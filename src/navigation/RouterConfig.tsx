@@ -8,6 +8,7 @@ import SubTask from '../components/Tasks/SubTasks/SubTask'
 import Chat from '../components/Chat/Chat'
 import AppLayout from "./AppLayout";
 import Connections from "../components/Connection/Connection";
+import PrivateRoute from './PrivateRoute';
 
 interface Configs {
 }
@@ -25,7 +26,7 @@ const RouterConfig: React.FC<Configs> = () => {
               <Route path="/task/:id" component={SubTask} />
               <Route path="/chat" component={Chat} />
               <Route path="/connections" component={Connections} />
-              <Route path="/dashboard" component={Dashboard} />
+              <PrivateRoute path="/dashboard" component={Dashboard} />
             </AppLayout>
         </Switch>
     </Router>

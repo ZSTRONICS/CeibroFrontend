@@ -13,7 +13,7 @@ interface ChatBoxHeaderProps {
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     
     const { chat } = props
-    const { username } = chat
+    const { name } = chat
 
     const classes = useStyles()
 
@@ -24,11 +24,11 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             </Grid>
             <Grid item xs={2} className={classes.usernameWrapper}>
                 <Typography className={classes.username}>
-                    {username}
+                    {name}
                 </Typography>
             </Grid>
             <Grid item xs={4} className={classes.avatarWrapper}>
-                <NameAvatar name={username}/>
+                <NameAvatar name={name}/>
             </Grid>
             <Grid item xs={4} className={classes.moreWrapper}>
                 <InputText placeholder="Chat Search" />

@@ -6,13 +6,31 @@ import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from 'react-intl';
+import { useDispatch } from 'react-redux';
+import { loginRequest } from '../../../redux/action/auth.action'
 
 const LoginForm = () => {
   const classes = useStyles();
+
   const history = useHistory()
   const [checked, setChecked] = useState(true)
   const intl = useIntl();
-  
+  const dispatch = useDispatch();
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("")
+
+
+
+  const handleSubmit = () => {
+    const payload = {
+      body: {
+        email,
+        password,
+      }
+    }
+    dispatch(loginRequest(payload));
+  }
 
   return (
     <div className="form-container">
@@ -28,6 +46,7 @@ const LoginForm = () => {
           inputProps={{
             style: { height: 12 }
           }}
+          onChange={(e: any) => setEmail(e.target.value)}
         />
         <TextField
           type="password"
@@ -36,6 +55,7 @@ const LoginForm = () => {
           inputProps={{
             style: { height: 12 }
           }}
+          onChange={(e: any) => setPassword(e.target.value)}
         />
         <FormControlLabel
           control={
@@ -54,9 +74,7 @@ const LoginForm = () => {
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            onClick={() => {
-              history.push('/dashboard')
-            }}
+            onClick={handleSubmit}
           >
             {intl.formatMessage({ id: 'input.Login' })}
           </Button>

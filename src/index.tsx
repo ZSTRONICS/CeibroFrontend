@@ -4,12 +4,12 @@ import App from './App';
 import { Provider } from 'react-redux'
 import { createTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import store from './redux/store';
+import Store from './redux/store';
 import reportWebVitals from './reportWebVitals';
 import colors from './assets/colors';
 import {IntlProvider} from "react-intl";
 import messages_en from "./translation/en.json";
-
+import { PersistGate } from 'redux-persist/integration/react'
 import './translation/i18next';
 
 
@@ -41,10 +41,12 @@ const theme = createTheme({
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
-      <Provider store={store}>
-        <IntlProvider locale={language} messages={messages[language]}>
-          <App />
-        </IntlProvider>
+      <Provider store={Store.store}>
+        <PersistGate loading={null} persistor={Store.persistor}>
+            <IntlProvider locale={language} messages={messages[language]}>
+              <App />
+            </IntlProvider>
+        </PersistGate>
       </Provider>
     </ThemeProvider>
   </React.StrictMode>,

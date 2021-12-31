@@ -1,9 +1,10 @@
 export interface ChatListInterface {
     bookmarked: boolean;
-    username: string;
-    lastMessage: string;
-    unreadCount: number,
-    lastMessageTime: string;
+    name: string;
+    username?: string;
+    lastMessage?: string;
+    unreadCount?: number,
+    lastMessageTime?: string;
 }
 
 export interface ChatMessageInterface {

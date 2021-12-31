@@ -7,12 +7,25 @@ import LoginForm from './LoginForm'
 import { LoginInterface } from '../../../interfaces/Login.interface'
 import { useMediaQuery } from 'react-responsive'
 import assets from '../../../assets/assets'
+import { useHistory } from 'react-router'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../../redux/reducers'
+import { useEffect } from 'react'
 
 
 
 const Login: React.FC<LoginInterface> = () => {
     const classes = useStyles()
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'}) 
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'});
+
+    const history = useHistory();
+    const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
+
+    useEffect(() => {
+        if(isLoggedIn) {
+            history.push('/dashboard');
+        }
+    }, [isLoggedIn]);
 
     return (
         <Grid container className={classes.login}>

@@ -14,32 +14,32 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     const classes = useStyles()
 
     const { chat } = props
-    const { bookmarked, username, lastMessage, unreadCount, lastMessageTime } = chat
+    const { bookmarked, username = "Qasim", name, lastMessage, unreadCount, lastMessageTime } = chat
 
     return (
         <Grid className={classes.chatListWrapper} container >
             <Grid item xs={1} className={classes.bookMarkWrapper}>
                 {bookmarked? (<Bookmark className={classes.bookmarked}/>): (<BookmarkBorder/>)}
-                {unreadCount > 1 && (
+                {unreadCount && unreadCount > 1 && (
                     <div className={classes.dot}>
                     </div> 
                 )} 
             </Grid>
             <Grid item xs={2} className={classes.avatarWrapper}>
-                <NameAvatar name={username}/>
+                <NameAvatar name={name}/>
             </Grid>
 
             <Grid item xs={6} className={classes.messageDetailWrapper}>
                 <Typography className={classes.userName}>
-                   {username}
+                   {name}
                 </Typography>
                 <Typography className={classes.message}>
-                    {lastMessage.substr(0, 22)}
+                    {/* {lastMessage.substr(0, 22)} */}
                 </Typography>
             </Grid>
 
             <Grid item xs={2} className={classes.timeWrapper}>
-                {unreadCount > 0 && (
+                {unreadCount && unreadCount > 0 && (
                         <Badge badgeContent={4} color="error">
                         </Badge>
                     )
