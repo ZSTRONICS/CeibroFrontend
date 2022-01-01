@@ -2,8 +2,12 @@ import { Grid, makeStyles } from "@material-ui/core"
 import { AttachFile, EmojiEmotionsOutlined, Image, Mic, SendOutlined } from "@material-ui/icons"
 import colors from "../../assets/colors"
 import Picker from 'emoji-picker-react';
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import OutsideClickHandler from 'react-outside-click-handler';
+import { SocketContext } from "../../App";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
+import { PUSH_MESSAGE } from "../../config/chat.config";
 
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
@@ -13,7 +17,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
     const [open, setOpen] = useState(false)
     const [text, setText] = useState("")
-    const classes = useStyles()
+    const classes = useStyles();
+    const chats = useSelector((state: RootState) => state.chat?.chat);
+    const socket:any = useContext(SocketContext) || null;
+    const dispatch = useDispatch();
 
     const onEmojiClick = (e: any, emojiObj: any) => {
         setText(`${text}${emojiObj.emoji}`)
@@ -29,10 +36,21 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
     const handleSend = () => {
         if(text) {
-            props.handleSendClick(text)
+            socket?.emit('SEND_MESSAGE', { chat: chats?.[0]?.id, message: text });
+            dispatch({
+                type: PUSH_MESSAGE,
+                payload: {
+                  username: "Test user",
+                  time: "20m ago",
+                  companyName: "Test company",
+                  messageText: text,
+                  seen: true,
+                  myMessage: true
+                }
+              })
+            // props.handleSendClick(text)
             setText('')
         }
-
     }
 
     return (

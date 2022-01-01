@@ -3,7 +3,8 @@ import { requestSuccess } from '../../utills/status'
 import { LOGIN } from '../../config/auth.config';
 
 const intialStatue = {
-    isLoggedIn: false
+    isLoggedIn: false,
+    user: {}
 }
 
 
@@ -16,12 +17,13 @@ const AuthReducer = (state = intialStatue, action: ActionInterface ) => {
             localStorage.setItem('tokens', JSON.stringify(action.payload?.tokens));
             return {
                 ...state,
-                isLoggedIn: true
+                isLoggedIn: true,
+                user: action.payload.user
             }
-        } 
+        }
             
         
-            default:
+        default:
             return state
     }
         

@@ -1,14 +1,20 @@
 import { ActionInterface } from ".";
 import { requestSuccess } from '../../utills/status'
-import { GET_CHAT } from "../../config/chat.config";
+import { GET_CHAT, PUSH_MESSAGE } from "../../config/chat.config";
 
-const intialStatue = {
-    chat: []
+interface ChatReducer {
+    chat: any;
+    messages: any;
+}
+
+const intialStatue: ChatReducer = {
+    chat: [],
+    messages: []
 }
 
 
 const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
-    
+
     switch(action.type) {
         
         case requestSuccess(GET_CHAT): {
@@ -16,10 +22,21 @@ const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
                 ...state,
                 chat: action.payload 
             }
-        } 
+        }
+
+        case PUSH_MESSAGE: {
+            return {
+                ...state,
+                messages: [
+                    ...state.messages,
+                    action.payload
+                ]
+            }
+        }
+
             
         
-            default:
+        default:
             return state
     }
         

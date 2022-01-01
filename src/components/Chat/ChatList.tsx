@@ -8,7 +8,7 @@ import { ChatListInterface } from '../../constants/interfaces/chat.interface';
 
 const ChatList = () => {
     const dispatch = useDispatch();
-    const chat = useSelector((state: RootState) => state.chat.chat); 
+    const chat = useSelector((state: RootState) => state.chat?.chat); 
     
     useEffect(() => {
         dispatch(getAllChats());
