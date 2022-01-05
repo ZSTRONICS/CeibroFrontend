@@ -8,8 +8,8 @@ interface NameAvatarProps {
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     const classes = useStyles()
     const { name } = props
-    const letter2 = name.split(' ')[1]? name.split(' ')[1][0]: ""
-    const letters = name[0].toUpperCase() + letter2
+    const letter2 = name?.split(' ')[1]? name.split(' ')[1][0]: ""
+    const letters = name?.[0].toUpperCase() + letter2
 
     return (
         <div className={classes.outerWrapper}>

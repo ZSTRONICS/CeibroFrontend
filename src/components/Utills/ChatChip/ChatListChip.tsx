@@ -5,19 +5,35 @@ import colors from "../../../assets/colors"
 import NameAvatar from '../Others/NameAvatar'
 import ChatListMenu from './ChatListMenu'
 import { ChatListInterface } from '../../../constants/interfaces/chat.interface'
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../redux/reducers';
 
 interface ChatListInterfaceProps {
-    chat: ChatListInterface
+    chat: ChatListInterface;
+    handleClick?: (e: any) => void;
 }
 
 const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     const classes = useStyles()
 
-    const { chat } = props
+    const { chat } = props;
     const { bookmarked, username = "Qasim", name, lastMessage, unreadCount, lastMessageTime } = chat
 
+    const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
+
+    const handleClick = () => {
+        props.handleClick?.(chat);
+    }
+
+    const getStyles = () => {
+        console.log('comparing', selectedChat, 'vs', chat._id , '  = ', selectedChat === chat._id, ' vs ', String(selectedChat) === String(chat._id) )
+        return {
+            backgroundColor: String(selectedChat) === String(chat._id)? colors.lightGrey: colors.white
+        }
+    }
+     
     return (
-        <Grid className={classes.chatListWrapper} container >
+        <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()} >
             <Grid item xs={1} className={classes.bookMarkWrapper}>
                 {bookmarked? (<Bookmark className={classes.bookmarked}/>): (<BookmarkBorder/>)}
                 {unreadCount && unreadCount > 1 && (
@@ -40,7 +56,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
             <Grid item xs={2} className={classes.timeWrapper}>
                 {unreadCount && unreadCount > 0 && (
-                        <Badge badgeContent={4} color="error">
+                        <Badge badgeContent={unreadCount} color="error">
                         </Badge>
                     )
                 }

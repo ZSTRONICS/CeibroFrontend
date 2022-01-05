@@ -1,8 +1,10 @@
+import { ActionInterface } from "../reducers";
 
 interface CreateAction {
     body?: any;
     params?: any;
-    success?: (payload:any) => void
+    success?: (res: any, action: ActionInterface) => void;
+    other?: any;
 }
 
 // Generic method for action dispatch and for apiCall.js templatee
@@ -12,7 +14,8 @@ export function createAction(type: string) {
         payload: {
             body: payload.body,
             params: payload.params,
-            success: payload.success
+            success: payload.success,
+            other: payload.other
         }
     })
 }

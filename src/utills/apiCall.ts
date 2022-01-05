@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { call, put, select } from "redux-saga/effects";
 // import { SHOW_TOAST } from "../redux/constants";
 import axios from "./axios";
@@ -65,10 +66,11 @@ const apiCall = ({ type, method, path, success, isFormData, isBlob }: ApiCall): 
         payload: err
       });
 
-      yield put({
-        type: SHOW_TOAST,
-        payload: { toastMessage: err?.message, toastVisible: true, error: true }
-      });
+      toast.error(err?.message || "Unknow error");
+      // yield put({
+      //   type: SHOW_TOAST,
+      //   payload: { toastMessage: err?.message, toastVisible: true, error: true }
+      // });
     }
   };
 export default apiCall;

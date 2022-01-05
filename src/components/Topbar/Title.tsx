@@ -8,7 +8,8 @@ import { Link } from 'react-router-dom'
 import colors from '../../assets/colors'
 import SelectDropdown from '../Utills/Inputs/SelectDropdown'
 import { useMediaQuery } from 'react-responsive'
-import { ArrowBack } from '@material-ui/icons'
+import { ArrowBack } from '@material-ui/icons';
+import CreateChat from './CreateChat'
 
 const Title = () => {
     
@@ -102,7 +103,7 @@ const Title = () => {
                 </div>
                 {!isTabletOrMobile && 
                     <div style={{ width: '100%'}}>
-                        <SelectDropdown title="project"/>
+                        <CreateChat/>
                     </div>
                 }
             </>

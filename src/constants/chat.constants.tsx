@@ -7,7 +7,8 @@ export const CHAT_LIST: ChatListInterface[] = [
         username: 'Paul Mets',
         lastMessage: "Cursus Condimentum tempus",
         unreadCount: 0,
-        lastMessageTime: '10:24pm'
+        lastMessageTime: '10:24pm',
+        _id: "234"
     }
 ]
 
@@ -16,7 +17,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         username: 'Kristo Vunukainen',
         time: '10:25 AM',
         companyName: 'Electrician',
-        messageText: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
+        message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: false
     },
@@ -24,7 +25,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         username: 'Kristo Vunukainen',
         time: '10:25 AM',
         companyName: 'Electrician',
-        messageText: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
+        message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: true
     },
@@ -32,7 +33,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         username: 'Kristo Vunukainen',
         time: '10:25 AM',
         companyName: 'Electrician',
-        messageText: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
+        message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: false
     },
@@ -40,7 +41,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         username: 'Kristo Vunukainen',
         time: '10:25 AM',
         companyName: 'Electrician',
-        messageText: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
+        message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: true
     },
@@ -48,7 +49,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         username: 'Kristo Vunukainen',
         time: '10:25 AM',
         companyName: 'Electrician',
-        messageText: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
+        message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: false,
         myMessage: false,
         files: []

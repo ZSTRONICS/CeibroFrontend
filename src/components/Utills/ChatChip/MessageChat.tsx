@@ -16,7 +16,7 @@ interface MessageChatProps {
 const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
-    const { username, time, companyName, messageText, seen, myMessage, files } = message
+    const { username, time, companyName, message: messageText, seen, myMessage, files } = message
     const classes = useStyles()
 
     const [view, setView] = useState(false)

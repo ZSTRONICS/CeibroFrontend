@@ -1,6 +1,8 @@
 import { Grid, makeStyles } from "@material-ui/core"
-import { useSelector } from "react-redux"
+import { useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface"
+import { getRoomMessages } from "../../redux/action/chat.action"
 import { RootState } from "../../redux/reducers"
 import MessageChat from '../Utills/ChatChip/MessageChat'
 
@@ -10,9 +12,28 @@ interface ChatBodyInt {
 
 const ChatBody: React.FC<ChatBodyInt> = (props) => {
     const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
-    console.log('messages are', messages);
-    const classes = useStyles()
+    const selectedChat = useSelector((store: RootState) => store.chat.selectedChat);
+    const classes = useStyles();
+    const dispatch = useDispatch();
 
+    useEffect(() => {
+        if(selectedChat) {
+            const payload = {
+                other: {
+                    roomId: selectedChat
+                }
+            }
+            dispatch(getRoomMessages(payload))
+        
+        }
+    }, [selectedChat]);
+
+    useEffect(() => {
+        setTimeout(() => {
+            const chatBox = document.getElementById('chatBox') || { scrollTop: 0, scrollHeight: 0}
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }, 300);
+    }, [messages, selectedChat]);
 
     return (
         <Grid className={classes.wrapper} id="chatBox" container >

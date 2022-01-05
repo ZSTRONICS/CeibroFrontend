@@ -4,6 +4,7 @@ import InputHOC from './InputHOC'
 import Select from 'react-select'
 import chroma from 'chroma-js'
 import colors from '../../../assets/colors'
+import { handleInputChange } from 'react-select/src/utils'
 
 const options = [
     { value: 'All', label: 'All', color: 'green' },
@@ -14,24 +15,27 @@ const options = [
 
 
   
+interface dataInterface {
+  value: string;
+  label: string;
+  color?: string;
+}
 
 interface My {
-    title: string
+    title: string;
+    data?: dataInterface[];
+    value?: any;
+    isMulti?: boolean;
+    placeholder?: string;
+    handleChange?: null | ((e: any) => void);
 }
 
 const SelectDropdown: FC<My> = (props) => {
 
     const classes = useStyles()
-
-    const style = {
-        control: (base: any) => ({
-          ...base,
-          border: 0,
-          // This line disable the blue border
-          boxShadow: "none",
-          flex: 2
-        })
-      };
+    let myOptions: any = props.data || options;
+    console.log('my optins ar', myOptions)
+    const { value, isMulti, placeholder } = props
 
       const colourStyles = {
         control: (styles: any) => ({ 
@@ -43,7 +47,7 @@ const SelectDropdown: FC<My> = (props) => {
             flex: 2 
         }),
         option: (styles: any, { data, isDisabled, isFocused, isSelected }: any) => {
-          const color = chroma(colors.darkYellow);
+          const color = chroma(data.color || colors.darkYellow);
           return {
             ...styles,
             backgroundColor: isDisabled
@@ -92,13 +96,23 @@ const SelectDropdown: FC<My> = (props) => {
         }),
       };
 
-
+  
+    const handleChange = (e:any) => {
+        props.handleChange?.(e);
+    }
 
 
     return (
         <InputHOC title={props.title}>
             <div className={classes.select}>
-                <Select isMulti options={options} styles={colourStyles} value={options[0]} />
+                <Select 
+                  placeholder={placeholder || "Select"} 
+                  isMulti={isMulti || false} 
+                  onChange={handleChange} 
+                  options={myOptions} 
+                  styles={colourStyles}
+                  value={value} 
+                />
             </div>
         </InputHOC>
     )

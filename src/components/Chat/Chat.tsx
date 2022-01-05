@@ -24,7 +24,7 @@ const Chat = () => {
                 username: 'Kristo Vunukainen',
                 time: nowTime,
                 companyName: 'Electrician',
-                messageText: text,
+                message: text,
                 seen: false,
                 myMessage: true
             }
@@ -43,7 +43,7 @@ const Chat = () => {
                     username: 'Kristo Vunukainen',
                     time: nowTime,
                     companyName: 'Electrician',
-                    messageText: 'I am fine . ',
+                    message: 'I am fine . ',
                     seen: false,
                     myMessage: false
                 }

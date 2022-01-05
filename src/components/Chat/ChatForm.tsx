@@ -18,7 +18,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const [open, setOpen] = useState(false)
     const [text, setText] = useState("")
     const classes = useStyles();
-    const chats = useSelector((state: RootState) => state.chat?.chat);
+    const { chat: chats, selectedChat } = useSelector((state: RootState) => state.chat);
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
 
@@ -34,16 +34,22 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         setText(e.currentTarget.value)
     }
 
+    const handleKeyDown = (e: any) => {
+        if(e.key === "Enter") {
+            handleSend();
+        }
+    }
+
     const handleSend = () => {
         if(text) {
-            socket?.emit('SEND_MESSAGE', { chat: chats?.[0]?.id, message: text });
+            socket?.emit('SEND_MESSAGE', { chat: selectedChat, message: text });
             dispatch({
                 type: PUSH_MESSAGE,
                 payload: {
                   username: "Test user",
                   time: "20m ago",
                   companyName: "Test company",
-                  messageText: text,
+                  message: text,
                   seen: true,
                   myMessage: true
                 }
@@ -56,7 +62,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     return (
         <Grid className={classes.wrapper} container>
             <Grid item xs={12} className={classes.inputWrapper}>
-                <input value={text} onChange={handleTextChange} type="text" placeholder="Type a message" className={`messageInput ${classes.messageInput}`} />
+                <input 
+                    value={text} 
+                    onChange={handleTextChange} 
+                    onKeyPress={handleKeyDown} 
+                    type="text" 
+                    placeholder="Type a message" 
+                    className={`messageInput ${classes.messageInput}`} 
+                />
                 <div className={classes.sendWrapper}>
                     <SendOutlined onClick={handleSend} className={classes.sendIcon} />
                 </div>

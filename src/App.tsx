@@ -10,6 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './redux/reducers';
 import { pushMessage } from './redux/action/chat.action';
 import { PUSH_MESSAGE } from './config/chat.config';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { sounds } from './assets/assets';
 
 export const SocketContext = createContext(null);
 interface MyApp {
@@ -33,20 +36,15 @@ const App: React.FC<MyApp> = () => {
           token: myToken
         }
       });
+      const audio = new Audio(sounds.message);
       setSocket(mySocket);
       mySocket.on("RECEIVE_MESSAGE", data => {
         if(data.from  !== user?.id) {
           dispatch({
             type: PUSH_MESSAGE,
-            payload: {
-              username: "Test user",
-              time: "20m ago",
-              companyName: "Test company",
-              messageText: data.message,
-              seen: false,
-              myMessage: false
-            }
-          })
+            payload: data.message
+          });
+          audio.play();
         }
       })
     }
@@ -55,6 +53,7 @@ const App: React.FC<MyApp> = () => {
   return (
     <div className="App">
       <CreateProjectDrawer/>
+      <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer/>
       <SocketContext.Provider value={socket}>
         <RouterConfig/>
