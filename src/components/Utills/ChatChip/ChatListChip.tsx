@@ -1,5 +1,5 @@
 import { Badge, Grid, makeStyles, Typography } from "@material-ui/core"
-import { Bookmark, BookmarkBorder, DockTwoTone, MoreVert } from "@material-ui/icons"
+import { Bookmark, BookmarkBorder, DockTwoTone, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { BsDot } from "react-icons/bs"
 import colors from "../../../assets/colors"
 import NameAvatar from '../Others/NameAvatar'
@@ -17,7 +17,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     const classes = useStyles()
 
     const { chat } = props;
-    const { bookmarked, username = "Qasim", name, lastMessage, unreadCount, lastMessageTime } = chat
+    const { bookmarked, username = "Qasim", name, lastMessage, unreadCount, lastMessageTime, project } = chat
 
     const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
 
@@ -34,41 +34,62 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
      
     return (
         <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()} >
-            <Grid item xs={1} className={classes.bookMarkWrapper}>
-                {bookmarked? (<Bookmark className={classes.bookmarked}/>): (<BookmarkBorder/>)}
-                {unreadCount && unreadCount > 1 && (
-                    <div className={classes.dot}>
-                    </div> 
-                )} 
-            </Grid>
-            <Grid item xs={2} className={classes.avatarWrapper}>
-                <NameAvatar name={name}/>
-            </Grid>
+            <Grid container>
+                <Grid item xs={1} className={classes.bookMarkWrapper}>
+                    {unreadCount && unreadCount > 0 && (
+                        <div className={classes.dot}>
+                        </div> 
+                    )} 
+                </Grid>
+                <Grid item xs={2} className={classes.avatarWrapper}>
+                    <NameAvatar name={name}/>
+                </Grid>
 
-            <Grid item xs={6} className={classes.messageDetailWrapper}>
-                <Typography className={classes.userName}>
-                   {name}
-                </Typography>
-                <Typography className={classes.message}>
-                    {/* {lastMessage.substr(0, 22)} */}
-                </Typography>
-            </Grid>
+                <Grid item xs={6} className={classes.messageDetailWrapper}>
+                        <Typography className={classes.userName}>
+                            {name}
+                        </Typography>
+                        {unreadCount && unreadCount > 0 && 
+                            <Typography className={classes.message}>
+                                {lastMessage?.message?.substr(0, 22)}
+                            </Typography>
+                        }
+                </Grid>
 
-            <Grid item xs={2} className={classes.timeWrapper}>
-                {unreadCount && unreadCount > 0 && (
-                        <Badge badgeContent={unreadCount} color="error">
-                        </Badge>
-                    )
-                }
-                <Typography className={classes.time}>
-                    {lastMessageTime}
-                </Typography>
-            </Grid>
+                <Grid item xs={2} className={classes.timeOuterWrapper}>
+                    <div>
+                        {bookmarked? 
+                            (<Star className={classes.startFilled} />): 
+                            (<StarBorder className={classes.bookmarked}/>)
+                        }
+                    </div>
+                    <div className={classes.timeWrapper}>
+                        {unreadCount && unreadCount > 0 && (
+                                <Badge badgeContent={unreadCount} color="error">
+                                </Badge>
+                            )
+                        }
+                        <Typography className={classes.time}>
+                            {lastMessageTime}
+                        </Typography>   
+                    </div>
+                </Grid>
 
-            <Grid item xs={1} className={classes.timeWrapper}>
-                <ChatListMenu />
+                <Grid item xs={1} className={classes.timeWrapper}>
+                    <ChatListMenu />
+                </Grid>
             </Grid>
-
+            <Grid container>
+                <Grid item xs={3}></Grid>
+                <Grid item xs={6}>
+                    {project?.name && 
+                        <Typography className={classes.chatProject}>
+                            <span>Project:  &nbsp;&nbsp;</span>
+                            <span className={classes.chatProjectName}>{project.name}</span>
+                        </Typography>
+                    }
+                </Grid>
+            </Grid>
         </Grid>
     )
 }
@@ -113,6 +134,22 @@ const useStyles = makeStyles({
         fontWeight: 500,
         color: colors.textGrey
     },
+    chatProject: {
+        fontSize: 10,
+        fontWeight: 500,
+        color: colors.black
+    },
+    chatProjectName: {
+        fontSize: 10,
+        fontWeight: "bold",
+        color: colors.textPrimary
+    },
+    timeOuterWrapper: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingRight: 5,
+    },
     timeWrapper: {
         display: 'flex',
         alignItems: 'center',
@@ -124,6 +161,9 @@ const useStyles = makeStyles({
         fontWeight: 500
     },
     bookmarked: {
+        color: colors.darkYellow
+    },
+    startFilled: {
         color: colors.darkYellow
     }
 })

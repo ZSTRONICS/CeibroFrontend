@@ -8,11 +8,11 @@ import { ChatListInterface } from '../../constants/interfaces/chat.interface';
 
 const ChatList = () => {
     const dispatch = useDispatch();
-    const chat = useSelector((state: RootState) => state.chat?.chat); 
+    const { chat, type } = useSelector((state: RootState) => state.chat); 
     
     useEffect(() => {
         dispatch(getAllChats());
-    }, []);
+    }, [type]);
 
     const handleClick = (chat: any) => {
         dispatch(setSelectedChat({ other: chat?._id }));

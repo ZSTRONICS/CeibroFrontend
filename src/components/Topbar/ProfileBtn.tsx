@@ -3,14 +3,17 @@ import { ContactPhone, Create, PermContactCalendar, PersonAdd } from '@material-
 import React, { useState } from 'react'
 import { BiLogOut } from 'react-icons/bi'
 import OutsideClickHandler from 'react-outside-click-handler'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router'
 import colors from '../../assets/colors'
+import { logoutUser } from '../../redux/action/auth.action'
 import './ProfileBtn.css'
 
 const ProfileBtn = () => {
 
     const classes = useStyles()
     const [open, setOpen] = useState(false)
+    const dispatch = useDispatch();
     const image = "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg"
 
     const history = useHistory()
@@ -31,6 +34,10 @@ const ProfileBtn = () => {
 
     const handleOutsideClick = () => {
         setOpen(false)
+    }
+
+    const handleLogout = () => {
+        dispatch(logoutUser());
     }
 
 
@@ -90,7 +97,7 @@ const ProfileBtn = () => {
                             <hr className={classes.break} />
 
 
-                            <div className={`${classes.menuItem} dropdown-menu`}>
+                            <div className={`${classes.menuItem} dropdown-menu`} onClick={handleLogout}>
                                 <div className={classes.smallMenuText}>
                                     <BiLogOut className={classes.smallMenuIcon} />
                                     <Typography className={classes.smallText}>

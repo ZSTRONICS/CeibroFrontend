@@ -21,6 +21,7 @@
     "i18next-browser-languagedetector": "^6.1.2",
     "jodit-react": "^1.1.1",
     "jquery": "^3.6.0",
+    "lodash": "^4.17.21",
     "normalizer": "^1.2.7",
     "react": "^17.0.2",
     "react-circular-progressbar": "^2.0.4",

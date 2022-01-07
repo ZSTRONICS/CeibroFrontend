@@ -1,6 +1,6 @@
 import { ActionInterface } from ".";
 import { requestSuccess } from '../../utills/status'
-import { LOGIN } from '../../config/auth.config';
+import { LOGIN, LOGOUT } from '../../config/auth.config';
 
 const intialStatue = {
     isLoggedIn: false,
@@ -19,6 +19,15 @@ const AuthReducer = (state = intialStatue, action: ActionInterface ) => {
                 ...state,
                 isLoggedIn: true,
                 user: action.payload.user
+            }
+        }
+     
+        case LOGOUT: {
+            localStorage.removeItem('tokens');
+            return {
+                ...state,
+                isLoggedIn: false,
+                user: null
             }
         }
             

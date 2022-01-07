@@ -66,8 +66,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     value={text} 
                     onChange={handleTextChange} 
                     onKeyPress={handleKeyDown} 
-                    type="text" 
-                    placeholder="Type a message" 
+                    type="text"
+                    disabled={!selectedChat} 
+                    placeholder={selectedChat? "Type a message": "Select a chat room"} 
                     className={`messageInput ${classes.messageInput}`} 
                 />
                 <div className={classes.sendWrapper}>

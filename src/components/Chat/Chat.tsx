@@ -5,13 +5,16 @@ import ChatBoxHeader from './ChatBoxHeader'
 import { CHAT_LIST, CHAT_MESSAGE } from '../../constants/chat.constants'
 import ChatBody from './ChatBody'
 import ChatForm from './ChatForm'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import $ from "jquery";
+import { clearSelectedChat } from '../../redux/action/chat.action'
+import { useDispatch } from 'react-redux'
 
 const Chat = () => {
     const classes = useStyles()
 
     const [messages, setMessage] = useState(CHAT_MESSAGE)
+    const dispatch = useDispatch();
 
     const sendMessage = (text: string) => {
 
@@ -57,6 +60,13 @@ const Chat = () => {
 
         return text
     }
+
+    useEffect(() => {
+        dispatch(clearSelectedChat());
+        return () => {
+            dispatch(clearSelectedChat());    
+        }
+    }, []);
 
     return (
         <Grid container className={classes.wrapper}>

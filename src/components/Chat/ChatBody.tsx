@@ -24,7 +24,6 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
                 }
             }
             dispatch(getRoomMessages(payload))
-        
         }
     }, [selectedChat]);
 

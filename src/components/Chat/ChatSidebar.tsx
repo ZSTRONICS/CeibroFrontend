@@ -1,27 +1,54 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { Add, Bookmark, BookmarkBorder, BookmarkOutlined, Chat, ContactPhone } from '@material-ui/icons'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../assets/colors'
+import { SET_CHAT_TYPE, SET_CHAT_SEARCH } from '../../config/chat.config'
+import { getAllChats } from '../../redux/action/chat.action'
+import { RootState } from '../../redux/reducers'
 import InputText from '../Utills/Inputs/InputText'
 import ChatList from './ChatList'
 
 const ChatSidebar = () => {
     const classes = useStyles()
+    const { type } = useSelector((store: RootState) => store.chat);
+    const messageListType = [
+        {
+            name: "View all",
+            value: "all"
+        },
+        {
+            name: "Read",
+            value: "read"
+        },
+        {
+            name: "Unread",
+            value: "unread"
+        }
+    ];
 
-    const [messageListType, setMessageListType] = useState([
-        "View all", "Read", "Unread"
-    ])
-
-    const [selectedMessageType, setSelected] = useState(0)
     const [selectedMenu, setSelectedMenu] = useState(0)
+    const dispatch = useDispatch();
 
-    const handleMessageTypeClick = (value: number) => {
-        setSelected(value)
+    const handleMessageTypeClick = (chatType: any) => {
+        dispatch({
+            type: SET_CHAT_TYPE,
+            payload: chatType.value
+        })
     }
 
     const handleMenuClick = (value: number) => {
         setSelectedMenu(value)
     }
+
+    const handleChatRoomSearch = (e: any) => {
+        dispatch({ 
+            type: SET_CHAT_SEARCH,
+            payload: e?.target?.value
+        });
+        dispatch(getAllChats()); 
+    }
+
 
     return (
         <Grid container className={classes.outerWrapper}>
@@ -39,14 +66,17 @@ const ChatSidebar = () => {
                 </div>
             </Grid>
             <Grid item xs={12}>
-                <InputText placeholder="Search" />
+                <InputText
+                    placeholder="Search"
+                    onChange={handleChatRoomSearch}
+                />
             </Grid>
             <Grid item xs={12} className={classes.messageTypeWrapper}>
-                {messageListType.map((type: string, index: number) => {
+                {messageListType.map((chatType: any, index: number) => {
                     return (
                         <>
-                            <Typography onClick={() => handleMessageTypeClick(index)} key={index} className={`${classes.messageTypeText} ${selectedMessageType === index ? classes.activeMessageType : ''}`}>
-                                {type}
+                            <Typography onClick={() => handleMessageTypeClick(chatType)} key={index} className={`${classes.messageTypeText} ${type === chatType.value ? classes.activeMessageType : ''}`}>
+                                {chatType.name}
                             </Typography>
                             {index < 2 &&
                                 <Typography className={classes.messagetypeBreak}>
