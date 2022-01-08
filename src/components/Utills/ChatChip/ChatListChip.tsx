@@ -17,8 +17,8 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     const classes = useStyles()
 
     const { chat } = props;
-    const { bookmarked, username = "Qasim", name, lastMessage, unreadCount, lastMessageTime, project } = chat
-
+    const { username = "Qasim", name, lastMessage, unreadCount, lastMessageTime, project } = chat
+    const { user } = useSelector((state: RootState) => state.auth);
     const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
 
     const handleClick = () => {
@@ -26,11 +26,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     }
 
     const getStyles = () => {
-        console.log('comparing', selectedChat, 'vs', chat._id , '  = ', selectedChat === chat._id, ' vs ', String(selectedChat) === String(chat._id) )
         return {
             backgroundColor: String(selectedChat) === String(chat._id)? colors.lightGrey: colors.white
         }
     }
+
+    const bookmarked = chat?.pinnedBy?.includes(user.id);
+    
      
     return (
         <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()} >
@@ -76,7 +78,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 </Grid>
 
                 <Grid item xs={1} className={classes.timeWrapper}>
-                    <ChatListMenu />
+                    <ChatListMenu room={chat} />
                 </Grid>
             </Grid>
             <Grid container>

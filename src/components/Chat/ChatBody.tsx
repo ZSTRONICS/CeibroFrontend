@@ -35,7 +35,7 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
     }, [messages, selectedChat]);
 
     return (
-        <Grid className={classes.wrapper} id="chatBox" container >
+        <Grid className={`${classes.wrapper} hide-scrollbar`} id="chatBox" container >
             {messages && messages?.map((message: ChatMessageInterface) => {
                 return <MessageChat message={message} />
             })}   

@@ -8,6 +8,8 @@ export const PUSH_TO_UNSELECTED = 'PUSH_TO_UNSELECTED';
 export const SET_MESSAGE_READ = 'SET_MESSAGE_READ';
 export const SET_CHAT_TYPE = 'SET_CHAT_TYPE';
 export const SET_CHAT_SEARCH = 'SET_CHAT_SEARCH';
+export const MUTE_CHAT = 'MUTE_CHAT';
+export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE';
 
 
 

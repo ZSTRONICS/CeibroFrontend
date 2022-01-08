@@ -1,17 +1,55 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import { BookmarkBorder, Chat, Delete, MoreVert } from "@material-ui/icons"
+import { BookmarkBorder, Chat, Delete, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { useState } from "react"
 import { BsBookmark } from "react-icons/bs"
-import { GrVolumeMute } from "react-icons/gr"
+import { GrVolume, GrVolumeMute } from "react-icons/gr"
 import OutsideClickHandler from "react-outside-click-handler"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 import colors from "../../../assets/colors"
+import { ChatListInterface } from "../../../constants/interfaces/chat.interface"
+import { addToFavourite, getAllChats, muteChat } from "../../../redux/action/chat.action"
+import { RootState } from "../../../redux/reducers"
 
-const ChatListMenu = () => {
-    const classes = useStyles()
-    const [show, setShow] = useState(false)
+interface ChatListMenueInt {
+    room: ChatListInterface
+}
 
-    const handleToggle = () => {
+const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
+    const { room } = props;
+    const classes = useStyles();
+    const [show, setShow] = useState(false);
+    const { user } = useSelector((state: RootState) => state.auth);
+    const { chat } = useSelector((state: RootState) => state.chat);
+    const isMuted = room?.mutedBy?.includes(user.id);
+    const isFavourite = room?.pinnedBy?.includes(user.id);
+    const dispatch = useDispatch();
+
+    const handleToggle = (e: any) => {
+        e.stopPropagation();
         setShow(!show)
+    }
+
+    const markAsUnread = () => {
+    }
+
+    const handleChatMute = (e: React.MouseEvent<HTMLElement>) => {
+        e.stopPropagation()
+        dispatch(muteChat({ other: room._id, success: () => {
+            const message = `Chat ${isMuted ? "Un muted": "muted"}`;
+            setShow(false);
+            dispatch(getAllChats({ success: () => {
+                toast.success(message);
+            }}))
+        } }));   
+    }
+
+    const handleFavouriteClick = (e: any) => {
+        e.stopPropagation()
+        dispatch(addToFavourite({ other: room._id, success: () => {
+            setShow(false);
+            dispatch(getAllChats());
+        } }));  
     }
 
     return (
@@ -20,25 +58,36 @@ const ChatListMenu = () => {
             {show && (
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>
-                            <div className={`${classes.menuWrapper} dropdown-menu`}>
+                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} >
                                 <Chat className={classes.menuIcon} />
                                 <Typography className={classes.menuText}>
                                     Mark unread
                                 </Typography>
                             </div>
-                            <div className={`${classes.menuWrapper} dropdown-menu`}>
-                                <GrVolumeMute className={classes.menuIcon} />
+                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={handleChatMute}>
+                                {isMuted ? (
+                                    <GrVolumeMute className={classes.menuIcon} />
+                                ): (
+                                    <GrVolume className={classes.menuIcon} />
+                                )}
                                 <Typography className={classes.menuText}>
-                                    Mute chat
+                                    {isMuted ? "Un mute": "mute"} chat
                                 </Typography>
                             </div>
 
                             <hr className={classes.break} />
 
-                            <div className={`${classes.menuWrapper} dropdown-menu`}>
-                                <BsBookmark className={classes.menuIcon} />
+                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={handleFavouriteClick}>
+                                {isFavourite? 
+                                    (<Star className={`${classes.star} ${classes.menuIcon}`} />): 
+                                    (<StarBorder className={`${classes.star} ${classes.menuIcon}`} />)
+                                }
                                 <Typography className={classes.menuText}>
-                                    Add to favorites
+                                    {isFavourite? (
+                                        "Remove from favorites"
+                                        ): (
+                                        "Add to favorites"
+                                    )}
                                 </Typography>
                             </div>
 
@@ -76,6 +125,9 @@ const useStyles = makeStyles({
     },
     menuIcon: {
         fontSize: 14
+    },
+    star: {
+        color: colors.darkYellow
     },
     menuText: {
         fontSize: 14,

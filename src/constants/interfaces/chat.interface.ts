@@ -7,6 +7,8 @@ export interface ChatListInterface {
     lastMessageTime?: string;
     _id: string;
     project?: any;
+    mutedBy?: any;
+    pinnedBy?: any;
 }
 
 export interface ChatMessageInterface {

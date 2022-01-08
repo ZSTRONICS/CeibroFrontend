@@ -26,19 +26,24 @@ const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
 
   const SERVER = "http://localhost:3000";
+  const audio = new Audio(sounds.message);
+
+  const playChatSound = (data: any) => {
+    if(!data?.mutedFor?.includes(user.id)) {
+      audio.play();
+    }
+  }
 
 
   useEffect(() => {
     if(isLoggedIn) {
       const tokens = localStorage.getItem('tokens') || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
-
       const mySocket = io(SERVER,{
         query: {
           token: myToken
         }
       });
-      const audio = new Audio(sounds.message);
       setSocket(mySocket);
       mySocket.on(RECEIVE_MESSAGE, data => {
         if(String(data.from)  !== String(user?.id)) {
@@ -48,10 +53,10 @@ const App: React.FC<MyApp> = () => {
               payload: data.message
             });
             dispatch(setMessagesRead({ other: selectedChat }));
-            audio.play();
+            playChatSound(data);
           } else {
             dispatch(getAllChats());
-            audio.play();
+            playChatSound(data);
           }
         }
       });
@@ -60,7 +65,7 @@ const App: React.FC<MyApp> = () => {
         mySocket.off(RECEIVE_MESSAGE);
       }
     }
-  }, [isLoggedIn, selectedChat]);
+  }, [isLoggedIn, selectedChat, user]);
 
   return (
     <div className="App">

@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import { Add, Bookmark, BookmarkBorder, BookmarkOutlined, Chat, ContactPhone } from '@material-ui/icons'
+import { Add, Bookmark, BookmarkBorder, BookmarkOutlined, Chat, ContactPhone, Star, StarBorder } from '@material-ui/icons'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../assets/colors'
@@ -53,17 +53,18 @@ const ChatSidebar = () => {
     return (
         <Grid container className={classes.outerWrapper}>
             <Grid item xs={12} className={classes.iconsWrapper}>
-                <div className={classes.menuOuterWrapper}>
-                    <Chat onClick={() => handleMenuClick(0)} className={`${classes.menuIcons} ${selectedMenu === 0 ? classes.activeIcon : ''}`} />
-                    <ContactPhone onClick={() => handleMenuClick(1)}  className={`${classes.menuIcons} ${selectedMenu === 1 ? classes.activeIcon : ''}`} />
-                    <BookmarkBorder onClick={() => handleMenuClick(2)}  className={`${classes.menuIcons} ${selectedMenu === 2 ? classes.activeIcon : ''}`} />
-                </div>
-                <div className={classes.addWrapper}>
-                    <Add className={classes.addIcon} />
-                    <Typography className={classes.addText}>
-                        Add
-                    </Typography>
-                </div>
+                <Grid item xs={6} className={`${classes.menuOuterWrapper} ${classes.rightBorder}`}>
+                    <Chat 
+                        onClick={() => handleMenuClick(0)} 
+                        className={`${classes.menuIcons} ${selectedMenu === 0 ? classes.activeIcon : ''}`} 
+                    />
+                </Grid>
+                <Grid item xs={6} className={classes.menuOuterWrapper}>
+                    <StarBorder
+                        onClick={() => handleMenuClick(1)} 
+                        className={`${classes.menuIcons} ${selectedMenu === 1 ? classes.activeIcon : ''}`} 
+                    />
+                </Grid>
             </Grid>
             <Grid item xs={12}>
                 <InputText
@@ -87,7 +88,7 @@ const ChatSidebar = () => {
                     )
                 })}
             </Grid>
-            <Grid item xs={12} className={classes.chatList}>
+            <Grid item xs={12} className={`${classes.chatList} hide-scrollbar`}>
                 <ChatList/>
             </Grid>
         </Grid>
@@ -109,9 +110,11 @@ const useStyles = makeStyles({
         height: 58
     },
     menuOuterWrapper: {
-        flex: 2,
         display: 'flex',
-        justifyContent: 'space-between'
+        justifyContent: 'center',
+    },
+    rightBorder: {
+        borderRight: `1px solid ${colors.grey}`
     },
     menuIcons: {
         fontSize: 20,
@@ -128,7 +131,7 @@ const useStyles = makeStyles({
     activeIcon: {
         color: colors.white,
         background: colors.darkYellow,
-        borderRadius: 5
+        borderRadius: 50
     },
     addText: {
         color: colors.textPrimary,
