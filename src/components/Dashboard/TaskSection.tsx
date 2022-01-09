@@ -48,7 +48,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
     return (
         <div>
             <Grid container alignItems="center">
-                <Grid item xs={12} md={3} className={classes.titleContainer} style={styles.titleContainer}>
+                <Grid item xs={12} md={4} lg={3} className={classes.titleContainer} style={styles.titleContainer}>
                     <Typography component="h1" variant="h5">
                         My Tasks
                     </Typography>
@@ -56,12 +56,12 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
                         Create
                     </Button>
                 </Grid>
-                <Grid style={styles.menuWrapper} className={classes.menuWrapper} item xs={12} md={8}>
+                <Grid style={styles.menuWrapper} className={classes.menuWrapper} item xs={12} md={6} lg={8}>
                     <StatusMenu
                         options={allStatus}
                     />
                 </Grid>
-                <Grid item xs={12} md={1}>
+                <Grid item xs={12} md={2} lg={1}>
                     <Button onClick={handleClick} className={classes.viewAll} variant="outlined" color="primary" size="medium" style={styles.viewAll} >
                         View all
                     </Button>

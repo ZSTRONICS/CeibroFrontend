@@ -22,7 +22,7 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
         return {
             paddingRight: history.location.pathname.includes('chat') 
             ? sidebarOpen ? 270: 60
-            : 60
+            : 20
         }
     }
 

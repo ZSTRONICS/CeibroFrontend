@@ -8,7 +8,8 @@ import {
     SET_CHAT_TYPE,
     SET_CHAT_SEARCH,
     SET_CHAT_SIDE_BAR,
-    SET_REPLY_TO_ID
+    SET_REPLY_TO_ID,
+    SAVE_MESSAGES
 } from "../../config/chat.config";
 
 interface ChatReducer {
@@ -50,6 +51,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
                     ...state.messages,
                     action.payload
                 ]
+            }
+        }
+
+        case SAVE_MESSAGES: {
+            return {
+                ...state,
+                messages: action.payload
             }
         }
 
@@ -103,6 +111,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
                 replyToId: action.payload
             }
         }
+
 
             
         

@@ -31,7 +31,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
         }
     }
 
-    const bookmarked = chat?.pinnedBy?.includes(user.id);
+    const bookmarked = chat?.pinnedBy?.includes(user?.id);
     
      
     return (

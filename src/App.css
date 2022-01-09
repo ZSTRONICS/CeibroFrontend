@@ -129,6 +129,10 @@ body {
   cursor: pointer;
 }
 
+.accordion:hover {
+  background-color: rgb(236, 240, 241);
+}
+
 .accordion .MuiBadge-root {
   font-size: 12px;
 }
@@ -148,3 +152,8 @@ body {
   background-color: white;
   overflow: hidden;
 }
+
+input:-webkit-autofill,
+  input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+  }

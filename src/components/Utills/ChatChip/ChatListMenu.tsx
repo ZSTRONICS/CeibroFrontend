@@ -64,14 +64,14 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                                     Mark unread
                                 </Typography>
                             </div>
-                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={handleChatMute}>
+                            <div className={`${classes.menuWrapper} dropdown-menu pointer ${classes.starMenu}`} onClick={handleChatMute}>
                                 {isMuted ? (
                                     <GrVolumeMute className={classes.menuIcon} />
                                 ): (
                                     <GrVolume className={classes.menuIcon} />
                                 )}
                                 <Typography className={classes.menuText}>
-                                    {isMuted ? "Un mute": "mute"} chat
+                                    {isMuted ? "Un mute": "Mute"} chat
                                 </Typography>
                             </div>
 
@@ -82,7 +82,7 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                                     (<Star className={`${classes.star} ${classes.menuIcon}`} />): 
                                     (<StarBorder className={`${classes.star} ${classes.menuIcon}`} />)
                                 }
-                                <Typography className={classes.menuText}>
+                                <Typography className={`${classes.menuText} ${classes.starText}`}>
                                     {isFavourite? (
                                         "Remove from favorites"
                                         ): (
@@ -115,7 +115,7 @@ const useStyles = makeStyles({
         color: colors.textPrimary
     },
     dropdownContent: {
-        minWidth: 160,
+        minWidth: 180,
         display: 'block'
     },
     menuWrapper: {
@@ -127,7 +127,15 @@ const useStyles = makeStyles({
         fontSize: 14
     },
     star: {
-        color: colors.darkYellow
+        color: colors.darkYellow,
+        fontSize: 20
+    },
+    starText: {
+        marginLeft: "4px !important"
+    },
+    starMenu: {
+        display: 'flex',
+        alignItems: ''
     },
     menuText: {
         fontSize: 14,

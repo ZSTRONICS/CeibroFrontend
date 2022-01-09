@@ -8,8 +8,10 @@ import { IoReturnUpForward } from 'react-icons/io5'
 import FileView from './FileView'
 import { useState } from "react"
 import ChatMessageMenu from "./ChatMessageMenu"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../redux/reducers"
+import { pinMessage } from "../../../redux/action/chat.action"
+import { SAVE_MESSAGES } from "../../../config/chat.config"
 
 interface MessageChatProps {
     message: ChatMessageInterface
@@ -21,7 +23,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     const { replyOf, username, time, companyName, message: messageText, seen, myMessage, files } = message
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
-
+    const { messages } = useSelector((state: RootState) => state.chat);
+    const dispatch = useDispatch();
     const [view, setView] = useState(false);
 
     const toggleView = () => {
@@ -32,7 +35,31 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         return {
             background: myMessage? colors.grey: colors.white,
             boxShadow: "none"
-          }
+        }
+    }
+
+    const handlePinClick = () => {
+        let myMsgs = JSON.parse(JSON.stringify(messages));
+        const index = messages?.findIndex((msg: ChatMessageInterface) => String(msg._id) == String(message._id))
+        const myMsg = messages[index];
+        if(myMsg?.pinnedBy?.includes?.(user.id)) {
+            myMsg.pinnedBy = myMsg?.pinnedBy?.filter?.((elem: any) => String(elem) !== String(user.id))
+        } else {
+            myMsg?.pinnedBy?.push?.(user.id);  
+        }
+
+        myMsgs[index] = myMsg;
+    
+        const payload = {
+            other: message._id,
+            success: () => {
+                dispatch({
+                    type: SAVE_MESSAGES,
+                    payload: JSON.parse(JSON.stringify(myMsgs))
+                })
+            }
+        }
+        dispatch(pinMessage(payload));
     }
 
     return (
@@ -121,7 +148,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                     </Typography>
                 </div>
             </Grid>
-            <Grid item xs={1} className={classes.iconsWrapper}>
+            <Grid item xs={1} className={classes.iconsWrapper} onClick={handlePinClick}>
                 {message?.pinnedBy?.includes?.(user?.id) ? (
                         <AiFillPushpin className={classes.pinIcon} />
                     ): (

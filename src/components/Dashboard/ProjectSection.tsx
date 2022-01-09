@@ -56,12 +56,12 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
                         Create
                     </Button>
                 </Grid>
-                <Grid style={styles.menuWrapper} className={classes.menuWrapper} item xs={12} md={6}>
+                <Grid style={styles.menuWrapper} className={classes.menuWrapper} item xs={12} md={5} lg={6}>
                     <StatusMenu
                         options={allStatus}
                     />
                 </Grid>
-                <Grid item xs={12} md={1}>
+                <Grid item xs={12} md={2} lg={1}>
                     <Button
                         onClick={handleClick} 
                         variant="outlined" 

@@ -26,7 +26,7 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
                         <Typography className={classes.chipTitle}>
                             {option.title}
                         </Typography>
-                        <Badge color="primary" badgeContent={option.count} >
+                        <Badge className={classes.statusBage} color="primary" badgeContent={option.count} >
                         </Badge>
                     </div>
                 )
@@ -45,10 +45,13 @@ const useStyles = makeStyles({
         width: 100,
         display: 'flex', 
         alignItems: 'center',
-        justifyContent: 'space-around',
+        // justifyContent: 'space-around',
         ['@media (max-width:960px)']: {
             justifyContent: 'space-between',
         }
+    },
+    statusBage: {
+        marginLeft: 15
     },
     chipTitle: {
         color: colors.primary,

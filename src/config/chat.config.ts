@@ -1,6 +1,7 @@
 export const GET_CHAT = 'GET_CHAT';
 export const GET_CHAT_API = 'GET_CHAT_API';
 export const PUSH_MESSAGE = 'PUSH_MESSAGE';
+export const SAVE_MESSAGES = 'SAVE_MESSAGES';
 export const SET_SELECTED_CHAT = 'SET_SELECTED_CHAT';
 export const CLEAR_SELECTED_CHAT = 'CLEAR_SELECTED_CHAT';
 export const GET_MESSAGES = 'GET_MESSAGES';
@@ -13,6 +14,7 @@ export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE';
 export const SET_CHAT_SIDE_BAR = 'SET_CHAT_SIDE_BAR';
 export const SET_REPLY_TO_ID = 'SET_REPLY_TO_ID';
 export const SEND_REPLY_MESSAGE = "SEND_REPLY_MESSAGE";
+export const PIN_MESSAGE = "PIN_MESSAGE";
 
 
 

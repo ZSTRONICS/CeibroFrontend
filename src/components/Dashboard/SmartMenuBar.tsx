@@ -17,7 +17,7 @@ const SmartMenuBar = () => {
 
     return (
         <Grid container >
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={5} lg={4}>
                 <div className={`${classes.connectionWrapper} ongoing-badge`}>
                     
                     <Typography className={classes.connectionTitle}>
@@ -36,7 +36,7 @@ const SmartMenuBar = () => {
                 </div>
             </Grid>
 
-            <Grid item xs={12} md={3} className={classes.invitationOuterWrapper}>
+            <Grid item xs={12} md={4} lg={3} className={classes.invitationOuterWrapper}>
                 <div className={`${classes.connectionWrapper} ongoing-badge`}>
                     <Typography className={classes.connectionTitle}>
                         {isTabletOrMobile && 
@@ -55,7 +55,7 @@ const SmartMenuBar = () => {
                 </div>
             </Grid>
 
-            <Grid item xs={12} md={5}>
+            <Grid item xs={12} md={3} lg={5}>
                 <div className={classes.searchWrapper}>
                     <InputInvite/>
                 </div>
