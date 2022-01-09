@@ -6,7 +6,9 @@ import {
     PUSH_MESSAGE, 
     SET_SELECTED_CHAT,
     SET_CHAT_TYPE,
-    SET_CHAT_SEARCH
+    SET_CHAT_SEARCH,
+    SET_CHAT_SIDE_BAR,
+    SET_REPLY_TO_ID
 } from "../../config/chat.config";
 
 interface ChatReducer {
@@ -15,6 +17,8 @@ interface ChatReducer {
     selectedChat: null;
     type: "all" | "read" | "unread";
     search: null | string;
+    sidebarOpen: boolean;
+    replyToId: any;
 }
 
 const intialStatue: ChatReducer = {
@@ -22,7 +26,9 @@ const intialStatue: ChatReducer = {
     messages: [],
     selectedChat: null,
     type: "all",
-    search: null
+    search: null,
+    sidebarOpen: false,
+    replyToId: null
 }
 
 
@@ -81,6 +87,20 @@ const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
             return {
                 ...state,
                 search: action.payload
+            }
+        }
+
+        case SET_CHAT_SIDE_BAR: {
+            return {
+                ...state,
+                sidebarOpen: action.payload
+            }
+        }
+
+        case SET_REPLY_TO_ID: {
+            return {
+                ...state,
+                replyToId: action.payload
             }
         }
 

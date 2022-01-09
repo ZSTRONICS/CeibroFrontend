@@ -1,5 +1,5 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE } from '../../config/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -64,6 +64,12 @@ const addToFavourite = apiCall({
   path: (payload: any) => "/chat/room/favourite/" + payload.other
 });
 
+const sendReplyMessage = apiCall({
+  type: SEND_REPLY_MESSAGE,
+  method: "post",
+  path: (payload: any) => "/chat/message/reply/" + payload.other
+});
+
 function* chatSaga() {
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
   yield takeLatest(GET_CHAT_API, getAllChat);
@@ -73,6 +79,7 @@ function* chatSaga() {
   yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);
   yield takeLatest(ADD_TO_FAVOURITE, addToFavourite);
+  yield takeLatest(SEND_REPLY_MESSAGE, sendReplyMessage);
 }
 
 export default chatSaga;

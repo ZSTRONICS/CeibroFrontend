@@ -4,14 +4,32 @@ import { useState } from "react"
 import { BiTask } from "react-icons/bi"
 import { BsArrow90DegLeft, BsArrow90DegRight } from "react-icons/bs"
 import OutsideClickHandler from "react-outside-click-handler"
+import { useDispatch } from "react-redux"
 import colors from "../../../assets/colors"
+import { SET_REPLY_TO_ID } from "../../../config/chat.config"
+import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface"
 
-const ChatMessageMenu = () => {
+
+interface ChatMessageMenueInt {
+    message: ChatMessageInterface
+}
+
+const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
+    const { message } = props;
     const classes = useStyles()
-    const [show, setShow] = useState(false)
+    const [show, setShow] = useState(false);
+    const dispatch = useDispatch();
 
     const handleToggle = () => {
         setShow(!show)
+    }
+
+    const handleClick = () => {
+        dispatch({
+            type: SET_REPLY_TO_ID,
+            payload: message._id
+        });
+        setShow(false);
     }
 
     return (
@@ -20,12 +38,14 @@ const ChatMessageMenu = () => {
             {show && (
                 <OutsideClickHandler onOutsideClick={handleToggle}>
                     <div className={`dropdown-content ${classes.dropdownContent}`}>
-                        <div className={`${classes.menuWrapper} dropdown-menu`}>
-                            <BsArrow90DegLeft className={classes.menuIcon} />
-                            <Typography className={classes.menuText}>
-                                Reply to chat
-                            </Typography>
-                        </div>
+                        {(!message.replyOf || !message.myMessage) && (
+                            <div className={`${classes.menuWrapper} dropdown-menu `} onClick={handleClick}>
+                                <BsArrow90DegLeft className={classes.menuIcon} />
+                                <Typography className={classes.menuText}>
+                                    Reply to chat
+                                </Typography>
+                            </div>
+                        )}
                         <div className={`${classes.menuWrapper} dropdown-menu`}>
                             <BsArrow90DegRight className={classes.menuIcon} />
                             <Typography className={classes.menuText}>
@@ -44,7 +64,7 @@ const ChatMessageMenu = () => {
 
                         <hr className={classes.break} />
 
-                        <div className={`${`${classes.menuWrapper} dropdown-menu`}`}>
+                        <div className={`${classes.menuWrapper} dropdown-menu`}>
                             <PersonAddOutlined className={classes.menuIcon} />
                             <Typography className={`${classes.menuText}`}>
                                 Add temporary member
@@ -72,7 +92,8 @@ const useStyles = makeStyles({
     menuWrapper: {
         display: 'flex',
         alignItems: 'baseline',
-        justifyContent: 'flex-start'
+        justifyContent: 'flex-start',
+        cursor: 'pointer'
     },
     menuIcon: {
         fontSize: 14

@@ -6,14 +6,25 @@ import Topbar from '../components/Topbar/Topbar'
 import { RootState } from '../redux/reducers/index'
 import { useSelector } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
+import { useHistory } from 'react-router'
 
 interface AppLayoutInterface {
 }
 
 const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
-    const classes = useStyles()
+    const classes = useStyles();
+    const history = useHistory();
     const navbarOpen = useSelector((state: RootState) => state.app.navbar)
+    const { sidebarOpen } = useSelector((state: RootState) => state.chat)
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'}) 
+
+    const getChildrenStyles = () => {
+        return {
+            paddingRight: history.location.pathname.includes('chat') 
+            ? sidebarOpen ? 270: 60
+            : 60
+        }
+    }
 
     return (
         <div className={classes.wrapper}>
@@ -21,7 +32,7 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
             {navbarOpen && isTabletOrMobile && <div className={classes.blackWrapper}></div>}
             <div className={classes.content}>
                 <Topbar/>
-                <div className={classes.children}>
+                <div className={classes.children} style={getChildrenStyles()}>
                     {children}
                 </div>
             </div>

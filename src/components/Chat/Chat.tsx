@@ -6,14 +6,17 @@ import { CHAT_LIST, CHAT_MESSAGE } from '../../constants/chat.constants'
 import ChatBody from './ChatBody'
 import ChatForm from './ChatForm'
 import { useEffect, useRef, useState } from 'react'
-import $ from "jquery";
 import { clearSelectedChat } from '../../redux/action/chat.action'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux';
+import MediaSidebar from './MediaSidebar';
+import './chat.css'
+import { RootState } from '../../redux/reducers'
 
 const Chat = () => {
     const classes = useStyles()
 
-    const [messages, setMessage] = useState(CHAT_MESSAGE)
+    const [messages, setMessage] = useState(CHAT_MESSAGE);
+    const { selectedChat } = useSelector((state: RootState) => state.chat);
     const dispatch = useDispatch();
 
     const sendMessage = (text: string) => {
@@ -29,7 +32,8 @@ const Chat = () => {
                 companyName: 'Electrician',
                 message: text,
                 seen: false,
-                myMessage: true
+                myMessage: true,
+                _id: ""
             }
         ])
 
@@ -48,7 +52,8 @@ const Chat = () => {
                     companyName: 'Electrician',
                     message: 'I am fine . ',
                     seen: false,
-                    myMessage: false
+                    myMessage: false,
+                    _id: ""
                 }
             ])
             setTimeout(() => {
@@ -69,16 +74,19 @@ const Chat = () => {
     }, []);
 
     return (
-        <Grid container className={classes.wrapper}>
-            <Grid item xs={12} md={4}>
-                <ChatSidebar/>
+        <>
+            {selectedChat && <MediaSidebar />}
+            <Grid container className={classes.wrapper}>
+                <Grid item xs={12} md={4}>
+                    <ChatSidebar/>
+                </Grid>
+                <Grid item xs={12} md={8} style={{ background: 'white' }}>
+                    <ChatBoxHeader chat={CHAT_LIST[0]} />
+                    <ChatBody messages={messages} />
+                    <ChatForm handleSendClick={sendMessage}/>
+                </Grid>
             </Grid>
-            <Grid item xs={12} md={8} style={{ background: 'white' }}>
-                <ChatBoxHeader chat={CHAT_LIST[0]} />
-                <ChatBody messages={messages} />
-                <ChatForm handleSendClick={sendMessage}/>
-            </Grid>
-        </Grid>
+        </>
     )
 }
 

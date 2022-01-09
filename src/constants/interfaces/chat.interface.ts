@@ -18,5 +18,8 @@ export interface ChatMessageInterface {
     message: string;
     seen: boolean;
     myMessage: boolean;
-    files?: any
+    files?: any;
+    replyOf?: any;
+    _id: any;
+    pinnedBy?: any
 }

@@ -1,5 +1,5 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core"
-import { AiOutlinePushpin } from "react-icons/ai"
+import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai"
 import { BsDownload } from "react-icons/bs"
 import colors from "../../../assets/colors"
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface"
@@ -8,6 +8,8 @@ import { IoReturnUpForward } from 'react-icons/io5'
 import FileView from './FileView'
 import { useState } from "react"
 import ChatMessageMenu from "./ChatMessageMenu"
+import { useSelector } from "react-redux"
+import { RootState } from "../../../redux/reducers"
 
 interface MessageChatProps {
     message: ChatMessageInterface
@@ -16,10 +18,11 @@ interface MessageChatProps {
 const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
-    const { username, time, companyName, message: messageText, seen, myMessage, files } = message
-    const classes = useStyles()
+    const { replyOf, username, time, companyName, message: messageText, seen, myMessage, files } = message
+    const classes = useStyles();
+    const { user } = useSelector((state: RootState) => state.auth);
 
-    const [view, setView] = useState(false)
+    const [view, setView] = useState(false);
 
     const toggleView = () => {
         setView(!view)
@@ -40,6 +43,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         >
             <Grid item xs={9}>
                 <div className={classes.innerWrapper} style={getStyles()}>
+                    {replyOf && (
+                        <Grid container className={classes.replyWrapper}>
+                            <span>
+                                “Reply: {replyOf?.message?.substring?.(0, 20)} ...”
+                            </span>
+                        </Grid>
+                    )}
                     <Grid container>
                         <Grid item xs={1}>
                             <NameAvatar name={username} />
@@ -96,7 +106,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                                     </Grid>
 
         
-                                    {view && <FileView handleClose={toggleView}/>}
+                                    {/* {view && <FileView handleClose={toggleView}/>} */}
 
                                 </Grid>
                             </Grid>
@@ -112,8 +122,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                 </div>
             </Grid>
             <Grid item xs={1} className={classes.iconsWrapper}>
-                <AiOutlinePushpin className={classes.pinIcon} />
-                <ChatMessageMenu/>
+                {message?.pinnedBy?.includes?.(user?.id) ? (
+                        <AiFillPushpin className={classes.pinIcon} />
+                    ): (
+                        <AiOutlinePushpin className={classes.pinIcon} />
+                    )
+                }
+                <ChatMessageMenu message={message} />
             </Grid>
         </Grid>
     )
@@ -124,6 +139,10 @@ export default MessageChat
 const useStyles = makeStyles({
     outerWrapper: {
         padding: 15,
+    },
+    replyWrapper: {
+        padding: 10,
+        color: colors.textGrey
     },
     innerWrapper: {
         border: `1px solid ${colors.grey}`,
@@ -171,7 +190,8 @@ const useStyles = makeStyles({
     },
     pinIcon: {
         color: colors.textPrimary,
-        fontSize: 20
+        fontSize: 20,
+        cursor: 'pointer'
     },
     moreIcon: {
         fontSize: 20,

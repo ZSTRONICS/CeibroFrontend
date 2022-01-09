@@ -19,7 +19,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         companyName: 'Electrician',
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
-        myMessage: false
+        myMessage: false,
+        _id: ""
     },
     {
         username: 'Kristo Vunukainen',
@@ -27,7 +28,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         companyName: 'Electrician',
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
-        myMessage: true
+        myMessage: true,
+        _id: ""
     },
     {
         username: 'Kristo Vunukainen',
@@ -35,7 +37,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         companyName: 'Electrician',
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
-        myMessage: false
+        myMessage: false,
+        _id: ""
     },
     {
         username: 'Kristo Vunukainen',
@@ -43,7 +46,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         companyName: 'Electrician',
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
-        myMessage: true
+        myMessage: true,
+        _id: ""
     },
     {
         username: 'Kristo Vunukainen',
@@ -52,6 +56,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: false,
         myMessage: false,
-        files: []
+        files: [],
+        _id: ""
     }
 ]

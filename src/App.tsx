@@ -13,6 +13,7 @@ import { PUSH_MESSAGE, PUSH_TO_UNSELECTED, RECEIVE_MESSAGE } from './config/chat
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { sounds } from './assets/assets';
+import { SERVER_URL } from './utills/axios';
 
 export const SocketContext = createContext(null);
 interface MyApp {
@@ -25,7 +26,7 @@ const App: React.FC<MyApp> = () => {
   const [socket, setSocket] = useState<any>(null);
   const dispatch = useDispatch();
 
-  const SERVER = "http://localhost:3000";
+  const SERVER = SERVER_URL;
   const audio = new Audio(sounds.message);
 
   const playChatSound = (data: any) => {

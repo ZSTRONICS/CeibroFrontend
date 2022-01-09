@@ -10,9 +10,14 @@ export const SET_CHAT_TYPE = 'SET_CHAT_TYPE';
 export const SET_CHAT_SEARCH = 'SET_CHAT_SEARCH';
 export const MUTE_CHAT = 'MUTE_CHAT';
 export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE';
+export const SET_CHAT_SIDE_BAR = 'SET_CHAT_SIDE_BAR';
+export const SET_REPLY_TO_ID = 'SET_REPLY_TO_ID';
+export const SEND_REPLY_MESSAGE = "SEND_REPLY_MESSAGE";
+
 
 
 
 //  SOCKET EVENTS
 
 export const RECEIVE_MESSAGE = "RECEIVE_MESSAGE";
+export const SEND_MESSAGE = "SEND_MESSAGE";

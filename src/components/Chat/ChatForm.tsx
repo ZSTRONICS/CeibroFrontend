@@ -1,5 +1,5 @@
-import { Grid, makeStyles } from "@material-ui/core"
-import { AttachFile, EmojiEmotionsOutlined, Image, Mic, SendOutlined } from "@material-ui/icons"
+import { Grid, makeStyles, Typography } from "@material-ui/core"
+import { AttachFile, Close, EmojiEmotionsOutlined, Image, Mic, SendOutlined } from "@material-ui/icons"
 import colors from "../../assets/colors"
 import Picker from 'emoji-picker-react';
 import { FormEvent, useContext, useState } from "react";
@@ -7,8 +7,9 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { SocketContext } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
-import { PUSH_MESSAGE } from "../../config/chat.config";
-
+import { PUSH_MESSAGE, SEND_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
+import AudioRecorder from './AudioRecorder'
+import { sendReplyMessage } from "../../redux/action/chat.action";
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
 }
@@ -18,7 +19,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const [open, setOpen] = useState(false)
     const [text, setText] = useState("")
     const classes = useStyles();
-    const { chat: chats, selectedChat } = useSelector((state: RootState) => state.chat);
+    const { chat: chats, selectedChat, replyToId } = useSelector((state: RootState) => state.chat);
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
 
@@ -40,9 +41,28 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         }
     }
 
+    const handleCloseReply = () => {
+        dispatch({
+            type: SET_REPLY_TO_ID,
+            payload: null
+        })
+    }
+
     const handleSend = () => {
         if(text) {
-            socket?.emit('SEND_MESSAGE', { chat: selectedChat, message: text });
+            if(replyToId) {
+                const payload = {
+                    body: {
+                        message: text
+                    },
+                    other: replyToId
+                }
+                dispatch(sendReplyMessage(payload));
+            } else {
+                socket?.emit(SEND_MESSAGE, { chat: selectedChat,  message: text });
+            }
+            
+            
             dispatch({
                 type: PUSH_MESSAGE,
                 payload: {
@@ -51,9 +71,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   companyName: "Test company",
                   message: text,
                   seen: true,
-                  myMessage: true
+                  myMessage: true,
+                  replyOf: replyToId
                 }
-              })
+              });
+            handleCloseReply();
             // props.handleSendClick(text)
             setText('')
         }
@@ -62,6 +84,16 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     return (
         <Grid className={classes.wrapper} container>
             <Grid item xs={12} className={classes.inputWrapper}>
+                {replyToId && 
+                    <div className={classes.replyTitle}>
+                        <Typography>
+                            Reply
+                        </Typography>
+                        <Typography className={classes.closeReply} onClick={handleCloseReply}>
+                            <Close/>
+                        </Typography>
+                    </div>
+                }
                 <input 
                     value={text} 
                     onChange={handleTextChange} 
@@ -79,6 +111,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 <EmojiEmotionsOutlined onClick={toggleEmoji} className={classes.btnIcon}/>
                 <AttachFile className={classes.btnIcon}/>
                 <Mic className={classes.btnIcon}/>
+                
                 <Image className={classes.btnIcon}/>
 
                 {open &&
@@ -90,6 +123,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                         </div>
                     </OutsideClickHandler>
                 }
+                {/* <AudioRecorder /> */}
             </Grid>
         </Grid>
     )
@@ -98,6 +132,24 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 export default ChatForm
 
 const useStyles = makeStyles({
+    replyTitle: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: 100,
+        background: colors.grey,
+        padding: 6,
+        paddingRight: 10,
+        borderRadius: 10,
+        color: colors.textGrey,
+    },
+    closeReply: {
+        fontSize: 12,
+        cursor: 'pointer',
+        '&:hover': {
+            color: colors.primaryRed
+        }
+    },
     wrapper: {
         height: 100,
         borderTop: `1px solid ${colors.lightGrey}`,
@@ -108,6 +160,7 @@ const useStyles = makeStyles({
         height: 50,
         paddingLeft: 15,
         display: 'flex',
+        alignItems: 'center',
         borderBottom: `1px solid ${colors.lightGrey}`,
     },
     sendWrapper: {
@@ -123,6 +176,7 @@ const useStyles = makeStyles({
         width: '90%',
         height: 45,
         border: 'none',
+        paddingLeft: 10,
         '&:focus': {
             border: 'none'
         },
