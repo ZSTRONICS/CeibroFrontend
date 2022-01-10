@@ -50,19 +50,17 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
     const handleSend = () => {
         if(text) {
-            if(replyToId) {
-                const payload = {
-                    body: {
-                        message: text
-                    },
-                    other: replyToId
-                }
-                dispatch(sendReplyMessage(payload));
-            } else {
-                socket?.emit(SEND_MESSAGE, { chat: selectedChat,  message: text });
+            const payload: any = {
+                body: {
+                    message: text,
+                    chat: selectedChat
+                },
             }
-            
-            
+            if(replyToId) {   
+                payload.body.messageId = replyToId;             
+            }
+            dispatch(sendReplyMessage(payload));
+
             dispatch({
                 type: PUSH_MESSAGE,
                 payload: {
