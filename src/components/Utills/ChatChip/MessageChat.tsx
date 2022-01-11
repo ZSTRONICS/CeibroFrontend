@@ -107,36 +107,42 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
                         </Grid>
 
-                        {files && 
-                            <Grid item xs={10} className={classes.filesWrapper}>
-                                <Grid container>
-                                    <Grid item xs={2} className={classes.imageWrapper}>
-                                        <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
-                                    </Grid>
-                                    <Grid item xs={2} className={classes.imageWrapper}>
-                                        <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
-                                    </Grid>
-                                    <Grid item xs={2} className={classes.imageWrapper}>
-                                        <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
-                                    </Grid>
+                        {files?.length && ( 
+                                <Grid item xs={10} className={classes.filesWrapper}>
+                                    <Grid container>
+                                        {files?.map?.((file: string) => {
+                                            return (
+                                                <Grid item xs={2} className={classes.imageWrapper}>
+                                                    <img src={file} className={classes.image}/>
+                                                </Grid>
+                                            )
+                                        })}
+                                        {/* <Grid item xs={2} className={classes.imageWrapper}>
+                                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
+                                        </Grid>
+                                        <Grid item xs={2} className={classes.imageWrapper}>
+                                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
+                                        </Grid> */}
 
-                                    <Grid item xs={2} className={classes.imageWrapper}>
-                                        <div className={classes.fileIconWrapper}>
-                                            <BsDownload className={classes.fileIcon}/>
-                                        </div>
+                                        <Grid item xs={2} className={classes.imageWrapper}>
+                                            <div className={classes.fileIconWrapper}>
+                                                <BsDownload className={classes.fileIcon}/>
+                                            </div>
+                                        </Grid>
+
+                                        <Grid item xs={2} className={classes.imageWrapper}>
+                                            <div className={classes.fileIconWrapper} onClick={toggleView}>
+                                                <IoReturnUpForward className={classes.fileIcon}/>
+                                            </div>
+                                        </Grid>
+
+            
+                                        {/* {view && <FileView handleClose={toggleView}/>} */}
+
                                     </Grid>
-
-                                    <Grid item xs={2} className={classes.imageWrapper}>
-                                        <div className={classes.fileIconWrapper} onClick={toggleView}>
-                                            <IoReturnUpForward className={classes.fileIcon}/>
-                                        </div>
-                                    </Grid>
-
-        
-                                    {/* {view && <FileView handleClose={toggleView}/>} */}
-
                                 </Grid>
-                            </Grid>
+                            )
+                            
                         }
 
 

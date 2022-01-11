@@ -2,7 +2,8 @@ import { Badge } from '@material-ui/core';
 import { Image, Person, PersonOutlined } from '@material-ui/icons';
 import KeyboardArrowDown from '@material-ui/icons/KeyboardArrowDown';
 import { makeStyles } from '@material-ui/styles';
-import { useState } from 'react';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { AiOutlinePushpin } from 'react-icons/ai';
 import { GoFileMedia } from 'react-icons/go';
 import { MdArticle, MdOutlineArticle } from 'react-icons/md';
@@ -10,13 +11,26 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_CHAT_SIDE_BAR } from '../../config/chat.config';
 import { RootState } from '../../redux/reducers';
+import { baseURL } from '../../utills/axios';
 import ChatMembers from './ChatMembers';
+import ChatMedia from './ChatMedia';
 
 const MediaSidebar = () => {
     const classes = useStyles();
-    const { sidebarOpen } = useSelector((state: RootState) => state.chat);
+    const { sidebarOpen, selectedChat } = useSelector((state: RootState) => state.chat);
     const [openIndex, setOpenIndex] =  useState<number>(0);
     const dispatch = useDispatch();
+
+    const [media, setMedia] = useState<any>(null);
+
+    useEffect(() => {
+        if(selectedChat) {
+            axios.get(`${baseURL}/chat/media/${selectedChat}`).then(response => {
+                console.log('response is ', response);
+                setMedia(response.data);
+            });
+        }
+    }, [selectedChat, openIndex])
 
     const getStyles = () => {
         return {
@@ -91,6 +105,7 @@ const MediaSidebar = () => {
                 )}
                 
             </button>
+            {openIndex === 3 && <ChatMedia media={media} />}
 
         </div>
         </OutsideClickHandler>

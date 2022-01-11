@@ -22,6 +22,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const { chat: chats, selectedChat, replyToId } = useSelector((state: RootState) => state.chat);
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
+    const [files, setFiles] = useState<any>();
+    const [filesPreview, setFilesPreview] = useState<any>(null);
 
     const onEmojiClick = (e: any, emojiObj: any) => {
         setText(`${text}${emojiObj.emoji}`)
@@ -50,11 +52,17 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
     const handleSend = () => {
         if(text) {
+            const formdata = new FormData();
+            
+            formdata.append("message", text);
+            formdata.append("chat", selectedChat);
+            
+            if(files?.length > 0) {
+                formdata.append("product", files[0]);
+            }
+
             const payload: any = {
-                body: {
-                    message: text,
-                    chat: selectedChat
-                },
+                body: formdata
             }
             if(replyToId) {   
                 payload.body.messageId = replyToId;             
@@ -70,13 +78,22 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   message: text,
                   seen: true,
                   myMessage: true,
-                  replyOf: replyToId
+                  replyOf: replyToId,
+                  files: files?.length > 0 ? [filesPreview[0]]: []
                 }
               });
             handleCloseReply();
             // props.handleSendClick(text)
             setText('')
         }
+    }
+
+    const handleFileChange = (e: any) => {
+        const files = e.target.files;
+        console.log('files are', files)
+        setFiles(files);
+        const previews = Object.values(files).map((file: any) => URL.createObjectURL(file))
+        setFilesPreview(previews);   
     }
 
     return (
@@ -105,13 +122,27 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     <SendOutlined onClick={handleSend} className={classes.sendIcon} />
                 </div>
             </Grid>
+            <Grid item xs={12}>
+                {filesPreview && filesPreview.map((preview: any) => {
+                    return <img className={classes.preview} src={preview} />
+                })}
+            </Grid>
             <Grid item xs={12} className={classes.btnWrapper}>
                 <EmojiEmotionsOutlined onClick={toggleEmoji} className={classes.btnIcon}/>
                 <AttachFile className={classes.btnIcon}/>
                 <Mic className={classes.btnIcon}/>
                 
-                <Image className={classes.btnIcon}/>
-
+                <label className="custom-file-upload">
+                    <Image className={classes.btnIcon}/>
+                    <input 
+                        type="file" 
+                        accept="image/png, image/gif, image/jpeg" 
+                        onChange={handleFileChange}
+                        multiple={true}
+                        formEncType="multipart/form-data"
+                    />
+                </label>
+                
                 {open &&
                     <OutsideClickHandler
                         onOutsideClick={toggleEmoji}
@@ -149,11 +180,16 @@ const useStyles = makeStyles({
         }
     },
     wrapper: {
-        height: 100,
+        // height: 100,
         borderTop: `1px solid ${colors.lightGrey}`,
         paddingTop: 10,
         position: 'relative'
     },
+    preview: {
+        height: 50,
+        width: 50,
+        padding: 10
+    },  
     inputWrapper: {
         height: 50,
         paddingLeft: 15,
@@ -196,7 +232,8 @@ const useStyles = makeStyles({
     },
     btnIcon: {
         color: colors.textPrimary,
-        fontSize: 20
+        fontSize: 20,
+        cursor: 'pointer'
     },
     emojisWrapper: {
         position: 'absolute',

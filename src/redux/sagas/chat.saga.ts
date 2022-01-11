@@ -67,7 +67,7 @@ const addToFavourite = apiCall({
 const sendReplyMessage = apiCall({
   type: SEND_REPLY_MESSAGE,
   method: "post",
-  path: "/chat/message/reply/message"
+  path: "/chat/message/reply"
 });
 
 const pinMessage= apiCall({
