@@ -11,6 +11,7 @@ import ChatMessageMenu from "./ChatMessageMenu"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../redux/reducers"
 import { pinMessage } from "../../../redux/action/chat.action"
+import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES } from "../../../config/chat.config"
 
 interface MessageChatProps {
@@ -62,6 +63,17 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         dispatch(pinMessage(payload));
     }
 
+    const handleFileClick = (file: any) => {
+        window.open(file.url, "_blank")
+    }
+
+    const handleAllFilesDownload = () => {
+        files?.map?.((file: any) => {
+            console.log('workingfor', file)
+            window.open(file.url)
+        })
+    }
+
     return (
         <Grid 
             container 
@@ -110,10 +122,12 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                         {files?.length && ( 
                                 <Grid item xs={10} className={classes.filesWrapper}>
                                     <Grid container>
-                                        {files?.map?.((file: string) => {
+                                        {files?.map?.((file: any) => {
                                             return (
-                                                <Grid item xs={2} className={classes.imageWrapper}>
-                                                    <img src={file} className={classes.image}/>
+                                                <Grid item xs={2} className={` ${classes.imageWrapper}`}>
+                                                    <FilePreviewer 
+                                                        file={file}
+                                                    />
                                                 </Grid>
                                             )
                                         })}
@@ -125,14 +139,14 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                                         </Grid> */}
 
                                         <Grid item xs={2} className={classes.imageWrapper}>
-                                            <div className={classes.fileIconWrapper}>
+                                            <div className={classes.fileIconWrapper} onClick={handleAllFilesDownload}>
                                                 <BsDownload className={classes.fileIcon}/>
                                             </div>
                                         </Grid>
 
                                         <Grid item xs={2} className={classes.imageWrapper}>
                                             <div className={classes.fileIconWrapper} onClick={toggleView}>
-                                                <IoReturnUpForward className={classes.fileIcon}/>
+                                                <IoReturnUpForward  className={classes.fileIcon}/>
                                             </div>
                                         </Grid>
 

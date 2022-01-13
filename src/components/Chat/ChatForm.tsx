@@ -10,6 +10,12 @@ import { RootState } from "../../redux/reducers";
 import { PUSH_MESSAGE, SEND_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
 import AudioRecorder from './AudioRecorder'
 import { sendReplyMessage } from "../../redux/action/chat.action";
+// @ts-ignore
+import FileViewer from 'react-file-viewer';
+// @ts-ignore
+import { FileIcon, defaultStyles } from 'react-file-icon';
+import { getFileType } from '../../utills/file'
+import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
 }
@@ -23,7 +29,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
     const [files, setFiles] = useState<any>();
-    const [filesPreview, setFilesPreview] = useState<any>(null);
+    const [filesPreview, setFilesPreview] = useState<any>([]);
 
     const onEmojiClick = (e: any, emojiObj: any) => {
         setText(`${text}${emojiObj.emoji}`)
@@ -56,9 +62,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             
             formdata.append("message", text);
             formdata.append("chat", selectedChat);
-            
-            if(files?.length > 0) {
-                formdata.append("product", files[0]);
+
+            if(files && Object.values(files)?.length > 0) {
+                for (const key of Object.keys(files)) {
+                    formdata.append('products', files[key]);
+                }
             }
 
             const payload: any = {
@@ -79,21 +87,31 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   seen: true,
                   myMessage: true,
                   replyOf: replyToId,
-                  files: files?.length > 0 ? [filesPreview[0]]: []
+                  files: files && Object.keys(files)?.length > 0 ? filesPreview: []
                 }
               });
             handleCloseReply();
+            setFiles(null);
+            setFilesPreview(null);
             // props.handleSendClick(text)
             setText('')
         }
     }
 
     const handleFileChange = (e: any) => {
-        const files = e.target.files;
-        console.log('files are', files)
-        setFiles(files);
-        const previews = Object.values(files).map((file: any) => URL.createObjectURL(file))
-        setFilesPreview(previews);   
+        const newFiles = e.target.files;
+        let oldFiles = files;
+        if(!oldFiles) {
+            oldFiles = {};
+        }
+        setFiles({...newFiles});
+        const previews = Object.values(newFiles).map((file: any) => {
+            return ({
+                fileType: getFileType(file),
+                url: URL.createObjectURL(file)
+            })
+        });
+        setFilesPreview([...previews]);   
     }
 
     return (
@@ -122,14 +140,26 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     <SendOutlined onClick={handleSend} className={classes.sendIcon} />
                 </div>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ display: 'flex', paddingLeft: 20 }}>
                 {filesPreview && filesPreview.map((preview: any) => {
-                    return <img className={classes.preview} src={preview} />
+                    console.log('preview is ', preview)
+                    return <FilePreviewer 
+                                file={preview}
+                                // handleClick={handleFileClick}
+                            />
                 })}
             </Grid>
             <Grid item xs={12} className={classes.btnWrapper}>
                 <EmojiEmotionsOutlined onClick={toggleEmoji} className={classes.btnIcon}/>
-                <AttachFile className={classes.btnIcon}/>
+                
+                <label className="custom-file-upload">
+                    <AttachFile className={classes.btnIcon}/>
+                    <input 
+                        type="file" 
+                        onChange={handleFileChange}
+                        multiple={true}
+                    />
+                </label>
                 <Mic className={classes.btnIcon}/>
                 
                 <label className="custom-file-upload">
@@ -139,7 +169,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                         accept="image/png, image/gif, image/jpeg" 
                         onChange={handleFileChange}
                         multiple={true}
-                        formEncType="multipart/form-data"
                     />
                 </label>
                 
@@ -228,6 +257,7 @@ const useStyles = makeStyles({
     btnWrapper: {
         display: 'flex',
         paddingLeft: 20,
+        paddingTop: 10,
         gap: 20
     },
     btnIcon: {

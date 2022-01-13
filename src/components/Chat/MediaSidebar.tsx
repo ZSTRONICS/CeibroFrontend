@@ -117,7 +117,7 @@ export default MediaSidebar;
 const useStyles = makeStyles({
     mediaSidebarWrapper: {
         position: 'absolute',
-        right: 30,
+        right: 18,
         height: "calc(100vh - 100px)",
         display: 'flex',
         flexDirection: 'column',

@@ -16,7 +16,7 @@ const Chat = () => {
     const classes = useStyles()
 
     const [messages, setMessage] = useState(CHAT_MESSAGE);
-    const { selectedChat } = useSelector((state: RootState) => state.chat);
+    const { selectedChat, sidebarOpen } = useSelector((state: RootState) => state.chat);
     const dispatch = useDispatch();
 
     const sendMessage = (text: string) => {
@@ -77,10 +77,10 @@ const Chat = () => {
         <>
             {selectedChat && <MediaSidebar />}
             <Grid container className={classes.wrapper}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={sidebarOpen ? 4: 3}>
                     <ChatSidebar/>
                 </Grid>
-                <Grid item xs={12} md={9} style={{ background: 'white' }}>
+                <Grid item xs={12} md={sidebarOpen ? 8: 9} style={{ background: 'white' }}>
                     <ChatBoxHeader chat={CHAT_LIST[0]} />
                     <ChatBody messages={messages} />
                     <ChatForm handleSendClick={sendMessage}/>
