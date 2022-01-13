@@ -16,6 +16,9 @@ import FileViewer from 'react-file-viewer';
 import { FileIcon, defaultStyles } from 'react-file-icon';
 import { getFileType } from '../../utills/file'
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
+import { AiFillBell } from "react-icons/ai";
+import { IoBarbellOutline, IoDocument } from "react-icons/io5";
+import { FaRegBell } from "react-icons/fa";
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
 }
@@ -26,6 +29,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const [text, setText] = useState("")
     const classes = useStyles();
     const { chat: chats, selectedChat, replyToId } = useSelector((state: RootState) => state.chat);
+    const { user } = useSelector((state: RootState) => state.auth);
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
     const [files, setFiles] = useState<any>();
@@ -68,21 +72,27 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     formdata.append('products', files[key]);
                 }
             }
+            
+            if(replyToId) {   
+               formdata.append("messageId", replyToId);             
+            }
 
             const payload: any = {
                 body: formdata
             }
-            if(replyToId) {   
-                payload.body.messageId = replyToId;             
-            }
-            dispatch(sendReplyMessage(payload));
+            
 
+            console.log('payload is ', payload)
+            console.log('payload is ', payload)
+            console.log('payload is ', payload)
+            console.log('payload is ', payload)
+            dispatch(sendReplyMessage(payload));
+            
             dispatch({
                 type: PUSH_MESSAGE,
                 payload: {
-                  username: "Test user",
-                  time: "20m ago",
-                  companyName: "Test company",
+                  username: user?.name,
+                  time: "1 seconds ago",
                   message: text,
                   seen: true,
                   myMessage: true,
@@ -172,6 +182,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     />
                 </label>
                 
+                <FaRegBell className={classes.btnIcon}/>
+                <IoDocument className={classes.btnIcon}/>
+                
                 {open &&
                     <OutsideClickHandler
                         onOutsideClick={toggleEmoji}
@@ -181,7 +194,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                         </div>
                     </OutsideClickHandler>
                 }
-                {/* <AudioRecorder /> */}
             </Grid>
         </Grid>
     )
@@ -262,7 +274,7 @@ const useStyles = makeStyles({
     },
     btnIcon: {
         color: colors.textPrimary,
-        fontSize: 20,
+        fontSize: 18,
         cursor: 'pointer'
     },
     emojisWrapper: {

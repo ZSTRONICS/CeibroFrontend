@@ -4,6 +4,7 @@ import * as React from 'react';
 import colors from '../../assets/colors';
 
 interface IAppProps {
+    onChange: (e: any) => void;
 }
 
 const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
@@ -22,6 +23,7 @@ const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
                     type="text"
                     className={`emptyBorder ${classes.input}`}
                     placeholder="Search"
+                    onChange={props.onChange}
                 />
             </div>
         </div>

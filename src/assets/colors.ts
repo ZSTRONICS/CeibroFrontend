@@ -17,6 +17,7 @@ const colors = {
     textGrey: '#605C5C',
     secondaryGrey: 'rgb(222, 226, 230)',
     purpleGrey: '#DBDBE5',
+    inputGrey: '#AEADBD',
     
     lightGreen: 'rgb(93, 198, 97)',
     aquaGreen: '#55BCB3',

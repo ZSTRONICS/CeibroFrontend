@@ -3,6 +3,10 @@ import logo from './images/logo.png';
 import contactIcon from './images/contactIcon.png';
 import clipboardIcon from './images/clipboardIcon.png';
 import moreIcon from './images/moreIcon.png';
+import usersIcon from './images/usersIcon.png';
+import pinIcon from './images/pinIcon.png';
+import mediaIcon from './images/mediaIcon.png';
+import documentIcon from './images/documentIcon.png';
 
 import message from './sound/message.mp3'
 
@@ -11,7 +15,11 @@ const assets = {
     logo,
     contactIcon,
     clipboardIcon,
-    moreIcon
+    moreIcon,
+    usersIcon,
+    pinIcon,
+    mediaIcon,
+    documentIcon
 }
 
 export const sounds = {

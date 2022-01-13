@@ -68,7 +68,7 @@ const ChatSidebar = () => {
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <ChatRoomSearch />
+                <ChatRoomSearch onChange={handleChatRoomSearch} />
             </Grid>
             <Grid item xs={12} className={classes.messageTypeWrapper}>
                 {messageListType.map((chatType: any, index: number) => {

@@ -14,13 +14,15 @@ import { RootState } from '../../redux/reducers';
 import { baseURL } from '../../utills/axios';
 import ChatMembers from './ChatMembers';
 import ChatMedia from './ChatMedia';
+import assets from '../../assets/assets';
 
 const MediaSidebar = () => {
     const classes = useStyles();
-    const { sidebarOpen, selectedChat } = useSelector((state: RootState) => state.chat);
+    const { sidebarOpen, selectedChat, chat  } = useSelector((state: RootState) => state.chat);
     const [openIndex, setOpenIndex] =  useState<number>(0);
     const dispatch = useDispatch();
-
+    const selectedChatRoom =  chat.find((room: any)=> String(room._id) == String(selectedChat));
+    
     const [media, setMedia] = useState<any>(null);
 
     useEffect(() => {
@@ -65,13 +67,13 @@ const MediaSidebar = () => {
             <button className="accordion" onClick={() => handleClick(1)}>
                 <span>
                     <Badge 
-                        badgeContent={4} 
+                        badgeContent={selectedChatRoom?.members?.length}
                         color="secondary"
                         classes={{
                             badge: classes.font1
                         }}
                     >
-                        <PersonOutlined color="action" />
+                        <img src={assets.usersIcon} />
                     </Badge>
                     {sidebarOpen && <span className="accordion-title">Chat members</span>}
                 </span>
@@ -83,7 +85,8 @@ const MediaSidebar = () => {
 
             <button className="accordion" onClick={() => handleClick(2)}>
                 <span>
-                    <AiOutlinePushpin style={{ fontSize: 20 }} color="action" />
+                    {/* <AiOutlinePushpin style={{ fontSize: 20 }} color="action" /> */}
+                    <img src={assets.pinIcon} />
                     {sidebarOpen && <span className="accordion-title">Pinned messages</span>}
                 </span>
                 {sidebarOpen && (
@@ -92,9 +95,9 @@ const MediaSidebar = () => {
             </button>
 
             <button className="accordion" onClick={() => handleClick(3)}>
-                <span>
-                    <Badge badgeContent={4} color="secondary">
-                        <Image />
+                <span className={'chat-room-media'}>
+                    <Badge badgeContent={media?.length} color="secondary">
+                        <img src={assets.mediaIcon} />
                     </Badge>
                     {sidebarOpen && <span className="accordion-title">
                         Media & Files   
@@ -106,6 +109,17 @@ const MediaSidebar = () => {
                 
             </button>
             {openIndex === 3 && <ChatMedia media={media} />}
+
+            <button className="accordion" onClick={() => handleClick(2)}>
+                <span>
+                    <img src={assets.documentIcon} />
+                    {sidebarOpen && <span className="accordion-title">Questioniar</span>}
+                </span>
+                {sidebarOpen && (
+                    <KeyboardArrowDown/>
+                )}
+            </button>
+
 
         </div>
         </OutsideClickHandler>

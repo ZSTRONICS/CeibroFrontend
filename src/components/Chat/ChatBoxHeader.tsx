@@ -2,10 +2,8 @@ import { Grid, makeStyles, Typography } from "@material-ui/core"
 import { Create } from "@material-ui/icons"
 import colors from "../../assets/colors"
 import { ChatListInterface } from "../../constants/interfaces/chat.interface"
-import NameAvatar from "../Utills/Others/NameAvatar"
-import InputText from "../Utills/Inputs/InputText"
 import ChatUserMenu from '../Utills/ChatChip/ChatUserMenu'
-
+import MessageSearch from './MessageSearch'
 interface ChatBoxHeaderProps {
     chat: ChatListInterface
 }
@@ -22,16 +20,16 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             <Grid item xs={1} className={classes.editWrapper}>
                 <Create className={classes.editIcon} />
             </Grid>
-            <Grid item xs={2} className={classes.usernameWrapper}>
+            <Grid item xs={4} className={classes.usernameWrapper}>
                 <Typography className={classes.username}>
                     {name}
                 </Typography>
+                <Typography className={classes.projectName}>
+                    Project: <span className={classes.projectTitle}> Vesse-12 </span>
+                </Typography>
             </Grid>
-            <Grid item xs={4} className={classes.avatarWrapper}>
-                <NameAvatar name={name}/>
-            </Grid>
-            <Grid item xs={4} className={classes.moreWrapper}>
-                <InputText placeholder="Chat Search" />
+            <Grid item xs={6} className={classes.moreWrapper}>
+                <MessageSearch />
             </Grid>
             <Grid item xs={1} className={classes.moreWrapper}>
                 <ChatUserMenu/>
@@ -51,7 +49,7 @@ const useStyles = makeStyles({
         color: colors.textPrimary,
         fontSize: 14,
         border: `0.5px solid ${colors.lightGrey}`,
-        padding: 1
+        padding: 8
     },
     username: {
         fontSize: 14,
@@ -63,9 +61,12 @@ const useStyles = makeStyles({
         justifyContent: 'center',
     },
     usernameWrapper: {
-        borderRight: `1px solid ${colors.grey}`,
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        fontWeight: "bold",
+        fontSize: 14,
+        paddingTop: 2
     },
     avatarWrapper: {
         paddingLeft: 20,
@@ -77,5 +78,15 @@ const useStyles = makeStyles({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    projectName: {
+        fontStyle: "normal",
+        fontWeight: 500,
+        fontSize: 10
+    },
+    projectTitle: {
+        fontWeight: "bold",
+        fontSize: 10,
+        color: colors.textPrimary
     }
 })

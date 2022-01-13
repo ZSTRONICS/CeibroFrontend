@@ -2,6 +2,7 @@ import { makeStyles, Typography } from "@material-ui/core"
 import { Delete, Image, Info, MoreVert, PeopleOutline, PersonAddOutlined } from "@material-ui/icons"
 import { useState } from "react"
 import OutsideClickHandler from "react-outside-click-handler"
+import assets from "../../../assets/assets"
 import colors from "../../../assets/colors"
 
 const ChatUserMenu = () => {
@@ -14,7 +15,8 @@ const ChatUserMenu = () => {
 
     return (
         <div className="dropdown">
-            <MoreVert className={classes.moreIcon} onClick={handleToggle} />
+            {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
+            <img src={assets.moreIcon} className={classes.moreIcon} onClick={handleToggle}  />
             {show && (
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>
@@ -67,8 +69,7 @@ export default ChatUserMenu
 
 const useStyles = makeStyles({
     moreIcon: {
-        fontSize: 24,
-        color: colors.textPrimary
+        cursor: 'pointer'
     },
     dropdownContent: {
         minWidth: 180,

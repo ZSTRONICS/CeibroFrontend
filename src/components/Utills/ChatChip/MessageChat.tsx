@@ -119,7 +119,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
                         </Grid>
 
-                        {files?.length && ( 
+                        {files && files.length > 0 && ( 
                                 <Grid item xs={10} className={classes.filesWrapper}>
                                     <Grid container>
                                         {files?.map?.((file: any) => {
