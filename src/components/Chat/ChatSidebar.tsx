@@ -8,6 +8,7 @@ import { getAllChats } from '../../redux/action/chat.action'
 import { RootState } from '../../redux/reducers'
 import InputText from '../Utills/Inputs/InputText'
 import ChatList from './ChatList'
+import ChatRoomSearch from './ChatRoomSearch';
 
 const ChatSidebar = () => {
     const classes = useStyles()
@@ -67,10 +68,7 @@ const ChatSidebar = () => {
                 </Grid>
             </Grid>
             <Grid item xs={12}>
-                <InputText
-                    placeholder="Search"
-                    onChange={handleChatRoomSearch}
-                />
+                <ChatRoomSearch />
             </Grid>
             <Grid item xs={12} className={classes.messageTypeWrapper}>
                 {messageListType.map((chatType: any, index: number) => {
@@ -100,14 +98,16 @@ export default ChatSidebar
 const useStyles = makeStyles({
     outerWrapper: {
         border: `0.5px solid ${colors.grey}`,
+        borderTop: 'none',
         height: '100%',
         display: 'block'
     },
     iconsWrapper: {
         display: 'flex',
         justifyContent: 'space-between',
-        padding: 10,
-        height: 58
+        alignItems: 'center',
+        height: 48,
+        borderBottom: `0.5px solid ${colors.grey}`,
     },
     menuOuterWrapper: {
         display: 'flex',

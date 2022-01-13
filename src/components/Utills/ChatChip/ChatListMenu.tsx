@@ -6,6 +6,7 @@ import { GrVolume, GrVolumeMute } from "react-icons/gr"
 import OutsideClickHandler from "react-outside-click-handler"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import assets from "../../../assets/assets"
 import colors from "../../../assets/colors"
 import { ChatListInterface } from "../../../constants/interfaces/chat.interface"
 import { addToFavourite, getAllChats, muteChat } from "../../../redux/action/chat.action"
@@ -54,7 +55,8 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
 
     return (
         <div className="dropdown">
-            <MoreVert className={classes.moreIcon} onClick={handleToggle} />
+            {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
+            <img src={assets.moreIcon} className={classes.moreIcon} onClick={handleToggle} /> 
             {show && (
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>
@@ -111,8 +113,7 @@ export default ChatListMenu
 
 const useStyles = makeStyles({
     moreIcon: {
-        fontSize: 24,
-        color: colors.textPrimary
+        cursor: 'pointer'
     },
     dropdownContent: {
         minWidth: 180,

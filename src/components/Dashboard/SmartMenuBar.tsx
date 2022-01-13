@@ -5,6 +5,7 @@ import InputInvite from '../Profile/InputInvite'
 import { MdInsertInvitation } from 'react-icons/md'
 import { useMediaQuery } from 'react-responsive'
 import { useHistory } from 'react-router'
+import assets from '../../assets/assets'
 
 const SmartMenuBar = () => {
     const classes = useStyles()
@@ -21,17 +22,14 @@ const SmartMenuBar = () => {
                 <div className={`${classes.connectionWrapper} ongoing-badge`}>
                     
                     <Typography className={classes.connectionTitle}>
-                        <ContactPhone className={classes.connectionIcon}/>
-                         <span className={classes.marginLeft}>My connections</span>
-                         {isTabletOrMobile && 
+                        <img src={assets.contactIcon} className={classes.connectionIcon}/>
+                        <span className="align-center">
+                            <span className={classes.marginLeft}>My connection</span>
                             <Badge badgeContent={4} color="primary">
                             </Badge>
-                         }
+                        </span>
                     </Typography>
-                    {!isTabletOrMobile && 
-                        <Badge badgeContent={4} color="primary">
-                        </Badge>
-                    }
+                    
                     <Button size="small" color="primary" variant="outlined" onClick={goToConnections}>View</Button>
                 </div>
             </Grid>
@@ -42,15 +40,12 @@ const SmartMenuBar = () => {
                         {isTabletOrMobile && 
                             <MdInsertInvitation className={classes.inviteIcon} />
                         }
-                        <span className={classes.marginLeft}>Invitations</span>
-
-                        {isTabletOrMobile && 
+                        <span className="align-center">
+                            <span className={classes.marginLeft}>Invitations</span>
                             <Badge badgeContent={4} color="error">
                             </Badge>
-                        }
+                        </span>
                     </Typography>
-                    {!isTabletOrMobile && <Badge badgeContent={4} color="error">
-                    </Badge>}
                     <Button size="small" color="primary" variant="outlined">View</Button>
                 </div>
             </Grid>
@@ -70,9 +65,9 @@ const useStyles = makeStyles({
     connectionWrapper: {
         background: colors.white,
         display: 'flex',
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: 'center',
-        padding: "10px 2px",
+        padding: "10px 15px",
         ['@media (max-width:960px)']: {
             justifyContent: "space-between",
             padding: "10px 10px"

@@ -77,10 +77,10 @@ const Chat = () => {
         <>
             {selectedChat && <MediaSidebar />}
             <Grid container className={classes.wrapper}>
-                <Grid item xs={12} md={4}>
+                <Grid item xs={12} md={3}>
                     <ChatSidebar/>
                 </Grid>
-                <Grid item xs={12} md={8} style={{ background: 'white' }}>
+                <Grid item xs={12} md={9} style={{ background: 'white' }}>
                     <ChatBoxHeader chat={CHAT_LIST[0]} />
                     <ChatBody messages={messages} />
                     <ChatForm handleSendClick={sendMessage}/>

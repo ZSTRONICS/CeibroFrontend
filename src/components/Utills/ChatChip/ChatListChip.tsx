@@ -83,7 +83,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
             </Grid>
             <Grid container>
                 <Grid item xs={3}></Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} style={{ paddingLeft: 10 }}>
                     {project?.name && 
                         <Typography className={classes.chatProject}>
                             <span>Project:  &nbsp;&nbsp;</span>
@@ -125,16 +125,19 @@ const useStyles = makeStyles({
     messageDetailWrapper: {
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'flex-start',
+        paddingLeft: 6,
+        paddingTop: 4
     },
     userName: {
         fontSize: 14,
-        fontWeight: 500
+        fontWeight: 500,
     },
     message: {
         fontSize: 12,
         fontWeight: 500,
-        color: colors.textGrey
+        color: colors.textGrey,
+        paddingLeft: 2
     },
     chatProject: {
         fontSize: 10,
@@ -163,10 +166,12 @@ const useStyles = makeStyles({
         fontWeight: 500
     },
     bookmarked: {
-        color: colors.darkYellow
+        color: colors.darkYellow,
+        fontSize: 18
     },
     startFilled: {
-        color: colors.darkYellow
+        color: colors.darkYellow,
+        fontSize: 18
     }
 })
 

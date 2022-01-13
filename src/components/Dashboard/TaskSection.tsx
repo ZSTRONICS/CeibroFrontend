@@ -47,7 +47,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
 
     return (
         <div>
-            <Grid container alignItems="center">
+            <Grid className={classes.outerWrapper} container alignItems="center">
                 <Grid item xs={12} md={4} lg={3} className={classes.titleContainer} style={styles.titleContainer}>
                     <Typography component="h1" variant="h5">
                         My Tasks
@@ -75,6 +75,10 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
 export default TaskSection
 
 const useStyles = makeStyles({
+    outerWrapper: {
+        paddingTop: 30, 
+        paddingBottom: 12
+    },
     menuWrapper: {
         display: 'flex',
         justifyContent: 'flex-end',

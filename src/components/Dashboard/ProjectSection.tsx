@@ -47,7 +47,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
 
     return (
         <div>
-            <Grid container alignItems="center">
+            <Grid container alignItems="center" className={classes.outerWrapper}>
                 <Grid item xs={12} md={5} className={classes.titleContainer} style={styles.titleContainer}>
                     <Typography component="h1" variant="h5">
                         My Project
@@ -83,6 +83,10 @@ export default ProjectSection
 
 
 const useStyles = makeStyles({
+    outerWrapper: {
+        paddingTop: 30,
+        paddingBottom: 12
+    },
     menuWrapper: {
         display: 'flex',
         flexWrap: 'wrap',

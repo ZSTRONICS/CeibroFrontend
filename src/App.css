@@ -161,3 +161,8 @@ input:-webkit-autofill,
 input[type="file"] {
     display: none;
 }
+
+.align-center {
+  display: flex;
+  align-items: center;
+}

@@ -28,7 +28,7 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: 40,
+        height: 30,
         maxWidth: 45
     }
 })
