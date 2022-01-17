@@ -2,7 +2,7 @@ import { Grid, makeStyles, Typography } from "@material-ui/core"
 import { AttachFile, Close, EmojiEmotionsOutlined, Image, Mic, SendOutlined } from "@material-ui/icons"
 import colors from "../../assets/colors"
 import Picker from 'emoji-picker-react';
-import { FormEvent, useContext, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import OutsideClickHandler from 'react-outside-click-handler';
 import { SocketContext } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,6 +19,7 @@ import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import { AiFillBell } from "react-icons/ai";
 import { IoBarbellOutline, IoDocument } from "react-icons/io5";
 import { FaRegBell } from "react-icons/fa";
+import assets from "../../assets/assets";
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
 }
@@ -28,12 +29,19 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const [open, setOpen] = useState(false)
     const [text, setText] = useState("")
     const classes = useStyles();
-    const { chat: chats, selectedChat, replyToId } = useSelector((state: RootState) => state.chat);
+    const { chat: chats, selectedChat, replyToId, messages } = useSelector((state: RootState) => state.chat);
     const { user } = useSelector((state: RootState) => state.auth);
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
     const [files, setFiles] = useState<any>();
     const [filesPreview, setFilesPreview] = useState<any>([]);
+
+
+    useEffect(() => {
+        setFiles(null);
+        setFilesPreview(null);
+        setText("");
+    }, [selectedChat])
 
     const onEmojiClick = (e: any, emojiObj: any) => {
         setText(`${text}${emojiObj.emoji}`)
@@ -68,6 +76,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             formdata.append("chat", selectedChat);
 
             if(files && Object.values(files)?.length > 0) {
+                console.log('files are', files)
                 for (const key of Object.keys(files)) {
                     formdata.append('products', files[key]);
                 }
@@ -81,12 +90,12 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 body: formdata
             }
             
-
-            console.log('payload is ', payload)
-            console.log('payload is ', payload)
-            console.log('payload is ', payload)
-            console.log('payload is ', payload)
             dispatch(sendReplyMessage(payload));
+
+            let replyMessage = null;
+            if(replyToId) {
+                replyMessage = messages?.find((msg: any) => String(msg._id) == String(replyToId))
+            }
             
             dispatch({
                 type: PUSH_MESSAGE,
@@ -96,7 +105,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   message: text,
                   seen: true,
                   myMessage: true,
-                  replyOf: replyToId,
+                  replyOf: replyMessage || replyToId,
                   files: files && Object.keys(files)?.length > 0 ? filesPreview: []
                 }
               });
@@ -118,11 +127,26 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         const previews = Object.values(newFiles).map((file: any) => {
             return ({
                 fileType: getFileType(file),
+                fileName: file.name,
                 url: URL.createObjectURL(file)
             })
         });
         setFilesPreview([...previews]);   
     }
+
+    const handleFileClick = (id: number) => {
+        setFiles((file: any) => {
+            delete file[id]
+            return file;
+        })
+        setFilesPreview((file: any) => {
+            return [
+                ...file.slice(0, id),
+                ...file.slice(id + 1, file.length)
+            ]
+        })
+    }
+    
 
     return (
         <Grid className={classes.wrapper} container>
@@ -147,54 +171,63 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     className={`messageInput ${classes.messageInput}`} 
                 />
                 <div className={classes.sendWrapper}>
-                    <SendOutlined onClick={handleSend} className={classes.sendIcon} />
+                    <img src={assets.sendIcon} onClick={handleSend} className={classes.sendIcon} />
                 </div>
             </Grid>
-            <Grid item xs={12} style={{ display: 'flex', paddingLeft: 20 }}>
-                {filesPreview && filesPreview.map((preview: any) => {
-                    console.log('preview is ', preview)
+            {filesPreview && filesPreview.length > 0 && <Grid item xs={12} className={classes.filePreviewer}>
+                {filesPreview && filesPreview.map((preview: any, index: number) => {
                     return <FilePreviewer 
                                 file={preview}
-                                // handleClick={handleFileClick}
+                                id={index}
+                                handleClick={handleFileClick}
+                                showControls={true}
                             />
                 })}
-            </Grid>
-            <Grid item xs={12} className={classes.btnWrapper}>
-                <EmojiEmotionsOutlined onClick={toggleEmoji} className={classes.btnIcon}/>
-                
-                <label className="custom-file-upload">
-                    <AttachFile className={classes.btnIcon}/>
-                    <input 
-                        type="file" 
-                        onChange={handleFileChange}
-                        multiple={true}
-                    />
-                </label>
-                <Mic className={classes.btnIcon}/>
-                
-                <label className="custom-file-upload">
-                    <Image className={classes.btnIcon}/>
-                    <input 
-                        type="file" 
-                        accept="image/png, image/gif, image/jpeg" 
-                        onChange={handleFileChange}
-                        multiple={true}
-                    />
-                </label>
-                
-                <FaRegBell className={classes.btnIcon}/>
-                <IoDocument className={classes.btnIcon}/>
-                
-                {open &&
-                    <OutsideClickHandler
-                        onOutsideClick={toggleEmoji}
-                    > 
-                        <div className={classes.emojisWrapper}>
-                            <Picker onEmojiClick={onEmojiClick} />
-                        </div>
-                    </OutsideClickHandler>
-                }
-            </Grid>
+            </Grid>}
+            {selectedChat && 
+                <Grid item xs={12} className={classes.btnWrapper}>
+                    <EmojiEmotionsOutlined onClick={toggleEmoji} className={classes.btnIcon}/>
+                    
+                    <label className="custom-file-upload">
+                        <AttachFile className={classes.btnIcon}/>
+                        <input 
+                            type="file" 
+                            onChange={handleFileChange}
+                            multiple={true}
+                        />
+                    </label>
+                    <Mic className={classes.btnIcon}/>
+                    
+                    <label className="custom-file-upload">
+                        <Image className={classes.btnIcon}/>
+                        <input 
+                            type="file" 
+                            accept="image/png, image/gif, image/jpeg" 
+                            onChange={handleFileChange}
+                            multiple={true}
+                        />
+                    </label>
+                    <Typography className={classes.gapLine}>
+                        |
+                    </Typography>
+                    <FaRegBell className={classes.btnIcon}/>
+                    <Typography className={classes.gapLine}>
+                        |
+                    </Typography>
+                    <IoDocument className={classes.btnIcon}/>
+                    
+                    
+                    {open &&
+                        <OutsideClickHandler
+                            onOutsideClick={toggleEmoji}
+                        > 
+                            <div className={classes.emojisWrapper}>
+                                <Picker onEmojiClick={onEmojiClick} />
+                            </div>
+                        </OutsideClickHandler>
+                    }
+                </Grid>
+            }
         </Grid>
     )
 }
@@ -212,6 +245,9 @@ const useStyles = makeStyles({
         paddingRight: 10,
         borderRadius: 10,
         color: colors.textGrey,
+    },
+    gapLine: {
+        color: colors.grey
     },
     closeReply: {
         fontSize: 12,
@@ -240,10 +276,12 @@ const useStyles = makeStyles({
     },
     sendWrapper: {
         fontSize: 18,
-        textAlign: 'center'
+        textAlign: 'center',
+        cursor: 'pointer',
     },
     sendIcon: {
-        background: colors.darkYellow,
+        borderRadius: 5,
+        background: colors.primary,
         padding: 10,
         color: colors.white
     },
@@ -270,7 +308,7 @@ const useStyles = makeStyles({
         display: 'flex',
         paddingLeft: 20,
         paddingTop: 10,
-        gap: 20
+        gap: 28
     },
     btnIcon: {
         color: colors.textPrimary,
@@ -281,5 +319,12 @@ const useStyles = makeStyles({
         position: 'absolute',
         top: -250,
         left: 0
+    },
+    filePreviewer: {
+        display: 'flex',
+        gap: 15,
+        flexWrap: 'wrap',
+        background: '#dadbdb',
+        padding: "8px 15px"
     }
 })

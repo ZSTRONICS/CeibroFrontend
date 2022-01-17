@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
+import NameAvatar from "../Utills/Others/NameAvatar";
 
 
 const ChatMembers = () => {
@@ -13,8 +14,8 @@ const ChatMembers = () => {
             {members.map((member: any) => {
                 return (
                     <Grid container className="chat-member-chip">
-                        <Grid item xs={2}>
-                            <img style={{ width: '100%', height: '100%' }} src={member.image || 'https://www.propertytwinsswfl.com/wp-content/uploads/2018/09/dummy-profile-pic-male.jpg'} />
+                        <Grid item xs={2} style={{ paddingTop: 5 }}>
+                            <NameAvatar name={member?.name} />
                         </Grid>
                         <Grid item xs={10} style={{ padding: 2, display: 'flex', flexDirection: 'column' }}>
                             <Typography className="chat-member-name">

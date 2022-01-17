@@ -1,6 +1,8 @@
 import { ActionInterface } from ".";
-import { TOGGLE_NAVBAR, SET_NAVBAR_OPEN, SET_COLLAPSE } from "../../config/app.config";
+import { TOGGLE_NAVBAR, SET_NAVBAR_OPEN, SET_COLLAPSE, SET_SIDEBAR_CONFIG } from "../../config/app.config";
+import { GET_CHAT } from "../../config/chat.config";
 import SidebarConfig from "../../navigation/SidebarConfig";
+import { requestSuccess } from "../../utills/status";
 
 
 const intialStatue = {
@@ -27,6 +29,12 @@ const AppReducer = (state = intialStatue, action: ActionInterface ) => {
             return {
                 ...state,
                 collapse: action.payload
+            }
+        
+        case SET_SIDEBAR_CONFIG:
+            return {
+                ...state,
+                sidebarRoutes: action.payload
             }
         default:
             return state

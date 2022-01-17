@@ -7,6 +7,7 @@ import usersIcon from './images/usersIcon.png';
 import pinIcon from './images/pinIcon.png';
 import mediaIcon from './images/mediaIcon.png';
 import documentIcon from './images/documentIcon.png';
+import sendIcon from './images/sendIcon.png';
 
 import message from './sound/message.mp3'
 
@@ -19,7 +20,8 @@ const assets = {
     usersIcon,
     pinIcon,
     mediaIcon,
-    documentIcon
+    documentIcon,
+    sendIcon
 }
 
 export const sounds = {

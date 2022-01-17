@@ -31,7 +31,7 @@ const App: React.FC<MyApp> = () => {
 
   const playChatSound = (data: any) => {
     if(!data?.mutedFor?.includes(user.id)) {
-      audio.play();
+      // audio.play();
     }
   }
 

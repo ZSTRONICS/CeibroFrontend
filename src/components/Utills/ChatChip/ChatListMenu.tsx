@@ -1,5 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core"
-import { BookmarkBorder, Chat, Delete, MoreVert, Star, StarBorder } from "@material-ui/icons"
+import { BookmarkBorder, Chat, Delete, Markunread, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { useState } from "react"
 import { BsBookmark } from "react-icons/bs"
 import { GrVolume, GrVolumeMute } from "react-icons/gr"
@@ -53,6 +53,14 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
         } }));  
     }
 
+    const markunread = (e: any) => {
+        e.stopPropagation() 
+    }
+
+    const handleDeleteClick = (e: any) => {
+        e.stopPropagation();
+    }
+
     return (
         <div className="dropdown">
             {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
@@ -60,7 +68,7 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
             {show && (
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>
-                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} >
+                            <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={markunread}>
                                 <Chat className={classes.menuIcon} />
                                 <Typography className={classes.menuText}>
                                     Mark unread
@@ -95,7 +103,10 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
 
                             <hr className={classes.break} />
 
-                            <div className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}>
+                            <div 
+                                className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}
+                                onClick={handleDeleteClick}
+                            >
                                 <Delete className={classes.menuIcon} />
                                 <Typography className={`${classes.menuText} ${classes.deleteText}`}>
                                     Delete conversation

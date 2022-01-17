@@ -93,7 +93,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                         <Grid item xs={1}>
                             <NameAvatar name={username} />
                         </Grid>
-                        <Grid item xs={10}>
+                        <Grid item xs={11}>
                             <div className={classes.titleWrapper}>
                                 <div className={classes.usernameWrapper}>
                                     <Typography className={classes.username}>
@@ -118,6 +118,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                             </div>
 
                         </Grid>
+                        <Grid item xs={1}></Grid>
 
                         {files && files.length > 0 && ( 
                                 <Grid item xs={10} className={classes.filesWrapper}>
@@ -127,6 +128,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                                                 <Grid item xs={2} className={` ${classes.imageWrapper}`}>
                                                     <FilePreviewer 
                                                         file={file}
+                                                        showControls={false}
                                                     />
                                                 </Grid>
                                             )
@@ -138,13 +140,10 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                                             <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
                                         </Grid> */}
 
-                                        <Grid item xs={2} className={classes.imageWrapper}>
+                                        <Grid item xs={4} style={{ paddingTop: 17, gap: 4, display: 'flex', alignItems: 'flex-start'  }} className={classes.imageWrapper}>
                                             <div className={classes.fileIconWrapper} onClick={handleAllFilesDownload}>
                                                 <BsDownload className={classes.fileIcon}/>
                                             </div>
-                                        </Grid>
-
-                                        <Grid item xs={2} className={classes.imageWrapper}>
                                             <div className={classes.fileIconWrapper} onClick={toggleView}>
                                                 <IoReturnUpForward  className={classes.fileIcon}/>
                                             </div>
@@ -257,7 +256,10 @@ const useStyles = makeStyles({
     filesWrapper: {
         paddingLeft: 10,
         display: 'flex',
-        gap: 10
+        gap: 10,
+        marginTop: 20,
+        border: "1px solid #dfdede",
+        padding: 10
     },
     imageWrapper: {
         padding: 5
@@ -267,14 +269,16 @@ const useStyles = makeStyles({
         borderRadius: 4
     },
     fileIcon: {
-        fontSize: 20,
+        fontSize: 15,
         color: colors.textPrimary
     },
     fileIconWrapper: {
         border: `1px solid ${colors.textPrimary }`,
+        borderRadius: 5,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        height: '80%'
+        height: 30,
+        width: 30
     }
 })

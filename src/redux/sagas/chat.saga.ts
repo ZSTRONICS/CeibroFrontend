@@ -1,5 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE } from '../../config/chat.config';
+import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT } from '../../config/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -16,6 +17,9 @@ const getAllChat = apiCall({
       if(payload?.other?.search) {
         query = `${query}name=${payload.other.search}`
       }
+      if(payload?.other?.favourite) {
+        query = `${query}favourite=${payload.other.favourite}`
+      }
       return `/chat/rooms${query}`;
     }
 })
@@ -23,14 +27,19 @@ const getAllChat = apiCall({
 function* getUserChatsByFilter(action: ActionInterface): Generator<any>{
   const type = yield select((state: RootState) => state.chat.type);
   const search = yield select((state: RootState) => state.chat.search);
+  const favourite = yield select((state: RootState) => state.chat.favouriteFilter);
   const payload = action.payload;
   payload.other = {
     type,
-    search
+    search,
+    favourite
   }
   yield put({
     type: GET_CHAT_API,
     payload
+  })
+  yield put({
+    type: GET_UNREAD_CHAT_COUNT,
   })
 }
 
@@ -76,6 +85,25 @@ const pinMessage= apiCall({
     path: (payload: any) => "/chat/message/favourite/" + payload.other
   });
 
+const getUnreadCount= apiCall({
+    type: GET_UNREAD_CHAT_COUNT,
+    method: "get",
+    path: "/chat/unread/count"
+  });
+
+
+function* unreadMessagesCount(action: ActionInterface): Generator<any> {
+    const oldRoutes: any = yield select((state: RootState) => state.app.sidebarRoutes);
+    oldRoutes['Chat'].notification = action.payload?.count || 0;
+    
+    yield put({
+      type: SET_SIDEBAR_CONFIG,
+      payload: {
+          ...oldRoutes
+      }
+    })
+ }
+
 function* chatSaga() {
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
   yield takeLatest(GET_CHAT_API, getAllChat);
@@ -87,6 +115,8 @@ function* chatSaga() {
   yield takeLatest(ADD_TO_FAVOURITE, addToFavourite);
   yield takeLatest(SEND_REPLY_MESSAGE, sendReplyMessage);
   yield takeLatest(PIN_MESSAGE, pinMessage);
+  yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
+  yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
 }
 
 export default chatSaga;

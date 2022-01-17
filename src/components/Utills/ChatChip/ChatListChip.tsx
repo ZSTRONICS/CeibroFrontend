@@ -102,7 +102,8 @@ const useStyles = makeStyles({
     chatListWrapper: {
         padding: 0,
         height: 70,
-        border: `0.5px solid ${colors.grey}`
+        border: `0.5px solid ${colors.grey}`,
+        cursor: 'pointer'
     },
     bookMarkWrapper: {
         padding: 0,

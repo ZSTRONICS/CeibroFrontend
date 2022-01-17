@@ -35,7 +35,7 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
     }, [messages, selectedChat]);
 
     return (
-        <Grid className={`${classes.wrapper} hide-scrollbar`} id="chatBox" container >
+        <Grid className={`${classes.wrapper} custom-scrollbar`} id="chatBox" container >
             {messages && messages?.map((message: ChatMessageInterface) => {
                 return <MessageChat message={message} />
             })}   
@@ -48,6 +48,7 @@ export default ChatBody
 const useStyles = makeStyles({
      wrapper: {
          height: 'calc(100vh - 271px)',
-         overflowY: 'scroll',
+         overflowY: 'auto',
+         display: 'block'
      }
 })

@@ -18,6 +18,7 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
                             <Grid item xs={4} style={{ padding: 10 }}>
                                 <FilePreviewer 
                                     file={file}
+                                    showControls={false}
                                 />
                             </Grid>
                     )

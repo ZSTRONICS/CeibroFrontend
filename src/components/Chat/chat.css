@@ -1,5 +1,6 @@
 .chat-members {
-    height: 400px;
+    min-height: 100px;
+    max-height: 400px;
     background-color: white;
     overflow-y: auto;
 }

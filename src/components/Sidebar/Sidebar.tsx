@@ -1,6 +1,6 @@
 import { Badge, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
@@ -13,6 +13,7 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import appActions from '../../redux/action/app.action'
 import './sidebar.css'
 import { IoHelpCircle, IoHelpCircleOutline } from 'react-icons/io5'
+import { getAllChats } from '../../redux/action/chat.action'
 
 
 function Sidebar() {
@@ -22,7 +23,11 @@ function Sidebar() {
     const dispatch = useDispatch()
     const history = useHistory()
     const intl = useIntl();
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'}) 
+    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'});
+
+    useEffect(() => {
+        dispatch(getAllChats());
+    }, [])
 
   
     const handleRouteClick = (config: SingleConfig) => {
@@ -57,7 +62,7 @@ function Sidebar() {
                 </div>
 
                 <div className={classes.menueWrapper}>
-                    {configs && Object.values(configs).map(config => {
+                    {configs && Object.values(configs).map((config: any) => {
                         return (
                             <div
                                 key={config.title}

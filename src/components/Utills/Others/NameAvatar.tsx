@@ -23,7 +23,7 @@ export default NameAvatar
 const useStyles = makeStyles({
     outerWrapper: {
         border: `1px solid ${colors.secondaryGrey}`,
-        background: colors.white,
+        background: colors.secondaryGrey,
         width: '80%',
         display: 'flex',
         alignItems: 'center',

@@ -20,11 +20,13 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
 
-    const handleToggle = () => {
+    const handleToggle = (e: any) => {
+        e.stopPropagation();
         setShow(!show)
     }
 
-    const handleClick = () => {
+    const handleClick = (e: any) => {
+        e.stopPropagation();
         dispatch({
             type: SET_REPLY_TO_ID,
             payload: message._id
@@ -83,7 +85,8 @@ export default ChatMessageMenu
 const useStyles = makeStyles({
     moreIcon: {
         fontSize: 24,
-        color: colors.textPrimary
+        color: colors.textPrimary,
+        cursor: 'pointer'
     },
     dropdownContent: {
         minWidth: 200,

@@ -9,7 +9,8 @@ import {
     SET_CHAT_SEARCH,
     SET_CHAT_SIDE_BAR,
     SET_REPLY_TO_ID,
-    SAVE_MESSAGES
+    SAVE_MESSAGES,
+    SET_FAVOURITE_FILTER
 } from "../../config/chat.config";
 
 interface ChatReducer {
@@ -17,6 +18,7 @@ interface ChatReducer {
     messages: any;
     selectedChat: null;
     type: "all" | "read" | "unread";
+    favouriteFilter: boolean;
     search: null | string;
     sidebarOpen: boolean;
     replyToId: any;
@@ -27,9 +29,10 @@ const intialStatue: ChatReducer = {
     messages: [],
     selectedChat: null,
     type: "all",
+    favouriteFilter: false,
     search: null,
     sidebarOpen: false,
-    replyToId: null
+    replyToId: null,
 }
 
 
@@ -109,6 +112,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface ) => {
             return {
                 ...state,
                 replyToId: action.payload
+            }
+        }
+
+        case SET_FAVOURITE_FILTER: {
+            return {
+                ...state,
+                favouriteFilter: action.payload 
             }
         }
 

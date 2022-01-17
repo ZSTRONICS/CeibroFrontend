@@ -1,39 +1,48 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core"
 import { Create } from "@material-ui/icons"
+import { useSelector } from "react-redux"
 import colors from "../../assets/colors"
 import { ChatListInterface } from "../../constants/interfaces/chat.interface"
+import { RootState } from "../../redux/reducers"
 import ChatUserMenu from '../Utills/ChatChip/ChatUserMenu'
 import MessageSearch from './MessageSearch'
 interface ChatBoxHeaderProps {
-    chat: ChatListInterface
+    chat?: ChatListInterface
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     
-    const { chat } = props
-    const { name } = chat
+    const classes = useStyles();
 
-    const classes = useStyles()
+    const { chat: allChats, selectedChat } = useSelector((store: RootState) => store.chat); 
+    const myChat = allChats?.find?.((room: any) => String(room._id) == String(selectedChat));
 
     return (
         <Grid container className={classes.wrapper}>
-            <Grid item xs={1} className={classes.editWrapper}>
-                <Create className={classes.editIcon} />
-            </Grid>
-            <Grid item xs={4} className={classes.usernameWrapper}>
-                <Typography className={classes.username}>
-                    {name}
-                </Typography>
-                <Typography className={classes.projectName}>
-                    Project: <span className={classes.projectTitle}> Vesse-12 </span>
-                </Typography>
-            </Grid>
-            <Grid item xs={6} className={classes.moreWrapper}>
-                <MessageSearch />
-            </Grid>
-            <Grid item xs={1} className={classes.moreWrapper}>
-                <ChatUserMenu/>
-            </Grid>
+            {
+                myChat && (
+                    <>
+                        <Grid item xs={1} className={classes.editWrapper}>
+                            <Create className={classes.editIcon} />
+                        </Grid>
+                        <Grid item xs={4} className={classes.usernameWrapper}>
+                            <Typography className={classes.username}>
+                                {myChat?.name}
+                            </Typography>
+                            {myChat?.project && <Typography className={classes.projectName}>
+                                Project: <span className={classes.projectTitle}> {myChat?.project?.name} </span>
+                            </Typography>}
+                        </Grid>
+                        <Grid item xs={6} className={classes.moreWrapper}>
+                            <MessageSearch />
+                        </Grid>
+                        <Grid item xs={1} className={classes.moreWrapper}>
+                            <ChatUserMenu/>
+                        </Grid>
+                    </>
+                )
+            }
+            
         </Grid>
     )
 }

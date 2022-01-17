@@ -29,13 +29,13 @@ const SidebarConfig: SidebarConfigInterface = {
         title: 'Chat',
         icon: <BsChatSquareDots />,
         path: "chat",
-        notification: 3
+        notification: 0
     },
     "Tasks": {
         title: 'Tasks',
         icon: <BiTask />,
         path: "tasks",
-        notification: 2
+        notification: 0
     },
     "Projects": {
         title: 'Projects',

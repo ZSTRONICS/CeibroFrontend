@@ -49,6 +49,16 @@ const CreateChat = () => {
                 label: 'Qasim Ali',
                 value: '61cd2405ee825127ef0a3f3b',
                 color: 'green'
+            },
+            {
+                label: 'Test 1',
+                value: '61e18bf646621de1a34d8ed7',
+                color: 'green'
+            },
+            {
+                label: 'User 1',
+                value: '61e18c1e46621de1a34d8ed8',
+                color: 'green'
             }
     ]);
         
@@ -85,19 +95,16 @@ const CreateChat = () => {
                         <div className={`dropdown-content ${classes.outerMenu}`} id="dropdownContent">
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <TextField
-                                        variant="outlined"
+                                    <input
+                                        type="text"
                                         value={name}
                                         onChange={(e: any) => setName(e.target.value)}
                                         className={classes.searchInput}
-                                        inputProps={{
-                                            className: classes.searchInput
-                                        }}
                                         placeholder="Enter chat name"
                                     />
                                 </Grid>
 
-                                <Grid item xs={12} style={{ zIndex: 3, paddingTop: 30 }}>
+                                <Grid item xs={12} style={{ zIndex: 3, paddingTop: 10 }}>
                                     <SelectDropdown
                                         title="Project"
                                         placeholder="Please select a project"
@@ -106,7 +113,7 @@ const CreateChat = () => {
                                         handleChange={handleProjectChange}
                                     />
                                 </Grid>
-                                <Grid item xs={12} style={{ paddingTop: 20}}>
+                                <Grid item xs={12} style={{ paddingTop: 10}}>
                                     <SelectDropdown
                                         title="Chat"
                                         placeholder="Type the name of a person or a group"
@@ -151,7 +158,7 @@ const useStyles = makeStyles(theme => ({
         left: 0
     },
     searchInput: {
-        height: 1,
-        width: "100%"
+        width: 340,
+        height: 30
     },
 }))

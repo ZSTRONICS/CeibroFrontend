@@ -3,7 +3,7 @@ import { Add, Bookmark, BookmarkBorder, BookmarkOutlined, Chat, ContactPhone, St
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../assets/colors'
-import { SET_CHAT_TYPE, SET_CHAT_SEARCH } from '../../config/chat.config'
+import { SET_CHAT_TYPE, SET_CHAT_SEARCH, SET_FAVOURITE_FILTER } from '../../config/chat.config'
 import { getAllChats } from '../../redux/action/chat.action'
 import { RootState } from '../../redux/reducers'
 import InputText from '../Utills/Inputs/InputText'
@@ -12,7 +12,7 @@ import ChatRoomSearch from './ChatRoomSearch';
 
 const ChatSidebar = () => {
     const classes = useStyles()
-    const { type } = useSelector((store: RootState) => store.chat);
+    const { type, favouriteFilter } = useSelector((store: RootState) => store.chat);
     const messageListType = [
         {
             name: "View all",
@@ -28,7 +28,6 @@ const ChatSidebar = () => {
         }
     ];
 
-    const [selectedMenu, setSelectedMenu] = useState(0)
     const dispatch = useDispatch();
 
     const handleMessageTypeClick = (chatType: any) => {
@@ -38,8 +37,11 @@ const ChatSidebar = () => {
         })
     }
 
-    const handleMenuClick = (value: number) => {
-        setSelectedMenu(value)
+    const handleMenuClick = (value: boolean) => {
+        dispatch({
+            type: SET_FAVOURITE_FILTER,
+            payload: value
+        })
     }
 
     const handleChatRoomSearch = (e: any) => {
@@ -56,14 +58,14 @@ const ChatSidebar = () => {
             <Grid item xs={12} className={classes.iconsWrapper}>
                 <Grid item xs={6} className={`${classes.menuOuterWrapper} ${classes.rightBorder}`}>
                     <Chat 
-                        onClick={() => handleMenuClick(0)} 
-                        className={`${classes.menuIcons} ${selectedMenu === 0 ? classes.activeIcon : ''}`} 
+                        onClick={() => handleMenuClick(false)} 
+                        className={`${classes.menuIcons} ${!favouriteFilter? classes.activeIcon : ''}`} 
                     />
                 </Grid>
                 <Grid item xs={6} className={classes.menuOuterWrapper}>
                     <StarBorder
-                        onClick={() => handleMenuClick(1)} 
-                        className={`${classes.menuIcons} ${selectedMenu === 1 ? classes.activeIcon : ''}`} 
+                        onClick={() => handleMenuClick(true)} 
+                        className={`${classes.menuIcons} ${favouriteFilter ? classes.activeIcon : ''}`} 
                     />
                 </Grid>
             </Grid>
