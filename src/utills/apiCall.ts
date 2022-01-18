@@ -29,8 +29,9 @@ const apiCall = ({ type, method, path, success, isFormData, isBlob }: ApiCall): 
     }
     header["Access-Control-Allow-Origin"] = "*";
 
-    if (idToken) {
-      header["Authorization"] = `Bearer ${JSON.parse(idToken).access.token}`;
+    if (idToken && idToken != 'undefined' && idToken != 'null') {
+      console.log('hader is ', typeof idToken)
+      header["Authorization"] = `Bearer ${JSON.parse(idToken)?.access?.token}`;
     }
 
     try {
@@ -65,12 +66,11 @@ const apiCall = ({ type, method, path, success, isFormData, isBlob }: ApiCall): 
         type: requestFail(type),
         payload: err
       });
-
-      toast.error(err?.message || "Unknow error");
-      // yield put({
-      //   type: SHOW_TOAST,
-      //   payload: { toastMessage: err?.message, toastVisible: true, error: true }
-      // });
+      
+      const msg = err?.response?.data?.message || err?.message || 'Unknown error'
+       
+      toast.error(msg);
+    
     }
   };
 export default apiCall;

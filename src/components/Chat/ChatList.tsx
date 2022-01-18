@@ -9,9 +9,16 @@ import { ChatListInterface } from '../../constants/interfaces/chat.interface';
 const ChatList = () => {
     const dispatch = useDispatch();
     const { chat, type, favouriteFilter, selectedChat } = useSelector((state: RootState) => state.chat); 
-    
+
     useEffect(() => {
-        dispatch(getAllChats());
+        dispatch(getAllChats({
+            success: (_res: any) => {
+                console.log('pyaload i s',  _res?.data?.[0]?._id)
+                if(!selectedChat && _res?.data?.[0]?._id) {
+                    dispatch(setSelectedChat({ other: _res?.data?.[0]?._id }));
+                }
+            }
+        }));
     }, [type, favouriteFilter]);
 
     const handleClick = (chat: any) => {

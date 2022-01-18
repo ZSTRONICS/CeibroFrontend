@@ -7,7 +7,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import './topbar.css'
 import appActions from '../../redux/action/app.action';
 import projectActions from '../../redux/action/project.action';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useMediaQuery } from 'react-responsive'
 // import { RootState } from '../../redux/reducers'
 import colors from '../../assets/colors';
@@ -15,6 +15,7 @@ import { Link } from 'react-router-dom';
 import ProfileBtn from './ProfileBtn'
 import Title from './Title'
 import { useHistory } from 'react-router'
+import { RootState } from '../../redux/reducers';
 
 const Topbar = (props: any) => {
     const classes = useStyles()
@@ -23,7 +24,7 @@ const Topbar = (props: any) => {
     const history = useHistory() 
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+    const { user } = useSelector((state: RootState) => state.auth)
     const dispatch = useDispatch();
     // const { navbar } = useSelector((store: RootState) => store.app)
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -88,10 +89,10 @@ const Topbar = (props: any) => {
                     {!isTabletOrMobile && 
                         <div className={classes.nameWrapper}>
                             <Typography>
-                                IIja
+                                {user?.name?.split(" ")?.[0]}
                             </Typography>
                             <Typography>
-                                Nikolajev
+                                {user?.name?.split(" ")?.[1]}
                             </Typography>
                         </div>
                     }

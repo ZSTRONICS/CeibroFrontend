@@ -7,7 +7,7 @@ import { useHistory } from 'react-router'
 import assets from '../../assets/assets'
 import colors from '../../assets/colors'
 import { SingleConfig } from '../../navigation/SidebarConfig'
-import { RootState } from '../../redux/reducers'
+import { ActionInterface, RootState } from '../../redux/reducers'
 import { useMediaQuery } from 'react-responsive'
 import OutsideClickHandler from 'react-outside-click-handler';
 import appActions from '../../redux/action/app.action'

@@ -1,12 +1,13 @@
-import { Badge, Grid, makeStyles, Typography } from "@material-ui/core"
+import { Badge, IconButton, Grid, makeStyles, Typography } from "@material-ui/core"
 import { Bookmark, BookmarkBorder, DockTwoTone, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { BsDot } from "react-icons/bs"
 import colors from "../../../assets/colors"
 import NameAvatar from '../Others/NameAvatar'
 import ChatListMenu from './ChatListMenu'
 import { ChatListInterface } from '../../../constants/interfaces/chat.interface'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../redux/reducers';
+import { addToFavourite, getAllChats } from "../../../redux/action/chat.action"
 
 interface ChatListInterfaceProps {
     chat: ChatListInterface;
@@ -21,6 +22,8 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     const { user } = useSelector((state: RootState) => state.auth);
     const selectedChat = useSelector((state: RootState) => state.chat.selectedChat);
 
+    const dispatch = useDispatch();
+
     const handleClick = () => {
         props.handleClick?.(chat);
     }
@@ -30,6 +33,14 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
             backgroundColor: String(selectedChat) === String(chat._id)? colors.lightGrey: colors.white
         }
     }
+
+    const handleFavouriteClick = (e: any) => {
+        e.stopPropagation()
+        dispatch(addToFavourite({ other: chat._id, success: () => {
+            dispatch(getAllChats());
+        } }));  
+    }
+
 
     const bookmarked = chat?.pinnedBy?.includes(user?.id);
     
@@ -59,7 +70,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 </Grid>
 
                 <Grid item xs={2} className={classes.timeOuterWrapper}>
-                    <div>
+                    <div onClick={handleFavouriteClick}>
                         {bookmarked? 
                             (<Star className={classes.startFilled} />): 
                             (<StarBorder className={classes.bookmarked}/>)

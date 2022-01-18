@@ -31,7 +31,8 @@ export default ChatMembers;
 
 const styles = {
     wrapper: {
-        height: 300,
+        height: "auto",
+        maxHeight: 240,
         overflow: 'auto'
     }
 }

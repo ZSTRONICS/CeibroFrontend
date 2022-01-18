@@ -13,6 +13,7 @@ import { RootState } from "../../../redux/reducers"
 import { pinMessage } from "../../../redux/action/chat.action"
 import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES } from "../../../config/chat.config"
+import $ from 'jquery'
 
 interface MessageChatProps {
     message: ChatMessageInterface
@@ -21,7 +22,7 @@ interface MessageChatProps {
 const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
-    const { replyOf, username, time, companyName, message: messageText, seen, myMessage, files } = message
+    const { replyOf, _id, username, time, companyName, message: messageText, seen, myMessage, files } = message
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
     const { messages } = useSelector((state: RootState) => state.chat);
@@ -69,9 +70,17 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const handleAllFilesDownload = () => {
         files?.map?.((file: any) => {
-            console.log('workingfor', file)
             window.open(file.url)
         })
+    }
+
+    const handleReplyClick = () => {
+        if(replyOf?.id) {
+            const elem = document.getElementById(replyOf.id);
+            if(elem) {
+                elem?.scrollIntoView();
+            }
+        }
     }
 
     return (
@@ -79,13 +88,14 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
             container 
             justifyContent={myMessage? "flex-end": "flex-start"} 
             className={classes.outerWrapper}
+            id={_id}
         >
             <Grid item xs={9}>
                 <div className={classes.innerWrapper} style={getStyles()}>
                     {replyOf && (
-                        <Grid container className={classes.replyWrapper}>
+                        <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
                             <span>
-                                “Reply: {replyOf?.message?.substring?.(0, 20)} ...”
+                                {replyOf?.message}
                             </span>
                         </Grid>
                     )}
@@ -187,8 +197,12 @@ const useStyles = makeStyles({
         padding: 15,
     },
     replyWrapper: {
-        padding: 10,
-        color: colors.textGrey
+        color: colors.textGrey,
+        cursor: 'pointer',
+        borderLeft: `2px solid ${colors.textPrimary}`,
+        padding: 12,
+        background: "rgba(0, 0, 0, 0.05)",
+        marginBottom: 10    
     },
     innerWrapper: {
         border: `1px solid ${colors.grey}`,

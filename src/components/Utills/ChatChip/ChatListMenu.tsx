@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from "@material-ui/core"
+import { IconButton, makeStyles, Typography } from "@material-ui/core"
 import { BookmarkBorder, Chat, Delete, Markunread, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { useState } from "react"
 import { BsBookmark } from "react-icons/bs"
@@ -22,8 +22,8 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
     const [show, setShow] = useState(false);
     const { user } = useSelector((state: RootState) => state.auth);
     const { chat } = useSelector((state: RootState) => state.chat);
-    const isMuted = room?.mutedBy?.includes(user.id);
-    const isFavourite = room?.pinnedBy?.includes(user.id);
+    const isMuted = room?.mutedBy?.includes(user?.id);
+    const isFavourite = room?.pinnedBy?.includes(user?.id);
     const dispatch = useDispatch();
 
     const handleToggle = (e: any) => {
@@ -64,7 +64,12 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
     return (
         <div className="dropdown">
             {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
-            <img src={assets.moreIcon} className={classes.moreIcon} onClick={handleToggle} /> 
+            <IconButton onClick={handleToggle}>
+                <img 
+                    src={assets.moreIcon} 
+                    className={classes.moreIcon} 
+                /> 
+            </IconButton>
             {show && (
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>

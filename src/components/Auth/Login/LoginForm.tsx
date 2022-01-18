@@ -6,11 +6,15 @@ import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from 'react-intl';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginRequest } from '../../../redux/action/auth.action'
+import { RootState } from "../../../redux/reducers";
+import Loading from '../../Utills/Loader/Loading';
 
 const LoginForm = () => {
   const classes = useStyles();
+
+  const { loginLoading } = useSelector((state: RootState) => state.auth);
 
   const history = useHistory()
   const [checked, setChecked] = useState(true)
@@ -74,9 +78,20 @@ const LoginForm = () => {
             className={classes.loginButton}
             variant="contained"
             color="primary"
+            disabled={loginLoading}
             onClick={handleSubmit}
           >
-            {intl.formatMessage({ id: 'input.Login' })}
+            {loginLoading ? (
+                <Loading 
+                  type="spin" 
+                  color="white" 
+                  height={24} 
+                  width={24} 
+                />
+              ): (
+                intl.formatMessage({ id: 'input.Login' })
+              )
+            }
           </Button>
           <Typography
             className={`${classes.titles} ${classes.forget}`}

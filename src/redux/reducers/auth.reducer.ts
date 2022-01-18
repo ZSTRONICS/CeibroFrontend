@@ -1,10 +1,11 @@
 import { ActionInterface } from ".";
-import { requestSuccess } from '../../utills/status'
+import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 import { LOGIN, LOGOUT } from '../../config/auth.config';
 
 const intialStatue = {
     isLoggedIn: false,
-    user: {}
+    user: {},
+    loginLoading: false
 }
 
 
@@ -13,12 +14,29 @@ const AuthReducer = (state = intialStatue, action: ActionInterface ) => {
     
     switch(action.type) {
         
+        case requestPending(LOGIN): {
+            return {
+                ...state,
+                loginLoading: true
+            }
+        }
+     
+    
         case requestSuccess(LOGIN): {
             localStorage.setItem('tokens', JSON.stringify(action.payload?.tokens));
             return {
                 ...state,
                 isLoggedIn: true,
-                user: action.payload.user
+                user: action.payload.user,
+                loginLoading: false
+            }
+        }
+     
+        case requestFail(LOGIN): {
+            localStorage.setItem('tokens', JSON.stringify(action.payload?.tokens));
+            return {
+                ...state,
+                loginLoading: false
             }
         }
      

@@ -95,6 +95,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             let replyMessage = null;
             if(replyToId) {
                 replyMessage = messages?.find((msg: any) => String(msg._id) == String(replyToId))
+                if(replyMessage) {
+                    replyMessage.id = replyMessage._id;
+                }
             }
             
             dispatch({

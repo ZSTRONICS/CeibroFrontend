@@ -32,7 +32,7 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
             const chatBox = document.getElementById('chatBox') || { scrollTop: 0, scrollHeight: 0}
             chatBox.scrollTop = chatBox.scrollHeight;
         }, 300);
-    }, [messages, selectedChat]);
+    }, [messages?.length, selectedChat]);
 
     return (
         <Grid className={`${classes.wrapper} custom-scrollbar`} id="chatBox" container >
