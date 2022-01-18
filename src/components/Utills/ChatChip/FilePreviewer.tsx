@@ -1,4 +1,5 @@
 import { makeStyles } from '@material-ui/core';
+import { Cancel } from '@material-ui/icons';
 import { useEffect } from 'react';
 // @ts-ignore
 import { FileIcon, defaultStyles } from 'react-file-icon';
@@ -16,7 +17,6 @@ interface FilePreviewerInterface {
 const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
     const { file, showControls } = props;
     const classes = useStyles();
-    const { selectedChat } = useSelector((store: RootState) => store.chat);
 
     const handleClick = () => {
         if(props.handleClick) {
@@ -34,11 +34,12 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
                 ): (
                     <FileIcon 
                         {...defaultStyles[file?.fileType]} 
+                        id="file-icon"
                         extension={file?.fileType || 'Unknown'}
                     />    
                 )
             }
-            {showControls && <span className={classes.crossIcon}>x</span>}
+            {showControls && <Cancel className={classes.crossIcon} />}
             <span className={classes.fileName}>{file?.fileName?.slice(0, 7)}</span>
         </div>
     )
@@ -55,11 +56,16 @@ const useStyles = makeStyles({
     },
     crossIcon: {
         position: 'absolute',
-        left: 0,
+        left: -10,
         top: -8,
         fontWeight: 'bold',
+        cursor: 'pointer',
+        fontSize: "20px !important",
         color: colors.btnRed,
-        cursor: 'pointer'
+        background: colors.white,
+        borderRadius: 100,
+        width: '20px !important',
+        height: '20px !important'
     },
     fileName: {
         fontSize: 12,
