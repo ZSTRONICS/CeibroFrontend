@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core"
+import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core"
 import { AttachFile, Close, EmojiEmotionsOutlined, Image, Mic, SendOutlined } from "@material-ui/icons"
 import colors from "../../assets/colors"
 import Picker from 'emoji-picker-react';
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import { PUSH_MESSAGE, SEND_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
 import AudioRecorder from './AudioRecorder'
-import { sendReplyMessage } from "../../redux/action/chat.action";
+import { openQuestioniarDrawer, sendReplyMessage } from "../../redux/action/chat.action";
 // @ts-ignore
 import FileViewer from 'react-file-viewer';
 // @ts-ignore
@@ -149,6 +149,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             ]
         })
     }
+
+    const handleOpenQuestioniar = () => {
+        dispatch(openQuestioniarDrawer());
+    }
     
 
     return (
@@ -217,8 +221,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                     <Typography className={classes.gapLine}>
                         |
                     </Typography>
-                    <IoDocument className={classes.btnIcon}/>
-                    
+                    <IoDocument onClick={handleOpenQuestioniar} className={classes.btnIcon}/>
                     
                     {open &&
                         <OutsideClickHandler

@@ -14,6 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { sounds } from './assets/assets';
 import { SERVER_URL } from './utills/axios';
+import CreateQuestioniarDrawer from './components/Chat/Questioniar/CreateQuestioniar';
 
 export const SocketContext = createContext(null);
 interface MyApp {
@@ -70,6 +71,7 @@ const App: React.FC<MyApp> = () => {
 
   return (
     <div className="App">
+      <CreateQuestioniarDrawer />
       <CreateProjectDrawer/>
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer/>

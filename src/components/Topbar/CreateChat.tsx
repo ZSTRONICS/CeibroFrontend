@@ -6,7 +6,28 @@ import colors from "../../assets/colors"
 import { createChatRoom } from "../../redux/action/auth.action"
 import { getAllChats } from "../../redux/action/chat.action"
 import SelectDropdown from "../Utills/Inputs/SelectDropdown"
-
+export const dbUsers = [
+    {
+        label: 'fake name',
+        value: '61c71b696d4ef3341ed92bf0',
+        color: 'green'
+    },
+    {
+        label: 'Qasim Ali',
+        value: '61cd2405ee825127ef0a3f3b',
+        color: 'green'
+    },
+    {
+        label: 'Test 1',
+        value: '61e18bf646621de1a34d8ed7',
+        color: 'green'
+    },
+    {
+        label: 'User 1',
+        value: '61e18c1e46621de1a34d8ed8',
+        color: 'green'
+    }
+]
 const CreateChat = () => {
     
     const classes = useStyles();
@@ -39,29 +60,7 @@ const CreateChat = () => {
             label: 'First project',
             value: '61cd34dfbfc3273091fceff9'
         }]);
-        setUsers([
-            {
-                label: 'fake name',
-                value: '61c71b696d4ef3341ed92bf0',
-                color: 'green'
-            },
-            {
-                label: 'Qasim Ali',
-                value: '61cd2405ee825127ef0a3f3b',
-                color: 'green'
-            },
-            {
-                label: 'Test 1',
-                value: '61e18bf646621de1a34d8ed7',
-                color: 'green'
-            },
-            {
-                label: 'User 1',
-                value: '61e18c1e46621de1a34d8ed8',
-                color: 'green'
-            }
-    ]);
-        
+        setUsers(dbUsers);
     }, []);
 
     const handleSubmit = () => {

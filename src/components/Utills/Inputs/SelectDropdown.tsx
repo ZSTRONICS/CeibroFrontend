@@ -12,9 +12,6 @@ const options = [
     { value: 'Project2', label: 'Project 2', color: 'brown' }
   ]
 
-
-
-  
 interface dataInterface {
   value: string;
   label: string;
