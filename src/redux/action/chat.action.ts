@@ -12,6 +12,7 @@ import {
   OPEN_QUESTIONIAR_DRAWER,
   CLOSE_QUESTIONIAR_DRAWER,
   SET_QUESTIONS,
+  GET_ROOM_MEDIA
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -25,6 +26,7 @@ export const muteChat = createAction(MUTE_CHAT);
 export const addToFavourite = createAction(ADD_TO_FAVOURITE);
 export const sendReplyMessage = createAction(SEND_REPLY_MESSAGE);
 export const pinMessage = createAction(PIN_MESSAGE);
+export const getRoomMedia = createAction(GET_ROOM_MEDIA);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,

@@ -1,6 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA } from '../../config/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -91,6 +91,12 @@ const getUnreadCount= apiCall({
     path: "/chat/unread/count"
   });
 
+const getRoomMedia = apiCall({
+    type: GET_ROOM_MEDIA,
+    method: "get",
+    path: (payload: any) => `/chat/media/${payload.other}`
+  });
+
 
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
     const oldRoutes: any = yield select((state: RootState) => state.app.sidebarRoutes);
@@ -116,7 +122,9 @@ function* chatSaga() {
   yield takeLatest(SEND_REPLY_MESSAGE, sendReplyMessage);
   yield takeLatest(PIN_MESSAGE, pinMessage);
   yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
+  yield takeLatest(GET_ROOM_MEDIA, getRoomMedia);
   yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
+
 }
 
 export default chatSaga;

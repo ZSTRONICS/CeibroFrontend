@@ -15,10 +15,11 @@ import { baseURL } from '../../utills/axios';
 import ChatMembers from './ChatMembers';
 import ChatMedia from './ChatMedia';
 import assets from '../../assets/assets';
+import { getRoomMedia } from '../../redux/action/chat.action';
 
 const MediaSidebar = () => {
     const classes = useStyles();
-    const { sidebarOpen, selectedChat, chat  } = useSelector((state: RootState) => state.chat);
+    const { sidebarOpen, selectedChat, chat, chatMedia  } = useSelector((state: RootState) => state.chat);
     const [openIndex, setOpenIndex] =  useState<number>(0);
     const dispatch = useDispatch();
     const selectedChatRoom =  chat.find((room: any)=> String(room._id) == String(selectedChat));
@@ -27,10 +28,9 @@ const MediaSidebar = () => {
 
     useEffect(() => {
         if(selectedChat) {
-            axios.get(`${baseURL}/chat/media/${selectedChat}`).then(response => {
-                console.log('response is ', response);
-                setMedia(response.data);
-            });
+            dispatch(getRoomMedia({
+                other: selectedChat
+            }));
         }
     }, [selectedChat, openIndex])
 
@@ -96,7 +96,7 @@ const MediaSidebar = () => {
 
             <button className="accordion" onClick={() => handleClick(3)}>
                 <span className={'chat-room-media'}>
-                    <Badge badgeContent={media?.length} color="secondary">
+                    <Badge badgeContent={chatMedia?.length} color="secondary">
                         <img src={assets.mediaIcon} />
                     </Badge>
                     {sidebarOpen && <span className="accordion-title">
@@ -108,7 +108,7 @@ const MediaSidebar = () => {
                 )}
                 
             </button>
-            {openIndex === 3 && <ChatMedia media={media} />}
+            {openIndex === 3 && <ChatMedia media={chatMedia} />}
 
             <button className="accordion" onClick={() => handleClick(2)}>
                 <span>

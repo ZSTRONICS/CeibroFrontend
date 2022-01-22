@@ -15,6 +15,7 @@ import {
   OPEN_QUESTIONIAR_DRAWER,
   CLOSE_QUESTIONIAR_DRAWER,
   SET_QUESTIONS,
+  GET_ROOM_MEDIA,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -31,6 +32,7 @@ interface ChatReducer {
   replyToId: any;
   questioniarDrawer: boolean;
   questioniars: QuestioniarInterface[];
+  chatMedia: string[];
 }
 
 const intialStatue: ChatReducer = {
@@ -44,6 +46,7 @@ const intialStatue: ChatReducer = {
   replyToId: null,
   questioniarDrawer: false,
   questioniars: [getNewQuestionTemplate(0)],
+  chatMedia: []
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -145,6 +148,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         questioniars: JSON.parse(JSON.stringify(action.payload)),
+      };
+    }
+
+    case requestSuccess(GET_ROOM_MEDIA): {
+      return {
+        ...state,
+        chatMedia: action.payload,
       };
     }
 
