@@ -12,7 +12,10 @@ import {
   OPEN_QUESTIONIAR_DRAWER,
   CLOSE_QUESTIONIAR_DRAWER,
   SET_QUESTIONS,
-  GET_ROOM_MEDIA
+  GET_ROOM_MEDIA,
+  SET_MEMBERS_DIALOG,
+  SET_TEMP_MEMBERS_DIALOG,
+  ADD_MEMBERS_TO_CHAT
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -41,4 +44,16 @@ export const closeQuestioniarDrawer = () => ({
 export const setQuestions = (payload: any) => ({
   type: SET_QUESTIONS,
   payload,
+});
+
+export const setMembersDialog = (open: boolean) => ({
+  type: SET_MEMBERS_DIALOG,
+  payload: open
+});
+
+export const addMemberToChat = createAction(ADD_MEMBERS_TO_CHAT);
+
+export const setTempMembersDialog = (open: boolean) => ({
+  type: SET_TEMP_MEMBERS_DIALOG,
+  payload: open
 });

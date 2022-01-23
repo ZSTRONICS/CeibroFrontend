@@ -5,7 +5,8 @@ import colors from "../../assets/colors"
 import { ChatListInterface } from "../../constants/interfaces/chat.interface"
 import { RootState } from "../../redux/reducers"
 import ChatUserMenu from '../Utills/ChatChip/ChatUserMenu'
-import MessageSearch from './MessageSearch'
+import MessageSearch from './MessageSearch';
+import AddChatMember from '../Utills/ChatChip/AddChatMember';
 interface ChatBoxHeaderProps {
     chat?: ChatListInterface
 }
@@ -19,6 +20,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
     return (
         <Grid container className={classes.wrapper}>
+            <AddChatMember />
             {
                 myChat && (
                     <>

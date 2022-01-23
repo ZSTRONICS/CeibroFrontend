@@ -8,23 +8,23 @@ import { getAllChats } from "../../redux/action/chat.action"
 import SelectDropdown from "../Utills/Inputs/SelectDropdown"
 export const dbUsers = [
     {
-        label: 'fake name',
-        value: '61c71b696d4ef3341ed92bf0',
-        color: 'green'
-    },
-    {
-        label: 'Qasim Ali',
-        value: '61cd2405ee825127ef0a3f3b',
-        color: 'green'
-    },
-    {
         label: 'Test 1',
-        value: '61e18bf646621de1a34d8ed7',
+        value: '61ec20bb778f854909aec4d2',
         color: 'green'
     },
     {
-        label: 'User 1',
-        value: '61e18c1e46621de1a34d8ed8',
+        label: 'Test 2',
+        value: '61ec2121778f854909aec4d7',
+        color: 'green'
+    },
+    {
+        label: 'Test 3',
+        value: '61ec2139778f854909aec4dc',
+        color: 'green'
+    },
+    {
+        label: 'Test 4',
+        value: '61ec220d778f854909aec4fa',
         color: 'green'
     }
 ]
@@ -58,7 +58,7 @@ const CreateChat = () => {
     useEffect(() => {
         setProjects([{
             label: 'First project',
-            value: '61cd34dfbfc3273091fceff9'
+            value: '61ec230ab738171d327c1316'
         }]);
         setUsers(dbUsers);
     }, []);

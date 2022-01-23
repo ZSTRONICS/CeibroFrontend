@@ -9,6 +9,7 @@ import mediaIcon from "./images/mediaIcon.png";
 import documentIcon from "./images/documentIcon.png";
 import sendIcon from "./images/sendIcon.png";
 import clearIcon from "./images/clearIcon.png";
+import addUser from "./images/addUser.png";
 
 import message from "./sound/message.mp3";
 
@@ -24,6 +25,7 @@ const assets = {
   documentIcon,
   sendIcon,
   clearIcon,
+  addUser
 };
 
 export const sounds = {
