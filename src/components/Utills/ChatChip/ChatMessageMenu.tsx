@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux"
 import colors from "../../../assets/colors"
 import { SET_REPLY_TO_ID } from "../../../config/chat.config"
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface"
+import { setTempMembersDialog } from "../../../redux/action/chat.action"
 
 
 interface ChatMessageMenueInt {
@@ -32,6 +33,11 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
             payload: message._id
         });
         setShow(false);
+    }
+
+    const addTempMember = (e: any) => {
+        e?.stopPropagation();
+        dispatch(setTempMembersDialog(true));
     }
 
     return (
@@ -66,7 +72,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
 
                         <hr className={classes.break} />
 
-                        <div className={`${classes.menuWrapper} dropdown-menu`}>
+                        <div onClick={addTempMember} className={`${classes.menuWrapper} dropdown-menu`}>
                             <PersonAddOutlined className={classes.menuIcon} />
                             <Typography className={`${classes.menuText}`}>
                                 Add temporary member

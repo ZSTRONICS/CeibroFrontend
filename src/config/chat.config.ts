@@ -33,3 +33,4 @@ export const GET_ALL_USERS = "GET_ALL_USERS";
 
 export const RECEIVE_MESSAGE = "RECEIVE_MESSAGE";
 export const SEND_MESSAGE = "SEND_MESSAGE";
+export const REFRESH_CHAT = "REFRESH_CHAT";

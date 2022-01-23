@@ -11,6 +11,7 @@ import {IntlProvider} from "react-intl";
 import messages_en from "./translation/en.json";
 import { PersistGate } from 'redux-persist/integration/react'
 import './translation/i18next';
+import { ConfirmProvider } from 'material-ui-confirm';
 
 
 const messages: any = {
@@ -44,7 +45,9 @@ ReactDOM.render(
       <Provider store={Store.store}>
         <PersistGate loading={null} persistor={Store.persistor}>
             <IntlProvider locale={language} messages={messages[language]}>
+            <ConfirmProvider>
               <App />
+            </ConfirmProvider>
             </IntlProvider>
         </PersistGate>
       </Provider>

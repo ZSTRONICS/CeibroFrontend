@@ -51,6 +51,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         }
 
         myMsgs[index] = myMsg;
+        
+        console.log('message was', message)
     
         const payload = {
             other: message._id,
@@ -177,11 +179,11 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                     </Typography>
                 </div>
             </Grid>
-            <Grid item xs={1} className={classes.iconsWrapper} onClick={handlePinClick}>
+            <Grid item xs={1} className={classes.iconsWrapper}>
                 {message?.pinnedBy?.includes?.(user?.id) ? (
-                        <AiFillPushpin className={classes.pinIcon} />
+                        <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
                     ): (
-                        <AiOutlinePushpin className={classes.pinIcon} />
+                        <AiOutlinePushpin className={classes.pinIcon} onClick={handlePinClick} />
                     )
                 }
                 <ChatMessageMenu message={message} />

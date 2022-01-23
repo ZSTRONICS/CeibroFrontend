@@ -15,7 +15,8 @@ import {
   GET_ROOM_MEDIA,
   SET_MEMBERS_DIALOG,
   SET_TEMP_MEMBERS_DIALOG,
-  ADD_MEMBERS_TO_CHAT
+  ADD_MEMBERS_TO_CHAT,
+  ADD_TEMP_MEMBERS_TO_CHAT
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -30,6 +31,8 @@ export const addToFavourite = createAction(ADD_TO_FAVOURITE);
 export const sendReplyMessage = createAction(SEND_REPLY_MESSAGE);
 export const pinMessage = createAction(PIN_MESSAGE);
 export const getRoomMedia = createAction(GET_ROOM_MEDIA);
+export const addMemberToChat = createAction(ADD_MEMBERS_TO_CHAT);
+export const addTempMemberToChat = createAction(ADD_TEMP_MEMBERS_TO_CHAT);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,
@@ -51,7 +54,6 @@ export const setMembersDialog = (open: boolean) => ({
   payload: open
 });
 
-export const addMemberToChat = createAction(ADD_MEMBERS_TO_CHAT);
 
 export const setTempMembersDialog = (open: boolean) => ({
   type: SET_TEMP_MEMBERS_DIALOG,

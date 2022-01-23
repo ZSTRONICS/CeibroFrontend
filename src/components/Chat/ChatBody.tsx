@@ -4,7 +4,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface"
 import { getRoomMessages } from "../../redux/action/chat.action"
 import { RootState } from "../../redux/reducers"
-import MessageChat from '../Utills/ChatChip/MessageChat'
+import MessageChat from '../Utills/ChatChip/MessageChat';
+import AddTempChatMember from '../Utills/ChatChip/AddTempChatMember';
 
 interface ChatBodyInt {
     messages: ChatMessageInterface[]
@@ -39,6 +40,7 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
             {messages && messages?.map((message: ChatMessageInterface) => {
                 return <MessageChat message={message} />
             })}   
+            <AddTempChatMember />
         </Grid>
     )
 }

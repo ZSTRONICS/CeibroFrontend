@@ -9,7 +9,7 @@ import { io } from "socket.io-client";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './redux/reducers';
 import { getAllChats, pushMessage, setMessagesRead } from './redux/action/chat.action';
-import { PUSH_MESSAGE, PUSH_TO_UNSELECTED, RECEIVE_MESSAGE } from './config/chat.config';
+import { PUSH_MESSAGE, REFRESH_CHAT,  PUSH_TO_UNSELECTED, RECEIVE_MESSAGE } from './config/chat.config';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { sounds } from './assets/assets';
@@ -62,9 +62,13 @@ const App: React.FC<MyApp> = () => {
           }
         }
       });
+      mySocket.on(REFRESH_CHAT, () => {
+        dispatch(getAllChats());
+      })
 
       return () => {
         mySocket.off(RECEIVE_MESSAGE);
+        mySocket.off(REFRESH_CHAT);
       }
     }
   }, [isLoggedIn, selectedChat, user]);
