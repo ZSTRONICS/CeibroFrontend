@@ -11,7 +11,7 @@ import sendIcon from "./images/sendIcon.png";
 import clearIcon from "./images/clearIcon.png";
 import addUser from "./images/addUser.png";
 import trashIcon from "./images/trashIcon.png";
-
+import blueDocument from "./images/blueDocument.png";
 import message from "./sound/message.mp3";
 
 const assets = {
@@ -27,7 +27,8 @@ const assets = {
   sendIcon,
   clearIcon,
   addUser,
-  trashIcon
+  trashIcon,
+  blueDocument,
 };
 
 export const sounds = {

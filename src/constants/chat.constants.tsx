@@ -20,7 +20,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: false,
-        _id: ""
+        _id: "",
+        type: 'questioniar'
     },
     {
         username: 'Kristo Vunukainen',
@@ -29,7 +30,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: true,
-        _id: ""
+        _id: "",
+        type: 'questioniar'
     },
     {
         username: 'Kristo Vunukainen',
@@ -38,7 +40,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: false,
-        _id: ""
+        _id: "",
+        type: 'questioniar'
     },
     {
         username: 'Kristo Vunukainen',
@@ -47,7 +50,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: true,
-        _id: ""
+        _id: "",
+        type: 'questioniar'
     },
     {
         username: 'Kristo Vunukainen',
@@ -57,6 +61,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         seen: false,
         myMessage: false,
         files: [],
-        _id: ""
+        _id: "",
+        type: 'questioniar'
     }
 ]

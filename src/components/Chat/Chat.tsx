@@ -33,7 +33,8 @@ const Chat = () => {
                 message: text,
                 seen: false,
                 myMessage: true,
-                _id: ""
+                _id: "",
+                type: 'message'
             }
         ])
 
@@ -53,7 +54,8 @@ const Chat = () => {
                     message: 'I am fine . ',
                     seen: false,
                     myMessage: false,
-                    _id: ""
+                    _id: "",
+                    type: 'message'
                 }
             ])
             setTimeout(() => {

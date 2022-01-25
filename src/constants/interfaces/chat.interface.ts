@@ -21,5 +21,6 @@ export interface ChatMessageInterface {
     files?: any;
     replyOf?: any;
     _id: any;
-    pinnedBy?: any
+    pinnedBy?: any;
+    type: 'message' | 'questioniar'
 }

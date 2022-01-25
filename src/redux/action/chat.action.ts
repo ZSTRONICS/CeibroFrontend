@@ -16,7 +16,12 @@ import {
   SET_MEMBERS_DIALOG,
   SET_TEMP_MEMBERS_DIALOG,
   ADD_MEMBERS_TO_CHAT,
-  ADD_TEMP_MEMBERS_TO_CHAT
+  ADD_TEMP_MEMBERS_TO_CHAT,
+  SAVE_QUESTIONIAR,
+  OPEN_VIEW_QUESTIONIAR_DRAWER,
+  CLOSE_VIEW_QUESTIONIAR_DRAWER,
+  SET_SELECTED_QUESTIONIAR,
+  GET_QUESTIONIAR
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -33,6 +38,8 @@ export const pinMessage = createAction(PIN_MESSAGE);
 export const getRoomMedia = createAction(GET_ROOM_MEDIA);
 export const addMemberToChat = createAction(ADD_MEMBERS_TO_CHAT);
 export const addTempMemberToChat = createAction(ADD_TEMP_MEMBERS_TO_CHAT);
+export const saveQuestioniar = createAction(SAVE_QUESTIONIAR);
+export const getQuestioniarById = createAction(GET_QUESTIONIAR);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,
@@ -42,6 +49,21 @@ export const openQuestioniarDrawer = () => ({
 export const closeQuestioniarDrawer = () => ({
   type: CLOSE_QUESTIONIAR_DRAWER,
   payload: false,
+});
+
+export const openViewQuestioniarDrawer = () => ({
+  type: OPEN_VIEW_QUESTIONIAR_DRAWER,
+  payload: true,
+});
+
+export const closeViewQuestioniarDrawer = () => ({
+  type: CLOSE_VIEW_QUESTIONIAR_DRAWER,
+  payload: false,
+});
+
+export const setSelectedQuestioniar = (questioniarId: any) => ({
+  type: SET_SELECTED_QUESTIONIAR,
+  payload: questioniarId,
 });
 
 export const setQuestions = (payload: any) => ({

@@ -10,10 +10,11 @@ import { useState } from "react"
 import ChatMessageMenu from "./ChatMessageMenu"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../redux/reducers"
-import { pinMessage } from "../../../redux/action/chat.action"
+import { openViewQuestioniarDrawer, pinMessage, setSelectedQuestioniar } from "../../../redux/action/chat.action"
 import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES } from "../../../config/chat.config"
 import $ from 'jquery'
+import assets from "../../../assets/assets"
 
 interface MessageChatProps {
     message: ChatMessageInterface
@@ -22,7 +23,7 @@ interface MessageChatProps {
 const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
-    const { replyOf, _id, username, time, companyName, message: messageText, seen, myMessage, files } = message
+    const { replyOf, _id, type, username, time, companyName, message: messageText, seen, myMessage, files } = message
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
     const { messages } = useSelector((state: RootState) => state.chat);
@@ -35,8 +36,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const getStyles = () => {
         return {
-            background: myMessage? colors.grey: colors.white,
-            boxShadow: "none"
+            background: message.type === 'questioniar'? colors.questioniarPrimary: myMessage? colors.grey: colors.white,
+            boxShadow: "none",
         }
     }
 
@@ -85,6 +86,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         }
     }
 
+    const handleClick = () => {
+        if(type === 'questioniar') {
+            dispatch(setSelectedQuestioniar(message._id)) 
+            dispatch(openViewQuestioniarDrawer()) 
+        }
+    }
+
     return (
         <Grid 
             container 
@@ -92,8 +100,16 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
             className={classes.outerWrapper}
             id={_id}
         >
-            <Grid item xs={9}>
+            <Grid item xs={9} onClick={handleClick}>
                 <div className={classes.innerWrapper} style={getStyles()}>
+                    {type === 'questioniar' && (
+                        <div className={classes.questioniarWrapper}>
+                            <Typography className={classes.questionText}>
+                                Questioniar
+                            </Typography>
+                            <img src={assets.blueDocument} />
+                        </div>
+                    )}
                     {replyOf && (
                         <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
                             <span>
@@ -198,20 +214,36 @@ const useStyles = makeStyles({
     outerWrapper: {
         padding: 15,
     },
+    questioniarWrapper: {
+        position: 'absolute',
+        right: 0,
+        display: 'flex',
+        gap: 5,
+        paddingRight: 10,
+        paddingTop: 10,
+        cursor: 'pointer',
+        alignItems: 'center'
+    },
+    questionText: {
+        fontWeight: 500,
+        fontSize: 14
+    },
     replyWrapper: {
         color: colors.textGrey,
         cursor: 'pointer',
         borderLeft: `2px solid ${colors.textPrimary}`,
         padding: 12,
         background: "rgba(0, 0, 0, 0.05)",
-        marginBottom: 10    
+        marginBottom: 10, 
     },
     innerWrapper: {
         border: `1px solid ${colors.grey}`,
         padding: 8,
         background: colors.white,
         boxShadow: `0px 0px 15px rgba(0, 0, 0, 0.1)`,
-        borderRadius: 4
+        borderRadius: 4,
+        position: 'relative',
+        color: colors.textPrimary
     },
     titleWrapper: {
     },

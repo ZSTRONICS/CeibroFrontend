@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { sounds } from './assets/assets';
 import { SERVER_URL } from './utills/axios';
 import CreateQuestioniarDrawer from './components/Chat/Questioniar/CreateQuestioniar';
+import ViewQuestioniarDrawer from './components/Chat/Questioniar/ViewQuestioniar';
 
 export const SocketContext = createContext(null);
 interface MyApp {
@@ -26,7 +27,8 @@ const App: React.FC<MyApp> = () => {
   const { selectedChat, type } = useSelector((store: RootState) => store.chat);
   const [socket, setSocket] = useState<any>(null);
   const dispatch = useDispatch();
-
+  const drawerOpen = useSelector((store: RootState) => store.chat.openViewQuestioniar)
+    
   const SERVER = SERVER_URL;
   const audio = new Audio(sounds.message);
 
@@ -76,6 +78,7 @@ const App: React.FC<MyApp> = () => {
   return (
     <div className="App">
       <CreateQuestioniarDrawer />
+      {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer/>
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer/>

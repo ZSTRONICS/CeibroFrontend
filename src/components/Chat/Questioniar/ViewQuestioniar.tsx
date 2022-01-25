@@ -3,35 +3,42 @@ import { Drawer } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import colors from '../../../assets/colors'
-import { closeQuestioniarDrawer } from '../../../redux/action/chat.action';
+import { closeQuestioniarDrawer, closeViewQuestioniarDrawer, getQuestioniarById } from '../../../redux/action/chat.action';
 // import colors from '../../../../assets/colors'
 // import projectActions from '../../../../redux/action/project.action'
 import { RootState } from '../../../redux/reducers';
 import QuestioniarHeader from './QuestioniarHeader'
-import QuestioniarBody from './QuestioniarBody'
+import ViewQuestioniarBody from './ViewQuestioniarBody'
+import { useEffect } from 'react';
 // import CreateProjectBody from './CreateProjectBody'
 // import CreateProjectFooter from './CreateProjectFooter'
 
-const CreateQuestioniarDrawer = () => {
-    const drawerOpen = useSelector((store: RootState) => store.chat.questioniarDrawer)
+const ViewQuestioniarDrawer = () => {
+    const drawerOpen = useSelector((store: RootState) => store.chat.openViewQuestioniar)
+    const selectedQuestioniar = useSelector((store: RootState) => store.chat.selectedQuestioniar)
     const dispatch = useDispatch()
-    const classes = useStyles()
+    const classes = useStyles();
+
 
     const handleClose = () => {
-        dispatch(closeQuestioniarDrawer());
+        dispatch(closeViewQuestioniarDrawer());
     }
+
+    useEffect(() => {
+        dispatch(getQuestioniarById({other: selectedQuestioniar}))
+    }, [selectedQuestioniar])
 
     return (    
         <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
             <div className={classes.outerWrapper}>
                 <QuestioniarHeader/>
-                <QuestioniarBody/>
+                <ViewQuestioniarBody />
             </div>
           </Drawer>
     )
 }
 
-export default CreateQuestioniarDrawer;
+export default ViewQuestioniarDrawer;
 
 const useStyles = makeStyles({
     outerWrapper: {

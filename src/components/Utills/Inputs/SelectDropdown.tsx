@@ -12,7 +12,7 @@ const options = [
     { value: 'Project2', label: 'Project 2', color: 'brown' }
   ]
 
-interface dataInterface {
+export interface dataInterface {
   value: string;
   label: string;
   color?: string;

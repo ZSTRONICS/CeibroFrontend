@@ -1,6 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR } from '../../config/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -67,6 +67,12 @@ const muteChat = apiCall({
   path: (payload: any) => "/chat/room/mute/" + payload.other
 });
 
+const getQuestioniarById = apiCall({
+  type: GET_QUESTIONIAR,
+  method: "get",
+  path: (payload: any) => "/chat/questioniar/view/" + payload.other
+});
+
 const addToFavourite = apiCall({
   type: ADD_TO_FAVOURITE,
   method: "post",
@@ -109,6 +115,12 @@ const addTempMemberToChat = apiCall({
   path: (payload: any) => `/chat/member/${payload?.other?.roomId}/${payload?.other?.userId}?temporary=true`
 });
 
+const saveQuestioniar = apiCall({
+  type: SAVE_QUESTIONIAR,
+  method: "post",
+  path: () => `chat/message/questioniar`
+});
+
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
     const oldRoutes: any = yield select((state: RootState) => state.app.sidebarRoutes);
     oldRoutes['Chat'].notification = action.payload?.count || 0;
@@ -137,6 +149,8 @@ function* chatSaga() {
   yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
   yield takeLatest(ADD_MEMBERS_TO_CHAT, addMemberToChat);
   yield takeLatest(ADD_TEMP_MEMBERS_TO_CHAT, addTempMemberToChat);
+  yield takeLatest(SAVE_QUESTIONIAR, saveQuestioniar);
+  yield takeLatest(GET_QUESTIONIAR, getQuestioniarById);
 
 }
 

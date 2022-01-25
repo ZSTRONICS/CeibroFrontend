@@ -18,6 +18,10 @@ import {
   GET_ROOM_MEDIA,
   SET_MEMBERS_DIALOG,
   SET_TEMP_MEMBERS_DIALOG,
+  OPEN_VIEW_QUESTIONIAR_DRAWER,
+  CLOSE_VIEW_QUESTIONIAR_DRAWER,
+  SET_SELECTED_QUESTIONIAR,
+  GET_QUESTIONIAR,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -37,6 +41,8 @@ interface ChatReducer {
   chatMedia: string[];
   membersDialog: boolean;
   tempMembersDialog: boolean;
+  openViewQuestioniar: boolean;
+  selectedQuestioniar: any;
 }
 
 const intialStatue: ChatReducer = {
@@ -52,7 +58,9 @@ const intialStatue: ChatReducer = {
   questioniars: [getNewQuestionTemplate(0)],
   chatMedia: [],
   membersDialog: false,
-  tempMembersDialog: false
+  tempMembersDialog: false,
+  openViewQuestioniar: false,
+  selectedQuestioniar: null
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -150,6 +158,20 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
+    case OPEN_VIEW_QUESTIONIAR_DRAWER: {
+      return {
+        ...state,
+        openViewQuestioniar: true,
+      };
+    }
+
+    case CLOSE_VIEW_QUESTIONIAR_DRAWER: {
+      return {
+        ...state,
+        openViewQuestioniar: false,
+      };
+    }
+
     case SET_QUESTIONS: {
       return {
         ...state,
@@ -175,6 +197,20 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         tempMembersDialog: action.payload
+      }
+    }
+
+    case SET_SELECTED_QUESTIONIAR: {
+      return {
+        ...state,
+        selectedQuestioniar: action.payload
+      }
+    }
+
+    case requestSuccess(GET_QUESTIONIAR): {
+      return {
+        ...state,
+        questioniars: action.payload.questions
       }
     }
 

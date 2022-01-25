@@ -2,13 +2,24 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core'
 import InputHOC from './InputHOC'
 
-const DatePicker = () => {
+interface DatePickerInt {
+    onChange?: (e: any) => void;
+    value?: any;
+}
 
-    const classes = useStyles()
+const DatePicker: React.FC<DatePickerInt> = (props) => {
+
+    const classes = useStyles();
+
+    const handleChange = (e: any) => {
+        if(props.onChange) {
+            props.onChange(e)
+        }
+    }
 
     return (
         <InputHOC title="Due Date">
-            <input className={classes.dateInput} type="date" />
+            <input onChange={handleChange} value={props.value} className={classes.dateInput} type="date" />
         </InputHOC>
     )
 }

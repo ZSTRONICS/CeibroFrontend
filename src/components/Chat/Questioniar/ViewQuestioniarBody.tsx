@@ -60,52 +60,13 @@ const QuestioniarBody = () => {
 
   return (
     <Grid container className={classes.wrapper}>
-      <Grid item xs={12} className={classes.preview}>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={preview}
-              onChange={handleChangePreview}
-              name="checkedB"
-              color="primary"
-            />
-          }
-          label="Preview"
-        />
-      </Grid>
-      <Grid item xs={12} className={classes.wrapper2}>
-        <div className={classes.datePickerWrapper}>
-          <DatePicker onChange={handleDateChange} value={dueDate} />
-        </div>
-      {!preview  && <div className={classes.assignedToWrapper}>
-          <SelectDropdown
-            title="Assigned to"
-            data={dbUsers}
-            handleChange={handleUserChange}
-            isMulti={true}
-            value={members}
-          />
-        </div>}
-      </Grid>
 
       <Grid item xs={12} className={classes.questionsWrapper}>
         {questioniars &&
           questioniars.map((question: QuestioniarInterface, index: number) => {
-            if (preview) {
               return <PreviewQuestion key={index} question={question} />;
-            }
-            return <CreateQuestion key={index} id={question.id} />;
           })}
       </Grid>
-
-    {!preview && 
-      <Grid item xs={12} style={{ paddingTop: 20 }}>
-        <Button onClick={addNewQuestion} variant="outlined" color="primary">
-          + Add question
-        </Button>
-      </Grid>
-      }
-
 
       <Grid item xs={12} className={classes.questionsWrapper}>
         <Button onClick={handleSave} variant="contained" color="primary">

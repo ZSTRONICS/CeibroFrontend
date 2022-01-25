@@ -1,6 +1,7 @@
 
 const colors = {
     primary: 'rgb(0, 118, 200)',
+    questioniarPrimary: 'rgba(0, 118, 200, 0.2)',
     textPrimary: 'rgb(0, 118, 200)',
     lightPurpuple: 'rgb(122, 177, 251)',
     secondaryBlue: 'rgb(0, 82, 204)',
