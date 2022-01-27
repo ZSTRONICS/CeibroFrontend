@@ -3,5 +3,5 @@ export interface QuestioniarInterface {
   question: string;
   id: string | number;
   options?: string[];
-  answer?: string[];
+  answer?: string | string[] | number;
 }

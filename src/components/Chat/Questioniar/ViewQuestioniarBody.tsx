@@ -1,9 +1,9 @@
-import { Button, Grid, makeStyles, TextField } from "@material-ui/core";
+import { Button, Grid, makeStyles, TextField, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
-import { saveQuestioniar, setQuestions } from "../../../redux/action/chat.action";
+import { saveQuestioniar, saveQuestioniarAnswers, setQuestions } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
@@ -16,63 +16,51 @@ import { dbUsers } from "../../Topbar/CreateChat";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, selectedChat } = useSelector((store: RootState) => store.chat);
+  const { questioniars, selectedChat, questioniarsLoading, selectedQuestioniar, answeredByMe } = useSelector((store: RootState) => store.chat);
   const [preview, setPreview] = useState<boolean>(false);
   const [members, setMembers] = useState<any>([]);
   const dispatch = useDispatch();
   const [dueDate, setDueDate] = useState<any>(null);
   console.log('dueDate: ', dueDate);
 
-  const handleChangePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPreview(event.target.checked);
-  };
-
-  const handleDateChange = (e: any) => {
-    setDueDate(e?.target?.value);
-  }
-
-  const handleUserChange = (e: any) => {
-    setMembers(e)
-  }
-
-  const addNewQuestion = () => {
-    const myQuestions: QuestioniarInterface[] = JSON.parse(
-      JSON.stringify(questioniars)
-    );
-    const newQuestion: QuestioniarInterface = getNewQuestionTemplate(
-      myQuestions.length + 1
-    );
-    myQuestions.push(newQuestion);
-    dispatch(setQuestions(myQuestions));
-  };
-
   const handleSave = () => {
+    const myQuestions = questioniars?.map((question: QuestioniarInterface) => {
+      return {
+        id: question.id,
+        answer: question.answer,
+      }
+    })
     const payload = {
       body: {
-        members: members.map((obj: any) => obj.value),
-        dueDate: dueDate,
-        questions: questioniars,
-        chat: selectedChat
-      }
+        questions: myQuestions
+      },
+      other: selectedQuestioniar
     }
-    dispatch(saveQuestioniar(payload));
+    dispatch(saveQuestioniarAnswers(payload));
   }
 
   return (
     <Grid container className={classes.wrapper}>
 
       <Grid item xs={12} className={classes.questionsWrapper}>
-        {questioniars &&
+        {questioniars && !questioniarsLoading &&
           questioniars.map((question: QuestioniarInterface, index: number) => {
-              return <PreviewQuestion key={index} question={question} />;
+              return <PreviewQuestion key={question.id} question={question} />;
           })}
+          {
+            questioniarsLoading && (
+              <Typography>
+                Loading please wait ....
+              </Typography>
+            )
+          }
       </Grid>
 
-      <Grid item xs={12} className={classes.questionsWrapper}>
+      {!answeredByMe && !questioniarsLoading && <Grid item xs={12} className={classes.questionsWrapper}>
         <Button onClick={handleSave} variant="contained" color="primary">
             Save
           </Button>
-      </Grid>
+      </Grid>}
 
     </Grid>
   );

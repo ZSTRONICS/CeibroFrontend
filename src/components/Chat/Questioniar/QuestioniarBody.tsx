@@ -59,7 +59,7 @@ const QuestioniarBody = () => {
   }
 
   return (
-    <Grid container className={classes.wrapper}>
+    <Grid container direction="column" className={classes.wrapper}>
       <Grid item xs={12} className={classes.preview}>
         <FormControlLabel
           control={

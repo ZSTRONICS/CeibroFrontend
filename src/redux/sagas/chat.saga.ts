@@ -1,6 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION } from '../../config/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -73,6 +73,19 @@ const getQuestioniarById = apiCall({
   path: (payload: any) => "/chat/questioniar/view/" + payload.other
 });
 
+const saveQuestioniarAnswers = apiCall({
+  type: SAVE_QUESTIONIAR_ANSWERS,
+  method: "post",
+  path: (payload: any) => "/chat/questioniar/view/" + payload.other
+});
+
+const deleteConversation = apiCall({
+  type: DELETE_CONVERSATION,
+  method: "delete",
+  path: (payload: any) => "/chat/room/" + payload.other
+});
+
+
 const addToFavourite = apiCall({
   type: ADD_TO_FAVOURITE,
   method: "post",
@@ -139,6 +152,7 @@ function* chatSaga() {
   yield takeLatest(GET_MESSAGES, getRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
   yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
+  yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
   yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);
   yield takeLatest(ADD_TO_FAVOURITE, addToFavourite);
@@ -151,7 +165,8 @@ function* chatSaga() {
   yield takeLatest(ADD_TEMP_MEMBERS_TO_CHAT, addTempMemberToChat);
   yield takeLatest(SAVE_QUESTIONIAR, saveQuestioniar);
   yield takeLatest(GET_QUESTIONIAR, getQuestioniarById);
-
+  yield takeLatest(SAVE_QUESTIONIAR_ANSWERS, saveQuestioniarAnswers);
+  yield takeLatest(DELETE_CONVERSATION, deleteConversation);
 }
 
 export default chatSaga;

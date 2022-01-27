@@ -1,3 +1,6 @@
+// ssh -i "ceibro_new_key.pem" ubuntu@ec2-16-171-45-183.eu-north-1.compute.amazonaws.com
+
+
 import CreateProjectDrawer from './components/Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer';
 import './App.css';
 import RouterConfig from './navigation/RouterConfig';

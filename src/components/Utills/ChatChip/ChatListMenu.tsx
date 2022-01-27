@@ -1,5 +1,6 @@
 import { IconButton, makeStyles, Typography } from "@material-ui/core"
 import { BookmarkBorder, Chat, Delete, Markunread, MoreVert, Star, StarBorder } from "@material-ui/icons"
+import { useConfirm } from "material-ui-confirm"
 import { useState } from "react"
 import { BsBookmark } from "react-icons/bs"
 import { GrVolume, GrVolumeMute } from "react-icons/gr"
@@ -9,7 +10,7 @@ import { toast } from "react-toastify"
 import assets from "../../../assets/assets"
 import colors from "../../../assets/colors"
 import { ChatListInterface } from "../../../constants/interfaces/chat.interface"
-import { addToFavourite, getAllChats, muteChat } from "../../../redux/action/chat.action"
+import { addMemberToChat, addToFavourite, deleteConversation, getAllChats, muteChat, setSelectedChat } from "../../../redux/action/chat.action"
 import { RootState } from "../../../redux/reducers"
 
 interface ChatListMenueInt {
@@ -21,10 +22,11 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
     const classes = useStyles();
     const [show, setShow] = useState(false);
     const { user } = useSelector((state: RootState) => state.auth);
-    const { chat } = useSelector((state: RootState) => state.chat);
+    const { chat, selectedChat } = useSelector((state: RootState) => state.chat);
     const isMuted = room?.mutedBy?.includes(user?.id);
     const isFavourite = room?.pinnedBy?.includes(user?.id);
     const dispatch = useDispatch();
+    const confirm = useConfirm();
 
     const handleToggle = (e: any) => {
         e.stopPropagation();
@@ -59,6 +61,21 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
 
     const handleDeleteClick = (e: any) => {
         e.stopPropagation();
+        confirm({ description: 'Are you confirm want to delete' })
+        .then(() => { 
+            dispatch(deleteConversation({
+                other: room._id,
+                success: () => {
+                    dispatch(getAllChats({
+                        success: (_res: any) => {
+                            if(_res?.data?.[0]?._id) {
+                                dispatch(setSelectedChat({ other: _res?.data?.[0]?._id }));
+                            }
+                        }
+                    }));
+                }
+            }))
+        })
     }
 
     return (

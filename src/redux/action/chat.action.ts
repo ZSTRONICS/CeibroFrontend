@@ -21,7 +21,9 @@ import {
   OPEN_VIEW_QUESTIONIAR_DRAWER,
   CLOSE_VIEW_QUESTIONIAR_DRAWER,
   SET_SELECTED_QUESTIONIAR,
-  GET_QUESTIONIAR
+  GET_QUESTIONIAR,
+  SAVE_QUESTIONIAR_ANSWERS,
+  DELETE_CONVERSATION
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -40,6 +42,8 @@ export const addMemberToChat = createAction(ADD_MEMBERS_TO_CHAT);
 export const addTempMemberToChat = createAction(ADD_TEMP_MEMBERS_TO_CHAT);
 export const saveQuestioniar = createAction(SAVE_QUESTIONIAR);
 export const getQuestioniarById = createAction(GET_QUESTIONIAR);
+export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS);
+export const deleteConversation = createAction(DELETE_CONVERSATION);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,

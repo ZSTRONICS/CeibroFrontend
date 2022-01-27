@@ -11,26 +11,56 @@ import {
   CheckboxProps,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { RadioProps } from "@material-ui/core/Radio";
 import { CheckBox } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/reducers";
+import { setQuestions } from "../../../redux/action/chat.action";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
 }
 
 const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
   const classes = useStyles();
-  const [selected, setSelected] = useState<any>(1);
+  const { questioniars, answeredByMe } = useSelector((state: RootState) => state.chat)
+  const [selected, setSelected] = useState<any>([]);
   const {
-    question: { type, question, options },
+    question: { type, question, options, answer, id },
   } = props;
+  const dispatch = useDispatch();
 
-  const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+  useEffect(() => {
+    if(answer && Array.isArray(answer)) {
+      setSelected(answer)
+    }
+  }, [])
+
+  useEffect(() => {
+    //   updating question in global state
+    const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
+    const myQuestionIndex: number = myQuestioniars?.findIndex(
+      (question: QuestioniarInterface) => question?.id === id
+    );
+    if (myQuestionIndex > -1) {
+      const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];
+      if (myQuestion) {
+        myQuestion.answer = selected;
+        dispatch(setQuestions(myQuestioniars));
+      }
+    }
+  }, [selected])
+
+  const handleChangeAnswer = (event: any) => {
     console.log((event.target as HTMLInputElement).value);
-    setSelected(+(event.target as HTMLInputElement).value);
+    setSelected(event.target.checked ? [...selected, event.target.value] : selected.filter((data: any) => data !== event.target.value));
+    // setSelected(+(event.target as HTMLInputElement).value);
   };
+
+  console.log('selectesa rere', selected)
 
   return (
     <Grid container className={classes.wrapper}>
@@ -39,14 +69,18 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
       </Grid>
       <Grid item xs={12}>
         <FormControl component="fieldset">
-          <FormGroup>
+          <FormGroup onChange={handleChangeAnswer} >
             {options?.map((option: string, index: number) => {
+              console.log('hella fkjal fjald f', index, selected,  selected.includes(index))
               return (
                 <FormControlLabel
                   key={index}
                   className={`options-text ${classes.smallRadioButton}`}
                   control={<CustomCheckbox name={option} />}
                   label={option}
+                  value={index}
+                  disabled={answeredByMe}
+                  checked={selected?.findIndex((selected: any) => selected == index ) > -1}
                 />
               );
             })}

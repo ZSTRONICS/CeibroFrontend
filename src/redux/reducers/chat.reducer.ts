@@ -1,5 +1,5 @@
 import { ActionInterface } from ".";
-import { requestSuccess } from "../../utills/status";
+import { requestFail, requestPending, requestSuccess } from "../../utills/status";
 import {
   CLEAR_SELECTED_CHAT,
   GET_CHAT,
@@ -22,6 +22,8 @@ import {
   CLOSE_VIEW_QUESTIONIAR_DRAWER,
   SET_SELECTED_QUESTIONIAR,
   GET_QUESTIONIAR,
+  SAVE_QUESTIONIAR,
+  SAVE_QUESTIONIAR_ANSWERS,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -43,6 +45,8 @@ interface ChatReducer {
   tempMembersDialog: boolean;
   openViewQuestioniar: boolean;
   selectedQuestioniar: any;
+  answeredByMe: boolean;
+  questioniarsLoading: boolean;
 }
 
 const intialStatue: ChatReducer = {
@@ -60,7 +64,9 @@ const intialStatue: ChatReducer = {
   membersDialog: false,
   tempMembersDialog: false,
   openViewQuestioniar: false,
-  selectedQuestioniar: null
+  selectedQuestioniar: null,
+  answeredByMe: false,
+  questioniarsLoading: false
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -161,7 +167,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case OPEN_VIEW_QUESTIONIAR_DRAWER: {
       return {
         ...state,
-        openViewQuestioniar: true,
+        openViewQuestioniar: true
       };
     }
 
@@ -210,9 +216,47 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_QUESTIONIAR): {
       return {
         ...state,
-        questioniars: action.payload.questions
+        questioniars: action.payload.questions,
+        answeredByMe: action.payload.answeredByMe,
+        questioniarsLoading: false
       }
     }
+
+    case requestPending(GET_QUESTIONIAR): {
+      return {
+        ...state,
+        questioniarsLoading: true
+      }
+    }
+    
+    
+    case requestFail(GET_QUESTIONIAR): {
+      return {
+        ...state,
+        questioniarsLoading: false
+      }
+    }
+    
+    case requestSuccess(SAVE_QUESTIONIAR): {
+      return {
+        ...state,
+        questioniars: [getNewQuestionTemplate(0)],
+        answeredByMe: false,
+        questioniarDrawer: false,
+        openViewQuestioniar: false        
+      }
+    }
+
+    case requestSuccess(SAVE_QUESTIONIAR_ANSWERS): {
+      return {
+        ...state,
+        questioniars: [getNewQuestionTemplate(0)],
+        answeredByMe: false,
+        questioniarDrawer: false,
+        openViewQuestioniar: false        
+      }
+    }
+    
 
 
     default:

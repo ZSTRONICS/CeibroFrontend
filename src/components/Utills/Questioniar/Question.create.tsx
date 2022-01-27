@@ -25,6 +25,7 @@ interface createQuestionInt {
 }
 
 let debounceTimeOut: any = null;
+let settled = false;
 
 const CreateQuestion: React.FC<createQuestionInt> = (props) => {
   const classes = useStyles();
@@ -61,13 +62,14 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
         setQuestionText(myQuestion.question);
         if (myQuestion.type) {
           const myQuestiontype = availableQuestionTypes.find(
-            (type: any) => myQuestion.type === type
+            (type: any) => myQuestion.type === type.value
           );
           if (myQuestiontype) {
             setQuestionType(myQuestiontype);
           }
         }
         setOptions(myQuestion.options);
+        settled = true;
         intervalRef.current = true;
       }
     }
@@ -75,7 +77,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
 
   useEffect(() => {
     console.log('reksjfkas', intervalRef.current)
-    if(intervalRef.current) {
+    if(intervalRef.current && settled) {
       if (debounceTimeOut) {
         clearTimeout(debounceTimeOut);
       }

@@ -208,3 +208,7 @@ input[type="file"] {
   font-weight: 500 !important;
   font-size: 14px;
 }
+
+.MuiFormControlLabel-label.Mui-disabled {
+  color: black !important;
+}

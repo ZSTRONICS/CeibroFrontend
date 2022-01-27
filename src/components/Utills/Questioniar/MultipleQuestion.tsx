@@ -8,23 +8,49 @@ import {
   Radio,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { RadioProps } from "@material-ui/core/Radio";
+import { setQuestions } from "../../../redux/action/chat.action";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/reducers";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
+  handleChange?: (value: any) => void
 }
 
 const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
   const classes = useStyles();
-  const [selected, setSelected] = useState<any>(1);
+  const { questioniars, answeredByMe } = useSelector((state: RootState) => state.chat)
+  const [selected, setSelected] = useState<any>(-1);
+  const dispatch = useDispatch();
   const {
-    question: { type, question, options },
+    question: { type, id, question, options, answer },
   } = props;
 
+  useEffect(() => {
+    if(answer && typeof answer === 'string') {
+      setSelected(+answer)
+    }
+  }, [])
+
+  useEffect(() => {
+    //   updating question in global state
+    const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
+    const myQuestionIndex: number = myQuestioniars?.findIndex(
+      (question: QuestioniarInterface) => question?.id === id
+    );
+    if (myQuestionIndex > -1) {
+      const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];
+      if (myQuestion) {
+        myQuestion.answer = selected;
+        dispatch(setQuestions(myQuestioniars));
+      }
+    }
+  }, [selected])
+
   const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log((event.target as HTMLInputElement).value);
     setSelected(+(event.target as HTMLInputElement).value);
   };
 
@@ -47,6 +73,7 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
                   value={index}
                   control={<CustomRadio />}
                   label={option}
+                  disabled={answeredByMe}
                   className={`options-text ${classes.smallRadioButton}`}
                 />
               );
