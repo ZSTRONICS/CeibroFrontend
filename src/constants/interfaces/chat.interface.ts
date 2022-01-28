@@ -22,5 +22,6 @@ export interface ChatMessageInterface {
     replyOf?: any;
     _id: any;
     pinnedBy?: any;
-    type: 'message' | 'questioniar'
+    voiceUrl?: string;
+    type: 'message' | 'questioniar' | 'voice'
 }

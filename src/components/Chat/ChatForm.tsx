@@ -20,6 +20,7 @@ import { AiFillBell } from "react-icons/ai";
 import { IoBarbellOutline, IoDocument } from "react-icons/io5";
 import { FaRegBell } from "react-icons/fa";
 import assets from "../../assets/assets";
+import VoiceRecorder from './VoiceRecorder'
 interface ChatFormInterface {
     handleSendClick: (a: string) => string
 }
@@ -34,6 +35,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const socket:any = useContext(SocketContext) || null;
     const dispatch = useDispatch();
     const [files, setFiles] = useState<any>();
+    const [showRecorder, setShowRecorder] = useState<boolean>(false);
     const [filesPreview, setFilesPreview] = useState<any>([]);
 
 
@@ -153,11 +155,51 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     const handleOpenQuestioniar = () => {
         dispatch(openQuestioniarDrawer());
     }
+
+    const handleCancelVoice = () => {
+        setShowRecorder(false);
+    }
+
+    const handleSendVoice = (blob: any) => {
+        if(blob) {
+            setShowRecorder(false);
+                const formdata = new FormData();
+                formdata.append("type", "voice");
+                formdata.append("chat", selectedChat);
+                formdata.append('products', blob.blob);
+    
+                const payload: any = {
+                    body: formdata
+                }
+                
+                dispatch(sendReplyMessage(payload));
+    
+                let replyMessage = null;
+                
+                dispatch({
+                    type: PUSH_MESSAGE,
+                    payload: {
+                        type: "voice",
+                        username: user?.name,
+                        time: "1 seconds ago",
+                        seen: true,
+                        myMessage: true,
+                        replyOf: replyMessage,
+                        voiceUrl: blob.url
+                    }
+                  });
+                handleCloseReply();
+                setFiles(null);
+                setFilesPreview(null);
+                // props.handleSendClick(text)
+                setText('')
+        }
+    }
     
 
     return (
         <Grid className={classes.wrapper} container>
-            <Grid item xs={12} className={classes.inputWrapper}>
+            {!showRecorder && <Grid item xs={12} className={classes.inputWrapper}>
                 {replyToId && 
                     <div className={classes.replyTitle}>
                         <Typography>
@@ -180,7 +222,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 <div className={classes.sendWrapper}>
                     <img src={assets.sendIcon} onClick={handleSend} className={classes.sendIcon} />
                 </div>
-            </Grid>
+            </Grid>}
+            {showRecorder && 
+                <VoiceRecorder handleSubmit={handleSendVoice} onCancel={handleCancelVoice} />
+            }
+            
             {filesPreview && filesPreview.length > 0 && <Grid item xs={12} className={classes.filePreviewer}>
                 {filesPreview && filesPreview.map((preview: any, index: number) => {
                     return <FilePreviewer 
@@ -203,7 +249,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                             multiple={true}
                         />
                     </label>
-                    <Mic className={classes.btnIcon}/>
+                    
+                    <Mic onClick={() => setShowRecorder(!showRecorder)} className={classes.btnIcon}/>
                     
                     <label className="custom-file-upload">
                         <Image className={classes.btnIcon}/>

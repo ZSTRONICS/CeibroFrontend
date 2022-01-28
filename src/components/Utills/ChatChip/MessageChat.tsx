@@ -23,7 +23,7 @@ interface MessageChatProps {
 const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
-    const { replyOf, _id, type, username, time, companyName, message: messageText, seen, myMessage, files } = message
+    const { replyOf, _id, type, voiceUrl, username, time, companyName, message: messageText, seen, myMessage, files } = message
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
     const { messages } = useSelector((state: RootState) => state.chat);
@@ -140,9 +140,16 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                             </div>
 
                             <div className={classes.messageBody}>
-                                <Typography className={classes.messageText}>
-                                    {messageText}
-                                </Typography>
+                                {type === 'message' && 
+                                    <Typography className={classes.messageText}>
+                                        {messageText}
+                                    </Typography>
+                                }
+                                {type === 'voice' && 
+                                    <audio controls>
+                                        <source src={voiceUrl} />
+                                    </audio>
+                                }
                             </div>
 
                         </Grid>
