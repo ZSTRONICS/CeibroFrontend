@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import { PUSH_MESSAGE, SEND_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
 import AudioRecorder from './AudioRecorder'
-import { openQuestioniarDrawer, sendReplyMessage } from "../../redux/action/chat.action";
+import { openQuestioniarDrawer, sendReplyMessage, updateMessageById } from "../../redux/action/chat.action";
 // @ts-ignore
 import FileViewer from 'react-file-viewer';
 // @ts-ignore
@@ -88,12 +88,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                formdata.append("messageId", replyToId);             
             }
 
-            const payload: any = {
-                body: formdata
-            }
-            
-            dispatch(sendReplyMessage(payload));
-
             let replyMessage = null;
             if(replyToId) {
                 replyMessage = messages?.find((msg: any) => String(msg._id) == String(replyToId))
@@ -102,17 +96,36 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 }
             }
             
+            const myId = new Date().valueOf();
+            const newMessage = {
+                username: user?.name,
+                time: "1 seconds ago",
+                message: text,
+                seen: true,
+                type: 'message',
+                myMessage: true,
+                id: myId,
+                replyOf: replyMessage || replyToId,
+                files: files && Object.keys(files)?.length > 0 ? filesPreview: []
+              }
+            const payload: any = {
+                body: formdata,
+                success: (res: any) => {
+
+                    dispatch(updateMessageById({
+                        other: {
+                            oldMessageId: myId,
+                            newMessage: res.data
+                        }
+                    }))
+                }
+            }
+            
+            dispatch(sendReplyMessage(payload));
+            
             dispatch({
                 type: PUSH_MESSAGE,
-                payload: {
-                  username: user?.name,
-                  time: "1 seconds ago",
-                  message: text,
-                  seen: true,
-                  myMessage: true,
-                  replyOf: replyMessage || replyToId,
-                  files: files && Object.keys(files)?.length > 0 ? filesPreview: []
-                }
+                payload: newMessage 
               });
             handleCloseReply();
             setFiles(null);
@@ -166,15 +179,13 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 const formdata = new FormData();
                 formdata.append("type", "voice");
                 formdata.append("chat", selectedChat);
-                formdata.append('products', blob.blob);
+                formdata.append('products', blob.blob, `${new Date().valueOf()}.mp3`);
     
-                const payload: any = {
-                    body: formdata
-                }
                 
-                dispatch(sendReplyMessage(payload));
+                
     
                 let replyMessage = null;
+                const myId = new Date().valueOf();
                 
                 dispatch({
                     type: PUSH_MESSAGE,
@@ -185,9 +196,23 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                         seen: true,
                         myMessage: true,
                         replyOf: replyMessage,
-                        voiceUrl: blob.url
+                        voiceUrl: blob.url,
+                        id: myId
                     }
                   });
+                const payload: any = {
+                    body: formdata,
+                    success: (res: any) => {
+                        dispatch(updateMessageById({
+                            other: {
+                                oldMessageId: myId,
+                                newMessage: res.data
+                            }
+                        }))
+                    }
+                }
+                dispatch(sendReplyMessage(payload));
+
                 handleCloseReply();
                 setFiles(null);
                 setFilesPreview(null);

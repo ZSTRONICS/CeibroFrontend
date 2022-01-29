@@ -15,6 +15,7 @@ import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES } from "../../../config/chat.config"
 import $ from 'jquery'
 import assets from "../../../assets/assets"
+import { ClipLoader } from "react-spinners"
 
 interface MessageChatProps {
     message: ChatMessageInterface
@@ -24,6 +25,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
     const { message } = props
     const { replyOf, _id, type, voiceUrl, username, time, companyName, message: messageText, seen, myMessage, files } = message
+    const { loadingMessages } = useSelector((root: RootState) => root.chat);
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
     const { messages } = useSelector((state: RootState) => state.chat);
@@ -52,9 +54,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         }
 
         myMsgs[index] = myMsg;
-        
-        console.log('message was', message)
-    
+
         const payload = {
             other: message._id,
             success: () => {
@@ -100,6 +100,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
             className={classes.outerWrapper}
             id={_id}
         >
+            {message.id && loadingMessages?.includes?.(message.id) && <ClipLoader color={colors.textGrey} size={6} />}
             <Grid item xs={9} onClick={handleClick}>
                 <div className={classes.innerWrapper} style={getStyles()}>
                     {type === 'questioniar' && (
@@ -112,9 +113,21 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                     )}
                     {replyOf && (
                         <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
-                            <span>
-                                {replyOf?.message}
-                            </span>
+                            {message.type === 'message' && 
+                                <span>
+                                    {replyOf?.message}
+                                </span>
+                            }
+                            {replyOf.type === 'questioniar' && 
+                                <span>
+                                    Questioniar
+                                </span>
+                            }
+                            {replyOf.type === 'voice' && 
+                                <span>
+                                    Voice
+                                </span>
+                            }
                         </Grid>
                     )}
                     <Grid container>

@@ -5,6 +5,7 @@ import InputHOC from './InputHOC'
 interface DatePickerInt {
     onChange?: (e: any) => void;
     value?: any;
+    disabled?: boolean;
 }
 
 const DatePicker: React.FC<DatePickerInt> = (props) => {
@@ -19,7 +20,7 @@ const DatePicker: React.FC<DatePickerInt> = (props) => {
 
     return (
         <InputHOC title="Due Date">
-            <input onChange={handleChange} value={props.value} className={classes.dateInput} type="date" />
+            <input disabled={props.disabled} onChange={handleChange} value={props.value} className={classes.dateInput} type="date" />
         </InputHOC>
     )
 }

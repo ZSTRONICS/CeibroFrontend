@@ -25,7 +25,7 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
 
     useEffect(() => {
         //@ts-ignore
-        navigator.getUserMedia (
+        navigator?.getUserMedia?. (
             // constraints
             {
                audio: true
@@ -38,9 +38,9 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
          
             // errorCallback
             function(err: any) {
-            //  if(err === PERMISSION_DENIED) {
-            //    // Explain why you need permission and how to update the permission setting
-            //  }
+             if(err) {
+               // Explain why you need permission and how to update the permission setting
+             }
             }
          );
     }, [])

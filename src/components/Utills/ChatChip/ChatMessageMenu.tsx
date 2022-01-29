@@ -9,6 +9,7 @@ import colors from "../../../assets/colors"
 import { SET_REPLY_TO_ID } from "../../../config/chat.config"
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface"
 import { setTempMembersDialog } from "../../../redux/action/chat.action"
+import ForwardMessage from './ForwardMessage'
 
 
 interface ChatMessageMenueInt {
@@ -20,6 +21,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
     const classes = useStyles()
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
+    const [open, setOpen] = useState<boolean>(false);
 
     const handleToggle = (e: any) => {
         e.stopPropagation();
@@ -40,8 +42,17 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
         dispatch(setTempMembersDialog(true));
     }
 
+    const openDialog = () => {
+        setOpen(true);
+    }
+
+    const closeDialog = () => {
+        setOpen(false);
+    }
+
     return (
         <div className="dropdown">
+            <ForwardMessage onClose={closeDialog}  messageId={message._id} open={open} />
             <MoreVert className={classes.moreIcon} onClick={handleToggle} />
             {show && (
                 <OutsideClickHandler onOutsideClick={handleToggle}>
@@ -54,13 +65,14 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
                                 </Typography>
                             </div>
                         )}
-                        <div className={`${classes.menuWrapper} dropdown-menu`}>
-                            <BsArrow90DegRight className={classes.menuIcon} />
-                            <Typography className={classes.menuText}>
-                                Forward message
-                            </Typography>
-                        </div>
-
+                        {message.type !== 'questioniar' && 
+                            <div onClick={openDialog} className={`${classes.menuWrapper} dropdown-menu`}>
+                                <BsArrow90DegRight className={classes.menuIcon} />
+                                <Typography className={classes.menuText}>
+                                    Forward message
+                                </Typography>
+                            </div>
+                        }
                         <hr className={classes.break} />
 
                         <div className={`${classes.menuWrapper} dropdown-menu`}>

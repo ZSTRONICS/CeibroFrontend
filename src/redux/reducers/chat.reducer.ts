@@ -24,6 +24,9 @@ import {
   GET_QUESTIONIAR,
   SAVE_QUESTIONIAR,
   SAVE_QUESTIONIAR_ANSWERS,
+  UPDATE_MESSAGE_BY_ID,
+  SET_LOADING_MESSAGES,
+  GET_USER_QUESTIONIAR_ANSWER,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -47,6 +50,10 @@ interface ChatReducer {
   selectedQuestioniar: any;
   answeredByMe: boolean;
   questioniarsLoading: boolean;
+  loadingMessages: string[];
+  dueDate: any;
+  sender: any;
+  questioniarInfo: any;
 }
 
 const intialStatue: ChatReducer = {
@@ -66,7 +73,11 @@ const intialStatue: ChatReducer = {
   openViewQuestioniar: false,
   selectedQuestioniar: null,
   answeredByMe: false,
-  questioniarsLoading: false
+  questioniarsLoading: false,
+  loadingMessages: [],
+  dueDate: null,
+  sender: null,
+  questioniarInfo: null
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -82,6 +93,14 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         messages: [...state.messages, action.payload],
+        loadingMessages: [...state.loadingMessages, action.payload.id]
+      };
+    }
+
+    case SET_LOADING_MESSAGES: {
+      return {
+        ...state,
+        loadingMessages: action.payload
       };
     }
 
@@ -218,7 +237,33 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         ...state,
         questioniars: action.payload.questions,
         answeredByMe: action.payload.answeredByMe,
-        questioniarsLoading: false
+        questioniarsLoading: false,
+        questioniarInfo: {
+          dueDate: action.payload?.dueDate,
+          sender: action.payload?.sender,
+          id: action.payload?.id
+        }
+      }
+    }
+
+    case GET_USER_QUESTIONIAR_ANSWER: {
+      return {
+        ...state,
+        questioniars: [],
+      }
+    }
+
+    case requestSuccess(GET_USER_QUESTIONIAR_ANSWER): {
+      return {
+        ...state,
+        questioniars: action.payload.questions,
+        answeredByMe: action.payload.answeredByMe,
+        questioniarInfo: {
+          dueDate: action.payload?.dueDate,
+          sender: action.payload?.sender,
+          id: action.payload?.id,
+          isAnswered: action.payload.answeredByMe
+        }
       }
     }
 

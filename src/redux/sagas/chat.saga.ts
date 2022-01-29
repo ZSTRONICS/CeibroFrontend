@@ -1,6 +1,7 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION, FORWARD_CHAT, UPDATE_MESSAGE_BY_ID, SET_LOADING_MESSAGES, GET_USER_QUESTIONIAR_ANSWER } from '../../config/chat.config';
+import { SAVE_MESSAGES } from '../../config/dist/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
 import { ActionInterface, RootState } from '../reducers';
@@ -134,6 +135,18 @@ const saveQuestioniar = apiCall({
   path: () => `chat/message/questioniar`
 });
 
+const forwardChat = apiCall({
+  type: FORWARD_CHAT,
+  method: "post",
+  path: () => `chat/message/forward`
+});
+
+const getUserQuestioniarAnswer = apiCall({
+  type: GET_USER_QUESTIONIAR_ANSWER,
+  method: "get",
+  path: (payload) => `/chat/questioniar/view-answer/${payload?.other?.questioniarId}/${payload?.other?.userId}`
+});
+
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
     const oldRoutes: any = yield select((state: RootState) => state.app.sidebarRoutes);
     oldRoutes['Chat'].notification = action.payload?.count || 0;
@@ -145,6 +158,36 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
       }
     })
  }
+
+function* updateMessageById(action: ActionInterface): Generator<any> {
+  const { payload: { other } } = action;
+  const messages: any = yield select((state: RootState) => state.chat.messages);
+  const loadingMessages: any = yield select((state: RootState) => state.chat.loadingMessages);
+  const newLoadingMessages = loadingMessages?.filter((message: any) => String(message) !== String(other.oldMessageId))
+  yield put({
+    type: SET_LOADING_MESSAGES,
+    payload: [...newLoadingMessages]
+  })
+  
+  const index = messages?.findIndex((message: any) => {
+    console.log('matching ', message.id, 'vs ', other.oldMessageId)
+    return String(message?.id) === String(other.oldMessageId)
+  });
+  if(index > -1) {
+    const myMessage = messages[index];
+    myMessage._id = other.newMessage.id;
+  
+    messages[index] = myMessage;
+  }
+  yield put({
+    type: SAVE_MESSAGES,
+    payload: [...messages]
+  })
+
+  
+}
+
+
 
 function* chatSaga() {
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
@@ -167,6 +210,9 @@ function* chatSaga() {
   yield takeLatest(GET_QUESTIONIAR, getQuestioniarById);
   yield takeLatest(SAVE_QUESTIONIAR_ANSWERS, saveQuestioniarAnswers);
   yield takeLatest(DELETE_CONVERSATION, deleteConversation);
+  yield takeLatest(FORWARD_CHAT, forwardChat);
+  yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
+  yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
 }
 
 export default chatSaga;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
-import { saveQuestioniar, saveQuestioniarAnswers, setQuestions } from "../../../redux/action/chat.action";
+import { closeQuestioniarDrawer, closeViewQuestioniarDrawer, getUserQuestioniarAnswer, saveQuestioniar, saveQuestioniarAnswers, setQuestions } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
@@ -13,15 +13,35 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
+import { formatDate } from '../../../helpers/chat.helpers'
+import { toast } from "react-toastify";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, selectedChat, questioniarsLoading, selectedQuestioniar, answeredByMe } = useSelector((store: RootState) => store.chat);
-  const [preview, setPreview] = useState<boolean>(false);
-  const [members, setMembers] = useState<any>([]);
+  const [member, setMember] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { questioniars, selectedChat, questioniarsLoading, selectedQuestioniar, answeredByMe, questioniarInfo  } = useSelector((store: RootState) => store.chat);
+  const { user } = useSelector((store: RootState) => store.auth);
+  console.log('hello from', String(questioniarInfo?.sender), ' vs ', String(user?._id))
+  const myQuestion = String(questioniarInfo?.sender) === String(user?.id)
+
+  const everyFilled = questioniars?.every((question: any) => {
+    if(question?.type === 'shortAnswer') {
+      return question?.answer?.length > 0;
+    }
+    if(question?.type === 'multiple') {
+      return question?.answer?.toString()?.length > 0;
+    }
+
+    if(question?.type === 'checkbox') {
+      return Array.isArray(question?.answer) && question?.answer.length > 0
+    }
+
+    return false;
+  })
+  
   const dispatch = useDispatch();
-  const [dueDate, setDueDate] = useState<any>(null);
-  console.log('dueDate: ', dueDate);
+  const myDate = formatDate(questioniarInfo?.dueDate);
 
   const handleSave = () => {
     const myQuestions = questioniars?.map((question: QuestioniarInterface) => {
@@ -34,31 +54,77 @@ const QuestioniarBody = () => {
       body: {
         questions: myQuestions
       },
+      success: () => {
+        toast.success("Answers saved")
+      },
       other: selectedQuestioniar
     }
     dispatch(saveQuestioniarAnswers(payload));
   }
 
-  return (
-    <Grid container className={classes.wrapper}>
+  const handleClose = () => {
+    dispatch(closeViewQuestioniarDrawer());
+  }
 
+  const handleUserChange = (e: any) => {
+    setLoading(true);
+    setMember(e);
+    dispatch(getUserQuestioniarAnswer({
+      other: {
+        userId: e?.value,
+        questioniarId: questioniarInfo?.id
+      },
+      success: () => {
+        setLoading(false);
+      }
+    }))
+  }
+
+  return (
+    <Grid container direction="column" className={classes.wrapper}>
       <Grid item xs={12} className={classes.questionsWrapper}>
+        {!questioniarsLoading && (
+          <Grid item xs={12} className={classes.wrapper2}>
+            <div className={classes.datePickerWrapper}>
+              <DatePicker disabled={true} value={myDate} />
+            </div>
+            <div className={classes.datePickerWrapper}>
+              <SelectDropdown
+                title="View answer"
+                data={dbUsers}
+                handleChange={handleUserChange}
+                isMulti={false}
+                // value={members}
+              />
+              {!questioniarInfo?.isAnswered && member && !loading && (<div>
+                <Typography className={classes.error}>
+                   Not Answered yet
+                </Typography>
+              </div>)
+}
+            </div>
+          </Grid>
+        )}
         {questioniars && !questioniarsLoading &&
           questioniars.map((question: QuestioniarInterface, index: number) => {
               return <PreviewQuestion key={question.id} question={question} />;
-          })}
-          {
-            questioniarsLoading && (
-              <Typography>
-                Loading please wait ....
-              </Typography>
-            )
-          }
+          })
+        }
+        {
+          questioniarsLoading && (
+            <Typography>
+              Loading please wait ....
+            </Typography>
+          )
+        }
       </Grid>
 
-      {!answeredByMe && !questioniarsLoading && <Grid item xs={12} className={classes.questionsWrapper}>
-        <Button onClick={handleSave} variant="contained" color="primary">
+      {!myQuestion && !answeredByMe && !questioniarsLoading && <Grid item xs={12} className={classes.questionsWrapper}>
+        <Button disabled={!everyFilled} onClick={handleSave} variant="contained" color="primary">
             Save
+          </Button>
+          <Button onClick={handleClose} variant="outlined">
+            cancel
           </Button>
       </Grid>}
 
@@ -94,5 +160,9 @@ const useStyles = makeStyles({
   },
   wrapper2: {
     zIndex: 5
+  },
+  error: {
+    color: colors.btnRed,
+    paddingTop: 20
   }
 });

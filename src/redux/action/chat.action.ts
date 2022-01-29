@@ -23,7 +23,10 @@ import {
   SET_SELECTED_QUESTIONIAR,
   GET_QUESTIONIAR,
   SAVE_QUESTIONIAR_ANSWERS,
-  DELETE_CONVERSATION
+  DELETE_CONVERSATION,
+  FORWARD_CHAT,
+  UPDATE_MESSAGE_BY_ID,
+  GET_USER_QUESTIONIAR_ANSWER
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -44,6 +47,9 @@ export const saveQuestioniar = createAction(SAVE_QUESTIONIAR);
 export const getQuestioniarById = createAction(GET_QUESTIONIAR);
 export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS);
 export const deleteConversation = createAction(DELETE_CONVERSATION);
+export const forwardChat = createAction(FORWARD_CHAT);
+export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
+export const getUserQuestioniarAnswer = createAction(GET_USER_QUESTIONIAR_ANSWER);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,

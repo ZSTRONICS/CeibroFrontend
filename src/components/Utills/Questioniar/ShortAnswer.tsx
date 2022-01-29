@@ -3,7 +3,7 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import TextField from '../Inputs/TextField';
 // @ts-ignore
@@ -17,7 +17,7 @@ interface ShowAnswerInt {
 
 let debounceTimeout: any = null;
 
-const ShowAnswer: React.FC<ShowAnswerInt> = (props) => {
+const ShowAnswer: React.FC<ShowAnswerInt> = memo((props) => {
   const classes = useStyles();
   const [answer, setAnswer] = useState<any>("");
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const ShowAnswer: React.FC<ShowAnswerInt> = (props) => {
                 style: { height: 15 },
               }}
               className={classes.inputs}
-              placeholder="Type your question"
+              placeholder="Type your answer"
               onChange={handleAnswerChange}
               value={answer}
               disabled={answeredByMe}
@@ -86,7 +86,7 @@ const ShowAnswer: React.FC<ShowAnswerInt> = (props) => {
       </Grid>
     </Grid>
   );
-};
+});
 
 export default ShowAnswer;
 
