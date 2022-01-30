@@ -1,6 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION, FORWARD_CHAT, UPDATE_MESSAGE_BY_ID, SET_LOADING_MESSAGES, GET_USER_QUESTIONIAR_ANSWER } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION, FORWARD_CHAT, UPDATE_MESSAGE_BY_ID, SET_LOADING_MESSAGES, GET_USER_QUESTIONIAR_ANSWER, GET_UP_CHAT_MESSAGE, GET_UP_MESSAGES, SET_VIEWPORT } from '../../config/chat.config';
 import { SAVE_MESSAGES } from '../../config/dist/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
@@ -48,6 +48,12 @@ const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
   path: (payload: any ) => "/chat/room/messages/" + payload.other.roomId
+});
+
+const getUpRoomMessages = apiCall({
+  type: GET_UP_MESSAGES,
+  method: "get",
+  path: (payload: any ) => "/chat/room/messages/" + payload.other.roomId + `?lastMessageId=${payload?.other.lastMessageId}`
 });
 
 const setAllMessagesRead = apiCall({
@@ -183,8 +189,27 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
     type: SAVE_MESSAGES,
     payload: [...messages]
   })
+}
 
-  
+function* getUpChatMessages(action: ActionInterface): Generator<any>{
+    const selectedChat = yield select((state: RootState) => state.chat.selectedChat)  
+    const messages: any = yield select((state: RootState) => state.chat.messages)
+    yield put({
+      type: SET_VIEWPORT,
+      payload: messages?.[0]?._id
+    })
+    const payload = {
+      other: {
+        roomId: selectedChat,
+        lastMessageId: messages?.[0]?._id || null
+      }
+    }
+
+    yield put({
+      type: GET_UP_MESSAGES,
+      payload
+    })
+
 }
 
 
@@ -193,6 +218,7 @@ function* chatSaga() {
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
   yield takeLatest(GET_CHAT_API, getAllChat);
   yield takeLatest(GET_MESSAGES, getRoomMessages);
+  yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
   yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
@@ -213,6 +239,7 @@ function* chatSaga() {
   yield takeLatest(FORWARD_CHAT, forwardChat);
   yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
+  yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
 }
 
 export default chatSaga;

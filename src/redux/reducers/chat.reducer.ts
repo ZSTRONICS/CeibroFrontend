@@ -27,6 +27,9 @@ import {
   UPDATE_MESSAGE_BY_ID,
   SET_LOADING_MESSAGES,
   GET_USER_QUESTIONIAR_ANSWER,
+  GET_UP_MESSAGES,
+  SET_VIEWPORT,
+  SET_ALLOW_SCROLL,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -54,6 +57,9 @@ interface ChatReducer {
   dueDate: any;
   sender: any;
   questioniarInfo: any;
+  viewport: any;
+  allowScroll: boolean,
+  upScrollLoading: boolean
 }
 
 const intialStatue: ChatReducer = {
@@ -77,7 +83,10 @@ const intialStatue: ChatReducer = {
   loadingMessages: [],
   dueDate: null,
   sender: null,
-  questioniarInfo: null
+  questioniarInfo: null,
+  viewport: null,
+  allowScroll: false,
+  upScrollLoading: false
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -87,6 +96,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         ...state,
         chat: action.payload,
       };
+    }
+
+    case SET_VIEWPORT: {
+      return {
+        ...state,
+        viewport: action.payload
+      }
     }
 
     case PUSH_MESSAGE: {
@@ -130,8 +146,56 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_MESSAGES): {
       return {
         ...state,
-        messages: action.payload?.conversation,
+        messages: action.payload,
+        upScrollLoading: false
       };
+    }
+
+    case requestPending(GET_MESSAGES): {
+      return {
+        ...state,
+        upScrollLoading: true
+      }
+    }
+
+    case requestFail(GET_MESSAGES): {
+      return {
+        ...state,
+        upScrollLoading: false
+      }
+    }
+
+    case requestPending(GET_UP_MESSAGES): {
+      return {
+        ...state,
+        upScrollLoading: true
+      }
+    }
+
+    case requestFail(GET_UP_MESSAGES): {
+      return {
+        ...state,
+        upScrollLoading: false
+      }
+    }
+
+    case requestSuccess(GET_UP_MESSAGES): {
+      return {
+        ...state,
+        messages: [
+          ...action.payload,
+          ...state.messages
+        ],
+        upScrollLoading: false,
+        allowScroll: true
+      };
+    }
+
+    case SET_ALLOW_SCROLL: {
+      return {
+        ...state,
+        allowScroll: action.payload
+      }
     }
 
     case SET_CHAT_TYPE: {

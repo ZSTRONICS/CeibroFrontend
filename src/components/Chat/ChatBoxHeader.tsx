@@ -7,6 +7,7 @@ import { RootState } from "../../redux/reducers"
 import ChatUserMenu from '../Utills/ChatChip/ChatUserMenu'
 import MessageSearch from './MessageSearch';
 import AddChatMember from '../Utills/ChatChip/AddChatMember';
+import { ClipLoader } from "react-spinners"
 interface ChatBoxHeaderProps {
     chat?: ChatListInterface
 }
@@ -15,12 +16,19 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     
     const classes = useStyles();
 
-    const { chat: allChats, selectedChat } = useSelector((store: RootState) => store.chat); 
+    const { upScrollLoading, chat: allChats, selectedChat } = useSelector((store: RootState) => store.chat); 
     const myChat = allChats?.find?.((room: any) => String(room._id) == String(selectedChat));
 
     return (
         <Grid container className={classes.wrapper}>
             <AddChatMember />
+            {upScrollLoading && 
+                <div className={classes.loadingWrapper}>
+                    <div className={classes.innerLoading}>
+                        <ClipLoader size={30} color={colors.primary}/>
+                    </div>
+                </div>
+            }
             {
                 myChat && (
                     <>
@@ -99,5 +107,18 @@ const useStyles = makeStyles({
         fontWeight: "bold",
         fontSize: 10,
         color: colors.textPrimary
+    },
+    loadingWrapper: {
+        position: 'absolute',
+        left: '52%',
+        top: '10%',
+        zIndex: 3,
+    },
+    innerLoading: {
+        padding: 5,
+        background: 'white',
+        display: "flex",
+        borderRadius: "50%",
+        boxShadow: "0px 1px 17px #cac6c6"
     }
 })
