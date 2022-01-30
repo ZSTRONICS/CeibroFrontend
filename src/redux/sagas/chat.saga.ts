@@ -47,7 +47,13 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any>{
 const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
-  path: (payload: any ) => "/chat/room/messages/" + payload.other.roomId
+  path: (payload: any ) => {
+    let url = `/chat/room/messages/${payload.other.roomId}`
+    if(payload?.other?.search) {
+      url = url + `?search=${payload?.other?.search}`
+    }
+    return url;
+  }
 });
 
 const getUpRoomMessages = apiCall({
@@ -192,23 +198,26 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
 }
 
 function* getUpChatMessages(action: ActionInterface): Generator<any>{
-    const selectedChat = yield select((state: RootState) => state.chat.selectedChat)  
-    const messages: any = yield select((state: RootState) => state.chat.messages)
-    yield put({
-      type: SET_VIEWPORT,
-      payload: messages?.[0]?._id
-    })
-    const payload = {
-      other: {
-        roomId: selectedChat,
-        lastMessageId: messages?.[0]?._id || null
+    const isBlocked = yield select((state: RootState) => state.chat.blockPagination)  
+    if(!isBlocked) {
+      const selectedChat = yield select((state: RootState) => state.chat.selectedChat)  
+      const messages: any = yield select((state: RootState) => state.chat.messages)
+      yield put({
+        type: SET_VIEWPORT,
+        payload: messages?.[0]?._id
+      })
+      const payload = {
+        other: {
+          roomId: selectedChat,
+          lastMessageId: messages?.[0]?._id || null
+        }
       }
-    }
 
-    yield put({
-      type: GET_UP_MESSAGES,
-      payload
-    })
+      yield put({
+        type: GET_UP_MESSAGES,
+        payload
+      })
+    }
 
 }
 

@@ -18,7 +18,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
     const { upScrollLoading, chat: allChats, selectedChat } = useSelector((store: RootState) => store.chat); 
     const myChat = allChats?.find?.((room: any) => String(room._id) == String(selectedChat));
-
+    
     return (
         <Grid container className={classes.wrapper}>
             <AddChatMember />

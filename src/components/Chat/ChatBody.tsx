@@ -1,22 +1,22 @@
 import { Grid, makeStyles } from "@material-ui/core"
-import { useEffect } from "react"
+import { memo, useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface"
 import { getRoomMessages, getUpMessages } from "../../redux/action/chat.action"
 import { RootState } from "../../redux/reducers"
 import MessageChat from '../Utills/ChatChip/MessageChat';
 import AddTempChatMember from '../Utills/ChatChip/AddTempChatMember';
-import { SET_ALLOW_SCROLL, SET_VIEWPORT } from "../../config/chat.config"
-import { ClipLoader } from "react-spinners"
+import { SET_ALLOW_SCROLL, SET_PAGINATION_BLOCK, SET_VIEWPORT } from "../../config/chat.config"
 
 interface ChatBodyInt {
     messages: ChatMessageInterface[]
 }
 
-const ChatBody: React.FC<ChatBodyInt> = (props) => {
+const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
     const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
     const selectedChat = useSelector((store: RootState) => store.chat.selectedChat);
     const viewport = useSelector((store: RootState) => store.chat.viewport);
+    const {blockPagination, allowChangeBlock} = useSelector((store: RootState) => store.chat);
     const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
     const classes = useStyles();
     const dispatch = useDispatch();
@@ -34,12 +34,21 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
 
     useEffect(() => {
         const element = document.getElementById('chatBox');
-        element?.addEventListener('scroll', (scroll) => {
-            if(element?.scrollTop <= 0) {
+        element?.addEventListener('scroll', () => handleScroll(blockPagination))
+        return () => {
+            element?.removeEventListener('scroll', () => {
+            });
+        }
+    }, [blockPagination, allowChangeBlock]);
+
+    const handleScroll = (blocked: boolean) => {
+        const element = document.getElementById('chatBox');
+        if(element && element?.scrollTop <= 0) {
+            if(!blockPagination) {
                 dispatch(getUpMessages())
             }
-        })
-    }, []);
+        }
+    }
 
     useEffect(() => {
         if(!viewport) {
@@ -77,13 +86,13 @@ const ChatBody: React.FC<ChatBodyInt> = (props) => {
 
     return (
         <Grid className={`${classes.wrapper} custom-scrollbar`} id="chatBox" container >
-            {messages && messages?.map((message: ChatMessageInterface) => {
+            {messages && messages?.map?.((message: ChatMessageInterface) => {
                 return <MessageChat message={message} />
             })}   
             <AddTempChatMember />
         </Grid>
     )
-}
+})
 
 export default ChatBody
 

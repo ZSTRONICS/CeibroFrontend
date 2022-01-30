@@ -2,12 +2,44 @@ import { makeStyles, Typography } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import * as React from 'react';
 import colors from '../../assets/colors';
+// @ts-ignore
+import _ from 'lodash'
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/reducers';
+import { getRoomMessages } from '../../redux/action/chat.action';
+import { SET_PAGINATION_BLOCK } from '../../config/chat.config';
 
 interface IAppProps {
 }
 
 const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
-    const classes = useStyles()
+    const classes = useStyles();
+    const { selectedChat } = useSelector((state: RootState) => state.chat);
+    const [search, setSearch] = React.useState("");
+    const dispatch = useDispatch();
+
+    const handleSearchChange = _.debounce((e: any) => {
+        const value = e?.target?.value 
+        setSearch(value);
+        dispatch({
+            type: SET_PAGINATION_BLOCK,
+            payload: true
+        })
+        dispatch(getRoomMessages({
+            other: {
+                roomId: selectedChat,
+                search: value
+            },
+            success: () => {
+                setTimeout(() => {
+                    dispatch({
+                        type: SET_PAGINATION_BLOCK,
+                        payload: false
+                    })
+                }, 1000)
+            }
+        }))
+    }, 300)
 
     return (
         <div className={classes.wrapper}>
@@ -22,14 +54,15 @@ const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
                     type="text"
                     className={`emptyBorder ${classes.input}`}
                     placeholder="Chat search"
+                    onChange={handleSearchChange}
                 />
             </div>
             <div className={classes.btnWrapper}>
                 <select className={classes.categories}>
                     <option>All Categories</option>
-                    <option>Category 1</option>
+                    {/* <option>Category 1</option>
                     <option>Category 2</option>
-                    <option>Category 3</option>
+                    <option>Category 3</option> */}
                 </select>
             </div>
         </div>

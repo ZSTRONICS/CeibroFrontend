@@ -30,6 +30,7 @@ import {
   GET_UP_MESSAGES,
   SET_VIEWPORT,
   SET_ALLOW_SCROLL,
+  SET_PAGINATION_BLOCK,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -58,8 +59,10 @@ interface ChatReducer {
   sender: any;
   questioniarInfo: any;
   viewport: any;
-  allowScroll: boolean,
-  upScrollLoading: boolean
+  allowScroll: boolean;
+  upScrollLoading: boolean;
+  blockPagination: boolean;
+  allowChangeBlock: boolean
 }
 
 const intialStatue: ChatReducer = {
@@ -86,7 +89,9 @@ const intialStatue: ChatReducer = {
   questioniarInfo: null,
   viewport: null,
   allowScroll: false,
-  upScrollLoading: false
+  upScrollLoading: false,
+  blockPagination: false,
+  allowChangeBlock: true
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -96,6 +101,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         ...state,
         chat: action.payload,
       };
+    }
+
+    case SET_PAGINATION_BLOCK: {
+      return {
+        ...state,
+        blockPagination: action.payload
+      }
     }
 
     case SET_VIEWPORT: {
@@ -147,21 +159,27 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         messages: action.payload,
-        upScrollLoading: false
+        upScrollLoading: false,
       };
+    }
+
+    case GET_MESSAGES: {
+      return {
+        ...state,
+      }
     }
 
     case requestPending(GET_MESSAGES): {
       return {
         ...state,
-        upScrollLoading: true
+        upScrollLoading: true,
       }
     }
 
     case requestFail(GET_MESSAGES): {
       return {
         ...state,
-        upScrollLoading: false
+        upScrollLoading: false,
       }
     }
 
