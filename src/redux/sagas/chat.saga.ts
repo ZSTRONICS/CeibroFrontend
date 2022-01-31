@@ -1,6 +1,6 @@
 import { put, takeLatest, select } from 'redux-saga/effects'
 import { SET_SIDEBAR_CONFIG } from '../../config/app.config';
-import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION, FORWARD_CHAT, UPDATE_MESSAGE_BY_ID, SET_LOADING_MESSAGES, GET_USER_QUESTIONIAR_ANSWER, GET_UP_CHAT_MESSAGE, GET_UP_MESSAGES, SET_VIEWPORT } from '../../config/chat.config';
+import { GET_CHAT, GET_CHAT_API, GET_MESSAGES, SET_SELECTED_CHAT, SET_MESSAGE_READ, MUTE_CHAT, ADD_TO_FAVOURITE, SEND_REPLY_MESSAGE, PIN_MESSAGE, GET_UNREAD_CHAT_COUNT, GET_ROOM_MEDIA, ADD_MEMBERS_TO_CHAT, ADD_TEMP_MEMBERS_TO_CHAT, SAVE_QUESTIONIAR, GET_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, DELETE_CONVERSATION, FORWARD_CHAT, UPDATE_MESSAGE_BY_ID, SET_LOADING_MESSAGES, GET_USER_QUESTIONIAR_ANSWER, GET_UP_CHAT_MESSAGE, GET_UP_MESSAGES, SET_VIEWPORT, GET_PINNED_MESSAGES } from '../../config/chat.config';
 import { SAVE_MESSAGES } from '../../config/dist/chat.config';
 import apiCall from '../../utills/apiCall';
 import { requestSuccess } from '../../utills/status';
@@ -159,6 +159,12 @@ const getUserQuestioniarAnswer = apiCall({
   path: (payload) => `/chat/questioniar/view-answer/${payload?.other?.questioniarId}/${payload?.other?.userId}`
 });
 
+const getPinnedMessages = apiCall({
+  type: GET_PINNED_MESSAGES,
+  method: "get",
+  path: (payload: any) => `/chat/message/favourite/${payload.other}`
+});
+
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
     const oldRoutes: any = yield select((state: RootState) => state.app.sidebarRoutes);
     oldRoutes['Chat'].notification = action.payload?.count || 0;
@@ -249,6 +255,8 @@ function* chatSaga() {
   yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
   yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
+  yield takeLatest(GET_PINNED_MESSAGES, getPinnedMessages);
+
 }
 
 export default chatSaga;

@@ -10,7 +10,7 @@ import { useState } from "react"
 import ChatMessageMenu from "./ChatMessageMenu"
 import { useDispatch, useSelector } from "react-redux"
 import { RootState } from "../../../redux/reducers"
-import { openViewQuestioniarDrawer, pinMessage, setSelectedQuestioniar } from "../../../redux/action/chat.action"
+import { getPinnedMessages, openViewQuestioniarDrawer, pinMessage, setSelectedQuestioniar } from "../../../redux/action/chat.action"
 import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES } from "../../../config/chat.config"
 import $ from 'jquery'
@@ -28,7 +28,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     const { loadingMessages } = useSelector((root: RootState) => root.chat);
     const classes = useStyles();
     const { user } = useSelector((state: RootState) => state.auth);
-    const { messages } = useSelector((state: RootState) => state.chat);
+    const { messages, selectedChat } = useSelector((state: RootState) => state.chat);
     const dispatch = useDispatch();
     const [view, setView] = useState(false);
 
@@ -62,6 +62,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                     type: SAVE_MESSAGES,
                     payload: JSON.parse(JSON.stringify(myMsgs))
                 })
+                dispatch(getPinnedMessages({ other: selectedChat}))
             }
         }
         dispatch(pinMessage(payload));

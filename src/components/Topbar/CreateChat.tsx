@@ -1,12 +1,14 @@
 import { Avatar, Button, Grid, makeStyles, TextField } from "@material-ui/core"
 import { useEffect, useState } from "react"
 import OutsideClickHandler from "react-outside-click-handler"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import colors from "../../assets/colors"
+import { removeCurrentUser } from "../../helpers/chat.helpers"
 import { createChatRoom } from "../../redux/action/auth.action"
 import { getAllChats } from "../../redux/action/chat.action"
+import { RootState } from "../../redux/reducers"
 import SelectDropdown from "../Utills/Inputs/SelectDropdown"
-export const dbUsers = [
+export let dbUsers = [
     {
         label: 'Test 1',
         value: '61ec20bb778f854909aec4d2',
@@ -38,6 +40,8 @@ const CreateChat = () => {
     const [users, setUsers] = useState<any>();
     const [name, setName] = useState("");
     const dispatch = useDispatch();
+    const userInfo = useSelector((state: RootState) => state.auth?.user)
+    const values = removeCurrentUser(dbUsers, userInfo?.id)
 
     const toggle = () => {
         setOpen(!open);
@@ -60,7 +64,7 @@ const CreateChat = () => {
             label: 'First project',
             value: '61ec230ab738171d327c1316'
         }]);
-        setUsers(dbUsers);
+        setUsers(values);
     }, []);
 
     const handleSubmit = () => {

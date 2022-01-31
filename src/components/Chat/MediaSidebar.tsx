@@ -14,12 +14,13 @@ import { RootState } from '../../redux/reducers';
 import { baseURL } from '../../utills/axios';
 import ChatMembers from './ChatMembers';
 import ChatMedia from './ChatMedia';
+import ChatPinned from './ChatPinned';
 import assets from '../../assets/assets';
-import { getRoomMedia } from '../../redux/action/chat.action';
+import { getPinnedMessages, getRoomMedia } from '../../redux/action/chat.action';
 
 const MediaSidebar = () => {
     const classes = useStyles();
-    const { sidebarOpen, selectedChat, chat, chatMedia  } = useSelector((state: RootState) => state.chat);
+    const { sidebarOpen, selectedChat, chat, chatMedia, pinnedMessages } = useSelector((state: RootState) => state.chat);
     const [openIndex, setOpenIndex] =  useState<number>(0);
     const dispatch = useDispatch();
     const selectedChatRoom =  chat.find((room: any)=> String(room._id) == String(selectedChat));
@@ -31,6 +32,10 @@ const MediaSidebar = () => {
             dispatch(getRoomMedia({
                 other: selectedChat
             }));
+            dispatch(getPinnedMessages({
+                other: selectedChat
+            }));
+
         }
     }, [selectedChat, openIndex])
 
@@ -85,14 +90,25 @@ const MediaSidebar = () => {
 
             <button className="accordion" onClick={() => handleClick(2)}>
                 <span>
+
+                    <Badge 
+                        badgeContent={pinnedMessages?.length}
+                        color="secondary"
+                        classes={{
+                            badge: classes.font1
+                        }}
+                    >
+                        <img src={assets.pinIcon} />
+                    </Badge>
                     {/* <AiOutlinePushpin style={{ fontSize: 20 }} color="action" /> */}
-                    <img src={assets.pinIcon} />
+                    {/* <img src={assets.pinIcon} /> */}
                     {sidebarOpen && <span className="accordion-title">Pinned messages</span>}
                 </span>
                 {sidebarOpen && (
                     <KeyboardArrowDown/>
                 )}
             </button>
+            {openIndex === 2 && <ChatPinned />}
 
             <button className="accordion" onClick={() => handleClick(3)}>
                 <span className={'chat-room-media'}>

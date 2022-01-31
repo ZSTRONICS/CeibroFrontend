@@ -11,9 +11,9 @@ import CreateQuestion from "../../Utills/Questioniar/Question.create";
 import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
-import { formatDate } from '../../../helpers/chat.helpers'
+import { formatDate, removeCurrentUser } from '../../../helpers/chat.helpers'
 import { toast } from "react-toastify";
 
 const QuestioniarBody = () => {
@@ -24,7 +24,13 @@ const QuestioniarBody = () => {
   const { user } = useSelector((store: RootState) => store.auth);
   console.log('hello from', String(questioniarInfo?.sender), ' vs ', String(user?._id))
   const myQuestion = String(questioniarInfo?.sender) === String(user?.id)
-
+  const [values,setValue] = useState();
+  
+  useEffect(() =>{
+    setValue(removeCurrentUser(dbUsers, user?.id))
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    
+  }, []); 
   const everyFilled = questioniars?.every((question: any) => {
     if(question?.type === 'shortAnswer') {
       return question?.answer?.length > 0;
@@ -91,7 +97,7 @@ const QuestioniarBody = () => {
             <div className={classes.datePickerWrapper}>
               <SelectDropdown
                 title="View answer"
-                data={dbUsers}
+                data={values}
                 handleChange={handleUserChange}
                 isMulti={false}
                 // value={members}

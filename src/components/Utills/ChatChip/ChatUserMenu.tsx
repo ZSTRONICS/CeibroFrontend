@@ -1,16 +1,20 @@
 import { IconButton, makeStyles, Typography } from "@material-ui/core"
 import { Delete, Image, Info, MoreVert, PeopleOutline, PersonAddOutlined } from "@material-ui/icons"
+import { useConfirm } from "material-ui-confirm"
 import { useState } from "react"
 import OutsideClickHandler from "react-outside-click-handler"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import assets from "../../../assets/assets"
 import colors from "../../../assets/colors"
-import { setMembersDialog } from "../../../redux/action/chat.action"
+import { deleteConversation, getAllChats, setMembersDialog, setSelectedChat } from "../../../redux/action/chat.action"
+import { RootState } from "../../../redux/reducers"
 
 const ChatUserMenu = () => {
-    const classes = useStyles()
-    const [show, setShow] = useState(false)
+    const classes = useStyles();
+    const [show, setShow] = useState(false);
+    const { selectedChat } = useSelector((state: RootState) => state.chat)
     const dispatch = useDispatch();
+    const confirm = useConfirm();
 
     const handleToggle = () => {
         setShow(!show)
@@ -19,6 +23,27 @@ const ChatUserMenu = () => {
     const openMembersDialog = () => {
         dispatch(setMembersDialog(true));
     }
+    
+    const handleDeleteClick = (e: any) => {
+        e.stopPropagation();
+        confirm({ description: 'Are you confirm want to delete' })
+        .then(() => { 
+            dispatch(deleteConversation({
+                other: selectedChat,
+                success: () => {
+                    dispatch(getAllChats({
+                        success: (_res: any) => {
+                            if(_res?.data?.[0]?._id) {
+                                dispatch(setSelectedChat({ other: _res?.data?.[0]?._id }));
+                            }
+                        }
+                    }));
+                }
+            }))
+        })
+    }
+
+
 
     return (
         <div className="dropdown">
@@ -39,7 +64,7 @@ const ChatUserMenu = () => {
 
                             <hr className={classes.break} />
 
-                            <div className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}>
+                            <div onClick={handleDeleteClick} className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}>
                                 <Delete className={classes.menuIcon} />
                                 <Typography className={`${classes.menuText} ${classes.deleteText}`}>
                                     Delete conversation

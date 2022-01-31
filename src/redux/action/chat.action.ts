@@ -27,7 +27,8 @@ import {
   FORWARD_CHAT,
   UPDATE_MESSAGE_BY_ID,
   GET_USER_QUESTIONIAR_ANSWER,
-  GET_UP_CHAT_MESSAGE
+  GET_UP_CHAT_MESSAGE,
+  GET_PINNED_MESSAGES
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -52,6 +53,7 @@ export const forwardChat = createAction(FORWARD_CHAT);
 export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
 export const getUserQuestioniarAnswer = createAction(GET_USER_QUESTIONIAR_ANSWER);
 export const getUpMessages = createAction(GET_UP_CHAT_MESSAGE);
+export const getPinnedMessages = createAction(GET_PINNED_MESSAGES);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,

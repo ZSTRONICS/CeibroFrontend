@@ -11,20 +11,28 @@ import CreateQuestion from "../../Utills/Questioniar/Question.create";
 import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
 import { PUSH_MESSAGE } from "../../../config/dist/chat.config";
 import { toast } from "react-toastify";
+import { removeCurrentUser } from "../../../helpers/chat.helpers";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, selectedChat } = useSelector((store: RootState) => store.chat);
+  const { questioniars, selectedChat, chat } = useSelector((store: RootState) => store.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   const [preview, setPreview] = useState<boolean>(false);
   const [members, setMembers] = useState<any>([]);
   const dispatch = useDispatch();
   const [dueDate, setDueDate] = useState<any>(null);
-  console.log('dueDate: ', dueDate);
+    // const remove = removeCurrentUser(dbUsers, user?.id))
+    const [values,setValue] = useState();
+  
+  useEffect(() =>{
+    setValue(removeCurrentUser(dbUsers, user?.id))
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    
+  }, []); 
 
   const handleChangePreview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPreview(event.target.checked);
@@ -110,7 +118,7 @@ const QuestioniarBody = () => {
       {!preview  && <div className={classes.assignedToWrapper}>
           <SelectDropdown
             title="Assigned to"
-            data={dbUsers}
+            data={values}
             handleChange={handleUserChange}
             isMulti={true}
             value={members}

@@ -12,3 +12,7 @@ export function formatDate(date: any) {
 
   return [year, month, day].join('-');
 }
+
+export function removeCurrentUser(values: any, currentUser: any) {
+  return values?.filter((user: any) => String(user.value) !== String(currentUser));
+}

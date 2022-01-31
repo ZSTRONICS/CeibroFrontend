@@ -31,6 +31,8 @@ import {
   SET_VIEWPORT,
   SET_ALLOW_SCROLL,
   SET_PAGINATION_BLOCK,
+  DELETE_CONVERSATION,
+  GET_PINNED_MESSAGES,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -62,7 +64,8 @@ interface ChatReducer {
   allowScroll: boolean;
   upScrollLoading: boolean;
   blockPagination: boolean;
-  allowChangeBlock: boolean
+  allowChangeBlock: boolean;
+  pinnedMessages: any;
 }
 
 const intialStatue: ChatReducer = {
@@ -91,7 +94,8 @@ const intialStatue: ChatReducer = {
   allowScroll: false,
   upScrollLoading: false,
   blockPagination: false,
-  allowChangeBlock: true
+  allowChangeBlock: true,
+  pinnedMessages: []
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -307,6 +311,14 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
 
+    case requestSuccess(DELETE_CONVERSATION): {
+      return {
+        ...state,
+        selectedChat: null,
+        messages: []
+      }
+    }
+
     case SET_SELECTED_QUESTIONIAR: {
       return {
         ...state,
@@ -381,6 +393,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         answeredByMe: false,
         questioniarDrawer: false,
         openViewQuestioniar: false        
+      }
+    }
+
+    case requestSuccess(GET_PINNED_MESSAGES): {
+      return {
+        ...state,
+        pinnedMessages: action.payload
       }
     }
     
