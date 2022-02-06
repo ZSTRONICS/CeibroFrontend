@@ -16,11 +16,11 @@ import ChatMembers from './ChatMembers';
 import ChatMedia from './ChatMedia';
 import ChatPinned from './ChatPinned';
 import assets from '../../assets/assets';
-import { getPinnedMessages, getRoomMedia } from '../../redux/action/chat.action';
+import { getPinnedMessages, getRoomMedia, getRoomQuestioniars } from '../../redux/action/chat.action';
 
 const MediaSidebar = () => {
     const classes = useStyles();
-    const { sidebarOpen, selectedChat, chat, chatMedia, pinnedMessages } = useSelector((state: RootState) => state.chat);
+    const { sidebarOpen, selectedChat, chat, chatMedia, pinnedMessages, roomQuestioniars } = useSelector((state: RootState) => state.chat);
     const [openIndex, setOpenIndex] =  useState<number>(0);
     const dispatch = useDispatch();
     const selectedChatRoom =  chat.find((room: any)=> String(room._id) == String(selectedChat));
@@ -35,6 +35,10 @@ const MediaSidebar = () => {
             dispatch(getPinnedMessages({
                 other: selectedChat
             }));
+            const payload = {
+                other: selectedChat
+            }
+            dispatch(getRoomQuestioniars(payload))
 
         }
     }, [selectedChat, openIndex])
@@ -128,7 +132,9 @@ const MediaSidebar = () => {
 
             <button className="accordion" onClick={() => handleClick(2)}>
                 <span>
-                    <img src={assets.documentIcon} />
+                    <Badge badgeContent={roomQuestioniars?.length} color="secondary">
+                        <img src={assets.documentIcon} />
+                    </Badge>
                     {sidebarOpen && <span className="accordion-title">Questioniar</span>}
                 </span>
                 {sidebarOpen && (

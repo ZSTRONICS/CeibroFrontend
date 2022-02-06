@@ -33,6 +33,7 @@ import {
   SET_PAGINATION_BLOCK,
   DELETE_CONVERSATION,
   GET_PINNED_MESSAGES,
+  GET_ROOM_QUESTIONIAR,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -66,6 +67,7 @@ interface ChatReducer {
   blockPagination: boolean;
   allowChangeBlock: boolean;
   pinnedMessages: any;
+  roomQuestioniars: any;
 }
 
 const intialStatue: ChatReducer = {
@@ -95,7 +97,8 @@ const intialStatue: ChatReducer = {
   upScrollLoading: false,
   blockPagination: false,
   allowChangeBlock: true,
-  pinnedMessages: []
+  pinnedMessages: [],
+  roomQuestioniars: []
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -400,6 +403,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         pinnedMessages: action.payload
+      }
+    }
+
+    case requestSuccess(GET_ROOM_QUESTIONIAR): {
+      return {
+        ...state,
+        roomQuestioniars: action.payload
       }
     }
     

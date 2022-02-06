@@ -276,6 +276,7 @@ const useStyles = makeStyles({
 
     },
     messageBody: {
+        wordBreak: 'break-word'
     },
     username: {
         fontSize: 14,

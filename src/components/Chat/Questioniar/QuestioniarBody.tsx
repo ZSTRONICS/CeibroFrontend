@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
-import { closeQuestioniarDrawer, saveQuestioniar, setQuestions, updateMessageById } from "../../../redux/action/chat.action";
+import { closeQuestioniarDrawer, getRoomQuestioniars, saveQuestioniar, setQuestions, updateMessageById } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
@@ -87,6 +87,8 @@ const QuestioniarBody = () => {
               newMessage: res.data
           }
       }))
+      dispatch(getRoomQuestioniars({ other: selectedChat }))
+
       }
     }
     dispatch(saveQuestioniar(payload));
