@@ -16,21 +16,34 @@ interface FilePreviewerInterface {
 
 const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
     const { file, showControls } = props;
+    console.log('file: ', file);
     const classes = useStyles();
 
+
     const handleClick = () => {
-        if(props.handleClick) {
-            props.handleClick(props.id);
-            return;
-        } else {
-            window.open(file.url);
-        }
+        // if(props.handleClick) {
+        //     props.handleClick(props.id);
+        //     return;
+        // } else {
+        //     window.open(file.url);
+        // }
     }
     
     return (
-        <div onClick={handleClick} className={`file-preview ${classes.wrapper} `} >
+        <div id="ceibro" onClick={handleClick} className={`file-preview ${classes.wrapper} `} >
+            {!showControls && <div 
+                data-name={file.fileName}
+                data-url={file.url}
+                data-format={file.fileType}
+                className={classes.invisibleWrapper}
+            ></div>}
             {['png', 'jpg', 'jpeg'].includes(file?.fileType) ? (
-                    <img src={file?.url} />
+                    <img 
+                        data-name={file.fileName}
+                        data-url={file.url}
+                        data-format={file.fileType}
+                        src={file?.url} 
+                    />
                 ): (
                     <FileIcon 
                         {...defaultStyles[file?.fileType]} 
@@ -48,11 +61,17 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
 export default FilePreviewer;
 
 const useStyles = makeStyles({
+    invisibleWrapper: {
+        opacity: 0,
+        width: 50,
+        position: "absolute",
+        height: 50
+    },
     wrapper: {
         position: 'relative',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     crossIcon: {
         position: 'absolute',
