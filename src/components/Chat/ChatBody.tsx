@@ -7,6 +7,7 @@ import { RootState } from "../../redux/reducers"
 import MessageChat from '../Utills/ChatChip/MessageChat';
 import AddTempChatMember from '../Utills/ChatChip/AddTempChatMember';
 import { SET_ALLOW_SCROLL, SET_PAGINATION_BLOCK, SET_VIEWPORT } from "../../config/chat.config"
+import NoConversation from './NoConversation';
 
 interface ChatBodyInt {
     messages: ChatMessageInterface[]
@@ -83,6 +84,10 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
                 }
         }
     }, [viewport, allowScroll]);
+
+    if(!selectedChat) {
+        return <NoConversation />
+    }
 
     return (
         <Grid className={`${classes.wrapper} custom-scrollbar`} id="chatBox" container >

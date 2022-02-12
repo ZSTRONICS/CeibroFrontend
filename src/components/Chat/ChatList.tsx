@@ -13,7 +13,6 @@ const ChatList = () => {
     useEffect(() => {
         dispatch(getAllChats({
             success: (_res: any) => {
-                console.log('pyaload i s',  _res?.data?.[0]?._id)
                 if(!selectedChat && _res?.data?.[0]?._id) {
                     dispatch(setSelectedChat({ other: _res?.data?.[0]?._id }));
                 }

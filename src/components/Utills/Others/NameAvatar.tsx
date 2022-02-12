@@ -3,6 +3,7 @@ import colors from "../../../assets/colors"
 
 interface NameAvatarProps {
     name: string;
+    background?: string;
 }
 
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
@@ -12,7 +13,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     const letters = name?.[0].toUpperCase() + letter2
 
     return (
-        <div className={classes.outerWrapper}>
+        <div className={classes.outerWrapper} style={{ background: props?.background || colors.secondaryGrey }}>
             {letters}
         </div>
     )

@@ -220,6 +220,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 setText('')
         }
     }
+
+    if(!selectedChat) {
+        return null;
+    }
     
 
     return (

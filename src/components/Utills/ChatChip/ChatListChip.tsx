@@ -55,7 +55,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                     )} 
                 </Grid>
                 <Grid item xs={2} className={classes.avatarWrapper}>
-                    <NameAvatar name={name}/>
+                    <NameAvatar background="white" name={name}/>
                 </Grid>
 
                 <Grid item xs={6} className={classes.messageDetailWrapper}>
