@@ -3,7 +3,7 @@ import { Grid, makeStyles } from '@material-ui/core';
 import { Mic, PauseCircleOutlineSharp, PlayArrowOutlined } from '@material-ui/icons';
 // @ts-ignore
 import AudioReactRecorder, { RecordState } from 'audio-react-recorder'
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { BiTrash } from 'react-icons/bi';
 import assets from '../../assets/assets';
 import colors from '../../assets/colors';
@@ -23,7 +23,7 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
     
     const classes = useStyles();
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         //@ts-ignore
         navigator?.getUserMedia?. (
             // constraints

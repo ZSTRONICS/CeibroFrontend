@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         background: colors.white,
         display: 'flex',
         alignItems: 'center',
-        border: `1px solid ${colors.grey}`,
+        border: `1.5px solid ${colors.borderGrey}`,
         paddingRight: 8,
         borderRadius: 4
     },

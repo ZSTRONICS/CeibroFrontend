@@ -24,7 +24,7 @@ const BootstrapInput = withStyles((theme) => ({
       borderRadius: 4,
       position: 'relative',
       backgroundColor: theme.palette.common.white,
-      border: `1px solid ${colors.lightGrey}`,
+      border: `1px solid ${colors.purpleGrey}`,
       fontSize: 16,
       padding: '10px 12px',
       transition: theme.transitions.create(['border-color', 'box-shadow']),

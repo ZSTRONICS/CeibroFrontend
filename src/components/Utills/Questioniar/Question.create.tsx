@@ -76,7 +76,6 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
   }, []);
 
   useEffect(() => {
-    console.log('reksjfkas', intervalRef.current)
     if(intervalRef.current && settled) {
       if (debounceTimeOut) {
         clearTimeout(debounceTimeOut);
@@ -163,7 +162,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
                           style: { height: 15 },
                         }}
                         className={classes.inputs}
-                        placeholder="Type reply text"
+                        placeholder="Type text"
                         value={option}
                         onChange={(e: any) => handleChangeInput(e, index)}
                       />
@@ -198,18 +197,18 @@ export default CreateQuestion;
 
 const useStyles = makeStyles({
   wrapper: {
-    padding: 20,
+    padding: "15px 0px",
   },
   questionWrapper: {
-    maxWidth: 400,
+    maxWidth: 450,
     paddingBottom: 10,
   },
   questionType: {
-    maxWidth: 400,
+    maxWidth: 450,
     paddingBottom: 10,
   },
   optionsOuterWrapper: {
-    maxWidth: 400,
+    maxWidth: 450,
     background: colors.secondaryGrey,
     padding: 20,
   },

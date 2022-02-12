@@ -1,5 +1,5 @@
 
-import { Drawer } from '@material-ui/core'
+import { Drawer, Dialog } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { RootStateOrAny, useDispatch, useSelector } from 'react-redux'
 import colors from '../../../assets/colors'
@@ -22,12 +22,12 @@ const CreateQuestioniarDrawer = () => {
     }
 
     return (    
-        <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
+        <Dialog className={'custom-scrollbar'} onClose={handleClose} open={drawerOpen} >
             <div className={classes.outerWrapper}>
                 <QuestioniarHeader/>
                 <QuestioniarBody/>
             </div>
-          </Drawer>
+        </Dialog>
     )
 }
 
@@ -35,11 +35,11 @@ export default CreateQuestioniarDrawer;
 
 const useStyles = makeStyles({
     outerWrapper: {
-        width: 'calc(100vw - 200px)',
+        maxWidth: 500,
         backgroundColor: colors.white,
         height: '100vh',
         ['@media (max-width:960px)']: {
-            width: '100vw'
+            // width: '100vw'
         }
     }
 })

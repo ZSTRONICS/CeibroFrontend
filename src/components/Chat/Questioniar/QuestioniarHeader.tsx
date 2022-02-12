@@ -19,7 +19,7 @@ const ProjectDrawerHeader = () => {
         <div className={classes.drawerHeader}>
             <div className={classes.headerTitleWrapper}>
                 <Typography className={classes.headerTitle}>
-                    Questioniar
+                    Questionarie
                 </Typography>
             </div>
             <div className={classes.headerIcons} onClick={handleClose}>
@@ -37,7 +37,7 @@ export default ProjectDrawerHeader;
 const useStyles = makeStyles({
     drawerHeader: {
         backgroundColor: colors.white,
-        height: 50,
+        height: 80,
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',

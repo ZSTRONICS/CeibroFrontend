@@ -109,14 +109,17 @@ body {
 }
 
 /* custom scrollbar */
+.MuiDialog-paperWidthSm::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {
   width: 20px;
 }
 
+.MuiDialog-paperWidthSm::-webkit-scrollbar-track,
 .custom-scrollbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
+.MuiDialog-paperWidthSm::-webkit-scrollbar-thumb,
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #d6dee1;
   border-radius: 20px;
@@ -124,6 +127,7 @@ body {
   background-clip: content-box;
 }
 
+.MuiDialog-paperWidthSm::-webkit-scrollbar-thumb:hover,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
 }
@@ -180,6 +184,10 @@ input[type="file"] {
   display: none;
 }
 
+input {
+  border-color: #DBDBE5;
+}
+
 .align-center {
   display: flex;
   align-items: center;
@@ -202,6 +210,12 @@ input[type="file"] {
 .create-question-row input::-webkit-input-placeholder {
   font-size: 12px;
   line-height: 3;
+}
+
+input::-webkit-input-placeholder {
+  font-size: 14px !important;
+  color: #AEADBD !important;
+  font-weight: 500 !important;
 }
 
 .options-text .MuiFormControlLabel-label {

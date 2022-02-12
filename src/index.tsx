@@ -35,7 +35,12 @@ const theme = createTheme({
     fontFamily: [
       'Inter'
     ].join(','),
-  }
+    button: {
+      textTransform: 'none',
+      fontSize: 12,
+      fontWeight: 'bold'
+    }
+  },
 });
 
 
