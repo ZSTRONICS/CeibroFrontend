@@ -26,7 +26,7 @@ import { useEffect, useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
 import { PUSH_MESSAGE } from "../../../config/dist/chat.config";
 import { toast } from "react-toastify";
-import { removeCurrentUser } from "../../../helpers/chat.helpers";
+import { removeCurrentUser, validateQuestions } from "../../../helpers/chat.helpers";
 import IosSwitchMaterialUi from "ios-switch-material-ui";
 
 const QuestioniarBody = () => {
@@ -40,7 +40,7 @@ const QuestioniarBody = () => {
   const [members, setMembers] = useState<any>([]);
   const dispatch = useDispatch();
   const [dueDate, setDueDate] = useState<any>(null);
-  // const remove = removeCurrentUser(dbUsers, user?.id))
+  const isValidated = validateQuestions(questioniars);
   const [values, setValue] = useState();
 
   useEffect(() => {
@@ -200,7 +200,7 @@ const QuestioniarBody = () => {
             onClick={handleSave}
             variant="contained"
             color="primary"
-            disabled={!dueDate || !members || members?.length <= 0}
+            disabled={!dueDate || !members || members?.length <= 0 || !isValidated}
           >
             Create
           </Button>
