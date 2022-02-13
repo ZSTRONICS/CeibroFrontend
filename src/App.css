@@ -114,6 +114,10 @@ body {
   width: 20px;
 }
 
+.MuiButton-label {
+  font-weight: bold !important;
+}
+
 .MuiDialog-paperWidthSm::-webkit-scrollbar-track,
 .custom-scrollbar::-webkit-scrollbar-track {
   background-color: transparent;

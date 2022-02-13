@@ -17,12 +17,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
-  handleChange?: (value: any) => void
+  handleChange?: (value: any) => void;
 }
 
 const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
   const classes = useStyles();
-  const { questioniars, answeredByMe } = useSelector((state: RootState) => state.chat)
+  const { questioniars, answeredByMe } = useSelector(
+    (state: RootState) => state.chat
+  );
   const [selected, setSelected] = useState<any>(-1);
   const dispatch = useDispatch();
   const {
@@ -30,10 +32,10 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
   } = props;
 
   useEffect(() => {
-    if(answer && typeof answer === 'string') {
-      setSelected(+answer)
+    if (answer && typeof answer === "string") {
+      setSelected(+answer);
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     //   updating question in global state
@@ -48,7 +50,7 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
         dispatch(setQuestions(myQuestioniars));
       }
     }
-  }, [selected])
+  }, [selected]);
 
   const handleChangeAnswer = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSelected(+(event.target as HTMLInputElement).value);
@@ -106,6 +108,7 @@ const useStyles = makeStyles({
   },
   smallRadioButton: {
     fontSize: "14px !important",
+    fontWeight: 500,
     "& svg": {
       width: "0.8em",
       height: "0.8em",

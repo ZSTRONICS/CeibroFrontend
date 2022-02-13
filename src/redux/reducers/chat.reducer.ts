@@ -1,5 +1,9 @@
 import { ActionInterface } from ".";
-import { requestFail, requestPending, requestSuccess } from "../../utills/status";
+import {
+  requestFail,
+  requestPending,
+  requestSuccess,
+} from "../../utills/status";
 import {
   CLEAR_SELECTED_CHAT,
   GET_CHAT,
@@ -100,7 +104,7 @@ const intialStatue: ChatReducer = {
   allowChangeBlock: true,
   pinnedMessages: [],
   roomQuestioniars: [],
-  createQuestioniarLoading: false
+  createQuestioniarLoading: false,
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -115,29 +119,29 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case SET_PAGINATION_BLOCK: {
       return {
         ...state,
-        blockPagination: action.payload
-      }
+        blockPagination: action.payload,
+      };
     }
 
     case SET_VIEWPORT: {
       return {
         ...state,
-        viewport: action.payload
-      }
+        viewport: action.payload,
+      };
     }
 
     case PUSH_MESSAGE: {
       return {
         ...state,
         messages: [...state.messages, action.payload],
-        loadingMessages: [...state.loadingMessages, action.payload.id]
+        loadingMessages: [...state.loadingMessages, action.payload.id],
       };
     }
 
     case SET_LOADING_MESSAGES: {
       return {
         ...state,
-        loadingMessages: action.payload
+        loadingMessages: action.payload,
       };
     }
 
@@ -175,54 +179,51 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case GET_MESSAGES: {
       return {
         ...state,
-      }
+      };
     }
 
     case requestPending(GET_MESSAGES): {
       return {
         ...state,
         upScrollLoading: true,
-      }
+      };
     }
 
     case requestFail(GET_MESSAGES): {
       return {
         ...state,
         upScrollLoading: false,
-      }
+      };
     }
 
     case requestPending(GET_UP_MESSAGES): {
       return {
         ...state,
-        upScrollLoading: true
-      }
+        upScrollLoading: true,
+      };
     }
 
     case requestFail(GET_UP_MESSAGES): {
       return {
         ...state,
-        upScrollLoading: false
-      }
+        upScrollLoading: false,
+      };
     }
 
     case requestSuccess(GET_UP_MESSAGES): {
       return {
         ...state,
-        messages: [
-          ...action.payload,
-          ...state.messages
-        ],
+        messages: [...action.payload, ...state.messages],
         upScrollLoading: false,
-        allowScroll: true
+        allowScroll: true,
       };
     }
 
     case SET_ALLOW_SCROLL: {
       return {
         ...state,
-        allowScroll: action.payload
-      }
+        allowScroll: action.payload,
+      };
     }
 
     case SET_CHAT_TYPE: {
@@ -264,6 +265,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         questioniarDrawer: true,
+        questioniars: [getNewQuestionTemplate(0)],
       };
     }
 
@@ -277,7 +279,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case OPEN_VIEW_QUESTIONIAR_DRAWER: {
       return {
         ...state,
-        openViewQuestioniar: true
+        openViewQuestioniar: true,
       };
     }
 
@@ -305,30 +307,30 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case SET_MEMBERS_DIALOG: {
       return {
         ...state,
-        membersDialog: action.payload
-      }
+        membersDialog: action.payload,
+      };
     }
 
     case SET_TEMP_MEMBERS_DIALOG: {
       return {
         ...state,
-        tempMembersDialog: action.payload
-      }
+        tempMembersDialog: action.payload,
+      };
     }
 
     case requestSuccess(DELETE_CONVERSATION): {
       return {
         ...state,
         selectedChat: null,
-        messages: []
-      }
+        messages: [],
+      };
     }
 
     case SET_SELECTED_QUESTIONIAR: {
       return {
         ...state,
-        selectedQuestioniar: action.payload
-      }
+        selectedQuestioniar: action.payload,
+      };
     }
 
     case requestSuccess(GET_QUESTIONIAR): {
@@ -340,16 +342,16 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniarInfo: {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
-          id: action.payload?.id
-        }
-      }
+          id: action.payload?.id,
+        },
+      };
     }
 
     case GET_USER_QUESTIONIAR_ANSWER: {
       return {
         ...state,
         questioniars: [],
-      }
+      };
     }
 
     case requestSuccess(GET_USER_QUESTIONIAR_ANSWER): {
@@ -361,31 +363,30 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
           id: action.payload?.id,
-          isAnswered: action.payload.answeredByMe
-        }
-      }
+          isAnswered: action.payload.answeredByMe,
+        },
+      };
     }
 
     case requestPending(GET_QUESTIONIAR): {
       return {
         ...state,
-        questioniarsLoading: true
-      }
+        questioniarsLoading: true,
+      };
     }
-    
-    
+
     case requestFail(GET_QUESTIONIAR): {
       return {
         ...state,
-        questioniarsLoading: false
-      }
+        questioniarsLoading: false,
+      };
     }
-    
+
     case requestPending(SAVE_QUESTIONIAR): {
       return {
         ...state,
-        createQuestioniarLoading: true      
-      }
+        createQuestioniarLoading: true,
+      };
     }
 
     case requestSuccess(SAVE_QUESTIONIAR): {
@@ -395,15 +396,15 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         answeredByMe: false,
         questioniarDrawer: false,
         openViewQuestioniar: false,
-        createQuestioniarLoading: false      
-      }
+        createQuestioniarLoading: false,
+      };
     }
 
     case requestFail(SAVE_QUESTIONIAR): {
       return {
         ...state,
-        createQuestioniarLoading: false      
-      }
+        createQuestioniarLoading: false,
+      };
     }
 
     case requestSuccess(SAVE_QUESTIONIAR_ANSWERS): {
@@ -412,25 +413,23 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniars: [getNewQuestionTemplate(0)],
         answeredByMe: false,
         questioniarDrawer: false,
-        openViewQuestioniar: false        
-      }
+        openViewQuestioniar: false,
+      };
     }
 
     case requestSuccess(GET_PINNED_MESSAGES): {
       return {
         ...state,
-        pinnedMessages: action.payload
-      }
+        pinnedMessages: action.payload,
+      };
     }
 
     case requestSuccess(GET_ROOM_QUESTIONIAR): {
       return {
         ...state,
-        roomQuestioniars: action.payload
-      }
+        roomQuestioniars: action.payload,
+      };
     }
-    
-
 
     default:
       return state;

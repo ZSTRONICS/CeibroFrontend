@@ -22,7 +22,11 @@ const CreateQuestioniarDrawer = () => {
     }
 
     return (    
-        <Dialog className={'custom-scrollbar'} onClose={handleClose} open={drawerOpen} >
+        <Dialog 
+            className={'custom-scrollbar'} 
+            onClose={handleClose} 
+            open={drawerOpen} 
+        >
             <div className={classes.outerWrapper}>
                 <QuestioniarHeader/>
                 <QuestioniarBody/>

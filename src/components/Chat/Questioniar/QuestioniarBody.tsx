@@ -26,15 +26,18 @@ import { useEffect, useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
 import { PUSH_MESSAGE } from "../../../config/dist/chat.config";
 import { toast } from "react-toastify";
-import { getDate, removeCurrentUser, validateQuestions } from "../../../helpers/chat.helpers";
+import {
+  getDate,
+  removeCurrentUser,
+  validateQuestions,
+} from "../../../helpers/chat.helpers";
 import IosSwitchMaterialUi from "ios-switch-material-ui";
 import Loading from "../../Utills/Loader/Loading";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, createQuestioniarLoading, selectedChat, chat } = useSelector(
-    (store: RootState) => store.chat
-  );
+  const { questioniars, createQuestioniarLoading, selectedChat, chat } =
+    useSelector((store: RootState) => store.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   const [preview, setPreview] = useState<boolean>(false);
   const [nudge, setNudge] = useState<boolean>(false);
@@ -122,7 +125,12 @@ const QuestioniarBody = () => {
       <Grid container direction="column" className={classes.wrapper}>
         <Grid item xs={12} className={classes.wrapper2}>
           <div className={classes.datePickerWrapper}>
-            <DatePicker min={getDate()} max={getDate(15)} onChange={handleDateChange} value={dueDate} />
+            <DatePicker
+              min={getDate()}
+              max={getDate(15)}
+              onChange={handleDateChange}
+              value={dueDate}
+            />
           </div>
           {!preview && (
             <div className={classes.assignedToWrapper}>
@@ -200,19 +208,15 @@ const QuestioniarBody = () => {
             onClick={handleSave}
             variant="contained"
             color="primary"
-            disabled={!dueDate || !members || members?.length <= 0 || !isValidated}
+            disabled={
+              !dueDate || !members || members?.length <= 0 || !isValidated
+            }
           >
             {createQuestioniarLoading ? (
-                <Loading
-                  type="spin" 
-                  color="white" 
-                  height={24} 
-                  width={24} 
-                />
-              ): (
-                'Create'
-              )
-            }
+              <Loading type="spin" color="white" height={24} width={24} />
+            ) : (
+              "Create"
+            )}
           </Button>
 
           <Button onClick={handleClose} variant="text">
@@ -243,6 +247,7 @@ const useStyles = makeStyles({
   },
   wrapper3: {
     padding: 30,
+    paddingTop: 10,
     height: "auto",
     background: colors.white,
     width: "100%",
