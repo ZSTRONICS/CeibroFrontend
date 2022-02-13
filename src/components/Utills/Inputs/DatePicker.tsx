@@ -6,6 +6,8 @@ interface DatePickerInt {
     onChange?: (e: any) => void;
     value?: any;
     disabled?: boolean;
+    min?: string;
+    max?: string;
 }
 
 const DatePicker: React.FC<DatePickerInt> = (props) => {
@@ -20,7 +22,15 @@ const DatePicker: React.FC<DatePickerInt> = (props) => {
 
     return (
         <InputHOC title="Due Date">
-            <input disabled={props.disabled} onChange={handleChange} value={props.value} className={classes.dateInput} type="date" />
+            <input
+                min={props?.min} 
+                max={props?.max}
+                disabled={props.disabled} 
+                onChange={handleChange} 
+                value={props.value} 
+                className={classes.dateInput} 
+                type="date" 
+            />
         </InputHOC>
     )
 }

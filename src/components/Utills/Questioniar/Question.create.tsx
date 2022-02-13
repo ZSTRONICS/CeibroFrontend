@@ -162,7 +162,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
                           style: { height: 15 },
                         }}
                         className={classes.inputs}
-                        placeholder="Type text"
+                        placeholder="Type reply text"
                         value={option}
                         onChange={(e: any) => handleChangeInput(e, index)}
                       />

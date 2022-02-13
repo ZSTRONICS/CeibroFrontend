@@ -26,12 +26,13 @@ import { useEffect, useState } from "react";
 import { dbUsers } from "../../Topbar/CreateChat";
 import { PUSH_MESSAGE } from "../../../config/dist/chat.config";
 import { toast } from "react-toastify";
-import { removeCurrentUser, validateQuestions } from "../../../helpers/chat.helpers";
+import { getDate, removeCurrentUser, validateQuestions } from "../../../helpers/chat.helpers";
 import IosSwitchMaterialUi from "ios-switch-material-ui";
+import Loading from "../../Utills/Loader/Loading";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, selectedChat, chat } = useSelector(
+  const { questioniars, createQuestioniarLoading, selectedChat, chat } = useSelector(
     (store: RootState) => store.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -106,7 +107,7 @@ const QuestioniarBody = () => {
         dispatch(getRoomQuestioniars({ other: selectedChat }));
       },
     };
-    dispatch(saveQuestioniar(payload));
+    !createQuestioniarLoading && dispatch(saveQuestioniar(payload));
   };
   const handleClose = () => {
     dispatch(closeQuestioniarDrawer());
@@ -121,7 +122,7 @@ const QuestioniarBody = () => {
       <Grid container direction="column" className={classes.wrapper}>
         <Grid item xs={12} className={classes.wrapper2}>
           <div className={classes.datePickerWrapper}>
-            <DatePicker onChange={handleDateChange} value={dueDate} />
+            <DatePicker min={getDate()} max={getDate(15)} onChange={handleDateChange} value={dueDate} />
           </div>
           {!preview && (
             <div className={classes.assignedToWrapper}>
@@ -139,7 +140,6 @@ const QuestioniarBody = () => {
           item
           style={{ display: "flex", paddingTop: preview ? 20 : 0 }}
           xs={12}
-          className={classes.wrapper2}
         >
           <Grid item xs={4} className={classes.nudge}>
             <IosSwitchMaterialUi
@@ -202,7 +202,17 @@ const QuestioniarBody = () => {
             color="primary"
             disabled={!dueDate || !members || members?.length <= 0 || !isValidated}
           >
-            Create
+            {createQuestioniarLoading ? (
+                <Loading
+                  type="spin" 
+                  color="white" 
+                  height={24} 
+                  width={24} 
+                />
+              ): (
+                'Create'
+              )
+            }
           </Button>
 
           <Button onClick={handleClose} variant="text">

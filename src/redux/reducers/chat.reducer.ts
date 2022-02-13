@@ -68,6 +68,7 @@ interface ChatReducer {
   allowChangeBlock: boolean;
   pinnedMessages: any;
   roomQuestioniars: any;
+  createQuestioniarLoading: boolean;
 }
 
 const intialStatue: ChatReducer = {
@@ -98,7 +99,8 @@ const intialStatue: ChatReducer = {
   blockPagination: false,
   allowChangeBlock: true,
   pinnedMessages: [],
-  roomQuestioniars: []
+  roomQuestioniars: [],
+  createQuestioniarLoading: false
 };
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -379,13 +381,28 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
     
+    case requestPending(SAVE_QUESTIONIAR): {
+      return {
+        ...state,
+        createQuestioniarLoading: true      
+      }
+    }
+
     case requestSuccess(SAVE_QUESTIONIAR): {
       return {
         ...state,
         questioniars: [getNewQuestionTemplate(0)],
         answeredByMe: false,
         questioniarDrawer: false,
-        openViewQuestioniar: false        
+        openViewQuestioniar: false,
+        createQuestioniarLoading: false      
+      }
+    }
+
+    case requestFail(SAVE_QUESTIONIAR): {
+      return {
+        ...state,
+        createQuestioniarLoading: false      
       }
     }
 
