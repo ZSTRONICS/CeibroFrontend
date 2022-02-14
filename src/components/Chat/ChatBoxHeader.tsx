@@ -36,10 +36,10 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       )}
       {myChat && (
         <>
-          <Grid item xs={1} className={classes.editWrapper}>
+          <Grid item xs={3} md={1} className={classes.editWrapper}>
             <Create className={classes.editIcon} />
           </Grid>
-          <Grid item xs={4} className={classes.usernameWrapper}>
+          <Grid item xs={9} md={4} className={classes.usernameWrapper}>
             <Typography className={classes.username}>{myChat?.name}</Typography>
             {myChat?.project && (
               <Typography className={classes.projectName}>
@@ -69,6 +69,9 @@ const useStyles = makeStyles({
   wrapper: {
     borderBottom: `1px solid ${colors.grey}`,
     height: 48,
+    ["@media (max-width:960px)"]: {
+      height: 60,
+    },
   },
   editIcon: {
     color: colors.textPrimary,
@@ -92,6 +95,9 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: 14,
     paddingTop: 2,
+    ["@media (max-width:960px)"]: {
+      justifyContent: "center",
+    },
   },
   avatarWrapper: {
     paddingLeft: 20,
@@ -103,6 +109,9 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    ["@media (max-width:960px)"]: {
+      display: "none",
+    },
   },
   projectName: {
     fontStyle: "normal",

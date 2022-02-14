@@ -13,6 +13,7 @@ import addUser from "./images/addUser.png";
 import trashIcon from "./images/trashIcon.png";
 import blueDocument from "./images/blueDocument.png";
 import nudgeIcon from "./images/Nudge.png";
+import primaryNudgeIcon from "./images/primaryNudge.png";
 import message from "./sound/message.mp3";
 
 const assets = {
@@ -31,6 +32,7 @@ const assets = {
   trashIcon,
   blueDocument,
   nudgeIcon,
+  primaryNudgeIcon,
 };
 
 export const sounds = {

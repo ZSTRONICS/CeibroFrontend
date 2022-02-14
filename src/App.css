@@ -188,9 +188,9 @@ input[type="file"] {
   display: none;
 }
 
-input {
+/* input {
   border-color: #DBDBE5;
-}
+} */
 
 .align-center {
   display: flex;

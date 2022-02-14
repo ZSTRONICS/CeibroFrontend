@@ -65,7 +65,7 @@ const Topbar = (props: any) => {
 
         <Grid
           item
-          xs={7}
+          xs={4}
           md={history.location.pathname.includes("chat") ? 5 : 3}
           className={classes.titleContainer}
         >
@@ -94,7 +94,7 @@ const Topbar = (props: any) => {
           </Grid>
         )} */}
         <Grid
-          xs={8}
+          xs={6}
           md={5}
           item
           style={{ display: "flex", justifyContent: "flex-end" }}

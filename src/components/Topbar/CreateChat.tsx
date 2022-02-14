@@ -1,4 +1,15 @@
-import { Avatar, Button, Grid, makeStyles, TextField } from "@material-ui/core";
+import {
+  Avatar,
+  Typography,
+  Button,
+  Grid,
+  makeStyles,
+  TextField,
+  Checkbox,
+  FormControlLabel,
+  withStyles,
+  CheckboxProps,
+} from "@material-ui/core";
 import { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,8 +17,17 @@ import colors from "../../assets/colors";
 import { removeCurrentUser } from "../../helpers/chat.helpers";
 import { createChatRoom } from "../../redux/action/auth.action";
 import { getAllChats } from "../../redux/action/chat.action";
+import {
+  getAllProjectMembers,
+  getAllProjects,
+} from "../../redux/action/project.action";
 import { RootState } from "../../redux/reducers";
 import SelectDropdown from "../Utills/Inputs/SelectDropdown";
+import NameAvatar from "../Utills/Others/NameAvatar";
+import CustomCheckbox from "../Utills/Inputs/Checkbox";
+import { Cancel } from "@material-ui/icons";
+import Loading from "../Utills/Loader/Loading";
+
 export let dbUsers = [
   {
     label: "Test 1",
@@ -36,11 +56,18 @@ const CreateChat = () => {
   const [projects, setProjects] = useState<any>([]);
   const [project, setProject] = useState<any>();
   const [user, setUser] = useState<any>();
-  const [users, setUsers] = useState<any>();
+  const [users, setUsers] = useState<any>([]);
   const [name, setName] = useState("");
   const dispatch = useDispatch();
   const userInfo = useSelector((state: RootState) => state.auth?.user);
+  const createChatLoading = useSelector(
+    (state: RootState) => state.chat.createChatLoading
+  );
+
   const values = removeCurrentUser(dbUsers, userInfo?.id);
+  const { allProjects, projectMembers } = useSelector(
+    (store: RootState) => store.project
+  );
 
   const toggle = () => {
     setOpen(!open);
@@ -52,28 +79,43 @@ const CreateChat = () => {
 
   const handleProjectChange = (e: any) => {
     setProject(e);
+    dispatch(
+      getAllProjectMembers({
+        other: e.value,
+      })
+    );
   };
 
   const handleUserChange = (e: any) => {
-    setUser(e);
+    if (!users?.includes?.(e?.target?.value)) {
+      setUsers([...users, e.target.value]);
+    } else {
+      removeSelectedUser(e?.target?.value);
+    }
+  };
+
+  const removeSelectedUser = (userId: any) => {
+    setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
 
   useEffect(() => {
-    setProjects([
-      {
-        label: "First project",
-        value: "61ec230ab738171d327c1316",
-      },
-    ]);
-    setUsers(values);
+    dispatch(getAllProjects());
+    setUsers([]);
   }, []);
 
+  useEffect(() => {
+    if (open) {
+      dispatch(getAllProjects());
+    }
+    setUsers([]);
+    setProject(null);
+  }, [open]);
+
   const handleSubmit = () => {
-    const userIds = user.map((x: any) => x.value);
     const payload = {
       body: {
         name,
-        members: userIds,
+        members: users,
         projectId: project.value,
       },
       success: () => {
@@ -119,21 +161,75 @@ const CreateChat = () => {
                 <SelectDropdown
                   title="Project"
                   placeholder="Please select a project"
-                  data={projects}
+                  data={allProjects}
                   value={project}
                   handleChange={handleProjectChange}
                 />
               </Grid>
-              <Grid item xs={12} style={{ paddingTop: 10 }}>
-                <SelectDropdown
-                  title="Chat"
-                  placeholder="Type the name of a person or a group"
-                  data={users}
-                  value={user}
-                  handleChange={handleUserChange}
-                  isMulti={true}
-                />
-              </Grid>
+              {projectMembers?.length > 0 && (
+                <Grid
+                  item
+                  xs={12}
+                  style={{ paddingTop: 10 }}
+                  className={classes.suggestUser}
+                >
+                  <Grid container>
+                    {projectMembers?.map((member: any) => {
+                      if (!users?.includes?.(String(member.id))) return null;
+
+                      return (
+                        <Grid
+                          item
+                          xs={4}
+                          md={2}
+                          className={classes.selectedUser}
+                        >
+                          <NameAvatar name={member.name} />
+                          <Cancel
+                            onClick={() => removeSelectedUser(member.id)}
+                            className={classes.cancelIcon}
+                          />
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+
+                  <Typography className={classes.suggestedUsersTitle}>
+                    Suggested users/groups
+                  </Typography>
+
+                  <Grid container>
+                    {projectMembers?.map((member: any, index: number) => {
+                      return (
+                        <Grid container className={classes.wrapper}>
+                          <Grid item xs={2}>
+                            <NameAvatar name={member.name} />
+                          </Grid>
+                          <Grid item xs={8}>
+                            <div>
+                              <Typography className={classes.titleText}>
+                                {member.name}
+                              </Typography>
+                              <Typography className={classes.subTitleText}>
+                                Company . Electrician
+                              </Typography>
+                            </div>
+                          </Grid>
+
+                          <Grid item xs={2}>
+                            <CustomCheckbox
+                              onClick={handleUserChange}
+                              value={member.id}
+                              name={"s"}
+                              checked={users?.includes?.(member.id)}
+                            />
+                          </Grid>
+                        </Grid>
+                      );
+                    })}
+                  </Grid>
+                </Grid>
+              )}
 
               <Grid item xs={12} style={{ paddingTop: 20 }}>
                 <Button
@@ -142,7 +238,11 @@ const CreateChat = () => {
                   onClick={handleSubmit}
                   disabled={!project || user?.length < 1}
                 >
-                  Start conversation
+                  {createChatLoading ? (
+                    <Loading type="spin" color="white" height={24} width={24} />
+                  ) : (
+                    "Start conversation"
+                  )}
                 </Button>
                 <Button onClick={handleOutsideClick}>cancel</Button>
               </Grid>
@@ -168,5 +268,66 @@ const useStyles = makeStyles((theme) => ({
   searchInput: {
     width: 340,
     height: 30,
+  },
+  smallRadioButton: {
+    fontSize: "14px !important",
+    "& svg": {
+      width: "0.8em",
+      height: "0.8em",
+    },
+    "&$checked": {
+      color: "green",
+    },
+  },
+  suggestedUsersTitle: {
+    fontSize: 12,
+    fontWeight: 500,
+    color: colors.textGrey,
+    marginBottom: 10,
+  },
+  wrapper: {
+    // borderBottom: `1px solid ${colors.grey}`,
+    marginBottom: 5,
+  },
+  titleText: {
+    fontSize: 14,
+    fontWeight: "bold",
+  },
+  subTitleText: {
+    fontSize: 12,
+    fontWeight: 500,
+    color: colors.textGrey,
+  },
+  actionWrapper: {
+    display: "flex",
+    justifyContent: "flex-start",
+    gap: 25,
+    paddingTop: 10,
+    paddingBottom: 15,
+  },
+  actionBtn: {
+    fontSize: 12,
+    fontWeight: "bold",
+  },
+  time: {
+    fontSize: 12,
+    fontWeight: "bold",
+    color: colors.textGrey,
+  },
+  suggestUser: {
+    maxHeight: 300,
+    overflow: "auto",
+  },
+  selectedUser: {
+    height: 50,
+    width: 50,
+    position: "relative",
+  },
+  cancelIcon: {
+    fontSize: 14,
+    position: "absolute",
+    color: colors.textGrey,
+    top: -5,
+    right: 5,
   },
 }));

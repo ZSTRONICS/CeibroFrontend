@@ -144,12 +144,8 @@ const QuestioniarBody = () => {
             </div>
           )}
         </Grid>
-        <Grid
-          item
-          style={{ display: "flex", paddingTop: preview ? 20 : 0 }}
-          xs={12}
-        >
-          <Grid item xs={4} className={classes.nudge}>
+        <Grid container item style={{ paddingTop: preview ? 20 : 0 }} xs={12}>
+          <Grid item xs={12} md={4} className={classes.nudge}>
             <IosSwitchMaterialUi
               colorKnobOnLeft="#FFFFFF"
               colorKnobOnRight="#FFFFFF"
@@ -159,7 +155,7 @@ const QuestioniarBody = () => {
             />
             <Typography className={classes.nudgeText}>Nudge</Typography>
           </Grid>
-          <Grid item xs={6} className={classes.nudge}>
+          <Grid item xs={12} md={6} className={classes.nudge}>
             <IosSwitchMaterialUi
               colorKnobOnLeft="#FFFFFF"
               colorKnobOnRight="#FFFFFF"

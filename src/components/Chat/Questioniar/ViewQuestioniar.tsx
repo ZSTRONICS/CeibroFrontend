@@ -54,7 +54,8 @@ const useStyles = makeStyles({
   outerWrapper: {
     maxWidth: 500,
     backgroundColor: colors.white,
-    height: "100vh",
+    height: "100%",
+    minHeight: 300,
     ["@media (max-width:960px)"]: {
       // width: '100vw'
     },

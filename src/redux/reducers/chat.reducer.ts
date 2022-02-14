@@ -42,6 +42,7 @@ import {
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../constants/questioniar.constants";
+import { CREATE_ROOM } from "../../config/auth.config";
 
 interface ChatReducer {
   chat: any;
@@ -49,6 +50,7 @@ interface ChatReducer {
   selectedChat: null;
   type: "all" | "read" | "unread";
   favouriteFilter: boolean;
+  createChatLoading: boolean;
   search: null | string;
   sidebarOpen: boolean;
   replyToId: any;
@@ -79,6 +81,7 @@ const intialStatue: ChatReducer = {
   chat: [],
   messages: [],
   selectedChat: null,
+  createChatLoading: false,
   type: "all",
   favouriteFilter: false,
   search: null,
@@ -113,6 +116,25 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         chat: action.payload,
+      };
+    }
+
+    case requestPending(CREATE_ROOM): {
+      return {
+        ...state,
+        createChatLoading: true,
+      };
+    }
+    case requestSuccess(CREATE_ROOM): {
+      return {
+        ...state,
+        createChatLoading: false,
+      };
+    }
+    case requestFail(CREATE_ROOM): {
+      return {
+        ...state,
+        createChatLoading: false,
       };
     }
 

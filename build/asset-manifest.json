@@ -1,28 +1,28 @@
 {
   "files": {
-    "main.css": "/static/css/main.5bc5fce2.chunk.css",
-    "main.js": "/static/js/main.10b39dfa.chunk.js",
-    "main.js.map": "/static/js/main.10b39dfa.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.be2be760.js",
-    "runtime-main.js.map": "/static/js/runtime-main.be2be760.js.map",
+    "main.css": "/static/css/main.c5b7798d.chunk.css",
+    "main.js": "/static/js/main.3c898ecb.chunk.js",
+    "main.js.map": "/static/js/main.3c898ecb.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.0f820a50.js",
+    "runtime-main.js.map": "/static/js/runtime-main.0f820a50.js.map",
     "static/css/2.02f9874d.chunk.css": "/static/css/2.02f9874d.chunk.css",
-    "static/js/2.3098f36f.chunk.js": "/static/js/2.3098f36f.chunk.js",
-    "static/js/2.3098f36f.chunk.js.map": "/static/js/2.3098f36f.chunk.js.map",
-    "static/js/3.dd0ec7dd.chunk.js": "/static/js/3.dd0ec7dd.chunk.js",
-    "static/js/3.dd0ec7dd.chunk.js.map": "/static/js/3.dd0ec7dd.chunk.js.map",
+    "static/js/2.293227da.chunk.js": "/static/js/2.293227da.chunk.js",
+    "static/js/2.293227da.chunk.js.map": "/static/js/2.293227da.chunk.js.map",
+    "static/js/3.ec27d194.chunk.js": "/static/js/3.ec27d194.chunk.js",
+    "static/js/3.ec27d194.chunk.js.map": "/static/js/3.ec27d194.chunk.js.map",
     "index.html": "/index.html",
     "static/css/2.02f9874d.chunk.css.map": "/static/css/2.02f9874d.chunk.css.map",
-    "static/css/main.5bc5fce2.chunk.css.map": "/static/css/main.5bc5fce2.chunk.css.map",
-    "static/js/2.3098f36f.chunk.js.LICENSE.txt": "/static/js/2.3098f36f.chunk.js.LICENSE.txt",
+    "static/css/main.c5b7798d.chunk.css.map": "/static/css/main.c5b7798d.chunk.css.map",
+    "static/js/2.293227da.chunk.js.LICENSE.txt": "/static/js/2.293227da.chunk.js.LICENSE.txt",
     "static/media/Visual.edcfd16a.png": "/static/media/Visual.edcfd16a.png",
     "static/media/message.b62244e7.mp3": "/static/media/message.b62244e7.mp3",
     "static/media/index.css": "/static/media/roboto-vietnamese-400-normal.52cebac0.woff2"
   },
   "entrypoints": [
-    "static/js/runtime-main.be2be760.js",
+    "static/js/runtime-main.0f820a50.js",
     "static/css/2.02f9874d.chunk.css",
-    "static/js/2.3098f36f.chunk.js",
-    "static/css/main.5bc5fce2.chunk.css",
-    "static/js/main.10b39dfa.chunk.js"
+    "static/js/2.293227da.chunk.js",
+    "static/css/main.c5b7798d.chunk.css",
+    "static/js/main.3c898ecb.chunk.js"
   ]
 }
