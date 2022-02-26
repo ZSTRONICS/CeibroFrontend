@@ -1,23 +1,22 @@
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ImageTile from "./ImageTile";
-import "./login.css";
-import LoginForm from "./LoginForm";
-
-import { LoginInterface } from "../../../interfaces/Login.interface";
+import "./register.css";
+import RegisterForm from "./RegisterForm";
 import { useMediaQuery } from "react-responsive";
-import assets from "../../../assets/assets";
+import assets from "assets/assets";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "redux/reducers";
 import { useEffect } from "react";
-import colors from "../../../assets/colors";
+import colors from "assets/colors";
 
-const Login: React.FC<LoginInterface> = () => {
+const Register = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const history = useHistory();
+
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
 
   useEffect(() => {
@@ -26,16 +25,17 @@ const Login: React.FC<LoginInterface> = () => {
     }
   }, [isLoggedIn]);
 
-  const goToSignup = () => {
-    history.push('/register')
+  const handleClick = () => {
+    history.push('/login')
   }
+
   return (
-    <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={4} className={classes.form}>
-        <LoginForm />
+    <Grid container className={classes.register}>
+      <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
+        <RegisterForm />
         <Typography className={classes.dontHave}>
-          Don't have an account?{" "}
-          <span onClick={goToSignup} className={classes.signup}>Sign Up!</span>
+          Already have an account?{" "}
+          <span onClick={handleClick} className={classes.signup}>Sign in!</span>
         </Typography>
       </Grid>
 
@@ -48,11 +48,11 @@ const Login: React.FC<LoginInterface> = () => {
   );
 };
 
-export default Login;
+export default Register;
 
 const useStyles = makeStyles((theme) => {
   return {
-    login: {
+    register: {
       display: "flex",
       ["@media (max-width:960px)"]: {
         flexDirection: "column",
@@ -61,6 +61,8 @@ const useStyles = makeStyles((theme) => {
     },
     form: {
       height: "100vh",
+      overflowY: 'scroll',
+      paddingBottom: 10,
       ["@media (max-width:960px)"]: {
         background: `url(${assets.visual})`,
         backgroundSize: "100vw 100vh",

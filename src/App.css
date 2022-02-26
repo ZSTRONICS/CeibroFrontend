@@ -230,3 +230,7 @@ input::-webkit-input-placeholder {
 .MuiFormControlLabel-label.Mui-disabled {
   color: black !important;
 }
+
+.error-text {
+  color: var(--btn-red) !important;
+}

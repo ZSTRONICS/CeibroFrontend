@@ -1,4 +1,5 @@
 import { toast } from 'react-toastify';
+import { REGISTER } from 'redux-persist/es/constants';
 import { put, takeLatest } from 'redux-saga/effects'
 import { CREATE_ROOM, GET_USERS, LOGIN } from '../../config/auth.config';
 import apiCall from '../../utills/apiCall';
@@ -9,9 +10,18 @@ const loginRequest = apiCall({
     type: LOGIN,
     method: "post",
     path: "/auth/login",
-    success: (res: any) => {
+    success: (_res: any) => {
         toast.success('logged in successfully');
     }
+});
+
+const registerRequest = apiCall({
+  type: REGISTER,
+  method: "post",
+  path: "/auth/register",
+  success: (_res: any) => {
+      toast.success('Verification email sent');
+  }
 });
 
 const createChatRoom = apiCall({
@@ -25,6 +35,7 @@ const createChatRoom = apiCall({
 
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
+  yield takeLatest(REGISTER, registerRequest);
   yield takeLatest(CREATE_ROOM, createChatRoom);
 }
 

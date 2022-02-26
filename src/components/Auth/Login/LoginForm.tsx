@@ -92,7 +92,7 @@ const LoginForm = () => {
             onClick={handleSubmit}
           >
             {loginLoading ? (
-              <Loading type="spin" color="white" height={24} width={24} />
+              <Loading type="spin" color="white" height={14} width={14} />
             ) : (
               intl.formatMessage({ id: "input.Login" })
             )}
@@ -145,7 +145,10 @@ const useStyles = makeStyles({
     marginTop: 40,
     height: 5,
   },
-  loginButton: {},
+  loginButton: {
+    height: 32,
+    width: 21
+  },
   forget: {
     marginTop: 5,
     fontWeight: 500,

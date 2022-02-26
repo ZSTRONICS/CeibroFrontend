@@ -6,6 +6,7 @@ import { FileIcon, defaultStyles } from 'react-file-icon';
 import { useSelector } from 'react-redux';
 import colors from '../../../assets/colors';
 import { RootState } from '../../../redux/reducers';
+import projectSaga from '../../../redux/sagas/project.sagas';
 
 interface FilePreviewerInterface {
     file: any;
@@ -27,6 +28,9 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
         // } else {
         //     window.open(file.url);
         // }
+    }
+    const handleCancelClick = () => {
+        props?.handleClick?.(props.id);
     }
     
     return (
@@ -52,7 +56,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
                     />    
                 )
             }
-            {showControls && <Cancel className={classes.crossIcon} />}
+            {showControls && <Cancel onClick={handleCancelClick} className={classes.crossIcon} />}
             <span className={classes.fileName}>{file?.fileName?.slice(0, 7)}</span>
         </div>
     )

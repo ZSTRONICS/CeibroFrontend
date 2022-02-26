@@ -1,11 +1,13 @@
 import { ActionInterface } from ".";
 import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 import { LOGIN, LOGOUT } from '../../config/auth.config';
+import { REGISTER } from "redux-persist/es/constants";
 
 const intialStatue = {
     isLoggedIn: false,
     user: {},
-    loginLoading: false
+    loginLoading: false,
+    registerLoading: false
 }
 
 
@@ -37,6 +39,27 @@ const AuthReducer = (state = intialStatue, action: ActionInterface ) => {
             return {
                 ...state,
                 loginLoading: false
+            }
+        }
+
+        case requestPending(REGISTER): {
+            return {
+                ...state,
+                registerLoading: true
+            }
+        }
+        
+        case requestSuccess(REGISTER): {
+            return {
+                ...state,
+                registerLoading: false
+            }
+        }
+        
+        case requestFail(REGISTER): {
+            return {
+                ...state,
+                registerLoading: false
             }
         }
      
