@@ -14,9 +14,18 @@ import trashIcon from "./images/trashIcon.png";
 import blueDocument from "./images/blueDocument.png";
 import nudgeIcon from "./images/Nudge.png";
 import primaryNudgeIcon from "./images/primaryNudge.png";
+import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
+import sidebarFolderIcon from "./images/sidebarFolder.png";
+import sidebarChatIcon from "./images/sidebarChat.png";
+import sidebarPaseIcon from "./images/sidebarPaste.png";
+import questionMarkIcon from "./images/questionMark.png";
 import message from "./sound/message.mp3";
 
 const assets = {
+  sidebarDashboardIcon,
+  sidebarFolderIcon,
+  sidebarChatIcon,
+  sidebarPaseIcon,
   visual,
   logo,
   contactIcon,
@@ -33,6 +42,7 @@ const assets = {
   blueDocument,
   nudgeIcon,
   primaryNudgeIcon,
+  questionMarkIcon,
 };
 
 export const sounds = {

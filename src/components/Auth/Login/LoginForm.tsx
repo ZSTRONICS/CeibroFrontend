@@ -160,6 +160,7 @@ const useStyles = makeStyles({
   },
   rememberText: {
     fontSize: 14,
+    fontWeight: 500,
   },
   inputs: {
     marginTop: 40,
@@ -168,6 +169,7 @@ const useStyles = makeStyles({
   loginButton: {
     height: 32,
     width: 21,
+    fontSize: 14,
   },
   forget: {
     marginTop: 5,
