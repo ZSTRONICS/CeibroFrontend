@@ -1,7 +1,7 @@
 import { toast } from 'react-toastify';
 import { REGISTER } from 'redux-persist/es/constants';
 import { put, takeLatest } from 'redux-saga/effects'
-import { CREATE_ROOM, GET_USERS, LOGIN } from '../../config/auth.config';
+import { CREATE_ROOM, GET_USERS, LOGIN, VERIFY_EMAIL } from '../../config/auth.config';
 import apiCall from '../../utills/apiCall';
 import { ActionInterface } from '../reducers';
 
@@ -13,6 +13,15 @@ const loginRequest = apiCall({
     success: (_res: any) => {
         toast.success('logged in successfully');
     }
+});
+
+const verifyEmail = apiCall({
+  type: VERIFY_EMAIL,
+  method: "post",
+  path: "/auth/veify-email",
+  onFailSaga:  (err) => {
+    console.log('it is failed', err)
+  }
 });
 
 const registerRequest = apiCall({
@@ -37,6 +46,7 @@ function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
   yield takeLatest(CREATE_ROOM, createChatRoom);
+  yield takeLatest(VERIFY_EMAIL, verifyEmail);
 }
 
 export default projectSaga;

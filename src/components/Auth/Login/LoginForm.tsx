@@ -15,11 +15,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "../../../redux/action/auth.action";
 import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
+import { Alert } from "@material-ui/lab";
 
-const LoginForm = () => {
+interface LoginForm {
+  tokenLoading: boolean;
+  showSuccess: boolean;
+  showError: boolean;
+}
+
+const LoginForm: React.FC<LoginForm> = (props) => {
   const classes = useStyles();
+  const { tokenLoading, showSuccess, showError } = props;
 
-  const { loginLoading } = useSelector((state: RootState) => state.auth);
+  const { loginLoading, authErrorMessage, authSuccessMessage } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   const history = useHistory();
   const [checked, setChecked] = useState(true);
@@ -50,6 +60,16 @@ const LoginForm = () => {
       </div>
 
       <div className={classes.loginForm}>
+        {(showSuccess || tokenLoading) && (
+          <Alert severity="success">
+            {tokenLoading
+              ? "Verifying email"
+              : "Email verified successfully. Please sign in!"}
+          </Alert>
+        )}
+
+        {showError && <Alert severity="error">Link expired</Alert>}
+
         <TextField
           placeholder={intl.formatMessage({ id: "input.Email" })}
           className={classes.inputs}
@@ -147,7 +167,7 @@ const useStyles = makeStyles({
   },
   loginButton: {
     height: 32,
-    width: 21
+    width: 21,
   },
   forget: {
     marginTop: 5,

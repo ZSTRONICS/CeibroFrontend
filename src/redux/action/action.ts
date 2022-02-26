@@ -4,6 +4,8 @@ interface CreateAction {
     body?: any;
     params?: any;
     success?: (res: any, action: ActionInterface) => void;
+    onFailAction?: (err: any) => void;
+    showErrorToast?: boolean;   // by default showErrorToast will be true in apiCall.ts
     other?: any;
 }
 

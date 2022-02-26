@@ -11,13 +11,14 @@ interface ApiCall {
   method: "post" | "get" | "delete" | "put" | "patch";
   path?: string | ((payload: any) => string);
   success?: (res: any, action: any) => void;
+  onFailSaga?: (err: any) => void
   isFormData?: boolean;
   isBlob?: boolean
 }
 
-const apiCall = ({ type, method, path, success, isFormData, isBlob }: ApiCall): any  =>
+const apiCall = ({ type, method, path, success, onFailSaga, isFormData, isBlob }: ApiCall): any  =>
   function* (action: any): Generator<any> {
-    const { body, params, success: successPayload } = action.payload || {};
+    const { body, params, success: successPayload, onFailAction, showErrorToast = true } = action.payload || {};
     const idToken = localStorage.getItem("tokens");
 
     let header: any = {};
@@ -62,14 +63,18 @@ const apiCall = ({ type, method, path, success, isFormData, isBlob }: ApiCall): 
       successPayload && successPayload(res);
       success && success(res, action);
     } catch (err: any) {
-      yield put({
-        type: requestFail(type),
-        payload: err
-      });
-      
-      const msg = err?.response?.data?.message || err?.message || 'Unknown error'
-       
-      toast.error(msg);
+      onFailAction && onFailAction(err);
+      onFailSaga && onFailSaga(err);
+      if(showErrorToast) {
+        yield put({
+          type: requestFail(type),
+          payload: err
+        });
+        
+        const msg = err?.response?.data?.message || err?.message || 'Unknown error'
+         
+        toast.error(msg);
+      }
     
     }
   };

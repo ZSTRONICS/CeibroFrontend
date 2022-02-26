@@ -7,7 +7,9 @@ const intialStatue = {
     isLoggedIn: false,
     user: {},
     loginLoading: false,
-    registerLoading: false
+    registerLoading: false,
+    authSuccessMessage: '',
+    authErrorMessage: '',
 }
 
 
