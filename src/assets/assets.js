@@ -17,8 +17,24 @@ import primaryNudgeIcon from "./images/primaryNudge.png";
 import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
 import sidebarChatIcon from "./images/sidebarChat.png";
+import chatIcon from "./images/chatIcon.png";
 import sidebarPaseIcon from "./images/sidebarPaste.png";
 import questionMarkIcon from "./images/questionMark.png";
+import clip from "./images/clip.png";
+import searchIcon from "./images/searchIcon.png";
+import folderIcon from "./images/folderIcon.png";
+import blueUser from "./images/blueUser.png";
+import chevrondown from "./images/chevron-down.png";
+import chevronRight from "./images/chevron-right.png";
+import wrongImage from "./images/wrongImage.png";
+import clockIcon from "./images/clockIcon.png";
+import pencilIcon from "./images/pencil.png";
+
+import testProject1 from "./images/TestProject1.png";
+import testProject2 from "./images/TestProject2.png";
+import testProject3 from "./images/TestProject3.png";
+import testProject4 from "./images/TestProject4.png";
+
 import message from "./sound/message.mp3";
 
 const assets = {
@@ -43,6 +59,21 @@ const assets = {
   nudgeIcon,
   primaryNudgeIcon,
   questionMarkIcon,
+  searchIcon,
+  clip,
+  chatIcon,
+  folderIcon,
+  blueUser,
+  chevrondown,
+  chevronRight,
+  wrongImage,
+  clockIcon,
+  pencilIcon,
+
+  testProject1,
+  testProject2,
+  testProject3,
+  testProject4,
 };
 
 export const sounds = {

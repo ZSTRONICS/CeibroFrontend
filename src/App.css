@@ -15,6 +15,10 @@ body {
   padding: 0;
 }
 
+.MuiTableCell-body {
+  color: black !important;
+}
+
 .all-badge .MuiBadge-colorPrimary {
   background: white;
   color: var(--black);
@@ -32,7 +36,7 @@ body {
 
 .completed-badge .MuiBadge-colorPrimary {
   background: var(--medium-grey);
-  color: white;
+  color: black;
 }
 
 .draft-badge .MuiBadge-colorPrimary {
@@ -233,4 +237,13 @@ input::-webkit-input-placeholder {
 
 .error-text {
   color: var(--btn-red) !important;
+}
+
+input,
+input::-webkit-input-placeholder,
+textarea, 
+textarea::-webkit-input-placeholder{
+    font-size: 14px !important;
+    font-weight: 500;
+    font-family: Inter;
 }

@@ -77,7 +77,11 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-            <Typography variant="h6" component="h6">
+            <Typography
+              variant="h6"
+              className={classes.dashboardTitleText}
+              component="h6"
+            >
               Dashboard
             </Typography>
             {/* {!isTabletOrMobile && 
@@ -184,5 +188,9 @@ const useStyles = makeStyles({
       justifyContent: "space-between",
       paddingLeft: 0,
     },
+  },
+  dashboardTitleText: {
+    fontSize: 30,
+    fontWeight: 500,
   },
 });

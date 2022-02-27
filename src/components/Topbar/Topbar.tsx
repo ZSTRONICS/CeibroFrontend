@@ -101,8 +101,12 @@ const Topbar = (props: any) => {
         >
           {!isTabletOrMobile && (
             <div className={classes.nameWrapper}>
-              <Typography>{user?.name?.split(" ")?.[0]}</Typography>
-              <Typography>{user?.name?.split(" ")?.[1]}</Typography>
+              <Typography className={classes.username}>
+                {user?.firstName}
+              </Typography>
+              <Typography className={classes.username}>
+                {user?.surName}
+              </Typography>
             </div>
           )}
           <ProfileBtn />
@@ -157,6 +161,10 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "flex-end",
     flexDirection: "column",
+    fontSize: 14,
+    fontWeight: 500,
+  },
+  username: {
     fontSize: 14,
     fontWeight: 500,
   },
