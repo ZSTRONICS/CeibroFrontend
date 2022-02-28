@@ -2,12 +2,17 @@ import { makeStyles, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import assets from "assets/assets";
 import * as React from "react";
-import colors from "../../assets/colors";
+import colors from "assets/colors";
 
-interface IAppProps {}
+interface IAppProps {
+  value?: string;
+  onChange?: (e: any) => void;
+  disabled?: boolean;
+}
 
 const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
   const classes = useStyles();
+  const { value, disabled } = props;
 
   return (
     <div className={classes.wrapper}>
@@ -20,10 +25,12 @@ const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
           type="text"
           className={`emptyBorder ${classes.input}`}
           placeholder="Enter email or name surname"
+          value={value}
+          onChange={(e: any) => props?.onChange?.(e)}
         />
       </div>
       <div className={classes.btnWrapper}>
-        <button className={`custom-btn ${classes.btn}`}>
+        <button disabled={disabled} className={`custom-btn ${classes.btn}`}>
           <Typography className={classes.btnText}>Invite</Typography>
         </button>
       </div>

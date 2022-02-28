@@ -237,6 +237,8 @@ input::-webkit-input-placeholder {
 
 .error-text {
   color: var(--btn-red) !important;
+  font-size: 12px !important;
+  font-weight: 500;
 }
 
 input,
@@ -246,4 +248,11 @@ textarea::-webkit-input-placeholder{
     font-size: 14px !important;
     font-weight: 500;
     font-family: Inter;
+}
+
+button:disabled,
+button[disabled]{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
