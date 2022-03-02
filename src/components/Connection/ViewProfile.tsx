@@ -13,25 +13,38 @@ import {
   Typography,
 } from "@material-ui/core";
 import { Clear } from "@material-ui/icons";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import colors from "../../assets/colors";
 import NameAvatar from "../Utills/Others/NameAvatar";
 import { useDispatch } from "react-redux";
 import taskActions from "../../redux/action/task.action";
+import { getUserById } from "redux/action/user.action";
 interface IViewProfileProps {
   userId: String;
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
+  const { userId } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [getUser, setGetUser] = useState<any>({});
   const dispatch = useDispatch();
 
   const handleToggle = () => {
-    ///// api call
+    const payload = {
+      success: (val: any) => {
+        console.log("getUserByid", val.data);
+        setGetUser(val.data);
+      },
+      other: {
+        userId,
+      },
+    };
+    dispatch(getUserById(payload));
+
     setOpen(!open);
   };
-
+  console.log("hhh", getUser);
   const openTaskDrawer = () => {
     dispatch(taskActions.openDrawer());
   };

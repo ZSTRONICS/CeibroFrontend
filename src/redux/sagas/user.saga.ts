@@ -1,6 +1,6 @@
 import { put, takeLatest } from "redux-saga/effects";
 import { acceptAllInvites } from "redux/action/user.action";
-import { ACCEPT_ALL_INVITES, ACCEPT_INVITE, GET_MY_ALL_INVITES, GET_MY_CONNECTIONS, GET_MY_INVITES_COUNT, SEND_INVITATION } from "../../config/user.config";
+import { ACCEPT_ALL_INVITES, ACCEPT_INVITE, GET_MY_ALL_INVITES, GET_MY_CONNECTIONS, GET_MY_INVITES_COUNT, GET_USER_BY_ID, SEND_INVITATION } from "../../config/user.config";
 import apiCall from "../../utills/apiCall";
 
 const inviteUser = apiCall({
@@ -37,6 +37,12 @@ const getMyAllInviteCount = apiCall({
   method: 'get',
   path:"/users/invite/count"
 })
+const getUserById=apiCall({
+     type:GET_USER_BY_ID,
+  method: 'get',
+  path:(payload)=> `/users/${payload.other.userId}`
+})
+
 
 function* userSaga() {
   yield takeLatest(SEND_INVITATION, inviteUser);
@@ -47,6 +53,9 @@ function* userSaga() {
   yield takeLatest(GET_MY_CONNECTIONS, getMyConnections);
   yield takeLatest(ACCEPT_ALL_INVITES, acceptAllInvite);
   yield takeLatest(GET_MY_INVITES_COUNT, getMyAllInviteCount);
+  yield takeLatest(GET_USER_BY_ID, getUserById);
+
+  
 
 
 

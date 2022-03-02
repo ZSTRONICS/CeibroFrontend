@@ -33,7 +33,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     dispatch(getMyConnections(payload));
   }, []);
 
-  console.log("connection", connections);
+  console.log("connectiongh", connections);
 
   return (
     <Grid container className={classes.wrapper}>
@@ -72,7 +72,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                 >
                   Create task
                 </Button>
-                <ViewProfile /> //pass user id
+                <ViewProfile userId={connection?.from?.id} />
               </Grid>
             </Grid>
           </Grid>
