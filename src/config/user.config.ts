@@ -1,1 +1,4 @@
 export const SEND_INVITATION = "SEND_INVITATION";
+export const GET_MY_ALL_INVITES = "GET_MY_ALL_INVITES";
+
+

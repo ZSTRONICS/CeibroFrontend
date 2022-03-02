@@ -6,6 +6,7 @@ import {
   GET_PROFILE,
   GET_USERS,
   LOGIN,
+  UPDATE_MY_PROFILE,
   VERIFY_EMAIL,
 } from "../../config/auth.config";
 import apiCall from "../../utills/apiCall";
@@ -50,8 +51,19 @@ const createChatRoom = apiCall({
 
 const getMyProfile = apiCall({
   type: GET_PROFILE,
-  method: "post",
-  path: "/user/profile",
+  method: "get",
+  path: "/users/profile",
+});
+
+
+
+const updateMyProfile = apiCall({
+  type: UPDATE_MY_PROFILE,
+  method: "patch",
+  path: "/users/profile",
+  success: () => {
+    toast.success("Profile updated successfully");
+  },
 });
 
 function* projectSaga() {
@@ -60,6 +72,9 @@ function* projectSaga() {
   yield takeLatest(CREATE_ROOM, createChatRoom);
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
+  yield takeLatest(UPDATE_MY_PROFILE, updateMyProfile);
+
+  
 }
 
 export default projectSaga;

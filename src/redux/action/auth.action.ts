@@ -5,6 +5,7 @@ import {
   CREATE_ROOM,
   LOGOUT,
   GET_PROFILE,
+  UPDATE_MY_PROFILE
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
@@ -17,3 +18,5 @@ export const getAllusers = createAction(GET_USERS);
 export const createChatRoom = createAction(CREATE_ROOM);
 
 export const getMyProfile = createAction(GET_PROFILE);
+export const updateMyProfile = createAction(UPDATE_MY_PROFILE);
+
