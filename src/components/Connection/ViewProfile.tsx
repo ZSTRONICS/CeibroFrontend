@@ -33,7 +33,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   const handleToggle = () => {
     const payload = {
       success: (val: any) => {
-        console.log("getUserByid", val.data);
+        console.log("getUserByid", val);
         setGetUser(val.data);
       },
       other: {
@@ -49,17 +49,17 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     dispatch(taskActions.openDrawer());
   };
 
-  const user = {
-    image:
-      "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
-    name: "Kristo",
-    surname: "Vaughn",
-    email: "abc123@gmail.com",
-    contact: "+372 5679 8908",
-    company: "My company Ltd.",
-    vat: "1324343554",
-    location: "Vesse 12, Tallinn, Harjumaa 12345",
-  };
+  //   const user = {
+  //     image:
+  //       "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
+  //     name: "Kristo",
+  //     surname: "Vaughn",
+  //     email: "abc123@gmail.com",
+  //     contact: "+372 5679 8908",
+  //     company: "My company Ltd.",
+  //     vat: "1324343554",
+  //     location: "Vesse 12, Tallinn, Harjumaa 12345",
+  //   };
 
   return (
     <>
@@ -72,14 +72,15 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
       >
         View profile
       </Button>
+
       <Dialog onClose={handleToggle} open={open}>
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <div className={classes.imgWrapper}>
-              {user.image ? (
-                <img className={classes.img} src={user.image} />
+              {getUser.image ? (
+                <img className={classes.img} src={getUser.image} />
               ) : (
-                <NameAvatar name={user.name} />
+                <NameAvatar name={getUser?.firstName} />
               )}
             </div>
             <Clear onClick={handleToggle} className={classes.close} />
@@ -90,12 +91,14 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Name</Typography>
-                <Typography className={classes.value}>{user.name}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.firstName}
+                </Typography>
               </div>
               <div>
                 <Typography className={classes.title}>Surname</Typography>
                 <Typography className={classes.value}>
-                  {user.surname}
+                  {getUser?.surName}
                 </Typography>
               </div>
             </Grid>
@@ -104,7 +107,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 <Typography className={classes.title}>Email</Typography>
                 <Typography className={classes.value}>
                   <a className={classes.email} href="#">
-                    {user.email}
+                    {getUser?.email}
                   </a>
                 </Typography>
               </div>
@@ -113,7 +116,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <div>
                 <Typography className={classes.title}>Contact</Typography>
                 <Typography className={classes.value}>
-                  {user.contact}
+                  {getUser?.contact}
                 </Typography>
               </div>
             </Grid>
@@ -128,19 +131,21 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <div>
                 <Typography className={classes.title}>Company</Typography>
                 <Typography className={classes.value}>
-                  {user.company}
+                  {getUser?.company}
                 </Typography>
               </div>
               <div>
                 <Typography className={classes.title}>VAT</Typography>
-                <Typography className={classes.value}>{user.vat}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.vat}
+                </Typography>
               </div>
             </Grid>
             <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Location</Typography>
                 <Typography className={classes.value}>
-                  {user.location}
+                  {getUser?.location}
                 </Typography>
               </div>
             </Grid>
@@ -150,7 +155,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                   Company contact number
                 </Typography>
                 <Typography className={classes.value}>
-                  {user.contact}
+                  {getUser?.contact}
                 </Typography>
               </div>
             </Grid>
