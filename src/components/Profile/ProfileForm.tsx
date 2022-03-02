@@ -117,7 +117,7 @@ const ProfileForm = () => {
     companyPhone: Yup.string()
       .required("Required")
       .matches(
-        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
         "Invalid phone"
       )
       .required("Phone is required"),
