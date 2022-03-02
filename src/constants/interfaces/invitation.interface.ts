@@ -1,4 +1,8 @@
+import { UserInterface } from "./user.interface";
+
 export interface InvitationInterface {
-    name: string;
-    time: string;
+   from: UserInterface;
+   createdAt: string;
+   status: 'pending' | 'accepted' |'rejected';
+   _id: string;
 }

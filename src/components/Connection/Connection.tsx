@@ -1,105 +1,137 @@
-import { Button, Grid, makeStyles, Typography } from '@material-ui/core';
-import * as React from 'react';
-import colors from '../../assets/colors';
-import { INVITATIONS_LIST } from '../../constants/invitations.constants';
-import NameAvatar from '../Utills/Others/NameAvatar';
-import ViewProfile from './ViewProfile'
-import taskActions from '../../redux/action/project.action'
-import { useDispatch } from 'react-redux'
-import { useMediaQuery } from 'react-responsive';
-interface IConnectionsProps {
-}
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import colors from "../../assets/colors";
+import { INVITATIONS_LIST } from "../../constants/invitations.constants";
+import NameAvatar from "../Utills/Others/NameAvatar";
+import ViewProfile from "./ViewProfile";
+import React, { useEffect, useState } from "react";
+import taskActions from "../../redux/action/project.action";
+import { getMyConnections } from "redux/action/user.action";
+
+import { useDispatch } from "react-redux";
+import { useMediaQuery } from "react-responsive";
+interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
-    
-    const classes = useStyles()
-    const dispatch = useDispatch()
-    const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'});
+  const [connections, setConnection] = useState<any>({});
 
-    const openTaskDrawer = () => {
-        dispatch(taskActions.openDrawer())
-    }
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-    return (
-        <Grid container className={classes.wrapper}>
-            {INVITATIONS_LIST && INVITATIONS_LIST.map(connection => {
-                return (
-                    <Grid item xs={12} className={classes.chipWrapper}>
-                        <Grid container>
-                            <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
-                                <NameAvatar name={connection.name}/>
-                                <div className={classes.nameWrapper}>
-                                    <Typography className={classes.name}>
-                                        {connection.name}
-                                    </Typography>
-                                    <Typography className={classes.subTitleText}>
-                                        company
-                                    </Typography>
-                                </div>
-                            </Grid>
-                            <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
-                                <Button className={classes.btn} variant="contained" size={isTabletOrMobile? 'small': 'medium'} color="primary">Start conversation</Button>
-                                <Button className={`${classes.btn} ${classes.centerBtn}`} variant="contained" onClick={openTaskDrawer} size={isTabletOrMobile? 'small': 'medium'} color="primary">Create task</Button>
-                                <ViewProfile/>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                )
-            })}
-        </Grid>
-    )
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+
+  const openTaskDrawer = () => {
+    dispatch(taskActions.openDrawer());
+  };
+
+  useEffect(() => {
+    const payload = {
+      success: (res: any) => {
+        // console.log("all conn", res);
+        setConnection(res?.data);
+      },
+    };
+    dispatch(getMyConnections(payload));
+  }, []);
+
+  console.log("connection", connections);
+
+  return (
+    <Grid container className={classes.wrapper}>
+      {connections?.map?.((connection: any) => {
+        return (
+          <Grid item xs={12} className={classes.chipWrapper}>
+            <Grid container>
+              <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
+                <NameAvatar
+                  name={`${connection?.from?.firstName} ${connection?.from?.surName}`}
+                />
+                <div className={classes.nameWrapper}>
+                  <Typography className={classes.name}>
+                    {`${connection?.from?.firstName} ${connection?.from?.surName}`}
+                  </Typography>
+                  <Typography className={classes.subTitleText}>
+                    company
+                  </Typography>
+                </div>
+              </Grid>
+              <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
+                <Button
+                  className={classes.btn}
+                  variant="contained"
+                  size={isTabletOrMobile ? "small" : "medium"}
+                  color="primary"
+                >
+                  Start conversation
+                </Button>
+                <Button
+                  className={`${classes.btn} ${classes.centerBtn}`}
+                  variant="contained"
+                  onClick={openTaskDrawer}
+                  size={isTabletOrMobile ? "small" : "medium"}
+                  color="primary"
+                >
+                  Create task
+                </Button>
+                <ViewProfile /> //pass user id
+              </Grid>
+            </Grid>
+          </Grid>
+        );
+      })}
+    </Grid>
+  );
 };
 
 export default Connections;
 
 const useStyles = makeStyles({
-    wrapper: {
-        background: colors.white,
-        padding: 20
+  wrapper: {
+    background: colors.white,
+    padding: 20,
+  },
+  chipWrapper: {
+    paddingTop: 10,
+    ["@media (max-width:600px)"]: {
+      paddingTop: 20,
     },
-    chipWrapper: {
-        paddingTop: 10,
-        ['@media (max-width:600px)']: {
-            paddingTop: 20
-        }
+  },
+  userWrapper: {
+    display: "flex",
+    alignItems: "center",
+  },
+  name: {
+    fontSize: 14,
+    fontWeight: "bold",
+    color: colors.primary,
+  },
+  subTitleText: {
+    fontSize: 12,
+    fontWeight: 500,
+    color: colors.textGrey,
+  },
+  nameWrapper: {
+    paddingLeft: 10,
+  },
+  btnWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    ["@media (max-width:960px)"]: {
+      flexDirection: "column",
+      alignItems: "center",
     },
-    userWrapper: {
-        display: 'flex',
-        alignItems: 'center'
+  },
+  btn: {
+    fontSize: 12,
+    fontWeight: "bold",
+    ["@media (max-width:960px)"]: {
+      width: "100%",
+      marginTop: 10,
     },
-    name: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: colors.primary
+  },
+  centerBtn: {
+    ["@media (max-width:960px)"]: {
+      marginTop: 10,
     },
-    subTitleText: {
-        fontSize: 12,
-        fontWeight: 500,
-        color: colors.textGrey
-    },
-    nameWrapper: {
-        paddingLeft: 10
-    },
-    btnWrapper: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-        ['@media (max-width:960px)']: {
-            flexDirection: 'column',
-            alignItems: 'center'
-        }
-    },
-    btn: {
-        fontSize: 12,
-        fontWeight: 'bold',
-        ['@media (max-width:960px)']: {
-            width: '100%',
-            marginTop: 10
-        }
-    },
-    centerBtn: {
-        ['@media (max-width:960px)']: {
-            marginTop: 10,
-        }
-    }
-})
+  },
+});
