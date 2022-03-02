@@ -1,18 +1,69 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { useEffect, useState } from "react";
+import { makeStyles, Typography, CircularProgress } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import assets from "assets/assets";
 import * as React from "react";
 import colors from "assets/colors";
-
+import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { sendInvitation } from "redux/action/user.action";
+import { toast } from "react-toastify";
 interface IAppProps {
-  value?: string;
-  onChange?: (e: any) => void;
-  disabled?: boolean;
+  onError?: (err: string) => void;
 }
 
 const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
   const classes = useStyles();
-  const { value, disabled } = props;
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  const isDiabled = !error && email && !loading ? false : true;
+
+  let schema = yup.object().shape({
+    email: yup.string().email(),
+  });
+
+  useEffect(() => {
+    if (email) {
+      schema
+        .isValid({
+          email,
+        })
+        .then((isValid: boolean) => {
+          if (isValid) {
+            setError("");
+          } else {
+            setError("Must be a valid email");
+          }
+        });
+    } else {
+      setError("");
+    }
+  }, [email]);
+
+  useEffect(() => {
+    props?.onError?.(error);
+  }, [error]);
+
+  const handleSubmit = () => {
+    setLoading(true);
+    dispatch(
+      sendInvitation({
+        body: {
+          email,
+        },
+        success: () => {
+          toast.success("Invitation sent successfully");
+          setEmail("");
+        },
+        finallyAction: () => {
+          setLoading(false);
+        },
+      })
+    );
+  };
 
   return (
     <div className={classes.wrapper}>
@@ -25,13 +76,20 @@ const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
           type="text"
           className={`emptyBorder ${classes.input}`}
           placeholder="Enter email or name surname"
-          value={value}
-          onChange={(e: any) => props?.onChange?.(e)}
+          value={email}
+          onChange={(e: any) => setEmail(e?.target.value)}
         />
       </div>
       <div className={classes.btnWrapper}>
-        <button disabled={disabled} className={`custom-btn ${classes.btn}`}>
+        <button
+          onClick={handleSubmit}
+          disabled={isDiabled}
+          className={`custom-btn ${classes.btn}`}
+        >
           <Typography className={classes.btnText}>Invite</Typography>
+          {isDiabled && loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
         </button>
       </div>
     </div>
@@ -82,9 +140,21 @@ const useStyles = makeStyles({
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,
     cursor: "pointer",
+    position: "relative",
   },
   btnText: {
     fontSize: 14,
     fontWeight: "bold",
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    marginLeft: "auto",
+    marginRight: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

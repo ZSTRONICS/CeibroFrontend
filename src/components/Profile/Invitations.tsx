@@ -10,39 +10,12 @@ interface InvitationsProps {}
 
 const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const classes = useStyles();
-  const [email, setEmail] = useState("");
   const [error, setError] = useState("");
-
-  let schema = yup.object().shape({
-    email: yup.string().email(),
-  });
-
-  useEffect(() => {
-    if (email) {
-      schema
-        .isValid({
-          email,
-        })
-        .then((isValid: boolean) => {
-          if (isValid) {
-            setError("");
-          } else {
-            setError("Must be a valid email");
-          }
-        });
-    } else {
-      setError("");
-    }
-  }, [email]);
 
   return (
     <Grid container>
       <Grid item xs={12} className={classes.inviteWrapper}>
-        <InputInvite
-          value={email}
-          onChange={(e: any) => setEmail(e?.target?.value)}
-          disabled={!error && email ? false : true}
-        />
+        <InputInvite onError={(err: string) => setError(err)} />
         {error && (
           <Typography style={{ paddingTop: 10 }} className={"error-text"}>
             {error}

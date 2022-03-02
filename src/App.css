@@ -253,6 +253,6 @@ textarea::-webkit-input-placeholder{
 button:disabled,
 button[disabled]{
   border: 1px solid #999999;
-  background-color: #cccccc;
-  color: #666666;
+  background-color: #ADB5BD;
+  color: white;
 }

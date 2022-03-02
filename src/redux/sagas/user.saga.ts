@@ -4,12 +4,12 @@ import apiCall from "../../utills/apiCall";
 
 const inviteUser = apiCall({
   type: SEND_INVITATION,
-  method: "get",
-  path: "/project/all",
+  method: "post",
+  path: "/users/invite",
 });
 
-function* projectSaga() {
+function* userSaga() {
   yield takeLatest(SEND_INVITATION, inviteUser);
 }
 
-export default projectSaga;
+export default userSaga;
