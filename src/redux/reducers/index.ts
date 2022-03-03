@@ -4,13 +4,14 @@ import projectReducer from './project.reducer'
 import taskReducer from './task.reducer'
 import authReducer from './auth.reducer'
 import chatReducer from './chat.reducer'
-
+import countReducer from './user.reducer'
 const rootReducer  = combineReducers({
     app: appReducer,
     project: projectReducer,
     task: taskReducer,
     auth: authReducer,
-    chat: chatReducer
+    chat: chatReducer,
+    count: countReducer,
 })
 
 export default rootReducer
