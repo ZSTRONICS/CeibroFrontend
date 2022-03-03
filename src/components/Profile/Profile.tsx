@@ -14,28 +14,20 @@ import { Create, Delete } from "@material-ui/icons";
 import Requests from "./Requests";
 import { useMediaQuery } from "react-responsive";
 import ProfileForm from "./ProfileForm";
+import ProfileImagePicker from "./ProfileImagePicker";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
 const Dashboard = () => {
   const classes = useStyles();
 
-  const image =
-    "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg";
-
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
-  const ActionBtns = () => (
-    <Grid item xs={12} className={classes.rowWrapper}>
-      <Button variant="contained" color="primary" size="medium">
-        Update
-      </Button>
-      <Button variant="text" className={classes.delete} size="medium">
-        <BiTrash className={classes.deleteIcon} /> Delete Account
-      </Button>
-    </Grid>
-  );
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <Grid container>
+      <ProfileImagePicker profilePic={user?.profilePic} />
+      {isTabletOrMobile && <Requests />}
       <ProfileForm />
       {!isTabletOrMobile && <Requests />}
     </Grid>

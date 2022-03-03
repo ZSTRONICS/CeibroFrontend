@@ -32,6 +32,7 @@ const Login: React.FC<LoginInterface> = () => {
   useEffect(() => {
     const queryParams = queryString.parse(history?.location?.search);
     if (queryParams?.token) {
+      // verifying email verification token
       setTokenLoading(true);
       axios
         .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)

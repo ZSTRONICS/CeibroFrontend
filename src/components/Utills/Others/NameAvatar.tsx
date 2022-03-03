@@ -13,7 +13,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
   const classes = useStyles();
   const { firstName, surName, url, variant = "small" } = props;
   const letters =
-    firstName?.[0]?.toUpperCase?.() + surName?.[0]?.toUpperCase?.();
+    firstName?.[0]?.toUpperCase?.() + (surName?.[0]?.toUpperCase?.() || "");
 
   const getImageClass = () => {
     return variant === "small"

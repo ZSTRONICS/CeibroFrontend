@@ -5,6 +5,7 @@ import { GoPencil } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { updateProfilePic } from "redux/action/user.action";
 import { toast } from "react-toastify";
+import { getMyProfile } from "redux/action/auth.action";
 
 interface ProfileImagePicker {
   profilePic: string | undefined | null;
@@ -41,6 +42,7 @@ const ProfileImagePicker: React.FC<ProfileImagePicker> = (props) => {
         updateProfilePic({
           body: formdata,
           success: () => {
+            dispatch(getMyProfile());
             toast.success("profile pic updated");
           },
         })
@@ -74,15 +76,15 @@ export default ProfileImagePicker;
 const useStyles = makeStyles({
   outerWrapper: {
     border: `1px solid ${colors.purpleGrey}`,
-    height: 100,
-    maxWidth: 100,
+    height: 200,
+    maxWidth: "100%",
     position: "relative",
     cursor: "pointer",
     backgroundSize: "cover !important",
   },
   icon: {
     position: "absolute",
-    right: 0,
+    left: 0,
     bottom: 0,
     color: colors.white,
     background: colors.primary,

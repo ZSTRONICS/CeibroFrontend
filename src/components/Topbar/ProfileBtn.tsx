@@ -14,8 +14,9 @@ import {
 import React, { useState } from "react";
 import { BiLogOut } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import { RootState } from "redux/reducers";
 import colors from "../../assets/colors";
 import { logoutUser } from "../../redux/action/auth.action";
 import "./ProfileBtn.css";
@@ -24,6 +25,7 @@ const ProfileBtn = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
   const image =
     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg";
 
@@ -63,7 +65,7 @@ const ProfileBtn = () => {
           variant="square"
           alt="Cindy Baker"
           className={classes.small}
-          src={image}
+          src={user?.profilePic}
         ></Avatar>
       </Button>
       {open && (
@@ -74,8 +76,12 @@ const ProfileBtn = () => {
               className={`${classes.menuItem} dropdown-menu`}
             >
               <div className={classes.menuText}>
-                <Typography>IIJA Nikojlave</Typography>
-                <Typography className={classes.subMenuText}>Company</Typography>
+                <Typography>
+                  {user?.firstName} {user?.surName}
+                </Typography>
+                <Typography className={classes.subMenuText}>
+                  {user?.companyName}
+                </Typography>
               </div>
               <div className={classes.menuAction}>
                 <Create className={classes.createIcon} />

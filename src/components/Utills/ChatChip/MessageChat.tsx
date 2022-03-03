@@ -40,6 +40,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     seen,
     myMessage,
     files,
+    sender,
   } = message;
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
   const classes = useStyles();
@@ -154,20 +155,24 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
           )}
           <Grid container>
             <Grid item xs={3} md={1}>
-              <NameAvatar firstName={username} />
+              <NameAvatar
+                firstName={sender?.firstName || ""}
+                surName={sender?.surName}
+                url={sender?.profilePic}
+              />
             </Grid>
             <Grid item xs={11}>
               <div className={classes.titleWrapper}>
                 <div className={classes.usernameWrapper}>
                   <Typography className={classes.username}>
-                    {username}
+                    {sender?.firstName} {sender?.surName}
                   </Typography>
 
                   <Typography className={classes.time}>{time}</Typography>
                 </div>
                 <div className={classes.projectWrapper}>
                   <Typography className={classes.company}>
-                    Company . {companyName}
+                    {sender?.companyName}
                   </Typography>
                 </div>
               </div>
