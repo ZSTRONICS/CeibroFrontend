@@ -7,25 +7,23 @@ import { useState, useEffect } from "react";
 import * as yup from "yup";
 import { getMyInvitesCount } from "redux/action/user.action";
 import { useDispatch, useSelector } from "react-redux";
-
+import { RootState } from "../../redux/reducers";
 interface InvitationsProps {}
 
 const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const classes = useStyles();
   const [error, setError] = useState("");
-  const [allCounts, setAllCounts] = useState<any>({});
   const dispatch = useDispatch();
-  // const data = useSelector((state) => state.count);
+  const { invites } = useSelector((state: RootState) => state?.count);
 
-  // console.log("reducer count", data);
   useEffect(() => {
-    const payload = {
-      success: (val: any) => {
-        console.log("valuesxxx", val);
-      },
-    };
+    // const payload = {
+    //   success: (val: any) => {
+    //     console.log("valuesxxx", val);
+    //   },
+    // };
 
-    dispatch(getMyInvitesCount(payload));
+    dispatch(getMyInvitesCount());
   }, []);
 
   return (
@@ -41,7 +39,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
       <Grid item xs={12} className={classes.viewInvitation}>
         <Typography className={classes.invitationText}>
           Invitations
-          <Badge badgeContent={4} className={classes.badge}></Badge>
+          <Badge badgeContent={invites} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />
       </Grid>

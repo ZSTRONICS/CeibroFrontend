@@ -4,16 +4,10 @@ import colors from "../../assets/colors";
 import InputInvite from "../Profile/InputInvite";
 import { MdInsertInvitation } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
-import { useEffect } from "react";
-import { useState } from "react";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
-import { useDispatch } from "react-redux";
-import { getMyInvitesCount } from "redux/action/user.action";
 
 const SmartMenuBar = () => {
-  const dispatch = useDispatch();
-  const [allCounts, setAllCounts] = useState<any>({});
   const classes = useStyles();
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
@@ -21,16 +15,6 @@ const SmartMenuBar = () => {
   const goToConnections = () => {
     history.push("connections");
   };
-
-  useEffect(() => {
-    const payload = {
-      success: (val: any) => {
-        console.log("valuesxxx", val);
-      },
-    };
-
-    dispatch(getMyInvitesCount(payload));
-  }, []);
 
   return (
     <Grid container>

@@ -32,7 +32,7 @@ const ProfileForm = () => {
   }, []);
 
   const handleSubmit = (values: any, action: any) => {
-    console.log("values BBB: ", values);
+    // console.log("values BBB: ", values);
 
     const {
       firstName,
@@ -55,7 +55,7 @@ const ProfileForm = () => {
         workEmail,
         phone,
         companyPhone,
-        // password,
+        password,
         companyName,
         companyVat,
         companyLocation,
@@ -79,16 +79,15 @@ const ProfileForm = () => {
       .max(50, "Too Long!")
       .required("Required"),
     // workEmail: Yup.string().email("Invalid email").required("Required"),
-    // password: Yup.string()
-    //   .required("Please enter your password")
-    //   .matches(
-    //     /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-    //     "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    //   ),
-    // confirmPassword: Yup.string()
-    //   .required("Please confirm your password")
-    //   .oneOf([Yup.ref("password"), null], "Passwords don't match."),
-    // email: Yup.string().email("Invalid email").required("Required"),
+    password: Yup.string().matches(
+      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+    ),
+    confirmPassword: Yup.string().oneOf(
+      [Yup.ref("password"), null],
+      "Passwords don't match."
+    ),
+    email: Yup.string().email("Invalid email").required("Required"),
     companyName: Yup.string()
       .min(2, "Too Short!")
       .max(50, "Too Long!")
@@ -130,8 +129,8 @@ const ProfileForm = () => {
             surName: userData?.surName,
             email: userData?.email,
             workEmail: userData?.workEmail,
-            // password: "",
-            // confirmPassword: "",
+            password: "",
+            confirmPassword: "",
             companyName: userData?.companyName,
             companyVat: userData?.companyVat,
             companyLocation: userData?.companyLocation,
@@ -254,7 +253,7 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      disabled={true}
+                      // disabled={true}
                       defaultValue={2435455}
                       type="password"
                       fullWidth
@@ -263,7 +262,7 @@ const ProfileForm = () => {
                       label="Password"
                       variant="outlined"
                       name="password"
-                      // value={values.password}
+                      value={values.password}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />
@@ -280,7 +279,7 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      disabled={true}
+                      // disabled={true}
                       defaultValue={2435455}
                       type="password"
                       fullWidth
@@ -289,7 +288,7 @@ const ProfileForm = () => {
                       label="Confirm password"
                       variant="outlined"
                       name="confirmPassword"
-                      // value={values.confirmPassword}
+                      value={values.confirmPassword}
                       onChange={handleChange}
                       onBlur={handleBlur}
                     />

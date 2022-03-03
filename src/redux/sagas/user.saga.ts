@@ -5,6 +5,7 @@ import {
   ACCEPT_INVITE,
   GET_MY_ALL_INVITES,
   GET_MY_CONNECTIONS,
+  GET_MY_CONNECTIONS_COUNT,
   GET_MY_INVITES_COUNT,
   GET_USER_BY_ID,
   SEND_INVITATION,
@@ -46,7 +47,15 @@ const getMyAllInviteCount = apiCall({
   type: GET_MY_INVITES_COUNT,
   method: "get",
   path: "/users/invite/count",
+  
 });
+const getMyConnectionsCount = apiCall({
+  type: GET_MY_CONNECTIONS_COUNT,
+  method: "get",
+  path: "/users/connections/count",
+  
+});
+
 
 const getUserById = apiCall({
   type: GET_USER_BY_ID,
@@ -72,6 +81,8 @@ function* userSaga() {
   yield takeLatest(GET_MY_INVITES_COUNT, getMyAllInviteCount);
   yield takeLatest(GET_USER_BY_ID, getUserById);
   yield takeLatest(UPDATE_PROFILE_PIC, updateProfilePic);
+  yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount);
+
 }
 
 export default userSaga;
