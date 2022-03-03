@@ -5,12 +5,28 @@ import InputInvite from "./InputInvite";
 import ViewInvitations from "./ViewInvitations";
 import { useState, useEffect } from "react";
 import * as yup from "yup";
+import { getMyInvitesCount } from "redux/action/user.action";
+import { useDispatch, useSelector } from "react-redux";
 
 interface InvitationsProps {}
 
 const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const classes = useStyles();
   const [error, setError] = useState("");
+  const [allCounts, setAllCounts] = useState<any>({});
+  const dispatch = useDispatch();
+  // const data = useSelector((state) => state.count);
+
+  console.log("reducer count", data);
+  useEffect(() => {
+    const payload = {
+      success: (val: any) => {
+        console.log("valuesxxx", val);
+      },
+    };
+
+    dispatch(getMyInvitesCount(payload));
+  }, []);
 
   return (
     <Grid container>
