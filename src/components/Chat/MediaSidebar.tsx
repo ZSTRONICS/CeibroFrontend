@@ -21,6 +21,7 @@ import {
   getRoomMedia,
   getRoomQuestioniars,
 } from "../../redux/action/chat.action";
+import colors from "assets/colors";
 
 const MediaSidebar = () => {
   const classes = useStyles();
@@ -62,6 +63,7 @@ const MediaSidebar = () => {
   const getStyles = () => {
     return {
       width: sidebarOpen ? 240 : 50,
+      background: colors.lightGrey,
     };
   };
 

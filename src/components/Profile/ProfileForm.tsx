@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
   Checkbox,
@@ -23,6 +23,8 @@ import { RootState } from "redux/reducers";
 const ProfileForm = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const passRef = useRef<HTMLInputElement>(null);
+  const confirmPassRef = useRef<HTMLInputElement>(null);
 
   const dispatch = useDispatch();
   const { user: userData } = useSelector((state: RootState) => state.auth);
@@ -55,7 +57,7 @@ const ProfileForm = () => {
         workEmail,
         phone,
         companyPhone,
-        password,
+        ...(password ? { password } : {}),
         companyName,
         companyVat,
         companyLocation,
@@ -64,6 +66,15 @@ const ProfileForm = () => {
       },
       success: () => {
         dispatch(getMyProfile());
+        console.log("passwor ref is ", passRef.current);
+        action?.setFieldValue("password", "");
+        action?.setFieldValue("confirmPassword", "");
+        // if (passRef.current) {
+        //   passRef.current.value = "";
+        // }
+        // if (confirmPassRef.current) {
+        //   confirmPassRef.current.value = "";
+        // }
       },
     };
     dispatch(updateMyProfile(payload));
@@ -264,14 +275,15 @@ const ProfileForm = () => {
                       name="password"
                       value={values.password}
                       onChange={handleChange}
+                      inputRef={passRef}
                       onBlur={handleBlur}
                     />
 
-                    {/* {errors.password && (
+                    {errors.password && (
                       <Typography className={`error-text ${classes.errorText}`}>
                         {errors.password && touched.password && errors.password}
                       </Typography>
-                    )} */}
+                    )}
                   </Grid>
 
                   <Grid item xs={12} className={classes.rowWrapper}>
@@ -291,15 +303,16 @@ const ProfileForm = () => {
                       value={values.confirmPassword}
                       onChange={handleChange}
                       onBlur={handleBlur}
+                      inputRef={confirmPassRef}
                     />
 
-                    {/* {errors.confirmPassword && (
+                    {errors.confirmPassword && (
                       <Typography className={`error-text ${classes.errorText}`}>
                         {errors.confirmPassword &&
                           touched.confirmPassword &&
                           errors.confirmPassword}
                       </Typography>
-                    )} */}
+                    )}
                   </Grid>
 
                   <Grid item xs={12} className={classes.rowWrapper}>

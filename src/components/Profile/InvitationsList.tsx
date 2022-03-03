@@ -141,7 +141,7 @@ const useStyles = makeStyles({
   },
   time: {
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: 500,
     color: colors.textGrey,
   },
 });
