@@ -17,7 +17,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const dispatch = useDispatch();
   // const data = useSelector((state) => state.count);
 
-  console.log("reducer count", data);
+  // console.log("reducer count", data);
   useEffect(() => {
     const payload = {
       success: (val: any) => {
