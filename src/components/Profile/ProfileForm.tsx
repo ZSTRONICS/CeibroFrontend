@@ -67,7 +67,7 @@ const ProfileForm = () => {
         companyName,
         companyVat,
         companyLocation,
-        email,
+        // email,
         currentlyRepresenting,
       },
       success: () => {},
@@ -110,7 +110,7 @@ const ProfileForm = () => {
     phone: Yup.string()
       .required("Required")
       .matches(
-        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/,
+        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
         "Invalid phone"
       )
       .required("Phone is required"),
@@ -123,7 +123,7 @@ const ProfileForm = () => {
       .required("Phone is required"),
     currentlyRepresenting: Yup.boolean()
       .required("Required")
-      .oneOf([true], "you must accept the terms and conditions"),
+      .oneOf([true, false]),
   });
 
   return (
@@ -414,11 +414,10 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      disabled={true}
                       fullWidth
                       size="small"
                       id="outlined-basic"
-                      label="Contact email"
+                      label="Work email"
                       variant="outlined"
                       name="workEmail"
                       value={values.workEmail}

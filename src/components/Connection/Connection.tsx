@@ -38,19 +38,18 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   return (
     <Grid container className={classes.wrapper}>
       {connections?.map?.((connection: any) => {
+        const user = connection?.sentByMe ? connection.to : connection.from;
         return (
           <Grid item xs={12} className={classes.chipWrapper}>
             <Grid container>
               <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
-                <NameAvatar
-                  name={`${connection?.from?.firstName} ${connection?.from?.surName}`}
-                />
+                <NameAvatar name={`${user?.firstName} ${user?.surName}`} />
                 <div className={classes.nameWrapper}>
                   <Typography className={classes.name}>
-                    {`${connection?.from?.firstName} ${connection?.from?.surName}`}
+                    {`${user?.firstName} ${user?.surName}`}
                   </Typography>
                   <Typography className={classes.subTitleText}>
-                    company
+                    {user?.companyName}
                   </Typography>
                 </div>
               </Grid>
@@ -72,7 +71,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                 >
                   Create task
                 </Button>
-                <ViewProfile userId={connection?.from?.id} />
+                <ViewProfile userId={user?.id} />
               </Grid>
             </Grid>
           </Grid>

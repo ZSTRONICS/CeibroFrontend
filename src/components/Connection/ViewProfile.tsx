@@ -116,7 +116,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <div>
                 <Typography className={classes.title}>Contact</Typography>
                 <Typography className={classes.value}>
-                  {getUser?.contact}
+                  {getUser?.phone}
                 </Typography>
               </div>
             </Grid>
@@ -131,13 +131,13 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <div>
                 <Typography className={classes.title}>Company</Typography>
                 <Typography className={classes.value}>
-                  {getUser?.company}
+                  {getUser?.companyName}
                 </Typography>
               </div>
               <div>
                 <Typography className={classes.title}>VAT</Typography>
                 <Typography className={classes.value}>
-                  {getUser?.vat}
+                  {getUser?.companyVat}
                 </Typography>
               </div>
             </Grid>
@@ -145,7 +145,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <div>
                 <Typography className={classes.title}>Location</Typography>
                 <Typography className={classes.value}>
-                  {getUser?.location}
+                  {getUser?.companyLocation}
                 </Typography>
               </div>
             </Grid>
@@ -155,7 +155,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                   Company contact number
                 </Typography>
                 <Typography className={classes.value}>
-                  {getUser?.contact}
+                  {getUser?.companyPhone}
                 </Typography>
               </div>
             </Grid>
