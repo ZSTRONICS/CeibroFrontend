@@ -1,35 +1,70 @@
-import { makeStyles } from "@material-ui/core"
-import colors from "../../../assets/colors"
+import { makeStyles } from "@material-ui/core";
+import colors from "../../../assets/colors";
 
 interface NameAvatarProps {
-    name: string;
-    background?: string;
+  firstName: string;
+  surName?: string;
+  background?: string;
+  url?: string;
+  variant?: "small" | "large" | "custom";
 }
 
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
-    const classes = useStyles()
-    const { name } = props
-    const letter2 = name?.split(' ')[1]? name.split(' ')[1][0]: ""
-    const letters = name?.[0].toUpperCase() + letter2
+  const classes = useStyles();
+  const { firstName, surName, url, variant = "small" } = props;
+  const letters =
+    firstName?.[0]?.toUpperCase?.() + surName?.[0]?.toUpperCase?.();
 
-    return (
-        <div className={classes.outerWrapper} style={{ background: props?.background || colors.secondaryGrey }}>
-            {letters}
+  const getImageClass = () => {
+    return variant === "small"
+      ? classes.outerWrapper
+      : variant === "large"
+      ? classes.imgWrapper
+      : "";
+  };
+
+  return (
+    <>
+      {!url && (
+        <div
+          className={getImageClass()}
+          style={{ background: props?.background || colors.secondaryGrey }}
+        >
+          {letters}
         </div>
-    )
-}
+      )}
 
-export default NameAvatar
+      {url && (
+        <div className={getImageClass()}>
+          <img src={url} className={classes.img} />
+        </div>
+      )}
+    </>
+  );
+};
+
+export default NameAvatar;
 
 const useStyles = makeStyles({
-    outerWrapper: {
-        border: `1px solid ${colors.secondaryGrey}`,
-        background: colors.secondaryGrey,
-        width: '80%',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 30,
-        maxWidth: 45
-    }
-})
+  outerWrapper: {
+    border: `1px solid ${colors.secondaryGrey}`,
+    background: colors.secondaryGrey,
+    width: "80%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 30,
+    maxWidth: 45,
+  },
+  imgWrapper: {
+    height: 80,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    width: 80,
+  },
+  img: {
+    width: "100%",
+    height: "100%",
+  },
+});

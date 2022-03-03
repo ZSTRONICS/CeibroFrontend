@@ -6,6 +6,7 @@ import NameAvatar from "../Utills/Others/NameAvatar";
 import { useConfirm } from "material-ui-confirm";
 import { addMemberToChat, getAllChats } from "../../redux/action/chat.action";
 import { toast } from "react-toastify";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 const ChatMembers = () => {
   const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
@@ -36,11 +37,15 @@ const ChatMembers = () => {
 
   return (
     <div className="chat-members">
-      {members.map((member: any) => {
+      {members.map((member: UserInterface) => {
         return (
           <Grid key={member.id} container className="chat-member-chip">
             <Grid item xs={2} style={{ paddingTop: 5 }}>
-              <NameAvatar name={member?.name} />
+              <NameAvatar
+                firstName={member?.firstName}
+                surName={member?.surName}
+                variant="small"
+              />
             </Grid>
             <Grid
               item
@@ -48,10 +53,10 @@ const ChatMembers = () => {
               style={{ padding: 2, display: "flex", flexDirection: "column" }}
             >
               <Typography className="chat-member-name">
-                {member.name}
+                {member.firstName} {member.surName}
               </Typography>
               <Typography className="chat-member-company">
-                Project: {member.compoany}
+                Project: {member.companyName}
               </Typography>
             </Grid>
             <Grid item xs={2} style={styles.trashWrapper}>

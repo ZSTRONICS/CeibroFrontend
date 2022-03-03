@@ -154,7 +154,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
           )}
           <Grid container>
             <Grid item xs={3} md={1}>
-              <NameAvatar name={username} />
+              <NameAvatar firstName={username} />
             </Grid>
             <Grid item xs={11}>
               <div className={classes.titleWrapper}>

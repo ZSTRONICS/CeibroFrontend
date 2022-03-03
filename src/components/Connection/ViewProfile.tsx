@@ -77,11 +77,12 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <div className={classes.imgWrapper}>
-              {getUser.image ? (
-                <img className={classes.img} src={getUser.image} />
-              ) : (
-                <NameAvatar name={getUser?.firstName} />
-              )}
+              <NameAvatar
+                firstName={getUser?.firstName}
+                surName={getUser?.surName}
+                url={getUser?.profilePic}
+                variant="large"
+              />
             </div>
             <Clear onClick={handleToggle} className={classes.close} />
           </div>
@@ -192,7 +193,7 @@ const useStyles = makeStyles({
   titleWrapper: {
     display: "flex",
     justifyContent: "space-between",
-    paddingBottom: 10,
+    paddingBottom: 0,
     alignItems: "center",
   },
   wrapper: {

@@ -36,16 +36,6 @@ const Dashboard = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} md={2} className={classes.imageWrapper}>
-        <div className={classes.imageInnerWrapper}>
-          <img src={image} className={classes.userImage} />
-          <div className={classes.imageIconWrapper}>
-            <Create className={classes.editPic} />
-            <Delete className={classes.trashPic} />
-          </div>
-        </div>
-      </Grid>
-      {isTabletOrMobile && <Requests />}
       <ProfileForm />
       {!isTabletOrMobile && <Requests />}
     </Grid>

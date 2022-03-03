@@ -184,7 +184,10 @@ const CreateChat = () => {
                           md={2}
                           className={classes.selectedUser}
                         >
-                          <NameAvatar name={member.name} />
+                          <NameAvatar
+                            firstName={member?.firstName}
+                            surName={member?.surName}
+                          />
                           <Cancel
                             onClick={() => removeSelectedUser(member.id)}
                             className={classes.cancelIcon}
@@ -203,12 +206,15 @@ const CreateChat = () => {
                       return (
                         <Grid container className={classes.wrapper}>
                           <Grid item xs={2}>
-                            <NameAvatar name={member.name} />
+                            <NameAvatar
+                              firstName={member?.firstName}
+                              surName={member?.surName}
+                            />
                           </Grid>
                           <Grid item xs={8}>
                             <div>
                               <Typography className={classes.titleText}>
-                                {member.name}
+                                {member.firstName} {member?.lastName}
                               </Typography>
                               <Typography className={classes.subTitleText}>
                                 Company . Electrician
