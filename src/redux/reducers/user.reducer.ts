@@ -3,14 +3,16 @@ import {
   requestSuccess,
 } from "../../utills/status";
 
-import { GET_MY_INVITES_COUNT } from "config/user.config";
+import { GET_MY_CONNECTIONS_COUNT, GET_MY_INVITES_COUNT } from "config/user.config";
 
 interface CountReducer {
-  count: any;
+  invites: any;
+  connections: any
 }
 
 const intialStatue: CountReducer = {
-  count: [] 
+  invites: [],
+  connections:[],
 };
 
 
@@ -19,7 +21,13 @@ const CountReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_MY_INVITES_COUNT): {
       return {
         ...state,
-        count: state.count,
+        invites: action.payload,
+      };
+    }
+      case requestSuccess(GET_MY_CONNECTIONS_COUNT): {
+      return {
+        ...state,
+        connections: action.payload,
       };
     }
 

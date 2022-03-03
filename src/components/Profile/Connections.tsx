@@ -1,22 +1,35 @@
 import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { ContactPhoneOutlined } from "@material-ui/icons";
-import * as React from 'react';
+import * as React from "react";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
+import { useState, useEffect } from "react";
+import { getMyConnectionsCount } from "redux/action/user.action";
 
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
-
-
   const classes = useStyles();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { connections } = useSelector((state: RootState) => state?.count);
+
+  useEffect(() => {
+    // const payload = {
+    //   success: (val: any) => {
+    //     console.log("connections", val);
+    //   },
+    // };
+
+    dispatch(getMyConnectionsCount());
+  }, []);
 
   const handleClick = () => {
     history.push("/connections");
   };
 
- 
   return (
     <Grid container>
       <Grid item xs={12} className={classes.connections}>
@@ -25,7 +38,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
           My conections
           <Badge
             color="primary"
-            badgeContent={123}
+            badgeContent={connections}
             className={classes.badge}
           ></Badge>
         </Typography>
