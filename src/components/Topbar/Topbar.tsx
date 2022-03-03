@@ -26,6 +26,7 @@ import ProfileBtn from "./ProfileBtn";
 import Title from "./Title";
 import { useHistory } from "react-router";
 import { RootState } from "../../redux/reducers";
+import assets from "assets/assets";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
@@ -114,7 +115,7 @@ const Topbar = (props: any) => {
           {!isTabletOrMobile && (
             <Typography>
               <Badge badgeContent={4}>
-                <NotificationsNoneSharp className={classes.bell} />
+                <img src={assets.notification} className={classes.bell} />
               </Badge>
             </Typography>
           )}

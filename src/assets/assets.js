@@ -29,6 +29,7 @@ import chevronRight from "./images/chevron-right.png";
 import wrongImage from "./images/wrongImage.png";
 import clockIcon from "./images/clockIcon.png";
 import pencilIcon from "./images/pencil.png";
+import notification from "./images/Notification.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -69,6 +70,7 @@ const assets = {
   wrongImage,
   clockIcon,
   pencilIcon,
+  notification,
 
   testProject1,
   testProject2,

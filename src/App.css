@@ -256,3 +256,9 @@ button[disabled]{
   background-color: #ADB5BD;
   color: white;
 }
+
+.MuiBadge-badge {
+  font-size: 8px !important;
+  font-weight: bold !important;
+  color: white !important;
+}
