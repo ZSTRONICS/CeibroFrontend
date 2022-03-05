@@ -52,6 +52,7 @@ const useStyles = makeStyles({
     width: "80%",
     display: "flex",
     alignItems: "center",
+    overflow: "hidden",
     justifyContent: "center",
     height: 30,
     maxWidth: 45,
@@ -65,6 +66,6 @@ const useStyles = makeStyles({
   },
   img: {
     width: "100%",
-    height: "100%",
+    height: "auto",
   },
 });

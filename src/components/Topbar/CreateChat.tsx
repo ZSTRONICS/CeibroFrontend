@@ -209,6 +209,7 @@ const CreateChat = () => {
                             <NameAvatar
                               firstName={member?.firstName}
                               surName={member?.surName}
+                              url={member?.profilePic}
                             />
                           </Grid>
                           <Grid item xs={8}>

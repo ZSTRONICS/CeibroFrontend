@@ -3,6 +3,7 @@ import { acceptAllInvites } from "redux/action/user.action";
 import {
   ACCEPT_ALL_INVITES,
   ACCEPT_INVITE,
+  GET_AVAILABLE_CHAT_USER,
   GET_MY_ALL_INVITES,
   GET_MY_CONNECTIONS,
   GET_MY_CONNECTIONS_COUNT,
@@ -52,8 +53,7 @@ const getMyAllInviteCount = apiCall({
 const getMyConnectionsCount = apiCall({
   type: GET_MY_CONNECTIONS_COUNT,
   method: "get",
-  path: "/users/connections/count",
-  
+  path: "/users/connections/count",  
 });
 
 
@@ -70,6 +70,12 @@ const updateProfilePic = apiCall({
   path: `/users/profile/pic`,
 });
 
+const getAvailableChatUsers = apiCall({
+  type: GET_AVAILABLE_CHAT_USER,
+  method: "get",
+  path: (payload: any) => `/chat/member/available/${payload?.other}`,
+});
+
 function* userSaga() {
   yield takeLatest(SEND_INVITATION, inviteUser);
   yield takeLatest(GET_MY_ALL_INVITES, getMyAllInvites);
@@ -82,7 +88,7 @@ function* userSaga() {
   yield takeLatest(GET_USER_BY_ID, getUserById);
   yield takeLatest(UPDATE_PROFILE_PIC, updateProfilePic);
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount);
-
+  yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers);
 }
 
 export default userSaga;

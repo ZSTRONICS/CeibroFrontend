@@ -1,4 +1,4 @@
-import { GET_MY_CONNECTIONS_COUNT, UPDATE_PROFILE_PIC } from "config/user.config";
+import { GET_AVAILABLE_CHAT_USER, GET_MY_CONNECTIONS_COUNT, UPDATE_PROFILE_PIC } from "config/user.config";
 import {
   ACCEPT_INVITE,
   GET_MY_ALL_INVITES,
@@ -19,4 +19,4 @@ export const getMyInvitesCount = createAction(GET_MY_INVITES_COUNT);
 export const getUserById = createAction(GET_USER_BY_ID);
 export const updateProfilePic = createAction(UPDATE_PROFILE_PIC);
 export const getMyConnectionsCount = createAction(GET_MY_CONNECTIONS_COUNT);
-
+export const getAvailableChatUsers = createAction(GET_AVAILABLE_CHAT_USER);

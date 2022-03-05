@@ -47,11 +47,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   console.log("connectiongh", connections);
 
   return (
-    <Grid container className={classes.wrapper} style={{ minHeight: 100 }}>
+    <Grid container className={classes.wrapper} style={{ minHeight: 300 }}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {connections.length < 1 && (
         <Typography className={classes.notRecord}>
-          Connection not found
+          No connection found
         </Typography>
       )}
 
@@ -170,7 +170,7 @@ const useStyles = makeStyles({
     zIndex: 999,
     left: 0,
     right: 0,
-    top: 100,
+    top: 200,
   },
   centerBtn: {
     ["@media (max-width:960px)"]: {

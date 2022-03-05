@@ -44,6 +44,7 @@ const ChatMembers = () => {
               <NameAvatar
                 firstName={member?.firstName}
                 surName={member?.surName}
+                url={member?.profilePic}
                 variant="small"
               />
             </Grid>
