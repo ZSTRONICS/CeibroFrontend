@@ -11,11 +11,15 @@ import {
   PermContactCalendar,
   PersonAdd,
 } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BiLogOut } from "react-icons/bi";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import {
+  getMyConnectionsCount,
+  getMyInvitesCount,
+} from "redux/action/user.action";
 import { RootState } from "redux/reducers";
 import colors from "../../assets/colors";
 import { logoutUser } from "../../redux/action/auth.action";
@@ -26,8 +30,19 @@ const ProfileBtn = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
+  const { connections } = useSelector((state: RootState) => state?.count);
+  const { invites } = useSelector((state: RootState) => state?.count);
+
   const image =
     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg";
+
+  useEffect(() => {
+    dispatch(getMyInvitesCount());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getMyConnectionsCount());
+  }, []);
 
   const history = useHistory();
 
@@ -101,7 +116,7 @@ const ProfileBtn = () => {
                 </Typography>
               </div>
               <div className={`${classes.menuAction} ongoing-badge`}>
-                <Badge color="primary" badgeContent={23}></Badge>
+                <Badge color="primary" badgeContent={connections}></Badge>
               </div>
             </div>
 
@@ -113,7 +128,7 @@ const ProfileBtn = () => {
                 </Typography>
               </div>
               <div className={`${classes.menuAction} rejected-badge`}>
-                <Badge color="primary" badgeContent={23}></Badge>
+                <Badge color="primary" badgeContent={invites}></Badge>
               </div>
             </div>
 

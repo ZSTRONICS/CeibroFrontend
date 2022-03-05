@@ -1,4 +1,10 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import {
+  Button,
+  Grid,
+  makeStyles,
+  Typography,
+  CircularProgress,
+} from "@material-ui/core";
 import colors from "../../assets/colors";
 import { INVITATIONS_LIST } from "../../constants/invitations.constants";
 import NameAvatar from "../Utills/Others/NameAvatar";
@@ -14,7 +20,7 @@ interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const [connections, setConnection] = useState<any>({});
-
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -30,14 +36,25 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         // console.log("all conn", res);
         setConnection(res?.data);
       },
+      finallyAction: () => {
+        setLoading(false);
+      },
     };
+    setLoading(true);
     dispatch(getMyConnections(payload));
   }, []);
 
   console.log("connectiongh", connections);
 
   return (
-    <Grid container className={classes.wrapper}>
+    <Grid container className={classes.wrapper} style={{ minHeight: 100 }}>
+      {loading && <CircularProgress size={20} className={classes.progress} />}
+      {connections.length < 1 && (
+        <Typography className={classes.notRecord}>
+          Connection not found
+        </Typography>
+      )}
+
       {connections?.map?.((connection: any) => {
         const user: UserInterface = connection?.sentByMe
           ? connection.to
@@ -134,6 +151,26 @@ const useStyles = makeStyles({
       width: "100%",
       marginTop: 10,
     },
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "100px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
+  },
+  notRecord: {
+    color: "#909090",
+    textAlign: "center",
+    position: "absolute",
+    zIndex: 999,
+    left: 0,
+    right: 0,
+    top: 100,
   },
   centerBtn: {
     ["@media (max-width:960px)"]: {

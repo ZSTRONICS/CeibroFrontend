@@ -7,6 +7,7 @@ import {
   Grid,
   TextField,
   Typography,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,9 +26,11 @@ const ProfileForm = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const passRef = useRef<HTMLInputElement>(null);
   const confirmPassRef = useRef<HTMLInputElement>(null);
-
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const { user: userData } = useSelector((state: RootState) => state.auth);
+
+  const isDiabled = !loading ? false : true;
 
   useEffect(() => {
     dispatch(getMyProfile());
@@ -35,7 +38,7 @@ const ProfileForm = () => {
 
   const handleSubmit = (values: any, action: any) => {
     // console.log("values BBB: ", values);
-
+    setLoading(true);
     const {
       firstName,
       surName,
@@ -75,6 +78,9 @@ const ProfileForm = () => {
         // if (confirmPassRef.current) {
         //   confirmPassRef.current.value = "";
         // }
+      },
+      finallyAction: () => {
+        setLoading(false);
       },
     };
     dispatch(updateMyProfile(payload));
@@ -475,9 +481,18 @@ const ProfileForm = () => {
                       color="primary"
                       size="medium"
                       type="submit"
-                      disabled={!isValid}
+                      disabled={isDiabled}
+                      // disabled={!isValid}
                     >
-                      Update
+                      <Typography className={classes.btnText}>
+                        Update
+                      </Typography>
+                      {isDiabled && loading && (
+                        <CircularProgress
+                          size={20}
+                          className={classes.progress}
+                        />
+                      )}
                     </Button>
                     <Button
                       variant="text"
@@ -534,6 +549,7 @@ const useStyles = makeStyles({
     color: colors.white,
     fontSize: 18,
   },
+
   trashPic: {
     background: colors.btnRed,
     color: colors.white,
@@ -553,5 +569,21 @@ const useStyles = makeStyles({
     marginTop: 10,
     fontSize: 14,
     fontWeight: 400,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    // marginLeft: "auto",
+    // marginRight: "auto"
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
+  },
+  btnText: {
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });

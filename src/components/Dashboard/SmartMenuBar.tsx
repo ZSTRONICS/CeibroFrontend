@@ -6,11 +6,30 @@ import { MdInsertInvitation } from "react-icons/md";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../redux/reducers";
+import {
+  getMyConnectionsCount,
+  getMyInvitesCount,
+} from "redux/action/user.action";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+
+  const dispatch = useDispatch();
+  const { connections } = useSelector((state: RootState) => state?.count);
+  const { invites } = useSelector((state: RootState) => state?.count);
+
+  useEffect(() => {
+    dispatch(getMyConnectionsCount());
+  }, []);
+
+  useEffect(() => {
+    dispatch(getMyInvitesCount());
+  }, []);
 
   const goToConnections = () => {
     history.push("connections");
@@ -28,7 +47,7 @@ const SmartMenuBar = () => {
               >
                 My connections
               </span>
-              <Badge badgeContent={123} color="primary"></Badge>
+              <Badge badgeContent={connections} color="primary"></Badge>
             </span>
           </Typography>
 
@@ -62,7 +81,7 @@ const SmartMenuBar = () => {
               >
                 Invitations
               </span>
-              <Badge badgeContent={4} color="error"></Badge>
+              <Badge badgeContent={invites} color="error"></Badge>
             </span>
           </Typography>
           <Button

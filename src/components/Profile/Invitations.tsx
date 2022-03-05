@@ -17,12 +17,6 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const { invites } = useSelector((state: RootState) => state?.count);
 
   useEffect(() => {
-    // const payload = {
-    //   success: (val: any) => {
-    //     console.log("valuesxxx", val);
-    //   },
-    // };
-
     dispatch(getMyInvitesCount());
   }, []);
 

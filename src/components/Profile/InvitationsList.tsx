@@ -4,6 +4,7 @@ import {
   List,
   ListItem,
   makeStyles,
+  CircularProgress,
   Typography,
 } from "@material-ui/core";
 // import * as React from 'react';
@@ -30,7 +31,9 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
     const classes = useStyles();
     const dispatch = useDispatch();
     const [myAllInvites, setmyAllInvites] = useState<any>({});
+    const [loading, setLoading] = useState<boolean>(false);
 
+    const isDiabled = !loading ? false : true;
     useEffect(() => {
       getMyInvites();
     }, []);
@@ -43,7 +46,11 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
           // console.log("all invites", res?.data[0]?.from);
           setmyAllInvites(res?.data);
         },
+        finallyAction: () => {
+          setLoading(false);
+        },
       };
+      setLoading(true);
       dispatch(getMyAllInvites(payload));
     };
 
@@ -61,7 +68,13 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
     };
 
     return (
-      <List>
+      <List style={{ minHeight: 300 }}>
+        {loading && <CircularProgress size={20} className={classes.progress} />}
+        {myAllInvites?.length < 1 && (
+          <Typography className={classes.notRecord}>
+            No Invitation Found
+          </Typography>
+        )}
         {myAllInvites?.map?.((invitation: InvitationInterface) => {
           return (
             <ListItem>
@@ -87,9 +100,19 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
                       className={classes.actionBtn}
                       color="primary"
                       variant="contained"
+                      disabled={isDiabled}
                       onClick={() => acceptHandler(invitation?._id, true)}
                     >
                       Accept
+                      {/* <Typography className={classes.btnText}>
+                        Accept
+                      </Typography>
+                      {isDiabled && loading && (
+                        <CircularProgress
+                          size={20}
+                          className={classes.progress}
+                        />
+                      )} */}
                     </Button>
                     <Button
                       className={classes.actionBtn}
@@ -143,5 +166,25 @@ const useStyles = makeStyles({
     fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "50px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
+  },
+  notRecord: {
+    color: "#909090",
+    textAlign: "center",
+    marginTop: "50px",
+  },
+  btnText: {
+    fontSize: 14,
+    fontWeight: "bold",
   },
 });

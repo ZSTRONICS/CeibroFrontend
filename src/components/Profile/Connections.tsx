@@ -17,12 +17,6 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const { connections } = useSelector((state: RootState) => state?.count);
 
   useEffect(() => {
-    // const payload = {
-    //   success: (val: any) => {
-    //     console.log("connections", val);
-    //   },
-    // };
-
     dispatch(getMyConnectionsCount());
   }, []);
 
