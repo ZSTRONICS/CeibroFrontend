@@ -5,7 +5,7 @@ import ImageTile from "./ImageTile";
 import "./login.css";
 import LoginForm from "./LoginForm";
 
-import { LoginInterface } from "../../../interfaces/Login.interface";
+import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import { useMediaQuery } from "react-responsive";
 import assets from "../../../assets/assets";
 import { useHistory } from "react-router";

@@ -3,36 +3,66 @@ import React from "react";
 import InputText from "../../../../Utills/Inputs/InputText";
 import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
 import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
+import _ from "lodash";
+import { useDispatch, useSelector } from "react-redux";
+import projectActions from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 
 const ProjectOverViewForm = () => {
+  const dispatch = useDispatch();
+  const projectOverview = useSelector(
+    (state: RootState) => state.project.projectOverview
+  );
+  const handleTitleChange = _.debounce((e) => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        title: e.target.value,
+      })
+    );
+  }, 500);
+
+  const handleLocationChange = _.debounce((e) => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        location: e.target.value,
+      })
+    );
+  }, 500);
+  const handleDescriptionChange = _.debounce((e) => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        description: e.target.value,
+      })
+    );
+  }, 500);
+
   return (
     <Grid container>
       <Grid item xs={12}>
-        <InputText placeholder="Enter Project title" />
+        <InputText
+          onChange={handleTitleChange}
+          name="title"
+          placeholder="Enter Project title"
+        />
       </Grid>
 
       <Grid item xs={12} style={styles.inputWrapper}>
-        <InputText placeholder="Enter project description" />
+        <InputText
+          onChange={handleLocationChange}
+          name="location"
+          placeholder="Enter a location address"
+        />
       </Grid>
 
       <Grid item xs={12} style={styles.inputWrapper}>
-        <InputTextArea placeholder="Enter a location address" />
-      </Grid>
-
-      <Grid item xs={12} style={styles.inputWrapper}>
-        <InputSwitch label="Add time" />
-      </Grid>
-
-      <Grid item xs={12} style={styles.inputWrapper}>
-        <InputSwitch label="Quantity" />
-      </Grid>
-
-      <Grid item xs={12} style={styles.inputWrapper}>
-        <InputSwitch label="Comment" />
-      </Grid>
-
-      <Grid item xs={12} style={styles.inputWrapper}>
-        <InputSwitch label="Photo" />
+        <InputTextArea
+          onChange={handleDescriptionChange}
+          name="description"
+          placeholder="Enter project description"
+        />
       </Grid>
     </Grid>
   );

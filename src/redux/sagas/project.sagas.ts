@@ -1,5 +1,7 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
+  CREATE_PROJECT,
+  GET_AVAILABLE_PROJECT_USERS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
 } from "../../config/project.config";
@@ -26,10 +28,17 @@ const getProjectMembers = apiCall({
   path: (payload) => `/project/members/${payload?.other}`,
 });
 
+const createProject = apiCall({
+  type: GET_PROJECTS_MEMBERS,
+  method: "post",
+  path: `/project`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
+  yield takeLatest(CREATE_PROJECT, createProject);
 }
 
 export default projectSaga;

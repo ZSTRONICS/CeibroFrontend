@@ -103,5 +103,9 @@ const projectReduxConfigs = {
 };
 export const GET_PROJECTS = "GET_PROJECTS";
 export const GET_PROJECTS_MEMBERS = "GET_PROJECT_MEMBERS";
+export const CREATE_PROJECT = "CREATE_PROJECT";
+export const SET_PROJECT_OVERVIEW = "SET_PROJECT_OVERVIEW";
+export const GET_AVAILABLE_PROJECT_USERS = "GET_AVAILABLE_PROJECT_USERS";
+export const SET_SELECTED_PROJECT = "SET_SELECTED_PROJECT";
 
 export default projectReduxConfigs;

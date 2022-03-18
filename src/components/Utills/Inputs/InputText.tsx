@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import "./inputText.css";
 
 interface InputTextInterface {
@@ -6,10 +6,11 @@ interface InputTextInterface {
   value?: string;
   onChange?: (e: any) => void;
   className?: any;
+  name?: any;
 }
 
 const InputText: FC<InputTextInterface> = (props) => {
-  const { placeholder, value, className } = props;
+  const { placeholder, value, className, name } = props;
   return (
     <div style={{ width: "100%" }}>
       <input
@@ -18,6 +19,7 @@ const InputText: FC<InputTextInterface> = (props) => {
         className={"input-text emptyBorder " + className}
         onChange={(e: any) => props.onChange?.(e)}
         value={value}
+        name={name}
       />
     </div>
   );

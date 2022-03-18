@@ -1,51 +1,52 @@
-import React, { FC, useState } from 'react'
-import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Switch, { SwitchClassKey, SwitchProps } from '@material-ui/core/Switch';
+import React, { FC, useState } from "react";
+import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 
-import './inputText.css'
-import { Typography } from '@material-ui/core';
+import "./inputText.css";
+import { Typography } from "@material-ui/core";
 
 interface InputSwitchtInterface {
-    label: string
+  label: string;
+  onChange?: (e: any) => void;
+  value?: boolean;
+  name?: string;
 }
 
 interface Styles extends Partial<Record<SwitchClassKey, string>> {
-    focusVisible?: string;
-  }
-  
-  interface Props extends SwitchProps {
-    classes: Styles;
-  }
+  focusVisible?: string;
+}
+
+interface Props extends SwitchProps {
+  classes: Styles;
+}
 
 const InputTextArea: FC<InputSwitchtInterface> = (props) => {
-    const [checked, setChecked] = useState(true)
-    const { label } = props
+  const { label, onChange, value, name } = props;
 
-    const toggle = () => setChecked(!checked)
+  return (
+    <div style={styles.wrapper}>
+      <FormControlLabel
+        control={<IOSSwitch checked={value} name={name} />}
+        label={<Typography style={styles.formControlLabel}>{label}</Typography>}
+        onClick={(e: any) => onChange?.(e)}
+        name={name}
+      />
+    </div>
+  );
+};
 
-    return (
-        <div style={styles.wrapper}>
-            <FormControlLabel
-                control={<IOSSwitch checked={checked} name="checkedB" />}
-                label={<Typography style={styles.formControlLabel}>{label}</Typography>}
-                onClick={toggle}
-            />
-        </div>
-    )
-}
-
-export default InputTextArea
+export default InputTextArea;
 
 const styles = {
-    wrapper: {
-        width: '100%'
-    },
-    formControlLabel: {
-        fontSize: 14,
-        fontWeight: 500
-    }
-}
+  wrapper: {
+    width: "100%",
+  },
+  formControlLabel: {
+    fontSize: 14,
+    fontWeight: 500,
+  },
+};
 
 const IOSSwitch = withStyles((theme: Theme) =>
   createStyles({
@@ -57,18 +58,18 @@ const IOSSwitch = withStyles((theme: Theme) =>
     },
     switchBase: {
       padding: 1,
-      '&$checked': {
-        transform: 'translateX(16px)',
+      "&$checked": {
+        transform: "translateX(16px)",
         color: theme.palette.common.white,
-        '& + $track': {
-          backgroundColor: '#52d869',
+        "& + $track": {
+          backgroundColor: "#52d869",
           opacity: 1,
-          border: 'none',
+          border: "none",
         },
       },
-      '&$focusVisible $thumb': {
-        color: '#52d869',
-        border: '6px solid #fff',
+      "&$focusVisible $thumb": {
+        color: "#52d869",
+        border: "6px solid #fff",
       },
     },
     thumb: {
@@ -80,11 +81,11 @@ const IOSSwitch = withStyles((theme: Theme) =>
       border: `1px solid ${theme.palette.grey[400]}`,
       backgroundColor: theme.palette.grey[50],
       opacity: 1,
-      transition: theme.transitions.create(['background-color', 'border']),
+      transition: theme.transitions.create(["background-color", "border"]),
     },
     checked: {},
     focusVisible: {},
-  }),
+  })
 )(({ classes, ...props }: Props) => {
   return (
     <Switch

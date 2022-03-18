@@ -1,65 +1,110 @@
-import { Grid, makeStyles } from '@material-ui/core'
-import React from 'react'
-import DatePicker from '../../../../Utills/Inputs/DatePicker'
-import SelectDropdown from '../../../../Utills/Inputs/SelectDropdown'
-import ImagePicker from '../../../../Utills/Inputs/ImagePicker'
-import HorizontalBreak from '../../../../Utills/Others/HorizontalBreak'
-import colors from '../../../../../assets/colors'
-import ProjectOverViewForm from './ProjectOverViewForm'
+import { Grid, makeStyles } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import DatePicker from "../../../../Utills/Inputs/DatePicker";
+import SelectDropdown, {
+  dataInterface,
+} from "../../../../Utills/Inputs/SelectDropdown";
+import ImagePicker from "../../../../Utills/Inputs/ImagePicker";
+import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
+import colors from "../../../../../assets/colors";
+import ProjectOverViewForm from "./ProjectOverViewForm";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
+import { projectOverviewInterface } from "constants/interfaces/project.interface";
+import _ from "lodash";
+import projectActions from "redux/action/project.action";
+import { getAvailableUsers } from "redux/action/user.action";
 
 const ProjectOverview = () => {
+  const classes = useStyles();
+  const projectOverview: projectOverviewInterface = useSelector(
+    (state: RootState) => state.project.projectOverview
+  );
+  const [data, setData] = useState<dataInterface[]>([]);
+  const dispatch = useDispatch();
 
-    const classes = useStyles()
+  useEffect(() => {
+    dispatch(
+      getAvailableUsers({
+        success: (res) => {
+          setData(res.data);
+        },
+      })
+    );
+  }, []);
 
-    return (
-        <>
-        <Grid container>
-                <Grid item xs={12} sm={6} md={3}>
-                    <DatePicker/>
-                </Grid>
+  const handleDateChange = _.debounce((e: any) => {
+    const date = e?.target?.value;
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        dueDate: date,
+      })
+    );
+  }, 300);
 
-                <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
-                    <SelectDropdown title="Owner"/>
-                </Grid>
+  const handleOwnerChange = _.debounce((user: any) => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        owner: user,
+      })
+    );
+  }, 300);
 
-                <Grid item xs={12} md={8} style={{ padding: '20px 5px'}}>
-                    <HorizontalBreak color={colors.grey}/>
-                </Grid>
-            </Grid>
+  return (
+    <>
+      <Grid container>
+        <Grid item xs={12} sm={6} md={3}>
+          <DatePicker
+            value={projectOverview.dueDate}
+            onChange={handleDateChange}
+          />
+        </Grid>
 
-            <Grid container className={classes.secondForm}>
-                <Grid item xs={12} md={2} className={classes.imagePicker}>
-                    <ImagePicker/>
-                </Grid>
+        <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
+          <SelectDropdown
+            handleChange={handleOwnerChange}
+            data={data}
+            value={projectOverview?.owner}
+            title="Owner"
+          />
+        </Grid>
 
-                <Grid item xs={12} md={6}>
-                    <ProjectOverViewForm />
-                </Grid>
+        <Grid item xs={12} md={8} style={{ padding: "20px 5px" }}>
+          <HorizontalBreak color={colors.grey} />
+        </Grid>
+      </Grid>
 
-            </Grid>
-        </>
-    )
-}
+      <Grid container className={classes.secondForm}>
+        <Grid item xs={12} md={2} className={classes.imagePicker}>
+          <ImagePicker />
+        </Grid>
 
-export default ProjectOverview
+        <Grid item xs={12} md={6}>
+          <ProjectOverViewForm />
+        </Grid>
+      </Grid>
+    </>
+  );
+};
 
-
+export default ProjectOverview;
 
 const useStyles = makeStyles({
-    datePickerWrapper: {
-        paddingLeft: 20,
-        ['@media (max-width:600px)']: {
-            paddingLeft: 0,
-            paddingTop: 20
-        }
+  datePickerWrapper: {
+    paddingLeft: 20,
+    ["@media (max-width:600px)"]: {
+      paddingLeft: 0,
+      paddingTop: 20,
     },
-    secondForm: {
-        paddingTop: 0
+  },
+  secondForm: {
+    paddingTop: 0,
+  },
+  imagePicker: {
+    ["@media (max-width:600px)"]: {
+      paddingBottom: 20,
     },
-    imagePicker: {
-        ['@media (max-width:600px)']: {
-            paddingBottom: 20
-        }
-    }
-})
-
+  },
+});

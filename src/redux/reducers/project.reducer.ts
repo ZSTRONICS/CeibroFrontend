@@ -2,14 +2,22 @@ import { ActionInterface } from ".";
 import config, {
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
+  SET_PROJECT_OVERVIEW,
+  SET_SELECTED_PROJECT,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
+import {
+  projectOverviewInterface,
+  projectOverviewTemplate,
+} from "constants/interfaces/project.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
   allProjects: any;
   projectMembers: [];
+  selectedProject: any;
+  projectOverview: projectOverviewInterface | null;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -17,6 +25,8 @@ const projectReducer: ProjectReducerInt = {
   menue: 1,
   allProjects: [],
   projectMembers: [],
+  selectedProject: null,
+  projectOverview: projectOverviewTemplate,
 };
 
 const AppReducer = (state = projectReducer, action: ActionInterface) => {
@@ -60,6 +70,22 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
       return {
         ...state,
         projectMembers: [],
+      };
+    }
+
+    case SET_PROJECT_OVERVIEW: {
+      return {
+        ...state,
+        projectOverview: {
+          ...action.payload,
+        },
+      };
+    }
+
+    case SET_SELECTED_PROJECT: {
+      return {
+        ...state,
+        selectedProject: action.payload,
       };
     }
 

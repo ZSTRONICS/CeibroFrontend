@@ -4,6 +4,7 @@ import {
   ACCEPT_ALL_INVITES,
   ACCEPT_INVITE,
   GET_AVAILABLE_CHAT_USER,
+  GET_AVAILABLE_USERS,
   GET_MY_ALL_INVITES,
   GET_MY_CONNECTIONS,
   GET_MY_CONNECTIONS_COUNT,
@@ -48,14 +49,12 @@ const getMyAllInviteCount = apiCall({
   type: GET_MY_INVITES_COUNT,
   method: "get",
   path: "/users/invite/count",
-  
 });
 const getMyConnectionsCount = apiCall({
   type: GET_MY_CONNECTIONS_COUNT,
   method: "get",
-  path: "/users/connections/count",  
+  path: "/users/connections/count",
 });
-
 
 const getUserById = apiCall({
   type: GET_USER_BY_ID,
@@ -76,6 +75,12 @@ const getAvailableChatUsers = apiCall({
   path: (payload: any) => `/chat/member/available/${payload?.other}`,
 });
 
+const getAvailableUsers = apiCall({
+  type: GET_AVAILABLE_USERS,
+  method: "get",
+  path: `/users/available`,
+});
+
 function* userSaga() {
   yield takeLatest(SEND_INVITATION, inviteUser);
   yield takeLatest(GET_MY_ALL_INVITES, getMyAllInvites);
@@ -89,6 +94,7 @@ function* userSaga() {
   yield takeLatest(UPDATE_PROFILE_PIC, updateProfilePic);
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount);
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers);
+  yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers);
 }
 
 export default userSaga;

@@ -8,6 +8,7 @@
   --light-black: rgb(125, 126, 128);
   --btn-red: #f94340;
   --aqua-green: #55bcb3;
+  --purple-grey: #DBDBE5;
 }
 
 body {
@@ -220,7 +221,11 @@ input[type="file"] {
   line-height: 3;
 }
 
-input::-webkit-input-placeholder {
+input, textarea {
+  background-color: white !important;
+}
+input::-webkit-input-placeholder,
+texarea::-webkit-input-placeholder{
   font-size: 14px !important;
   color: #AEADBD !important;
   font-weight: 500 !important;
@@ -248,6 +253,7 @@ textarea::-webkit-input-placeholder{
     font-size: 14px !important;
     font-weight: 500;
     font-family: Inter;
+    color: #AEADBD !important;
 }
 
 button:disabled,
