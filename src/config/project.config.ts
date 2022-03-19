@@ -82,7 +82,7 @@ export function getProjectStatus(): ProjectMenues[] {
       count: 1,
     },
     {
-      title: "Approved",
+      title: "Approvedww",
       count: 4,
     },
     {
@@ -108,5 +108,7 @@ export const CREATE_PROJECT = "CREATE_PROJECT";
 export const SET_PROJECT_OVERVIEW = "SET_PROJECT_OVERVIEW";
 export const GET_AVAILABLE_PROJECT_USERS = "GET_AVAILABLE_PROJECT_USERS";
 export const SET_SELECTED_PROJECT = "SET_SELECTED_PROJECT";
+export const GET_FILTER_PROJECTS = "GET_FILTER_PROJECTS";
+
 
 export default projectReduxConfigs;

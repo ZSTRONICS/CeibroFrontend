@@ -1,5 +1,6 @@
 import { ActionInterface } from ".";
 import config, {
+  GET_FILTER_PROJECTS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -21,6 +22,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   projectOverview: projectOverviewInterface | null;
+  filter: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -31,6 +33,8 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
+  filter: [],
+
 };
 
 const AppReducer = (state = projectReducer, action: ActionInterface) => {
@@ -97,6 +101,12 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
       return {
         ...state,
         selectedProject: action.payload,
+      };
+    }
+     case GET_FILTER_PROJECTS: {
+      return {
+        ...state,
+        filter: action.payload,
       };
     }
 
