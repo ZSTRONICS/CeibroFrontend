@@ -28,7 +28,6 @@ import {
   GET_QUESTIONIAR,
   SAVE_QUESTIONIAR,
   SAVE_QUESTIONIAR_ANSWERS,
-  UPDATE_MESSAGE_BY_ID,
   SET_LOADING_MESSAGES,
   GET_USER_QUESTIONIAR_ANSWER,
   GET_UP_MESSAGES,
@@ -44,7 +43,7 @@ import { QuestioniarInterface } from "../../constants/interfaces/questioniar.int
 import { getNewQuestionTemplate } from "../../constants/questioniar.constants";
 import { CREATE_ROOM } from "../../config/auth.config";
 
-interface ChatReducer {
+interface ChatReducerInt {
   chat: any;
   messages: any;
   selectedChat: null;
@@ -77,7 +76,7 @@ interface ChatReducer {
   createQuestioniarLoading: boolean;
 }
 
-const intialStatue: ChatReducer = {
+const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
   selectedChat: null,

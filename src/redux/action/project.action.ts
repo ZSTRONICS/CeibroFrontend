@@ -4,6 +4,7 @@ import configs, {
   GET_AVAILABLE_PROJECT_USERS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
+  GET_PROJECTS_WITH_PAGINATION,
   SET_PROJECT_OVERVIEW,
 } from "../../config/project.config";
 import { createAction } from "./action";
@@ -33,6 +34,9 @@ const projectActions = {
   },
 };
 
+export const getProjectsWithPagination = createAction(
+  GET_PROJECTS_WITH_PAGINATION
+);
 export const getAllProjects = createAction(GET_PROJECTS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);

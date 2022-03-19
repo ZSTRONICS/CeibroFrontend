@@ -14,7 +14,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const classes = useStyles();
   const [error, setError] = useState("");
   const dispatch = useDispatch();
-  const { invites } = useSelector((state: RootState) => state?.count);
+  const { invites } = useSelector((state: RootState) => state?.user);
 
   useEffect(() => {
     dispatch(getMyInvitesCount());

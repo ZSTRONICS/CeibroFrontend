@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     overflowY: "auto",
     background: colors.lightGrey,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       marginLeft: 0,
       padding: 0,
     },
@@ -65,10 +65,10 @@ const useStyles = makeStyles((theme) => ({
   children: {
     paddingBottom: 50,
     padding: "10px 35px",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: "10px 10px",
     },
-    ["@media (max-width:1280px)"]: {
+    "@media (max-width:1280px)": {
       padding: "10px 20px",
     },
   },

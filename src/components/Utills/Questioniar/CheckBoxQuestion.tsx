@@ -1,24 +1,15 @@
 import {
-  Grid,
-  Typography,
-  makeStyles,
-  FormControl,
-  FormControlLabel,
-  RadioGroup,
-  Radio,
-  FormGroup,
   Checkbox,
-  CheckboxProps,
+  CheckboxProps, FormControl,
+  FormControlLabel, FormGroup, Grid, makeStyles, Typography
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
-import { RadioProps } from "@material-ui/core/Radio";
-import { CheckBox } from "@material-ui/icons";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
 import { setQuestions } from "../../../redux/action/chat.action";
+import { RootState } from "../../../redux/reducers";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
 }
@@ -59,8 +50,6 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
     setSelected(event.target.checked ? [...selected, event.target.value] : selected.filter((data: any) => data !== event.target.value));
     // setSelected(+(event.target as HTMLInputElement).value);
   };
-
-  console.log('selectesa rere', selected)
 
   return (
     <Grid container className={classes.wrapper}>

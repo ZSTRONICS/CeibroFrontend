@@ -1,10 +1,7 @@
 import { toast } from "react-toastify";
 import { call, put, select } from "redux-saga/effects";
-// import { SHOW_TOAST } from "../redux/constants";
 import axios from "./axios";
 import { requestFail, requestPending, requestSuccess } from "./status";
-
-const SHOW_TOAST = "sld";
 
 interface ApiCall {
   type: string;
@@ -47,7 +44,7 @@ const apiCall = ({
     }
     header["Access-Control-Allow-Origin"] = "*";
 
-    if (idToken && idToken != "undefined" && idToken != "null") {
+    if (idToken && idToken !== "undefined" && idToken !== "null") {
       console.log("hader is ", typeof idToken);
       header["Authorization"] = `Bearer ${JSON.parse(idToken)?.access?.token}`;
     }

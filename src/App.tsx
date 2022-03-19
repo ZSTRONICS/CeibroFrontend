@@ -27,6 +27,7 @@ import { sounds } from "./assets/assets";
 import { SERVER_URL } from "./utills/axios";
 import CreateQuestioniarDrawer from "./components/Chat/Questioniar/CreateQuestioniar";
 import ViewQuestioniarDrawer from "./components/Chat/Questioniar/ViewQuestioniar";
+import "moment-timezone";
 
 export const SocketContext = createContext(null);
 interface MyApp {}

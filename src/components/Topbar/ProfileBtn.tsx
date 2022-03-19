@@ -19,6 +19,7 @@ import { useHistory } from "react-router";
 import {
   getMyConnectionsCount,
   getMyInvitesCount,
+  openViewInvitations,
 } from "redux/action/user.action";
 import { RootState } from "redux/reducers";
 import colors from "../../assets/colors";
@@ -30,8 +31,8 @@ const ProfileBtn = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections } = useSelector((state: RootState) => state?.count);
-  const { invites } = useSelector((state: RootState) => state?.count);
+  const { connections } = useSelector((state: RootState) => state.user);
+  const { invites } = useSelector((state: RootState) => state?.user);
 
   const image =
     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg";
@@ -120,7 +121,7 @@ const ProfileBtn = () => {
               </div>
             </div>
 
-            <div className={`${classes.menuItem} dropdown-menu`}>
+            <div className={`${classes.menuItem} dropdown-menu`} onClick={() => dispatch(openViewInvitations())}>
               <div className={classes.smallMenuText}>
                 <PersonAdd className={classes.smallMenuIcon} />
                 <Typography className={classes.smallText}>

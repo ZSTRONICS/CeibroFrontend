@@ -2,13 +2,10 @@ import React, { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Badge, Grid, Typography } from "@material-ui/core";
 import colors from "../../../assets/colors";
-import { BsClipboard } from "react-icons/bs";
-import { HiOutlineChatAlt } from "react-icons/hi";
 import {
   getColorByStatus,
   getTextColorByStatus,
 } from "../../../config/project.config";
-import { AttachFile } from "@material-ui/icons";
 
 import { TaskCardInterface } from "../../../constants/interfaces/task.interface";
 import assets from "assets/assets";
@@ -95,19 +92,19 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
 
         <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip} style={{ flex: 2, paddingLeft: 0 }}>
-            <img src={assets.clipboardIcon} />
+            <img src={assets.clipboardIcon} alt="ceibro" />
             <Typography style={{ paddingLeft: 5 }} className={classes.iconText}>
               {subTasks} subtask(s)
             </Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.clip} />
+            <img src={assets.clip} alt="ceibro" />
             <Typography className={classes.iconText}>{docs}</Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.chatIcon} />
+            <img src={assets.chatIcon} alt="ceibro" />
             <Typography className={classes.iconText}>{chat}</Typography>
           </div>
         </Grid>

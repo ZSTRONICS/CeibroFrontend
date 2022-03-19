@@ -1,5 +1,4 @@
-import { put, takeLatest } from "redux-saga/effects";
-import { acceptAllInvites } from "redux/action/user.action";
+import { takeLatest } from "redux-saga/effects";
 import {
   ACCEPT_ALL_INVITES,
   ACCEPT_INVITE,

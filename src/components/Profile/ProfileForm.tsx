@@ -178,7 +178,7 @@ const ProfileForm = () => {
                       fullWidth
                       size="small"
                       id="outlined-basic"
-                      label="First Name"
+                      label="Name"
                       variant="outlined"
                       name="firstName"
                       value={values.firstName}
@@ -586,4 +586,8 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: "bold",
   },
+  placehol: {
+    fontWeight: 500,
+    fontSize: 12
+  }
 });

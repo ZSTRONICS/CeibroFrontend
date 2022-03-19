@@ -12,7 +12,9 @@ import { RootState } from "../../redux/reducers";
 import {
   getMyConnectionsCount,
   getMyInvitesCount,
+  openViewInvitations,
 } from "redux/action/user.action";
+import ViewInvitations from "components/Profile/ViewInvitations";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
@@ -20,8 +22,8 @@ const SmartMenuBar = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const dispatch = useDispatch();
-  const { connections } = useSelector((state: RootState) => state?.count);
-  const { invites } = useSelector((state: RootState) => state?.count);
+  const { connections } = useSelector((state: RootState) => state?.user);
+  const { invites } = useSelector((state: RootState) => state?.user);
 
   useEffect(() => {
     dispatch(getMyConnectionsCount());
@@ -89,9 +91,13 @@ const SmartMenuBar = () => {
             color="primary"
             variant="outlined"
             className={classes.viewBtn}
+            onClick={() => dispatch(openViewInvitations())}
           >
             View
           </Button>
+          <ViewInvitations 
+            hideBtn={true}
+          />
         </div>
       </Grid>
 

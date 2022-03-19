@@ -153,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
     color: colors.black,
   },
   title: {
-    flex: 3,
+    flex: 4,
     fontSize: 16,
     fontWeight: 500,
   },

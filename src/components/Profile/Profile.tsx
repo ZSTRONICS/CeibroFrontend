@@ -1,22 +1,15 @@
-import React from "react";
 import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
   Grid,
-  makeStyles,
-  TextField,
+  makeStyles
 } from "@material-ui/core";
-import { BiTrash } from "react-icons/bi";
-import colors from "../../assets/colors";
-import { Create, Delete } from "@material-ui/icons";
-import Requests from "./Requests";
+import React from "react";
+import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
+import { RootState } from "redux/reducers";
+import colors from "../../assets/colors";
 import ProfileForm from "./ProfileForm";
 import ProfileImagePicker from "./ProfileImagePicker";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import Requests from "./Requests";
 
 const Dashboard = () => {
   const classes = useStyles();

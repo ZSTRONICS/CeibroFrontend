@@ -14,7 +14,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { connections } = useSelector((state: RootState) => state?.count);
+  const { connections } = useSelector((state: RootState) => state?.user);
 
   useEffect(() => {
     dispatch(getMyConnectionsCount());

@@ -1,10 +1,9 @@
 import { toast } from "react-toastify";
 import { REGISTER } from "redux-persist/es/constants";
-import { put, takeLatest } from "redux-saga/effects";
+import { takeLatest } from "redux-saga/effects";
 import {
   CREATE_ROOM,
   GET_PROFILE,
-  GET_USERS,
   LOGIN,
   UPDATE_MY_PROFILE,
   VERIFY_EMAIL,
@@ -55,8 +54,6 @@ const getMyProfile = apiCall({
   path: "/users/profile",
 });
 
-
-
 const updateMyProfile = apiCall({
   type: UPDATE_MY_PROFILE,
   method: "patch",
@@ -73,8 +70,6 @@ function* projectSaga() {
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
   yield takeLatest(UPDATE_MY_PROFILE, updateMyProfile);
-
-  
 }
 
 export default projectSaga;

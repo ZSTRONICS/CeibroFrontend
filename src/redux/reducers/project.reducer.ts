@@ -2,6 +2,7 @@ import { ActionInterface } from ".";
 import config, {
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
+  GET_PROJECTS_WITH_PAGINATION,
   SET_PROJECT_OVERVIEW,
   SET_SELECTED_PROJECT,
 } from "../../config/project.config";
@@ -10,11 +11,13 @@ import {
   projectOverviewInterface,
   projectOverviewTemplate,
 } from "constants/interfaces/project.interface";
+import { ProjectInterface } from "components/Utills/ProjectCard/ProjectCard";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
   allProjects: any;
+  projects: ProjectInterface[];
   projectMembers: [];
   selectedProject: any;
   projectOverview: projectOverviewInterface | null;
@@ -24,6 +27,7 @@ const projectReducer: ProjectReducerInt = {
   drawerOpen: false,
   menue: 1,
   allProjects: [],
+  projects: [],
   projectMembers: [],
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
@@ -56,6 +60,13 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
           label: project?.name,
           value: project.id,
         })),
+      };
+    }
+
+    case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
+      return {
+        ...state,
+        projects: action.payload?.results,
       };
     }
 

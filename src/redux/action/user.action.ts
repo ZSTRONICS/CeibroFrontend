@@ -1,7 +1,9 @@
 import {
+  CLOSE_VIEW_INVITATIONS,
   GET_AVAILABLE_CHAT_USER,
   GET_AVAILABLE_USERS,
   GET_MY_CONNECTIONS_COUNT,
+  OPEN_VIEW_INVITATIONS,
   UPDATE_PROFILE_PIC,
 } from "config/user.config";
 import {
@@ -26,3 +28,5 @@ export const updateProfilePic = createAction(UPDATE_PROFILE_PIC);
 export const getMyConnectionsCount = createAction(GET_MY_CONNECTIONS_COUNT);
 export const getAvailableChatUsers = createAction(GET_AVAILABLE_CHAT_USER);
 export const getAvailableUsers = createAction(GET_AVAILABLE_USERS);
+export const openViewInvitations = createAction(OPEN_VIEW_INVITATIONS);
+export const closeViewIvitations = createAction(CLOSE_VIEW_INVITATIONS);

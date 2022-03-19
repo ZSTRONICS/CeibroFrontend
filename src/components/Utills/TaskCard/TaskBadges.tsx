@@ -1,4 +1,4 @@
-import { Badge, Grid } from "@material-ui/core";
+import { Badge } from "@material-ui/core";
 import { getStyleClass } from "config/styles.config";
 import React from "react";
 

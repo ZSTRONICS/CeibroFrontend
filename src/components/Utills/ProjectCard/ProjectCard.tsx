@@ -18,7 +18,7 @@ interface ProjectCardInterface {
 }
 
 export interface ProjectInterface {
-  src: string;
+  projectPhoto: string;
   dueDate: string;
   owner: string;
   title: string;
@@ -26,22 +26,14 @@ export interface ProjectInterface {
   docs: number;
   users: number;
   chat: number;
-  status:
-    | "All"
-    | "Ongoing"
-    | "Approved"
-    | "Completed"
-    | "Draft"
-    | "Submitted"
-    | "Rejected"
-    | "Done";
+  publishStatus: string;
   statusDate: string;
 }
 
 const ProjectCard: FC<ProjectCardInterface> = (props) => {
   const { project } = props;
   const {
-    src,
+    projectPhoto: src,
     dueDate,
     owner,
     title,
@@ -49,7 +41,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     docs,
     users,
     chat,
-    status,
+    publishStatus: status,
     statusDate,
   } = project;
   const classes = useStyles();
@@ -80,9 +72,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               <Typography className={classes.statusText}>{status}</Typography>
             </div>
             <div className={classes.dateWrapper}>
-              <Typography className={classes.statusDate}>
-                {statusDate}
-              </Typography>
+              <Typography className={classes.statusDate}>{dueDate}</Typography>
             </div>
           </div>
           <img className={classes.myImage} src={src} alt="ceibro-project-img" />

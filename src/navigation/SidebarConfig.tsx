@@ -1,7 +1,3 @@
-import { VscHome } from "react-icons/vsc";
-import { BsChatSquareDots } from "react-icons/bs";
-import { BiTask } from "react-icons/bi";
-import { AiOutlineFolder } from "react-icons/ai";
 import assets from "assets/assets";
 
 export interface SingleConfig {

@@ -18,7 +18,7 @@ import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
 import sidebarChatIcon from "./images/sidebarChat.png";
 import chatIcon from "./images/chatIcon.png";
-import sidebarPaseIcon from "./images/sidebarPaste.png";
+import sidebarPaseIcon from "./images/testclipboard.png";
 import questionMarkIcon from "./images/questionMark.png";
 import clip from "./images/clip.png";
 import searchIcon from "./images/searchIcon.png";

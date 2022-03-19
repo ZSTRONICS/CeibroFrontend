@@ -12,13 +12,16 @@ import {
   Typography,
 } from "@material-ui/core";
 import React, { useRef, useState } from "react";
-import { acceptAllInvites } from "redux/action/user.action";
+import { acceptAllInvites, closeViewIvitations, openViewInvitations } from "redux/action/user.action";
 import colors from "../../assets/colors";
 import NameAvatar from "../Utills/Others/NameAvatar";
 import InvitationsList from "./InvitationsList";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
-interface IViewInvitationsProps {}
+interface IViewInvitationsProps {
+  hideBtn?: boolean
+}
 
 const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
   props
@@ -27,9 +30,12 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
   const ref = useRef();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  const { openInvites } = useSelector((state: RootState) => state.user)
+  const { hideBtn } = props
 
-  const handleToggle = () => {
-    setOpen(!open);
+  const handleOpen = () => {
+    // setOpen(!open);
+    dispatch(openViewInvitations())
   };
 
   //   React.useEffect(() => {
@@ -65,12 +71,16 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
     dispatch(acceptAllInvites(payload));
   };
 
+  const handleClose = () => {
+    dispatch(closeViewIvitations())
+  }
+
   return (
     <>
-      <Button color="primary" onClick={handleToggle} variant="outlined">
+      {!hideBtn && <Button color="primary" onClick={handleOpen} variant="outlined">
         View
-      </Button>
-      <Dialog onClose={handleToggle} open={open}>
+      </Button>}
+      <Dialog onClose={handleClose} open={openInvites}>
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <Button

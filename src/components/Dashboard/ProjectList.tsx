@@ -21,7 +21,7 @@ export default ProjectList;
 
 const projects: ProjectInterface[] = [
   {
-    src: assets.testProject1,
+    projectPhoto: assets.testProject1,
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New project Title 1",
@@ -29,11 +29,11 @@ const projects: ProjectInterface[] = [
     docs: 250,
     users: 47,
     chat: 0,
-    status: "Draft",
+    publishStatus: "Draft",
     statusDate: "22-05-2021",
   },
   {
-    src: assets.testProject2,
+    projectPhoto: assets.testProject2,
     dueDate: "26-07-2021",
     owner: "IIljalajeadfadf ",
     title: "New project Title 2",
@@ -41,11 +41,11 @@ const projects: ProjectInterface[] = [
     docs: 10,
     users: 97,
     chat: 5,
-    status: "Ongoing",
+    publishStatus: "Ongoing",
     statusDate: "22-05-2021",
   },
   {
-    src: assets.testProject3,
+    projectPhoto: assets.testProject3,
     dueDate: "26-07-2021",
     owner: "Bjlaksdolajev",
     title: "New project Title 3",
@@ -53,11 +53,11 @@ const projects: ProjectInterface[] = [
     docs: 250,
     users: 47,
     chat: 0,
-    status: "Done",
+    publishStatus: "Done",
     statusDate: "22-05-2021",
   },
   {
-    src: assets.testProject4,
+    projectPhoto: assets.testProject4,
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New project Title 1",
@@ -65,7 +65,7 @@ const projects: ProjectInterface[] = [
     docs: 250,
     users: 47,
     chat: 0,
-    status: "Draft",
+    publishStatus: "Draft",
     statusDate: "22-05-2021",
   },
 ];

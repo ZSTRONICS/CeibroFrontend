@@ -1,9 +1,9 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
   CREATE_PROJECT,
-  GET_AVAILABLE_PROJECT_USERS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
+  GET_PROJECTS_WITH_PAGINATION,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
 
@@ -20,6 +20,12 @@ const getProjects = apiCall({
   type: GET_PROJECTS,
   method: "get",
   path: "/project/all",
+});
+
+const getProjectsWithPagination = apiCall({
+  type: GET_PROJECTS_WITH_PAGINATION,
+  method: "get",
+  path: "/project",
 });
 
 const getProjectMembers = apiCall({
@@ -39,6 +45,7 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECTS, getProjects);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
+  yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
 }
 
 export default projectSaga;
