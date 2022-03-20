@@ -68,7 +68,7 @@ const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.iconWrapper}>
-        <img src={assets.searchIcon} />
+        <img src={assets.searchIcon} className="width-16" />
         <Typography className={classes.horizontalBreak}>|</Typography>
       </div>
       <div className={classes.inputWrapper}>

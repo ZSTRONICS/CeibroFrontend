@@ -1,12 +1,13 @@
 import { toast } from "react-toastify";
 import { call, put, select } from "redux-saga/effects";
+import { RootState } from "redux/reducers";
 import axios from "./axios";
 import { requestFail, requestPending, requestSuccess } from "./status";
 
 interface ApiCall {
   type: string;
   method: "post" | "get" | "delete" | "put" | "patch";
-  path?: string | ((payload: any, store?: any) => string);
+  path?: string | ((payload: any, store?: RootState) => string);
   success?: (res: any, action: any) => void;
   onFailSaga?: (err: any) => void;
   finallySaga?: () => void;
@@ -53,7 +54,9 @@ const apiCall = ({
       yield put({
         type: requestPending(type),
       });
-      const store = yield select((state) => state);
+
+      //@ts-ignore
+      const store: RootState = yield select((state) => state);
 
       let options: any = {
         url: `${typeof path === "function" ? path(action.payload, store) : path}`,

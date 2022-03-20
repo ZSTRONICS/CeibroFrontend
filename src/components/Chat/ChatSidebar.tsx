@@ -9,6 +9,7 @@ import {
   Star,
   StarBorder,
 } from "@material-ui/icons";
+import assets from "assets/assets";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
@@ -34,22 +35,31 @@ const ChatSidebar = () => {
       value: "all",
     },
     {
-      name: "Read",
-      value: "read",
-    },
-    {
       name: "Unread",
       value: "unread",
     },
+    {
+      name: "Favorites",
+      value: "favorites",
+      icon: assets.favouriteFilledIcon,
+    },
   ];
+
+  const [filter, setFilter] = useState(messageListType[0].name);
 
   const dispatch = useDispatch();
 
-  const handleMessageTypeClick = (chatType: any) => {
-    dispatch({
-      type: SET_CHAT_TYPE,
-      payload: chatType.value,
-    });
+  const handleMessageTypeClick = (chatType: any, index: number) => {
+    setFilter(chatType.name);
+    if (index === 2) {
+      handleMenuClick(true);
+    } else {
+      handleMenuClick(false);
+      dispatch({
+        type: SET_CHAT_TYPE,
+        payload: chatType.value,
+      });
+    }
   };
 
   const handleMenuClick = (value: boolean) => {
@@ -69,7 +79,7 @@ const ChatSidebar = () => {
 
   return (
     <Grid container className={classes.outerWrapper}>
-      <Grid item xs={12} className={classes.iconsWrapper}>
+      {/* <Grid item xs={12} className={classes.iconsWrapper}>
         <Grid
           item
           xs={6}
@@ -90,7 +100,7 @@ const ChatSidebar = () => {
             }`}
           />
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid item xs={12}>
         <ChatRoomSearch onChange={handleChatRoomSearch} />
       </Grid>
@@ -98,11 +108,18 @@ const ChatSidebar = () => {
         {messageListType.map((chatType: any, index: number) => {
           return (
             <>
+              {chatType?.icon && (
+                <img
+                  src={chatType.icon}
+                  className={`width-16`}
+                  style={{ height: 14 }}
+                />
+              )}
               <Typography
-                onClick={() => handleMessageTypeClick(chatType)}
+                onClick={() => handleMessageTypeClick(chatType, index)}
                 key={index}
                 className={`${classes.messageTypeText} ${
-                  type === chatType.value ? classes.activeMessageType : ""
+                  filter === chatType.name ? classes.activeMessageType : ""
                 }`}
               >
                 {chatType.name}

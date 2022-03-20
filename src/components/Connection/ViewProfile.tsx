@@ -77,12 +77,14 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <div className={classes.imgWrapper}>
-              <NameAvatar
-                firstName={getUser?.firstName}
-                surName={getUser?.surName}
-                url={getUser?.profilePic}
-                variant="large"
-              />
+              {getUser?.profilePic && (
+                <NameAvatar
+                  firstName={getUser?.firstName}
+                  surName={getUser?.surName}
+                  url={getUser?.profilePic || ""}
+                  variant="large"
+                />
+              )}
             </div>
             <Clear onClick={handleToggle} className={classes.close} />
           </div>

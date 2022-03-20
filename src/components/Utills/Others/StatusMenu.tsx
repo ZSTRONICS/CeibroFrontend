@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Badge, makeStyles, Typography } from "@material-ui/core";
-import { getColorByStatus, SET_SELECTED_STATUS } from "../../../config/project.config";
+import {
+  getColorByStatus,
+  SET_SELECTED_STATUS,
+} from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";
 import colors from "../../../assets/colors";
-import projectActions from "redux/action/project.action";
+import projectActions, {
+  getProjectsWithPagination,
+} from "redux/action/project.action";
 import { useDispatch } from "react-redux";
 
 interface StatusMenuInt {
@@ -24,11 +29,14 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   console.log("filter", filter);
 
   useEffect(() => {
-    dispatch(projectActions.setSelectedStatus(filter))
-    dispatch({
-      type: SET_SELECTED_STATUS,
-      payload: filter
-    })
+    if (filter) {
+      dispatch(projectActions.setSelectedStatus(filter));
+      dispatch({
+        type: SET_SELECTED_STATUS,
+        payload: filter,
+      });
+      dispatch(getProjectsWithPagination());
+    }
   }, [filter]);
 
   return (

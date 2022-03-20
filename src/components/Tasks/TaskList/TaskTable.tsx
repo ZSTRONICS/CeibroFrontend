@@ -86,7 +86,10 @@ const TaskTable = () => {
                       <TableCell component="th" scope="row">
                         <div className={classes.subTaskWrapper}>
                           <div className={classes.subTask}>
-                            <img src={assets.clipboardIcon} />
+                            <img
+                              src={assets.clipboardIcon}
+                              className={"width-16"}
+                            />
                             <Typography className={classes.subTaskText}>
                               {task.subTasks} &nbsp; SubTask(s)
                             </Typography>
@@ -94,12 +97,12 @@ const TaskTable = () => {
                           <div className={classes.attachmentWrapper}>
                             <Typography className={classes.attachmentText}>
                               0
-                              <img src={assets.clip} />
+                              <img src={assets.clip} className={`width-16`} />
                             </Typography>
 
                             <Typography className={classes.attachmentText}>
                               4
-                              <img src={assets.chatIcon} />
+                              <img src={assets.chatIcon} className="width-16" />
                             </Typography>
                           </div>
                         </div>

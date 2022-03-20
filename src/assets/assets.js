@@ -22,7 +22,7 @@ import sidebarPaseIcon from "./images/testclipboard.png";
 import questionMarkIcon from "./images/questionMark.png";
 import clip from "./images/clip.png";
 import searchIcon from "./images/searchIcon.png";
-import folderIcon from "./images/folderIcon.png";
+import folderIcon from "./images/blueFolder.png";
 import blueUser from "./images/blueUser.png";
 import chevrondown from "./images/chevron-down.png";
 import chevronRight from "./images/chevron-right.png";
@@ -34,7 +34,10 @@ import volumeMute from "./images/volumeMute.png";
 import unreadMessage from "./images/unreadMessage.png";
 import favouriteIcon from "./images/favourite.png";
 import favouriteFilledIcon from "./images/favouriteFilled.png";
-
+import bluePencil from "./images/bluePencil.png";
+import logout from "./images/logout.png";
+import contactsBlack from "./images/contactsBlack.png";
+import whitePencil from "./images/whitePencil.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -80,7 +83,10 @@ const assets = {
   unreadMessage,
   favouriteIcon,
   favouriteFilledIcon,
-
+  bluePencil,
+  whitePencil,
+  logout,
+  contactsBlack,
 
   testProject1,
   testProject2,

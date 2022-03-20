@@ -24,6 +24,7 @@ import {
 import { RootState } from "redux/reducers";
 import colors from "../../assets/colors";
 import { logoutUser } from "../../redux/action/auth.action";
+import assets from "assets/assets";
 import "./ProfileBtn.css";
 
 const ProfileBtn = () => {
@@ -100,7 +101,7 @@ const ProfileBtn = () => {
                 </Typography>
               </div>
               <div className={classes.menuAction}>
-                <Create className={classes.createIcon} />
+                <img src={assets.bluePencil} className={`w-16`} />
               </div>
             </div>
 
@@ -111,7 +112,7 @@ const ProfileBtn = () => {
               onClick={handleConnectionClick}
             >
               <div className={classes.smallMenuText}>
-                <PermContactCalendar className={classes.smallMenuIcon} />
+                <img src={assets.contactsBlack} className="w-16" />
                 <Typography className={classes.smallText}>
                   My connections
                 </Typography>
@@ -121,9 +122,12 @@ const ProfileBtn = () => {
               </div>
             </div>
 
-            <div className={`${classes.menuItem} dropdown-menu`} onClick={() => dispatch(openViewInvitations())}>
+            <div
+              className={`${classes.menuItem} dropdown-menu`}
+              onClick={() => dispatch(openViewInvitations())}
+            >
               <div className={classes.smallMenuText}>
-                <PersonAdd className={classes.smallMenuIcon} />
+                <img src={assets.addUser} className={`w-16`} />
                 <Typography className={classes.smallText}>
                   Invitations
                 </Typography>
@@ -140,7 +144,7 @@ const ProfileBtn = () => {
               onClick={handleLogout}
             >
               <div className={classes.smallMenuText}>
-                <BiLogOut className={classes.smallMenuIcon} />
+                <img src={assets.logout} className={"w-16"} />
                 <Typography className={classes.smallText}>Logout</Typography>
               </div>
             </div>

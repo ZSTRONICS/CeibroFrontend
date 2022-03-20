@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import { useState, useEffect } from "react";
 import { getMyConnectionsCount } from "redux/action/user.action";
+import assets from "assets/assets";
 
 interface IConnectionsProps {}
 
@@ -28,7 +29,10 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     <Grid container>
       <Grid item xs={12} className={classes.connections}>
         <Typography className={`${classes.connectionText} ongoing-badge`}>
-          <ContactPhoneOutlined className={classes.contactPhone} />
+          <img
+            src={assets.contactIcon}
+            className={`${classes.icon} w-16`}
+          />
           My conections
           <Badge
             color="primary"
@@ -69,4 +73,5 @@ const useStyles = makeStyles({
   badge: {
     marginLeft: 20,
   },
+  icon: { width: 18, height: 18, paddingRight: 10 }
 });

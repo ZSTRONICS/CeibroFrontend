@@ -33,16 +33,16 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     users,
     chat,
     publishStatus: status,
-    id
+    id,
   } = project;
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const handleProjectClick = () => {
-    dispatch(projectActions.setSelectedProject(id || null))
-    dispatch(projectActions.openDrawer())
-  }
-  
+    dispatch(projectActions.setSelectedProject(id || null));
+    dispatch(projectActions.openDrawer());
+  };
+
   const classes = useStyles();
 
   return (
@@ -104,24 +104,24 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
         <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip}>
-            <img src={assets.clipboardIcon} />
+            <img src={assets.clipboardIcon} className={`w-16`} />
             <Typography className={classes.iconText}>
               {tasks} task(s)
             </Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.folderIcon} />
+            <img src={assets.folderIcon} className={`w-16`} />
             <Typography className={classes.iconText}>{docs} doc(s)</Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.blueUser} />
+            <img src={assets.blueUser} className={`width-16`} />
             <Typography className={classes.iconText}>{users}</Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.chatIcon} />
+            <img src={assets.chatIcon} className={`w-16`} />
             <Typography className={classes.iconText}>{chat}</Typography>
           </div>
         </Grid>
@@ -135,7 +135,7 @@ export default ProjectCard;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
-    cursor: 'pointer'
+    cursor: "pointer",
   },
   cardWrapper: {
     height: 270,

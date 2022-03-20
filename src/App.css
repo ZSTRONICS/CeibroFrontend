@@ -278,5 +278,10 @@ button[disabled]{
 }
 
 .width-16 {
-  width: 16px;
+  width: auto;
+  height: 16px;
+}
+
+.w-16 {
+  width: 16px
 }

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { updateProfilePic } from "redux/action/user.action";
 import { toast } from "react-toastify";
 import { getMyProfile } from "redux/action/auth.action";
+import assets from "assets/assets";
 
 interface ProfileImagePicker {
   profilePic: string | undefined | null;
@@ -65,7 +66,7 @@ const ProfileImagePicker: React.FC<ProfileImagePicker> = (props) => {
         className={classes.outerWrapper}
         style={{ background: `url(${url})` }}
       >
-        <GoPencil className={classes.icon} />
+        <img src={assets.whitePencil} className={`width-16 ${classes.icon}`} />
       </div>
     </Grid>
   );

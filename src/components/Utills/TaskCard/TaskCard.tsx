@@ -92,19 +92,19 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
 
         <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip} style={{ flex: 2, paddingLeft: 0 }}>
-            <img src={assets.clipboardIcon} alt="ceibro" />
+            <img src={assets.clipboardIcon} className="width-16" alt="ceibro" />
             <Typography style={{ paddingLeft: 5 }} className={classes.iconText}>
               {subTasks} subtask(s)
             </Typography>
           </div>
-
+          {/* 
           <div className={classes.iconChip}>
             <img src={assets.clip} alt="ceibro" />
             <Typography className={classes.iconText}>{docs}</Typography>
-          </div>
+          </div> */}
 
           <div className={classes.iconChip}>
-            <img src={assets.chatIcon} alt="ceibro" />
+            <img className={`width-16`} src={assets.chatIcon} alt="ceibro" />
             <Typography className={classes.iconText}>{chat}</Typography>
           </div>
         </Grid>

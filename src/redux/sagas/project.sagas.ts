@@ -27,10 +27,21 @@ const getProjects = apiCall({
 const getProjectsWithPagination = apiCall({
   type: GET_PROJECTS_WITH_PAGINATION,
   method: "get",
-  path: (payload,store)=> {
-    let url='/project'
+  path: (payload, store) => {
+    let url = "/project?";
+    const status = store?.project?.selectedStatus;
+    const selectedDate = store?.project?.selectedDate;
+
+    if (status) {
+      url = `${url}publishStatus=${status?.toLowerCase()}`;
+    }
+
+    if (selectedDate) {
+      url = `${url}&dueDate=${selectedDate}`;
+    }
+
     return url;
-  } ,
+  },
 });
 
 const getProjectMembers = apiCall({
@@ -64,7 +75,7 @@ function* projectSaga() {
   // yield takeLatest(GET_FILTER_PROJECTS, getFilterProjects);
 
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
-  yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail)
+  yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
 }
 
 export default projectSaga;
