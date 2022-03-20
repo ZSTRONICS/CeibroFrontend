@@ -30,6 +30,11 @@ import wrongImage from "./images/wrongImage.png";
 import clockIcon from "./images/clockIcon.png";
 import pencilIcon from "./images/pencil.png";
 import notification from "./images/Notification.png";
+import volumeMute from "./images/volumeMute.png";
+import unreadMessage from "./images/unreadMessage.png";
+import favouriteIcon from "./images/favourite.png";
+import favouriteFilledIcon from "./images/favouriteFilled.png";
+
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -71,6 +76,11 @@ const assets = {
   clockIcon,
   pencilIcon,
   notification,
+  volumeMute,
+  unreadMessage,
+  favouriteIcon,
+  favouriteFilledIcon,
+
 
   testProject1,
   testProject2,

@@ -113,9 +113,9 @@ const Topbar = (props: any) => {
           <ProfileBtn />
 
           {!isTabletOrMobile && (
-            <Typography>
+            <Typography className={classes.notification}>
               <Badge badgeContent={4}>
-                <img src={assets.notification} className={classes.bell} />
+                <img src={assets.notification} className={`${classes.bell} width-16`} />
               </Badge>
             </Typography>
           )}
@@ -132,6 +132,9 @@ const useStyles = makeStyles((theme) => ({
     height: 60,
     paddingRight: 20,
     background: colors.white,
+  },
+  notification: {
+    alignSelf: 'center'
   },
   menuIconWrapper: {
     [theme.breakpoints.down("md")]: {

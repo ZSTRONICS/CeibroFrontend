@@ -91,18 +91,19 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                     <OutsideClickHandler onOutsideClick={handleToggle}>
                         <div className={`dropdown-content ${classes.dropdownContent}`}>
                             <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={markunread}>
-                                <Chat className={classes.menuIcon} />
-                                <Typography className={classes.menuText}>
+                                {/* <Chat className={classes.menuIcon} /> */}
+                                <img src={assets.unreadMessage} className="width-16" />
+                                <Typography className={`${classes.menuText} align-center`}>
                                     Mark unread
                                 </Typography>
                             </div>
                             <div className={`${classes.menuWrapper} dropdown-menu pointer ${classes.starMenu}`} onClick={handleChatMute}>
                                 {isMuted ? (
-                                    <GrVolumeMute className={classes.menuIcon} />
+                                    <img src={assets.volumeMute} className="width-16" />
                                 ): (
                                     <GrVolume className={classes.menuIcon} />
                                 )}
-                                <Typography className={classes.menuText}>
+                                <Typography className={`${classes.menuText} align-center`}>
                                     {isMuted ? "Un mute": "Mute"} chat
                                 </Typography>
                             </div>
@@ -111,10 +112,12 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
 
                             <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={handleFavouriteClick}>
                                 {isFavourite? 
-                                    (<Star className={`${classes.star} ${classes.menuIcon}`} />): 
-                                    (<StarBorder className={`${classes.star} ${classes.menuIcon}`} />)
+                                    // (<Star className={`${classes.star} ${classes.menuIcon}`} />):
+                                    (<img src={assets.favouriteFilledIcon} className={`width-16`} />): 
+                                    (<img src={assets.favouriteIcon} className={`width-16`} />)
+                                    // (<StarBorder className={`${classes.star} ${classes.menuIcon}`} />)
                                 }
-                                <Typography className={`${classes.menuText} ${classes.starText}`}>
+                                <Typography className={`${classes.menuText} align-center ${classes.starText}`}>
                                     {isFavourite? (
                                         "Remove from favorites"
                                         ): (
@@ -129,8 +132,8 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                                 className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}
                                 onClick={handleDeleteClick}
                             >
-                                <Delete className={classes.menuIcon} />
-                                <Typography className={`${classes.menuText} ${classes.deleteText}`}>
+                                <img src={assets.trashIcon} className={`width-16`} />
+                                <Typography className={`${classes.menuText} align-center ${classes.deleteText}`}>
                                     Delete conversation
                                 </Typography>
                             </div>
@@ -154,7 +157,7 @@ const useStyles = makeStyles({
     },
     menuWrapper: {
         display: 'flex',
-        alignItems: 'baseline',
+        alignItems: 'center',
         justifyContent: 'flex-start'
     },
     menuIcon: {
