@@ -23,7 +23,7 @@ const ProjectCard = () => {
       onClick={openProjectDrawer}
     >
       <Add className={classes.icon} />
-      <Typography className={classes.text}>Create new projectv</Typography>
+      <Typography className={classes.text}>Create new project</Typography>
     </Grid>
   );
 };
