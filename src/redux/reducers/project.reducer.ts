@@ -3,15 +3,16 @@ import config, {
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
+  GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
   SET_SELECTED_PROJECT,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
+  ProjectInterface,
   projectOverviewInterface,
   projectOverviewTemplate,
 } from "constants/interfaces/project.interface";
-import { ProjectInterface } from "components/Utills/ProjectCard/ProjectCard";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -97,6 +98,13 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
       return {
         ...state,
         selectedProject: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_PROJECT_DETAIL): {
+      return {
+        ...state,
+        projectOverview: action.payload,
       };
     }
 

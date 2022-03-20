@@ -12,22 +12,12 @@ import {
   getTextColorByStatus,
 } from "../../../config/project.config";
 import assets from "assets/assets";
+import { ProjectInterface } from "constants/interfaces/project.interface";
+import { useDispatch } from "react-redux";
+import projectActions from "redux/action/project.action";
 
 interface ProjectCardInterface {
   project: ProjectInterface;
-}
-
-export interface ProjectInterface {
-  projectPhoto: string;
-  dueDate: string;
-  owner: string;
-  title: string;
-  tasks: number;
-  docs: number;
-  users: number;
-  chat: number;
-  publishStatus: string;
-  statusDate: string;
 }
 
 const ProjectCard: FC<ProjectCardInterface> = (props) => {
@@ -42,8 +32,16 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     users,
     chat,
     publishStatus: status,
-    statusDate,
+    id
   } = project;
+
+  const dispatch = useDispatch()
+
+  const handleProjectClick = () => {
+    dispatch(projectActions.setSelectedProject(id || null))
+    dispatch(projectActions.openDrawer())
+  }
+  
   const classes = useStyles();
   return (
     <Grid
@@ -53,6 +51,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
       sm={6}
       md={4}
       lg={3}
+      onClick={handleProjectClick}
     >
       <Grid
         item
@@ -84,7 +83,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
-            <Typography className={classes.metaValue}>{owner}</Typography>
+            {/* <Typography className={classes.metaValue}>{owner}</Typography> */}
           </Grid>
         </Grid>
 
@@ -128,6 +127,7 @@ export default ProjectCard;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
+    cursor: 'pointer'
   },
   cardWrapper: {
     height: 270,

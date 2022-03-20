@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { projectOverviewSchema } from "constants/schemas/project.schema";
 import { useEffect, useState } from "react";
-import { createProject } from "redux/action/project.action";
+import projectActions, { createProject } from "redux/action/project.action";
+import { toast } from "react-toastify";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -32,8 +33,9 @@ const CreateProjectBody = () => {
     dispatch(
       createProject({
         body: data,
-        success: () => {
-          alert("projecte created");
+        success: (res) => {
+          toast.success("Project created")
+          dispatch(projectActions.setSelectedProject(res?.data?.id))
         },
       })
     );

@@ -5,7 +5,9 @@ import configs, {
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
+  GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
+  SET_SELECTED_PROJECT
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -32,6 +34,12 @@ const projectActions = {
       payload: projectOverview,
     };
   },
+  setSelectedProject: (projectId: string | null) => {
+    return {
+      type: SET_SELECTED_PROJECT,
+      payload: projectId,
+    };
+  },
 };
 
 export const getProjectsWithPagination = createAction(
@@ -43,5 +51,6 @@ export const createProject = createAction(CREATE_PROJECT);
 export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );
+export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
 
 export default projectActions;

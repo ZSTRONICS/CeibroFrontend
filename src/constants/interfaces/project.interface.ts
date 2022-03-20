@@ -11,6 +11,21 @@ export interface projectOverviewInterface {
   id?: string;
   _id?: string;
 }
+export interface ProjectInterface {
+  projectPhoto: string;
+  dueDate: string;
+  owner: string;
+  title: string;
+  tasks: number;
+  docs: number;
+  users: number;
+  chat: number;
+  publishStatus: string;
+  statusDate: string;
+  id?: string;
+  _id?: string
+}
+
 
 export const projectOverviewTemplate: projectOverviewInterface = {
   title: "",

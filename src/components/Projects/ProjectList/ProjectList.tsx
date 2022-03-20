@@ -1,11 +1,10 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import ProjectCard, {
-  ProjectInterface,
-} from "../../Utills/ProjectCard/ProjectCard";
+import ProjectCard from "../../Utills/ProjectCard/ProjectCard";
 import CreateProject from "../../Utills/ProjectCard/CreateProjectCard";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import { ProjectInterface } from "constants/interfaces/project.interface";
 
 const ProjectList = () => {
   const { projects } = useSelector((state: RootState) => state.project);

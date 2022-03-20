@@ -6,10 +6,11 @@ interface InputTexAreatInterface {
   rows?: number;
   name?: string;
   onChange?: (e: any) => void;
+  value?:string
 }
 
 const InputTextArea: FC<InputTexAreatInterface> = (props) => {
-  const { placeholder, rows, onChange, name } = props;
+  const { placeholder, rows, onChange, name, value } = props;
   return (
     <div style={{ width: "100%" }}>
       <textarea
@@ -18,6 +19,7 @@ const InputTextArea: FC<InputTexAreatInterface> = (props) => {
         rows={rows || 8}
         onChange={onChange}
         name={name}
+        value={value}
       />
     </div>
   );

@@ -38,20 +38,23 @@ function ProjectDrawerMenu() {
     const classes = useStyles()
     const dispatch = useDispatch()
 
-    const selectedMenue = useSelector((state: RootState) => state.project.menue)
+    const { menue: selectedMenue, selectedProject } = useSelector((state: RootState) => state.project)
     const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)'})
 
-    const handleClick = (id:number) => {
+    const handleClick = (id:number, isDisabled: boolean) => {
+        if(isDisabled) return;
         dispatch(projectActions.setMenue(id))
+        
     }
 
     return (
         <>
             <Grid container>
                 {menus && menus.map((menu, index) => {
+                    const isDisabled = index > 0 && !selectedProject;
                     return (
-                        <div key={index} className={`${classes.statusChip}`} onClick={() => handleClick(menu.id)}>
-                            <Typography className={classes.menu} style={{ color: selectedMenue === menu.id? colors.black: colors.primary}}>
+                        <div key={index} className={`${classes.statusChip}`} onClick={() => handleClick(menu.id, isDisabled)}>
+                            <Typography className={classes.menu} style={{ color: isDisabled? colors.lightGreySecondary: selectedMenue === menu.id? colors.black: colors.primary}}>
                                 {menu.title}
                             </Typography>
                         </div>

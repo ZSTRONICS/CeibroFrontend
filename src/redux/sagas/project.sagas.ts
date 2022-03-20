@@ -4,6 +4,7 @@ import {
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
+  GET_PROJECT_DETAIL,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
 
@@ -35,9 +36,15 @@ const getProjectMembers = apiCall({
 });
 
 const createProject = apiCall({
-  type: GET_PROJECTS_MEMBERS,
+  type: CREATE_PROJECT,
   method: "post",
   path: `/project`,
+});
+
+const getProjectDetail = apiCall({
+  type: GET_PROJECT_DETAIL,
+  method: "get",
+  path: (payload) => `/project/detail/${payload.other}`,
 });
 
 function* projectSaga() {
@@ -46,6 +53,7 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
+  yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail)
 }
 
 export default projectSaga;

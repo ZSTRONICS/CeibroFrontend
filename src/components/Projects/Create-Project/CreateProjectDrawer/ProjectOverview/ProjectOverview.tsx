@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { projectOverviewInterface } from "constants/interfaces/project.interface";
 import _ from "lodash";
-import projectActions from "redux/action/project.action";
+import projectActions, { getProjectDetail } from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
 
 const ProjectOverview = () => {
@@ -20,8 +20,17 @@ const ProjectOverview = () => {
   const projectOverview: projectOverviewInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
+  const selectedProject = useSelector(
+    (state: RootState) => state.project.selectedProject
+  );
   const [data, setData] = useState<dataInterface[]>([]);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    if(selectedProject) {
+      dispatch(getProjectDetail({ other: selectedProject }))
+    }
+  }, [selectedProject])
 
   useEffect(() => {
     dispatch(
@@ -56,7 +65,7 @@ const ProjectOverview = () => {
     <>
       <Grid container>
         <Grid item xs={12} sm={6} md={3}>
-          <DatePicker
+          <DatePicker     
             value={projectOverview.dueDate}
             onChange={handleDateChange}
           />

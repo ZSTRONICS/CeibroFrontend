@@ -35,8 +35,7 @@ const ProjectOverViewForm = () => {
       projectActions.setProjectOverview({
         ...projectOverview,
         description: e.target.value,
-      })
-    );
+      }));
   }, 500);
 
   return (
@@ -46,6 +45,7 @@ const ProjectOverViewForm = () => {
           onChange={handleTitleChange}
           name="title"
           placeholder="Enter Project title"
+          value={projectOverview.title}
         />
       </Grid>
 
@@ -54,6 +54,7 @@ const ProjectOverViewForm = () => {
           onChange={handleLocationChange}
           name="location"
           placeholder="Enter a location address"
+          value={projectOverview.location}
         />
       </Grid>
 
@@ -62,6 +63,7 @@ const ProjectOverViewForm = () => {
           onChange={handleDescriptionChange}
           name="description"
           placeholder="Enter project description"
+          value={projectOverview.description}
         />
       </Grid>
     </Grid>

@@ -1,10 +1,9 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import ProjectCard, {
-  ProjectInterface,
-} from "../Utills/ProjectCard/ProjectCard";
+import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 import CreateProject from "../Utills/ProjectCard/CreateProjectCard";
 import assets from "assets/assets";
+import { ProjectInterface } from "constants/interfaces/project.interface";
 
 const ProjectList = () => {
   return (
