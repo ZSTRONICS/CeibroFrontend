@@ -14,6 +14,7 @@ import { projectOverviewInterface } from "constants/interfaces/project.interface
 import _ from "lodash";
 import projectActions, { getProjectDetail } from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
+import { formatDate } from 'helpers/project.helper'
 
 const ProjectOverview = () => {
   const classes = useStyles();
@@ -60,13 +61,15 @@ const ProjectOverview = () => {
       })
     );
   }, 300);
+  
+  const my = formatDate(projectOverview.dueDate)
 
   return (
     <>
       <Grid container>
         <Grid item xs={12} sm={6} md={3}>
           <DatePicker     
-            value={projectOverview.dueDate}
+            value={my}
             onChange={handleDateChange}
           />
         </Grid>

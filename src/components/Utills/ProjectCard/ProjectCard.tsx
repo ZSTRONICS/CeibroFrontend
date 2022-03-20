@@ -6,7 +6,7 @@ import { BsClipboard } from "react-icons/bs";
 import { AiOutlineFolder } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa";
 import { HiOutlineChatAlt } from "react-icons/hi";
-
+import Moment from "react-moment";
 import {
   getColorByStatus,
   getTextColorByStatus,
@@ -15,6 +15,7 @@ import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import { useDispatch } from "react-redux";
 import projectActions from "redux/action/project.action";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface ProjectCardInterface {
   project: ProjectInterface;
@@ -43,6 +44,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   }
   
   const classes = useStyles();
+
   return (
     <Grid
       className={classes.cardOuterWrapper}
@@ -71,7 +73,9 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               <Typography className={classes.statusText}>{status}</Typography>
             </div>
             <div className={classes.dateWrapper}>
-              <Typography className={classes.statusDate}>{dueDate}</Typography>
+              <Typography className={classes.statusDate}>
+                {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+              </Typography>
             </div>
           </div>
           <img className={classes.myImage} src={src} alt="ceibro-project-img" />
@@ -79,11 +83,15 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         <Grid container>
           <Grid item xs={5}>
             <Typography className={classes.meta}>Due Date</Typography>
-            <Typography className={classes.metaValue}>{dueDate}</Typography>
+            <Typography className={classes.metaValue}>
+              {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+            </Typography>
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
-            {/* <Typography className={classes.metaValue}>{owner}</Typography> */}
+            <Typography className={classes.metaValue}>
+              {owner.firstName} {owner.surName}
+            </Typography>
           </Grid>
         </Grid>
 

@@ -2,6 +2,7 @@ import { projectOverviewInterface } from "constants/interfaces/project.interface
 import configs, {
   CREATE_PROJECT,
   GET_AVAILABLE_PROJECT_USERS,
+  GET_FILTER_PROJECTS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -48,6 +49,8 @@ export const getProjectsWithPagination = createAction(
 export const getAllProjects = createAction(GET_PROJECTS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
+export const getFilterProjects = createAction(GET_FILTER_PROJECTS);
+
 export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );

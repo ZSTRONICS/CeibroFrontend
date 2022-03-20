@@ -1,5 +1,6 @@
 import { ActionInterface } from ".";
 import config, {
+  GET_FILTER_PROJECTS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -22,6 +23,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   projectOverview: projectOverviewInterface | null;
+  filter: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -32,6 +34,8 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
+  filter: [],
+
 };
 
 const AppReducer = (state = projectReducer, action: ActionInterface) => {
@@ -100,11 +104,24 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
         selectedProject: action.payload,
       };
     }
-
-    case requestSuccess(GET_PROJECT_DETAIL): {
+     case GET_FILTER_PROJECTS: {
       return {
         ...state,
-        projectOverview: action.payload,
+        filter: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_PROJECT_DETAIL): {
+      const projectDetail = {
+        ...action.payload,
+        owner: {
+          label: action.payload?.owner?.firstName + " " +  action.payload?.owner?.surName,
+          value: action.payload?.owner?.id
+        }
+      }
+      return {
+        ...state,
+        projectOverview: projectDetail,
       };
     }
 

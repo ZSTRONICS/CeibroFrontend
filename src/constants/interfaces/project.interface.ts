@@ -14,7 +14,7 @@ export interface projectOverviewInterface {
 export interface ProjectInterface {
   projectPhoto: string;
   dueDate: string;
-  owner: string;
+  owner: UserInterface
   title: string;
   tasks: number;
   docs: number;

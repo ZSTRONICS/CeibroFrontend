@@ -8,6 +8,7 @@ interface CreateAction {
   finallyAction?: () => void;
   showErrorToast?: boolean; // by default showErrorToast will be true in apiCall.ts
   other?: any;
+  filter?: any
 }
 
 // Generic method for action dispatch and for apiCall.js templatee
@@ -21,6 +22,7 @@ export function createAction(type: string) {
       onFailAction: payload.onFailAction,
       finallyAction: payload.finallyAction,
       other: payload.other,
+      filter:payload.filter
     },
   });
 }
