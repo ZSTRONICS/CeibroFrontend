@@ -6,6 +6,7 @@ import config, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
+  SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
   SET_SELECTED_STATUS,
 } from "../../config/project.config";
@@ -26,6 +27,7 @@ interface ProjectReducerInt {
   projectOverview: projectOverviewInterface | null;
   filter: any;
   selectedStatus: string | null;
+  selectedDate: string | null;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -37,7 +39,8 @@ const projectReducer: ProjectReducerInt = {
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
   filter: [],
-  selectedStatus: null
+  selectedStatus: null,
+  selectedDate: null,
 };
 
 const AppReducer = (state = projectReducer, action: ActionInterface) => {
@@ -119,6 +122,12 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
         selectedStatus: action.payload,
       };
     }
+case SET_SELECTED_DATE: {
+  return {
+    ...state,
+    selectedDate: action.payload
+  }
+}
 
     case requestSuccess(GET_PROJECT_DETAIL): {
       const projectDetail = {

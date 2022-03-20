@@ -27,7 +27,10 @@ const getProjects = apiCall({
 const getProjectsWithPagination = apiCall({
   type: GET_PROJECTS_WITH_PAGINATION,
   method: "get",
-  path: "/project",
+  path: (payload,store)=> {
+    let url='/project'
+    return url;
+  } ,
 });
 
 const getProjectMembers = apiCall({

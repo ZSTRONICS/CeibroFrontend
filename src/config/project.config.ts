@@ -82,7 +82,7 @@ export function getProjectStatus(): ProjectMenues[] {
       count: 1,
     },
     {
-      title: "Approvedww",
+      title: "Approved",
       count: 4,
     },
     {
@@ -111,6 +111,8 @@ export const SET_SELECTED_PROJECT = "SET_SELECTED_PROJECT";
 export const GET_PROJECT_DETAIL = "GET_PROJECT_DETAIL";
 export const GET_FILTER_PROJECTS = "GET_FILTER_PROJECTS";
 export const SET_SELECTED_STATUS = "SET_SELECTED_STATUS";
+export const SET_SELECTED_DATE = "SET_SELECTED_DATE";
+
 
 
 export default projectReduxConfigs;

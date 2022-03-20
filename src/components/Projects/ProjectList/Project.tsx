@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import ProjectList from "./ProjectList";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
@@ -7,24 +8,32 @@ import {
   getProjectStatus,
 } from "../../../config/project.config";
 import StatusMenu from "../../Utills/Others/StatusMenu";
-import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getProjectsWithPagination } from "redux/action/project.action";
+import projectActions, {
+  getProjectsWithPagination,
+} from "redux/action/project.action";
 
 const Project = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const allStatus = getProjectStatus();
+  const [date, setDate] = useState<string>("");
+
+  console.log("selected date1", date);
 
   useEffect(() => {
     dispatch(getProjectsWithPagination());
   }, []);
 
+  useEffect(() => {
+    dispatch(projectActions.setSelectedDate(date));
+  }, [date]);
+
   return (
     <Grid item xs={12}>
       <Grid container>
         <Grid item xs={12} md={3} className={classes.datePicker}>
-          <DatePicker />
+          <DatePicker onChange={(e: any) => setDate(e.target.value)} />
         </Grid>
 
         <Grid item xs={12} md={4} className={classes.datePicker}>

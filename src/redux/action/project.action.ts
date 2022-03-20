@@ -8,6 +8,7 @@ import configs, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
+  SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
   SET_SELECTED_STATUS
 } from "../../config/project.config";
@@ -46,6 +47,12 @@ const projectActions = {
     return {
       type: SET_SELECTED_STATUS,
       payload: status
+    }
+  },
+  setSelectedDate: (date: string) =>{
+    return {
+      type: SET_SELECTED_DATE,
+      payload: date
     }
   }
 };
