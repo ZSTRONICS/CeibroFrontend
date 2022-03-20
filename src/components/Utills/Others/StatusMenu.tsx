@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Badge, makeStyles, Typography } from "@material-ui/core";
-import { getColorByStatus } from "../../../config/project.config";
+import { getColorByStatus, SET_SELECTED_STATUS } from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";
 import colors from "../../../assets/colors";
-import { getFilterProjects } from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import { useDispatch } from "react-redux";
 
 interface StatusMenuInt {
@@ -20,14 +20,15 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [filter, setFilter] = useState({});
+  const [filter, setFilter] = useState<string>("");
   console.log("filter", filter);
 
   useEffect(() => {
-    const payload = {
-      filter,
-    };
-    dispatch(getFilterProjects(payload));
+    dispatch(projectActions.setSelectedStatus(filter))
+    dispatch({
+      type: SET_SELECTED_STATUS,
+      payload: filter
+    })
   }, [filter]);
 
   return (

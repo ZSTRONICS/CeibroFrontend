@@ -7,6 +7,7 @@ import config, {
   GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
   SET_SELECTED_PROJECT,
+  SET_SELECTED_STATUS,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -24,6 +25,7 @@ interface ProjectReducerInt {
   selectedProject: any;
   projectOverview: projectOverviewInterface | null;
   filter: any;
+  selectedStatus: string | null;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -35,7 +37,7 @@ const projectReducer: ProjectReducerInt = {
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
   filter: [],
-
+  selectedStatus: null
 };
 
 const AppReducer = (state = projectReducer, action: ActionInterface) => {
@@ -108,6 +110,13 @@ const AppReducer = (state = projectReducer, action: ActionInterface) => {
       return {
         ...state,
         filter: action.payload,
+      };
+    }
+
+    case SET_SELECTED_STATUS: {
+      return {
+        ...state,
+        selectedStatus: action.payload,
       };
     }
 

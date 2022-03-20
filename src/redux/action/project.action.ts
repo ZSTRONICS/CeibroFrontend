@@ -8,7 +8,8 @@ import configs, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   SET_PROJECT_OVERVIEW,
-  SET_SELECTED_PROJECT
+  SET_SELECTED_PROJECT,
+  SET_SELECTED_STATUS
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -41,6 +42,12 @@ const projectActions = {
       payload: projectId,
     };
   },
+  setSelectedStatus: (status: string) => {
+    return {
+      type: SET_SELECTED_STATUS,
+      payload: status
+    }
+  }
 };
 
 export const getProjectsWithPagination = createAction(
@@ -49,8 +56,6 @@ export const getProjectsWithPagination = createAction(
 export const getAllProjects = createAction(GET_PROJECTS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
-export const getFilterProjects = createAction(GET_FILTER_PROJECTS);
-
 export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );
