@@ -38,6 +38,9 @@ import bluePencil from "./images/bluePencil.png";
 import logout from "./images/logout.png";
 import contactsBlack from "./images/contactsBlack.png";
 import whitePencil from "./images/whitePencil.png";
+import camera from "./images/camera.png";
+import mic from "./images/mic.png";
+import emoji from "./images/emoji.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -87,6 +90,9 @@ const assets = {
   whitePencil,
   logout,
   contactsBlack,
+  camera,
+  mic,
+  emoji,
 
   testProject1,
   testProject2,

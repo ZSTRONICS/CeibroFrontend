@@ -1,40 +1,28 @@
-import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import {
   AttachFile,
   Close,
   EmojiEmotionsOutlined,
   Image,
   Mic,
-  SendOutlined,
 } from "@material-ui/icons";
-import colors from "../../assets/colors";
 import Picker from "emoji-picker-react";
 import { FormEvent, useContext, useEffect, useState } from "react";
+import { IoDocument } from "react-icons/io5";
 import OutsideClickHandler from "react-outside-click-handler";
-import { SocketContext } from "../../App";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
-import {
-  PUSH_MESSAGE,
-  SEND_MESSAGE,
-  SET_REPLY_TO_ID,
-} from "../../config/chat.config";
-import AudioRecorder from "./AudioRecorder";
+import { SocketContext } from "../../App";
+import assets from "../../assets/assets";
+import colors from "../../assets/colors";
+import { PUSH_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
 import {
   openQuestioniarDrawer,
   sendReplyMessage,
   updateMessageById,
 } from "../../redux/action/chat.action";
-// @ts-ignore
-import FileViewer from "react-file-viewer";
-// @ts-ignore
-import { FileIcon, defaultStyles } from "react-file-icon";
+import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
-import { AiFillBell } from "react-icons/ai";
-import { IoBarbellOutline, IoDocument } from "react-icons/io5";
-import { FaRegBell } from "react-icons/fa";
-import assets from "../../assets/assets";
 import VoiceRecorder from "./VoiceRecorder";
 interface ChatFormInterface {
   handleSendClick: (a: string) => string;
@@ -299,23 +287,25 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       )}
       {selectedChat && (
         <Grid item xs={12} className={classes.btnWrapper}>
-          <EmojiEmotionsOutlined
+          <img
+            src={assets.emoji}
             onClick={toggleEmoji}
-            className={classes.btnIcon}
+            className={"width-16"}
           />
 
           <label className="custom-file-upload">
-            <AttachFile className={classes.btnIcon} />
+            <img src={assets.clip} className="width-16" />
             <input type="file" onChange={handleFileChange} multiple={true} />
           </label>
 
-          <Mic
+          <img
+            src={assets.mic}
             onClick={() => setShowRecorder(!showRecorder)}
-            className={classes.btnIcon}
+            className={`width-16`}
           />
 
           <label className="custom-file-upload">
-            <Image className={classes.btnIcon} />
+            <img src={assets.camera} className={`width-16`} />
             <input
               type="file"
               accept="image/png, image/gif, image/jpeg"
@@ -326,9 +316,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           <Typography className={classes.gapLine}>|</Typography>
           <img src={assets.primaryNudgeIcon} style={{ height: 18 }} />
           <Typography className={classes.gapLine}>|</Typography>
-          <IoDocument
+          <img
+            src={assets.blueDocument}
             onClick={handleOpenQuestioniar}
-            className={classes.btnIcon}
+            className={`width-16`}
           />
 
           {open && (
