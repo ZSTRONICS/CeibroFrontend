@@ -3,20 +3,19 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle,
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import Input from "components/Utills/Inputs/Input";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
-import { RootState } from "redux/reducers";
+import Input from "components/Utills/Inputs/Input";
+import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 
 interface AddRoleProps {}
 
