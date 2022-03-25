@@ -115,5 +115,6 @@ export const SET_SELECTED_STATUS = "SET_SELECTED_STATUS";
 export const SET_SELECTED_DATE = "SET_SELECTED_DATE";
 export const OPEN_ROLE_DRAWER = "OPEN_ROLE_DRAWER";
 export const CLOSE_ROLE_DRAWER = "CLOSE_ROLE_DRAWER";
+export const GET_ROLES = "GET_ROLES";
 
 export default projectReduxConfigs;

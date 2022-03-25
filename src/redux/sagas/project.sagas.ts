@@ -6,6 +6,7 @@ import {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
+  GET_ROLES,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
 
@@ -67,6 +68,12 @@ const getProjectDetail = apiCall({
   path: (payload) => `/project/detail/${payload.other}`,
 });
 
+const getAllRoles = apiCall({
+  type: GET_ROLES,
+  method: "get",
+  path: (payload) => `/project/role/${payload?.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -76,6 +83,7 @@ function* projectSaga() {
 
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
+  yield takeLatest(GET_ROLES, getAllRoles);
 }
 
 export default projectSaga;

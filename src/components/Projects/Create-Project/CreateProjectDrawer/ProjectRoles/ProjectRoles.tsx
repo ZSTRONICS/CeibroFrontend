@@ -30,7 +30,7 @@ const ProjectRoles = () => {
               dispatch(projectActions.openProjectRole());
             }}
           >
-            Add a role
+            Add a roled
           </Button>
           <RoleDrawer />
         </Grid>

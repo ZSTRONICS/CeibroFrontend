@@ -31,10 +31,10 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   useEffect(() => {
     if (filter) {
       dispatch(projectActions.setSelectedStatus(filter));
-      dispatch({
-        type: SET_SELECTED_STATUS,
-        payload: filter,
-      });
+      // dispatch({
+      //   type: SET_SELECTED_STATUS,
+      //   payload: filter,
+      // });
       dispatch(getProjectsWithPagination());
     }
   }, [filter]);

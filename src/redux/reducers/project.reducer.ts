@@ -6,6 +6,7 @@ import config, {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
+  GET_ROLES,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
   SET_ROLE,
@@ -35,6 +36,7 @@ interface ProjectReducerInt {
   selectedStatus: string | null;
   selectedDate: string | null;
   roleDrawer: boolean;
+  rolesList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -49,7 +51,8 @@ const projectReducer: ProjectReducerInt = {
   filter: [],
   selectedStatus: null,
   selectedDate: null,
-  roleDrawer: true,
+  roleDrawer: false,
+  rolesList: null,
 };
 
 const AppReducer = (
@@ -169,6 +172,12 @@ const AppReducer = (
       return {
         ...state,
         roleDrawer: false,
+      };
+    }
+    case requestSuccess(GET_ROLES): {
+      return {
+        ...state,
+        rolesList: action.payload,
       };
     }
 

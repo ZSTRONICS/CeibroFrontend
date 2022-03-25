@@ -11,9 +11,11 @@ import {
 } from "@material-ui/core";
 import "./roles-table.css";
 import colors from "assets/colors";
-import React from "react";
+import React, { useEffect } from "react";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "redux/reducers";
+import { getRolesById } from "redux/action/project.action";
 function createData(name: string, approve: boolean, submit: boolean) {
   return { name, approve, submit };
 }
@@ -28,9 +30,21 @@ const rows = [
   createData("Project Lead", false, true),
   createData("Worker", false, true),
 ];
-
+// store?: RootState
 const RolesTable = () => {
+  const { selectedProject, rolesList } = useSelector(
+    (state: RootState) => state?.project
+  );
+  console.log(rolesList);
+
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (selectedProject) {
+      dispatch(getRolesById({ other: selectedProject }));
+    }
+  }, [selectedProject]);
 
   return (
     <TableContainer className="roles-table">
@@ -47,13 +61,13 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rolesList?.map((row: any) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row" className={classes.name}>
                 {row.name}
               </TableCell>
               <TableCell align="right">
-                <InputCheckbox checked={row.approve} />
+                <InputCheckbox checked={row.approved} />
               </TableCell>
               <TableCell align="right">
                 <InputCheckbox checked={row.submit} />
