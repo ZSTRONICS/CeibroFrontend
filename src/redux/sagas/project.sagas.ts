@@ -1,6 +1,7 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
   CREATE_PROJECT,
+  CREATE_ROLES,
   GET_FILTER_PROJECTS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
@@ -73,6 +74,11 @@ const getAllRoles = apiCall({
   method: "get",
   path: (payload) => `/project/role/${payload?.other}`,
 });
+const createRoles = apiCall({
+  type: CREATE_ROLES,
+  method: "post",
+  path: (paylaod) => `/project/role/${paylaod?.other?.}`,
+});
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
@@ -84,6 +90,7 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
   yield takeLatest(GET_ROLES, getAllRoles);
+  yield takeLatest(CREATE_ROLES, createRoles);
 }
 
 export default projectSaga;
