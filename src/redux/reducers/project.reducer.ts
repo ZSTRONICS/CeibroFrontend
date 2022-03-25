@@ -8,6 +8,7 @@ import config, {
   GET_PROJECT_DETAIL,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
+  SET_ROLE,
   SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
   SET_SELECTED_STATUS,
@@ -15,8 +16,10 @@ import config, {
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
   ProjectInterface,
+  roleInterface,
   projectOverviewInterface,
   projectOverviewTemplate,
+  rolesTemplate,
 } from "constants/interfaces/project.interface";
 
 interface ProjectReducerInt {
@@ -27,6 +30,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   projectOverview: projectOverviewInterface;
+  role: roleInterface;
   filter: any;
   selectedStatus: string | null;
   selectedDate: string | null;
@@ -41,6 +45,7 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   projectOverview: projectOverviewTemplate,
+  role: rolesTemplate,
   filter: [],
   selectedStatus: null,
   selectedDate: null,
@@ -164,6 +169,13 @@ const AppReducer = (
       return {
         ...state,
         roleDrawer: false,
+      };
+    }
+
+    case SET_ROLE: {
+      return {
+        ...state,
+        role: action.payload,
       };
     }
 

@@ -1,48 +1,61 @@
-import React, { FC, useState } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import { green } from '@material-ui/core/colors';
-import Checkbox, { CheckboxProps } from '@material-ui/core/Checkbox';
+import { FC, useState } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 
-import './inputText.css'
-import colors from '../../../assets/colors';
-import { FormControlLabel } from '@material-ui/core';
-
+import "./inputText.css";
+import colors from "../../../assets/colors";
+import { FormControlLabel, makeStyles } from "@material-ui/core";
 
 const CustomCheckbox = withStyles({
-    root: {
+  root: {
+    color: colors.darkYellow,
+    "&$checked": {
       color: colors.darkYellow,
-      '&$checked': {
-        color: colors.darkYellow,
-      },
     },
-    checked: {},
-  })((props: CheckboxProps) => <Checkbox color="default" {...props} />);
-
-
+    width: 16,
+    height: 16,
+    padding: 5,
+  },
+  checked: {},
+})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 interface InputCheckboxInterface {
-    checked: boolean
-    label?: string
+  checked: boolean;
+  label?: string;
+  onChange?: (e: boolean) => void;
 }
 
 const InputCheckbox: FC<InputCheckboxInterface> = (props) => {
-    const { checked, label } = props
+  const { checked, label } = props;
+  const classes = useStyles();
+  const [check, setChecked] = useState<boolean>(checked);
 
-    const [check, setChecked] = useState<boolean>(checked)
+  const toggle = () => {
+    setChecked(!check);
+  };
 
-    const toggle = () => {
-      setChecked(!check)
-    }
+  const handleChange = (e: any) => {
+    props.onChange?.(e.target?.checked);
+  };
 
-    return (
-        <div style={{ width: '100%'}}>
-            <FormControlLabel
-                control={<CustomCheckbox checked={check} />}
-                label={label}
-                onClick={toggle}
-            />
-        </div>
-    )
-}
+  return (
+    <div style={{ width: "100%" }}>
+      <FormControlLabel
+        control={<CustomCheckbox checked={check} />}
+        label={label}
+        onClick={toggle}
+        classes={{ label: classes.label }}
+        onChange={handleChange}
+      />
+    </div>
+  );
+};
 
-export default InputCheckbox
+export default InputCheckbox;
+
+const useStyles = makeStyles({
+  label: {
+    fontSize: 12,
+    fontWeight: 500,
+  },
+});

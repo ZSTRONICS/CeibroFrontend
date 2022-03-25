@@ -1,4 +1,7 @@
-import { projectOverviewInterface } from "constants/interfaces/project.interface";
+import {
+  projectOverviewInterface,
+  roleInterface,
+} from "constants/interfaces/project.interface";
 import configs, {
   CLOSE_ROLE_DRAWER,
   CREATE_PROJECT,
@@ -10,6 +13,7 @@ import configs, {
   GET_PROJECT_DETAIL,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
+  SET_ROLE,
   SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
   SET_SELECTED_STATUS,
@@ -39,6 +43,12 @@ const projectActions = {
       payload: projectOverview,
     };
   },
+  setRole: (role: roleInterface) => {
+    return {
+      type: SET_ROLE,
+      payload: role,
+    };
+  },
   setSelectedProject: (projectId: string | null) => {
     return {
       type: SET_SELECTED_PROJECT,
@@ -48,25 +58,25 @@ const projectActions = {
   setSelectedStatus: (status: string) => {
     return {
       type: SET_SELECTED_STATUS,
-      payload: status
-    }
+      payload: status,
+    };
   },
-  setSelectedDate: (date: string) =>{
+  setSelectedDate: (date: string) => {
     return {
       type: SET_SELECTED_DATE,
-      payload: date
-    }
+      payload: date,
+    };
   },
-  openProjectRole: () =>{
+  openProjectRole: () => {
     return {
       type: OPEN_ROLE_DRAWER,
-    }
+    };
   },
-  closeProjectRole: () =>{
+  closeProjectRole: () => {
     return {
       type: CLOSE_ROLE_DRAWER,
-    }
-  }
+    };
+  },
 };
 
 export const getProjectsWithPagination = createAction(

@@ -9,21 +9,31 @@ import {
 } from "@material-ui/core";
 import Input from "components/Utills/Inputs/Input";
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 import { RootState } from "redux/reducers";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
+import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import projectActions from "redux/action/project.action";
 
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = () => {
   const classes = useStyles();
-  const [isRole, setIsRole] = useState(false);
-  const { roleDrawer } = useSelector((state: RootState) => state.project);
+  const roles = ["create", "edit", "delete", "self-made"];
 
-  const handleClose = () => {};
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [isRole, setIsRole] = useState(false);
+  const [isMember, setIsMember] = useState(false);
+  const [isTimeProfile, setIsTimeProfile] = useState(false);
+  const { roleDrawer, role } = useSelector((state: RootState) => state.project);
+  const dispatch = useDispatch();
+
+  const handleClose = () => {
+    dispatch(projectActions.closeProjectRole());
+  };
 
   const handleOk = () => {};
 
@@ -31,11 +41,52 @@ const AddRole: React.FC<AddRoleProps> = () => {
     setIsRole(e.target?.checked);
   };
 
+  const handleChangeMember = (e: any) => {
+    setIsMember(e.target?.checked);
+  };
+
+  const handleChangeTimeProfile = (e: any) => {
+    setIsTimeProfile(e.target?.checked);
+  };
+
+  const handleAdminChange = (e: any) => {
+    dispatch(
+      projectActions.setRole({
+        ...role,
+        admin: e.target?.checked,
+      })
+    );
+  };
+
+  const handleAccessChange = (
+    checked: boolean,
+    access: string,
+    fieldName: "roles" | "member" | "timeProfile"
+  ) => {
+    let existingField = role[fieldName];
+    if (existingField) {
+      if (checked) {
+        existingField?.push?.(access);
+      } else {
+        existingField = existingField?.filter?.(
+          (old: string) => old !== access
+        );
+      }
+
+      dispatch(
+        projectActions.setRole({
+          ...role,
+          [fieldName]: existingField,
+        })
+      );
+    }
+  };
+
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
         <div className={classes.dropdownWrapper}>
-          <Input title="Role" placeholder="Enter role name" />
+          <Input value={role.name} title="Role" placeholder="Enter role name" />
           <br />
           <SelectDropdown
             title="Member"
@@ -51,26 +102,102 @@ const AddRole: React.FC<AddRoleProps> = () => {
               <Typography className={classes.optionTitle}>
                 Project admin
               </Typography>
-              <InputSwitch label="" />
-            </div>
-            <div className={classes.option}>
-              <Typography className={classes.optionTitle}>Role</Typography>
               <InputSwitch
-                value={isRole}
+                value={role.admin}
+                onChange={handleAdminChange}
                 label=""
-                onChange={handleChangeRole}
               />
             </div>
-            <div className={classes.option}>
-              <Typography className={classes.optionTitle}>Member</Typography>
-              <InputSwitch label="" />
-            </div>
-            <div className={classes.option}>
-              <Typography className={classes.optionTitle}>
-                Time profile
-              </Typography>
-              <InputSwitch label="" />
-            </div>
+
+            {!role.admin && (
+              <>
+                <div className={classes.option}>
+                  <Typography className={classes.optionTitle}>Role</Typography>
+                  <InputSwitch
+                    value={isRole}
+                    label=""
+                    onChange={handleChangeRole}
+                  />
+                </div>
+                {isRole && (
+                  <div
+                    className={classes.option}
+                    style={{ paddingLeft: 7, paddingBottom: 5 }}
+                  >
+                    {roles?.map((myRole: string) => {
+                      return (
+                        <InputCheckbox
+                          label={myRole}
+                          checked={role?.roles?.includes(myRole) || false}
+                          onChange={(checked) =>
+                            handleAccessChange(checked, myRole, "roles")
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+
+                <div className={classes.option}>
+                  <Typography className={classes.optionTitle}>
+                    Member
+                  </Typography>
+                  <InputSwitch
+                    value={isMember}
+                    label=""
+                    onChange={handleChangeMember}
+                  />
+                </div>
+                {isMember && (
+                  <div
+                    className={classes.option}
+                    style={{ paddingLeft: 7, paddingBottom: 5 }}
+                  >
+                    {roles?.map((myRole: string) => {
+                      return (
+                        <InputCheckbox
+                          label={myRole}
+                          checked={role?.member?.includes?.(myRole) || false}
+                          onChange={(checked) =>
+                            handleAccessChange(checked, myRole, "member")
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+                <div className={classes.option}>
+                  <Typography className={classes.optionTitle}>
+                    Time profile
+                  </Typography>
+                  <InputSwitch
+                    value={isTimeProfile}
+                    label=""
+                    onChange={handleChangeTimeProfile}
+                  />
+                </div>
+                {isTimeProfile && (
+                  <div
+                    className={classes.option}
+                    style={{ paddingLeft: 7, paddingBottom: 5 }}
+                  >
+                    {roles?.map((myRole: string) => {
+                      return (
+                        <InputCheckbox
+                          label={myRole}
+                          checked={
+                            role?.timeProfile?.includes?.(myRole) || false
+                          }
+                          onChange={(checked) =>
+                            handleAccessChange(checked, myRole, "timeProfile")
+                          }
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </>
+            )}
           </div>
         </div>
       </DialogContent>
@@ -102,8 +229,8 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 300,
-    width: 300,
+    maxWidth: 370,
+    width: 370,
     height: 300,
   },
   optionsWrapper: {

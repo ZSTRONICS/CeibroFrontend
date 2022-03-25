@@ -287,5 +287,8 @@ button[disabled]{
 }
 
 .Component-switchBase-131.Component-checked-134 {
-  transform: translateX(13px) !important;
+  transform: translateX(8px) !important;
+}
+.Component-thumb-133 {
+  margin-left: 1px !important;
 }
