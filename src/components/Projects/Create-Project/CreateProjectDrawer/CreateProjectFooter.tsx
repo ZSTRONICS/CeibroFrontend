@@ -34,8 +34,8 @@ const CreateProjectBody = () => {
       createProject({
         body: data,
         success: (res) => {
-          toast.success("Project created")
-          dispatch(projectActions.setSelectedProject(res?.data?.id))
+          toast.success("Project created");
+          dispatch(projectActions.setSelectedProject(res?.data?.id));
         },
       })
     );
@@ -45,9 +45,9 @@ const CreateProjectBody = () => {
     const { title, owner, dueDate, location, description, photoFile } =
       projectOverview;
     const formData = new FormData();
-    formData.append("title", title);
-    formData.append("location", location);
-    formData.append("description", description);
+    formData.append("title", title || "");
+    formData.append("location", location || "");
+    formData.append("description", description || "");
     formData.append("owner", owner.value);
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);

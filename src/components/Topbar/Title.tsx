@@ -48,7 +48,7 @@ const Title = () => {
               color="primary"
               variant="contained"
             >
-              Create newbb
+              Create new
             </Button>
           </div>
         </>

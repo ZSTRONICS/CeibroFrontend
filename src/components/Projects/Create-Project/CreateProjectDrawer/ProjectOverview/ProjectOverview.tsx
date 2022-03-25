@@ -14,11 +14,11 @@ import { projectOverviewInterface } from "constants/interfaces/project.interface
 import _ from "lodash";
 import projectActions, { getProjectDetail } from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
-import { formatDate } from 'helpers/project.helper'
+import { formatDate } from "helpers/project.helper";
 
 const ProjectOverview = () => {
   const classes = useStyles();
-  const projectOverview: projectOverviewInterface = useSelector(
+  const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
   const selectedProject = useSelector(
@@ -28,10 +28,10 @@ const ProjectOverview = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if(selectedProject) {
-      dispatch(getProjectDetail({ other: selectedProject }))
+    if (selectedProject) {
+      dispatch(getProjectDetail({ other: selectedProject }));
     }
-  }, [selectedProject])
+  }, [selectedProject]);
 
   useEffect(() => {
     dispatch(
@@ -61,17 +61,14 @@ const ProjectOverview = () => {
       })
     );
   }, 300);
-  
-  const my = formatDate(projectOverview.dueDate)
+
+  const my = formatDate(projectOverview?.dueDate);
 
   return (
     <>
       <Grid container>
         <Grid item xs={12} sm={6} md={3}>
-          <DatePicker     
-            value={my}
-            onChange={handleDateChange}
-          />
+          <DatePicker value={my} onChange={handleDateChange} />
         </Grid>
 
         <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>

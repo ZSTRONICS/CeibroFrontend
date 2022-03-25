@@ -1,5 +1,6 @@
 import { projectOverviewInterface } from "constants/interfaces/project.interface";
 import configs, {
+  CLOSE_ROLE_DRAWER,
   CREATE_PROJECT,
   GET_AVAILABLE_PROJECT_USERS,
   GET_FILTER_PROJECTS,
@@ -7,10 +8,11 @@ import configs, {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
+  OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
   SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
-  SET_SELECTED_STATUS
+  SET_SELECTED_STATUS,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -53,6 +55,16 @@ const projectActions = {
     return {
       type: SET_SELECTED_DATE,
       payload: date
+    }
+  },
+  openProjectRole: () =>{
+    return {
+      type: OPEN_ROLE_DRAWER,
+    }
+  },
+  closeProjectRole: () =>{
+    return {
+      type: CLOSE_ROLE_DRAWER,
     }
   }
 };

@@ -3,7 +3,7 @@ import { UserInterface } from "./user.interface";
 export interface projectOverviewInterface {
   dueDate?: any;
   owner?: UserInterface | any;
-  title: string;
+  title: string | null;
   description?: string;
   location?: string;
   projectPhoto?: string;
@@ -14,7 +14,7 @@ export interface projectOverviewInterface {
 export interface ProjectInterface {
   projectPhoto: string;
   dueDate: string;
-  owner: UserInterface
+  owner: UserInterface;
   title: string;
   tasks: number;
   docs: number;
@@ -23,9 +23,8 @@ export interface ProjectInterface {
   publishStatus: string;
   statusDate: string;
   id?: string;
-  _id?: string
+  _id?: string;
 }
-
 
 export const projectOverviewTemplate: projectOverviewInterface = {
   title: "",

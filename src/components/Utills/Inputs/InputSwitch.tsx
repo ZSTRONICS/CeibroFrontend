@@ -5,6 +5,7 @@ import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 
 import "./inputText.css";
 import { Typography } from "@material-ui/core";
+import colors from "assets/colors";
 
 interface InputSwitchtInterface {
   label: string;
@@ -28,7 +29,7 @@ const InputTextArea: FC<InputSwitchtInterface> = (props) => {
     <div style={styles.wrapper}>
       <FormControlLabel
         control={<IOSSwitch checked={value} name={name} />}
-        label={<Typography style={styles.formControlLabel}>{label}</Typography>}
+        label={""}
         onClick={(e: any) => onChange?.(e)}
         name={name}
       />
@@ -40,7 +41,7 @@ export default InputTextArea;
 
 const styles = {
   wrapper: {
-    width: "100%",
+    // width: "100%",
   },
   formControlLabel: {
     fontSize: 14,
@@ -51,10 +52,13 @@ const styles = {
 const IOSSwitch = withStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: 40,
-      height: 22,
+      width: 30,
+      height: 20,
       padding: 0,
       margin: theme.spacing(1),
+      display: "flex",
+      alignItems: "center",
+      marginRight: 0,
     },
     switchBase: {
       padding: 1,
@@ -73,13 +77,15 @@ const IOSSwitch = withStyles((theme: Theme) =>
       },
     },
     thumb: {
-      width: 20,
-      height: 20,
+      width: 10,
+      height: 10,
+      marginTop: 4,
+      marginLeft: 2,
     },
     track: {
       borderRadius: 26 / 2,
-      border: `1px solid ${theme.palette.grey[400]}`,
-      backgroundColor: theme.palette.grey[50],
+      border: `green`,
+      backgroundColor: colors.inputGrey,
       opacity: 1,
       transition: theme.transitions.create(["background-color", "border"]),
     },
