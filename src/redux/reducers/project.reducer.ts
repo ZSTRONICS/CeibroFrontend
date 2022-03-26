@@ -1,5 +1,6 @@
 import { ActionInterface } from ".";
 import config, {
+  CLOSE_DOCUMENT_DRAWER,
   CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
@@ -9,6 +10,7 @@ import config, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
+  OPEN_DOCUMENT_DRAWER,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
@@ -40,6 +42,7 @@ interface ProjectReducerInt {
   selectedDate: string | null;
   roleDrawer: boolean;
   groupDrawer: boolean;
+  documentDrawer: boolean;
   rolesList: any;
   groupList: any;
 }
@@ -58,6 +61,7 @@ const projectReducer: ProjectReducerInt = {
   selectedDate: null,
   roleDrawer: false,
   groupDrawer: false,
+  documentDrawer: false,
   rolesList: null,
   groupList: null,
 };
@@ -216,6 +220,19 @@ const AppReducer = (
       };
     }
 
+    case OPEN_DOCUMENT_DRAWER: {
+      return {
+        ...state,
+        documentDrawer: true,
+      };
+    }
+
+    case CLOSE_DOCUMENT_DRAWER: {
+      return {
+        ...state,
+        documentDrawer: false,
+      };
+    }
     default:
       return state;
   }

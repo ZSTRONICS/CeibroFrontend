@@ -22,6 +22,8 @@ import configs, {
   CLOSE_GROUP_DRAWER,
   CREATE_GROUP,
   GET_GROUP,
+  CLOSE_DOCUMENT_DRAWER,
+  OPEN_DOCUMENT_DRAWER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -91,6 +93,17 @@ const projectActions = {
   closeProjectGroup: () => {
     return {
       type: CLOSE_GROUP_DRAWER,
+    };
+  },
+
+  openProjectDocuments: () => {
+    return {
+      type: OPEN_DOCUMENT_DRAWER,
+    };
+  },
+  closeProjectDocuments: () => {
+    return {
+      type: CLOSE_DOCUMENT_DRAWER,
     };
   },
 };
