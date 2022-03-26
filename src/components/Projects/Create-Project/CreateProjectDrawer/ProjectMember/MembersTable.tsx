@@ -47,7 +47,7 @@ const roleOptions = [
 
 const groupOptions = [
   {
-    title: "Electrikud",
+    title: "Electrikudwr",
     value: "1",
   },
 ];

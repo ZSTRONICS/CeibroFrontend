@@ -1,12 +1,15 @@
 import { ActionInterface } from ".";
 import config, {
+  CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
+  GET_GROUP,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
+  OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
   SET_ROLE,
@@ -36,7 +39,9 @@ interface ProjectReducerInt {
   selectedStatus: string | null;
   selectedDate: string | null;
   roleDrawer: boolean;
+  groupDrawer: boolean;
   rolesList: any;
+  groupList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -52,7 +57,9 @@ const projectReducer: ProjectReducerInt = {
   selectedStatus: null,
   selectedDate: null,
   roleDrawer: false,
+  groupDrawer: false,
   rolesList: null,
+  groupList: null,
 };
 
 const AppReducer = (
@@ -174,6 +181,20 @@ const AppReducer = (
         roleDrawer: false,
       };
     }
+
+    case OPEN_GROUP_DRAWER: {
+      return {
+        ...state,
+        groupDrawer: true,
+      };
+    }
+    case CLOSE_GROUP_DRAWER: {
+      return {
+        ...state,
+        groupDrawer: false,
+      };
+    }
+
     case requestSuccess(GET_ROLES): {
       return {
         ...state,
@@ -185,6 +206,13 @@ const AppReducer = (
       return {
         ...state,
         role: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_GROUP): {
+      return {
+        ...state,
+        groupList: action.payload,
       };
     }
 

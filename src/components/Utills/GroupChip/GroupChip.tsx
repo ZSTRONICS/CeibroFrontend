@@ -25,14 +25,15 @@ const menue: MenuOptions[] = [
   },
 ];
 
-const GroupChip = () => {
+const GroupChip = (props: any) => {
+  const { name } = props;
   const classes = useStyles();
   return (
     <div>
       <div className={classes.groupChip}>
         <div className={classes.title}>
           <img src={assets.chevrondown} />
-          <Typography className={classes.titleText}>Electrikud</Typography>
+          <Typography className={classes.titleText}>{name}</Typography>
         </div>
         <div className={classes.action}>
           <MenuButton buttonInner={<MoreVertIcon />} menu={menue} />

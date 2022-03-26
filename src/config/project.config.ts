@@ -114,7 +114,12 @@ export const GET_FILTER_PROJECTS = "GET_FILTER_PROJECTS";
 export const SET_SELECTED_STATUS = "SET_SELECTED_STATUS";
 export const SET_SELECTED_DATE = "SET_SELECTED_DATE";
 export const OPEN_ROLE_DRAWER = "OPEN_ROLE_DRAWER";
+export const OPEN_GROUP_DRAWER = "OPEN_GROUP_DRAWER";
+export const CLOSE_GROUP_DRAWER = "CLOSE_GROUP_DRAWER";
 export const CLOSE_ROLE_DRAWER = "CLOSE_ROLE_DRAWER";
 export const GET_ROLES = "GET_ROLES";
+export const CREATE_ROLES = "CREATE_ROLES";
+export const CREATE_GROUP = "CREATE_GROUP";
+export const GET_GROUP = "GET_GROUP";
 
 export default projectReduxConfigs;
