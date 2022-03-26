@@ -3,6 +3,7 @@ import config, {
   CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
+  GET_GROUP,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -40,6 +41,7 @@ interface ProjectReducerInt {
   roleDrawer: boolean;
   groupDrawer: boolean;
   rolesList: any;
+  groupList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -57,6 +59,7 @@ const projectReducer: ProjectReducerInt = {
   roleDrawer: false,
   groupDrawer: false,
   rolesList: null,
+  groupList: null,
 };
 
 const AppReducer = (
@@ -203,6 +206,13 @@ const AppReducer = (
       return {
         ...state,
         role: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_GROUP): {
+      return {
+        ...state,
+        groupList: action.payload,
       };
     }
 

@@ -1,8 +1,10 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
+  CREATE_GROUP,
   CREATE_PROJECT,
   CREATE_ROLES,
   GET_FILTER_PROJECTS,
+  GET_GROUP,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -77,7 +79,19 @@ const getAllRoles = apiCall({
 const createRoles = apiCall({
   type: CREATE_ROLES,
   method: "post",
-  path: (paylaod) => `/project/role/${paylaod?.other?.}`,
+  path: (paylaod) => `/project/role/${paylaod?.other}`,
+});
+
+const createGroup = apiCall({
+  type: CREATE_GROUP,
+  method: "post",
+  path: (payload) => `/project/group/${payload?.other}`,
+});
+
+const getGroup = apiCall({
+  type: GET_GROUP,
+  method: "get",
+  path: (payload) => `/project/group/${payload?.other}`,
 });
 
 function* projectSaga() {
@@ -91,6 +105,8 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
   yield takeLatest(GET_ROLES, getAllRoles);
   yield takeLatest(CREATE_ROLES, createRoles);
+  yield takeLatest(CREATE_GROUP, createGroup);
+  yield takeLatest(GET_GROUP, getGroup);
 }
 
 export default projectSaga;

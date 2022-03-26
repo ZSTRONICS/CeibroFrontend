@@ -20,6 +20,8 @@ import configs, {
   SET_SELECTED_PROJECT,
   SET_SELECTED_STATUS,
   CLOSE_GROUP_DRAWER,
+  CREATE_GROUP,
+  GET_GROUP,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -105,5 +107,7 @@ export const getAvailableProjectUsers = createAction(
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
 export const getRolesById = createAction(GET_ROLES);
 export const createRole = createAction(CREATE_ROLES);
+export const createGroup = createAction(CREATE_GROUP);
+export const getGroup = createAction(GET_GROUP);
 
 export default projectActions;

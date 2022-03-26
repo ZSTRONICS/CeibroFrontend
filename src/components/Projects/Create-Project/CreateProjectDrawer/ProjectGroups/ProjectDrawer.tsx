@@ -15,7 +15,9 @@ import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
+  createGroup,
   createRole,
+  getGroup,
   getRolesById,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -25,12 +27,15 @@ interface AddGroupProps {}
 
 const AddGroup: React.FC<AddGroupProps> = () => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete", "self-made"];
+  // const roles = ["create", "edit", "delete", "self-made"];
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
+
+  const [name, setName] = useState();
+
   const { groupDrawer, role, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
@@ -42,26 +47,20 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   };
 
   const handleOk = () => {
-    dispatch(projectActions.closeProjectGroup());
-    // const payload = {
-    //   body: role,
-    //   success: () => {
-    //     toast.success("Role created successfully");
-    //     dispatch(projectActions.closeProjectRole());
-    //     dispatch(getRolesById({ other: selectedProject }));
-    //   },
-    //   other: selectedProject,
-    // };
-    // dispatch(createRole(payload));
+    const payload = {
+      body: { name },
+      success: () => {
+        toast.success("Group created successfully");
+        dispatch(projectActions.closeProjectGroup());
+        dispatch(getGroup({ other: selectedProject }));
+      },
+      other: selectedProject,
+    };
+    dispatch(createGroup(payload));
   };
 
   const handleNameChange = (e: any) => {
-    // dispatch(
-    //   projectActions.setRole({
-    //     ...role,
-    //     name: e?.target?.value,
-    //   })
-    // );
+    setName(e.target.value);
   };
 
   return (
@@ -69,14 +68,13 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       <DialogContent>
         <div className={classes.dropdownWrapper}>
           <Input
-            value={role.name}
-            title="Role"
+            value={name}
+            title="Group"
             placeholder="Enter role name"
             onChange={handleNameChange}
           />
           <br />
           <HorizontalBreak color={colors.grey} />
-          <h1>Add Group</h1>
         </div>
       </DialogContent>
       <DialogActions>
