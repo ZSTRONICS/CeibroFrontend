@@ -306,7 +306,10 @@ const getTableRow = (
         {!isFile && !open && <img src={assets.chevronRight} />}
         {!isFile && open && <img src={assets.chevrondown} />}
         {!isFile && (
-          <img src={assets.sidebarFolderIcon} className={classes.folder} />
+          <img
+            src={assets.sidebarFolderIcon}
+            className={`${classes.folder} w-16`}
+          />
         )}
         <Typography className={`${classes.name} ${isFile ? classes.file : ""}`}>
           {name}
