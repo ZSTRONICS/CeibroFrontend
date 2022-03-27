@@ -128,5 +128,7 @@ export const GET_GROUP = "GET_GROUP";
 
 export const GET_FOLDER = "GET_FOLDER";
 export const CREATE_FOLDER = "CREATE_FOLDER";
+export const CREATE_MEMBER = "CREATE_MEMBER";
+export const GET_MEMBER = "GET_MEMBER";
 
 export default projectReduxConfigs;
