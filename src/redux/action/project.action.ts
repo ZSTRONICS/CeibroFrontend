@@ -26,6 +26,8 @@ import configs, {
   OPEN_DOCUMENT_DRAWER,
   GET_FOLDER,
   CREATE_FOLDER,
+  CREATE_MEMBER,
+  GET_MEMBER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -126,5 +128,7 @@ export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
 export const getFolder = createAction(GET_FOLDER);
 export const createFolder = createAction(CREATE_FOLDER);
+export const createMember = createAction(CREATE_MEMBER);
+export const getMember = createAction(GET_MEMBER);
 
 export default projectActions;

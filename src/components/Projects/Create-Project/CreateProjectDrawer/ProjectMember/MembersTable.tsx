@@ -10,7 +10,10 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMember } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import Select from "../../../../Utills/Inputs/Select";
@@ -53,7 +56,20 @@ const groupOptions = [
 ];
 
 const RolesTable = () => {
+  const { selectedProject, memberList } = useSelector(
+    (state: RootState) => state?.project
+  );
+
+  console.log("members list", memberList);
+
+  const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    if (selectedProject) {
+      dispatch(getMember({ other: selectedProject }));
+    }
+  }, [selectedProject]);
 
   return (
     <TableContainer>
@@ -70,11 +86,15 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {memberList?.map((row: any) => (
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row" style={{ width: "60%" }}>
                 <div className={classes.nameWrapper}>
-                  <Typography className={classes.name}>{row.name}</Typography>
+                  <Typography className={classes.name}>
+                    {row.isInvited && row.invitedEmail}
+                    {row?.user &&
+                      `${row?.user?.firstName} ${row?.user?.surName}`}
+                  </Typography>
                   <Typography className={classes.organizationName}>
                     Company name
                   </Typography>

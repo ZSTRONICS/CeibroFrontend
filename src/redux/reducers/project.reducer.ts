@@ -6,6 +6,7 @@ import config, {
   GET_FILTER_PROJECTS,
   GET_FOLDER,
   GET_GROUP,
+  GET_MEMBER,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -48,6 +49,7 @@ interface ProjectReducerInt {
   rolesList: roleInterface[];
   groupList: any;
   folderList: any;
+  memberList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -68,6 +70,7 @@ const projectReducer: ProjectReducerInt = {
   rolesList: [],
   groupList: null,
   folderList: null,
+  memberList: null,
 };
 
 const AppReducer = (
@@ -242,6 +245,13 @@ const AppReducer = (
       return {
         ...state,
         folderList: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_MEMBER): {
+      return {
+        ...state,
+        memberList: action.payload,
       };
     }
 
