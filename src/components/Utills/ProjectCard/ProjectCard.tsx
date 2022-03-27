@@ -90,7 +90,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
             <Typography className={classes.metaValue}>
-              {owner.firstName} {owner.surName}
+              {owner?.firstName} {owner?.surName}
             </Typography>
           </Grid>
         </Grid>

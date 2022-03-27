@@ -1,5 +1,6 @@
 import { put, takeLatest } from "redux-saga/effects";
 import {
+  CREATE_FOLDER,
   CREATE_GROUP,
   CREATE_PROJECT,
   CREATE_ROLES,
@@ -100,6 +101,12 @@ const geFolder = apiCall({
   path: (payload) => `/project/folder/${payload?.other}`,
 });
 
+const createFolder = apiCall({
+  type: CREATE_FOLDER,
+  method: "post",
+  path: (payload) => `/project/folder/${payload?.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -114,6 +121,7 @@ function* projectSaga() {
   yield takeLatest(CREATE_GROUP, createGroup);
   yield takeLatest(GET_GROUP, getGroup);
   yield takeLatest(GET_FOLDER, geFolder);
+  yield takeLatest(CREATE_FOLDER, createFolder);
 }
 
 export default projectSaga;

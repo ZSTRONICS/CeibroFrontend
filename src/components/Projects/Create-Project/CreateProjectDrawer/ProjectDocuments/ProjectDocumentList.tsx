@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import Select from "react-select";
 import { FolderSpecialOutlined } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
@@ -425,9 +426,17 @@ const ProjectDocumentList = () => {
           {folderList?.map((row: any) => {
             console.log("folder", row.name);
             return (
-              <TableRow key={row.name}>
+              <TableRow key={row?.name}>
                 <TableCell component="th" scope="row" className={classes.name}>
-                  {row.name}
+                  {row?.name}
+                </TableCell>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  align="right"
+                  className={classes.modifyDate}
+                >
+                  {row?.createdAt}
                 </TableCell>
               </TableRow>
             );
@@ -456,6 +465,11 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
+  },
+  modifyDate: {
+    fontSize: 14,
+    fontWeight: 500,
+    // paddingLeft: 15,
   },
   folderIcon: {
     fontSize: 20,
