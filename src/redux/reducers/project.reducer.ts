@@ -45,7 +45,7 @@ interface ProjectReducerInt {
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
-  rolesList: any;
+  rolesList: roleInterface[];
   groupList: any;
   folderList: any;
 }
@@ -65,7 +65,7 @@ const projectReducer: ProjectReducerInt = {
   roleDrawer: false,
   groupDrawer: false,
   documentDrawer: false,
-  rolesList: null,
+  rolesList: [],
   groupList: null,
   folderList: null,
 };

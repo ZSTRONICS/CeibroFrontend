@@ -292,3 +292,7 @@ button[disabled]{
 .Component-thumb-133 {
   margin-left: 1px !important;
 }
+
+.MuiFormControlLabel-root {
+  margin: 0px !important;
+}

@@ -11,7 +11,7 @@ const ProjectRoles = () => {
 
   return (
     <>
-      <Grid container>
+      <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
           <Button
             variant="outlined"
@@ -30,7 +30,7 @@ const ProjectRoles = () => {
               dispatch(projectActions.openProjectRole());
             }}
           >
-            Add a roled
+            Add a role
           </Button>
           <RoleDrawer />
         </Grid>
@@ -49,7 +49,7 @@ const useStyles = makeStyles({
   actionWrapper: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start",
     ["@media (max-width:960px)"]: {
       alignItems: "flex-start",
       paddingBottom: 20,

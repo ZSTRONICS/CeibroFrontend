@@ -228,15 +228,26 @@ const AddRole: React.FC<AddRoleProps> = () => {
                 )}
               </>
             )}
+            <HorizontalBreak />
           </div>
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button disabled={false} onClick={handleOk} color="primary">
-          ok
-        </Button>
-        <Button onClick={handleClose} color="secondary" autoFocus>
+      <DialogActions style={{ paddingRight: 22, paddingTop: 0 }}>
+        <Button
+          className={classes.cancel}
+          onClick={handleClose}
+          color="secondary"
+          autoFocus
+        >
           cancel
+        </Button>
+        <Button
+          className={classes.ok}
+          color="primary"
+          variant="contained"
+          onClick={handleOk}
+        >
+          ok
         </Button>
       </DialogActions>
     </Dialog>
@@ -273,5 +284,14 @@ const useStyles = makeStyles({
   optionTitle: {
     fontSize: 14,
     fontWeight: 500,
+  },
+  cancel: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: colors.textGrey,
+  },
+  ok: {
+    fontSize: 12,
+    fontWeight: 700,
   },
 });
