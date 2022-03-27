@@ -4,6 +4,7 @@ import config, {
   CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
+  GET_FOLDER,
   GET_GROUP,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
@@ -27,6 +28,7 @@ import {
   projectOverviewTemplate,
   rolesTemplate,
 } from "constants/interfaces/project.interface";
+import { GET_PROFILE } from "config/auth.config";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -45,6 +47,7 @@ interface ProjectReducerInt {
   documentDrawer: boolean;
   rolesList: any;
   groupList: any;
+  folderList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -64,6 +67,7 @@ const projectReducer: ProjectReducerInt = {
   documentDrawer: false,
   rolesList: null,
   groupList: null,
+  folderList: null,
 };
 
 const AppReducer = (
@@ -233,6 +237,14 @@ const AppReducer = (
         documentDrawer: false,
       };
     }
+
+    case requestSuccess(GET_FOLDER): {
+      return {
+        ...state,
+        folderList: action.payload,
+      };
+    }
+
     default:
       return state;
   }

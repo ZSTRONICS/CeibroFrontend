@@ -4,6 +4,7 @@ import {
   CREATE_PROJECT,
   CREATE_ROLES,
   GET_FILTER_PROJECTS,
+  GET_FOLDER,
   GET_GROUP,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
@@ -93,6 +94,11 @@ const getGroup = apiCall({
   method: "get",
   path: (payload) => `/project/group/${payload?.other}`,
 });
+const geFolder = apiCall({
+  type: GET_FOLDER,
+  method: "get",
+  path: (payload) => `/project/folder/${payload?.other}`,
+});
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
@@ -107,6 +113,7 @@ function* projectSaga() {
   yield takeLatest(CREATE_ROLES, createRoles);
   yield takeLatest(CREATE_GROUP, createGroup);
   yield takeLatest(GET_GROUP, getGroup);
+  yield takeLatest(GET_FOLDER, geFolder);
 }
 
 export default projectSaga;

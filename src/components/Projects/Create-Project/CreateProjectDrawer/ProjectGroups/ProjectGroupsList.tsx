@@ -12,7 +12,6 @@ const ProjectGroupsList = () => {
   const { selectedProject, groupList } = useSelector(
     (state: RootState) => state?.project
   );
-  console.log("group list", groupList);
   const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {

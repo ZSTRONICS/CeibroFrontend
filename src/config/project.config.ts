@@ -126,4 +126,6 @@ export const CREATE_ROLES = "CREATE_ROLES";
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_GROUP = "GET_GROUP";
 
+export const GET_FOLDER = "GET_FOLDER";
+
 export default projectReduxConfigs;

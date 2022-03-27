@@ -24,6 +24,7 @@ import configs, {
   GET_GROUP,
   CLOSE_DOCUMENT_DRAWER,
   OPEN_DOCUMENT_DRAWER,
+  GET_FOLDER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -122,5 +123,6 @@ export const getRolesById = createAction(GET_ROLES);
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
+export const getFolder = createAction(GET_FOLDER);
 
 export default projectActions;

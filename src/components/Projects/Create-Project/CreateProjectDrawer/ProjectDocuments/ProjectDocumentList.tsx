@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { FolderSpecialOutlined } from "@material-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import { BiChevronDown } from "react-icons/bi";
@@ -25,6 +25,9 @@ import {
 import { HiDownload, HiTrash, HiUpload } from "react-icons/hi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
+import { RootState } from "redux/reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { getFolder } from "redux/action/project.action";
 
 function createData(name: string, approve: boolean, submit: boolean) {
   return { name, approve, submit };
@@ -382,6 +385,17 @@ const getTableRows: any = (
 };
 
 const ProjectDocumentList = () => {
+  const { selectedProject, folderList } = useSelector(
+    (state: RootState) => state?.project
+  );
+  console.log("folder list", folderList);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (selectedProject) {
+      dispatch(getFolder({ other: selectedProject }));
+    }
+  }, [selectedProject]);
+
   const classes = useStyles();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
@@ -404,9 +418,21 @@ const ProjectDocumentList = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {allRows.map((row: any) => {
+          {/* {allRows.map((row: any) => {
             return row;
+          })} */}
+
+          {folderList?.map((row: any) => {
+            console.log("folder", row.name);
+            return (
+              <TableRow key={row.name}>
+                <TableCell component="th" scope="row" className={classes.name}>
+                  {row.name}
+                </TableCell>
+              </TableRow>
+            );
           })}
+          {/* <h1>hello</h1> */}
         </TableBody>
       </Table>
     </TableContainer>
