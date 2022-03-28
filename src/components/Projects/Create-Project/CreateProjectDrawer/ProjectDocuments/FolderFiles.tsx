@@ -19,6 +19,7 @@ import {
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import { useDropzone } from "react-dropzone";
+import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
@@ -112,8 +113,16 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                 {folderFiles?.map((file: FolderFileInterface) => {
                   return (
                     <TableRow key={file?.name}>
-                      <TableCell onClick={() => {}} component="th" scope="row">
+                      <TableCell
+                        onClick={() => {}}
+                        style={{ display: "flex" }}
+                        component="th"
+                        scope="row"
+                      >
                         {/* <img src={assets.usersFolder} className="width-16" /> */}
+                        {/* <div style={{ width: 20, height: 20 }}>
+                          <FilePreviewer file={file} showControls={false} />
+                        </div> */}
                         <Typography className={`${classes.fileName}`}>
                           {file?.name}
                         </Typography>
