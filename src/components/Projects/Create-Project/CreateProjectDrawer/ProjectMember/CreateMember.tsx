@@ -48,6 +48,7 @@ const MemberDialog = () => {
   useEffect(() => {
     dispatch(getRolesById({ other: selectedProject }));
   }, []);
+
   useEffect(() => {
     if (groupList) {
       const newGroups = mapGroups(groupList);
@@ -109,11 +110,12 @@ const MemberDialog = () => {
                 onChange={handleNameChange}
               />
             </div>
-            <div className={classes.meta}>
+            <div className={classes.meta} style={{ zIndex: 1000 }}>
               <SelectDropdown
                 title="Role"
                 data={roles}
                 handleChange={(e: any) => setSelectRoles(e)}
+                zIndex={10}
               />
             </div>
             <div className={classes.meta}>
@@ -121,15 +123,19 @@ const MemberDialog = () => {
                 title="Group"
                 data={groups}
                 handleChange={(e: any) => setSelectGroups(e)}
+                zIndex={8}
               />
             </div>
 
-            <Typography variant="h5">Subcontractor Company</Typography>
+            <Typography variant="h5" className={classes.subContractor}>
+              Subcontractor Company
+            </Typography>
             <div className={classes.meta}>
               <SelectDropdown
                 title="Name"
                 data={groups}
                 handleChange={(e: any) => setSelectGroups(e)}
+                zIndex={5}
               />
             </div>
             {/* <div></div> */}
@@ -163,5 +169,10 @@ const useStyle = makeStyles({
   },
   meta: {
     marginTop: 10,
+  },
+  subContractor: {
+    fontSize: 14,
+    fontWeight: 700,
+    paddingTop: 10,
   },
 });

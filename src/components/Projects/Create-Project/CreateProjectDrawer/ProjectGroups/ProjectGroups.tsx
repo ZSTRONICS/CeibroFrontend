@@ -13,7 +13,7 @@ const ProjectGroups = () => {
 
   return (
     <>
-      <Grid container>
+      <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
           <Button
             variant="outlined"
@@ -38,7 +38,7 @@ const ProjectGroups = () => {
         </Grid>
         <Grid item xs={12} className={classes.titleWrapper}>
           <Typography className={classes.title}>Group name</Typography>
-          <HorizontalBreak />
+          <HorizontalBreak color={colors.ternaryGrey} />
         </Grid>
 
         <Grid item xs={12} className={classes.groupsWrapper}>

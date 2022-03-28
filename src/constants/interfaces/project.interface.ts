@@ -29,10 +29,11 @@ export interface ProjectInterface {
 
 export interface roleInterface {
   name: string;
+  id?: string;
   roles?: string[];
   admin?: boolean;
-  member?: string[],
-  timeProfile?: string[]
+  member?: string[];
+  timeProfile?: string[];
 }
 
 export const projectOverviewTemplate: projectOverviewInterface = {
@@ -42,7 +43,17 @@ export const projectOverviewTemplate: projectOverviewInterface = {
 export const rolesTemplate: roleInterface = {
   name: "",
   admin: false,
-  roles: ['create', 'delete'],
-  member: [ 'edit', 'delete'],
-  timeProfile: ['create', 'edit']
+  roles: ["create", "delete"],
+  member: ["edit", "delete"],
+  timeProfile: ["create", "edit"],
+};
+
+export interface groupInterface {}
+
+export interface folderInterface {
+  name: string;
+  id?: string;
+  _id?: string;
+  group: any;
+  createdAt: string;
 }

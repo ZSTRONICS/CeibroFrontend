@@ -24,19 +24,6 @@ const ProjectGroupsList = () => {
       {groupList?.map((group: any) => (
         <GroupChip name={group.name} />
       ))}
-      {/* <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip />
-      <GroupChip /> */}
     </>
   );
 };

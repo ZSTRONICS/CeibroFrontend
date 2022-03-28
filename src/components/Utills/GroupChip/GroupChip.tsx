@@ -32,14 +32,14 @@ const GroupChip = (props: any) => {
     <div>
       <div className={classes.groupChip}>
         <div className={classes.title}>
-          <img src={assets.chevrondown} />
+          <img src={assets.chevrondown} className="w-16" />
           <Typography className={classes.titleText}>{name}</Typography>
         </div>
         <div className={classes.action}>
-          <MenuButton buttonInner={<MoreVertIcon />} menu={menue} />
+          <img src={assets.moreIcon} className={"width-16"} />
         </div>
       </div>
-      <HorizontalBreak />
+      <HorizontalBreak color={colors.grey} />
     </div>
   );
 };
@@ -50,7 +50,7 @@ const useStyles = makeStyles({
   groupChip: {
     display: "flex",
     justifyContent: "space-between",
-    paddingBottom: 0,
+    paddingBottom: 12,
   },
   title: {
     display: "flex",

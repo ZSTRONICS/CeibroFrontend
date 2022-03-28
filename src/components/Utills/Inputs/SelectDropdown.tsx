@@ -25,13 +25,14 @@ interface My {
   isMulti?: boolean;
   placeholder?: string;
   handleChange?: null | ((e: any) => void);
+  zIndex?: number;
 }
 
 const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
-  let myOptions: any = props.data || options;
-  console.log("my optins ar", myOptions);
-  const { value, isMulti, placeholder } = props;
+  let myOptions: any = props.data || [];
+
+  const { value, isMulti, placeholder, zIndex } = props;
 
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
@@ -108,7 +109,7 @@ const SelectDropdown: FC<My> = (props) => {
 
   return (
     <InputHOC title={props.title}>
-      <div className={classes.select}>
+      <div className={classes.select} style={{ ...(zIndex ? { zIndex } : {}) }}>
         <Select
           placeholder={placeholder || "Select"}
           isMulti={isMulti || false}

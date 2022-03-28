@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  Chip,
   makeStyles,
   Paper,
   Table,
@@ -10,9 +11,10 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import React, { useEffect } from "react";
+import { roleInterface } from "constants/interfaces/project.interface";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getMember } from "redux/action/project.action";
+import { getGroup, getMember, getRolesById } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
@@ -56,14 +58,47 @@ const groupOptions = [
 ];
 
 const RolesTable = () => {
-  const { selectedProject, memberList } = useSelector(
+  const { groupList, rolesList, selectedProject, memberList } = useSelector(
     (state: RootState) => state?.project
   );
+
+  const [group, setGroups] = useState<any>();
+  const [role, setRoles] = useState<any>();
 
   console.log("members list", memberList);
 
   const dispatch = useDispatch();
   const classes = useStyles();
+
+  useEffect(() => {
+    dispatch(getGroup({ other: selectedProject }));
+    dispatch(getRolesById({ other: selectedProject }));
+  }, []);
+
+  useEffect(() => {
+    if (groupList) {
+      const newGroups = groupList.map((group: any) => {
+        return {
+          title: group.name,
+          value: group.id,
+        };
+      });
+      setGroups(newGroups);
+    }
+  }, [groupList]);
+
+  useEffect(() => {
+    console.log("role lisr here", rolesList);
+    if (rolesList) {
+      const newRoles = rolesList.map((role: roleInterface) => {
+        return {
+          title: role.name,
+          value: role.id,
+        };
+      });
+      setRoles(newRoles);
+    }
+  }, [rolesList]);
 
   useEffect(() => {
     if (selectedProject) {
@@ -91,24 +126,31 @@ const RolesTable = () => {
               <TableCell component="th" scope="row" style={{ width: "60%" }}>
                 <div className={classes.nameWrapper}>
                   <Typography className={classes.name}>
-                    {row.isInvited && row.invitedEmail}
+                    {row.isInvited && (
+                      <span>
+                        {row.invitedEmail}{" "}
+                        <Chip
+                          className={classes.chip}
+                          variant="outlined"
+                          label="Invited"
+                          size="small"
+                        ></Chip>
+                      </span>
+                    )}
                     {row?.user &&
                       `${row?.user?.firstName} ${row?.user?.surName}`}
                   </Typography>
                   <Typography className={classes.organizationName}>
-                    Company name
+                    {row?.user?.companyName}
                   </Typography>
                 </div>
               </TableCell>
               <TableCell align="right" style={{ width: "20%" }}>
-                <Select options={roleOptions} selectedValue={row.role} />
+                <Select options={role} selectedValue={row?.role?.id} />
               </TableCell>
               <TableCell align="right" style={{ width: "20%" }}>
-                <Select options={groupOptions} selectedValue={1} />
+                <Select options={group} selectedValue={row?.group?.id} />
               </TableCell>
-              {/* <TableCell align="right"  style={{ width: '20%'}}>
-                <InputCheckbox checked={row.submit} />
-              </TableCell> */}
             </TableRow>
           ))}
         </TableBody>
@@ -137,5 +179,11 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 12,
     color: colors.textGrey,
+  },
+  chip: {
+    color: colors.white,
+    borderColor: colors.darkYellow,
+    background: colors.darkYellow,
+    fontSize: 10,
   },
 });

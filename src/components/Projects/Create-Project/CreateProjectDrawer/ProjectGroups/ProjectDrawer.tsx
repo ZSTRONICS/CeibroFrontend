@@ -4,24 +4,18 @@ import {
   DialogActions,
   DialogContent,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
-import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
   createGroup,
-  createRole,
   getGroup,
-  getRolesById,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { toast } from "react-toastify";
 
 interface AddGroupProps {}
 
@@ -70,7 +64,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           <Input
             value={name}
             title="Group"
-            placeholder="Enter role name"
+            placeholder="Enter group name"
             onChange={handleNameChange}
           />
           <br />
@@ -78,11 +72,21 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button disabled={false} onClick={handleOk} color="primary">
-          ok
-        </Button>
-        <Button onClick={handleClose} color="secondary" autoFocus>
+        <Button
+          className={classes.cancel}
+          onClick={handleClose}
+          color="secondary"
+          autoFocus
+        >
           cancel
+        </Button>
+        <Button
+          className={classes.ok}
+          color="primary"
+          variant="contained"
+          onClick={handleOk}
+        >
+          ok
         </Button>
       </DialogActions>
     </Dialog>
@@ -119,5 +123,14 @@ const useStyles = makeStyles({
   optionTitle: {
     fontSize: 14,
     fontWeight: 500,
+  },
+  cancel: {
+    fontSize: 12,
+    fontWeight: 700,
+    color: colors.textGrey,
+  },
+  ok: {
+    fontSize: 12,
+    fontWeight: 700,
   },
 });

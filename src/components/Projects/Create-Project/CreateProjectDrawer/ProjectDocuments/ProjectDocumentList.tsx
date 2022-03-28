@@ -1,7 +1,5 @@
 import {
-  Checkbox,
   makeStyles,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -10,386 +8,22 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import Select from "react-select";
-import { FolderSpecialOutlined } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
-import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import { BiChevronDown } from "react-icons/bi";
-import {
-  FaChevronDown,
-  FaChevronLeft,
-  FaChevronRight,
-  FaChevronUp,
-  FaTrash,
-} from "react-icons/fa";
-import { HiDownload, HiTrash, HiUpload } from "react-icons/hi";
-import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
-import { RootState } from "redux/reducers";
+import { folderInterface } from "constants/interfaces/project.interface";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFolder } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
+import colors from "../../../../../assets/colors";
 
-function createData(name: string, approve: boolean, submit: boolean) {
-  return { name, approve, submit };
+interface ProjectDocumentListInt {
+  onFolderClick?: (folder: folderInterface) => any;
 }
 
-const rows = [
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-  {
-    folderName: "Folder name",
-    modified: "18/08/06",
-    member: "Electrikfild",
-    files: [
-      {
-        fileName: "file1.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "fil23.jpg",
-        modified: "18/08/2021",
-      },
-      {
-        fileName: "file4.jpg",
-        modified: "18/08/2021",
-      },
-    ],
-  },
-];
-
-const getTableRow = (
-  name: string,
-  modified: string,
-  memeber: string,
-  classes: any,
-  isFile: boolean = false,
-  handleFolderClick: any,
-  index: any,
-  open: boolean
-) => {
-  const handleClick = () => {
-    if (!isFile) {
-      handleFolderClick(index);
-    }
-  };
-
-  return (
-    <TableRow
-      key={index}
-      onClick={handleClick}
-      style={{
-        background: !isFile ? colors.white : "inherit",
-        cursor: "pointer",
-      }}
-    >
-      <TableCell component="th" scope="row" className={classes.nameWrapper}>
-        {!isFile && !open && <img src={assets.chevronRight} />}
-        {!isFile && open && <img src={assets.chevrondown} />}
-        {!isFile && (
-          <img
-            src={assets.sidebarFolderIcon}
-            className={`${classes.folder} w-16`}
-          />
-        )}
-        <Typography className={`${classes.name} ${isFile ? classes.file : ""}`}>
-          {name}
-        </Typography>
-      </TableCell>
-      <TableCell align="right" className={classes.dateWrapper}>
-        <Typography className={classes.generic}>{modified}</Typography>
-      </TableCell>
-
-      <TableCell align="right" className={classes.memberWrapper}>
-        {!isFile && (
-          <Typography className={classes.generic}>{memeber}</Typography>
-        )}
-        {isFile && (
-          <div className={classes.fileActions}>
-            <HiUpload />
-            <HiDownload />
-            <HiTrash />
-          </div>
-        )}
-      </TableCell>
-    </TableRow>
-  );
-};
-
-const getTableRows: any = (
-  rows: any,
-  classes: any,
-  openIndex: any,
-  handleFolderClick: any
-) => {
-  const allRows: any = [];
-
-  const handleClick = (index: number) => {
-    handleFolderClick(index);
-  };
-
-  rows.forEach((row: any, index: number) => {
-    allRows.push(
-      getTableRow(
-        row.folderName,
-        row.modified,
-        row.member,
-        classes,
-        false,
-        handleClick,
-        index,
-        openIndex === index
-      )
-    );
-
-    if (index === openIndex) {
-      row.files.forEach((file: any, secondIndex: number) => {
-        allRows.push(
-          getTableRow(
-            file.fileName,
-            file.modified,
-            "",
-            classes,
-            true,
-            handleClick,
-            `file${secondIndex}`,
-            false
-          )
-        );
-      });
-    }
-  });
-  return allRows;
-};
-
-const ProjectDocumentList = () => {
+const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const { selectedProject, folderList } = useSelector(
     (state: RootState) => state?.project
   );
-  console.log("folder list", folderList);
   const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
@@ -400,35 +34,42 @@ const ProjectDocumentList = () => {
   const classes = useStyles();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const handleFolderClick = (index: number) => {
-    setOpenIndex(index === openIndex ? null : index);
+  const handleFolderClick = (folder: folderInterface) => {
+    props.onFolderClick?.(folder);
   };
-
-  const allRows: any = [
-    ...getTableRows(rows, classes, openIndex, handleFolderClick),
-  ];
 
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell align="right">Date modified</TableCell>
-            <TableCell align="right">Members</TableCell>
+            <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="right">
+              Date modified
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="right">
+              Members
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="right">
+              Who can access
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {allRows.map((row: any) => {
-            return row;
-          })} */}
-
-          {folderList?.map((row: any) => {
+          {folderList?.map((row: folderInterface) => {
             console.log("folder", row.name);
             return (
               <TableRow key={row?.name}>
-                <TableCell component="th" scope="row" className={classes.name}>
-                  {row?.name}
+                <TableCell
+                  onClick={() => handleFolderClick(row)}
+                  component="th"
+                  scope="row"
+                  className={classes.name}
+                >
+                  <img src={assets.usersFolder} className="width-16" />
+                  <Typography className={`${classes.name}`}>
+                    {row?.name}
+                  </Typography>
                 </TableCell>
                 <TableCell
                   component="th"
@@ -438,10 +79,22 @@ const ProjectDocumentList = () => {
                 >
                   {row?.createdAt}
                 </TableCell>
+
+                <TableCell
+                  component="th"
+                  scope="row"
+                  align="right"
+                  className={classes.modifyDate}
+                ></TableCell>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  align="right"
+                  className={classes.modifyDate}
+                ></TableCell>
               </TableRow>
             );
           })}
-          {/* <h1>hello</h1> */}
         </TableBody>
       </Table>
     </TableContainer>
@@ -465,6 +118,8 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
+    display: "flex",
+    alignItems: "center",
   },
   modifyDate: {
     fontSize: 14,
@@ -496,5 +151,10 @@ const useStyles = makeStyles({
   folder: {
     paddingRight: 5,
     paddingLeft: 5,
+  },
+  tableTitle: {
+    fontSize: 12,
+    fontWeight: 500,
+    color: colors.textGrey,
   },
 });
