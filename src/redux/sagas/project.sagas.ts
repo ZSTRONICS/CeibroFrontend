@@ -7,6 +7,7 @@ import {
   CREATE_ROLES,
   GET_FILTER_PROJECTS,
   GET_FOLDER,
+  GET_FOLDER_FILES,
   GET_GROUP,
   GET_MEMBER,
   GET_PROJECTS,
@@ -15,6 +16,7 @@ import {
   GET_PROJECT_DETAIL,
   GET_ROLES,
   UPDATE_MEMBER,
+  UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
 
@@ -98,6 +100,7 @@ const getGroup = apiCall({
   method: "get",
   path: (payload) => `/project/group/${payload?.other}`,
 });
+
 const geFolder = apiCall({
   type: GET_FOLDER,
   method: "get",
@@ -109,21 +112,37 @@ const createFolder = apiCall({
   method: "post",
   path: (payload) => `/project/folder/${payload?.other}`,
 });
+
 const createMember = apiCall({
   type: CREATE_MEMBER,
   method: "post",
   path: (payload) => `/project/member/${payload?.other}`,
 });
+
 const getMember = apiCall({
   type: GET_MEMBER,
   method: "get",
   path: (payload) => `/project/member/${payload?.other}`,
 });
+
 const updateMember = apiCall({
   type: UPDATE_MEMBER,
   method: "patch",
   path: (payload) => `/project/member/${payload?.other}`,
 });
+
+const getFolderFiles = apiCall({
+  type: GET_FOLDER_FILES,
+  method: "get",
+  path: (payload) => `/project/file/${payload.other}`,
+});
+
+const uploadFileToFolder = apiCall({
+  type: UPLOAD_FILE_TO_FOLDER,
+  method: "post",
+  path: (payload) => `/project/file/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -142,6 +161,8 @@ function* projectSaga() {
   yield takeLatest(CREATE_MEMBER, createMember);
   yield takeLatest(GET_MEMBER, getMember);
   yield takeLatest(UPDATE_MEMBER, updateMember);
+  yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
+  yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
 }
 
 export default projectSaga;

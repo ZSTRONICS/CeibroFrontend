@@ -127,6 +127,8 @@ export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_GROUP = "GET_GROUP";
 
 export const GET_FOLDER = "GET_FOLDER";
+export const GET_FOLDER_FILES = "GET_FOLDER_FILES";
+export const UPLOAD_FILE_TO_FOLDER = "UPLOAD_FILE_TO_FOLDER";
 export const CREATE_FOLDER = "CREATE_FOLDER";
 export const CREATE_MEMBER = "CREATE_MEMBER";
 export const GET_MEMBER = "GET_MEMBER";

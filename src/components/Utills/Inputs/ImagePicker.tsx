@@ -5,7 +5,7 @@ import { GoPencil } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { projectOverviewInterface } from "constants/interfaces/project.interface";
+import { ProjectOverviewInterface } from "constants/interfaces/project.interface";
 
 const ImagePicker = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -14,7 +14,7 @@ const ImagePicker = () => {
     "https://lh3.googleusercontent.com/proxy/ten4SpJ9QmAd8hrlUGL5gWjVehpKHpO-SJskSTYNRF48cVO69HJdP5NaW_TOGDl2gOKmw1hcFIrlCqRZES_KPYuiGxgQ31L1vqw7o_HVX-uTaPQEq5qWG2jfpYCu"
   );
 
-  const projectOverview: projectOverviewInterface = useSelector(
+  const projectOverview: ProjectOverviewInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
   const classes = useStyles();

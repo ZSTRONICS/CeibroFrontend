@@ -19,7 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
 import { getRolesById } from "redux/action/project.action";
 import assets from "assets/assets";
-import { roleInterface } from "constants/interfaces/project.interface";
+import { RoleInterface } from "constants/interfaces/project.interface";
 
 // store?: RootState
 const RolesTable = () => {
@@ -44,7 +44,7 @@ const RolesTable = () => {
       </Grid>
 
       <Grid item xs={12} className={classes.dataContainer}>
-        {rolesList?.map((role: roleInterface) => {
+        {rolesList?.map((role: RoleInterface) => {
           return (
             <div className={classes.roleChip}>
               <div className={classes.roleInner}>

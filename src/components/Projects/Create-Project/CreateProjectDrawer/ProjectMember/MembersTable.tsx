@@ -11,7 +11,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import { roleInterface } from "constants/interfaces/project.interface";
+import { RoleInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -95,7 +95,7 @@ const RolesTable = () => {
   useEffect(() => {
     console.log("role lisr here", rolesList);
     if (rolesList) {
-      const newRoles = rolesList.map((role: roleInterface) => {
+      const newRoles = rolesList.map((role: RoleInterface) => {
         return {
           title: role.name,
           value: role.id,

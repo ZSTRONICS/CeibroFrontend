@@ -10,7 +10,7 @@ import colors from "../../../../../assets/colors";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { projectOverviewInterface } from "constants/interfaces/project.interface";
+import { ProjectOverviewInterface } from "constants/interfaces/project.interface";
 import _ from "lodash";
 import projectActions, { getProjectDetail } from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";

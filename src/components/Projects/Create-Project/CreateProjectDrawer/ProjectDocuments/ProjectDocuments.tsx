@@ -1,20 +1,16 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
-import { folderInterface } from "constants/interfaces/project.interface";
+import { Grid, makeStyles } from "@material-ui/core";
+import { FolderInterface } from "constants/interfaces/project.interface";
 import { useState } from "react";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { BsGrid } from "react-icons/bs";
 import colors from "../../../../../assets/colors";
-import InputText from "../../../../Utills/Inputs/InputText";
-import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
+import FolderFiles from "./FolderFiles";
 import ProjectDocumentHeader from "./ProjectDocumentHeader";
 import ProjectDocumentList from "./ProjectDocumentList";
 
 const ProjectDocuments = () => {
   const classes = useStyles();
-  const [folder, setFolder] = useState<folderInterface | any>(null);
+  const [folder, setFolder] = useState<FolderInterface | any>(null);
 
-  const handleFolderClick = (folder: folderInterface) => {
+  const handleFolderClick = (folder: FolderInterface) => {
     setFolder(folder);
   };
 
@@ -33,6 +29,7 @@ const ProjectDocuments = () => {
         />
         <Grid item xs={12} className={classes.groupsWrapper}>
           {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}
+          {folder && <FolderFiles selectedFolderId={folder?.id} />}
         </Grid>
       </Grid>
     </>

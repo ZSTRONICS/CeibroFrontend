@@ -5,6 +5,7 @@ import config, {
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
   GET_FOLDER,
+  GET_FOLDER_FILES,
   GET_GROUP,
   GET_MEMBER,
   GET_PROJECTS,
@@ -24,13 +25,14 @@ import config, {
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
   ProjectInterface,
-  roleInterface,
-  projectOverviewInterface,
+  RoleInterface,
+  ProjectOverviewInterface,
   projectOverviewTemplate,
   rolesTemplate,
-  folderInterface,
-  memberInterface,
-  groupInterface,
+  FolderInterface,
+  MemberInterface,
+  GroupInterface,
+  FolderFileInterface,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 
@@ -41,18 +43,19 @@ interface ProjectReducerInt {
   projects: ProjectInterface[];
   projectMembers: [];
   selectedProject: any;
-  projectOverview: projectOverviewInterface;
-  role: roleInterface;
+  projectOverview: ProjectOverviewInterface;
+  role: RoleInterface;
   filter: any;
   selectedStatus: string | null;
   selectedDate: string | null;
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
-  rolesList: roleInterface[];
-  groupList: groupInterface[];
-  folderList: folderInterface[];
-  memberList: memberInterface[];
+  rolesList: RoleInterface[];
+  groupList: GroupInterface[];
+  folderList: FolderInterface[];
+  memberList: MemberInterface[];
+  folderFiles: FolderFileInterface[];
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -74,6 +77,7 @@ const projectReducer: ProjectReducerInt = {
   groupList: [],
   folderList: [],
   memberList: [],
+  folderFiles: [],
 };
 
 const AppReducer = (
@@ -255,6 +259,13 @@ const AppReducer = (
       return {
         ...state,
         memberList: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_FOLDER_FILES): {
+      return {
+        ...state,
+        folderFiles: action.payload,
       };
     }
 

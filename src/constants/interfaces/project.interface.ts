@@ -1,7 +1,7 @@
 import { string } from "yup/lib/locale";
 import { UserInterface } from "./user.interface";
 
-export interface projectOverviewInterface {
+export interface ProjectOverviewInterface {
   dueDate?: any;
   owner?: UserInterface | any;
   title: string | null;
@@ -27,7 +27,7 @@ export interface ProjectInterface {
   _id?: string;
 }
 
-export interface roleInterface {
+export interface RoleInterface {
   name: string;
   id?: string;
   roles?: string[];
@@ -36,11 +36,11 @@ export interface roleInterface {
   timeProfile?: string[];
 }
 
-export const projectOverviewTemplate: projectOverviewInterface = {
+export const projectOverviewTemplate: ProjectOverviewInterface = {
   title: "",
 };
 
-export const rolesTemplate: roleInterface = {
+export const rolesTemplate: RoleInterface = {
   name: "",
   admin: false,
   roles: ["create", "delete"],
@@ -48,26 +48,37 @@ export const rolesTemplate: roleInterface = {
   timeProfile: ["create", "edit"],
 };
 
-export interface groupInterface {
+export interface GroupInterface {
   name: string;
   id?: string;
   _id?: string;
 }
 
-export interface folderInterface {
+export interface FolderInterface {
   name: string;
   id?: string;
   _id?: string;
-  group: groupInterface;
+  group: GroupInterface;
   createdAt: string;
 }
 
-export interface memberInterface {
+export interface FolderFileInterface {
+  name: string;
+  url: string;
+  access: UserInterface[];
+  project: ProjectInterface;
+  folder: FolderInterface;
+  uploadedBy: UserInterface;
+  fileType: string;
+  createdAt?: string;
+}
+
+export interface MemberInterface {
   user?: UserInterface;
   id?: string;
   _id?: string;
-  group?: groupInterface;
-  subContractor?: groupInterface;
-  role?: roleInterface;
+  group?: GroupInterface;
+  subContractor?: GroupInterface;
+  role?: RoleInterface;
   createdAt?: string;
 }

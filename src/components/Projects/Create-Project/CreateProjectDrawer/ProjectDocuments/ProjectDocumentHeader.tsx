@@ -9,10 +9,10 @@ import { useDispatch } from "react-redux";
 import InputText from "../../../../Utills/Inputs/InputText";
 import projectActions from "redux/action/project.action";
 import DocumentDrawer from "./DocumentDrawer";
-import { folderInterface } from "constants/interfaces/project.interface";
+import { FolderInterface } from "constants/interfaces/project.interface";
 
 interface headerInterface {
-  selectedFolder?: folderInterface | null;
+  selectedFolder?: FolderInterface | null;
   handleGoBack: () => any;
 }
 
@@ -79,6 +79,9 @@ const useStyles = makeStyles({
     fontWeight: 500,
     color: colors.textGrey,
     cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
+    },
   },
   breadCrumsFolder: {
     fontSize: 14,

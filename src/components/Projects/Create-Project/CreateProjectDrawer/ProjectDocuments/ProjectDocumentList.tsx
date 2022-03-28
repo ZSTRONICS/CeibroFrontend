@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import assets from "assets/assets";
-import { folderInterface } from "constants/interfaces/project.interface";
+import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFolder } from "redux/action/project.action";
@@ -17,7 +17,7 @@ import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 
 interface ProjectDocumentListInt {
-  onFolderClick?: (folder: folderInterface) => any;
+  onFolderClick?: (folder: FolderInterface) => any;
 }
 
 const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
@@ -34,7 +34,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const classes = useStyles();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const handleFolderClick = (folder: folderInterface) => {
+  const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
   };
 
@@ -56,7 +56,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {folderList?.map((row: folderInterface) => {
+          {folderList?.map((row: FolderInterface) => {
             console.log("folder", row.name);
             return (
               <TableRow key={row?.name}>

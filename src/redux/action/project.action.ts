@@ -1,6 +1,6 @@
 import {
-  projectOverviewInterface,
-  roleInterface,
+  ProjectOverviewInterface,
+  RoleInterface,
 } from "constants/interfaces/project.interface";
 import configs, {
   CLOSE_ROLE_DRAWER,
@@ -29,6 +29,8 @@ import configs, {
   CREATE_MEMBER,
   GET_MEMBER,
   UPDATE_MEMBER,
+  GET_FOLDER_FILES,
+  UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -49,13 +51,13 @@ const projectActions = {
       payload: id,
     };
   },
-  setProjectOverview: (projectOverview: projectOverviewInterface) => {
+  setProjectOverview: (projectOverview: ProjectOverviewInterface) => {
     return {
       type: SET_PROJECT_OVERVIEW,
       payload: projectOverview,
     };
   },
-  setRole: (role: roleInterface) => {
+  setRole: (role: RoleInterface) => {
     return {
       type: SET_ROLE,
       payload: role,
@@ -132,5 +134,7 @@ export const createFolder = createAction(CREATE_FOLDER);
 export const createMember = createAction(CREATE_MEMBER);
 export const getMember = createAction(GET_MEMBER);
 export const updateMember = createAction(UPDATE_MEMBER);
+export const getFolderFiles = createAction(GET_FOLDER_FILES);
+export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);
 
 export default projectActions;
