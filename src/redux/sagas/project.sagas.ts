@@ -14,6 +14,7 @@ import {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
+  UPDATE_MEMBER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
 
@@ -118,7 +119,11 @@ const getMember = apiCall({
   method: "get",
   path: (payload) => `/project/member/${payload?.other}`,
 });
-
+const updateMember = apiCall({
+  type: UPDATE_MEMBER,
+  method: "patch",
+  path: (payload) => `/project/member/${payload?.other}`,
+});
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -136,6 +141,7 @@ function* projectSaga() {
   yield takeLatest(CREATE_FOLDER, createFolder);
   yield takeLatest(CREATE_MEMBER, createMember);
   yield takeLatest(GET_MEMBER, getMember);
+  yield takeLatest(UPDATE_MEMBER, updateMember);
 }
 
 export default projectSaga;

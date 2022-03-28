@@ -14,7 +14,12 @@ import {
 import { roleInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getGroup, getMember, getRolesById } from "redux/action/project.action";
+import {
+  getGroup,
+  getMember,
+  getRolesById,
+  updateMember,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
@@ -100,11 +105,49 @@ const RolesTable = () => {
     }
   }, [rolesList]);
 
-  useEffect(() => {
+  const getMemebers = () => {
     if (selectedProject) {
       dispatch(getMember({ other: selectedProject }));
     }
+  };
+
+  useEffect(() => {
+    getMemebers();
   }, [selectedProject]);
+
+  const selectGroupHandle = (e: any, row: any) => {
+    // console.log("selected valueee", e.target.value);
+
+    const payload = {
+      body: {
+        groupId: e,
+        memberId: row?.id,
+        roleId: row?.role.id,
+      },
+      success: () => {
+        getMemebers();
+      },
+      other: selectedProject,
+    };
+
+    dispatch(updateMember(payload));
+  };
+
+  const selectRoleHandle = (e: any, row: any) => {
+    const payload = {
+      body: {
+        groupId: row?.group?.id,
+        memberId: row?.id,
+        roleId: e,
+      },
+      success: () => {
+        getMemebers();
+      },
+      other: selectedProject,
+    };
+
+    dispatch(updateMember(payload));
+  };
 
   return (
     <TableContainer>
@@ -146,10 +189,18 @@ const RolesTable = () => {
                 </div>
               </TableCell>
               <TableCell align="right" style={{ width: "20%" }}>
-                <Select options={role} selectedValue={row?.role?.id} />
+                <Select
+                  options={role}
+                  selectedValue={row?.role?.id}
+                  handleValueChange={(e: any) => selectRoleHandle(e, row)}
+                />
               </TableCell>
               <TableCell align="right" style={{ width: "20%" }}>
-                <Select options={group} selectedValue={row?.group?.id} />
+                <Select
+                  options={group}
+                  selectedValue={row?.group?.id}
+                  handleValueChange={(e: any) => selectGroupHandle(e, row)}
+                />
               </TableCell>
             </TableRow>
           ))}
