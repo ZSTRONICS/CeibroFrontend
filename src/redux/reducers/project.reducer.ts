@@ -29,6 +29,8 @@ import {
   projectOverviewTemplate,
   rolesTemplate,
   folderInterface,
+  memberInterface,
+  groupInterface,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 
@@ -48,9 +50,9 @@ interface ProjectReducerInt {
   groupDrawer: boolean;
   documentDrawer: boolean;
   rolesList: roleInterface[];
-  groupList: any;
+  groupList: groupInterface[];
   folderList: folderInterface[];
-  memberList: any;
+  memberList: memberInterface[];
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -69,9 +71,9 @@ const projectReducer: ProjectReducerInt = {
   groupDrawer: false,
   documentDrawer: false,
   rolesList: [],
-  groupList: null,
+  groupList: [],
   folderList: [],
-  memberList: null,
+  memberList: [],
 };
 
 const AppReducer = (

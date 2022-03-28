@@ -120,6 +120,10 @@ const useStyles = makeStyles({
     paddingLeft: 5,
     display: "flex",
     alignItems: "center",
+    cursor: "pointer",
+    "&:hover": {
+      textDecoration: "underline",
+    },
   },
   modifyDate: {
     fontSize: 14,

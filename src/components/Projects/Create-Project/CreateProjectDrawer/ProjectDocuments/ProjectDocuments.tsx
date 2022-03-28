@@ -18,10 +18,19 @@ const ProjectDocuments = () => {
     setFolder(folder);
   };
 
+  const handleGoBack = () => {
+    if (folder) {
+      setFolder(null);
+    }
+  };
+
   return (
     <>
-      <Grid container alignItems="flex-start">
-        <ProjectDocumentHeader />
+      <Grid item xs={12} alignItems="flex-start">
+        <ProjectDocumentHeader
+          handleGoBack={handleGoBack}
+          selectedFolder={folder}
+        />
         <Grid item xs={12} className={classes.groupsWrapper}>
           {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}
         </Grid>

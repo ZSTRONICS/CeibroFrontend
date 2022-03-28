@@ -48,12 +48,26 @@ export const rolesTemplate: roleInterface = {
   timeProfile: ["create", "edit"],
 };
 
-export interface groupInterface {}
+export interface groupInterface {
+  name: string;
+  id?: string;
+  _id?: string;
+}
 
 export interface folderInterface {
   name: string;
   id?: string;
   _id?: string;
-  group: any;
+  group: groupInterface;
   createdAt: string;
+}
+
+export interface memberInterface {
+  user?: UserInterface;
+  id?: string;
+  _id?: string;
+  group?: groupInterface;
+  subContractor?: groupInterface;
+  role?: roleInterface;
+  createdAt?: string;
 }
