@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -31,6 +32,10 @@ const AddRole: React.FC<AddRoleProps> = () => {
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const isDiabled = !loading ? false : true;
+
   const { roleDrawer, role, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
@@ -49,8 +54,12 @@ const AddRole: React.FC<AddRoleProps> = () => {
         dispatch(projectActions.closeProjectRole());
         dispatch(getRolesById({ other: selectedProject }));
       },
+      finallyAction: () => {
+        setLoading(false);
+      },
       other: selectedProject,
     };
+    setLoading(true);
     dispatch(createRole(payload));
   };
 
@@ -245,9 +254,13 @@ const AddRole: React.FC<AddRoleProps> = () => {
           className={classes.ok}
           color="primary"
           variant="contained"
+          disabled={isDiabled}
           onClick={handleOk}
         >
           ok
+          {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
         </Button>
       </DialogActions>
     </Dialog>
@@ -293,5 +306,16 @@ const useStyles = makeStyles({
   ok: {
     fontSize: 12,
     fontWeight: 700,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    // marginTop: "50px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

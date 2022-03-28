@@ -1,4 +1,4 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import DatePicker from "../../../../Utills/Inputs/DatePicker";
 import SelectDropdown, {
@@ -25,11 +25,21 @@ const ProjectOverview = () => {
     (state: RootState) => state.project.selectedProject
   );
   const [data, setData] = useState<dataInterface[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (selectedProject) {
-      dispatch(getProjectDetail({ other: selectedProject }));
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: selectedProject,
+      };
+      setLoading(true);
+
+      dispatch(getProjectDetail(payload));
     }
   }, [selectedProject]);
 
@@ -67,6 +77,8 @@ const ProjectOverview = () => {
   return (
     <>
       <Grid container>
+        {loading && <CircularProgress size={20} className={classes.progress} />}
+
         <Grid item xs={12} sm={6} md={3}>
           <DatePicker value={my} onChange={handleDateChange} />
         </Grid>
@@ -115,5 +127,17 @@ const useStyles = makeStyles({
     ["@media (max-width:600px)"]: {
       paddingBottom: 20,
     },
+  },
+
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "300px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

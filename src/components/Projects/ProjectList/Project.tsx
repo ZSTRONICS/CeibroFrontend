@@ -2,13 +2,15 @@ import React, { useState, useEffect } from "react";
 import ProjectList from "./ProjectList";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
-import { Grid, makeStyles } from "@material-ui/core";
+import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import {
   getColorByStatus,
   getProjectStatus,
 } from "../../../config/project.config";
 import StatusMenu from "../../Utills/Others/StatusMenu";
 import { useDispatch } from "react-redux";
+import colors from "assets/colors";
+
 import projectActions, {
   getProjectsWithPagination,
 } from "redux/action/project.action";
@@ -18,11 +20,18 @@ const Project = () => {
   const dispatch = useDispatch();
   const allStatus = getProjectStatus();
   const [date, setDate] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   console.log("selected date1", date);
 
   useEffect(() => {
-    dispatch(getProjectsWithPagination());
+    const payload = {
+      finallyAction: () => {
+        setLoading(false);
+      },
+    };
+    setLoading(true);
+    dispatch(getProjectsWithPagination(payload));
   }, []);
 
   useEffect(() => {
@@ -31,6 +40,8 @@ const Project = () => {
 
   return (
     <Grid item xs={12}>
+      {loading && <CircularProgress size={20} className={classes.progress} />}
+
       <Grid container>
         <Grid item xs={12} md={3} className={classes.datePicker}>
           <DatePicker onChange={(e: any) => setDate(e.target.value)} />
@@ -82,5 +93,16 @@ const useStyles = makeStyles({
   },
   approved: {
     background: getColorByStatus("approved"),
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "300px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

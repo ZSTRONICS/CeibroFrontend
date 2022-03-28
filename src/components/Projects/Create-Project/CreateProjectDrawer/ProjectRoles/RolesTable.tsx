@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  CircularProgress,
   Grid,
   makeStyles,
   Paper,
@@ -13,7 +14,7 @@ import {
 } from "@material-ui/core";
 import "./roles-table.css";
 import colors from "assets/colors";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -26,14 +27,23 @@ const RolesTable = () => {
   const { selectedProject, rolesList } = useSelector(
     (state: RootState) => state?.project
   );
-  console.log(rolesList);
 
   const dispatch = useDispatch();
   const classes = useStyles();
 
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const isDiabled = !loading ? false : true;
   useEffect(() => {
     if (selectedProject) {
-      dispatch(getRolesById({ other: selectedProject }));
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: selectedProject,
+      };
+      setLoading(true);
+      dispatch(getRolesById(payload));
     }
   }, [selectedProject]);
 
@@ -44,6 +54,7 @@ const RolesTable = () => {
       </Grid>
 
       <Grid item xs={12} className={classes.dataContainer}>
+        {loading && <CircularProgress size={20} className={classes.progress} />}
         {rolesList?.map((role: roleInterface) => {
           return (
             <div className={classes.roleChip}>
@@ -181,4 +192,15 @@ const useStyles = makeStyles({
     color: colors.textGrey,
   },
   roleMenu: {},
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "300px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
+  },
 });

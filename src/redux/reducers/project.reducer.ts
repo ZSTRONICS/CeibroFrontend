@@ -53,6 +53,7 @@ interface ProjectReducerInt {
   groupList: groupInterface[];
   folderList: folderInterface[];
   memberList: memberInterface[];
+  load: boolean;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -74,6 +75,7 @@ const projectReducer: ProjectReducerInt = {
   groupList: [],
   folderList: [],
   memberList: [],
+  load: false,
 };
 
 const AppReducer = (
@@ -213,6 +215,9 @@ const AppReducer = (
       return {
         ...state,
         rolesList: action.payload,
+        //  finallyAction: () => {
+        //     setLoading(false);
+        //   },
       };
     }
 

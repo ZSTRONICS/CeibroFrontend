@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -29,11 +30,12 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const [isTimeProfile, setIsTimeProfile] = useState(false);
 
   const [name, setName] = useState();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const { groupDrawer, role, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-
+  const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -50,6 +52,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       },
       other: selectedProject,
     };
+    setLoading(true);
     dispatch(createGroup(payload));
   };
 
@@ -85,8 +88,12 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           color="primary"
           variant="contained"
           onClick={handleOk}
+          disabled={isDiabled}
         >
           ok
+          {isDiabled && loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
         </Button>
       </DialogActions>
     </Dialog>
@@ -132,5 +139,16 @@ const useStyles = makeStyles({
   ok: {
     fontSize: 12,
     fontWeight: 700,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    // marginTop: "50px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });
