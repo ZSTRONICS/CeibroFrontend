@@ -81,4 +81,6 @@ export interface MemberInterface {
   subContractor?: GroupInterface;
   role?: RoleInterface;
   createdAt?: string;
+  isInvited?: boolean;
+  invitedEmail?: string;
 }

@@ -84,8 +84,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
     }
   }, [groupList]);
 
-  // const optionHandler = () => {};
-
   return (
     <Dialog open={documentDrawer} onClose={handleClose}>
       <DialogContent>

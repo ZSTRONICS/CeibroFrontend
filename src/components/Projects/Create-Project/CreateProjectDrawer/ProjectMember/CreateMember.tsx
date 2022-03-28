@@ -6,7 +6,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
-import { makeStyles, Typography } from "@material-ui/core";
+import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
+import colors from "assets/colors";
+
 import InputText from "../../../../Utills/Inputs/InputText";
 import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,10 +32,11 @@ const MemberDialog = () => {
   const [roles, setRoles] = useState();
   const [selectGroups, setSelectGroups] = useState<any>();
   const [selectRoles, setSelectRoles] = useState<any>();
-
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const classes = useStyle();
+  const isDiabled = !loading ? false : true;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -66,7 +69,6 @@ const MemberDialog = () => {
   }, [rolesList]);
 
   const handleOk = () => {
-    handleClose();
     const payload = {
       body: {
         email: name,
@@ -76,11 +78,16 @@ const MemberDialog = () => {
       },
       success: () => {
         toast.success("Member created successfully");
-        handleClose();
         dispatch(getMember({ other: selectedProject }));
+        handleClose();
+      },
+      finallyAction: () => {
+        setLoading(false);
       },
       other: selectedProject,
     };
+    setLoading(true);
+
     dispatch(createMember(payload));
   };
 
@@ -148,8 +155,16 @@ const MemberDialog = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleOk} color="primary" variant="contained">
+          <Button
+            onClick={handleOk}
+            color="primary"
+            variant="contained"
+            disabled={isDiabled}
+          >
             Add
+            {isDiabled && loading && (
+              <CircularProgress size={20} className={classes.progress} />
+            )}
           </Button>
         </DialogActions>
       </Dialog>
@@ -175,5 +190,16 @@ const useStyle = makeStyles({
     fontSize: 14,
     fontWeight: 700,
     paddingTop: 10,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    // marginTop: "50px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

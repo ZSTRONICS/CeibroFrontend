@@ -1,6 +1,7 @@
 import {
   Checkbox,
   Chip,
+  CircularProgress,
   makeStyles,
   Paper,
   Table,
@@ -11,7 +12,11 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import { RoleInterface } from "constants/interfaces/project.interface";
+import {
+  GroupInterface,
+  MemberInterface,
+  RoleInterface,
+} from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -69,6 +74,7 @@ const RolesTable = () => {
 
   const [group, setGroups] = useState<any>();
   const [role, setRoles] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   console.log("members list", memberList);
 
@@ -82,7 +88,7 @@ const RolesTable = () => {
 
   useEffect(() => {
     if (groupList) {
-      const newGroups = groupList.map((group: any) => {
+      const newGroups = groupList.map((group: GroupInterface) => {
         return {
           title: group.name,
           value: group.id,
@@ -107,7 +113,14 @@ const RolesTable = () => {
 
   const getMemebers = () => {
     if (selectedProject) {
-      dispatch(getMember({ other: selectedProject }));
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: selectedProject,
+      };
+      setLoading(true);
+      dispatch(getMember(payload));
     }
   };
 
@@ -115,14 +128,14 @@ const RolesTable = () => {
     getMemebers();
   }, [selectedProject]);
 
-  const selectGroupHandle = (e: any, row: any) => {
+  const selectGroupHandle = (e: string, row: MemberInterface) => {
     // console.log("selected valueee", e.target.value);
 
     const payload = {
       body: {
         groupId: e,
         memberId: row?.id,
-        roleId: row?.role.id,
+        roleId: row?.role?.id,
       },
       success: () => {
         getMemebers();
@@ -133,7 +146,7 @@ const RolesTable = () => {
     dispatch(updateMember(payload));
   };
 
-  const selectRoleHandle = (e: any, row: any) => {
+  const selectRoleHandle = (e: string, row: MemberInterface) => {
     const payload = {
       body: {
         groupId: row?.group?.id,
@@ -164,7 +177,11 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {memberList?.map((row: any) => (
+          {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
+
+          {memberList?.map((row: MemberInterface) => (
             <TableRow key={row.id}>
               <TableCell component="th" scope="row" style={{ width: "60%" }}>
                 <div className={classes.nameWrapper}>
@@ -192,14 +209,14 @@ const RolesTable = () => {
                 <Select
                   options={role}
                   selectedValue={row?.role?.id}
-                  handleValueChange={(e: any) => selectRoleHandle(e, row)}
+                  handleValueChange={(e: string) => selectRoleHandle(e, row)}
                 />
               </TableCell>
               <TableCell align="right" style={{ width: "20%" }}>
                 <Select
                   options={group}
                   selectedValue={row?.group?.id}
-                  handleValueChange={(e: any) => selectGroupHandle(e, row)}
+                  handleValueChange={(e: string) => selectGroupHandle(e, row)}
                 />
               </TableCell>
             </TableRow>
@@ -236,5 +253,16 @@ const useStyles = makeStyles({
     borderColor: colors.darkYellow,
     background: colors.darkYellow,
     fontSize: 10,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "300px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });
