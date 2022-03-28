@@ -79,6 +79,7 @@ export default function CustomizedSelects(props) {
 
   const handleChange = (event) => {
     console.log("vale u is ", event.target.value);
+    props.handleValueChange?.(event.target.value);
     // handleValueChange(event.target.value)
   };
 

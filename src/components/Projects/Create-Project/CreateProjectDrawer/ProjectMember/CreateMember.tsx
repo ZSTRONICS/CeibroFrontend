@@ -15,6 +15,7 @@ import { mapGroups } from "helpers/project.helper";
 import {
   createMember,
   getGroup,
+  getMember,
   getRolesById,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
@@ -76,7 +77,7 @@ const MemberDialog = () => {
       success: () => {
         toast.success("Member created successfully");
         handleClose();
-        // dispatch(getFolder({ other: selectedProject }));
+        dispatch(getMember({ other: selectedProject }));
       },
       other: selectedProject,
     };
