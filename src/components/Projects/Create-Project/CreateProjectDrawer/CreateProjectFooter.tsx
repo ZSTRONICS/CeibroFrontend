@@ -1,19 +1,25 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Button, CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import colors from "../../../../assets/colors";
 import { FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { projectOverviewSchema } from "constants/schemas/project.schema";
 import { useEffect, useState } from "react";
-import projectActions, { createProject } from "redux/action/project.action";
+import projectActions, {
+  createProject,
+  updateProject,
+} from "redux/action/project.action";
 import { toast } from "react-toastify";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
   const [isValid, setIsValid] = useState(false);
   const dispatch = useDispatch();
-
-  const { projectOverview } = useSelector((state: RootState) => state.project);
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDiabled = !loading ? false : true;
+  const { projectOverview, projects, selectedProject } = useSelector(
+    (state: RootState) => state.project
+  );
   useEffect(() => {
     projectOverviewSchema
       .isValid(projectOverview)
@@ -35,10 +41,31 @@ const CreateProjectBody = () => {
         body: data,
         success: (res) => {
           toast.success("Project created");
+          setLoading(true);
           dispatch(projectActions.setSelectedProject(res?.data?.id));
+        },
+        finallyAction: () => {
+          setLoading(false);
         },
       })
     );
+  };
+
+  const handleProjectUpdate = () => {
+    const data = getFormValues();
+    const payload = {
+      body: data,
+      other: selectedProject,
+    };
+    dispatch(updateProject(payload));
+  };
+
+  const handleSubmit = () => {
+    if (selectedProject) {
+      handleProjectUpdate();
+    } else {
+      handleProjectCreate();
+    }
   };
 
   const getFormValues = () => {
@@ -68,13 +95,16 @@ const CreateProjectBody = () => {
         <FaTrash />
       </Button>
       <Button
-        disabled={!isValid}
+        disabled={isDiabled}
         className={classes.create}
         variant="contained"
         color="primary"
-        onClick={() => handleProjectCreate()}
+        onClick={handleSubmit}
       >
-        Create project
+        {selectedProject ? "update" : "Create project"}
+        {isDiabled && loading && (
+          <CircularProgress size={20} className={classes.progress} />
+        )}
       </Button>
     </Grid>
   );
@@ -102,5 +132,15 @@ const useStyles = makeStyles({
   },
   trash: {
     color: "red",
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });
