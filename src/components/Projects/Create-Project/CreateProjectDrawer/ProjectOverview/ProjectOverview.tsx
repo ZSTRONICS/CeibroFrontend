@@ -53,7 +53,7 @@ const ProjectOverview = () => {
     );
   }, []);
 
-  const handleDateChange = _.debounce((e: any) => {
+  const handleDateChange = (e: any) => {
     const date = e?.target?.value;
     dispatch(
       projectActions.setProjectOverview({
@@ -61,16 +61,16 @@ const ProjectOverview = () => {
         dueDate: date,
       })
     );
-  }, 300);
+  };
 
-  const handleOwnerChange = _.debounce((user: any) => {
+  const handleOwnerChange = (user: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
         owner: user,
       })
     );
-  }, 300);
+  };
 
   const my = formatDate(projectOverview?.dueDate);
 

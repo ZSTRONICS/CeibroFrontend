@@ -31,6 +31,7 @@ import configs, {
   UPDATE_MEMBER,
   GET_FOLDER_FILES,
   UPLOAD_FILE_TO_FOLDER,
+  UPDATE_PROJECT,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -136,5 +137,6 @@ export const getMember = createAction(GET_MEMBER);
 export const updateMember = createAction(UPDATE_MEMBER);
 export const getFolderFiles = createAction(GET_FOLDER_FILES);
 export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);
+export const updateProject = createAction(UPDATE_PROJECT);
 
 export default projectActions;

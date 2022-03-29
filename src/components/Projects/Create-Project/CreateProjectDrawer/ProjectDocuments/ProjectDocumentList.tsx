@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   makeStyles,
   Table,
   TableBody,
@@ -24,10 +25,21 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const { selectedProject, folderList } = useSelector(
     (state: RootState) => state?.project
   );
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDiabled = !loading ? false : true;
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
-      dispatch(getFolder({ other: selectedProject }));
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: selectedProject,
+      };
+      setLoading(true);
+
+      dispatch(getFolder(payload));
     }
   }, [selectedProject]);
 
@@ -56,6 +68,10 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
+          {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
+
           {folderList?.map((row: FolderInterface) => {
             console.log("folder", row.name);
             return (
@@ -160,5 +176,16 @@ const useStyles = makeStyles({
     fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    marginTop: "300px",
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

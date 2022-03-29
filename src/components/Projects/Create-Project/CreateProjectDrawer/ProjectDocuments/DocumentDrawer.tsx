@@ -1,5 +1,6 @@
 import {
   Button,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -42,6 +43,8 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const [name, setName] = useState();
   const [groups, setGroups] = useState();
   const [selectGroups, setSelectGroups] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDiabled = !loading ? false : true;
 
   const { documentDrawer, groupList, selectedProject } = useSelector(
     (state: RootState) => state.project
@@ -64,8 +67,12 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         dispatch(projectActions.closeProjectDocuments());
         dispatch(getFolder({ other: selectedProject }));
       },
+      finallyAction: () => {
+        setLoading(false);
+      },
       other: selectedProject,
     };
+    setLoading(true);
     dispatch(createFolder(payload));
   };
 
@@ -76,7 +83,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   useEffect(() => {
     dispatch(getGroup({ other: selectedProject }));
   }, []);
-
   useEffect(() => {
     if (groupList) {
       const newGroups = mapGroups(groupList);
@@ -105,8 +111,11 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         </div>
       </DialogContent>
       <DialogActions>
-        <Button disabled={false} onClick={handleOk} color="primary">
+        <Button onClick={handleOk} color="primary" disabled={isDiabled}>
           ok
+          {isDiabled && loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
         </Button>
         <Button onClick={handleClose} color="secondary" autoFocus>
           cancel
@@ -146,5 +155,15 @@ const useStyles = makeStyles({
   optionTitle: {
     fontSize: 14,
     fontWeight: 500,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

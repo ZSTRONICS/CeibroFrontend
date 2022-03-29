@@ -8,11 +8,11 @@ import { ProjectInterface } from "constants/interfaces/project.interface";
 
 const ProjectList = () => {
   const { projects } = useSelector((state: RootState) => state.project);
-
   return (
     <Grid container>
+      <h1>test</h1>
       {projects &&
-        projects.map((project: ProjectInterface, index: number) => {
+        projects?.map((project: ProjectInterface, index: number) => {
           return <ProjectCard key={index} project={project} />;
         })}
       <CreateProject />

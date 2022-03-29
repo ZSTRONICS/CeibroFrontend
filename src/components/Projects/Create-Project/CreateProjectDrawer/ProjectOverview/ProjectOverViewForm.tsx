@@ -13,31 +13,34 @@ const ProjectOverViewForm = () => {
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const handleTitleChange = _.debounce((e) => {
+  const handleTitleChange = (e: any) => {
+    console.log("project titlee", e.target.value);
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
         title: e.target.value,
       })
     );
-  }, 500);
+  };
 
-  const handleLocationChange = _.debounce((e) => {
+  console.log("projectOverview", projectOverview);
+
+  const handleLocationChange = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
         location: e.target.value,
       })
     );
-  }, 500);
-  const handleDescriptionChange = _.debounce((e) => {
+  };
+  const handleDescriptionChange = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
         description: e.target.value,
       })
     );
-  }, 500);
+  };
 
   return (
     <Grid container>

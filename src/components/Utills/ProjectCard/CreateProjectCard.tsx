@@ -4,12 +4,16 @@ import { Add } from "@material-ui/icons";
 import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
 import { useDispatch } from "react-redux";
+import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 
 const ProjectCard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const openProjectDrawer = () => {
+    dispatch(projectActions.setSelectedProject(null));
+    dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
+
     dispatch(projectActions.openDrawer());
   };
 

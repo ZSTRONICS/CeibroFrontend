@@ -16,6 +16,7 @@ import {
   GET_PROJECT_DETAIL,
   GET_ROLES,
   UPDATE_MEMBER,
+  UPDATE_PROJECT,
   UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
@@ -142,6 +143,11 @@ const uploadFileToFolder = apiCall({
   method: "post",
   path: (payload) => `/project/file/${payload.other}`,
 });
+const updateProject = apiCall({
+  type: UPLOAD_FILE_TO_FOLDER,
+  method: "put",
+  path: (payload) => `/project/detail/${payload.other}`,
+});
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
@@ -163,6 +169,7 @@ function* projectSaga() {
   yield takeLatest(UPDATE_MEMBER, updateMember);
   yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
+  yield takeLatest(UPDATE_PROJECT, updateProject);
 }
 
 export default projectSaga;

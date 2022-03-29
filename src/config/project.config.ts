@@ -133,5 +133,6 @@ export const CREATE_FOLDER = "CREATE_FOLDER";
 export const CREATE_MEMBER = "CREATE_MEMBER";
 export const GET_MEMBER = "GET_MEMBER";
 export const UPDATE_MEMBER = "UPDATE_MEMBER";
+export const UPDATE_PROJECT = "UPDATE_PROJECT";
 
 export default projectReduxConfigs;
