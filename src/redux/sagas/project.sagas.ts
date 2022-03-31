@@ -5,7 +5,6 @@ import {
   CREATE_MEMBER,
   CREATE_PROJECT,
   CREATE_ROLES,
-  GET_FILTER_PROJECTS,
   GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
@@ -15,8 +14,10 @@ import {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
+  GET_ROLES_BY_ID,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
+  UPDATE_ROLE,
   UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
@@ -149,6 +150,18 @@ const updateProject = apiCall({
   path: (payload) => `/project/detail/${payload.other}`,
 });
 
+const getRolesById = apiCall({
+  type: GET_ROLES_BY_ID,
+  method: "get",
+  path: (payload) => `/project/role/detail/${payload.other}`,
+});
+
+const updateRole = apiCall({
+  type: UPDATE_ROLE,
+  method: "put",
+  path: (payload) => `/project/role/detail/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -170,6 +183,8 @@ function* projectSaga() {
   yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
   yield takeLatest(UPDATE_PROJECT, updateProject);
+  yield takeLatest(GET_ROLES_BY_ID, getRolesById);
+  yield takeLatest(UPDATE_ROLE, updateRole);
 }
 
 export default projectSaga;

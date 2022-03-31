@@ -13,6 +13,7 @@ import config, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
+  GET_ROLES_BY_ID,
   OPEN_DOCUMENT_DRAWER,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
@@ -20,6 +21,7 @@ import config, {
   SET_ROLE,
   SET_SELECTED_DATE,
   SET_SELECTED_PROJECT,
+  SET_SELECTED_ROLE,
   SET_SELECTED_STATUS,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
@@ -43,6 +45,7 @@ interface ProjectReducerInt {
   projects: ProjectInterface[];
   projectMembers: [];
   selectedProject: any;
+  selectedRole: any;
   projectOverview: ProjectOverviewInterface;
   role: RoleInterface;
   filter: any;
@@ -66,6 +69,7 @@ const projectReducer: ProjectReducerInt = {
   projects: [],
   projectMembers: [],
   selectedProject: null,
+  selectedRole: null,
   projectOverview: projectOverviewTemplate,
   role: rolesTemplate,
   filter: [],
@@ -149,6 +153,12 @@ const AppReducer = (
       return {
         ...state,
         selectedProject: action.payload,
+      };
+    }
+    case SET_SELECTED_ROLE: {
+      return {
+        ...state,
+        selectedRole: action.payload,
       };
     }
     case GET_FILTER_PROJECTS: {
@@ -271,6 +281,13 @@ const AppReducer = (
       return {
         ...state,
         folderFiles: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_ROLES_BY_ID): {
+      return {
+        ...state,
+        role: action.payload,
       };
     }
 

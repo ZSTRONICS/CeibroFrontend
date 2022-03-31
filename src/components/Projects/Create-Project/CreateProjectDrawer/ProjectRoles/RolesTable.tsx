@@ -18,15 +18,20 @@ import React, { useEffect, useState } from "react";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
-import { getRolesById } from "redux/action/project.action";
+import projectActions, {
+  getRoles,
+  getRolesById,
+} from "redux/action/project.action";
 import assets from "assets/assets";
 import { RoleInterface } from "constants/interfaces/project.interface";
 
 // store?: RootState
 const RolesTable = () => {
-  const { selectedProject, rolesList } = useSelector(
+  const { selectedProject, rolesList, selectedRole } = useSelector(
     (state: RootState) => state?.project
   );
+
+  console.log("selectedRole", selectedRole);
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -43,9 +48,14 @@ const RolesTable = () => {
         other: selectedProject,
       };
       setLoading(true);
-      dispatch(getRolesById(payload));
+      dispatch(getRoles(payload));
     }
   }, [selectedProject]);
+
+  const handleRoleClick = (id: any) => {
+    dispatch(projectActions.setSelectedRole(id));
+    dispatch(projectActions.openProjectRole());
+  };
 
   return (
     <Grid container>
@@ -57,7 +67,10 @@ const RolesTable = () => {
         {loading && <CircularProgress size={20} className={classes.progress} />}
         {rolesList?.map((role: RoleInterface) => {
           return (
-            <div className={classes.roleChip}>
+            <div
+              className={classes.roleChip}
+              onClick={() => handleRoleClick(role?.id)}
+            >
               <div className={classes.roleInner}>
                 <Typography className={classes.roleName}>
                   {role.name}

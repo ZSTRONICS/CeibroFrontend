@@ -13,11 +13,13 @@ import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createRole,
+  getRoles,
   getRolesById,
+  updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
@@ -36,10 +38,11 @@ const AddRole: React.FC<AddRoleProps> = () => {
 
   const isDiabled = !loading ? false : true;
 
-  const { roleDrawer, role, selectedProject } = useSelector(
+  const { roleDrawer, role, selectedProject, selectedRole } = useSelector(
     (state: RootState) => state.project
   );
 
+  console.log("selected rolee", selectedRole);
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -61,6 +64,39 @@ const AddRole: React.FC<AddRoleProps> = () => {
     };
     setLoading(true);
     dispatch(createRole(payload));
+  };
+
+  const handleUpdate = () => {
+    const payload = {
+      body: {
+        // const {name,admin,roles, member,timeProfile} =role
+        name: role.name,
+        admin: role.admin,
+        roles: role.roles,
+        member: role.member,
+        timeProfile: role.timeProfile,
+      },
+      success: () => {
+        toast.success("Role Updated successfully");
+        dispatch(projectActions.closeProjectRole());
+        // dispatch(getRolesById({ other: selectedProject }));
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: selectedRole,
+    };
+    setLoading(true);
+
+    dispatch(updateRole(payload));
+  };
+
+  const handleSubmit = () => {
+    if (selectedRole) {
+      handleUpdate();
+    } else {
+      handleOk();
+    }
   };
 
   const handleChangeRole = (e: any) => {
@@ -115,7 +151,26 @@ const AddRole: React.FC<AddRoleProps> = () => {
       })
     );
   };
-
+  useEffect(() => {
+    if (selectedRole && roleDrawer) {
+      dispatch(
+        getRolesById({
+          other: selectedRole,
+          success: (res) => {
+            if (res.data.roles.length > 1) {
+              setIsRole(true);
+            }
+            if (res.data.member.length > 1) {
+              setIsMember(true);
+            }
+            if (res.data.timeProfile.length > 1) {
+              setIsTimeProfile(true);
+            }
+          },
+        })
+      );
+    }
+  }, [roleDrawer, selectedRole]);
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
@@ -255,9 +310,9 @@ const AddRole: React.FC<AddRoleProps> = () => {
           color="primary"
           variant="contained"
           disabled={isDiabled}
-          onClick={handleOk}
+          onClick={handleSubmit}
         >
-          ok
+          {selectedRole ? "update" : "ok"}
           {loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}

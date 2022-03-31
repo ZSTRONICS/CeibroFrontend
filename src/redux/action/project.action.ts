@@ -32,6 +32,9 @@ import configs, {
   GET_FOLDER_FILES,
   UPLOAD_FILE_TO_FOLDER,
   UPDATE_PROJECT,
+  SET_SELECTED_ROLE,
+  GET_ROLES_BY_ID,
+  UPDATE_ROLE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -68,6 +71,12 @@ const projectActions = {
     return {
       type: SET_SELECTED_PROJECT,
       payload: projectId,
+    };
+  },
+  setSelectedRole: (roleId: string | null) => {
+    return {
+      type: SET_SELECTED_ROLE,
+      payload: roleId,
     };
   },
   setSelectedStatus: (status: string) => {
@@ -126,7 +135,9 @@ export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
-export const getRolesById = createAction(GET_ROLES);
+export const getRoles = createAction(GET_ROLES);
+export const getRolesById = createAction(GET_ROLES_BY_ID);
+
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
@@ -138,5 +149,6 @@ export const updateMember = createAction(UPDATE_MEMBER);
 export const getFolderFiles = createAction(GET_FOLDER_FILES);
 export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);
 export const updateProject = createAction(UPDATE_PROJECT);
+export const updateRole = createAction(UPDATE_ROLE);
 
 export default projectActions;

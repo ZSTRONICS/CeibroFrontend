@@ -14,7 +14,6 @@ const ProjectOverViewForm = () => {
     (state: RootState) => state.project.projectOverview
   );
   const handleTitleChange = (e: any) => {
-    console.log("project titlee", e.target.value);
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,

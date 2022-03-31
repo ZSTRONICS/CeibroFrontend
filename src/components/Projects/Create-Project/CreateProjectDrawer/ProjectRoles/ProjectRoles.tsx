@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import projectActions from "redux/action/project.action";
 import RolesTable from "./RolesTable";
 import RoleDrawer from "./RoleDrawer";
+import { rolesTemplate } from "constants/interfaces/project.interface";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -28,6 +29,9 @@ const ProjectRoles = () => {
             className={classes.actionButton}
             onClick={() => {
               dispatch(projectActions.openProjectRole());
+              dispatch(projectActions.setRole(rolesTemplate));
+
+              dispatch(projectActions.setSelectedRole(null));
             }}
           >
             Add a role
