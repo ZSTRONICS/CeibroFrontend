@@ -53,6 +53,11 @@ export interface GroupInterface {
   id?: string;
   _id?: string;
 }
+export const groupTemplate: GroupInterface = {
+  name: "",
+  id: "",
+  _id: "",
+};
 
 export interface FolderInterface {
   name: string;

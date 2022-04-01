@@ -6,6 +6,7 @@ import colors from "../../../../../assets/colors";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
+import { groupTemplate } from "constants/interfaces/project.interface";
 
 const ProjectGroups = () => {
   const classes = useStyles();
@@ -30,6 +31,7 @@ const ProjectGroups = () => {
             className={classes.actionButton}
             onClick={() => {
               dispatch(projectActions.openProjectGroup());
+              dispatch(projectActions.setSelectedGroup(null));
             }}
           >
             Add a group

@@ -8,6 +8,7 @@ import {
   GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
+  GET_GROUP_BY_ID,
   GET_MEMBER,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
@@ -15,6 +16,7 @@ import {
   GET_PROJECT_DETAIL,
   GET_ROLES,
   GET_ROLES_BY_ID,
+  UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_ROLE,
@@ -162,6 +164,18 @@ const updateRole = apiCall({
   path: (payload) => `/project/role/detail/${payload.other}`,
 });
 
+const getGroupById = apiCall({
+  type: GET_GROUP_BY_ID,
+  method: "get",
+  path: (payload) => `/project/group/detail/${payload.other}`,
+});
+
+const updateGroup = apiCall({
+  type: UPDATE_GROUP,
+  method: "put",
+  path: (payload) => `/project/group/detail/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -184,6 +198,9 @@ function* projectSaga() {
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
   yield takeLatest(UPDATE_PROJECT, updateProject);
   yield takeLatest(GET_ROLES_BY_ID, getRolesById);
+  yield takeLatest(GET_GROUP_BY_ID, getGroupById);
+  yield takeLatest(UPDATE_GROUP, updateGroup);
+
   yield takeLatest(UPDATE_ROLE, updateRole);
 }
 

@@ -30,7 +30,6 @@ const ProjectRoles = () => {
             onClick={() => {
               dispatch(projectActions.openProjectRole());
               dispatch(projectActions.setRole(rolesTemplate));
-
               dispatch(projectActions.setSelectedRole(null));
             }}
           >

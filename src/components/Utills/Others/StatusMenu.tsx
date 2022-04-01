@@ -72,6 +72,7 @@ const useStyles = makeStyles({
     width: 100,
     display: "flex",
     alignItems: "center",
+    cursor: "pointer",
     // justifyContent: 'space-around',
     ["@media (max-width:960px)"]: {
       justifyContent: "space-between",

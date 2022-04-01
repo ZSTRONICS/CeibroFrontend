@@ -1,4 +1,5 @@
 import {
+  GroupInterface,
   ProjectOverviewInterface,
   RoleInterface,
 } from "constants/interfaces/project.interface";
@@ -35,6 +36,10 @@ import configs, {
   SET_SELECTED_ROLE,
   GET_ROLES_BY_ID,
   UPDATE_ROLE,
+  SET_SELECTED_GROUP,
+  GET_GROUP_BY_ID,
+  UPDATE_GROUP,
+  SET_GROUP,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -67,6 +72,13 @@ const projectActions = {
       payload: role,
     };
   },
+  setGroup: (group: GroupInterface) => {
+    return {
+      type: SET_GROUP,
+      payload: group,
+    };
+  },
+
   setSelectedProject: (projectId: string | null) => {
     return {
       type: SET_SELECTED_PROJECT,
@@ -79,6 +91,14 @@ const projectActions = {
       payload: roleId,
     };
   },
+
+  setSelectedGroup: (groupId: string | null) => {
+    return {
+      type: SET_SELECTED_GROUP,
+      payload: groupId,
+    };
+  },
+
   setSelectedStatus: (status: string) => {
     return {
       type: SET_SELECTED_STATUS,
@@ -141,6 +161,8 @@ export const getRolesById = createAction(GET_ROLES_BY_ID);
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
+export const getGroupById = createAction(GET_GROUP_BY_ID);
+
 export const getFolder = createAction(GET_FOLDER);
 export const createFolder = createAction(CREATE_FOLDER);
 export const createMember = createAction(CREATE_MEMBER);
@@ -150,5 +172,6 @@ export const getFolderFiles = createAction(GET_FOLDER_FILES);
 export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);
 export const updateProject = createAction(UPDATE_PROJECT);
 export const updateRole = createAction(UPDATE_ROLE);
+export const updateGroup = createAction(UPDATE_GROUP);
 
 export default projectActions;

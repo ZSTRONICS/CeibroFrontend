@@ -129,6 +129,8 @@ export const GET_ROLES_BY_ID = "GET_ROLES_BY_ID";
 export const CREATE_ROLES = "CREATE_ROLES";
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_GROUP = "GET_GROUP";
+export const GET_GROUP_BY_ID = "GET_GROUP_BY_ID";
+export const UPDATE_GROUP = "UPDATE_GROUP";
 
 export const GET_FOLDER = "GET_FOLDER";
 export const GET_FOLDER_FILES = "GET_FOLDER_FILES";
@@ -139,5 +141,7 @@ export const GET_MEMBER = "GET_MEMBER";
 export const UPDATE_MEMBER = "UPDATE_MEMBER";
 export const UPDATE_PROJECT = "UPDATE_PROJECT";
 export const UPDATE_ROLE = "UPDATE_ROLE";
+export const SET_SELECTED_GROUP = "SET_SELECTED_GROUP";
+export const SET_GROUP = "SET_GROUP";
 
 export default projectReduxConfigs;

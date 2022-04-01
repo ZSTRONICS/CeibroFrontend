@@ -26,11 +26,11 @@ const menue: MenuOptions[] = [
 ];
 
 const GroupChip = (props: any) => {
-  const { name } = props;
+  const { name, handleClick } = props;
   const classes = useStyles();
   return (
     <div>
-      <div className={classes.groupChip}>
+      <div className={classes.groupChip} onClick={handleClick}>
         <div className={classes.title}>
           <img src={assets.chevrondown} className="w-16" />
           <Typography className={classes.titleText}>{name}</Typography>

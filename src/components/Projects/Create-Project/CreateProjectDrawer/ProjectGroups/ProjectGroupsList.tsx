@@ -6,13 +6,15 @@ import colors from "../../../../../assets/colors";
 import GroupChip from "../../../../Utills/GroupChip/GroupChip";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
-import { getGroup } from "redux/action/project.action";
+import projectActions, { getGroup } from "redux/action/project.action";
 import { GroupInterface } from "constants/interfaces/project.interface";
 
 const ProjectGroupsList = () => {
-  const { selectedProject, groupList } = useSelector(
+  const { selectedProject, groupList, selectedGroup } = useSelector(
     (state: RootState) => state?.project
   );
+
+  console.log("selectedGroup", selectedGroup);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -30,17 +32,27 @@ const ProjectGroupsList = () => {
       dispatch(getGroup(payload));
     }
   }, [selectedProject]);
+
+  const handleGroupClick = (id: any) => {
+    dispatch(projectActions.setSelectedGroup(id));
+    dispatch(projectActions.openProjectGroup());
+  };
   const classes = useStyles();
   return (
     <>
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {groupList?.map((group: GroupInterface) => (
-        <GroupChip name={group.name} />
+        <GroupChip
+          name={group.name}
+          handleClick={() => handleGroupClick(group?.id)}
+        />
       ))}
     </>
   );
 };
-
+{
+  /* <h2 onClick={() => handleGroupClick(group?.id)}>{group.name}</h2> */
+}
 export default ProjectGroupsList;
 
 const useStyles = makeStyles({

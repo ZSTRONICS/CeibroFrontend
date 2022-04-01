@@ -23,6 +23,9 @@ import config, {
   SET_SELECTED_PROJECT,
   SET_SELECTED_ROLE,
   SET_SELECTED_STATUS,
+  SET_SELECTED_GROUP,
+  GET_GROUP_BY_ID,
+  SET_GROUP,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -35,6 +38,7 @@ import {
   MemberInterface,
   GroupInterface,
   FolderFileInterface,
+  groupTemplate,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 
@@ -46,6 +50,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   selectedRole: any;
+  selectedGroup: any;
   projectOverview: ProjectOverviewInterface;
   role: RoleInterface;
   filter: any;
@@ -56,6 +61,8 @@ interface ProjectReducerInt {
   documentDrawer: boolean;
   rolesList: RoleInterface[];
   groupList: GroupInterface[];
+  group: GroupInterface;
+
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
   memberList: MemberInterface[];
@@ -70,6 +77,7 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   selectedRole: null,
+  selectedGroup: null,
   projectOverview: projectOverviewTemplate,
   role: rolesTemplate,
   filter: [],
@@ -80,6 +88,7 @@ const projectReducer: ProjectReducerInt = {
   documentDrawer: false,
   rolesList: [],
   groupList: [],
+  group: groupTemplate,
   folderList: [],
   memberList: [],
   folderFiles: [],
@@ -159,6 +168,12 @@ const AppReducer = (
       return {
         ...state,
         selectedRole: action.payload,
+      };
+    }
+    case SET_SELECTED_GROUP: {
+      return {
+        ...state,
+        selectedGroup: action.payload,
       };
     }
     case GET_FILTER_PROJECTS: {
@@ -242,6 +257,13 @@ const AppReducer = (
       };
     }
 
+    case SET_GROUP: {
+      return {
+        ...state,
+        group: action.payload,
+      };
+    }
+
     case requestSuccess(GET_GROUP): {
       return {
         ...state,
@@ -288,6 +310,13 @@ const AppReducer = (
       return {
         ...state,
         role: action.payload,
+      };
+    }
+
+    case requestSuccess(GET_GROUP_BY_ID): {
+      return {
+        ...state,
+        group: action.payload,
       };
     }
 
