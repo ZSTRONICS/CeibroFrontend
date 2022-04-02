@@ -18,10 +18,12 @@ import {
   GET_PROJECT_PROFILE,
   GET_ROLES,
   GET_ROLES_BY_ID,
+  GET_TIME_PROFILE_BY_ID,
   UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_ROLE,
+  UPDATE_TIME_PROFILE,
   UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
@@ -190,6 +192,18 @@ const getProjectProfile = apiCall({
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
+const getTimeProfileById = apiCall({
+  type: GET_TIME_PROFILE_BY_ID,
+  method: "get",
+  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+});
+
+const updateTimeProfile = apiCall({
+  type: UPDATE_TIME_PROFILE,
+  method: "put",
+  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -218,6 +232,8 @@ function* projectSaga() {
   yield takeLatest(UPDATE_ROLE, updateRole);
   yield takeLatest(CREATE_NEW_PROFILE, createNewProfile);
   yield takeLatest(GET_PROJECT_PROFILE, getProjectProfile);
+  yield takeLatest(GET_TIME_PROFILE_BY_ID, getTimeProfileById);
+  yield takeLatest(UPDATE_TIME_PROFILE, updateTimeProfile);
 }
 
 export default projectSaga;

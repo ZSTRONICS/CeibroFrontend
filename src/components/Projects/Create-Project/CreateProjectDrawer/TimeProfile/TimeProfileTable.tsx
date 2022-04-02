@@ -13,7 +13,7 @@ import { MoreVert } from "@material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectProfile } from "redux/action/project.action";
+import projectActions, { getProjectProfile } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 
@@ -54,6 +54,11 @@ const RolesTable = () => {
     }
   }, [selectedProject]);
 
+  const handleTimeProfileClick = (id: any) => {
+    dispatch(projectActions.openTimeProfileDrawer());
+    dispatch(projectActions.setSelectedTimeProfile(id));
+  };
+
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">
@@ -71,7 +76,10 @@ const RolesTable = () => {
           )}
 
           {projectProfile.map((row: any) => (
-            <TableRow key={row.name}>
+            <TableRow
+              key={row.name}
+              onClick={() => handleTimeProfileClick(row.id)}
+            >
               <TableCell component="th" scope="row" style={{ width: "60%" }}>
                 <Typography className={classes.name}>{row.name}</Typography>
               </TableCell>

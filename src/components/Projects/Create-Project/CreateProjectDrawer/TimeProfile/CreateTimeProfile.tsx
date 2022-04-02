@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -21,15 +21,18 @@ import CreateWork from "./CreateWork";
 import colors from "../../../../../assets/colors";
 import WorkTable from "./WorkProfileTable";
 import { useDispatch, useSelector } from "react-redux";
-import {
+import projectActions, {
   createNewProfile,
   getProjectProfile,
+  getTimeProfileById,
+  updateTimeProfile,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
 import { RootState } from "redux/reducers";
 
 const MemberDialog = () => {
-  const { selectedProject } = useSelector((state: RootState) => state.project);
+  const { selectedProject, timeProfileDrawer, selectedTimeProfile } =
+    useSelector((state: RootState) => state.project);
 
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
@@ -46,15 +49,17 @@ const MemberDialog = () => {
   };
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(projectActions.closeTimeProfileDrawer());
+
+    // setOpen(false);
   };
-  const handleClick = () => {
+  const handleOk = () => {
     const payload = {
       body: { name },
       success: () => {
         toast.success("profile created successfuly");
+        dispatch(projectActions.closeTimeProfileDrawer());
         dispatch(getProjectProfile({ other: selectedProject }));
-        handleClose();
       },
       finallyAction: () => {
         setLoading(false);
@@ -65,19 +70,69 @@ const MemberDialog = () => {
     dispatch(createNewProfile(payload));
   };
 
+  const handleUpdate = () => {
+    const payload = {
+      body: { name },
+      success: () => {
+        toast.success("Time Profile Updated successfully");
+        dispatch(projectActions.closeTimeProfileDrawer());
+        dispatch(getProjectProfile({ other: selectedProject }));
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: selectedTimeProfile,
+    };
+    setLoading(true);
+
+    dispatch(updateTimeProfile(payload));
+  };
+
+  const handleSubmit = () => {
+    if (selectedTimeProfile) {
+      handleUpdate();
+    } else {
+      handleOk();
+    }
+  };
+
+  const handleNameChange = (e: any) => {
+    setName(e.target.value);
+  };
+
+  useEffect(() => {
+    if (selectedTimeProfile && timeProfileDrawer) {
+      dispatch(
+        getTimeProfileById({
+          other: selectedTimeProfile,
+          success: (res) => {
+            setName(res.data.name);
+          },
+        })
+      );
+    }
+  }, [selectedTimeProfile, timeProfileDrawer]);
+
+  useEffect(() => {
+    setName("");
+  }, [timeProfileDrawer]);
   return (
     <div>
       <Button
         variant="outlined"
         color="primary"
         className={classes.btn}
-        onClick={handleClickOpen}
+        // onClick={handleClickOpen}
+        onClick={() => {
+          dispatch(projectActions.openTimeProfileDrawer());
+          dispatch(projectActions.setSelectedTimeProfile(null));
+        }}
       >
         Create new Profile
       </Button>
       <Dialog
         maxWidth={"md"}
-        open={open}
+        open={timeProfileDrawer}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
@@ -92,8 +147,9 @@ const MemberDialog = () => {
           <Grid container className={classes.body}>
             <Grid item xs={12}>
               <InputText
+                value={name}
                 placeholder="Enter a profile layout name"
-                onChange={(e) => setName(e.target.value)}
+                onChange={handleNameChange}
               />
             </Grid>
 
@@ -124,7 +180,7 @@ const MemberDialog = () => {
             Cancel
           </Button>
           <Button
-            onClick={handleClick}
+            onClick={handleSubmit}
             color="primary"
             variant="contained"
             disabled={isDisabled}
@@ -132,7 +188,7 @@ const MemberDialog = () => {
             {isDisabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
-            Add
+            {selectedTimeProfile ? "update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>
