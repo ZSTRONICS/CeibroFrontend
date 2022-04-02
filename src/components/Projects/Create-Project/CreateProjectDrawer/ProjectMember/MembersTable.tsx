@@ -99,9 +99,8 @@ const RolesTable = () => {
   }, [groupList]);
 
   useEffect(() => {
-    console.log("role lisr here", rolesList);
     if (rolesList) {
-      const newRoles = rolesList.map((role: RoleInterface) => {
+      const newRoles = rolesList?.map((role: RoleInterface) => {
         return {
           title: role.name,
           value: role.id,

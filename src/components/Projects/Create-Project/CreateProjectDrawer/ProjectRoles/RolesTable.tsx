@@ -31,7 +31,7 @@ const RolesTable = () => {
     (state: RootState) => state?.project
   );
 
-  console.log("selectedRole", selectedRole);
+  console.log("rolesList", rolesList);
 
   const dispatch = useDispatch();
   const classes = useStyles();

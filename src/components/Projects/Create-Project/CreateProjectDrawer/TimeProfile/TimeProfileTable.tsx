@@ -1,4 +1,5 @@
 import {
+  CircularProgress,
   makeStyles,
   Table,
   TableBody,
@@ -9,8 +10,11 @@ import {
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import { getProjectProfile } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 
 function createData(name: string, approve: boolean, role: number) {
@@ -30,6 +34,25 @@ const rows = [
 
 const RolesTable = () => {
   const classes = useStyles();
+  const { selectedProject, projectProfile } = useSelector(
+    (state: RootState) => state.project
+  );
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  console.log("projectProfile", projectProfile);
+  useEffect(() => {
+    if (selectedProject) {
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: selectedProject,
+      };
+      setLoading(true);
+      dispatch(getProjectProfile(payload));
+    }
+  }, [selectedProject]);
 
   return (
     <TableContainer>
@@ -43,7 +66,11 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {rows.map((row) => (
+          {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
+
+          {projectProfile.map((row: any) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row" style={{ width: "60%" }}>
                 <Typography className={classes.name}>{row.name}</Typography>
@@ -124,5 +151,16 @@ const useStyles = makeStyles({
   compnayRole: {
     fontSize: 14,
     fontWeight: 500,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    marginTop: "400px",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

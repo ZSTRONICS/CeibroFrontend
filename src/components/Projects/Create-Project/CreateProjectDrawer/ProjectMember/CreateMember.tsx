@@ -61,7 +61,6 @@ const MemberDialog = () => {
   }, [groupList]);
 
   useEffect(() => {
-    console.log("role lisr here", rolesList);
     if (rolesList) {
       const newRoles = mapGroups(rolesList);
       setRoles(newRoles);

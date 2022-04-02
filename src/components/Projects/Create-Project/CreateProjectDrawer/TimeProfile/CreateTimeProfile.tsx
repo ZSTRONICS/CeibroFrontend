@@ -1,24 +1,45 @@
-import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import ListIcon from '@material-ui/icons/List';
-import { Grid, ListItemIcon, makeStyles, Typography } from '@material-ui/core';
-import InputText from '../../../../Utills/Inputs/InputText';
-import SelectDropdown from '../../../../Utills/Inputs/SelectDropdown';
-import { Close } from '@material-ui/icons';
-import CreateWork from './CreateWork'
-import colors from '../../../../../assets/colors';
-import WorkTable from './WorkProfileTable'
+import React from "react";
+import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import ListIcon from "@material-ui/icons/List";
+import {
+  CircularProgress,
+  Grid,
+  ListItemIcon,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import InputText from "../../../../Utills/Inputs/InputText";
+import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
+import { Close } from "@material-ui/icons";
+import CreateWork from "./CreateWork";
+import colors from "../../../../../assets/colors";
+import WorkTable from "./WorkProfileTable";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createNewProfile,
+  getProjectProfile,
+} from "redux/action/project.action";
+import { toast } from "react-toastify";
+import { RootState } from "redux/reducers";
 
 const MemberDialog = () => {
-  const [open, setOpen] = React.useState(false);
+  const { selectedProject } = useSelector((state: RootState) => state.project);
 
-  const classes = useStyle()
+  const [open, setOpen] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [loading, setLoading] = React.useState<boolean>(false);
+
+  const isDisabled = !loading ? false : true;
+
+  const dispatch = useDispatch();
+
+  const classes = useStyle();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,6 +47,22 @@ const MemberDialog = () => {
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const handleClick = () => {
+    const payload = {
+      body: { name },
+      success: () => {
+        toast.success("profile created successfuly");
+        dispatch(getProjectProfile({ other: selectedProject }));
+        handleClose();
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: selectedProject,
+    };
+    setLoading(true);
+    dispatch(createNewProfile(payload));
   };
 
   return (
@@ -38,21 +75,26 @@ const MemberDialog = () => {
       >
         Create new Profile
       </Button>
-      <Dialog maxWidth={"md"}
-       open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="customized-dialog-title" className="customized-title" >
-          <Typography className={classes.headerTitle}>
-            Time Profile
-          </Typography>
+      <Dialog
+        maxWidth={"md"}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="customized-dialog-title" className="customized-title">
+          <Typography className={classes.headerTitle}>Time Profile</Typography>
           <div className={classes.headerAction} onClick={handleClose}>
             Close
-            <Close/>
+            <Close />
           </div>
         </DialogTitle>
         <DialogContent>
           <Grid container className={classes.body}>
             <Grid item xs={12}>
-              <InputText placeholder="Enter a profile layout name"/>
+              <InputText
+                placeholder="Enter a profile layout name"
+                onChange={(e) => setName(e.target.value)}
+              />
             </Grid>
 
             <Grid item xs={12} className={classes.bulkWrapper}>
@@ -62,18 +104,16 @@ const MemberDialog = () => {
                 startIcon={<ListIcon />}
                 className={classes.actionButton}
               >
-                  Bulk edit
+                Bulk edit
               </Button>
 
-              <CreateWork/>
+              <CreateWork />
             </Grid>
 
             <Grid item xs={12}>
-              <WorkTable/>
+              <WorkTable />
             </Grid>
 
-            
-            
             {/* <div></div> */}
           </Grid>
           {/* <InputText/>
@@ -83,58 +123,73 @@ const MemberDialog = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary" variant="contained">
+          <Button
+            onClick={handleClick}
+            color="primary"
+            variant="contained"
+            disabled={isDisabled}
+          >
+            {isDisabled && loading && (
+              <CircularProgress size={20} className={classes.progress} />
+            )}
             Add
           </Button>
         </DialogActions>
       </Dialog>
     </div>
   );
-}
+};
 
-export default MemberDialog
+export default MemberDialog;
 
 const useStyle = makeStyles({
   btn: {
-      fontSize: 12,
-      fontWeight: 'bold',
-      fontStyle: 'normal'
+    fontSize: 12,
+    fontWeight: "bold",
+    fontStyle: "normal",
   },
   wrapper: {
-    maxWidth: 800
+    maxWidth: 800,
   },
   body: {
     maxWidth: 800,
-    width: 800    
+    width: 800,
   },
   meta: {
-    marginTop: 10
+    marginTop: 10,
   },
-  titleWrapper: {
-    
-  },
+  titleWrapper: {},
   headerTitle: {
     fontSize: 30,
-    fontWeight: 500
+    fontWeight: 500,
   },
   headerAction: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     fontSize: 14,
     fontWeight: 500,
     color: colors.primary,
-    cursor: 'pointer'
+    cursor: "pointer",
   },
   actionButton: {
     fontSize: 12,
-    fontWeight: 'bold',
-    fontStyle: 'normal'
+    fontWeight: "bold",
+    fontStyle: "normal",
   },
   bulkWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    marginTop: 10
-  }
-
-})
+    display: "flex",
+    justifyContent: "space-between",
+    marginTop: 10,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
+  },
+});

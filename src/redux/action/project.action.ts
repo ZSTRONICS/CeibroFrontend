@@ -40,6 +40,8 @@ import configs, {
   GET_GROUP_BY_ID,
   UPDATE_GROUP,
   SET_GROUP,
+  CREATE_NEW_PROFILE,
+  GET_PROJECT_PROFILE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -173,5 +175,8 @@ export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);
 export const updateProject = createAction(UPDATE_PROJECT);
 export const updateRole = createAction(UPDATE_ROLE);
 export const updateGroup = createAction(UPDATE_GROUP);
+
+export const createNewProfile = createAction(CREATE_NEW_PROFILE);
+export const getProjectProfile = createAction(GET_PROJECT_PROFILE);
 
 export default projectActions;

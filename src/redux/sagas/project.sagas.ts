@@ -3,6 +3,7 @@ import {
   CREATE_FOLDER,
   CREATE_GROUP,
   CREATE_MEMBER,
+  CREATE_NEW_PROFILE,
   CREATE_PROJECT,
   CREATE_ROLES,
   GET_FOLDER,
@@ -14,6 +15,7 @@ import {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
+  GET_PROJECT_PROFILE,
   GET_ROLES,
   GET_ROLES_BY_ID,
   UPDATE_GROUP,
@@ -79,7 +81,7 @@ const createProject = apiCall({
 const getProjectDetail = apiCall({
   type: GET_PROJECT_DETAIL,
   method: "get",
-  path: (payload) => `/project/detail/${payload.other}`,
+  path: (payload) => `/project/detail/${payload?.other}`,
 });
 
 const getAllRoles = apiCall({
@@ -176,6 +178,18 @@ const updateGroup = apiCall({
   path: (payload) => `/project/group/detail/${payload.other}`,
 });
 
+const createNewProfile = apiCall({
+  type: CREATE_NEW_PROFILE,
+  method: "post",
+  path: (payload) => `/project/timeProfile/${payload.other}`,
+});
+
+const getProjectProfile = apiCall({
+  type: GET_PROJECT_PROFILE,
+  method: "get",
+  path: (payload) => `/project/timeProfile/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -202,6 +216,8 @@ function* projectSaga() {
   yield takeLatest(UPDATE_GROUP, updateGroup);
 
   yield takeLatest(UPDATE_ROLE, updateRole);
+  yield takeLatest(CREATE_NEW_PROFILE, createNewProfile);
+  yield takeLatest(GET_PROJECT_PROFILE, getProjectProfile);
 }
 
 export default projectSaga;

@@ -144,4 +144,7 @@ export const UPDATE_ROLE = "UPDATE_ROLE";
 export const SET_SELECTED_GROUP = "SET_SELECTED_GROUP";
 export const SET_GROUP = "SET_GROUP";
 
+export const CREATE_NEW_PROFILE = "CREATE_NEW_PROFILE";
+export const GET_PROJECT_PROFILE = "GET_PROJECT_PROFILE";
+
 export default projectReduxConfigs;

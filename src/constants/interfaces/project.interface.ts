@@ -36,6 +36,11 @@ export interface RoleInterface {
   timeProfile?: string[];
 }
 
+export interface projectProfileInterface {
+  name: string;
+  id?: string;
+}
+
 export const projectOverviewTemplate: ProjectOverviewInterface = {
   title: "",
 };

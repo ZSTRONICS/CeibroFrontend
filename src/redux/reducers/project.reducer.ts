@@ -26,6 +26,7 @@ import config, {
   SET_SELECTED_GROUP,
   GET_GROUP_BY_ID,
   SET_GROUP,
+  GET_PROJECT_PROFILE,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -39,8 +40,10 @@ import {
   GroupInterface,
   FolderFileInterface,
   groupTemplate,
+  projectProfileInterface,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
+import { PlaylistAddOutlined } from "@material-ui/icons";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -65,6 +68,7 @@ interface ProjectReducerInt {
 
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
+  projectProfile: projectProfileInterface[];
   memberList: MemberInterface[];
   load: boolean;
 }
@@ -92,6 +96,7 @@ const projectReducer: ProjectReducerInt = {
   folderList: [],
   memberList: [],
   folderFiles: [],
+  projectProfile: [],
   load: false,
 };
 
@@ -317,6 +322,12 @@ const AppReducer = (
       return {
         ...state,
         group: action.payload,
+      };
+    }
+    case requestSuccess(GET_PROJECT_PROFILE): {
+      return {
+        ...state,
+        projectProfile: action.payload,
       };
     }
 

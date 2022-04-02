@@ -43,8 +43,8 @@ export default function BasicTable() {
               <TableCell>
                 <div className={classes.extrasWrapper}>
                   <img src={assets.clockIcon} />
-                  <img src={assets.wrongImage} />
-                  <img src={assets.sidebarChatIcon} />
+                  <img src={assets.wrongImage} className="w-16" />
+                  <img src={assets.sidebarChatIcon} className="w-16" />
                 </div>
               </TableCell>
 
@@ -57,7 +57,7 @@ export default function BasicTable() {
 
                 <div>
                   <img src={assets.pencilIcon} />
-                  <img src={assets.trashIcon} />
+                  <img src={assets.trashIcon} className="w-16" />
                 </div>
               </TableCell>
             </TableRow>
