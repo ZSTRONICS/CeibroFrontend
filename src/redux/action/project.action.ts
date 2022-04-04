@@ -47,6 +47,7 @@ import configs, {
   SET_SELECTED_TIME_PROFILE,
   GET_TIME_PROFILE_BY_ID,
   UPDATE_TIME_PROFILE,
+  GET_FILE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -202,5 +203,6 @@ export const createNewProfile = createAction(CREATE_NEW_PROFILE);
 export const getProjectProfile = createAction(GET_PROJECT_PROFILE);
 export const getTimeProfileById = createAction(GET_TIME_PROFILE_BY_ID);
 export const updateTimeProfile = createAction(UPDATE_TIME_PROFILE);
+export const getFile = createAction(GET_FILE);
 
 export default projectActions;

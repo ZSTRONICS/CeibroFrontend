@@ -152,5 +152,7 @@ export const CLOSE_TIME_PROFILE_DRAWER = "CLOSE_TIME_PROFILE_DRAWER";
 export const SET_SELECTED_TIME_PROFILE = "SET_SELECTED_TIME_PROFILE";
 export const GET_TIME_PROFILE_BY_ID = "GET_TIME_PROFILE_BY_ID";
 export const UPDATE_TIME_PROFILE = "UPDATE_TIME_PROFILE";
+export const SET_FIND_DOC = "SET_FIND_DOC";
+export const GET_FILE = "GET_FILE";
 
 export default projectReduxConfigs;

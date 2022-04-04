@@ -57,6 +57,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   selectedRole: any;
+  selectedFolder: any;
   selectedGroup: any;
   selectedTimeProfile: any;
   projectOverview: ProjectOverviewInterface;
@@ -71,7 +72,6 @@ interface ProjectReducerInt {
   rolesList: RoleInterface[];
   groupList: GroupInterface[];
   group: GroupInterface;
-
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
   projectProfile: projectProfileInterface[];
@@ -88,6 +88,7 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   selectedRole: null,
+  selectedFolder: null,
   selectedGroup: null,
   selectedTimeProfile: null,
   projectOverview: projectOverviewTemplate,
@@ -185,6 +186,7 @@ const AppReducer = (
         selectedRole: action.payload,
       };
     }
+
     case SET_SELECTED_GROUP: {
       return {
         ...state,

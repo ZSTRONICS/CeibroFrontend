@@ -30,6 +30,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
     (state: RootState) => state?.project
   );
 
+  console.log("folderFiles", folderFiles);
+
   const { selectedFolderId } = props;
 
   const dispatch = useDispatch();
@@ -38,7 +40,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
     if (selectedFolderId) {
       dispatch(
         getFolderFiles({
-          other: selectedFolderId,
+          other: { selectedFolder: selectedFolderId },
         })
       );
     }

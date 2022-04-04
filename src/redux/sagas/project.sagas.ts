@@ -6,6 +6,7 @@ import {
   CREATE_NEW_PROFILE,
   CREATE_PROJECT,
   CREATE_ROLES,
+  GET_FILE,
   GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
@@ -19,6 +20,7 @@ import {
   GET_ROLES,
   GET_ROLES_BY_ID,
   GET_TIME_PROFILE_BY_ID,
+  SET_FIND_DOC,
   UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
@@ -112,7 +114,23 @@ const getGroup = apiCall({
 const geFolder = apiCall({
   type: GET_FOLDER,
   method: "get",
-  path: (payload) => `/project/folder/${payload?.other}`,
+  // path: (payload) =>
+  //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
+  path: (payload) => {
+    let url = "/project/folder/";
+    const selectedProject = payload?.other?.selectedProject;
+    const inputData = payload?.other?.findDoc;
+    console.log("selectedProject saga", selectedProject);
+    if (selectedProject) {
+      url = `${url}${selectedProject}`;
+    }
+
+    if (inputData) {
+      url = `${url}?search=${inputData}`;
+    }
+
+    return url;
+  },
 });
 
 const createFolder = apiCall({
@@ -142,7 +160,23 @@ const updateMember = apiCall({
 const getFolderFiles = apiCall({
   type: GET_FOLDER_FILES,
   method: "get",
-  path: (payload) => `/project/file/${payload.other}`,
+  // path: (payload) => `/project/file/${payload.other}`,
+
+  path: (payload) => {
+    let url = "/project/file/";
+    const selectedFolder = payload?.other?.selectedFolder;
+    const inputData = payload?.other?.findDoc;
+    console.log("selectedFile saga", selectedFolder);
+    if (selectedFolder) {
+      url = `${url}${selectedFolder}`;
+    }
+
+    if (inputData) {
+      url = `${url}?search=${inputData}`;
+    }
+
+    return url;
+  },
 });
 
 const uploadFileToFolder = apiCall({

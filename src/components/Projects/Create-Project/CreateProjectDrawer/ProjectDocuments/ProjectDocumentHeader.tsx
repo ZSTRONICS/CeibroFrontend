@@ -1,15 +1,21 @@
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import ListItemIcon from "@material-ui/icons/List";
 import { TramSharp } from "@material-ui/icons";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsGrid } from "react-icons/bs";
 import colors from "../../../../../assets/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InputText from "../../../../Utills/Inputs/InputText";
-import projectActions from "redux/action/project.action";
+import projectActions, {
+  getFile,
+  getFolder,
+  getFolderFiles,
+  getGroup,
+} from "redux/action/project.action";
 import DocumentDrawer from "./DocumentDrawer";
 import { FolderInterface } from "constants/interfaces/project.interface";
+import { RootState } from "redux/reducers";
 
 interface headerInterface {
   selectedFolder?: FolderInterface | null;
@@ -19,7 +25,30 @@ interface headerInterface {
 const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { selectedProject, folderList } = useSelector(
+    (state: RootState) => state?.project
+  );
   const { selectedFolder, handleGoBack } = props;
+  const [findDoc, setFindDoc] = useState<any>();
+  // console.log("findDoc", findDoc);
+
+  console.log("folder id", selectedFolder?.id);
+
+  useEffect(() => {
+    if (findDoc) {
+      dispatch(getFolder({ other: { selectedProject, findDoc } }));
+    }
+  }, [findDoc]);
+
+  useEffect(() => {
+    if (selectedFolder && findDoc) {
+      dispatch(
+        getFolderFiles({
+          other: { selectedFolder: selectedFolder?.id, findDoc },
+        })
+      );
+    }
+  }, [selectedFolder, findDoc]);
 
   return (
     <Grid container>
@@ -34,7 +63,10 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
         </Button>
       </Grid>
       <Grid item xs={12} md={7} className={classes.actionWrapper}>
-        <InputText placeholder="Find Document" />
+        <InputText
+          placeholder="Find Document"
+          onChange={(e: any) => setFindDoc(e.target.value)}
+        />
       </Grid>
       <Grid item xs={12} md={3} className={classes.secondActionWrapper}>
         <Button
