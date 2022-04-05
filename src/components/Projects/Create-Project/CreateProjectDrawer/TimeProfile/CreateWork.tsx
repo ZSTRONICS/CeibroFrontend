@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,18 +9,34 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import ListIcon from "@material-ui/icons/List";
 import { Grid, ListItemIcon, makeStyles, Typography } from "@material-ui/core";
 import InputText from "../../../../Utills/Inputs/InputText";
-import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
+import SelectDropdown, {
+  dataInterface,
+} from "../../../../Utills/Inputs/SelectDropdown";
 import { Close } from "@material-ui/icons";
 import colors from "../../../../../assets/colors";
 import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
 import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import { useDispatch, useSelector } from "react-redux";
+import { createProfileWork, getRoles } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
+import { mapRoles } from "helpers/project.helper";
+import { toast } from "react-toastify";
+import { Toast } from "react-toastify/dist/components";
 
 const CreateWork = () => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
   const isDiabled = !loading ? false : true;
+  const { selectedProject, rolesList, selectedTimeProfile } = useSelector(
+    (state: RootState) => state.project
+  );
 
-  const [data, setData] = useState({
+  const rolesData = mapRoles(rolesList);
+
+  const [data, setData] = useState<any>({
+    name: "",
+    roles: [],
     time: true,
     timeRequired: false,
     quantity: true,
@@ -28,15 +44,19 @@ const CreateWork = () => {
     comment: true,
     commentRequired: false,
     photo: false,
-    photoRequired: false
-  })
+    photoRequired: false,
+  });
+
   const handleChange = (name: string, value: boolean) => {
     setData({
       ...data,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
+  useEffect(() => {
+    dispatch(getRoles({ other: selectedProject }));
+  }, []);
 
   const classes = useStyle();
 
@@ -48,8 +68,22 @@ const CreateWork = () => {
     setOpen(false);
   };
   const handleOk = () => {
-    handleClose();
+    let body = data;
+    body.roles = body?.roles.map((role: dataInterface) => {
+      return role.value;
+    });
+    dispatch(
+      createProfileWork({
+        other: selectedTimeProfile,
+        body,
+        success: () => {
+          toast.success("Work created");
+          handleClose();
+        },
+      })
+    );
   };
+
   return (
     <div>
       <Button
@@ -74,11 +108,33 @@ const CreateWork = () => {
         <DialogContent>
           <Grid container className={classes.body}>
             <Grid item xs={12}>
-              <InputText placeholder="Select/Add work" />
+              <InputText
+                onChange={(e: any) =>
+                  setData({ ...data, name: e.target.value })
+                }
+                value={data.name}
+                placeholder="Select/Add work"
+              />
             </Grid>
 
-            <Grid item xs={12} className={classes.rolesWrapper}>
-              <SelectDropdown title="Role" />
+            <Grid
+              style={{ display: "block" }}
+              item
+              xs={12}
+              className={classes.rolesWrapper}
+            >
+              <SelectDropdown
+                data={rolesData}
+                value={data.roles}
+                isMulti={true}
+                title="Role"
+                handleChange={(values: dataInterface[]) => {
+                  setData({
+                    ...data,
+                    roles: values,
+                  });
+                }}
+              />
             </Grid>
 
             <Grid item xs={12} className={classes.rolesWrapper}>
@@ -186,7 +242,7 @@ const useStyle = makeStyles({
     fontStyle: "normal",
   },
   body: {
-    maxWidth: 300
+    maxWidth: 300,
   },
   meta: {
     marginTop: 10,
@@ -211,8 +267,8 @@ const useStyle = makeStyles({
   },
   rolesWrapper: {
     marginTop: 10,
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });

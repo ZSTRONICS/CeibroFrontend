@@ -4,6 +4,7 @@ import {
   CREATE_GROUP,
   CREATE_MEMBER,
   CREATE_NEW_PROFILE,
+  CREATE_PROFILE_WORK,
   CREATE_PROJECT,
   CREATE_ROLES,
   GET_FILE,
@@ -252,6 +253,12 @@ const getStatus = apiCall({
   path: "/project/count/status",
 });
 
+const createProfileWork = apiCall({
+  type: CREATE_PROFILE_WORK,
+  method: "post",
+  path: (payload) => `/project/work/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -283,6 +290,8 @@ function* projectSaga() {
   yield takeLatest(GET_TIME_PROFILE_BY_ID, getTimeProfileById);
   yield takeLatest(UPDATE_TIME_PROFILE, updateTimeProfile);
   yield takeLatest(GET_STATUS, getStatus);
+
+  yield takeLatest(CREATE_PROFILE_WORK, createProfileWork);
 }
 
 export default projectSaga;
