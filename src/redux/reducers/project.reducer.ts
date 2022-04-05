@@ -27,6 +27,10 @@ import config, {
   GET_GROUP_BY_ID,
   SET_GROUP,
   GET_PROJECT_PROFILE,
+  CLOSE_TIME_PROFILE_DRAWER,
+  OPEN_TIME_PROFILE_DRAWER,
+  SET_SELECTED_TIME_PROFILE,
+  GET_TIME_PROFILE_BY_ID,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -53,7 +57,9 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   selectedRole: any;
+  selectedFolder: any;
   selectedGroup: any;
+  selectedTimeProfile: any;
   projectOverview: ProjectOverviewInterface;
   role: RoleInterface;
   filter: any;
@@ -62,15 +68,16 @@ interface ProjectReducerInt {
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
+  timeProfileDrawer: boolean;
   rolesList: RoleInterface[];
   groupList: GroupInterface[];
   group: GroupInterface;
-
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
   projectProfile: projectProfileInterface[];
   memberList: MemberInterface[];
   load: boolean;
+  getTimeProfileById: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -81,7 +88,9 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   selectedRole: null,
+  selectedFolder: null,
   selectedGroup: null,
+  selectedTimeProfile: null,
   projectOverview: projectOverviewTemplate,
   role: rolesTemplate,
   filter: [],
@@ -90,6 +99,7 @@ const projectReducer: ProjectReducerInt = {
   roleDrawer: false,
   groupDrawer: false,
   documentDrawer: false,
+  timeProfileDrawer: false,
   rolesList: [],
   groupList: [],
   group: groupTemplate,
@@ -98,6 +108,7 @@ const projectReducer: ProjectReducerInt = {
   folderFiles: [],
   projectProfile: [],
   load: false,
+  getTimeProfileById: [],
 };
 
 const AppReducer = (
@@ -175,10 +186,17 @@ const AppReducer = (
         selectedRole: action.payload,
       };
     }
+
     case SET_SELECTED_GROUP: {
       return {
         ...state,
         selectedGroup: action.payload,
+      };
+    }
+    case SET_SELECTED_TIME_PROFILE: {
+      return {
+        ...state,
+        selectedTimeProfile: action.payload,
       };
     }
     case GET_FILTER_PROJECTS: {
@@ -242,6 +260,20 @@ const AppReducer = (
       return {
         ...state,
         groupDrawer: false,
+      };
+    }
+
+    case CLOSE_TIME_PROFILE_DRAWER: {
+      return {
+        ...state,
+        timeProfileDrawer: false,
+      };
+    }
+
+    case OPEN_TIME_PROFILE_DRAWER: {
+      return {
+        ...state,
+        timeProfileDrawer: true,
       };
     }
 
@@ -328,6 +360,12 @@ const AppReducer = (
       return {
         ...state,
         projectProfile: action.payload,
+      };
+    }
+    case requestSuccess(GET_TIME_PROFILE_BY_ID): {
+      return {
+        ...state,
+        getTimeProfileById: action.payload,
       };
     }
 

@@ -6,6 +6,7 @@ import {
   CREATE_NEW_PROFILE,
   CREATE_PROJECT,
   CREATE_ROLES,
+  GET_FILE,
   GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
@@ -18,10 +19,13 @@ import {
   GET_PROJECT_PROFILE,
   GET_ROLES,
   GET_ROLES_BY_ID,
+  GET_TIME_PROFILE_BY_ID,
+  SET_FIND_DOC,
   UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_ROLE,
+  UPDATE_TIME_PROFILE,
   UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
@@ -110,7 +114,23 @@ const getGroup = apiCall({
 const geFolder = apiCall({
   type: GET_FOLDER,
   method: "get",
-  path: (payload) => `/project/folder/${payload?.other}`,
+  // path: (payload) =>
+  //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
+  path: (payload) => {
+    let url = "/project/folder/";
+    const selectedProject = payload?.other?.selectedProject;
+    const inputData = payload?.other?.findDoc;
+    console.log("selectedProject saga", selectedProject);
+    if (selectedProject) {
+      url = `${url}${selectedProject}`;
+    }
+
+    if (inputData) {
+      url = `${url}?search=${inputData}`;
+    }
+
+    return url;
+  },
 });
 
 const createFolder = apiCall({
@@ -140,7 +160,23 @@ const updateMember = apiCall({
 const getFolderFiles = apiCall({
   type: GET_FOLDER_FILES,
   method: "get",
-  path: (payload) => `/project/file/${payload.other}`,
+  // path: (payload) => `/project/file/${payload.other}`,
+
+  path: (payload) => {
+    let url = "/project/file/";
+    const selectedFolder = payload?.other?.selectedFolder;
+    const inputData = payload?.other?.findDoc;
+    console.log("selectedFile saga", selectedFolder);
+    if (selectedFolder) {
+      url = `${url}${selectedFolder}`;
+    }
+
+    if (inputData) {
+      url = `${url}?search=${inputData}`;
+    }
+
+    return url;
+  },
 });
 
 const uploadFileToFolder = apiCall({
@@ -190,6 +226,18 @@ const getProjectProfile = apiCall({
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
+const getTimeProfileById = apiCall({
+  type: GET_TIME_PROFILE_BY_ID,
+  method: "get",
+  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+});
+
+const updateTimeProfile = apiCall({
+  type: UPDATE_TIME_PROFILE,
+  method: "put",
+  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -218,6 +266,8 @@ function* projectSaga() {
   yield takeLatest(UPDATE_ROLE, updateRole);
   yield takeLatest(CREATE_NEW_PROFILE, createNewProfile);
   yield takeLatest(GET_PROJECT_PROFILE, getProjectProfile);
+  yield takeLatest(GET_TIME_PROFILE_BY_ID, getTimeProfileById);
+  yield takeLatest(UPDATE_TIME_PROFILE, updateTimeProfile);
 }
 
 export default projectSaga;

@@ -42,6 +42,12 @@ import configs, {
   SET_GROUP,
   CREATE_NEW_PROFILE,
   GET_PROJECT_PROFILE,
+  CLOSE_TIME_PROFILE_DRAWER,
+  OPEN_TIME_PROFILE_DRAWER,
+  SET_SELECTED_TIME_PROFILE,
+  GET_TIME_PROFILE_BY_ID,
+  UPDATE_TIME_PROFILE,
+  GET_FILE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -145,6 +151,23 @@ const projectActions = {
       type: CLOSE_DOCUMENT_DRAWER,
     };
   },
+
+  closeTimeProfileDrawer: () => {
+    return {
+      type: CLOSE_TIME_PROFILE_DRAWER,
+    };
+  },
+  openTimeProfileDrawer: () => {
+    return {
+      type: OPEN_TIME_PROFILE_DRAWER,
+    };
+  },
+  setSelectedTimeProfile: (timeProfileId: string | null) => {
+    return {
+      type: SET_SELECTED_TIME_PROFILE,
+      payload: timeProfileId,
+    };
+  },
 };
 
 export const getProjectsWithPagination = createAction(
@@ -178,5 +201,8 @@ export const updateGroup = createAction(UPDATE_GROUP);
 
 export const createNewProfile = createAction(CREATE_NEW_PROFILE);
 export const getProjectProfile = createAction(GET_PROJECT_PROFILE);
+export const getTimeProfileById = createAction(GET_TIME_PROFILE_BY_ID);
+export const updateTimeProfile = createAction(UPDATE_TIME_PROFILE);
+export const getFile = createAction(GET_FILE);
 
 export default projectActions;

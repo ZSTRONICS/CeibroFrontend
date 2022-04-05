@@ -28,6 +28,8 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
 
+  console.log("folderList", folderList);
+
   const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
@@ -35,7 +37,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
         finallyAction: () => {
           setLoading(false);
         },
-        other: selectedProject,
+        other: { selectedProject },
       };
       setLoading(true);
 
@@ -48,6 +50,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
+
+    // console.log("folder is", folder.id);
+    // dispatch(setSelectedFolder(folder?.id));
   };
 
   return (
