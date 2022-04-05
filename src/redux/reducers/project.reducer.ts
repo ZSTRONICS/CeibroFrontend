@@ -147,7 +147,7 @@ const AppReducer = (
       return {
         ...state,
         allProjects: action.payload?.map?.((project: any) => ({
-          label: project?.name,
+          label: project?.title,
           value: project.id,
         })),
       };

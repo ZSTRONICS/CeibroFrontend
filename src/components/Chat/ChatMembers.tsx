@@ -62,7 +62,11 @@ const ChatMembers = () => {
             </Grid>
             <Grid item xs={2} style={styles.trashWrapper}>
               <IconButton onClick={() => handleClick(member.id)}>
-                <img src={assets.trashIcon} style={styles.trashImage} />
+                <img
+                  className="w-16"
+                  src={assets.trashIcon}
+                  style={styles.trashImage}
+                />
               </IconButton>
             </Grid>
           </Grid>
