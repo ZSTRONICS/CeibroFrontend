@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getGroup,
   getMember,
+  getRoles,
   getRolesById,
   updateMember,
 } from "redux/action/project.action";
@@ -83,7 +84,11 @@ const RolesTable = () => {
 
   useEffect(() => {
     dispatch(getGroup({ other: selectedProject }));
-    dispatch(getRolesById({ other: selectedProject }));
+    dispatch(
+      getRoles({
+        other: selectedProject,
+      })
+    );
   }, []);
 
   useEffect(() => {

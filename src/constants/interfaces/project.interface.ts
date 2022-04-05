@@ -1,3 +1,4 @@
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import { string } from "yup/lib/locale";
 import { UserInterface } from "./user.interface";
 
@@ -10,6 +11,7 @@ export interface ProjectOverviewInterface {
   projectPhoto?: string;
   photoFile?: any; // will be used only while creating a project
   id?: string;
+  publishStatus?: string;
   _id?: string;
 }
 export interface ProjectInterface {
@@ -48,9 +50,6 @@ export const projectOverviewTemplate: ProjectOverviewInterface = {
 export const rolesTemplate: RoleInterface = {
   name: "",
   admin: false,
-  roles: ["create", "delete"],
-  member: ["edit", "delete"],
-  timeProfile: ["create", "edit"],
 };
 
 export interface GroupInterface {

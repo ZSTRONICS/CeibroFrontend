@@ -7,6 +7,7 @@ export const projectOverviewSchema = Yup.object().shape({
     .required("Required"),
   dueDate: Yup.date().required(),
   owner: Yup.object().required(),
+  publishStatus: Yup.string().required(),
   description: Yup.string().required(),
   location: Yup.string().required(),
   projectPhoto: Yup.string().required(),

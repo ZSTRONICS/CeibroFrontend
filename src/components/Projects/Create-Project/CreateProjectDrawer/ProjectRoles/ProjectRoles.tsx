@@ -28,9 +28,9 @@ const ProjectRoles = () => {
             color="primary"
             className={classes.actionButton}
             onClick={() => {
-              dispatch(projectActions.openProjectRole());
               dispatch(projectActions.setRole(rolesTemplate));
               dispatch(projectActions.setSelectedRole(null));
+              dispatch(projectActions.openProjectRole());
             }}
           >
             Add a role

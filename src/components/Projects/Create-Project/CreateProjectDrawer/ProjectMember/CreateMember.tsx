@@ -17,6 +17,7 @@ import { mapGroups } from "helpers/project.helper";
 import {
   createMember,
   getGroup,
+  getRoles,
   getMember,
   getRolesById,
 } from "redux/action/project.action";
@@ -48,9 +49,7 @@ const MemberDialog = () => {
 
   useEffect(() => {
     dispatch(getGroup({ other: selectedProject }));
-  }, []);
-  useEffect(() => {
-    dispatch(getRolesById({ other: selectedProject }));
+    dispatch(getRoles({ other: selectedProject }));
   }, []);
 
   useEffect(() => {

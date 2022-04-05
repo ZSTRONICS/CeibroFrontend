@@ -1,10 +1,11 @@
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import colors from "../assets/colors";
 
 interface ColorCodes {
   [key: string]: string;
 }
 
-const colorsByStatus: ColorCodes = {
+export const colorsByStatus: ColorCodes = {
   all: colors.white,
   ongoing: colors.darkYellow,
   approved: colors.primary,
@@ -32,6 +33,16 @@ export function getColorByStatus(status: string): string {
 
 export function getTextColorByStatus(status: string): string {
   return textColorsByStatus[status.toLowerCase()];
+}
+
+export function getStatusDropdown(): dataInterface[] {
+  const data = Object.entries(colorsByStatus).map((status: any) => ({
+    label: status[0],
+    value: status[0],
+    color: status[1],
+  }));
+  delete data[0];
+  return data;
 }
 
 interface ProjectMenues {

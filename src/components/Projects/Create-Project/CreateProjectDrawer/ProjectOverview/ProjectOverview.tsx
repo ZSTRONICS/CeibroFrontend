@@ -15,6 +15,7 @@ import _ from "lodash";
 import projectActions, { getProjectDetail } from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
 import { formatDate } from "helpers/project.helper";
+import { getStatusDropdown } from "config/project.config";
 
 const ProjectOverview = () => {
   const classes = useStyles();
@@ -72,7 +73,23 @@ const ProjectOverview = () => {
     );
   };
 
+  const handleStatusChange = (status: dataInterface) => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        publishStatus: status.value,
+      })
+    );
+  };
+
   const my = formatDate(projectOverview?.dueDate);
+  const statusData = getStatusDropdown();
+  const statusValue = projectOverview?.publishStatus
+    ? {
+        label: projectOverview?.publishStatus,
+        value: projectOverview?.publishStatus,
+      }
+    : null;
 
   return (
     <>
@@ -89,6 +106,15 @@ const ProjectOverview = () => {
             data={data}
             value={projectOverview?.owner}
             title="Owner"
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={4} className={classes.datePickerWrapper}>
+          <SelectDropdown
+            handleChange={handleStatusChange}
+            data={statusData}
+            value={statusValue}
+            title="Status"
           />
         </Grid>
 

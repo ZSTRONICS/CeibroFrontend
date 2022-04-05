@@ -76,7 +76,10 @@ const RolesTable = () => {
                   {role.name}
                 </Typography>
                 <div className={classes.roleDetail}>
-                  {role?.roles?.length && (
+                  {role.admin && (
+                    <Typography className={classes.detail}>Admin</Typography>
+                  )}
+                  {(role?.roles?.length || 0) > 0 && (
                     <>
                       <Typography className={classes.detailTitle}>
                         Role: &nbsp;
@@ -90,12 +93,12 @@ const RolesTable = () => {
                       })}
                     </>
                   )}
-                  {role?.member && (
+                  {(role?.member?.length || 0) > 0 && (
                     <>
                       <Typography className={classes.detailTitle}>
                         Member: &nbsp;
                       </Typography>
-                      {role?.roles?.map((access) => {
+                      {role?.member?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
                             {access}, &nbsp;
@@ -104,12 +107,12 @@ const RolesTable = () => {
                       })}
                     </>
                   )}
-                  {role?.timeProfile && (
+                  {(role?.timeProfile?.length || 0) > 0 && (
                     <>
                       <Typography className={classes.detailTitle}>
                         Time Profile: &nbsp;
                       </Typography>
-                      {role?.roles?.map((access) => {
+                      {role?.timeProfile?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
                             {access}, &nbsp;

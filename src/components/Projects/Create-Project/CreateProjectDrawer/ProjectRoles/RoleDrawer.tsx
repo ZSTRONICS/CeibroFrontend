@@ -55,7 +55,7 @@ const AddRole: React.FC<AddRoleProps> = () => {
       success: () => {
         toast.success("Role created successfully");
         dispatch(projectActions.closeProjectRole());
-        dispatch(getRolesById({ other: selectedProject }));
+        dispatch(getRoles({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);
@@ -126,6 +126,7 @@ const AddRole: React.FC<AddRoleProps> = () => {
     fieldName: "roles" | "member" | "timeProfile"
   ) => {
     let existingField = role[fieldName];
+    console.log("existingField: ", existingField);
     if (existingField) {
       if (checked) {
         existingField?.push?.(access);
@@ -141,6 +142,15 @@ const AddRole: React.FC<AddRoleProps> = () => {
           [fieldName]: existingField,
         })
       );
+    } else {
+      if (checked) {
+        dispatch(
+          projectActions.setRole({
+            ...role,
+            [fieldName]: [access],
+          })
+        );
+      }
     }
   };
   const handleNameChange = (e: any) => {
@@ -157,13 +167,14 @@ const AddRole: React.FC<AddRoleProps> = () => {
         getRolesById({
           other: selectedRole,
           success: (res) => {
-            if (res.data.roles.length > 1) {
+            console.log("res is ", res.data.timeProfile);
+            if (res.data.roles.length > 0) {
               setIsRole(true);
             }
-            if (res.data.member.length > 1) {
+            if (res.data.member.length > 0) {
               setIsMember(true);
             }
-            if (res.data.timeProfile.length > 1) {
+            if (res.data.timeProfile.length > 0) {
               setIsTimeProfile(true);
             }
           },

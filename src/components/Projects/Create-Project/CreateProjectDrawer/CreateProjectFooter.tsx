@@ -33,8 +33,6 @@ const CreateProjectBody = () => {
     const data = getFormValues();
     if (saveAsDraft) {
       data.append("projectStatus", "draft");
-    } else {
-      data.append("projectStatus", "published");
     }
     dispatch(
       createProject({
@@ -69,8 +67,15 @@ const CreateProjectBody = () => {
   };
 
   const getFormValues = () => {
-    const { title, owner, dueDate, location, description, photoFile } =
-      projectOverview;
+    const {
+      title,
+      owner,
+      dueDate,
+      location,
+      description,
+      photoFile,
+      publishStatus,
+    } = projectOverview;
     const formData = new FormData();
     formData.append("title", title || "");
     formData.append("location", location || "");
@@ -78,6 +83,8 @@ const CreateProjectBody = () => {
     formData.append("owner", owner.value);
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);
+    formData.append("projectStatus", publishStatus || "");
+
     return formData;
   };
 

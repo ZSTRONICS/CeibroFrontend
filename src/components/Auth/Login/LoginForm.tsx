@@ -155,7 +155,7 @@ const useStyles = makeStyles({
     },
   },
   remember: {
-    marginTop: 25,
+    marginTop: "35px !important",
     fontSize: 14,
   },
   rememberText: {

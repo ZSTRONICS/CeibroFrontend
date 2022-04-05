@@ -5,29 +5,21 @@ import {
   DialogActions,
   DialogContent,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
-import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
+import { mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
   createFolder,
-  createGroup,
-  createRole,
   getFolder,
   getGroup,
-  getRolesById,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { toast } from "react-toastify";
-import { List } from "lodash";
-import { group } from "console";
-import { mapGroups } from "helpers/project.helper";
 
 interface AddGroupProps {}
 
