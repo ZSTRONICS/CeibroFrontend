@@ -7,6 +7,8 @@ import { projectOverviewSchema } from "constants/schemas/project.schema";
 import { useEffect, useState } from "react";
 import projectActions, {
   createProject,
+  deleteProject,
+  getProjectsWithPagination,
   updateProject,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
@@ -76,6 +78,18 @@ const CreateProjectBody = () => {
     }
   };
 
+  const handleDelete = () => {
+    const payload = {
+      success: () => {
+        toast.success("Project Delete Successfully");
+        dispatch(projectActions.closeDrawer());
+        dispatch(getProjectsWithPagination());
+      },
+      other: selectedProject,
+    };
+    dispatch(deleteProject(payload));
+  };
+
   const getFormValues = () => {
     const {
       title,
@@ -108,7 +122,13 @@ const CreateProjectBody = () => {
       >
         Save as draft
       </Button>
-      <Button className={classes.trash} color="primary">
+      {/* {!selectedProject?} */}
+      <Button
+        className={classes.trash}
+        color="primary"
+        onClick={handleDelete}
+        // {selectedProject? style={{display:"none"}} : display:"block"}
+      >
         <FaTrash />
       </Button>
       <Button
