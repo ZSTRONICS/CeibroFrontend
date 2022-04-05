@@ -25,7 +25,9 @@ interface StatusMenuProps {
 
 export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   const { options } = props;
-  const { getStatuses } = useSelector((state: RootState) => state.project);
+  const { getStatuses, drawerOpen } = useSelector(
+    (state: RootState) => state.project
+  );
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -44,8 +46,10 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   }, [filter]);
 
   useEffect(() => {
-    dispatch(getStatus());
-  }, []);
+    if (!drawerOpen) {
+      dispatch(getStatus());
+    }
+  }, [drawerOpen]);
 
   console.log("getStatuses", getStatuses);
 
