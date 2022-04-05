@@ -32,7 +32,7 @@ const CreateProjectBody = () => {
   const handleProjectCreate = (saveAsDraft = false) => {
     const data = getFormValues();
     if (saveAsDraft) {
-      data.append("projectStatus", "draft");
+      data.append("publishStatus", "draft");
     }
     dispatch(
       createProject({
@@ -51,6 +51,7 @@ const CreateProjectBody = () => {
 
   const handleProjectUpdate = () => {
     const data = getFormValues();
+    data.delete('projectPhoto')
     const payload = {
       body: data,
       other: selectedProject,
@@ -83,7 +84,7 @@ const CreateProjectBody = () => {
     formData.append("owner", owner.value);
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);
-    formData.append("projectStatus", publishStatus || "");
+    formData.append("publishStatus", publishStatus || "");
 
     return formData;
   };
