@@ -48,6 +48,8 @@ import configs, {
   GET_TIME_PROFILE_BY_ID,
   UPDATE_TIME_PROFILE,
   GET_FILE,
+  GET_STATUS,
+  SET_SEARCH_PROJECT,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -117,6 +119,12 @@ const projectActions = {
     return {
       type: SET_SELECTED_DATE,
       payload: date,
+    };
+  },
+  setSearchProject: (findProject: string) => {
+    return {
+      type: SET_SEARCH_PROJECT,
+      payload: findProject,
     };
   },
   openProjectRole: () => {
@@ -204,5 +212,6 @@ export const getProjectProfile = createAction(GET_PROJECT_PROFILE);
 export const getTimeProfileById = createAction(GET_TIME_PROFILE_BY_ID);
 export const updateTimeProfile = createAction(UPDATE_TIME_PROFILE);
 export const getFile = createAction(GET_FILE);
+export const getStatus = createAction(GET_STATUS);
 
 export default projectActions;

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Badge, makeStyles, Typography } from "@material-ui/core";
 import {
+  getAllStatus,
   getColorByStatus,
   SET_SELECTED_STATUS,
 } from "../../../config/project.config";
@@ -8,8 +9,10 @@ import { getStyleClass } from "../../../config/styles.config";
 import colors from "../../../assets/colors";
 import projectActions, {
   getProjectsWithPagination,
+  getStatus,
 } from "redux/action/project.action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
 interface StatusMenuInt {
   title: string;
@@ -22,6 +25,7 @@ interface StatusMenuProps {
 
 export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   const { options } = props;
+  const { getStatuses } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -39,18 +43,24 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
     }
   }, [filter]);
 
+  useEffect(() => {
+    dispatch(getStatus());
+  }, []);
+
+  console.log("getStatuses", getStatuses);
+
   return (
     <>
-      {options &&
-        options.map((option, index) => {
+      {getStatuses &&
+        getStatuses.map((option: any, index: any) => {
           return (
             <div
-              onClick={() => setFilter(option.title)}
+              onClick={() => setFilter(option.name)}
               key={index}
-              className={`${classes.statusChip} ${getStyleClass(option.title)}`}
+              className={`${classes.statusChip} ${getStyleClass(option.name)}`}
             >
               <Typography className={classes.chipTitle}>
-                {option.title}
+                {option.name}
               </Typography>
               <Badge
                 className={classes.statusBage}
@@ -85,6 +95,7 @@ const useStyles = makeStyles({
     color: colors.primary,
     fontSize: 14,
     fontWeight: 500,
+    textTransform: "capitalize",
   },
   ongoing: {
     background: getColorByStatus("ongoing"),

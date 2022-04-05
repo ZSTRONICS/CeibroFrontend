@@ -19,6 +19,7 @@ import {
   GET_PROJECT_PROFILE,
   GET_ROLES,
   GET_ROLES_BY_ID,
+  GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
   SET_FIND_DOC,
   UPDATE_GROUP,
@@ -52,6 +53,7 @@ const getProjectsWithPagination = apiCall({
     let url = "/project?";
     const status = store?.project?.selectedStatus;
     const selectedDate = store?.project?.selectedDate;
+    const searchProject = store?.project?.searchProject;
 
     if (status) {
       url = `${url}publishStatus=${status?.toLowerCase()}`;
@@ -60,6 +62,12 @@ const getProjectsWithPagination = apiCall({
     if (selectedDate) {
       url = `${url}&dueDate=${selectedDate}`;
     }
+
+    if (searchProject) {
+      url = `${url}title=${searchProject}`;
+    }
+
+    console.log("xsearchProject", searchProject);
 
     return url;
   },
@@ -238,6 +246,12 @@ const updateTimeProfile = apiCall({
   path: (payload) => `/project/timeProfile/detail/${payload.other}`,
 });
 
+const getStatus = apiCall({
+  type: GET_STATUS,
+  method: "get",
+  path: "/project/count/status",
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -268,6 +282,7 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECT_PROFILE, getProjectProfile);
   yield takeLatest(GET_TIME_PROFILE_BY_ID, getTimeProfileById);
   yield takeLatest(UPDATE_TIME_PROFILE, updateTimeProfile);
+  yield takeLatest(GET_STATUS, getStatus);
 }
 
 export default projectSaga;

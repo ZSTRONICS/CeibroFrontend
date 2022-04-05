@@ -31,6 +31,8 @@ import config, {
   OPEN_TIME_PROFILE_DRAWER,
   SET_SELECTED_TIME_PROFILE,
   GET_TIME_PROFILE_BY_ID,
+  GET_STATUS,
+  SET_SEARCH_PROJECT,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -65,6 +67,7 @@ interface ProjectReducerInt {
   filter: any;
   selectedStatus: string | null;
   selectedDate: string | null;
+  searchProject: string | null;
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
@@ -78,6 +81,7 @@ interface ProjectReducerInt {
   memberList: MemberInterface[];
   load: boolean;
   getTimeProfileById: any;
+  getStatuses: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -96,6 +100,7 @@ const projectReducer: ProjectReducerInt = {
   filter: [],
   selectedStatus: null,
   selectedDate: null,
+  searchProject: "",
   roleDrawer: false,
   groupDrawer: false,
   documentDrawer: false,
@@ -105,6 +110,7 @@ const projectReducer: ProjectReducerInt = {
   group: groupTemplate,
   folderList: [],
   memberList: [],
+  getStatuses: [],
   folderFiles: [],
   projectProfile: [],
   load: false,
@@ -216,6 +222,13 @@ const AppReducer = (
       return {
         ...state,
         selectedDate: action.payload,
+      };
+    }
+
+    case SET_SEARCH_PROJECT: {
+      return {
+        ...state,
+        searchProject: action.payload,
       };
     }
 
@@ -366,6 +379,12 @@ const AppReducer = (
       return {
         ...state,
         getTimeProfileById: action.payload,
+      };
+    }
+    case requestSuccess(GET_STATUS): {
+      return {
+        ...state,
+        getStatuses: action.payload,
       };
     }
 
