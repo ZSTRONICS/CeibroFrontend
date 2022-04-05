@@ -50,6 +50,7 @@ import configs, {
   GET_FILE,
   GET_STATUS,
   SET_SEARCH_PROJECT,
+  GET_NEW_WORK,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -213,5 +214,6 @@ export const getTimeProfileById = createAction(GET_TIME_PROFILE_BY_ID);
 export const updateTimeProfile = createAction(UPDATE_TIME_PROFILE);
 export const getFile = createAction(GET_FILE);
 export const getStatus = createAction(GET_STATUS);
+export const getNewWork = createAction(GET_NEW_WORK);
 
 export default projectActions;
