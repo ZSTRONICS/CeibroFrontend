@@ -1,21 +1,16 @@
-import React, { FC } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
-import colors from "../../../assets/colors";
-import { BsClipboard } from "react-icons/bs";
-import { AiOutlineFolder } from "react-icons/ai";
-import { FaRegUser } from "react-icons/fa";
-import { HiOutlineChatAlt } from "react-icons/hi";
+import { makeStyles } from "@material-ui/core/styles";
+import assets from "assets/assets";
+import { ProjectInterface } from "constants/interfaces/project.interface";
+import React, { FC } from "react";
 import Moment from "react-moment";
+import { useDispatch } from "react-redux";
+import projectActions from "redux/action/project.action";
+import colors from "../../../assets/colors";
 import {
   getColorByStatus,
   getTextColorByStatus,
 } from "../../../config/project.config";
-import assets from "assets/assets";
-import { ProjectInterface } from "constants/interfaces/project.interface";
-import { useDispatch } from "react-redux";
-import projectActions from "redux/action/project.action";
-import { UserInterface } from "constants/interfaces/user.interface";
 
 interface ProjectCardInterface {
   project: ProjectInterface;
@@ -29,9 +24,9 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     owner,
     title,
     tasks,
-    docs,
-    users,
-    chat,
+    docsCount,
+    usersCount,
+    chatCount,
     publishStatus: status,
     id,
   } = project;
@@ -112,17 +107,19 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
           <div className={classes.iconChip}>
             <img src={assets.folderIcon} className={`w-16`} />
-            <Typography className={classes.iconText}>{docs} doc(s)</Typography>
+            <Typography className={classes.iconText}>
+              {docsCount} doc(s)
+            </Typography>
           </div>
 
           <div className={classes.iconChip}>
             <img src={assets.blueUser} className={`width-16`} />
-            <Typography className={classes.iconText}>{users}</Typography>
+            <Typography className={classes.iconText}>{usersCount}</Typography>
           </div>
 
           <div className={classes.iconChip}>
             <img src={assets.chatIcon} className={`w-16`} />
-            <Typography className={classes.iconText}>{chat}</Typography>
+            <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
         </Grid>
       </Grid>

@@ -20,9 +20,9 @@ export interface ProjectInterface {
   owner: UserInterface;
   title: string;
   tasks: number;
-  docs: number;
-  users: number;
-  chat: number;
+  docsCount: number;
+  usersCount: number;
+  chatCount: number;
   publishStatus: string;
   statusDate: string;
   id?: string;
