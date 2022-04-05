@@ -29,7 +29,7 @@ const InputTextArea: FC<InputSwitchtInterface> = (props) => {
     <div style={styles.wrapper}>
       <FormControlLabel
         control={<IOSSwitch checked={value} name={name} />}
-        label={""}
+        label={label? label: ""}
         onClick={(e: any) => onChange?.(e)}
         name={name}
       />

@@ -296,3 +296,9 @@ button[disabled]{
 .MuiFormControlLabel-root {
   margin: 0px !important;
 }
+
+.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
+  font-size: 14px;
+  font-weight: 500; 
+  padding-left: 10px;
+}

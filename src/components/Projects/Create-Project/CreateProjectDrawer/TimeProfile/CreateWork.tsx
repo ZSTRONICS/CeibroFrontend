@@ -13,11 +13,30 @@ import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
 import { Close } from "@material-ui/icons";
 import colors from "../../../../../assets/colors";
 import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
+import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
 
 const CreateWork = () => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
+
+  const [data, setData] = useState({
+    time: true,
+    timeRequired: false,
+    quantity: true,
+    quantityRequired: false,
+    comment: true,
+    commentRequired: false,
+    photo: false,
+    photoRequired: false
+  })
+  const handleChange = (name: string, value: boolean) => {
+    setData({
+      ...data,
+      [name]: value
+    })
+  }
+
 
   const classes = useStyle();
 
@@ -63,23 +82,87 @@ const CreateWork = () => {
             </Grid>
 
             <Grid item xs={12} className={classes.rolesWrapper}>
-              <InputSwitch label="Add time" />
+              <InputSwitch
+                value={data.time}
+                onChange={(e: any) => handleChange("time", e.target?.checked)}
+                label="Add time"
+              />
+              {data.time && (
+                <div>
+                  <InputCheckbox
+                    label={"Obligatory field"}
+                    checked={data.timeRequired}
+                    onChange={(checked: boolean) =>
+                      handleChange("timeRequired", checked)
+                    }
+                  />
+                </div>
+              )}
             </Grid>
 
             <Grid item xs={12} className={classes.rolesWrapper}>
-              <InputSwitch label="Quantity" />
+              <InputSwitch
+                value={data.quantity}
+                onChange={(e: any) =>
+                  handleChange("quantity", e.target?.checked)
+                }
+                label="Quantity"
+              />
+
+              {data.quantity && (
+                <div>
+                  <InputCheckbox
+                    label={"Obligatory field"}
+                    checked={data.quantityRequired}
+                    onChange={(checked: boolean) =>
+                      handleChange("quantityRequired", checked)
+                    }
+                  />
+                </div>
+              )}
             </Grid>
 
             <Grid item xs={12} className={classes.rolesWrapper}>
-              <InputSwitch label="Comment" />
+              <InputSwitch
+                value={data.comment}
+                onChange={(e: any) =>
+                  handleChange("comment", e.target?.checked)
+                }
+                label="Comment"
+              />
+
+              {data.comment && (
+                <div>
+                  <InputCheckbox
+                    label={"Obligatory field"}
+                    checked={data.commentRequired}
+                    onChange={(checked: boolean) =>
+                      handleChange("commentRequired", checked)
+                    }
+                  />
+                </div>
+              )}
             </Grid>
 
             <Grid item xs={12} className={classes.rolesWrapper}>
-              <InputSwitch label="Photo" />
+              <InputSwitch
+                value={data.photo}
+                onChange={(e: any) => handleChange("photo", e.target?.checked)}
+                label="Photo"
+              />
+              {data.photo && (
+                <div>
+                  <InputCheckbox
+                    label={"Obligatory field"}
+                    checked={data.photoRequired}
+                    onChange={(checked: boolean) =>
+                      handleChange("photoRequired", checked)
+                    }
+                  />
+                </div>
+              )}
             </Grid>
           </Grid>
-          {/* <InputText/>
-          <SelectDropdown title="Role"/> */}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -103,8 +186,7 @@ const useStyle = makeStyles({
     fontStyle: "normal",
   },
   body: {
-    // maxWidth: 500,
-    // width: 500
+    maxWidth: 300
   },
   meta: {
     marginTop: 10,
@@ -129,5 +211,8 @@ const useStyle = makeStyles({
   },
   rolesWrapper: {
     marginTop: 10,
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center'
   },
 });

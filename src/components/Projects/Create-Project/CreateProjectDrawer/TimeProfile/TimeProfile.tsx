@@ -9,7 +9,7 @@ const TimeProfile = () => {
 
     return (
         <>
-            <Grid container>
+            <Grid item xs={12}>
                 <Grid item xs={12} className={classes.actionWrapper}>
                     <Button
                         variant="outlined"
