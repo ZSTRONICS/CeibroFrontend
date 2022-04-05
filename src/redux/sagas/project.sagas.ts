@@ -13,6 +13,7 @@ import {
   GET_GROUP,
   GET_GROUP_BY_ID,
   GET_MEMBER,
+  GET_NEW_WORK,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -259,6 +260,12 @@ const createProfileWork = apiCall({
   path: (payload) => `/project/work/${payload.other}`,
 });
 
+const getNewWork = apiCall({
+  type: GET_NEW_WORK,
+  method: "get",
+  path: (payload) => `/project/work/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -292,6 +299,7 @@ function* projectSaga() {
   yield takeLatest(GET_STATUS, getStatus);
 
   yield takeLatest(CREATE_PROFILE_WORK, createProfileWork);
+  yield takeLatest(GET_NEW_WORK, getNewWork);
 }
 
 export default projectSaga;

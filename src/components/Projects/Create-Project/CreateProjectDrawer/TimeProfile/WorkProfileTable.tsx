@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -14,6 +14,9 @@ import { Typography } from "@material-ui/core";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
+import { useDispatch, useSelector } from "react-redux";
+import { getNewWork } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 
 function createData(name: string, group: string, role: string) {
   return { name, group, role };
@@ -23,6 +26,17 @@ const rows = [createData("Work name", "Electrikud", "Project Management")];
 
 export default function BasicTable() {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const { selectedTimeProfile, getNewWorkList } = useSelector(
+    (state: RootState) => state.project
+  );
+
+  // selectedTimeProfile;
+  useEffect(() => {
+    if (selectedTimeProfile) {
+      dispatch(getNewWork({ other: selectedTimeProfile }));
+    }
+  }, []);
 
   return (
     <TableContainer>
@@ -35,7 +49,7 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {getNewWorkList.map((row: any) => (
             <TableRow key={row.name}>
               <TableCell component="th" scope="row">
                 <Typography className={classes.name}>{row.name}</Typography>

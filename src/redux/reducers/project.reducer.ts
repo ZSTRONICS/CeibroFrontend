@@ -33,6 +33,7 @@ import config, {
   GET_TIME_PROFILE_BY_ID,
   GET_STATUS,
   SET_SEARCH_PROJECT,
+  GET_NEW_WORK,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -82,6 +83,7 @@ interface ProjectReducerInt {
   load: boolean;
   getTimeProfileById: any;
   getStatuses: any;
+  getNewWorkList: any;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -111,6 +113,7 @@ const projectReducer: ProjectReducerInt = {
   folderList: [],
   memberList: [],
   getStatuses: [],
+  getNewWorkList: [],
   folderFiles: [],
   projectProfile: [],
   load: false,
@@ -387,6 +390,13 @@ const AppReducer = (
         getStatuses: action.payload,
       };
     }
+    case requestSuccess(GET_NEW_WORK): {
+      return {
+        ...state,
+        getNewWorkList: action.payload,
+      };
+    }
+    // GET_NEW_WORK;
 
     default:
       return state;

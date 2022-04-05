@@ -55,7 +55,7 @@ const CreateProjectBody = () => {
     const payload = {
       body: data,
       success: () => {
-        toast.success("Overview Update Successfuly");
+        toast.success("Project Saved");
         dispatch(projectActions.closeDrawer());
       },
       finallyAction: () => {
