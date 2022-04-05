@@ -51,11 +51,20 @@ const CreateProjectBody = () => {
 
   const handleProjectUpdate = () => {
     const data = getFormValues();
-    data.delete('projectPhoto')
+    data.delete("projectPhoto");
     const payload = {
       body: data,
+      success: () => {
+        toast.success("Overview Update Successfuly");
+        dispatch(projectActions.closeDrawer());
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
       other: selectedProject,
     };
+    setLoading(true);
+
     dispatch(updateProject(payload));
   };
 
@@ -109,10 +118,10 @@ const CreateProjectBody = () => {
         color="primary"
         onClick={handleSubmit}
       >
-        {selectedProject ? "update" : "Create project"}
         {isDiabled && loading && (
           <CircularProgress size={20} className={classes.progress} />
         )}
+        {selectedProject ? "update" : "Create project"}
       </Button>
     </Grid>
   );

@@ -51,7 +51,7 @@ const Project = () => {
     dispatch(projectActions.setSearchProject(findProject));
     dispatch(getProjectsWithPagination());
   }, [findProject]);
-  console.log("searchProject", searchProject);
+
   return (
     <Grid item xs={12}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
