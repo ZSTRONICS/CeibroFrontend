@@ -8,36 +8,50 @@ import {
   getProjectStatus,
 } from "../../../config/project.config";
 import StatusMenu from "../../Utills/Others/StatusMenu";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 
 import projectActions, {
   getProjectsWithPagination,
 } from "redux/action/project.action";
+import InputText from "components/Utills/Inputs/InputText";
+import { RootState } from "redux/reducers";
 
 const Project = () => {
+  const { searchProject, drawerOpen } = useSelector(
+    (state: RootState) => state.project
+  );
   const classes = useStyles();
   const dispatch = useDispatch();
   const allStatus = getProjectStatus();
   const [date, setDate] = useState<string>("");
+  const [findProject, setFindProject] = useState<string>("");
+
   const [loading, setLoading] = useState<boolean>(false);
 
-  console.log("selected date1", date);
+  console.log("findProject", findProject);
 
   useEffect(() => {
-    const payload = {
-      finallyAction: () => {
-        setLoading(false);
-      },
-    };
-    setLoading(true);
-    dispatch(getProjectsWithPagination(payload));
-  }, []);
+    if (!drawerOpen) {
+      const payload = {
+        finallyAction: () => {
+          setLoading(false);
+        },
+      };
+      setLoading(true);
+      dispatch(getProjectsWithPagination(payload));
+    }
+  }, [drawerOpen]);
 
   useEffect(() => {
     dispatch(projectActions.setSelectedDate(date));
   }, [date]);
 
+  useEffect(() => {
+    dispatch(projectActions.setSearchProject(findProject));
+    dispatch(getProjectsWithPagination());
+  }, [findProject]);
+  console.log("searchProject", searchProject);
   return (
     <Grid item xs={12}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
@@ -52,7 +66,11 @@ const Project = () => {
         </Grid>
 
         <Grid item xs={12} md={4} className={classes.datePicker}>
-          <SelectDropdown title="Projects" />
+          {/* <SelectDropdown title="Projects" /> */}
+          <InputText
+            placeholder="Find Project"
+            onChange={(e: any) => setFindProject(e.target.value)}
+          />
         </Grid>
       </Grid>
 

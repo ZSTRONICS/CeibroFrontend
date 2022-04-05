@@ -85,7 +85,7 @@ export function getAllStatus(): ProjectMenues[] {
 export function getProjectStatus(): ProjectMenues[] {
   return [
     {
-      title: "All",
+      title: "Alldf",
       count: 3,
     },
     {
@@ -165,5 +165,7 @@ export const GET_TIME_PROFILE_BY_ID = "GET_TIME_PROFILE_BY_ID";
 export const UPDATE_TIME_PROFILE = "UPDATE_TIME_PROFILE";
 export const SET_FIND_DOC = "SET_FIND_DOC";
 export const GET_FILE = "GET_FILE";
+export const GET_STATUS = "GET_STATUS";
+export const SET_SEARCH_PROJECT = "SET_SEARCH_PROJECT";
 
 export default projectReduxConfigs;
