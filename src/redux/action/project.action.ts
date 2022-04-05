@@ -52,6 +52,7 @@ import configs, {
   SET_SEARCH_PROJECT,
   CREATE_PROFILE_WORK,
   GET_NEW_WORK,
+  DELETE_PROJECT,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -217,5 +218,6 @@ export const getFile = createAction(GET_FILE);
 export const getStatus = createAction(GET_STATUS);
 export const createProfileWork = createAction(CREATE_PROFILE_WORK);
 export const getNewWork = createAction(GET_NEW_WORK);
+export const deleteProject = createAction(DELETE_PROJECT);
 
 export default projectActions;

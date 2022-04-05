@@ -170,5 +170,6 @@ export const SET_SEARCH_PROJECT = "SET_SEARCH_PROJECT";
 export const GET_NEW_WORK = "GET_NEW_WORK";
 
 export const CREATE_PROFILE_WORK = "CREATE_PROFILE_WORK";
+export const DELETE_PROJECT = "DELETE_PROJECT";
 
 export default projectReduxConfigs;

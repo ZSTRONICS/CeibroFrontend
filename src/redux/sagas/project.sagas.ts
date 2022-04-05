@@ -7,6 +7,7 @@ import {
   CREATE_PROFILE_WORK,
   CREATE_PROJECT,
   CREATE_ROLES,
+  DELETE_PROJECT,
   GET_FILE,
   GET_FOLDER,
   GET_FOLDER_FILES,
@@ -265,6 +266,11 @@ const getNewWork = apiCall({
   method: "get",
   path: (payload) => `/project/work/${payload.other}`,
 });
+const deleteProject = apiCall({
+  type: DELETE_PROJECT,
+  method: "delete",
+  path: (payload) => `/project/detail/${payload.other}`,
+});
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
@@ -300,6 +306,7 @@ function* projectSaga() {
 
   yield takeLatest(CREATE_PROFILE_WORK, createProfileWork);
   yield takeLatest(GET_NEW_WORK, getNewWork);
+  yield takeLatest(DELETE_PROJECT, deleteProject);
 }
 
 export default projectSaga;
