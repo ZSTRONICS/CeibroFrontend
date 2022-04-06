@@ -7,7 +7,13 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ListIcon from "@material-ui/icons/List";
-import { Grid, ListItemIcon, makeStyles, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  Grid,
+  ListItemIcon,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
 import InputText from "../../../../Utills/Inputs/InputText";
 import SelectDropdown, {
   dataInterface,
@@ -17,24 +23,31 @@ import colors from "../../../../../assets/colors";
 import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
 import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
 import { useDispatch, useSelector } from "react-redux";
-import { createProfileWork, getRoles } from "redux/action/project.action";
+import projectActions, {
+  createProfileWork,
+  getNewWork,
+  getRoles,
+  getWorkById,
+  updateWork,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { mapRoles } from "helpers/project.helper";
 import { toast } from "react-toastify";
 import { Toast } from "react-toastify/dist/components";
 
 const CreateWork = () => {
-  const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const isDiabled = !loading ? false : true;
-  const { selectedProject, rolesList, selectedTimeProfile } = useSelector(
-    (state: RootState) => state.project
-  );
+  const isDisabled = !loading ? false : true;
+  const {
+    selectedProject,
+    rolesList,
+    selectedTimeProfile,
+    selectedWork,
+    workDrawer,
+  } = useSelector((state: RootState) => state.project);
 
-  const rolesData = mapRoles(rolesList);
-
-  const [data, setData] = useState<any>({
+  const workTempale = {
     name: "",
     roles: [],
     time: true,
@@ -45,7 +58,12 @@ const CreateWork = () => {
     commentRequired: false,
     photo: false,
     photoRequired: false,
-  });
+  };
+
+  const rolesData = mapRoles(rolesList);
+
+  const [data, setData] = useState<any>(workTempale);
+  const [work, setWork] = useState<any>();
 
   const handleChange = (name: string, value: boolean) => {
     setData({
@@ -61,17 +79,20 @@ const CreateWork = () => {
   const classes = useStyle();
 
   const handleClickOpen = () => {
-    setOpen(true);
+    dispatch(projectActions.setSelectedwork(null));
+    dispatch(projectActions.openWorkDrawer());
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  function handleClose() {
+    dispatch(projectActions.closeWorkDrawer());
+  }
   const handleOk = () => {
     let body = data;
     body.roles = body?.roles.map((role: dataInterface) => {
       return role.value;
     });
+    setLoading(true);
+
     dispatch(
       createProfileWork({
         other: selectedTimeProfile,
@@ -79,9 +100,59 @@ const CreateWork = () => {
         success: () => {
           toast.success("Work created");
           handleClose();
+          dispatch(getNewWork({ other: selectedTimeProfile }));
+        },
+        finallyAction: () => {
+          setLoading(false);
         },
       })
     );
+  };
+
+  useEffect(() => {
+    setData(workTempale);
+  }, [workDrawer]);
+
+  useEffect(() => {
+    if (selectedWork && workDrawer) {
+      const payload = {
+        success: (res: any) => {
+          setData(res.data);
+          console.log("res work", res);
+        },
+
+        other: selectedWork,
+      };
+      dispatch(getWorkById(payload));
+    }
+  }, [selectedWork, workDrawer]);
+
+  console.log("work", work);
+
+  const updateWorkHandle = () => {
+    const payload = {
+      body: { data },
+      success: () => {
+        toast.success("Work Updated successfully");
+        dispatch(getNewWork({ other: selectedTimeProfile }));
+        dispatch(projectActions.closeWorkDrawer());
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: selectedWork,
+    };
+    setLoading(true);
+
+    dispatch(updateWork(payload));
+  };
+
+  const handleSubmit = () => {
+    if (selectedWork) {
+      updateWorkHandle();
+    } else {
+      handleOk();
+    }
   };
 
   return (
@@ -95,7 +166,7 @@ const CreateWork = () => {
         Add new work
       </Button>
       <Dialog
-        open={open}
+        open={workDrawer}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
@@ -112,7 +183,7 @@ const CreateWork = () => {
                 onChange={(e: any) =>
                   setData({ ...data, name: e.target.value })
                 }
-                value={data.name}
+                value={data?.name}
                 placeholder="Select/Add work"
               />
             </Grid>
@@ -125,7 +196,7 @@ const CreateWork = () => {
             >
               <SelectDropdown
                 data={rolesData}
-                value={data.roles}
+                value={data?.roles}
                 isMulti={true}
                 title="Role"
                 handleChange={(values: dataInterface[]) => {
@@ -224,8 +295,17 @@ const CreateWork = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleOk} color="primary" variant="contained">
-            Add
+          <Button
+            disabled={isDisabled}
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+          >
+            {isDisabled && loading && (
+              <CircularProgress size={20} className={classes.progress} />
+            )}
+            {selectedWork ? "Update" : "Add"}
+            {/* Add */}
           </Button>
         </DialogActions>
       </Dialog>
@@ -270,5 +350,15 @@ const useStyle = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

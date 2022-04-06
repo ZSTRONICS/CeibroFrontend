@@ -8,6 +8,7 @@ import {
   CREATE_PROJECT,
   CREATE_ROLES,
   DELETE_PROJECT,
+  DELETE_WORK,
   GET_FILE,
   GET_FOLDER,
   GET_FOLDER_FILES,
@@ -24,12 +25,14 @@ import {
   GET_ROLES_BY_ID,
   GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
+  GET_WORK_BY_ID,
   SET_FIND_DOC,
   UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_ROLE,
   UPDATE_TIME_PROFILE,
+  UPDATE_WORK,
   UPLOAD_FILE_TO_FOLDER,
 } from "../../config/project.config";
 import apiCall from "../../utills/apiCall";
@@ -272,6 +275,23 @@ const deleteProject = apiCall({
   path: (payload) => `/project/detail/${payload.other}`,
 });
 
+const getWorkById = apiCall({
+  type: GET_WORK_BY_ID,
+  method: "get",
+  path: (payload) => `/project/work/detail/${payload.other}`,
+});
+
+const updateWork = apiCall({
+  type: UPDATE_WORK,
+  method: "put",
+  path: (payload) => `/project/work/detail/${payload.other}`,
+});
+
+const deleteWork = apiCall({
+  type: DELETE_WORK,
+  method: "delete",
+  path: (payload) => `/project/work/detail/${payload.other}`,
+});
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -307,6 +327,9 @@ function* projectSaga() {
   yield takeLatest(CREATE_PROFILE_WORK, createProfileWork);
   yield takeLatest(GET_NEW_WORK, getNewWork);
   yield takeLatest(DELETE_PROJECT, deleteProject);
+  yield takeLatest(GET_WORK_BY_ID, getWorkById);
+  yield takeLatest(UPDATE_WORK, updateWork);
+  yield takeLatest(DELETE_WORK, deleteWork);
 }
 
 export default projectSaga;

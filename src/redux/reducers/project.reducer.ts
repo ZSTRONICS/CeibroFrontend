@@ -34,6 +34,9 @@ import config, {
   GET_STATUS,
   SET_SEARCH_PROJECT,
   GET_NEW_WORK,
+  SET_SELECTED_WORK,
+  CLOSE_WORK_DRAWER,
+  OPEN_WORK_DRAWER,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -67,12 +70,14 @@ interface ProjectReducerInt {
   role: RoleInterface;
   filter: any;
   selectedStatus: string | null;
+  selectedWork: string | null;
   selectedDate: string | null;
   searchProject: string | null;
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
   timeProfileDrawer: boolean;
+  workDrawer: boolean;
   rolesList: RoleInterface[];
   groupList: GroupInterface[];
   group: GroupInterface;
@@ -101,12 +106,14 @@ const projectReducer: ProjectReducerInt = {
   role: rolesTemplate,
   filter: [],
   selectedStatus: null,
+  selectedWork: null,
   selectedDate: null,
   searchProject: "",
   roleDrawer: false,
   groupDrawer: false,
   documentDrawer: false,
   timeProfileDrawer: false,
+  workDrawer: false,
   rolesList: [],
   groupList: [],
   group: groupTemplate,
@@ -221,6 +228,13 @@ const AppReducer = (
         selectedStatus: action.payload,
       };
     }
+
+    case SET_SELECTED_WORK: {
+      return {
+        ...state,
+        selectedWork: action.payload,
+      };
+    }
     case SET_SELECTED_DATE: {
       return {
         ...state,
@@ -290,6 +304,19 @@ const AppReducer = (
       return {
         ...state,
         timeProfileDrawer: true,
+      };
+    }
+
+    case CLOSE_WORK_DRAWER: {
+      return {
+        ...state,
+        workDrawer: false,
+      };
+    }
+    case OPEN_WORK_DRAWER: {
+      return {
+        ...state,
+        workDrawer: true,
       };
     }
 
