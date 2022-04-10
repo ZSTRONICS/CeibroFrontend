@@ -94,9 +94,11 @@ const LoginForm: React.FC<LoginForm> = (props) => {
               onChange={() => setChecked(!checked)}
               name="checkedB"
               color="primary"
+              style={{ padding: 0 }}
             />
           }
           className={classes.remember}
+          style={{ padding: 0 }}
           label={
             <Typography className={classes.rememberText}>
               {intl.formatMessage({ id: "input.RememberMe" })}
@@ -157,6 +159,7 @@ const useStyles = makeStyles({
   remember: {
     marginTop: "35px !important",
     fontSize: 14,
+    padding: 0,
   },
   rememberText: {
     fontSize: 14,

@@ -1,14 +1,16 @@
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import RolesTable from "./RolesTable";
 import RoleDrawer from "./RoleDrawer";
 import { rolesTemplate } from "constants/interfaces/project.interface";
+import { RootState } from "redux/reducers";
 
 const ProjectRoles = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { roleDrawer } = useSelector((state: RootState) => state.project)
 
   return (
     <>
@@ -35,7 +37,7 @@ const ProjectRoles = () => {
           >
             Add a role
           </Button>
-          <RoleDrawer />
+          {roleDrawer && <RoleDrawer />}
         </Grid>
 
         <Grid item xs={12}>
