@@ -12,6 +12,7 @@ import projectActions, {
   updateProject,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -104,7 +105,15 @@ const CreateProjectBody = () => {
     formData.append("title", title || "");
     formData.append("location", location || "");
     formData.append("description", description || "");
-    formData.append("owner", owner.value);
+    if (owner) {
+      if (owner?.length > 0) {
+        owner?.map?.((row: dataInterface) =>
+          formData.append("owner", row.value)
+        );
+      } else {
+        formData.append("owner", owner);
+      }
+    }
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);
     formData.append("publishStatus", publishStatus || "");

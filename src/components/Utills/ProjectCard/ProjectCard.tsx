@@ -1,12 +1,9 @@
 import React, { FC, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
-import colors from "../../../assets/colors";
-import { BsClipboard } from "react-icons/bs";
-import { AiOutlineFolder } from "react-icons/ai";
-import { FaRegUser } from "react-icons/fa";
-import { HiOutlineChatAlt } from "react-icons/hi";
 import Moment from "react-moment";
+
+import colors from "../../../assets/colors";
 import {
   getColorByStatus,
   getTextColorByStatus,
@@ -30,9 +27,9 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     owner,
     title,
     tasks,
-    docs,
-    users,
-    chat,
+    docsCount,
+    usersCount,
+    chatCount,
     publishStatus: status,
     id,
   } = project;
@@ -100,7 +97,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
             <Typography className={classes.metaValue}>
-              {owner?.firstName} {owner?.surName}
+              {owner?.[0]?.firstName} {owner?.[0]?.surName}
             </Typography>
           </Grid>
         </Grid>
@@ -122,17 +119,19 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
           <div className={classes.iconChip}>
             <img src={assets.folderIcon} className={`w-16`} />
-            <Typography className={classes.iconText}>{docs} doc(s)</Typography>
+            <Typography className={classes.iconText}>
+              {docsCount} doc(s)
+            </Typography>
           </div>
 
           <div className={classes.iconChip}>
             <img src={assets.blueUser} className={`width-16`} />
-            <Typography className={classes.iconText}>{users}</Typography>
+            <Typography className={classes.iconText}>{usersCount}</Typography>
           </div>
 
           <div className={classes.iconChip}>
             <img src={assets.chatIcon} className={`w-16`} />
-            <Typography className={classes.iconText}>{chat}</Typography>
+            <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
         </Grid>
       </Grid>

@@ -23,7 +23,7 @@ body {
 
 .all-badge .MuiBadge-colorPrimary {
   background: white;
-  color: var(--black);
+  color: var(--black) !important;
 }
 
 .ongoing-badge .MuiBadge-colorPrimary {

@@ -13,6 +13,7 @@ const ProjectRoles = () => {
   const { userPermissions } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { roleDrawer } = useSelector((state: RootState) => state.project);
 
   const havePermission = checkRolePermission(
     userPermissions,
@@ -46,7 +47,7 @@ const ProjectRoles = () => {
           >
             Add a role
           </Button>
-          <RoleDrawer />
+          {roleDrawer && <RoleDrawer />}
         </Grid>
 
         <Grid item xs={12}>

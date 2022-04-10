@@ -175,7 +175,9 @@ const CreateChat = () => {
                 >
                   <Grid container>
                     {projectMembers?.map((member: any) => {
-                      if (!users?.includes?.(String(member.id))) return null;
+                      console.log("emmerbsj asdre", member);
+                      if (!users?.includes?.(String(member?.user?.id)))
+                        return null;
 
                       return (
                         <Grid
@@ -185,8 +187,9 @@ const CreateChat = () => {
                           className={classes.selectedUser}
                         >
                           <NameAvatar
-                            firstName={member?.firstName}
-                            surName={member?.surName}
+                            firstName={member?.user?.firstName}
+                            surName={member?.user?.surName}
+                            url={member?.user?.profilePic}
                           />
                           <Cancel
                             onClick={() => removeSelectedUser(member.id)}
@@ -207,18 +210,19 @@ const CreateChat = () => {
                         <Grid container className={classes.wrapper}>
                           <Grid item xs={2}>
                             <NameAvatar
-                              firstName={member?.firstName}
-                              surName={member?.surName}
-                              url={member?.profilePic}
+                              firstName={member?.user?.firstName}
+                              surName={member?.user?.surName}
+                              url={member?.user?.profilePic}
                             />
                           </Grid>
                           <Grid item xs={8}>
                             <div>
                               <Typography className={classes.titleText}>
-                                {member.firstName} {member?.lastName}
+                                {member?.user?.firstName}{" "}
+                                {member?.user?.lastName}
                               </Typography>
                               <Typography className={classes.subTitleText}>
-                                Company . Electrician
+                                {member?.role?.name} . {member?.group?.name}
                               </Typography>
                             </div>
                           </Grid>
@@ -226,9 +230,9 @@ const CreateChat = () => {
                           <Grid item xs={2}>
                             <CustomCheckbox
                               onClick={handleUserChange}
-                              value={member.id}
+                              value={member?.user?.id}
                               name={"s"}
-                              checked={users?.includes?.(member.id)}
+                              checked={users?.includes?.(member?.user?.id)}
                             />
                           </Grid>
                         </Grid>
