@@ -29,7 +29,7 @@ export interface ProjectInterface {
   _id?: string;
 }
 
-export interface userPermissions {
+export interface userRolesPermissions {
   admin?: boolean;
   roles?: string[];
   member?: string[];

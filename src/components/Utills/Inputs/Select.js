@@ -70,6 +70,7 @@ export default function CustomizedSelects(props) {
     options = defaultOptions,
     selectedValue,
     handleValueChange,
+    handleDisabled,
   } = props;
   console.log(
     "🚀 ~ file: Select.js ~ line 74 ~ CustomizedSelects ~ selectedValue",
@@ -91,6 +92,7 @@ export default function CustomizedSelects(props) {
         onChange={handleChange}
         placeholder={placeholder}
         input={<BootstrapInput />}
+        disabled={handleDisabled}
       >
         {options &&
           options.map((option) => {

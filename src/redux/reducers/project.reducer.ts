@@ -52,7 +52,7 @@ import {
   FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
-  userPermissions,
+  userRolesPermissions,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 import { PlaylistAddOutlined } from "@material-ui/icons";
@@ -92,7 +92,7 @@ interface ProjectReducerInt {
   getTimeProfileById: any;
   getStatuses: any;
   getNewWorkList: any;
-  userPermissions: userPermissions | null;
+  userPermissions: userRolesPermissions | null;
 }
 
 const projectReducer: ProjectReducerInt = {

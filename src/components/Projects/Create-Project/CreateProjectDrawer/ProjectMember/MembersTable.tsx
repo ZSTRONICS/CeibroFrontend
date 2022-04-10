@@ -12,11 +12,13 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import { avaialablePermissions } from "config/project.config";
 import {
   GroupInterface,
   MemberInterface,
   RoleInterface,
 } from "constants/interfaces/project.interface";
+import { checkMemberPermission } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -69,9 +71,8 @@ const groupOptions = [
 ];
 
 const RolesTable = () => {
-  const { groupList, rolesList, selectedProject, memberList } = useSelector(
-    (state: RootState) => state?.project
-  );
+  const { groupList, rolesList, selectedProject, memberList, userPermissions } =
+    useSelector((state: RootState) => state?.project);
 
   const [group, setGroups] = useState<any>();
   const [role, setRoles] = useState<any>();
@@ -133,8 +134,6 @@ const RolesTable = () => {
   }, [selectedProject]);
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
-    // console.log("selected valueee", e.target.value);
-
     const payload = {
       body: {
         groupId: e,
@@ -165,6 +164,11 @@ const RolesTable = () => {
 
     dispatch(updateMember(payload));
   };
+
+  const havePermission = checkMemberPermission(
+    userPermissions,
+    avaialablePermissions.edit_permission
+  );
 
   return (
     <TableContainer>
@@ -213,6 +217,7 @@ const RolesTable = () => {
                 <Select
                   options={role}
                   selectedValue={row?.role?.id}
+                  handleDisabled={havePermission ? false : true}
                   handleValueChange={(e: string) => selectRoleHandle(e, row)}
                 />
               </TableCell>
@@ -220,6 +225,7 @@ const RolesTable = () => {
                 <Select
                   options={group}
                   selectedValue={row?.group?.id}
+                  handleDisabled={havePermission ? false : true}
                   handleValueChange={(e: string) => selectGroupHandle(e, row)}
                 />
               </TableCell>
