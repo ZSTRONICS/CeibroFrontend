@@ -24,12 +24,13 @@ import projectActions, {
 } from "redux/action/project.action";
 import assets from "assets/assets";
 import { RoleInterface } from "constants/interfaces/project.interface";
+import { checkRolePermission } from "helpers/project.helper";
+import { avaialablePermissions } from "config/project.config";
 
 // store?: RootState
 const RolesTable = () => {
-  const { selectedProject, rolesList, selectedRole } = useSelector(
-    (state: RootState) => state?.project
-  );
+  const { selectedProject, rolesList, selectedRole, userPermissions } =
+    useSelector((state: RootState) => state?.project);
 
   console.log("rolesList", rolesList);
 
@@ -52,9 +53,16 @@ const RolesTable = () => {
     }
   }, [selectedProject]);
 
+  const havePermission = checkRolePermission(
+    userPermissions,
+    avaialablePermissions.edit_permission
+  );
+
   const handleRoleClick = (id: any) => {
-    dispatch(projectActions.setSelectedRole(id));
-    dispatch(projectActions.openProjectRole());
+    if (havePermission) {
+      dispatch(projectActions.setSelectedRole(id));
+      dispatch(projectActions.openProjectRole());
+    }
   };
 
   return (

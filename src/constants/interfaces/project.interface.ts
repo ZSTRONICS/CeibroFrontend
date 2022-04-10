@@ -29,6 +29,13 @@ export interface ProjectInterface {
   _id?: string;
 }
 
+export interface userPermissions {
+  admin?: boolean;
+  roles?: string[];
+  member?: string[];
+  timeProfile?: string[];
+}
+
 export interface RoleInterface {
   name: string;
   id?: string;

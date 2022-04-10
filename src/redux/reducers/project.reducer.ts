@@ -37,6 +37,7 @@ import config, {
   SET_SELECTED_WORK,
   CLOSE_WORK_DRAWER,
   OPEN_WORK_DRAWER,
+  GET_PERMISSIONS,
 } from "../../config/project.config";
 import { requestPending, requestSuccess } from "../../utills/status";
 import {
@@ -51,6 +52,7 @@ import {
   FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
+  userPermissions,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 import { PlaylistAddOutlined } from "@material-ui/icons";
@@ -89,6 +91,7 @@ interface ProjectReducerInt {
   getTimeProfileById: any;
   getStatuses: any;
   getNewWorkList: any;
+  userPermissions: userPermissions | null;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -121,6 +124,7 @@ const projectReducer: ProjectReducerInt = {
   memberList: [],
   getStatuses: [],
   getNewWorkList: [],
+  userPermissions: null,
   folderFiles: [],
   projectProfile: [],
   load: false,
@@ -424,6 +428,12 @@ const AppReducer = (
       };
     }
     // GET_NEW_WORK;
+    case requestSuccess(GET_PERMISSIONS): {
+      return {
+        ...state,
+        userPermissions: action.payload,
+      };
+    }
 
     default:
       return state;

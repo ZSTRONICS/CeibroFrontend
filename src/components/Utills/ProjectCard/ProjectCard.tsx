@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@material-ui/core";
 import colors from "../../../assets/colors";
@@ -13,9 +13,10 @@ import {
 } from "../../../config/project.config";
 import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
-import { useDispatch } from "react-redux";
-import projectActions from "redux/action/project.action";
+import { useDispatch, useSelector } from "react-redux";
+import projectActions, { getPermissions } from "redux/action/project.action";
 import { UserInterface } from "constants/interfaces/user.interface";
+import { RootState } from "redux/reducers";
 
 interface ProjectCardInterface {
   project: ProjectInterface;
@@ -35,13 +36,22 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     publishStatus: status,
     id,
   } = project;
+  const { selectedProject } = useSelector((state: RootState) => state.project);
 
   const dispatch = useDispatch();
 
   const handleProjectClick = () => {
     dispatch(projectActions.setSelectedProject(id || null));
     dispatch(projectActions.openDrawer());
+
+    console.log("project clicked");
   };
+
+  useEffect(() => {
+    if (selectedProject) {
+      dispatch(getPermissions({ other: selectedProject }));
+    }
+  }, [selectedProject]);
 
   const classes = useStyles();
 

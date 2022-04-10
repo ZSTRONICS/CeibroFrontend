@@ -13,7 +13,7 @@ import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createRole,
@@ -23,10 +23,12 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
-
+// import permissionContext from "../../../../context/PermissionContext";
 interface AddRoleProps {}
 
-const AddRole: React.FC<AddRoleProps> = () => {
+const AddRole: React.FC<AddRoleProps> = (props: any) => {
+  console.log("role props", props);
+
   const classes = useStyles();
   const roles = ["create", "edit", "delete", "self-made"];
 
@@ -38,16 +40,26 @@ const AddRole: React.FC<AddRoleProps> = () => {
 
   const isDiabled = !loading ? false : true;
 
-  const { roleDrawer, role, selectedProject, selectedRole } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { roleDrawer, role, selectedProject, selectedRole, userPermissions } =
+    useSelector((state: RootState) => state.project);
+  // const permissions = useContext(permissionContext);
+  // console.log("permission", permissions);
 
   console.log("selected rolee", selectedRole);
+  console.log("userPermissions", userPermissions?.roles);
+
+  // console.log("permissions available", permissionsAvailable);
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(projectActions.closeProjectRole());
   };
+
+  // function checkRolePermission(permissions: any, permissionToCheck: any) {
+  //   return permissions.includes(permissionToCheck);
+  // }
+  // const havePermission = checkRolePermission(userPermissions?.roles, "create");
+  // console.log("havePermission", havePermission);
 
   const handleOk = () => {
     const payload = {

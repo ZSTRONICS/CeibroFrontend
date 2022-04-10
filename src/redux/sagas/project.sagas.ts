@@ -16,6 +16,7 @@ import {
   GET_GROUP_BY_ID,
   GET_MEMBER,
   GET_NEW_WORK,
+  GET_PERMISSIONS,
   GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
@@ -292,6 +293,13 @@ const deleteWork = apiCall({
   method: "delete",
   path: (payload) => `/project/work/detail/${payload.other}`,
 });
+
+const getPermissions = apiCall({
+  type: GET_PERMISSIONS,
+  method: "get",
+  path: (payload) => `/project/permissions/${payload.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -330,6 +338,7 @@ function* projectSaga() {
   yield takeLatest(GET_WORK_BY_ID, getWorkById);
   yield takeLatest(UPDATE_WORK, updateWork);
   yield takeLatest(DELETE_WORK, deleteWork);
+  yield takeLatest(GET_PERMISSIONS, getPermissions);
 }
 
 export default projectSaga;

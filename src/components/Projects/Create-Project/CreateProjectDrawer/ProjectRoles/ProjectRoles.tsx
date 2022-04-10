@@ -1,14 +1,24 @@
 import { Button, Grid, makeStyles } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import RolesTable from "./RolesTable";
 import RoleDrawer from "./RoleDrawer";
 import { rolesTemplate } from "constants/interfaces/project.interface";
+import { RootState } from "redux/reducers";
+import { checkRolePermission } from "helpers/project.helper";
+import { avaialablePermissions } from "config/project.config";
 
 const ProjectRoles = () => {
+  const { userPermissions } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
+
+  const havePermission = checkRolePermission(
+    userPermissions,
+    avaialablePermissions.create_permission
+  );
+  console.log("havePermission", havePermission);
 
   return (
     <>
@@ -27,6 +37,7 @@ const ProjectRoles = () => {
             variant="outlined"
             color="primary"
             className={classes.actionButton}
+            disabled={!havePermission ? true : false}
             onClick={() => {
               dispatch(projectActions.setRole(rolesTemplate));
               dispatch(projectActions.setSelectedRole(null));

@@ -59,6 +59,7 @@ import configs, {
   OPEN_WORK_DRAWER,
   GET_WORK_BY_ID,
   UPDATE_WORK,
+  GET_PERMISSIONS,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -246,5 +247,6 @@ export const deleteProject = createAction(DELETE_PROJECT);
 export const getWorkById = createAction(GET_WORK_BY_ID);
 export const updateWork = createAction(UPDATE_WORK);
 export const deleteWork = createAction(DELETE_WORK);
+export const getPermissions = createAction(GET_PERMISSIONS);
 
 export default projectActions;

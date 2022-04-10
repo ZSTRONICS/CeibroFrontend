@@ -14,6 +14,8 @@ import { CircularProgress, Typography } from "@material-ui/core";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
+import { useConfirm } from "material-ui-confirm";
+
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   deleteWork,
@@ -34,6 +36,8 @@ export default function BasicTable() {
   const { selectedTimeProfile, getNewWorkList, selectedWork } = useSelector(
     (state: RootState) => state.project
   );
+  const confirm = useConfirm();
+
   const [loading, setLoading] = useState<boolean>(false);
   const isDisabled = !loading ? false : true;
 
@@ -54,18 +58,35 @@ export default function BasicTable() {
 
   const deleteTimeProfileWork = (id: any) => {
     setLoading(true);
-    dispatch(
-      deleteWork({
-        success: () => {
-          toast.success("Deleted Successfully");
-          dispatch(getNewWork({ other: selectedTimeProfile }));
-        },
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: id,
-      })
-    );
+
+    confirm({ description: "Are you confirm want to delete" }).then(() => {
+      dispatch(
+        deleteWork({
+          success: () => {
+            toast.success("Deleted Successfully");
+            dispatch(getNewWork({ other: selectedTimeProfile }));
+          },
+          finallyAction: () => {
+            setLoading(false);
+          },
+          other: id,
+        })
+      );
+    });
+
+    // dispatch(
+    //   deleteWork({
+    //     success: () => {
+    //       toast.success("Deleted Successfully");
+    //       dispatch(getNewWork({ other: selectedTimeProfile }));
+    //     },
+    //     finallyAction: () => {
+    //       setLoading(false);
+    //     },
+    //     other: id,
+    //   })
+    // );
+
     // dispatch(projectActions.openWorkDrawer());
     // dispatch(getNewWork({ other: selectedTimeProfile }));
   };

@@ -107,6 +107,12 @@ export function getProjectStatus(): ProjectMenues[] {
   ];
 }
 
+export const avaialablePermissions = {
+  create_permission: "create",
+  edit_permission: "edit",
+  delete_permission: "delete",
+  self_made_permission: "self-made",
+};
 const projectReduxConfigs = {
   OPEN_DRAWER: "OPEN_DRAWER",
   CLOSE_DRAWER: "CLOSE_DRAWER",
@@ -177,5 +183,6 @@ export const CLOSE_WORK_DRAWER = "CLOSE_WORK_DRAWER";
 export const GET_WORK_BY_ID = "GET_WORK_BY_ID";
 export const UPDATE_WORK = "UPDATE_WORK";
 export const DELETE_WORK = "DELETE_WORK";
+export const GET_PERMISSIONS = "GET_PERMISSIONS";
 
 export default projectReduxConfigs;

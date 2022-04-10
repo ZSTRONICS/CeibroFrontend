@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions from "../../../../redux/action/project.action";
 import { RootState } from "../../../../redux/reducers";
 import { useMediaQuery } from "react-responsive";
+import PermissionState from "components/context/PermissionState";
 
 const menus = [
   {
@@ -50,6 +51,7 @@ function ProjectDrawerMenu() {
 
   return (
     <>
+      {/* <PermissionState> */}
       <Grid container>
         {menus &&
           menus.map((menu, index) => {
@@ -81,6 +83,7 @@ function ProjectDrawerMenu() {
           <HorizontalBreak />
         </Grid>
       )}
+      {/* </PermissionState> */}
     </>
   );
 }

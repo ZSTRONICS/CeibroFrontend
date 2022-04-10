@@ -28,6 +28,7 @@ import { SERVER_URL } from "./utills/axios";
 import CreateQuestioniarDrawer from "./components/Chat/Questioniar/CreateQuestioniar";
 import ViewQuestioniarDrawer from "./components/Chat/Questioniar/ViewQuestioniar";
 import "moment-timezone";
+import PermissionState from "./components/context/PermissionState";
 
 export const SocketContext = createContext(null);
 interface MyApp {}
@@ -87,6 +88,7 @@ const App: React.FC<MyApp> = () => {
 
   return (
     <div className="App">
+      {/* <PermissionState> */}
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer />
@@ -95,6 +97,7 @@ const App: React.FC<MyApp> = () => {
       <SocketContext.Provider value={socket}>
         <RouterConfig />
       </SocketContext.Provider>
+      {/* </PermissionState> */}
     </div>
   );
 };
