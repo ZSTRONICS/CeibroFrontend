@@ -37,10 +37,6 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   useEffect(() => {
     if (filter) {
       dispatch(projectActions.setSelectedStatus(filter));
-      // dispatch({
-      //   type: SET_SELECTED_STATUS,
-      //   payload: filter,
-      // });
       dispatch(getProjectsWithPagination());
     }
   }, [filter]);
@@ -66,11 +62,14 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
               <Typography className={classes.chipTitle}>
                 {option.name}
               </Typography>
-              <Badge
-                className={classes.statusBage}
-                color="primary"
-                badgeContent={option.count}
-              ></Badge>
+              {option.count > 0 && (
+                <Badge
+                  className={classes.statusBage}
+                  color="primary"
+                  badgeContent={option.count}
+                  style={{ marginRight: 20 }}
+                ></Badge>
+              )}
             </div>
           );
         })}
@@ -83,7 +82,7 @@ export default StatusMenu;
 const useStyles = makeStyles({
   statusChip: {
     padding: "10px 10px",
-    width: 100,
+    // width: 100,
     display: "flex",
     alignItems: "center",
     cursor: "pointer",

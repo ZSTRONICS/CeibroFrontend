@@ -4,7 +4,7 @@ import { UserInterface } from "./user.interface";
 
 export interface ProjectOverviewInterface {
   dueDate?: any;
-  owner?: UserInterface | any;
+  owner?: UserInterface[] | any;
   title: string | null;
   description?: string;
   location?: string;
@@ -17,7 +17,7 @@ export interface ProjectOverviewInterface {
 export interface ProjectInterface {
   projectPhoto: string;
   dueDate: string;
-  owner: UserInterface;
+  owner: UserInterface[];
   title: string;
   tasks: number;
   docsCount: number;

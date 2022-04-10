@@ -25,6 +25,7 @@ const ProjectOverview = () => {
   const selectedProject = useSelector(
     (state: RootState) => state.project.selectedProject
   );
+  const { user } = useSelector((state: RootState) => state.auth);
   const [data, setData] = useState<dataInterface[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -49,6 +50,17 @@ const ProjectOverview = () => {
       getAvailableUsers({
         success: (res) => {
           setData(res.data);
+          // setting current user as default owner
+          res?.data?.map((row: dataInterface) => {
+            if (row?.value === user?.id) {
+              dispatch(
+                projectActions.setProjectOverview({
+                  ...projectOverview,
+                  owner: [...(projectOverview?.owner || []), row],
+                })
+              );
+            }
+          });
         },
       })
     );
@@ -64,11 +76,11 @@ const ProjectOverview = () => {
     );
   };
 
-  const handleOwnerChange = (user: any) => {
+  const handleOwnerChange = (users: dataInterface[]) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
-        owner: user,
+        owner: users,
       })
     );
   };
@@ -106,6 +118,7 @@ const ProjectOverview = () => {
             data={data}
             value={projectOverview?.owner}
             title="Owner"
+            isMulti={true}
           />
         </Grid>
 

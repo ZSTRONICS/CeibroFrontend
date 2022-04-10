@@ -54,6 +54,7 @@ import {
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 import { PlaylistAddOutlined } from "@material-ui/icons";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -252,13 +253,12 @@ const AppReducer = (
     case requestSuccess(GET_PROJECT_DETAIL): {
       const projectDetail = {
         ...action.payload,
-        owner: {
-          label:
-            action.payload?.owner?.firstName +
-            " " +
-            action.payload?.owner?.surName,
-          value: action.payload?.owner?.id,
-        },
+        owner: action.payload?.owner?.map((user: UserInterface) => {
+          return {
+            label: user?.firstName + " " + user?.surName,
+            value: user?.id,
+          };
+        }),
       };
       return {
         ...state,
