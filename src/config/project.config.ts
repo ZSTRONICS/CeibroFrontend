@@ -171,5 +171,11 @@ export const GET_NEW_WORK = "GET_NEW_WORK";
 
 export const CREATE_PROFILE_WORK = "CREATE_PROFILE_WORK";
 export const DELETE_PROJECT = "DELETE_PROJECT";
+export const SET_SELECTED_WORK = "SET_SELECTED_WORK";
+export const OPEN_WORK_DRAWER = "OPEN_WORK_DRAWER";
+export const CLOSE_WORK_DRAWER = "CLOSE_WORK_DRAWER";
+export const GET_WORK_BY_ID = "GET_WORK_BY_ID";
+export const UPDATE_WORK = "UPDATE_WORK";
+export const DELETE_WORK = "DELETE_WORK";
 
 export default projectReduxConfigs;

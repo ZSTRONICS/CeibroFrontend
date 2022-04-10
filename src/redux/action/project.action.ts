@@ -53,6 +53,12 @@ import configs, {
   CREATE_PROFILE_WORK,
   GET_NEW_WORK,
   DELETE_PROJECT,
+  SET_SELECTED_WORK,
+  CLOSE_WORK_DRAWER,
+  DELETE_WORK,
+  OPEN_WORK_DRAWER,
+  GET_WORK_BY_ID,
+  UPDATE_WORK,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -130,6 +136,13 @@ const projectActions = {
       payload: findProject,
     };
   },
+  setSelectedwork: (id: string | null) => {
+    return {
+      type: SET_SELECTED_WORK,
+      payload: id,
+    };
+  },
+
   openProjectRole: () => {
     return {
       type: OPEN_ROLE_DRAWER,
@@ -173,6 +186,17 @@ const projectActions = {
       type: OPEN_TIME_PROFILE_DRAWER,
     };
   },
+  closeWorkDrawer: () => {
+    return {
+      type: CLOSE_WORK_DRAWER,
+    };
+  },
+  openWorkDrawer: () => {
+    return {
+      type: OPEN_WORK_DRAWER,
+    };
+  },
+
   setSelectedTimeProfile: (timeProfileId: string | null) => {
     return {
       type: SET_SELECTED_TIME_PROFILE,
@@ -219,5 +243,8 @@ export const getStatus = createAction(GET_STATUS);
 export const createProfileWork = createAction(CREATE_PROFILE_WORK);
 export const getNewWork = createAction(GET_NEW_WORK);
 export const deleteProject = createAction(DELETE_PROJECT);
+export const getWorkById = createAction(GET_WORK_BY_ID);
+export const updateWork = createAction(UPDATE_WORK);
+export const deleteWork = createAction(DELETE_WORK);
 
 export default projectActions;

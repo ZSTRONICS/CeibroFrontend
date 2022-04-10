@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -10,13 +10,17 @@ import AlaramIcon from "@material-ui/icons/Alarm";
 import CropOriginalIcon from "@material-ui/icons/CropOriginal";
 import ChatIcon from "@material-ui/icons/Chat";
 import Paper from "@material-ui/core/Paper";
-import { Typography } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { getNewWork } from "redux/action/project.action";
+import projectActions, {
+  deleteWork,
+  getNewWork,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
+import { toast } from "react-toastify";
 
 function createData(name: string, group: string, role: string) {
   return { name, group, role };
@@ -27,16 +31,44 @@ const rows = [createData("Work name", "Electrikud", "Project Management")];
 export default function BasicTable() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { selectedTimeProfile, getNewWorkList } = useSelector(
+  const { selectedTimeProfile, getNewWorkList, selectedWork } = useSelector(
     (state: RootState) => state.project
   );
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDisabled = !loading ? false : true;
 
-  // selectedTimeProfile;
+  console.log("new work", selectedWork);
+
+  console.log("getNewWorkList", getNewWorkList);
+
+  const handleWorkClick = (id: any) => {
+    dispatch(projectActions.setSelectedwork(id));
+    dispatch(projectActions.openWorkDrawer());
+  };
+
   useEffect(() => {
     if (selectedTimeProfile) {
       dispatch(getNewWork({ other: selectedTimeProfile }));
     }
   }, []);
+
+  const deleteTimeProfileWork = (id: any) => {
+    setLoading(true);
+    dispatch(
+      deleteWork({
+        success: () => {
+          toast.success("Deleted Successfully");
+          dispatch(getNewWork({ other: selectedTimeProfile }));
+        },
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: id,
+      })
+    );
+    // dispatch(projectActions.openWorkDrawer());
+    // dispatch(getNewWork({ other: selectedTimeProfile }));
+  };
 
   return (
     <TableContainer>
@@ -56,9 +88,13 @@ export default function BasicTable() {
               </TableCell>
               <TableCell>
                 <div className={classes.extrasWrapper}>
-                  <img src={assets.clockIcon} />
-                  <img src={assets.wrongImage} className="w-16" />
-                  <img src={assets.sidebarChatIcon} className="w-16" />
+                  {row?.time && <img src={assets.clockIcon} />}
+                  {row?.photo && (
+                    <img src={assets.wrongImage} className="w-16" />
+                  )}
+                  {row?.comment && (
+                    <img src={assets.sidebarChatIcon} className="w-16" />
+                  )}
                 </div>
               </TableCell>
 
@@ -70,8 +106,19 @@ export default function BasicTable() {
                 </div>
 
                 <div>
-                  <img src={assets.pencilIcon} />
-                  <img src={assets.trashIcon} className="w-16" />
+                  <img
+                    src={assets.pencilIcon}
+                    onClick={() => handleWorkClick(row?.id)}
+                  />
+
+                  {loading && (
+                    <CircularProgress size={20} className={classes.progress} />
+                  )}
+                  <img
+                    src={assets.trashIcon}
+                    className="w-16 cursor-pointer"
+                    onClick={() => deleteTimeProfileWork(row?.id)}
+                  />
                 </div>
               </TableCell>
             </TableRow>
@@ -125,5 +172,16 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 12,
     color: colors.textGrey,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    marginTop: "200px",
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });
