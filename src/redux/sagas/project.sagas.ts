@@ -7,6 +7,7 @@ import {
   CREATE_PROFILE_WORK,
   CREATE_PROJECT,
   CREATE_ROLES,
+  DELETE_MEMBER,
   DELETE_PROJECT,
   DELETE_WORK,
   GET_FILE,
@@ -299,6 +300,11 @@ const getPermissions = apiCall({
   method: "get",
   path: (payload) => `/project/permissions/${payload.other}`,
 });
+const deleteMember = apiCall({
+  type: DELETE_MEMBER,
+  method: "delete",
+  path: (payload) => `/project/member/detail/${payload.other}`,
+});
 
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
@@ -324,6 +330,7 @@ function* projectSaga() {
   yield takeLatest(GET_ROLES_BY_ID, getRolesById);
   yield takeLatest(GET_GROUP_BY_ID, getGroupById);
   yield takeLatest(UPDATE_GROUP, updateGroup);
+  yield takeLatest(DELETE_MEMBER, deleteMember);
 
   yield takeLatest(UPDATE_ROLE, updateRole);
   yield takeLatest(CREATE_NEW_PROFILE, createNewProfile);

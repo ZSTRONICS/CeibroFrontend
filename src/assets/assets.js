@@ -47,6 +47,7 @@ import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
 import testProject3 from "./images/TestProject3.png";
 import testProject4 from "./images/TestProject4.png";
+import membersDelete from "./images/membersDelete.png";
 
 import message from "./sound/message.mp3";
 
@@ -100,6 +101,7 @@ const assets = {
   testProject2,
   testProject3,
   testProject4,
+  membersDelete,
 };
 
 export const sounds = {
