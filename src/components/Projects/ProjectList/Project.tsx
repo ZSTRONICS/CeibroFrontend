@@ -90,7 +90,7 @@ const useStyles = makeStyles({
     padding: 5,
   },
   allStatus: {
-    paddingLeft: 5,
+    padding: "10px 5px"
   },
   statusChip: {
     padding: "10px 10px",

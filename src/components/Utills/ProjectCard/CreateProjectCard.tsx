@@ -37,6 +37,7 @@ export default ProjectCard;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
+    marginTop: 5,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

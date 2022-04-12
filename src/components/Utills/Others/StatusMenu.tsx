@@ -31,7 +31,7 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState<string>("all");
   console.log("filter", filter);
 
   useEffect(() => {
@@ -58,6 +58,7 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
               onClick={() => setFilter(option.name)}
               key={index}
               className={`${classes.statusChip} ${getStyleClass(option.name)}`}
+              style={{ border: (filter === option.name)? `1px solid ${colors.inputGrey}`: 'none', borderRadius: 5 }} 
             >
               <Typography className={classes.chipTitle}>
                 {option.name}
@@ -81,7 +82,7 @@ export default StatusMenu;
 
 const useStyles = makeStyles({
   statusChip: {
-    padding: "10px 20px",
+    padding: "5px 20px",
     // width: 100,
     display: "flex",
     alignItems: "center",

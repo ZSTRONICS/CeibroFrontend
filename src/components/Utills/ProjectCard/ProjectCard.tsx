@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid, Typography } from "@material-ui/core";
+import { Chip, Grid, Typography } from "@material-ui/core";
 import Moment from "react-moment";
 
 import colors from "../../../assets/colors";
@@ -96,8 +96,14 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
-            <Typography className={classes.metaValue}>
+            <Typography
+              className={classes.metaValue}
+              style={{ display: "flex" }}
+            >
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.length > 1 && (
+                <div className={classes.extraOwners}>+{owner.length - 1}</div>
+              )}
             </Typography>
           </Grid>
         </Grid>
@@ -105,7 +111,6 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         <Grid item xs={12}>
           <Typography className={classes.title}>{title}</Typography>
           <Typography className={classes.viewMap}>View map</Typography>
-
           <hr className={classes.break} />
         </Grid>
 
@@ -242,5 +247,18 @@ const useStyles = makeStyles({
     fontSize: 10,
     fontWeight: 500,
     paddingLeft: 5,
+  },
+  extraOwners: {
+    background: colors.darkYellow,
+    color: colors.white,
+    borderRadius: 20,
+    height: 15,
+    minWidth: 20,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: 5,
+    fontSize: 8,
+    fontWeight: 700,
   },
 });

@@ -1,26 +1,72 @@
-import { Grid } from "@material-ui/core";
-import React from "react";
+import { Button, Grid, Typography } from "@material-ui/core";
+import React, { useState } from "react";
 import ProjectCard from "../../Utills/ProjectCard/ProjectCard";
 import CreateProject from "../../Utills/ProjectCard/CreateProjectCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { ProjectInterface } from "constants/interfaces/project.interface";
+import {
+  ProjectInterface,
+  projectOverviewTemplate,
+} from "constants/interfaces/project.interface";
+import { makeStyles } from "@material-ui/core";
+import projectActions from "redux/action/project.action";
 
 const ProjectList = () => {
   const { projects } = useSelector((state: RootState) => state.project);
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const openCreateProject = () => {
+    dispatch(projectActions.setSelectedProject(null));
+    dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
+    dispatch(projectActions.openDrawer());
+  };
   return (
     <Grid container>
-      {/* <h1>testz</h1> */}
-      {projects &&
-        projects?.map((project: ProjectInterface, index: number) => {
-          return <ProjectCard key={index} project={project} />;
-        })}
-      <CreateProject />
+      {projects && projects.length > 0 ? (
+        <>
+          {projects?.map((project: ProjectInterface, index: number) => {
+            return <ProjectCard key={index} project={project} />;
+          })}
+          <CreateProject />
+        </>
+      ) : (
+        <Grid container style={{ height: 400 }}>
+          <Grid item xs={12} className={classes.noProject}>
+            <Typography className={classes.noProjectText}>
+              Not any project was created by you or you’re not participating yet
+            </Typography>
+            <Button
+              style={{ marginTop: 20 }}
+              variant="contained"
+              color="primary"
+              onClick={openCreateProject}
+            >
+              Create new
+            </Button>
+          </Grid>
+        </Grid>
+      )}
     </Grid>
   );
 };
 
 export default ProjectList;
+
+const useStyles = makeStyles({
+  noProject: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    height: "100%",
+    flexDirection: "column",
+    marginBottom: 40,
+  },
+  noProjectText: {
+    fontSize: 14,
+    fontWeight: 500,
+    gap: 20,
+  },
+});
 
 const projects: ProjectInterface[] = [
   // {
