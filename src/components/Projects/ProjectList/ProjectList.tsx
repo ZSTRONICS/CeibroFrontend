@@ -8,6 +8,8 @@ import { ProjectInterface } from "constants/interfaces/project.interface";
 
 const ProjectList = () => {
   const { projects } = useSelector((state: RootState) => state.project);
+
+  console.log("projects listsss", projects);
   return (
     <Grid container>
       {/* <h1>testz</h1> */}

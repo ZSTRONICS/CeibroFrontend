@@ -185,5 +185,6 @@ export const GET_WORK_BY_ID = "GET_WORK_BY_ID";
 export const UPDATE_WORK = "UPDATE_WORK";
 export const DELETE_WORK = "DELETE_WORK";
 export const GET_PERMISSIONS = "GET_PERMISSIONS";
+export const UPDATE_PROJECT_PICTURE = "UPDATE_PROJECT_PICTURE";
 
 export default projectReduxConfigs;

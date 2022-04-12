@@ -61,6 +61,7 @@ import configs, {
   UPDATE_WORK,
   DELETE_MEMBER,
   GET_PERMISSIONS,
+  UPDATE_PROJECT_PICTURE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -251,5 +252,6 @@ export const getWorkById = createAction(GET_WORK_BY_ID);
 export const updateWork = createAction(UPDATE_WORK);
 export const deleteWork = createAction(DELETE_WORK);
 export const getPermissions = createAction(GET_PERMISSIONS);
+export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 
 export default projectActions;

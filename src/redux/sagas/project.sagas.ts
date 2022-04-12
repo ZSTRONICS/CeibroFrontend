@@ -32,6 +32,7 @@ import {
   UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
+  UPDATE_PROJECT_PICTURE,
   UPDATE_ROLE,
   UPDATE_TIME_PROFILE,
   UPDATE_WORK,
@@ -306,6 +307,13 @@ const deleteMember = apiCall({
   path: (payload) => `/project/member/detail/${payload.other}`,
 });
 
+const updateProjectPic = apiCall({
+  type: UPDATE_PROJECT_PICTURE,
+  method: "patch",
+  isFormData: true,
+  path: `/project/profile/pic`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -346,6 +354,7 @@ function* projectSaga() {
   yield takeLatest(UPDATE_WORK, updateWork);
   yield takeLatest(DELETE_WORK, deleteWork);
   yield takeLatest(GET_PERMISSIONS, getPermissions);
+  yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
 }
 
 export default projectSaga;
