@@ -48,14 +48,14 @@ const RoleMenu = (props: any) => {
               </Typography>
             </div>
 
-            <hr className={classes.break} />
+            {/* <hr className={classes.break} />
 
             <div className={`${classes.menuWrapper} dropdown-menu pointer`}>
               <img src={assets.addUser} className="width-16" />
               <Typography className={`${classes.menuText} align-center`}>
                 Add Role
               </Typography>
-            </div>
+            </div> */}
 
             <hr className={classes.break} />
 
