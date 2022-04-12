@@ -3,10 +3,14 @@ import React, { useRef, useState } from "react";
 import colors from "../../../assets/colors";
 import { GoPencil } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions from "redux/action/project.action";
+import projectActions, {
+  getProjectDetail,
+  updateProjectPicture,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { ProjectOverviewInterface } from "constants/interfaces/project.interface";
 import assets from "assets/assets";
+import { toast } from "react-toastify";
 
 const ImagePicker = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -32,11 +36,25 @@ const ImagePicker = () => {
       setFile(e.target.files[0]);
       const myUrl = URL.createObjectURL(e.target.files[0]);
       setUrl(myUrl);
+
       dispatch(
         projectActions.setProjectOverview({
           ...projectOverview,
           projectPhoto: myUrl,
           photoFile: e.target?.files[0],
+        })
+      );
+
+      const formdata = new FormData();
+      formdata.append("profilePic", e?.target?.files?.[0]);
+
+      dispatch(
+        updateProjectPicture({
+          body: formdata,
+          success: () => {
+            // dispatch(getProjectDetail());
+            toast.success("project pic updated");
+          },
         })
       );
     }
