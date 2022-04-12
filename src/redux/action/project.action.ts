@@ -60,6 +60,7 @@ import configs, {
   GET_WORK_BY_ID,
   UPDATE_WORK,
   GET_PERMISSIONS,
+  SET_SELECTED_USER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -135,6 +136,12 @@ const projectActions = {
     return {
       type: SET_SEARCH_PROJECT,
       payload: findProject,
+    };
+  },
+  setSelectedUser: (selectedUserId: string | null) => {
+    return {
+      type: SET_SELECTED_USER,
+      payload: selectedUserId,
     };
   },
   setSelectedwork: (id: string | null) => {

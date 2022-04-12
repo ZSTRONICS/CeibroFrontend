@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import ProjectList from "./ProjectList";
 import DatePicker from "../../Utills/Inputs/DatePicker";
-import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
+import SelectDropdown, {
+  dataInterface,
+} from "../../Utills/Inputs/SelectDropdown";
 import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import {
   getColorByStatus,
@@ -16,20 +18,21 @@ import projectActions, {
 } from "redux/action/project.action";
 import InputText from "components/Utills/Inputs/InputText";
 import { RootState } from "redux/reducers";
+import { getAvailableUsers } from "redux/action/user.action";
+import Input from "components/Utills/Inputs/Input";
 
 const Project = () => {
-  const { searchProject, drawerOpen } = useSelector(
+  const { searchProject, drawerOpen, projectsLoading } = useSelector(
     (state: RootState) => state.project
   );
   const classes = useStyles();
   const dispatch = useDispatch();
   const allStatus = getProjectStatus();
   const [date, setDate] = useState<string>("");
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
   const [findProject, setFindProject] = useState<string>("");
 
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log("findProject", findProject);
 
   useEffect(() => {
     if (!drawerOpen) {
@@ -52,9 +55,31 @@ const Project = () => {
     dispatch(getProjectsWithPagination());
   }, [findProject]);
 
+  useEffect(() => {
+    dispatch(
+      getAvailableUsers({
+        success: (res) => {
+          setAvailableUsers(res.data);
+        },
+      })
+    );
+  }, []);
+
+  const handleUserChange = (user: dataInterface) => {
+    dispatch(projectActions.setSelectedUser(user?.value || null));
+    setLoading(true);
+    dispatch(
+      getProjectsWithPagination({
+        finallyAction: () => setLoading(false),
+      })
+    );
+  };
+
   return (
     <Grid item xs={12}>
-      {loading && <CircularProgress size={20} className={classes.progress} />}
+      {(loading || projectsLoading) && (
+        <CircularProgress size={20} className={classes.progress} />
+      )}
 
       <Grid container>
         <Grid item xs={12} md={3} className={classes.datePicker}>
@@ -62,13 +87,19 @@ const Project = () => {
         </Grid>
 
         <Grid item xs={12} md={4} className={classes.datePicker}>
-          <SelectDropdown title="Assigned to" />
+          <SelectDropdown
+            isClearAble={true}
+            title="Assigned to"
+            data={availableUsers}
+            handleChange={handleUserChange}
+          />
         </Grid>
 
         <Grid item xs={12} md={4} className={classes.datePicker}>
           {/* <SelectDropdown title="Projects" /> */}
-          <InputText
-            placeholder="Find Project"
+          <Input
+            placeholder="search"
+            title="Find Project"
             onChange={(e: any) => setFindProject(e.target.value)}
           />
         </Grid>
@@ -90,7 +121,7 @@ const useStyles = makeStyles({
     padding: 5,
   },
   allStatus: {
-    padding: "10px 5px"
+    padding: "10px 5px",
   },
   statusChip: {
     padding: "10px 10px",

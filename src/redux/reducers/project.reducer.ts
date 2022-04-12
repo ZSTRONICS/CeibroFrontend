@@ -38,8 +38,13 @@ import config, {
   CLOSE_WORK_DRAWER,
   OPEN_WORK_DRAWER,
   GET_PERMISSIONS,
+  SET_SELECTED_USER,
 } from "../../config/project.config";
-import { requestPending, requestSuccess } from "../../utills/status";
+import {
+  requestFail,
+  requestPending,
+  requestSuccess,
+} from "../../utills/status";
 import {
   ProjectInterface,
   RoleInterface,
@@ -61,6 +66,7 @@ import { UserInterface } from "constants/interfaces/user.interface";
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
+  projectsLoading: boolean;
   allProjects: any;
   projects: ProjectInterface[];
   projectMembers: [];
@@ -76,6 +82,7 @@ interface ProjectReducerInt {
   selectedWork: string | null;
   selectedDate: string | null;
   searchProject: string | null;
+  selectedUser: string | null;
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
@@ -98,6 +105,7 @@ interface ProjectReducerInt {
 const projectReducer: ProjectReducerInt = {
   drawerOpen: false,
   menue: 1,
+  projectsLoading: false,
   allProjects: [],
   projects: [],
   projectMembers: [],
@@ -112,6 +120,7 @@ const projectReducer: ProjectReducerInt = {
   selectedStatus: null,
   selectedWork: null,
   selectedDate: null,
+  selectedUser: null,
   searchProject: "",
   roleDrawer: false,
   groupDrawer: false,
@@ -143,6 +152,19 @@ const AppReducer = (
         drawerOpen: true,
       };
 
+    case requestPending(GET_PROJECTS_WITH_PAGINATION): {
+      return {
+        ...state,
+        projectsLoading: true,
+      };
+    }
+    case requestFail(GET_PROJECTS_WITH_PAGINATION): {
+      return {
+        ...state,
+        projectsLoading: false,
+      };
+    }
+
     case config.CLOSE_DRAWER:
       return {
         ...state,
@@ -169,6 +191,7 @@ const AppReducer = (
       return {
         ...state,
         projects: action.payload?.results,
+        projectsLoading: false,
       };
     }
 
@@ -251,6 +274,13 @@ const AppReducer = (
       return {
         ...state,
         searchProject: action.payload,
+      };
+    }
+
+    case SET_SELECTED_USER: {
+      return {
+        ...state,
+        selectedUser: action.payload,
       };
     }
 

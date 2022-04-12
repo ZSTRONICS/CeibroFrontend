@@ -12,7 +12,9 @@ import { makeStyles } from "@material-ui/core";
 import projectActions from "redux/action/project.action";
 
 const ProjectList = () => {
-  const { projects } = useSelector((state: RootState) => state.project);
+  const { projects, projectsLoading } = useSelector(
+    (state: RootState) => state.project
+  );
   const classes = useStyles();
   const dispatch = useDispatch();
   const openCreateProject = () => {
@@ -30,21 +32,26 @@ const ProjectList = () => {
           <CreateProject />
         </>
       ) : (
-        <Grid container style={{ height: 400 }}>
-          <Grid item xs={12} className={classes.noProject}>
-            <Typography className={classes.noProjectText}>
-              Not any project was created by you or you’re not participating yet
-            </Typography>
-            <Button
-              style={{ marginTop: 20 }}
-              variant="contained"
-              color="primary"
-              onClick={openCreateProject}
-            >
-              Create new
-            </Button>
-          </Grid>
-        </Grid>
+        <>
+          {!projectsLoading && (
+            <Grid container style={{ height: 400 }}>
+              <Grid item xs={12} className={classes.noProject}>
+                <Typography className={classes.noProjectText}>
+                  Not any project was created by you or you’re not participating
+                  yet
+                </Typography>
+                <Button
+                  style={{ marginTop: 20 }}
+                  variant="contained"
+                  color="primary"
+                  onClick={openCreateProject}
+                >
+                  Create new
+                </Button>
+              </Grid>
+            </Grid>
+          )}
+        </>
       )}
     </Grid>
   );

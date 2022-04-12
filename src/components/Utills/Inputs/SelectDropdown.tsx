@@ -26,13 +26,14 @@ interface My {
   placeholder?: string;
   handleChange?: null | ((e: any) => void);
   zIndex?: number;
+  isClearAble?: boolean;
 }
 
 const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, placeholder, zIndex } = props;
+  const { value, isMulti, isClearAble, placeholder, zIndex } = props;
 
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
@@ -103,7 +104,7 @@ const SelectDropdown: FC<My> = (props) => {
     }),
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: dataInterface) => {
     props.handleChange?.(e);
   };
 
@@ -117,6 +118,7 @@ const SelectDropdown: FC<My> = (props) => {
           options={myOptions}
           styles={colourStyles}
           value={value}
+          isClearable={isClearAble}
         />
       </div>
     </InputHOC>

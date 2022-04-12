@@ -1,4 +1,5 @@
 import { put, takeLatest } from "redux-saga/effects";
+import { RootState } from "redux/reducers";
 import {
   CREATE_FOLDER,
   CREATE_GROUP,
@@ -56,25 +57,30 @@ const getProjects = apiCall({
 const getProjectsWithPagination = apiCall({
   type: GET_PROJECTS_WITH_PAGINATION,
   method: "get",
-  path: (payload, store) => {
+  path: (payload, store: any) => {
     let url = "/project?";
-    const status = store?.project?.selectedStatus;
-    const selectedDate = store?.project?.selectedDate;
-    const searchProject = store?.project?.searchProject;
+    const {
+      selectedStatus: status,
+      selectedDate,
+      searchProject,
+      selectedUser,
+    } = store?.project;
 
     if (status) {
-      url = `${url}publishStatus=${status?.toLowerCase()}`;
+      url = `${url}publishStatus=${status?.toLowerCase()}&`;
     }
 
     if (selectedDate) {
-      url = `${url}&dueDate=${selectedDate}`;
+      url = `${url}dueDate=${selectedDate}&`;
     }
 
     if (searchProject) {
-      url = `${url}title=${searchProject}`;
+      url = `${url}title=${searchProject}&`;
     }
 
-    console.log("xsearchProject", searchProject);
+    if (selectedUser) {
+      url = `${url}assignedTo=${selectedUser}&`;
+    }
 
     return url;
   },

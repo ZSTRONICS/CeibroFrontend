@@ -173,6 +173,7 @@ export const SET_FIND_DOC = "SET_FIND_DOC";
 export const GET_FILE = "GET_FILE";
 export const GET_STATUS = "GET_STATUS";
 export const SET_SEARCH_PROJECT = "SET_SEARCH_PROJECT";
+export const SET_SELECTED_USER = "SET_SELECTED_USER";
 export const GET_NEW_WORK = "GET_NEW_WORK";
 
 export const CREATE_PROFILE_WORK = "CREATE_PROFILE_WORK";

@@ -58,7 +58,13 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
               onClick={() => setFilter(option.name)}
               key={index}
               className={`${classes.statusChip} ${getStyleClass(option.name)}`}
-              style={{ border: (filter === option.name)? `1px solid ${colors.inputGrey}`: 'none', borderRadius: 5 }} 
+              style={{
+                border:
+                  filter === option.name
+                    ? `1px solid ${colors.inputGrey}`
+                    : "none",
+                borderRadius: 5,
+              }}
             >
               <Typography className={classes.chipTitle}>
                 {option.name}
