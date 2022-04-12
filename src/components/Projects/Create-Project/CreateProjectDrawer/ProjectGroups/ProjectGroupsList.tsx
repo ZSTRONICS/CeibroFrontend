@@ -6,8 +6,12 @@ import colors from "../../../../../assets/colors";
 import GroupChip from "../../../../Utills/GroupChip/GroupChip";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
-import projectActions, { getGroup } from "redux/action/project.action";
+import projectActions, {
+  deleteGroup,
+  getGroup,
+} from "redux/action/project.action";
 import { GroupInterface } from "constants/interfaces/project.interface";
+import { toast } from "react-toastify";
 
 const ProjectGroupsList = () => {
   const { selectedProject, groupList, selectedGroup } = useSelector(
@@ -39,7 +43,20 @@ const ProjectGroupsList = () => {
   };
 
   const handleGroupDelete = (id: any) => {
-    alert("deleted");
+    // alert("deleted");
+    setLoading(true);
+    dispatch(
+      deleteGroup({
+        success: () => {
+          toast.success("Deleted Successfully");
+          dispatch(getGroup({ other: selectedProject }));
+        },
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: id,
+      })
+    );
   };
 
   const classes = useStyles();

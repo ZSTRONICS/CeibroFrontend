@@ -63,6 +63,8 @@ import configs, {
   GET_PERMISSIONS,
   SET_SELECTED_USER,
   UPDATE_PROJECT_PICTURE,
+  DELETE_GROUP,
+  DELETE_ROLE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -260,5 +262,7 @@ export const updateWork = createAction(UPDATE_WORK);
 export const deleteWork = createAction(DELETE_WORK);
 export const getPermissions = createAction(GET_PERMISSIONS);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
+export const deleteGroup = createAction(DELETE_GROUP);
+export const deleteRole = createAction(DELETE_ROLE);
 
 export default projectActions;

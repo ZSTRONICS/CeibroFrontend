@@ -19,6 +19,7 @@ import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
 import projectActions, {
+  deleteRole,
   getRoles,
   getRolesById,
 } from "redux/action/project.action";
@@ -26,6 +27,8 @@ import assets from "assets/assets";
 import { RoleInterface } from "constants/interfaces/project.interface";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
+import RoleMenu from "./RoleMenu";
+import { toast } from "react-toastify";
 
 // store?: RootState
 const RolesTable = () => {
@@ -58,11 +61,28 @@ const RolesTable = () => {
     avaialablePermissions.edit_permission
   );
   console.log("havePermission userd", userPermissions);
+
   const handleRoleClick = (id: any) => {
     if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));
       dispatch(projectActions.openProjectRole());
     }
+  };
+
+  const handleDelete = (id: any) => {
+    setLoading(true);
+    dispatch(
+      deleteRole({
+        success: () => {
+          toast.success("Deleted Successfully");
+          dispatch(getRoles({ other: selectedProject }));
+        },
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: id,
+      })
+    );
   };
 
   return (
@@ -132,7 +152,12 @@ const RolesTable = () => {
                 </div>
               </div>
               <div className={classes.roleMenu}>
-                <img src={assets.moreIcon} className={`width-16`} />
+                {/* <img src={assets.moreIcon} className={`width-16`} /> */}
+                <RoleMenu
+                  onEdit={handleRoleClick}
+                  onDelete={() => handleDelete(role?.id)}
+                  name={role?.name}
+                />
               </div>
             </div>
           );
