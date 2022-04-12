@@ -317,7 +317,7 @@ const updateProjectPic = apiCall({
   type: UPDATE_PROJECT_PICTURE,
   method: "patch",
   isFormData: true,
-  path: `/project/profile/pic`,
+  path: (payload) => `/project/profile/pic/${payload.other}`,
 });
 
 function* projectSaga() {

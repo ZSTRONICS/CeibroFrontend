@@ -1,10 +1,8 @@
 import { makeStyles } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import colors from "../../../assets/colors";
-import { GoPencil } from "react-icons/go";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  getProjectDetail,
   updateProjectPicture,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -22,6 +20,8 @@ const ImagePicker = () => {
   const projectOverview: ProjectOverviewInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
+
+  const { selectedProject } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -55,6 +55,7 @@ const ImagePicker = () => {
             // dispatch(getProjectDetail());
             toast.success("project pic updated");
           },
+          other: selectedProject,
         })
       );
     }

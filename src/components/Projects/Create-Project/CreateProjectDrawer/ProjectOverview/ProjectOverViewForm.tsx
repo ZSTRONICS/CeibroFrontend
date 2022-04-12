@@ -21,9 +21,6 @@ const ProjectOverViewForm = () => {
       })
     );
   };
-
-  console.log("projectOverview", projectOverview);
-
   const handleLocationChange = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
