@@ -42,6 +42,7 @@ import camera from "./images/camera.png";
 import mic from "./images/mic.png";
 import emoji from "./images/emoji.png";
 import usersFolder from "./images/userFolderIcon.png";
+import pencilFilled from "./images/pencilFilled.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -95,6 +96,7 @@ const assets = {
   mic,
   emoji,
   usersFolder,
+  pencilFilled,
 
   testProject1,
   testProject2,

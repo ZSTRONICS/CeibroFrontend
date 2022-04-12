@@ -6,7 +6,7 @@ export const projectOverviewSchema = Yup.object().shape({
     .max(50, "Too Long!")
     .required("Required"),
   dueDate: Yup.date().required(),
-  owner: Yup.object().required(),
+  owner: Yup.array().required(),
   publishStatus: Yup.string().required(),
   description: Yup.string().required(),
   location: Yup.string().required(),

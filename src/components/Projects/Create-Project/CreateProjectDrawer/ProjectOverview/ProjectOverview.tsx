@@ -104,7 +104,7 @@ const ProjectOverview = () => {
     : null;
 
   return (
-    <>
+    <div style={{ width: "100%" }}>
       <Grid container>
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
@@ -131,7 +131,7 @@ const ProjectOverview = () => {
           />
         </Grid>
 
-        <Grid item xs={12} md={8} style={{ padding: "20px 5px" }}>
+        <Grid item xs={12} md={12} style={{ padding: "20px 5px" }}>
           <HorizontalBreak color={colors.grey} />
         </Grid>
       </Grid>
@@ -145,7 +145,7 @@ const ProjectOverview = () => {
           <ProjectOverViewForm />
         </Grid>
       </Grid>
-    </>
+    </div>
   );
 };
 

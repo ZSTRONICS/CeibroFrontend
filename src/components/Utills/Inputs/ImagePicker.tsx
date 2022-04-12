@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { ProjectOverviewInterface } from "constants/interfaces/project.interface";
+import assets from "assets/assets";
 
 const ImagePicker = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -56,7 +57,7 @@ const ImagePicker = () => {
         className={classes.outerWrapper}
         style={{ background: `url(${projectOverview.projectPhoto})` }}
       >
-        <GoPencil className={classes.icon} />
+        <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} />
       </div>
     </>
   );
@@ -80,6 +81,8 @@ const useStyles = makeStyles({
     color: colors.white,
     background: colors.primary,
     padding: 2,
+    height: 22,
+    width: 22,
   },
   inputFile: {
     visibility: "hidden",

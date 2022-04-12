@@ -14,11 +14,12 @@ const BootstrapInput = withStyles((theme) => ({
   },
   input: {
     borderRadius: 4,
-    height: 15,
+    height: 18,
     position: "relative",
     backgroundColor: theme.palette.background.paper,
     border: "1px solid #ced4da",
-    fontSize: 16,
+    fontSize: 14,
+    fontWeight: 500,
     padding: "10px 26px 10px 12px",
     transition: theme.transitions.create(["border-color", "box-shadow"]),
     // Use the system font instead of the default Roboto font.

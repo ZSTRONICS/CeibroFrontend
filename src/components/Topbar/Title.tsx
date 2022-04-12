@@ -10,6 +10,7 @@ import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import { useMediaQuery } from "react-responsive";
 import { ArrowBack } from "@material-ui/icons";
 import CreateChat from "./CreateChat";
+import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,8 @@ const Title = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const openProjectDrawer = () => {
+    dispatch(projectActions.setSelectedProject(null));
+    dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
 

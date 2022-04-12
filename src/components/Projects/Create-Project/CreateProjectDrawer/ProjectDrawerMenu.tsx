@@ -18,20 +18,20 @@ const menus = [
     title: "Role(s)",
   },
   {
-    id: 3,
-    title: "Group(s)",
+    id: 6,
+    title: "Works Profile",
   },
   {
-    id: 4,
-    title: "Documents",
+    id: 3,
+    title: "Group(s)",
   },
   {
     id: 5,
     title: "Members",
   },
   {
-    id: 6,
-    title: "Time Profile",
+    id: 4,
+    title: "Documents",
   },
 ];
 
@@ -93,7 +93,7 @@ export default ProjectDrawerMenu;
 const useStyles = makeStyles({
   statusChip: {
     padding: "10px 10px",
-    width: 80,
+    width: 100,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",

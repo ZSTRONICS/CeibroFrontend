@@ -13,6 +13,8 @@ import projectActions, {
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
+import assets from "assets/assets";
+import { useConfirm } from "material-ui-confirm";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -23,6 +25,7 @@ const CreateProjectBody = () => {
   const { projectOverview, projects, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
+  const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
       .isValid(projectOverview)
@@ -80,15 +83,17 @@ const CreateProjectBody = () => {
   };
 
   const handleDelete = () => {
-    const payload = {
-      success: () => {
-        toast.success("Project Delete Successfully");
-        dispatch(projectActions.closeDrawer());
-        dispatch(getProjectsWithPagination());
-      },
-      other: selectedProject,
-    };
-    dispatch(deleteProject(payload));
+    confirm({ description: "confirm want to  delete this " }).then(() => {
+      const payload = {
+        success: () => {
+          toast.success("Project Delete Successfully");
+          dispatch(projectActions.closeDrawer());
+          dispatch(getProjectsWithPagination());
+        },
+        other: selectedProject,
+      };
+      dispatch(deleteProject(payload));
+    });
   };
 
   const getFormValues = () => {
@@ -132,14 +137,16 @@ const CreateProjectBody = () => {
         Save as draft
       </Button>
       {/* {!selectedProject?} */}
-      <Button
-        className={classes.trash}
-        color="primary"
-        onClick={handleDelete}
-        // {selectedProject? style={{display:"none"}} : display:"block"}
-      >
-        <FaTrash />
-      </Button>
+      {selectedProject && (
+        <Button
+          className={classes.trash}
+          color="primary"
+          onClick={handleDelete}
+          // {selectedProject? style={{display:"none"}} : display:"block"}
+        >
+          <img src={assets.trashIcon} className={"w-16"} />
+        </Button>
+      )}
       <Button
         disabled={isDiabled}
         className={classes.create}
@@ -160,7 +167,7 @@ export default CreateProjectBody;
 
 const useStyles = makeStyles({
   body: {
-    padding: 20,
+    padding: "10px 20px",
     background: colors.white,
     ["@media (max-width:960px)"]: {
       flexDirection: "column",

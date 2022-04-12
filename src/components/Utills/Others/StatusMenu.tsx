@@ -81,7 +81,7 @@ export default StatusMenu;
 
 const useStyles = makeStyles({
   statusChip: {
-    padding: "10px 10px",
+    padding: "10px 20px",
     // width: 100,
     display: "flex",
     alignItems: "center",
