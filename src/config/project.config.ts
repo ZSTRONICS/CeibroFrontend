@@ -187,5 +187,7 @@ export const UPDATE_WORK = "UPDATE_WORK";
 export const DELETE_WORK = "DELETE_WORK";
 export const GET_PERMISSIONS = "GET_PERMISSIONS";
 export const UPDATE_PROJECT_PICTURE = "UPDATE_PROJECT_PICTURE";
+export const DELETE_GROUP = "DELETE_GROUP";
+export const DELETE_ROLE = "DELETE_ROLE";
 
 export default projectReduxConfigs;

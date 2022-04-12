@@ -8,8 +8,10 @@ import {
   CREATE_PROFILE_WORK,
   CREATE_PROJECT,
   CREATE_ROLES,
+  DELETE_GROUP,
   DELETE_MEMBER,
   DELETE_PROJECT,
+  DELETE_ROLE,
   DELETE_WORK,
   GET_FILE,
   GET_FOLDER,
@@ -320,6 +322,18 @@ const updateProjectPic = apiCall({
   path: (payload) => `/project/profile/pic/${payload.other}`,
 });
 
+const deleteGroup = apiCall({
+  type: DELETE_GROUP,
+  method: "delete",
+  path: (payload) => `/project/group/detail/${payload?.other}`,
+});
+
+const deleteRole = apiCall({
+  type: DELETE_ROLE,
+  method: "delete",
+  path: (payload) => `/project/role/detail/${payload?.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -361,6 +375,8 @@ function* projectSaga() {
   yield takeLatest(DELETE_WORK, deleteWork);
   yield takeLatest(GET_PERMISSIONS, getPermissions);
   yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
+  yield takeLatest(DELETE_GROUP, deleteGroup);
+  yield takeLatest(DELETE_ROLE, deleteRole);
 }
 
 export default projectSaga;
