@@ -185,7 +185,10 @@ const RolesTable = () => {
   const handleDelete = (id: any) => {
     setLoading(true);
 
-    confirm({ description: "Are you confirm want to delete" }).then(() => {
+    confirm({
+      title: "Please confirm",
+      description: "Are you confirm want to delete",
+    }).then(() => {
       dispatch(
         deleteMember({
           success: () => {
@@ -212,6 +215,7 @@ const RolesTable = () => {
             <TableCell className={classes.rowTop} align="left">
               Group
             </TableCell>
+            <TableCell className={classes.rowTop} align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
@@ -262,9 +266,9 @@ const RolesTable = () => {
               <TableCell align="right" style={{ width: "10%" }}>
                 {haveDeletePermission && (
                   <img
-                    // disabled={!haveDeletePermission ? true :false}
+                    style={{ width: 32, height: 32 }}
                     src={assets.membersDelete}
-                    className="width-16"
+                    className={"pointer"}
                     onClick={() => handleDelete(row?.id)}
                   />
                 )}
