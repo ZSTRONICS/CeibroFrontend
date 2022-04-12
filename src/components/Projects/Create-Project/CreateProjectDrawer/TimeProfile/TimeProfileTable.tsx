@@ -10,6 +10,8 @@ import {
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
+import { avaialablePermissions } from "config/project.config";
+import { checkTimeProfilePermission } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +36,7 @@ const rows = [
 
 const RolesTable = () => {
   const classes = useStyles();
-  const { selectedProject, projectProfile } = useSelector(
+  const { selectedProject, projectProfile, userPermissions } = useSelector(
     (state: RootState) => state.project
   );
   const dispatch = useDispatch();
@@ -54,9 +56,16 @@ const RolesTable = () => {
     }
   }, [selectedProject]);
 
+  const havePermission = checkTimeProfilePermission(
+    userPermissions,
+    avaialablePermissions.edit_permission
+  );
+
   const handleTimeProfileClick = (id: any) => {
-    dispatch(projectActions.openTimeProfileDrawer());
-    dispatch(projectActions.setSelectedTimeProfile(id));
+    if (havePermission) {
+      dispatch(projectActions.openTimeProfileDrawer());
+      dispatch(projectActions.setSelectedTimeProfile(id));
+    }
   };
 
   return (

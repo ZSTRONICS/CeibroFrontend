@@ -10,10 +10,11 @@ import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 
 const ProjectRoles = () => {
-  const { userPermissions } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { roleDrawer } = useSelector((state: RootState) => state.project);
+  const { roleDrawer, userPermissions } = useSelector(
+    (state: RootState) => state.project
+  );
 
   const havePermission = checkRolePermission(
     userPermissions,

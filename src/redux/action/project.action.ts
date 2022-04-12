@@ -59,6 +59,7 @@ import configs, {
   OPEN_WORK_DRAWER,
   GET_WORK_BY_ID,
   UPDATE_WORK,
+  DELETE_MEMBER,
   GET_PERMISSIONS,
   SET_SELECTED_USER,
 } from "../../config/project.config";
@@ -235,6 +236,8 @@ export const getFolder = createAction(GET_FOLDER);
 export const createFolder = createAction(CREATE_FOLDER);
 export const createMember = createAction(CREATE_MEMBER);
 export const getMember = createAction(GET_MEMBER);
+export const deleteMember = createAction(DELETE_MEMBER);
+
 export const updateMember = createAction(UPDATE_MEMBER);
 export const getFolderFiles = createAction(GET_FOLDER_FILES);
 export const uploadFileToFolder = createAction(UPLOAD_FILE_TO_FOLDER);

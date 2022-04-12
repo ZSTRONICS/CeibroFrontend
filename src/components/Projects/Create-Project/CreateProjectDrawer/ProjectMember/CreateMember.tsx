@@ -13,7 +13,7 @@ import InputText from "../../../../Utills/Inputs/InputText";
 import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { mapGroups } from "helpers/project.helper";
+import { checkMemberPermission, mapGroups } from "helpers/project.helper";
 import {
   createMember,
   getGroup,
@@ -22,11 +22,16 @@ import {
   getRolesById,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
+import { avaialablePermissions } from "config/project.config";
 
 const MemberDialog = () => {
-  const { documentDrawer, groupList, rolesList, selectedProject } = useSelector(
-    (state: RootState) => state.project
-  );
+  const {
+    documentDrawer,
+    groupList,
+    rolesList,
+    selectedProject,
+    userPermissions,
+  } = useSelector((state: RootState) => state.project);
   const dispatch = useDispatch();
   const [name, setName] = useState();
   const [groups, setGroups] = useState();
@@ -42,7 +47,7 @@ const MemberDialog = () => {
   const handleClickOpen = () => {
     setOpen(true);
   };
-
+  console.log("mem permisssion", userPermissions);
   const handleClose = () => {
     setOpen(false);
   };
@@ -65,6 +70,11 @@ const MemberDialog = () => {
       setRoles(newRoles);
     }
   }, [rolesList]);
+
+  const havePermission = checkMemberPermission(
+    userPermissions,
+    avaialablePermissions.create_permission
+  );
 
   const handleOk = () => {
     const payload = {
@@ -99,6 +109,7 @@ const MemberDialog = () => {
         variant="outlined"
         color="primary"
         className={classes.btn}
+        disabled={havePermission ? false : true}
         onClick={handleClickOpen}
       >
         Add a member

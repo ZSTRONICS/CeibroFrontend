@@ -12,14 +12,17 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import { avaialablePermissions } from "config/project.config";
 import {
   GroupInterface,
   MemberInterface,
   RoleInterface,
 } from "constants/interfaces/project.interface";
+import { checkMemberPermission } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteMember,
   getGroup,
   getMember,
   getRoles,
@@ -27,9 +30,14 @@ import {
   updateMember,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
+import { useConfirm } from "material-ui-confirm";
+
 import colors from "../../../../../assets/colors";
 import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
 import Select from "../../../../Utills/Inputs/Select";
+// import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
+import assets from "assets/assets";
+import { toast } from "react-toastify";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -69,15 +77,15 @@ const groupOptions = [
 ];
 
 const RolesTable = () => {
-  const { groupList, rolesList, selectedProject, memberList } = useSelector(
-    (state: RootState) => state?.project
-  );
+  const { groupList, rolesList, selectedProject, memberList, userPermissions } =
+    useSelector((state: RootState) => state?.project);
 
   const [group, setGroups] = useState<any>();
   const [role, setRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
 
   console.log("members list", memberList);
+  const confirm = useConfirm();
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -133,8 +141,6 @@ const RolesTable = () => {
   }, [selectedProject]);
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
-    // console.log("selected valueee", e.target.value);
-
     const payload = {
       body: {
         groupId: e,
@@ -166,6 +172,34 @@ const RolesTable = () => {
     dispatch(updateMember(payload));
   };
 
+  const havePermission = checkMemberPermission(
+    userPermissions,
+    avaialablePermissions.edit_permission
+  );
+
+  const haveDeletePermission = checkMemberPermission(
+    userPermissions,
+    avaialablePermissions.delete_permission
+  );
+
+  const handleDelete = (id: any) => {
+    setLoading(true);
+
+    confirm({ description: "Are you confirm want to delete" }).then(() => {
+      dispatch(
+        deleteMember({
+          success: () => {
+            toast.success("Deleted Successfully");
+            dispatch(getMember({ other: selectedProject }));
+          },
+          finallyAction: () => {
+            setLoading(false);
+          },
+          other: id,
+        })
+      );
+    });
+  };
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">
@@ -213,6 +247,7 @@ const RolesTable = () => {
                 <Select
                   options={role}
                   selectedValue={row?.role?.id}
+                  handleDisabled={havePermission ? false : true}
                   handleValueChange={(e: string) => selectRoleHandle(e, row)}
                 />
               </TableCell>
@@ -220,8 +255,19 @@ const RolesTable = () => {
                 <Select
                   options={group}
                   selectedValue={row?.group?.id}
+                  handleDisabled={havePermission ? false : true}
                   handleValueChange={(e: string) => selectGroupHandle(e, row)}
                 />
+              </TableCell>
+              <TableCell align="right" style={{ width: "10%" }}>
+                {haveDeletePermission && (
+                  <img
+                    // disabled={!haveDeletePermission ? true :false}
+                    src={assets.membersDelete}
+                    className="width-16"
+                    onClick={() => handleDelete(row?.id)}
+                  />
+                )}
               </TableCell>
             </TableRow>
           ))}
@@ -258,6 +304,11 @@ const useStyles = makeStyles({
     background: colors.darkYellow,
     fontSize: 10,
   },
+  // del: {
+  //   // fontSize: 100,
+  //   width: "16",
+  //   // alignItems: "center",
+  // },
   progress: {
     color: colors.primary,
     position: "absolute",

@@ -29,10 +29,16 @@ import projectActions, {
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
 import { RootState } from "redux/reducers";
+import { avaialablePermissions } from "config/project.config";
+import { checkTimeProfilePermission } from "helpers/project.helper";
 
 const MemberDialog = () => {
-  const { selectedProject, timeProfileDrawer, selectedTimeProfile } =
-    useSelector((state: RootState) => state.project);
+  const {
+    selectedProject,
+    timeProfileDrawer,
+    selectedTimeProfile,
+    userPermissions,
+  } = useSelector((state: RootState) => state.project);
 
   const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
@@ -116,16 +122,27 @@ const MemberDialog = () => {
   useEffect(() => {
     setName("");
   }, [timeProfileDrawer]);
+
+  const havePermission = checkTimeProfilePermission(
+    userPermissions,
+    avaialablePermissions.create_permission
+  );
+
+  console.log("profile havePermission", havePermission);
+
   return (
     <div>
       <Button
         variant="outlined"
         color="primary"
         className={classes.btn}
+        disabled={!havePermission ? true : false}
         // onClick={handleClickOpen}
         onClick={() => {
-          dispatch(projectActions.openTimeProfileDrawer());
-          dispatch(projectActions.setSelectedTimeProfile(null));
+          if (havePermission) {
+            dispatch(projectActions.openTimeProfileDrawer());
+            dispatch(projectActions.setSelectedTimeProfile(null));
+          }
         }}
       >
         Create new Profile

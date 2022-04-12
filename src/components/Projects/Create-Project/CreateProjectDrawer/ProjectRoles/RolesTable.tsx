@@ -57,7 +57,7 @@ const RolesTable = () => {
     userPermissions,
     avaialablePermissions.edit_permission
   );
-
+  console.log("havePermission userd", userPermissions);
   const handleRoleClick = (id: any) => {
     if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));
