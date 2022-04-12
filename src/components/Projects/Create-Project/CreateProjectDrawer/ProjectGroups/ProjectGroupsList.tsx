@@ -37,6 +37,11 @@ const ProjectGroupsList = () => {
     dispatch(projectActions.setSelectedGroup(id));
     dispatch(projectActions.openProjectGroup());
   };
+
+  const handleGroupDelete = (id: any) => {
+    alert("deleted");
+  };
+
   const classes = useStyles();
   return (
     <>
@@ -44,7 +49,9 @@ const ProjectGroupsList = () => {
       {groupList?.map((group: GroupInterface) => (
         <GroupChip
           name={group.name}
+          groupId={group.id || ""}
           handleClick={() => handleGroupClick(group?.id)}
+          handleDelete={() => handleGroupDelete(group?.id)}
         />
       ))}
     </>

@@ -43,6 +43,7 @@ import mic from "./images/mic.png";
 import emoji from "./images/emoji.png";
 import usersFolder from "./images/userFolderIcon.png";
 import pencilFilled from "./images/pencilFilled.png";
+import blackPencil from "./images/blackPencil.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -84,6 +85,7 @@ const assets = {
   wrongImage,
   clockIcon,
   pencilIcon,
+  blackPencil,
   notification,
   volumeMute,
   unreadMessage,

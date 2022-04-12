@@ -1,14 +1,12 @@
-import React from "react";
 import { makeStyles, Typography } from "@material-ui/core";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import colors from "../../../assets/colors";
-import HorizontalBreak from "../Others/HorizontalBreak";
-import MenuButton from "../Others/MenuButton";
-import { MenuOptions } from "../Others/MenuButton";
-import { BiPencil } from "react-icons/bi";
 import { Delete, PersonAdd } from "@material-ui/icons";
 import assets from "assets/assets";
+import React from "react";
+import { BiPencil } from "react-icons/bi";
+import colors from "../../../assets/colors";
+import HorizontalBreak from "../Others/HorizontalBreak";
+import { MenuOptions } from "../Others/MenuButton";
+import GroupMenu from "./GroupMenu";
 
 const menue: MenuOptions[] = [
   {
@@ -25,8 +23,15 @@ const menue: MenuOptions[] = [
   },
 ];
 
-const GroupChip = (props: any) => {
-  const { name, handleClick } = props;
+interface GroupChipInterface {
+  name: string;
+  groupId: string;
+  handleClick: () => void;
+  handleDelete: () => void;
+}
+
+const GroupChip: React.FC<GroupChipInterface> = (props) => {
+  const { name, handleClick, groupId, handleDelete } = props;
   const classes = useStyles();
   return (
     <div>
@@ -36,7 +41,12 @@ const GroupChip = (props: any) => {
           <Typography className={classes.titleText}>{name}</Typography>
         </div>
         <div className={classes.action}>
-          <img src={assets.moreIcon} className={"width-16"} />
+          <GroupMenu
+            onDelete={handleDelete}
+            groupId={groupId}
+            onEdit={handleClick}
+            name={name}
+          />
         </div>
       </div>
       <HorizontalBreak color={colors.grey} />
