@@ -3,8 +3,11 @@ import { REGISTER } from "redux-persist/es/constants";
 import { takeLatest } from "redux-saga/effects";
 import {
   CREATE_ROOM,
+  FORGET_PASSWORD,
   GET_PROFILE,
   LOGIN,
+  OTP_VERIFY,
+  RESET_PASSWORD,
   UPDATE_MY_PROFILE,
   VERIFY_EMAIL,
 } from "../../config/auth.config";
@@ -54,6 +57,12 @@ const getMyProfile = apiCall({
   path: "/users/profile",
 });
 
+const otpVerify = apiCall({
+  type: OTP_VERIFY,
+  method: "post",
+  path: (payload) => `/auth/verify-email?otp=${payload?.other}`,
+});
+
 const updateMyProfile = apiCall({
   type: UPDATE_MY_PROFILE,
   method: "patch",
@@ -63,6 +72,19 @@ const updateMyProfile = apiCall({
   },
 });
 
+const forgetPassword = apiCall({
+  type: FORGET_PASSWORD,
+  method: "post",
+  path: `/auth/forgot-password`,
+});
+
+const resetPassword = apiCall({
+  type: RESET_PASSWORD,
+  method: "post",
+  path: (payload) => `/auth/reset-password?otp=${payload?.other}`,
+  // reset-password?otp=grgdfvdf
+});
+
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
@@ -70,6 +92,9 @@ function* projectSaga() {
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
   yield takeLatest(UPDATE_MY_PROFILE, updateMyProfile);
+  yield takeLatest(OTP_VERIFY, otpVerify);
+  yield takeLatest(FORGET_PASSWORD, forgetPassword);
+  yield takeLatest(RESET_PASSWORD, resetPassword);
 }
 
 export default projectSaga;

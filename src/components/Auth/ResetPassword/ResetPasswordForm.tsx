@@ -3,60 +3,75 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import assets from "assets/assets";
 import colors from "assets/colors";
 import TextField from "components/Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { registerRequest } from "redux/action/auth.action";
+import { resetPassword } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 import Loading from "components/Utills/Loader/Loading";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { Alert } from "@material-ui/lab";
 
-const RegisterForm = () => {
+const ResetPasswordForm = () => {
   const classes = useStyles();
 
   const { registerLoading } = useSelector((state: RootState) => state.auth);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>();
+  const [error, setError] = useState<boolean>(false);
 
   const intl = useIntl();
   const dispatch = useDispatch();
   const history = useHistory();
+  const isDiabled = !loading ? false : true;
+
   const handleSubmit = (values: any, action: any) => {
     console.log("values: ", values);
 
-    const { firstName, surName, email, password } = values;
+    // console.log("success", success);
+    const { otp, password } = values;
     const payload = {
-      body: {
-        firstName,
-        surName,
-        email,
-        password,
-      },
+      body: { password },
       success: (res: any) => {
+        setSuccess(res);
         if (res) {
-          history.push("/verify-email");
+          history.push("/login");
         }
-        // action?.resetForm?.();
+        toast.success("Password Reset Successfully");
+        action?.resetForm?.();
       },
+      onFailAction: (err: any) => {
+        setError(true);
+
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
+      },
+      showErrorToast: false,
+
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: otp,
     };
-    dispatch(registerRequest(payload));
+    setLoading(true);
+    dispatch(resetPassword(payload));
   };
 
   const registerSchema = Yup.object().shape({
-    firstName: Yup.string()
+    otp: Yup.string()
       .min(2, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    surName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
     password: Yup.string()
       .required("Please enter your password")
       .matches(
@@ -75,16 +90,14 @@ const RegisterForm = () => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Register</Typography>
+        <Typography className={classes.title}>Reset Password</Typography>
       </div>
 
       <div className={classes.loginForm}>
         <Formik
           initialValues={{
-            email: "",
             password: "",
-            firstName: "",
-            surName: "",
+            otp: "",
             confirmPassword: "",
           }}
           validationSchema={registerSchema}
@@ -101,58 +114,31 @@ const RegisterForm = () => {
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <TextField
-                placeholder={"First name"}
-                className={classes.inputs}
-                name="firstName"
-                inputProps={{
-                  style: { height: 12, width: "100%" },
-                }}
-                value={values.firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.firstName && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.firstName && touched.firstName && errors.firstName}
-                </Typography>
+              {(success || loading) && (
+                <Alert severity="success">
+                  {loading ? "Verifying email" : "Password Reset Successfully"}
+                </Alert>
               )}
+
+              {error && <Alert severity="error">Invalid OTP</Alert>}
+
               <TextField
-                placeholder={"Sur name"}
+                placeholder={"Enter OTP"}
                 className={classes.inputs}
-                name="surName"
-                value={values.surName}
+                name="otp"
+                value={values.otp}
                 inputProps={{
                   style: { height: 12 },
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.surName && (
+
+              {errors.otp && (
                 <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.surName && touched.surName && errors.surName}
+                  {errors.otp && touched.otp && errors.otp}
                 </Typography>
               )}
-
-              <TextField
-                placeholder={intl.formatMessage({ id: "input.Email" })}
-                className={classes.inputs}
-                name="email"
-                value={values.email}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                error={true}
-                helperText="Not a valid email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.email && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.email && touched.email && errors.email}
-                </Typography>
-              )}
-
               <TextField
                 type="password"
                 placeholder={intl.formatMessage({ id: "input.Password" })}
@@ -198,13 +184,18 @@ const RegisterForm = () => {
                   variant="contained"
                   color="primary"
                   type="submit"
-                  disabled={!isValid || registerLoading}
+                  //   disabled={!isValid || registerLoading}
+                  disabled={isDiabled}
                 >
-                  {registerLoading ? (
+                  {/* {registerLoading ? (
                     <Loading type="spin" color="white" height={14} width={20} />
                   ) : (
-                    "Register"
+                    "Reset Password"
+                  )} */}
+                  {isDiabled && loading && (
+                    <CircularProgress size={20} className={classes.progress} />
                   )}
+                  Reset Password
                 </Button>
               </div>
             </form>
@@ -215,7 +206,7 @@ const RegisterForm = () => {
   );
 };
 
-export default RegisterForm;
+export default ResetPasswordForm;
 
 const useStyles = makeStyles({
   wrapper: {
@@ -235,7 +226,7 @@ const useStyles = makeStyles({
   loginForm: {
     display: "flex",
     flexDirection: "column",
-    marginTop: 20,
+    marginTop: 0,
     padding: "10px 13%",
     ["@media (max-width:960px)"]: {
       padding: "10 13%",
@@ -254,8 +245,11 @@ const useStyles = makeStyles({
     width: "100%",
   },
   loginButton: {
-    height: 32,
-    width: 21,
+    height: 40,
+    width: 140,
+    fontSize: 13,
+
+    fontWeight: 500,
   },
   forget: {
     marginTop: 5,
@@ -279,5 +273,15 @@ const useStyles = makeStyles({
     marginTop: 10,
     fontSize: 14,
     fontWeight: 400,
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

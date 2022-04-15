@@ -59,7 +59,9 @@ const apiCall = ({
       const store: RootState = yield select((state) => state);
 
       let options: any = {
-        url: `${typeof path === "function" ? path(action.payload, store) : path}`,
+        url: `${
+          typeof path === "function" ? path(action.payload, store) : path
+        }`,
         method: method,
         headers: header,
         data: body,
@@ -83,6 +85,7 @@ const apiCall = ({
     } catch (err: any) {
       onFailAction && onFailAction(err);
       onFailSaga && onFailSaga(err);
+
       if (showErrorToast) {
         yield put({
           type: requestFail(type),

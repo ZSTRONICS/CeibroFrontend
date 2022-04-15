@@ -5,7 +5,10 @@ import {
   CREATE_ROOM,
   LOGOUT,
   GET_PROFILE,
-  UPDATE_MY_PROFILE
+  UPDATE_MY_PROFILE,
+  OTP_VERIFY,
+  FORGET_PASSWORD,
+  RESET_PASSWORD,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
@@ -19,4 +22,6 @@ export const createChatRoom = createAction(CREATE_ROOM);
 
 export const getMyProfile = createAction(GET_PROFILE);
 export const updateMyProfile = createAction(UPDATE_MY_PROFILE);
-
+export const otpVerify = createAction(OTP_VERIFY);
+export const forgetPassword = createAction(FORGET_PASSWORD);
+export const resetPassword = createAction(RESET_PASSWORD);

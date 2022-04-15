@@ -21,6 +21,7 @@ export function createAction(type: string) {
       onFailAction: payload.onFailAction,
       finallyAction: payload.finallyAction,
       other: payload.other,
+      showErrorToast: payload.showErrorToast,
     },
   });
 }

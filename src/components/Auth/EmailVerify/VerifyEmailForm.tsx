@@ -3,6 +3,7 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
@@ -12,18 +13,19 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequest } from "../../../redux/action/auth.action";
+import { loginRequest, otpVerify } from "../../../redux/action/auth.action";
 import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
+import { toast } from "react-toastify";
 
-interface LoginForm {
+interface VerifyEmailForm {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
 
-const LoginForm: React.FC<LoginForm> = (props) => {
+const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
   const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
 
@@ -36,21 +38,40 @@ const LoginForm: React.FC<LoginForm> = (props) => {
   const intl = useIntl();
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>();
+  const [error, setError] = useState<boolean>(false);
+
+  console.log("otp", otp);
+  const isDiabled = !loading ? false : true;
 
   const handleSubmit = () => {
+    setError(false);
+
     const payload = {
-      body: {
-        email,
-        password,
+      other: otp,
+      success: (res: any) => {
+        setSuccess(res);
+        setOtp("");
+        toast.success("OTP Verified");
+        history.push("/login");
+      },
+      onFailAction: (err: any) => {
+        setError(true);
+
+        setTimeout(() => {
+          setError(false);
+        }, 3000);
+      },
+      showErrorToast: false,
+
+      finallyAction: () => {
+        setLoading(false);
       },
     };
-    dispatch(loginRequest(payload));
-  };
-
-  const handlePasswordForget = () => {
-    history.push("/forgot-password");
+    setLoading(true);
+    dispatch(otpVerify(payload));
   };
 
   return (
@@ -60,84 +81,56 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Login</Typography>
+        <Typography className={classes.title}>OTP</Typography>
       </div>
 
       <div className={classes.loginForm}>
-        {(showSuccess || tokenLoading) && (
+        {(success || loading) && (
           <Alert severity="success">
-            {tokenLoading
-              ? "Verifying email"
-              : "Email verified successfully. Please sign in!"}
+            {loading ? "Verifying OTP..." : "Register User Successfully"}
           </Alert>
         )}
+
+        {error && <Alert severity="error">Invalid OTP</Alert>}
 
         {showError && <Alert severity="error">Link expired</Alert>}
 
         <TextField
-          placeholder={intl.formatMessage({ id: "input.Email" })}
+          placeholder={intl.formatMessage({ id: "input.otp" })}
           className={classes.inputs}
           inputProps={{
             style: { height: 12 },
           }}
-          onChange={(e: any) => setEmail(e.target.value)}
+          onChange={(e: any) => setOtp(e.target.value)}
         />
-        <TextField
-          type="password"
-          placeholder={intl.formatMessage({ id: "input.Password" })}
-          className={classes.inputs}
-          inputProps={{
-            style: { height: 12 },
-          }}
-          onChange={(e: any) => setPassword(e.target.value)}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checked}
-              onChange={() => setChecked(!checked)}
-              name="checkedB"
-              color="primary"
-              style={{ padding: 0 }}
-            />
-          }
-          className={classes.remember}
-          style={{ padding: 0 }}
-          label={
-            <Typography className={classes.rememberText}>
-              {intl.formatMessage({ id: "input.RememberMe" })}
-            </Typography>
-          }
-        />
+
         <div className={classes.actionWrapper}>
           <Button
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            disabled={loginLoading}
+            // disabled={loginLoading}
+            disabled={isDiabled}
             onClick={handleSubmit}
           >
-            {loginLoading ? (
+            {/* {loginLoading ? (
               <Loading type="spin" color="white" height={14} width={14} />
             ) : (
-              intl.formatMessage({ id: "input.Login" })
+              intl.formatMessage({ id: "input.verify" })
+            )} */}
+
+            {isDiabled && loading && (
+              <CircularProgress size={20} className={classes.progress} />
             )}
+            {intl.formatMessage({ id: "input.verify" })}
           </Button>
-          <Typography
-            className={`${classes.titles} ${classes.forget}`}
-            variant="body1"
-            gutterBottom
-            onClick={handlePasswordForget}
-          >
-            {intl.formatMessage({ id: "input.ForgetPassword" })} ?
-          </Typography>
         </div>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default VerifyEmailForm;
 
 const useStyles = makeStyles({
   wrapper: {
@@ -196,5 +189,15 @@ const useStyles = makeStyles({
   title: {
     fontSize: 30,
     fontWeight: "bold",
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });

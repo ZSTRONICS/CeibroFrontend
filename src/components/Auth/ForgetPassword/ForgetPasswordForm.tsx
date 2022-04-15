@@ -3,6 +3,7 @@ import {
   Button,
   FormControlLabel,
   Checkbox,
+  CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
@@ -12,18 +13,19 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequest } from "../../../redux/action/auth.action";
+import { forgetPassword } from "../../../redux/action/auth.action";
 import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
+import { toast } from "react-toastify";
 
-interface LoginForm {
+interface ForgetPasswordForm {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
 
-const LoginForm: React.FC<LoginForm> = (props) => {
+const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
   const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
 
@@ -37,20 +39,25 @@ const LoginForm: React.FC<LoginForm> = (props) => {
   const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDiabled = !loading ? false : true;
 
   const handleSubmit = () => {
     const payload = {
-      body: {
-        email,
-        password,
+      body: { email },
+      success: (res: any) => {
+        if (res) {
+          history.push("/reset-password");
+        }
+        setEmail("");
+      },
+      finallyAction: () => {
+        setLoading(false);
       },
     };
-    dispatch(loginRequest(payload));
-  };
+    setLoading(true);
 
-  const handlePasswordForget = () => {
-    history.push("/forgot-password");
+    dispatch(forgetPassword(payload));
   };
 
   return (
@@ -60,14 +67,14 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Login</Typography>
+        <Typography className={classes.title}>Email</Typography>
       </div>
 
       <div className={classes.loginForm}>
         {(showSuccess || tokenLoading) && (
           <Alert severity="success">
             {tokenLoading
-              ? "Verifying email"
+              ? "Verifying otp"
               : "Email verified successfully. Please sign in!"}
           </Alert>
         )}
@@ -82,62 +89,34 @@ const LoginForm: React.FC<LoginForm> = (props) => {
           }}
           onChange={(e: any) => setEmail(e.target.value)}
         />
-        <TextField
-          type="password"
-          placeholder={intl.formatMessage({ id: "input.Password" })}
-          className={classes.inputs}
-          inputProps={{
-            style: { height: 12 },
-          }}
-          onChange={(e: any) => setPassword(e.target.value)}
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checked}
-              onChange={() => setChecked(!checked)}
-              name="checkedB"
-              color="primary"
-              style={{ padding: 0 }}
-            />
-          }
-          className={classes.remember}
-          style={{ padding: 0 }}
-          label={
-            <Typography className={classes.rememberText}>
-              {intl.formatMessage({ id: "input.RememberMe" })}
-            </Typography>
-          }
-        />
+
         <div className={classes.actionWrapper}>
           <Button
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            disabled={loginLoading}
+            // disabled={loginLoading}
+            disabled={isDiabled}
             onClick={handleSubmit}
           >
-            {loginLoading ? (
+            {/* {loginLoading ? (
               <Loading type="spin" color="white" height={14} width={14} />
             ) : (
-              intl.formatMessage({ id: "input.Login" })
+              intl.formatMessage({ id: "input.send" })
+            )} */}
+            {isDiabled && loading && (
+              <CircularProgress size={20} className={classes.progress} />
             )}
+            {/* Send */}
+            {intl.formatMessage({ id: "input.send" })}
           </Button>
-          <Typography
-            className={`${classes.titles} ${classes.forget}`}
-            variant="body1"
-            gutterBottom
-            onClick={handlePasswordForget}
-          >
-            {intl.formatMessage({ id: "input.ForgetPassword" })} ?
-          </Typography>
         </div>
       </div>
     </div>
   );
 };
 
-export default LoginForm;
+export default ForgetPasswordForm;
 
 const useStyles = makeStyles({
   wrapper: {
@@ -196,5 +175,15 @@ const useStyles = makeStyles({
   title: {
     fontSize: 30,
     fontWeight: "bold",
+  },
+  progress: {
+    color: colors.primary,
+    position: "absolute",
+    zIndex: 1,
+    margin: "auto",
+    left: 0,
+    right: 0,
+    top: 10,
+    textAlign: "center",
   },
 });
