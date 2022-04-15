@@ -40,10 +40,17 @@ const QuestioniarBody = () => {
     questioniarsLoading,
     selectedQuestioniar,
     answeredByMe,
+    chat,
     questioniarInfo,
   } = useSelector((store: RootState) => store.chat);
   const { user } = useSelector((store: RootState) => store.auth);
   const myQuestion = String(questioniarInfo?.sender) === String(user?.id);
+
+  const membersList = selectedChat
+    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+        ?.members
+    : [];
+
   const [values, setValue] = useState();
 
   useEffect(() => {
@@ -68,6 +75,11 @@ const QuestioniarBody = () => {
 
   const dispatch = useDispatch();
   const myDate = formatDate(questioniarInfo?.dueDate);
+
+  const listOfMember = membersList?.map((member: any) => ({
+    label: ` ${member?.firstName} ${member?.surName}`,
+    value: member?.id,
+  }));
 
   const handleSave = () => {
     const myQuestions = questioniars?.map((question: QuestioniarInterface) => {
@@ -133,7 +145,7 @@ const QuestioniarBody = () => {
                 <div className={classes.datePickerWrapper}>
                   <SelectDropdown
                     title="View answer"
-                    data={values}
+                    data={listOfMember}
                     handleChange={handleUserChange}
                     isMulti={false}
                     // value={members}

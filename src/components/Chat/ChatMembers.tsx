@@ -35,6 +35,8 @@ const ChatMembers = () => {
     });
   };
 
+  console.log("chat members", members);
+
   return (
     <div className="chat-members">
       {members.map((member: UserInterface) => {

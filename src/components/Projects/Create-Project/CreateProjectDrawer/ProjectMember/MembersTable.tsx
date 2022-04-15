@@ -11,6 +11,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Button,
+  Grid,
 } from "@material-ui/core";
 import { avaialablePermissions } from "config/project.config";
 import {
@@ -21,7 +23,7 @@ import {
 import { checkMemberPermission } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
+import projectActions, {
   deleteMember,
   getGroup,
   getMember,
@@ -203,6 +205,10 @@ const RolesTable = () => {
       );
     });
   };
+  const openCreateMember = () => {
+    dispatch(projectActions.openProjectMemberDrawer());
+  };
+
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">
@@ -223,58 +229,93 @@ const RolesTable = () => {
             <CircularProgress size={20} className={classes.progress} />
           )}
 
-          {memberList?.map((row: MemberInterface) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row" style={{ width: "60%" }}>
-                <div className={classes.nameWrapper}>
-                  <Typography className={classes.name}>
-                    {row.isInvited && (
-                      <span>
-                        {row.invitedEmail}{" "}
-                        <Chip
-                          className={classes.chip}
-                          variant="outlined"
-                          label="Invited"
-                          size="small"
-                        ></Chip>
-                      </span>
+          {memberList && memberList.length > 0 ? (
+            <>
+              {memberList?.map((row: MemberInterface) => (
+                <TableRow key={row.id}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "60%" }}
+                  >
+                    <div className={classes.nameWrapper}>
+                      <Typography className={classes.name}>
+                        {row.isInvited && (
+                          <span>
+                            {row.invitedEmail}{" "}
+                            <Chip
+                              className={classes.chip}
+                              variant="outlined"
+                              label="Invited"
+                              size="small"
+                            ></Chip>
+                          </span>
+                        )}
+                        {row?.user &&
+                          `${row?.user?.firstName} ${row?.user?.surName}`}
+                      </Typography>
+                      <Typography className={classes.organizationName}>
+                        {row?.user?.companyName}
+                      </Typography>
+                    </div>
+                  </TableCell>
+                  <TableCell align="right" style={{ width: "20%" }}>
+                    <Select
+                      options={role}
+                      selectedValue={row?.role?.id}
+                      handleDisabled={havePermission ? false : true}
+                      handleValueChange={(e: string) =>
+                        selectRoleHandle(e, row)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="right" style={{ width: "20%" }}>
+                    <Select
+                      options={group}
+                      selectedValue={row?.group?.id}
+                      handleDisabled={havePermission ? false : true}
+                      handleValueChange={(e: string) =>
+                        selectGroupHandle(e, row)
+                      }
+                    />
+                  </TableCell>
+                  <TableCell align="right" style={{ width: "10%" }}>
+                    {haveDeletePermission && (
+                      <img
+                        style={{ width: 32, height: 32 }}
+                        src={assets.membersDelete}
+                        className={"pointer"}
+                        onClick={() => handleDelete(row?.id)}
+                      />
                     )}
-                    {row?.user &&
-                      `${row?.user?.firstName} ${row?.user?.surName}`}
-                  </Typography>
-                  <Typography className={classes.organizationName}>
-                    {row?.user?.companyName}
-                  </Typography>
-                </div>
-              </TableCell>
-              <TableCell align="right" style={{ width: "20%" }}>
-                <Select
-                  options={role}
-                  selectedValue={row?.role?.id}
-                  handleDisabled={havePermission ? false : true}
-                  handleValueChange={(e: string) => selectRoleHandle(e, row)}
-                />
-              </TableCell>
-              <TableCell align="right" style={{ width: "20%" }}>
-                <Select
-                  options={group}
-                  selectedValue={row?.group?.id}
-                  handleDisabled={havePermission ? false : true}
-                  handleValueChange={(e: string) => selectGroupHandle(e, row)}
-                />
-              </TableCell>
-              <TableCell align="right" style={{ width: "10%" }}>
-                {haveDeletePermission && (
-                  <img
-                    style={{ width: 32, height: 32 }}
-                    src={assets.membersDelete}
-                    className={"pointer"}
-                    onClick={() => handleDelete(row?.id)}
-                  />
-                )}
-              </TableCell>
-            </TableRow>
-          ))}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <>
+              {!loading && (
+                <Grid container style={{ height: 400 }}>
+                  <Grid item xs={12} className={classes.noProject}>
+                    <Typography
+                      // style={{ marginTop: 10 }}
+                      className={classes.noProjectText}
+                    >
+                      You haven't any member yet
+                    </Typography>
+                    <Button
+                      style={{ marginTop: 10 }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={openCreateMember}
+                    >
+                      Add a member
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
@@ -286,6 +327,7 @@ export default RolesTable;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    // position: "relative",
   },
   nameWrapper: {},
   name: {
@@ -323,5 +365,23 @@ const useStyles = makeStyles({
     right: 0,
     top: 10,
     textAlign: "center",
+  },
+  noProject: {
+    position: "absolute",
+    top: "10",
+    left: "42%",
+    // transform: 'translate("-50%", "-50%")',
+    display: "flex",
+    // alignItems: "center",
+    // justifyContent: "center",
+    height: "100%",
+    flexDirection: "column",
+    marginBottom: 40,
+    paddingTop: 10,
+  },
+  noProjectText: {
+    fontSize: 14,
+    fontWeight: 500,
+    gap: 20,
   },
 });

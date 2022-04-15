@@ -8,6 +8,8 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Grid,
+  Button,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import { avaialablePermissions } from "config/project.config";
@@ -68,6 +70,10 @@ const RolesTable = () => {
     }
   };
 
+  const openCreateTimeProfile = () => {
+    dispatch(projectActions.openTimeProfileDrawer());
+  };
+
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">
@@ -84,33 +90,61 @@ const RolesTable = () => {
             <CircularProgress size={20} className={classes.progress} />
           )}
 
-          {projectProfile.map((row: any) => (
-            <TableRow
-              key={row.name}
-              onClick={() => handleTimeProfileClick(row.id)}
-            >
-              <TableCell component="th" scope="row" style={{ width: "60%" }}>
-                <Typography className={classes.name}>{row.name}</Typography>
-              </TableCell>
-              <TableCell align="left" className={classes.roleWrapper}>
-                <Typography className={classes.compnayRole}>
-                  Project manager
-                </Typography>
-
-                <div className={classes.actions}>
-                  <div className={classes.statusChip}>
-                    <AiOutlineCheckCircle className={classes.statusIcon} />
-                    <Typography className={classes.statusText}>
-                      Activate
+          {projectProfile && projectProfile.length > 0 ? (
+            <>
+              {projectProfile.map((row: any) => (
+                <TableRow
+                  key={row.name}
+                  onClick={() => handleTimeProfileClick(row.id)}
+                >
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "60%" }}
+                  >
+                    <Typography className={classes.name}>{row.name}</Typography>
+                  </TableCell>
+                  <TableCell align="left" className={classes.roleWrapper}>
+                    <Typography className={classes.compnayRole}>
+                      Project manager
                     </Typography>
-                  </div>
-                  <div className={classes.options}>
-                    <MoreVert />
-                  </div>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+
+                    <div className={classes.actions}>
+                      <div className={classes.statusChip}>
+                        <AiOutlineCheckCircle className={classes.statusIcon} />
+                        <Typography className={classes.statusText}>
+                          Activate
+                        </Typography>
+                      </div>
+                      <div className={classes.options}>
+                        <MoreVert />
+                      </div>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <>
+              {!loading && (
+                <Grid container style={{ height: 400 }}>
+                  <Grid item xs={12} className={classes.noProject}>
+                    <Typography className={classes.noProjectText}>
+                      You haven't any Profile yet
+                    </Typography>
+                    <Button
+                      style={{ marginTop: 10 }}
+                      variant="outlined"
+                      color="primary"
+                      onClick={openCreateTimeProfile}
+                    >
+                      Create new profile
+                    </Button>
+                  </Grid>
+                </Grid>
+              )}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
@@ -122,6 +156,7 @@ export default RolesTable;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    position: "relative",
   },
   nameWrapper: {},
   name: {
@@ -179,5 +214,23 @@ const useStyles = makeStyles({
     right: 0,
     top: 10,
     textAlign: "center",
+  },
+  noProject: {
+    position: "absolute",
+    top: "8",
+    left: "42%",
+    // transform: 'translate("-50%", "-50%")',
+    display: "flex",
+    // alignItems: "center",
+    // justifyContent: "center",
+    height: "100%",
+    flexDirection: "column",
+    marginBottom: 40,
+    paddingTop: 10,
+  },
+  noProjectText: {
+    fontSize: 14,
+    fontWeight: 500,
+    gap: 20,
   },
 });

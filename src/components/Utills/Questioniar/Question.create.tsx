@@ -76,11 +76,11 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
   }, []);
 
   useEffect(() => {
-    if(intervalRef.current && settled) {
+    if (intervalRef.current && settled) {
       if (debounceTimeOut) {
         clearTimeout(debounceTimeOut);
       }
-  
+
       debounceTimeOut = setTimeout(() => {
         //   updating question in global state
         const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
@@ -124,6 +124,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     <Grid container className={classes.wrapper}>
       <Grid item xs={12} className={"create-question-row"}>
         <div className={classes.questionWrapper}>
+          helooo
           <TextField
             inputProps={{
               style: { height: 15 },

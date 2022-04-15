@@ -14,7 +14,7 @@ import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { checkMemberPermission, mapGroups } from "helpers/project.helper";
-import {
+import projectActions, {
   createMember,
   getGroup,
   getRoles,
@@ -31,6 +31,7 @@ const MemberDialog = () => {
     rolesList,
     selectedProject,
     userPermissions,
+    memberDrawer,
   } = useSelector((state: RootState) => state.project);
   const dispatch = useDispatch();
   const [name, setName] = useState();
@@ -45,11 +46,13 @@ const MemberDialog = () => {
   const isDiabled = !loading ? false : true;
 
   const handleClickOpen = () => {
-    setOpen(true);
+    // setOpen(true);
+    dispatch(projectActions.openProjectMemberDrawer());
   };
   console.log("mem permisssion", userPermissions);
   const handleClose = () => {
     setOpen(false);
+    dispatch(projectActions.closeProjectMemberDrawer());
   };
 
   useEffect(() => {
@@ -115,7 +118,7 @@ const MemberDialog = () => {
         Add a member
       </Button>
       <Dialog
-        open={open}
+        open={memberDrawer}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >

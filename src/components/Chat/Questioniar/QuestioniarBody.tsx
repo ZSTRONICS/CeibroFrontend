@@ -39,6 +39,21 @@ const QuestioniarBody = () => {
   const { questioniars, createQuestioniarLoading, selectedChat, chat } =
     useSelector((store: RootState) => store.chat);
   const { user } = useSelector((state: RootState) => state.auth);
+  /////
+  // const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
+  const membersList = selectedChat
+    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+        ?.members
+    : [];
+  ////
+
+  // const listOfMember = membersList?.map((member: any) => ({
+  //   label: ` ${member?.firstName} ${member?.surName}`,
+  //   value: member?.id,
+  // }));
+
+  console.log("membersList", membersList);
+
   const [preview, setPreview] = useState<boolean>(false);
   const [nudge, setNudge] = useState<boolean>(false);
   const [members, setMembers] = useState<any>([]);
@@ -46,6 +61,7 @@ const QuestioniarBody = () => {
   const [dueDate, setDueDate] = useState<any>(null);
   const isValidated = validateQuestions(questioniars);
   const [values, setValue] = useState();
+  const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
     setValue(removeCurrentUser(dbUsers, user?.id));
@@ -56,6 +72,12 @@ const QuestioniarBody = () => {
     setPreview(!notShowPreview);
   };
 
+  const listOfMember = membersList?.map((member: any) => ({
+    label: ` ${member?.firstName} ${member?.surName}`,
+    value: member?.id,
+  }));
+
+  console.log("listOfMembers", listOfMembers);
   const handleDateChange = (e: any) => {
     setDueDate(e?.target?.value);
   };
@@ -63,7 +85,7 @@ const QuestioniarBody = () => {
   const handleUserChange = (e: any) => {
     setMembers(e);
   };
-
+  console.log("membersmembers", members);
   const addNewQuestion = () => {
     const myQuestions: QuestioniarInterface[] = JSON.parse(
       JSON.stringify(questioniars)
@@ -74,7 +96,7 @@ const QuestioniarBody = () => {
     myQuestions.push(newQuestion);
     dispatch(setQuestions(myQuestions));
   };
-
+  console.log("vluesqqqq", values);
   const handleSave = () => {
     const myId = new Date().valueOf();
 
@@ -136,7 +158,7 @@ const QuestioniarBody = () => {
             <div className={classes.assignedToWrapper}>
               <SelectDropdown
                 title="Assigned to"
-                data={values}
+                data={listOfMember}
                 handleChange={handleUserChange}
                 isMulti={true}
                 value={members}

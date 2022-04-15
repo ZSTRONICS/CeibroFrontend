@@ -82,6 +82,8 @@ const AddGroup: React.FC<AddGroupProps> = () => {
     }
   }, [groupList]);
 
+  console.log("groupsgroups", groups);
+
   return (
     <Dialog open={documentDrawer} onClose={handleClose}>
       <DialogContent>

@@ -39,6 +39,8 @@ import config, {
   OPEN_WORK_DRAWER,
   GET_PERMISSIONS,
   SET_SELECTED_USER,
+  CLOSE_MEMBER_DRAWER,
+  OPEN_MEMBER_DRAWER,
 } from "../../config/project.config";
 import {
   requestFail,
@@ -86,6 +88,7 @@ interface ProjectReducerInt {
   roleDrawer: boolean;
   groupDrawer: boolean;
   documentDrawer: boolean;
+  memberDrawer: boolean;
   timeProfileDrawer: boolean;
   workDrawer: boolean;
   rolesList: RoleInterface[];
@@ -125,6 +128,7 @@ const projectReducer: ProjectReducerInt = {
   roleDrawer: false,
   groupDrawer: false,
   documentDrawer: false,
+  memberDrawer: false,
   timeProfileDrawer: false,
   workDrawer: false,
   rolesList: [],
@@ -396,6 +400,20 @@ const AppReducer = (
       return {
         ...state,
         documentDrawer: false,
+      };
+    }
+
+    case OPEN_MEMBER_DRAWER: {
+      return {
+        ...state,
+        memberDrawer: true,
+      };
+    }
+
+    case CLOSE_MEMBER_DRAWER: {
+      return {
+        ...state,
+        memberDrawer: false,
       };
     }
 

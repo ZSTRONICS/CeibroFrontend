@@ -189,5 +189,7 @@ export const GET_PERMISSIONS = "GET_PERMISSIONS";
 export const UPDATE_PROJECT_PICTURE = "UPDATE_PROJECT_PICTURE";
 export const DELETE_GROUP = "DELETE_GROUP";
 export const DELETE_ROLE = "DELETE_ROLE";
+export const OPEN_MEMBER_DRAWER = "OPEN_MEMBER_DRAWER";
+export const CLOSE_MEMBER_DRAWER = "CLOSE_MEMBER_DRAWER";
 
 export default projectReduxConfigs;

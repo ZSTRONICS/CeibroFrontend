@@ -21,6 +21,7 @@ import { SAVE_MESSAGES } from "../../../config/chat.config";
 import $ from "jquery";
 import assets from "../../../assets/assets";
 import { ClipLoader } from "react-spinners";
+import { classNames } from "react-select/src/utils";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -139,7 +140,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
               <Typography className={classes.questionText}>
                 Questioniar
               </Typography>
-              <img src={assets.blueDocument} />
+              <img className="w-16" src={assets.blueDocument} />
             </div>
           )}
           {replyOf && (

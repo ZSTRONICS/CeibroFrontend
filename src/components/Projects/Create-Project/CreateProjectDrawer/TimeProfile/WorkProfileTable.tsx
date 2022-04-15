@@ -10,7 +10,7 @@ import AlaramIcon from "@material-ui/icons/Alarm";
 import CropOriginalIcon from "@material-ui/icons/CropOriginal";
 import ChatIcon from "@material-ui/icons/Chat";
 import Paper from "@material-ui/core/Paper";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { CircularProgress, Typography, Grid } from "@material-ui/core";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
@@ -102,48 +102,75 @@ export default function BasicTable() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {getNewWorkList.map((row: any) => (
-            <TableRow key={row.name}>
-              <TableCell component="th" scope="row">
-                <Typography className={classes.name}>{row.name}</Typography>
-              </TableCell>
-              <TableCell>
-                <div className={classes.extrasWrapper}>
-                  {row?.time && <img src={assets.clockIcon} />}
-                  {row?.photo && (
-                    <img src={assets.wrongImage} className="w-16" />
-                  )}
-                  {row?.comment && (
-                    <img src={assets.sidebarChatIcon} className="w-16" />
-                  )}
-                </div>
-              </TableCell>
+          {getNewWorkList && getNewWorkList.length > 0 ? (
+            <>
+              {getNewWorkList.map((row: any) => (
+                <TableRow key={row.name}>
+                  <TableCell component="th" scope="row">
+                    <Typography className={classes.name}>{row.name}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <div className={classes.extrasWrapper}>
+                      {row?.time && <img src={assets.clockIcon} />}
+                      {row?.photo && (
+                        <img src={assets.wrongImage} className="w-16" />
+                      )}
+                      {row?.comment && (
+                        <img src={assets.sidebarChatIcon} className="w-16" />
+                      )}
+                    </div>
+                  </TableCell>
 
-              <TableCell className={classes.final}>
-                <div className={classes.rolesText}>
-                  <Typography className={classes.roles}>
-                    {row.group} {row.role}
-                  </Typography>
-                </div>
+                  <TableCell className={classes.final}>
+                    <div className={classes.rolesText}>
+                      <Typography className={classes.roles}>
+                        {row.group} {row.role}
+                      </Typography>
+                    </div>
 
-                <div>
-                  <img
-                    src={assets.pencilIcon}
-                    onClick={() => handleWorkClick(row?.id)}
-                  />
+                    <div>
+                      <img
+                        src={assets.pencilIcon}
+                        onClick={() => handleWorkClick(row?.id)}
+                      />
 
-                  {loading && (
-                    <CircularProgress size={20} className={classes.progress} />
-                  )}
-                  <img
-                    src={assets.trashIcon}
-                    className="w-16 cursor-pointer"
-                    onClick={() => deleteTimeProfileWork(row?.id)}
-                  />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
+                      {loading && (
+                        <CircularProgress
+                          size={20}
+                          className={classes.progress}
+                        />
+                      )}
+                      <img
+                        src={assets.trashIcon}
+                        className="w-16 cursor-pointer"
+                        onClick={() => deleteTimeProfileWork(row?.id)}
+                      />
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </>
+          ) : (
+            <>
+              {!loading && (
+                <Grid container style={{ maxHeight: 400 }}>
+                  <Grid item xs={12} className={classes.noProject}>
+                    <Typography className={classes.noProjectText}>
+                      You haven't any work yet
+                    </Typography>
+                    {/* <Button
+                      style={{ marginTop: 20 }}
+                      variant="contained"
+                      color="primary"
+                      onClick={openCreateTimeProfile}
+                    >
+                      Create new profile
+                    </Button> */}
+                  </Grid>
+                </Grid>
+              )}
+            </>
+          )}
         </TableBody>
       </Table>
     </TableContainer>
@@ -204,5 +231,25 @@ const useStyles = makeStyles({
     right: 0,
     top: 10,
     textAlign: "center",
+  },
+  noProject: {
+    position: "absolute",
+    top: " 10",
+    left: "42%",
+    // transform: 'translate("-50%", "-50%")',
+    display: "flex",
+    // alignItems: "center",
+    // justifyContent: "center",
+    height: "100%",
+    flexDirection: "column",
+    marginBottom: 40,
+    paddingTop: 10,
+  },
+  noProjectText: {
+    justifyContent: "center",
+
+    fontSize: 14,
+    fontWeight: 500,
+    gap: 20,
   },
 });

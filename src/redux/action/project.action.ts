@@ -65,6 +65,8 @@ import configs, {
   UPDATE_PROJECT_PICTURE,
   DELETE_GROUP,
   DELETE_ROLE,
+  CLOSE_MEMBER_DRAWER,
+  OPEN_MEMBER_DRAWER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -174,6 +176,16 @@ const projectActions = {
   closeProjectGroup: () => {
     return {
       type: CLOSE_GROUP_DRAWER,
+    };
+  },
+  openProjectMemberDrawer: () => {
+    return {
+      type: OPEN_MEMBER_DRAWER,
+    };
+  },
+  closeProjectMemberDrawer: () => {
+    return {
+      type: CLOSE_MEMBER_DRAWER,
     };
   },
 

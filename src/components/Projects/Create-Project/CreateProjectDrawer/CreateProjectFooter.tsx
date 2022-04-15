@@ -40,12 +40,13 @@ const CreateProjectBody = () => {
     if (saveAsDraft) {
       data.append("publishStatus", "draft");
     }
+    setLoading(true);
     dispatch(
       createProject({
         body: data,
         success: (res) => {
           toast.success("Project created");
-          setLoading(true);
+          // setLoading(true);
           dispatch(projectActions.setSelectedProject(res?.data?.id));
         },
         finallyAction: () => {
@@ -70,7 +71,6 @@ const CreateProjectBody = () => {
       other: selectedProject,
     };
     setLoading(true);
-
     dispatch(updateProject(payload));
   };
 
