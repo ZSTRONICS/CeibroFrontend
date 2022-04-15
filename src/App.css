@@ -232,6 +232,10 @@ texarea::-webkit-input-placeholder{
   font-weight: 500 !important;
 }
 
+.black-input {
+  color: var(--black) !important;
+}
+
 .options-text .MuiFormControlLabel-label {
   font-weight: 500 !important;
   font-size: 14px;

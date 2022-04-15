@@ -1,34 +1,29 @@
 // ssh -i "ceibro_new_key.pem" ubuntu@ec2-16-171-45-183.eu-north-1.compute.amazonaws.com
 
-import CreateProjectDrawer from "./components/Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
-import "./App.css";
-import RouterConfig from "./navigation/RouterConfig";
 import "fontsource-roboto";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import "./components/Topbar/ProfileBtn.css";
-import CreateTaskDrawer from "./components/Tasks/Create-Task/CreateTaskDrawer";
-import { io } from "socket.io-client";
+import "moment-timezone";
+import React, { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./redux/reducers";
-import {
-  getAllChats,
-  pushMessage,
-  setMessagesRead,
-} from "./redux/action/chat.action";
-import {
-  PUSH_MESSAGE,
-  REFRESH_CHAT,
-  PUSH_TO_UNSELECTED,
-  RECEIVE_MESSAGE,
-} from "./config/chat.config";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { io } from "socket.io-client";
+import "./App.css";
 import { sounds } from "./assets/assets";
-import { SERVER_URL } from "./utills/axios";
 import CreateQuestioniarDrawer from "./components/Chat/Questioniar/CreateQuestioniar";
 import ViewQuestioniarDrawer from "./components/Chat/Questioniar/ViewQuestioniar";
-import "moment-timezone";
-import PermissionState from "./components/context/PermissionState";
+import CreateProjectDrawer from "./components/Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
+import CreateTaskDrawer from "./components/Tasks/Create-Task/CreateTaskDrawer";
+import "./components/Topbar/ProfileBtn.css";
+import {
+  PUSH_MESSAGE, RECEIVE_MESSAGE, REFRESH_CHAT
+} from "./config/chat.config";
+import RouterConfig from "./navigation/RouterConfig";
+import {
+  getAllChats,
+  setMessagesRead
+} from "./redux/action/chat.action";
+import { RootState } from "./redux/reducers";
+import { SERVER_URL } from "./utills/axios";
 
 export const SocketContext = createContext(null);
 interface MyApp {}

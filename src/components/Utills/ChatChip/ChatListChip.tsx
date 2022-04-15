@@ -122,10 +122,10 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
       <Grid container>
         <Grid item xs={3}></Grid>
         <Grid item xs={6} style={{ paddingLeft: 10 }}>
-          {project?.name && (
+          {project?.title && (
             <Typography className={classes.chatProject}>
               <span>Project: &nbsp;&nbsp;</span>
-              <span className={classes.chatProjectName}>{project.name}</span>
+              <span className={classes.chatProjectName}>{project.title}</span>
             </Typography>
           )}
         </Grid>

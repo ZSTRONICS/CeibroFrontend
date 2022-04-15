@@ -1,12 +1,10 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import InputText from "../../../../Utills/Inputs/InputText";
-import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
-import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
-import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
+import InputText from "../../../../Utills/Inputs/InputText";
+import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
 
 const ProjectOverViewForm = () => {
   const dispatch = useDispatch();

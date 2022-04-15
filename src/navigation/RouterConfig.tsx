@@ -1,9 +1,4 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import Login from "../components/Auth/Login/Login";
 // import ForgetPassword from "components/Auth/Login/ForgetPassword";
 import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
@@ -20,11 +15,14 @@ import AppLayout from "./AppLayout";
 import Connections from "components/Connection/Connection";
 import PrivateRoute from "./PrivateRoute";
 
+import { createBrowserHistory } from "history";
+export const appHistory = createBrowserHistory();
+
 interface Configs {}
 
 const RouterConfig: React.FC<Configs> = () => {
   return (
-    <Router>
+    <Router history={appHistory}>
       <Switch>
         <Redirect exact from="/" to="/login" />
         <Route path="/login" component={Login} />

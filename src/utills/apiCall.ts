@@ -1,5 +1,8 @@
+import { LOGIN } from "config/auth.config";
+import { appHistory } from "navigation/RouterConfig";
 import { toast } from "react-toastify";
 import { call, put, select } from "redux-saga/effects";
+import { logoutUser } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 import axios from "./axios";
 import { requestFail, requestPending, requestSuccess } from "./status";
@@ -87,6 +90,11 @@ const apiCall = ({
       onFailSaga && onFailSaga(err);
 
       if (showErrorToast) {
+        if (err?.response?.status === 401) {
+          yield put(logoutUser());
+          return;
+          // appHistory.push("/login");
+        }
         yield put({
           type: requestFail(type),
           payload: err,
