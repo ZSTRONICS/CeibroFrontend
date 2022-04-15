@@ -144,7 +144,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   icon: {
-    padding: 4,
+    padding: 8,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

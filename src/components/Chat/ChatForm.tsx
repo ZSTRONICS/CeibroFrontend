@@ -105,8 +105,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       }
 
       const myId = new Date().valueOf();
+      console.log("user is ", user);
       const newMessage = {
-        username: user?.name,
+        sender: user,
         time: "1 seconds ago",
         message: text,
         seen: true,
@@ -194,7 +195,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         type: PUSH_MESSAGE,
         payload: {
           type: "voice",
-          username: user?.name,
+          username: user?.firstName + " " + user.surName,
+          sender: user,
           time: "1 seconds ago",
           seen: true,
           myMessage: true,
@@ -252,7 +254,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             type="text"
             disabled={!selectedChat}
             placeholder={selectedChat ? "Type a message" : "Select a chat room"}
-            className={`messageInput ${classes.messageInput}`}
+            className={`messageInput black-input ${classes.messageInput}`}
           />
           <div className={classes.sendWrapper}>
             <img
@@ -361,7 +363,7 @@ const useStyles = makeStyles({
   },
   wrapper: {
     // height: 100,
-    borderTop: `1px solid ${colors.lightGrey}`,
+    borderTop: `2px solid ${colors.lightGrey}`,
     paddingTop: 10,
     position: "relative",
   },
@@ -375,7 +377,7 @@ const useStyles = makeStyles({
     paddingLeft: 15,
     display: "flex",
     alignItems: "center",
-    borderBottom: `1px solid ${colors.lightGrey}`,
+    borderBottom: `2px solid ${colors.lightGrey}`,
   },
   sendWrapper: {
     fontSize: 18,
