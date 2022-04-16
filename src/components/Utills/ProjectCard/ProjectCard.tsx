@@ -38,17 +38,10 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   const dispatch = useDispatch();
 
   const handleProjectClick = () => {
+    dispatch(getPermissions({ other: selectedProject }));
     dispatch(projectActions.setSelectedProject(id || null));
     dispatch(projectActions.openDrawer());
-
-    console.log("project clicked");
   };
-
-  useEffect(() => {
-    if (selectedProject) {
-      dispatch(getPermissions({ other: selectedProject }));
-    }
-  }, [selectedProject]);
 
   const classes = useStyles();
 

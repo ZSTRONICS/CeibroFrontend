@@ -232,7 +232,7 @@ texarea::-webkit-input-placeholder{
   font-weight: 500 !important;
 }
 
-.black-input {
+.black-input, .black-input input {
   color: var(--black) !important;
 }
 

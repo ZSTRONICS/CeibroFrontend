@@ -17,6 +17,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createRole,
+  getPermissions,
   getRoles,
   getRolesById,
   updateRole,
@@ -42,24 +43,11 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const { roleDrawer, role, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
-  // const permissions = useContext(permissionContext);
-  // console.log("permission", permissions);
-
-  console.log("selected rolee", selectedRole);
-  console.log("userPermissions", userPermissions?.roles);
-
-  // console.log("permissions available", permissionsAvailable);
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(projectActions.closeProjectRole());
   };
-
-  // function checkRolePermission(permissions: any, permissionToCheck: any) {
-  //   return permissions.includes(permissionToCheck);
-  // }
-  // const havePermission = checkRolePermission(userPermissions?.roles, "create");
-  // console.log("havePermission", havePermission);
 
   const handleOk = () => {
     const payload = {
@@ -92,6 +80,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         toast.success("Role Updated successfully");
         dispatch(projectActions.closeProjectRole());
         dispatch(getRoles({ other: selectedProject }));
+        dispatch(getPermissions({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);

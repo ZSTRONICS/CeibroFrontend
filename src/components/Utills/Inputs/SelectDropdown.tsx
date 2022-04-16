@@ -43,6 +43,7 @@ const SelectDropdown: FC<My> = (props) => {
         color: colors.inputGrey,
         fontWeight: 500,
         fontFamily: "Inter",
+        paddingLeft: 10,
       };
     },
     control: (styles: any) => ({

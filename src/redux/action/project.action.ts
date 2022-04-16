@@ -67,6 +67,7 @@ import configs, {
   DELETE_ROLE,
   CLOSE_MEMBER_DRAWER,
   OPEN_MEMBER_DRAWER,
+  GET_AVAILABLE_PROJECT_MEMBERS,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -276,5 +277,8 @@ export const getPermissions = createAction(GET_PERMISSIONS);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
+export const getAvailableProjectMembers = createAction(
+  GET_AVAILABLE_PROJECT_MEMBERS
+);
 
 export default projectActions;

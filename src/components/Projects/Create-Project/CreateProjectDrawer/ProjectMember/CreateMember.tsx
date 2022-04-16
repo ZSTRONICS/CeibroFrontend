@@ -10,7 +10,10 @@ import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import colors from "assets/colors";
 
 import InputText from "../../../../Utills/Inputs/InputText";
-import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
+import CreateableSelectDropdown from "../../../../Utills/Inputs/CreateAbleSelect";
+import SelectDropdown, {
+  dataInterface,
+} from "../../../../Utills/Inputs/SelectDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { checkMemberPermission, mapGroups } from "helpers/project.helper";
@@ -20,6 +23,7 @@ import projectActions, {
   getRoles,
   getMember,
   getRolesById,
+  getAvailableProjectMembers,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
 import { avaialablePermissions } from "config/project.config";
@@ -41,6 +45,10 @@ const MemberDialog = () => {
   const [selectRoles, setSelectRoles] = useState<any>();
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+  const [selectedEmail, setSelectedEmail] = useState<dataInterface | null>(
+    null
+  );
 
   const classes = useStyle();
   const isDiabled = !loading ? false : true;
@@ -58,6 +66,14 @@ const MemberDialog = () => {
   useEffect(() => {
     dispatch(getGroup({ other: selectedProject }));
     dispatch(getRoles({ other: selectedProject }));
+    dispatch(
+      getAvailableProjectMembers({
+        other: selectedProject,
+        success: (res) => {
+          setAvailableUsers(res.data);
+        },
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -82,7 +98,7 @@ const MemberDialog = () => {
   const handleOk = () => {
     const payload = {
       body: {
-        email: name,
+        email: selectedEmail?.value,
         roleId: selectRoles?.value,
         groupId: selectGroups?.value,
         subContractor: selectGroups?.value,
@@ -100,10 +116,6 @@ const MemberDialog = () => {
     setLoading(true);
 
     dispatch(createMember(payload));
-  };
-
-  const handleNameChange = (e: any) => {
-    setName(e.target.value);
   };
 
   return (
@@ -125,10 +137,17 @@ const MemberDialog = () => {
         <DialogContent>
           <div className={classes.body}>
             <div>
-              <InputText
+              <CreateableSelectDropdown
+                title="Role"
+                data={availableUsers}
+                value={selectedEmail}
+                handleChange={(e: any) => setSelectedEmail(e)}
+                zIndex={11}
+              />
+              {/* <InputText
                 placeholder="Search or/and add email"
                 onChange={handleNameChange}
-              />
+              /> */}
             </div>
             <div className={classes.meta} style={{ zIndex: 1000 }}>
               <SelectDropdown
@@ -193,7 +212,8 @@ const useStyle = makeStyles({
     fontStyle: "normal",
   },
   body: {
-    width: 280,
+    width: 360,
+    minHeight: 300,
   },
   meta: {
     marginTop: 10,

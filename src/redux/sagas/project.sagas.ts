@@ -13,6 +13,7 @@ import {
   DELETE_PROJECT,
   DELETE_ROLE,
   DELETE_WORK,
+  GET_AVAILABLE_PROJECT_MEMBERS,
   GET_FILE,
   GET_FOLDER,
   GET_FOLDER_FILES,
@@ -334,6 +335,12 @@ const deleteRole = apiCall({
   path: (payload) => `/project/role/detail/${payload?.other}`,
 });
 
+const getAvailableProjectMembers = apiCall({
+  type: GET_AVAILABLE_PROJECT_MEMBERS,
+  method: "get",
+  path: (payload) => `/project/members/available/${payload?.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -377,6 +384,7 @@ function* projectSaga() {
   yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
   yield takeLatest(DELETE_GROUP, deleteGroup);
   yield takeLatest(DELETE_ROLE, deleteRole);
+  yield takeLatest(GET_AVAILABLE_PROJECT_MEMBERS, getAvailableProjectMembers);
 }
 
 export default projectSaga;
