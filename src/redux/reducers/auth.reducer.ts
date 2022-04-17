@@ -46,7 +46,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(LOGIN): {
-      localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      // localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
       return {
         ...state,
         loginLoading: false,

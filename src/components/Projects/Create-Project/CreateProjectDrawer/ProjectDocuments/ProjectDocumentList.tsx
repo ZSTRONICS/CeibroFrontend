@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFolder } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
+import Moment from "react-moment";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
@@ -98,7 +99,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   align="right"
                   className={classes.modifyDate}
                 >
-                  {row?.createdAt}
+                  {<Moment format="YYYY-MM-DD">{row?.createdAt}</Moment>}
                 </TableCell>
 
                 <TableCell

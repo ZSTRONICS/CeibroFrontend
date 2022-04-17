@@ -12,10 +12,11 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequest } from "../../../redux/action/auth.action";
+import { loginRequest, verifyEmail } from "../../../redux/action/auth.action";
 import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
+import { toast } from "react-toastify";
 
 interface LoginForm {
   tokenLoading: boolean;
@@ -38,6 +39,8 @@ const LoginForm: React.FC<LoginForm> = (props) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const [verifyError, setVerifyError] = useState<boolean>(false);
 
   const handleSubmit = () => {
     const payload = {
@@ -45,8 +48,34 @@ const LoginForm: React.FC<LoginForm> = (props) => {
         email,
         password,
       },
+      onFailAction: (err: any) => {
+        console.log("error login", err.response);
+
+        if (err.response.status === 406) {
+          setVerifyError(true);
+        } else {
+          setError(true);
+
+          // setTimeout(() => {
+          //   setError(false);
+          // }, 3000);
+        }
+      },
+      showErrorToast: true,
     };
     dispatch(loginRequest(payload));
+  };
+
+  const handleVerifyEmail = () => {
+    const payload = {
+      body: { email },
+      success: () => {
+        toast.success("Please check your email");
+
+        history.push("/verify-email");
+      },
+    };
+    dispatch(verifyEmail(payload));
   };
 
   const handlePasswordForget = () => {
@@ -71,9 +100,37 @@ const LoginForm: React.FC<LoginForm> = (props) => {
               : "Email verified successfully. Please sign in!"}
           </Alert>
         )}
+        {/* {showError && <Alert severity="error">Link expired</Alert>} */}
 
-        {showError && <Alert severity="error">Link expired</Alert>}
-
+        {verifyError && (
+          <Alert severity="error" style={{ display: "flex" }}>
+            <Typography
+              className={`${classes.titles} ${classes.forget} ${classes.color} `}
+              variant="body1"
+              gutterBottom
+              onClick={handleVerifyEmail}
+              // style={{ textAlign: "center" }}
+            >
+              Email not verified.
+              <span className={classes.emailVerify}>
+                {" "}
+                {intl.formatMessage({ id: "input.verifyEmail" })} ?
+              </span>
+            </Typography>
+          </Alert>
+        )}
+        {/* {verifyError && (
+          <Typography
+            className={`${classes.titles} ${classes.forget}`}
+            variant="body1"
+            gutterBottom
+            onClick={handleVerifyEmail}
+            // style={{ textAlign: "center" }}
+          >
+            <a> {intl.formatMessage({ id: "input.verifyEmail" })} </a>
+          </Typography>
+        )} */}
+        {error && <Alert severity="error">Incorrect email or password</Alert>}
         <TextField
           placeholder={intl.formatMessage({ id: "input.Email" })}
           className={classes.inputs}
@@ -184,6 +241,17 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 14,
     paddingLeft: 30,
+  },
+  color: {
+    color: "#611A15",
+    padding: 0,
+  },
+  emailVerify: {
+    textDecoration: "underline",
+
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
   logoWrapper: {
     paddingTop: "2%",

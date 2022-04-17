@@ -8,6 +8,7 @@ import {
   LOGIN,
   OTP_VERIFY,
   RESET_PASSWORD,
+  SEND_VERIFY_EMAIL,
   UPDATE_MY_PROFILE,
   VERIFY_EMAIL,
 } from "../../config/auth.config";
@@ -85,6 +86,12 @@ const resetPassword = apiCall({
   // reset-password?otp=grgdfvdf
 });
 
+const sendVerifyEmail = apiCall({
+  type: SEND_VERIFY_EMAIL,
+  method: "post",
+  path: `/auth/send-verification-email`,
+});
+
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
@@ -95,6 +102,7 @@ function* projectSaga() {
   yield takeLatest(OTP_VERIFY, otpVerify);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
   yield takeLatest(RESET_PASSWORD, resetPassword);
+  yield takeLatest(SEND_VERIFY_EMAIL, sendVerifyEmail);
 }
 
 export default projectSaga;

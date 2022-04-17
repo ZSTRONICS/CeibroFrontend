@@ -156,7 +156,6 @@ export default RolesTable;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
-    position: "relative",
   },
   nameWrapper: {},
   name: {
@@ -216,15 +215,12 @@ const useStyles = makeStyles({
     textAlign: "center",
   },
   noProject: {
-    position: "absolute",
-    top: "8",
-    left: "42%",
-    // transform: 'translate("-50%", "-50%")',
     display: "flex",
-    // alignItems: "center",
+    alignItems: "center",
     // justifyContent: "center",
     height: "100%",
     flexDirection: "column",
+    marginLeft: 270,
     marginBottom: 40,
     paddingTop: 10,
   },

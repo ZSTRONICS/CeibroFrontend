@@ -9,6 +9,8 @@ import {
   OTP_VERIFY,
   FORGET_PASSWORD,
   RESET_PASSWORD,
+  VERIFY_EMAIL,
+  SEND_VERIFY_EMAIL,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
@@ -25,3 +27,4 @@ export const updateMyProfile = createAction(UPDATE_MY_PROFILE);
 export const otpVerify = createAction(OTP_VERIFY);
 export const forgetPassword = createAction(FORGET_PASSWORD);
 export const resetPassword = createAction(RESET_PASSWORD);
+export const verifyEmail = createAction(SEND_VERIFY_EMAIL);
