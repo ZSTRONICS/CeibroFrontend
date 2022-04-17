@@ -89,16 +89,17 @@ const apiCall = ({
       onFailAction && onFailAction(err);
       onFailSaga && onFailSaga(err);
 
+      yield put({
+        type: requestFail(type),
+        payload: err,
+      });
+
       if (showErrorToast) {
-        if (err?.response?.status === 401) {
+        if (err?.response?.status === 401 || err?.response?.status === 406) {
           yield put(logoutUser());
           return;
           // appHistory.push("/login");
         }
-        yield put({
-          type: requestFail(type),
-          payload: err,
-        });
 
         const msg =
           err?.response?.data?.message || err?.message || "Unknown error";
