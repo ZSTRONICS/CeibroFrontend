@@ -43,6 +43,8 @@ const LoginForm: React.FC<LoginForm> = (props) => {
   const [verifyError, setVerifyError] = useState<boolean>(false);
 
   const handleSubmit = () => {
+    setError(false);
+    setVerifyError(false);
     const payload = {
       body: {
         email,
@@ -56,9 +58,9 @@ const LoginForm: React.FC<LoginForm> = (props) => {
         } else {
           setError(true);
 
-          // setTimeout(() => {
-          //   setError(false);
-          // }, 3000);
+          setTimeout(() => {
+            setError(false);
+          }, 3000);
         }
       },
       showErrorToast: true,
@@ -93,15 +95,6 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       </div>
 
       <div className={classes.loginForm}>
-        {(showSuccess || tokenLoading) && (
-          <Alert severity="success">
-            {tokenLoading
-              ? "Verifying email"
-              : "Email verified successfully. Please sign in!"}
-          </Alert>
-        )}
-        {/* {showError && <Alert severity="error">Link expired</Alert>} */}
-
         {verifyError && (
           <Alert severity="error" style={{ display: "flex" }}>
             <Typography
@@ -109,7 +102,6 @@ const LoginForm: React.FC<LoginForm> = (props) => {
               variant="body1"
               gutterBottom
               onClick={handleVerifyEmail}
-              // style={{ textAlign: "center" }}
             >
               Email not verified.
               <span className={classes.emailVerify}>
@@ -119,17 +111,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
             </Typography>
           </Alert>
         )}
-        {/* {verifyError && (
-          <Typography
-            className={`${classes.titles} ${classes.forget}`}
-            variant="body1"
-            gutterBottom
-            onClick={handleVerifyEmail}
-            // style={{ textAlign: "center" }}
-          >
-            <a> {intl.formatMessage({ id: "input.verifyEmail" })} </a>
-          </Typography>
-        )} */}
+
         {error && <Alert severity="error">Incorrect email or password</Alert>}
         <TextField
           placeholder={intl.formatMessage({ id: "input.Email" })}
