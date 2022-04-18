@@ -190,6 +190,7 @@ const useStyles = makeStyles({
   titles: {
     color: colors.textPrimary,
     fontFamily: "Inter",
+    marginTop: -10,
   },
   loginForm: {
     display: "flex",
@@ -223,6 +224,7 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 14,
     paddingLeft: 30,
+    cursor: "pointer",
   },
   color: {
     color: "#611A15",

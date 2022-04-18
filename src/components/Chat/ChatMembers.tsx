@@ -7,6 +7,9 @@ import { useConfirm } from "material-ui-confirm";
 import { addMemberToChat, getAllChats } from "../../redux/action/chat.action";
 import { toast } from "react-toastify";
 import { UserInterface } from "constants/interfaces/user.interface";
+import ChatMemberSearch from "./ChatMemberSearch";
+import { useState } from "react";
+import { makeStyles } from "@material-ui/core";
 
 const ChatMembers = () => {
   const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
@@ -14,9 +17,10 @@ const ChatMembers = () => {
     ? chat.find((room: any) => String(room._id) == String(selectedChat))
         ?.members
     : [];
+  const [searchText, setSearchText] = useState("");
   const confirm = useConfirm();
   const dispatch = useDispatch();
-
+  const classes = useStyles();
   const handleClick = (userId: any) => {
     // console.log('confirm is ', confirm
     confirm({ description: "User will be removed from this chat" }).then(() => {
@@ -35,11 +39,30 @@ const ChatMembers = () => {
     });
   };
 
-  console.log("chat members", members);
+  const handleSearchChange = (e: any) => {
+    setSearchText(e?.target?.value);
+  };
+
+  let myMembers = members;
+  if (searchText && members) {
+    myMembers = members?.filter((member: UserInterface) => {
+      console.log(
+        'checking searchText "',
+        searchText,
+        '" in ',
+        member.firstName
+      );
+      return (
+        member?.firstName?.toLowerCase()?.includes(searchText?.toLowerCase()) ||
+        member?.surName?.toLowerCase()?.includes(searchText?.toLowerCase())
+      );
+    });
+  }
 
   return (
     <div className="chat-members">
-      {members.map((member: UserInterface) => {
+      <ChatMemberSearch value={searchText} handleChange={handleSearchChange} />
+      {myMembers?.map?.((member: UserInterface) => {
         return (
           <Grid key={member.id} container className="chat-member-chip">
             <Grid item xs={2} style={{ paddingTop: 5 }}>
@@ -55,11 +78,13 @@ const ChatMembers = () => {
               xs={8}
               style={{ padding: 2, display: "flex", flexDirection: "column" }}
             >
-              <Typography className="chat-member-name">
+              <Typography className={`chat-member-name ${classes.memberName}`}>
                 {member.firstName} {member.surName}
               </Typography>
-              <Typography className="chat-member-company">
-                Project: {member.companyName}
+              <Typography
+                className={`${classes.memberCompany} chat-member-company`}
+              >
+                Company: {member.companyName}
               </Typography>
             </Grid>
             <Grid item xs={2} style={styles.trashWrapper}>
@@ -90,3 +115,14 @@ const styles = {
     cursor: "pointer",
   },
 };
+
+const useStyles = makeStyles({
+  memberName: {
+    fontSize: 14,
+    fontWeight: 700,
+  },
+  memberCompany: {
+    fontSize: 12,
+    fontWeight: 500,
+  },
+});

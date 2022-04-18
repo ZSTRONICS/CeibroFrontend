@@ -162,6 +162,7 @@ const CreateWork = () => {
         color="primary"
         className={classes.btn}
         onClick={handleClickOpen}
+        disabled={!selectedTimeProfile}
       >
         Add new work
       </Button>

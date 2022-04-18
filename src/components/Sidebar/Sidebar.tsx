@@ -130,11 +130,13 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     padding: "10px 10px",
+    paddingRight: 0,
     borderBottom: `1px solid ${colors.white}`,
     fontSize: 16,
     fontWeight: 500,
     color: colors.primary,
     cursor: "pointer",
+    gap: 13,
     "&:hover": {
       background: colors.white,
     },

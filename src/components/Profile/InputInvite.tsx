@@ -74,7 +74,7 @@ const InputInvite: React.FunctionComponent<IAppProps> = (props) => {
       <div className={classes.inputWrapper}>
         <input
           type="text"
-          className={`emptyBorder ${classes.input}`}
+          className={`emptyBorder black-input ${classes.input}`}
           placeholder="Enter email or name surname"
           value={email}
           onChange={(e: any) => setEmail(e?.target.value)}

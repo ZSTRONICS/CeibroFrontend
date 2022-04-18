@@ -45,19 +45,21 @@ const ImagePicker = () => {
         })
       );
 
-      const formdata = new FormData();
-      formdata.append("profilePic", e?.target?.files?.[0]);
+      if (selectedProject) {
+        const formdata = new FormData();
+        formdata.append("profilePic", e?.target?.files?.[0]);
 
-      dispatch(
-        updateProjectPicture({
-          body: formdata,
-          success: () => {
-            // dispatch(getProjectDetail());
-            toast.success("project pic updated");
-          },
-          other: selectedProject,
-        })
-      );
+        dispatch(
+          updateProjectPicture({
+            body: formdata,
+            success: () => {
+              // dispatch(getProjectDetail());
+              toast.success("project pic updated");
+            },
+            other: selectedProject,
+          })
+        );
+      }
     }
   };
 

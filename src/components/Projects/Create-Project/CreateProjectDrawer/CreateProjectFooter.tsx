@@ -157,7 +157,7 @@ const CreateProjectBody = () => {
         {isDiabled && loading && (
           <CircularProgress size={20} className={classes.progress} />
         )}
-        {selectedProject ? "update" : "Create project"}
+        {selectedProject ? "Update" : "Create project"}
       </Button>
     </Grid>
   );

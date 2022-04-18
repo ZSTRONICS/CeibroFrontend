@@ -50,8 +50,9 @@ import testProject2 from "./images/TestProject2.png";
 import testProject3 from "./images/TestProject3.png";
 import testProject4 from "./images/TestProject4.png";
 import membersDelete from "./images/membersDelete.png";
-
+import Add from "./images/Add.png";
 import message from "./sound/message.mp3";
+import blueSearch from "./images/blueSearch.png";
 
 const assets = {
   sidebarDashboardIcon,
@@ -100,6 +101,8 @@ const assets = {
   emoji,
   usersFolder,
   pencilFilled,
+  Add,
+  blueSearch,
 
   testProject1,
   testProject2,

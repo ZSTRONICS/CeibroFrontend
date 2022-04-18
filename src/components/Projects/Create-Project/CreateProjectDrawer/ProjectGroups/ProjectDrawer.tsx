@@ -142,7 +142,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           color="secondary"
           autoFocus
         >
-          cancel
+          Cancel
         </Button>
         <Button
           className={classes.ok}
@@ -151,7 +151,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           onClick={handleSubmit}
           disabled={isDiabled}
         >
-          {selectedGroup ? "update" : "ok"}
+          {selectedGroup ? "Update" : "Ok"}
 
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />

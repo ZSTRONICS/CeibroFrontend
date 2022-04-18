@@ -1,17 +1,18 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import colors from "../../assets/colors";
-import ChatSidebar from "./ChatSidebar";
-import ChatBoxHeader from "./ChatBoxHeader";
-import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
-import ChatBody from "./ChatBody";
-import ChatForm from "./ChatForm";
-import { useEffect, useRef, useState } from "react";
-import { clearSelectedChat } from "../../redux/action/chat.action";
+import { SET_CHAT_SEARCH } from "config/chat.config";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import MediaSidebar from "./MediaSidebar";
-import "./chat.css";
-import { RootState } from "../../redux/reducers";
 import { useMediaQuery } from "react-responsive";
+import colors from "../../assets/colors";
+import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
+import { clearSelectedChat } from "../../redux/action/chat.action";
+import { RootState } from "../../redux/reducers";
+import "./chat.css";
+import ChatBody from "./ChatBody";
+import ChatBoxHeader from "./ChatBoxHeader";
+import ChatForm from "./ChatForm";
+import ChatSidebar from "./ChatSidebar";
+import MediaSidebar from "./MediaSidebar";
 
 const Chat = () => {
   const classes = useStyles();
@@ -76,6 +77,10 @@ const Chat = () => {
   };
 
   useEffect(() => {
+    dispatch({
+      type: SET_CHAT_SEARCH,
+      payload: null,
+    });
     dispatch(clearSelectedChat());
     return () => {
       dispatch(clearSelectedChat());

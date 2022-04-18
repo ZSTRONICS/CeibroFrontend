@@ -315,7 +315,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           color="secondary"
           autoFocus
         >
-          cancel
+          Cancel
         </Button>
         <Button
           className={classes.ok}
@@ -324,7 +324,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           disabled={isDiabled}
           onClick={handleSubmit}
         >
-          {selectedRole ? "update" : "ok"}
+          {selectedRole ? "Update" : "Ok"}
           {loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}

@@ -57,7 +57,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       success: () => {
         toast.success("Group created successfully");
         dispatch(projectActions.closeProjectDocuments());
-        dispatch(getFolder({ other: selectedProject }));
+        dispatch(getFolder({ other: { selectedProject } }));
       },
       finallyAction: () => {
         setLoading(false);
@@ -82,8 +82,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
     }
   }, [groupList]);
 
-  console.log("groupsgroups", groups);
-
   return (
     <Dialog open={documentDrawer} onClose={handleClose}>
       <DialogContent>
@@ -106,13 +104,13 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleOk} color="primary" disabled={isDiabled}>
-          ok
+          Ok
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}
         </Button>
         <Button onClick={handleClose} color="secondary" autoFocus>
-          cancel
+          Cancel
         </Button>
       </DialogActions>
     </Dialog>

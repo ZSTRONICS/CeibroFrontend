@@ -20,6 +20,7 @@ import {
   getPinnedMessages,
   getRoomMedia,
   getRoomQuestioniars,
+  setMembersDialog,
 } from "../../redux/action/chat.action";
 import colors from "assets/colors";
 
@@ -87,11 +88,17 @@ const MediaSidebar = () => {
     }
   };
 
+  const handleAddMember = (e: any) => {
+    e?.preventDefault?.();
+    e?.stopPropagation?.();
+    dispatch(setMembersDialog(true));
+  };
+
   return (
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         <button className="accordion" onClick={() => handleClick(1)}>
-          <span>
+          <span className={classes.chatMembersWrapper}>
             <Badge
               badgeContent={selectedChatRoom?.members?.length}
               color="secondary"
@@ -102,7 +109,18 @@ const MediaSidebar = () => {
               <img src={assets.usersIcon} />
             </Badge>
             {sidebarOpen && (
-              <span className="accordion-title">Chat members</span>
+              <span
+                className={`accordion-title ${classes.chatMembers} ${
+                  openIndex === 1 ? "active" : ""
+                }`}
+              >
+                Chat members
+                <img
+                  src={assets.Add}
+                  onClick={handleAddMember}
+                  className={`${classes.addIcon}`}
+                />
+              </span>
             )}
           </span>
           {sidebarOpen && <KeyboardArrowDown />}
@@ -173,5 +191,21 @@ const useStyles = makeStyles({
   },
   font1: {
     fontSize: "0.5rem",
+  },
+  addIcon: {
+    border: `2px solid ${colors.primary}`,
+    padding: 2,
+    width: 10,
+    height: 10,
+  },
+  chatMembersWrapper: {
+    display: "flex",
+    width: "100%",
+  },
+  chatMembers: {
+    display: "flex",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "space-evenly",
   },
 });

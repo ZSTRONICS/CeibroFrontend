@@ -41,6 +41,7 @@ import config, {
   SET_SELECTED_USER,
   CLOSE_MEMBER_DRAWER,
   OPEN_MEMBER_DRAWER,
+  CREATE_NEW_PROFILE,
 } from "../../config/project.config";
 import {
   requestFail,
@@ -226,6 +227,7 @@ const AppReducer = (
       return {
         ...state,
         selectedProject: action.payload,
+        menue: 1,
       };
     }
     case SET_SELECTED_ROLE: {
@@ -245,6 +247,12 @@ const AppReducer = (
       return {
         ...state,
         selectedTimeProfile: action.payload,
+      };
+    }
+    case requestSuccess(CREATE_NEW_PROFILE): {
+      return {
+        ...state,
+        selectedTimeProfile: action.payload?.data?.id,
       };
     }
     case GET_FILTER_PROJECTS: {

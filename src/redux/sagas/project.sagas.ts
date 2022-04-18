@@ -143,13 +143,10 @@ const geFolder = apiCall({
   // path: (payload) =>
   //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
   path: (payload) => {
-    let url = "/project/folder/";
     const selectedProject = payload?.other?.selectedProject;
     const inputData = payload?.other?.findDoc;
-    console.log("selectedProject saga", selectedProject);
-    if (selectedProject) {
-      url = `${url}${selectedProject}`;
-    }
+
+    let url = `/project/folder/${selectedProject}`;
 
     if (inputData) {
       url = `${url}?search=${inputData}`;

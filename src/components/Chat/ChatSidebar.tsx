@@ -18,7 +18,7 @@ import {
   SET_CHAT_SEARCH,
   SET_FAVOURITE_FILTER,
 } from "../../config/chat.config";
-import { getAllChats } from "../../redux/action/chat.action";
+import { clearSelectedChat, getAllChats } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import InputText from "../Utills/Inputs/InputText";
 import ChatList from "./ChatList";
@@ -70,6 +70,7 @@ const ChatSidebar = () => {
   };
 
   const handleChatRoomSearch = (e: any) => {
+    dispatch(clearSelectedChat());
     dispatch({
       type: SET_CHAT_SEARCH,
       payload: e?.target?.value,

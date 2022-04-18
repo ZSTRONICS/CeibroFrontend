@@ -34,7 +34,7 @@ const SmartMenuBar = () => {
   }, []);
 
   const goToConnections = () => {
-    history.push("connections");
+    history.push("/connections");
   };
 
   return (
@@ -95,9 +95,7 @@ const SmartMenuBar = () => {
           >
             View
           </Button>
-          <ViewInvitations 
-            hideBtn={true}
-          />
+          <ViewInvitations hideBtn={true} />
         </div>
       </Grid>
 

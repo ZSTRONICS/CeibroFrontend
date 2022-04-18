@@ -20,7 +20,7 @@ const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
       <div className={classes.inputWrapper}>
         <input
           type="text"
-          className={`emptyBorder ${classes.input}`}
+          className={`emptyBorder black-input ${classes.input}`}
           placeholder="Search"
           onChange={props.onChange}
         />
