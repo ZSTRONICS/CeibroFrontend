@@ -37,6 +37,7 @@ const SelectDropdown: FC<My> = (props) => {
 
   const { value, isMulti, isClearAble, placeholder, zIndex } = props;
 
+  console.log("createAbles", props);
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
       return {

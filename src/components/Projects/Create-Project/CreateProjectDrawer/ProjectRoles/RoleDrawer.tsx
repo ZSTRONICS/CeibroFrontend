@@ -11,12 +11,16 @@ import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
 import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
+import SelectDropdown, {
+  dataInterface,
+} from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import React, { useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createRole,
+  getAvailableProjectMembers,
+  getMember,
   getPermissions,
   getRoles,
   getRolesById,
@@ -24,6 +28,7 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
+import { string } from "yup/lib/locale";
 // import permissionContext from "../../../../context/PermissionContext";
 interface AddRoleProps {}
 
@@ -32,12 +37,19 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const classes = useStyles();
   const roles = ["create", "edit", "delete", "self-made"];
+  const workTempale = {
+    roles: [],
+  };
 
   const [isAdmin, setIsAdmin] = useState(false);
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+  const [selectedMember, setSelectedMember] = useState<any>(null);
+  // const [data, setData] = useState<any>({ roles: [] });
+  const [data, setData] = useState<any>(workTempale);
 
   const isDiabled = !loading ? false : true;
 
@@ -48,6 +60,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const handleClose = () => {
     dispatch(projectActions.closeProjectRole());
   };
+
+  // const handleChange = (name: string, value: boolean) => {
+  //   setData({
+  //     ...data,
+  //     [name]: value,
+  //   });
+  // };
 
   const handleOk = () => {
     const payload = {
@@ -73,13 +92,17 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         name: role.name,
         admin: role.admin,
         roles: role.roles,
-        member: role.member,
+        member: data?.roles.map((role: dataInterface) => {
+          return role.value;
+        }),
         timeProfile: role.timeProfile,
       },
       success: () => {
         toast.success("Role Updated successfully");
         dispatch(projectActions.closeProjectRole());
         dispatch(getRoles({ other: selectedProject }));
+        dispatch(getMember({ other: selectedProject }));
+
         dispatch(getPermissions({ other: selectedProject }));
       },
       finallyAction: () => {
@@ -183,6 +206,17 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       );
     }
   }, [roleDrawer, selectedRole]);
+
+  useEffect(() => {
+    dispatch(
+      getAvailableProjectMembers({
+        other: selectedProject,
+        success: (res) => {
+          setAvailableUsers(res.data);
+        },
+      })
+    );
+  }, []);
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
@@ -197,9 +231,17 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           <SelectDropdown
             title="Member"
             placeholder="Please select"
-            data={[]}
-            value={[]}
-            // handleChange={(e: any) => setSelectedUser(e)}
+            data={availableUsers}
+            isMulti={true}
+            value={data?.roles}
+            // handleChange={(e: any) => setSelectedMember(e)}
+
+            handleChange={(values: dataInterface[]) => {
+              setData({
+                ...data,
+                roles: values,
+              });
+            }}
           />
           <br />
           <HorizontalBreak color={colors.grey} />
