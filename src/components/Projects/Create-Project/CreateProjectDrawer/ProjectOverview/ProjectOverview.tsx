@@ -1,9 +1,9 @@
 import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import DatePicker from "../../../../Utills/Inputs/DatePicker";
-import SelectDropdown, {
-  dataInterface,
-} from "../../../../Utills/Inputs/SelectDropdown";
+import { dataInterface } from "../../../../Utills/Inputs/SelectDropdown";
+import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
+import CreatableSelect from "../../../../Utills/Inputs/CreateAbleSelect2";
 import ImagePicker from "../../../../Utills/Inputs/ImagePicker";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import colors from "../../../../../assets/colors";
@@ -96,6 +96,8 @@ const ProjectOverview = () => {
 
   const my = formatDate(projectOverview?.dueDate);
   const statusData = getStatusDropdown();
+  console.log("statusData: ", statusData);
+
   const statusValue = projectOverview?.publishStatus
     ? {
         label: projectOverview?.publishStatus,
@@ -123,7 +125,7 @@ const ProjectOverview = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={4} className={classes.datePickerWrapper}>
-          <SelectDropdown
+          <CreatableSelect
             handleChange={handleStatusChange}
             data={statusData}
             value={statusValue}

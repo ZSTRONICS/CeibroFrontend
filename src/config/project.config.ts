@@ -41,7 +41,7 @@ export function getStatusDropdown(): dataInterface[] {
     value: status[0],
     color: status[1],
   }));
-  delete data[0];
+  data?.splice(0, 1);
   return data;
 }
 

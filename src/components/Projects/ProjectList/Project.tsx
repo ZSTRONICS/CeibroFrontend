@@ -98,7 +98,7 @@ const Project = () => {
         <Grid item xs={12} md={4} className={classes.datePicker}>
           {/* <SelectDropdown title="Projects" /> */}
           <Input
-            placeholder="search"
+            placeholder="Search"
             title="Find Project"
             onChange={(e: any) => setFindProject(e.target.value)}
           />

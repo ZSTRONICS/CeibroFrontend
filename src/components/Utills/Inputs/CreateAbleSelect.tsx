@@ -7,18 +7,13 @@ import colors from "../../../assets/colors";
 import { handleInputChange } from "react-select/src/utils";
 import CreatableSelect from "react-select/creatable";
 import assets from "assets/assets";
+import { dataInterface } from "./SelectDropdown";
 
 const options = [
   { value: "All", label: "All", color: "green" },
   { value: "Project1", label: "Project 1", color: "yellow" },
   { value: "Project2", label: "Project 2", color: "brown" },
 ];
-
-export interface dataInterface {
-  value: string;
-  label: string;
-  color?: string;
-}
 
 interface My {
   title: string;

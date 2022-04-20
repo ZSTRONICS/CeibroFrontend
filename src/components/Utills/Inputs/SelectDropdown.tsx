@@ -43,6 +43,7 @@ const SelectDropdown: FC<My> = (props) => {
         color: colors.inputGrey,
         fontWeight: 500,
         fontFamily: "Inter",
+        paddingLeft: 4,
       };
     },
     control: (styles: any) => ({
@@ -52,6 +53,7 @@ const SelectDropdown: FC<My> = (props) => {
       // This line disable the blue border
       boxShadow: "none",
       flex: 2,
+      minHeihgt: 200,
     }),
     option: (styles: any, { data, isDisabled, isFocused, isSelected }: any) => {
       const color = chroma(data.color || colors.darkYellow);
@@ -119,6 +121,7 @@ const SelectDropdown: FC<My> = (props) => {
           styles={colourStyles}
           value={value}
           isClearable={isClearAble}
+          menuPlacement="auto"
         />
       </div>
     </InputHOC>
