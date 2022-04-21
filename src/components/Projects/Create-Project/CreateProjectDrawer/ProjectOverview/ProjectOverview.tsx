@@ -77,6 +77,7 @@ const ProjectOverview = () => {
   };
 
   const handleOwnerChange = (users: dataInterface[]) => {
+    console.log("projectovervuew user", users);
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
@@ -104,7 +105,25 @@ const ProjectOverview = () => {
         value: projectOverview?.publishStatus,
       }
     : null;
+  // console.log("projectOverview?.owner", projectOverview?.owner);
+  // console.log("projectOverview?.data", data);
 
+  //  const newArray = Array.from(
+  //    new Set(projectOverview?.owner?.map((el: any) => JSON.stringify(el)))
+  //  ).map((el: any) => JSON.parse(el));
+
+  const ProjectOwnerList = projectOverview?.owner?.reduce?.(
+    (acc: any, current: any) => {
+      const x = acc.find((item: any) => item.value === current.value);
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    },
+    []
+  );
+  console.log("uniqueChars", ProjectOwnerList);
   return (
     <div style={{ width: "100%" }}>
       <Grid container>
@@ -118,7 +137,7 @@ const ProjectOverview = () => {
           <SelectDropdown
             handleChange={handleOwnerChange}
             data={data}
-            value={projectOverview?.owner}
+            value={ProjectOwnerList}
             title="Owner"
             isMulti={true}
           />
