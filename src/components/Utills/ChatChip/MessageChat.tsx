@@ -123,6 +123,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     }
   };
 
+  const getQuickBtnStyles = () => {
+    return {
+      background: myMessage ? colors.white : colors.grey,
+      border: myMessage ? colors.grey : colors.white,
+    };
+  };
+
   return (
     <Grid
       container
@@ -165,11 +172,34 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
             <Grid item xs={11}>
               <div className={classes.titleWrapper}>
                 <div className={classes.usernameWrapper}>
-                  <Typography className={classes.username}>
-                    {sender?.firstName} {sender?.surName}
-                  </Typography>
-
-                  <Typography className={classes.time}>{time}</Typography>
+                  <div className={classes.nameWrapper}>
+                    <Typography className={classes.username}>
+                      {sender?.firstName} {sender?.surName}
+                    </Typography>
+                    <Typography className={classes.time}>{time}</Typography>
+                  </div>
+                  {type !== "questioniar" && (
+                    <div className={classes.quickReplyWrapper}>
+                      <button
+                        className={classes.quickBtn}
+                        style={getQuickBtnStyles()}
+                      >
+                        OK
+                      </button>
+                      <button
+                        className={classes.quickBtn}
+                        style={getQuickBtnStyles()}
+                      >
+                        ?
+                      </button>
+                      <button
+                        className={classes.quickBtn}
+                        style={getQuickBtnStyles()}
+                      >
+                        Done
+                      </button>
+                    </div>
+                  )}
                 </div>
                 <div className={classes.projectWrapper}>
                   <Typography className={classes.company}>
@@ -248,13 +278,20 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         </div>
       </Grid>
       <Grid item xs={1} className={classes.iconsWrapper}>
-        {message?.pinnedBy?.includes?.(user?.id) ? (
-          <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
-        ) : (
-          <AiOutlinePushpin
-            className={classes.pinIcon}
-            onClick={handlePinClick}
-          />
+        {message.type !== "questioniar" && (
+          <>
+            {message?.pinnedBy?.includes?.(user?.id) ? (
+              <AiFillPushpin
+                className={classes.pinIcon}
+                onClick={handlePinClick}
+              />
+            ) : (
+              <AiOutlinePushpin
+                className={classes.pinIcon}
+                onClick={handlePinClick}
+              />
+            )}
+          </>
         )}
         <ChatMessageMenu message={message} />
       </Grid>
@@ -302,6 +339,7 @@ const useStyles = makeStyles({
   titleWrapper: {},
   usernameWrapper: {
     display: "flex",
+    justifyContent: "space-between",
     alignItems: "baseline",
   },
   projectWrapper: {},
@@ -380,5 +418,21 @@ const useStyles = makeStyles({
     justifyContent: "center",
     height: 30,
     width: 30,
+  },
+  quickReplyWrapper: {
+    display: "flex",
+    gap: 10,
+  },
+  nameWrapper: {},
+  quickBtn: {
+    background: colors.white,
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: 500,
+    border: `1px solid ${colors.grey}`,
+    boxSizing: "border-box",
+    borderRadius: 4,
+    cursor: "pointer",
+    padding: "4px 8px",
   },
 });

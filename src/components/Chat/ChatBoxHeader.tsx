@@ -46,7 +46,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                 Project:{" "}
                 <span className={classes.projectTitle}>
                   {" "}
-                  {myChat?.project?.name}{" "}
+                  {myChat?.project?.title}{" "}
                 </span>
               </Typography>
             )}
@@ -68,7 +68,7 @@ export default ChatBoxHeader;
 const useStyles = makeStyles({
   wrapper: {
     borderBottom: `1px solid ${colors.grey}`,
-    height: 48,
+    height: 40,
     ["@media (max-width:960px)"]: {
       height: 60,
     },
@@ -76,8 +76,9 @@ const useStyles = makeStyles({
   editIcon: {
     color: colors.textPrimary,
     fontSize: 14,
+    borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
-    padding: 8,
+    padding: 6,
   },
   username: {
     fontSize: 14,

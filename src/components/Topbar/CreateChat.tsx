@@ -1,15 +1,5 @@
-import {
-  Avatar,
-  Typography,
-  Button,
-  Grid,
-  makeStyles,
-  TextField,
-  Checkbox,
-  FormControlLabel,
-  withStyles,
-  CheckboxProps,
-} from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Cancel } from "@material-ui/icons";
 import { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,11 +12,10 @@ import {
   getAllProjects,
 } from "../../redux/action/project.action";
 import { RootState } from "../../redux/reducers";
-import SelectDropdown from "../Utills/Inputs/SelectDropdown";
-import NameAvatar from "../Utills/Others/NameAvatar";
 import CustomCheckbox from "../Utills/Inputs/Checkbox";
-import { Cancel } from "@material-ui/icons";
+import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import Loading from "../Utills/Loader/Loading";
+import NameAvatar from "../Utills/Others/NameAvatar";
 
 export let dbUsers = [
   {
@@ -255,7 +244,7 @@ const CreateChat = () => {
                     "Start conversation"
                   )}
                 </Button>
-                <Button onClick={handleOutsideClick}>cancel</Button>
+                <Button onClick={handleOutsideClick}>Cancel</Button>
               </Grid>
             </Grid>
           </div>

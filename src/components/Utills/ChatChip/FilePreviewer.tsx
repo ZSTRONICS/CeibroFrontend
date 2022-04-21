@@ -9,10 +9,11 @@ interface FilePreviewerInterface {
   handleClick?: (id: number) => void;
   id?: any;
   showControls: boolean;
+  hideName?: boolean;
 }
 
 const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
-  const { file, showControls } = props;
+  const { file, showControls, hideName = false } = props;
   console.log("file: ", file);
   const classes = useStyles();
 
@@ -41,6 +42,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
           data-url={file.url}
           data-format={file.fileType}
           src={file?.url}
+          className={classes.mediaImg}
         />
       ) : (
         <FileIcon
@@ -52,7 +54,9 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
       {showControls && (
         <Cancel onClick={handleCancelClick} className={classes.crossIcon} />
       )}
-      <span className={classes.fileName}>{file?.fileName?.slice(0, 7)}</span>
+      {!hideName && (
+        <span className={classes.fileName}>{file?.fileName?.slice(0, 7)}</span>
+      )}
     </div>
   );
 };
@@ -62,9 +66,9 @@ export default FilePreviewer;
 const useStyles = makeStyles({
   invisibleWrapper: {
     opacity: 0,
-    width: 50,
+    width: 36,
     position: "absolute",
-    height: 50,
+    height: 36,
   },
   wrapper: {
     position: "relative",
@@ -88,5 +92,10 @@ const useStyles = makeStyles({
   fileName: {
     fontSize: 12,
     paddingTop: 6,
+  },
+  mediaImg: {
+    borderRadius: 10,
+    // width: 36,
+    // height: 36,
   },
 });

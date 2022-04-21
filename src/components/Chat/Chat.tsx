@@ -115,5 +115,6 @@ const useStyles = makeStyles({
   wrapper: {
     background: colors.white,
     position: "relative",
+    height: "calc(100vh - 85px)",
   },
 });

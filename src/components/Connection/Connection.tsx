@@ -4,6 +4,7 @@ import {
   makeStyles,
   Typography,
   CircularProgress,
+  Chip,
 } from "@material-ui/core";
 import colors from "../../assets/colors";
 import { INVITATIONS_LIST } from "../../constants/invitations.constants";
@@ -55,52 +56,68 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         </Typography>
       )}
 
-      {connections?.map?.((connection: any) => {
-        const user: UserInterface = connection?.sentByMe
-          ? connection.to
-          : connection.from;
-        return (
-          <Grid item xs={12} className={classes.chipWrapper}>
-            <Grid container>
-              <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
-                <NameAvatar
-                  firstName={user?.firstName}
-                  surName={user?.surName}
-                  url={user?.profilePic}
-                />
-                <div className={classes.nameWrapper}>
-                  <Typography className={classes.name}>
-                    {`${user?.firstName} ${user?.surName}`}
-                  </Typography>
-                  <Typography className={classes.subTitleText}>
-                    {user?.companyName}
-                  </Typography>
-                </div>
-              </Grid>
-              <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
-                <Button
-                  className={classes.btn}
-                  variant="contained"
-                  size={isTabletOrMobile ? "small" : "medium"}
-                  color="primary"
+      <Grid item xs={12}>
+        {connections?.map?.((connection: any) => {
+          const user: UserInterface = connection?.sentByMe
+            ? connection.to
+            : connection.from;
+          return (
+            <Grid item xs={12} className={classes.chipWrapper}>
+              <Grid container>
+                <Grid
+                  item
+                  xs={12}
+                  md={4}
+                  lg={7}
+                  className={classes.userWrapper}
                 >
-                  Start conversation
-                </Button>
-                <Button
-                  className={`${classes.btn} ${classes.centerBtn}`}
-                  variant="contained"
-                  onClick={openTaskDrawer}
-                  size={isTabletOrMobile ? "small" : "medium"}
-                  color="primary"
-                >
-                  Create task
-                </Button>
-                <ViewProfile userId={user?.id} />
+                  <NameAvatar
+                    firstName={user?.firstName}
+                    surName={user?.surName}
+                    url={user?.profilePic}
+                  />
+                  <div className={classes.nameWrapper}>
+                    <Typography className={classes.name}>
+                      {`${user?.firstName} ${user?.surName}`}
+                    </Typography>
+                    <Typography className={classes.subTitleText}>
+                      {user?.companyName}
+                    </Typography>
+                  </div>
+                  {connection.status === "pending" && (
+                    <Chip
+                      className={classes.chip}
+                      variant="outlined"
+                      label="Invited"
+                      size="small"
+                    ></Chip>
+                  )}
+                </Grid>
+                <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
+                  <Button
+                    className={classes.btn}
+                    variant="contained"
+                    size={isTabletOrMobile ? "small" : "medium"}
+                    color="primary"
+                  >
+                    Start conversation
+                  </Button>
+                  <Button
+                    className={`${classes.btn} ${classes.centerBtn}`}
+                    variant="contained"
+                    onClick={openTaskDrawer}
+                    size={isTabletOrMobile ? "small" : "medium"}
+                    color="primary"
+                  >
+                    Create task
+                  </Button>
+                  <ViewProfile userId={user?.id} />
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        );
-      })}
+          );
+        })}
+      </Grid>
     </Grid>
   );
 };
@@ -171,6 +188,14 @@ const useStyles = makeStyles({
     left: 0,
     right: 0,
     top: 200,
+  },
+  chip: {
+    color: colors.white,
+    borderColor: colors.darkYellow,
+    background: colors.darkYellow,
+    fontSize: 12,
+    fontWeight: 500,
+    marginLeft: 10,
   },
   centerBtn: {
     ["@media (max-width:960px)"]: {

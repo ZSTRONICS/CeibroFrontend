@@ -88,10 +88,10 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
       </DialogContent>
       <DialogActions>
         <Button disabled={!selectedUser} onClick={handleOk} color="primary">
-          ok
+          Ok
         </Button>
         <Button onClick={handleClose} color="secondary" autoFocus>
-          cancel
+          Cancel
         </Button>
       </DialogActions>
     </Dialog>

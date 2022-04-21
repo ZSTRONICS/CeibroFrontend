@@ -16,6 +16,7 @@ import assets from "../../assets/assets";
 import colors from "../../assets/colors";
 import { PUSH_MESSAGE, SET_REPLY_TO_ID } from "../../config/chat.config";
 import {
+  getRoomMedia,
   openQuestioniarDrawer,
   sendReplyMessage,
   updateMessageById,
@@ -126,6 +127,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 oldMessageId: myId,
                 newMessage: res.data,
               },
+            })
+          );
+          dispatch(
+            getRoomMedia({
+              other: selectedChat,
             })
           );
         },
