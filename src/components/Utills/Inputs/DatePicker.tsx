@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import InputHOC from "./InputHOC";
 import colors from "assets/colors";
 
+
 interface DatePickerInt {
   onChange?: (e: any) => void;
   value?: any;
@@ -41,6 +42,9 @@ const useStyles = makeStyles({
   dateInput: {
     border: "none",
     color: `${colors.black} !important`,
+    fontSize: 14,
+    fontWeight: 500,
+    paddingLeft: 10,
     background: "transparent",
     flex: 3,
     "&:focus": {

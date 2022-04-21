@@ -56,6 +56,7 @@ const useStyles = makeStyles({
     justifyContent: "center",
     height: 30,
     maxWidth: 45,
+    borderRadius: 4,
   },
   imgWrapper: {
     height: 80,
@@ -63,6 +64,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
     width: 80,
+    borderRadius: 4,
   },
   img: {
     width: "100%",

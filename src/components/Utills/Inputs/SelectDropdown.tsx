@@ -88,6 +88,19 @@ const SelectDropdown: FC<My> = (props) => {
       return {
         ...styles,
         backgroundColor: colors.darkYellow,
+        fontSize: 14,
+        fontWeight: 500,
+        // paddingLeft: 4,
+        fontFamily: "Inter",
+      };
+    },
+    singleValue: (defaultStyles: any) => {
+      return {
+        ...defaultStyles,
+        fontSize: 14,
+        fontWeight: 500,
+        fontFamily: "Inter",
+        paddingLeft: 4
       };
     },
     multiValueLabel: (styles: any, { data }: any) => ({

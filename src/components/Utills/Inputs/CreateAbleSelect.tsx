@@ -112,6 +112,15 @@ const SelectDropdown: FC<My> = (props) => {
       ...styles,
       height: 200,
     }),
+    singleValue: (defaultStyles: any) => {
+      return {
+        ...defaultStyles,
+        fontSize: 14,
+        fontWeight: 500,
+        fontFamily: "Inter",
+        paddingLeft: 4
+      };
+    }
   };
 
   const handleChange = (e: dataInterface) => {

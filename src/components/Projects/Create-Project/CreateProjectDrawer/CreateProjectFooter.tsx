@@ -36,10 +36,7 @@ const CreateProjectBody = () => {
   }, [projectOverview]);
 
   const handleProjectCreate = (saveAsDraft = false) => {
-    const data = getFormValues();
-    if (saveAsDraft) {
-      data.append("publishStatus", "draft");
-    }
+    const data = getFormValues(saveAsDraft);
     setLoading(true);
     dispatch(
       createProject({
@@ -56,8 +53,8 @@ const CreateProjectBody = () => {
     );
   };
 
-  const handleProjectUpdate = () => {
-    const data = getFormValues();
+  const handleProjectUpdate = (saveAsDraft = false) => {
+    const data = getFormValues(saveAsDraft);
     data.delete("projectPhoto");
     const payload = {
       body: data,
@@ -74,11 +71,11 @@ const CreateProjectBody = () => {
     dispatch(updateProject(payload));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (saveAsDrfat = false) => {
     if (selectedProject) {
-      handleProjectUpdate();
+      handleProjectUpdate(saveAsDrfat);
     } else {
-      handleProjectCreate();
+      handleProjectCreate(saveAsDrfat);
     }
   };
 
@@ -96,7 +93,7 @@ const CreateProjectBody = () => {
     });
   };
 
-  const getFormValues = () => {
+  const getFormValues = (saveAsDraft = false) => {
     const {
       title,
       owner,
@@ -121,15 +118,15 @@ const CreateProjectBody = () => {
     }
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);
-    formData.append("publishStatus", publishStatus || "");
-
+    formData.append("publishStatus", saveAsDraft ? "draft": publishStatus || "draft");
+    
     return formData;
   };
 
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       <Button
-        onClick={() => handleProjectCreate(true)}
+        onClick={() => handleSubmit(true)}
         disabled={!isValid}
         className={classes.draft}
         color="primary"
@@ -148,11 +145,11 @@ const CreateProjectBody = () => {
         </Button>
       )}
       <Button
-        disabled={isDiabled}
+        disabled={!isValid || loading}
         className={classes.create}
         variant="contained"
         color="primary"
-        onClick={handleSubmit}
+        onClick={() => handleSubmit(false)}
       >
         {isDiabled && loading && (
           <CircularProgress size={20} className={classes.progress} />

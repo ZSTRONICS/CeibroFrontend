@@ -272,8 +272,16 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
           </Grid>
         </div>
         <div className={classes.seenWrapper}>
+          <div className={classes.seenByWrapper}>
+            <div className={classes.seenAvatar}>
+              <img src={sender?.profilePic} className={classes.seenChip} />
+            </div>
+            <div className={classes.seenAvatar}>
+              <img src={sender?.profilePic} className={classes.seenChip} />
+            </div>
+          </div>
           <Typography className={classes.visibility}>
-            {/* {seen ? "Seen" : "Unseen"} */}
+            {seen ? "Seen" : "Unseen"}
           </Typography>
         </div>
       </Grid>
@@ -434,5 +442,20 @@ const useStyles = makeStyles({
     borderRadius: 4,
     cursor: "pointer",
     padding: "4px 8px",
+  },
+  seenByWrapper: {
+    marginRight: 10,
+    display: "flex",
+    gap: 10,
+    marginTop: 4,
+  },
+  seenAvatar: {
+    width: 16,
+    height: 16,
+  },
+  seenChip: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 4,
   },
 });

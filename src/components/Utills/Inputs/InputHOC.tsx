@@ -34,8 +34,9 @@ const useStyles = makeStyles({
   },
   titleWrapper: {
     padding: 11,
-    minWidth: 65,
+    minWidth: 45,
     // flex: 1,
+    textAlign: 'center',
     borderRight: `1px solid ${colors.borderGrey}`,
   },
   title: {
