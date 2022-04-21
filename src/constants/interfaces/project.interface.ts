@@ -43,6 +43,7 @@ export interface RoleInterface {
   admin?: boolean;
   member?: string[];
   timeProfile?: string[];
+  memberIds?: any;
 }
 
 export interface projectProfileInterface {

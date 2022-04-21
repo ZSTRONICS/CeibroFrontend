@@ -72,6 +72,7 @@ export default function CustomizedSelects(props) {
     selectedValue,
     handleValueChange,
     handleDisabled,
+    showDisabled,
   } = props;
   console.log(
     "🚀 ~ file: Select.js ~ line 74 ~ CustomizedSelects ~ selectedValue",
@@ -95,9 +96,17 @@ export default function CustomizedSelects(props) {
         input={<BootstrapInput />}
         disabled={handleDisabled}
       >
+        {showDisabled && <option value="" selected disabled></option>}
         {options &&
           options.map((option) => {
-            return <option value={option.value}>{option.title}</option>;
+            // <option value="" selected disabled>
+            //   Choose here
+            // </option>;
+            return (
+              <option selected={option.selected} value={option.value}>
+                {option.title}
+              </option>
+            );
           })}
       </NativeSelect>
     </FormControl>

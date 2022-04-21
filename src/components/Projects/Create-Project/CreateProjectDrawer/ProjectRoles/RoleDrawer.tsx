@@ -37,8 +37,9 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const classes = useStyles();
   const roles = ["create", "edit", "delete", "self-made"];
-  const workTempale = {
-    roles: [],
+
+  const roleTempale = {
+    memberList: [],
   };
 
   const [isAdmin, setIsAdmin] = useState(false);
@@ -49,7 +50,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
   const [selectedMember, setSelectedMember] = useState<any>(null);
   // const [data, setData] = useState<any>({ roles: [] });
-  const [data, setData] = useState<any>(workTempale);
+  const [data, setData] = useState<any>(roleTempale);
 
   const isDiabled = !loading ? false : true;
 
@@ -68,9 +69,25 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   //   });
   // };
 
+  console.log(
+    "member idsss",
+    role?.memberIds?.map?.((role: any) => {
+      return role.id;
+    })
+  );
+
   const handleOk = () => {
     const payload = {
-      body: role,
+      body: {
+        name: role.name,
+        admin: role.admin,
+        roles: role.roles,
+        member: role.member,
+        memberIds: role?.memberIds?.map?.((row: dataInterface) => {
+          return row.id;
+        }),
+        timeProfile: role.timeProfile,
+      },
       success: () => {
         toast.success("Role created successfully");
         dispatch(projectActions.closeProjectRole());
@@ -84,7 +101,10 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     setLoading(true);
     dispatch(createRole(payload));
   };
-
+  // const memberlistt = data?.roles.map((role: dataInterface) => {
+  //   return role.value;
+  // });
+  console.log("dataxxxx", data);
   const handleUpdate = () => {
     const payload = {
       body: {
@@ -92,9 +112,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         name: role.name,
         admin: role.admin,
         roles: role.roles,
-        member: data?.roles.map((role: dataInterface) => {
-          return role.value;
-        }),
+        member: role?.member,
         timeProfile: role.timeProfile,
       },
       success: () => {
@@ -233,14 +251,23 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             placeholder="Please select"
             data={availableUsers}
             isMulti={true}
-            value={data?.roles}
+            value={role?.member}
             // handleChange={(e: any) => setSelectedMember(e)}
 
-            handleChange={(values: dataInterface[]) => {
-              setData({
-                ...data,
-                roles: values,
-              });
+            // handleChange={(values) => {
+            //   setData({
+            //     ...data,
+            //     roles: values,
+            //   });
+            // }}
+            handleChange={(values: any) => {
+              dispatch(
+                projectActions.setRole({
+                  ...role,
+                  memberIds: values,
+                })
+              );
+              console.log("valuesvalues", values);
             }}
           />
           <br />

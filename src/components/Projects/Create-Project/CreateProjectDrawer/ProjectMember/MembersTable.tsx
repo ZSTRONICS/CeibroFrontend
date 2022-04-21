@@ -145,7 +145,7 @@ const RolesTable = () => {
   const selectGroupHandle = (e: string, row: MemberInterface) => {
     const payload = {
       body: {
-        groupId: e,
+        groupId: e ? e : null,
         memberId: row?.id,
         roleId: row?.role?.id,
       },
@@ -261,6 +261,7 @@ const RolesTable = () => {
                   </TableCell>
                   <TableCell align="right" style={{ width: "20%" }}>
                     <Select
+                      showDisabled={true}
                       options={role}
                       selectedValue={row?.role?.id}
                       handleDisabled={havePermission ? false : true}
@@ -271,7 +272,9 @@ const RolesTable = () => {
                   </TableCell>
                   <TableCell align="right" style={{ width: "20%" }}>
                     <Select
+                      showDisabled={true}
                       options={group}
+                      selected="selected"
                       selectedValue={row?.group?.id}
                       handleDisabled={havePermission ? false : true}
                       handleValueChange={(e: string) =>
