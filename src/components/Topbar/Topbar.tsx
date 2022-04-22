@@ -27,6 +27,7 @@ import Title from "./Title";
 import { useHistory } from "react-router";
 import { RootState } from "../../redux/reducers";
 import assets from "assets/assets";
+import TopBarSearch from "./TopBarSearch";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
@@ -81,25 +82,20 @@ const Topbar = (props: any) => {
           ></Grid>
         )}
 
-        {/* {!isTabletOrMobile && (
-          <Grid xs={5} md={3} item>
-            <Textfield
-              id="input-with-icon-adornment"
-              placeholder="Search"
-              className={classes.searchInput}
-              size="small"
-              inputProps={{
-                className: classes.searchInput,
-              }}
-            />
-          </Grid>
-        )} */}
         <Grid
           xs={6}
           md={5}
           item
-          style={{ display: "flex", justifyContent: "flex-end" }}
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+          }}
         >
+          {!isTabletOrMobile &&
+            !window?.location?.pathname?.includes(`chat`) && (
+              <TopBarSearch onChange={(e: any) => {}} />
+            )}
           {!isTabletOrMobile && (
             <div className={classes.nameWrapper}>
               <Typography className={classes.username}>
@@ -115,7 +111,10 @@ const Topbar = (props: any) => {
           {!isTabletOrMobile && (
             <Typography className={classes.notification}>
               <Badge badgeContent={4}>
-                <img src={assets.notification} className={`${classes.bell} width-16`} />
+                <img
+                  src={assets.notification}
+                  className={`${classes.bell} width-16`}
+                />
               </Badge>
             </Typography>
           )}
@@ -129,12 +128,12 @@ export default Topbar;
 
 const useStyles = makeStyles((theme) => ({
   topNavbarWrapper: {
-    height: 60,
+    height: 70,
     paddingRight: 20,
     background: colors.white,
   },
   notification: {
-    alignSelf: 'center'
+    alignSelf: "center",
   },
   menuIconWrapper: {
     [theme.breakpoints.down("md")]: {
@@ -149,6 +148,7 @@ const useStyles = makeStyles((theme) => ({
   },
   searchInput: {
     height: 12,
+    marginRight: 30,
   },
   bell: {
     // color: colors.white,

@@ -130,8 +130,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     });
   }
 
-  const availableQuestionsTypesList = capitalize(availableQuestionTypes);
-  console.log("testtt", availableQuestionsTypesList);
+  const availableQuestionsTypesList = availableQuestionTypes
 
   // const availableQuestionsTypesList = availableQuestionTypes?.map(
   //   (element: any) =>

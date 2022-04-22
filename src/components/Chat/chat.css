@@ -8,6 +8,7 @@
 .chat-member-chip {
     height: 60px;
     padding: 5px;
+    background: var(#F5F7F8);
     border-bottom: 1px solid #ECF0F1;
 }
 

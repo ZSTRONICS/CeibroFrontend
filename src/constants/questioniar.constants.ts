@@ -1,9 +1,9 @@
 import { QuestioniarInterface } from "./interfaces/questioniar.interface";
 
 export const availableQuestionTypes = [
-  { value: "multiple", label: "multiple" },
-  { value: "checkbox", label: "checkbox" },
-  { value: "shortAnswer", label: "short answer" },
+  { value: "multiple", label: "Multiple" },
+  { value: "checkbox", label: "Checkbox" },
+  { value: "shortAnswer", label: "Short Answer" },
 ];
 
 export const getNewQuestionTemplate = (id: any) => {

@@ -60,7 +60,7 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
         </Grid>
         <Grid container className={classes.secondSection}>
           <Grid item xs={5}>
-            <Typography className={classes.meta}>Task Due Date</Typography>
+            <Typography className={classes.meta}>Task Due date</Typography>
             <Typography className={classes.metaValue}>{dueDate}</Typography>
           </Grid>
           <Grid

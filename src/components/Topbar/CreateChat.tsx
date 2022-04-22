@@ -16,6 +16,7 @@ import CustomCheckbox from "../Utills/Inputs/Checkbox";
 import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import Loading from "../Utills/Loader/Loading";
 import NameAvatar from "../Utills/Others/NameAvatar";
+import TextField from "components/Utills/Inputs/TextField";
 
 export let dbUsers = [
   {
@@ -137,11 +138,11 @@ const CreateChat = () => {
           >
             <Grid container>
               <Grid item xs={12}>
-                <input
+                <TextField
                   type="text"
                   value={name}
                   onChange={(e: any) => setName(e.target.value)}
-                  className={classes.searchInput}
+                  className={`${classes.searchInput} emptyBorder`}
                   placeholder="Enter chat name"
                 />
               </Grid>
@@ -268,6 +269,7 @@ const useStyles = makeStyles((theme) => ({
   searchInput: {
     width: 340,
     height: 30,
+    border: `1px solid ${colors.borderGrey}`,
   },
   smallRadioButton: {
     fontSize: "14px !important",

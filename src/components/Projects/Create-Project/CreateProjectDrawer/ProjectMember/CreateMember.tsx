@@ -101,7 +101,7 @@ const MemberDialog = () => {
         email: selectedEmail?.value,
         roleId: selectRoles?.value,
         groupId: selectGroups?.value,
-        subContractor: selectGroups?.value,
+        // subContractor: selectGroups?.value,
       },
       success: () => {
         toast.success("Member created successfully");
@@ -166,7 +166,7 @@ const MemberDialog = () => {
               />
             </div>
 
-            <Typography variant="h5" className={classes.subContractor}>
+            {/* <Typography variant="h5" className={classes.subContractor}>
               Subcontractor Company
             </Typography>
             <div className={classes.meta}>
@@ -176,8 +176,7 @@ const MemberDialog = () => {
                 handleChange={(e: any) => setSelectGroups(e)}
                 zIndex={5}
               />
-            </div>
-            {/* <div></div> */}
+            </div> */}
           </div>
           {/* <InputText/>
           <SelectDropdown title="Role"/> */}

@@ -96,7 +96,6 @@ const QuestioniarBody = () => {
     myQuestions.push(newQuestion);
     dispatch(setQuestions(myQuestions));
   };
-  console.log("vluesqqqq", values);
   const handleSave = () => {
     const myId = new Date().valueOf();
 
@@ -142,6 +141,8 @@ const QuestioniarBody = () => {
     setNudge(!notActive);
   };
 
+  const validated = validateQuestions(questioniars);
+
   return (
     <>
       <Grid container direction="column" className={classes.wrapper}>
@@ -184,6 +185,7 @@ const QuestioniarBody = () => {
               colorSwitch={preview ? colors.primary : colors.inputGrey}
               onChange={handleChangePreview}
               defaultKnobOnLeft={true}
+              disabled={!validated}
             />
             <Typography className={classes.nudgeText}>Preview</Typography>
           </Grid>

@@ -3,7 +3,6 @@ import { makeStyles } from "@material-ui/core";
 import InputHOC from "./InputHOC";
 import colors from "assets/colors";
 
-
 interface DatePickerInt {
   onChange?: (e: any) => void;
   value?: any;
@@ -22,7 +21,7 @@ const DatePicker: React.FC<DatePickerInt> = (props) => {
   };
 
   return (
-    <InputHOC title="Due Date">
+    <InputHOC title="Due date">
       <input
         min={props?.min}
         max={props?.max}
