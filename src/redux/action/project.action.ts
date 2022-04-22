@@ -68,6 +68,10 @@ import configs, {
   CLOSE_MEMBER_DRAWER,
   OPEN_MEMBER_DRAWER,
   GET_AVAILABLE_PROJECT_MEMBERS,
+  CLOSE_FILE_VIEW_DRAWER,
+  OPEN_FILE_VIEW_DRAWER,
+  SELECTED_FILE_URL,
+  SELECTED_FILE_TYPE,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -98,6 +102,18 @@ const projectActions = {
     return {
       type: SET_ROLE,
       payload: role,
+    };
+  },
+  setSelectedFileUrl: (url: any) => {
+    return {
+      type: SELECTED_FILE_URL,
+      payload: url,
+    };
+  },
+  setSelectedFileType: (type: any) => {
+    return {
+      type: SELECTED_FILE_TYPE,
+      payload: type,
     };
   },
   setGroup: (group: GroupInterface) => {
@@ -177,6 +193,16 @@ const projectActions = {
   closeProjectGroup: () => {
     return {
       type: CLOSE_GROUP_DRAWER,
+    };
+  },
+  openFileViewDrawer: () => {
+    return {
+      type: OPEN_FILE_VIEW_DRAWER,
+    };
+  },
+  closeFileViewDrawer: () => {
+    return {
+      type: CLOSE_FILE_VIEW_DRAWER,
     };
   },
   openProjectMemberDrawer: () => {

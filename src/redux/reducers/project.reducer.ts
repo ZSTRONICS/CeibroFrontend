@@ -42,6 +42,10 @@ import config, {
   CLOSE_MEMBER_DRAWER,
   OPEN_MEMBER_DRAWER,
   CREATE_NEW_PROFILE,
+  OPEN_FILE_VIEW_DRAWER,
+  CLOSE_FILE_VIEW_DRAWER,
+  SELECTED_FILE_URL,
+  SELECTED_FILE_TYPE,
 } from "../../config/project.config";
 import {
   requestFail,
@@ -75,6 +79,8 @@ interface ProjectReducerInt {
   projectMembers: [];
   selectedProject: any;
   selectedRole: any;
+  filePath: any;
+  fileType: any;
   selectedFolder: any;
   selectedGroup: any;
   selectedTimeProfile: any;
@@ -92,6 +98,7 @@ interface ProjectReducerInt {
   memberDrawer: boolean;
   timeProfileDrawer: boolean;
   workDrawer: boolean;
+  FileViewerDrawer: boolean;
   rolesList: RoleInterface[];
   groupList: GroupInterface[];
   group: GroupInterface;
@@ -115,6 +122,8 @@ const projectReducer: ProjectReducerInt = {
   projectMembers: [],
   selectedProject: null,
   selectedRole: null,
+  filePath: null,
+  fileType: null,
   selectedFolder: null,
   selectedGroup: null,
   selectedTimeProfile: null,
@@ -132,6 +141,7 @@ const projectReducer: ProjectReducerInt = {
   memberDrawer: false,
   timeProfileDrawer: false,
   workDrawer: false,
+  FileViewerDrawer: false,
   rolesList: [],
   groupList: [],
   group: groupTemplate,
@@ -230,6 +240,19 @@ const AppReducer = (
         menue: 1,
       };
     }
+    case SELECTED_FILE_URL: {
+      return {
+        ...state,
+        filePath: action.payload,
+      };
+    }
+    case SELECTED_FILE_TYPE: {
+      return {
+        ...state,
+        fileType: action.payload,
+      };
+    }
+
     case SET_SELECTED_ROLE: {
       return {
         ...state,
@@ -424,7 +447,18 @@ const AppReducer = (
         memberDrawer: false,
       };
     }
-
+    case OPEN_FILE_VIEW_DRAWER: {
+      return {
+        ...state,
+        FileViewerDrawer: true,
+      };
+    }
+    case CLOSE_FILE_VIEW_DRAWER: {
+      return {
+        ...state,
+        FileViewerDrawer: false,
+      };
+    }
     case requestSuccess(GET_FOLDER): {
       return {
         ...state,

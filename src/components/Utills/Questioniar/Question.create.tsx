@@ -102,6 +102,43 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     }
   }, [options, questionText, questionType]);
 
+  // console.log(
+  //   "availableQuestionTypes",
+  //   availableQuestionTypes?.map(
+  //     (element: any) =>
+  //       element.value.charAt(0).toUpperCase() +
+  //       element.value.substring(1).toLowerCase()
+  //   )
+  // );
+
+  function capitalize(arr: any) {
+    for (var i = 0; i < arr.length; i++) {
+      var first = arr[i].label;
+      var last = arr[i].value;
+      arr[i].label =
+        first?.slice(0, 1)?.toUpperCase() + first?.slice(1)?.toLowerCase();
+      arr[i].value =
+        last?.slice(0, 1)?.toUpperCase() + last?.slice(1)?.toLowerCase();
+    }
+    return arr;
+  }
+
+  function cap(arr: any) {
+    arr.map((ele: any) => {
+      const first = ele.label;
+      const last = ele.value;
+    });
+  }
+
+  const availableQuestionsTypesList = capitalize(availableQuestionTypes);
+  console.log("testtt", availableQuestionsTypesList);
+
+  // const availableQuestionsTypesList = availableQuestionTypes?.map(
+  //   (element: any) =>
+  //     element.label.charAt(0).toUpperCase() +
+  //     element.label.substring(1).toLowerCase()
+  // );
+
   const handleChangeInput = (e: any, index: number) => {
     const myOptions = options;
     let myOptionText = options?.[index];
@@ -124,7 +161,6 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     <Grid container className={classes.wrapper}>
       <Grid item xs={12} className={"create-question-row"}>
         <div className={classes.questionWrapper}>
-          helooo
           <TextField
             inputProps={{
               style: { height: 15 },
@@ -139,7 +175,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
           <SelectDropdown
             placeholder={"Question type"}
             title={"Question type"}
-            data={availableQuestionTypes}
+            data={availableQuestionsTypesList}
             handleChange={handleQuestionTypeChange}
             value={questionType}
           />
