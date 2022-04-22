@@ -219,7 +219,7 @@ const CreateChat = () => {
                             <div>
                               <Typography className={classes.titleText}>
                                 {member?.user?.firstName}{" "}
-                                {member?.user?.lastName}
+                                {member?.user?.surName}
                               </Typography>
                               <Typography className={classes.subTitleText}>
                                 {member?.role?.name} . {member?.group?.name}

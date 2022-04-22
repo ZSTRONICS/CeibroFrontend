@@ -88,6 +88,7 @@ export interface FolderFileInterface {
   uploadedBy: UserInterface;
   fileType: string;
   createdAt?: string;
+  id?: string;
 }
 
 export interface MemberInterface {

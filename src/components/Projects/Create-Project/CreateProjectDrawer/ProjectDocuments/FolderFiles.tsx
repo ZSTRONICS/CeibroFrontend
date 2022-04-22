@@ -12,7 +12,7 @@ import {
 import { FolderFileInterface } from "constants/interfaces/project.interface";
 import React, { createRef, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
+import projectActions, {
   getFolderFiles,
   uploadFileToFolder,
 } from "redux/action/project.action";
@@ -20,15 +20,15 @@ import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import { useDropzone } from "react-dropzone";
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
+import FileViewDrawer from "./FileViewDrawer";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
 }
 
 const FolderFiles: React.FC<FolderFilesInt> = (props) => {
-  const { selectedProject, folderList, folderFiles } = useSelector(
-    (state: RootState) => state?.project
-  );
+  const { selectedProject, folderList, folderFiles, FileViewerDrawer } =
+    useSelector((state: RootState) => state?.project);
 
   console.log("folderFiles", folderFiles);
 
@@ -73,10 +73,18 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
     onDrop,
   });
 
+  const handleFileClick = (url: any, type: any) => {
+    dispatch(projectActions.setSelectedFileUrl(url));
+    dispatch(projectActions.setSelectedFileType(type));
+
+    dispatch(projectActions.openFileViewDrawer());
+  };
+  console.log("FileViewerDrawer", FileViewerDrawer);
+
   return (
     <div
       {...getRootProps({
-        onClick: (event) => event.stopPropagation(),
+        onClick: (event: any) => event.stopPropagation(),
       })}
     >
       <input {...getInputProps()} />
@@ -125,7 +133,12 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                         {/* <div style={{ width: 20, height: 20 }}>
                           <FilePreviewer file={file} showControls={false} />
                         </div> */}
-                        <Typography className={`${classes.fileName}`}>
+                        <Typography
+                          className={`${classes.fileName}`}
+                          onClick={() =>
+                            handleFileClick(file?.url, file?.fileType)
+                          }
+                        >
                           {file?.name}
                         </Typography>
                       </TableCell>
@@ -157,6 +170,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                     </TableRow>
                   );
                 })}
+                <FileViewDrawer />
               </>
             )}
           </TableBody>
