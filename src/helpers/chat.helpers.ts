@@ -43,10 +43,10 @@ export function validateQuestions(questioniars: any): boolean {
 }
 
 export function getDate(addDays?: number): string {
-// return date in "yyyy-mm-dd" format
+  // return date in "yyyy-mm-dd" format
   let dtToday = new Date();
 
-  if(addDays) {
+  if (addDays) {
     // adding days to current date
     dtToday = new Date(dtToday.setDate(dtToday.getDate() + addDays));
   }

@@ -244,6 +244,7 @@ texarea::-webkit-input-placeholder{
 .options-text .MuiFormControlLabel-label {
   font-weight: 500 !important;
   font-size: 14px;
+  text-align: justify;
 }
 
 .MuiFormControlLabel-label.Mui-disabled {
@@ -312,7 +313,6 @@ button[disabled]{
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   font-size: 14px;
   font-weight: 500; 
-  padding-left: 10px;
 }
 
 .css-qc6sy-singleValue {

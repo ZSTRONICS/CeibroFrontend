@@ -7,7 +7,7 @@ export const availableQuestionTypes = [
 ];
 
 export const getNewQuestionTemplate = (id: any) => {
-  // const newQuestionTemplate1: QuestioniarInterface = {
+  // const newQuestionTemplate: QuestioniarInterface = {
   //   type: "multiple",
   //   question: "Question for questionary with single choice?",
   //   id,

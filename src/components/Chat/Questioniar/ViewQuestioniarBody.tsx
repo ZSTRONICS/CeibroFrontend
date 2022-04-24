@@ -126,13 +126,18 @@ const QuestioniarBody = () => {
         <Grid item xs={12} className={classes.myWrapper}>
           {!questioniarsLoading && (
             <Grid container className={classes.wrapper2}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={5}>
                 <DatePicker disabled={true} value={myDate} />
+              </Grid>
+              <Grid item xs={12} md={3} className={classes.participantWrapper}>
+                <Typography className={classes.participant}>
+                  Participants list
+                </Typography>
               </Grid>
               <Grid
                 item
                 xs={12}
-                md={6}
+                md={4}
                 className={classes.timeRemainingWrapper}
               >
                 <img src={assets.nudgeIcon} className={classes.nudgeIcon} />
@@ -141,7 +146,7 @@ const QuestioniarBody = () => {
                 </Typography>
               </Grid>
 
-              <Grid item xs={12}>
+              {/* <Grid item xs={12}>
                 <div className={classes.datePickerWrapper}>
                   <SelectDropdown
                     title="View answer"
@@ -158,7 +163,7 @@ const QuestioniarBody = () => {
                     </div>
                   )}
                 </div>
-              </Grid>
+              </Grid> */}
             </Grid>
           )}
         </Grid>
@@ -173,7 +178,7 @@ const QuestioniarBody = () => {
           <Typography>Loading please wait ....</Typography>
         )}
 
-        {!myQuestion && !answeredByMe && !questioniarsLoading && (
+        {!answeredByMe && !questioniarsLoading && (
           <Grid item xs={12} className={classes.questionsWrapper}>
             <Button
               disabled={!everyFilled}
@@ -197,7 +202,7 @@ export default QuestioniarBody;
 
 const useStyles = makeStyles({
   wrapper: {
-    padding: 30,
+    padding: 15,
     paddingTop: 0,
     paddingBottom: 10,
     borderBottom: `1px solid ${colors.grey}`,
@@ -211,9 +216,9 @@ const useStyles = makeStyles({
     },
   },
   wrapper3: {
-    padding: 30,
+    padding: 15,
     paddingTop: 10,
-    paddingBottom: 10,
+    paddingBottom: 30,
     height: "auto",
     background: colors.white,
     width: "100%",
@@ -258,12 +263,22 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-end",
-    gap: 12,
+    gap: 3,
   },
   nudgeIcon: {},
   remainingText: {
     fontSize: 14,
     fontWeight: 500,
     color: colors.inputGrey,
+  },
+  participantWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  participant: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: colors.textPrimary,
   },
 });

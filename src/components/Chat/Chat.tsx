@@ -1,5 +1,6 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { SET_CHAT_SEARCH } from "config/chat.config";
+import { UserInterface } from "constants/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -19,10 +20,14 @@ const Chat = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const [messages, setMessage] = useState(CHAT_MESSAGE);
-  const { selectedChat, sidebarOpen } = useSelector(
-    (state: RootState) => state.chat
-  );
+  const {
+    selectedChat,
+    sidebarOpen,
+    chat: allChats,
+  } = useSelector((state: RootState) => state.chat);
+  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
+  const [enable, setEnable] = useState(false);
 
   const sendMessage = (text: string) => {
     const today = new Date();
@@ -87,9 +92,27 @@ const Chat = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (selectedChat) {
+      const myChat = allChats?.find?.(
+        (room: any) => String(room._id) == String(selectedChat)
+      );
+      console.log("myChat: ", myChat);
+      if (myChat) {
+        let members = myChat?.members || [];
+        let myUserIndex = members?.findIndex?.(
+          (member: UserInterface) => member.id === user?.id
+        );
+        setEnable(myUserIndex > -1);
+      } else {
+        setEnable(false);
+      }
+    }
+  }, [selectedChat, allChats]);
+
   return (
     <>
-      {selectedChat && <MediaSidebar />}
+      {selectedChat && enable && <MediaSidebar />}
       <Grid container className={classes.wrapper}>
         <Grid item xs={12} md={sidebarOpen && !isTabletOrMobile ? 4 : 3}>
           <ChatSidebar />
@@ -100,9 +123,9 @@ const Chat = () => {
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white" }}
         >
-          <ChatBoxHeader chat={CHAT_LIST[0]} />
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody messages={messages} />
-          <ChatForm handleSendClick={sendMessage} />
+          <ChatForm enable={enable} handleSendClick={sendMessage} />
         </Grid>
       </Grid>
     </>

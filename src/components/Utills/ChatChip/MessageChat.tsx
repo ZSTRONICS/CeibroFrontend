@@ -22,6 +22,8 @@ import $ from "jquery";
 import assets from "../../../assets/assets";
 import { ClipLoader } from "react-spinners";
 import { classNames } from "react-select/src/utils";
+import { UserInterface } from "constants/interfaces/user.interface";
+import SeenBy from "./SeenBy";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -42,6 +44,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     myMessage,
     files,
     sender,
+    title,
+    readBy,
   } = message;
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
   const classes = useStyles();
@@ -144,9 +148,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         <div className={classes.innerWrapper} style={getStyles()}>
           {type === "questioniar" && (
             <div className={classes.questioniarWrapper}>
-              <Typography className={classes.questionText}>
-                Questioniar
-              </Typography>
+              <Typography className={classes.questionText}>{title}</Typography>
               <img className="w-16" src={assets.blueDocument} />
             </div>
           )}
@@ -273,16 +275,21 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         </div>
         <div className={classes.seenWrapper}>
           <div className={classes.seenByWrapper}>
-            <div className={classes.seenAvatar}>
-              <img src={sender?.profilePic} className={classes.seenChip} />
-            </div>
-            <div className={classes.seenAvatar}>
-              <img src={sender?.profilePic} className={classes.seenChip} />
-            </div>
+            {readBy?.map((user: UserInterface) => {
+              return (
+                <SeenBy
+                  url={user?.profilePic}
+                  firstName={user.firstName}
+                  surName={user.surName}
+                />
+              );
+            })}
           </div>
-          <Typography className={classes.visibility}>
-            {seen ? "Seen" : "Unseen"}
-          </Typography>
+          {readBy && readBy?.length > 0 && (
+            <Typography className={classes.visibility}>
+              {seen ? "Seen" : "Unseen"}
+            </Typography>
+          )}
         </div>
       </Grid>
       <Grid item xs={1} className={classes.iconsWrapper}>
@@ -431,7 +438,9 @@ const useStyles = makeStyles({
     display: "flex",
     gap: 10,
   },
-  nameWrapper: {},
+  nameWrapper: {
+    display: "flex",
+  },
   quickBtn: {
     background: colors.white,
     color: colors.primary,

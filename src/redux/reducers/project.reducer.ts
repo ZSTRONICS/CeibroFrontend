@@ -46,6 +46,7 @@ import config, {
   CLOSE_FILE_VIEW_DRAWER,
   SELECTED_FILE_URL,
   SELECTED_FILE_TYPE,
+  DELETE_PROJECT,
 } from "../../config/project.config";
 import {
   requestFail,
@@ -161,6 +162,13 @@ const AppReducer = (
   action: ActionInterface
 ): ProjectReducerInt => {
   switch (action.type) {
+    case requestSuccess(DELETE_PROJECT): {
+      return {
+        ...state,
+        selectedProject: null,
+      };
+    }
+
     case config.OPEN_DRAWER:
       return {
         ...state,

@@ -3,7 +3,6 @@ import {
   Divider,
   Grid,
   makeStyles,
-  TextField,
   Typography,
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +32,7 @@ import {
 } from "../../../helpers/chat.helpers";
 import IosSwitchMaterialUi from "ios-switch-material-ui";
 import Loading from "../../Utills/Loader/Loading";
+import TextField from "../../Utills/Inputs/TextField";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
@@ -61,6 +61,7 @@ const QuestioniarBody = () => {
   const [dueDate, setDueDate] = useState<any>(null);
   const isValidated = validateQuestions(questioniars);
   const [values, setValue] = useState();
+  const [title, setTitle] = useState("");
   const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
@@ -103,7 +104,9 @@ const QuestioniarBody = () => {
       type: PUSH_MESSAGE,
       payload: {
         type: "questioniar",
-        username: user?.name,
+        username: user?.firstName + " " + user?.surName,
+        sender: user,
+        title,
         time: "1 seconds ago",
         seen: true,
         myMessage: true,
@@ -117,6 +120,7 @@ const QuestioniarBody = () => {
         dueDate: dueDate,
         questions: questioniars,
         chat: selectedChat,
+        title,
       },
       success: (res: any) => {
         toast.success("Questioniar sent");
@@ -137,6 +141,10 @@ const QuestioniarBody = () => {
     dispatch(closeQuestioniarDrawer());
   };
 
+  const handleTitleChange = (e: any) => {
+    setTitle(e?.target?.value);
+  };
+
   const handleNudgeChange = (notActive: boolean) => {
     setNudge(!notActive);
   };
@@ -146,6 +154,19 @@ const QuestioniarBody = () => {
   return (
     <>
       <Grid container direction="column" className={classes.wrapper}>
+        <Grid item xs={12} className={classes.titleWrapper}>
+          <div className={classes.titleInput}>
+            <TextField
+              onChange={handleTitleChange}
+              placeholder="Type questionarie title"
+            />
+          </div>
+          <div className={classes.templateWrapper}>
+            <Typography className={classes.selectFromTemplate}>
+              Select from template
+            </Typography>
+          </div>
+        </Grid>
         <Grid item xs={12} className={classes.wrapper2}>
           <div className={classes.datePickerWrapper}>
             <DatePicker
@@ -229,7 +250,11 @@ const QuestioniarBody = () => {
             variant="contained"
             color="primary"
             disabled={
-              !dueDate || !members || members?.length <= 0 || !isValidated
+              !dueDate ||
+              !members ||
+              members?.length <= 0 ||
+              !isValidated ||
+              !title
             }
           >
             {createQuestioniarLoading ? (
@@ -251,8 +276,25 @@ const QuestioniarBody = () => {
 export default QuestioniarBody;
 
 const useStyles = makeStyles({
+  titleWrapper: {
+    display: "flex",
+  },
+  titleInput: {
+    flex: 5,
+  },
+  templateWrapper: {
+    flex: 3,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  selectFromTemplate: {
+    fontSize: 14,
+    fontWeight: 500,
+    color: colors.textPrimary,
+  },
   wrapper: {
-    padding: 30,
+    padding: 15,
     paddingTop: 0,
     paddingBottom: 20,
     borderBottom: `1px solid ${colors.grey}`,
@@ -266,7 +308,7 @@ const useStyles = makeStyles({
     },
   },
   wrapper3: {
-    padding: 30,
+    padding: 10,
     paddingTop: 10,
     height: "auto",
     background: colors.white,

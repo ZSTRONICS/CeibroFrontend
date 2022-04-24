@@ -24,8 +24,11 @@ export interface ChatMessageInterface {
   replyOf?: any;
   _id: any;
   id?: any;
+  readBy?: UserInterface[];
   pinnedBy?: any;
   sender?: UserInterface;
+  title?: string;
   voiceUrl?: string;
+  dueDate?: any;
   type: "message" | "questioniar" | "voice";
 }

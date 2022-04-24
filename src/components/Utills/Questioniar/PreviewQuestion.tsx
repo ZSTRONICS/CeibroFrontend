@@ -11,7 +11,6 @@ interface createQuestionInt {
 
 const CreateQuestion: React.FC<createQuestionInt> = (props) => {
   const classes = useStyles();
-  console.log("preview questions are", props);
   const { question } = props;
 
   if (question.type === "multiple") {

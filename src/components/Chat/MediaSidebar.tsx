@@ -14,6 +14,7 @@ import { RootState } from "../../redux/reducers";
 import { baseURL } from "../../utills/axios";
 import ChatMembers from "./ChatMembers";
 import ChatMedia from "./ChatMedia";
+import ChatQuestioniar from "./ChatQuestioniar";
 import ChatPinned from "./ChatPinned";
 import assets from "../../assets/assets";
 import {
@@ -161,7 +162,7 @@ const MediaSidebar = () => {
         </button>
         {openIndex === 3 && <ChatMedia media={chatMedia} />}
 
-        <button className="accordion" onClick={() => handleClick(2)}>
+        <button className="accordion" onClick={() => handleClick(4)}>
           <span>
             <Badge badgeContent={roomQuestioniars?.length} color="secondary">
               <img src={assets.documentIcon} />
@@ -172,6 +173,7 @@ const MediaSidebar = () => {
           </span>
           {sidebarOpen && <KeyboardArrowDown />}
         </button>
+        {openIndex === 4 && <ChatQuestioniar />}
       </div>
     </OutsideClickHandler>
   );

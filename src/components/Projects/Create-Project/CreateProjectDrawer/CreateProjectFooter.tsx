@@ -80,7 +80,7 @@ const CreateProjectBody = () => {
   };
 
   const handleDelete = () => {
-    confirm({ description: "confirm want to  delete this " }).then(() => {
+    confirm({ description: "Confirm want to  delete this " }).then(() => {
       const payload = {
         success: () => {
           toast.success("Project Delete Successfully");
@@ -118,8 +118,11 @@ const CreateProjectBody = () => {
     }
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", photoFile);
-    formData.append("publishStatus", saveAsDraft ? "draft": publishStatus || "draft");
-    
+    formData.append(
+      "publishStatus",
+      saveAsDraft ? "draft" : publishStatus || "draft"
+    );
+
     return formData;
   };
 

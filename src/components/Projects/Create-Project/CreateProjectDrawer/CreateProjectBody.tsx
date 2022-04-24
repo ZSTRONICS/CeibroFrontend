@@ -30,6 +30,8 @@ const CreateProjectBody = () => {
           }
         }, 60000)
       );
+    } else {
+      clearInterval(permissionRef);
     }
     return () => {
       if (permissionRef) {

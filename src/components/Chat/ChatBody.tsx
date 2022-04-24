@@ -120,7 +120,7 @@ export default ChatBody;
 
 const useStyles = makeStyles({
   wrapper: {
-    height: "calc(100vh - 271px)",
+    height: "calc(100vh - 235px)",
     overflowY: "auto",
     display: "block",
     position: "relative",

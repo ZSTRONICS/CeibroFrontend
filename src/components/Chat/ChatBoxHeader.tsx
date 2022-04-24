@@ -10,6 +10,7 @@ import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 interface ChatBoxHeaderProps {
   chat?: ChatListInterface;
+  enable: boolean;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -55,7 +56,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             <MessageSearch />
           </Grid>
           <Grid item xs={1} className={classes.moreWrapper}>
-            <ChatUserMenu />
+            <ChatUserMenu enable={props.enable} />
           </Grid>
         </>
       )}
@@ -126,7 +127,7 @@ const useStyles = makeStyles({
   },
   loadingWrapper: {
     position: "absolute",
-    left: "52%",
+    left: "55%",
     top: "10%",
     zIndex: 3,
   },

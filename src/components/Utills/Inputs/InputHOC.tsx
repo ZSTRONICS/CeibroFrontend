@@ -31,12 +31,13 @@ const useStyles = makeStyles({
     border: `1.5px solid ${colors.borderGrey}`,
     paddingRight: 8,
     borderRadius: 4,
+    height: "38px !important",
   },
   titleWrapper: {
     padding: 11,
     minWidth: 45,
     // flex: 1,
-    textAlign: 'center',
+    textAlign: "center",
     borderRight: `1px solid ${colors.borderGrey}`,
   },
   title: {

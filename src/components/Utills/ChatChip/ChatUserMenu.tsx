@@ -21,15 +21,20 @@ import {
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 
-const ChatUserMenu = () => {
+interface ChatUserMenuInt {
+  enable: boolean;
+}
+
+const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
   const classes = useStyles();
+  const { enable } = props;
   const [show, setShow] = useState(false);
   const { selectedChat } = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
   const confirm = useConfirm();
 
   const handleToggle = () => {
-    setShow(!show);
+    enable && setShow(!show);
   };
 
   const openMembersDialog = () => {
@@ -61,7 +66,7 @@ const ChatUserMenu = () => {
   return (
     <div className="dropdown">
       {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
-      <IconButton onClick={handleToggle}>
+      <IconButton style={{ opacity: enable ? 1 : 0.5 }} onClick={handleToggle}>
         <img src={assets.moreIcon} className={classes.moreIcon} />
       </IconButton>
       {show && (

@@ -10,11 +10,16 @@ import {
 import { withStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
 import colors from "../../../assets/colors";
-import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
+import {
+  QuestioniarInterface,
+  QuestioniarOptionInterface,
+} from "../../../constants/interfaces/questioniar.interface";
 import { RadioProps } from "@material-ui/core/Radio";
 import { setQuestions } from "../../../redux/action/chat.action";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
+import AnswerByWrapper from "./AnswerByWrapper";
+import { UserInterface } from "constants/interfaces/user.interface";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
   handleChange?: (value: any) => void;
@@ -25,6 +30,7 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
   const { questioniars, answeredByMe } = useSelector(
     (state: RootState) => state.chat
   );
+  const { user } = useSelector((state: RootState) => state.auth);
   const [selected, setSelected] = useState<any>(-1);
   const dispatch = useDispatch();
   const {
@@ -62,24 +68,40 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
         <Typography className={classes.question}>{question}</Typography>
       </Grid>
       <Grid item xs={12}>
-        <FormControl component="fieldset">
+        <FormControl component="fieldset" style={{ width: "100%" }}>
           <RadioGroup
             onChange={handleChangeAnswer}
             value={selected}
             name="gender1"
           >
-            {options?.map((option: string, index: number) => {
-              return (
-                <FormControlLabel
-                  key={index}
-                  value={index}
-                  control={<CustomRadio />}
-                  label={option}
-                  disabled={answeredByMe}
-                  className={`options-text ${classes.smallRadioButton}`}
-                />
-              );
-            })}
+            {options?.map(
+              (option: QuestioniarOptionInterface, index: number) => {
+                return (
+                  <Grid container>
+                    <Grid item xs={11}>
+                      <FormControlLabel
+                        key={index}
+                        value={index}
+                        control={<CustomRadio />}
+                        label={option.option}
+                        disabled={answeredByMe}
+                        className={`options-text ${classes.smallRadioButton}`}
+                      />
+                    </Grid>
+
+                    <Grid item xs={1} className={classes.answeredByWrapper}>
+                      <Typography className={classes.answeredByPercentage}>
+                        {option?.percentage || 0}%
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={12} className={classes.answerUserWrapper}>
+                      <AnswerByWrapper users={option?.selectedBy || []} />
+                    </Grid>
+                  </Grid>
+                );
+              }
+            )}
           </RadioGroup>
         </FormControl>
       </Grid>
@@ -101,6 +123,24 @@ const CustomRadio = withStyles({
 const useStyles = makeStyles({
   wrapper: {
     paddingTop: 20,
+  },
+  answeredByWrapper: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingLeft: 10,
+  },
+  answeredByPercentage: {
+    fontSize: 14,
+    fontWeight: 700,
+    color: colors.green,
+  },
+  answerUserWrapper: {
+    display: "flex",
+    alignItems: "center",
+    flexWrap: "wrap",
+    gap: 10,
+    padding: "2px 10px",
   },
   question: {
     fontSize: 18,

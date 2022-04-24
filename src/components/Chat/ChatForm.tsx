@@ -27,11 +27,13 @@ import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
 interface ChatFormInterface {
   handleSendClick: (a: string) => string;
+  enable: boolean;
 }
 
 const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const { enable } = props;
   const classes = useStyles();
   const {
     chat: chats,
@@ -53,24 +55,39 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   }, [selectedChat]);
 
   const onEmojiClick = (e: any, emojiObj: any) => {
+    if (!enable) {
+      return;
+    }
     setText(`${text}${emojiObj.emoji}`);
   };
 
   const toggleEmoji = () => {
+    if (!enable) {
+      return;
+    }
     setOpen(!open);
   };
 
   const handleTextChange = (e: FormEvent<HTMLInputElement>) => {
+    if (!enable) {
+      return;
+    }
     setText(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: any) => {
+    if (!enable) {
+      return;
+    }
     if (e.key === "Enter") {
       handleSend();
     }
   };
 
   const handleCloseReply = () => {
+    if (!enable) {
+      return;
+    }
     dispatch({
       type: SET_REPLY_TO_ID,
       payload: null,
@@ -78,6 +95,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleSend = () => {
+    if (!enable) {
+      return;
+    }
     if (text) {
       const formdata = new FormData();
 
@@ -152,6 +172,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileChange = (e: any) => {
+    if (!enable) {
+      return;
+    }
     const newFiles = e.target.files;
     let oldFiles = files;
     if (!oldFiles) {
@@ -169,6 +192,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileClick = (id: number) => {
+    if (!enable) {
+      return;
+    }
     setFiles((file: any) => {
       delete file[id];
       return file;
@@ -179,6 +205,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleOpenQuestioniar = () => {
+    if (!enable) {
+      return;
+    }
     dispatch(openQuestioniarDrawer());
   };
 
@@ -239,7 +268,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   }
 
   return (
-    <Grid className={classes.wrapper} container>
+    <Grid
+      className={classes.wrapper}
+      container
+      style={{ opacity: enable ? 1 : 0.5 }}
+    >
       {!showRecorder && (
         <Grid item xs={12} className={classes.inputWrapper}>
           {replyToId && (
@@ -258,8 +291,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             onChange={handleTextChange}
             onKeyPress={handleKeyDown}
             type="text"
-            disabled={!selectedChat}
-            placeholder={selectedChat ? "Type a message" : "Select a chat room"}
+            disabled={!selectedChat || !enable}
+            placeholder={
+              selectedChat
+                ? enable
+                  ? "Type a message"
+                  : "You were removed from this chat"
+                : "Select a chat room"
+            }
             className={`messageInput black-input ${classes.messageInput}`}
           />
           <div className={classes.sendWrapper}>
@@ -298,36 +337,49 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           <img
             src={assets.emoji}
             onClick={toggleEmoji}
-            className={"width-16"}
+            className={"width-16 pointer"}
           />
 
           <label className="custom-file-upload">
-            <img src={assets.clip} className="width-16" />
-            <input type="file" onChange={handleFileChange} multiple={true} />
+            <img src={assets.clip} className="width-16 pointer" />
+            <input
+              disabled={!enable}
+              type="file"
+              onChange={handleFileChange}
+              multiple={true}
+            />
           </label>
 
           <img
             src={assets.mic}
-            onClick={() => setShowRecorder(!showRecorder)}
-            className={`width-16`}
+            onClick={() => {
+              if (!enable) return;
+              setShowRecorder(!showRecorder);
+            }}
+            className={`width-16 pointer`}
           />
 
           <label className="custom-file-upload">
-            <img src={assets.camera} className={`width-16`} />
+            <img src={assets.camera} className={`width-16 pointer`} />
             <input
               type="file"
               accept="image/png, image/gif, image/jpeg"
               onChange={handleFileChange}
               multiple={true}
+              disabled={!enable}
             />
           </label>
           <Typography className={classes.gapLine}>|</Typography>
-          <img src={assets.primaryNudgeIcon} style={{ height: 18 }} />
+          <img
+            src={assets.primaryNudgeIcon}
+            className="pointer"
+            style={{ height: 18 }}
+          />
           <Typography className={classes.gapLine}>|</Typography>
           <img
             src={assets.blueDocument}
             onClick={handleOpenQuestioniar}
-            className={`width-16`}
+            className={`width-16 pointer`}
           />
 
           {open && (
