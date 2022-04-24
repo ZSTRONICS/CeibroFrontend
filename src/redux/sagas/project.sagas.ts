@@ -19,6 +19,7 @@ import {
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_GROUP_BY_ID,
+  GET_GROUP_MEMBERS,
   GET_MEMBER,
   GET_NEW_WORK,
   GET_PERMISSIONS,
@@ -338,6 +339,12 @@ const getAvailableProjectMembers = apiCall({
   path: (payload) => `/project/members/available/${payload?.other}`,
 });
 
+const getGroupMembers = apiCall({
+  type: GET_GROUP_MEMBERS,
+  method: "get",
+  path: (payload) => `/project/group/members/${payload?.other}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -382,6 +389,7 @@ function* projectSaga() {
   yield takeLatest(DELETE_GROUP, deleteGroup);
   yield takeLatest(DELETE_ROLE, deleteRole);
   yield takeLatest(GET_AVAILABLE_PROJECT_MEMBERS, getAvailableProjectMembers);
+  yield takeLatest(GET_GROUP_MEMBERS, getGroupMembers);
 }
 
 export default projectSaga;

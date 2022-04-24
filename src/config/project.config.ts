@@ -197,4 +197,6 @@ export const CLOSE_FILE_VIEW_DRAWER = "CLOSE_FILE_VIEW_DRAWER";
 export const SELECTED_FILE_URL = "SELECTED_FILE_URL";
 export const SELECTED_FILE_TYPE = "SELECTED_FILE_TYPE";
 
+export const GET_GROUP_MEMBERS = "GET_GROUP_MEMBERS";
+
 export default projectReduxConfigs;

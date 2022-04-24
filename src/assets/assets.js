@@ -25,7 +25,7 @@ import searchIcon from "./images/searchIcon.png";
 import folderIcon from "./images/blueFolder.png";
 import blueUser from "./images/blueUser.png";
 import chevrondown from "./images/chevron-down.png";
-import chevronRight from "./images/chevron-right.png";
+import chevronRight from "./images/chevronRight.png";
 import wrongImage from "./images/wrongImage.png";
 import clockIcon from "./images/clockIcon.png";
 import pencilIcon from "./images/pencil.png";
@@ -44,6 +44,7 @@ import emoji from "./images/emoji.png";
 import usersFolder from "./images/userFolderIcon.png";
 import pencilFilled from "./images/pencilFilled.png";
 import blackPencil from "./images/blackPencil.png";
+import calender from "./images/calender.png";
 
 import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
@@ -103,6 +104,7 @@ const assets = {
   pencilFilled,
   Add,
   blueSearch,
+  calender,
 
   testProject1,
   testProject2,

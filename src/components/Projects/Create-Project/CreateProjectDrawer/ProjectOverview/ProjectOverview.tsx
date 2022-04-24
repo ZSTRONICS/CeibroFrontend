@@ -53,12 +53,14 @@ const ProjectOverview = () => {
           // setting current user as default owner
           res?.data?.map((row: dataInterface) => {
             if (row?.value === user?.id) {
-              dispatch(
-                projectActions.setProjectOverview({
-                  ...projectOverview,
-                  owner: [...(projectOverview?.owner || []), row],
-                })
-              );
+              if (!selectedProject) {
+                dispatch(
+                  projectActions.setProjectOverview({
+                    ...projectOverview,
+                    owner: [...(projectOverview?.owner || []), row],
+                  })
+                );
+              }
             }
           });
         },

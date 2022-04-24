@@ -1,14 +1,16 @@
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import assets from "assets/assets";
 import React, { FC } from "react";
 import colors from "../../../assets/colors";
 
 interface InputHOCInterface {
   title: string;
+  showIcon?: boolean;
 }
 
 const InputHOC: FC<InputHOCInterface> = (props) => {
-  const { children, title } = props;
+  const { children, showIcon, title } = props;
   const classes = useStyles();
 
   return (
@@ -17,6 +19,9 @@ const InputHOC: FC<InputHOCInterface> = (props) => {
         <Typography className={classes.title}>{title}</Typography>
       </div>
       {children}
+      {showIcon && (
+        <img src={assets.calender} className={`w-16 ${classes.calender}`} />
+      )}
     </div>
   );
 };
@@ -24,14 +29,19 @@ const InputHOC: FC<InputHOCInterface> = (props) => {
 export default InputHOC;
 
 const useStyles = makeStyles({
+  calender: {
+    position: "absolute",
+    right: "10%",
+  },
   outerWrapper: {
+    position: "relative",
     background: colors.white,
     display: "flex",
     alignItems: "center",
     border: `1.5px solid ${colors.borderGrey}`,
     paddingRight: 8,
     borderRadius: 4,
-    height: "38px !important",
+    maxWidth: "100%",
   },
   titleWrapper: {
     padding: 11,

@@ -71,6 +71,7 @@ import configs, {
   CLOSE_FILE_VIEW_DRAWER,
   OPEN_FILE_VIEW_DRAWER,
   SELECTED_FILE_URL,
+  GET_GROUP_MEMBERS,
   SELECTED_FILE_TYPE,
 } from "../../config/project.config";
 import { createAction } from "./action";
@@ -303,6 +304,7 @@ export const getPermissions = createAction(GET_PERMISSIONS);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
+export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getAvailableProjectMembers = createAction(
   GET_AVAILABLE_PROJECT_MEMBERS
 );
