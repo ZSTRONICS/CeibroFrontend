@@ -107,13 +107,17 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   scope="row"
                   align="right"
                   className={classes.modifyDate}
-                ></TableCell>
+                >
+                  {row?.group?.members?.length || 0} member(s)
+                </TableCell>
                 <TableCell
                   component="th"
                   scope="row"
                   align="right"
                   className={classes.modifyDate}
-                ></TableCell>
+                >
+                  Only you
+                </TableCell>
               </TableRow>
             );
           })}

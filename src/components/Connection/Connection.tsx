@@ -71,20 +71,34 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                   lg={7}
                   className={classes.userWrapper}
                 >
-                  <NameAvatar
-                    firstName={user?.firstName}
-                    surName={user?.surName}
-                    url={user?.profilePic}
-                  />
-                  <div className={classes.nameWrapper}>
-                    <Typography className={classes.name}>
-                      {`${user?.firstName} ${user?.surName}`}
-                    </Typography>
-                    <Typography className={classes.subTitleText}>
-                      {user?.companyName}
-                    </Typography>
-                  </div>
-                  {connection.status === "pending" && (
+                  {!connection.email && (
+                    <>
+                      <NameAvatar
+                        firstName={user?.firstName}
+                        surName={user?.surName}
+                        url={user?.profilePic}
+                      />
+                      <div className={classes.nameWrapper}>
+                        <Typography className={classes.name}>
+                          {`${user?.firstName} ${user?.surName}`}
+                        </Typography>
+                        <Typography className={classes.subTitleText}>
+                          {user?.companyName}
+                        </Typography>
+                      </div>
+                    </>
+                  )}
+                  {connection.email && (
+                    <>
+                      <div className={classes.nameWrapper}>
+                        <Typography className={classes.name}>
+                          {connection.email}
+                        </Typography>
+                      </div>
+                    </>
+                  )}
+
+                  {(connection.status === "pending" || connection.email) && (
                     <Chip
                       className={classes.chip}
                       variant="outlined"
@@ -99,6 +113,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                     variant="contained"
                     size={isTabletOrMobile ? "small" : "medium"}
                     color="primary"
+                    disabled={connection.email}
                   >
                     Start conversation
                   </Button>
@@ -108,10 +123,14 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                     onClick={openTaskDrawer}
                     size={isTabletOrMobile ? "small" : "medium"}
                     color="primary"
+                    disabled={connection.email}
                   >
                     Create task
                   </Button>
-                  <ViewProfile userId={user?.id} />
+                  <ViewProfile
+                    disabled={connection.email ? true : false}
+                    userId={user?.id}
+                  />
                 </Grid>
               </Grid>
             </Grid>

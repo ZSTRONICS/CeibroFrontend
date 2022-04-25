@@ -1,5 +1,6 @@
 import {
   Button,
+  Grid,
   makeStyles,
   Table,
   TableBody,
@@ -21,6 +22,8 @@ import colors from "../../../../../assets/colors";
 import { useDropzone } from "react-dropzone";
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import FileViewDrawer from "./FileViewDrawer";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import Moment from "react-moment";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
@@ -52,12 +55,14 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
 
   const classes = useStyles();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: any) => {
     const file = acceptedFiles?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
+      setLoading(true);
       dispatch(
         uploadFileToFolder({
           body: formData,
@@ -65,12 +70,16 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           success: () => {
             getFiles();
           },
+          finallyAction: () => {
+            setLoading(false);
+          },
         })
       );
     }
   }, []);
   const { getRootProps, getInputProps, isDragActive, open } = useDropzone({
     onDrop,
+    disabled: loading,
   });
 
   const handleFileClick = (url: any, type: any) => {
@@ -86,6 +95,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
       {...getRootProps({
         onClick: (event: any) => event.stopPropagation(),
       })}
+      style={{ minHeight: 300 }}
     >
       <input {...getInputProps()} />
       <TableContainer>
@@ -104,78 +114,79 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
               </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
-            {isDragActive ? (
-              <DragMessage
-                classes={classes}
-                showBtn={false}
-                message={"Drop your file here ..."}
-              />
-            ) : (
-              <>
-                {folderFiles?.length < 1 && (
-                  <DragMessage
-                    classes={classes}
-                    onBtnClick={open}
-                    showBtn={true}
-                  />
-                )}
-                {folderFiles?.map((file: FolderFileInterface) => {
-                  return (
-                    <TableRow key={file?.name}>
-                      <TableCell
-                        onClick={() => {}}
-                        style={{ display: "flex" }}
-                        component="th"
-                        scope="row"
+          {!isDragActive && !loading && folderFiles?.length > 0 && (
+            <TableBody>
+              {folderFiles?.map((file: FolderFileInterface) => {
+                return (
+                  <TableRow key={file?.name}>
+                    <TableCell
+                      onClick={() => {}}
+                      style={{ display: "flex" }}
+                      component="th"
+                      scope="row"
+                    >
+                      <Typography
+                        className={`${classes.fileName}`}
+                        onClick={() =>
+                          handleFileClick(file?.url, file?.fileType)
+                        }
                       >
-                        {/* <img src={assets.usersFolder} className="width-16" /> */}
-                        {/* <div style={{ width: 20, height: 20 }}>
-                          <FilePreviewer file={file} showControls={false} />
-                        </div> */}
-                        <Typography
-                          className={`${classes.fileName}`}
-                          onClick={() =>
-                            handleFileClick(file?.url, file?.fileType)
-                          }
-                        >
-                          {file?.name}
-                        </Typography>
-                      </TableCell>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="right"
-                        className={classes.modifyDate}
-                      >
+                        {file?.name}
+                      </Typography>
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="right"
+                      className={classes.modifyDate}
+                    >
+                      <Moment format="YYYY-MM-DD HH:MM">
                         {file?.createdAt}
-                      </TableCell>
+                      </Moment>
+                    </TableCell>
 
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="right"
-                        className={classes.modifyDate}
-                      ></TableCell>
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        align="right"
-                        className={classes.modifyDate}
-                      >
-                        <Typography className={classes.access}>
-                          Only you
-                        </Typography>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-                <FileViewDrawer />
-              </>
-            )}
-          </TableBody>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="right"
+                      className={classes.modifyDate}
+                    >
+                      {file?.folder?.group?.members?.length || 0} member(s)
+                    </TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      align="right"
+                      className={classes.modifyDate}
+                    >
+                      <Typography className={classes.access}>
+                        Only you
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+              <FileViewDrawer />
+            </TableBody>
+          )}
         </Table>
       </TableContainer>
+      {(isDragActive || loading || folderFiles?.length < 1) && (
+        <DragMessage
+          classes={classes}
+          showBtn={!isDragActive && !loading && folderFiles?.length < 1}
+          message={
+            loading
+              ? "Uploading file"
+              : isDragActive
+              ? "Drop your file here ..."
+              : folderFiles?.length < 1
+              ? "Drop to upload file or choose from computer"
+              : ""
+          }
+          loading={loading}
+        />
+      )}
     </div>
   );
 };
@@ -195,6 +206,7 @@ const useStyles = makeStyles({
   message: {
     fontSize: 14,
     fontWeight: 500,
+    marginBottom: 20,
   },
   nameWrapper: {
     display: "flex",
@@ -274,6 +286,7 @@ interface DragMessageInt {
   message?: string;
   showBtn?: boolean;
   onBtnClick?: () => void;
+  loading?: boolean;
 }
 
 const DragMessage: React.FC<DragMessageInt> = ({
@@ -281,49 +294,29 @@ const DragMessage: React.FC<DragMessageInt> = ({
   message,
   showBtn,
   onBtnClick,
+  loading,
 }) => {
   return (
-    <TableRow style={{ height: 300 }}>
-      <TableCell
-        onClick={() => {}}
-        component="th"
-        scope="row"
-        className={classes.name}
-      ></TableCell>
-      <TableCell
-        component="th"
-        scope="row"
-        align="right"
-        className={`${classes.name} ${classes.uploadMessage}`}
-      >
-        <Typography className={classes.message}>
-          {message ? message : "Drop to upload file or choose from computer"}
-        </Typography>
-
-        {showBtn && (
-          <Button
-            style={{ alignItems: "center" }}
-            variant="outlined"
-            color="primary"
-            onClick={onBtnClick}
-          >
-            Browse...
-          </Button>
-        )}
-      </TableCell>
-
-      <TableCell
-        component="th"
-        scope="row"
-        align="right"
-        className={classes.name}
-      ></TableCell>
-      <TableCell
-        component="th"
-        scope="row"
-        align="right"
-        className={classes.name}
-      ></TableCell>
-    </TableRow>
+    <Grid
+      container
+      direction="column"
+      justifyContent="center"
+      alignItems="center"
+      style={{ paddingTop: 20 }}
+    >
+      <Typography className={classes.message}>{message}</Typography>
+      {loading && <LinearProgress color="primary" style={{ width: 200 }} />}
+      {showBtn && (
+        <Button
+          style={{ alignItems: "center" }}
+          variant="outlined"
+          color="primary"
+          onClick={onBtnClick}
+        >
+          Browse...
+        </Button>
+      )}
+      {/* </TableCell> */}
+    </Grid>
   );
 };

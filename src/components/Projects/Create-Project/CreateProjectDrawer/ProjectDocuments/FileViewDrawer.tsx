@@ -111,7 +111,7 @@ const useStyles = makeStyles({
   dropdownWrapper: {
     maxWidth: 370,
     width: 370,
-    height: 300,
+    height: "auto",
   },
   optionsWrapper: {
     width: "100%",

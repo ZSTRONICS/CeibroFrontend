@@ -233,12 +233,16 @@ input, textarea {
 input::-webkit-input-placeholder,
 texarea::-webkit-input-placeholder{
   font-size: 14px !important;
-  color: #AEADBD !important;
+  color: black !important;
   font-weight: 500 !important;
 }
 
 .black-input, .black-input input {
   color: var(--black) !important;
+}
+
+.css-6j8wv5-Input input {
+  color: black !important
 }
 
 .options-text .MuiFormControlLabel-label {
@@ -321,4 +325,8 @@ button[disabled]{
 
 .react-datepicker-wrapper input {
   width: 95%;
+}
+
+.pg-viewer-wrapper {
+  overflow-y: auto !important;
 }

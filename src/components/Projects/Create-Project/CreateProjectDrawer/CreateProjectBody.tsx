@@ -14,9 +14,17 @@ const CreateProjectBody = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const [permissionRef, setPermissionRef] = useState<any>();
-  const { menue: selectedMenue, selectedProject } = useSelector(
-    (state: RootState) => state.project
-  );
+  const {
+    menue: selectedMenue,
+    selectedProject,
+    drawerOpen,
+  } = useSelector((state: RootState) => state.project);
+
+  useEffect(() => {
+    if (!drawerOpen && permissionRef) {
+      clearInterval(permissionRef);
+    }
+  }, [drawerOpen, permissionRef]);
 
   useEffect(() => {
     if (selectedProject) {

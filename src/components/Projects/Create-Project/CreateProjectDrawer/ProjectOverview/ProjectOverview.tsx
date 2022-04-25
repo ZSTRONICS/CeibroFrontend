@@ -125,13 +125,12 @@ const ProjectOverview = () => {
     },
     []
   );
-  console.log("uniqueChars", ProjectOwnerList);
   return (
     <div style={{ width: "100%" }}>
       <Grid container>
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} className="black-input">
           <DatePicker value={my} onChange={handleDateChange} />
         </Grid>
 

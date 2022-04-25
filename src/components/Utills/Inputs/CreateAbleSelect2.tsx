@@ -117,7 +117,7 @@ const SelectDropdown: FC<My> = (props) => {
         fontSize: 14,
         fontWeight: 500,
         fontFamily: "Inter",
-        paddingLeft: 4
+        paddingLeft: 4,
       };
     },
   };
@@ -131,7 +131,10 @@ const SelectDropdown: FC<My> = (props) => {
 
   return (
     <InputHOC title={props.title}>
-      <div className={classes.select} style={{ ...(zIndex ? { zIndex } : {}) }}>
+      <div
+        className={`${classes.select} black-input`}
+        style={{ ...(zIndex ? { zIndex } : {}) }}
+      >
         <CreatableSelect
           placeholder={placeholder || "Select"}
           isMulti={isMulti || false}

@@ -63,6 +63,7 @@ export const rolesTemplate: RoleInterface = {
 export interface GroupInterface {
   name: string;
   id?: string;
+  members?: any;
   _id?: string;
 }
 export const groupTemplate: GroupInterface = {

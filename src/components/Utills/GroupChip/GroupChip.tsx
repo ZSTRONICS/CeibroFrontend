@@ -81,6 +81,10 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
       {open && (
         <Grid container style={{ flexDirection: "column" }}>
           {members?.map?.((member: UserInterface) => {
+            if(!member) {
+              return null;
+            }
+            
             return (
               <Grid
                 key={member.id}
@@ -108,12 +112,12 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
                   <Typography
                     className={`chat-member-name ${classes.memberName}`}
                   >
-                    {member.firstName} {member.surName}
+                    {member?.firstName} {member?.surName}
                   </Typography>
                   <Typography
                     className={`${classes.memberCompany} chat-member-company`}
                   >
-                    Company: {member.companyName}
+                    Company: {member?.companyName}
                   </Typography>
                 </Grid>
               </Grid>

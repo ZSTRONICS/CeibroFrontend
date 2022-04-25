@@ -61,50 +61,56 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         className={classes.cardWrapper}
         style={{ borderColor: getColorByStatus(status) }}
       >
-        <Grid item xs={12} className={classes.imageWrapper}>
-          <div className={classes.tagWrapper}>
-            <div
-              className={classes.status}
-              style={{
-                background: getColorByStatus(status),
-                color: getTextColorByStatus(status),
-              }}
-            >
-              <Typography className={classes.statusText}>{status}</Typography>
+        <Grid container className={classes.wrapper}>
+          <Grid item xs={12} className={classes.imageWrapper}>
+            <div className={classes.tagWrapper}>
+              <div
+                className={classes.status}
+                style={{
+                  background: getColorByStatus(status),
+                  color: getTextColorByStatus(status),
+                }}
+              >
+                <Typography className={classes.statusText}>{status}</Typography>
+              </div>
+              <div className={classes.dateWrapper}>
+                <Typography className={classes.statusDate}>
+                  {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+                </Typography>
+              </div>
             </div>
-            <div className={classes.dateWrapper}>
-              <Typography className={classes.statusDate}>
+            <img
+              className={classes.myImage}
+              src={src}
+              alt="ceibro-project-img"
+            />
+          </Grid>
+          <Grid container>
+            <Grid item xs={5}>
+              <Typography className={classes.meta}>Due Date</Typography>
+              <Typography className={classes.metaValue}>
                 {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
               </Typography>
-            </div>
-          </div>
-          <img className={classes.myImage} src={src} alt="ceibro-project-img" />
-        </Grid>
-        <Grid container>
-          <Grid item xs={5}>
-            <Typography className={classes.meta}>Due Date</Typography>
-            <Typography className={classes.metaValue}>
-              {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
-            </Typography>
+            </Grid>
+            <Grid item xs={7}>
+              <Typography className={classes.meta}>Owner</Typography>
+              <Typography
+                className={classes.metaValue}
+                style={{ display: "flex" }}
+              >
+                {owner?.[0]?.firstName} {owner?.[0]?.surName}
+                {owner?.length > 1 && (
+                  <div className={classes.extraOwners}>+{owner.length - 1}</div>
+                )}
+              </Typography>
+            </Grid>
           </Grid>
-          <Grid item xs={7}>
-            <Typography className={classes.meta}>Owner</Typography>
-            <Typography
-              className={classes.metaValue}
-              style={{ display: "flex" }}
-            >
-              {owner?.[0]?.firstName} {owner?.[0]?.surName}
-              {owner?.length > 1 && (
-                <div className={classes.extraOwners}>+{owner.length - 1}</div>
-              )}
-            </Typography>
-          </Grid>
-        </Grid>
 
-        <Grid item xs={12}>
-          <Typography className={classes.title}>{title}</Typography>
-          <Typography className={classes.viewMap}>View map</Typography>
-          <hr className={classes.break} />
+          <Grid item xs={12}>
+            <Typography className={classes.title}>{title}</Typography>
+            <Typography className={classes.viewMap}>View map</Typography>
+            <hr className={classes.break} />
+          </Grid>
         </Grid>
 
         <Grid item xs={12} className={classes.iconWrapper}>
@@ -144,8 +150,12 @@ const useStyles = makeStyles({
     padding: 5,
     cursor: "pointer",
   },
+  wrapper: {
+    height: "80%",
+  },
   cardWrapper: {
-    height: 270,
+    minHeight: 270,
+    height: "100%",
     padding: 15,
     background: colors.white,
     border: `1px solid`,
@@ -223,6 +233,7 @@ const useStyles = makeStyles({
     aligItems: "center",
     justifyContent: "space-between",
     minHeight: 40,
+    height: "20%",
   },
   iconChip: {
     display: "flex",

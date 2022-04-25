@@ -20,6 +20,7 @@ import { RootState } from "redux/reducers";
 interface headerInterface {
   selectedFolder?: FolderInterface | null;
   handleGoBack: () => any;
+  isFolder: boolean;
 }
 
 const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
@@ -28,7 +29,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   const { selectedProject, folderList } = useSelector(
     (state: RootState) => state?.project
   );
-  const { selectedFolder, handleGoBack } = props;
+  const { selectedFolder, handleGoBack, isFolder } = props;
   const [findDoc, setFindDoc] = useState<any>();
   // console.log("findDoc", findDoc);
 
@@ -64,7 +65,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       </Grid>
       <Grid item xs={12} md={7} className={classes.actionWrapper}>
         <InputText
-          placeholder="Find Document"
+          placeholder={isFolder ? "Find folder" : "Find document"}
           onChange={(e: any) => setFindDoc(e.target.value)}
         />
       </Grid>

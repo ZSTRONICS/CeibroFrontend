@@ -20,11 +20,12 @@ import { useDispatch } from "react-redux";
 import taskActions from "../../redux/action/task.action";
 import { getUserById } from "redux/action/user.action";
 interface IViewProfileProps {
-  userId: String;
+  userId: string;
+  disabled: boolean;
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
-  const { userId } = props;
+  const { userId, disabled } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [getUser, setGetUser] = useState<any>({});
@@ -69,6 +70,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         variant="outlined"
         size="medium"
         color="primary"
+        disabled={disabled}
       >
         View profile
       </Button>
