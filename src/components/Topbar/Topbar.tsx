@@ -68,7 +68,7 @@ const Topbar = (props: any) => {
         <Grid
           item
           xs={4}
-          md={history.location.pathname.includes("chat") ? 5 : 3}
+          md={history.location.pathname.includes("chat") ? 5 : 4}
           className={classes.titleContainer}
         >
           <Title />
@@ -78,7 +78,7 @@ const Topbar = (props: any) => {
           <Grid
             item
             xs={1}
-            md={history?.location.pathname.includes("chat") ? 2 : 4}
+            md={history?.location.pathname.includes("chat") ? 2 : 3}
           ></Grid>
         )}
 

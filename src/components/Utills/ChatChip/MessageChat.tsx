@@ -15,15 +15,19 @@ import {
   openViewQuestioniarDrawer,
   pinMessage,
   setSelectedQuestioniar,
+  updateMessageById,
+  getRoomMedia,
+  sendReplyMessage,
 } from "../../../redux/action/chat.action";
 import FilePreviewer from "./FilePreviewer";
-import { SAVE_MESSAGES } from "../../../config/chat.config";
+import { SAVE_MESSAGES, PUSH_MESSAGE } from "../../../config/chat.config";
 import $ from "jquery";
 import assets from "../../../assets/assets";
 import { ClipLoader } from "react-spinners";
 import { classNames } from "react-select/src/utils";
 import { UserInterface } from "constants/interfaces/user.interface";
 import SeenBy from "./SeenBy";
+import { useMediaQuery } from "react-responsive";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -53,6 +57,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   const { messages, selectedChat } = useSelector(
     (state: RootState) => state.chat
   );
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const dispatch = useDispatch();
   const [view, setView] = useState(false);
 
@@ -134,6 +139,51 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     };
   };
 
+  const handleSend = (text: string) => {
+    if (text) {
+      const formdata = new FormData();
+
+      formdata.append("message", text);
+      formdata.append("chat", selectedChat);
+
+      const myId = new Date().valueOf();
+      const newMessage = {
+        sender: user,
+        time: "1 seconds ago",
+        message: text,
+        seen: true,
+        type: "message",
+        myMessage: true,
+        id: myId,
+      };
+      const payload: any = {
+        body: formdata,
+        success: (res: any) => {
+          dispatch(
+            updateMessageById({
+              other: {
+                oldMessageId: myId,
+                newMessage: res.data,
+              },
+            })
+          );
+          dispatch(
+            getRoomMedia({
+              other: selectedChat,
+            })
+          );
+        },
+      };
+
+      dispatch(sendReplyMessage(payload));
+
+      dispatch({
+        type: PUSH_MESSAGE,
+        payload: newMessage,
+      });
+    }
+  };
+
   return (
     <Grid
       container
@@ -171,7 +221,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                 url={sender?.profilePic}
               />
             </Grid>
-            <Grid item xs={11}>
+            <Grid item xs={9} md={11}>
               <div className={classes.titleWrapper}>
                 <div className={classes.usernameWrapper}>
                   <div className={classes.nameWrapper}>
@@ -180,23 +230,26 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                     </Typography>
                     <Typography className={classes.time}>{time}</Typography>
                   </div>
-                  {type !== "questioniar" && (
+                  {!isTabletOrMobile && type !== "questioniar" && (
                     <div className={classes.quickReplyWrapper}>
                       <button
                         className={classes.quickBtn}
                         style={getQuickBtnStyles()}
+                        onClick={() => handleSend("OK")}
                       >
                         OK
                       </button>
                       <button
                         className={classes.quickBtn}
                         style={getQuickBtnStyles()}
+                        onClick={() => handleSend("?")}
                       >
                         ?
                       </button>
                       <button
                         className={classes.quickBtn}
                         style={getQuickBtnStyles()}
+                        onClick={() => handleSend("Done")}
                       >
                         Done
                       </button>

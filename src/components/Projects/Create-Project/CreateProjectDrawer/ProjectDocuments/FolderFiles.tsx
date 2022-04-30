@@ -174,6 +174,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
       {(isDragActive || loading || folderFiles?.length < 1) && (
         <DragMessage
           classes={classes}
+          onBtnClick={open}
           showBtn={!isDragActive && !loading && folderFiles?.length < 1}
           message={
             loading

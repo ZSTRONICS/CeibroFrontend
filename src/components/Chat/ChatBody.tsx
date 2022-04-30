@@ -45,11 +45,15 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
 
   useEffect(() => {
     const element = document.getElementById("chatBox");
+    if(element){
+      element?.removeEventListener('scroll', () => {})
+    }
     element?.addEventListener("scroll", () => handleScroll(blockPagination));
     return () => {
+      // alert('hadsfjk')
       element?.removeEventListener("scroll", () => {});
     };
-  }, [blockPagination, allowChangeBlock]);
+  }, [blockPagination, allowChangeBlock, selectedChat]);
 
   const handleScroll = (blocked: boolean) => {
     const element = document.getElementById("chatBox");

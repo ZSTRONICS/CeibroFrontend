@@ -42,7 +42,11 @@ const Title = () => {
       return (
         <>
           <div className={classes.projectTitle}>
-            <Typography variant="h6" component="h6">
+            <Typography
+              variant="h6"
+              component="h6"
+              className={classes.dashboardTitleText}
+            >
               Project
             </Typography>
             <Button
@@ -61,7 +65,11 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
-            <Typography variant="h6" component="h6">
+            <Typography
+              variant="h6"
+              component="h6"
+              className={classes.dashboardTitleText}
+            >
               Task
             </Typography>
             <Button
@@ -106,12 +114,18 @@ const Title = () => {
       return (
         <>
           <div className={classes.chatTitle}>
-            <Typography variant="h6" component="h6">
+            <Typography
+              variant="h6"
+              component="h6"
+              className={classes.dashboardTitleText}
+            >
               Chat
             </Typography>
           </div>
           {!isTabletOrMobile && (
-            <div style={{ width: "100%" }}>
+            <div
+              style={{ width: "100%", display: "flex", alignItems: "center" }}
+            >
               <CreateChat />
             </div>
           )}
@@ -123,7 +137,11 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <Typography variant="h6" component="h6">
+            <Typography
+              className={classes.profileTitle}
+              variant="h6"
+              component="h6"
+            >
               My connections
             </Typography>
           </div>
@@ -135,7 +153,11 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <Typography variant="h6" component="h6">
+            <Typography
+              className={classes.profileTitle}
+              variant="h6"
+              component="h6"
+            >
               Profile
             </Typography>
           </div>
@@ -153,11 +175,16 @@ const useStyles = makeStyles({
     color: colors.white,
     textDecoration: "none",
   },
+  profileTitle: {
+    fontSize: 30,
+    fontWeight: 500,
+  },
   chatTitle: {
     paddingLeft: 33,
     paddingRight: 20,
     display: "flex",
     alignItems: "center",
+    justifyContent: "center",
     ["@media (max-width:960px)"]: {
       paddingLeft: 0,
     },
@@ -169,16 +196,22 @@ const useStyles = makeStyles({
   },
   projectTitle: {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
+    alignItems: "center",
     width: "100%",
+    paddingLeft: 33,
+    gap: 20,
     ["@media (max-width:960px)"]: {
       justifyContent: "space-between",
     },
   },
   taskTitle: {
     display: "flex",
-    justifyContent: "space-evenly",
+    justifyContent: "flex-start",
     width: "100%",
+    paddingLeft: 33,
+    gap: 20,
+    alignItems: "center",
     ["@media (max-width:960px)"]: {
       justifyContent: "space-between",
     },

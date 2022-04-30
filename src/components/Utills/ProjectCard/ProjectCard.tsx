@@ -53,6 +53,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
       sm={6}
       md={4}
       lg={3}
+      xl={2}
       onClick={handleProjectClick}
     >
       <Grid

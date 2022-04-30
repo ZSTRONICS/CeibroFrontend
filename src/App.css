@@ -271,6 +271,13 @@ textarea::-webkit-input-placeholder{
     color: #AEADBD !important;
 }
 
+.css-1pndypt-Input input,
+.css-1pndypt-Input input::-webkit-input-placeholder {
+  color: black !important;
+}
+
+
+
 button:disabled,
 button[disabled]{
   border: 1px solid #999999;
