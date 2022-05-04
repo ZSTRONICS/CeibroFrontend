@@ -23,6 +23,10 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
+import {
+  ProfileWork,
+  RoleInterface,
+} from "constants/interfaces/project.interface";
 
 function createData(name: string, group: string, role: string) {
   return { name, group, role };
@@ -104,7 +108,7 @@ export default function BasicTable() {
         <TableBody>
           {getNewWorkList && getNewWorkList.length > 0 ? (
             <>
-              {getNewWorkList.map((row: any) => (
+              {getNewWorkList.map((row: ProfileWork) => (
                 <TableRow key={row.name}>
                   <TableCell component="th" scope="row">
                     <Typography className={classes.name}>{row.name}</Typography>
@@ -123,15 +127,21 @@ export default function BasicTable() {
 
                   <TableCell className={classes.final}>
                     <div className={classes.rolesText}>
-                      <Typography className={classes.roles}>
-                        {row.group} {row.role}
-                      </Typography>
+                      {row?.roles?.map((role: RoleInterface, index) => {
+                        return (
+                          <Typography key={index} className={classes.roles}>
+                            {role.name}{" "}
+                            {index === row?.roles?.length - 1 ? "" : ","}
+                          </Typography>
+                        );
+                      })}
                     </div>
 
                     <div>
                       <img
                         src={assets.pencilIcon}
                         onClick={() => handleWorkClick(row?.id)}
+                        className="pointer"
                       />
 
                       {loading && (
@@ -142,7 +152,7 @@ export default function BasicTable() {
                       )}
                       <img
                         src={assets.trashIcon}
-                        className="w-16 cursor-pointer"
+                        className="w-16 pointer"
                         onClick={() => deleteTimeProfileWork(row?.id)}
                       />
                     </div>
@@ -201,7 +211,10 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
   },
-  rolesText: {},
+  rolesText: {
+    display: "felx",
+    flexWrap: "wrap",
+  },
   final: {
     display: "flex",
     justifyContent: "space-between",

@@ -251,6 +251,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             placeholder="Please select"
             data={availableUsers}
             isMulti={true}
+            noOptionMessage="No user available"
             value={role?.member}
             // handleChange={(e: any) => setSelectedMember(e)}
 
@@ -419,8 +420,8 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 370,
-    width: 370,
+    maxWidth: 400,
+    width: 400,
     height: 300,
   },
   optionsWrapper: {

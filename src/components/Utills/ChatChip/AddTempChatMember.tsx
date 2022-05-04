@@ -81,6 +81,7 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
             data={availableUsers}
             value={selectedUser}
             handleChange={(e: any) => setSelectedUser(e)}
+            noOptionMessage="No user available"
           />
         </div>
       </DialogContent>

@@ -103,3 +103,23 @@ export interface MemberInterface {
   isInvited?: boolean;
   invitedEmail?: string;
 }
+
+export interface TimeProfile {
+  name: string;
+  id: string;
+  project: string | ProjectInterface;
+}
+export interface ProfileWork {
+  comment: boolean;
+  commentRequired: boolean;
+  id: string;
+  name: string;
+  photo: string;
+  photoRequired: string;
+  profile: string | TimeProfile;
+  quantity: boolean;
+  quantityRequired: boolean;
+  roles: RoleInterface[];
+  time: boolean;
+  timeRequired: boolean;
+}

@@ -150,12 +150,14 @@ const MemberDialog = () => {
                 data={roles}
                 handleChange={(e: any) => setSelectRoles(e)}
                 zIndex={10}
+                noOptionMessage="No role available"
               />
             </div>
             <div className={classes.meta}>
               <SelectDropdown
                 title="Group"
                 data={groups}
+                noOptionMessage="No group available"
                 handleChange={(e: any) => setSelectGroups(e)}
                 zIndex={8}
               />

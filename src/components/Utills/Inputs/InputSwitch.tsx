@@ -4,7 +4,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
 
 import "./inputText.css";
-import { Typography } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
 
 interface InputSwitchtInterface {
@@ -24,20 +24,28 @@ interface Props extends SwitchProps {
 
 const InputTextArea: FC<InputSwitchtInterface> = (props) => {
   const { label, onChange, value, name } = props;
+  const classes = useStyles();
 
   return (
     <div style={styles.wrapper}>
       <FormControlLabel
         control={<IOSSwitch checked={value} name={name} />}
-        label={label? label: ""}
+        label={label ? label : ""}
         onClick={(e: any) => onChange?.(e)}
         name={name}
+        classes={{ label: classes.inputLabel }}
       />
     </div>
   );
 };
 
 export default InputTextArea;
+
+const useStyles = makeStyles({
+  inputLabel: {
+    paddingLeft: 10,
+  },
+});
 
 const styles = {
   wrapper: {

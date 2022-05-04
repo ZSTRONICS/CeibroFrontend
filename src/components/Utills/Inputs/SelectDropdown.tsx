@@ -28,13 +28,15 @@ interface My {
   handleChange?: null | ((e: any) => void);
   zIndex?: number;
   isClearAble?: boolean;
+  noOptionMessage?: string;
 }
 
 const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, isClearAble, placeholder, zIndex } = props;
+  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
+    props;
 
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
@@ -101,7 +103,7 @@ const SelectDropdown: FC<My> = (props) => {
         fontSize: 14,
         fontWeight: 500,
         fontFamily: "Inter",
-        paddingLeft: 4
+        paddingLeft: 4,
       };
     },
     multiValueLabel: (styles: any, { data }: any) => ({
@@ -136,6 +138,7 @@ const SelectDropdown: FC<My> = (props) => {
           value={value}
           isClearable={isClearAble}
           menuPlacement="auto"
+          noOptionsMessage={() => noOptionMessage || "Nothing found"}
         />
       </div>
     </InputHOC>

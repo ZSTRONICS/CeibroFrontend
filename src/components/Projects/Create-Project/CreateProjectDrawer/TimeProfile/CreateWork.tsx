@@ -50,11 +50,11 @@ const CreateWork = () => {
   const workTempale = {
     name: "",
     roles: [],
-    time: true,
+    time: false,
     timeRequired: false,
-    quantity: true,
+    quantity: false,
     quantityRequired: false,
-    comment: true,
+    comment: false,
     commentRequired: false,
     photo: false,
     photoRequired: false,
@@ -87,7 +87,7 @@ const CreateWork = () => {
     dispatch(projectActions.closeWorkDrawer());
   }
   const handleOk = () => {
-    let body = data;
+    let body = JSON.parse(JSON.stringify(data));
     body.roles = body?.roles.map((role: dataInterface) => {
       return role.value;
     });
@@ -118,20 +118,33 @@ const CreateWork = () => {
       const payload = {
         success: (res: any) => {
           setData(res.data);
-          console.log("res work", res);
         },
-
         other: selectedWork,
       };
       dispatch(getWorkById(payload));
     }
   }, [selectedWork, workDrawer]);
 
-  console.log("work", work);
-
   const updateWorkHandle = () => {
+    const myRoles = data.roles.map((role: dataInterface) => {
+      console.log("role is ", role);
+      return role.value;
+    });
+    let body = {
+      name: data.name,
+      roles: myRoles,
+      time: data.time,
+      timeRequired: data.timeRequired,
+      quantity: data.quantity,
+      quantityRequired: data.quantityRequired,
+      comment: data.comment,
+      commentRequired: data.commentRequired,
+      photo: data.photo,
+      photoRequired: data.photoRequired,
+    };
+
     const payload = {
-      body: { data },
+      body,
       success: () => {
         toast.success("Work Updated successfully");
         dispatch(getNewWork({ other: selectedTimeProfile }));
@@ -340,6 +353,7 @@ const useStyle = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     color: colors.primary,
+    cursor: "pointer",
   },
   actionButton: {
     fontSize: 12,

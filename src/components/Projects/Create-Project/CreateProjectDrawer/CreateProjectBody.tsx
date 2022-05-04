@@ -27,6 +27,7 @@ const CreateProjectBody = () => {
   }, [drawerOpen, permissionRef]);
 
   useEffect(() => {
+    // alert(selectedProject);
     if (selectedProject) {
       if (permissionRef) {
         clearInterval(permissionRef);
