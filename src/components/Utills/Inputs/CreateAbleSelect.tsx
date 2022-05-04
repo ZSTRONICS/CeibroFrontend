@@ -5,7 +5,7 @@ import Select from "react-select";
 import chroma from "chroma-js";
 import colors from "../../../assets/colors";
 import { handleInputChange } from "react-select/src/utils";
-import CreatableSelect from "react-select/creatable";
+import CreatableSelect from "react-select";
 import assets from "assets/assets";
 import { dataInterface } from "./SelectDropdown";
 
@@ -24,13 +24,15 @@ interface My {
   handleChange?: null | ((e: any) => void);
   zIndex?: number;
   isClearAble?: boolean;
+  noOptionMessage?: string;
 }
 
 const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, isClearAble, placeholder, zIndex } = props;
+  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
+    props;
 
   console.log("createAbles", props);
   const colourStyles = {
@@ -118,9 +120,9 @@ const SelectDropdown: FC<My> = (props) => {
         fontSize: 14,
         fontWeight: 500,
         fontFamily: "Inter",
-        paddingLeft: 4
+        paddingLeft: 4,
       };
-    }
+    },
   };
 
   const handleChange = (e: dataInterface) => {
@@ -147,7 +149,8 @@ const SelectDropdown: FC<My> = (props) => {
           styles={colourStyles}
           value={value}
           isClearable={isClearAble}
-          formatCreateLabel={formatCreateLabel}
+          noOptionsMessage={() => noOptionMessage || ""}
+          // formatCreateLabel={formatCreateLabel}
         />
       </div>
     </div>

@@ -86,7 +86,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
 
       <div className={classes.loginForm}>
         {(success || loading) && (
-          <Alert severity="success">
+          <Alert icon={!loading} severity="success">
             {loading ? "Verifying OTP..." : "Register User Successfully"}
           </Alert>
         )}

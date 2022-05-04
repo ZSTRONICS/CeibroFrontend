@@ -48,6 +48,7 @@ const ProjectOverview = () => {
   useEffect(() => {
     dispatch(
       getAvailableUsers({
+        other: true,
         success: (res) => {
           setData(res.data);
           // setting current user as default owner

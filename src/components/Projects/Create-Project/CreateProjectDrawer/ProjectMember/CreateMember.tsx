@@ -1,32 +1,26 @@
-import React, { useEffect, useState } from "react";
+import { CircularProgress, makeStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import colors from "assets/colors";
-
-import InputText from "../../../../Utills/Inputs/InputText";
+import { avaialablePermissions } from "config/project.config";
+import { checkMemberPermission, mapGroups } from "helpers/project.helper";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import projectActions, {
+  createMember,
+  getAvailableProjectMembers,
+  getGroup,
+  getMember,
+  getRoles,
+} from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import CreateableSelectDropdown from "../../../../Utills/Inputs/CreateAbleSelect";
 import SelectDropdown, {
   dataInterface,
 } from "../../../../Utills/Inputs/SelectDropdown";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { checkMemberPermission, mapGroups } from "helpers/project.helper";
-import projectActions, {
-  createMember,
-  getGroup,
-  getRoles,
-  getMember,
-  getRolesById,
-  getAvailableProjectMembers,
-} from "redux/action/project.action";
-import { toast } from "react-toastify";
-import { avaialablePermissions } from "config/project.config";
 
 const MemberDialog = () => {
   const {
@@ -143,6 +137,7 @@ const MemberDialog = () => {
                 value={selectedEmail}
                 handleChange={(e: any) => setSelectedEmail(e)}
                 zIndex={11}
+                noOptionMessage={"No user available"}
               />
               {/* <InputText
                 placeholder="Search or/and add email"

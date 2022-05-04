@@ -95,7 +95,13 @@ const getProjectsWithPagination = apiCall({
 const getProjectMembers = apiCall({
   type: GET_PROJECTS_MEMBERS,
   method: "get",
-  path: (payload) => `/project/members/${payload?.other}`,
+  path: (payload) => {
+    let url = `/project/members/${payload?.other?.projectId}`;
+    if (payload.other?.excludeMe) {
+      url = `${url}?excludeMe=true`;
+    }
+    return url;
+  },
 });
 // const getFilterProjects = apiCall({
 //   type: GET_FILTER_PROJECTS,

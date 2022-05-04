@@ -168,6 +168,7 @@ const ProfileForm = () => {
             isValid,
           }) => (
             <form onSubmit={handleSubmit}>
+              {console.log("values are", values.phone)}
               <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
                 <Grid container>
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
@@ -221,7 +222,6 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      disabled={true}
                       fullWidth
                       size="small"
                       id="outlined-basic"
@@ -229,7 +229,14 @@ const ProfileForm = () => {
                       variant="outlined"
                       name="email"
                       value={values.email}
-                      onChange={handleChange}
+                      onChange={(e: any) => {
+                        e?.preventDefault?.();
+                        e.target.blur();
+                      }}
+                      onFocus={(e: any) => {
+                        e?.preventDefault?.();
+                        e.target.blur();
+                      }}
                       onBlur={handleBlur}
                     />
                     {errors.email && (
@@ -588,6 +595,6 @@ const useStyles = makeStyles({
   },
   placehol: {
     fontWeight: 500,
-    fontSize: 12
-  }
+    fontSize: 12,
+  },
 });

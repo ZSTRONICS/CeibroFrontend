@@ -69,9 +69,13 @@ const CreateChat = () => {
 
   const handleProjectChange = (e: any) => {
     setProject(e);
+    setUsers([]);
     dispatch(
       getAllProjectMembers({
-        other: e.value,
+        other: {
+          projectId: e.value,
+          excludeMe: true,
+        },
       })
     );
   };

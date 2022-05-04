@@ -77,7 +77,13 @@ const getAvailableChatUsers = apiCall({
 const getAvailableUsers = apiCall({
   type: GET_AVAILABLE_USERS,
   method: "get",
-  path: `/users/available`,
+  path: (payload) => {
+    let url = `/users/available`;
+    if (payload.other) {
+      url = `${url}?includeMe=true`;
+    }
+    return url;
+  },
 });
 
 function* userSaga() {
