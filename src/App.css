@@ -337,3 +337,11 @@ button[disabled]{
 .pg-viewer-wrapper {
   overflow-y: auto !important;
 }
+
+.pin-message-chip {
+  cursor: pointer;
+}
+
+.pin-message-chip:hover {
+  background-color: var(--purple-grey) !important;
+}

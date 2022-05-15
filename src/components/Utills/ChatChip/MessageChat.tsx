@@ -18,6 +18,7 @@ import {
   updateMessageById,
   getRoomMedia,
   sendReplyMessage,
+  goToMessage,
 } from "../../../redux/action/chat.action";
 import FilePreviewer from "./FilePreviewer";
 import { SAVE_MESSAGES, PUSH_MESSAGE } from "../../../config/chat.config";
@@ -117,12 +118,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   };
 
   const handleReplyClick = () => {
-    if (replyOf?.id) {
-      const elem = document.getElementById(replyOf.id);
-      if (elem) {
-        elem?.scrollIntoView();
-      }
-    }
+    dispatch(goToMessage(replyOf.id));
   };
 
   const handleClick = () => {

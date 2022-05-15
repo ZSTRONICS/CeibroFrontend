@@ -205,7 +205,7 @@ const MemberDialog = () => {
             {isDisabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
-            {selectedTimeProfile ? "update" : "Add"}
+            {selectedTimeProfile ? "Update" : "Add"}
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,6 +1,12 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core";
-import { Create } from "@material-ui/icons";
-import { useSelector } from "react-redux";
+import {
+  CircularProgress,
+  Grid,
+  IconButton,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import { Cancel, Check, Clear, Create, Edit } from "@material-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { RootState } from "../../redux/reducers";
@@ -8,6 +14,11 @@ import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
 import MessageSearch from "./MessageSearch";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
+import TextField from "components/Utills/Inputs/TextField";
+import { FormEvent, HTMLInputTypeAttribute, useState } from "react";
+import { editRoomName } from "redux/action/chat.action";
+import { requestSuccess } from "utills/status";
+import { GET_CHAT } from "config/chat.config";
 interface ChatBoxHeaderProps {
   chat?: ChatListInterface;
   enable: boolean;
@@ -15,6 +26,10 @@ interface ChatBoxHeaderProps {
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const [edit, setEdit] = useState(false);
+  const [name, setName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const {
     upScrollLoading,
@@ -24,6 +39,41 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) == String(selectedChat)
   );
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setName(e?.target?.value);
+  };
+
+  const handleUpdate = () => {
+    setLoading(true);
+    dispatch(
+      editRoomName({
+        body: { name },
+        success: () => {
+          setEdit(false);
+          let allRooms = JSON.parse(JSON.stringify(allChats));
+          const index = allRooms?.findIndex?.(
+            (room: any) => String(room._id) == String(selectedChat)
+          );
+          if (index > -1) {
+            allRooms[index].name = name;
+            dispatch({
+              type: requestSuccess(GET_CHAT),
+              payload: allRooms,
+            });
+          }
+        },
+        finallyAction: () => {
+          setLoading(false);
+        },
+        other: myChat?._id,
+      })
+    );
+  };
+
+  const handleCancel = () => {
+    setEdit(false);
+  };
 
   return (
     <Grid container className={classes.wrapper}>
@@ -38,18 +88,52 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       {myChat && (
         <>
           <Grid item xs={3} md={1} className={classes.editWrapper}>
-            <Create className={classes.editIcon} />
+            {!edit && (
+              <Create
+                onClick={() => {
+                  setEdit(true);
+                  setName(myChat.name);
+                }}
+                className={classes.editIcon}
+              />
+            )}
           </Grid>
           <Grid item xs={9} md={4} className={classes.usernameWrapper}>
-            <Typography className={classes.username}>{myChat?.name}</Typography>
-            {myChat?.project && (
-              <Typography className={classes.projectName}>
-                Project:{" "}
-                <span className={classes.projectTitle}>
-                  {" "}
-                  {myChat?.project?.title}{" "}
-                </span>
-              </Typography>
+            {edit ? (
+              <div className={`${classes.editInputWrapper} editInputWrapper`}>
+                <TextField
+                  inputProps={{ maxLength: 20 }}
+                  value={name}
+                  onChange={handleNameChange}
+                />
+                <IconButton size="small" onClick={handleCancel}>
+                  <Clear className={classes.cancelIcon} />
+                </IconButton>
+                {loading ? (
+                  <div className={classes.loading}>
+                    <CircularProgress disableShrink={false} size={15} />
+                  </div>
+                ) : (
+                  <IconButton size="small" onClick={handleUpdate}>
+                    <Check className={classes.checkIcon} />
+                  </IconButton>
+                )}
+              </div>
+            ) : (
+              <>
+                <Typography className={classes.username}>
+                  {myChat?.name}
+                </Typography>
+                {myChat?.project && (
+                  <Typography className={classes.projectName}>
+                    Project:{" "}
+                    <span className={classes.projectTitle}>
+                      {" "}
+                      {myChat?.project?.title}{" "}
+                    </span>
+                  </Typography>
+                )}
+              </>
             )}
           </Grid>
           <Grid item xs={6} className={classes.moreWrapper}>
@@ -75,6 +159,7 @@ const useStyles = makeStyles({
     },
   },
   editIcon: {
+    cursor: "pointer",
     color: colors.textPrimary,
     fontSize: 14,
     borderRadius: 5,
@@ -90,6 +175,21 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "center",
   },
+  editInputWrapper: {
+    marginTop: "auto",
+    marginBottom: "auto",
+    display: "flex",
+  },
+  cancelIcon: {
+    fontSize: 18,
+    color: colors.btnRed,
+    cursor: "pointer",
+  },
+  checkIcon: {
+    fontSize: 18,
+    color: colors.green,
+    cursor: "pointer",
+  },
   usernameWrapper: {
     display: "flex",
     flexDirection: "column",
@@ -97,10 +197,14 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontSize: 14,
     paddingTop: 2,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
     ["@media (max-width:960px)"]: {
       justifyContent: "center",
     },
   },
+  loading: { display: "flex", alignItems: "center" },
   avatarWrapper: {
     paddingLeft: 20,
     display: "flex",

@@ -31,12 +31,14 @@ import {
   SET_LOADING_MESSAGES,
   GET_USER_QUESTIONIAR_ANSWER,
   GET_UP_MESSAGES,
+  GET_DOWN_MESSAGES,
   SET_VIEWPORT,
   SET_ALLOW_SCROLL,
   SET_PAGINATION_BLOCK,
   DELETE_CONVERSATION,
   GET_PINNED_MESSAGES,
   GET_ROOM_QUESTIONIAR,
+  SET_DOWN_BLOCK,
 } from "../../config/chat.config";
 
 import { QuestioniarInterface } from "../../constants/interfaces/questioniar.interface";
@@ -74,6 +76,7 @@ interface ChatReducerInt {
   pinnedMessages: any;
   roomQuestioniars: any;
   createQuestioniarLoading: boolean;
+  blockDown: boolean;
 }
 
 const intialStatue: ChatReducerInt = {
@@ -105,6 +108,7 @@ const intialStatue: ChatReducerInt = {
   blockPagination: false,
   allowChangeBlock: true,
   pinnedMessages: [],
+  blockDown: false,
   roomQuestioniars: [],
   createQuestioniarLoading: false,
 };
@@ -237,6 +241,27 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         messages: [...action.payload, ...state.messages],
         upScrollLoading: false,
         allowScroll: true,
+      };
+    }
+
+    case requestPending(GET_DOWN_MESSAGES): {
+      return {
+        ...state,
+        blockDown: true,
+      };
+    }
+
+    case requestSuccess(GET_DOWN_MESSAGES): {
+      return {
+        ...state,
+        messages: [...state.messages, ...action.payload],
+      };
+    }
+
+    case SET_DOWN_BLOCK: {
+      return {
+        ...state,
+        blockDown: action.payload,
       };
     }
 

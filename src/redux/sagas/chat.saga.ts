@@ -27,6 +27,10 @@ import {
   SET_VIEWPORT,
   GET_PINNED_MESSAGES,
   GET_ROOM_QUESTIONIAR,
+  EDIT_ROOM_NAME,
+  GO_TO_MESSAGES,
+  GET_DOWN_CHAT_MESSAGE,
+  GET_DOWN_MESSAGES,
 } from "../../config/chat.config";
 import { SAVE_MESSAGES } from "../../config/chat.config";
 import apiCall from "../../utills/apiCall";
@@ -81,6 +85,9 @@ const getRoomMessages = apiCall({
     if (payload?.other?.search) {
       url = url + `?search=${payload?.other?.search}`;
     }
+    if (payload?.other?.messageId) {
+      url = url + `?messageId=${payload?.other?.messageId}`;
+    }
     return url;
   },
 });
@@ -92,6 +99,15 @@ const getUpRoomMessages = apiCall({
     "/chat/room/messages/" +
     payload.other.roomId +
     `?lastMessageId=${payload?.other.lastMessageId}`,
+});
+
+const getDownRoomMessages = apiCall({
+  type: GET_DOWN_MESSAGES,
+  method: "get",
+  path: (payload: any) =>
+    "/chat/room/messages/" +
+    payload.other.roomId +
+    `?lastMessageId=${payload?.other.lastMessageId}&down=true`,
 });
 
 const setAllMessagesRead = apiCall({
@@ -127,6 +143,12 @@ const saveQuestioniarAnswers = apiCall({
 const deleteConversation = apiCall({
   type: DELETE_CONVERSATION,
   method: "delete",
+  path: (payload: any) => "/chat/room/" + payload.other,
+});
+
+const editRoomName = apiCall({
+  type: EDIT_ROOM_NAME,
+  method: "put",
   path: (payload: any) => "/chat/room/" + payload.other,
 });
 
@@ -219,6 +241,35 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
   });
 }
 
+function* goToMessage(action: ActionInterface): Generator<any> {
+  if (action.payload) {
+    const elem = document.getElementById(action.payload);
+    if (elem) {
+      // if message already in dom
+      elem?.scrollIntoView();
+    } else {
+      // if message is not in dom
+      const roomId = yield select((state: any) => state.chat.selectedChat);
+      yield put({
+        type: GET_MESSAGES,
+        payload: {
+          success: () => {
+            const elem = document.getElementById(action.payload);
+            if (elem) {
+              // if message already in dom
+              elem?.scrollIntoView();
+            }
+          },
+          other: {
+            roomId: roomId,
+            messageId: action.payload,
+          },
+        },
+      });
+    }
+  }
+}
+
 function* updateMessageById(action: ActionInterface): Generator<any> {
   const {
     payload: { other },
@@ -239,9 +290,6 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   const index = messages?.findIndex((message: any) => {
     return String(message?.id) === String(other.oldMessageId);
   });
-  console.log("index: ", index);
-  console.log("index: ", index);
-  console.log("index: ", index);
   if (index > -1) {
     const myMessage = messages[index];
     myMessage._id = other.newMessage.id;
@@ -283,11 +331,37 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
   }
 }
 
+function* getDownChatMessages(action: ActionInterface): Generator<any> {
+  const isBlocked = yield select(
+    (state: RootState) => state.chat.blockPagination
+  );
+  if (!isBlocked) {
+    const selectedChat = yield select(
+      (state: RootState) => state.chat.selectedChat
+    );
+    const messages: any = yield select(
+      (state: RootState) => state.chat.messages
+    );
+    const payload = {
+      other: {
+        roomId: selectedChat,
+        lastMessageId: messages?.[messages?.length - 1]?._id || null,
+      },
+    };
+
+    yield put({
+      type: GET_DOWN_MESSAGES,
+      payload,
+    });
+  }
+}
+
 function* chatSaga() {
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
   yield takeLatest(GET_CHAT_API, getAllChat);
   yield takeLatest(GET_MESSAGES, getRoomMessages);
   yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
+  yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
   yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
@@ -309,8 +383,11 @@ function* chatSaga() {
   yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
   yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
+  yield takeLatest(GET_DOWN_CHAT_MESSAGE, getDownChatMessages);
   yield takeLatest(GET_PINNED_MESSAGES, getPinnedMessages);
   yield takeLatest(GET_ROOM_QUESTIONIAR, getRoomQuestioniar);
+  yield takeLatest(EDIT_ROOM_NAME, editRoomName);
+  yield takeLatest(GO_TO_MESSAGES, goToMessage);
 }
 
 export default chatSaga;

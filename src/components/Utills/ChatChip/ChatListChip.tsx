@@ -167,6 +167,9 @@ const useStyles = makeStyles({
     justifyContent: "flex-start",
     paddingLeft: 6,
     paddingTop: 4,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   userName: {
     fontSize: 14,

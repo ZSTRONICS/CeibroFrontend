@@ -29,7 +29,11 @@ import {
   GET_USER_QUESTIONIAR_ANSWER,
   GET_UP_CHAT_MESSAGE,
   GET_PINNED_MESSAGES,
-  GET_ROOM_QUESTIONIAR
+  GET_ROOM_QUESTIONIAR,
+  EDIT_ROOM_NAME,
+  GO_TO_MESSAGES,
+  GET_DOWN_CHAT_MESSAGE,
+  SET_DOWN_BLOCK,
 } from "../../config/chat.config";
 import { createAction } from "./action";
 
@@ -51,12 +55,15 @@ export const getQuestioniarById = createAction(GET_QUESTIONIAR);
 export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS);
 export const deleteConversation = createAction(DELETE_CONVERSATION);
 export const forwardChat = createAction(FORWARD_CHAT);
-export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
-export const getUserQuestioniarAnswer = createAction(GET_USER_QUESTIONIAR_ANSWER);
+export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID);
+export const getUserQuestioniarAnswer = createAction(
+  GET_USER_QUESTIONIAR_ANSWER
+);
 export const getUpMessages = createAction(GET_UP_CHAT_MESSAGE);
+export const getDownMessages = createAction(GET_DOWN_CHAT_MESSAGE);
 export const getPinnedMessages = createAction(GET_PINNED_MESSAGES);
-export const getRoomQuestioniars = createAction(GET_ROOM_QUESTIONIAR)
-
+export const getRoomQuestioniars = createAction(GET_ROOM_QUESTIONIAR);
+export const editRoomName = createAction(EDIT_ROOM_NAME);
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,
@@ -90,11 +97,20 @@ export const setQuestions = (payload: any) => ({
 
 export const setMembersDialog = (open: boolean) => ({
   type: SET_MEMBERS_DIALOG,
-  payload: open
+  payload: open,
 });
-
 
 export const setTempMembersDialog = (open: boolean) => ({
   type: SET_TEMP_MEMBERS_DIALOG,
-  payload: open
+  payload: open,
+});
+
+export const goToMessage = (messageId: string) => ({
+  type: GO_TO_MESSAGES,
+  payload: messageId,
+});
+
+export const setDownBlock = (block: boolean) => ({
+  type: SET_DOWN_BLOCK,
+  payload: block,
 });

@@ -1,8 +1,12 @@
 import { Grid, makeStyles } from "@material-ui/core";
-import { memo, useEffect } from "react";
+import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
-import { getRoomMessages, getUpMessages } from "../../redux/action/chat.action";
+import {
+  getDownMessages,
+  getRoomMessages,
+  getUpMessages,
+} from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import MessageChat from "../Utills/ChatChip/MessageChat";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
@@ -25,10 +29,11 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
     (store: RootState) => store.chat.selectedChat
   );
   const viewport = useSelector((store: RootState) => store.chat.viewport);
-  const { blockPagination, allowChangeBlock } = useSelector(
+  const { blockPagination, allowChangeBlock, blockDown } = useSelector(
     (store: RootState) => store.chat
   );
   const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
+  const [blockLocal, setBlockLocal] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -45,36 +50,50 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
 
   useEffect(() => {
     const element = document.getElementById("chatBox");
-    if(element){
-      element?.removeEventListener('scroll', () => {})
+    if (!blockLocal) {
+      if (element) {
+        element?.removeEventListener("scroll", () => {});
+      }
+      element?.addEventListener("scroll", () => handleScroll(blockLocal));
     }
-    element?.addEventListener("scroll", () => handleScroll(blockPagination));
     return () => {
-      // alert('hadsfjk')
       element?.removeEventListener("scroll", () => {});
     };
-  }, [blockPagination, allowChangeBlock, selectedChat]);
+  }, [blockPagination, allowChangeBlock, selectedChat, blockLocal]);
 
-  const handleScroll = (blocked: boolean) => {
+  const handleScroll = (blockLocal: boolean) => {
     const element = document.getElementById("chatBox");
     if (element && element?.scrollTop <= 0) {
       if (!blockPagination) {
         dispatch(getUpMessages());
       }
     }
+    if (
+      (element?.clientHeight || 0) > 300 &&
+      (element?.scrollHeight || 0) - (element?.scrollTop || 0) ===
+        element?.clientHeight
+    ) {
+      if (!blockLocal) {
+        dispatch(getDownMessages());
+      }
+    }
   };
 
   useEffect(() => {
-    if (!viewport) {
+    if (!viewport && !blockDown) {
+      setBlockLocal(true);
       setTimeout(() => {
         const chatBox = document.getElementById("chatBox") || {
           scrollTop: 0,
           scrollHeight: 0,
         };
         chatBox.scrollTop = chatBox.scrollHeight;
+        setTimeout(() => {
+          setBlockLocal(false);
+        }, 5000);
       }, 300);
     }
-  }, [messages?.length, selectedChat]);
+  }, [messages?.length, selectedChat, blockDown]);
 
   useEffect(() => {
     if (allowScroll) {
