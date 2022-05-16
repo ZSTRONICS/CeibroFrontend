@@ -17,6 +17,7 @@ import { getFolder } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import Moment from "react-moment";
+import ProjectDocumentMenu from "./ProjectDocsMenu";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
@@ -26,6 +27,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const { selectedProject, folderList } = useSelector(
     (state: RootState) => state?.project
   );
+  const { user } = useSelector((state: RootState) => state?.auth);
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
 
@@ -57,7 +59,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   };
 
   return (
-    <TableContainer>
+    <TableContainer style={{ height: "100%", overflow: "visible" }}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -114,9 +116,19 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   component="th"
                   scope="row"
                   align="right"
+                  style={{ padding: 6 }}
                   className={classes.modifyDate}
                 >
-                  Only you
+                  {row?.access?.length > 0
+                    ? `${row?.access?.length} member(s)`
+                    : "Only you"}
+                  {row.creator === user.id && (
+                    <ProjectDocumentMenu
+                      folderId={row.id || ""}
+                      access={row?.access || []}
+                      groupId={row?.group?.id || ""}
+                    />
+                  )}
                 </TableCell>
               </TableRow>
             );

@@ -49,5 +49,7 @@ const useStyles = makeStyles({
     color: colors.textGrey,
     paddingBottom: 10,
   },
-  groupsWrapper: {},
+  groupsWrapper: {
+    height: "100%",
+  },
 });

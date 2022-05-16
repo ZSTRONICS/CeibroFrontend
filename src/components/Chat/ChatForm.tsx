@@ -299,6 +299,15 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   : "You were removed from this chat"
                 : "Select a chat room"
             }
+            style={
+              replyToId || showRecorder
+                ? {
+                    width: "75%",
+                  }
+                : {
+                    width: "90%",
+                  }
+            }
             className={`messageInput black-input ${classes.messageInput}`}
           />
           <div className={classes.sendWrapper}>
@@ -449,7 +458,6 @@ const useStyles = makeStyles({
     color: colors.white,
   },
   messageInput: {
-    width: "90%",
     height: 45,
     border: "none",
     paddingLeft: 10,

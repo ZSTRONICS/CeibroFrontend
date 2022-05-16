@@ -122,6 +122,7 @@ const useStyles = makeStyles({
   inputWrapper: {
     height: 50,
     paddingLeft: 15,
+    paddingRight: 25,
     display: "flex",
     alignItems: "center",
     borderBottom: `1px solid ${colors.lightGrey}`,

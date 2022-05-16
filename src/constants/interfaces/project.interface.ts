@@ -76,6 +76,8 @@ export interface FolderInterface {
   name: string;
   id?: string;
   _id?: string;
+  access: string[];
+  creator: UserInterface;
   group: GroupInterface;
   createdAt: string;
 }

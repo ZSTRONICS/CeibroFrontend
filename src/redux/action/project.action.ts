@@ -73,6 +73,8 @@ import configs, {
   SELECTED_FILE_URL,
   GET_GROUP_MEMBERS,
   SELECTED_FILE_TYPE,
+  GET_GROUP_USERS,
+  ADD_REMOVE_FOLDER_USER,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -305,6 +307,8 @@ export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
 export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
+export const getGroupUsers = createAction(GET_GROUP_USERS);
+export const addRemoveFolderUser = createAction(ADD_REMOVE_FOLDER_USER);
 export const getAvailableProjectMembers = createAction(
   GET_AVAILABLE_PROJECT_MEMBERS
 );

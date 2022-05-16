@@ -1,6 +1,7 @@
 import { put, takeLatest } from "redux-saga/effects";
 import { RootState } from "redux/reducers";
 import {
+  ADD_REMOVE_FOLDER_USER,
   CREATE_FOLDER,
   CREATE_GROUP,
   CREATE_MEMBER,
@@ -20,6 +21,7 @@ import {
   GET_GROUP,
   GET_GROUP_BY_ID,
   GET_GROUP_MEMBERS,
+  GET_GROUP_USERS,
   GET_MEMBER,
   GET_NEW_WORK,
   GET_PERMISSIONS,
@@ -351,6 +353,19 @@ const getGroupMembers = apiCall({
   path: (payload) => `/project/group/members/${payload?.other}`,
 });
 
+const getGroupUsers = apiCall({
+  type: GET_GROUP_USERS,
+  method: "get",
+  path: (payload) => `/project/group/users/${payload?.other}`,
+});
+
+const addRemoveFolderUser = apiCall({
+  type: ADD_REMOVE_FOLDER_USER,
+  method: "post",
+  path: ({ other: { folderId, userId } }) =>
+    `/project/folder-user/${folderId}/${userId}`,
+});
+
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
@@ -396,6 +411,8 @@ function* projectSaga() {
   yield takeLatest(DELETE_ROLE, deleteRole);
   yield takeLatest(GET_AVAILABLE_PROJECT_MEMBERS, getAvailableProjectMembers);
   yield takeLatest(GET_GROUP_MEMBERS, getGroupMembers);
+  yield takeLatest(GET_GROUP_USERS, getGroupUsers);
+  yield takeLatest(ADD_REMOVE_FOLDER_USER, addRemoveFolderUser);
 }
 
 export default projectSaga;
