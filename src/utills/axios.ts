@@ -1,15 +1,15 @@
-import axios from "axios";
+import axios from 'axios'
 
 // export const SERVER_URL = "https://shielded-plateau-81277.herokuapp.com";
-// export const SERVER_URL = "https://backend.ceibro.ee";
+export const SERVER_URL = 'https://backend.ceibro.ee'
 
-export const SERVER_URL = "http://localhost:3000";
+// export const SERVER_URL = "http://localhost:3000";
 
-export const baseURL = `${SERVER_URL}/v1`;
+export const baseURL = `${SERVER_URL}/v1`
 
 const API = axios.create({
   baseURL,
-});
+})
 
 // API.interceptors.response.use(
 //   (response) => {
@@ -66,4 +66,4 @@ const API = axios.create({
 //   return response;
 // };
 
-export default API;
+export default API

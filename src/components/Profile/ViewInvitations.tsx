@@ -3,6 +3,7 @@ import {
   Button,
   Dialog,
   DialogTitle,
+  DialogContent,
   Grid,
   List,
   ListItem,
@@ -10,33 +11,37 @@ import {
   ListItemText,
   makeStyles,
   Typography,
-} from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import { acceptAllInvites, closeViewIvitations, openViewInvitations } from "redux/action/user.action";
-import colors from "../../assets/colors";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import InvitationsList from "./InvitationsList";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+} from '@material-ui/core'
+import IconButton from '@material-ui/core/IconButton'
+import CloseIcon from '@material-ui/icons/Close'
+import React, { useRef, useState } from 'react'
+import {
+  acceptAllInvites,
+  closeViewIvitations,
+  openViewInvitations,
+} from 'redux/action/user.action'
+import colors from '../../assets/colors'
+import NameAvatar from '../Utills/Others/NameAvatar'
+import InvitationsList from './InvitationsList'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from 'redux/reducers'
 
 interface IViewInvitationsProps {
   hideBtn?: boolean
 }
 
-const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
-  props
-) => {
-  const dispatch = useDispatch();
-  const ref = useRef();
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
+const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props => {
+  const dispatch = useDispatch()
+  const ref = useRef()
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
   const { openInvites } = useSelector((state: RootState) => state.user)
   const { hideBtn } = props
 
   const handleOpen = () => {
     // setOpen(!open);
     dispatch(openViewInvitations())
-  };
+  }
 
   //   React.useEffect(() => {
   //     const payload = {
@@ -58,18 +63,18 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
   //   };
 
   const acceptAllHandler = (accepted: boolean) => {
-    console.log("id", accepted);
+    console.log('id', accepted)
     const payload = {
       success: (val: any) => {
         //  @ts-ignore
-        ref?.current?.getMyInvites(); //accessing invitationList component
+        ref?.current?.getMyInvites() //accessing invitationList component
       },
       other: {
         accepted,
       },
-    };
-    dispatch(acceptAllInvites(payload));
-  };
+    }
+    dispatch(acceptAllInvites(payload))
+  }
 
   const handleClose = () => {
     dispatch(closeViewIvitations())
@@ -77,11 +82,27 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
 
   return (
     <>
-      {!hideBtn && <Button color="primary" onClick={handleOpen} variant="outlined">
-        View
-      </Button>}
+      {!hideBtn && (
+        <Button color="primary" onClick={handleOpen} variant="outlined">
+          View
+        </Button>
+      )}
       <Dialog onClose={handleClose} open={openInvites}>
         <DialogTitle>
+          <IconButton
+            aria-label="close"
+            size="small"
+            onClick={handleClose}
+            style={{
+              position: 'absolute',
+              right: '8px',
+              top: '8px',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
           <div className={classes.titleWrapper}>
             <Button
               className={classes.acceptBtn}
@@ -99,20 +120,20 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
               Decline all
             </Button>
           </div>
-        </DialogTitle>
+        </DialogContent>
         <InvitationsList ref={ref} />
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default ViewInvitations;
+export default ViewInvitations
 
 const useStyles = makeStyles({
   titleWrapper: {
     width: 400,
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     borderBottom: `1px solid ${colors.mediumGrey}`,
     paddingBottom: 10,
   },
@@ -125,4 +146,4 @@ const useStyles = makeStyles({
     fontWeight: 500,
     color: colors.btnRed,
   },
-});
+})
