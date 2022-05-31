@@ -41,30 +41,37 @@ const LoginForm: React.FC<LoginForm> = props => {
   const intl = useIntl()
   const dispatch = useDispatch()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState<boolean>(false)
-  const [verifyError, setVerifyError] = useState<boolean>(false)
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState<boolean>(false);
+  const [lockError, setLockError] = useState<boolean>(false);
+  const [verifyError, setVerifyError] = useState<boolean>(false);
 
   const handleSubmit = () => {
-    setError(false)
-    setVerifyError(false)
+    setError(false);
+    setLockError(false);
+    setVerifyError(false);
     const payload = {
       body: {
         email,
         password,
       },
       onFailAction: (err: any) => {
-        console.log('error login', err.response)
 
         if (err.response.status === 406) {
           setVerifyError(true)
         } else {
-          setError(true)
-
-          setTimeout(() => {
-            setError(false)
-          }, 3000)
+          if(err.response.status === 423) {
+            setLockError(true);
+            setTimeout(() => {
+              setLockError(false);
+            }, 3000);
+          } else {
+            setError(true);
+            setTimeout(() => {
+              setError(false);
+            }, 3000);
+          }
         }
       },
       showErrorToast: true,
@@ -99,6 +106,15 @@ const LoginForm: React.FC<LoginForm> = props => {
       </div>
 
       <div className={classes.loginForm}>
+      {(showSuccess || tokenLoading) && (
+          <Alert severity="success">
+            {tokenLoading
+              ? "Verifying email"
+              : "Email verified successfully. Please sign in!"}
+          </Alert>
+        )}
+
+        {showError && <Alert severity="error">Link expired</Alert>}
         {verifyError && (
           <Alert severity="error" style={{ display: 'flex' }}>
             <Typography
@@ -117,6 +133,7 @@ const LoginForm: React.FC<LoginForm> = props => {
         )}
 
         {error && <Alert severity="error">Incorrect email or password</Alert>}
+        {lockError && <Alert severity="error">Account locked. Retry after 15 minutes</Alert>}
         <TextField
           placeholder={intl.formatMessage({ id: 'input.Email' })}
           className={classes.inputs}

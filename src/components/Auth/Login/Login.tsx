@@ -29,30 +29,30 @@ const Login: React.FC<LoginInterface> = () => {
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   const queryParams = queryString.parse(history?.location?.search);
-  //   if (queryParams?.token) {
-  //     // verifying email verification token
-  //     setTokenLoading(true);
-  //     axios
-  //       .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
-  //       .then((response) => {
-  //         setSuccess(true);
-  //         setTokenLoading(false);
-  //         setTimeout(() => {
-  //           setSuccess(false);
-  //         }, 5000);
-  //       })
-  //       .catch((err) => {
-  //         setError(true);
-  //         setTokenLoading(false);
-  //         setTimeout(() => {
-  //           setError(false);
-  //         }, 5000);
-  //         console.log("error is ", err);
-  //       });
-  //   }
-  // }, []);
+  useEffect(() => {
+    const queryParams = queryString.parse(history?.location?.search);
+    if (queryParams?.token) {
+      // verifying email verification token
+      setTokenLoading(true);
+      axios
+        .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
+        .then((response) => {
+          setSuccess(true);
+          setTokenLoading(false);
+          setTimeout(() => {
+            setSuccess(false);
+          }, 5000);
+        })
+        .catch((err) => {
+          setError(true);
+          setTokenLoading(false);
+          setTimeout(() => {
+            setError(false);
+          }, 5000);
+          console.log("error is ", err);
+        });
+    }
+  }, []);
 
   useEffect(() => {
     if (isLoggedIn) {
