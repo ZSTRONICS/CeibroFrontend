@@ -21,6 +21,7 @@ import { useDispatch } from 'react-redux'
 import taskActions from '../../redux/action/task.action'
 import { getUserById } from 'redux/action/user.action'
 import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
+import { createSingleRoom } from '../../redux/action/chat.action'
 interface IViewProfileProps {
   userId: string
   disabled: boolean
@@ -57,6 +58,10 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
     dispatch(deleteMyConnection({ other: id, success: () => dispatch(getMyConnections()) }))
 
     handleToggle()
+  }
+
+  const startRoom = () => {
+    dispatch(createSingleRoom({ other: getUser?.id }))
   }
 
   //   const user = {
@@ -164,7 +169,13 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
               >
                 <Delete />
               </IconButton>
-              <Button className={classes.btn} variant="contained" size="medium" color="primary">
+              <Button
+                className={classes.btn}
+                onClick={startRoom}
+                variant="contained"
+                size="medium"
+                color="primary"
+              >
                 Start conversation
               </Button>
               <Button
