@@ -20,6 +20,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { Alert } from "@material-ui/lab";
+import queryString from "query-string";
 
 const ResetPasswordForm = () => {
   const classes = useStyles();
@@ -38,9 +39,11 @@ const ResetPasswordForm = () => {
     console.log("values: ", values);
 
     // console.log("success", success);
-    const { otp, password } = values;
+    const { password } = values;
+    const queryParams = queryString.parse(history?.location?.search);
+
     const payload = {
-      body: { password },
+      body: { password, token: queryParams.token  },
       success: (res: any) => {
         setSuccess(res);
         if (res) {
@@ -61,17 +64,17 @@ const ResetPasswordForm = () => {
       finallyAction: () => {
         setLoading(false);
       },
-      other: otp,
+      other: queryParams?.token
     };
     setLoading(true);
     dispatch(resetPassword(payload));
   };
 
   const registerSchema = Yup.object().shape({
-    otp: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
+    // otp: Yup.string()
+    //   .min(2, "Too Short!")
+    //   .max(50, "Too Long!")
+    //   .required("Required"),
     password: Yup.string()
       .required("Please enter your password")
       .matches(
@@ -97,7 +100,7 @@ const ResetPasswordForm = () => {
         <Formik
           initialValues={{
             password: "",
-            otp: "",
+            // otp: "",
             confirmPassword: "",
           }}
           validationSchema={registerSchema}
@@ -116,13 +119,13 @@ const ResetPasswordForm = () => {
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               {(success || loading) && (
                 <Alert severity="success">
-                  {loading ? "Verifying email" : "Password Reset Successfully"}
+                  {loading ? "Verifying" : "Password Reset Successfully"}
                 </Alert>
               )}
 
               {error && <Alert severity="error">Invalid OTP</Alert>}
 
-              <TextField
+              {/* <TextField
                 placeholder={"Enter OTP"}
                 className={classes.inputs}
                 name="otp"
@@ -138,7 +141,7 @@ const ResetPasswordForm = () => {
                 <Typography className={`error-text ${classes.errorText}`}>
                   {errors.otp && touched.otp && errors.otp}
                 </Typography>
-              )}
+              )} */}
               <TextField
                 type="password"
                 placeholder={intl.formatMessage({ id: "input.Password" })}

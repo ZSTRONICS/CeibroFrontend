@@ -95,6 +95,15 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       </div>
 
       <div className={classes.loginForm}>
+      {(showSuccess || tokenLoading) && (
+          <Alert severity="success">
+            {tokenLoading
+              ? "Verifying email"
+              : "Email verified successfully. Please sign in!"}
+          </Alert>
+        )}
+
+        {showError && <Alert severity="error">Link expired</Alert>}
         {verifyError && (
           <Alert severity="error" style={{ display: "flex" }}>
             <Typography
