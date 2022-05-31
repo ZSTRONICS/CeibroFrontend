@@ -11,44 +11,53 @@ import {
   ListItemText,
   makeStyles,
   Typography,
-} from "@material-ui/core";
-import { Clear } from "@material-ui/icons";
-import React, { useEffect, useState } from "react";
-import colors from "../../assets/colors";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import { useDispatch } from "react-redux";
-import taskActions from "../../redux/action/task.action";
-import { getUserById } from "redux/action/user.action";
+  IconButton,
+} from '@material-ui/core'
+import { Clear, Delete } from '@material-ui/icons'
+import React, { useEffect, useState } from 'react'
+import colors from '../../assets/colors'
+import NameAvatar from '../Utills/Others/NameAvatar'
+import { useDispatch } from 'react-redux'
+import taskActions from '../../redux/action/task.action'
+import { getUserById } from 'redux/action/user.action'
+import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
 interface IViewProfileProps {
-  userId: string;
-  disabled: boolean;
+  userId: string
+  disabled: boolean
 }
 
-const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
-  const { userId, disabled } = props;
-  const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [getUser, setGetUser] = useState<any>({});
-  const dispatch = useDispatch();
+const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
+  const { userId, disabled } = props
+  const classes = useStyles()
+  const [open, setOpen] = React.useState(false)
+  const [getUser, setGetUser] = useState<any>({})
+  const dispatch = useDispatch()
 
   const handleToggle = () => {
     const payload = {
       success: (val: any) => {
-        console.log("getUserByid", val);
-        setGetUser(val.data);
+        console.log('getUserByid', val)
+        setGetUser(val.data)
       },
       other: {
         userId,
       },
-    };
-    dispatch(getUserById(payload));
+    }
+    dispatch(getUserById(payload))
 
-    setOpen(!open);
-  };
-  console.log("hhh", getUser);
+    setOpen(!open)
+  }
+  console.log('hhh', getUser)
   const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer());
-  };
+    dispatch(taskActions.openDrawer())
+  }
+
+  const handleDelete = () => {
+    const id: string = getUser?.id
+    dispatch(deleteMyConnection({ other: id, success: () => dispatch(getMyConnections()) }))
+
+    handleToggle()
+  }
 
   //   const user = {
   //     image:
@@ -83,7 +92,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 <NameAvatar
                   firstName={getUser?.firstName}
                   surName={getUser?.surName}
-                  url={getUser?.profilePic || ""}
+                  url={getUser?.profilePic || ''}
                   variant="large"
                 />
               )}
@@ -96,15 +105,11 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Name</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.firstName}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.firstName}</Typography>
               </div>
               <div>
                 <Typography className={classes.title}>Surname</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.surName}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.surName}</Typography>
               </div>
             </Grid>
             <Grid item xs={12} className={classes.detailRow}>
@@ -120,58 +125,46 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Contact</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.phone}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.phone}</Typography>
               </div>
             </Grid>
             <br />
             <br />
 
-            <Grid
-              item
-              xs={12}
-              className={`${classes.companyRow} ${classes.detailRow}`}
-            >
+            <Grid item xs={12} className={`${classes.companyRow} ${classes.detailRow}`}>
               <div>
                 <Typography className={classes.title}>Company</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.companyName}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.companyName}</Typography>
               </div>
               <div>
                 <Typography className={classes.title}>VAT</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.companyVat}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.companyVat}</Typography>
               </div>
             </Grid>
             <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Location</Typography>
-                <Typography className={classes.value}>
-                  {getUser?.companyLocation}
-                </Typography>
+                <Typography className={classes.value}>{getUser?.companyLocation}</Typography>
               </div>
             </Grid>
             <Grid item xs={12} className={classes.detailRow}>
               <div>
-                <Typography className={classes.title}>
-                  Company contact number
-                </Typography>
-                <Typography className={classes.value}>
-                  {getUser?.companyPhone}
-                </Typography>
+                <Typography className={classes.title}>Company contact number</Typography>
+                <Typography className={classes.value}>{getUser?.companyPhone}</Typography>
               </div>
             </Grid>
 
             <Grid item xs={12} className={classes.btnWrapper}>
-              <Button
-                className={classes.btn}
-                variant="contained"
-                size="medium"
+              <IconButton
+                onClick={() => handleDelete()}
+                aria-label="delete"
+                disableRipple={true}
+                size={'small'}
                 color="primary"
               >
+                <Delete />
+              </IconButton>
+              <Button className={classes.btn} variant="contained" size="medium" color="primary">
                 Start conversation
               </Button>
               <Button
@@ -188,17 +181,17 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         </DialogContent>
       </Dialog>
     </>
-  );
-};
+  )
+}
 
-export default ViewProfile;
+export default ViewProfile
 
 const useStyles = makeStyles({
   titleWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
+    display: 'flex',
+    justifyContent: 'space-between',
     paddingBottom: 0,
-    alignItems: "center",
+    alignItems: 'center',
   },
   wrapper: {
     width: 300,
@@ -208,31 +201,31 @@ const useStyles = makeStyles({
     maxHeight: 80,
   },
   img: {
-    width: "100%",
+    width: '100%',
   },
   close: {
     color: colors.primary,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   btn: {
     fontSize: 12,
-    fontWeight: "bold",
-    ["@media (max-width:960px)"]: {
-      width: "100%",
+    fontWeight: 'bold',
+    '@media (max-width:960px)': {
+      width: '100%',
       marginTop: 10,
     },
   },
   btnWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
     padding: `25px 0px`,
-    ["@media (max-width:960px)"]: {
-      flexDirection: "column",
+    '@media (max-width:960px)': {
+      flexDirection: 'column',
     },
   },
   detailRow: {
-    display: "flex",
+    display: 'flex',
     paddingTop: 10,
     gap: 30,
   },
@@ -251,4 +244,4 @@ const useStyles = makeStyles({
   email: {
     color: colors.textPrimary,
   },
-});
+})
