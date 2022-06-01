@@ -93,7 +93,11 @@ const apiCall = ({
       })
 
       if (showErrorToast) {
-        if (err?.response?.status === 401 || err?.response?.status === 406) {
+        if (
+          err?.response?.status === 401 ||
+          err?.response?.status === 406 ||
+          err?.response?.status === 423
+        ) {
           yield put(logoutUser())
           return
           // appHistory.push("/login");

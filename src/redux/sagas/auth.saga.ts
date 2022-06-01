@@ -82,7 +82,7 @@ const forgetPassword = apiCall({
 const resetPassword = apiCall({
   type: RESET_PASSWORD,
   method: "post",
-  path: (payload) => `/auth/reset-password?otp=${payload?.other}`,
+  path: (payload) => `/auth/reset-password?token=${payload?.other}`,
   // reset-password?otp=grgdfvdf
 });
 

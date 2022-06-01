@@ -46,9 +46,7 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
     const payload = {
       body: { email },
       success: (res: any) => {
-        if (res) {
-          history.push("/reset-password");
-        }
+        toast.success('Please check your email')
         setEmail("");
       },
       finallyAction: () => {
@@ -56,7 +54,6 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
       },
     };
     setLoading(true);
-
     dispatch(forgetPassword(payload));
   };
 
