@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
 import { UserInterface } from 'constants/interfaces/user.interface'
 import { createSingleRoom } from '../../redux/action/chat.action'
+import { useHistory } from 'react-router-dom'
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = props => {
@@ -18,6 +19,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
   const [loading, setLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
   const classes = useStyles()
+  const history = useHistory()
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
 
@@ -42,7 +44,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
   console.log('connectiongh', connections)
 
   const startRoom = (id: string) => {
-    dispatch(createSingleRoom({ other: id }))
+    const payload = { other: { id }, success: () => history.push('chat') }
+
+    dispatch(createSingleRoom(payload))
   }
 
   return (
@@ -100,7 +104,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                     size={isTabletOrMobile ? 'small' : 'medium'}
                     color="primary"
                     disabled={connection.email}
-                    onClick={() => startRoom(user.id)}
+                    onClick={() => startRoom(connection.to.id)}
                   >
                     Start conversation
                   </Button>

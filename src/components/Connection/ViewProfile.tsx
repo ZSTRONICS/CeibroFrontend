@@ -14,7 +14,7 @@ import {
   IconButton,
 } from '@material-ui/core'
 import { Clear, Delete } from '@material-ui/icons'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import colors from '../../assets/colors'
 import NameAvatar from '../Utills/Others/NameAvatar'
 import { useDispatch } from 'react-redux'
@@ -22,6 +22,7 @@ import taskActions from '../../redux/action/task.action'
 import { getUserById } from 'redux/action/user.action'
 import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
 import { createSingleRoom } from '../../redux/action/chat.action'
+import { useHistory } from 'react-router-dom'
 interface IViewProfileProps {
   userId: string
   disabled: boolean
@@ -33,6 +34,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
   const [open, setOpen] = React.useState(false)
   const [getUser, setGetUser] = useState<any>({})
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleToggle = () => {
     const payload = {
@@ -55,13 +57,24 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
 
   const handleDelete = () => {
     const id: string = getUser?.id
-    dispatch(deleteMyConnection({ other: id, success: () => dispatch(getMyConnections()) }))
+    const payload: any = {
+      other: {
+        id,
+      },
+      params: {
+        isEmailInvited: false,
+      },
+      success: () => dispatch(getMyConnections()),
+    }
+
+    dispatch(deleteMyConnection(payload))
 
     handleToggle()
   }
 
   const startRoom = () => {
-    dispatch(createSingleRoom({ other: getUser?.id }))
+    const payload = { other: { id: getUser?.id }, success: () => history.push('chat') }
+    dispatch(createSingleRoom(payload))
   }
 
   //   const user = {
@@ -161,7 +174,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
 
             <Grid item xs={12} className={classes.btnWrapper}>
               <IconButton
-                onClick={() => handleDelete()}
+                onClick={handleDelete}
                 aria-label="delete"
                 disableRipple={true}
                 size={'small'}
