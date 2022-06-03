@@ -1,74 +1,68 @@
-import {
-  Typography,
-  Button,
-  FormControlLabel,
-  Checkbox,
-  CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import assets from "assets/assets";
-import colors from "assets/colors";
-import TextField from "components/Utills/Inputs/TextField";
-import { useIntl } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-import { resetPassword } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
-import Loading from "components/Utills/Loader/Loading";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-toastify";
-import { Alert } from "@material-ui/lab";
-import queryString from "query-string";
+import { Typography, Button, FormControlLabel, Checkbox, CircularProgress } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useEffect, useState } from 'react'
+import { useHistory } from 'react-router'
+import assets from 'assets/assets'
+import colors from 'assets/colors'
+import TextField from 'components/Utills/Inputs/TextField'
+import { useIntl } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
+import { resetPassword } from 'redux/action/auth.action'
+import { RootState } from 'redux/reducers'
+import Loading from 'components/Utills/Loader/Loading'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
+import { toast } from 'react-toastify'
+import { Alert } from '@material-ui/lab'
+import queryString from 'query-string'
 
 const ResetPasswordForm = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { registerLoading } = useSelector((state: RootState) => state.auth);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>();
-  const [error, setError] = useState<boolean>(false);
+  const { registerLoading } = useSelector((state: RootState) => state.auth)
+  const [loading, setLoading] = useState<boolean>(false)
+  const [success, setSuccess] = useState<boolean>()
+  const [error, setError] = useState<boolean>(false)
 
-  const intl = useIntl();
-  const dispatch = useDispatch();
-  const history = useHistory();
-  const isDiabled = !loading ? false : true;
+  const intl = useIntl()
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const isDiabled = !loading ? false : true
 
   const handleSubmit = (values: any, action: any) => {
-    console.log("values: ", values);
+    console.log('values: ', values)
 
     // console.log("success", success);
-    const { password } = values;
-    const queryParams = queryString.parse(history?.location?.search);
+    const { password } = values
+    const queryParams = queryString.parse(history?.location?.search)
 
     const payload = {
-      body: { password, token: queryParams.token  },
+      body: { password, token: queryParams.token },
       success: (res: any) => {
-        setSuccess(res);
+        setSuccess(res)
         if (res) {
-          history.push("/login");
+          history.push('/login')
         }
-        toast.success("Password Reset Successfully");
-        action?.resetForm?.();
+        toast.success('Password Reset Successfully')
+        action?.resetForm?.()
       },
       onFailAction: (err: any) => {
-        setError(true);
+        setError(true)
 
         setTimeout(() => {
-          setError(false);
-        }, 3000);
+          setError(false)
+        }, 3000)
       },
       showErrorToast: false,
 
       finallyAction: () => {
-        setLoading(false);
+        setLoading(false)
       },
-      other: queryParams?.token
-    };
-    setLoading(true);
-    dispatch(resetPassword(payload));
-  };
+      other: queryParams?.token,
+    }
+    setLoading(true)
+    dispatch(resetPassword(payload))
+  }
 
   const registerSchema = Yup.object().shape({
     // otp: Yup.string()
@@ -76,15 +70,15 @@ const ResetPasswordForm = () => {
     //   .max(50, "Too Long!")
     //   .required("Required"),
     password: Yup.string()
-      .required("Please enter your password")
+      .required('Please enter your password')
       .matches(
-        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+        'Password must contain at least 8 characters, one uppercase and one number'
       ),
     confirmPassword: Yup.string()
-      .required("Please confirm your password")
-      .oneOf([Yup.ref("password"), null], "Passwords don't match."),
-  });
+      .required('Please confirm your password')
+      .oneOf([Yup.ref('password'), null], "Passwords don't match."),
+  })
 
   return (
     <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
@@ -99,9 +93,9 @@ const ResetPasswordForm = () => {
       <div className={classes.loginForm}>
         <Formik
           initialValues={{
-            password: "",
+            password: '',
             // otp: "",
-            confirmPassword: "",
+            confirmPassword: '',
           }}
           validationSchema={registerSchema}
           onSubmit={handleSubmit}
@@ -116,10 +110,10 @@ const ResetPasswordForm = () => {
             isSubmitting,
             isValid,
           }) => (
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
               {(success || loading) && (
                 <Alert severity="success">
-                  {loading ? "Verifying" : "Password Reset Successfully"}
+                  {loading ? 'Verifying' : 'Password Reset Successfully'}
                 </Alert>
               )}
 
@@ -144,7 +138,7 @@ const ResetPasswordForm = () => {
               )} */}
               <TextField
                 type="password"
-                placeholder={intl.formatMessage({ id: "input.Password" })}
+                placeholder={intl.formatMessage({ id: 'input.Password' })}
                 className={classes.inputs}
                 name="password"
                 value={values.password}
@@ -163,7 +157,7 @@ const ResetPasswordForm = () => {
 
               <TextField
                 type="password"
-                placeholder={"Confirm password"}
+                placeholder={'Confirm password'}
                 name="confirmPassword"
                 value={values.confirmPassword}
                 className={classes.inputs}
@@ -175,9 +169,7 @@ const ResetPasswordForm = () => {
               />
               {errors.confirmPassword && (
                 <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.confirmPassword &&
-                    touched.confirmPassword &&
-                    errors.confirmPassword}
+                  {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}
                 </Typography>
               )}
 
@@ -206,33 +198,33 @@ const ResetPasswordForm = () => {
         </Formik>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ResetPasswordForm;
+export default ResetPasswordForm
 
 const useStyles = makeStyles({
   wrapper: {
-    minHeight: "94%",
-    overflowY: "auto",
+    minHeight: '94%',
+    overflowY: 'auto',
     marginBottom: 20,
   },
   actionWrapper: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     paddingTop: 40,
   },
   titles: {
     color: colors.textPrimary,
-    fontFamily: "Inter",
+    fontFamily: 'Inter',
   },
   loginForm: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginTop: 0,
-    padding: "10px 13%",
-    ["@media (max-width:960px)"]: {
-      padding: "10 13%",
+    padding: '10px 13%',
+    '@media (max-width:960px)': {
+      padding: '10 13%',
     },
   },
   remember: {
@@ -245,7 +237,7 @@ const useStyles = makeStyles({
   inputs: {
     marginTop: 30,
     height: 8,
-    width: "100%",
+    width: '100%',
   },
   loginButton: {
     height: 40,
@@ -261,16 +253,16 @@ const useStyles = makeStyles({
     paddingLeft: 30,
   },
   logoWrapper: {
-    paddingTop: "2%",
-    paddingLeft: "6%",
+    paddingTop: '2%',
+    paddingLeft: '6%',
   },
   titleWrapper: {
-    paddingTop: "3%",
-    paddingLeft: "12%",
+    paddingTop: '3%',
+    paddingLeft: '12%',
   },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   errorText: {
     marginTop: 10,
@@ -279,12 +271,12 @@ const useStyles = makeStyles({
   },
   progress: {
     color: colors.primary,
-    position: "absolute",
+    position: 'absolute',
     zIndex: 1,
-    margin: "auto",
+    margin: 'auto',
     left: 0,
     right: 0,
     top: 10,
-    textAlign: "center",
+    textAlign: 'center',
   },
-});
+})

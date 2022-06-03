@@ -1,72 +1,63 @@
-import {
-  Typography,
-  Button,
-  FormControlLabel,
-  Checkbox,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
-import { useHistory } from "react-router";
-import assets from "assets/assets";
-import colors from "assets/colors";
-import TextField from "components/Utills/Inputs/TextField";
-import { useIntl } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-import { registerRequest } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
-import Loading from "components/Utills/Loader/Loading";
-import { Formik } from "formik";
-import * as Yup from "yup";
+import { Typography, Button, FormControlLabel, Checkbox } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { useState } from 'react'
+import { useHistory } from 'react-router'
+import assets from 'assets/assets'
+import colors from 'assets/colors'
+import TextField from 'components/Utills/Inputs/TextField'
+import { useIntl } from 'react-intl'
+import { useDispatch, useSelector } from 'react-redux'
+import { registerRequest } from 'redux/action/auth.action'
+import { RootState } from 'redux/reducers'
+import Loading from 'components/Utills/Loader/Loading'
+import { Formik } from 'formik'
+import * as Yup from 'yup'
 
 const RegisterForm = () => {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { registerLoading } = useSelector((state: RootState) => state.auth);
+  const { registerLoading } = useSelector((state: RootState) => state.auth)
 
-  const intl = useIntl();
-  const dispatch = useDispatch();
-  const history = useHistory();
+  const intl = useIntl()
+  const dispatch = useDispatch()
+  const history = useHistory()
   const handleSubmit = (values: any, action: any) => {
-    console.log("values: ", values);
+    console.log('values: ', values)
 
-    const { firstName, surName, email, password } = values;
+    const { firstName, surName, userName, email, password } = values
     const payload = {
       body: {
         firstName,
         surName,
+        userName,
         email,
         password,
       },
       success: (res: any) => {
         if (res) {
-          history.push("/verify-email");
+          history.push('/verify-email')
         }
         // action?.resetForm?.();
       },
-    };
-    dispatch(registerRequest(payload));
-  };
+    }
+    dispatch(registerRequest(payload))
+  }
 
   const registerSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    surName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    email: Yup.string().email("Invalid email").required("Required"),
+    firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    surName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    userName: Yup.string().min(6, 'Too Short!').max(50, 'Too Long!').required('Required'),
+    email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
-      .required("Please enter your password")
+      .required('Please enter your password')
       .matches(
-        /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-        "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
+        'Password must contain at least 8 characters, one uppercase and one number'
       ),
     confirmPassword: Yup.string()
-      .required("Please confirm your password")
-      .oneOf([Yup.ref("password"), null], "Passwords don't match."),
-  });
+      .required('Please confirm your password')
+      .oneOf([Yup.ref('password'), null], "Passwords don't match."),
+  })
 
   return (
     <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
@@ -81,11 +72,12 @@ const RegisterForm = () => {
       <div className={classes.loginForm}>
         <Formik
           initialValues={{
-            email: "",
-            password: "",
-            firstName: "",
-            surName: "",
-            confirmPassword: "",
+            email: '',
+            password: '',
+            firstName: '',
+            surName: '',
+            userName: '',
+            confirmPassword: '',
           }}
           validationSchema={registerSchema}
           onSubmit={handleSubmit}
@@ -100,13 +92,13 @@ const RegisterForm = () => {
             isSubmitting,
             isValid,
           }) => (
-            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
               <TextField
-                placeholder={"First name"}
+                placeholder={'First name'}
                 className={classes.inputs}
                 name="firstName"
                 inputProps={{
-                  style: { height: 12, width: "100%" },
+                  style: { height: 12, width: '100%' },
                 }}
                 value={values.firstName}
                 onChange={handleChange}
@@ -118,7 +110,7 @@ const RegisterForm = () => {
                 </Typography>
               )}
               <TextField
-                placeholder={"Sur name"}
+                placeholder={'Sur name'}
                 className={classes.inputs}
                 name="surName"
                 value={values.surName}
@@ -133,9 +125,25 @@ const RegisterForm = () => {
                   {errors.surName && touched.surName && errors.surName}
                 </Typography>
               )}
+              <TextField
+                placeholder={'User name'}
+                className={classes.inputs}
+                name="userName"
+                value={values.userName}
+                inputProps={{
+                  style: { height: 12 },
+                }}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.userName && (
+                <Typography className={`error-text ${classes.errorText}`}>
+                  {errors.userName && touched.userName && errors.userName}
+                </Typography>
+              )}
 
               <TextField
-                placeholder={intl.formatMessage({ id: "input.Email" })}
+                placeholder={intl.formatMessage({ id: 'input.Email' })}
                 className={classes.inputs}
                 name="email"
                 value={values.email}
@@ -155,7 +163,7 @@ const RegisterForm = () => {
 
               <TextField
                 type="password"
-                placeholder={intl.formatMessage({ id: "input.Password" })}
+                placeholder={intl.formatMessage({ id: 'input.Password' })}
                 className={classes.inputs}
                 name="password"
                 value={values.password}
@@ -174,7 +182,7 @@ const RegisterForm = () => {
 
               <TextField
                 type="password"
-                placeholder={"Confirm password"}
+                placeholder={'Confirm password'}
                 name="confirmPassword"
                 value={values.confirmPassword}
                 className={classes.inputs}
@@ -186,9 +194,7 @@ const RegisterForm = () => {
               />
               {errors.confirmPassword && (
                 <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.confirmPassword &&
-                    touched.confirmPassword &&
-                    errors.confirmPassword}
+                  {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}
                 </Typography>
               )}
 
@@ -203,7 +209,7 @@ const RegisterForm = () => {
                   {registerLoading ? (
                     <Loading type="spin" color="white" height={14} width={20} />
                   ) : (
-                    "Register"
+                    'Register'
                   )}
                 </Button>
               </div>
@@ -212,33 +218,33 @@ const RegisterForm = () => {
         </Formik>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm
 
 const useStyles = makeStyles({
   wrapper: {
-    minHeight: "94%",
-    overflowY: "auto",
+    minHeight: '94%',
+    overflowY: 'auto',
     marginBottom: 20,
   },
   actionWrapper: {
-    display: "flex",
-    alignItems: "center",
+    display: 'flex',
+    alignItems: 'center',
     paddingTop: 40,
   },
   titles: {
     color: colors.textPrimary,
-    fontFamily: "Inter",
+    fontFamily: 'Inter',
   },
   loginForm: {
-    display: "flex",
-    flexDirection: "column",
+    display: 'flex',
+    flexDirection: 'column',
     marginTop: 20,
-    padding: "10px 13%",
-    ["@media (max-width:960px)"]: {
-      padding: "10 13%",
+    padding: '10px 13%',
+    '@media (max-width:960px)': {
+      padding: '10 13%',
     },
   },
   remember: {
@@ -251,7 +257,7 @@ const useStyles = makeStyles({
   inputs: {
     marginTop: 30,
     height: 8,
-    width: "100%",
+    width: '100%',
   },
   loginButton: {
     height: 32,
@@ -264,20 +270,20 @@ const useStyles = makeStyles({
     paddingLeft: 30,
   },
   logoWrapper: {
-    paddingTop: "2%",
-    paddingLeft: "6%",
+    paddingTop: '2%',
+    paddingLeft: '6%',
   },
   titleWrapper: {
-    paddingTop: "3%",
-    paddingLeft: "12%",
+    paddingTop: '3%',
+    paddingLeft: '12%',
   },
   title: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   errorText: {
     marginTop: 10,
     fontSize: 14,
     fontWeight: 400,
   },
-});
+})
