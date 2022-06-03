@@ -29,7 +29,7 @@ const getMyAllInvites = apiCall({
 const acceptInvite = apiCall({
   type: ACCEPT_INVITE,
   method: 'post',
-  path: payload => `users/invite/accept/${payload?.other?.accepted}/${payload?.other?.inviteId}`,
+  path: payload => `users/invite/accept/${payload?.other?.accepted}`,
 })
 
 const getMyConnections = apiCall({
@@ -41,7 +41,15 @@ const getMyConnections = apiCall({
 const deleteMyConnection = apiCall({
   type: DELETE_MY_CONNECTION,
   method: 'delete',
-  path: payload => `/users/connection/${payload?.other}`,
+  path: (payload: any) => {
+    let url = `/users/connection/${payload?.other?.id}`
+
+    const params: string = Object.keys(payload.params).map(
+      key => `${key}=${payload.params[key]}&`
+    )[0]
+
+    return params ? `${url}?${params.substring(-1)}` : url
+  },
 })
 
 const acceptAllInvite = apiCall({

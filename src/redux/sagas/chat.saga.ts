@@ -228,10 +228,8 @@ const getRoomQuestioniar = apiCall({
 const createSingleRoom = apiCall({
   type: CREATE_SINGLE_ROOM,
   method: 'post',
-  path: (payload: any) => {
-    console.log('Payload ::: ', payload)
-    return `/chat/room/single/${payload.other}`
-  },
+  path: payload => `/chat/room/single/${payload?.other?.id}`,
+  // success: payload => payload?.success,
 })
 
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
