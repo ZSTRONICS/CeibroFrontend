@@ -114,7 +114,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                   >
                     Create task
                   </Button>
-                  <ViewProfile disabled={connection.email ? true : false} userId={user?.id} />
+                  <ViewProfile connectionId={connection.id} disabled={connection.email ? true : false} userId={user?.id} />
                 </Grid>
               </Grid>
             </Grid>

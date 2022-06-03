@@ -25,10 +25,11 @@ import { createSingleRoom } from '../../redux/action/chat.action'
 interface IViewProfileProps {
   userId: string
   disabled: boolean
+  connectionId: string;
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
-  const { userId, disabled } = props
+  const { userId, disabled, connectionId } = props
   const classes = useStyles()
   const [open, setOpen] = React.useState(false)
   const [getUser, setGetUser] = useState<any>({})
@@ -54,7 +55,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
   }
 
   const handleDelete = () => {
-    const id: string = getUser?.id
+    const id: string = connectionId
     dispatch(deleteMyConnection({ other: id, success: () => dispatch(getMyConnections()) }))
 
     handleToggle()
