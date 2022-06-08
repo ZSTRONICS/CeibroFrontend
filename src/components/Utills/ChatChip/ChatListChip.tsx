@@ -1,10 +1,4 @@
-import {
-  Badge,
-  IconButton,
-  Grid,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Badge, IconButton, Grid, makeStyles, Typography } from '@material-ui/core'
 import {
   Bookmark,
   BookmarkBorder,
@@ -12,79 +6,60 @@ import {
   MoreVert,
   Star,
   StarBorder,
-} from "@material-ui/icons";
-import { BsDot } from "react-icons/bs";
-import colors from "../../../assets/colors";
-import NameAvatar from "../Others/NameAvatar";
-import ChatListMenu from "./ChatListMenu";
-import { ChatListInterface } from "../../../constants/interfaces/chat.interface";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
-import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
+} from '@material-ui/icons'
+import { BsDot } from 'react-icons/bs'
+import colors from '../../../assets/colors'
+import NameAvatar from '../Others/NameAvatar'
+import ChatListMenu from './ChatListMenu'
+import { ChatListInterface } from '../../../constants/interfaces/chat.interface'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../../redux/reducers'
+import { addToFavourite, getAllChats } from '../../../redux/action/chat.action'
 
 interface ChatListInterfaceProps {
-  chat: ChatListInterface;
-  handleClick?: (e: any) => void;
+  chat: ChatListInterface
+  handleClick?: (e: any) => void
 }
 
-const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
-  const classes = useStyles();
+const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
+  const classes = useStyles()
 
-  const { chat } = props;
-  const {
-    username = "Qasim",
-    name,
-    lastMessage,
-    unreadCount,
-    lastMessageTime,
-    project,
-  } = chat;
-  const { user } = useSelector((state: RootState) => state.auth);
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat
-  );
+  const { chat } = props
+  const { username = 'Qasim', name, lastMessage, unreadCount, lastMessageTime, project } = chat
+  const { user } = useSelector((state: RootState) => state.auth)
+  const selectedChat = useSelector((state: RootState) => state.chat.selectedChat)
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
 
   const handleClick = () => {
-    props.handleClick?.(chat);
-  };
+    props.handleClick?.(chat)
+  }
 
   const getStyles = () => {
     return {
-      backgroundColor:
-        String(selectedChat) === String(chat._id)
-          ? colors.lightGrey
-          : colors.white,
-    };
-  };
+      backgroundColor: String(selectedChat) === String(chat._id) ? colors.lightGrey : colors.white,
+    }
+  }
 
   const handleFavouriteClick = (e: any) => {
-    e.stopPropagation();
+    e.stopPropagation()
     dispatch(
       addToFavourite({
         other: chat._id,
         success: () => {
-          dispatch(getAllChats());
+          dispatch(getAllChats())
         },
       })
-    );
-  };
+    )
+  }
 
-  const bookmarked = chat?.pinnedBy?.includes(user?.id);
+  const bookmarked = chat?.pinnedBy?.includes(user?.id)
 
   return (
-    <Grid
-      onClick={handleClick}
-      className={classes.chatListWrapper}
-      container
-      style={getStyles()}
-    >
+    <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()}>
       <Grid container>
         <Grid item xs={1} className={classes.bookMarkWrapper}>
-          {unreadCount && unreadCount > 0 && (
-            <div className={classes.dot}></div>
-          )}
+          {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
         </Grid>
         <Grid item xs={2} className={classes.avatarWrapper}>
           <NameAvatar background="white" firstName={name} />
@@ -131,45 +106,45 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
         </Grid>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
-export default ChatListChip;
+export default ChatListChip
 
 const useStyles = makeStyles({
   chatListWrapper: {
     padding: 0,
     height: 70,
     border: `0.5px solid ${colors.grey}`,
-    cursor: "pointer",
+    cursor: 'pointer',
   },
   bookMarkWrapper: {
     padding: 0,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
   },
   dot: {
     marginTop: 15,
     width: 8,
     height: 8,
-    borderRadius: "50%",
+    borderRadius: '50%',
     background: `linear-gradient(180deg, #F1B740 0%, #FF7A00 100%)`,
   },
   avatarWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   messageDetailWrapper: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
     paddingLeft: 6,
     paddingTop: 4,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   userName: {
     fontSize: 14,
@@ -188,20 +163,20 @@ const useStyles = makeStyles({
   },
   chatProjectName: {
     fontSize: 10,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: colors.textPrimary,
   },
   timeOuterWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
     paddingRight: 5,
   },
   timeWrapper: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
   },
   time: {
     fontSize: 12,
@@ -215,4 +190,4 @@ const useStyles = makeStyles({
     color: colors.darkYellow,
     fontSize: 18,
   },
-});
+})

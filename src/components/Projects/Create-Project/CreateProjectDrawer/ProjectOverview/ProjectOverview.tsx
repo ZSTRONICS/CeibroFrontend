@@ -67,31 +67,34 @@ const ProjectOverview = () => {
 
   const handleDateChange = (e: any) => {
     const date = e?.target?.value
-    dispatch(
-      projectActions.setProjectOverview({
-        ...projectOverview,
-        dueDate: date,
-      })
-    )
+    date &&
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          dueDate: date,
+        })
+      )
   }
 
   const handleOwnerChange = (users: dataInterface[]) => {
     console.log('projectovervuew user', users)
-    dispatch(
-      projectActions.setProjectOverview({
-        ...projectOverview,
-        owner: users,
-      })
-    )
+    users &&
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          owner: users,
+        })
+      )
   }
 
   const handleStatusChange = (status: dataInterface) => {
-    dispatch(
-      projectActions.setProjectOverview({
-        ...projectOverview,
-        publishStatus: status.value,
-      })
-    )
+    status?.value &&
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          publishStatus: status.value,
+        })
+      )
   }
 
   const my = formatDate(projectOverview?.dueDate)
