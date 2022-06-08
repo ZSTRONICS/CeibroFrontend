@@ -13,16 +13,16 @@ import {
   Typography,
   Button,
   Grid,
-} from '@material-ui/core'
-import { avaialablePermissions } from 'config/project.config'
+} from "@material-ui/core";
+import { avaialablePermissions } from "config/project.config";
 import {
   GroupInterface,
   MemberInterface,
   RoleInterface,
-} from 'constants/interfaces/project.interface'
-import { checkMemberPermission } from 'helpers/project.helper'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+} from "constants/interfaces/project.interface";
+import { checkMemberPermission } from "helpers/project.helper";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   deleteMember,
   getGroup,
@@ -30,77 +30,76 @@ import projectActions, {
   getRoles,
   getRolesById,
   updateMember,
-} from 'redux/action/project.action'
-import { RootState } from 'redux/reducers'
-import { useConfirm } from 'material-ui-confirm'
+} from "redux/action/project.action";
+import { RootState } from "redux/reducers";
+import { useConfirm } from "material-ui-confirm";
 
-import colors from '../../../../../assets/colors'
-import InputCheckbox from '../../../../Utills/Inputs/InputCheckbox'
-import Select from '../../../../Utills/Inputs/Select'
+import colors from "../../../../../assets/colors";
+import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
+import Select from "../../../../Utills/Inputs/Select";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
-import assets from 'assets/assets'
-import { toast } from 'react-toastify'
+import assets from "assets/assets";
+import { toast } from "react-toastify";
 
 function createData(name: string, approve: boolean, role: number) {
-  return { name, approve, role }
+  return { name, approve, role };
 }
 
 const rows = [
-  createData('Owner', true, 1),
-  createData('Project Manager', true, 2),
-  createData('Project Lead', false, 3),
-  createData('Worker', false, 1),
-  createData('Owner', true, 1),
-  createData('Project Manager', true, 2),
-  createData('Project Lead', false, 3),
-  createData('Worker', false, 1),
-]
+  createData("Owner", true, 1),
+  createData("Project Manager", true, 2),
+  createData("Project Lead", false, 3),
+  createData("Worker", false, 1),
+  createData("Owner", true, 1),
+  createData("Project Manager", true, 2),
+  createData("Project Lead", false, 3),
+  createData("Worker", false, 1),
+];
 
 const roleOptions = [
   {
-    title: 'Project Manager',
-    value: '1',
+    title: "Project Manager",
+    value: "1",
   },
   {
-    title: 'Project Lead',
-    value: '2',
+    title: "Project Lead",
+    value: "2",
   },
   {
-    title: 'Worker',
-    value: '3',
+    title: "Worker",
+    value: "3",
   },
-]
+];
 
 const groupOptions = [
   {
-    title: 'Electrikudwr',
-    value: '1',
+    title: "Electrikudwr",
+    value: "1",
   },
-]
+];
 
 const RolesTable = () => {
-  const { groupList, rolesList, selectedProject, memberList, userPermissions } = useSelector(
-    (state: RootState) => state?.project
-  )
+  const { groupList, rolesList, selectedProject, memberList, userPermissions } =
+    useSelector((state: RootState) => state?.project);
 
-  const [group, setGroups] = useState<any>()
-  const [role, setRoles] = useState<any>()
-  const [loading, setLoading] = useState<boolean>(false)
+  const [group, setGroups] = useState<any>();
+  const [role, setRoles] = useState<any>();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  console.log('members list', memberList)
-  const confirm = useConfirm()
+  console.log("members list", memberList);
+  const confirm = useConfirm();
 
-  const dispatch = useDispatch()
-  const classes = useStyles()
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getGroup({ other: selectedProject }))
+    dispatch(getGroup({ other: selectedProject }));
     dispatch(
       getRoles({
         other: selectedProject,
       })
-    )
-  }, [])
+    );
+  }, []);
 
   useEffect(() => {
     if (groupList) {
@@ -108,11 +107,11 @@ const RolesTable = () => {
         return {
           title: group.name,
           value: group.id,
-        }
-      })
-      setGroups(newGroups)
+        };
+      });
+      setGroups(newGroups);
     }
-  }, [groupList])
+  }, [groupList]);
 
   useEffect(() => {
     if (rolesList) {
@@ -120,28 +119,28 @@ const RolesTable = () => {
         return {
           title: role.name,
           value: role.id,
-        }
-      })
-      setRoles(newRoles)
+        };
+      });
+      setRoles(newRoles);
     }
-  }, [rolesList])
+  }, [rolesList]);
 
   const getMemebers = () => {
     if (selectedProject) {
       const payload = {
         finallyAction: () => {
-          setLoading(false)
+          setLoading(false);
         },
-        other: selectedProject,
-      }
-      setLoading(true)
-      dispatch(getMember(payload))
+        other: { projectId: selectedProject, excludeMe: true },
+      };
+      setLoading(true);
+      dispatch(getMember(payload));
     }
-  }
+  };
 
   useEffect(() => {
-    getMemebers()
-  }, [selectedProject])
+    getMemebers();
+  }, [selectedProject]);
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
     const payload = {
@@ -151,13 +150,13 @@ const RolesTable = () => {
         roleId: row?.role?.id,
       },
       success: () => {
-        getMemebers()
+        getMemebers();
       },
       other: selectedProject,
-    }
+    };
 
-    dispatch(updateMember(payload))
-  }
+    dispatch(updateMember(payload));
+  };
 
   const selectRoleHandle = (e: string, row: MemberInterface) => {
     const payload = {
@@ -167,48 +166,48 @@ const RolesTable = () => {
         roleId: e,
       },
       success: () => {
-        getMemebers()
+        getMemebers();
       },
       other: selectedProject,
-    }
+    };
 
-    dispatch(updateMember(payload))
-  }
+    dispatch(updateMember(payload));
+  };
 
   const havePermission = checkMemberPermission(
     userPermissions,
     avaialablePermissions.edit_permission
-  )
+  );
 
   const haveDeletePermission = checkMemberPermission(
     userPermissions,
     avaialablePermissions.delete_permission
-  )
+  );
 
   const handleDelete = (id: any) => {
-    setLoading(true)
+    setLoading(true);
 
     confirm({
-      title: 'Please confirm',
-      description: 'Are you confirm want to delete',
+      title: "Please confirm",
+      description: "Are you confirm want to delete",
     }).then(() => {
       dispatch(
         deleteMember({
           success: () => {
-            toast.success('Deleted Successfully')
-            dispatch(getMember({ other: selectedProject }))
+            toast.success("Deleted Successfully");
+            dispatch(getMember({ other: { projectId: selectedProject } }));
           },
           finallyAction: () => {
-            setLoading(false)
+            setLoading(false);
           },
           other: id,
         })
-      )
-    })
-  }
+      );
+    });
+  };
   const openCreateMember = () => {
-    dispatch(projectActions.openProjectMemberDrawer())
-  }
+    dispatch(projectActions.openProjectMemberDrawer());
+  };
 
   return (
     <TableContainer>
@@ -226,18 +225,24 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {loading && <CircularProgress size={20} className={classes.progress} />}
+          {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )}
 
           {memberList && memberList.length > 0 ? (
             <>
               {memberList?.map((row: MemberInterface) => (
                 <TableRow key={row.id}>
-                  <TableCell component="th" scope="row" style={{ width: '60%' }}>
+                  <TableCell
+                    component="th"
+                    scope="row"
+                    style={{ width: "60%" }}
+                  >
                     <div className={classes.nameWrapper}>
                       <Typography className={classes.name}>
                         {row.isInvited && (
                           <span>
-                            {row.invitedEmail}{' '}
+                            {row.invitedEmail}{" "}
                             <Chip
                               className={classes.chip}
                               variant="outlined"
@@ -246,7 +251,8 @@ const RolesTable = () => {
                             ></Chip>
                           </span>
                         )}
-                        {row?.user && `${row?.user?.firstName} ${row?.user?.surName}`}
+                        {row?.user &&
+                          `${row?.user?.firstName} ${row?.user?.surName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
                         {row?.user?.companyName}
@@ -276,12 +282,12 @@ const RolesTable = () => {
                       }
                     />
                   </TableCell> */}
-                  <TableCell align="right" style={{ width: '10%' }}>
+                  <TableCell align="right" style={{ width: "10%" }}>
                     {haveDeletePermission && (
                       <img
                         style={{ width: 32, height: 32 }}
                         src={assets.membersDelete}
-                        className={'pointer'}
+                        className={"pointer"}
                         onClick={() => handleDelete(row?.id)}
                       />
                     )}
@@ -316,10 +322,10 @@ const RolesTable = () => {
         </TableBody>
       </Table>
     </TableContainer>
-  )
-}
+  );
+};
 
-export default RolesTable
+export default RolesTable;
 
 const useStyles = makeStyles({
   table: {
@@ -329,7 +335,7 @@ const useStyles = makeStyles({
   nameWrapper: {},
   name: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.primary,
   },
   organizationName: {
@@ -354,28 +360,28 @@ const useStyles = makeStyles({
   // },
   progress: {
     color: colors.primary,
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
-    margin: 'auto',
-    marginTop: '300px',
+    margin: "auto",
+    marginTop: "300px",
     left: 0,
     right: 0,
     top: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
   noProject: {
     // position: "absolute",
     // top: "10",
     // left: "42%",
     // transform: 'translate("-50%", "-50%")',
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     // margin: "auto",
     // width: "50%",
-    textAlign: 'center',
+    textAlign: "center",
     // justifyContent: "center",
-    height: '100%',
-    flexDirection: 'column',
+    height: "100%",
+    flexDirection: "column",
     marginBottom: 40,
     marginLeft: 270,
     paddingTop: 10,
@@ -385,4 +391,4 @@ const useStyles = makeStyles({
     fontWeight: 500,
     gap: 20,
   },
-})
+});

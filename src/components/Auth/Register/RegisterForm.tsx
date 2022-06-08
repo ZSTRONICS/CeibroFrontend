@@ -29,15 +29,15 @@ const RegisterForm = () => {
       body: {
         firstName,
         surName,
-        userName,
+        username: userName,
         email,
         password,
       },
       success: (res: any) => {
         if (res) {
-          history.push('/verify-email')
+          // history.push('/verify-email')
         }
-        // action?.resetForm?.();
+        action?.resetForm?.();
       },
     }
     dispatch(registerRequest(payload))

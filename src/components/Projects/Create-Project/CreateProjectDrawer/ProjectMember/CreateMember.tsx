@@ -94,12 +94,12 @@ const MemberDialog = () => {
       body: {
         email: selectedEmail?.value,
         roleId: selectRoles?.value,
-        groupId: selectGroups?.value,
+        groupId: selectGroups?.svalue,
         // subContractor: selectGroups?.value,
       },
       success: () => {
         toast.success("Member created successfully");
-        dispatch(getMember({ other: selectedProject }));
+        dispatch(getMember({ other: { projectId: selectedProject } }));
         handleClose();
       },
       finallyAction: () => {

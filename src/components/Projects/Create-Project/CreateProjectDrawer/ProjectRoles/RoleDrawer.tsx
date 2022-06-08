@@ -119,7 +119,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         toast.success("Role Updated successfully");
         dispatch(projectActions.closeProjectRole());
         dispatch(getRoles({ other: selectedProject }));
-        dispatch(getMember({ other: selectedProject }));
+        dispatch(getMember({ other: { projectId: selectedProject } }));
 
         dispatch(getPermissions({ other: selectedProject }));
       },

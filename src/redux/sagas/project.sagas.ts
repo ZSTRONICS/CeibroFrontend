@@ -180,7 +180,13 @@ const createMember = apiCall({
 const getMember = apiCall({
   type: GET_MEMBER,
   method: "get",
-  path: (payload) => `/project/member/${payload?.other}`,
+  path: (payload) => {
+    let url = `/project/members/${payload?.other?.projectId}`;
+    if (payload.other?.excludeMe) {
+      url = `${url}?excludeMe=true`;
+    }
+    return url;
+  },
 });
 
 const updateMember = apiCall({
