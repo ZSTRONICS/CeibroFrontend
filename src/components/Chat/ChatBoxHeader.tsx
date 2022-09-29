@@ -19,9 +19,9 @@ import { FormEvent, HTMLInputTypeAttribute, useState } from "react";
 import { editRoomName } from "redux/action/chat.action";
 import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
+import MessageSearch from "./MessageSearch";
 interface ChatBoxHeaderProps {
   chat?: ChatListInterface;
-  enable: boolean;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -137,7 +137,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             )}
           </Grid>
           <Grid item xs={6} className={classes.moreWrapper}>
-            <ChatSearch enable={props.enable} />
+            <MessageSearch />
           </Grid>
           <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props.enable} />
