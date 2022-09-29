@@ -78,6 +78,7 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any> {
   });
 }
 
+
 const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
@@ -85,6 +86,18 @@ const getRoomMessages = apiCall({
     let url = `/chat/room/messages/${payload.other.roomId}`;
     if (payload?.other?.search) {
       url = url + `?search=${payload?.other?.search}`;
+    }
+    if (payload?.other?.username) {
+      url = url + `?username=${payload?.other?.username}`;
+    }
+    if (payload?.other?.company) {
+      url = url + `?company=${payload?.other?.company}`;
+    }
+    if (payload?.other?.group) {
+      url = url + `?group=${payload?.other?.group}`;
+    }
+    if (payload?.other?.startDate) {
+      url = url + `?startDate=${payload?.other?.startDate}`;
     }
     if (payload?.other?.messageId) {
       url = url + `?messageId=${payload?.other?.messageId}`;

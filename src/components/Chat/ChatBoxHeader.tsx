@@ -11,7 +11,7 @@ import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { RootState } from "../../redux/reducers";
 import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
-import MessageSearch from "./MessageSearch";
+import ChatSearch from "./../Utills/ChatChip/ChatSearch";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 import TextField from "components/Utills/Inputs/TextField";
@@ -137,7 +137,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             )}
           </Grid>
           <Grid item xs={6} className={classes.moreWrapper}>
-            <MessageSearch />
+            <ChatSearch enable={props.enable} />
           </Grid>
           <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props.enable} />

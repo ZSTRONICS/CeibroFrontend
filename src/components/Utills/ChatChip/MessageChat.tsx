@@ -176,7 +176,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
       })
     }
 
-    bodyRef && bodyRef?.current?.scrollToEnd()
+    // bodyRef && bodyRef?.current?.scrollToEnd()
   }
 
   return (

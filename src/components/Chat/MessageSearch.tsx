@@ -46,7 +46,7 @@ const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
   return (
     <div className={classes.wrapper}>
       <img src={assets.blueSearch} className="w-16" />
-      {/* <div className={classes.iconWrapper}>
+      <div className={classes.iconWrapper}>
         <Search />
         <Typography className={classes.horizontalBreak}>|</Typography>
       </div>
@@ -62,7 +62,7 @@ const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
         <select className={classes.categories}>
           <option>All Categories</option>
         </select>
-      </div> */}
+      </div>
     </div>
   );
 };
