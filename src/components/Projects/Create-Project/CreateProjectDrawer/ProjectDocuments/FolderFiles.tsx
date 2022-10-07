@@ -32,9 +32,6 @@ interface FolderFilesInt {
 const FolderFiles: React.FC<FolderFilesInt> = (props) => {
   const { selectedProject, folderList, folderFiles, FileViewerDrawer } =
     useSelector((state: RootState) => state?.project);
-
-  console.log("folderFiles", folderFiles);
-
   const { selectedFolderId } = props;
 
   const dispatch = useDispatch();
@@ -88,7 +85,6 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
 
     dispatch(projectActions.openFileViewDrawer());
   };
-  console.log("FileViewerDrawer", FileViewerDrawer);
 
   return (
     <div

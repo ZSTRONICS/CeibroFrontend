@@ -34,9 +34,6 @@ import { toast } from "react-toastify";
 const RolesTable = () => {
   const { selectedProject, rolesList, selectedRole, userPermissions } =
     useSelector((state: RootState) => state?.project);
-
-  console.log("rolesList", rolesList);
-
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -60,8 +57,6 @@ const RolesTable = () => {
     userPermissions,
     avaialablePermissions.edit_permission
   );
-  console.log("havePermission userd", userPermissions);
-
   const handleRoleClick = (id: any) => {
     if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));

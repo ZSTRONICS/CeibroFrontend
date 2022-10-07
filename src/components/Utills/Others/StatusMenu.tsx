@@ -32,8 +32,6 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
   const dispatch = useDispatch();
 
   const [filter, setFilter] = useState<string>("all");
-  console.log("filter", filter);
-
   useEffect(() => {
     if (filter) {
       dispatch(projectActions.setSelectedStatus(filter));
@@ -46,8 +44,6 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
       dispatch(getStatus());
     }
   }, [drawerOpen]);
-
-  console.log("getStatuses", getStatuses);
 
   return (
     <>

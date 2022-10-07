@@ -28,12 +28,9 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
-import { string } from "yup/lib/locale";
-// import permissionContext from "../../../../context/PermissionContext";
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
-  console.log("role props", props);
 
   const classes = useStyles();
   const roles = ["create", "edit", "delete", "self-made"];
@@ -49,7 +46,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
   const [selectedMember, setSelectedMember] = useState<any>(null);
-  // const [data, setData] = useState<any>({ roles: [] });
   const [data, setData] = useState<any>(roleTempale);
 
   const isDiabled = !loading ? false : true;
@@ -68,13 +64,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   //     [name]: value,
   //   });
   // };
-
-  console.log(
-    "member idsss",
-    role?.memberIds?.map?.((role: any) => {
-      return role.id;
-    })
-  );
 
   const handleOk = () => {
     const payload = {
@@ -104,7 +93,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   // const memberlistt = data?.roles.map((role: dataInterface) => {
   //   return role.value;
   // });
-  console.log("dataxxxx", data);
   const handleUpdate = () => {
     const payload = {
       body: {
@@ -168,7 +156,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     fieldName: "roles" | "member" | "timeProfile"
   ) => {
     let existingField = role[fieldName];
-    console.log("existingField: ", existingField);
     if (existingField) {
       if (checked) {
         existingField?.push?.(access);
@@ -209,7 +196,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         getRolesById({
           other: selectedRole,
           success: (res) => {
-            console.log("res is ", res.data.timeProfile);
             if (res.data.roles.length > 0) {
               setIsRole(true);
             }
@@ -253,14 +239,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             isMulti={true}
             noOptionMessage="No user available"
             value={role?.member}
-            // handleChange={(e: any) => setSelectedMember(e)}
 
-            // handleChange={(values) => {
-            //   setData({
-            //     ...data,
-            //     roles: values,
-            //   });
-            // }}
             handleChange={(values: any) => {
               dispatch(
                 projectActions.setRole({
@@ -268,7 +247,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                   memberIds: values,
                 })
               );
-              console.log("valuesvalues", values);
             }}
           />
           <br />

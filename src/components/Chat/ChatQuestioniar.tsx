@@ -29,12 +29,6 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
   if (searchText && myQuestioniars) {
     myQuestioniars = roomQuestioniars?.filter(
       (message: ChatMessageInterface) => {
-        console.log(
-          'checking searchText "',
-          searchText,
-          '" in ',
-          message.title
-        );
         return message?.title
           ?.toLowerCase()
           ?.includes(searchText?.toLowerCase());

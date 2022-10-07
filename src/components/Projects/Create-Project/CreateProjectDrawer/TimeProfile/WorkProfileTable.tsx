@@ -44,11 +44,6 @@ export default function BasicTable() {
 
   const [loading, setLoading] = useState<boolean>(false);
   const isDisabled = !loading ? false : true;
-
-  console.log("new work", selectedWork);
-
-  console.log("getNewWorkList", getNewWorkList);
-
   const handleWorkClick = (id: any) => {
     dispatch(projectActions.setSelectedwork(id));
     dispatch(projectActions.openWorkDrawer());

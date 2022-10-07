@@ -74,16 +74,9 @@ export default function CustomizedSelects(props) {
     handleDisabled,
     showDisabled,
   } = props;
-  console.log(
-    "🚀 ~ file: Select.js ~ line 74 ~ CustomizedSelects ~ selectedValue",
-    selectedValue,
-    options
-  );
 
   const handleChange = (event) => {
-    console.log("vale u is ", event.target.value);
     props.handleValueChange?.(event.target.value);
-    // handleValueChange(event.target.value)
   };
 
   return (
@@ -99,9 +92,6 @@ export default function CustomizedSelects(props) {
         {showDisabled && <option value="" selected disabled></option>}
         {options &&
           options.map((option) => {
-            // <option value="" selected disabled>
-            //   Choose here
-            // </option>;
             return (
               <option selected={option.selected} value={option.value}>
                 {option.title}

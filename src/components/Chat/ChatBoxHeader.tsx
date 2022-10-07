@@ -11,7 +11,7 @@ import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { RootState } from "../../redux/reducers";
 import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
-import ChatSearch from "./../Utills/ChatChip/ChatSearch";
+// import ChatSearch from "./../Utills/ChatChip/ChatSearch";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 import TextField from "components/Utills/Inputs/TextField";
@@ -21,7 +21,8 @@ import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
 import MessageSearch from "./MessageSearch";
 interface ChatBoxHeaderProps {
-  chat?: ChatListInterface;
+  chat?: ChatListInterface
+  enable: boolean
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -140,7 +141,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             <MessageSearch />
           </Grid>
           <Grid item xs={1} className={classes.moreWrapper}>
-            <ChatUserMenu enable={props.enable} />
+            <ChatUserMenu enable={props?.enable} />
           </Grid>
         </>
       )}

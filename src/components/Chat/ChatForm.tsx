@@ -101,7 +101,6 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
       formdata.append('chat', selectedChat)
 
       if (files && Object.values(files)?.length > 0) {
-        console.log('files are', files)
         for (const key of Object.keys(files)) {
           formdata.append('products', files[key])
         }
@@ -120,7 +119,6 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
       }
 
       const myId = new Date().valueOf()
-      console.log('user is ', user)
       const newMessage = {
         sender: user,
         time: '1 seconds ago',

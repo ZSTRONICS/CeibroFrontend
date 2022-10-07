@@ -20,7 +20,6 @@ const ProjectRoles = () => {
     userPermissions,
     avaialablePermissions.create_permission
   );
-  console.log("havePermission", havePermission);
 
   return (
     <>

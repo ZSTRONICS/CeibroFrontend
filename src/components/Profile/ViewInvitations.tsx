@@ -55,7 +55,6 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
   //   const getMyInvites = () => {
   //     const payload = {
   //       success: (res: any) => {
-  //         // console.log("all invites", res?.data[0]?.from);
   //         setmyAllInvites(res?.data);
   //       },
   //     };
@@ -63,7 +62,6 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
   //   };
 
   const acceptAllHandler = (accepted: boolean) => {
-    console.log('id', accepted)
     const payload = {
       success: (val: any) => {
         //  @ts-ignore

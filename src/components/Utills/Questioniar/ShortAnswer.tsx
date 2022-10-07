@@ -52,7 +52,6 @@ const ShowAnswer: React.FC<ShowAnswerInt> = memo((props) => {
   }, [answer]);
 
   const handleAnswerChange = (event: any) => {
-    console.log("value is ", event.target.value);
     setAnswer((event.target as HTMLInputElement).value);
   };
 

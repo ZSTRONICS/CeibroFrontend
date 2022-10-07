@@ -127,7 +127,6 @@ const CreateWork = () => {
 
   const updateWorkHandle = () => {
     const myRoles = data.roles.map((role: dataInterface) => {
-      console.log("role is ", role);
       return role.value;
     });
     let body = {

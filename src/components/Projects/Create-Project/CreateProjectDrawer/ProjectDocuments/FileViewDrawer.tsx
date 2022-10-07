@@ -62,10 +62,7 @@ const FileViewDrawer: React.FC<AddGroupProps> = () => {
   // const filePath = folderFiles?.map?.((file) => {
   //   return file?.url;
   // });
-  console.log("filePath", filePath);
-  console.log("fileType", fileType);
-
-  console.log("FileViewerDrawer", FileViewerDrawer);
+  
   return (
     <Dialog open={FileViewerDrawer} onClose={handleClose}>
       <DialogContent>

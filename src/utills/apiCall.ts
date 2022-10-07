@@ -49,7 +49,6 @@ const apiCall = ({
     header['Access-Control-Allow-Origin'] = '*'
 
     if (idToken && idToken !== 'undefined' && idToken !== 'null') {
-      console.log('hader is ', typeof idToken)
       header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
     }
 

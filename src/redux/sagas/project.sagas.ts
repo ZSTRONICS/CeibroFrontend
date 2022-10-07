@@ -204,7 +204,6 @@ const getFolderFiles = apiCall({
     let url = "/project/file/";
     const selectedFolder = payload?.other?.selectedFolder;
     const inputData = payload?.other?.findDoc;
-    console.log("selectedFile saga", selectedFolder);
     if (selectedFolder) {
       url = `${url}${selectedFolder}`;
     }

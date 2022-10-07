@@ -31,9 +31,6 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   );
   const { selectedFolder, handleGoBack, isFolder } = props;
   const [findDoc, setFindDoc] = useState<any>();
-  // console.log("findDoc", findDoc);
-
-  console.log("folder id", selectedFolder?.id);
 
   useEffect(() => {
     if (findDoc) {

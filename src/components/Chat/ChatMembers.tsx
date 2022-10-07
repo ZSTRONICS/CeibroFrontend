@@ -22,7 +22,6 @@ const ChatMembers = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const handleClick = (userId: any) => {
-    // console.log('confirm is ', confirm
     confirm({ description: "User will be removed from this chat" }).then(() => {
       dispatch(
         addMemberToChat({
@@ -46,12 +45,6 @@ const ChatMembers = () => {
   let myMembers = members;
   if (searchText && members) {
     myMembers = members?.filter((member: UserInterface) => {
-      console.log(
-        'checking searchText "',
-        searchText,
-        '" in ',
-        member.firstName
-      );
       return (
         member?.firstName?.toLowerCase()?.includes(searchText?.toLowerCase()) ||
         member?.surName?.toLowerCase()?.includes(searchText?.toLowerCase())

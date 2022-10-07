@@ -97,7 +97,6 @@ const Chat = () => {
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) == String(selectedChat)
       );
-      console.log("myChat: ", myChat);
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(

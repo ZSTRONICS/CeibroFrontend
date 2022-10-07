@@ -37,7 +37,6 @@ const ProfileForm = () => {
   }, []);
 
   const handleSubmit = (values: any, action: any) => {
-    // console.log("values BBB: ", values);
     setLoading(true);
     const {
       firstName,
@@ -69,7 +68,6 @@ const ProfileForm = () => {
       },
       success: () => {
         dispatch(getMyProfile());
-        console.log("passwor ref is ", passRef.current);
         action?.setFieldValue("password", "");
         action?.setFieldValue("confirmPassword", "");
         // if (passRef.current) {
@@ -168,7 +166,6 @@ const ProfileForm = () => {
             isValid,
           }) => (
             <form onSubmit={handleSubmit}>
-              {console.log("values are", values.phone)}
               <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
                 <Grid container>
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
