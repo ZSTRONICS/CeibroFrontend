@@ -17,6 +17,11 @@ body {
   padding: 0;
 }
 
+iframe
+{
+    display: none !important;
+}
+
 .MuiTableCell-body {
   color: black !important;
 }
