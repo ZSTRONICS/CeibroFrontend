@@ -18,7 +18,7 @@ const ProjectDrawerHeader = () => {
   return (
     <div className={classes.drawerHeader}>
       <div className={classes.headerTitleWrapper}>
-        <Typography className={classes.headerTitle}>New project</Typography>
+        <Typography className={classes.headerTitle}>New Project</Typography>
       </div>
       <div className={classes.headerIcons} onClick={handleClose}>
         <Typography>Close</Typography>
