@@ -22,7 +22,6 @@ const RegisterForm = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const handleSubmit = (values: any, action: any) => {
-    console.log('values: ', values)
 
     const { firstName, surName, userName, email, password } = values
     const payload = {

@@ -43,7 +43,6 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
   const [success, setSuccess] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
 
-  console.log("otp", otp);
   const isDiabled = !loading ? false : true;
 
   const handleSubmit = () => {

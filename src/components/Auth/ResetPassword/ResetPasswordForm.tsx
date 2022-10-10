@@ -30,12 +30,9 @@ const ResetPasswordForm = () => {
   const isDiabled = !loading ? false : true
 
   const handleSubmit = (values: any, action: any) => {
-    console.log('values: ', values)
-
-    // console.log("success", success);
     const { password } = values
     const queryParams = queryString.parse(history?.location?.search)
-
+    
     const payload = {
       body: { password, token: queryParams.token },
       success: (res: any) => {

@@ -127,9 +127,6 @@ const MemberDialog = () => {
     userPermissions,
     avaialablePermissions.create_permission
   );
-
-  console.log("profile havePermission", havePermission);
-
   return (
     <div>
       <Button

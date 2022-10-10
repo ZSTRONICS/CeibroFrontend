@@ -169,7 +169,6 @@ const CreateChat = () => {
                 >
                   <Grid container>
                     {projectMembers?.map((member: any) => {
-                      console.log("emmerbsj asdre", member);
                       if (!users?.includes?.(String(member?.user?.id)))
                         return null;
 

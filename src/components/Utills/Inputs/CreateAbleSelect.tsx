@@ -31,10 +31,8 @@ const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
-    props;
+  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =  props;
 
-  console.log("createAbles", props);
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
       return {
@@ -126,7 +124,6 @@ const SelectDropdown: FC<My> = (props) => {
   };
 
   const handleChange = (e: dataInterface) => {
-    console.log("e: ", e);
     props.handleChange?.(e);
   };
 

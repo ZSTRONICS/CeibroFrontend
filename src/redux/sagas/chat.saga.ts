@@ -295,7 +295,6 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   const {
     payload: { other },
   } = action;
-  console.log("great", other);
   const messages: any = yield select((state: RootState) => state.chat.messages);
   const loadingMessages: any = yield select(
     (state: RootState) => state.chat.loadingMessages

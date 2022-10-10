@@ -59,7 +59,6 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
   }, [selected]);
 
   const handleChangeAnswer = (event: any) => {
-    console.log((event.target as HTMLInputElement).value);
     setSelected(
       event.target.checked
         ? [...selected, event.target.value]

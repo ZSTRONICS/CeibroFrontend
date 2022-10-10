@@ -37,13 +37,10 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
     useEffect(() => {
       getMyInvites();
     }, []);
-
-    console.log("invitesss", myAllInvites);
     useImperativeHandle(ref, () => ({ getMyInvites }), []);
     const getMyInvites = () => {
       const payload = {
         success: (res: any) => {
-          // console.log("all invites", res?.data[0]?.from);
           setmyAllInvites(res?.data);
         },
         finallyAction: () => {

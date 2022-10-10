@@ -6,8 +6,6 @@ import TaskCard from "../Utills/TaskCard/TaskCard";
 
 const TaskList = () => {
   const tasks = TASKS.slice(0, 4);
-  console.log("task", tasks);
-
   return (
     <Grid container>
       {tasks &&

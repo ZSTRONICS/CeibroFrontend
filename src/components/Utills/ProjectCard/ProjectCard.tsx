@@ -34,7 +34,6 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     id,
   } = project;
   const { selectedProject } = useSelector((state: RootState) => state.project);
-
   const dispatch = useDispatch();
 
   const handleProjectClick = () => {
@@ -64,6 +63,13 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
       >
         <Grid container className={classes.wrapper}>
           <Grid item xs={12} className={classes.imageWrapper}>
+          <div className="myImg">
+            <img
+              className={classes.myImage}
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv9SiXdvz4gtd13yyohVs0a-ohZ-AVTen5mh4zlc-ofQ&s.png"
+              alt="ceibro-project-img"
+            />
+              </div>
             <div className={classes.tagWrapper}>
               <div
                 className={classes.status}
@@ -80,13 +86,9 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
                 </Typography>
               </div>
             </div>
-            <img
-              className={classes.myImage}
-              src={src}
-              alt="ceibro-project-img"
-            />
+           
           </Grid>
-          <Grid container>
+          <Grid container spacing={2}>
             <Grid item xs={5}>
               <Typography className={classes.meta}>Due Date</Typography>
               <Typography className={classes.metaValue}>
@@ -167,13 +169,8 @@ const useStyles = makeStyles({
     position: "relative",
   },
   tagWrapper: {
-    position: "absolute",
-    background: colors.white,
-    top: 10,
-    left: 5,
-    borderRadius: 3,
-    display: "flex",
-    height: 20,
+     width: "100px",
+     padding: "10px 0"
   },
   status: {
     background: colors.darkYellow,

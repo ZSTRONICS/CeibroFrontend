@@ -15,15 +15,12 @@ const PermissionState = (props: any) => {
   // useEffect(() => {
   //   const payload = {
   //     success: (res: any) => {
-  //       console.log("per", res?.data);
   //       setPermissions(res?.data);
   //     },
   //     other: selectedProject,
   //   };
   //   dispatch(getPermissions(payload));
   // }, []);
-
-  // console.log("testing permissions", permissions);
   return (
     <permissionContext.Provider value={permissions}>
       {props.children}

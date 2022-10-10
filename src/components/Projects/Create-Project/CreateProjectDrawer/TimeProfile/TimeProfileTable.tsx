@@ -43,8 +43,6 @@ const RolesTable = () => {
   );
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log("projectProfile", projectProfile);
   useEffect(() => {
     if (selectedProject) {
       const payload = {

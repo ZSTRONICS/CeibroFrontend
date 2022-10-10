@@ -123,7 +123,6 @@ const SelectDropdown: FC<My> = (props) => {
   };
 
   const handleChange = (e: dataInterface) => {
-    console.log("e: ", e);
     props.handleChange?.(e);
   };
 

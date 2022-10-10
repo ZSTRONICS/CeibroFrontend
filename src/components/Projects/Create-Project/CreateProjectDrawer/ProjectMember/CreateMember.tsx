@@ -51,7 +51,7 @@ const MemberDialog = () => {
     // setOpen(true);
     dispatch(projectActions.openProjectMemberDrawer());
   };
-  console.log("mem permisssion", userPermissions);
+  
   const handleClose = () => {
     setOpen(false);
     dispatch(projectActions.closeProjectMemberDrawer());

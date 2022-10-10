@@ -31,8 +31,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
 
-  console.log("folderList", folderList);
-
   const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
@@ -53,8 +51,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
-
-    // console.log("folder is", folder.id);
     // dispatch(setSelectedFolder(folder?.id));
   };
 
@@ -81,7 +77,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           )}
 
           {folderList?.map((row: FolderInterface) => {
-            console.log("folder", row.name);
             return (
               <TableRow key={row?.name}>
                 <TableCell

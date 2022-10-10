@@ -85,10 +85,7 @@ const RolesTable = () => {
   const [group, setGroups] = useState<any>();
   const [role, setRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
-
-  console.log("members list", memberList);
   const confirm = useConfirm();
-
   const dispatch = useDispatch();
   const classes = useStyles();
 

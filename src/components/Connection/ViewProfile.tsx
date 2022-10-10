@@ -40,7 +40,6 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
   const handleToggle = () => {
     const payload = {
       success: (val: any) => {
-        console.log('getUserByid', val)
         setGetUser(val.data)
       },
       other: {
@@ -51,7 +50,6 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
 
     setOpen(!open)
   }
-  console.log('hhh', getUser)
   const openTaskDrawer = () => {
     dispatch(taskActions.openDrawer())
   }

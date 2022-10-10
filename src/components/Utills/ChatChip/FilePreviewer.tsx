@@ -14,7 +14,6 @@ interface FilePreviewerInterface {
 
 const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
   const { file, showControls, hideName = false } = props;
-  console.log("file: ", file);
   const classes = useStyles();
 
   const handleClick = () => {};

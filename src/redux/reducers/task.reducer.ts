@@ -6,10 +6,8 @@ const intialStatue = {
     menue: 1
 }
 
-
-
 const AppReducer = (state = intialStatue, action: ActionInterface ) => {
-    console.log('we added', action, state)
+
     switch(action.type) {
         case config.OPEN_TASK_DRAWER:
             return {

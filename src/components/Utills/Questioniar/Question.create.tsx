@@ -102,15 +102,6 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     }
   }, [options, questionText, questionType]);
 
-  // console.log(
-  //   "availableQuestionTypes",
-  //   availableQuestionTypes?.map(
-  //     (element: any) =>
-  //       element.value.charAt(0).toUpperCase() +
-  //       element.value.substring(1).toLowerCase()
-  //   )
-  // );
-
   function capitalize(arr: any) {
     for (var i = 0; i < arr.length; i++) {
       var first = arr[i].label;

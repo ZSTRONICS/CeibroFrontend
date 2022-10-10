@@ -52,8 +52,6 @@ const QuestioniarBody = () => {
   //   value: member?.id,
   // }));
 
-  console.log("membersList", membersList);
-
   const [preview, setPreview] = useState<boolean>(false);
   const [nudge, setNudge] = useState<boolean>(false);
   const [members, setMembers] = useState<any>([]);
@@ -78,7 +76,6 @@ const QuestioniarBody = () => {
     value: member?.id,
   }));
 
-  console.log("listOfMembers", listOfMembers);
   const handleDateChange = (e: any) => {
     setDueDate(e?.target?.value);
   };
@@ -86,7 +83,6 @@ const QuestioniarBody = () => {
   const handleUserChange = (e: any) => {
     setMembers(e);
   };
-  console.log("membersmembers", members);
   const addNewQuestion = () => {
     const myQuestions: QuestioniarInterface[] = JSON.parse(
       JSON.stringify(questioniars)

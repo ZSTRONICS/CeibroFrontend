@@ -38,7 +38,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const { groupDrawer, group, selectedGroup, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-  console.log("group", group?.name);
 
   const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();
@@ -83,7 +82,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         getGroupById({
           other: selectedGroup,
           success: (res) => {
-            // console.log("res group", res.data.name);
             setName(res.data.name);
           },
         })

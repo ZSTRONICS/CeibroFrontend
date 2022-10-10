@@ -30,7 +30,6 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
   useEffect(() => {
     const payload = {
       success: (res: any) => {
-        // console.log("all conn", res);
         setConnection(res?.data)
       },
       finallyAction: () => {
@@ -40,8 +39,6 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
     setLoading(true)
     dispatch(getMyConnections(payload))
   }, [])
-
-  console.log('connectiongh', connections)
 
   const startRoom = (id: string) => {
     const payload = { other: { id }, success: () => history.push('chat') }

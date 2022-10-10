@@ -77,7 +77,6 @@ const ProjectOverview = () => {
   }
 
   const handleOwnerChange = (users: dataInterface[]) => {
-    console.log('projectovervuew user', users)
     users &&
       dispatch(
         projectActions.setProjectOverview({
@@ -99,17 +98,12 @@ const ProjectOverview = () => {
 
   const my = formatDate(projectOverview?.dueDate)
   const statusData = getStatusDropdown()
-  console.log('statusData: ', statusData)
-
   const statusValue = projectOverview?.publishStatus
     ? {
         label: projectOverview?.publishStatus,
         value: projectOverview?.publishStatus,
       }
     : null
-  // console.log("projectOverview?.owner", projectOverview?.owner);
-  // console.log("projectOverview?.data", data);
-
   //  const newArray = Array.from(
   //    new Set(projectOverview?.owner?.map((el: any) => JSON.stringify(el)))
   //  ).map((el: any) => JSON.parse(el));
