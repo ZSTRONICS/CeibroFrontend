@@ -329,8 +329,12 @@ button[disabled]{
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   font-size: 14px;
   font-weight: 500; 
+  padding-left: 10px;
 }
 
+.MuiDialog-paper{
+  min-height: 55vh;
+}
 .css-qc6sy-singleValue {
   margin-left: 10px !important;
 }

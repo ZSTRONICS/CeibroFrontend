@@ -24,7 +24,7 @@ interface InputCheckboxInterface {
   label?: string;
   onChange?: (e: boolean) => void;
 }
-
+``
 const InputCheckbox: FC<InputCheckboxInterface> = (props) => {
   const { checked, label } = props;
   const classes = useStyles();
@@ -39,7 +39,7 @@ const InputCheckbox: FC<InputCheckboxInterface> = (props) => {
   };
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "60%" }}>
       <FormControlLabel
         control={<CustomCheckbox checked={check} />}
         label={label}

@@ -9,7 +9,6 @@ import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 const ProjectList = () => {
   const { projects } = useSelector((state: RootState) => state.project);
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getProjectsWithPagination());
   }, []);

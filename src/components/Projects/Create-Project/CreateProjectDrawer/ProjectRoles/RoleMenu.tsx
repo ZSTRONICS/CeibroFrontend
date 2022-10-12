@@ -44,7 +44,7 @@ const RoleMenu = (props: any) => {
             >
               <img src={assets.blackPencil} className="width-16" />
               <Typography className={`${classes.menuText} align-center`}>
-                Manage Role
+                Edit Role
               </Typography>
             </div>
 

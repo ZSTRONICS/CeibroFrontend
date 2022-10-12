@@ -53,7 +53,6 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
   };
 
   const stop = (audio: any) => {
-    console.log("🚀 ~ file: VoiceRecorder.tsx ~ line 27 ~ stop ~ audio", audio);
     setUrl(audio.url);
     setBlob(audio);
     if (sendOnStop) {
