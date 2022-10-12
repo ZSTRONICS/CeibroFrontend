@@ -52,7 +52,7 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
             >
               <img src={assets.blackPencil} className="width-16" />
               <Typography className={`${classes.menuText} align-center`}>
-                Manage group
+                Edit group
               </Typography>
             </div>
 

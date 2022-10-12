@@ -133,6 +133,7 @@ export default TaskCard;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
+    margin: '0 5px',
   },
   cardWrapper: {
     height: 220,

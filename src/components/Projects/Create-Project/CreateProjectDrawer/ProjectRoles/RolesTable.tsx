@@ -133,7 +133,7 @@ const RolesTable = () => {
                   {(role?.timeProfile?.length || 0) > 0 && (
                     <>
                       <Typography className={classes.detailTitle}>
-                        Time Profile: &nbsp;
+                        Work Profile: &nbsp;
                       </Typography>
                       {role?.timeProfile?.map((access) => {
                         return (

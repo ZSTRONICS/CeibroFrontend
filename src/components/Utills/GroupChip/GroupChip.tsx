@@ -14,7 +14,7 @@ import GroupMenu from "./GroupMenu";
 
 const menue: MenuOptions[] = [
   {
-    title: "Manage Group",
+    title: "Edit Group",
     icon: <BiPencil />,
   },
   {

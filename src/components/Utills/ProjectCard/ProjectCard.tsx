@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getPermissions } from "redux/action/project.action";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { RootState } from "redux/reducers";
-
+import styled from "@emotion/styled";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -33,9 +33,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     publishStatus: status,
     id,
   } = project;
-  const { selectedProject } = useSelector((state: RootState) => state.project);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const handleProjectClick = () => {
     dispatch(getPermissions({ other: id }));
     dispatch(projectActions.setSelectedProject(id || null));
@@ -43,79 +42,59 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   };
 
   const classes = useStyles();
+  const imgSrc =  src ==='undefined' ? assets.Defaulttask: src
 
   return (
-    <Grid
-      className={classes.cardOuterWrapper}
-      item
-      xs={12}
-      sm={6}
-      md={4}
-      lg={3}
-      xl={2}
-      onClick={handleProjectClick}
-    >
-      <Grid
-        item
-        xs={12}
-        className={classes.cardWrapper}
-        style={{ borderColor: getColorByStatus(status) }}
+    <>
+      <ProjectCardContain
+        style={{ border: `1px solid ${getColorByStatus(status)}` }}
+        onClick={handleProjectClick}
       >
-        <Grid container className={classes.wrapper}>
-          <Grid item xs={12} className={classes.imageWrapper}>
-          <div className="myImg">
-            <img
-              className={classes.myImage}
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTv9SiXdvz4gtd13yyohVs0a-ohZ-AVTen5mh4zlc-ofQ&s.png"
-              alt="ceibro-project-img"
-            />
-              </div>
-            <div className={classes.tagWrapper}>
-              <div
-                className={classes.status}
-                style={{
-                  background: getColorByStatus(status),
-                  color: getTextColorByStatus(status),
-                }}
-              >
-                <Typography className={classes.statusText}>{status}</Typography>
-              </div>
-              <div className={classes.dateWrapper}>
-                <Typography className={classes.statusDate}>
-                  {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
-                </Typography>
-              </div>
+        <ImageCard>
+          <Image src={ imgSrc} />
+          <Status>
+            <div
+              className={classes.status}
+              style={{
+                background: getColorByStatus(status),
+                color: getTextColorByStatus(status),
+              }}
+            >
+              <Typography className={classes.statusText}>{status}</Typography>
             </div>
-           
-          </Grid>
-          <Grid container spacing={2}>
-            <Grid item xs={5}>
-              <Typography className={classes.meta}>Due Date</Typography>
-              <Typography className={classes.metaValue}>
+            <div className={classes.dateWrapper}>
+              <Typography className={classes.statusDate}>
                 {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
               </Typography>
-            </Grid>
-            <Grid item xs={7}>
-              <Typography className={classes.meta}>Owner</Typography>
-              <Typography
-                className={classes.metaValue}
-                style={{ display: "flex" }}
-              >
-                {owner?.[0]?.firstName} {owner?.[0]?.surName}
-                {owner?.length > 1 && (
-                  <div className={classes.extraOwners}>+{owner.length - 1}</div>
-                )}
-              </Typography>
-            </Grid>
+            </div>
+          </Status>
+        </ImageCard>
+        <Grid container spacing={2}>
+          <Grid item xs={5}>
+            <Typography className={classes.meta}>Due Date </Typography>
+            <Typography className={classes.metaValue}>
+              {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+            </Typography>
           </Grid>
-
-          <Grid item xs={12}>
-            <Typography className={classes.title}>{title}</Typography>
-            <Typography className={classes.viewMap}>View map</Typography>
-            <hr className={classes.break} />
+          <Grid item xs={7}>
+            <Typography className={classes.meta}>Owner</Typography>
+            <Typography
+              className={classes.metaValue}
+              style={{ display: "flex" }}
+            >
+              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.length > 1 && (
+                <div className={classes.extraOwners}>+{owner.length - 1}</div>
+              )}
+            </Typography>
           </Grid>
         </Grid>
 
+        <Grid item xs={12}>
+          <Typography className={classes.title}>{title}</Typography>
+          <Typography className={classes.viewMap}>View map</Typography>
+          <hr className={classes.break} />
+        </Grid>
         <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip}>
             <img src={assets.clipboardIcon} className={`w-16`} />
@@ -141,13 +120,36 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
         </Grid>
-      </Grid>
-    </Grid>
+      </ProjectCardContain>
+    </>
   );
 };
 
 export default ProjectCard;
 
+const ProjectCardContain = styled.div`
+  margin: 7px 10px;
+  max-width: 285px;
+  width: 285px;
+  padding: 10px 20px;
+  background: white;
+  cursor: pointer;
+  height: 267px;
+`;
+const ImageCard = styled.div`
+  position: relative;
+`;
+const Image = styled.img`
+  width: 100%;
+  height: 110px;
+  border-radius: 4px;
+`;
+const Status = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+`;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
@@ -169,17 +171,17 @@ const useStyles = makeStyles({
     position: "relative",
   },
   tagWrapper: {
-     width: "100px",
-     padding: "10px 0"
+    width: "100px",
+    padding: "10px 0",
   },
   status: {
     background: colors.darkYellow,
     borderRadius: 3,
-    paddingLeft: 5,
-    paddingRight: 10,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    textTransform: "capitalize",
+    padding: "2px 5px",
   },
   statusText: {
     color: colors.white,
@@ -196,6 +198,9 @@ const useStyles = makeStyles({
     alignItems: "center",
     paddingLeft: 5,
     paddingRight: 10,
+    background: "white",
+    padding: "3px 5px",
+    borderRadius: " 3px",
   },
   myImage: {
     width: "100%",
@@ -208,11 +213,12 @@ const useStyles = makeStyles({
     color: colors.textGrey,
   },
   metaValue: {
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 12,
+    textTransform: "capitalize",
   },
   title: {
-    fontWeight: 500,
+    fontWeight: 700,
     fontSize: 14,
     marginTop: 10,
     color: colors.black,

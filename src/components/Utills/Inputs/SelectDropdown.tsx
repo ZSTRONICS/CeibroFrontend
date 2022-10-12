@@ -35,7 +35,7 @@ interface My {
 const SelectDropdown: FC<My> = props => {
   const classes = useStyles()
   let myOptions: any = props.data || []
-
+  
   const {
     value,
     isMulti,
@@ -45,7 +45,8 @@ const SelectDropdown: FC<My> = props => {
     noOptionMessage,
     isDisabled = false,
   } = props
-
+  
+  console.log("myOptions--->",myOptions, value);
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
       return {

@@ -23,12 +23,11 @@ const RegisterForm = () => {
   const history = useHistory()
   const handleSubmit = (values: any, action: any) => {
 
-    const { firstName, surName, userName, email, password } = values
+    const { firstName, surName, email, password } = values
     const payload = {
       body: {
         firstName,
         surName,
-        username: userName,
         email,
         password,
       },
@@ -45,7 +44,6 @@ const RegisterForm = () => {
   const registerSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
     surName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    userName: Yup.string().min(6, 'Too Short!').max(50, 'Too Long!').required('Required'),
     email: Yup.string().email('Invalid email').required('Required'),
     password: Yup.string()
       .required('Please enter your password')
@@ -75,7 +73,6 @@ const RegisterForm = () => {
             password: '',
             firstName: '',
             surName: '',
-            userName: '',
             confirmPassword: '',
           }}
           validationSchema={registerSchema}
@@ -124,7 +121,7 @@ const RegisterForm = () => {
                   {errors.surName && touched.surName && errors.surName}
                 </Typography>
               )}
-              <TextField
+              {/* <TextField
                 placeholder={'User name'}
                 className={classes.inputs}
                 name="userName"
@@ -139,7 +136,7 @@ const RegisterForm = () => {
                 <Typography className={`error-text ${classes.errorText}`}>
                   {errors.userName && touched.userName && errors.userName}
                 </Typography>
-              )}
+              )} */}
 
               <TextField
                 placeholder={intl.formatMessage({ id: 'input.Email' })}

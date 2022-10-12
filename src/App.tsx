@@ -5,6 +5,7 @@ import "moment-timezone";
 import React, { createContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
+import { CssBaseline } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { io } from "socket.io-client";
 import "./App.css";
@@ -83,6 +84,7 @@ const App: React.FC<MyApp> = () => {
 
   return (
     <div className="App">
+      <CssBaseline/>
       {/* <PermissionState> */}
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}

@@ -31,7 +31,6 @@ import { toast } from "react-toastify";
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
-
   const classes = useStyles();
   const roles = ["create", "edit", "delete", "self-made"];
 
@@ -221,6 +220,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       })
     );
   }, []);
+  
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
@@ -238,8 +238,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             data={availableUsers}
             isMulti={true}
             noOptionMessage="No user available"
-            value={role?.member}
-
+            // value={role?.member}
             handleChange={(values: any) => {
               dispatch(
                 projectActions.setRole({
@@ -274,24 +273,55 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                   />
                 </div>
                 {isRole && (
-                  <div
-                    className={classes.option}
-                    style={{ paddingLeft: 7, paddingBottom: 5 }}
-                  >
-                    {roles?.map((myRole: string) => {
-                      return (
-                        <InputCheckbox
-                          label={myRole}
-                          checked={role?.roles?.includes(myRole) || false}
-                          onChange={(checked) =>
-                            handleAccessChange(checked, myRole, "roles")
-                          }
-                        />
-                      );
-                    })}
+                  <div className={classes.option} style={{ paddingBottom: 5 }}>
+                    {roles
+                      ?.filter((item) => item !== "self-made")
+                      .map((myRole: string, i) => {
+                        return (
+                          <InputCheckbox
+                            key={i}
+                            label={myRole}
+                            checked={role?.roles?.includes(myRole) || false}
+                            onChange={(checked) =>
+                              handleAccessChange(checked, myRole, "roles")
+                            }
+                          />
+                        );
+                      })}
                   </div>
                 )}
-
+                <HorizontalBreak />
+                <div className={classes.option}>
+                  <Typography className={classes.optionTitle}>
+                    Work profile
+                  </Typography>
+                  <InputSwitch
+                    value={isTimeProfile}
+                    label=""
+                    onChange={handleChangeTimeProfile}
+                  />
+                </div>
+                {isTimeProfile && (
+                  <div className={classes.option} style={{ paddingBottom: 5 }}>
+                    {roles
+                      ?.filter((item) => item !== "self-made")
+                      .map((myRole: string, i) => {
+                        return (
+                          <InputCheckbox
+                            key={i}
+                            label={myRole}
+                            checked={
+                              role?.timeProfile?.includes?.(myRole) || false
+                            }
+                            onChange={(checked) =>
+                              handleAccessChange(checked, myRole, "timeProfile")
+                            }
+                          />
+                        );
+                      })}
+                  </div>
+                )}
+                <HorizontalBreak />
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Member
@@ -303,47 +333,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                   />
                 </div>
                 {isMember && (
-                  <div
-                    className={classes.option}
-                    style={{ paddingLeft: 7, paddingBottom: 5 }}
-                  >
-                    {roles?.map((myRole: string) => {
+                  <div className={classes.option} style={{ paddingBottom: 5 }}>
+                    {roles?.map((myRole: string, i) => {
                       return (
                         <InputCheckbox
+                          key={i}
                           label={myRole}
                           checked={role?.member?.includes?.(myRole) || false}
                           onChange={(checked) =>
                             handleAccessChange(checked, myRole, "member")
-                          }
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-                <div className={classes.option}>
-                  <Typography className={classes.optionTitle}>
-                    Time profile
-                  </Typography>
-                  <InputSwitch
-                    value={isTimeProfile}
-                    label=""
-                    onChange={handleChangeTimeProfile}
-                  />
-                </div>
-                {isTimeProfile && (
-                  <div
-                    className={classes.option}
-                    style={{ paddingLeft: 7, paddingBottom: 5 }}
-                  >
-                    {roles?.map((myRole: string) => {
-                      return (
-                        <InputCheckbox
-                          label={myRole}
-                          checked={
-                            role?.timeProfile?.includes?.(myRole) || false
-                          }
-                          onChange={(checked) =>
-                            handleAccessChange(checked, myRole, "timeProfile")
                           }
                         />
                       );
@@ -412,6 +410,7 @@ const useStyles = makeStyles({
   optionTitle: {
     fontSize: 14,
     fontWeight: 500,
+    paddingTop: 8,
   },
   cancel: {
     fontSize: 12,

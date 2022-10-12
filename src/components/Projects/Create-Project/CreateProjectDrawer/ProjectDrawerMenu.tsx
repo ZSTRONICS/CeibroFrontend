@@ -19,7 +19,7 @@ const menus = [
   },
   {
     id: 6,
-    title: "Works Profile",
+    title: "Work Profile",
   },
   {
     id: 3,
@@ -93,7 +93,7 @@ export default ProjectDrawerMenu;
 const useStyles = makeStyles({
   statusChip: {
     padding: "10px 10px",
-    width: 100,
+    width: 103,
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",

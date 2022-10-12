@@ -25,6 +25,7 @@ const CreateProjectBody = () => {
   const { projectOverview, projects, selectedProject } = useSelector(
     (state: RootState) => state.project
   )
+  
   const confirm = useConfirm()
   useEffect(() => {
     projectOverviewSchema
@@ -113,7 +114,7 @@ const CreateProjectBody = () => {
 
     return formData
   }
-
+const disableBtn = [projectOverview.isDefault? true: false]
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       {!selectedProject && (
@@ -132,7 +133,7 @@ const CreateProjectBody = () => {
           className={classes.trash}
           color="primary"
           onClick={handleDelete}
-          // {selectedProject? style={{display:"none"}} : display:"block"}
+          disabled={projectOverview.isDefault}
         >
           <img src={assets.trashIcon} className={'w-16'} />
         </Button>
@@ -173,6 +174,10 @@ const useStyles = makeStyles({
   },
   trash: {
     color: 'red',
+    display:'block'
+  },
+  notrash:{
+    display:'none'
   },
   progress: {
     color: colors.primary,

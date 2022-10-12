@@ -13,6 +13,7 @@ export interface ProjectOverviewInterface {
   id?: string;
   publishStatus?: string;
   _id?: string;
+  isDefault?:boolean;
 }
 export interface ProjectInterface {
   projectPhoto: string;

@@ -151,7 +151,7 @@ const MemberDialog = () => {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="customized-dialog-title" className="customized-title">
-          <Typography className={classes.headerTitle}>Time Profile</Typography>
+          <Typography className={classes.headerTitle}>Work Profile</Typography>
           <div className={classes.headerAction} onClick={handleClose}>
             Close
             <Close />

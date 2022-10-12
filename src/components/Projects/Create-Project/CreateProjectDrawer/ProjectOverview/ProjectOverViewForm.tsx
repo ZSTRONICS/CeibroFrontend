@@ -3,14 +3,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
+import AuthReducer from "redux/reducers/auth.reducer";
 import InputText from "../../../../Utills/Inputs/InputText";
 import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
 
 const ProjectOverViewForm = () => {
   const dispatch = useDispatch();
-  const projectOverview = useSelector(
-    (state: RootState) => state.project.projectOverview
-  );
+  const projectOverview = useSelector( (state: RootState) => state.project.projectOverview);
+  
   const handleTitleChange = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
@@ -27,6 +27,7 @@ const ProjectOverViewForm = () => {
       })
     );
   };
+
   const handleDescriptionChange = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
@@ -44,6 +45,7 @@ const ProjectOverViewForm = () => {
           name="title"
           placeholder="Enter Project title"
           value={projectOverview.title || ""}
+          disabled={projectOverview.isDefault?true:false}
         />
       </Grid>
 

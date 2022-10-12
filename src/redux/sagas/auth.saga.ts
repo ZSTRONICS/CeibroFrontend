@@ -66,7 +66,7 @@ const otpVerify = apiCall({
 
 const updateMyProfile = apiCall({
   type: UPDATE_MY_PROFILE,
-  method: "patch",
+  method: "post",
   path: "/users/profile",
   success: () => {
     toast.success("Profile updated successfully");

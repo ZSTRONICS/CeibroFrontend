@@ -24,7 +24,6 @@ const ProjectOverview = () => {
   const { user } = useSelector((state: RootState) => state.auth)
   const [data, setData] = useState<dataInterface[]>([])
   const [loading, setLoading] = useState<boolean>(false)
-
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -36,7 +35,6 @@ const ProjectOverview = () => {
         other: selectedProject,
       }
       setLoading(true)
-
       dispatch(getProjectDetail(payload))
     }
   }, [selectedProject])
@@ -104,6 +102,7 @@ const ProjectOverview = () => {
         value: projectOverview?.publishStatus,
       }
     : null
+
   //  const newArray = Array.from(
   //    new Set(projectOverview?.owner?.map((el: any) => JSON.stringify(el)))
   //  ).map((el: any) => JSON.parse(el));
