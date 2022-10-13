@@ -94,7 +94,7 @@ const MemberDialog = () => {
       body: {
         email: selectedEmail?.value,
         roleId: selectRoles?.value,
-        groupId: selectGroups?.svalue,
+        groupId: selectGroups?.value,
         // subContractor: selectGroups?.value,
       },
       success: () => {
