@@ -46,7 +46,6 @@ const SelectDropdown: FC<My> = props => {
     isDisabled = false,
   } = props
   
-  console.log("myOptions--->",myOptions, value);
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
       return {
