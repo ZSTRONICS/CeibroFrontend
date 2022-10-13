@@ -76,7 +76,7 @@ const ImagePicker = () => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ background: `url(${projectOverview.projectPhoto})` }}
+        style={{ background: `url(${projectOverview.projectPhoto==='undefined'?assets.Defaulttask:projectOverview.projectPhoto})` }}
       >
         <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} />
       </div>
@@ -94,6 +94,7 @@ const useStyles = makeStyles({
     position: "relative",
     cursor: "pointer",
     backgroundSize: "cover !important",
+    backgroundPosition: 'center !important'
   },
   icon: {
     position: "absolute",
