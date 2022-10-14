@@ -34,7 +34,6 @@ import { checkTimeProfilePermission } from "helpers/project.helper";
 import Draggable from "react-draggable";
 import Paper, { PaperProps } from '@mui/material/Paper';
 
-
 const MemberDialog = () => {
   const {
     selectedProject,
@@ -57,7 +56,7 @@ const MemberDialog = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+   const handleClose = () => {
     dispatch(projectActions.closeTimeProfileDrawer());
 
     // setOpen(false);
@@ -154,7 +153,7 @@ const MemberDialog = () => {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="customized-dialog-title" className="customized-title" style={{ cursor: 'move' }} id="draggable-dialog-title">
+        <DialogTitle id="customized-dialog-title" className="customized-title" style={{ cursor: 'move' }} >
           <Typography className={classes.headerTitle}>Work Profile</Typography>
           <div className={classes.headerAction} onClick={handleClose}>
             Close
@@ -217,7 +216,7 @@ const MemberDialog = () => {
 function DragComp(props:PaperProps ) {
   return(
     <Draggable
-    handle="#draggable-dialog-title"
+    handle="#customized-dialog-title"
     cancel={'[class*="MuiDialogContent-root"]'}
   >
     <Paper {...props}/>
