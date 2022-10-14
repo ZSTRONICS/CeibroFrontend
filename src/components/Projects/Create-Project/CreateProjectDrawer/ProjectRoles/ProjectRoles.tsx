@@ -15,7 +15,7 @@ const ProjectRoles = () => {
   const { roleDrawer, userPermissions } = useSelector(
     (state: RootState) => state.project
   );
-
+console.log(rolesTemplate)
   const havePermission = checkRolePermission(
     userPermissions,
     avaialablePermissions.create_permission

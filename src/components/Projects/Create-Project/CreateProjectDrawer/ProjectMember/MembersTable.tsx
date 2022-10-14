@@ -205,7 +205,7 @@ const RolesTable = () => {
   const openCreateMember = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
-
+  
   return (
     <TableContainer>
       <Table className={classes.table} aria-label="simple table">

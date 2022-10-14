@@ -149,6 +149,7 @@ const RolesTable = () => {
               <div className={classes.roleMenu}>
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
                 <RoleMenu
+                  permissoin={havePermission}
                   onEdit={handleRoleClick}
                   onDelete={() => handleDelete(role?.id)}
                   name={role?.name}
@@ -159,28 +160,6 @@ const RolesTable = () => {
         })}
       </Grid>
     </Grid>
-    // <TableContainer className="roles-table">
-    //   <Table className={classes.table} aria-label="simple table">
-    //     <TableHead>
-    //       <TableRow>
-    //         <TableCell className={classes.rowTop}>Owner</TableCell>
-    //         <TableCell className={classes.rowTop} align="right"></TableCell>
-    //       </TableRow>
-    //     </TableHead>
-    //     <TableBody>
-    //       {rolesList?.map((row: any) => (
-    //         <TableRow key={row.name}>
-    //           <TableCell component="th" scope="row" className={classes.name}>
-    //             {row.name}
-    //           </TableCell>
-    //           <TableCell align="right">
-    //             <img src={assets.moreIcon} />
-    //           </TableCell>
-    //         </TableRow>
-    //       ))}
-    //     </TableBody>
-    //   </Table>
-    // </TableContainer>
   );
 };
 

@@ -31,6 +31,8 @@ import { toast } from "react-toastify";
 import { RootState } from "redux/reducers";
 import { avaialablePermissions } from "config/project.config";
 import { checkTimeProfilePermission } from "helpers/project.helper";
+import Draggable from "react-draggable";
+import Paper, { PaperProps } from '@mui/material/Paper';
 
 const MemberDialog = () => {
   const {
@@ -54,7 +56,7 @@ const MemberDialog = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
+   const handleClose = () => {
     dispatch(projectActions.closeTimeProfileDrawer());
 
     // setOpen(false);
@@ -145,12 +147,13 @@ const MemberDialog = () => {
         Create new Profile
       </Button>
       <Dialog
+      PaperComponent={DragComp}
         maxWidth={"md"}
         open={timeProfileDrawer}
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="customized-dialog-title" className="customized-title">
+        <DialogTitle id="customized-dialog-title" className="customized-title" style={{ cursor: 'move' }} >
           <Typography className={classes.headerTitle}>Work Profile</Typography>
           <div className={classes.headerAction} onClick={handleClose}>
             Close
@@ -209,6 +212,17 @@ const MemberDialog = () => {
     </div>
   );
 };
+
+function DragComp(props:PaperProps ) {
+  return(
+    <Draggable
+    handle="#customized-dialog-title"
+    cancel={'[class*="MuiDialogContent-root"]'}
+  >
+    <Paper {...props}/>
+    </Draggable>
+  )
+}
 
 export default MemberDialog;
 
