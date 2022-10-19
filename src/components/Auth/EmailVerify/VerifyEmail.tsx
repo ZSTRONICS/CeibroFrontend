@@ -84,10 +84,5 @@ const useStyles = makeStyles((theme) => {
     signup: {
       color: colors.textPrimary,
     },
-    // formTile: {
-    //     display: 'inline-block',
-    //     margin: 'auto',
-    //     textAlign: 'center'
-    // }
   };
 });

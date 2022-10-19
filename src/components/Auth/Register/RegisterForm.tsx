@@ -267,11 +267,11 @@ const useStyles = makeStyles({
   },
   logoWrapper: {
     paddingTop: '2%',
-    paddingLeft: '6%',
+    paddingLeft: '7%',
   },
   titleWrapper: {
     paddingTop: '3%',
-    paddingLeft: '12%',
+    paddingLeft: '12.5%',
   },
   title: {
     fontSize: 30,

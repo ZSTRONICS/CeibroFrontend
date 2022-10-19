@@ -74,19 +74,5 @@ const useStyles = makeStyles((theme) => {
     tileWrapper: {
       position: "relative",
     },
-    dontHave: {
-      paddingLeft: "12%",
-      fontSize: 14,
-      fontWeight: 500,
-      cursor: "pointer",
-    },
-    signup: {
-      color: colors.textPrimary,
-    },
-    // formTile: {
-    //     display: 'inline-block',
-    //     margin: 'auto',
-    //     textAlign: 'center'
-    // }
   };
 });
