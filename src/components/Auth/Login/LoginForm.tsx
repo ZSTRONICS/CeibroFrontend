@@ -5,41 +5,41 @@ import {
   Checkbox,
   InputAdornment,
   IconButton,
-} from '@material-ui/core'
-import { Visibility, VisibilityOff } from '@material-ui/icons'
-import { makeStyles } from '@material-ui/core/styles'
-import { useState } from 'react'
-import { useHistory } from 'react-router'
-import assets from '../../../assets/assets'
-import colors from '../../../assets/colors'
-import TextField from '../../Utills/Inputs/TextField'
-import { useIntl } from 'react-intl'
-import { useDispatch, useSelector } from 'react-redux'
-import { loginRequest, verifyEmail } from '../../../redux/action/auth.action'
-import { RootState } from '../../../redux/reducers'
-import Loading from '../../Utills/Loader/Loading'
-import { Alert } from '@material-ui/lab'
-import { toast } from 'react-toastify'
+  FormControl,
+  OutlinedInput,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/core/styles";
+import { useState } from "react";
+import { useHistory } from "react-router";
+import assets from "../../../assets/assets";
+import colors from "../../../assets/colors";
+import { useIntl } from "react-intl";
+import { useDispatch, useSelector } from "react-redux";
+import { loginRequest, verifyEmail } from "../../../redux/action/auth.action";
+import { RootState } from "../../../redux/reducers";
+import Loading from "../../Utills/Loader/Loading";
+import { Alert } from "@material-ui/lab";
+import { toast } from "react-toastify";
 
 interface LoginForm {
-  tokenLoading: boolean
-  showSuccess: boolean
-  showError: boolean
+  tokenLoading: boolean;
+  showSuccess: boolean;
+  showError: boolean;
 }
 
-const LoginForm: React.FC<LoginForm> = props => {
-  const classes = useStyles()
-  const { tokenLoading, showSuccess, showError } = props
-  const [showPassword, setShowPassword] = useState(false)
+const LoginForm: React.FC<LoginForm> = (props) => {
+  const classes = useStyles();
+  const { tokenLoading, showSuccess, showError } = props;
+  const [showPassword, setShowPassword] = useState(false);
 
   const { loginLoading, authErrorMessage, authSuccessMessage } = useSelector(
     (state: RootState) => state.auth
-  )
-
-  const history = useHistory()
-  const [checked, setChecked] = useState(true)
-  const intl = useIntl()
-  const dispatch = useDispatch()
+  );
+  const history = useHistory();
+  const [checked, setChecked] = useState(true);
+  const intl = useIntl();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -57,11 +57,10 @@ const LoginForm: React.FC<LoginForm> = props => {
         password,
       },
       onFailAction: (err: any) => {
-
-        if (err.response.status === 406) {
-          setVerifyError(true)
+        if (err) {
+          setVerifyError(true);
         } else {
-          if(err.response.status === 423) {
+          if (err) {
             setLockError(true);
             setTimeout(() => {
               setLockError(false);
@@ -75,28 +74,30 @@ const LoginForm: React.FC<LoginForm> = props => {
         }
       },
       showErrorToast: true,
-    }
-    dispatch(loginRequest(payload))
-  }
+    };
+
+    dispatch(loginRequest(payload));
+  };
 
   const handleVerifyEmail = () => {
     const payload = {
       body: { email },
       success: () => {
-        toast.success('Please check your email')
+        toast.success("Please check your email");
 
-        history.push('/verify-email')
+        history.push("/verify-email");
       },
-    }
-    dispatch(verifyEmail(payload))
-  }
+    };
+    dispatch(verifyEmail(payload));
+  };
 
   const handlePasswordForget = () => {
-    history.push('/forgot-password')
-  }
+    history.push("/forgot-password");
+  };
 
   return (
     <div className={`form-container ${classes.wrapper}`}>
+     
       <div className={classes.logoWrapper}>
         <img src={assets.logo} alt="ceibro-logo" />
       </div>
@@ -106,7 +107,7 @@ const LoginForm: React.FC<LoginForm> = props => {
       </div>
 
       <div className={classes.loginForm}>
-      {(showSuccess || tokenLoading) && (
+        {(showSuccess || tokenLoading) && (
           <Alert severity="success">
             {tokenLoading
               ? "Verifying email"
@@ -116,7 +117,7 @@ const LoginForm: React.FC<LoginForm> = props => {
 
         {showError && <Alert severity="error">Link expired</Alert>}
         {verifyError && (
-          <Alert severity="error" style={{ display: 'flex' }}>
+          <Alert severity="error" style={{ display: "flex" }}>
             <Typography
               className={`${classes.titles} ${classes.forget} ${classes.color} `}
               variant="body1"
@@ -125,39 +126,45 @@ const LoginForm: React.FC<LoginForm> = props => {
             >
               Email not verified.
               <span className={classes.emailVerify}>
-                {' '}
-                {intl.formatMessage({ id: 'input.verifyEmail' })} ?
+                {" "}
+                {intl.formatMessage({ id: "input.verifyEmail" })} ?
               </span>
             </Typography>
           </Alert>
         )}
 
         {error && <Alert severity="error">Incorrect email or password</Alert>}
-        {lockError && <Alert severity="error">Account locked. Retry after 15 minutes</Alert>}
-        <TextField
-          placeholder={intl.formatMessage({ id: 'input.Email' })}
-          className={classes.inputs}
-          inputProps={{
-            style: { height: 12 },
-          }}
-          onChange={(e: any) => setEmail(e.target.value)}
-        />
-        <TextField
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                {showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-          inputProps={{
-            style: { height: 12 },
-          }}
-          type={showPassword ? 'text' : 'password'}
-          placeholder={intl.formatMessage({ id: 'input.Password' })}
-          className={classes.inputs}
-          onChange={(e: any) => setPassword(e.target.value)}
-        />
+        {lockError && (
+          <Alert severity="error">Account locked. Retry after 15 minutes</Alert>
+        )}
+        <FormControl variant="outlined" >
+          <OutlinedInput
+           className={classes.inputOutline}
+            placeholder={intl.formatMessage({ id: "input.Email" })}
+            onChange={(e: any) => setEmail(e.target.value)}
+          />
+        </FormControl>
+
+        <FormControl variant="outlined" className={classes.PassInput}>
+          <OutlinedInput
+            className={classes.inputOutline}
+            id="filled-adornment-password"
+            type={showPassword ? "text" : "password"}
+            placeholder={intl.formatMessage({ id: "input.Password" })}
+            onChange={(e: any) => setPassword(e.target.value)}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={() => setShowPassword(!showPassword)}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+          ></OutlinedInput>
+        </FormControl>
         <FormControlLabel
           control={
             <Checkbox
@@ -172,7 +179,7 @@ const LoginForm: React.FC<LoginForm> = props => {
           style={{ padding: 0 }}
           label={
             <Typography className={classes.rememberText}>
-              {intl.formatMessage({ id: 'input.RememberMe' })}
+              {intl.formatMessage({ id: "input.RememberMe" })}
             </Typography>
           }
         />
@@ -184,10 +191,11 @@ const LoginForm: React.FC<LoginForm> = props => {
             disabled={loginLoading}
             onClick={handleSubmit}
           >
+            
             {loginLoading ? (
               <Loading type="spin" color="white" height={14} width={14} />
             ) : (
-              intl.formatMessage({ id: 'input.Login' })
+              intl.formatMessage({ id: "input.Login" })
             )}
           </Button>
           <Typography
@@ -196,51 +204,60 @@ const LoginForm: React.FC<LoginForm> = props => {
             gutterBottom
             onClick={handlePasswordForget}
           >
-            {intl.formatMessage({ id: 'input.ForgetPassword' })} ?
+            {intl.formatMessage({ id: "input.ForgetPassword" })} ?
           </Typography>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
 
 const useStyles = makeStyles({
+  root: {
+    "&:hover $notchedOutline": {
+      borderColor: "orange",
+    },
+  },
+  focused: {},
+  notchedOutline: {},
+  PassInput: {
+    marginTop: "10px",
+  },
+  inputOutline: {
+    height: "40px",
+  },
   wrapper: {
-    height: '94%',
+    height: "94%",
   },
   actionWrapper: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingTop: 20,
   },
   titles: {
     color: colors.textPrimary,
-    fontFamily: 'Inter',
+    fontFamily: "Inter",
     marginTop: -10,
   },
   loginForm: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     marginTop: 20,
-    padding: '10px 13%',
-    '@media (max-width:960px)': {
-      padding: '10 13%',
+    padding: "10px 13%",
+    "@media (max-width:960px)": {
+      padding: "10 13%",
     },
   },
   remember: {
-    marginTop: '35px !important',
+    marginTop: "35px !important",
     fontSize: 14,
     padding: 0,
   },
   rememberText: {
     fontSize: 14,
     fontWeight: 500,
-  },
-  inputs: {
-    marginTop: 40,
-    height: 5,
   },
   loginButton: {
     height: 32,
@@ -252,29 +269,29 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 14,
     paddingLeft: 30,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   color: {
-    color: '#611A15',
+    color: "#611A15",
     padding: 0,
   },
   emailVerify: {
-    textDecoration: 'underline',
+    textDecoration: "underline",
 
-    '&:hover': {
-      cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
   },
   logoWrapper: {
-    paddingTop: '2%',
-    paddingLeft: '6%',
+    paddingTop: "2%",
+    paddingLeft: "8%",
   },
   titleWrapper: {
-    paddingTop: '10%',
-    paddingLeft: '12%',
+    paddingTop: "10%",
+    paddingLeft: "13%",
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
-})
+});

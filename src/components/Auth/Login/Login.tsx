@@ -29,12 +29,12 @@ const Login: React.FC<LoginInterface> = () => {
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  useEffect(() => {
+  const LoginData = async()=>{
     const queryParams = queryString.parse(history?.location?.search);
     if (queryParams?.token) {
       // verifying email verification token
       setTokenLoading(true);
-      axios
+    await  axios
         .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
         .then((response) => {
           setSuccess(true);
@@ -52,12 +52,13 @@ const Login: React.FC<LoginInterface> = () => {
           console.log("error is ", err);
         });
     }
-  }, []);
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
       history.push("/dashboard");
     }
+    LoginData()
   }, [isLoggedIn]);
 
   const goToSignup = () => {
@@ -111,7 +112,7 @@ const useStyles = makeStyles((theme) => {
       position: "relative",
     },
     dontHave: {
-      paddingLeft: "12%",
+      paddingLeft: "13%",
       fontSize: 14,
       fontWeight: 500,
       cursor: "pointer",
@@ -119,10 +120,5 @@ const useStyles = makeStyles((theme) => {
     signup: {
       color: colors.textPrimary,
     },
-    // formTile: {
-    //     display: 'inline-block',
-    //     margin: 'auto',
-    //     textAlign: 'center'
-    // }
   };
 });

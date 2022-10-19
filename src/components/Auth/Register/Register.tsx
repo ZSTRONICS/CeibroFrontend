@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme) => {
       position: "relative",
     },
     dontHave: {
-      paddingLeft: "12%",
+      paddingLeft: "12.5%",
       fontSize: 14,
       fontWeight: 500,
       cursor: "pointer"

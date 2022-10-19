@@ -18,6 +18,7 @@ import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 interface ForgetPasswordForm {
   tokenLoading: boolean;
@@ -77,8 +78,9 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
         )}
 
         {showError && <Alert severity="error">Link expired</Alert>}
-
+        <form onSubmit={handleSubmit}>
         <TextField
+          required
           placeholder={intl.formatMessage({ id: "input.Email" })}
           className={classes.inputs}
           inputProps={{
@@ -86,7 +88,6 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
           }}
           onChange={(e: any) => setEmail(e.target.value)}
         />
-
         <div className={classes.actionWrapper}>
           <Button
             className={classes.loginButton}
@@ -107,7 +108,12 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
             {/* Send */}
             {intl.formatMessage({ id: "input.send" })}
           </Button>
+          <span className={classes.rememberText}> Remember!
+          <Link to={'/login'} className={classes.rememberLogin}>Login</Link>
+            </span>
         </div>
+    
+        </form>
       </div>
     </div>
   );
@@ -142,12 +148,17 @@ const useStyles = makeStyles({
     fontSize: 14,
     padding: 0,
   },
+  rememberLogin:{
+    paddingLeft: 5, 
+    textDecoration: 'none'
+  },
   rememberText: {
+    paddingLeft: 15,
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 600,
   },
   inputs: {
-    marginTop: 40,
+    // marginTop: 40,
     height: 5,
   },
   loginButton: {
@@ -163,11 +174,11 @@ const useStyles = makeStyles({
   },
   logoWrapper: {
     paddingTop: "2%",
-    paddingLeft: "6%",
+    paddingLeft: "7%",
   },
   titleWrapper: {
     paddingTop: "10%",
-    paddingLeft: "12%",
+    paddingLeft: "12.5%",
   },
   title: {
     fontSize: 30,
