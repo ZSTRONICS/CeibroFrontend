@@ -79,6 +79,13 @@ const LoginForm: React.FC<LoginForm> = (props) => {
     dispatch(loginRequest(payload));
   };
 
+  const checkValidInputs=()=>{
+    if(email&& email.length>0 && password && password.length>0){
+      return false
+    }
+    return true
+  }
+
   const handleVerifyEmail = () => {
     const payload = {
       body: { email },
@@ -188,7 +195,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            disabled={loginLoading}
+            disabled={checkValidInputs() || loginLoading}
             onClick={handleSubmit}
           >
             

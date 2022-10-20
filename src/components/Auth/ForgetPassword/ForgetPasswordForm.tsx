@@ -1,21 +1,16 @@
 import {
   Typography,
   Button,
-  FormControlLabel,
-  Checkbox,
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
-import { useHistory } from "react-router";
+import React, { useState } from "react";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
-import { RootState } from "../../../redux/reducers";
-import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
@@ -30,18 +25,25 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
   const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
 
-  const { loginLoading, authErrorMessage, authSuccessMessage } = useSelector(
-    (state: RootState) => state.auth
-  );
-
-  const history = useHistory();
-  const [checked, setChecked] = useState(true);
   const intl = useIntl();
   const dispatch = useDispatch();
-
+  
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
+  
+  const handleKeyDown= (e:any)=>{
+    if(e.keyCode == 13){
+      handleSubmit()
+    }
+  } 
+
+  const checkValidInputs=()=>{
+    if(email&& email.length>0){
+      return false
+    }
+    return true
+  }
 
   const handleSubmit = () => {
     const payload = {
@@ -80,7 +82,7 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
         {showError && <Alert severity="error">Link expired</Alert>}
         <form onSubmit={handleSubmit}>
         <TextField
-          required
+        onkeyDown={handleKeyDown}
           placeholder={intl.formatMessage({ id: "input.Email" })}
           className={classes.inputs}
           inputProps={{
@@ -93,15 +95,9 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            // disabled={loginLoading}
-            disabled={isDiabled}
+            disabled={checkValidInputs() || isDiabled}
             onClick={handleSubmit}
           >
-            {/* {loginLoading ? (
-              <Loading type="spin" color="white" height={14} width={14} />
-            ) : (
-              intl.formatMessage({ id: "input.send" })
-            )} */}
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
