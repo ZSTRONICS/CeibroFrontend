@@ -22,7 +22,7 @@ function Sidebar() {
   const history = useHistory()
   const intl = useIntl()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
-
+  
   useEffect(() => {
     dispatch(getAllChats())
   }, [dispatch])
@@ -68,7 +68,8 @@ function Sidebar() {
                 >
                   <div className={classes.iconWrapper}>
                     <Typography className={classes.icon}>
-                      <img src={config.icon} className={classes.iconInner} alt={''} />
+                    {config.icon}
+                      {/* <img src={} className={classes.iconInner} alt={''} /> */}
                     </Typography>
                   </div>
                   <Typography className={classes.title}>
@@ -98,7 +99,8 @@ export default Sidebar
 
 const useStyles = makeStyles(theme => ({
   sidebarWrapper: {
-    background: colors.grey,
+    background: colors.white,
+    boxShadow: '-1px 0px 2px 0px',
     width: 200,
     height: '100vh',
     position: 'absolute',
@@ -113,20 +115,21 @@ const useStyles = makeStyles(theme => ({
   menueWrapper: {
     height: 'calc(100vh - 200px)',
     overflowY: 'auto',
+    marginTop:'28px',
   },
   menue: {
     display: 'flex',
     alignItems: 'center',
-    padding: '10px 10px',
+    padding: '15px 10px',
     paddingRight: 0,
-    borderBottom: `1px solid ${colors.white}`,
+    borderBottom: `1px solid #dedede`,
     fontSize: 16,
     fontWeight: 500,
     color: colors.primary,
     cursor: 'pointer',
     gap: 13,
     '&:hover': {
-      background: colors.white,
+      background:'linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)',
     },
   },
   iconWrapper: {
@@ -139,7 +142,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: '50%',
-    background: colors.white,
+    background: '#0076C8',
     color: colors.black,
   },
   title: {
@@ -151,7 +154,7 @@ const useStyles = makeStyles(theme => ({
     flex: 1,
   },
   active: {
-    background: colors.white,
+    background:'linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)',
     color: `${colors.black} !important`,
   },
   help: {

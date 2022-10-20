@@ -346,7 +346,9 @@ button[disabled]{
 .pg-viewer-wrapper {
   overflow-y: auto !important;
 }
-
+.sideBar_icon{
+  color: white;
+}
 .pin-message-chip {
   cursor: pointer;
 }
