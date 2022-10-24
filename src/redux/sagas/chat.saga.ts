@@ -112,7 +112,7 @@ const getUpRoomMessages = apiCall({
   path: (payload: any) =>
     "/chat/room/messages/" +
     payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}`,
+    `?lastMessageId=${payload?.other.lastMessageId}&limit=1000`,
 });
 
 const getDownRoomMessages = apiCall({

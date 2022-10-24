@@ -1,5 +1,6 @@
 import assets from "assets/assets";
-
+import {HomeWorkOutlined,ChatOutlined, AssignmentIndOutlined,
+  FolderOutlined} from '@material-ui/icons'
 export interface SingleConfig {
   title: string;
   icon: any;
@@ -15,26 +16,26 @@ export interface SidebarConfigInterface {
 const SidebarConfig: SidebarConfigInterface = {
   Dashboard: {
     title: "Dashboard",
-    icon: assets.sidebarDashboardIcon,
+    icon: <HomeWorkOutlined className="sideBar_icon"/>,
     path: "dashboard",
     notification: 0,
     active: true,
   },
   Chat: {
     title: "Chat",
-    icon: assets.sidebarChatIcon,
+    icon: <ChatOutlined className="sideBar_icon"/>,
     path: "chat",
     notification: 0,
   },
   Tasks: {
     title: "Tasks",
-    icon: assets.sidebarPaseIcon,
+    icon: <AssignmentIndOutlined className="sideBar_icon"/>,
     path: "tasks",
     notification: 0,
   },
   Projects: {
     title: "Projects",
-    icon: assets.sidebarFolderIcon,
+    icon: <FolderOutlined className="sideBar_icon"/>,
     path: "projects",
     notification: 0,
   },

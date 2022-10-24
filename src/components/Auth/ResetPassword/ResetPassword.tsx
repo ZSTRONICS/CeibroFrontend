@@ -25,9 +25,9 @@ const ResetPassword = () => {
     }
   }, [isLoggedIn]);
 
-  const handleClick = () => {
-    history.push("/login");
-  };
+  // const handleClick = () => {
+  //   history.push("/login");
+  // };
 
   return (
     <Grid container className={classes.register}>

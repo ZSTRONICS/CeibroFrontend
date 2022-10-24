@@ -33,7 +33,7 @@ const RegisterForm = () => {
       },
       success: (res: any) => {
         if (res) {
-          // history.push('/verify-email')
+          history.push('/verify-email')
         }
         action?.resetForm?.();
       },
@@ -48,8 +48,8 @@ const RegisterForm = () => {
     password: Yup.string()
       .required('Please enter your password')
       .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/,
-        'Password must contain at least 8 characters, one uppercase and one number'
+        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
+        'Password must contain at least 8 characters, one special character and one number'
       ),
     confirmPassword: Yup.string()
       .required('Please confirm your password')

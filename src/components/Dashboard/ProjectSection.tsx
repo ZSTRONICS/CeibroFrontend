@@ -53,7 +53,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
           style={styles.titleContainer}
         >
           <Typography className={classes.title} component="h1" variant="h5">
-            My project
+            My Project
           </Typography>
           <Button
             variant="contained"
@@ -62,7 +62,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
             style={styles.btn}
             onClick={openProjectDrawer}
           >
-            Create new
+            Create New
           </Button>
         </Grid>
         <Grid
@@ -84,7 +84,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
             style={styles.viewAll}
             className={classes.viewAll}
           >
-            View all
+            View All
           </Button>
         </Grid>
       </Grid>
@@ -97,8 +97,7 @@ export default ProjectSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    paddingTop: 30,
-    paddingBottom: 12,
+    padding: '30px 0 12px 10px',
   },
   title: {
     fontSize: 24,
@@ -137,7 +136,7 @@ const styles = {
     marginLeft: 10,
   },
   viewAll: {
-    fontSize: 9,
-    padding: 12,
+    fontSize: 10,
+    padding: 7,
   },
 };

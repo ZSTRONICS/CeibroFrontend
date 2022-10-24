@@ -105,7 +105,7 @@ const useStyles = makeStyles({
     background: colors.white,
   },
   iconWrapper: {
-    flex: 2,
+    flex: 1,
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",

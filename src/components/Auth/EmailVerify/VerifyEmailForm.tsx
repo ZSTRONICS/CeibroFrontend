@@ -1,8 +1,6 @@
 import {
   Typography,
   Button,
-  FormControlLabel,
-  Checkbox,
   CircularProgress,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -12,10 +10,8 @@ import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useIntl } from "react-intl";
-import { useDispatch, useSelector } from "react-redux";
-import { loginRequest, otpVerify } from "../../../redux/action/auth.action";
-import { RootState } from "../../../redux/reducers";
-import Loading from "../../Utills/Loader/Loading";
+import { useDispatch } from "react-redux";
+import {  otpVerify } from "../../../redux/action/auth.action";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
 
@@ -27,14 +23,9 @@ interface VerifyEmailForm {
 
 const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
   const classes = useStyles();
-  const { tokenLoading, showSuccess, showError } = props;
-
-  const { loginLoading, authErrorMessage, authSuccessMessage } = useSelector(
-    (state: RootState) => state.auth
-  );
+  const { showError } = props;
 
   const history = useHistory();
-  const [checked, setChecked] = useState(true);
   const intl = useIntl();
   const dispatch = useDispatch();
 
@@ -108,15 +99,9 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
             className={classes.loginButton}
             variant="contained"
             color="primary"
-            // disabled={loginLoading}
             disabled={isDiabled}
             onClick={handleSubmit}
           >
-            {/* {loginLoading ? (
-              <Loading type="spin" color="white" height={14} width={14} />
-            ) : (
-              intl.formatMessage({ id: "input.verify" })
-            )} */}
 
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
@@ -153,15 +138,6 @@ const useStyles = makeStyles({
       padding: "10 13%",
     },
   },
-  remember: {
-    marginTop: "35px !important",
-    fontSize: 14,
-    padding: 0,
-  },
-  rememberText: {
-    fontSize: 14,
-    fontWeight: 500,
-  },
   inputs: {
     marginTop: 40,
     height: 5,
@@ -170,12 +146,6 @@ const useStyles = makeStyles({
     height: 32,
     width: 21,
     fontSize: 14,
-  },
-  forget: {
-    marginTop: 5,
-    fontWeight: 500,
-    fontSize: 14,
-    paddingLeft: 30,
   },
   logoWrapper: {
     paddingTop: "2%",

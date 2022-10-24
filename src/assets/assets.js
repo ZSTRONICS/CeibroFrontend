@@ -55,7 +55,9 @@ import Add from "./images/Add.png";
 import message from "./sound/message.mp3";
 import blueSearch from "./images/blueSearch.png";
 import Defaulttask from "./images/Defaulttask.jpg";
+import InvitaionIcon from './images/Invitation.svg'
 const assets = {
+  InvitaionIcon,
   sidebarDashboardIcon,
   sidebarFolderIcon,
   sidebarChatIcon,
