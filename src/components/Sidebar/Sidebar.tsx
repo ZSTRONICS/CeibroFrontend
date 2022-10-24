@@ -22,7 +22,7 @@ function Sidebar() {
   const history = useHistory()
   const intl = useIntl()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
-  
+
   useEffect(() => {
     dispatch(getAllChats())
   }, [dispatch])
@@ -85,11 +85,11 @@ function Sidebar() {
             })}
         </div>
 
-        <div className={classes.help}>
+        {/* <div className={classes.help}>
           <div className={classes.helpInnerWrapper}></div>
           <img src={assets.questionMarkIcon} className={classes.helpIcon} alt={''} />
           <Typography className={classes.helpText}>Help</Typography>
-        </div>
+        </div> */}
       </div>
     </OutsideClickHandler>
   )
@@ -100,7 +100,7 @@ export default Sidebar
 const useStyles = makeStyles(theme => ({
   sidebarWrapper: {
     background: colors.white,
-    boxShadow: '-1px 0px 2px 0px',
+    boxShadow: '1px 0 4px -3px #888',
     width: 200,
     height: '100vh',
     position: 'absolute',
@@ -158,7 +158,7 @@ const useStyles = makeStyles(theme => ({
     color: `${colors.black} !important`,
   },
   help: {
-    height: '50px',
+    // height: '50px',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

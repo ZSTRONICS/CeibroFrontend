@@ -218,7 +218,7 @@ const useStyles = makeStyles({
   },
   dashboardTitle: {
     display: "flex",
-    paddingLeft: 33,
+    paddingLeft: 24,
     width: "100%",
     ["@media (max-width:960px)"]: {
       justifyContent: "space-between",

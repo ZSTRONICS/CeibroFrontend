@@ -54,7 +54,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           style={styles.titleContainer}
         >
           <Typography className={classes.myTask} component="h1" variant="h5">
-            My tasks
+            My Tasks
           </Typography>
           <Button
             onClick={openTaskDrawer}
@@ -63,7 +63,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
             size="small"
             style={styles.btn}
           >
-            Create new
+            Create New
           </Button>
         </Grid>
         <Grid
@@ -85,7 +85,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
             size="medium"
             style={styles.viewAll}
           >
-            View all
+            View All
           </Button>
         </Grid>
       </Grid>
@@ -98,8 +98,7 @@ export default TaskSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    paddingTop: 30,
-    paddingBottom: 12,
+    padding: '30px 0 12px 10px'
   },
   menuWrapper: {
     display: "flex",
@@ -140,7 +139,7 @@ const styles = {
     fontSize: 12,
   },
   viewAll: {
-    fontSize: 9,
-    padding: 12,
+    fontSize: 10,
+    padding: 7,
   },
 };

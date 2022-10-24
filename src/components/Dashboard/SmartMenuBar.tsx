@@ -42,12 +42,14 @@ const SmartMenuBar = () => {
       <Grid item xs={12} md={5} lg={4}>
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Typography className={classes.connectionTitle}>
+            <div className={classes.smartMenuIcon}>
             <img src={assets.contactIcon} className={classes.connectionIcon} />
+              </div>
             <span className="align-center">
               <span
                 className={`${classes.marginLeft} ${classes.myConnections}`}
               >
-                My connections
+                My Connections
               </span>
               <Badge badgeContent={connections} color="primary"></Badge>
             </span>
@@ -74,16 +76,16 @@ const SmartMenuBar = () => {
       >
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Typography className={classes.connectionTitle}>
-            {isTabletOrMobile && (
-              <MdInsertInvitation className={classes.inviteIcon} />
-            )}
+          <div className={classes.smartMenuIcon}>
+            <img src={assets.InvitaionIcon} className={classes.connectionIcon} />
+              </div>
             <span className="align-center">
               <span
-                className={`${classes.marginLeft} ${classes.invitationText}`}
+                className={`${classes.marginLeft} ${classes.myConnections}`}
               >
                 Invitations
               </span>
-              <Badge badgeContent={invites} color="error"></Badge>
+            { invites.length>0 && <Badge badgeContent={invites} color="error"></Badge>}
             </span>
           </Typography>
           <Button
@@ -111,6 +113,10 @@ const SmartMenuBar = () => {
 export default SmartMenuBar;
 
 const useStyles = makeStyles({
+  smartMenuIcon:{
+    width:'34px',
+    padding: '3px 5px 0px 4px'
+  },
   connectionWrapper: {
     background: colors.white,
     display: "flex",
@@ -127,12 +133,9 @@ const useStyles = makeStyles({
     paddingRight: 20,
   },
   myConnections: {
-    fontSize: 14,
-    fontWeight: 500,
-  },
-  invitationText: {
-    fontSize: 14,
-    fontWeight: 500,
+    fontSize: 16,
+    fontWeight: 600,
+    paddingLeft:'8px'
   },
   connectionTitle: {
     fontSize: 14,
@@ -141,9 +144,7 @@ const useStyles = makeStyles({
     alignItems: "center",
   },
   connectionIcon: {
-    width: 18,
-    color: colors.primary,
-    paddingRight: 10,
+    width: "100%",
   },
   inviteIcon: {
     fontSize: 18,
@@ -153,7 +154,6 @@ const useStyles = makeStyles({
   invitationOuterWrapper: {
     paddingLeft: 10,
     ["@media (max-width:960px)"]: {
-      // marginLeft: 0,
       padding: 0,
     },
   },

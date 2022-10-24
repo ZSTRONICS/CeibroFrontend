@@ -84,12 +84,11 @@ export default StatusMenu;
 
 const useStyles = makeStyles({
   statusChip: {
-    padding: "5px 20px",
-    // width: 100,
+    padding: "5px 15px",
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    // justifyContent: 'space-around',
+    marginRight:'5px',
     ["@media (max-width:960px)"]: {
       justifyContent: "space-between",
     },
