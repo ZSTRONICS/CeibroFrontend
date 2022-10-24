@@ -61,9 +61,10 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
         </Grid>
         <Grid container className={classes.secondSection}>
           <Grid item xs={5}>
-            <Typography className={classes.meta}>Task Due date</Typography>
+            <Typography className={classes.meta}>Task Due Date</Typography>
             <Typography className={classes.metaValue}>{dueDate}</Typography>
           </Grid>
+          
           <Grid
             item
             xs={7}
@@ -84,7 +85,9 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
                 badgeContent={`+${members - 1}`}
               ></Badge>
             )}
+          
           </Grid>
+       
         </Grid>
 
         <Grid item xs={12}>
@@ -160,12 +163,7 @@ const useStyles = makeStyles({
   status: {
     background: colors.darkYellow,
     borderRadius: 3,
-    paddingLeft: 5,
-    paddingRight: 10,
-    marginLeft: "-4px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
+    padding:'2px 5px',
   },
   statusText: {
     color: colors.white,
@@ -174,7 +172,7 @@ const useStyles = makeStyles({
   },
   statusDate: {
     color: colors.black,
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 10,
   },
   dateWrapper: {
@@ -194,11 +192,11 @@ const useStyles = makeStyles({
     color: colors.textGrey,
   },
   metaValue: {
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 12,
   },
   title: {
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 14,
     marginTop: 10,
     color: colors.textPrimary,
@@ -232,8 +230,9 @@ const useStyles = makeStyles({
     fontSize: 12,
   },
   iconText: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 500,
+    paddingLeft: '6px'
   },
   secondSection: {
     marginTop: 40,

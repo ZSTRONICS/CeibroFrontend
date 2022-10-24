@@ -238,6 +238,7 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     minHeight: 40,
     height: "20%",
+    paddingBottom: 10
   },
   iconChip: {
     display: "flex",
@@ -253,7 +254,7 @@ const useStyles = makeStyles({
   },
   iconText: {
     fontSize: 10,
-    fontWeight: 500,
+    fontWeight: 600,
     paddingLeft: 5,
   },
   extraOwners: {
