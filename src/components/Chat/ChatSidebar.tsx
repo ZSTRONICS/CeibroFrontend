@@ -102,21 +102,21 @@ const ChatSidebar = () => {
       <Grid item xs={12} className={classes.messageTypeWrapper}>
         {messageListType.map((chatType: any, index: number) => {
           return (
-            <>
-              {chatType?.icon && (
-                <img src={chatType.icon} className={`width-16`} style={{ height: 14 }} />
-              )}
+            // <>
               <Typography
                 onClick={() => handleMessageTypeClick(chatType, index)}
                 key={index}
-                className={`${classes.messageTypeText} ${
+                className={`${classes.messageTypeText} ${index < 2 && classes.borderRight} ${
                   filter === chatType.name ? classes.activeMessageType : ''
                 }`}
               >
+                 {chatType?.icon && (
+                <img src={chatType.icon} className={`width-16`} style={{ height: 14,paddingRight: 18 }} />
+              )}
                 {chatType.name}
               </Typography>
-              {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
-            </>
+              //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
+            // </>
           )
         })}
       </Grid>
@@ -130,6 +130,10 @@ const ChatSidebar = () => {
 export default ChatSidebar
 
 const useStyles = makeStyles({
+  borderRight:{
+    borderRight: '2px solid',
+    paddingRight: 23
+  },
   outerWrapper: {
     border: `0.5px solid ${colors.grey}`,
     borderTop: 'none',
@@ -186,9 +190,9 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
     cursor: 'pointer',
   },
-  messagetypeBreak: {
-    color: colors.mediumGrey,
-  },
+  // messagetypeBreak: {
+  //   color: colors.mediumGrey,
+  // },
   activeMessageType: {
     color: colors.black,
   },

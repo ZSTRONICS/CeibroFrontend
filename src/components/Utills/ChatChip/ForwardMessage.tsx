@@ -58,7 +58,7 @@ const ForwardMessage: React.FC<ForwardMessageInt> = (props) => {
                     {myChats?.map((room: any) => {
                         const check: any = selected.includes(room._id) || false;
                         return (
-                            <div className={classes.room}>
+                            <div className={classes.room} key={room._id}>
                                 <Checkbox checked={check} onClick={() => handleClick(room._id)} className={classes.check} />
                                 <Typography className={classes.name}>
                                     {room.name}

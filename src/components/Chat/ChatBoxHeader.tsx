@@ -20,6 +20,8 @@ import { editRoomName } from "redux/action/chat.action";
 import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
 import MessageSearch from "./MessageSearch";
+import assets from "assets/assets";
+
 interface ChatBoxHeaderProps {
   chat?: ChatListInterface
   enable: boolean
@@ -75,7 +77,11 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const handleCancel = () => {
     setEdit(false);
   };
-
+  const handleKeyDown= (e:any)=>{
+    if(e.keyCode == 13){
+      handleUpdate()
+    }
+  } 
   return (
     <Grid container className={classes.wrapper}>
       <AddChatMember />
@@ -88,24 +94,27 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       )}
       {myChat && (
         <>
-          <Grid item xs={3} md={1} className={classes.editWrapper}>
-            {!edit && (
-              <Create
+          <Grid item xs={1} md={1} className={classes.editWrapper}>
+            {!edit && (<>
+              {myChat?.project&& <assets.EditIcon
                 onClick={() => {
                   setEdit(true);
                   setName(myChat.name);
                 }}
                 className={classes.editIcon}
-              />
+              />}
+            
+            </>
             )}
           </Grid>
-          <Grid item xs={9} md={4} className={classes.usernameWrapper}>
+          <Grid item xs={9} md={2} className={classes.usernameWrapper}>
             {edit ? (
               <div className={`${classes.editInputWrapper} editInputWrapper`}>
                 <TextField
                   inputProps={{ maxLength: 20 }}
                   value={name}
                   onChange={handleNameChange}
+                   onkeyDown={handleKeyDown}
                 />
                 <IconButton size="small" onClick={handleCancel}>
                   <Clear className={classes.cancelIcon} />
@@ -137,12 +146,13 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               </>
             )}
           </Grid>
-          <Grid item xs={6} className={classes.moreWrapper}>
+          <Grid item xs={8} className={classes.moreWrapper}>
             <MessageSearch />
-          </Grid>
-          <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props?.enable} />
           </Grid>
+          {/* <Grid item xs={1} className={classes.moreWrapper}>
+            <ChatUserMenu enable={props?.enable} />
+          </Grid> */}
         </>
       )}
     </Grid>
@@ -153,6 +163,8 @@ export default ChatBoxHeader;
 
 const useStyles = makeStyles({
   wrapper: {
+    justifyContent:' space-between',
+    padding: '0 50px 0 0',
     borderBottom: `1px solid ${colors.grey}`,
     height: 40,
     ["@media (max-width:960px)"]: {
@@ -162,7 +174,7 @@ const useStyles = makeStyles({
   editIcon: {
     cursor: "pointer",
     color: colors.textPrimary,
-    fontSize: 14,
+    fontSize: '34px !important',
     borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
     padding: 6,
@@ -175,6 +187,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    // border: '1px solid #ecf0f1'
   },
   editInputWrapper: {
     marginTop: "auto",

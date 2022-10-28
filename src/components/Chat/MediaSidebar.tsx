@@ -1,6 +1,5 @@
 import { Badge } from "@material-ui/core";
 import { Image, Person, PersonOutlined } from "@material-ui/icons";
-import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import { makeStyles } from "@material-ui/styles";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -101,13 +100,16 @@ const MediaSidebar = () => {
         <button className="accordion" onClick={() => handleClick(1)}>
           <span className={classes.chatMembersWrapper}>
             <Badge
+            overlap='circle'
               badgeContent={selectedChatRoom?.members?.length}
               color="secondary"
               classes={{
                 badge: classes.font1,
               }}
             >
-              <img src={assets.usersIcon} />
+              <div  className={`${classes.addIconContainer}`}>
+              <img src={assets.usersIcon}  className={`${classes.IconSize}`} />
+              </div>
             </Badge>
             {sidebarOpen && (
               <span
@@ -116,21 +118,24 @@ const MediaSidebar = () => {
                 }`}
               >
                 Chat members
+                <div className={`${classes.addIconContainerSide}`}>
                 <img
                   src={assets.Add}
                   onClick={handleAddMember}
                   className={`${classes.addIcon}`}
                 />
+                </div>
               </span>
             )}
           </span>
-          {sidebarOpen && <KeyboardArrowDown />}
+          {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {openIndex === 1 && <ChatMembers />}
 
         <button className="accordion" onClick={() => handleClick(2)}>
           <span>
             <Badge
+            overlap='circle'
               badgeContent={pinnedMessages?.length}
               color="secondary"
               classes={{
@@ -145,33 +150,35 @@ const MediaSidebar = () => {
               <span className="accordion-title">Pinned messages</span>
             )}
           </span>
-          {sidebarOpen && <KeyboardArrowDown />}
+          {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {openIndex === 2 && <ChatPinned />}
 
         <button className="accordion" onClick={() => handleClick(3)}>
           <span className={"chat-room-media"}>
-            <Badge badgeContent={chatMedia?.length} color="secondary">
+            <Badge
+            overlap='circle' badgeContent={chatMedia?.length} color="secondary">
               <img src={assets.mediaIcon} />
             </Badge>
             {sidebarOpen && (
               <span className="accordion-title">Media & Files</span>
             )}
           </span>
-          {sidebarOpen && <KeyboardArrowDown />}
+          {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {openIndex === 3 && <ChatMedia media={chatMedia} />}
 
         <button className="accordion" onClick={() => handleClick(4)}>
           <span>
-            <Badge badgeContent={roomQuestioniars?.length} color="secondary">
+            <Badge
+            overlap='circle' badgeContent={roomQuestioniars?.length} color="secondary">
               <img src={assets.documentIcon} />
             </Badge>
             {sidebarOpen && (
               <span className="accordion-title">Questioniar</span>
             )}
           </span>
-          {sidebarOpen && <KeyboardArrowDown />}
+          {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {openIndex === 4 && <ChatQuestioniar />}
       </div>
@@ -194,15 +201,26 @@ const useStyles = makeStyles({
   font1: {
     fontSize: "0.5rem",
   },
+  addIconContainer:{
+    width: 18,
+    marginLeft: '0px'
+  },
+  addIconContainerSide:{
+    width: 18,
+    marginLeft: '5px'
+  },
   addIcon: {
     border: `2px solid ${colors.primary}`,
     padding: 2,
-    width: 10,
-    height: 10,
+    width: '100%'
+  },
+  IconSize: {
+    padding: 2,
+    width: '100%'
   },
   chatMembersWrapper: {
     display: "flex",
-    width: "100%",
+    // width: "100%",
   },
   chatMembers: {
     display: "flex",

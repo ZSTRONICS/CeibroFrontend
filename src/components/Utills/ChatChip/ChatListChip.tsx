@@ -11,10 +11,11 @@ import { BsDot } from 'react-icons/bs'
 import colors from '../../../assets/colors'
 import NameAvatar from '../Others/NameAvatar'
 import ChatListMenu from './ChatListMenu'
-import { ChatListInterface } from '../../../constants/interfaces/chat.interface'
+import { ChatListInterface, ChatMembers, ChatMessageInterface } from '../../../constants/interfaces/chat.interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../redux/reducers'
 import { addToFavourite, getAllChats } from '../../../redux/action/chat.action'
+import { ProjectInterface } from "constants/interfaces/project.interface";
 
 interface ChatListInterfaceProps {
   chat: ChatListInterface
@@ -25,11 +26,24 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
   const classes = useStyles()
 
   const { chat } = props
-  const { username = 'Qasim', name, lastMessage, unreadCount, lastMessageTime, project } = chat
+  const { username = 'Qasim', name, lastMessage, unreadCount, lastMessageTime, project} = chat
   const { user } = useSelector((state: RootState) => state.auth)
   const selectedChat = useSelector((state: RootState) => state.chat.selectedChat)
+  const { projects } = useSelector((state: RootState) => state.project);
 
   const dispatch = useDispatch()
+  let avaterInfo:any ={}
+
+
+  const chatMemberInit = chat.isGroupChat === false && chat.members.filter(item=> item.id !==user.id).map((item:any)=>{
+      avaterInfo.firstName= item.firstName,
+      avaterInfo.surName= item.surName,
+      avaterInfo.picUrl= item.profilePic
+  })
+
+  const individualFirstName = avaterInfo.firstName
+  const individualSurName = avaterInfo.surName
+  const individualPicUrl = avaterInfo.picUrl
 
   const handleClick = () => {
     props.handleClick?.(chat)
@@ -40,7 +54,6 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
       backgroundColor: String(selectedChat) === String(chat._id) ? colors.lightGrey : colors.white,
     }
   }
-
   const handleFavouriteClick = (e: any) => {
     e.stopPropagation()
     dispatch(
@@ -54,19 +67,26 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
   }
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id)
-
   return (
     <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()}>
       <Grid container>
-        <Grid item xs={1} className={classes.bookMarkWrapper}>
+        {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
           {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
-        </Grid>
+        </Grid> */}
         <Grid item xs={2} className={classes.avatarWrapper}>
+         {chatMemberInit?(
+          <NameAvatar background="white" firstName={individualFirstName} surName={individualSurName} url={individualPicUrl}/>
+         ):(
           <NameAvatar background="white" firstName={name} />
+         ) 
+          }
         </Grid>
 
         <Grid item xs={6} className={classes.messageDetailWrapper}>
-          <Typography className={classes.userName}>{name}</Typography>
+        {chat.isGroupChat? 
+         <Typography className={classes.userName}>{name}</Typography> :
+         <Typography className={classes.userName}>{`${individualFirstName} ${individualSurName}`}</Typography>
+         }
           {unreadCount && unreadCount > 0 && (
             <Typography className={classes.message}>
               {lastMessage?.message?.substr(0, 22)}
@@ -84,7 +104,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
           </div>
           <div className={classes.timeWrapper}>
             {unreadCount && unreadCount > 0 && (
-              <Badge badgeContent={unreadCount} color="error"></Badge>
+              <Badge overlap='circle' badgeContent={unreadCount} color="error"></Badge>
             )}
             <Typography className={classes.time}>{lastMessageTime}</Typography>
           </div>
@@ -95,9 +115,9 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item xs={3}></Grid>
-        <Grid item xs={6} style={{ paddingLeft: 10 }}>
-          {project?.title && (
+        <Grid item xs={2}></Grid>
+        <Grid item xs={6} style={{ paddingLeft: 6 }}>
+          {project?.title&& (
             <Typography className={classes.chatProject}>
               <span>Project: &nbsp;&nbsp;</span>
               <span className={classes.chatProjectName}>{project.title}</span>
@@ -118,12 +138,12 @@ const useStyles = makeStyles({
     border: `0.5px solid ${colors.grey}`,
     cursor: 'pointer',
   },
-  bookMarkWrapper: {
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-  },
+  // bookMarkWrapper: {
+  //   padding: 0,
+  //   display: 'flex',
+  //   flexDirection: 'column',
+  //   alignItems: 'center',
+  // },
   dot: {
     marginTop: 15,
     width: 8,
@@ -149,6 +169,7 @@ const useStyles = makeStyles({
   userName: {
     fontSize: 14,
     fontWeight: 500,
+    paddingTop: 5
   },
   message: {
     fontSize: 12,

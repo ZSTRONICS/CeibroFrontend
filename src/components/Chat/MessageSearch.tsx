@@ -1,4 +1,4 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import * as React from "react";
 import colors from "../../assets/colors";
@@ -12,10 +12,11 @@ import assets from "assets/assets";
 
 interface IAppProps {}
 
-const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
+const MessageSearch: React.FC<IAppProps> = (props) => {
   const classes = useStyles();
   const { selectedChat } = useSelector((state: RootState) => state.chat);
   const [search, setSearch] = React.useState("");
+  const [show, setShow] = React.useState(false);
   const dispatch = useDispatch();
 
   const handleSearchChange = _.debounce((e: any) => {
@@ -43,26 +44,40 @@ const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
     );
   }, 300);
 
+const showHandler=()=>{
+  setShow((prev)=>!prev)
+}
+const handleCancel=()=>{
+  setShow((prev)=>!prev)
+}
+
   return (
     <div className={classes.wrapper}>
-      <img src={assets.blueSearch} className="w-16" />
+      <div className={classes.searchIconContainer} onClick={showHandler}>
+      <assets.SearchOutlinedIcon  className={classes.searchIcon}/>
+      </div>
+     {show&& <>
       <div className={classes.iconWrapper}>
-        <Search />
-        <Typography className={classes.horizontalBreak}>|</Typography>
       </div>
       <div className={classes.inputWrapper}>
         <input
           type="text"
           className={`emptyBorder ${classes.input}`}
-          placeholder="Chat search"
+          placeholder="Enter Chat search"
           onChange={handleSearchChange}
         />
       </div>
-      <div className={classes.btnWrapper}>
-        <select className={classes.categories}>
-          <option>All Categories</option>
-        </select>
-      </div>
+      <Grid container className={classes.btnWrapper}>
+        <Grid item className={classes.filterWrapper} >
+        <img src={assets.filterIcon} className= {classes.filterIco} />
+        </Grid>
+        <Grid item >
+        <Button variant="outlined" onClick={handleCancel}>
+              Cancel
+            </Button>
+        </Grid>
+        </Grid>
+      </>}
     </div>
   );
 };
@@ -70,6 +85,22 @@ const MessageSearch: React.FunctionComponent<IAppProps> = (props) => {
 export default MessageSearch;
 
 const useStyles = makeStyles({
+
+  filterIco:{
+width: '100%'
+  },
+
+  searchIconContainer:{
+    display: 'flex',
+    alignItems: 'center',
+  },
+  searchIcon:{
+fontSize:'30px !important',
+color: colors.textPrimary,
+'&:hover':{
+  cursor: 'pointer'
+}
+  },
   wrapper: {
     display: "flex",
     flex: 1,
@@ -77,22 +108,21 @@ const useStyles = makeStyles({
     background: colors.white,
   },
   iconWrapper: {
-    flex: 1,
+    // flex: 1,
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
-    paddingLeft: 2,
-    border: `0.2px solid ${colors.inputGrey}`,
-    borderTopLeftRadius: 7,
-    borderBottomLeftRadius: 7,
-    borderRight: "none",
+    paddingRight: 7,
+    marginRight: 10,
+    borderRight:'1px solid #ecf0f1',
+
   },
   horizontalBreak: {
     color: colors.mediumGrey,
   },
   inputWrapper: {
     flex: 4,
-    border: `0.2px solid ${colors.inputGrey}`,
+    // border: `0.2px solid ${colors.inputGrey}`,
     // borderTopLeftRadius: 7,
     // borderBottomLeftRadius: 7,
     borderRight: "none",
@@ -105,8 +135,16 @@ const useStyles = makeStyles({
     width: "100%",
   },
   btnWrapper: {
-    flex: 3,
-    display: "flex",
+    flex: 1,
+    alignItems: 'center',
+    borderLeft:  '1px solid #ecf0f1',
+    padding: '2px 2px',
+    justifyContent:'space-between',
+  },
+  filterWrapper:{
+    padding: '0 10px',
+    display: 'flex',
+    width: '42px',
   },
   btn: {
     flex: 1,
@@ -121,13 +159,13 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: "bold",
   },
-  categories: {
-    border: `0.2px solid ${colors.inputGrey}`,
-    borderTopRightRadius: 7,
-    borderBottomRightRadius: 7,
-    background: colors.white,
-    "&:focus": {
-      outline: "none",
-    },
-  },
+  // categories: {
+  //   border: `0.2px solid ${colors.inputGrey}`,
+  //   borderTopRightRadius: 7,
+  //   borderBottomRightRadius: 7,
+  //   background: colors.white,
+  //   "&:focus": {
+  //     outline: "none",
+  //   },
+  // },
 });

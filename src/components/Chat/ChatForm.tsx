@@ -41,11 +41,10 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
   const [files, setFiles] = useState<any>()
   const [showRecorder, setShowRecorder] = useState<boolean>(false)
   const [filesPreview, setFilesPreview] = useState<any>([])
-
   useEffect(() => {
     setFiles(null)
     setFilesPreview(null)
-    setText('')
+    setText(' ')
   }, [selectedChat])
 
   const onEmojiClick = (e: any, emojiObj: any) => {
@@ -337,7 +336,7 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
             className={`width-16 pointer`}
           />
 
-          <label className="custom-file-upload">
+          {/* <label className="custom-file-upload">
             <img src={assets.camera} className={`width-16 pointer`} />
             <input
               type="file"
@@ -346,7 +345,7 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
               multiple={true}
               disabled={!enable}
             />
-          </label>
+          </label> */}
           <Typography className={classes.gapLine}>|</Typography>
           <img src={assets.primaryNudgeIcon} className="pointer" style={{ height: 18 }} />
           <Typography className={classes.gapLine}>|</Typography>

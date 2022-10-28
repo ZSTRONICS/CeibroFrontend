@@ -40,11 +40,11 @@ const ProfileBtn = () => {
 
   useEffect(() => {
     dispatch(getMyInvitesCount());
-  }, []);
-
-  useEffect(() => {
     dispatch(getMyConnectionsCount());
   }, []);
+
+  // useEffect(() => {
+  // }, []);
 
   const history = useHistory();
 

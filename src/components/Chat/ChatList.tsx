@@ -13,6 +13,11 @@ const ChatList = () => {
     (state: RootState) => state.chat
   );
 
+//   const members = selectedChat
+//   ? chat.find((room: any) => String(room._id) == String(selectedChat))
+//       ?.members
+//   : [];
+
   useEffect(() => {
     dispatch(
       getAllChats({

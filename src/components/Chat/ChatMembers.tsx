@@ -1,17 +1,22 @@
-import { Grid, IconButton, Typography } from "@material-ui/core";
-import { useDispatch, useSelector } from "react-redux";
-import assets from "../../assets/assets";
-import { RootState } from "../../redux/reducers";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import { useConfirm } from "material-ui-confirm";
-import { addMemberToChat, getAllChats } from "../../redux/action/chat.action";
-import { toast } from "react-toastify";
-import { UserInterface } from "constants/interfaces/user.interface";
-import ChatMemberSearch from "./ChatMemberSearch";
 import { useState } from "react";
-import { makeStyles } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useConfirm } from "material-ui-confirm";
+import { Grid, IconButton, Typography  } from '@material-ui/core'
+// redux-imports
+import { addMemberToChat, getAllChats } from "../../redux/action/chat.action";
+import { RootState } from "../../redux/reducers";
+// components
+import { UserInterface } from "constants/interfaces/user.interface";
+import assets from 'assets/assets'
+import useStyles from "./styles";
+import ChatMemberSearch from "./ChatMemberSearch";
+import ChatMemberFilters from "./ChatMemberFilters";
+import NameAvatar from 'components/Utills/Others/NameAvatar'
+import RollOver from "components/RollOver/RollOver";
 
 const ChatMembers = () => {
+  const classes = useStyles();
   const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
   const members = selectedChat
     ? chat.find((room: any) => String(room._id) == String(selectedChat))
@@ -20,7 +25,19 @@ const ChatMembers = () => {
   const [searchText, setSearchText] = useState("");
   const confirm = useConfirm();
   const dispatch = useDispatch();
-  const classes = useStyles();
+
+  const [btnIndex, setBtnIndex] = useState(null);
+  const [show, setShow] = useState(false);
+
+  const handleToggle = (e: any, i: any) => {
+    e.stopPropagation();
+    setBtnIndex(i);
+  };
+  const handleMembersShow = (e: any) => {
+    e.stopPropagation();
+    setShow((prev)=> !prev)
+  };
+
   const handleClick = (userId: any) => {
     confirm({ description: "User will be removed from this chat" }).then(() => {
       dispatch(
@@ -54,40 +71,79 @@ const ChatMembers = () => {
 
   return (
     <div className="chat-members">
+      <ChatMemberFilters handleMembersShow={handleMembersShow} show={show}/>
       <ChatMemberSearch value={searchText} handleChange={handleSearchChange} />
-      {myMembers?.map?.((member: UserInterface) => {
+      {myMembers?.map?.((member: UserInterface, i: any) => {
         return (
           <Grid key={member.id} container className="chat-member-chip">
             <Grid item xs={2} style={{ paddingTop: 5 }}>
               <NameAvatar
+                // styleAvater={}
                 firstName={member?.firstName}
                 surName={member?.surName}
                 url={member?.profilePic}
                 variant="small"
               />
             </Grid>
-            <Grid
-              item
-              xs={8}
-              style={{ padding: 2, display: "flex", flexDirection: "column" }}
-            >
+            <Grid item xs={8} className={classes.memberPreview}>
               <Typography className={`chat-member-name ${classes.memberName}`}>
                 {member.firstName} {member.surName}
               </Typography>
-              <Typography
-                className={`${classes.memberCompany} chat-member-company`}
-              >
-                Company: {member.companyName}
-              </Typography>
+              {member.companyName && (
+                <Typography
+                  className={`${classes.memberCompany} chat-member-company`}
+                >
+                  Company: {member.companyName}
+                </Typography>
+              )}
             </Grid>
             <Grid item xs={2} style={styles.trashWrapper}>
-              <IconButton onClick={() => handleClick(member.id)}>
-                <img
-                  className="w-16"
-                  src={assets.trashIcon}
-                  style={styles.trashImage}
-                />
+              <IconButton onClick={(e) => handleToggle(e, i)} tabIndex={i}>
+                <img src={assets.moreIcon} className={classes.moreIcon} />
               </IconButton>
+              {btnIndex === i && (
+                <RollOver handleToggle={ handleToggle}>
+                  <div
+                    className={`${classes.menuWrapper} dropdown-menu pointer`}
+                  >
+                    <img src={assets.usersIcon} className="width-16" />
+                    <Typography className={`${classes.menuText} align-center`}>
+                      View profile
+                    </Typography>
+                  </div>
+                  <div
+                    className={`${classes.menuWrapper} dropdown-menu pointer`}
+                  >
+                    <img src={assets.chatIcon} className="width-16" />
+                    <Typography className={`${classes.menuText} align-center`}>
+                      Go to chat
+                    </Typography>
+                  </div>
+                  {/* make adming and remove admin */}
+                  <div
+                    className={`${classes.menuWrapper} dropdown-menu pointer`}
+                  >
+                    <assets.SupervisorAccountOutlinedIcon className="width-16" />
+                    <Typography className={`${classes.menuText} align-center`}>
+                      Remove admin
+                    </Typography>
+                  </div>
+                  <hr className={classes.break} />
+                  <div
+                    className={`${`${classes.menuWrapper} dropdown-menu`} ${
+                      classes.deleteConversation
+                    }`}
+                    // onClick={handleDeleteClick}
+                  >
+                    <img src={assets.trashIcon} className={`width-16`} />
+                    <Typography
+                      className={`${classes.menuText} align-center ${classes.deleteText}`}
+                    >
+                      Delete from chat
+                    </Typography>
+                  </div>
+                </RollOver>
+              )}
             </Grid>
           </Grid>
         );
@@ -95,8 +151,6 @@ const ChatMembers = () => {
     </div>
   );
 };
-
-export default ChatMembers;
 
 const styles = {
   trashWrapper: {
@@ -108,14 +162,4 @@ const styles = {
     cursor: "pointer",
   },
 };
-
-const useStyles = makeStyles({
-  memberName: {
-    fontSize: 14,
-    fontWeight: 700,
-  },
-  memberCompany: {
-    fontSize: 12,
-    fontWeight: 500,
-  },
-});
+export default ChatMembers;

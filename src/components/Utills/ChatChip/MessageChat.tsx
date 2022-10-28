@@ -52,15 +52,15 @@ const MessageChat: React.FC<MessageChatProps> = props => {
     title,
     readBy,
   } = message
+  
   const { loadingMessages } = useSelector((root: RootState) => root.chat)
   const classes = useStyles()
   const { user } = useSelector((state: RootState) => state.auth)
-  const { messages, selectedChat } = useSelector((state: RootState) => state.chat)
+  const { messages, selectedChat,chat } = useSelector((state: RootState) => state.chat)
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const dispatch = useDispatch()
   const [view, setView] = useState(false)
   const bodyRef = useRef(null)
-
   const toggleView = () => {
     setView(!view)
   }
@@ -71,7 +71,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
         message.type === 'questioniar'
           ? colors.questioniarPrimary
           : myMessage
-          ? colors.grey
+          ? colors.lightGrey
           : colors.white,
       boxShadow: 'none',
     }
@@ -189,7 +189,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
       {message.id && loadingMessages?.includes?.(message.id) && (
         <ClipLoader color={colors.textGrey} size={6} />
       )}
-      <Grid item xs={9} onClick={handleClick}>
+      <Grid item xs={6} onClick={handleClick}>
         <div className={classes.innerWrapper} style={getStyles()}>
           {type === 'questioniar' && (
             <div className={classes.questioniarWrapper}>
@@ -205,14 +205,14 @@ const MessageChat: React.FC<MessageChatProps> = props => {
             </Grid>
           )}
           <Grid container ref={bodyRef}>
-            <Grid item xs={3} md={1}>
+            <Grid item xs={3} md={1} >
               <NameAvatar
                 firstName={sender?.firstName || ''}
                 surName={sender?.surName}
                 url={sender?.profilePic}
               />
             </Grid>
-            <Grid item xs={9} md={11}>
+            <Grid item xs={9} md={11} className={classes.sideName}>
               <div className={classes.titleWrapper}>
                 <div className={classes.usernameWrapper}>
                   <div className={classes.nameWrapper}>
@@ -223,6 +223,9 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                   </div>
                   {!isTabletOrMobile && type !== 'questioniar' && (
                     <div className={classes.quickReplyWrapper}>
+                     {sender?.id === user.id ? 
+                     <></>
+                    : <>
                       <button
                         className={classes.quickBtn}
                         style={getQuickBtnStyles()}
@@ -244,6 +247,8 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                       >
                         Done
                       </button>
+                      </>
+                    }
                     </div>
                   )}
                 </div>
@@ -268,9 +273,9 @@ const MessageChat: React.FC<MessageChatProps> = props => {
             {files && files.length > 0 && (
               <Grid item xs={10} className={classes.filesWrapper}>
                 <Grid container>
-                  {files?.map?.((file: any) => {
+                  {files?.map?.((file: any,i:any) => {
                     return (
-                      <Grid item xs={2} className={` ${classes.imageWrapper}`}>
+                      <Grid key={i} item xs={2} className={` ${classes.imageWrapper}`}>
                         <FilePreviewer file={file} showControls={false} />
                       </Grid>
                     )
@@ -289,7 +294,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                       paddingTop: 17,
                       gap: 4,
                       display: 'flex',
-                      alignItems: 'flex-start',
+                      alignItems: 'flex-end',
                     }}
                     className={classes.imageWrapper}
                   >
@@ -309,9 +314,9 @@ const MessageChat: React.FC<MessageChatProps> = props => {
         </div>
         <div className={classes.seenWrapper}>
           <div className={classes.seenByWrapper}>
-            {readBy?.map((user: UserInterface) => {
+            {readBy?.map((user: UserInterface,i:any) => {
               return (
-                <SeenBy url={user?.profilePic} firstName={user.firstName} surName={user.surName} />
+                <SeenBy key={i} url={user?.profilePic} firstName={user.firstName} surName={user.surName} />
               )
             })}
           </div>
@@ -339,6 +344,9 @@ const MessageChat: React.FC<MessageChatProps> = props => {
 export default MessageChat
 
 const useStyles = makeStyles({
+  sideName:{
+    paddingLeft: 15
+  },
   outerWrapper: {
     padding: 15,
   },
@@ -366,7 +374,7 @@ const useStyles = makeStyles({
   },
   innerWrapper: {
     border: `1px solid ${colors.grey}`,
-    padding: 8,
+    padding: '8px 8px 4px',
     background: colors.white,
     boxShadow: `0px 0px 15px rgba(0, 0, 0, 0.1)`,
     borderRadius: 4,
@@ -403,6 +411,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     color: colors.black,
+    padding: '10px 0px 0px 3px',
   },
   iconsWrapper: {
     display: 'flex',
@@ -422,6 +431,7 @@ const useStyles = makeStyles({
   seenWrapper: {
     display: 'flex',
     justifyContent: 'flex-end',
+    alignItems: 'flex-end'
   },
   visibility: {
     fontSize: 12,
@@ -432,7 +442,7 @@ const useStyles = makeStyles({
     paddingLeft: 10,
     display: 'flex',
     gap: 10,
-    marginTop: 20,
+    margin: '10px 0',
     border: '1px solid #dfdede',
     padding: 10,
   },
@@ -462,6 +472,7 @@ const useStyles = makeStyles({
   },
   nameWrapper: {
     display: 'flex',
+    alignItems: 'flex-end'
   },
   quickBtn: {
     background: colors.white,
@@ -479,14 +490,5 @@ const useStyles = makeStyles({
     display: 'flex',
     gap: 10,
     marginTop: 4,
-  },
-  seenAvatar: {
-    width: 16,
-    height: 16,
-  },
-  seenChip: {
-    width: '100%',
-    height: '100%',
-    borderRadius: 4,
   },
 })

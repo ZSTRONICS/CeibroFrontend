@@ -32,7 +32,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
       </Grid>
       <Grid item xs={12} className={classes.viewInvitation}>
         <Typography className={classes.invitationText}>
-          Invitations
+          Invitations 
           <Badge badgeContent={invites} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />

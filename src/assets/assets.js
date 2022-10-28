@@ -55,8 +55,20 @@ import Add from "./images/Add.png";
 import message from "./sound/message.mp3";
 import blueSearch from "./images/blueSearch.png";
 import Defaulttask from "./images/Defaulttask.jpg";
-import InvitaionIcon from './images/Invitation.svg'
+import InvitaionIcon from './images/Invitation.svg';
+import filterIcon from './images/filterIcon.svg'
+// material-imports-icon
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+import EditIcon from '@mui/icons-material/Edit';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+
 const assets = {
+  KeyboardArrowDown,
+  SearchOutlinedIcon,
+  EditIcon,
+  SupervisorAccountOutlinedIcon,
+  filterIcon,
   InvitaionIcon,
   sidebarDashboardIcon,
   sidebarFolderIcon,

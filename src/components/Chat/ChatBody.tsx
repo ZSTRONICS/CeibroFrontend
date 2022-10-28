@@ -28,6 +28,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
   const selectedChat = useSelector(
     (store: RootState) => store.chat.selectedChat
   );
+
   const viewport = useSelector((store: RootState) => store.chat.viewport);
   const { blockPagination, allowChangeBlock, blockDown } = useSelector(
     (store: RootState) => store.chat
@@ -42,6 +43,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
       const payload = {
         other: {
           roomId: selectedChat,
+          limit: 101,
         },
       };
       dispatch(getRoomMessages(payload));

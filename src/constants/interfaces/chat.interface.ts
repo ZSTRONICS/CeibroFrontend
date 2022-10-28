@@ -1,4 +1,19 @@
 import { UserInterface } from "./user.interface";
+export interface ChatMembers{  
+   role:string
+   isEmailVerified: boolean
+   pinnedMessages: string[]
+   pinnedChat: string[]
+   mutedChat: string[]
+   isOnline: boolean
+   firstName:string
+   surName:string
+   username:string
+   email:string
+   socketId:string
+   lockedUntil:Date
+   id:string
+}
 
 export interface ChatListInterface {
   bookmarked: boolean;
@@ -11,6 +26,9 @@ export interface ChatListInterface {
   project?: any;
   mutedBy?: any;
   pinnedBy?: any;
+  isGroupChat: boolean;
+  initiator:string
+  members:ChatMembers[]
 }
 
 export interface ChatMessageInterface {

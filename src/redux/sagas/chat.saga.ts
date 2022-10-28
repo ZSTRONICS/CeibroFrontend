@@ -102,6 +102,9 @@ const getRoomMessages = apiCall({
     if (payload?.other?.messageId) {
       url = url + `?messageId=${payload?.other?.messageId}`;
     }
+    if (payload?.other?.limit) {
+      url = url + `?limit=${payload?.other?.limit}`;
+    }
     return url;
   },
 });
@@ -109,10 +112,15 @@ const getRoomMessages = apiCall({
 const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
-  path: (payload: any) =>
-    "/chat/room/messages/" +
-    payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}&limit=1000`,
+  path: (payload: any) => 
+     `/chat/room/messages/${payload.other.roomId }?limit=99`
+    // if (payload?.other.lastMessageId){
+    //   pathStr += `?lastMessageId=${payload?.other.lastMessageId}&limit=99`;
+    // }else{
+    //   pathStr += '&limit=99';
+    // }
+    // return pathStr;
+  
 });
 
 const getDownRoomMessages = apiCall({

@@ -74,11 +74,13 @@ interface ChatReducerInt {
   roomQuestioniars: any
   createQuestioniarLoading: boolean
   blockDown: boolean
+  isGroupCha:boolean
 }
 
 const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
+  isGroupCha:false,
   selectedChat: null,
   createChatLoading: false,
   type: 'all',
