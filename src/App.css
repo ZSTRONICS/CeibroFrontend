@@ -22,6 +22,9 @@ iframe
     display: none !important;
 }
 
+.Custompopover > div{
+  margin-top: 30px;
+}
 .MuiTableCell-body {
   color: black !important;
 }

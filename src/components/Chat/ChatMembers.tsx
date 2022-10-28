@@ -108,7 +108,7 @@ const ChatMembers = () => {
                   >
                     <img src={assets.usersIcon} className="width-16" />
                     <Typography className={`${classes.menuText} align-center`}>
-                      View profile
+                      View Profile
                     </Typography>
                   </div>
                   <div
@@ -116,7 +116,7 @@ const ChatMembers = () => {
                   >
                     <img src={assets.chatIcon} className="width-16" />
                     <Typography className={`${classes.menuText} align-center`}>
-                      Go to chat
+                      Start Chat
                     </Typography>
                   </div>
                   {/* make adming and remove admin */}
@@ -125,7 +125,7 @@ const ChatMembers = () => {
                   >
                     <assets.SupervisorAccountOutlinedIcon className="width-16" />
                     <Typography className={`${classes.menuText} align-center`}>
-                      Remove admin
+                      Remove Admin
                     </Typography>
                   </div>
                   <hr className={classes.break} />
@@ -135,11 +135,11 @@ const ChatMembers = () => {
                     }`}
                     // onClick={handleDeleteClick}
                   >
-                    <img src={assets.trashIcon} className={`width-16`} />
+                    <img src={assets.DeleteIcon} className={`width-16`} />
                     <Typography
                       className={`${classes.menuText} align-center ${classes.deleteText}`}
                     >
-                      Delete from chat
+                      Delete Member
                     </Typography>
                   </div>
                 </RollOver>

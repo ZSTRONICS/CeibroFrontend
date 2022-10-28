@@ -5,13 +5,13 @@ import { makeStyles } from "@material-ui/core";
 const RollOver = (props: any) => {
   const classes = useStyles();
   return (
-    <>
+    <div className={props.customStyle}>
       <OutsideClickHandler onOutsideClick={props.handleToggle}>
         <div className={`dropdown-content ${classes.dropdownContent}`}>
           {props.children}
         </div>
       </OutsideClickHandler>
-    </>
+    </div>
   );
 };
 export default RollOver;
