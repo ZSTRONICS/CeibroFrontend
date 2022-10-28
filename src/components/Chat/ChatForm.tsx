@@ -322,7 +322,7 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
         <Grid item xs={12} className={classes.btnWrapper}>
           <img src={assets.emoji} onClick={toggleEmoji} className={'width-16 pointer'} />
 
-          <label className="custom-file-upload">
+          <label className={classes.customFileUpload}>
             <img src={assets.clip} className="width-16 pointer" />
             <input disabled={!enable} type="file" onChange={handleFileChange} multiple={true} />
           </label>
@@ -371,6 +371,9 @@ const ChatForm: React.FC<ChatFormInterface> = props => {
 export default ChatForm
 
 const useStyles = makeStyles({
+  customFileUpload:{
+    paddingTop: '6px'
+  },
   replyTitle: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -443,6 +446,7 @@ const useStyles = makeStyles({
     display: 'flex',
     paddingLeft: 20,
     paddingTop: 10,
+    alignItems:'center',
     gap: 28,
     '@media (max-width:960px)': {
       gap: 12,

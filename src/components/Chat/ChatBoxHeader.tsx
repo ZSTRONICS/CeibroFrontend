@@ -23,8 +23,8 @@ import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
 
 interface ChatBoxHeaderProps {
-  chat?: ChatListInterface
-  enable: boolean
+  chat?: ChatListInterface;
+  enable: boolean;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -77,11 +77,12 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const handleCancel = () => {
     setEdit(false);
   };
-  const handleKeyDown= (e:any)=>{
-    if(e.keyCode == 13){
-      handleUpdate()
+  const handleKeyDown = (e: any) => {
+    if (e.keyCode == 13) {
+      handleUpdate();
     }
-  } 
+  };
+
   return (
     <Grid container className={classes.wrapper}>
       <AddChatMember />
@@ -94,27 +95,30 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       )}
       {myChat && (
         <>
-          <Grid item xs={1} md={1} className={classes.editWrapper}>
-            {!edit && (<>
-              {myChat?.project&& <assets.EditIcon
-                onClick={() => {
-                  setEdit(true);
-                  setName(myChat.name);
-                }}
-                className={classes.editIcon}
-              />}
-            
-            </>
+          <Grid item xs={6} md={2} className={classes.editWrapper}>
+            {!edit && (
+              <>
+                {myChat?.project && (
+                  <div className={classes.iconContainer}>
+                    <img
+                      src={assets.EditIcon}
+                      onClick={() => {
+                        setEdit(true);
+                        setName(myChat.name);
+                      }}
+                      className={classes.editIcon}
+                    />
+                  </div>
+                )}
+              </>
             )}
-          </Grid>
-          <Grid item xs={9} md={2} className={classes.usernameWrapper}>
             {edit ? (
               <div className={`${classes.editInputWrapper} editInputWrapper`}>
                 <TextField
                   inputProps={{ maxLength: 20 }}
                   value={name}
                   onChange={handleNameChange}
-                   onkeyDown={handleKeyDown}
+                  onkeyDown={handleKeyDown}
                 />
                 <IconButton size="small" onClick={handleCancel}>
                   <Clear className={classes.cancelIcon} />
@@ -131,18 +135,20 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               </div>
             ) : (
               <>
-                <Typography className={classes.username}>
-                  {myChat?.name}
-                </Typography>
-                {myChat?.project && (
-                  <Typography className={classes.projectName}>
-                    Project:{" "}
-                    <span className={classes.projectTitle}>
-                      {" "}
-                      {myChat?.project?.title}{" "}
-                    </span>
+                <div className={classes.editProject}>
+                  <Typography className={classes.username}>
+                    {myChat?.name}
                   </Typography>
-                )}
+                  {myChat?.project && (
+                    <Typography className={classes.projectName}>
+                      Project:{" "}
+                      <span className={classes.projectTitle}>
+                        {" "}
+                        {myChat?.project?.title}{" "}
+                      </span>
+                    </Typography>
+                  )}
+                </div>
               </>
             )}
           </Grid>
@@ -162,9 +168,27 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 export default ChatBoxHeader;
 
 const useStyles = makeStyles({
+  iconContainer:{
+    width: '30px'
+  },
+  editProject: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    fontWeight: "bold",
+    fontSize: 14,
+    paddingTop: 2,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    paddingLeft: 16,
+    textOverflow: "ellipsis",
+    ["@media (max-width:960px)"]: {
+      justifyContent: "center",
+    },
+  },
   wrapper: {
-    justifyContent:' space-between',
-    padding: '0 50px 0 0',
+    justifyContent: " space-between",
+    padding: "0 50px 0 0",
     borderBottom: `1px solid ${colors.grey}`,
     height: 40,
     ["@media (max-width:960px)"]: {
@@ -174,14 +198,20 @@ const useStyles = makeStyles({
   editIcon: {
     cursor: "pointer",
     color: colors.textPrimary,
-    fontSize: '34px !important',
+    fontSize: "34px !important",
     borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
     padding: 6,
+    width: '100%'
   },
   username: {
     fontSize: 14,
     fontWeight: "bold",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    fontStyle: "normal",
+    textOverflow: "ellipsis",
+    width: "120px",
   },
   editWrapper: {
     display: "flex",
@@ -234,7 +264,11 @@ const useStyles = makeStyles({
     },
   },
   projectName: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     fontStyle: "normal",
+    textOverflow: "ellipsis",
+    width: "120px",
     fontWeight: 500,
     fontSize: 10,
   },

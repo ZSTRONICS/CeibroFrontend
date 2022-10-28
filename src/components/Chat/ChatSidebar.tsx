@@ -197,7 +197,7 @@ const useStyles = makeStyles({
     color: colors.black,
   },
   chatList: {
-    height: 'calc(100vh - 260px)',
+    height: 'calc(100vh - 170px)',
     overflowY: 'scroll',
     overflowX: 'hidden',
   },

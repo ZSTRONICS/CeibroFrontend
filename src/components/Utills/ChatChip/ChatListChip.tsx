@@ -26,10 +26,10 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
   const classes = useStyles()
 
   const { chat } = props
-  const { username = 'Qasim', name, lastMessage, unreadCount, lastMessageTime, project} = chat
+  const { name, lastMessage, unreadCount, lastMessageTime, project} = chat
   const { user } = useSelector((state: RootState) => state.auth)
   const selectedChat = useSelector((state: RootState) => state.chat.selectedChat)
-  const { projects } = useSelector((state: RootState) => state.project);
+  // const { projects } = useSelector((state: RootState) => state.project);
 
   const dispatch = useDispatch()
   let avaterInfo:any ={}
