@@ -22,9 +22,12 @@ export const appHistory = createBrowserHistory();
 interface Configs {}
 
 const RouterConfig: React.FC<Configs> = () => {
+  const notShow = false
   return (
     <>
-      {/* <ViewInvitations /> */}
+    {/* component used here for availability of modal on all routes*/}
+    <span style={{opacity: 0, visibility: 'hidden'}}><ViewInvitations /></span>  
+    {/* end */}
       <Router history={appHistory}>
         <Switch>
           <Redirect exact from="/" to="/login" />

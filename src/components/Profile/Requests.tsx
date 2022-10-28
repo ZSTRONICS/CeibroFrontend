@@ -22,7 +22,6 @@ const Requests: React.FunctionComponent<IRequestsProps> = (props) => {
 
 export default Requests;
 
-
 const useStyles = makeStyles({
   wrapper: {
     ['@media (max-width:960px)']: {
