@@ -40,10 +40,9 @@ const ProjectOverview = () => {
   }, [selectedProject])
 
   useEffect(() => {
-    dispatch(
-      getAvailableUsers({
+    const payload = {
         other: true,
-        success: res => {
+        success: (res: any) => {
           setData(res.data)
           // setting current user as default owner
           res?.data?.map((row: dataInterface) => {
@@ -59,9 +58,9 @@ const ProjectOverview = () => {
             }
           })
         },
-      })
-    )
-  }, [])
+      }
+      dispatch(getAvailableUsers(payload))
+    });
 
   const handleDateChange = (e: any) => {
     const date = e?.target?.value

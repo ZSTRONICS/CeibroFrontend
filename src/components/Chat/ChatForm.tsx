@@ -155,11 +155,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       socket.emit(SEND_MESSAGE, payload);
   
-      dispatch({
-        type: PUSH_MESSAGE,
-        payload: newMessage,
-      });
-      dispatch(setMessagesRead({ other: selectedChat }));
+      // dispatch({
+      //   type: PUSH_MESSAGE,
+      //   payload: newMessage,
+      // });
+      // dispatch(setMessagesRead({ other: selectedChat }));
       //handleCloseReply();
       //dispatch(setMessagesRead({ other: data.chat }));
       
@@ -175,22 +175,22 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
     if (String(data.chat) == String(selectedChat)) {
       
-      dispatch(
-        updateMessageById({
-          other: {
-            oldMessageId: payload.myId,
-            newMessage: data.message,
-          },
-        })
-      );
+      // dispatch(
+      //   updateMessageById({
+      //     other: {
+      //       oldMessageId: payload.myId,
+      //       newMessage: data.message,
+      //     },
+      //   })
+      // );
 
-      dispatch(
-        getRoomMedia({
-          other: data.chat,
-        })
-      );
+      // dispatch(
+      //   getRoomMedia({
+      //     other: data.chat,
+      //   })
+      // );
     } else {
-        dispatch(getAllChats());
+        // dispatch(getAllChats());
       //  playChatSound(data);
     }
   });

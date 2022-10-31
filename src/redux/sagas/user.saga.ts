@@ -72,7 +72,7 @@ const getMyConnectionsCount = apiCall({
 const getUserById = apiCall({
   type: GET_USER_BY_ID,
   method: 'get',
-  path: payload => `/users/${payload.other.userId}`,
+  path: payload => `/user/${payload.other.userId}`,
 })
 
 const updateProfilePic = apiCall({
@@ -91,11 +91,13 @@ const getAvailableChatUsers = apiCall({
 const getAvailableUsers = apiCall({
   type: GET_AVAILABLE_USERS,
   method: 'get',
+ 
   path: payload => {
+    console.log("payload", payload)
     let url = `/users/available`
-    if (payload.other) {
+   //if (payload.other) {
       url = `${url}?includeMe=true`
-    }
+  //  }
     return url
   },
 })

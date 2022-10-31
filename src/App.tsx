@@ -51,7 +51,7 @@ const App: React.FC<MyApp> = () => {
   useEffect(() => {
     if (isLoggedIn) {
       socket.on(REFRESH_CHAT, () => {
-        dispatch(getAllChats());
+       // dispatch(getAllChats());
       });
       return () => {
         socket.off(RECEIVE_MESSAGE);
