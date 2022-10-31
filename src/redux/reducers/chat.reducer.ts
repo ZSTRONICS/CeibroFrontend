@@ -36,6 +36,7 @@ import {
   GET_ROOM_QUESTIONIAR,
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
+  MY_SOCKET,
 } from '../../config/chat.config'
 
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
@@ -69,18 +70,19 @@ interface ChatReducerInt {
   allowScroll: boolean
   upScrollLoading: boolean
   blockPagination: boolean
+  mysocket: any
   allowChangeBlock: boolean
   pinnedMessages: any
   roomQuestioniars: any
   createQuestioniarLoading: boolean
   blockDown: boolean
-  isGroupCha:boolean
+  isGroupChat:boolean
 }
 
 const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
-  isGroupCha:false,
+  isGroupChat:false,
   selectedChat: null,
   createChatLoading: false,
   type: 'all',
@@ -105,6 +107,7 @@ const intialStatue: ChatReducerInt = {
   allowScroll: false,
   upScrollLoading: false,
   blockPagination: false,
+  mysocket: null,
   allowChangeBlock: true,
   pinnedMessages: [],
   blockDown: false,
@@ -117,7 +120,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_CHAT): {
       return {
         ...state,
-        chat: action.payload,
+        chat: action.payload?.userallchat,
       }
     }
 
@@ -218,7 +221,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_MESSAGES): {
       return {
         ...state,
-        messages: action.payload,
+        messages: action.payload.message,
         upScrollLoading: false,
       }
     }
@@ -232,7 +235,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestPending(GET_MESSAGES): {
       return {
         ...state,
-        upScrollLoading: true,
+        upScrollLoading: false,
       }
     }
 
@@ -260,7 +263,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_UP_MESSAGES): {
       return {
         ...state,
-        messages: [...action.payload, ...state.messages],
+        messages: [...action.payload.message, ...state.messages],
         upScrollLoading: false,
         allowScroll: true,
       }
@@ -276,7 +279,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_DOWN_MESSAGES): {
       return {
         ...state,
-        messages: [...state.messages, ...action.payload],
+        messages: [...state.messages, ...action.payload.message],
       }
     }
 

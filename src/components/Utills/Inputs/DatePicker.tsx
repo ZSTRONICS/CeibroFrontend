@@ -22,7 +22,7 @@ const DatePicker: React.FC<DatePickerInt> = (props) => {
   };
 
   return (
-    <InputHOC title={props?props.Datetitle : '"Due date"'}>
+    <InputHOC title={props.Datetitle || "Due date"}>
       <input
         min={props?.min}
         max={props?.max}

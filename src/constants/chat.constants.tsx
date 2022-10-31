@@ -8,7 +8,10 @@ export const CHAT_LIST: ChatListInterface[] = [
         lastMessage: "Cursus Condimentum tempus",
         unreadCount: 0,
         lastMessageTime: '10:24pm',
-        _id: "234"
+        _id: "234",
+        isGroupChat: false,
+        initiator:'12a',
+        members:[]
     }
 ]
 

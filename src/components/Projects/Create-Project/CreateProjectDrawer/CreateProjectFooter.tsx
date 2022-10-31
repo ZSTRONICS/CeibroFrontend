@@ -135,7 +135,7 @@ const disableBtn = [projectOverview.isDefault? true: false]
           onClick={handleDelete}
           disabled={projectOverview.isDefault}
         >
-          <img src={assets.trashIcon} className={'w-16'} />
+          <img src={assets.DeleteIcon} className={'w-16'} />
         </Button>
       )}
       <Button

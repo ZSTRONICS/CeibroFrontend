@@ -63,7 +63,9 @@ import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import SendIcon from '@mui/icons-material/Send';
 const assets = {
+  SendIcon,
   SendOutlinedIcon,
   DeleteIcon,
   KeyboardArrowDown,

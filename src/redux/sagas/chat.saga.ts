@@ -45,10 +45,10 @@ const getAllChat = apiCall({
   path: (payload) => {
     let query = "?";
     if (payload?.other?.type) {
-      query = `${query}type=${payload?.other?.type}&&`;
+      query = `${query}type=${payload?.other?.type}&`;
     }
     if (payload?.other?.search) {
-      query = `${query}name=${payload.other.search}`;
+      query = `${query}name=${payload.other.search}&`;
     }
     if (payload?.other?.favourite) {
       query = `${query}favourite=${payload.other.favourite}`;
@@ -77,7 +77,6 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any> {
     type: GET_UNREAD_CHAT_COUNT,
   });
 }
-
 
 const getRoomMessages = apiCall({
   type: GET_MESSAGES,
@@ -113,14 +112,9 @@ const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
   path: (payload: any) => 
-     `/chat/room/messages/${payload.other.roomId }?limit=99`
-    // if (payload?.other.lastMessageId){
-    //   pathStr += `?lastMessageId=${payload?.other.lastMessageId}&limit=99`;
-    // }else{
-    //   pathStr += '&limit=99';
-    // }
-    // return pathStr;
-  
+     "/chat/room/messages/"+
+     payload.other.roomId+
+     `?lastMessageId=${payload?.other.lastMessageId}&limit=99`,
 });
 
 const getDownRoomMessages = apiCall({
@@ -303,7 +297,9 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   const {
     payload: { other },
   } = action;
+  
   const messages: any = yield select((state: RootState) => state.chat.messages);
+
   const loadingMessages: any = yield select(
     (state: RootState) => state.chat.loadingMessages
   );
@@ -320,8 +316,7 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   });
   if (index > -1) {
     const myMessage = messages[index];
-    myMessage._id = other.newMessage.id;
-
+    myMessage.id = other.newMessage._id;
     messages[index] = myMessage;
   }
   yield put({

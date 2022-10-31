@@ -146,7 +146,7 @@ export default function BasicTable() {
                         />
                       )}
                       <img
-                        src={assets.trashIcon}
+                        src={assets.DeleteIcon}
                         className="w-16 pointer"
                         onClick={() => deleteTimeProfileWork(row?.id)}
                       />

@@ -32,7 +32,6 @@ const Chat = () => {
   const sendMessage = (text: string) => {
     const today = new Date();
     const nowTime = (today.getHours() % 12) + ":" + today.getMinutes() + " Pm";
-
     setMessage([
       ...messages,
       {

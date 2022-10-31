@@ -35,6 +35,7 @@ import {
   GET_DOWN_CHAT_MESSAGE,
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
+  MY_SOCKET,
 } from '../../config/chat.config'
 import { createAction } from './action'
 
@@ -64,6 +65,11 @@ export const getDownMessages = createAction(GET_DOWN_CHAT_MESSAGE)
 export const getPinnedMessages = createAction(GET_PINNED_MESSAGES)
 export const getRoomQuestioniars = createAction(GET_ROOM_QUESTIONIAR)
 export const editRoomName = createAction(EDIT_ROOM_NAME)
+
+export const globalSocketContext = (data:any) => ({
+  type: MY_SOCKET,
+  payload: data,
+})
 
 export const openQuestioniarDrawer = () => ({
   type: OPEN_QUESTIONIAR_DRAWER,

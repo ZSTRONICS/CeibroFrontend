@@ -1,12 +1,12 @@
 // ssh -i "ceibro_new_key.pem" ubuntu@ec2-16-171-45-183.eu-north-1.compute.amazonaws.com
 import "fontsource-roboto";
 import "moment-timezone";
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import { CssBaseline } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 import "./App.css";
 import { sounds } from "./assets/assets";
 import CreateQuestioniarDrawer from "./components/Chat/Questioniar/CreateQuestioniar";
@@ -15,23 +15,26 @@ import CreateProjectDrawer from "./components/Projects/Create-Project/CreateProj
 import CreateTaskDrawer from "./components/Tasks/Create-Task/CreateTaskDrawer";
 import "./components/Topbar/ProfileBtn.css";
 import {
-  PUSH_MESSAGE, RECEIVE_MESSAGE, REFRESH_CHAT
+  PUSH_MESSAGE, RECEIVE_MESSAGE, REFRESH_CHAT, SEND_MESSAGE
 } from "./config/chat.config";
 import RouterConfig from "./navigation/RouterConfig";
 import {
   getAllChats,
-  setMessagesRead
+  setMessagesRead,
+  globalSocketContext,
 } from "./redux/action/chat.action";
+import {socket} from './services/socket.services'
 import { RootState } from "./redux/reducers";
 import { SERVER_URL } from "./utills/axios";
 
-export const SocketContext = createContext(null);
+export const SocketContext = createContext('');
 interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
+
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   const { selectedChat, type } = useSelector((store: RootState) => store.chat);
-  const [socket, setSocket] = useState<any>(null);
+
   const dispatch = useDispatch();
   const drawerOpen = useSelector(
     (store: RootState) => store.chat.openViewQuestioniar
@@ -47,39 +50,15 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      const tokens = localStorage.getItem("tokens") || "{}";
-      const myToken = JSON.parse(tokens)?.access?.token;
-      const mySocket = io(SERVER, {
-        query: {
-          token: myToken,
-        },
-      });
-      setSocket(mySocket);
-      mySocket.on(RECEIVE_MESSAGE, (data) => {
-        if (String(data.from) !== String(user?.id)) {
-          if (String(data.chat) == String(selectedChat)) {
-            dispatch({
-              type: PUSH_MESSAGE,
-              payload: data.message,
-            });
-            dispatch(setMessagesRead({ other: selectedChat }));
-            playChatSound(data);
-          } else {
-            dispatch(getAllChats());
-            playChatSound(data);
-          }
-        }
-      });
-      mySocket.on(REFRESH_CHAT, () => {
+      socket.on(REFRESH_CHAT, () => {
         dispatch(getAllChats());
       });
-
       return () => {
-        mySocket.off(RECEIVE_MESSAGE);
-        mySocket.off(REFRESH_CHAT);
+        socket.off(RECEIVE_MESSAGE);
+        socket.off(REFRESH_CHAT);
       };
     }
-  }, [isLoggedIn, selectedChat, user]);
+  }, [isLoggedIn, user]);
 
   return (
     <div className="App">
@@ -90,9 +69,9 @@ const App: React.FC<MyApp> = () => {
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
-      <SocketContext.Provider value={socket}>
+      {/* <SocketContext.Provider value={socket}> */}
         <RouterConfig />
-      </SocketContext.Provider>
+      {/* </SocketContext.Provider> */}
       {/* </PermissionState> */}
     </div>
   );

@@ -71,7 +71,7 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
               onClick={handleDelete}
               className={`${classes.menuWrapper} dropdown-menu pointer`}
             >
-              <img src={assets.trashIcon} className="width-16" />
+              <img src={assets.DeleteIcon} className="width-16" />
               <Typography className={`${classes.menuText} align-center`}>
                 Delete group
               </Typography>

@@ -23,7 +23,7 @@ interface ChatBodyInt {
 
 const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
   const messages: ChatMessageInterface[] = useSelector(
-    (store: RootState) => store.chat.messages
+    (store: RootState) => store.chat?.messages
   );
   const selectedChat = useSelector(
     (store: RootState) => store.chat.selectedChat

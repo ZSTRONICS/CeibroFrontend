@@ -31,11 +31,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
           </div>
           <Typography variant="body1" className={classes.connectionText}>
             My connections
-            {connections&&  <Badge
+             <Badge
             color="primary"
             badgeContent={connections}
             className={classes.badge}
-          ></Badge>}
+          ></Badge>
           </Typography>
        </Grid>
         <Grid item>
