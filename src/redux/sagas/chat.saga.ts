@@ -293,6 +293,7 @@ function* goToMessage(action: ActionInterface): Generator<any> {
   }
 }
 
+
 function* updateMessageById(action: ActionInterface): Generator<any> {
   const {
     payload: { other },
@@ -384,9 +385,9 @@ function* chatSaga() {
   yield takeLatest(GET_CHAT_API, getAllChat);
   yield takeLatest(GET_MESSAGES, getRoomMessages);
   yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
-  yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
+  // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
-  yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
+  // yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
   yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);

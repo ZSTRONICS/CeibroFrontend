@@ -51,7 +51,7 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
         e.stopPropagation()
         dispatch(addToFavourite({ other: room._id, success: () => {
             setShow(false);
-            dispatch(getAllChats());
+             dispatch(getAllChats());
         } }));  
     }
 

@@ -44,7 +44,7 @@ export interface ChatMessageInterface {
   id?: any;
   readBy?: UserInterface[];
   pinnedBy?: any;
-  sender?: UserInterface;
+  sender?: UserInterface| any;
   title?: string;
   voiceUrl?: string;
   dueDate?: any;

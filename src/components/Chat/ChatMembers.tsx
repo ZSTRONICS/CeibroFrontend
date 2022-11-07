@@ -73,7 +73,7 @@ const ChatMembers = () => {
     <div className="chat-members">
       <ChatMemberFilters handleMembersShow={handleMembersShow} show={show}/>
       <ChatMemberSearch value={searchText} handleChange={handleSearchChange} />
-      {myMembers?.map?.((member: UserInterface, i: any) => {
+      {myMembers&& myMembers?.map?.((member: UserInterface, i: any) => {
         return (
           <Grid key={member.id} container className="chat-member-chip">
             <Grid item xs={2} style={{ paddingTop: 5 }}>

@@ -51,7 +51,7 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
       dispatch(getMyAllInvites(payload));
     };
 
-    const acceptHandler = (inviteId: any, accepted: boolean) => {
+    const acceptHandler = (accepted: boolean, inviteId: any) => {
       const payload = {
         success: () => {
           getMyInvites();
@@ -98,7 +98,7 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
                       color="primary"
                       variant="contained"
                       disabled={isDiabled}
-                      onClick={() => acceptHandler(invitation?._id, true)}
+                      onClick={() => acceptHandler(true, invitation?._id)}
                     >
                       Accept
                       {/* <Typography className={classes.btnText}>
@@ -114,7 +114,7 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
                     <Button
                       className={classes.actionBtn}
                       variant="contained"
-                      onClick={() => acceptHandler(invitation?._id, false)}
+                      onClick={() => acceptHandler(false, invitation?._id)}
                     >
                       Decline
                     </Button>

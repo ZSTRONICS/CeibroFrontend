@@ -13,6 +13,7 @@ import OutsideClickHandler from 'react-outside-click-handler'
 import appActions from '../../redux/action/app.action'
 import './sidebar.css'
 import { getAllChats } from '../../redux/action/chat.action'
+import { setAppSelectedChat } from 'services/socket.services'
 
 function Sidebar() {
   const classes = useStyles()
@@ -23,11 +24,14 @@ function Sidebar() {
   const intl = useIntl()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
 
-  useEffect(() => {
-    dispatch(getAllChats())
-  }, [dispatch])
+  // useEffect(() => {
+  //   dispatch(getAllChats())
+  // }, [])
 
   const handleRouteClick = (config: SingleConfig) => {
+    if (config.path !== "chat"){
+      setAppSelectedChat(null)
+    }
     history.push(`/${config.path}`)
     if (isTabletOrMobile && navbarOpen) {
       dispatch(appActions.setNavbarOpen(false))

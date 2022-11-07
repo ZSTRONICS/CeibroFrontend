@@ -23,7 +23,6 @@ import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
 
 interface ChatBoxHeaderProps {
-  chat?: ChatListInterface;
   enable: boolean;
 }
 
@@ -38,7 +37,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     upScrollLoading,
     chat: allChats,
     selectedChat,
-  } = useSelector((store: RootState) => store.chat);
+  } = useSelector((store: RootState ) => store.chat);
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) == String(selectedChat)
   );

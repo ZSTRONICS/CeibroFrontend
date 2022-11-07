@@ -114,7 +114,7 @@ const ResetPasswordForm = () => {
                 </Alert>
               )}
 
-              {error && <Alert severity="error">Invalid OTP</Alert>}
+              {error && <Alert severity="error">Invalid email</Alert>}
 
               {/* <TextField
                 placeholder={"Enter OTP"}

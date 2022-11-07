@@ -1,3 +1,4 @@
+import { useRef, useState } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import {
   Add,
@@ -10,7 +11,6 @@ import {
   StarBorder,
 } from '@material-ui/icons'
 import assets from 'assets/assets'
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../assets/colors'
 import { SET_CHAT_TYPE, SET_CHAT_SEARCH, SET_FAVOURITE_FILTER } from '../../config/chat.config'

@@ -26,14 +26,15 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
   const classes = useStyles()
 
   const { chat } = props
+  
   const { name, lastMessage, unreadCount, lastMessageTime, project} = chat
+
   const { user } = useSelector((state: RootState) => state.auth)
   const selectedChat = useSelector((state: RootState) => state.chat.selectedChat)
   // const { projects } = useSelector((state: RootState) => state.project);
 
   const dispatch = useDispatch()
   let avaterInfo:any ={}
-
 
   const chatMemberInit = chat.isGroupChat === false && chat.members.filter(item=> item.id !==user.id).map((item:any)=>{
       avaterInfo.firstName= item.firstName,
@@ -54,19 +55,22 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
       backgroundColor: String(selectedChat) === String(chat._id) ? colors.lightGrey : colors.white,
     }
   }
+
   const handleFavouriteClick = (e: any) => {
     e.stopPropagation()
     dispatch(
       addToFavourite({
         other: chat._id,
         success: () => {
-          dispatch(getAllChats())
+          // console.log('add to fav here need only fav api call')
+           dispatch(getAllChats())
         },
       })
     )
   }
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id)
+
   return (
     <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()}>
       <Grid container>

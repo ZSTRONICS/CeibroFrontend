@@ -25,12 +25,13 @@ const RouterConfig: React.FC<Configs> = () => {
   const notShow = false
   return (
     <>
-    
+     {/* component used here for availability of modal on all routes*/}
+     <div style={{opacity: 0, visibility: 'hidden',width:0,height:0}}><ViewInvitations /></div> 
       <Router history={appHistory}>
         <Switch>
           <Redirect exact from="/" to="/login" />
           <Route path="/login" component={Login} />
-          <Route path="/verify-email" component={VerifyEmail} />
+          {/* <Route path="/verify-email" component={VerifyEmail} /> */}
           <Route path="/forgot-password" component={ForgetPassword} />
           <Route path="/reset-password" component={ResetPassword} />
 
@@ -45,10 +46,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <PrivateRoute path="/dashboard" component={Dashboard} />
           </AppLayout>
         </Switch>
-      </Router>
-      {/* component used here for availability of modal on all routes*/}
-    <span style={{opacity: 0, visibility: 'hidden'}}><ViewInvitations /></span>  
-    {/* end */}
+      </Router> 
     </>
   );
 };

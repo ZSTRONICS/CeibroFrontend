@@ -8,14 +8,13 @@ import {
 } from "@material-ui/icons";
 import Button from "@mui/material/Button";
 import Picker from "emoji-picker-react";
-import { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useRef, useState } from "react";
 import { IoDocument } from "react-icons/io5";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
-import { SocketContext } from "../../App";
 import assets from "../../assets/assets";
 import colors from "../../assets/colors";
-import { io } from "socket.io-client";
+
 import {
   PUSH_MESSAGE,
   SET_REPLY_TO_ID,
@@ -34,16 +33,16 @@ import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
-import { socket } from "services/socket.services";
+import { getSocket } from "services/socket.services";
 
 interface ChatFormInterface {
-  handleSendClick: (a: string) => string;
   enable: boolean;
 }
 
 const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
+  const messageRef= useRef<any>()
   const { enable } = props;
   const classes = useStyles();
   const {
@@ -57,6 +56,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
+  const chatBox:any = document.getElementById("chatBox");
 
   useEffect(() => {
     setFiles(null);
@@ -93,6 +93,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     }
     if (e.key === "Enter") {
       handleSend();
+      messageRef.current.focus;
     }
   };
 
@@ -112,9 +113,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     }
     if (text) {
       let payload: any = {};
-      payload.message = text;
+      payload.message = text.trim();
       payload.chat = selectedChat;
       payload.type = "message";
+      messageRef.current.focus;
 
       if (files && Object.values(files)?.length > 0) {
         for (const key of Object.keys(files)) {
@@ -138,7 +140,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       payload.files =
         files && Object.keys(files)?.length > 0 ? filesPreview : [];
-
+   
       const myId = new Date().valueOf();
       payload.myId = myId;
       const newMessage = {
@@ -152,48 +154,18 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
-
-      socket.emit(SEND_MESSAGE, payload);
+      getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
   
-      // dispatch({
-      //   type: PUSH_MESSAGE,
-      //   payload: newMessage,
-      // });
-      // dispatch(setMessagesRead({ other: selectedChat }));
-      //handleCloseReply();
-      //dispatch(setMessagesRead({ other: data.chat }));
-      
-
+      dispatch({
+        type: PUSH_MESSAGE,
+        payload: newMessage,
+      });
+      //handleCloseReply()
       setFiles(null);
       setFilesPreview(null);
       setText("");
     }
   };
-
-  socket.on(RECEIVE_MESSAGE, (payload: any) => {
-    const data = payload.data;
-
-    if (String(data.chat) == String(selectedChat)) {
-      
-      // dispatch(
-      //   updateMessageById({
-      //     other: {
-      //       oldMessageId: payload.myId,
-      //       newMessage: data.message,
-      //     },
-      //   })
-      // );
-
-      // dispatch(
-      //   getRoomMedia({
-      //     other: data.chat,
-      //   })
-      // );
-    } else {
-        // dispatch(getAllChats());
-      //  playChatSound(data);
-    }
-  });
 
   const handleFileChange = (e: any) => {
     if (!enable) {
@@ -312,9 +284,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             </div>
           )}
           <input
+          ref={messageRef}
             value={text}
             onChange={handleTextChange}
             onKeyPress={handleKeyDown}
+
             type="text"
             disabled={!selectedChat || !enable}
             placeholder={
@@ -336,12 +310,18 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             className={`messageInput black-input ${classes.messageInput}`}
           />
           <div className={classes.sendWrapper}>
-            <img
+            {/* <img
               src={assets.sendIcon}
               onClick={handleSend}
               className={classes.sendIcon}
+            /> */}
+            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: 'transparent' }} >
+            <img
+              src={assets.sendIcon}
+              // onClick={handleSend}
+              className={classes.sendIcon}
             />
-            {/* <Button variant="contained" onClick={handleSend} endIcon={<assets.SendIcon />} /> */}
+            </Button>
           </div>
         </Grid>
       )}

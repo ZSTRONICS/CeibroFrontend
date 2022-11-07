@@ -29,7 +29,7 @@ const getMyAllInvites = apiCall({
 const acceptInvite = apiCall({
   type: ACCEPT_INVITE,
   method: 'post',
-  path: payload => `users/invite/accept/${payload?.other?.accepted}`,
+  path: payload => `users/invite/accept/${payload?.other?.accepted}/${payload?.other?.inviteId}`,
 })
 
 const getMyConnections = apiCall({
@@ -93,7 +93,6 @@ const getAvailableUsers = apiCall({
   method: 'get',
  
   path: payload => {
-    console.log("payload", payload)
     let url = `/users/available`
    //if (payload.other) {
       url = `${url}?includeMe=true`

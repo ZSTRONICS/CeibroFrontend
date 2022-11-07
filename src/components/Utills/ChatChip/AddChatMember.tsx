@@ -37,13 +37,12 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<any>();
-
   useEffect(() => {
     if (selectedChat && membersDialog) {
       const payload = {
         other: selectedChat,
         success: (res: any) => {
-          const myUsers = mapUsers(res.data);
+          const myUsers = mapUsers(res.data.message);
           setAvailableUsers(myUsers);
         },
       };

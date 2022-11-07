@@ -67,6 +67,7 @@ const ProfileBtn = () => {
   };
 
   const handleLogout = () => {
+    history.push('/login')
     dispatch(logoutUser());
   };
 

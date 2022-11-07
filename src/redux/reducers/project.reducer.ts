@@ -203,7 +203,7 @@ const AppReducer = (
     case requestSuccess(GET_PROJECTS): {
       return {
         ...state,
-        allProjects: action.payload?.map?.((project: any) => ({
+        allProjects: action.payload?.result?.map?.((project: any) => ({
           label: project?.title,
           value: project.id,
         })),
@@ -213,7 +213,7 @@ const AppReducer = (
     case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
       return {
         ...state,
-        projects: action.payload?.results,
+        projects: action.payload?.result?.results,
         projectsLoading: false,
       };
     }
