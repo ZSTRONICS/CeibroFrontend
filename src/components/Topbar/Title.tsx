@@ -113,7 +113,7 @@ const Title = () => {
     if (location.pathname.includes("chat"))
       return (
         <>
-          <div className={classes.chatTitle}>
+          <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
             <Typography
               variant="h6"
               component="h6"
@@ -176,22 +176,25 @@ const useStyles = makeStyles({
     textDecoration: "none",
   },
   profileTitle: {
-    fontSize: 30,
+    fontSize: 25,
     fontWeight: 500,
+    marginLeft: 10,
+  },
+  chatBtn:{
+    paddingRight: 20
   },
   chatTitle: {
-    paddingLeft: 33,
-    paddingRight: 20,
+    paddingLeft: 20,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     ["@media (max-width:960px)"]: {
       paddingLeft: 0,
+      minWidth: 300,
     },
   },
   backIcon: {
     color: colors.primary,
-    paddingRight: 20,
     cursor: "pointer",
   },
   projectTitle: {

@@ -54,20 +54,20 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
     dispatch(taskActions.openDrawer())
   }
 
-  const handleDelete = () => {
-    const id: string = connectionId
-    const payload: any = {
-      other: {
-        id,
-      },
-      params: {
-        isEmailInvited: false,
-      },
-      success: () => dispatch(getMyConnections()),
-    }
-    dispatch(deleteMyConnection(payload))
-    handleToggle()
-  }
+  // const handleDelete = () => {
+  //   const id: string = connectionId
+  //   const payload: any = {
+  //     other: {
+  //       id,
+  //     },
+  //     params: {
+  //       isEmailInvited: false,
+  //     },
+  //     success: () => dispatch(getMyConnections()),
+  //   }
+  //   dispatch(deleteMyConnection(payload))
+  //   handleToggle()
+  // }
 
   const startRoom = () => {
     const payload = { other: { id: getUser?.id }, success: () => history.push('chat') }
@@ -170,7 +170,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
             </Grid>
 
             <Grid item xs={12} className={classes.btnWrapper}>
-              <IconButton
+              {/* <IconButton
                 onClick={handleDelete}
                 aria-label="delete"
                 disableRipple={true}
@@ -178,7 +178,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
                 color="primary"
               >
                 <Delete />
-              </IconButton>
+              </IconButton> */}
               <Button
                 className={classes.btn}
                 onClick={startRoom}
@@ -212,10 +212,11 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'space-between',
     paddingBottom: 0,
+    paddingTop: 2,
     alignItems: 'center',
   },
   wrapper: {
-    width: 300,
+    width: 390,
   },
   imgWrapper: {
     maxWidth: 80,
@@ -247,7 +248,7 @@ const useStyles = makeStyles({
   },
   detailRow: {
     display: 'flex',
-    paddingTop: 10,
+    paddingTop: 5,
     gap: 30,
   },
   title: {

@@ -1,6 +1,6 @@
 import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import {
-  Delete,
+  DeleteOutlined,
   Image,
   Info,
   MoreVert,
@@ -76,7 +76,9 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
               onClick={openMembersDialog}
               className={`${classes.menuWrapper} dropdown-menu`}
             >
-              <img src={assets.addUser} className="w-16" />
+              <div className={classes.iconContainer}>
+              <img src={assets.addUser}  className={classes.menuIcon}/>
+              </div>
               <Typography className={classes.menuText}>Add People</Typography>
             </div>
 
@@ -88,11 +90,13 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
                 classes.deleteConversation
               }`}
             >
-              <Delete className={classes.menuIcon} />
+              <div  className={classes.iconContainer}>
+              <img src={assets.DeleteIcon} className={classes.menuIcon} />
+              </div>
               <Typography
                 className={`${classes.menuText} ${classes.deleteText}`}
               >
-                Delete conversation
+                Delete Chat
               </Typography>
             </div>
           </div>
@@ -114,11 +118,14 @@ const useStyles = makeStyles({
   },
   menuWrapper: {
     display: "flex",
-    alignItems: "baseline",
+    alignItems: "center",
     justifyContent: "flex-start",
   },
+  iconContainer:{
+    width: '20px'
+  },
   menuIcon: {
-    fontSize: 14,
+    width:'100%'
   },
   menuText: {
     fontSize: 14,

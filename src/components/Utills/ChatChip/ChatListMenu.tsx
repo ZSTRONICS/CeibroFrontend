@@ -51,7 +51,7 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
         e.stopPropagation()
         dispatch(addToFavourite({ other: room._id, success: () => {
             setShow(false);
-            dispatch(getAllChats());
+             dispatch(getAllChats());
         } }));  
     }
 
@@ -132,9 +132,9 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                                 className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation}`}
                                 onClick={handleDeleteClick}
                             >
-                                <img src={assets.trashIcon} className={`width-16`} />
+                                <img src={assets.DeleteIcon} className={`width-16`} />
                                 <Typography className={`${classes.menuText} align-center ${classes.deleteText}`}>
-                                    Delete conversation
+                                    Delete Chat
                                 </Typography>
                             </div>
                         </div>

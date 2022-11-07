@@ -45,10 +45,10 @@ const getAllChat = apiCall({
   path: (payload) => {
     let query = "?";
     if (payload?.other?.type) {
-      query = `${query}type=${payload?.other?.type}&&`;
+      query = `${query}type=${payload?.other?.type}&`;
     }
     if (payload?.other?.search) {
-      query = `${query}name=${payload.other.search}`;
+      query = `${query}name=${payload.other.search}&`;
     }
     if (payload?.other?.favourite) {
       query = `${query}favourite=${payload.other.favourite}`;
@@ -78,7 +78,6 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any> {
   });
 }
 
-
 const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
@@ -102,6 +101,9 @@ const getRoomMessages = apiCall({
     if (payload?.other?.messageId) {
       url = url + `?messageId=${payload?.other?.messageId}`;
     }
+    if (payload?.other?.limit) {
+      url = url + `?limit=${payload?.other?.limit}`;
+    }
     return url;
   },
 });
@@ -109,10 +111,10 @@ const getRoomMessages = apiCall({
 const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
-  path: (payload: any) =>
-    "/chat/room/messages/" +
-    payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}&limit=1000`,
+  path: (payload: any) => 
+     "/chat/room/messages/"+
+     payload.other.roomId+
+     `?lastMessageId=${payload?.other.lastMessageId}&limit=99`,
 });
 
 const getDownRoomMessages = apiCall({
@@ -291,11 +293,14 @@ function* goToMessage(action: ActionInterface): Generator<any> {
   }
 }
 
+
 function* updateMessageById(action: ActionInterface): Generator<any> {
   const {
     payload: { other },
   } = action;
+  
   const messages: any = yield select((state: RootState) => state.chat.messages);
+
   const loadingMessages: any = yield select(
     (state: RootState) => state.chat.loadingMessages
   );
@@ -312,8 +317,7 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   });
   if (index > -1) {
     const myMessage = messages[index];
-    myMessage._id = other.newMessage.id;
-
+    myMessage.id = other.newMessage._id;
     messages[index] = myMessage;
   }
   yield put({
@@ -381,9 +385,9 @@ function* chatSaga() {
   yield takeLatest(GET_CHAT_API, getAllChat);
   yield takeLatest(GET_MESSAGES, getRoomMessages);
   yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
-  yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
+  // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
-  yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
+  // yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
   yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);

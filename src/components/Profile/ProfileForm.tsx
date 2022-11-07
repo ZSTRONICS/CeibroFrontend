@@ -8,7 +8,10 @@ import {
   TextField,
   Typography,
   CircularProgress,
+InputAdornment,
+IconButton
 } from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -23,13 +26,13 @@ import { RootState } from "redux/reducers";
 
 const ProfileForm = () => {
   const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const passRef = useRef<HTMLInputElement>(null);
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const { user: userData } = useSelector((state: RootState) => state.auth);
-
   const isDiabled = !loading ? false : true;
 
   useEffect(() => {
@@ -274,9 +277,21 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
+                      InputProps={{
+                        endAdornment:(
+                          <InputAdornment position="end">
+                          <IconButton
+                            aria-label="toggle password visibility"
+                            onClick={() => setShowPassword(!showPassword)}
+                            edge="end"
+                          >
+                            {showPassword ? <Visibility /> : <VisibilityOff />}
+                          </IconButton>
+                        </InputAdornment>
+                        )
+                      }}
                       // disabled={true}
                       defaultValue={2435455}
-                      type="password"
                       fullWidth
                       size="small"
                       id="outlined-basic"
@@ -285,6 +300,7 @@ const ProfileForm = () => {
                       name="password"
                       value={values.password}
                       onChange={handleChange}
+                      type={showPassword ? "text" : "password"}
                       inputRef={passRef}
                       onBlur={handleBlur}
                     />
@@ -560,7 +576,7 @@ const useStyles = makeStyles({
     fontSize: 18,
   },
   passwordRow: {
-    marginTop: 20,
+    marginTop: 10,
   },
   root: {
     color: colors.darkYellow,

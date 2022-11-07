@@ -33,7 +33,7 @@ const RegisterForm = () => {
       },
       success: (res: any) => {
         if (res) {
-          history.push('/verify-email')
+          history.push('/login')
         }
         action?.resetForm?.();
       },

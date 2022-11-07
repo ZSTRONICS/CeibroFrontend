@@ -16,32 +16,38 @@ import Connections from "components/Connection/Connection";
 import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
+import ViewInvitations from "components/Profile/ViewInvitations";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}
 
 const RouterConfig: React.FC<Configs> = () => {
+  const notShow = false
   return (
-    <Router history={appHistory}>
-      <Switch>
-        <Redirect exact from="/" to="/login" />
-        <Route path="/login" component={Login} />
-        <Route path="/verify-email" component={VerifyEmail} />
-        <Route path="/forgot-password" component={ForgetPassword} />
-        <Route path="/reset-password" component={ResetPassword} />
+    <>
+     {/* component used here for availability of modal on all routes*/}
+     <div style={{opacity: 0, visibility: 'hidden',width:0,height:0}}><ViewInvitations /></div> 
+      <Router history={appHistory}>
+        <Switch>
+          <Redirect exact from="/" to="/login" />
+          <Route path="/login" component={Login} />
+          {/* <Route path="/verify-email" component={VerifyEmail} /> */}
+          <Route path="/forgot-password" component={ForgetPassword} />
+          <Route path="/reset-password" component={ResetPassword} />
 
-        <Route path="/register" component={Register} />
-        <AppLayout>
-          <Route path="/profile" component={Profile} />
-          <Route path="/projects" component={Projects} />
-          <Route path="/tasks" component={Tasks} />
-          <Route path="/task/:id" component={SubTask} />
-          <Route path="/chat" component={Chat} />
-          <Route path="/connections" component={Connections} />
-          <PrivateRoute path="/dashboard" component={Dashboard} />
-        </AppLayout>
-      </Switch>
-    </Router>
+          <Route path="/register" component={Register} />
+          <AppLayout>
+            <Route path="/profile" component={Profile} />
+            <Route path="/projects" component={Projects} />
+            <Route path="/tasks" component={Tasks} />
+            <Route path="/task/:id" component={SubTask} />
+            <Route path="/chat" component={Chat} />
+            <Route path="/connections" component={Connections} />
+            <PrivateRoute path="/dashboard" component={Dashboard} />
+          </AppLayout>
+        </Switch>
+      </Router> 
+    </>
   );
 };
 

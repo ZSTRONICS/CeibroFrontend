@@ -92,7 +92,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       success: () => {
         toast.success("Please check your email");
 
-        history.push("/verify-email");
+        history.push("/login");
       },
     };
     dispatch(verifyEmail(payload));
@@ -131,7 +131,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
               gutterBottom
               onClick={handleVerifyEmail}
             >
-              Email not verified.
+              Email not verified please check your inbox.
               <span className={classes.emailVerify}>
                 {" "}
                 {intl.formatMessage({ id: "input.verifyEmail" })} ?

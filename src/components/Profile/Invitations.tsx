@@ -8,6 +8,7 @@ import * as yup from "yup";
 import { getMyInvitesCount } from "redux/action/user.action";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
+import assets from "assets/assets";
 interface InvitationsProps {}
 
 const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
@@ -31,9 +32,15 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
         )}
       </Grid>
       <Grid item xs={12} className={classes.viewInvitation}>
-        <Typography className={classes.invitationText}>
-          Invitations
-          <Badge badgeContent={invites} className={classes.badge}></Badge>
+        <Typography className={classes.inivite}>
+        <div className={classes.smartMenuIcon}>
+            <img src={assets.InvitaionIcon} className={classes.connectionIcon} />
+              </div>
+              <Typography variant='body1' className={classes.invitationText}>
+                Invitations
+              </Typography>
+           
+         <Badge badgeContent={invites} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />
       </Grid>
@@ -44,6 +51,13 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
 export default Invitations;
 
 const useStyles = makeStyles({
+  smartMenuIcon:{
+    width:'34px',
+    padding: '3px 5px 0px 4px'
+  },
+  connectionIcon:{
+    width: '100%'
+  },
   inviteWrapper: {
     background: colors.white,
     padding: "20px 15px",
@@ -57,9 +71,15 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  invitationText: {
+  inivite: {
+    display: 'flex',
+    alignItems: 'center',
     fontSize: 14,
     fontWeight: 500,
+    padding: '0 2px'
+  },
+  invitationText:{
+    paddingLeft: '5px'
   },
   badge: {
     marginLeft: 20,

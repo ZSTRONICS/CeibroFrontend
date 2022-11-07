@@ -22,6 +22,9 @@ iframe
     display: none !important;
 }
 
+.Custompopover > div{
+  margin-top: 30px;
+}
 .MuiTableCell-body {
   color: black !important;
 }
@@ -332,9 +335,9 @@ button[disabled]{
   padding-left: 10px;
 }
 
-.MuiDialog-paper{
+/* .MuiDialog-paper{
   min-height: 55vh;
-}
+} */
 .css-qc6sy-singleValue {
   margin-left: 10px !important;
 }

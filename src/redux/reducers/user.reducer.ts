@@ -13,12 +13,14 @@ interface UserReducerInt {
   invites: any
   connections: any
   openInvites: boolean
+  id: string
 }
 
 const intialStatue: UserReducerInt = {
   invites: [],
   connections: [],
   openInvites: false,
+  id: ""
 }
 
 const UserReducer = (state = intialStatue, action: ActionInterface) => {

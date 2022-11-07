@@ -40,11 +40,11 @@ const ProfileBtn = () => {
 
   useEffect(() => {
     dispatch(getMyInvitesCount());
-  }, []);
-
-  useEffect(() => {
     dispatch(getMyConnectionsCount());
   }, []);
+
+  // useEffect(() => {
+  // }, []);
 
   const history = useHistory();
 
@@ -67,6 +67,7 @@ const ProfileBtn = () => {
   };
 
   const handleLogout = () => {
+    history.push('/login')
     dispatch(logoutUser());
   };
 

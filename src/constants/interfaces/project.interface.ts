@@ -28,6 +28,8 @@ export interface ProjectInterface {
   statusDate: string;
   id?: string;
   _id?: string;
+  isDefault?:boolean;
+
 }
 
 export interface userRolesPermissions {

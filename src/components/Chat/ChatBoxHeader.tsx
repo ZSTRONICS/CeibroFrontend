@@ -20,9 +20,10 @@ import { editRoomName } from "redux/action/chat.action";
 import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
 import MessageSearch from "./MessageSearch";
+import assets from "assets/assets";
+
 interface ChatBoxHeaderProps {
-  chat?: ChatListInterface
-  enable: boolean
+  enable: boolean;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -36,7 +37,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     upScrollLoading,
     chat: allChats,
     selectedChat,
-  } = useSelector((store: RootState) => store.chat);
+  } = useSelector((store: RootState ) => store.chat);
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) == String(selectedChat)
   );
@@ -75,6 +76,11 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const handleCancel = () => {
     setEdit(false);
   };
+  const handleKeyDown = (e: any) => {
+    if (e.keyCode == 13) {
+      handleUpdate();
+    }
+  };
 
   return (
     <Grid container className={classes.wrapper}>
@@ -88,24 +94,30 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       )}
       {myChat && (
         <>
-          <Grid item xs={3} md={1} className={classes.editWrapper}>
+          <Grid item xs={6} md={2} className={classes.editWrapper}>
             {!edit && (
-              <Create
-                onClick={() => {
-                  setEdit(true);
-                  setName(myChat.name);
-                }}
-                className={classes.editIcon}
-              />
+              <>
+                {myChat?.project && (
+                  <div className={classes.iconContainer}>
+                    <img
+                      src={assets.EditIcon}
+                      onClick={() => {
+                        setEdit(true);
+                        setName(myChat.name);
+                      }}
+                      className={classes.editIcon}
+                    />
+                  </div>
+                )}
+              </>
             )}
-          </Grid>
-          <Grid item xs={9} md={4} className={classes.usernameWrapper}>
             {edit ? (
               <div className={`${classes.editInputWrapper} editInputWrapper`}>
                 <TextField
                   inputProps={{ maxLength: 20 }}
                   value={name}
                   onChange={handleNameChange}
+                  onkeyDown={handleKeyDown}
                 />
                 <IconButton size="small" onClick={handleCancel}>
                   <Clear className={classes.cancelIcon} />
@@ -122,27 +134,30 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               </div>
             ) : (
               <>
-                <Typography className={classes.username}>
-                  {myChat?.name}
-                </Typography>
-                {myChat?.project && (
-                  <Typography className={classes.projectName}>
-                    Project:{" "}
-                    <span className={classes.projectTitle}>
-                      {" "}
-                      {myChat?.project?.title}{" "}
-                    </span>
+                <div className={classes.editProject}>
+                  <Typography className={classes.username}>
+                    {myChat?.name}
                   </Typography>
-                )}
+                  {myChat?.project && (
+                    <Typography className={classes.projectName}>
+                      Project:{" "}
+                      <span className={classes.projectTitle}>
+                        {" "}
+                        {myChat?.project?.title}{" "}
+                      </span>
+                    </Typography>
+                  )}
+                </div>
               </>
             )}
           </Grid>
-          <Grid item xs={6} className={classes.moreWrapper}>
+          <Grid item xs={8} className={classes.moreWrapper}>
             <MessageSearch />
-          </Grid>
-          <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props?.enable} />
           </Grid>
+          {/* <Grid item xs={1} className={classes.moreWrapper}>
+            <ChatUserMenu enable={props?.enable} />
+          </Grid> */}
         </>
       )}
     </Grid>
@@ -152,7 +167,27 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 export default ChatBoxHeader;
 
 const useStyles = makeStyles({
+  iconContainer:{
+    width: '30px'
+  },
+  editProject: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    fontWeight: "bold",
+    fontSize: 14,
+    paddingTop: 2,
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    paddingLeft: 16,
+    textOverflow: "ellipsis",
+    ["@media (max-width:960px)"]: {
+      justifyContent: "center",
+    },
+  },
   wrapper: {
+    justifyContent: " space-between",
+    padding: "0 50px 0 0",
     borderBottom: `1px solid ${colors.grey}`,
     height: 40,
     ["@media (max-width:960px)"]: {
@@ -162,19 +197,26 @@ const useStyles = makeStyles({
   editIcon: {
     cursor: "pointer",
     color: colors.textPrimary,
-    fontSize: 14,
+    fontSize: "34px !important",
     borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
     padding: 6,
+    width: '100%'
   },
   username: {
     fontSize: 14,
     fontWeight: "bold",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    fontStyle: "normal",
+    textOverflow: "ellipsis",
+    width: "120px",
   },
   editWrapper: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
+    // border: '1px solid #ecf0f1'
   },
   editInputWrapper: {
     marginTop: "auto",
@@ -221,7 +263,11 @@ const useStyles = makeStyles({
     },
   },
   projectName: {
+    whiteSpace: "nowrap",
+    overflow: "hidden",
     fontStyle: "normal",
+    textOverflow: "ellipsis",
+    width: "120px",
     fontWeight: 500,
     fontSize: 10,
   },

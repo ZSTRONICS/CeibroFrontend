@@ -44,7 +44,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
       success: (res: any) => {
         setSuccess(res);
         setOtp("");
-        toast.success("OTP Verified");
+        toast.success("email Verified");
         history.push("/login");
       },
       onFailAction: (err: any) => {
@@ -77,11 +77,11 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
       <div className={classes.loginForm}>
         {(success || loading) && (
           <Alert icon={!loading} severity="success">
-            {loading ? "Verifying OTP..." : "Register User Successfully"}
+            {loading ? "Verifying email..." : "Register User Successfully"}
           </Alert>
         )}
 
-        {error && <Alert severity="error">Invalid OTP</Alert>}
+        {/* {error && <Alert severity="error">Invalid OTP</Alert>} */}
 
         {showError && <Alert severity="error">Link expired</Alert>}
 

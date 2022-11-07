@@ -27,8 +27,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     <>
       {!url && (
         <div
-          className={getImageClass()}
-          style={{ background: props?.background || colors.secondaryGrey }}
+          className={classes.letterAvater}
         >
           {letters}
         </div>
@@ -49,14 +48,20 @@ const useStyles = makeStyles({
   outerWrapper: {
     border: `1px solid ${colors.secondaryGrey}`,
     background: colors.secondaryGrey,
-    width: "80%",
+    width: "40px",
     display: "flex",
     alignItems: "center",
     overflow: "hidden",
     justifyContent: "center",
-    height: 30,
-    maxWidth: 45,
     borderRadius: 4,
+  },
+  letterAvater:{
+    border: `1px solid ${colors.secondaryGrey}`,
+     padding: '8px 8px',
+     display: 'flex',
+     justifyContent: 'center',
+     alignItems:'center',
+      // marginTop: '5px' 
   },
   imgWrapper: {
     height: 80,

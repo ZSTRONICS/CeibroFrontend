@@ -44,7 +44,7 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
           userId: selectedUser?.value,
         },
         success: () => {
-          dispatch(getAllChats());
+           dispatch(getAllChats());
           toast.success("New member added successfully");
           setSelectedUser(null);
         },
@@ -58,7 +58,7 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
       const payload = {
         other: selectedChat,
         success: (res: any) => {
-          const myUsers = mapUsers(res.data);
+          const myUsers = mapUsers(res.data.message);
           setAvailableUsers(myUsers);
         },
       };

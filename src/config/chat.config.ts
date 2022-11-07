@@ -49,6 +49,7 @@ export const GET_ROOM_QUESTIONIAR = 'GET_ROOM_QUESTIONIAR'
 export const EDIT_ROOM_NAME = 'EDIT_ROOM_NAME'
 export const GO_TO_MESSAGES = 'GO_TO_MESSAGES'
 export const CREATE_SINGLE_ROOM = 'CREATE_SINGLE_ROOM'
+export const MY_SOCKET = 'MY_SOCKET'
 
 // users constants
 export const GET_ALL_USERS = 'GET_ALL_USERS'

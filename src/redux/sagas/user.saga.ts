@@ -29,7 +29,7 @@ const getMyAllInvites = apiCall({
 const acceptInvite = apiCall({
   type: ACCEPT_INVITE,
   method: 'post',
-  path: payload => `users/invite/accept/${payload?.other?.accepted}`,
+  path: payload => `users/invite/accept/${payload?.other?.accepted}/${payload?.other?.inviteId}`,
 })
 
 const getMyConnections = apiCall({
@@ -72,7 +72,7 @@ const getMyConnectionsCount = apiCall({
 const getUserById = apiCall({
   type: GET_USER_BY_ID,
   method: 'get',
-  path: payload => `/users/${payload.other.userId}`,
+  path: payload => `/user/${payload.other.userId}`,
 })
 
 const updateProfilePic = apiCall({
@@ -91,11 +91,12 @@ const getAvailableChatUsers = apiCall({
 const getAvailableUsers = apiCall({
   type: GET_AVAILABLE_USERS,
   method: 'get',
+ 
   path: payload => {
     let url = `/users/available`
-    if (payload.other) {
+   //if (payload.other) {
       url = `${url}?includeMe=true`
-    }
+  //  }
     return url
   },
 })

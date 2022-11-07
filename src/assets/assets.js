@@ -1,19 +1,18 @@
 import visual from "./images/Visual.png";
 import logo from "./images/logo.png";
-import contactIcon from "./images/contactIcon.png";
+import contactIcon from "./images/contactIcon.svg";
 import clipboardIcon from "./images/clipboardIcon.png";
 import moreIcon from "./images/moreIcon.png";
 import usersIcon from "./images/usersIcon.png";
-import pinIcon from "./images/pinIcon.png";
+import pinIcon from "./images/pin.svg";
 import mediaIcon from "./images/mediaIcon.png";
 import documentIcon from "./images/documentIcon.png";
 import sendIcon from "./images/sendIcon.png";
 import clearIcon from "./images/clearIcon.png";
-import addUser from "./images/addUser.png";
-import trashIcon from "./images/trashIcon.png";
-import blueDocument from "./images/blueDocument.png";
+import addUser from "./images/addUser.svg";
+import blueDocument from "./images/blueDocument.svg";
 import nudgeIcon from "./images/Nudge.png";
-import primaryNudgeIcon from "./images/primaryNudge.png";
+import primaryNudgeIcon from "./images/primaryNudge.svg";
 import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
 import sidebarChatIcon from "./images/sidebarChat.png";
@@ -38,12 +37,12 @@ import bluePencil from "./images/bluePencil.png";
 import logout from "./images/logout.png";
 import contactsBlack from "./images/contactsBlack.png";
 import whitePencil from "./images/whitePencil.png";
-import camera from "./images/camera.png";
-import mic from "./images/mic.png";
-import emoji from "./images/emoji.png";
+import camera from "./images/camera.svg";
+import mic from "./images/mic.svg";
+import emoji from "./images/emoji.svg";
 import usersFolder from "./images/userFolderIcon.png";
 import pencilFilled from "./images/pencilFilled.png";
-import blackPencil from "./images/blackPencil.png";
+import blackPencil from "./images/edit.svg";
 import calender from "./images/calender.png";
 
 import testProject1 from "./images/TestProject1.png";
@@ -55,8 +54,25 @@ import Add from "./images/Add.png";
 import message from "./sound/message.mp3";
 import blueSearch from "./images/blueSearch.png";
 import Defaulttask from "./images/Defaulttask.jpg";
-import InvitaionIcon from './images/Invitation.svg'
+import InvitaionIcon from './images/Invitation.svg';
+import filterIcon from './images/filterIcon.svg'
+import DeleteIcon from './images/DeleteIcon.svg'
+import EditIcon from './images/edit.svg';
+// material-imports-icon
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import SendIcon from '@mui/icons-material/Send';
 const assets = {
+  SendIcon,
+  SendOutlinedIcon,
+  DeleteIcon,
+  KeyboardArrowDown,
+  SearchOutlinedIcon,
+  EditIcon,
+  SupervisorAccountOutlinedIcon,
+  filterIcon,
   InvitaionIcon,
   sidebarDashboardIcon,
   sidebarFolderIcon,
@@ -74,7 +90,6 @@ const assets = {
   sendIcon,
   clearIcon,
   addUser,
-  trashIcon,
   blueDocument,
   nudgeIcon,
   primaryNudgeIcon,
