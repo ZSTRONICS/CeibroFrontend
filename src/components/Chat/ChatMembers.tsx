@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -22,6 +23,7 @@ const ChatMembers = () => {
     ? chat.find((room: any) => String(room._id) == String(selectedChat))
         ?.members
     : [];
+    
   const [searchText, setSearchText] = useState("");
   const confirm = useConfirm();
   const dispatch = useDispatch();
@@ -33,6 +35,10 @@ const ChatMembers = () => {
     e.stopPropagation();
     setBtnIndex(i);
   };
+  // const findAdmins=(arr:any)=>{
+  //   const admins = arr.filter((admin:any)=> admin.role === 'admin')
+  // }
+
   const handleMembersShow = (e: any) => {
     e.stopPropagation();
     setShow((prev)=> !prev)
@@ -71,7 +77,7 @@ const ChatMembers = () => {
 
   return (
     <div className="chat-members">
-      <ChatMemberFilters handleMembersShow={handleMembersShow} show={show}/>
+      <ChatMemberFilters handleMembersShow={handleMembersShow} show={show} findAdmins={findAdmins}/>
       <ChatMemberSearch value={searchText} handleChange={handleSearchChange} />
       {myMembers&& myMembers?.map?.((member: UserInterface, i: any) => {
         return (

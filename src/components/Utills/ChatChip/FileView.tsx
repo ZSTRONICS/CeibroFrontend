@@ -1,13 +1,12 @@
+//@ts-nocheck
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { Close } from '@material-ui/icons'
 import colors from '../../../assets/colors'
 import OutsideClickHandler from 'react-outside-click-handler';
 
-
 interface FileViewProps {
     handleClose: () => void
 }
-
 
 const FileView: React.FC<FileViewProps> = (props) => {
     
@@ -32,10 +31,10 @@ const FileView: React.FC<FileViewProps> = (props) => {
                             <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
                         </Grid>
                         <Grid item xs={3} className={classes.imageWrapper}>
-                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
+                             <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
                         </Grid>
                         <Grid item xs={3} className={classes.imageWrapper}>
-                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
+                             <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
                         </Grid>
 
                     </Grid>

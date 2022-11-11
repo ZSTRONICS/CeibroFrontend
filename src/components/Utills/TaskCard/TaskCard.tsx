@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Badge, Grid, Typography } from "@material-ui/core";

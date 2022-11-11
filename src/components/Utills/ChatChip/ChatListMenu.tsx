@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { IconButton, makeStyles, Typography } from "@material-ui/core"
 import { BookmarkBorder, Chat, Delete, Markunread, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { useConfirm } from "material-ui-confirm"
@@ -83,7 +84,7 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
             {/* <MoreVert className={classes.moreIcon} onClick={handleToggle} /> */}
             <IconButton onClick={handleToggle}>
                 <img 
-                    src={assets.moreIcon} 
+                      src={assets.moreIcon} 
                     className={classes.moreIcon} 
                 /> 
             </IconButton>
@@ -113,8 +114,8 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                             <div className={`${classes.menuWrapper} dropdown-menu pointer`} onClick={handleFavouriteClick}>
                                 {isFavourite? 
                                     // (<Star className={`${classes.star} ${classes.menuIcon}`} />):
-                                    (<img src={assets.favouriteFilledIcon} className={`width-16`} />): 
-                                    (<img src={assets.favouriteIcon} className={`width-16`} />)
+                                    ( <img src={assets.favouriteFilledIcon} className={`width-16`} />): 
+                                    ( <img src={assets.favouriteIcon} className={`width-16`} />)
                                     // (<StarBorder className={`${classes.star} ${classes.menuIcon}`} />)
                                 }
                                 <Typography className={`${classes.menuText} align-center ${classes.starText}`}>

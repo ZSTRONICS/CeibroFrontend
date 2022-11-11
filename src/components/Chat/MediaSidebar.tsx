@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Badge } from "@material-ui/core";
 import { Image, Person, PersonOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
@@ -120,7 +121,7 @@ const MediaSidebar = () => {
                 Chat members
                 <div className={`${classes.addIconContainerSide}`}>
                 <img
-                  src={assets.Add}
+                    src={assets.Add}
                   onClick={handleAddMember}
                   className={`${classes.addIcon}`}
                 />
@@ -136,13 +137,13 @@ const MediaSidebar = () => {
           <span>
             <Badge
             overlap='circle'
-              badgeContent={pinnedMessages?.length}
+              badgeContent={pinnedMessages?.message?.length}
               color="secondary"
               classes={{
                 badge: classes.font1,
               }}
             >
-              <img src={assets.pinIcon} />
+              <img src={assets.pinIcon}  />
             </Badge>
             {/* <AiOutlinePushpin style={{ fontSize: 20 }} color="action" /> */}
             {/* <img src={assets.pinIcon} /> */}

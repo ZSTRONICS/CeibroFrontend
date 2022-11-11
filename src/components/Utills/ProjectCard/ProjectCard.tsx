@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { FC, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Chip, Grid, Typography } from "@material-ui/core";
@@ -51,7 +52,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         onClick={handleProjectClick}
       >
         <ImageCard>
-          <Image src={ imgSrc} />
+          <Image   src={ imgSrc} />
           <Status>
             <div
               className={classes.status}
@@ -104,19 +105,19 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.folderIcon} className={`w-16`} />
+             <img src={assets.folderIcon} className={`w-16`} />
             <Typography className={classes.iconText}>
               {docsCount} doc(s)
             </Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.blueUser} className={`width-16`} />
+             <img src={assets.blueUser} className={`width-16`} />
             <Typography className={classes.iconText}>{usersCount}</Typography>
           </div>
 
           <div className={classes.iconChip}>
-            <img src={assets.chatIcon} className={`w-16`} />
+             <img src={assets.chatIcon} className={`w-16`} />
             <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
         </Grid>

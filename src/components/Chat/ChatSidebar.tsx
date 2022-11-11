@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { useRef, useState } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import {

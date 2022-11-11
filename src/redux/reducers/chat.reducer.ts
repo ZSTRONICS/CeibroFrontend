@@ -76,13 +76,13 @@ interface ChatReducerInt {
   roomQuestioniars: any
   createQuestioniarLoading: boolean
   blockDown: boolean
-  isGroupChat:boolean
+  isGroupChat: boolean
 }
 
 const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
-  isGroupChat:false,
+  isGroupChat: false,
   selectedChat: null,
   createChatLoading: false,
   type: 'all',
@@ -505,6 +505,9 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     default:
       return state
   }
+
 }
+
+
 
 export default ChatReducer

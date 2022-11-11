@@ -1,21 +1,15 @@
-import { Badge, IconButton, Grid, makeStyles, Typography } from '@material-ui/core'
+import { Badge, Grid, makeStyles, Typography } from '@material-ui/core'
 import {
-  Bookmark,
-  BookmarkBorder,
-  DockTwoTone,
-  MoreVert,
   Star,
   StarBorder,
 } from '@material-ui/icons'
-import { BsDot } from 'react-icons/bs'
 import colors from '../../../assets/colors'
 import NameAvatar from '../Others/NameAvatar'
 import ChatListMenu from './ChatListMenu'
-import { ChatListInterface, ChatMembers, ChatMessageInterface } from '../../../constants/interfaces/chat.interface'
+import { ChatListInterface} from '../../../constants/interfaces/chat.interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../redux/reducers'
 import { addToFavourite, getAllChats } from '../../../redux/action/chat.action'
-import { ProjectInterface } from "constants/interfaces/project.interface";
 
 interface ChatListInterfaceProps {
   chat: ChatListInterface
@@ -36,11 +30,11 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
   const dispatch = useDispatch()
   let avaterInfo:any ={}
 
-  const chatMemberInit = chat.isGroupChat === false && chat.members.filter(item=> item.id !==user.id).map((item:any)=>{
+  const chatMemberInit = chat.isGroupChat === false && chat.members.filter(item=> item.id !==user.id).map((item:any)=>(
       avaterInfo.firstName= item.firstName,
       avaterInfo.surName= item.surName,
       avaterInfo.picUrl= item.profilePic
-  })
+  ))
 
   const individualFirstName = avaterInfo.firstName
   const individualSurName = avaterInfo.surName

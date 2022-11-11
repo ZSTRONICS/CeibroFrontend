@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
@@ -16,7 +17,7 @@ const SeenBy: React.FC<SeenByInt> = (props) => {
     firstName?.[0]?.toUpperCase?.() + (surName?.[0]?.toUpperCase?.() || "");
   return (<>
       { url ?(<div className={classes.seenAvatar}>
-     <img src={url} className={classes.seenChip} />
+      <img src={url} className={classes.seenChip} />
     </div>):(
           <div className={classes.lettersAvatar}>
           {letters}

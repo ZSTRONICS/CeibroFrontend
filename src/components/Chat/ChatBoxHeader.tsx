@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { useState } from "react";
 import {
   CircularProgress,
   Grid,
@@ -5,7 +7,7 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
-import { Cancel, Check, Clear, Create, Edit } from "@material-ui/icons";
+import { Check, Clear } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
@@ -15,15 +17,16 @@ import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 import TextField from "components/Utills/Inputs/TextField";
-import { FormEvent, HTMLInputTypeAttribute, useState } from "react";
 import { editRoomName } from "redux/action/chat.action";
 import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
 import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
+import CustomImg from "components/CustomImg";
 
 interface ChatBoxHeaderProps {
   enable: boolean;
+  chat: ChatListInterface
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -39,7 +42,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     selectedChat,
   } = useSelector((store: RootState ) => store.chat);
   const myChat = allChats?.find?.(
-    (room: any) => String(room._id) == String(selectedChat)
+    (room: any) => String(room._id) === String(selectedChat)
   );
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,7 +58,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
           setEdit(false);
           let allRooms = JSON.parse(JSON.stringify(allChats));
           const index = allRooms?.findIndex?.(
-            (room: any) => String(room._id) == String(selectedChat)
+            (room: any) => String(room._id) === String(selectedChat)
           );
           if (index > -1) {
             allRooms[index].name = name;
@@ -77,7 +80,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     setEdit(false);
   };
   const handleKeyDown = (e: any) => {
-    if (e.keyCode == 13) {
+    if (e.keyCode === 13) {
       handleUpdate();
     }
   };
@@ -99,14 +102,22 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               <>
                 {myChat?.project && (
                   <div className={classes.iconContainer}>
-                    <img
+                    <img 
+                    src={assets.EditIcon}
+                    onClick={() => {
+                      setEdit(true);
+                      setName(myChat.name);
+                    }}
+                    className={classes.editIcon}
+                    />
+                    {/* <img
                       src={assets.EditIcon}
                       onClick={() => {
                         setEdit(true);
                         setName(myChat.name);
                       }}
                       className={classes.editIcon}
-                    />
+                    /> */}
                   </div>
                 )}
               </>

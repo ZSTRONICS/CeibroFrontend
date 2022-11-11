@@ -1,6 +1,6 @@
 // ssh -i "ceibro_new_key.pem" ubuntu@ec2-16-171-45-183.eu-north-1.compute.amazonaws.com
 
-import React, { createContext, useEffect, useState, useRef } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import "fontsource-roboto";
 import "moment-timezone";
@@ -13,15 +13,9 @@ import ViewQuestioniarDrawer from "./components/Chat/Questioniar/ViewQuestioniar
 import CreateProjectDrawer from "./components/Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 import CreateTaskDrawer from "./components/Tasks/Create-Task/CreateTaskDrawer";
 import "./components/Topbar/ProfileBtn.css";
-import {
-  PUSH_MESSAGE,
-  RECEIVE_MESSAGE,
-  REFRESH_CHAT,
-} from "./config/chat.config";
 import RouterConfig from "./navigation/RouterConfig";
 
 import { RootState } from "./redux/reducers";
-import { SERVER_URL } from "./utills/axios";
 import {
   getAllChats,
   setMessagesRead,
@@ -30,31 +24,35 @@ import {
 import {
   getAppSelectedChat,
   getSocket,
-  initSocket,
+  InitSocket,
   isSocketConnected,
+  
 } from "services/socket.services";
+import { PUSH_MESSAGE, RECEIVE_MESSAGE } from "config/chat.config";
 import { isMessageInStore } from "components/Chat/Chat";
-import { select } from "redux-saga/effects";
+
 
 interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
-  const chatBox: any = document.getElementById("chatBox");
+  InitSocket();
+
 
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   const drawerOpen = useSelector(
     (store: RootState) => store.chat.openViewQuestioniar
   );
 
-  const onSocketMsgRecvCallBack = () => {
+
     getSocket().on(RECEIVE_MESSAGE, (payload: any) => {
+      const chatBox: any = document.getElementById("chatBox");
       chatBox.scrollTop = chatBox.scrollHeight;
       const selectedChat = getAppSelectedChat();
       const data = payload.data;
 
       if (String(data.from) !== String(user?.id)) {
-        if (String(data.chat) == String(selectedChat)) {
+        if (String(data.chat) === String(selectedChat)) {
           dispatch({
             type: PUSH_MESSAGE,
             payload: data.message,
@@ -64,7 +62,7 @@ const App: React.FC<MyApp> = () => {
           dispatch(getAllChats());
           dispatch(getUnreadCount());
         }
-      } else if (String(data.chat) == String(selectedChat)) {
+      } else if (String(data.chat) === String(selectedChat)) {
         if (isMessageInStore(payload.myId)) {
           dispatch(
             updateMessageById({
@@ -84,16 +82,16 @@ const App: React.FC<MyApp> = () => {
         dispatch(getAllChats());
       }
     });
-  };
 
-  useEffect(() => {
-    if (isLoggedIn) {
-      if (!isSocketConnected()) {
-        initSocket();
-        onSocketMsgRecvCallBack();
-      }
-    }
-  }, [isLoggedIn]);
+
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     // if (!isSocketConnected()) {
+  //     //   initSocket
+  //     //   onSocketMsgRecvCallBack
+  //     // }
+  //   }
+  // }, [isLoggedIn]);
   return (
     <div className="App">
       <CssBaseline />

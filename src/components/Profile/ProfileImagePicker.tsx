@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import colors from "../../assets/colors";

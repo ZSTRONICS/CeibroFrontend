@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Badge,
   Button,
@@ -112,7 +113,7 @@ const Topbar = (props: any) => {
             <Typography className={classes.notification}>
               <Badge badgeContent={4}>
                 <img
-                  src={assets.notification}
+                    src={assets.notification}
                   className={`${classes.bell} width-16`}
                 />
               </Badge>

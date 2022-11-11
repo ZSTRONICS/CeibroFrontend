@@ -5,26 +5,15 @@ import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
 import "./inputText.css";
 import colors from "../../../assets/colors";
 import { FormControlLabel, makeStyles } from "@material-ui/core";
+import CustomCheckbox from "./Checkbox";
 
-const CustomCheckbox = withStyles({
-  root: {
-    color: colors.darkYellow,
-    "&$checked": {
-      color: colors.darkYellow,
-    },
-    width: 16,
-    height: 16,
-    padding: 5,
-  },
-  checked: {},
-})((props: CheckboxProps) => <Checkbox color="default" {...props} />);
 
 interface InputCheckboxInterface {
   checked: boolean;
   label?: string;
   onChange?: (e: boolean) => void;
 }
-``
+
 const InputCheckbox: FC<InputCheckboxInterface> = (props) => {
   const { checked, label } = props;
   const classes = useStyles();

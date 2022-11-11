@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Typography, Button, makeStyles, IconButton } from "@material-ui/core";

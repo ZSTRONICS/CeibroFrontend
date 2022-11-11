@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Avatar,
   Button,
@@ -54,37 +55,37 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
     dispatch(taskActions.openDrawer())
   }
 
-  // const handleDelete = () => {
-  //   const id: string = connectionId
-  //   const payload: any = {
-  //     other: {
-  //       id,
-  //     },
-  //     params: {
-  //       isEmailInvited: false,
-  //     },
-  //     success: () => dispatch(getMyConnections()),
-  //   }
-  //   dispatch(deleteMyConnection(payload))
-  //   handleToggle()
-  // }
+  const handleDelete = () => {
+    const id: string = connectionId
+    const payload: any = {
+      other: {
+        id,
+      },
+      params: {
+        isEmailInvited: false,
+      },
+      success: () => dispatch(getMyConnections()),
+    }
+    dispatch(deleteMyConnection(payload))
+    handleToggle()
+  }
 
   const startRoom = () => {
     const payload = { other: { id: getUser?.id }, success: () => history.push('chat') }
     dispatch(createSingleRoom(payload))
   }
 
-  //   const user = {
-  //     image:
-  //       "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
-  //     name: "Kristo",
-  //     surname: "Vaughn",
-  //     email: "abc123@gmail.com",
-  //     contact: "+372 5679 8908",
-  //     company: "My company Ltd.",
-  //     vat: "1324343554",
-  //     location: "Vesse 12, Tallinn, Harjumaa 12345",
-  //   };
+    // const user = {
+    //   image:
+    //     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
+    //   name: "Kristo",
+    //   surname: "Vaughn",
+    //   email: "abc123@gmail.com",
+    //   contact: "+372 5679 8908",
+    //   company: "My company Ltd.",
+    //   vat: "1324343554",
+    //   location: "Vesse 12, Tallinn, Harjumaa 12345",
+    // };
 
   return (
     <>

@@ -1,15 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+//@ts-nocheck
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import {
-  AttachFile,
-  Close,
-  EmojiEmotionsOutlined,
-  Image,
-  Mic,
-} from "@material-ui/icons";
+import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";
 import Picker from "emoji-picker-react";
-import { FormEvent, useContext, useEffect, useRef, useState } from "react";
-import { IoDocument } from "react-icons/io5";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import assets from "../../assets/assets";
@@ -18,22 +13,19 @@ import colors from "../../assets/colors";
 import {
   PUSH_MESSAGE,
   SET_REPLY_TO_ID,
-  RECEIVE_MESSAGE,
   SEND_MESSAGE,
 } from "../../config/chat.config";
 import {
-  getRoomMedia,
-  getAllChats,
   openQuestioniarDrawer,
   sendReplyMessage,
-  setMessagesRead,
   updateMessageById,
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
-import { getSocket } from "services/socket.services";
+import { getSocket} from "services/socket.services";
+import CustomImg from "components/CustomImg";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -42,7 +34,7 @@ interface ChatFormInterface {
 const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [open, setOpen] = useState(false);
   const [text, setText] = useState("");
-  const messageRef= useRef<any>()
+  const messageRef = useRef<any>();
   const { enable } = props;
   const classes = useStyles();
   const {
@@ -56,7 +48,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
-  const chatBox:any = document.getElementById("chatBox");
 
   useEffect(() => {
     setFiles(null);
@@ -140,7 +131,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       payload.files =
         files && Object.keys(files)?.length > 0 ? filesPreview : [];
-   
+
       const myId = new Date().valueOf();
       payload.myId = myId;
       const newMessage = {
@@ -155,7 +146,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
       getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
-  
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
@@ -165,6 +155,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setFilesPreview(null);
       setText("");
     }
+    
   };
 
   const handleFileChange = (e: any) => {
@@ -284,7 +275,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             </div>
           )}
           <input
-          ref={messageRef}
+            ref={messageRef}
             value={text}
             onChange={handleTextChange}
             onKeyPress={handleKeyDown}
@@ -315,12 +306,15 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               onClick={handleSend}
               className={classes.sendIcon}
             /> */}
-            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: 'transparent' }} >
-            <img
+            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent"}} >
+               <img
               src={assets.sendIcon}
               // onClick={handleSend}
               className={classes.sendIcon}
-            />
+            /> 
+              {/* <assets.SendIcon
+                className={classes.sendIcon}
+              /> */}
             </Button>
           </div>
         </Grid>
@@ -349,14 +343,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       )}
       {selectedChat && (
         <Grid item xs={12} className={classes.btnWrapper}>
-          <img
+      <img
             src={assets.emoji}
             onClick={toggleEmoji}
             className={"width-16 pointer"}
           />
 
           <label className={classes.customFileUpload}>
-            <img src={assets.clip} className="width-16 pointer" />
+            <CustomImg alt="" src={assets.clip} className="width-16 pointer" />
             <input
               disabled={!enable}
               type="file"

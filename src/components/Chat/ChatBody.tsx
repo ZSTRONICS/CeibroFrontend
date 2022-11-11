@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Grid, makeStyles } from "@material-ui/core";
 import { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,10 +19,13 @@ import {
 } from "../../config/chat.config";
 import NoConversation from "./NoConversation";
 
-const ChatBody= memo(() => {
+interface ChatBodyInt {
+  messages: ChatMessageInterface[];
+}
 
+const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
   const messages: ChatMessageInterface[] = useSelector(
-    (store: RootState) => store.chat.messages
+    (store: RootState) => store.chat?.messages
   );
 
   const [blockLocal, setBlockLocal] = useState(false);
@@ -38,15 +43,17 @@ const ChatBody= memo(() => {
   let chatBox = document.getElementById("chatBox")
 
   useEffect(() => {
+   
     if (selectedChat) {
       const payload = {
         other: {
           roomId: selectedChat,
+          limit: 101,
         },
       };
       dispatch(getRoomMessages(payload));
     }
-    return ()=>{
+    return ():void=>{
       selectedChat
       null
     }
@@ -61,7 +68,7 @@ const ChatBody= memo(() => {
     }
     return () => {
       chatBox?.removeEventListener("scroll", () => {});
-      null
+      
     };
   }, [blockPagination, allowChangeBlock, blockLocal]);
 
@@ -100,7 +107,7 @@ const ChatBody= memo(() => {
       blockDown
       clearTimeout(viewport)
     }
-  }, [messages, blockDown]);
+  }, [messages?.length, selectedChat, blockDown]);
 
   useEffect(() => {
     if (allowScroll) {
@@ -128,7 +135,7 @@ const ChatBody= memo(() => {
   return ()=>{
       allowScroll
     }
-  }, [viewport]);
+  }, [viewport, allowScroll]);
 
   if (!selectedChat) {
     return <NoConversation />;
@@ -140,7 +147,10 @@ const ChatBody= memo(() => {
       id="chatBox"
       container
     >
-      <MessageChat />
+      {messages &&
+        messages?.map?.((message: ChatMessageInterface) => {
+          return <MessageChat message={message} />;
+        })}
       <AddTempChatMember />
     </Grid>
   );

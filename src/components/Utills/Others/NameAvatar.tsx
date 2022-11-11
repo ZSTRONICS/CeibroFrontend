@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { makeStyles } from "@material-ui/core";
 import colors from "../../../assets/colors";
 

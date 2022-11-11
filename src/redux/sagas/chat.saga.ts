@@ -295,9 +295,7 @@ function* goToMessage(action: ActionInterface): Generator<any> {
 
 
 function* updateMessageById(action: ActionInterface): Generator<any> {
-  const {
-    payload: { other },
-  } = action;
+  const { payload: { other },} = action;
   
   const messages: any = yield select((state: RootState) => state.chat.messages);
 
@@ -305,7 +303,7 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
     (state: RootState) => state.chat.loadingMessages
   );
   const newLoadingMessages = loadingMessages?.filter(
-    (message: any) => String(message) !== String(other.oldMessageId)
+    (id: any) => String(id) !== String(other.oldMessageId)
   );
   yield put({
     type: SET_LOADING_MESSAGES,
