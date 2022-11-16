@@ -143,7 +143,7 @@ const Title = () => {
               variant="h6"
               component="h6"
             >
-              My connections
+              My Connections
             </Typography>
           </div>
         </>

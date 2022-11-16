@@ -1,7 +1,7 @@
 import { Router, Switch, Route, Redirect } from "react-router-dom";
 import Login from "../components/Auth/Login/Login";
 // import ForgetPassword from "components/Auth/Login/ForgetPassword";
-import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
+// import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
 import ForgetPassword from "components/Auth/ForgetPassword/ForgetPassword";
 import ResetPassword from "components/Auth/ResetPassword/ResetPassword";
 import Register from "components/Auth/Register/Register";
@@ -22,11 +22,8 @@ export const appHistory = createBrowserHistory();
 interface Configs {}
 
 const RouterConfig: React.FC<Configs> = () => {
-  const notShow = false
   return (
     <>
-     {/* component used here for availability of modal on all routes*/}
-     <div style={{opacity: 0, visibility: 'hidden',width:0,height:0}}><ViewInvitations /></div> 
       <Router history={appHistory}>
         <Switch>
           <Redirect exact from="/" to="/login" />

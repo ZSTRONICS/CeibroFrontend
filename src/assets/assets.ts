@@ -65,8 +65,14 @@ import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccount
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import SendIcon from '@mui/icons-material/Send';
+import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
+import PeopleAltOutlinedIcon  from '@mui/icons-material/PeopleAltOutlined';
+import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 
 const assets= {
+  ClearOutlinedIcon,
+  PeopleAltOutlinedIcon,
+  ChatOutlinedIcon,
   SendIcon,
   SendOutlinedIcon,
   DeleteIcon,

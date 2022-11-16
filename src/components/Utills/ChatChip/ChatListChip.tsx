@@ -1,90 +1,113 @@
-import { Badge, Grid, makeStyles, Typography } from '@material-ui/core'
-import {
-  Star,
-  StarBorder,
-} from '@material-ui/icons'
-import colors from '../../../assets/colors'
-import NameAvatar from '../Others/NameAvatar'
-import ChatListMenu from './ChatListMenu'
-import { ChatListInterface} from '../../../constants/interfaces/chat.interface'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../redux/reducers'
-import { addToFavourite, getAllChats } from '../../../redux/action/chat.action'
+import { Badge, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Star, StarBorder } from "@material-ui/icons";
+import colors from "../../../assets/colors";
+import NameAvatar from "../Others/NameAvatar";
+import ChatListMenu from "./ChatListMenu";
+import { ChatListInterface } from "../../../constants/interfaces/chat.interface";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../redux/reducers";
+import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 
 interface ChatListInterfaceProps {
-  chat: ChatListInterface
-  handleClick?: (e: any) => void
+  chat: ChatListInterface;
+  handleClick?: (e: any) => void;
 }
 
-const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
-  const classes = useStyles()
+const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
+  const classes = useStyles();
 
-  const { chat } = props
-  
-  const { name, lastMessage, unreadCount, lastMessageTime, project} = chat
+  const { chat } = props;
 
-  const { user } = useSelector((state: RootState) => state.auth)
-  const selectedChat = useSelector((state: RootState) => state.chat.selectedChat)
+  const { name, lastMessage, unreadCount, lastMessageTime, project } = chat;
+
+  const { user } = useSelector((state: RootState) => state.auth);
+  const selectedChat = useSelector(
+    (state: RootState) => state.chat.selectedChat
+  );
   // const { projects } = useSelector((state: RootState) => state.project);
 
-  const dispatch = useDispatch()
-  let avaterInfo:any ={}
+  const dispatch = useDispatch();
+  let avaterInfo: any = {};
+  let chatMemberInit: any;
 
-  const chatMemberInit = chat.isGroupChat === false && chat.members.filter(item=> item.id !==user.id).map((item:any)=>(
-      avaterInfo.firstName= item.firstName,
-      avaterInfo.surName= item.surName,
-      avaterInfo.picUrl= item.profilePic
-  ))
+  if (chat.isGroupChat === false) {
+    let chatMember = chat.members.filter((item) => item.id !== user.id);
+    if (chatMember?.length === 0) {
+      chatMember = chat.removedMembers;
+    }
 
-  const individualFirstName = avaterInfo.firstName
-  const individualSurName = avaterInfo.surName
-  const individualPicUrl = avaterInfo.picUrl
+    chatMemberInit = chatMember
+      .filter((item) => item.id !== user.id)
+      .map((item: any) => (
+        (avaterInfo.firstName = item.firstName),
+          (avaterInfo.surName = item.surName),
+          (avaterInfo.picUrl = item.profilePic)
+      ));
+  }
+
+  const individualFirstName = avaterInfo.firstName;
+  const individualSurName = avaterInfo.surName;
+  const individualPicUrl = avaterInfo.picUrl;
 
   const handleClick = () => {
-    props.handleClick?.(chat)
-  }
+    props.handleClick?.(chat);
+  };
 
   const getStyles = () => {
     return {
-      backgroundColor: String(selectedChat) === String(chat._id) ? colors.lightGrey : colors.white,
-    }
-  }
+      backgroundColor:
+        String(selectedChat) === String(chat._id)
+          ? colors.lightGrey
+          : colors.white,
+    };
+  };
 
   const handleFavouriteClick = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     dispatch(
       addToFavourite({
         other: chat._id,
         success: () => {
-          // console.log('add to fav here need only fav api call')
-           dispatch(getAllChats())
+          dispatch(getAllChats());
         },
       })
-    )
-  }
+    );
+  };
 
-  const bookmarked = chat?.pinnedBy?.includes(user?.id)
+  const bookmarked = chat?.pinnedBy?.includes(user?.id);
 
   return (
-    <Grid onClick={handleClick} className={classes.chatListWrapper} container style={getStyles()}>
+    <Grid
+      onClick={handleClick}
+      className={classes.chatListWrapper}
+      container
+      style={getStyles()}
+    >
       <Grid container>
         {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
           {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
         </Grid> */}
         <Grid item xs={2} className={classes.avatarWrapper}>
-         {chatMemberInit?(
-          <NameAvatar background="white" firstName={individualFirstName} surName={individualSurName} url={individualPicUrl}/>
-         ):(
-          <NameAvatar background="white" firstName={name} />
-         ) 
-          }
+          {chatMemberInit ? (
+            <NameAvatar
+              background="white"
+              firstName={individualFirstName}
+              surName={individualSurName}
+              url={individualPicUrl}
+            />
+          ) : (
+            <NameAvatar background="white" firstName={name} />
+          )}
         </Grid>
 
         <Grid item xs={6} className={classes.messageDetailWrapper}>
-        {chat.isGroupChat? 
-         <Typography className={classes.userName}>{name}</Typography> :
-         <Typography className={classes.userName}>{`${individualFirstName} ${individualSurName}`}</Typography>
-         }
+          {chat.isGroupChat ? (
+            <Typography className={classes.userName}>{name}</Typography>
+          ) : (
+            <Typography
+              className={classes.userName}
+            >{`${individualFirstName} ${individualSurName}`}</Typography>
+          )}
           {unreadCount && unreadCount > 0 && (
             <Typography className={classes.message}>
               {lastMessage?.message?.substr(0, 22)}
@@ -102,7 +125,11 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
           </div>
           <div className={classes.timeWrapper}>
             {unreadCount && unreadCount > 0 && (
-              <Badge overlap='circle' badgeContent={unreadCount} color="error"></Badge>
+              <Badge
+                overlap="circular"
+                badgeContent={unreadCount}
+                color="error"
+              ></Badge>
             )}
             <Typography className={classes.time}>{lastMessageTime}</Typography>
           </div>
@@ -115,7 +142,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
       <Grid container>
         <Grid item xs={2}></Grid>
         <Grid item xs={6} style={{ paddingLeft: 6 }}>
-          {project?.title&& (
+          {project?.title && (
             <Typography className={classes.chatProject}>
               <span>Project: &nbsp;&nbsp;</span>
               <span className={classes.chatProjectName}>{project.title}</span>
@@ -124,17 +151,17 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = props => {
         </Grid>
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
-export default ChatListChip
+export default ChatListChip;
 
 const useStyles = makeStyles({
   chatListWrapper: {
     padding: 0,
     height: 70,
     border: `0.5px solid ${colors.grey}`,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   // bookMarkWrapper: {
   //   padding: 0,
@@ -146,28 +173,28 @@ const useStyles = makeStyles({
     marginTop: 15,
     width: 8,
     height: 8,
-    borderRadius: '50%',
+    borderRadius: "50%",
     background: `linear-gradient(180deg, #F1B740 0%, #FF7A00 100%)`,
   },
   avatarWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
   messageDetailWrapper: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "flex-start",
     paddingLeft: 6,
     paddingTop: 4,
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
   },
   userName: {
     fontSize: 14,
     fontWeight: 500,
-    paddingTop: 5
+    paddingTop: 5,
   },
   message: {
     fontSize: 12,
@@ -182,20 +209,20 @@ const useStyles = makeStyles({
   },
   chatProjectName: {
     fontSize: 10,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.textPrimary,
   },
   timeOuterWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingRight: 5,
   },
   timeWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
+    display: "flex",
+    alignItems: "center",
+    flexDirection: "column",
+    justifyContent: "space-evenly",
   },
   time: {
     fontSize: 12,
@@ -209,4 +236,4 @@ const useStyles = makeStyles({
     color: colors.darkYellow,
     fontSize: 18,
   },
-})
+});

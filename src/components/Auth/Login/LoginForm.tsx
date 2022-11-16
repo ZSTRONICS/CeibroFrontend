@@ -47,7 +47,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
   const [error, setError] = useState<boolean>(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
-
+  
   const handleSubmit = () => {
     setError(false);
     setLockError(false);
@@ -56,6 +56,9 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       body: {
         email,
         password,
+      },
+      success: (_res: any) => {
+        toast.success("logged in successfully");
       },
       onFailAction: (err: any) => {
         if (err) {
@@ -92,7 +95,6 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       body: { email },
       success: () => {
         toast.success("Please check your email");
-
         history.push("/login");
       },
     };

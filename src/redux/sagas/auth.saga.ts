@@ -1,5 +1,5 @@
-import { toast } from "react-toastify";
 import { REGISTER } from "redux-persist/es/constants";
+import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import {
   CREATE_ROOM,
@@ -20,9 +20,6 @@ const loginRequest = apiCall({
   type: LOGIN,
   method: "post",
   path: "/auth/login",
-  success: (_res: any) => {
-    toast.success("logged in successfully");
-  },
 });
 
 const verifyEmail = apiCall({

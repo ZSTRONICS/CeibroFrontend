@@ -21,9 +21,10 @@ import NoConversation from "./NoConversation";
 
 interface ChatBodyInt {
   messages: ChatMessageInterface[];
+  enable:boolean
 }
 
-const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
+const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
   );
@@ -48,7 +49,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
       const payload = {
         other: {
           roomId: selectedChat,
-          limit: 101,
+          limit: 21,
         },
       };
       dispatch(getRoomMessages(payload));
@@ -149,7 +150,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo((props) => {
     >
       {messages &&
         messages?.map?.((message: ChatMessageInterface) => {
-          return <MessageChat message={message} />;
+          return <MessageChat message={message} enable={enable} />;
         })}
       <AddTempChatMember />
     </Grid>

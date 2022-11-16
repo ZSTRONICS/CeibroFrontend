@@ -11,7 +11,9 @@ export const CHAT_LIST: ChatListInterface[] = [
         _id: "234",
         isGroupChat: false,
         initiator:'12a',
-        members:[]
+        members:[],
+        removedMembers: [],
+        access:[]
     }
 ]
 

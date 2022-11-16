@@ -114,7 +114,7 @@ const getUpRoomMessages = apiCall({
   path: (payload: any) => 
      "/chat/room/messages/"+
      payload.other.roomId+
-     `?lastMessageId=${payload?.other.lastMessageId}&limit=99`,
+     `?lastMessageId=${payload?.other.lastMessageId}&limit=21`,
 });
 
 const getDownRoomMessages = apiCall({
@@ -159,7 +159,7 @@ const saveQuestioniarAnswers = apiCall({
 const deleteConversation = apiCall({
   type: DELETE_CONVERSATION,
   method: "delete",
-  path: (payload: any) => "/chat/room/" + payload.other,
+  path: (payload: any) => "/chat/room/removeChatRoom/" + payload.other,
 });
 
 const editRoomName = apiCall({
@@ -385,7 +385,7 @@ function* chatSaga() {
   yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
   // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
   yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
-  // yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
+  yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
   yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);

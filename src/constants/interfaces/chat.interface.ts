@@ -29,6 +29,8 @@ export interface ChatListInterface {
   isGroupChat: boolean;
   initiator:string
   members:ChatMembers[]
+  removedMembers:ChatMembers[]
+  access:[]
 }
 
 export interface ChatMessageInterface {

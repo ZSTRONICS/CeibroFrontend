@@ -24,8 +24,8 @@ import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
-import { getSocket} from "services/socket.services";
 import CustomImg from "components/CustomImg";
+import {socket} from "services/socket.services"
 
 interface ChatFormInterface {
   enable: boolean;
@@ -122,7 +122,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       let replyMessage = null;
       if (replyToId) {
         replyMessage = messages?.find(
-          (msg: any) => String(msg._id) == String(replyToId)
+          (msg: any) => String(msg._id) === String(replyToId)
         );
         if (replyMessage) {
           replyMessage.id = replyMessage._id;
@@ -132,7 +132,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       payload.files =
         files && Object.keys(files)?.length > 0 ? filesPreview : [];
 
-      const myId = new Date().valueOf();
+      const myId = String(new Date().valueOf());
       payload.myId = myId;
       const newMessage = {
         sender: user,
@@ -145,7 +145,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
-      getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
+      socket.getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
@@ -307,7 +307,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               className={classes.sendIcon}
             /> */}
             <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent"}} >
+              
                <img
+               alt=""
               src={assets.sendIcon}
               // onClick={handleSend}
               className={classes.sendIcon}

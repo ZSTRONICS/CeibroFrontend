@@ -33,10 +33,11 @@ import { useMediaQuery } from 'react-responsive'
 
 interface MessageChatProps {
   message: ChatMessageInterface
+  enable:boolean
 }
 
 const MessageChat: React.FC<MessageChatProps> = props => {
-  const { message } = props
+  const { message,enable } = props
   const {
     replyOf,
     _id,
@@ -140,7 +141,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
       formdata.append('message', text)
       formdata.append('chat', selectedChat)
 
-      const myId = new Date().valueOf()
+      const myId = String(new Date().valueOf())
       const newMessage = {
         sender: user,
         time: '1 seconds ago',
@@ -180,12 +181,12 @@ const MessageChat: React.FC<MessageChatProps> = props => {
 
     // bodyRef && bodyRef?.current?.scrollToEnd()
   }
-  
+  const senderUserId = (sender?.id === user.id)
   return (
     <>
     <Grid
       container
-      justifyContent={myMessage ? 'flex-end' : 'flex-start'}
+      justifyContent={myMessage || senderUserId ? 'flex-end' : 'flex-start'}
       className={classes.outerWrapper}
       id={_id}>
       {message.id && loadingMessages?.includes?.(message.id) && (
@@ -225,10 +226,10 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                   </div>
                   {!isTabletOrMobile && type !== 'questioniar' && (
                     <div className={classes.quickReplyWrapper}>
-                     {sender?.id === user.id ? 
+                     {(sender?.id === user.id) ? 
                      <></>
                     : <>
-                      <button
+                      {enable&&<><button
                         className={classes.quickBtn}
                         style={getQuickBtnStyles()}
                         onClick={() => handleSend('OK')}
@@ -248,7 +249,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                         onClick={() => handleSend('Done')}
                       >
                         Done
-                      </button>
+                      </button></>}
                       </>
                     }
                     </div>
@@ -282,13 +283,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                       </Grid>
                     )
                   })}
-                  {/* <Grid item xs={2} className={classes.imageWrapper}>
-                                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
-                                        </Grid>
-                                        <Grid item xs={2} className={classes.imageWrapper}>
-                                            <img src={"https://cdn.pixabay.com/photo/2021/08/25/20/42/field-6574455__480.jpg"} className={classes.image}/>
-                                        </Grid> */}
-
+                  
                   <Grid
                     item
                     xs={4}
@@ -337,7 +332,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
             )}
           </>
         )}
-        <ChatMessageMenu message={message} />
+       {enable&&<ChatMessageMenu message={message} />}
       </Grid>
     </Grid>
     </>

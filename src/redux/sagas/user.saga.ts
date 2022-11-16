@@ -72,7 +72,7 @@ const getMyConnectionsCount = apiCall({
 const getUserById = apiCall({
   type: GET_USER_BY_ID,
   method: 'get',
-  path: payload => `/user/${payload.other.userId}`,
+  path: payload => `/users/${payload.other.userId}`,
 })
 
 const updateProfilePic = apiCall({

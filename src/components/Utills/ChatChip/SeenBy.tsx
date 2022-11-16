@@ -1,6 +1,5 @@
-//@ts-nocheck
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import {createStyles,Avatar, makeStyles, Theme, Box } from "@material-ui/core";
 import colors from "assets/colors";
 
 interface SeenByInt {
@@ -15,37 +14,32 @@ const SeenBy: React.FC<SeenByInt> = (props) => {
 
   const letters =
     firstName?.[0]?.toUpperCase?.() + (surName?.[0]?.toUpperCase?.() || "");
-  return (<>
-      { url ?(<div className={classes.seenAvatar}>
-      <img src={url} className={classes.seenChip} />
-    </div>):(
-          <div className={classes.lettersAvatar}>
-          {letters}
-          </div>
-        ) }
+  return (<><Box>
+        {!url ?
+          <Avatar variant="square" className={`${classes.MuiAvatarSquare} ${classes.small}`}>
+            {letters}
+          </Avatar> : <Avatar alt="avater" src={url}  variant="square"  className={classes.small}/>
+        }
+       </Box>
   </>
   );
 };
 
 export default SeenBy;
 
-const useStyles = makeStyles({
-  lettersAvatar:{
-padding: '3px 4px',
-  background: colors.grey,
-  fontSize: 10,  
-},
-  seenAvatar: {
-    width: 20,
-    // background: colors.grey,
-    fontSize: 10,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+const useStyles =  makeStyles((theme: Theme) =>
+createStyles({
+  small: {
+    width: theme.spacing(3),
+    height: theme.spacing(3),
   },
-  seenChip: {
-    width: "100%",
-    height: '85%',
-    borderRadius: '100%',
-  },
-});
+  MuiAvatarSquare:{
+    border: `1px solid ${colors.secondaryGrey}`,
+    background: colors.secondaryGrey,
+    borderRadius: "4px",
+    color: colors.black,
+    fontSize: "14px",
+    fontWeight: 500,
+    textTransform: "uppercase",
+  }
+}));

@@ -69,8 +69,8 @@ const ChatListMenu: React.FC<ChatListMenueInt> = (props) => {
                 success: () => {
                     dispatch(getAllChats({
                         success: (_res: any) => {
-                            if(_res?.data?.[0]?._id) {
-                                dispatch(setSelectedChat({ other: _res?.data?.[0]?._id }));
+                            if(_res?.data?.userallchat[0]?._id) {
+                                dispatch(setSelectedChat({ other: _res?.data?.userallchat[0]?._id }));
                             }
                         }
                     }));

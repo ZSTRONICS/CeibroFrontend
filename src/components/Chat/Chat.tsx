@@ -4,8 +4,7 @@ import React, { useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { select } from "redux-saga/effects";
-import { setAppSelectedChat } from "services/socket.services";
+import {socket} from "services/socket.services"
 import colors from "../../assets/colors";
 import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
 import { clearSelectedChat } from "../../redux/action/chat.action";
@@ -100,7 +99,7 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    setAppSelectedChat(selectedChat);
+    socket.setAppSelectedChat(selectedChat);
 
     if (selectedChat) {
       const myChat = allChats?.find?.(
@@ -121,11 +120,10 @@ const Chat = () => {
       selectedChat;
     };
   }, [selectedChat, allChats]);
-
   return (
     <>
       {/* right sidebar for chat actions */}
-      {selectedChat && enable && <MediaSidebar />}
+      {selectedChat && <MediaSidebar enable={enable}/>}
       <Grid container className={classes.wrapper}>
         <Grid item xs={12} md={sidebarOpen && !isTabletOrMobile ? 4 : 3}>
           <ChatSidebar />
@@ -137,7 +135,7 @@ const Chat = () => {
           style={{ background: "white" }}
         >
           <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
-          <ChatBody messages={messages} />
+          <ChatBody messages={messages}  enable={enable}/>
           <ChatForm enable={enable} />
         </Grid>
       </Grid>
@@ -147,14 +145,7 @@ const Chat = () => {
 
 export default Chat;
 
-export function* isMessageInStore(msgIdRecieved: any): Generator<any>{
-  let messages:any = []
-  messages = yield select((state: any) => state.chat.messages);
-  const index = messages?.findIndex((message: any) => {
-    return String(message?.id) === String(msgIdRecieved);
-  });
-  return index > -1;
-}
+
 
 const useStyles = makeStyles({
   wrapper: {
