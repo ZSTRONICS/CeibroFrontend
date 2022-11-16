@@ -2,6 +2,13 @@ import { makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
 
 const useStyles = makeStyles({
+  iconBtn:{
+    padding: '6px 42px 2px 8px',
+    alignItems: 'end',
+    '&:hover': {
+      backgroundColor: 'transparent',
+  },
+  },
     memberContainer: {
         marginBottom: "10px",
         fontSize: '12px',

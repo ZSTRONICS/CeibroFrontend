@@ -7,6 +7,7 @@ import {
   GET_MY_INVITES_COUNT,
   OPEN_VIEW_INVITATIONS,
   DELETE_MY_CONNECTION,
+  GET_MY_CONNECTIONS,
 } from 'config/user.config'
 
 interface UserReducerInt {
@@ -14,12 +15,14 @@ interface UserReducerInt {
   connections: any
   openInvites: boolean
   id: string
+  myConnections:any,
 }
 
 const intialStatue: UserReducerInt = {
   invites: [],
   connections: [],
   openInvites: false,
+  myConnections:[],
   id: ""
 }
 
@@ -37,6 +40,13 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
         connections: action.payload,
       }
     }
+    case requestSuccess(GET_MY_CONNECTIONS): {
+      return {
+        ...state,
+        myConnections: action.payload,
+      }
+    }
+
     case requestSuccess(GET_MY_CONNECTIONS_COUNT): {
       return {
         ...state,

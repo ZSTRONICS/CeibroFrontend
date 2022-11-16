@@ -37,6 +37,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+
       return {
         ...state,
         isLoggedIn: true,

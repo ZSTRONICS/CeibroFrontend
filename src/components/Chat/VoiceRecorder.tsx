@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Grid, makeStyles } from "@material-ui/core";
 import {
   Mic,
@@ -85,7 +86,7 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
     <Grid item xs={12} direction="row-reverse" className={classes.inputWrapper}>
       <div className={classes.sendWrapper}>
         <img
-          src={assets.sendIcon}
+            src={assets.sendIcon}
           onClick={handleSend}
           className={classes.sendIcon}
         />

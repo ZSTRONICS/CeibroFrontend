@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Delete, PersonAdd } from "@material-ui/icons";
 import assets from "assets/assets";

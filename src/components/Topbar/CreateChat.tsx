@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 import { useEffect, useState } from "react";

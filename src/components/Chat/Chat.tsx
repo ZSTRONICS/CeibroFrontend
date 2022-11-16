@@ -1,12 +1,12 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+import React, { useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import { SET_CHAT_SEARCH, SET_LOADING_MESSAGES } from "config/chat.config";
-import { UserInterface } from "constants/interfaces/user.interface";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { select, put } from "redux-saga/effects";
-import { setAppSelectedChat } from "services/socket.services";
+import {socket} from "services/socket.services"
 import colors from "../../assets/colors";
+import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
 import { clearSelectedChat } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import "./chat.css";
@@ -15,56 +15,115 @@ import ChatBoxHeader from "./ChatBoxHeader";
 import ChatForm from "./ChatForm";
 import ChatSidebar from "./ChatSidebar";
 import MediaSidebar from "./MediaSidebar";
+import { SET_CHAT_SEARCH } from "config/chat.config";
+import { UserInterface } from "constants/interfaces/user.interface";
+import { useSelect } from "@mui/base";
 
 const Chat = () => {
   const classes = useStyles();
-  const [enable, setEnable] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+
+  const [messages, setMessage] = useState(CHAT_MESSAGE);
   const {
     selectedChat,
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
+  const [enable, setEnable] = useState(false);
+
+  const sendMessage = (text: string) => {
+    const today = new Date();
+    const nowTime = (today.getHours() % 12) + ":" + today.getMinutes() + " Pm";
+    setMessage([
+      ...messages,
+      {
+        username: "Kristo Vunukainen",
+        time: nowTime,
+        companyName: "Electrician",
+        message: text,
+        seen: false,
+        myMessage: true,
+        _id: "",
+        type: "message",
+      },
+    ]);
+
+    setTimeout(() => {
+      const chatBox: any = document.getElementById("chatBox") || {
+        scrollTop: 0,
+        scrollHeight: 0,
+      };
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }, 300);
+
+    setTimeout(() => {
+      setMessage((old) => [
+        ...old,
+        {
+          username: "Kristo Vunukainen",
+          time: nowTime,
+          companyName: "Electrician",
+          message: "I am fine . ",
+          seen: false,
+          myMessage: false,
+          _id: "",
+          type: "message",
+        },
+      ]);
+      setTimeout(() => {
+        const chatBox: any = document.getElementById("chatBox") || {
+          scrollTop: 0,
+          scrollHeight: 0,
+        };
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }, 300);
+    }, 6000);
+
+    return text;
+  };
 
   useEffect(() => {
-    setAppSelectedChat(selectedChat)
-    
+    dispatch({
+      type: SET_CHAT_SEARCH,
+      payload: null,
+    });
+    dispatch(clearSelectedChat());
+    return () => {
+      dispatch(clearSelectedChat());
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.setAppSelectedChat(selectedChat);
+
     if (selectedChat) {
       const myChat = allChats?.find?.(
-        (room: any) => String(room._id) == String(selectedChat)
+        (room: any) => String(room._id) === String(selectedChat)
       );
       if (myChat) {
         let members = myChat?.members || [];
-        const index = members?.findIndex((member: any) => {
-          return (
-            String(member?.id) === String(user?.id) ||
-            String(member?.id) === String(user?.id)
-          );
-        });
-
-        // let myUserIndex = members?.findIndex?.(
-        //   (member: UserInterface) => member.id === user?.id
-        // );
-        setEnable(index > -1);
+        let myUserIndex = members?.findIndex?.(
+          (member: UserInterface) => member.id === user?.id
+        );
+        setEnable(myUserIndex > -1);
       } else {
         setEnable(false);
       }
     }
-    return () => {
+    return (): void => {
       allChats;
       selectedChat;
     };
-  }, [selectedChat]);
-
+  }, [selectedChat, allChats]);
   return (
     <>
       {/* right sidebar for chat actions */}
-      {selectedChat && enable && <MediaSidebar />}
+      {selectedChat && <MediaSidebar enable={enable}/>}
       <Grid container className={classes.wrapper}>
         <Grid item xs={12} md={sidebarOpen && !isTabletOrMobile ? 4 : 3}>
           <ChatSidebar />
@@ -75,28 +134,18 @@ const Chat = () => {
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white" }}
         >
-          <ChatBoxHeader enable={enable} />
-          <ChatBody />
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
+          <ChatBody messages={messages}  enable={enable}/>
           <ChatForm enable={enable} />
         </Grid>
       </Grid>
     </>
   );
-
-
-
-
 };
-
 
 export default Chat;
-export const isMessageInStore = (msgIdRecieved: any) => {
-  const messages: any = select((state: RootState) => state.chat.messages);
-  const index = messages?.findIndex((message: any) => {
-    return String(message?.id) === String(msgIdRecieved);
-  });
-  return index > -1;
-};
+
+
 
 const useStyles = makeStyles({
   wrapper: {

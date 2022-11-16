@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import { useDispatch } from "react-redux";
 import { Typography, Button, makeStyles, IconButton } from "@material-ui/core";
@@ -142,7 +143,7 @@ const Title = () => {
               variant="h6"
               component="h6"
             >
-              My connections
+              My Connections
             </Typography>
           </div>
         </>

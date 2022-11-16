@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Avatar,
   Badge,
@@ -34,9 +35,6 @@ const ProfileBtn = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const { connections } = useSelector((state: RootState) => state.user);
   const { invites } = useSelector((state: RootState) => state?.user);
-
-  const image =
-    "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg";
 
   useEffect(() => {
     dispatch(getMyInvitesCount());
@@ -81,7 +79,7 @@ const ProfileBtn = () => {
       >
         <Avatar
           variant="square"
-          alt="Cindy Baker"
+          alt="profile"
           className={classes.small}
           src={user?.profilePic}
         ></Avatar>
@@ -92,7 +90,7 @@ const ProfileBtn = () => {
             <div
               onClick={handleProfileClick}
               className={`${classes.menuItem} dropdown-menu`}
-            >
+             >
               <div className={classes.menuText}>
                 <Typography>
                   {user?.firstName} {user?.surName}

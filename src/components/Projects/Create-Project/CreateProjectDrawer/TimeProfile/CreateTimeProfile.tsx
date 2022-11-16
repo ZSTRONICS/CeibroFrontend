@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import ListIcon from "@material-ui/icons/List";
 import {
   CircularProgress,
   Grid,
-  ListItemIcon,
   makeStyles,
   Typography,
 } from "@material-ui/core";
 import InputText from "../../../../Utills/Inputs/InputText";
-import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
+// import SelectDropdown from "../../../../Utills/Inputs/SelectDropdown";
 import { Close } from "@material-ui/icons";
 import CreateWork from "./CreateWork";
 import colors from "../../../../../assets/colors";
@@ -31,8 +28,8 @@ import { toast } from "react-toastify";
 import { RootState } from "redux/reducers";
 import { avaialablePermissions } from "config/project.config";
 import { checkTimeProfilePermission } from "helpers/project.helper";
-import Draggable from "react-draggable";
-import Paper, { PaperProps } from '@mui/material/Paper';
+// import Draggable from "react-draggable";
+// import Paper, { PaperProps } from '@mui/material/Paper';
 
 const MemberDialog = () => {
   const {
@@ -42,7 +39,7 @@ const MemberDialog = () => {
     userPermissions,
   } = useSelector((state: RootState) => state.project);
 
-  const [open, setOpen] = React.useState(false);
+  // const [open, setOpen] = React.useState(false);
   const [name, setName] = React.useState("");
   const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -52,9 +49,9 @@ const MemberDialog = () => {
 
   const classes = useStyle();
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const handleClickOpen = () => {
+  //   setOpen(true);
+  // };
 
    const handleClose = () => {
     dispatch(projectActions.closeTimeProfileDrawer());
@@ -84,7 +81,7 @@ const MemberDialog = () => {
       success: () => {
         toast.success("Time Profile Updated successfully");
         dispatch(projectActions.closeTimeProfileDrawer());
-        dispatch(getProjectProfile({ other: selectedProject }));
+        dispatch(getProjectProfile({ other: selectedProject }) );
       },
       finallyAction: () => {
         setLoading(false);
@@ -147,7 +144,6 @@ const MemberDialog = () => {
         Create new Profile
       </Button>
       <Dialog
-      PaperComponent={DragComp}
         maxWidth={"md"}
         open={timeProfileDrawer}
         onClose={handleClose}
@@ -213,16 +209,16 @@ const MemberDialog = () => {
   );
 };
 
-function DragComp(props:PaperProps ) {
-  return(
-    <Draggable
-    handle="#customized-dialog-title"
-    cancel={'[class*="MuiDialogContent-root"]'}
-  >
-    <Paper {...props}/>
-    </Draggable>
-  )
-}
+// function DragComp(props:PaperProps ) {
+//   return(
+//     <Draggable
+//     handle="#customized-dialog-title"
+//     cancel={'[class*="MuiDialogContent-root"]'}
+//   >
+//     <Paper {...props}/>
+//     </Draggable>
+//   )
+// }
 
 export default MemberDialog;
 

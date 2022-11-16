@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState, useRef } from "react";
 import {
   Button,
@@ -35,9 +36,9 @@ const ProfileForm = () => {
   const { user: userData } = useSelector((state: RootState) => state.auth);
   const isDiabled = !loading ? false : true;
 
-  useEffect(() => {
-    dispatch(getMyProfile());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMyProfile());
+  // }, []);
 
   const handleSubmit = (values: any, action: any) => {
     setLoading(true);

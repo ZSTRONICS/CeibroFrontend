@@ -1,3 +1,4 @@
+//@ts-nocheck
 import {
   Badge,
   Button,
@@ -31,10 +32,8 @@ import TopBarSearch from "./TopBarSearch";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
-
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const history = useHistory();
-
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
@@ -50,7 +49,6 @@ const Topbar = (props: any) => {
   const toggleNavbar = () => {
     dispatch(appActions.toggleNavbar());
   };
-
   return (
     <div className={`topbar ${classes.topNavbarWrapper}`}>
       <Grid
@@ -112,7 +110,7 @@ const Topbar = (props: any) => {
             <Typography className={classes.notification}>
               <Badge badgeContent={4}>
                 <img
-                  src={assets.notification}
+                    src={assets.notification}
                   className={`${classes.bell} width-16`}
                 />
               </Badge>

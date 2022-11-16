@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React from "react";
 import {
   Badge,
@@ -87,7 +88,7 @@ const TaskTable = () => {
                         <div className={classes.subTaskWrapper}>
                           <div className={classes.subTask}>
                             <img
-                              src={assets.clipboardIcon}
+                                src={assets.clipboardIcon}
                               className={"width-16"}
                             />
                             <Typography className={classes.subTaskText}>
@@ -97,12 +98,12 @@ const TaskTable = () => {
                           <div className={classes.attachmentWrapper}>
                             <Typography className={classes.attachmentText}>
                               0
-                              <img src={assets.clip} className={`width-16`} />
+                               <img src={assets.clip} className={`width-16`} />
                             </Typography>
 
                             <Typography className={classes.attachmentText}>
                               4
-                              <img src={assets.chatIcon} className="width-16" />
+                               <img src={assets.chatIcon} className="width-16" />
                             </Typography>
                           </div>
                         </div>

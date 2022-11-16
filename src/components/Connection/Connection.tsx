@@ -30,7 +30,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
   useEffect(() => {
     const payload = {
       success: (res: any) => {
-        setConnection(res?.data)
+        setConnection(res?.data?.myConnections)
       },
       finallyAction: () => {
         setLoading(false)

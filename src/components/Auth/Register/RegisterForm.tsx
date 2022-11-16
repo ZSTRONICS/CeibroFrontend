@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Typography, Button, FormControlLabel, Checkbox } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
@@ -32,9 +33,9 @@ const RegisterForm = () => {
         password,
       },
       success: (res: any) => {
-        if (res) {
+        // if (res) {
           history.push('/login')
-        }
+        // }
         action?.resetForm?.();
       },
     }

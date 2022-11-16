@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, {useEffect} from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +28,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     <Grid container xs={12} className={classes.connectionsContainer}>
         <Grid item  className={classes.connectionMain}>
           <div className={classes.iconContainer}>
-            <img  src={assets.contactIcon} className={classes.icon}/>
+            <img src={assets.contactIcon} className={classes.icon}/>
           </div>
           <Typography variant="body1" className={classes.connectionText}>
             My connections

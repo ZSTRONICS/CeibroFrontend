@@ -1,48 +1,46 @@
-import { RECEIVE_MESSAGE } from 'config/chat.config';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllChats, updateMessageById } from 'redux/action/chat.action';
+
+import { useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
+
 import { io } from 'socket.io-client';
 import { SERVER_URL } from "../utills/axios";
 
-let socket: any = null
-let selectedChat:any = null
+class WebSocketService {
+  public static socket: any 
+  public static selectedChat: any 
 
-const initSocket = () => {
-  const tokens = localStorage.getItem("tokens") || "{}";
-  const myToken = JSON.parse(tokens)?.access?.token;
-  
-  socket= io(SERVER_URL, {
-    query: {
-      token: myToken,
-    },
-  });
-}
+  public constructor() {
+    WebSocketService.socket = null;
+    WebSocketService.selectedChat = null;
 
-const setAppSelectedChat = (chat:any)=>{
-  selectedChat = chat
-}
-const getAppSelectedChat = ()=>{
-  return selectedChat
-}
+  }
 
-const getSocket = () => {
-  return socket;
-}
+  public setAppSelectedChat(chat: any) {
+    WebSocketService.selectedChat = chat
+  }
 
-const isSocketConnected =()=>{
-  try {
-      return socket.connected
-  } catch (error) {
-    return false
+  public getAppSelectedChat() {
+    return WebSocketService.selectedChat
+  }
+
+  public isSocketConnected() {
+    try {
+      return WebSocketService.socket.connected
+    } catch (error) {
+      return false
+    }
+  }
+
+  public getSocket() {
+    return WebSocketService.socket
+  }
+
+  public setSocket(socket:any){
+    WebSocketService.socket = socket
   }
 
 }
 
-export {
-  initSocket,
-  setAppSelectedChat,
-  getAppSelectedChat,
-  isSocketConnected,
-  getSocket}
+const socket = new WebSocketService()
 
+export {socket}

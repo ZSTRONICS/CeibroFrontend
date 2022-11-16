@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { makeStyles, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import assets from "assets/assets";

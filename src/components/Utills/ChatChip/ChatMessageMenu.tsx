@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { makeStyles, Typography } from "@material-ui/core"
 import { MoreVert, PersonAddOutlined } from "@material-ui/icons"
 import { useState } from "react"

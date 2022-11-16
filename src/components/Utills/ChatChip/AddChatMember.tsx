@@ -7,9 +7,7 @@ import {
   DialogContentText,
   DialogTitle,
   makeStyles,
-  Typography,
 } from "@material-ui/core";
-import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import SelectDropdown from "../Inputs/SelectDropdown";
 import { dbUsers } from "../../Topbar/CreateChat";
@@ -31,12 +29,14 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
   const { membersDialog, selectedChat, chat } = useSelector(
     (state: RootState) => state.chat
   );
+  const { user } = useSelector((state: RootState) => state.auth);
   const chatMembers =
     chat?.find((room: any) => room._id === selectedChat)?.members || [];
   const memberIds = chatMembers?.map((member: any) => member.id);
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<any>();
+  
   useEffect(() => {
     if (selectedChat && membersDialog) {
       const payload = {

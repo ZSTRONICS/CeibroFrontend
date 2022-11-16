@@ -15,6 +15,7 @@ import * as Yup from 'yup'
 import { toast } from 'react-toastify'
 import { Alert } from '@material-ui/lab'
 import queryString from 'query-string'
+import CustomImg from 'components/CustomImg'
 
 const ResetPasswordForm = () => {
   const classes = useStyles()
@@ -80,7 +81,7 @@ const ResetPasswordForm = () => {
   return (
     <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
       <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
+        <CustomImg src={assets.logo} alt="ceibro-logo" className=''  />
       </div>
 
       <div className={classes.titleWrapper}>

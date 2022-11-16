@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -110,12 +111,12 @@ export default function BasicTable() {
                   </TableCell>
                   <TableCell>
                     <div className={classes.extrasWrapper}>
-                      {row?.time && <img src={assets.clockIcon} />}
+                      {row?.time &&  <img src={assets.clockIcon} />}
                       {row?.photo && (
-                        <img src={assets.wrongImage} className="w-16" />
+                         <img src={assets.wrongImage} className="w-16" />
                       )}
                       {row?.comment && (
-                        <img src={assets.sidebarChatIcon} className="w-16" />
+                         <img src={assets.sidebarChatIcon} className="w-16" />
                       )}
                     </div>
                   </TableCell>
@@ -134,7 +135,7 @@ export default function BasicTable() {
 
                     <div>
                       <img
-                        src={assets.pencilIcon}
+                          src={assets.pencilIcon}
                         onClick={() => handleWorkClick(row?.id)}
                         className="pointer"
                       />
@@ -146,7 +147,7 @@ export default function BasicTable() {
                         />
                       )}
                       <img
-                        src={assets.DeleteIcon}
+                          src={assets.DeleteIcon}
                         className="w-16 pointer"
                         onClick={() => deleteTimeProfileWork(row?.id)}
                       />

@@ -11,14 +11,13 @@ interface chatMInt {}
 const ChatPinned: React.FC<chatMInt> = (props) => {
   const { pinnedMessages } = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
-
   const handleReplyClick = (messageId: string) => {
     dispatch(goToMessage(messageId));
   };
 
   return (
     <Grid container className="chat-member-chip" style={styles.wrapper}>
-      {pinnedMessages?.map?.((message: ChatMessageInterface) => {
+      {pinnedMessages?.message?.map?.((message: ChatMessageInterface) => {
         return (
           <Grid
             item

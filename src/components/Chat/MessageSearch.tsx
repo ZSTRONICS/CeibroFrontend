@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import * as React from "react";
@@ -78,7 +79,7 @@ const MessageSearch: React.FC<IAppProps> = (props) => {
           <Grid container className={classes.btnWrapper}>
             <Grid item className={classes.filterWrapper}>
               <img
-                src={assets.filterIcon}
+                  src={assets.filterIcon}
                 className={classes.filterIco}
                 onClick={showHandleFilter}
               />

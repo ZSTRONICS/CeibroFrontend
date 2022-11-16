@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
 import CustomCheckbox from "components/Utills/Inputs/Checkbox";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";

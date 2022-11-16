@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { makeStyles } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 // @ts-ignore
@@ -40,7 +41,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
           data-name={file.fileName}
           data-url={file.url}
           data-format={file.fileType}
-          src={file?.url}
+            src={file?.url}
           className={classes.mediaImg}
         />
       ) : (
