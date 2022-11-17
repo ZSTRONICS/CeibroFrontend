@@ -12,7 +12,6 @@ const ChatList = () => {
   const { chat, type, favouriteFilter, selectedChat } = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
 
-
 //   const members = selectedChat
 //   ? chat.find((room: any) => String(room._id) == String(selectedChat))
 //       ?.members
@@ -36,7 +35,7 @@ const ChatList = () => {
       dispatch(setSelectedChat({ other: chat._id }));
     }
   };
-
+// console.log('chat',chat)
 return (
     <Grid container>
       {chat &&

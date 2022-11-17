@@ -30,6 +30,7 @@ export interface ChatListInterface {
   initiator:string
   members:ChatMembers[]
   removedMembers:ChatMembers[]
+  removedAccess:ChatMembers[]
   access:[]
 }
 

@@ -28,15 +28,15 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const dispatch = useDispatch();
   let avaterInfo: any = {};
-  let chatMemberInit: any;
-
+  const chatMembers = [...chat.members, ...chat.removedAccess]
+  
   if (chat.isGroupChat === false) {
-    let chatMember = chat.members.filter((item) => item.id !== user.id);
-    if (chatMember?.length === 0) {
+    let chatMember = chatMembers.filter((item) => item.id !== user.id);
+    if (chatMember.length === 0) {
       chatMember = chat.removedMembers;
     }
 
-    chatMemberInit = chatMember
+     chatMember
       .filter((item) => item.id !== user.id)
       .map((item: any) => (
         (avaterInfo.firstName = item.firstName),
@@ -88,15 +88,15 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
           {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
         </Grid> */}
         <Grid item xs={2} className={classes.avatarWrapper}>
-          {chatMemberInit ? (
+          {chat.isGroupChat ? (
+            <NameAvatar background="white" firstName={name} />
+          ) : (
             <NameAvatar
               background="white"
               firstName={individualFirstName}
               surName={individualSurName}
               url={individualPicUrl}
             />
-          ) : (
-            <NameAvatar background="white" firstName={name} />
           )}
         </Grid>
 
