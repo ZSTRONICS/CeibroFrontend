@@ -13,7 +13,8 @@ export const CHAT_LIST: ChatListInterface[] = [
         initiator:'12a',
         members:[],
         removedMembers: [],
-        access:[]
+        access:[],
+        removedAccess:[]
     }
 ]
 

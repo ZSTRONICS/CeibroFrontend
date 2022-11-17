@@ -150,7 +150,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         type: PUSH_MESSAGE,
         payload: newMessage,
       });
-      //handleCloseReply()
+      handleCloseReply()
       setFiles(null);
       setFilesPreview(null);
       setText("");

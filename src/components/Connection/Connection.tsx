@@ -39,7 +39,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
     setLoading(true)
     dispatch(getMyConnections(payload))
   }, [])
-
+console.log('connections', connections)
   const startRoom = (id: string) => {
     const payload = { other: { id }, success: () => history.push('chat') }
 
@@ -101,7 +101,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                     size={isTabletOrMobile ? 'small' : 'medium'}
                     color="primary"
                     disabled={connection.email}
-                    onClick={() => startRoom(connection.to.id)}
+                    onClick={() => startRoom(connection.sentByMe?connection.to.id:connection.from.id)}
                   >
                     Start conversation
                   </Button>
