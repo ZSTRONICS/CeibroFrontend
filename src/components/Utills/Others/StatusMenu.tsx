@@ -67,6 +67,7 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
               </Typography>
               {option.count > 0 && (
                 <Badge
+                  overlap="circular"
                   className={classes.statusBage}
                   color="primary"
                   badgeContent={option.count}

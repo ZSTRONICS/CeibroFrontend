@@ -1,17 +1,11 @@
-//@ts-nocheck
+// @ts-nocheck
 import { Badge } from "@material-ui/core";
-import { Image, Person, PersonOutlined } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
-import axios from "axios";
 import { useEffect, useState } from "react";
-import { AiOutlinePushpin } from "react-icons/ai";
-import { GoFileMedia } from "react-icons/go";
-import { MdArticle, MdOutlineArticle } from "react-icons/md";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_CHAT_SIDE_BAR } from "../../config/chat.config";
 import { RootState } from "../../redux/reducers";
-import { baseURL } from "../../utills/axios";
 import ChatMembers from "./ChatMembers";
 import ChatMedia from "./ChatMedia";
 import ChatQuestioniar from "./ChatQuestioniar";
@@ -105,7 +99,7 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
         <button className="accordion" onClick={() => handleClick(1)}>
           <span className={classes.chatMembersWrapper}>
             <Badge
-            overlap='circular'
+              overlap='circular'
               badgeContent={selectedChatRoom?.members?.length}
               color="secondary"
               classes={{
@@ -113,7 +107,7 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
               }}
             >
               <div  className={`${classes.addIconContainer}`}>
-              <img src={assets.usersIcon}  className={`${classes.IconSize}`} />
+              <img alt="usersIcon" src={assets.usersIcon}  className={`${classes.IconSize}`} />
               </div>
             </Badge>
             {sidebarOpen && (
@@ -124,7 +118,7 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
               >
                 Chat members
                 <div className={`${classes.addIconContainerSide}`}>
-                {enable &&<img
+                {enable &&<img alt="addIcon"
                     src={assets.Add}
                   onClick={handleAddMember}
                   className={`${classes.addIcon}`}
@@ -147,7 +141,7 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
                 badge: classes.font1,
               }}
             >
-              <img src={assets.pinIcon}  />
+              <img src={assets.pinIcon} alt="" />
             </Badge>
             {/* <AiOutlinePushpin style={{ fontSize: 20 }} color="action" /> */}
             {/* <img src={assets.pinIcon} /> */}
@@ -162,8 +156,8 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
         <button className="accordion" onClick={() => handleClick(3)}>
           <span className={"chat-room-media"}>
             <Badge
-            overlap='circular' badgeContent={chatMedia?.length} color="secondary">
-              <img src={assets.mediaIcon} />
+             overlap='circular' badgeContent={chatMedia?.length} color="secondary">
+              <img src={assets.mediaIcon} alt="mediaIcon" />
             </Badge>
             {sidebarOpen && (
               <span className="accordion-title">Media & Files</span>
@@ -177,7 +171,7 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
           <span>
             <Badge
             overlap='circular' badgeContent={roomQuestioniars?.length} color="secondary">
-              <img src={assets.documentIcon} />
+              <img src={assets.documentIcon} alt="documentIcon"/>
             </Badge>
             {sidebarOpen && (
               <span className="accordion-title">Questioniar</span>

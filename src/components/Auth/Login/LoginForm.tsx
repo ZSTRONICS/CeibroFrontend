@@ -23,13 +23,13 @@ import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
 
-interface LoginForm {
+interface Props {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
 
-const LoginForm: React.FC<LoginForm> = (props) => {
+const LoginForm: React.FC<Props> = (props) => {
   const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
   const [showPassword, setShowPassword] = useState(false);
