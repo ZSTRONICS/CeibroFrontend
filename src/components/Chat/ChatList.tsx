@@ -2,27 +2,33 @@ import React, { useEffect } from "react";
 import ChatListChip from "../Utills/ChatChip/ChatListChip";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChats, setSelectedChat } from "../../redux/action/chat.action";
-import {  RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { Grid } from "@material-ui/core";
-import {socket} from "services/socket.services"
+import { socket } from "services/socket.services";
 
 const ChatList = () => {
   const dispatch = useDispatch();
-  const { chat, type, favouriteFilter, selectedChat } = useSelector((state: RootState) => state.chat);
+  const { chat, type, favouriteFilter, selectedChat } = useSelector(
+    (state: RootState) => state.chat
+  );
   const { user } = useSelector((state: RootState) => state.auth);
 
-//   const members = selectedChat
-//   ? chat.find((room: any) => String(room._id) == String(selectedChat))
-//       ?.members
-//   : [];
+  //   const members = selectedChat
+  //   ? chat.find((room: any) => String(room._id) == String(selectedChat))
+  //       ?.members
+  //   : [];
 
   useEffect(() => {
     dispatch(
       getAllChats({
         success: (_res: any) => {
-          if (_res?.data?.userallchat[0]._id) {
-            dispatch(setSelectedChat({ other: _res?.data?.userallchat[0]._id }));
+          if (_res?.data?.userallchat.length > 0) {
+            if (_res?.data?.userallchat[0]._id) {
+              dispatch(
+                setSelectedChat({ other: _res?.data?.userallchat[0]._id })
+              );
+            }
           }
         },
       })
@@ -31,24 +37,24 @@ const ChatList = () => {
 
   const handleClick = (chat: any) => {
     if (String(chat?._id) !== String(selectedChat)) {
-      socket.getSocket().emit('JOIN_ROOM',({user, selectedChat}))
+      socket.getSocket().emit("JOIN_ROOM", { user, selectedChat });
       dispatch(setSelectedChat({ other: chat._id }));
     }
   };
-// console.log('chat',chat)
-return (
+  
+  return (
     <Grid container>
       {chat &&
         chat.map((chat: ChatListInterface, index: number) => {
-          const chatMembers = [...chat.members, ...chat.removedMembers]
-          if (chatMembers.findIndex((item:any) => item.id === user.id) > -1 ){
+          const chatMembers = [...chat.members, ...chat.removedMembers];
+          if (chatMembers.findIndex((item: any) => item.id === user.id) > -1) {
             return (
               <ChatListChip handleClick={handleClick} chat={chat} key={index} />
             );
-          }else{
-            return null
+          } else {
+            return null;
           }
-        })} 
+        })}
     </Grid>
   );
 };
