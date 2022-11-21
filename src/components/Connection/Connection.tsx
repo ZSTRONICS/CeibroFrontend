@@ -39,7 +39,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
     setLoading(true)
     dispatch(getMyConnections(payload))
   }, [])
-console.log('connections', connections)
+  
   const startRoom = (id: string) => {
     const payload = { other: { id }, success: () => history.push('chat') }
 
