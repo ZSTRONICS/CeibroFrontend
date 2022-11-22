@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import ImageTile from "./ImageTile";
 import "./login.css";
 import LoginForm from "./LoginForm";
 
 import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import { useMediaQuery } from "react-responsive";
-import assets from "../../../assets/assets";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 import { useEffect } from "react";
-import colors from "../../../assets/colors";
 import queryString from "query-string";
 import { useDispatch } from "react-redux";
 import { baseURL } from "utills/axios";
 import axios from "axios";
-
+import LoginSkeleton from "./LoginSkeleton";
+//style file
+import useStyles from './LoginStyles'
 const Login: React.FC<LoginInterface> = () => {
+
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const dispatch = useDispatch();
@@ -29,12 +29,12 @@ const Login: React.FC<LoginInterface> = () => {
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
-  const LoginData = async()=>{
+  const LoginData = async () => {
     const queryParams = queryString.parse(history?.location?.search);
     if (queryParams?.token) {
       // verifying email verification token
       setTokenLoading(true);
-    await  axios
+      await axios
         .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
         .then((response) => {
           setSuccess(true);
@@ -67,17 +67,30 @@ const Login: React.FC<LoginInterface> = () => {
   return (
     <Grid container className={classes.login}>
       <Grid item xs={12} md={6} lg={4} className={classes.form}>
-        <LoginForm
-          tokenLoading={tokenLoading}
-          showSuccess={success}
-          showError={error}
-        />
-        <Typography className={classes.dontHave}>
-          Don't have an account?{" "}
-          <span onClick={goToSignup} className={classes.signup}>
-            Sign Up!
-          </span>
-        </Typography>
+
+        {/* if the data is loading it shows skeleton */}
+
+        {tokenLoading ?
+          <LoginSkeleton />
+
+          :
+
+          <>
+            <LoginForm
+              tokenLoading={tokenLoading}
+              showSuccess={success}
+              showError={error}
+            />
+
+            <Typography className={classes.dontHave}>
+              Don't have an account?{" "}
+              <span onClick={goToSignup} className={classes.signup}>
+                Sign Up!
+              </span>
+            </Typography>
+          </>
+
+        }
       </Grid>
 
       {!isTabletOrMobile && (
@@ -91,34 +104,4 @@ const Login: React.FC<LoginInterface> = () => {
 
 export default Login;
 
-const useStyles = makeStyles((theme) => {
-  return {
-    login: {
-      display: "flex",
-      ["@media (max-width:960px)"]: {
-        flexDirection: "column",
-        height: "100vh",
-      },
-    },
-    form: {
-      height: "100vh",
-      ["@media (max-width:960px)"]: {
-        background: `url(${assets.visual})`,
-        backgroundSize: "100vw 100vh",
-        backgroundRepeat: "no-repeat",
-      },
-    },
-    tileWrapper: {
-      position: "relative",
-    },
-    dontHave: {
-      paddingLeft: "13%",
-      fontSize: 14,
-      fontWeight: 500,
-      cursor: "pointer",
-    },
-    signup: {
-      color: colors.textPrimary,
-    },
-  };
-});
+

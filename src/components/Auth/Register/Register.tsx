@@ -4,12 +4,19 @@ import ImageTile from "./ImageTile";
 import "./register.css";
 import RegisterForm from "./RegisterForm";
 import { useMediaQuery } from "react-responsive";
-import assets from "assets/assets";
 import { useHistory } from "react-router";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { useEffect } from "react";
-import colors from "assets/colors";
+
+//style css 
+
+import useStyles from "./RegisterStyles";
+// import RegisterSkeleton from "./RegisterSkeleton";
+
+//register form skeleton
+
+// import RegisterSkeleton from "./RegisterSkeleton";
 
 const Register = () => {
   const classes = useStyles();
@@ -33,6 +40,8 @@ const Register = () => {
     <Grid container className={classes.register}>
       <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
         <RegisterForm />
+        {/* <RegisterSkeleton /> */}
+
         <Typography className={classes.dontHave}>
           Already have an account?{" "}
           <span onClick={handleClick} className={classes.signup}>Sign in!</span>
@@ -50,41 +59,3 @@ const Register = () => {
 
 export default Register;
 
-const useStyles = makeStyles((theme) => {
-  return {
-    register: {
-      display: "flex",
-      ["@media (max-width:960px)"]: {
-        flexDirection: "column",
-        height: "100vh",
-      },
-    },
-    form: {
-      height: "100vh",
-      overflowY: 'scroll',
-      paddingBottom: 10,
-      ["@media (max-width:960px)"]: {
-        background: `url(${assets.visual})`,
-        backgroundSize: "100vw 100vh",
-        backgroundRepeat: "no-repeat",
-      },
-    },
-    tileWrapper: {
-      position: "relative",
-    },
-    dontHave: {
-      paddingLeft: "12.5%",
-      fontSize: 14,
-      fontWeight: 500,
-      cursor: "pointer"
-    },
-    signup: {
-      color: colors.textPrimary,
-    },
-    // formTile: {
-    //     display: 'inline-block',
-    //     margin: 'auto',
-    //     textAlign: 'center'
-    // }
-  };
-});

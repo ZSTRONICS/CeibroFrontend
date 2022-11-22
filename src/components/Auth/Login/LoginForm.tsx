@@ -22,6 +22,7 @@ import { RootState } from "../../../redux/reducers";
 import Loading from "../../Utills/Loader/Loading";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
+import { CSkeleton } from "components/material-ui";
 
 interface LoginForm {
   tokenLoading: boolean;
@@ -47,7 +48,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
   const [error, setError] = useState<boolean>(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
-  
+
   const handleSubmit = () => {
     setError(false);
     setLockError(false);
@@ -83,8 +84,8 @@ const LoginForm: React.FC<LoginForm> = (props) => {
     dispatch(loginRequest(payload));
   };
 
-  const checkValidInputs=()=>{
-    if(email&& email.length>0 && password && password.length>0){
+  const checkValidInputs = () => {
+    if (email && email.length > 0 && password && password.length > 0) {
       return false
     }
     return true
@@ -107,49 +108,17 @@ const LoginForm: React.FC<LoginForm> = (props) => {
 
   return (
     <div className={`form-container ${classes.wrapper}`}>
-     
+
       <div className={classes.logoWrapper}>
         <img src={assets.logo} alt="ceibro-logo" />
       </div>
 
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Login</Typography>
-      </div>
 
       <div className={classes.loginForm}>
-        {(showSuccess || tokenLoading) && (
-          <Alert severity="success">
-            {tokenLoading
-              ? "Verifying email"
-              : "Email verified successfully. Please sign in!"}
-          </Alert>
-        )}
-
-        {showError && <Alert severity="error">Link expired</Alert>}
-        {verifyError && (
-          <Alert severity="error" style={{ display: "flex" }}>
-            <Typography
-              className={`${classes.titles} ${classes.forget} ${classes.color} `}
-              variant="body1"
-              gutterBottom
-              onClick={handleVerifyEmail}
-            >
-              Email not verified please check your inbox.
-              <span className={classes.emailVerify}>
-                {" "}
-                {intl.formatMessage({ id: "input.verifyEmail" })} ?
-              </span>
-            </Typography>
-          </Alert>
-        )}
-
-        {error && <Alert severity="error">Incorrect email or password</Alert>}
-        {lockError && (
-          <Alert severity="error">Account locked. Retry after 15 minutes</Alert>
-        )}
         <FormControl variant="outlined" >
+
           <OutlinedInput
-           className={classes.inputOutline}
+            className={classes.inputOutline}
             placeholder={intl.formatMessage({ id: "input.Email" })}
             onChange={(e: any) => setEmail(e.target.value)}
           />
@@ -201,7 +170,7 @@ const LoginForm: React.FC<LoginForm> = (props) => {
             disabled={checkValidInputs() || loginLoading}
             onClick={handleSubmit}
           >
-            
+
             {loginLoading ? (
               <Loading type="spin" color="white" height={14} width={14} />
             ) : (
