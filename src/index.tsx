@@ -2,52 +2,34 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { Provider } from "react-redux";
-import { createTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 import Store from "./redux/store";
 import reportWebVitals from "./reportWebVitals";
-import colors from "./assets/colors";
-import { IntlProvider } from "react-intl";
+// import { IntlProvider } from "react-intl";
 import messages_en from "./translation/en.json";
 import { PersistGate } from "redux-persist/integration/react";
 import "./translation/i18next";
 import { ConfirmProvider } from "material-ui-confirm";
+import { theme } from "theme";
 
-const messages: any = {
-  en: messages_en,
-};
+// const messages: any = {
+//   en: messages_en,
+// };
 
-const language: string = navigator.language.split(/[-_]/)[0];
+// const getLanguage = () => (navigator.languages && navigator.languages.length && navigator.languages[0]) || navigator.language || 'en';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: colors.primary,
-    },
-    secondary: {
-      main: colors.secondaryBlue,
-    },
-  },
-  typography: {
-    fontFamily: ["Inter"].join(","),
-    button: {
-      textTransform: "none",
-      fontSize: 12,
-      fontWeight: "bold",
-    },
-  },
-});
+// const language: string = getLanguage()
 
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={Store.store}>
         <PersistGate loading={null} persistor={Store.persistor}>
-          <IntlProvider locale={language} messages={messages[language]}>
+          {/* <IntlProvider locale={language} messages={messages[language]}> */}
             <ConfirmProvider>
               <App />
             </ConfirmProvider>
-          </IntlProvider>
+          {/* </IntlProvider> */}
         </PersistGate>
       </Provider>
     </ThemeProvider>

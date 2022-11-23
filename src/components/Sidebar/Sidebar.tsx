@@ -1,8 +1,7 @@
 //@ts-nocheck
+import React from 'react'
 import { Badge, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import React, { useEffect } from 'react'
-import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router'
 import assets from '../../assets/assets'
@@ -21,12 +20,7 @@ function Sidebar() {
   const navbarOpen = useSelector((store: RootState) => store.app.navbar)
   const dispatch = useDispatch()
   const history = useHistory()
-  const intl = useIntl()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
-
-  // useEffect(() => {
-  //   dispatch(getAllChats())
-  // }, [])
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.path !== "chat"){
@@ -77,7 +71,7 @@ function Sidebar() {
                     </Typography>
                   </div>
                   <Typography className={classes.title}>
-                    {intl.formatMessage({ id: config.title })}
+                    { config.title }
                   </Typography>
                   <div className={classes.badge}>
                     {config.notification > 0 && (

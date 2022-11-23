@@ -10,11 +10,12 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { useEffect } from "react";
 import colors from "assets/colors";
+import { useTranslation } from "react-i18next";
 
 const Register = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
+  const {t} = useTranslation()
   const history = useHistory();
 
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
@@ -34,8 +35,8 @@ const Register = () => {
       <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
         <RegisterForm />
         <Typography className={classes.dontHave}>
-          Already have an account?{" "}
-          <span onClick={handleClick} className={classes.signup}>Sign in!</span>
+          {t('auth.Already_have_an_account')}{" "}
+          <span onClick={handleClick} className={classes.signup}>{t('auth.register.signIn')}</span>
         </Typography>
       </Grid>
 
