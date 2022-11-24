@@ -1,48 +1,26 @@
 name: CICD for Ceibro Frontend
+
 on:
   push:
-    branches:
-      - dev
+    branches: [ dev ]
+ 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x, 18.x]
-    
     steps:
-      - uses: actions/checkout@v2
-      - name: Use node js
-        uses: actions/setup-node@v1
-        with:
-         node-version: ${{ matrix.node-version }}
-      - name: yarn install build
-        run: |
-          yarn install
-          yarn build
-        
-        env:
-          CI: true
-  
-  deploy:
-    needs: [build]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: SSH deploy
-        uses: appleboy/ssh-action@master
-        with:
-          host: "dev.ceibro.ee"
-          username: ${{ secrets.USER}}
-          key: ${{ secrets.KEY}}
-          port: ${{ secrets.PORT}}
-
-          script: |
-              curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.33.8/install.sh | bash
-              . ~/.nvm/nvm.sh
-              nvm install 14
-              npm install -g pm2
-
-              cd ~/CEIBRODEPLOY/public/
-              git pull origin dev
-              pm2 reload 0
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x to Build
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+    - run: yarn install
+    - run: CI=false yarn build
+    - name: ssh deploy on aws ec2
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+        REMOTE_HOST: ${{ secrets.HOST_DEV }}
+        REMOTE_USER: ${{ secrets.USER }}
+        REMOTE_PORT: ${{ secrets.PORT }}
+        SOURCE: "build/"
+        TARGET: ${{ secrets.TARGET_PATH }}
