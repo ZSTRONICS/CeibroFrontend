@@ -13,7 +13,13 @@ export const useStyles = makeStyles((theme: Theme) =>
             "@media (max-width:960px)": {
                 padding: "10 13%",
             },
+            '& .MuiInputBase-input': {
+                border: '1px solid #DBDBE5',
+                padding: '10px 12px !important',
+                position: 'relative',
+            }
         },
+
         logoWrapper: {
             paddingTop: "2%",
             paddingLeft: "8%",

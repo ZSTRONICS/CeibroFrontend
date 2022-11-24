@@ -34,7 +34,7 @@ const RegisterForm = () => {
       },
       success: (res: any) => {
         // if (res) {
-          history.push('/login')
+        history.push('/login')
         // }
         action?.resetForm?.();
       },

@@ -85,6 +85,7 @@ const Login: React.FC<LoginInterface> = () => {
             <Typography className={classes.dontHave}>
               Don't have an account?{" "}
               <span onClick={goToSignup} className={classes.signup}>
+
                 Sign Up!
               </span>
             </Typography>
@@ -97,7 +98,8 @@ const Login: React.FC<LoginInterface> = () => {
         <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
-      )}
+      )
+      }
     </Grid>
   );
 };

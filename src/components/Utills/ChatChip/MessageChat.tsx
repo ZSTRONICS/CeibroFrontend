@@ -33,11 +33,11 @@ import { useMediaQuery } from 'react-responsive'
 
 interface MessageChatProps {
   message: ChatMessageInterface
-  enable:boolean
+  enable: boolean
 }
 
 const MessageChat: React.FC<MessageChatProps> = props => {
-  const { message,enable } = props
+  const { message, enable } = props
   const {
     replyOf,
     _id,
@@ -54,11 +54,11 @@ const MessageChat: React.FC<MessageChatProps> = props => {
     title,
     readBy,
   } = message
-  
+
   const { loadingMessages } = useSelector((root: RootState) => root.chat)
   const classes = useStyles()
   const { user } = useSelector((state: RootState) => state.auth)
-  const { messages, selectedChat,chat } = useSelector((state: RootState) => state.chat)
+  const { messages, selectedChat, chat } = useSelector((state: RootState) => state.chat)
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
   const dispatch = useDispatch()
   const [view, setView] = useState(false)
@@ -73,8 +73,8 @@ const MessageChat: React.FC<MessageChatProps> = props => {
         message.type === 'questioniar'
           ? colors.questioniarPrimary
           : myMessage
-          ? colors.lightGrey
-          : colors.white,
+            ? colors.lightGrey
+            : colors.white,
       boxShadow: 'none',
     }
   }
@@ -184,157 +184,158 @@ const MessageChat: React.FC<MessageChatProps> = props => {
   const senderUserId = (sender?.id === user.id)
   return (
     <>
-    <Grid
-      container
-      justifyContent={myMessage || senderUserId ? 'flex-end' : 'flex-start'}
-      className={classes.outerWrapper}
-      id={_id}>
-      {message.id && loadingMessages?.includes?.(message.id) && (
-        <ClipLoader color={colors.textGrey} size={6} />
-      )}
-      <Grid item xs={6} onClick={handleClick}>
-        <div className={classes.innerWrapper} style={getStyles()}>
-          {type === 'questioniar' && (
-            <div className={classes.questioniarWrapper}>
-              <Typography className={classes.questionText}>{title}</Typography>
-              <img className="w-16" src={assets.blueDocument} />
-            </div>
-          )}
-          {replyOf && (
-            <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
-              {message.type === 'message' && <span>{replyOf?.message}</span>}
-              {replyOf.type === 'questioniar' && <span>Questioniar</span>}
-              {replyOf.type === 'voice' && <span>Voice</span>}
-            </Grid>
-          )}
-          <Grid container ref={bodyRef}>
-            <Grid item xs={3} md={1} >
-              <NameAvatar
-                firstName={sender?.firstName || ''}
-                surName={sender?.surName}
-                url={sender?.profilePic}
-              />
-            </Grid>
-            <Grid item xs={9} md={11} className={classes.sideName}>
-              <div className={classes.titleWrapper}>
-                <div className={classes.usernameWrapper}>
-                  <div className={classes.nameWrapper}>
-                    <Typography className={classes.username}>
-                      {sender?.firstName} {sender?.surName}
-                    </Typography>
-                    <Typography className={classes.time}>{time}</Typography>
-                  </div>
-                  {!isTabletOrMobile && type !== 'questioniar' && (
-                    <div className={classes.quickReplyWrapper}>
-                     {(sender?.id === user.id) ? 
-                     <></>
-                    : <>
-                      {enable&&<><button
-                        className={classes.quickBtn}
-                        style={getQuickBtnStyles()}
-                        onClick={() => handleSend('OK')}
-                      >
-                        OK
-                      </button>
-                      <button
-                        className={classes.quickBtn}
-                        style={getQuickBtnStyles()}
-                        onClick={() => handleSend('?')}
-                      >
-                        ?
-                      </button>
-                      <button
-                        className={classes.quickBtn}
-                        style={getQuickBtnStyles()}
-                        onClick={() => handleSend('Done')}
-                      >
-                        Done
-                      </button></>}
-                      </>
-                    }
-                    </div>
-                  )}
-                </div>
-                <div className={classes.projectWrapper}>
-                  <Typography className={classes.company}>{sender?.companyName}</Typography>
-                </div>
+
+      <Grid
+        container
+        justifyContent={myMessage || senderUserId ? 'flex-end' : 'flex-start'}
+        className={classes.outerWrapper}
+        id={_id}>
+        {message.id && loadingMessages?.includes?.(message.id) && (
+          <ClipLoader color={colors.textGrey} size={6} />
+        )}
+        <Grid item xs={6} onClick={handleClick}>
+          <div className={classes.innerWrapper} style={getStyles()}>
+            {type === 'questioniar' && (
+              <div className={classes.questioniarWrapper}>
+                <Typography className={classes.questionText}>{title}</Typography>
+                <img className="w-16" src={assets.blueDocument} />
               </div>
-
-              <div className={classes.messageBody}>
-                {type === 'message' && (
-                  <Typography className={classes.messageText}>{messageText}</Typography>
-                )}
-                {type === 'voice' && (
-                  <audio style={{ maxWidth: '100%' }} controls>
-                    <source src={voiceUrl} />
-                  </audio>
-                )}
-              </div>
-            </Grid>
-            <Grid item xs={1}></Grid>
-
-            {files && files.length > 0 && (
-              <Grid item xs={10} className={classes.filesWrapper}>
-                <Grid container>
-                  {files?.map?.((file: any,i:any) => {
-                    return (
-                      <Grid key={i} item xs={2} className={` ${classes.imageWrapper}`}>
-                        <FilePreviewer file={file} showControls={false} />
-                      </Grid>
-                    )
-                  })}
-                  
-                  <Grid
-                    item
-                    xs={4}
-                    style={{
-                      paddingTop: 17,
-                      gap: 4,
-                      display: 'flex',
-                      alignItems: 'flex-end',
-                    }}
-                    className={classes.imageWrapper}
-                  >
-                    <div className={classes.fileIconWrapper} onClick={handleAllFilesDownload}>
-                      <BsDownload className={classes.fileIcon} />
-                    </div>
-                    <div className={classes.fileIconWrapper} onClick={toggleView}>
-                      <IoReturnUpForward className={classes.fileIcon} />
-                    </div>
-                  </Grid>
-
-                  {/* {view && <FileView handleClose={toggleView}/>} */}
-                </Grid>
+            )}
+            {replyOf && (
+              <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
+                {message.type === 'message' && <span>{replyOf?.message}</span>}
+                {replyOf.type === 'questioniar' && <span>Questioniar</span>}
+                {replyOf.type === 'voice' && <span>Voice</span>}
               </Grid>
             )}
-          </Grid>
-        </div>
-        <div className={classes.seenWrapper}>
-          <div className={classes.seenByWrapper}>
-            {readBy?.map((user: UserInterface,i:any) => {
-              return (
-                <SeenBy key={i} url={user?.profilePic} firstName={user.firstName} surName={user.surName} />
-              )
-            })}
+            <Grid container ref={bodyRef}>
+              <Grid item xs={3} md={1} >
+                <NameAvatar
+                  firstName={sender?.firstName || ''}
+                  surName={sender?.surName}
+                  url={sender?.profilePic}
+                />
+              </Grid>
+              <Grid item xs={9} md={11} className={classes.sideName}>
+                <div className={classes.titleWrapper}>
+                  <div className={classes.usernameWrapper}>
+                    <div className={classes.nameWrapper}>
+                      <Typography className={classes.username}>
+                        {sender?.firstName} {sender?.surName}
+                      </Typography>
+                      <Typography className={classes.time}>{time}</Typography>
+                    </div>
+                    {!isTabletOrMobile && type !== 'questioniar' && (
+                      <div className={classes.quickReplyWrapper}>
+                        {(sender?.id === user.id) ?
+                          <></>
+                          : <>
+                            {enable && <><button
+                              className={classes.quickBtn}
+                              style={getQuickBtnStyles()}
+                              onClick={() => handleSend('OK')}
+                            >
+                              OK
+                            </button>
+                              <button
+                                className={classes.quickBtn}
+                                style={getQuickBtnStyles()}
+                                onClick={() => handleSend('?')}
+                              >
+                                ?
+                              </button>
+                              <button
+                                className={classes.quickBtn}
+                                style={getQuickBtnStyles()}
+                                onClick={() => handleSend('Done')}
+                              >
+                                Done
+                              </button></>}
+                          </>
+                        }
+                      </div>
+                    )}
+                  </div>
+                  <div className={classes.projectWrapper}>
+                    <Typography className={classes.company}>{sender?.companyName}</Typography>
+                  </div>
+                </div>
+
+                <div className={classes.messageBody}>
+                  {type === 'message' && (
+                    <Typography className={classes.messageText}>{messageText}</Typography>
+                  )}
+                  {type === 'voice' && (
+                    <audio style={{ maxWidth: '100%' }} controls>
+                      <source src={voiceUrl} />
+                    </audio>
+                  )}
+                </div>
+              </Grid>
+              <Grid item xs={1}></Grid>
+
+              {files && files.length > 0 && (
+                <Grid item xs={10} className={classes.filesWrapper}>
+                  <Grid container>
+                    {files?.map?.((file: any, i: any) => {
+                      return (
+                        <Grid key={i} item xs={2} className={` ${classes.imageWrapper}`}>
+                          <FilePreviewer file={file} showControls={false} />
+                        </Grid>
+                      )
+                    })}
+
+                    <Grid
+                      item
+                      xs={4}
+                      style={{
+                        paddingTop: 17,
+                        gap: 4,
+                        display: 'flex',
+                        alignItems: 'flex-end',
+                      }}
+                      className={classes.imageWrapper}
+                    >
+                      <div className={classes.fileIconWrapper} onClick={handleAllFilesDownload}>
+                        <BsDownload className={classes.fileIcon} />
+                      </div>
+                      <div className={classes.fileIconWrapper} onClick={toggleView}>
+                        <IoReturnUpForward className={classes.fileIcon} />
+                      </div>
+                    </Grid>
+
+                    {/* {view && <FileView handleClose={toggleView}/>} */}
+                  </Grid>
+                </Grid>
+              )}
+            </Grid>
           </div>
-          {readBy && readBy?.length > 0 && (
-            <Typography className={classes.visibility}>{seen ? 'Seen' : 'Unseen'}</Typography>
-          )}
-        </div>
-      </Grid>
-      <Grid item xs={1} className={classes.iconsWrapper}>
-        {message.type !== 'questioniar' && (
-          <>
-            {message?.pinnedBy?.includes?.(user?.id) ? (
-              <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
-            ) : (
-              <AiOutlinePushpin className={classes.pinIcon} onClick={handlePinClick} />
+          <div className={classes.seenWrapper}>
+            <div className={classes.seenByWrapper}>
+              {readBy?.map((user: UserInterface, i: any) => {
+                return (
+                  <SeenBy key={i} url={user?.profilePic} firstName={user.firstName} surName={user.surName} />
+                )
+              })}
+            </div>
+            {readBy && readBy?.length > 0 && (
+              <Typography className={classes.visibility}>{seen ? 'Seen' : 'Unseen'}</Typography>
             )}
-          </>
-        )}
-       {enable&&<ChatMessageMenu message={message} />}
+          </div>
+        </Grid>
+        <Grid item xs={1} className={classes.iconsWrapper}>
+          {message.type !== 'questioniar' && (
+            <>
+              {message?.pinnedBy?.includes?.(user?.id) ? (
+                <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
+              ) : (
+                <AiOutlinePushpin className={classes.pinIcon} onClick={handlePinClick} />
+              )}
+            </>
+          )}
+          {enable && <ChatMessageMenu message={message} />}
+        </Grid>
       </Grid>
-    </Grid>
     </>
   )
 }
@@ -342,7 +343,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
 export default MessageChat
 
 const useStyles = makeStyles({
-  sideName:{
+  sideName: {
     paddingLeft: 15
   },
   outerWrapper: {

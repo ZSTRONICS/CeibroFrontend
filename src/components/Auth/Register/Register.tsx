@@ -20,6 +20,8 @@ import useStyles from "./RegisterStyles";
 
 const Register = () => {
   const classes = useStyles();
+  const { registerLoading } = useSelector((state: RootState) => state.auth)
+
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const history = useHistory();

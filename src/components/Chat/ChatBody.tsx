@@ -21,10 +21,10 @@ import NoConversation from "./NoConversation";
 
 interface ChatBodyInt {
   messages: ChatMessageInterface[];
-  enable:boolean
+  enable: boolean
 }
 
-const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
+const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
   );
@@ -33,18 +33,18 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector( (store: RootState) => store.chat.selectedChat );
+  const selectedChat = useSelector((store: RootState) => store.chat.selectedChat);
 
   const viewport = useSelector((store: RootState) => store.chat.viewport);
 
-  const { blockPagination, allowChangeBlock, blockDown } = useSelector( (store: RootState) => store.chat );
+  const { blockPagination, allowChangeBlock, blockDown } = useSelector((store: RootState) => store.chat);
 
   const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
-  
-  let chatBox = document.getElementById("chatBox")
 
+  let chatBox = document.getElementById("chatBox")
+  console.log(selectedChat && selectedChat.length, 'length of chat')
   useEffect(() => {
-   
+
     if (selectedChat) {
       const payload = {
         other: {
@@ -54,7 +54,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
       };
       dispatch(getRoomMessages(payload));
     }
-    return ():void=>{
+    return (): void => {
       selectedChat
       null
     }
@@ -63,13 +63,13 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
   useEffect(() => {
     if (!blockLocal) {
       if (chatBox) {
-        chatBox?.removeEventListener("scroll", () => {});
+        chatBox?.removeEventListener("scroll", () => { });
       }
       chatBox?.addEventListener("scroll", () => handleScroll(blockLocal));
     }
     return () => {
-      chatBox?.removeEventListener("scroll", () => {});
-      
+      chatBox?.removeEventListener("scroll", () => { });
+
     };
   }, [blockPagination, allowChangeBlock, blockLocal]);
 
@@ -82,7 +82,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
     if (
       (chatBox?.clientHeight || 0) > 300 &&
       (chatBox?.scrollHeight || 0) - (chatBox?.scrollTop || 0) ===
-        chatBox?.clientHeight
+      chatBox?.clientHeight
     ) {
       if (!blockLocal) {
         dispatch(getDownMessages());
@@ -92,7 +92,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
 
   useEffect(() => {
     if (!viewport && !blockDown) {
-      setBlockLocal(()=> true);
+      setBlockLocal(() => true);
       setTimeout(() => {
         const chatBox = document.getElementById("chatBox") || {
           scrollTop: 0,
@@ -100,11 +100,11 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
         };
         chatBox.scrollTop = chatBox.scrollHeight;
         setTimeout(() => {
-          setBlockLocal(()=> false);
+          setBlockLocal(() => false);
         }, 5000);
       }, 300);
     }
-    return ()=>{
+    return () => {
       blockDown
       clearTimeout(viewport)
     }
@@ -113,11 +113,11 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
   useEffect(() => {
     if (allowScroll) {
       // will run when something merge at top
-       chatBox || {
+      chatBox || {
         scrollTop: 0,
         scrollHeight: 0,
       };
-       chatBox = document.getElementById(viewport);
+      chatBox = document.getElementById(viewport);
       if (chatBox) {
         chatBox.scrollTop = chatBox.offsetTop - 20;
         // chatBox.scrollIntoView({ behavior: "auto" });
@@ -133,7 +133,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
         });
       }
     }
-  return ()=>{
+    return () => {
       allowScroll
     }
   }, [viewport, allowScroll]);
@@ -141,19 +141,22 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
   if (!selectedChat) {
     return <NoConversation />;
   }
-  
+
   return (
-    <Grid
-      className={`${classes.wrapper} custom-scrollbar`}
-      id="chatBox"
-      container
-    >
-      {messages &&
-        messages?.map?.((message: ChatMessageInterface) => {
-          return <MessageChat message={message} enable={enable} />;
-        })}
-      <AddTempChatMember />
-    </Grid>
+    <>
+
+      <Grid
+        className={`${classes.wrapper} custom-scrollbar`}
+        id="chatBox"
+        container
+      >
+        {messages &&
+          messages?.map?.((message: ChatMessageInterface) => {
+            return <MessageChat message={message} enable={enable} />;
+          })}
+        <AddTempChatMember />
+      </Grid>
+    </>
   );
 });
 

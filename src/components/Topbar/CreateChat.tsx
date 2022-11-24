@@ -118,7 +118,7 @@ const CreateChat = () => {
         setProject(null);
         setUser(null);
         handleOutsideClick();
-         dispatch(getAllChats());
+        dispatch(getAllChats());
       },
     };
     dispatch(createChatRoom(payload));

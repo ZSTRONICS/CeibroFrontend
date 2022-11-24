@@ -112,6 +112,9 @@ const LoginForm: React.FC<LoginForm> = (props) => {
       <div className={classes.logoWrapper}>
         <img src={assets.logo} alt="ceibro-logo" />
       </div>
+      <div className={classes.titleWrapper}>
+        <Typography className={classes.title}>Login</Typography>
+      </div>
 
 
       <div className={classes.loginForm}>
@@ -206,6 +209,7 @@ const useStyles = makeStyles({
   },
   inputOutline: {
     height: "40px",
+    backgroundColor: '#fff'
   },
   wrapper: {
     height: "94%",
@@ -228,6 +232,9 @@ const useStyles = makeStyles({
     "@media (max-width:960px)": {
       padding: "10 13%",
     },
+    '& .MuiOutlinedInput-input': {
+      padding: '11px !important'
+    }
   },
   remember: {
     marginTop: "35px !important",

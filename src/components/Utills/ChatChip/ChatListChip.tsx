@@ -11,6 +11,7 @@ import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
+
 }
 
 const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
@@ -18,7 +19,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const { chat } = props;
 
-  const { name, lastMessage, unreadCount, lastMessageTime, project } = chat;
+  const { name, lastMessage, unreadCount, lastMessageTime, project, } = chat;
 
   const { user } = useSelector((state: RootState) => state.auth);
   const selectedChat = useSelector(
@@ -29,19 +30,19 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const dispatch = useDispatch();
   let avaterInfo: any = {};
   const chatMembers = [...chat.members, ...chat.removedAccess]
-  
+
   if (chat.isGroupChat === false) {
     let chatMember = chatMembers.filter((item) => item.id !== user.id);
     if (chatMember.length === 0) {
       chatMember = chat.removedMembers;
     }
 
-     chatMember
+    chatMember
       .filter((item) => item.id !== user.id)
       .map((item: any) => (
         (avaterInfo.firstName = item.firstName),
-          (avaterInfo.surName = item.surName),
-          (avaterInfo.picUrl = item.profilePic)
+        (avaterInfo.surName = item.surName),
+        (avaterInfo.picUrl = item.profilePic)
       ));
   }
 
@@ -51,6 +52,8 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const handleClick = () => {
     props.handleClick?.(chat);
+
+
   };
 
   const getStyles = () => {
@@ -77,80 +80,83 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
 
   return (
-    <Grid
-      onClick={handleClick}
-      className={classes.chatListWrapper}
-      container
-      style={getStyles()}
-    >
-      <Grid container>
-        {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
+    <>
+
+      <Grid
+        onClick={handleClick}
+        className={classes.chatListWrapper}
+        container
+        style={getStyles()}
+      >
+        <Grid container>
+          {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
           {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
         </Grid> */}
-        <Grid item xs={2} className={classes.avatarWrapper}>
-          {chat.isGroupChat ? (
-            <NameAvatar background="white" firstName={name} />
-          ) : (
-            <NameAvatar
-              background="white"
-              firstName={individualFirstName}
-              surName={individualSurName}
-              url={individualPicUrl}
-            />
-          )}
-        </Grid>
-
-        <Grid item xs={6} className={classes.messageDetailWrapper}>
-          {chat.isGroupChat ? (
-            <Typography className={classes.userName}>{name}</Typography>
-          ) : (
-            <Typography
-              className={classes.userName}
-            >{`${individualFirstName} ${individualSurName}`}</Typography>
-          )}
-          {unreadCount && unreadCount > 0 && (
-            <Typography className={classes.message}>
-              {lastMessage?.message?.substr(0, 22)}
-            </Typography>
-          )}
-        </Grid>
-
-        <Grid item xs={2} className={classes.timeOuterWrapper}>
-          <div onClick={handleFavouriteClick}>
-            {bookmarked ? (
-              <Star className={classes.startFilled} />
+          <Grid item xs={2} className={classes.avatarWrapper}>
+            {chat.isGroupChat ? (
+              <NameAvatar background="white" firstName={name} />
             ) : (
-              <StarBorder className={classes.bookmarked} />
+              <NameAvatar
+                background="white"
+                firstName={individualFirstName}
+                surName={individualSurName}
+                url={individualPicUrl}
+              />
             )}
-          </div>
-          <div className={classes.timeWrapper}>
-            {unreadCount && unreadCount > 0 && (
-              <Badge
-                overlap="circular"
-                badgeContent={unreadCount}
-                color="error"
-              ></Badge>
-            )}
-            <Typography className={classes.time}>{lastMessageTime}</Typography>
-          </div>
-        </Grid>
+          </Grid>
 
-        <Grid item xs={1} className={classes.timeWrapper}>
-          <ChatListMenu room={chat} />
+          <Grid item xs={6} className={classes.messageDetailWrapper}>
+            {chat.isGroupChat ? (
+              <Typography className={classes.userName}>{name}</Typography>
+            ) : (
+              <Typography
+                className={classes.userName}
+              >{`${individualFirstName} ${individualSurName}`}</Typography>
+            )}
+            {unreadCount && unreadCount > 0 && (
+              <Typography className={classes.message}>
+                {lastMessage?.message?.substr(0, 22)}
+              </Typography>
+            )}
+          </Grid>
+
+          <Grid item xs={2} className={classes.timeOuterWrapper}>
+            <div onClick={handleFavouriteClick}>
+              {bookmarked ? (
+                <Star className={classes.startFilled} />
+              ) : (
+                <StarBorder className={classes.bookmarked} />
+              )}
+            </div>
+            <div className={classes.timeWrapper}>
+              {unreadCount && unreadCount > 0 && (
+                <Badge
+                  overlap="circular"
+                  badgeContent={unreadCount}
+                  color="error"
+                ></Badge>
+              )}
+              <Typography className={classes.time}>{lastMessageTime}</Typography>
+            </div>
+          </Grid>
+
+          <Grid item xs={1} className={classes.timeWrapper}>
+            <ChatListMenu room={chat} />
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={6} style={{ paddingLeft: 6 }}>
+            {project?.title && (
+              <Typography className={classes.chatProject}>
+                <span>Project: &nbsp;&nbsp;</span>
+                <span className={classes.chatProjectName}>{project.title}</span>
+              </Typography>
+            )}
+          </Grid>
         </Grid>
       </Grid>
-      <Grid container>
-        <Grid item xs={2}></Grid>
-        <Grid item xs={6} style={{ paddingLeft: 6 }}>
-          {project?.title && (
-            <Typography className={classes.chatProject}>
-              <span>Project: &nbsp;&nbsp;</span>
-              <span className={classes.chatProjectName}>{project.title}</span>
-            </Typography>
-          )}
-        </Grid>
-      </Grid>
-    </Grid>
+    </>
   );
 };
 
