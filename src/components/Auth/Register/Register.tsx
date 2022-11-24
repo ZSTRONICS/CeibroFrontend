@@ -11,6 +11,8 @@ import { RootState } from "redux/reducers";
 import { useEffect } from "react";
 import colors from "assets/colors";
 import { useTranslation } from "react-i18next";
+import Setting from "components/Setting";
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const classes = useStyles();
@@ -26,18 +28,24 @@ const Register = () => {
     }
   }, [isLoggedIn]);
 
-  const handleClick = () => {
-    history.push('/login')
-  }
-
   return (
     <Grid container className={classes.register}>
       <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
         <RegisterForm />
-        <Typography className={classes.dontHave}>
+        <Grid container className={classes.langContainer} justifyContent="space-between">
+          <Grid item>
+          <Typography className={classes.dontHave}>
           {t('auth.Already_have_an_account')}{" "}
-          <span onClick={handleClick} className={classes.signup}>{t('auth.register.signIn')}</span>
-        </Typography>
+              <Link to ="/login" className={classes.signup}>
+              {t('auth.register.signIn')}
+              </Link>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Setting/>
+          </Grid>
+          </Grid>
+        
       </Grid>
 
       {!isTabletOrMobile && (
@@ -53,6 +61,9 @@ export default Register;
 
 const useStyles = makeStyles((theme) => {
   return {
+    langContainer:{
+      padding: "10px 13%",
+    },
     register: {
       display: "flex",
       ["@media (max-width:960px)"]: {
@@ -74,13 +85,13 @@ const useStyles = makeStyles((theme) => {
       position: "relative",
     },
     dontHave: {
-      paddingLeft: "12.5%",
       fontSize: 14,
       fontWeight: 500,
       cursor: "pointer"
     },
     signup: {
       color: colors.textPrimary,
+      textDecoration:'none'
     },
     // formTile: {
     //     display: 'inline-block',

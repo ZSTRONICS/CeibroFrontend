@@ -45,7 +45,6 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
-    console.log(values);
     const { email } = values;
     const payload = {
       body: { email },
@@ -53,7 +52,6 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
         toast.success(`${t("auth.check_your_email")}`);
       },
       onFailAction: (err: any) => {
-        console.log(err.response.data.code === 404);
         if (err.response.data.code === 404) {
           setEmailFound(true);
         }

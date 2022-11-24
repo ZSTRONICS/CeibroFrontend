@@ -1,24 +1,31 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./login.css";
-import axios from "axios";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import { useMediaQuery } from "react-responsive";
 import queryString from "query-string";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 
+// translation
+import { useTranslation } from "react-i18next";
+
+import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
+
+// axios
+import axios from "axios";
+import { baseURL } from "utills/axios";
+
+// redux
+import { RootState } from "../../../redux/reducers";
+import { useSelector } from "react-redux";
+
+// components
 import ImageTile from "./ImageTile";
+import LoginForm from "./LoginForm";
 import Setting from "components/Setting";
 import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import assets from "../../../assets/assets";
-import { RootState } from "../../../redux/reducers";
-import { useEffect } from "react";
 import colors from "../../../assets/colors";
-import { baseURL } from "utills/axios";
-import LoginForm from "./LoginForm";
 
 const Login: React.FC<LoginInterface> = () => {
   const classes = useStyles();
@@ -104,14 +111,14 @@ const useStyles = makeStyles((theme) => {
     },
     login: {
       display: "flex",
-      ["@media (max-width:960px)"]: {
+      "@media (max-width:960px)":{
         flexDirection: "column",
         height: "100vh",
       },
     },
     form: {
       height: "100vh",
-      ["@media (max-width:960px)"]: {
+      "@media (max-width:960px)":{
         background: `url(${assets.visual})`,
         backgroundSize: "100vw 100vh",
         backgroundRepeat: "no-repeat",
@@ -121,7 +128,6 @@ const useStyles = makeStyles((theme) => {
       position: "relative",
     },
     dontHave: {
-      // paddingLeft: "13%",
       fontSize: 14,
       fontWeight: 500,
       cursor: "pointer",

@@ -13,6 +13,8 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
+import Alert from "@mui/material/Alert";
+
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -39,6 +41,7 @@ const RegisterForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPass, setConfirmPass] = useState(false);
   const registerSch = setValidationSchema(t);
+  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
 
   const handleSubmit = (values: any, action: any) => {
     const { firstName, surName, email, password } = values;
@@ -53,8 +56,16 @@ const RegisterForm = () => {
         history.push("/login");
         action?.resetForm?.();
       },
+      onFailAction: (err: any) => {
+        if (err.response.data.code === 400) {
+          setIncorrectAuth(true);
+        }
+      }
     };
     dispatch(registerRequest(payload));
+    setTimeout(() => {
+      setIncorrectAuth(false);
+    }, 3000);
   };
 
   return (
@@ -87,10 +98,13 @@ const RegisterForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+              
+               {incorrectAuth && (
+                <Alert severity="error">{t("auth.email_already_taken")}</Alert>
+                )} 
               <TextField
                 placeholder={t("auth.register.first_name")}
                 className={classes.inputs}

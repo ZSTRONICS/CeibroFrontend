@@ -10,13 +10,13 @@ import { resetPassword } from 'redux/action/auth.action'
 import { RootState } from 'redux/reducers'
 import Loading from 'components/Utills/Loader/Loading'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
 import { toast } from 'react-toastify'
 import { Alert } from '@material-ui/lab'
 import queryString from 'query-string'
 import CustomImg from 'components/CustomImg'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
 import { useTranslation } from 'react-i18next'
+import { resetPasswordSchemaValidation } from '../userSchema/AuthSchema'
 
 const ResetPasswordForm = () => {
 
@@ -24,13 +24,12 @@ const ResetPasswordForm = () => {
   const classes = useStyles()
   const [showPassword, setShowPassword] = useState(false);
   const [confirmPass, setConfirmPass] = useState(false)
-
-  const { registerLoading } = useSelector((state: RootState) => state.auth)
   const [loading, setLoading] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>()
   const [error, setError] = useState<boolean>(false)
   const dispatch = useDispatch()
   const history = useHistory()
+
   const isDiabled = !loading ? false : true
 
   const handleSubmit = (values: any, action: any) => {
@@ -44,12 +43,14 @@ const ResetPasswordForm = () => {
         if (res) {
           history.push('/login')
         }
-        toast.success('Password Reset Successfully')
+        toast.success(`${t('auth.password_reset_successfully')}`)
         action?.resetForm?.()
       },
       onFailAction: (err: any) => {
-        setError(true)
-
+        if (err.response.data.code === 401) {
+          setError(true)
+          
+        }
         setTimeout(() => {
           setError(false)
         }, 3000)
@@ -65,21 +66,7 @@ const ResetPasswordForm = () => {
     dispatch(resetPassword(payload))
   }
 
-  const registerSchema = Yup.object().shape({
-    // otp: Yup.string()
-    //   .min(2, "Too Short!")
-    //   .max(50, "Too Long!")
-    //   .required("Required"),
-    password: Yup.string()
-      .required(`${t('auth.plz_Enter_pass')}`)
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
-        `${t('auth.pass_must_Contain')}`
-      ),
-    confirmPassword: Yup.string()
-      .required(`${t('auth.plz_confirm_pass')}`)
-      .oneOf([Yup.ref('password'), null], "Passwords don't match."),
-  })
+  const resetPasswordSchema = resetPasswordSchemaValidation(t)
 
   return (
     <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
@@ -97,7 +84,7 @@ const ResetPasswordForm = () => {
             password: '',
             confirmPassword: '',
           }}
-          validationSchema={registerSchema}
+          validationSchema={resetPasswordSchema}
           onSubmit={handleSubmit}
         >
           {({
@@ -107,8 +94,6 @@ const ResetPasswordForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
-            isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: '100%' }}>
               {(success || loading) && (
@@ -117,25 +102,8 @@ const ResetPasswordForm = () => {
                 </Alert>
               )}
 
-              {error && <Alert severity="error">{t('register.invalid_email')}</Alert>}
+              {error && <Alert severity="error">{t('auth.password_reset_failed')}</Alert>}
 
-              {/* <TextField
-                placeholder={"Enter OTP"}
-                className={classes.inputs}
-                name="otp"
-                value={values.otp}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-
-              {errors.otp && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.otp && touched.otp && errors.otp}
-                </Typography>
-              )} */}
               <TextField
                 type={showPassword ? "text" : "password"}
                 placeholder={t('auth.Password')}

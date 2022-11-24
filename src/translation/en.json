@@ -28,8 +28,10 @@
     "email_verified": "email Verified",
     "incorrect_email_password": "Incorrect email or password",
     "check_your_email": "Please check your email",
-    "loggedin_Successfully":"edukalt sisse logitud",
+    "loggedin_Successfully":"Logged in successfully",
     "noUserFound_with_email":"No users found with this email",
+    "password_reset_failed":"Password reset failed",
+    "email_already_taken":"Email already taken",
 
     "forgot_pass": {
       "verifying": "Verifying",
@@ -38,11 +40,11 @@
 
     "register": {
       "register": "Register",
-      "signIn": "sign In!",
-      "first_name": "first name",
+      "signIn": "Sign in!",
+      "first_name": "First name",
       "sur_name": "Surname",
       "invalid_email": "Invalid email",
-      "confirm_password": "confirm Password",
+      "confirm_password": "Confirm password",
       "submit": "submit",
       "company_vat": "Company Vat",
       "company_location": "Company Location",

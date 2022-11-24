@@ -20,3 +20,17 @@ export const forgotPasswordSchemaValidation = (t:TFunction) =>{
       })
 return forgotPasswordSchema
 }
+export const resetPasswordSchemaValidation = (t:TFunction) =>{
+    const resetPasswordSchema = yup.object().shape({
+      password: yup.string()
+        .required(`${t('auth.plz_Enter_pass')}`)
+        .matches(
+          /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
+          `${t('auth.pass_must_Contain')}`
+        ),
+      confirmPassword: yup.string()
+        .required(`${t('auth.plz_confirm_pass')}`)
+        .oneOf([yup.ref('password'), null], "Passwords don't match."),
+    })
+return resetPasswordSchema
+}

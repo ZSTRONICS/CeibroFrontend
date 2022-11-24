@@ -28,9 +28,10 @@
     "email_verified":"email Kinnitatud",
     "incorrect_email_password":"Vale e-mail või parool",
     "check_your_email": "Palun kontrolli oma e-posti",
-    "loggedin_Successfully":"logged in successfully",
+    "loggedin_Successfully":"Edukalt sisse logitud",
     "noUserFound_with_email":"Selle meiliga kasutajaid ei leitud",
-
+    "password_reset_failed":"Parooli lähtestamine ebaõnnestus",
+    "email_already_taken":"Meil on juba võetud",
 
     "forgot_pass": {
       "verifying": "Kontrollimine",
@@ -40,7 +41,7 @@
     "register": {
       "register": "Registreeri",
       "signIn": "Logi sisse",
-      "first_name": "eesnimi",
+      "first_name": "Eesnimi",
       "sur_name": "Perekonnanimi",
       "invalid_email": "Kehtetu e-posti aadress",
       "confirm_password": "Kinnita salasõna",

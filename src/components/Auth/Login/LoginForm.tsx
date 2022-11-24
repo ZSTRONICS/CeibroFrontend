@@ -5,6 +5,9 @@ import { Formik, Form } from "formik";
 // i18next
 import { useTranslation } from "react-i18next";
 
+// react router dom
+import { useHistory } from "react-router-dom";
+
 // material
 import {
   Button,
@@ -20,6 +23,7 @@ import {
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -33,9 +37,7 @@ import { toast } from "react-toastify";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 import colors from "assets/colors";
 import Loading from "react-loading";
-import { useHistory } from "react-router-dom";
 import assets from "assets/assets";
-import Alert from "@mui/material/Alert";
 
 interface Props {
   tokenLoading: boolean;
@@ -44,8 +46,8 @@ interface Props {
 }
 
 const LoginForm: React.FC<Props> = (props) => {
-  const { tokenLoading, showSuccess, showError } = props;
 
+  const { tokenLoading, showSuccess, showError } = props;
   const classes = useStyles();
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
@@ -54,6 +56,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -77,11 +80,9 @@ const LoginForm: React.FC<Props> = (props) => {
         toast.success(`${t("auth.loggedin_Successfully")}`);
       },
       onFailAction: (err: any) => {
-        console.log(err.response.data.code === 401);
         if (err.response.data.code === 401) {
           setIncorrectAuth(true);
-        }
-        if (err.response.data.code === 423) {
+        } else if (err.response.data.code === 423) {
           setLockError(true);
         } else if (err) {
           setVerifyError(true);
@@ -150,12 +151,18 @@ const LoginForm: React.FC<Props> = (props) => {
           values,
         }) => (
           <Form onSubmit={handleSubmit}>
-            <Grid container className={classes.formWraper} xs={8} md={8}>
+            <Grid
+              container
+              direction="column"
+              className={`${classes.formWraper}`}
+              xs={8}
+              md={8}
+            >
               {(showSuccess || tokenLoading) && (
                 <Alert severity="success">
                   {tokenLoading
-                    ? `${t('auth.successAlerts.verifying_email')}`
-                    : `${t('auth.successAlerts.email_verified')}`}
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
                 </Alert>
               )}
 
@@ -310,7 +317,6 @@ const useStyles = makeStyles({
     padding: "0 30px 33px",
   },
   formWraper: {
-    flexDirection:  'column !important',
     margin: "0 auto",
   },
   errorText: {
