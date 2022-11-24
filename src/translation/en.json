@@ -1,23 +1,79 @@
 {
-    "login.btn": "Login dyn3",
-    "input.Email": "Email",
-    "input.Password": "Password",
-    "input.RememberMe": "Remeber me",
-    "input.Login": "Login",
-    "input.ForgetPassword": "Forgot Password",
-    "input.otp": "Please Enter OTP",
-    "input.verify": "Verify",
-    "input.send": "Send",
-    "input.verifyEmail": "Resend Email verification",
+  "auth": {
+    "login": "Login",
+    "signUp": "Sign Up!",
+    "Email": "Email",
+    "Password": "Password",
+    "RememberMe": "Remeber me",
+    "ForgetPassword": "Forgot password?",
+    "verify": "Verify",
+    "send": "Send",
+    "verifyEmail": "Resend email verification?",
+    "dont_have_account": "Don't have an account?",
+    "Already_have_an_account": "Already have an account?",
+    "link_expired": "Link expired",
+    "email_not_verified": "Email not verified please check your inbox",
+    "Remember": "Remember!",
+    "reset_password": "Reset Password",
+    "password_reset_successfully": "Password Reset Successfully",
+    "plz_Enter_pass": "Please enter your password",
+    "pass_must_Contain": "Password must contain at least 8 characters, one special character and one number",
+    "plz_confirm_pass": "Please confirm your password",
+    "confirm_password": "confirm Password",
+    "pass_not_match": "Passwords don't match.",
+    "required": "Required",
+    "tooShort": "Too Short!",
+    "tooLong": "Too Long!",
+    "emailNotVerify": "Email not verified please check your inbox.",
+    "email_verified": "email Verified",
+    "incorrect_email_password": "Incorrect email or password",
+    "check_your_email": "Please check your email",
+    "loggedin_Successfully":"Logged in successfully",
+    "noUserFound_with_email":"No users found with this email",
+    "password_reset_failed":"Password reset failed",
+    "email_already_taken":"Email already taken",
+    "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
 
+    "forgot_pass": {
+      "verifying": "Verifying",
+      "email_verify_successfully": "Email verified successfully. Please sign in!"
+    },
 
+    "register": {
+      "register": "Register",
+      "signIn": "Sign in!",
+      "first_name": "First name",
+      "sur_name": "Surname",
+      "invalid_email": "Invalid email",
+      "confirm_password": "Confirm password",
+      "submit": "submit",
+      "company_vat": "Company Vat",
+      "company_location": "Company Location",
+      "company_phone": "Company Phone",
+      "work_email": "Work Email",
+      "Not_valid_email": "Not a valid email",
+      "currently_representing": "Currently Representing Company"
+    },
 
+    "profile_form": {
+      "phone": "Phone",
+      "company_name": "Company Name"
+    },
 
+    "errorAlerts": {
+      "incorrect_email_pass": "Incorrect email or password",
+      "account_locked_message": "Account locked. Retry after # minutes"
+    },
 
+    "successAlerts": {
+      "login_successfull": "success",
+      "verifying_email": "verifying email",
+      "email_verified": "Email verified successfully. Please sign in!"
+    }
+  },
 
-
-    "Dashboard": "Dashboard",
-    "Chat": "Chat",
-    "Tasks": "Tasks",
-    "Projects": "Projects"
- }
+  "Dashboard": "Dashboard",
+  "Chat": "Chat",
+  "Tasks": "Tasks",
+  "Projects": "Projects"
+}

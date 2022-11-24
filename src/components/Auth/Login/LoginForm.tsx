@@ -1,27 +1,43 @@
-// @ts-nocheck
+import React, { useState } from "react";
+//formik
+import { Formik, Form } from "formik";
+
+// i18next
+import { useTranslation } from "react-i18next";
+
+// react router dom
+import { useHistory } from "react-router-dom";
+
+// material
 import {
-  Typography,
   Button,
-  FormControlLabel,
   Checkbox,
-  InputAdornment,
-  IconButton,
   FormControl,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
   OutlinedInput,
+  Typography,
+  Grid,
+  Box,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useState } from "react";
-import { useHistory } from "react-router";
-import assets from "../../../assets/assets";
-import colors from "../../../assets/colors";
-import { useIntl } from "react-intl";
+import Alert from "@mui/material/Alert";
+
+// redux
 import { useDispatch, useSelector } from "react-redux";
-import { loginRequest, verifyEmail } from "../../../redux/action/auth.action";
-import { RootState } from "../../../redux/reducers";
-import Loading from "../../Utills/Loader/Loading";
-import { Alert } from "@material-ui/lab";
+import { loginRequest, verifyEmail } from "redux/action/auth.action";
+import { RootState } from "redux/reducers";
+
+//toastify
 import { toast } from "react-toastify";
+
+// component
+import { SigninSchemaValidation } from "../userSchema/AuthSchema";
+import colors from "assets/colors";
+import Loading from "react-loading";
+import assets from "assets/assets";
 
 interface Props {
   tokenLoading: boolean;
@@ -30,71 +46,76 @@ interface Props {
 }
 
 const LoginForm: React.FC<Props> = (props) => {
-  const classes = useStyles();
+
   const { tokenLoading, showSuccess, showError } = props;
-  const [showPassword, setShowPassword] = useState(false);
-
-  const { loginLoading, authErrorMessage, authSuccessMessage } = useSelector(
-    (state: RootState) => state.auth
-  );
-  const history = useHistory();
+  const classes = useStyles();
+  const { t } = useTranslation();
+  const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(true);
-  const intl = useIntl();
-  const dispatch = useDispatch();
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
-  
-  const handleSubmit = () => {
-    setError(false);
-    setLockError(false);
-    setVerifyError(false);
+  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+  let [timer, setTimer]= useState('')
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const { loginLoading } = useSelector((state: RootState) => state.auth);
+
+  const handleKeyDown = (e: any, values: any) => {
+    if (e.keyCode === 13) {
+      handleSubmit(values);
+    }
+  };
+
+  const handleSubmit = (values: any) => {
+    const { email, password } = values;
     const payload = {
       body: {
         email,
         password,
       },
       success: (_res: any) => {
-        toast.success("logged in successfully");
+        toast.success(`${t("auth.loggedin_Successfully")}`);
       },
       onFailAction: (err: any) => {
-        if (err) {
+        if (err.response.data.code === 401) {
+        const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
+        setTimer(timer)
+        setIncorrectAuth(true);
+        } else if (err.response.data.code === 423) {
+          const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
+        setTimer(timer)
+          setLockError(true);
+        } else if (err) {
           setVerifyError(true);
-        } else {
-          if (err) {
-            setLockError(true);
-            setTimeout(() => {
-              setLockError(false);
-            }, 3000);
-          } else {
-            setError(true);
-            setTimeout(() => {
-              setError(false);
-            }, 3000);
-          }
         }
+
+        setTimeout(() => {
+          setLockError(false);
+          setVerifyError(false);
+          setIncorrectAuth(false);
+        }, 3000);
       },
       showErrorToast: true,
     };
-
     dispatch(loginRequest(payload));
   };
 
-  const checkValidInputs=()=>{
-    if(email&& email.length>0 && password && password.length>0){
-      return false
+  const checkValidInputs = (values: any) => {
+    const { email, password } = values;
+    if (email && email.length > 0 && password && password.length > 0) {
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
-  const handleVerifyEmail = () => {
+  const handleVerifyEmail = (values: any) => {
+    const { email } = values;
     const payload = {
       body: { email },
       success: () => {
-        toast.success("Please check your email");
+        toast.success(`${t("auth.check_your_email")}`);
         history.push("/login");
       },
     };
@@ -106,137 +127,214 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className={`form-container ${classes.wrapper}`}>
-     
-      <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
-      </div>
+    <div className={classes.container}>
+      <Box className={classes.logoTitleWrapper}>
+        <Box className={classes.logoWrapper}>
+          <img src={assets.logo} alt="ceibro-logo" />
+        </Box>
+        <Box className={classes.titleWrapper}>
+          <Typography className={classes.title}>{t("auth.login")}</Typography>
+        </Box>
+      </Box>
 
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Login</Typography>
-      </div>
-
-      <div className={classes.loginForm}>
-        {(showSuccess || tokenLoading) && (
-          <Alert severity="success">
-            {tokenLoading
-              ? "Verifying email"
-              : "Email verified successfully. Please sign in!"}
-          </Alert>
-        )}
-
-        {showError && <Alert severity="error">Link expired</Alert>}
-        {verifyError && (
-          <Alert severity="error" style={{ display: "flex" }}>
-            <Typography
-              className={`${classes.titles} ${classes.forget} ${classes.color} `}
-              variant="body1"
-              gutterBottom
-              onClick={handleVerifyEmail}
+      <Formik
+        initialValues={{
+          email: "",
+          password: "",
+        }}
+        validationSchema={signinSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          values,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <Grid
+              container
+              direction="column"
+              className={`${classes.formWraper}`}
+              xs={8}
+              md={8}
             >
-              Email not verified please check your inbox.
-              <span className={classes.emailVerify}>
-                {" "}
-                {intl.formatMessage({ id: "input.verifyEmail" })} ?
-              </span>
-            </Typography>
-          </Alert>
-        )}
+              {(showSuccess || tokenLoading) && (
+                <Alert severity="success">
+                  {tokenLoading
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
+                </Alert>
+              )}
 
-        {error && <Alert severity="error">Incorrect email or password</Alert>}
-        {lockError && (
-          <Alert severity="error">Account locked. Retry after 15 minutes</Alert>
-        )}
-        <FormControl variant="outlined" >
-          <OutlinedInput
-           className={classes.inputOutline}
-            placeholder={intl.formatMessage({ id: "input.Email" })}
-            onChange={(e: any) => setEmail(e.target.value)}
-          />
-        </FormControl>
-
-        <FormControl variant="outlined" className={classes.PassInput}>
-          <OutlinedInput
-            className={classes.inputOutline}
-            id="filled-adornment-password"
-            type={showPassword ? "text" : "password"}
-            placeholder={intl.formatMessage({ id: "input.Password" })}
-            onChange={(e: any) => setPassword(e.target.value)}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={() => setShowPassword(!showPassword)}
-                  edge="end"
+              {showError && (
+                <Alert severity="error">{t("auth.link_expired")}</Alert>
+              )}
+              {verifyError && (
+                <Alert
+                  severity="error"
+                  style={{ display: "flex", margin: "2px 0" }}
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-          ></OutlinedInput>
-        </FormControl>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checked}
-              onChange={() => setChecked(!checked)}
-              name="checkedB"
-              color="primary"
-              style={{ padding: 0 }}
-            />
-          }
-          className={classes.remember}
-          style={{ padding: 0 }}
-          label={
-            <Typography className={classes.rememberText}>
-              {intl.formatMessage({ id: "input.RememberMe" })}
-            </Typography>
-          }
-        />
-        <div className={classes.actionWrapper}>
-          <Button
-            className={classes.loginButton}
-            variant="contained"
-            color="primary"
-            disabled={checkValidInputs() || loginLoading}
-            onClick={handleSubmit}
-          >
-            
-            {loginLoading ? (
-              <Loading type="spin" color="white" height={14} width={14} />
-            ) : (
-              intl.formatMessage({ id: "input.Login" })
-            )}
-          </Button>
-          <Typography
-            className={`${classes.titles} ${classes.forget}`}
-            variant="body1"
-            gutterBottom
-            onClick={handlePasswordForget}
-          >
-            {intl.formatMessage({ id: "input.ForgetPassword" })} ?
-          </Typography>
-        </div>
-      </div>
+                  <Typography
+                    className={`${classes.titles} ${classes.forget} ${classes.color}`}
+                    variant="body1"
+                    gutterBottom
+                    onClick={() => handleVerifyEmail(values)}
+                  >
+                    {t("auth.emailNotVerify")}
+                    <span className={classes.emailVerify}>
+                      {t("auth.verifyEmail")}
+                    </span>
+                  </Typography>
+                </Alert>
+              )}
+
+              {incorrectAuth && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_locked").replace('#', `${timer}`)}
+                </Alert>
+              )}
+              {lockError && (
+                <Alert severity="error">
+                  {t("auth.errorAlerts.account_locked_message").replace('#', `${timer}`)}
+                </Alert>
+              )}
+              <Grid item>
+                {(showSuccess || tokenLoading) && (
+                  <Alert severity="success">
+                    {tokenLoading
+                      ? `${t("auth.successAlerts.verifying_email")}`
+                      : `${t("auth.successAlerts.email_verified")}`}
+                  </Alert>
+                )}
+                <FormControl variant="outlined" className={classes.loginInput}>
+                  <OutlinedInput
+                    name="email"
+                    required
+                    value={values.email}
+                    className={classes.inputOutline}
+                    placeholder={t("auth.Email")}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormControl>
+
+                {/* validation error */}
+                {errors.email && touched.email && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.email}
+                  </Typography>
+                )}
+              </Grid>
+              <Grid item>
+                <FormControl variant="outlined" className={classes.loginInput}>
+                  <OutlinedInput
+                    required
+                    name="password"
+                    onKeyDown={(e) => handleKeyDown(e, values)}
+                    className={classes.inputOutline}
+                    value={values.password}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    id="filled-adornment-password"
+                    type={showPassword ? "text" : "password"}
+                    placeholder={t("auth.Password")}
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    }
+                  ></OutlinedInput>
+                </FormControl>
+
+                {errors.password && touched.password && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.password}
+                  </Typography>
+                )}
+
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={() => setChecked(!checked)}
+                      name="checkedB"
+                      color="primary"
+                      style={{ padding: 0 }}
+                    />
+                  }
+                  className={classes.remember}
+                  style={{ padding: 0 }}
+                  label={
+                    <Typography className={classes.rememberText}>
+                      {t("auth.RememberMe")}
+                    </Typography>
+                  }
+                />
+              </Grid>
+              <div className={classes.actionWrapper}>
+                <Button
+                  type="submit"
+                  className={classes.loginButton}
+                  variant="contained"
+                  color="primary"
+                  disabled={checkValidInputs(values) || loginLoading}
+                >
+                  {loginLoading ? (
+                    <Loading type="spin" color="white" height={14} width={14} />
+                  ) : (
+                    t("auth.login")
+                  )}
+                </Button>
+                <Typography
+                  className={`${classes.titles} ${classes.forget}`}
+                  variant="body1"
+                  gutterBottom
+                  onClick={handlePasswordForget}
+                >
+                  {t("auth.ForgetPassword")}
+                </Typography>
+              </div>
+            </Grid>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
 
 export default LoginForm;
-
 const useStyles = makeStyles({
-  root: {
-    "&:hover $notchedOutline": {
-      borderColor: "orange",
-    },
+  container: {
+    height: "92%",
   },
-  focused: {},
-  notchedOutline: {},
-  PassInput: {
-    marginTop: "10px",
+  logoTitleWrapper: {
+    padding: "0 30px 33px",
   },
+  formWraper: {
+    margin: "0 auto",
+  },
+  errorText: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: 400,
+  },
+  loginInput: {
+    width: "100%",
+    marginTop: "20px",
+  },
+
   inputOutline: {
     height: "40px",
+    background: "white",
   },
   wrapper: {
     height: "94%",
@@ -270,9 +368,9 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   loginButton: {
-    height: 32,
-    width: 21,
+    height: "41px",
     fontSize: 14,
+    background: "#0076C8",
   },
   forget: {
     marginTop: 5,
@@ -294,7 +392,7 @@ const useStyles = makeStyles({
   },
   logoWrapper: {
     paddingTop: "2%",
-    paddingLeft: "8%",
+    paddingLeft: "7%",
   },
   titleWrapper: {
     paddingTop: "10%",

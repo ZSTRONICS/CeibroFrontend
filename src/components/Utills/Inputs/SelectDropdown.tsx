@@ -93,7 +93,6 @@ const SelectDropdown: FC<My> = props => {
       }
     },
     multiValue: (styles: any, { data }: any) => {
-      const color = chroma(colors.darkYellow)
       return {
         ...styles,
         backgroundColor: colors.darkYellow,

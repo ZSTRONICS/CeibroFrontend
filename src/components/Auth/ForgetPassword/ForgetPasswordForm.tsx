@@ -1,62 +1,70 @@
-// @ts-nocheck
-import {
-  Typography,
-  Button,
-  CircularProgress,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
+
+import { Typography, Button, CircularProgress } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
-import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import { Form, Formik } from "formik";
+import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
 
-interface ForgetPasswordForm {
+interface Props {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
 
-const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
+const ForgetPasswordForm: React.FC<Props> = (props) => {
   const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
-
-  const intl = useIntl();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
-  
-  const [email, setEmail] = useState("");
+  const forgotPasswordSchema = forgotPasswordSchemaValidation(t);
   const [loading, setLoading] = useState<boolean>(false);
+  const [emailFoundErr, setEmailFound] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
-  
-  const handleKeyDown= (e:any)=>{
-    if(e.keyCode == 13){
-      handleSubmit()
-    }
-  } 
 
-  const checkValidInputs=()=>{
-    if(email&& email.length>0){
-      return false
+  const handleKeyDown = (e: any, values: any) => {
+    if (e.keyCode === 13) {
+      handleSubmit(values);
     }
-    return true
-  }
+  };
 
-  const handleSubmit = () => {
+  const checkValidInputs = (values: any) => {
+    const { email } = values;
+    if (email && email.length > 0) {
+      return false;
+    }
+    return true;
+  };
+
+  const handleSubmit = (values: any) => {
+    const { email } = values;
     const payload = {
       body: { email },
       success: (res: any) => {
-        toast.success('Please check your email')
-        setEmail("");
+        toast.success(`${t("auth.check_your_email")}`);
+      },
+      onFailAction: (err: any) => {
+        if (err.response.data.code === 404) {
+          setEmailFound(true);
+        }
       },
       finallyAction: () => {
         setLoading(false);
-      },
+      }
     };
+
+    setTimeout(() => {
+      setEmailFound(false);
+    }, 3000);
+
     setLoading(true);
     dispatch(forgetPassword(payload));
   };
@@ -68,49 +76,78 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Email</Typography>
+        <Typography className={classes.title}>{t("auth.Email")}</Typography>
       </div>
 
       <div className={classes.loginForm}>
         {(showSuccess || tokenLoading) && (
           <Alert severity="success">
             {tokenLoading
-              ? "Verifying otp"
-              : "Email verified successfully. Please sign in!"}
+              ? `${t("auth.forgot_pass.verifying")}`
+              : `${t("auth.forgot_pass.email_verify_successfully")}`}
           </Alert>
         )}
+         {emailFoundErr && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.noUserFound_with_email")}
+                </Alert>
+              )}
 
-        {showError && <Alert severity="error">Link expired</Alert>}
-        <form onSubmit={handleSubmit}>
-        <TextField
-        onkeyDown={handleKeyDown}
-          placeholder={intl.formatMessage({ id: "input.Email" })}
-          className={classes.inputs}
-          inputProps={{
-            style: { height: 12 },
-          }}
-          onChange={(e: any) => setEmail(e.target.value)}
-        />
-        <div className={classes.actionWrapper}>
-          <Button
-            className={classes.loginButton}
-            variant="contained"
-            color="primary"
-            disabled={checkValidInputs() || isDiabled}
-            onClick={handleSubmit}
-          >
-            {isDiabled && loading && (
-              <CircularProgress size={20} className={classes.progress} />
-            )}
-            {/* Send */}
-            {intl.formatMessage({ id: "input.send" })}
-          </Button>
-          <span className={classes.rememberText}> Remember!
-          <Link to={'/login'} className={classes.rememberLogin}>Login</Link>
-            </span>
-        </div>
-    
-        </form>
+        {showError && <Alert severity="error">{t("auth.link_expired")}</Alert>}
+        <Formik
+          initialValues={{ email: "" }}
+          validationSchema={forgotPasswordSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            values,
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+          }) => (
+            <Form  onSubmit={handleSubmit}>
+              <TextField
+                name="email"
+                onKeyDown={(e: any) => handleKeyDown(e, values)}
+                value={values.email}
+                placeholder={t("auth.Email")}
+                className={classes.inputs}
+                inputProps={{
+                  style: { height: 12 },
+                }}
+                onChange={handleChange}
+                onBlur={handleBlur}
+              />
+              {errors.email && touched.email && (
+                <Typography className={`error-text ${classes.errorText}`}>
+                  {errors.email}
+                </Typography>
+              )}
+              <div className={classes.actionWrapper}>
+                <Button
+                 type="submit"
+                  className={classes.loginButton}
+                  variant="contained"
+                  color="primary"
+                  disabled={checkValidInputs(values) || isDiabled}
+                 >
+                  {isDiabled && loading && (
+                    <CircularProgress size={20} className={classes.progress} />
+                  )}
+                  {t("auth.send")}
+                </Button>
+                <span className={classes.rememberText}>
+                  {t("auth.Remember")}
+                  <Link to={"/login"} className={classes.rememberLogin}>
+                    {t("auth.login")}
+                  </Link>
+                </span>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );
@@ -119,6 +156,11 @@ const ForgetPasswordForm: React.FC<ForgetPasswordForm> = (props) => {
 export default ForgetPasswordForm;
 
 const useStyles = makeStyles({
+  errorText: {
+    marginTop: 10,
+    fontSize: 14,
+    fontWeight: 400,
+  },
   wrapper: {
     height: "94%",
   },
@@ -145,9 +187,9 @@ const useStyles = makeStyles({
     fontSize: 14,
     padding: 0,
   },
-  rememberLogin:{
-    paddingLeft: 5, 
-    textDecoration: 'none'
+  rememberLogin: {
+    paddingLeft: 5,
+    textDecoration: "none",
   },
   rememberText: {
     paddingLeft: 15,
