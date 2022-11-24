@@ -24,4 +24,9 @@ jobs:
         REMOTE_PORT: ${{ secrets.PORT }}
         SOURCE: "build/"
         TARGET: ${{ secrets.TARGET_PATH }}
-    - run: pm2 reload all
+      script: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.33.8/install.sh | bash
+          . ~/.nvm/nvm.sh
+          nvm install 14
+          npm install -g pm2
+          pm2 reload all
