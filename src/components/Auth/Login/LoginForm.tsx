@@ -76,7 +76,6 @@ const LoginForm: React.FC<Props> = (props) => {
         password,
       },
       success: (_res: any) => {
-        console.log(_res.status);
         toast.success(`${t("auth.loggedin_Successfully")}`);
       },
       onFailAction: (err: any) => {
