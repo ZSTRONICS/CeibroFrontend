@@ -32,6 +32,7 @@
     "noUserFound_with_email":"Selle meiliga kasutajaid ei leitud",
     "password_reset_failed":"Parooli lähtestamine ebaõnnestus",
     "email_already_taken":"Meil on juba võetud",
+    "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
 
     "forgot_pass": {
       "verifying": "Kontrollimine",
@@ -61,7 +62,7 @@
 
     "errorAlerts": {
       "incorrect_email_pass": "Vale e-mail või parool",
-      "account_locked_message": "Konto lukus. Proovige 12 minuti pärast uuesti"
+      "account_locked_message": "Konto lukus. Proovige # minuti pärast uuesti"
     },
 
     "successAlerts": {

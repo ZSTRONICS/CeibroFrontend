@@ -260,7 +260,7 @@ const useStyles = makeStyles({
     marginRight: 0,
   },
   wrapper: {
-    minHeight: "94%",
+    minHeight: "92%",
     overflowY: "auto",
     marginBottom: 20,
   },

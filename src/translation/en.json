@@ -32,6 +32,7 @@
     "noUserFound_with_email":"No users found with this email",
     "password_reset_failed":"Password reset failed",
     "email_already_taken":"Email already taken",
+    "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
 
     "forgot_pass": {
       "verifying": "Verifying",
@@ -61,7 +62,7 @@
 
     "errorAlerts": {
       "incorrect_email_pass": "Incorrect email or password",
-      "account_locked_message": "Account locked. Retry after 12 minutes"
+      "account_locked_message": "Account locked. Retry after # minutes"
     },
 
     "successAlerts": {

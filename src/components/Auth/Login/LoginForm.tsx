@@ -56,7 +56,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-
+  let [timer, setTimer]= useState('')
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -80,8 +80,12 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 401) {
-          setIncorrectAuth(true);
+        const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
+        setTimer(timer)
+        setIncorrectAuth(true);
         } else if (err.response.data.code === 423) {
+          const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
+        setTimer(timer)
           setLockError(true);
         } else if (err) {
           setVerifyError(true);
@@ -189,12 +193,12 @@ const LoginForm: React.FC<Props> = (props) => {
 
               {incorrectAuth && (
                 <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.incorrect_email_password")}
+                  {t("auth.account_locked").replace('#', `${timer}`)}
                 </Alert>
               )}
               {lockError && (
                 <Alert severity="error">
-                  {t("auth.errorAlerts.account_locked_message")}
+                  {t("auth.errorAlerts.account_locked_message").replace('#', `${timer}`)}
                 </Alert>
               )}
               <Grid item>
