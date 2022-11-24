@@ -1,29 +1,40 @@
 // @ts-nocheck
-import { Typography, Button, FormControlLabel, Checkbox } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useState } from 'react'
-import { useHistory } from 'react-router'
-import assets from 'assets/assets'
-import colors from 'assets/colors'
-import TextField from 'components/Utills/Inputs/TextField'
+import React, { useState } from 'react'
 import { useIntl } from 'react-intl'
+
+//react router dom
+import { useHistory } from 'react-router'
+
+// mui-imports
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography, Button, InputAdornment, IconButton } from '@material-ui/core'
+import { Visibility, VisibilityOff } from '@material-ui/icons'
+
+// redux
 import { useDispatch, useSelector } from 'react-redux'
 import { registerRequest } from 'redux/action/auth.action'
 import { RootState } from 'redux/reducers'
+
+// components
+import assets from 'assets/assets'
+import colors from 'assets/colors'
+import TextField from 'components/Utills/Inputs/TextField'
 import Loading from 'components/Utills/Loader/Loading'
+
+//formik
 import { Formik } from 'formik'
 import * as Yup from 'yup'
 
 const RegisterForm = () => {
   const classes = useStyles()
-
   const { registerLoading } = useSelector((state: RootState) => state.auth)
-
   const intl = useIntl()
   const dispatch = useDispatch()
   const history = useHistory()
-  const handleSubmit = (values: any, action: any) => {
+  const [showPassword, setShowPassword] = useState(false)
+  const [confirmPass, setConfirmPass] = useState(false)
 
+  const handleSubmit = (values: any, action: any) => {
     const { firstName, surName, email, password } = values
     const payload = {
       body: {
@@ -122,22 +133,6 @@ const RegisterForm = () => {
                   {errors.surName && touched.surName && errors.surName}
                 </Typography>
               )}
-              {/* <TextField
-                placeholder={'User name'}
-                className={classes.inputs}
-                name="userName"
-                value={values.userName}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.userName && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.userName && touched.userName && errors.userName}
-                </Typography>
-              )} */}
 
               <TextField
                 placeholder={intl.formatMessage({ id: 'input.Email' })}
@@ -159,14 +154,24 @@ const RegisterForm = () => {
               )}
 
               <TextField
-                type="password"
+                 type={showPassword ? "text" : "password"}
                 placeholder={intl.formatMessage({ id: 'input.Password' })}
                 className={classes.inputs}
                 name="password"
                 value={values.password}
                 inputProps={{
-                  style: { height: 12 },
+                     style: { height: 12 },
                 }}
+                endAdornment={<InputAdornment position="end" className={classes.positionEnd}>
+                      <IconButton
+                      className={classes.endAornmnetBtn}
+                        aria-label="toggle password visibility"
+                        onClick={()=>setShowPassword(prev=>!prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 autoFill={false}
@@ -178,7 +183,7 @@ const RegisterForm = () => {
               )}
 
               <TextField
-                type="password"
+                type={confirmPass ? "text" : "password"}
                 placeholder={'Confirm password'}
                 name="confirmPassword"
                 value={values.confirmPassword}
@@ -186,7 +191,17 @@ const RegisterForm = () => {
                 inputProps={{
                   style: { height: 12 },
                 }}
-                onChange={handleChange}
+                endAdornment={<InputAdornment position="end" className={classes.positionEnd}>
+                      <IconButton
+                      className={classes.endAornmnetBtn}
+                        aria-label="toggle password visibility"
+                        onClick={()=>setConfirmPass(prev=> !prev)}
+                        edge="end"
+                      >
+                        {confirmPass ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>}
+                 onChange={handleChange}
                 onBlur={handleBlur}
               />
               {errors.confirmPassword && (
@@ -221,6 +236,12 @@ const RegisterForm = () => {
 export default RegisterForm
 
 const useStyles = makeStyles({
+  positionEnd:{
+    marginLeft:"-50px"
+  },
+  endAornmnetBtn:{
+    marginRight:0
+  },
   wrapper: {
     minHeight: '94%',
     overflowY: 'auto',
