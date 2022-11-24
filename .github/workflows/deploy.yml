@@ -24,3 +24,4 @@ jobs:
         REMOTE_PORT: ${{ secrets.PORT }}
         SOURCE: "build/"
         TARGET: ${{ secrets.TARGET_PATH }}
+    - run: pm2 reload all
