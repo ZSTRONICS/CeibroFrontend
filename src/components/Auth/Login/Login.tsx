@@ -49,15 +49,14 @@ const Login: React.FC<LoginInterface> = () => {
           setTokenLoading(false);
           setTimeout(() => {
             setSuccess(false);
-          }, 5000);
+          }, 10000);
         })
         .catch((err) => {
           setError(true);
           setTokenLoading(false);
           setTimeout(() => {
             setError(false);
-          }, 5000);
-          console.log("error is ", err);
+          }, 10000);
         });
     }
   };
@@ -119,9 +118,9 @@ const useStyles = makeStyles((theme) => {
     form: {
       height: "100vh",
       "@media (max-width:960px)":{
-        background: `url(${assets.visual})`,
+        // background: `url(${assets.visual})`,
+        background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${assets.visual}) no-repeat`,
         backgroundSize: "100vw 100vh",
-        backgroundRepeat: "no-repeat",
       },
     },
     tileWrapper: {

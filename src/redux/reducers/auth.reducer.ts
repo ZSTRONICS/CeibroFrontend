@@ -55,6 +55,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestPending(REGISTER): {
+      localStorage.clear();
+      sessionStorage.clear()
       return {
         ...state,
         registerLoading: true,
@@ -77,6 +79,9 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case LOGOUT: {
       localStorage.removeItem("tokens");
+      localStorage.removeItem("auth");
+      localStorage.clear();
+      sessionStorage.clear()
       return {
         ...state,
         isLoggedIn: false,

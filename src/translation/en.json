@@ -20,7 +20,7 @@
     "pass_must_Contain": "Password must contain at least 8 characters, one special character and one number",
     "plz_confirm_pass": "Please confirm your password",
     "confirm_password": "confirm Password",
-    "pass_not_match": "Passwords don't match.",
+    "pass_not_match": "Passwords don't match",
     "required": "Required",
     "tooShort": "Too Short!",
     "tooLong": "Too Long!",
@@ -33,6 +33,8 @@
     "password_reset_failed":"Password reset failed",
     "email_already_taken":"Email already taken",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
+    "account_not_found":"Account associated with this email address not found !",
+    "name_should_have":"Name must start with  a letter, and it's only containing letters and numbers",
 
     "forgot_pass": {
       "verifying": "Verifying",

@@ -3,8 +3,8 @@ import { TFunction } from 'i18next'
 
 export const setValidationSchema = (t:TFunction) =>{
     const registerSchema = yup.object().shape({
-        firstName: yup.string().min(2, `${t('auth.tooShort')}`).max(50, `${t('auth.tooLong')}`).required(`${t('auth.required')}`),
-        surName: yup.string().min(2, `${t('auth.tooShort')}`).max(50,  `${t('auth.tooLong')}`).required(`${t('auth.required')}`),
+        firstName: yup.string().min(2, `${t('auth.tooShort')}`).max(50, `${t('auth.tooLong')}`).required(`${t('auth.required')}`).matches(/^(?![0-9_])[a-zA-Z0-9]*$/,`${t('auth.name_should_have')}`),
+        surName: yup.string().min(2, `${t('auth.tooShort')}`).max(50,  `${t('auth.tooLong')}`).required(`${t('auth.required')}`).matches(/^(?![0-9_])[a-zA-Z0-9]*$/,`${t('auth.name_should_have')}`),
         email: yup.string().email(`${t('auth.register.invalid_email')}`).required(`${t('auth.required')}`),
         password: yup.string()
           .required(`${t('auth.plz_Enter_pass')}`)
