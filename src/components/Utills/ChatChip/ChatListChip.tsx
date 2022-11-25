@@ -7,7 +7,9 @@ import { ChatListInterface } from "../../../constants/interfaces/chat.interface"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
-
+import { ChatListSkeleton } from "./ChatListSkeleton";
+import useStyles from './ChatListStyles'
+import { CBox, CSkeleton } from "components/material-ui";
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
@@ -156,90 +158,55 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
           </Grid>
         </Grid>
       </Grid>
+      {/* <Grid
+        className={classes.chatListWrapper}
+        container
+      >
+        <Grid container>
+       
+          <Grid item xs={2} className={classes.avatarWrapper}>
+            <CSkeleton variant="circular" width={40} height={40} />
+          </Grid>
+
+          <Grid item xs={6} className={classes.messageDetailWrapper}>
+            <CBox mt={1.6}>
+              <CSkeleton variant="rectangular" width={40} height={10} />
+            </CBox>
+          </Grid>
+
+          <Grid item xs={2} className={classes.timeOuterWrapper}>
+            <div>
+              <CSkeleton variant="rectangular" width={20} height={15} />
+            </div>
+            <div className={classes.timeWrapper}>
+              {unreadCount && unreadCount > 0 && (
+                <Badge
+                  overlap="circular"
+                  badgeContent={unreadCount}
+                  color="error"
+                ></Badge>
+              )}
+              <Typography className={classes.time}>{lastMessageTime}</Typography>
+            </div>
+          </Grid>
+
+          <Grid item xs={1} className={classes.timeWrapper}>
+            <CSkeleton variant="rectangular" width={5} height={20} />
+          
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={2}></Grid>
+          <Grid item xs={6} style={{ paddingLeft: 6 }}>
+            <CSkeleton variant="rectangular" width={80} height={10} />
+          </Grid>
+        </Grid>
+      </Grid> */}
+
     </>
   );
 };
 
 export default ChatListChip;
 
-const useStyles = makeStyles({
-  chatListWrapper: {
-    padding: 0,
-    height: 70,
-    border: `0.5px solid ${colors.grey}`,
-    cursor: "pointer",
-  },
-  // bookMarkWrapper: {
-  //   padding: 0,
-  //   display: 'flex',
-  //   flexDirection: 'column',
-  //   alignItems: 'center',
-  // },
-  dot: {
-    marginTop: 15,
-    width: 8,
-    height: 8,
-    borderRadius: "50%",
-    background: `linear-gradient(180deg, #F1B740 0%, #FF7A00 100%)`,
-  },
-  avatarWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  messageDetailWrapper: {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    paddingLeft: 6,
-    paddingTop: 4,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  userName: {
-    fontSize: 14,
-    fontWeight: 500,
-    paddingTop: 5,
-  },
-  message: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-    paddingLeft: 2,
-  },
-  chatProject: {
-    fontSize: 10,
-    fontWeight: 500,
-    color: colors.black,
-  },
-  chatProjectName: {
-    fontSize: 10,
-    fontWeight: "bold",
-    color: colors.textPrimary,
-  },
-  timeOuterWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingRight: 5,
-  },
-  timeWrapper: {
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "space-evenly",
-  },
-  time: {
-    fontSize: 12,
-    fontWeight: 500,
-  },
-  bookmarked: {
-    color: colors.darkYellow,
-    fontSize: 18,
-  },
-  startFilled: {
-    color: colors.darkYellow,
-    fontSize: 18,
-  },
-});
+

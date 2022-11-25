@@ -36,7 +36,7 @@ const LoginSkeleton: React.FC<LoginInterface> = () => {
                 <div className={classes.loginForm}>
 
                     <CBox>
-                        <CSkeleton variant="rectangular" height={40} />
+                        <CSkeleton variant="circular" width={40} height={40} />
                     </CBox>
                     <CBox className={classes.PassInput}>
                         <CSkeleton variant="rectangular" height={40} />
