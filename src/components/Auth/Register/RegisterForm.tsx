@@ -31,6 +31,7 @@ import Loading from "components/Utills/Loader/Loading";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
+import { Grid } from "@mui/material";
 
 const RegisterForm = () => {
   const classes = useStyles();
@@ -65,7 +66,7 @@ const RegisterForm = () => {
     dispatch(registerRequest(payload));
     setTimeout(() => {
       setIncorrectAuth(false);
-    }, 3000);
+    }, 5000);
   };
 
   return (
@@ -101,7 +102,7 @@ const RegisterForm = () => {
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              
+              <Grid xs={8} md={8}>
                {incorrectAuth && (
                 <Alert severity="error">{t("auth.email_already_taken")}</Alert>
                 )} 
@@ -242,6 +243,7 @@ const RegisterForm = () => {
                   )}
                 </Button>
               </div>
+              </Grid>
             </form>
           )}
         </Formik>
@@ -277,7 +279,7 @@ const useStyles = makeStyles({
     display: "flex",
     flexDirection: "column",
     marginTop: 20,
-    padding: "10px 13%",
+    padding: "14px 0 10px 14%",
     "@media (max-width:960px)": {
       padding: "10 13%",
     },
@@ -305,11 +307,11 @@ const useStyles = makeStyles({
   },
   logoWrapper: {
     paddingTop: "2%",
-    paddingLeft: "7%",
+    paddingLeft: "10%",
   },
   titleWrapper: {
     paddingTop: "10%",
-    paddingLeft: "12.5%",
+    paddingLeft: "14%",
   },
   title: {
     fontSize: 30,

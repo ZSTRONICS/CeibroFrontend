@@ -56,12 +56,12 @@ const LoginForm: React.FC<Props> = (props) => {
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+  const [incorrectEmail, setIncorrectEmail] = useState<boolean>(false);
   let [timer, setTimer]= useState('')
   const dispatch = useDispatch();
   const history = useHistory();
 
   const { loginLoading } = useSelector((state: RootState) => state.auth);
-
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
       handleSubmit(values);
@@ -80,9 +80,14 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 401) {
-        const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
-        setTimer(timer)
-        setIncorrectAuth(true);
+          if((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)){
+            const  remainingTime= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
+            setTimer(remainingTime)
+            setIncorrectAuth(true);
+          }else{
+            setIncorrectEmail(true)
+          }
+
         } else if (err.response.data.code === 423) {
           const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
         setTimer(timer)
@@ -95,7 +100,9 @@ const LoginForm: React.FC<Props> = (props) => {
           setLockError(false);
           setVerifyError(false);
           setIncorrectAuth(false);
-        }, 3000);
+          setIncorrectEmail(false)
+
+        }, 10000);
       },
       showErrorToast: true,
     };
@@ -194,6 +201,11 @@ const LoginForm: React.FC<Props> = (props) => {
               {incorrectAuth && (
                 <Alert style={{ margin: "2px 0" }} severity="error">
                   {t("auth.account_locked").replace('#', `${timer}`)}
+                </Alert>
+              )}
+              {incorrectEmail && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_not_found").replace('#', `${timer}`)}
                 </Alert>
               )}
               {lockError && (

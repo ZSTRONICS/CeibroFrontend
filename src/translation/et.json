@@ -20,7 +20,7 @@
     "pass_must_Contain": "Parool peab sisaldama vähemalt 8 tähemärki, ühte erimärki ja ühte numbrit",
     "plz_confirm_pass":"Palun kinnitage oma parool",
     "confirm_password": "Kinnita salasõna",
-    "pass_not_match":"Paroolid ei ühti.",
+    "pass_not_match":"Paroolid ei ühti",
     "required":"Nõutud",
     "tooShort" :"Liiga lühike!",
     "tooLong":"Liiga kaua!",
@@ -33,6 +33,8 @@
     "password_reset_failed":"Parooli lähtestamine ebaõnnestus",
     "email_already_taken":"Meil on juba võetud",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
+    "name_should_have":"Nimi peab algama tähega ja see sisaldab ainult tähti ja numbreid",
+    "account_not_found":"Selle e-posti aadressiga seotud kontot ei leitud!",
 
     "forgot_pass": {
       "verifying": "Kontrollimine",

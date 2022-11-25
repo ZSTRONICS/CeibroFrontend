@@ -53,7 +53,7 @@ const ResetPasswordForm = () => {
         }
         setTimeout(() => {
           setError(false)
-        }, 3000)
+        }, 10000)
       },
       showErrorToast: false,
 

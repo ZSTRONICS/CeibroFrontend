@@ -63,7 +63,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 
     setTimeout(() => {
       setEmailFound(false);
-    }, 3000);
+    }, 5000);
 
     setLoading(true);
     dispatch(forgetPassword(payload));
