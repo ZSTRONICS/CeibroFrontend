@@ -1,30 +1,51 @@
 // @ts-nocheck
-import { Typography, Button, FormControlLabel, Checkbox } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useState } from 'react'
-import { useHistory } from 'react-router'
-import assets from 'assets/assets'
-import colors from 'assets/colors'
-import TextField from 'components/Utills/Inputs/TextField'
-import { useIntl } from 'react-intl'
-import { useDispatch, useSelector } from 'react-redux'
-import { registerRequest } from 'redux/action/auth.action'
-import { RootState } from 'redux/reducers'
-import Loading from 'components/Utills/Loader/Loading'
-import { Formik } from 'formik'
-import * as Yup from 'yup'
+import React, { useState } from "react";
+
+//react router dom
+import { useHistory } from "react-router";
+
+// mui-imports
+import { makeStyles } from "@material-ui/core/styles";
+import {
+  Typography,
+  Button,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
+import Alert from "@mui/material/Alert";
+
+
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { registerRequest } from "redux/action/auth.action";
+import { RootState } from "redux/reducers";
+
+// components
+import assets from "assets/assets";
+import colors from "assets/colors";
+import TextField from "components/Utills/Inputs/TextField";
+import Loading from "components/Utills/Loader/Loading";
+
+//formik
+import { Formik } from "formik";
+import { useTranslation } from "react-i18next";
+import { setValidationSchema } from "../userSchema/RegisterSchema";
+import { Grid } from "@mui/material";
 
 const RegisterForm = () => {
-  const classes = useStyles()
+  const classes = useStyles();
+  const { registerLoading } = useSelector((state: RootState) => state.auth);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPass, setConfirmPass] = useState(false);
+  const registerSch = setValidationSchema(t);
+  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
 
-  const { registerLoading } = useSelector((state: RootState) => state.auth)
-
-  const intl = useIntl()
-  const dispatch = useDispatch()
-  const history = useHistory()
   const handleSubmit = (values: any, action: any) => {
-
-    const { firstName, surName, email, password } = values
+    const { firstName, surName, email, password } = values;
     const payload = {
       body: {
         firstName,
@@ -33,50 +54,42 @@ const RegisterForm = () => {
         password,
       },
       success: (res: any) => {
-        // if (res) {
-        history.push('/login')
-        // }
+        history.push("/login");
         action?.resetForm?.();
       },
-    }
-    dispatch(registerRequest(payload))
-  }
-
-  const registerSchema = Yup.object().shape({
-    firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    surName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Required'),
-    email: Yup.string().email('Invalid email').required('Required'),
-    password: Yup.string()
-      .required('Please enter your password')
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
-        'Password must contain at least 8 characters, one special character and one number'
-      ),
-    confirmPassword: Yup.string()
-      .required('Please confirm your password')
-      .oneOf([Yup.ref('password'), null], "Passwords don't match."),
-  })
+      onFailAction: (err: any) => {
+        if (err.response.data.code === 400) {
+          setIncorrectAuth(true);
+        }
+      }
+    };
+    dispatch(registerRequest(payload));
+    setTimeout(() => {
+      setIncorrectAuth(false);
+    }, 5000);
+  };
 
   return (
-    <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
+    <div className={`form-container ${classes.wrapper} ${classes.form} hide-scrollbar`}>
       <div className={classes.logoWrapper}>
         <img src={assets.logo} alt="ceibro-logo" />
       </div>
-
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Register</Typography>
+        <Typography className={classes.title}>
+          {t("auth.register.register")}
+        </Typography>
       </div>
 
       <div className={classes.loginForm}>
         <Formik
           initialValues={{
-            email: '',
-            password: '',
-            firstName: '',
-            surName: '',
-            confirmPassword: '',
+            email: "",
+            password: "",
+            firstName: "",
+            surName: "",
+            confirmPassword: "",
           }}
-          validationSchema={registerSchema}
+          validationSchema={registerSch}
           onSubmit={handleSubmit}
         >
           {({
@@ -86,163 +99,195 @@ const RegisterForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
             isValid,
           }) => (
-            <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-              <TextField
-                placeholder={'First name'}
-                className={classes.inputs}
-                name="firstName"
-                inputProps={{
-                  style: { height: 12, width: '100%' },
-                }}
-                value={values.firstName}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.firstName && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.firstName && touched.firstName && errors.firstName}
-                </Typography>
-              )}
-              <TextField
-                placeholder={'Sur name'}
-                className={classes.inputs}
-                name="surName"
-                value={values.surName}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.surName && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.surName && touched.surName && errors.surName}
-                </Typography>
-              )}
-              {/* <TextField
-                placeholder={'User name'}
-                className={classes.inputs}
-                name="userName"
-                value={values.userName}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.userName && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.userName && touched.userName && errors.userName}
-                </Typography>
-              )} */}
+            <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+              <Grid
+                container
+                direction="column"
+                xs={8}
+                md={8}
+              >
+                {incorrectAuth && (
+                  <Alert severity="error">{t("auth.email_already_taken")}</Alert>
+                )}
+                <TextField
+                  placeholder={t("auth.register.first_name")}
+                  className={classes.inputs}
+                  name="firstName"
+                  inputProps={{
+                    style: { width: "100%" },
+                  }}
+                  value={values.firstName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.firstName && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.firstName && touched.firstName && errors.firstName}
+                  </Typography>
+                )}
 
-              <TextField
-                placeholder={intl.formatMessage({ id: 'input.Email' })}
-                className={classes.inputs}
-                name="email"
-                value={values.email}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                error={true}
-                helperText="Not a valid email"
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.email && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.email && touched.email && errors.email}
-                </Typography>
-              )}
+                <TextField
+                  placeholder={t("auth.register.sur_name")}
+                  className={classes.inputs}
+                  name="surName"
+                  value={values.surName}
+                  inputProps={{
+                    style: { height: 12 },
+                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.surName && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.surName && touched.surName && errors.surName}
+                  </Typography>
+                )}
 
-              <TextField
-                type="password"
-                placeholder={intl.formatMessage({ id: 'input.Password' })}
-                className={classes.inputs}
-                name="password"
-                value={values.password}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                autoFill={false}
-              />
-              {errors.password && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.password && touched.password && errors.password}
-                </Typography>
-              )}
+                <TextField
+                  placeholder={t("auth.Email")}
+                  className={classes.inputs}
+                  name="email"
+                  value={values.email}
 
-              <TextField
-                type="password"
-                placeholder={'Confirm password'}
-                name="confirmPassword"
-                value={values.confirmPassword}
-                className={classes.inputs}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-              {errors.confirmPassword && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}
-                </Typography>
-              )}
+                  error={true}
+                  helperText={t("auth.register.Not_valid_email")}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.email && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.email && touched.email && errors.email}
+                  </Typography>
+                )}
 
-              <div className={classes.actionWrapper}>
-                <Button
-                  className={classes.loginButton}
-                  variant="contained"
-                  color="primary"
-                  type="submit"
-                  disabled={!isValid || registerLoading}
-                >
-                  {registerLoading ? (
-                    <Loading type="spin" color="white" height={14} width={20} />
-                  ) : (
-                    'Register'
-                  )}
-                </Button>
-              </div>
+                <TextField
+                  type={showPassword ? "text" : "password"}
+                  placeholder={t("auth.Password")}
+                  className={classes.inputs}
+                  name="password"
+                  value={values.password}
+
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={classes.positionEnd}
+                    >
+                      <IconButton
+                        className={classes.endAornmnetBtn}
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword((prev) => !prev)}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  autoFill={false}
+                />
+                {errors.password && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.password && touched.password && errors.password}
+                  </Typography>
+                )}
+
+                <TextField
+                  type={confirmPass ? "text" : "password"}
+                  placeholder={t("auth.confirm_password")}
+                  name="confirmPassword"
+                  value={values.confirmPassword}
+                  className={classes.inputs}
+
+                  endAdornment={
+                    <InputAdornment
+                      position="end"
+                      className={classes.positionEnd}
+                    >
+                      <IconButton
+                        className={classes.endAornmnetBtn}
+                        aria-label="toggle password visibility"
+                        onClick={() => setConfirmPass((prev) => !prev)}
+                        edge="end"
+                      >
+                        {confirmPass ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.confirmPassword && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.confirmPassword &&
+                      touched.confirmPassword &&
+                      errors.confirmPassword}
+                  </Typography>
+                )}
+
+                <div className={classes.actionWrapper}>
+                  <Button
+                    className={classes.loginButton}
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={!isValid || registerLoading}
+                  >
+                    {registerLoading ? (
+                      <Loading type="spin" color="white" height={14} width={20} />
+                    ) : (
+                      `${t("auth.register.register")}`
+                    )}
+                  </Button>
+                </div>
+              </Grid>
             </form>
           )}
         </Formik>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default RegisterForm
+export default RegisterForm;
 
 const useStyles = makeStyles({
+  form: {
+    padding: '0 30px 33px',
+  },
+  positionEnd: {
+    marginLeft: "-50px",
+  },
+  endAornmnetBtn: {
+    marginRight: 0,
+  },
   wrapper: {
-    minHeight: '94%',
-    overflowY: 'auto',
+    minHeight: "92%",
+    overflowY: "auto",
     marginBottom: 20,
   },
   actionWrapper: {
-    display: 'flex',
-    alignItems: 'center',
+    display: "flex",
+    alignItems: "center",
     paddingTop: 40,
   },
   titles: {
     color: colors.textPrimary,
-    fontFamily: 'Inter',
+    fontFamily: "Inter",
   },
   loginForm: {
-    display: 'flex',
-    flexDirection: 'column',
+    display: "flex",
+    flexDirection: "column",
     marginTop: 20,
-    padding: '10px 13%',
-    '@media (max-width:960px)': {
-      padding: '10 13%',
+    // padding: "14px 0 10px 14%",
+    "@media (max-width:960px)": {
+      padding: "10 13%",
     },
+    '& .inputs': {
+      marginTop: '0px !important'
+    }
   },
   remember: {
     marginTop: 25,
@@ -252,13 +297,12 @@ const useStyles = makeStyles({
     fontSize: 14,
   },
   inputs: {
-    marginTop: 30,
-    height: 8,
-    width: '100%',
+    // marginTop: 30,
+
+    width: "100%",
   },
   loginButton: {
     height: 32,
-    width: 21,
   },
   forget: {
     marginTop: 5,
@@ -267,20 +311,20 @@ const useStyles = makeStyles({
     paddingLeft: 30,
   },
   logoWrapper: {
-    paddingTop: '2%',
-    paddingLeft: '7%',
+    paddingTop: "2%",
+    // paddingLeft: "10%",
   },
   titleWrapper: {
-    paddingTop: '3%',
-    paddingLeft: '12.5%',
+    paddingTop: "10%",
+    // paddingLeft: "14%",
   },
   title: {
     fontSize: 30,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   errorText: {
     marginTop: 10,
     fontSize: 14,
     fontWeight: 400,
   },
-})
+});

@@ -5,7 +5,7 @@ import colors from '../../../assets/colors';
 
 const ImageTile = () => {
     const classes = useStyles()
-    
+
     return (
         <div className={`${classes.imageTile} image-tile`}>
             <div className={classes.logoWrapper}>
@@ -16,7 +16,6 @@ const ImageTile = () => {
 }
 
 export default ImageTile
-
 
 const useStyles = makeStyles(theme => ({
     logoWrapper: {
@@ -38,12 +37,10 @@ const useStyles = makeStyles(theme => ({
     imageTile: {
         width: '100%',
         height: '100vh',
-        background: `url(${assets.visual})`,
+        background: `url(${assets.visual}) no-repeat`,
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         backgroundSize: '100% 100vh',
-        backgroundRepeat: 'no-repeat'
     }
-
 }))

@@ -1,31 +1,38 @@
-import { useState } from "react";
 import { Grid, Typography } from "@material-ui/core";
-import ImageTile from "./ImageTile";
-import "./login.css";
-import LoginForm from "./LoginForm";
-
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
+import queryString from "query-string";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
+import "./login.css";
+
+// translation
+import { useTranslation } from "react-i18next";
+
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
+
+// axios
+import axios from "axios";
+import { baseURL } from "utills/axios";
+
+// redux
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
-import { useEffect } from "react";
-import queryString from "query-string";
-import { useDispatch } from "react-redux";
-import { baseURL } from "utills/axios";
-import axios from "axios";
+
+// components
+import Setting from "components/Setting";
+import { LoginInterface } from "../../../constants/interfaces/Login.interface";
+import ImageTile from "./ImageTile";
+import LoginForm from "./LoginForm";
 import LoginSkeleton from "./LoginSkeleton";
-//style file
-import useStyles from './LoginStyles'
+import useStyles from './LoginStyles';
 const Login: React.FC<LoginInterface> = () => {
 
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-  const dispatch = useDispatch();
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
-
+  const { t } = useTranslation();
   const [error, setError] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
 
@@ -41,61 +48,63 @@ const Login: React.FC<LoginInterface> = () => {
           setTokenLoading(false);
           setTimeout(() => {
             setSuccess(false);
-          }, 5000);
+          }, 10000);
         })
         .catch((err) => {
           setError(true);
           setTokenLoading(false);
           setTimeout(() => {
             setError(false);
-          }, 5000);
-          console.log("error is ", err);
+          }, 10000);
         });
     }
-  }
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
       history.push("/dashboard");
     }
-    LoginData()
+    LoginData();
   }, [isLoggedIn]);
 
-  const goToSignup = () => {
-    history.push("/register");
-  };
   return (
     <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={4} className={classes.form}>
-
+      <Grid item xs={12} md={6} lg={5} className={classes.form}>
         {/* if the data is loading it shows skeleton */}
 
         {tokenLoading ?
+
           <LoginSkeleton />
-
           :
-
           <>
             <LoginForm
               tokenLoading={tokenLoading}
               showSuccess={success}
               showError={error}
             />
+            <Grid container className={classes.langContainer}>
+              <Grid item>
+                <Typography className={classes.dontHave}>
+                  {t("auth.dont_have_account")}{" "}
+                  <Link to="/register" className={classes.signup}>
+                    {t("auth.signUp")}
+                  </Link>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Setting />
+              </Grid>
+            </Grid>
 
-            <Typography className={classes.dontHave}>
-              Don't have an account?{" "}
-              <span onClick={goToSignup} className={classes.signup}>
-
-                Sign Up!
-              </span>
-            </Typography>
           </>
 
         }
+
+
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
+        <Grid item xs={12} md={6} lg={7} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
       )
@@ -105,5 +114,4 @@ const Login: React.FC<LoginInterface> = () => {
 };
 
 export default Login;
-
 

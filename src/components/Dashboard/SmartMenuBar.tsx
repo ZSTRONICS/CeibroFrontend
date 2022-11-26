@@ -44,7 +44,7 @@ const SmartMenuBar = () => {
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Typography className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
-            <img src={assets.contactIcon} className={classes.connectionIcon} />
+            <img src={assets.contactIcon} className={classes.connectionIcon} alt="connectionIcon"/>
               </div>
             <span className="align-center">
               <span
@@ -52,7 +52,7 @@ const SmartMenuBar = () => {
               >
                 My Connections
               </span>
-              <Badge badgeContent={connections} color="primary"></Badge>
+              <Badge overlap='circular' badgeContent={connections} color="primary"></Badge>
             </span>
           </Typography>
 
@@ -78,7 +78,7 @@ const SmartMenuBar = () => {
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Typography className={classes.connectionTitle}>
           <div className={classes.smartMenuIcon}>
-            <img src={assets.InvitaionIcon} className={classes.connectionIcon} />
+            <img alt="InvitaionIcon" src={assets.InvitaionIcon} className={classes.connectionIcon} />
               </div>
             <span className="align-center">
               <span

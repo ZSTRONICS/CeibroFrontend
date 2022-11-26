@@ -19,44 +19,48 @@ export const useStyles = makeStyles((theme: Theme) =>
                 position: 'relative',
             }
         },
+        PassInput: {
+            marginTop: "10px",
+        },
+
+        langContainer: {
+            justifyContent: "space-between",
+            padding: "10px 13%",
+        },
+        wrapper: {
+            height: "94%",
+        },
 
         logoWrapper: {
             paddingTop: "2%",
             paddingLeft: "8%",
         },
-        wrapper: {
-            height: "94%",
-        },
         login: {
             display: "flex",
-            '@media (max-width:960px)': {
+            "@media (max-width:960px)": {
                 flexDirection: "column",
                 height: "100vh",
             },
         },
-        PassInput: {
-            marginTop: "10px",
-        },
-
         form: {
             height: "100vh",
-            '@media (max-width:960px)': {
-                background: `url(${assets.visual})`,
+            "@media (max-width:960px)": {
+                // background: `url(${assets.visual})`,
+                background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${assets.visual}) no-repeat`,
                 backgroundSize: "100vw 100vh",
-                backgroundRepeat: "no-repeat",
             },
         },
         tileWrapper: {
             position: "relative",
         },
         dontHave: {
-            paddingLeft: "13%",
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",
         },
         signup: {
             color: colors.textPrimary,
+            textDecoration: "none"
         },
 
     }),

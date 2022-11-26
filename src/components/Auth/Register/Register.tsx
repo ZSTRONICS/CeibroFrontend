@@ -1,29 +1,20 @@
 import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import Setting from "components/Setting";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
+import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
+import { RootState } from "redux/reducers";
 import ImageTile from "./ImageTile";
 import "./register.css";
 import RegisterForm from "./RegisterForm";
-import { useMediaQuery } from "react-responsive";
-import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { useEffect } from "react";
-
-//style css 
-
 import useStyles from "./RegisterStyles";
-// import RegisterSkeleton from "./RegisterSkeleton";
-
-//register form skeleton
-
-// import RegisterSkeleton from "./RegisterSkeleton";
-
 const Register = () => {
   const classes = useStyles();
-  const { registerLoading } = useSelector((state: RootState) => state.auth)
-
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
+  const { t } = useTranslation()
   const history = useHistory();
 
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
@@ -34,24 +25,28 @@ const Register = () => {
     }
   }, [isLoggedIn]);
 
-  const handleClick = () => {
-    history.push('/login')
-  }
-
   return (
     <Grid container className={classes.register}>
-      <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
+      <Grid item xs={12} md={6} lg={5} className={`${classes.form} hide-scrollbar`}>
         <RegisterForm />
-        {/* <RegisterSkeleton /> */}
+        <Grid container className={classes.langContainer} justifyContent="space-between">
+          <Grid item>
+            <Typography className={classes.dontHave}>
+              {t('auth.Already_have_an_account')}{" "}
+              <Link to="/login" className={classes.signup}>
+                {t('auth.register.signIn')}
+              </Link>
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Setting />
+          </Grid>
+        </Grid>
 
-        <Typography className={classes.dontHave}>
-          Already have an account?{" "}
-          <span onClick={handleClick} className={classes.signup}>Sign in!</span>
-        </Typography>
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
+        <Grid item xs={12} md={6} lg={7} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
       )}

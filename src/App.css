@@ -236,7 +236,7 @@ input[type="file"] {
 }
 
 input, textarea {
-  background-color: white !important;
+  background-color: white;
 }
 input::-webkit-input-placeholder,
 texarea::-webkit-input-placeholder{
@@ -303,7 +303,7 @@ button[disabled]{
 }
 
 .MuiInputBase-input {
-  background-color: var(--white) !important;
+  background-color: var(--white);
   font-weight: 500 !important;
   font-size: 14px !important;
   color:rgb(0, 0, 0) !important;

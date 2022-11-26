@@ -1,27 +1,10 @@
-import { useState } from "react";
-import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import ImageTile from "./ImageTile";
 import "./login.css";
-import LoginForm from "./LoginForm";
 
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
-import { useMediaQuery } from "react-responsive";
-import assets from "../../../assets/assets";
-import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
-import { useEffect } from "react";
-import colors from "../../../assets/colors";
-import queryString from "query-string";
-import { useDispatch } from "react-redux";
-import { baseURL } from "utills/axios";
-import axios from "axios";
 import { CBox, CSkeleton } from "components/material-ui";
+import assets from "../../../assets/assets";
+import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 //style file
-import useStyles from './LoginStyles'
-import { FormControl } from "@mui/material";
-import Skeleton from '@mui/material/Skeleton';
+import useStyles from './LoginStyles';
 
 const LoginSkeleton: React.FC<LoginInterface> = () => {
     const classes = useStyles();

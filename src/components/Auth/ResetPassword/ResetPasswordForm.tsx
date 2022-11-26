@@ -1,33 +1,35 @@
-import { Typography, Button, FormControlLabel, Checkbox, CircularProgress } from '@material-ui/core'
+import { Typography, Button, FormControlLabel, Checkbox, CircularProgress, InputAdornment, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useHistory } from 'react-router'
 import assets from 'assets/assets'
 import colors from 'assets/colors'
 import TextField from 'components/Utills/Inputs/TextField'
-import { useIntl } from 'react-intl'
 import { useDispatch, useSelector } from 'react-redux'
 import { resetPassword } from 'redux/action/auth.action'
 import { RootState } from 'redux/reducers'
 import Loading from 'components/Utills/Loader/Loading'
 import { Formik } from 'formik'
-import * as Yup from 'yup'
 import { toast } from 'react-toastify'
 import { Alert } from '@material-ui/lab'
 import queryString from 'query-string'
 import CustomImg from 'components/CustomImg'
+import { Visibility, VisibilityOff } from '@material-ui/icons'
+import { useTranslation } from 'react-i18next'
+import { resetPasswordSchemaValidation } from '../userSchema/AuthSchema'
 
 const ResetPasswordForm = () => {
-  const classes = useStyles()
 
-  const { registerLoading } = useSelector((state: RootState) => state.auth)
+  const {t} = useTranslation()
+  const classes = useStyles()
+  const [showPassword, setShowPassword] = useState(false);
+  const [confirmPass, setConfirmPass] = useState(false)
   const [loading, setLoading] = useState<boolean>(false)
   const [success, setSuccess] = useState<boolean>()
   const [error, setError] = useState<boolean>(false)
-
-  const intl = useIntl()
   const dispatch = useDispatch()
   const history = useHistory()
+
   const isDiabled = !loading ? false : true
 
   const handleSubmit = (values: any, action: any) => {
@@ -41,15 +43,17 @@ const ResetPasswordForm = () => {
         if (res) {
           history.push('/login')
         }
-        toast.success('Password Reset Successfully')
+        toast.success(`${t('auth.password_reset_successfully')}`)
         action?.resetForm?.()
       },
       onFailAction: (err: any) => {
-        setError(true)
-
+        if (err.response.data.code === 401) {
+          setError(true)
+          
+        }
         setTimeout(() => {
           setError(false)
-        }, 3000)
+        }, 10000)
       },
       showErrorToast: false,
 
@@ -62,21 +66,7 @@ const ResetPasswordForm = () => {
     dispatch(resetPassword(payload))
   }
 
-  const registerSchema = Yup.object().shape({
-    // otp: Yup.string()
-    //   .min(2, "Too Short!")
-    //   .max(50, "Too Long!")
-    //   .required("Required"),
-    password: Yup.string()
-      .required('Please enter your password')
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
-        'Password must contain at least 8 characters, one special character and one number'
-      ),
-    confirmPassword: Yup.string()
-      .required('Please confirm your password')
-      .oneOf([Yup.ref('password'), null], "Passwords don't match."),
-  })
+  const resetPasswordSchema = resetPasswordSchemaValidation(t)
 
   return (
     <div className={`form-container ${classes.wrapper} hide-scrollbar`}>
@@ -85,17 +75,16 @@ const ResetPasswordForm = () => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Reset Password</Typography>
+        <Typography className={classes.title}>{t('auth.reset_password')}</Typography>
       </div>
 
       <div className={classes.loginForm}>
         <Formik
           initialValues={{
             password: '',
-            // otp: "",
             confirmPassword: '',
           }}
-          validationSchema={registerSchema}
+          validationSchema={resetPasswordSchema}
           onSubmit={handleSubmit}
         >
           {({
@@ -105,38 +94,19 @@ const ResetPasswordForm = () => {
             handleChange,
             handleBlur,
             handleSubmit,
-            isSubmitting,
-            isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: '100%' }}>
               {(success || loading) && (
                 <Alert severity="success">
-                  {loading ? 'Verifying' : 'Password Reset Successfully'}
+                  {loading ? `${t('auth.forgot_pass.verifying')}` : `${t('auth.password_reset_successfully')}`}
                 </Alert>
               )}
 
-              {error && <Alert severity="error">Invalid email</Alert>}
+              {error && <Alert severity="error">{t('auth.password_reset_failed')}</Alert>}
 
-              {/* <TextField
-                placeholder={"Enter OTP"}
-                className={classes.inputs}
-                name="otp"
-                value={values.otp}
-                inputProps={{
-                  style: { height: 12 },
-                }}
-                onChange={handleChange}
-                onBlur={handleBlur}
-              />
-
-              {errors.otp && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.otp && touched.otp && errors.otp}
-                </Typography>
-              )} */}
               <TextField
-                type="password"
-                placeholder={intl.formatMessage({ id: 'input.Password' })}
+                type={showPassword ? "text" : "password"}
+                placeholder={t('auth.Password')}
                 className={classes.inputs}
                 name="password"
                 value={values.password}
@@ -146,6 +116,18 @@ const ResetPasswordForm = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 autoFill={false}
+                endAdornment={
+                  <InputAdornment position="end" className={classes.positionEnd}>
+                    <IconButton
+                      className={classes.endAornmnetBtn}
+                      aria-label="toggle password visibility"
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                    >
+                      {showPassword ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                }
               />
               {errors.password && (
                 <Typography className={`error-text ${classes.errorText}`}>
@@ -154,8 +136,8 @@ const ResetPasswordForm = () => {
               )}
 
               <TextField
-                type="password"
-                placeholder={'Confirm password'}
+                type={confirmPass ? "text" : "password"}
+                placeholder={`${t('auth.confirm_password')}`}
                 name="confirmPassword"
                 value={values.confirmPassword}
                 className={classes.inputs}
@@ -164,6 +146,16 @@ const ResetPasswordForm = () => {
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                endAdornment={<InputAdornment position="end" className={classes.positionEnd}>
+                      <IconButton
+                      className={classes.endAornmnetBtn}
+                        aria-label="toggle password visibility"
+                        onClick={()=>setConfirmPass(prev=> !prev)}
+                        edge="end"
+                      >
+                        {confirmPass ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>}
               />
               {errors.confirmPassword && (
                 <Typography className={`error-text ${classes.errorText}`}>
@@ -180,15 +172,11 @@ const ResetPasswordForm = () => {
                   //   disabled={!isValid || registerLoading}
                   disabled={isDiabled}
                 >
-                  {/* {registerLoading ? (
-                    <Loading type="spin" color="white" height={14} width={20} />
-                  ) : (
-                    "Reset Password"
-                  )} */}
+                 
                   {isDiabled && loading && (
                     <CircularProgress size={20} className={classes.progress} />
                   )}
-                  Reset Password
+                  {t('auth.reset_password')}
                 </Button>
               </div>
             </form>
@@ -202,6 +190,12 @@ const ResetPasswordForm = () => {
 export default ResetPasswordForm
 
 const useStyles = makeStyles({
+  positionEnd:{
+    marginLeft:"-50px"
+  },
+  endAornmnetBtn:{
+    marginRight:0
+  },
   wrapper: {
     minHeight: '94%',
     overflowY: 'auto',
@@ -239,7 +233,6 @@ const useStyles = makeStyles({
   },
   loginButton: {
     height: 40,
-    width: 140,
     fontSize: 13,
 
     fontWeight: 500,
@@ -255,7 +248,7 @@ const useStyles = makeStyles({
     paddingLeft: '7%',
   },
   titleWrapper: {
-    paddingTop: '3%',
+    paddingTop: '10%',
     paddingLeft: '12.5%',
   },
   title: {

@@ -3,32 +3,8 @@ import colors from "../../../assets/colors";
 import assets from "../../../assets/assets";
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        logoWrapper: {
-            paddingTop: "2%",
-            paddingLeft: "8%",
-        },
-        wrapper: {
-            height: "94%",
-        },
-        titleWrapper: {
-            display: 'flex',
-            justifyContent: 'space-between',
-            paddingBottom: 0,
-            paddingTop: 2,
-            alignItems: 'center',
-        },
-        title: {
-            fontSize: 30,
-            fontWeight: "bold",
-        },
-        loginForm: {
-            display: "flex",
-            flexDirection: "column",
-            marginTop: 20,
+        langContainer: {
             padding: "10px 13%",
-            "@media (max-width:960px)": {
-                padding: "10 13%",
-            },
         },
         register: {
             display: "flex",
@@ -51,13 +27,13 @@ export const useStyles = makeStyles((theme: Theme) =>
             position: "relative",
         },
         dontHave: {
-            paddingLeft: "12.5%",
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer"
         },
         signup: {
             color: colors.textPrimary,
+            textDecoration: 'none'
         },
         // formTile: {
         //     display: 'inline-block',

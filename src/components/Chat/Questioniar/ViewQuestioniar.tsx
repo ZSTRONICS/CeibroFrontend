@@ -21,15 +21,14 @@ const ViewQuestioniarDrawer = () => {
     (store: RootState) => store.chat.openViewQuestioniar
   );
   const selectedQuestioniar = useSelector(
-    (store: RootState) => store.chat.selectedQuestioniar
+    (store: RootState) => store?.chat?.selectedQuestioniar
   );
   const dispatch = useDispatch();
   const classes = useStyles();
-
   const handleClose = () => {
     dispatch(closeViewQuestioniarDrawer());
   };
-
+  
   useEffect(() => {
     dispatch(getQuestioniarById({ other: selectedQuestioniar }));
   }, [selectedQuestioniar]);

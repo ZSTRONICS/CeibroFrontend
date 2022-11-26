@@ -1,0 +1,81 @@
+{
+  "auth": {
+    "login": "Logi sisse",
+    "signUp": "Registreeri!",
+    "Email": "Meil",
+    "Password": "Parool",
+    "RememberMe": "Mäleta mind",
+    "ForgetPassword": "Unustasid parooli?",
+    "verify": "kontrollida",
+    "send": "Saada",
+    "verifyEmail": "Saada meili kinnitus uuesti",
+    "dont_have_account": "Kas teil pole kontot?",
+    "Already_have_an_account": "On juba konto",
+    "link_expired": "Link aegus",
+    "email_not_verified": "E-post pole kinnitatud, kontrollige oma postkasti",
+    "Remember": "Pea meeles!",
+    "reset_password": "Lähtestage parool",
+    "password_reset_successfully": "Parooli lähtestamine õnnestus",
+    "plz_Enter_pass": "Palun sisesta oma salasõna",
+    "pass_must_Contain": "Parool peab sisaldama vähemalt 8 tähemärki, ühte erimärki ja ühte numbrit",
+    "plz_confirm_pass":"Palun kinnitage oma parool",
+    "confirm_password": "Kinnita salasõna",
+    "pass_not_match":"Paroolid ei ühti",
+    "required":"Nõutud",
+    "tooShort" :"Liiga lühike!",
+    "tooLong":"Liiga kaua!",
+    "emailNotVerify": "E-post pole kinnitatud, kontrollige oma postkasti.",
+    "email_verified":"email Kinnitatud",
+    "incorrect_email_password":"Vale e-mail või parool",
+    "check_your_email": "Palun kontrolli oma e-posti",
+    "loggedin_Successfully":"Edukalt sisse logitud",
+    "noUserFound_with_email":"Selle meiliga kasutajaid ei leitud",
+    "password_reset_failed":"Parooli lähtestamine ebaõnnestus",
+    "email_already_taken":"Meil on juba võetud",
+    "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
+    "name_should_have":"Nimi peab algama tähega ja see sisaldab ainult tähti ja numbreid",
+    "account_not_found":"Selle e-posti aadressiga seotud kontot ei leitud!",
+
+    "forgot_pass": {
+      "verifying": "Kontrollimine",
+      "email_verify_successfully": "E-posti aadress on edukalt kinnitatud. Palun logi sisse!"
+    },
+
+    "register": {
+      "register": "Registreeri",
+      "signIn": "Logi sisse",
+      "first_name": "Eesnimi",
+      "sur_name": "Perekonnanimi",
+      "invalid_email": "Kehtetu e-posti aadress",
+      "confirm_password": "Kinnita salasõna",
+      "submit": "Esita",
+      "company_vat": "Ettevõte Vat",
+      "company_location": "Ettevõte asukoht",
+      "company_phone": "Ettevõte Tel",
+      "work_email": "Töö e-post",
+      "Not_valid_email":"Pole kehtiv e-post",
+
+      "currently_representing": "Hetkel esindan ettevõtet"
+    },
+    "profile_form": {
+      "phone": "Telefon",
+      "company_name": "Ettevõtte nimi"
+    },
+
+    "errorAlerts": {
+      "incorrect_email_pass": "Vale e-mail või parool",
+      "account_locked_message": "Konto lukus. Proovige # minuti pärast uuesti"
+    },
+
+    "successAlerts": {
+      "login_successfull": "edu",
+      "verifying_email": "e-posti kinnitamine",
+      "email_verified": "E-posti aadress on edukalt kinnitatud. Palun logi sisse!"
+    }
+  },
+
+  "Dashboard": "Armatuurlaud",
+  "Chat": "Vestlus",
+  "Tasks": "Ülesanded",
+  "Projects": "Projektid"
+}

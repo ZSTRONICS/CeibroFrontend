@@ -10,11 +10,11 @@ import { useHistory } from "react-router";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
-import { useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import {  otpVerify } from "../../../redux/action/auth.action";
 import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
+import { useTranslation } from "react-i18next";
 
 interface VerifyEmailForm {
   tokenLoading: boolean;
@@ -25,9 +25,9 @@ interface VerifyEmailForm {
 const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
   const classes = useStyles();
   const { showError } = props;
+  const {t} = useTranslation()
 
   const history = useHistory();
-  const intl = useIntl();
   const dispatch = useDispatch();
 
   const [otp, setOtp] = useState("");
@@ -45,7 +45,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
       success: (res: any) => {
         setSuccess(res);
         setOtp("");
-        toast.success("email Verified");
+        toast.success(`${t('auth.email_verified')}`);
         history.push("/login");
       },
       onFailAction: (err: any) => {
@@ -53,7 +53,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
 
         setTimeout(() => {
           setError(false);
-        }, 3000);
+        }, 10000);
       },
       showErrorToast: false,
 
@@ -87,7 +87,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
         {showError && <Alert severity="error">Link expired</Alert>}
 
         <TextField
-          placeholder={intl.formatMessage({ id: "input.otp" })}
+          placeholder={"otp"}
           className={classes.inputs}
           inputProps={{
             style: { height: 12 },
@@ -107,7 +107,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
-            {intl.formatMessage({ id: "input.verify" })}
+            {"verify"}
           </Button>
         </div>
       </div>
