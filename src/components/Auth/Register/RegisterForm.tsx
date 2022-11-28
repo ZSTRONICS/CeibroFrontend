@@ -32,6 +32,7 @@ import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
 import { Grid } from "@mui/material";
+import { CBox } from "components/material-ui";
 
 const RegisterForm = () => {
   const classes = useStyles();
@@ -70,7 +71,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <div className={`form-container ${classes.wrapper} ${classes.form} hide-scrollbar`}>
+    <div className={`form-container  hide-scrollbar`}>
       <div className={classes.logoWrapper}>
         <img src={assets.logo} alt="ceibro-logo" />
       </div>
@@ -102,15 +103,11 @@ const RegisterForm = () => {
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <Grid
-                container
-                direction="column"
-                xs={8}
-                md={8}
-              >
-                {incorrectAuth && (
-                  <Alert severity="error">{t("auth.email_already_taken")}</Alert>
-                )}
+
+              {incorrectAuth && (
+                <Alert severity="error">{t("auth.email_already_taken")}</Alert>
+              )}
+              <CBox mb={3.1}>
                 <TextField
                   placeholder={t("auth.register.first_name")}
                   className={classes.inputs}
@@ -127,7 +124,10 @@ const RegisterForm = () => {
                     {errors.firstName && touched.firstName && errors.firstName}
                   </Typography>
                 )}
+              </CBox>
 
+
+              <CBox mb={3.1}>
                 <TextField
                   placeholder={t("auth.register.sur_name")}
                   className={classes.inputs}
@@ -144,7 +144,9 @@ const RegisterForm = () => {
                     {errors.surName && touched.surName && errors.surName}
                   </Typography>
                 )}
+              </CBox>
 
+              <CBox mb={3.1}>
                 <TextField
                   placeholder={t("auth.Email")}
                   className={classes.inputs}
@@ -161,7 +163,9 @@ const RegisterForm = () => {
                     {errors.email && touched.email && errors.email}
                   </Typography>
                 )}
+              </CBox>
 
+              <CBox mb={3.1}>
                 <TextField
                   type={showPassword ? "text" : "password"}
                   placeholder={t("auth.Password")}
@@ -193,7 +197,9 @@ const RegisterForm = () => {
                     {errors.password && touched.password && errors.password}
                   </Typography>
                 )}
+              </CBox>
 
+              <CBox mb={3.1}>
                 <TextField
                   type={confirmPass ? "text" : "password"}
                   placeholder={t("auth.confirm_password")}
@@ -226,23 +232,24 @@ const RegisterForm = () => {
                       errors.confirmPassword}
                   </Typography>
                 )}
+              </CBox>
 
-                <div className={classes.actionWrapper}>
-                  <Button
-                    className={classes.loginButton}
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={!isValid || registerLoading}
-                  >
-                    {registerLoading ? (
-                      <Loading type="spin" color="white" height={14} width={20} />
-                    ) : (
-                      `${t("auth.register.register")}`
-                    )}
-                  </Button>
-                </div>
-              </Grid>
+
+              <div className={classes.actionWrapper}>
+                <Button
+                  className={classes.loginButton}
+                  variant="contained"
+                  color="primary"
+                  type="submit"
+                  disabled={!isValid || registerLoading}
+                >
+                  {registerLoading ? (
+                    <Loading type="spin" color="white" height={14} width={20} />
+                  ) : (
+                    `${t("auth.register.register")}`
+                  )}
+                </Button>
+              </div>
             </form>
           )}
         </Formik>
@@ -254,24 +261,17 @@ const RegisterForm = () => {
 export default RegisterForm;
 
 const useStyles = makeStyles({
-  form: {
-    padding: '0 30px 33px',
-  },
+
   positionEnd: {
     marginLeft: "-50px",
   },
   endAornmnetBtn: {
     marginRight: 0,
   },
-  wrapper: {
-    minHeight: "92%",
-    overflowY: "auto",
-    marginBottom: 20,
-  },
+
   actionWrapper: {
     display: "flex",
     alignItems: "center",
-    paddingTop: 40,
   },
   titles: {
     color: colors.textPrimary,
@@ -315,7 +315,7 @@ const useStyles = makeStyles({
     // paddingLeft: "10%",
   },
   titleWrapper: {
-    paddingTop: "10%",
+    margin: '45px 0px 15px 0px'
     // paddingLeft: "14%",
   },
   title: {

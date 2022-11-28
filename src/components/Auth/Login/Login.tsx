@@ -24,7 +24,10 @@ import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import ImageTile from "./ImageTile";
 import LoginForm from "./LoginForm";
 import LoginSkeleton from "./LoginSkeleton";
+
+
 import useStyles from './LoginStyles';
+import { CBox } from "components/material-ui";
 const Login: React.FC<LoginInterface> = () => {
 
   const classes = useStyles();
@@ -76,7 +79,7 @@ const Login: React.FC<LoginInterface> = () => {
 
           <LoginSkeleton />
           :
-          <>
+          <CBox className={"logoTitleWrapper"}>
             <LoginForm
               tokenLoading={tokenLoading}
               showSuccess={success}
@@ -96,7 +99,7 @@ const Login: React.FC<LoginInterface> = () => {
               </Grid>
             </Grid>
 
-          </>
+          </CBox>
 
         }
 

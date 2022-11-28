@@ -1,4 +1,5 @@
 import { Grid, Typography } from "@material-ui/core";
+import { CBox } from "components/material-ui";
 import Setting from "components/Setting";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -28,20 +29,23 @@ const Register = () => {
   return (
     <Grid container className={classes.register}>
       <Grid item xs={12} md={6} lg={5} className={`${classes.form} hide-scrollbar`}>
-        <RegisterForm />
-        <Grid container className={classes.langContainer} justifyContent="space-between">
-          <Grid item>
-            <Typography className={classes.dontHave}>
-              {t('auth.Already_have_an_account')}{" "}
-              <Link to="/login" className={classes.signup}>
-                {t('auth.register.signIn')}
-              </Link>
-            </Typography>
+        <CBox className={"logoTitleWrapper"}>
+          <RegisterForm />
+          <Grid container className={classes.langContainer} justifyContent="space-between">
+            <Grid item>
+              <Typography className={classes.dontHave}>
+                {t('auth.Already_have_an_account')}{" "}
+                <Link to="/login" className={classes.signup}>
+                  {t('auth.register.signIn')}
+                </Link>
+              </Typography>
+            </Grid>
+            <Grid item>
+              <Setting />
+            </Grid>
           </Grid>
-          <Grid item>
-            <Setting />
-          </Grid>
-        </Grid>
+        </CBox>
+
 
       </Grid>
 

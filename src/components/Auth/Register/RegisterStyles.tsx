@@ -3,8 +3,20 @@ import colors from "../../../assets/colors";
 import assets from "../../../assets/assets";
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+
+
         langContainer: {
-            padding: "10px 13%",
+            justifyContent: "space-between",
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: 20,
+            paddingRight: 28,
+            width: '100%',
+            "@media (max-width:960px)": {
+                color: '#fff'
+            },
+
+            // padding: "10px 13%",
         },
         register: {
             display: "flex",

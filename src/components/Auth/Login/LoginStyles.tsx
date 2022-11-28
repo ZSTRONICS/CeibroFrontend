@@ -5,6 +5,15 @@ import assets from "../../../assets/assets";
 export const useStyles = makeStyles((theme: Theme) =>
 
     createStyles({
+
+        logoTitleWrapper: {
+            marginLeft: 45,
+            height: '100vh',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flexDirection: 'column'
+
+        },
         loginForm: {
             display: "flex",
             flexDirection: "column",
@@ -25,7 +34,15 @@ export const useStyles = makeStyles((theme: Theme) =>
 
         langContainer: {
             justifyContent: "space-between",
-            padding: "10px 13%",
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: 20,
+            paddingRight: 28,
+            width: '100%',
+
+            "@media (max-width:960px)": {
+                color: '#fff'
+            },
         },
         wrapper: {
             height: "94%",
@@ -60,7 +77,11 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         signup: {
             color: colors.textPrimary,
-            textDecoration: "none"
+            textDecoration: "none",
+
+            // "@media (max-width:960px)": {
+            //     color: '#fff !important'
+            // },
         },
 
     }),

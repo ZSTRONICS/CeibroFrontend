@@ -137,8 +137,8 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   return (
-    <div className={classes.container}>
-      <Box className={classes.logoTitleWrapper}>
+    <div>
+      <Box>
         <Box className={classes.logoWrapper}>
           <img src={assets.logo} alt="ceibro-logo" />
         </Box>
@@ -164,66 +164,61 @@ const LoginForm: React.FC<Props> = (props) => {
             values,
           }) => (
             <Form onSubmit={handleSubmit}>
-              <Grid
-                container
-                direction="column"
 
-                xs={8}
-                md={8}
-              >
-                {(showSuccess || tokenLoading) && (
-                  <Alert severity="success">
-                    {tokenLoading
-                      ? `${t("auth.successAlerts.verifying_email")}`
-                      : `${t("auth.successAlerts.email_verified")}`}
-                  </Alert>
-                )}
+              {(showSuccess || tokenLoading) && (
+                <Alert severity="success">
+                  {tokenLoading
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
+                </Alert>
+              )}
 
-                {showError && (
-                  <Alert severity="error">{t("auth.link_expired")}</Alert>
-                )}
-                {verifyError && (
-                  <Alert
-                    severity="error"
-                    style={{ display: "flex", margin: "2px 0" }}
+              {showError && (
+                <Alert severity="error">{t("auth.link_expired")}</Alert>
+              )}
+              {verifyError && (
+                <Alert
+                  severity="error"
+                  style={{ display: "flex", margin: "2px 0" }}
+                >
+                  <Typography
+                    className={`${classes.titles} ${classes.forget} ${classes.color}`}
+                    variant="body1"
+                    gutterBottom
+                    onClick={() => handleVerifyEmail(values)}
                   >
-                    <Typography
-                      className={`${classes.titles} ${classes.forget} ${classes.color}`}
-                      variant="body1"
-                      gutterBottom
-                      onClick={() => handleVerifyEmail(values)}
-                    >
-                      {t("auth.emailNotVerify")}
-                      <span className={classes.emailVerify}>
-                        {t("auth.verifyEmail")}
-                      </span>
-                    </Typography>
-                  </Alert>
-                )}
+                    {t("auth.emailNotVerify")}
+                    <span className={classes.emailVerify}>
+                      {t("auth.verifyEmail")}
+                    </span>
+                  </Typography>
+                </Alert>
+              )}
 
-                {incorrectAuth && (
-                  <Alert style={{ margin: "2px 0" }} severity="error">
-                    {t("auth.account_locked").replace('#', `${timer}`)}
-                  </Alert>
-                )}
-                {incorrectEmail && (
-                  <Alert style={{ margin: "2px 0" }} severity="error">
-                    {t("auth.account_not_found").replace('#', `${timer}`)}
-                  </Alert>
-                )}
-                {lockError && (
-                  <Alert severity="error">
-                    {t("auth.errorAlerts.account_locked_message").replace('#', `${timer}`)}
-                  </Alert>
-                )}
+              {incorrectAuth && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_locked").replace('#', `${timer}`)}
+                </Alert>
+              )}
+              {incorrectEmail && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_not_found").replace('#', `${timer}`)}
+                </Alert>
+              )}
+              {lockError && (
+                <Alert severity="error">
+                  {t("auth.errorAlerts.account_locked_message").replace('#', `${timer}`)}
+                </Alert>
+              )}
 
-                {(showSuccess || tokenLoading) && (
-                  <Alert severity="success">
-                    {tokenLoading
-                      ? `${t("auth.successAlerts.verifying_email")}`
-                      : `${t("auth.successAlerts.email_verified")}`}
-                  </Alert>
-                )}
+              {(showSuccess || tokenLoading) && (
+                <Alert severity="success">
+                  {tokenLoading
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
+                </Alert>
+              )}
+              <CBox mb={3.1}>
                 <TextField
                   placeholder={t("auth.register.first_name")}
                   className={classes.inputs}
@@ -235,26 +230,13 @@ const LoginForm: React.FC<Props> = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-
-                {/* <FormControl variant="outlined" className={classes.loginInput}>
-                  <OutlinedInput
-                    name="email"
-                    required
-                    value={values.email}
-                    className={classes.inputOutline}
-                    placeholder={t("auth.Email")}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                </FormControl> */}
-
-                {/* validation error */}
                 {errors.email && touched.email && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.email}
                   </Typography>
                 )}
-
+              </CBox>
+              <CBox mb={3.1}>
                 <TextField
                   placeholder={t("auth.register.first_name")}
                   type={showPassword ? "text" : "password"}
@@ -284,9 +266,29 @@ const LoginForm: React.FC<Props> = (props) => {
                     {errors.password}
                   </Typography>
                 )}
+              </CBox>
 
 
-                {/* <FormControl variant="outlined" className={classes.loginInput}>
+              {/* <FormControl variant="outlined" className={classes.loginInput}>
+                  <OutlinedInput
+                    name="email"
+                    required
+                    value={values.email}
+                    className={classes.inputOutline}
+                    placeholder={t("auth.Email")}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                </FormControl> */}
+
+              {/* validation error */}
+
+
+
+
+
+
+              {/* <FormControl variant="outlined" className={classes.loginInput}>
                   <OutlinedInput
                     required
                     name="password"
@@ -314,49 +316,49 @@ const LoginForm: React.FC<Props> = (props) => {
 
 
 
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checked}
-                      onChange={() => setChecked(!checked)}
-                      name="checkedB"
-                      color="primary"
-                      style={{ padding: 0 }}
-                    />
-                  }
-                  className={classes.remember}
-                  style={{ padding: 0 }}
-                  label={
-                    <Typography className={classes.rememberText}>
-                      {t("auth.RememberMe")}
-                    </Typography>
-                  }
-                />
-
-                <div className={classes.actionWrapper}>
-                  <Button
-                    type="submit"
-                    className={classes.loginButton}
-                    variant="contained"
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={() => setChecked(!checked)}
+                    name="checkedB"
                     color="primary"
-                    disabled={checkValidInputs(values) || loginLoading}
-                  >
-                    {loginLoading ? (
-                      <Loading type="spin" color="white" height={14} width={14} />
-                    ) : (
-                      t("auth.login")
-                    )}
-                  </Button>
-                  <Typography
-                    className={`${classes.titles} ${classes.forget}`}
-                    variant="body1"
-                    gutterBottom
-                    onClick={handlePasswordForget}
-                  >
-                    {t("auth.ForgetPassword")}
+                    style={{ padding: 0 }}
+                  />
+                }
+                className={classes.remember}
+                style={{ padding: 0 }}
+                label={
+                  <Typography className={classes.rememberText}>
+                    {t("auth.RememberMe")}
                   </Typography>
-                </div>
-              </Grid>
+                }
+              />
+
+              <div className={classes.actionWrapper}>
+                <Button
+                  type="submit"
+                  className={classes.loginButton}
+                  variant="contained"
+                  color="primary"
+                  disabled={checkValidInputs(values) || loginLoading}
+                >
+                  {loginLoading ? (
+                    <Loading type="spin" color="white" height={14} width={14} />
+                  ) : (
+                    t("auth.login")
+                  )}
+                </Button>
+                <Typography
+                  className={`${classes.titles} ${classes.forget}`}
+                  variant="body1"
+                  gutterBottom
+                  onClick={handlePasswordForget}
+                >
+                  {t("auth.ForgetPassword")}
+                </Typography>
+              </div>
+
             </Form>
           )}
         </Formik>
@@ -370,9 +372,7 @@ const useStyles = makeStyles({
   container: {
     height: "92%",
   },
-  logoTitleWrapper: {
-    padding: "0 30px 33px",
-  },
+
   formWraper: {
     margin: "0 auto",
   },
@@ -413,7 +413,7 @@ const useStyles = makeStyles({
     },
   },
   remember: {
-    marginTop: "35px !important",
+
     fontSize: 14,
     padding: 0,
   },
@@ -449,7 +449,8 @@ const useStyles = makeStyles({
     // paddingLeft: "7%",
   },
   titleWrapper: {
-    paddingTop: "10%",
+    margin: '45px 0px 15px 0px',
+
 
   },
   title: {
@@ -457,10 +458,8 @@ const useStyles = makeStyles({
     fontWeight: "bold",
   },
   inputs: {
-    marginTop: 30,
-    height: 8,
-    width: "100%",
-    maxWidth: 376,
+    // marginBottom: 25,
+
 
   },
   inputPass: {
