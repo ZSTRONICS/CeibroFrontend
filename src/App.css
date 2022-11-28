@@ -362,7 +362,7 @@ button[disabled]{
 }
 .logoTitleWrapper{
   height: 100vh;
-  margin: 0px 65px;
+  margin: 0px 85px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

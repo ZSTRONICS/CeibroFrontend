@@ -459,7 +459,8 @@ const useStyles = makeStyles({
   },
   inputs: {
     // marginBottom: 25,
-
+    width: "100%",
+    maxWidth: 376,
 
   },
   inputPass: {

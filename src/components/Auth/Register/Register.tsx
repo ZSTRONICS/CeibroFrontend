@@ -28,7 +28,7 @@ const Register = () => {
 
   return (
     <Grid container className={classes.register}>
-      <Grid item xs={12} md={6} lg={5} className={`${classes.form} hide-scrollbar`}>
+      <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
         <CBox className={"logoTitleWrapper"}>
           <RegisterForm />
           <Grid container className={classes.langContainer} justifyContent="space-between">
@@ -50,7 +50,7 @@ const Register = () => {
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={7} className={classes.tileWrapper}>
+        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
       )}

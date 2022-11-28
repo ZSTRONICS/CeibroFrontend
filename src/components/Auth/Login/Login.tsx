@@ -72,7 +72,7 @@ const Login: React.FC<LoginInterface> = () => {
 
   return (
     <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={5} className={classes.form}>
+      <Grid item xs={12} md={6} lg={4} className={classes.form}>
         {/* if the data is loading it shows skeleton */}
 
         {tokenLoading ?
@@ -107,7 +107,7 @@ const Login: React.FC<LoginInterface> = () => {
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={7} className={classes.tileWrapper}>
+        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
       )

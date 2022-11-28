@@ -296,9 +296,10 @@ const useStyles = makeStyles({
     fontSize: 14,
   },
   inputs: {
-    // marginTop: 30,
-
+    // marginBottom: 25,
     width: "100%",
+    maxWidth: 376,
+
   },
   loginButton: {
     height: 32,
