@@ -1,4 +1,4 @@
-import { REGISTER } from "redux-persist/es/constants";
+import { REGISTER } from "redux-persist";
 import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import {
