@@ -1,22 +1,21 @@
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import Login from "../components/Auth/Login/Login";
-// import ForgetPassword from "components/Auth/Login/ForgetPassword";
-// import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
-import ForgetPassword from "components/Auth/ForgetPassword/ForgetPassword";
-import ResetPassword from "components/Auth/ResetPassword/ResetPassword";
-import Register from "components/Auth/Register/Register";
-import Projects from "components/Projects/ProjectList/Project";
-import Dashboard from "components/Dashboard/Dashboard";
-import Profile from "components/Profile/Profile";
-import Tasks from "components/Tasks/TaskList/Task";
-import SubTask from "components/Tasks/SubTasks/SubTask";
-import Chat from "components/Chat/Chat";
+import { Login,
+  Connections,
+  ForgetPassword,
+  ResetPassword,
+  Register,
+  Projects,
+  Dashboard,
+  Profile,
+  Tasks,
+  SubTask,
+  Chat,
+} from 'components'
+
 import AppLayout from "./AppLayout";
-import Connections from "components/Connection/Connection";
 import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
-import ViewInvitations from "components/Profile/ViewInvitations";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}

@@ -23,7 +23,7 @@ const store: Store = createStore(
 );
 
 let persistor = persistStore(store);
-persistor.purge();
+
 sagaMiddleware.run(rootSaga);
 const myStore = { store, persistor };
 export default myStore;

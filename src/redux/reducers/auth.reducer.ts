@@ -96,7 +96,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.clear();
       sessionStorage.clear()
       return {
-        // state:null
         ...state,
         isLoggedIn: false,
         user: null,
