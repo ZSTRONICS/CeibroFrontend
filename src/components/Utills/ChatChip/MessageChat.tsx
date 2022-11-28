@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai'
 import { BsDownload } from 'react-icons/bs'

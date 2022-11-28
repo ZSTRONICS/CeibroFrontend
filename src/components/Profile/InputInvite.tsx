@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { useEffect, useState } from "react";
 import { makeStyles, Typography, CircularProgress } from "@material-ui/core";
 import { Search } from "@material-ui/icons";

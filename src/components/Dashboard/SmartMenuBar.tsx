@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { ContactPhone } from "@material-ui/icons";
 import colors from "../../assets/colors";

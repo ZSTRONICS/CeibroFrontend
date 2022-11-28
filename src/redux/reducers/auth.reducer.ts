@@ -29,7 +29,6 @@ const intialStatue: authInterface = {
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestPending(LOGIN): {
-      //console.log('loginLoading', state.loginLoading)
       setTimeout(() => {
         state.loginLoading=  false
       }, 10000/2);

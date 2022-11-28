@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";

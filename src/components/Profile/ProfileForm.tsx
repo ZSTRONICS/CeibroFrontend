@@ -1,5 +1,6 @@
-//@ts-nocheck
 import React, { useEffect, useState, useRef } from "react";
+
+// material & react-icon
 import {
   Button,
   Checkbox,
@@ -14,20 +15,21 @@ IconButton
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-
 import { BiTrash } from "react-icons/bi";
 
-import colors from "../../assets/colors";
-import { useMediaQuery } from "react-responsive";
-import { Formik } from "formik";
-import * as Yup from "yup";
+// redux
+import { useDispatch, useSelector } from "react-redux";
 import { getMyProfile, updateMyProfile } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
+import colors from "../../assets/colors";
+
+// formik and yup 
+import { Formik } from "formik";
+import * as Yup from "yup";
+
 const ProfileForm = () => {
   const classes = useStyles();
-  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const passRef = useRef<HTMLInputElement>(null);
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,7 +50,6 @@ const ProfileForm = () => {
       workEmail,
       phone,
       password,
-      email,
       companyName,
       companyPhone,
       companyVat,
@@ -67,7 +68,6 @@ const ProfileForm = () => {
         companyName,
         companyVat,
         companyLocation,
-        // email,
         currentlyRepresenting,
       },
       success: () => {
@@ -106,7 +106,7 @@ const ProfileForm = () => {
       [Yup.ref("password"), null],
       "Passwords don't match."
     ),
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email"),
     companyName: Yup.string()
       .min(2, "Too Short!")
       .max(50, "Too Long!")

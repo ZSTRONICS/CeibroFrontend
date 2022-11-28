@@ -1,54 +1,43 @@
-//@ts-nocheck
+import React from "react";
+import { useMediaQuery } from "react-responsive";
+
+// material
 import {
   Badge,
-  Button,
   Grid,
-  ListItemIcon,
-  ListItemText,
   makeStyles,
-  Menu,
-  MenuItem,
   Typography,
 } from "@material-ui/core";
-import Textfield from "../Utills/Inputs/TextField";
-import { Create, NotificationsNoneSharp } from "@material-ui/icons";
-import React from "react";
-import Avatar from "@material-ui/core/Avatar";
 import MenuIcon from "@material-ui/icons/Menu";
-import "./topbar.css";
-import appActions from "../../redux/action/app.action";
-import projectActions from "../../redux/action/project.action";
+
+// redux
 import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
-// import { RootState } from '../../redux/reducers'
-import colors from "../../assets/colors";
-import { Link } from "react-router-dom";
-import ProfileBtn from "./ProfileBtn";
-import Title from "./Title";
-import { useHistory } from "react-router";
+import appActions from "../../redux/action/app.action";
 import { RootState } from "../../redux/reducers";
+
+// router-dom
+import { useHistory } from "react-router";
+
+// components
 import assets from "assets/assets";
+import colors from "../../assets/colors";
+import "./topbar.css";
+import Title from "./Title";
 import TopBarSearch from "./TopBarSearch";
+import ProfileView from "./ProfileView";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const history = useHistory();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  // const { navbar } = useSelector((store: RootState) => store.app)
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const { user } = useSelector((state: RootState) => state.auth);
+  
   const toggleNavbar = () => {
     dispatch(appActions.toggleNavbar());
   };
+
   return (
     <div className={`topbar ${classes.topNavbarWrapper}`}>
       <Grid
@@ -104,7 +93,8 @@ const Topbar = (props: any) => {
               </Typography>
             </div>
           )}
-          <ProfileBtn />
+
+          <ProfileView />
 
           {!isTabletOrMobile && (
             <Typography className={classes.notification}>

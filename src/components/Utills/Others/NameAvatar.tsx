@@ -1,14 +1,14 @@
 import React from "react";
 import {  makeStyles, Box } from "@material-ui/core";
 import colors from "../../../assets/colors";
-import Avatar from "@material-ui/core/Avatar";
+import {Avatar} from "@material-ui/core";
 
 interface NameAvatarProps {
   firstName: string;
   surName?: string;
   background?: string;
   url?: string;
-  variant?: "small" | "large" | "custom";
+  variant?: "small" | "large" | "custom" | "rounded" ;
 }
 
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
@@ -21,9 +21,9 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     <>
       <Box>
         {!url ?
-          <Avatar variant="square" className={classes.MuiAvatarSquare}>
+          <Avatar variant= "rounded" className={classes.MuiAvatarSquare}>
             {letters}
-          </Avatar> : <Avatar alt="avater" src={url}  variant="square"  />
+          </Avatar> : <Avatar alt="avater" src={url}  variant= "rounded"  />
         }
       </Box>
     </>
