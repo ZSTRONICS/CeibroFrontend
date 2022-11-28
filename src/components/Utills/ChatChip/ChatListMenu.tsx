@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { IconButton, makeStyles, Typography } from "@material-ui/core"
 import { BookmarkBorder, Chat, Delete, Markunread, MoreVert, Star, StarBorder } from "@material-ui/icons"
 import { useConfirm } from "material-ui-confirm"

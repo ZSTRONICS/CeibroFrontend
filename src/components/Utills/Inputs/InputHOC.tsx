@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import assets from "assets/assets";
@@ -21,7 +20,7 @@ const InputHOC: FC<InputHOCInterface> = (props) => {
       </div>
       {children}
       {showIcon && (
-        <img src={assets.calender} className={`w-16 ${classes.calender}`} />
+        <img src={assets.calender} className={`w-16 ${classes.calender}`} alt="calendar" />
       )}
     </div>
   );
