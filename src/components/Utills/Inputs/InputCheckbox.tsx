@@ -1,12 +1,7 @@
 import { FC, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import Checkbox, { CheckboxProps } from "@material-ui/core/Checkbox";
-
 import "./inputText.css";
-import colors from "../../../assets/colors";
 import { FormControlLabel, makeStyles } from "@material-ui/core";
 import CustomCheckbox from "./Checkbox";
-
 
 interface InputCheckboxInterface {
   checked: boolean;

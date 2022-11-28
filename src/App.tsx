@@ -1,19 +1,32 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
-import { ToastContainer } from "react-toastify";
-import { CssBaseline } from "@mui/material";
-import "react-toastify/dist/ReactToastify.css";
-import "./App.css";
-import CreateQuestioniarDrawer from "./components/Chat/Questioniar/CreateQuestioniar";
-import ViewQuestioniarDrawer from "./components/Chat/Questioniar/ViewQuestioniar";
-import CreateProjectDrawer from "./components/Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
-import CreateTaskDrawer from "./components/Tasks/Create-Task/CreateTaskDrawer";
-import "./components/Topbar/ProfileBtn.css";
-import RouterConfig from "./navigation/RouterConfig";
-import { RootState } from "./redux/reducers";
+
+// components
+import { CreateQuestioniarDrawer, 
+  ViewQuestioniarDrawer ,
+  CreateProjectDrawer, 
+  CreateTaskDrawer,
+  ViewInvitations,
+  RouterConfig
+} from 'components'
+
+// socket
 import {socket} from "services/socket.services"
+import { io } from "socket.io-client";
+
+// material
+import { CssBaseline } from "@mui/material";
+
+// styling
+import "react-toastify/dist/ReactToastify.css";
+import "./components/Topbar/ProfileBtn.css";
+import "./App.css";
+
+// redux
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "./redux/reducers";
 import myStore from "redux/store";
 import {
   getAllChats,
@@ -25,9 +38,9 @@ import {
   RECEIVE_MESSAGE,
   REFRESH_CHAT,
 } from "config/chat.config";
+
+// axios
 import { SERVER_URL } from "utills/axios";
-import { io } from "socket.io-client";
-import ViewInvitations from "components/Profile/ViewInvitations";
 
 interface MyApp {}
 

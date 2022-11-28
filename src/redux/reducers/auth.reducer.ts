@@ -1,3 +1,4 @@
+import { REGISTER } from "redux-persist";
 import { ActionInterface } from ".";
 import {
   requestFail,
@@ -5,7 +6,6 @@ import {
   requestSuccess,
 } from "../../utills/status";
 import { GET_PROFILE, LOGIN, LOGOUT } from "../../config/auth.config";
-import { REGISTER } from "redux-persist/es/constants";
 import { UserInterface } from "constants/interfaces/user.interface";
 
 interface authInterface {
@@ -29,9 +29,13 @@ const intialStatue: authInterface = {
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestPending(LOGIN): {
+      //console.log('loginLoading', state.loginLoading)
+      setTimeout(() => {
+        state.loginLoading=  false
+      }, 10000/2);
       return {
         ...state,
-        loginLoading: true,
+        loginLoading:true,
       };
     }
 
@@ -47,7 +51,11 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(LOGIN): {
-      // localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      localStorage.clear();
+      sessionStorage.clear();
+      setTimeout(() => {
+        state.loginLoading=  false
+      }, 10000/2);
       return {
         ...state,
         loginLoading: false,
@@ -55,8 +63,9 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestPending(REGISTER): {
-      localStorage.clear();
-      sessionStorage.clear()
+      setTimeout(() => {
+        state.registerLoading=  false
+      }, 10000/2);
       return {
         ...state,
         registerLoading: true,
@@ -71,6 +80,11 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(REGISTER): {
+      localStorage.clear();
+      sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading=  false
+      }, 10000/2);
       return {
         ...state,
         registerLoading: false,
@@ -79,7 +93,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case LOGOUT: {
       localStorage.removeItem("tokens");
-      localStorage.removeItem("auth");
       localStorage.clear();
       sessionStorage.clear()
       return {
