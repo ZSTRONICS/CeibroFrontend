@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core'
 import colors from '../../../../assets/colors'
 import { FaTrash } from 'react-icons/fa'

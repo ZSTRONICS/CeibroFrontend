@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-//@ts-nocheck
+
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";

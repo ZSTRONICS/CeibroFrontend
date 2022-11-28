@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { makeStyles } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 // @ts-ignore

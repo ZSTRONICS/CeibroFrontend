@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React from 'react'
 import { Badge, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'

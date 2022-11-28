@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import ListItemIcon from "@material-ui/icons/List";
 import { TramSharp } from "@material-ui/icons";

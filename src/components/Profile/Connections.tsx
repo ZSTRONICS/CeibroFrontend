@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React, {useEffect} from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
