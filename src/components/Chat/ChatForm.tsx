@@ -25,7 +25,8 @@ import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
 import CustomImg from "components/CustomImg";
-import {socket} from "services/socket.services"
+import { socket } from "services/socket.services"
+import { CBox } from "components/material-ui";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -145,7 +146,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
-      socket.getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
+      socket.getSocket().emit(SEND_MESSAGE, JSON.stringify(payload));
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
@@ -155,7 +156,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setFilesPreview(null);
       setText("");
     }
-    
+
   };
 
   const handleFileChange = (e: any) => {
@@ -201,6 +202,13 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
   const handleCancelVoice = () => {
     setShowRecorder(false);
+  };
+  const dummyMessage = {
+    name: "firstName",
+    surName: "surname",
+    message: "text",
+
+
   };
 
   const handleSendVoice = (blob: any) => {
@@ -263,17 +271,46 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     >
       {!showRecorder && (
         <Grid item xs={12} className={classes.inputWrapper}>
-          {replyToId && (
-            <div className={classes.replyTitle}>
-              <Typography>Reply</Typography>
-              <Typography
-                className={classes.closeReply}
-                onClick={handleCloseReply}
-              >
-                <Close />
-              </Typography>
+          {replyToId && <>
+
+            <div style={{ width: "100%" }}  >
+              {/* <CBox display='flex'> */}
+              <Grid container item xs={6} className={classes.chatHeader}>
+                <CBox display="flex" flexDirection='column' className={classes.chatBox}>
+                  <CBox display="flex" justifyContent='space-between'>
+                    <CBox>
+                      <Typography>{`${dummyMessage.surName} ${dummyMessage.name}`}</Typography>
+                    </CBox>
+                    <CBox>
+                      <Typography
+                        className={classes.closeReply}
+                        onClick={handleCloseReply}
+                      >
+                        <Close />
+                      </Typography>
+                    </CBox>
+                  </CBox>
+                  <CBox>
+                    <Typography>{dummyMessage.message}</Typography>
+                  </CBox>
+
+                  <CBox>
+
+                  </CBox>
+                </CBox>
+
+              </Grid>
+
+              {/* </CBox> */}
+
+
+
+
+
             </div>
-          )}
+
+
+          </>}
           <input
             ref={messageRef}
             value={text}
@@ -292,11 +329,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             style={
               replyToId || showRecorder
                 ? {
-                    width: "75%",
-                  }
+                  width: "75%",
+                }
                 : {
-                    width: "90%",
-                  }
+                  width: "90%",
+                }
             }
             className={`messageInput black-input ${classes.messageInput}`}
           />
@@ -306,14 +343,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               onClick={handleSend}
               className={classes.sendIcon}
             /> */}
-            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent"}} >
-              
-               <img
-               alt=""
-              src={assets.sendIcon}
-              // onClick={handleSend}
-              className={classes.sendIcon}
-            /> 
+            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent" }} >
+
+              <img
+                alt=""
+                src={assets.sendIcon}
+                // onClick={handleSend}
+                className={classes.sendIcon}
+              />
               {/* <assets.SendIcon
                 className={classes.sendIcon}
               /> */}
@@ -345,7 +382,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       )}
       {selectedChat && (
         <Grid item xs={12} className={classes.btnWrapper}>
-      <img
+          <img
             src={assets.emoji}
             onClick={toggleEmoji}
             className={"width-16 pointer"}
@@ -409,6 +446,18 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 export default ChatForm;
 
 const useStyles = makeStyles({
+  chatHeader: {
+    width: '100%',
+    backgroundColor: '#f5f7f8',
+    flexDirection: 'column',
+    borderRadius: 5,
+    padding: 15,
+  },
+  chatBox: {
+    backgroundColor: 'antiquewhite',
+    borderLeft: '2px solid',
+    padding: 15,
+  },
   customFileUpload: {
     paddingTop: "6px",
   },

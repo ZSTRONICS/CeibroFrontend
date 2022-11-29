@@ -327,6 +327,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
           {message.type !== 'questioniar' && (
             <>
               {message?.pinnedBy?.includes?.(user?.id) ? (
+
                 <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
               ) : (
                 <AiOutlinePushpin className={classes.pinIcon} onClick={handlePinClick} />

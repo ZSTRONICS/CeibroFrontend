@@ -87,7 +87,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
   return (
     <>
-      {loading ? "loading" : "else"}
+
       < Grid container className={classes.wrapper} >
         <AddChatMember />
         {
