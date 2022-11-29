@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";
@@ -25,7 +24,7 @@ import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
 import CustomImg from "components/CustomImg";
-import { socket } from "services/socket.services"
+import { socket } from "services/socket.services";
 import { CBox } from "components/material-ui";
 
 interface ChatFormInterface {
@@ -99,6 +98,13 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     });
   };
 
+  let replyToMessage = null;
+  if (replyToId) {
+    replyToMessage = messages?.find(
+      (msg: any) => String(msg._id) === String(replyToId)
+    );
+  }
+
   const handleSend = () => {
     if (!enable) {
       return;
@@ -142,7 +148,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         seen: true,
         type: "message",
         myMessage: true,
-        id: myId,
+        _id: myId,
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
@@ -151,12 +157,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         type: PUSH_MESSAGE,
         payload: newMessage,
       });
-      handleCloseReply()
+      handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
       setText("");
     }
-
   };
 
   const handleFileChange = (e: any) => {
@@ -203,13 +208,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const handleCancelVoice = () => {
     setShowRecorder(false);
   };
-  const dummyMessage = {
-    name: "firstName",
-    surName: "surname",
-    message: "text",
-
-
-  };
 
   const handleSendVoice = (blob: any) => {
     if (blob) {
@@ -233,7 +231,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           myMessage: true,
           replyOf: replyMessage,
           voiceUrl: blob.url,
-          id: myId,
+          _id: myId,
         },
       });
       const payload: any = {
@@ -271,52 +269,44 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     >
       {!showRecorder && (
         <Grid item xs={12} className={classes.inputWrapper}>
-          {replyToId && <>
-
-            <div style={{ width: "100%" }}  >
-              {/* <CBox display='flex'> */}
-              <Grid container item xs={6} className={classes.chatHeader}>
-                <CBox display="flex" flexDirection='column' className={classes.chatBox}>
-                  <CBox display="flex" justifyContent='space-between'>
-                    <CBox>
-                      <Typography>{`${dummyMessage.surName} ${dummyMessage.name}`}</Typography>
+          {replyToId && (
+            <>
+              <div className={classes.replyto} style={{ width: "99%" }}>
+                <Grid container item xs={12} className={classes.chatHeader}>
+                  <CBox
+                    display="flex"
+                    flexDirection="column"
+                    width='100%'
+                    className={classes.chatBox}
+                  >
+                    <CBox display="flex" justifyContent="space-between">
+                      <CBox>
+                        <Typography
+                          className={classes.replyToTitle}
+                        >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+                      </CBox>
+                      <CBox>
+                        <Typography
+                          className={classes.closeReply}
+                          onClick={handleCloseReply}
+                        >
+                          <Close />
+                        </Typography>
+                      </CBox>
                     </CBox>
                     <CBox>
-                      <Typography
-                        className={classes.closeReply}
-                        onClick={handleCloseReply}
-                      >
-                        <Close />
-                      </Typography>
+                      <Typography className={classes.replyToMesg}>{replyToMessage.message}</Typography>
                     </CBox>
                   </CBox>
-                  <CBox>
-                    <Typography>{dummyMessage.message}</Typography>
-                  </CBox>
-
-                  <CBox>
-
-                  </CBox>
-                </CBox>
-
-              </Grid>
-
-              {/* </CBox> */}
-
-
-
-
-
-            </div>
-
-
-          </>}
+                </Grid>
+              </div>
+            </>
+          )}
           <input
             ref={messageRef}
             value={text}
             onChange={handleTextChange}
             onKeyPress={handleKeyDown}
-
             type="text"
             disabled={!selectedChat || !enable}
             placeholder={
@@ -329,11 +319,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             style={
               replyToId || showRecorder
                 ? {
-                  width: "75%",
-                }
+                    width: "75%",
+                  }
                 : {
-                  width: "90%",
-                }
+                    width: "90%",
+                  }
             }
             className={`messageInput black-input ${classes.messageInput}`}
           />
@@ -343,8 +333,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               onClick={handleSend}
               className={classes.sendIcon}
             /> */}
-            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent" }} >
-
+            <Button
+              onClick={handleSend}
+              disableRipple={true}
+              style={{ backgroundColor: "transparent" }}
+            >
               <img
                 alt=""
                 src={assets.sendIcon}
@@ -383,6 +376,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       {selectedChat && (
         <Grid item xs={12} className={classes.btnWrapper}>
           <img
+            alt=""
             src={assets.emoji}
             onClick={toggleEmoji}
             className={"width-16 pointer"}
@@ -399,6 +393,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           </label>
 
           <img
+            alt=""
             src={assets.mic}
             onClick={() => {
               if (!enable) return;
@@ -419,12 +414,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           </label> */}
           <Typography className={classes.gapLine}>|</Typography>
           <img
+            alt=""
             src={assets.primaryNudgeIcon}
             className="pointer"
             style={{ height: 18 }}
           />
           <Typography className={classes.gapLine}>|</Typography>
           <img
+            alt=""
             src={assets.blueDocument}
             onClick={handleOpenQuestioniar}
             className={`width-16 pointer`}
@@ -446,16 +443,35 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 export default ChatForm;
 
 const useStyles = makeStyles({
+  replyToMesg:{
+    color: '#959595',
+    wordBreak:'break-all',
+
+  },
+  replyToTitle: {
+    color: "#0076C8",
+    fontWeight: 600,
+    fonSize: "16px",
+    textTransform: "capitalize",
+  },
+  replyto: {
+    background: "#ECF0F1",
+    borderColor: "#0076C8",
+    borderRadius: "4px",
+    borderWidth: "2px 2px 0 4px",
+    borderStyle: "solid",
+    position: "absolute",
+    left: 0,
+    bottom: "58px",
+  },
   chatHeader: {
-    width: '100%',
-    backgroundColor: '#f5f7f8',
-    flexDirection: 'column',
-    borderRadius: 5,
-    padding: 15,
+    width: "100%",
+    backgroundColor: "#f5f7f8",
+    flexDirection: "column",
   },
   chatBox: {
-    backgroundColor: 'antiquewhite',
-    borderLeft: '2px solid',
+    // backgroundColor: 'antiquewhite',
+    // borderLeft: '2px solid',
     padding: 15,
   },
   customFileUpload: {
@@ -494,11 +510,14 @@ const useStyles = makeStyles({
     padding: 10,
   },
   inputWrapper: {
+    position: "relative",
     height: 50,
     paddingLeft: 15,
     display: "flex",
     alignItems: "center",
     borderBottom: `2px solid ${colors.lightGrey}`,
+    justifyContent: "space-between",
+    paddingRight: "30px",
   },
   sendWrapper: {
     fontSize: 18,

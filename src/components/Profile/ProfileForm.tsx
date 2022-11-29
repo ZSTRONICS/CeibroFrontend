@@ -10,8 +10,8 @@ import {
   TextField,
   Typography,
   CircularProgress,
-InputAdornment,
-IconButton
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +24,7 @@ import { RootState } from "redux/reducers";
 
 import colors from "../../assets/colors";
 
-// formik and yup 
+// formik and yup
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
@@ -176,7 +176,7 @@ const ProfileForm = () => {
                 <Grid container>
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -201,7 +201,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -224,7 +224,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -254,7 +254,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -281,25 +281,29 @@ const ProfileForm = () => {
                     className={`${classes.rowWrapper} ${classes.passwordRow}`}
                   >
                     <TextField
-                    className={classes.inputBg}
+                      autoComplete="new-password"
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       InputProps={{
-                        endAdornment:(
+                        endAdornment: (
                           <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                        )
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
                       }}
                       // disabled={true}
-                      defaultValue={2435455}
                       fullWidth
                       size="small"
                       id="outlined-basic"
@@ -322,12 +326,12 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                    autoComplete="new-password"
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      // disabled={true}
-                      defaultValue={2435455}
+                      defaultValue={""}
                       type="password"
                       fullWidth
                       size="small"
@@ -356,7 +360,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -381,7 +385,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -406,7 +410,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -431,7 +435,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -456,7 +460,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    className={classes.inputBg}
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -549,8 +553,8 @@ const ProfileForm = () => {
 export default ProfileForm;
 
 const useStyles = makeStyles({
-  inputBg:{
-    background:'white'
+  inputBg: {
+    background: "white",
   },
   rowWrapper: {
     padding: "10px 20px",
