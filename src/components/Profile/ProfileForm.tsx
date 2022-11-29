@@ -174,6 +174,7 @@ const ProfileForm = () => {
                 <Grid container>
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -198,6 +199,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -220,6 +222,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -249,6 +252,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -275,6 +279,7 @@ const ProfileForm = () => {
                     className={`${classes.rowWrapper} ${classes.passwordRow}`}
                   >
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -315,6 +320,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -348,6 +354,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -372,6 +379,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -396,6 +404,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -420,6 +429,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -444,6 +454,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -536,6 +547,9 @@ const ProfileForm = () => {
 export default ProfileForm;
 
 const useStyles = makeStyles({
+  inputBg:{
+    background:'white'
+  },
   rowWrapper: {
     padding: "10px 20px",
   },
