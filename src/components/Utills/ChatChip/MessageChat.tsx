@@ -23,7 +23,6 @@ import {
 } from '../../../redux/action/chat.action'
 import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES, PUSH_MESSAGE } from '../../../config/chat.config'
-import $ from 'jquery'
 import assets from '../../../assets/assets'
 import { ClipLoader } from 'react-spinners'
 import { classNames } from 'react-select/src/utils'
@@ -371,6 +370,10 @@ const useStyles = makeStyles({
     padding: 12,
     background: 'rgba(0, 0, 0, 0.05)',
     marginBottom: 10,
+    '& span':{
+      width:'100%',
+      wordBreak:'break-all',
+    }
   },
   innerWrapper: {
     border: `1px solid ${colors.grey}`,
@@ -392,6 +395,7 @@ const useStyles = makeStyles({
     wordBreak: 'break-word',
   },
   username: {
+    textTransform: 'capitalize',
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.primary,

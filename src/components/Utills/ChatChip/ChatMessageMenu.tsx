@@ -12,7 +12,6 @@ import { ChatMessageInterface } from "../../../constants/interfaces/chat.interfa
 import { setTempMembersDialog } from "../../../redux/action/chat.action"
 import ForwardMessage from './ForwardMessage'
 
-
 interface ChatMessageMenueInt {
     message: ChatMessageInterface
 }
@@ -33,7 +32,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
         e.stopPropagation();
         dispatch({
             type: SET_REPLY_TO_ID,
-            payload: message._id
+            payload: message?._id
         });
         setShow(false);
     }
