@@ -1,19 +1,18 @@
-//@ts-nocheck
+
 import { Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import colors from "../../assets/colors";
-import { GoPencil } from "react-icons/go";
 import { useDispatch } from "react-redux";
 import { updateProfilePic } from "redux/action/user.action";
 import { toast } from "react-toastify";
 import { getMyProfile } from "redux/action/auth.action";
 import assets from "assets/assets";
 
-interface ProfileImagePicker {
+interface Props {
   profilePic: string | undefined | null;
 }
 
-const ProfileImagePicker: React.FC<ProfileImagePicker> = (props) => {
+const ProfileImagePicker: React.FC<Props> = (props) => {
   const { profilePic } = props;
   const ref = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
@@ -67,7 +66,7 @@ const ProfileImagePicker: React.FC<ProfileImagePicker> = (props) => {
         className={classes.outerWrapper}
         style={{ background: `url(${url})` }}
       >
-        <img src={assets.whitePencil} className={`width-16 ${classes.icon}`} />
+        <img src={assets.whitePencil} className={`width-16 ${classes.icon}`} alt="edit"/>
       </div>
     </Grid>
   );

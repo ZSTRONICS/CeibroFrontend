@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";

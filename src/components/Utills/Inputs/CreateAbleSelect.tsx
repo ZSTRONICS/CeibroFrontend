@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React, { FC } from "react";
 import { makeStyles, Typography } from "@material-ui/core";
 import InputHOC from "./InputHOC";

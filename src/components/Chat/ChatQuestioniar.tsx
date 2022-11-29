@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { ChatMessageInterface } from "constants/interfaces/chat.interface";
 import { useDispatch, useSelector } from "react-redux";
