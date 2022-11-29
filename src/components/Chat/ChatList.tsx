@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ChatListChip from "../Utills/ChatChip/ChatListChip";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllChats, setSelectedChat } from "../../redux/action/chat.action";
@@ -24,6 +24,7 @@ const ChatList = () => {
       getAllChats({
         success: (_res: any) => {
           if (_res?.data?.userallchat.length > 0) {
+
             if (_res?.data?.userallchat[0]._id) {
               dispatch(
                 setSelectedChat({ other: _res?.data?.userallchat[0]._id })
@@ -41,7 +42,7 @@ const ChatList = () => {
       dispatch(setSelectedChat({ other: chat._id }));
     }
   };
-  
+
   return (
     <Grid container>
       {chat &&

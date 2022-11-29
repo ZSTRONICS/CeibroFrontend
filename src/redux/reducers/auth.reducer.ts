@@ -5,7 +5,7 @@ import {
   requestPending,
   requestSuccess,
 } from "../../utills/status";
-import { GET_PROFILE, LOGIN, LOGOUT } from "../../config/auth.config";
+import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 
 interface authInterface {
@@ -30,17 +30,16 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestPending(LOGIN): {
       setTimeout(() => {
-        state.loginLoading=  false
-      }, 10000/2);
+        state.loginLoading = false
+      }, 10000 / 2);
       return {
         ...state,
-        loginLoading:true,
+        loginLoading: true,
       };
     }
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
-
       return {
         ...state,
         isLoggedIn: true,
@@ -53,8 +52,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.clear();
       sessionStorage.clear();
       setTimeout(() => {
-        state.loginLoading=  false
-      }, 10000/2);
+        state.loginLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         loginLoading: false,
@@ -63,8 +62,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestPending(REGISTER): {
       setTimeout(() => {
-        state.registerLoading=  false
-      }, 10000/2);
+        state.registerLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         registerLoading: true,
@@ -82,8 +81,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.clear();
       sessionStorage.clear();
       setTimeout(() => {
-        state.registerLoading=  false
-      }, 10000/2);
+        state.registerLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         registerLoading: false,
@@ -101,13 +100,26 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case requestSuccess(GET_PROFILE): {
+    case GET_PROFILE: {
       return {
         ...state,
         user: action.payload,
       };
     }
 
+    case UPDATE_MY_PROFILE: {
+      const res = action.payload.body
+      let currUser: any = state.user
+      for (var atrNmae in res) {
+        if (atrNmae in currUser) {
+          currUser[atrNmae] = res[atrNmae]
+        }
+      }
+      return {
+        ...state,
+        user: currUser,
+      };
+    }
     default:
       return state;
   }

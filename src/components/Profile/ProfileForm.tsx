@@ -27,6 +27,7 @@ import colors from "../../assets/colors";
 // formik and yup 
 import { Formik } from "formik";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -65,15 +66,16 @@ const ProfileForm = () => {
         phone,
         companyPhone,
         ...(password ? { password } : {}),
+        password,
         companyName,
         companyVat,
         companyLocation,
         currentlyRepresenting,
       },
       success: () => {
-        dispatch(getMyProfile());
-        action?.setFieldValue("password", "");
-        action?.setFieldValue("confirmPassword", "");
+        toast.success("Profile updated successfully");
+        // action?.setFieldValue("password", "");
+        // action?.setFieldValue("confirmPassword", "");
         // if (passRef.current) {
         //   passRef.current.value = "";
         // }

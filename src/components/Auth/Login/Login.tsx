@@ -1,33 +1,35 @@
-import { useState, useEffect } from "react";
-import "./login.css";
 import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { useMediaQuery } from "react-responsive";
 import queryString from "query-string";
+import { useEffect, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import "./login.css";
 
 // translation
 import { useTranslation } from "react-i18next";
 
-import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 
 // axios
 import axios from "axios";
 import { baseURL } from "utills/axios";
 
 // redux
-import { RootState } from "../../../redux/reducers";
 import { useSelector } from "react-redux";
+import { RootState } from "../../../redux/reducers";
 
 // components
-import ImageTile from "./ImageTile";
-import LoginForm from "./LoginForm";
 import Setting from "components/Setting";
 import { LoginInterface } from "../../../constants/interfaces/Login.interface";
-import assets from "../../../assets/assets";
-import colors from "../../../assets/colors";
+import ImageTile from "./ImageTile";
+import LoginForm from "./LoginForm";
+import LoginSkeleton from "./LoginSkeleton";
 
+
+import useStyles from './LoginStyles';
+import { CBox } from "components/material-ui";
 const Login: React.FC<LoginInterface> = () => {
+
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const history = useHistory();
@@ -70,70 +72,49 @@ const Login: React.FC<LoginInterface> = () => {
 
   return (
     <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={5} className={classes.form}>
-        <LoginForm
-          tokenLoading={tokenLoading}
-          showSuccess={success}
-          showError={error}
-        />
-        <Grid container className={classes.langContainer}>
-          <Grid item>
-            <Typography className={classes.dontHave}>
-              {t("auth.dont_have_account")}{" "}
-              <Link to ="/register" className={classes.signup}>
-                {t("auth.signUp")}
-              </Link>
-            </Typography>
-          </Grid>
-          <Grid item>
-            <Setting />
-          </Grid>
-        </Grid>
+      <Grid item xs={12} md={6} lg={4} className={classes.form}>
+        {/* if the data is loading it shows skeleton */}
+
+        {tokenLoading ?
+
+          <LoginSkeleton />
+          :
+          <CBox className={"logoTitleWrapper"}>
+            <LoginForm
+              tokenLoading={tokenLoading}
+              showSuccess={success}
+              showError={error}
+            />
+            <Grid container className={classes.langContainer}>
+              <Grid item>
+                <Typography className={classes.dontHave}>
+                  {t("auth.dont_have_account")}{" "}
+                  <Link to="/register" className={classes.signup}>
+                    {t("auth.signUp")}
+                  </Link>
+                </Typography>
+              </Grid>
+              <Grid item>
+                <Setting />
+              </Grid>
+            </Grid>
+
+          </CBox>
+
+        }
+
+
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={7} className={classes.tileWrapper}>
+        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
-      )}
+      )
+      }
     </Grid>
   );
 };
 
 export default Login;
 
-const useStyles = makeStyles((theme) => {
-  return {
-    langContainer: {
-      justifyContent: "space-between",
-      padding: "10px 13%",
-    },
-    login: {
-      display: "flex",
-      "@media (max-width:960px)":{
-        flexDirection: "column",
-        height: "100vh",
-      },
-    },
-    form: {
-      height: "100vh",
-      "@media (max-width:960px)":{
-        // background: `url(${assets.visual})`,
-        background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${assets.visual}) no-repeat`,
-        backgroundSize: "100vw 100vh",
-      },
-    },
-    tileWrapper: {
-      position: "relative",
-    },
-    dontHave: {
-      fontSize: 14,
-      fontWeight: 500,
-      cursor: "pointer",
-    },
-    signup: {
-      color: colors.textPrimary,
-      textDecoration:"none"
-    },
-  };
-});
