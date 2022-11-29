@@ -42,7 +42,6 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
   const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
 
   let chatBox = document.getElementById("chatBox")
-  console.log(selectedChat && selectedChat.length, 'length of chat')
   useEffect(() => {
 
     if (selectedChat) {
