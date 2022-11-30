@@ -295,7 +295,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                       </CBox>
                     </CBox>
                     <CBox>
-                      <Typography className={classes.replyToMesg}>{replyToMessage.message}</Typography>
+                      <Typography className={`${classes.replyToMesg} ${'textOverflowY'}`}>{replyToMessage.message}</Typography>
                     </CBox>
                   </CBox>
                 </Grid>
@@ -319,11 +319,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             style={
               replyToId || showRecorder
                 ? {
-                    width: "75%",
-                  }
+                  width: "75%",
+                }
                 : {
-                    width: "90%",
-                  }
+                  width: "90%",
+                }
             }
             className={`messageInput black-input ${classes.messageInput}`}
           />
@@ -443,9 +443,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 export default ChatForm;
 
 const useStyles = makeStyles({
-  replyToMesg:{
+  replyToMesg: {
     color: '#959595',
-    wordBreak:'break-all',
+    wordBreak: 'break-all',
 
   },
   replyToTitle: {

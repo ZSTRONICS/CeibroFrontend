@@ -29,6 +29,7 @@ import { classNames } from 'react-select/src/utils'
 import { UserInterface } from 'constants/interfaces/user.interface'
 import SeenBy from './SeenBy'
 import { useMediaQuery } from 'react-responsive'
+import { AnyARecord } from 'dns'
 
 interface MessageChatProps {
   message: ChatMessageInterface
@@ -62,6 +63,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
   const dispatch = useDispatch()
   const [view, setView] = useState(false)
   const bodyRef = useRef(null)
+  const [reply, setReply]: any = useState(false);
   const toggleView = () => {
     setView(!view)
   }
@@ -114,9 +116,16 @@ const MessageChat: React.FC<MessageChatProps> = props => {
       window.open(file.url)
     })
   }
-
-  const handleReplyClick = () => {
+  const changeColor = () => {
+    setReply(true)
+    console.log('change color')
+  }
+  const handleReplyClick = (e: any) => {
     dispatch(goToMessage(replyOf.id))
+    changeColor()
+
+    // e.target.style.backgroundColor = 'red';
+    // console.log('check navigation')
   }
 
   const handleClick = () => {
@@ -200,14 +209,19 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                 <img className="w-16" src={assets.blueDocument} />
               </div>
             )}
-            {replyOf && (
-              <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
-                {message.type === 'message' && <span>{replyOf?.message}</span>}
-                {replyOf.type === 'questioniar' && <span>Questioniar</span>}
-                {replyOf.type === 'voice' && <span>Voice</span>}
-              </Grid>
-            )}
+            {replyOf &&
+
+              <>
+
+                <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
+                  {message.type === 'message' && <span>{replyOf?.message} title</span>}
+                  {replyOf.type === 'questioniar' && <span>Questioniar</span>}
+                  {replyOf.type === 'voice' && <span>Voice</span>}
+                </Grid>
+              </>
+            }
             <Grid container ref={bodyRef}>
+
               <Grid item xs={3} md={1} >
                 <NameAvatar
                   firstName={sender?.firstName || ''}
@@ -219,6 +233,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                 <div className={classes.titleWrapper}>
                   <div className={classes.usernameWrapper}>
                     <div className={classes.nameWrapper}>
+
                       <Typography className={classes.username}>
                         {sender?.firstName} {sender?.surName}
                       </Typography>
@@ -370,9 +385,9 @@ const useStyles = makeStyles({
     padding: 12,
     background: 'rgba(0, 0, 0, 0.05)',
     marginBottom: 10,
-    '& span':{
-      width:'100%',
-      wordBreak:'break-all',
+    '& span': {
+      width: '100%',
+      wordBreak: 'break-all',
     }
   },
   innerWrapper: {
@@ -495,4 +510,11 @@ const useStyles = makeStyles({
     gap: 10,
     marginTop: 4,
   },
+  democlass: {
+
+  },
+  anotherclass: {
+
+  }
+
 })

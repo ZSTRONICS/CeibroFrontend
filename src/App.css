@@ -367,3 +367,11 @@ button[disabled]{
   flex-direction: column;
   justify-content: space-between;
 }
+.textOverflowY{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+          line-clamp: 2; 
+  -webkit-box-orient: vertical;
+}

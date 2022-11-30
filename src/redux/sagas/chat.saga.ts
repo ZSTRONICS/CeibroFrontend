@@ -270,6 +270,9 @@ function* goToMessage(action: ActionInterface): Generator<any> {
     if (elem) {
       // if message already in dom
       elem?.scrollIntoView();
+      elem?.setAttribute("style","color:'red'"  )
+     
+
     } else {
       // if message is not in dom
       const roomId = yield select((state: any) => state.chat.selectedChat);
@@ -281,6 +284,7 @@ function* goToMessage(action: ActionInterface): Generator<any> {
             if (elem) {
               // if message already in dom
               elem?.scrollIntoView();
+    
             }
           },
           other: {
