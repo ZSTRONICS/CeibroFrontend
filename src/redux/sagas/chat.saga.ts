@@ -267,11 +267,22 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
 function* goToMessage(action: ActionInterface): Generator<any> {
   if (action.payload) {
     const elem = document.getElementById(action.payload);
+    
+    
     if (elem) {
       // if message already in dom
       elem?.scrollIntoView();
-      elem?.setAttribute("style","color:'red'"  )
-     
+
+      elem?.setAttribute("class","MuiGrid-root makeStyles-outerWrapper-196 MuiGrid-container new" )
+
+      setTimeout(function(){
+        elem?.setAttribute("class","MuiGrid-root makeStyles-outerWrapper-196 MuiGrid-container  new2" )
+
+        
+      
+        console.log('its removed')
+      },1000);
+    
 
     } else {
       // if message is not in dom

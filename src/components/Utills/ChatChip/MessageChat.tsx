@@ -116,16 +116,10 @@ const MessageChat: React.FC<MessageChatProps> = props => {
       window.open(file.url)
     })
   }
-  const changeColor = () => {
-    setReply(true)
-    console.log('change color')
-  }
+
   const handleReplyClick = (e: any) => {
     dispatch(goToMessage(replyOf.id))
-    changeColor()
 
-    // e.target.style.backgroundColor = 'red';
-    // console.log('check navigation')
   }
 
   const handleClick = () => {
@@ -202,7 +196,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
           <ClipLoader color={colors.textGrey} size={6} />
         )}
         <Grid item xs={6} onClick={handleClick}>
-          <div className={classes.innerWrapper} style={getStyles()}>
+          <div className={`${classes.innerWrapper} ${'chatReplyBox'}`} style={getStyles()}>
             {type === 'questioniar' && (
               <div className={classes.questioniarWrapper}>
                 <Typography className={classes.questionText}>{title}</Typography>
@@ -214,8 +208,8 @@ const MessageChat: React.FC<MessageChatProps> = props => {
               <>
 
                 <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
-                  {message.type === 'message' && <span>{replyOf?.message} title</span>}
-                  {replyOf.type === 'questioniar' && <span>Questioniar</span>}
+                  {message.type === 'message' && <span>{replyOf?.message}</span>}
+                  {replyOf.type === 'questioniar' && <span>Questioner</span>}
                   {replyOf.type === 'voice' && <span>Voice</span>}
                 </Grid>
               </>
@@ -235,7 +229,7 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                     <div className={classes.nameWrapper}>
 
                       <Typography className={classes.username}>
-                        {sender?.firstName} {sender?.surName}
+                        {sender?.firstName} {sender?.surName} its here
                       </Typography>
                       <Typography className={classes.time}>{time}</Typography>
                     </div>
@@ -515,6 +509,10 @@ const useStyles = makeStyles({
   },
   anotherclass: {
 
+  },
+  new: {
+    backgroundColor: 'red',
   }
+
 
 })

@@ -267,90 +267,91 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       container
       style={{ opacity: enable ? 1 : 0.5 }}
     >
-      {!showRecorder && (
-        <Grid item xs={12} className={classes.inputWrapper}>
-          {replyToId && (
-            <>
-              <div className={classes.replyto} style={{ width: "99%" }}>
-                <Grid container item xs={12} className={classes.chatHeader}>
-                  <CBox
-                    display="flex"
-                    flexDirection="column"
-                    width='100%'
-                    className={classes.chatBox}
-                  >
-                    <CBox display="flex" justifyContent="space-between">
-                      <CBox>
-                        <Typography
-                          className={classes.replyToTitle}
-                        >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+      {!showRecorder &&
+        <>
+          <Grid item xs={12} className={classes.inputWrapper}>
+            {replyToId && (
+              <>
+                <div className={classes.replyto}>
+                  <Grid container item xs={12} className={classes.chatHeader}>
+                    <CBox
+                      display="flex"
+                      flexDirection="column"
+                      width='100%'
+                      className={classes.chatBox}
+                    >
+                      <CBox display="flex" justifyContent="space-between">
+                        <CBox>
+                          <Typography
+                            className={classes.replyToTitle}
+                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`} helo sahi</Typography>
+                        </CBox>
+                        <CBox>
+                          <Typography
+                            className={classes.closeReply}
+                            onClick={handleCloseReply}
+                          >
+                            <Close />
+                          </Typography>
+                        </CBox>
                       </CBox>
                       <CBox>
-                        <Typography
-                          className={classes.closeReply}
-                          onClick={handleCloseReply}
-                        >
-                          <Close />
-                        </Typography>
+                        <Typography className={`${classes.replyToMesg} ${'textOverflowY'}`}>{replyToMessage.message}</Typography>
                       </CBox>
                     </CBox>
-                    <CBox>
-                      <Typography className={`${classes.replyToMesg} ${'textOverflowY'}`}>{replyToMessage.message}</Typography>
-                    </CBox>
-                  </CBox>
-                </Grid>
-              </div>
-            </>
-          )}
-          <input
-            ref={messageRef}
-            value={text}
-            onChange={handleTextChange}
-            onKeyPress={handleKeyDown}
-            type="text"
-            disabled={!selectedChat || !enable}
-            placeholder={
-              selectedChat
-                ? enable
-                  ? "Type a message"
-                  : "You were removed from this chat"
-                : "Select a chat room"
-            }
-            style={
-              replyToId || showRecorder
-                ? {
-                  width: "75%",
+                  </Grid>
+                </div>
+              </>
+            )}
+            <CBox display='flex' justifyContent='space-between' width='100%'>
+              <input
+                ref={messageRef}
+                value={text}
+                onChange={handleTextChange}
+                onKeyPress={handleKeyDown}
+                type="text"
+                disabled={!selectedChat || !enable}
+                placeholder={
+                  selectedChat
+                    ? enable
+                      ? "Type a message"
+                      : "You were removed from this chat"
+                    : "Select a chat room"
                 }
-                : {
-                  width: "90%",
+                style={
+                  replyToId || showRecorder
+                    ? {
+                      width: "100%",
+                    }
+                    : {
+                      width: "90%",
+                    }
                 }
-            }
-            className={`messageInput black-input ${classes.messageInput}`}
-          />
-          <div className={classes.sendWrapper}>
-            {/* <img
-              src={assets.sendIcon}
-              onClick={handleSend}
-              className={classes.sendIcon}
-            /> */}
-            <Button
-              onClick={handleSend}
-              disableRipple={true}
-              style={{ backgroundColor: "transparent" }}
-            >
-              <img
-                alt=""
-                src={assets.sendIcon}
-                // onClick={handleSend}
-                className={classes.sendIcon}
+                className={`messageInput black-input ${classes.messageInput}`}
               />
-              {/* <assets.SendIcon
+              <div className={classes.sendWrapper}>
+
+                <Button
+                  onClick={handleSend}
+                  disableRipple={true}
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <img
+                    alt=""
+                    src={assets.sendIcon}
+                    // onClick={handleSend}
+                    className={classes.sendIcon}
+                  />
+                  {/* <assets.SendIcon
                 className={classes.sendIcon}
               /> */}
-            </Button>
-          </div>
-        </Grid>
-      )}
+                </Button>
+              </div>
+            </CBox>
+          </Grid>
+
+        </>
+      }
       {showRecorder && (
         <VoiceRecorder
           handleSubmit={handleSendVoice}
@@ -460,9 +461,9 @@ const useStyles = makeStyles({
     borderRadius: "4px",
     borderWidth: "2px 2px 0 4px",
     borderStyle: "solid",
-    position: "absolute",
-    left: 0,
-    bottom: "58px",
+    width: "98%"
+    // position: "absolute",
+
   },
   chatHeader: {
     width: "100%",
@@ -501,7 +502,7 @@ const useStyles = makeStyles({
   wrapper: {
     // height: 100,
     borderTop: `2px solid ${colors.lightGrey}`,
-    paddingTop: 10,
+    // paddingTop: 10,
     position: "relative",
   },
   preview: {
@@ -511,18 +512,24 @@ const useStyles = makeStyles({
   },
   inputWrapper: {
     position: "relative",
-    height: 50,
-    paddingLeft: 15,
+    // height: 50,
     display: "flex",
     alignItems: "center",
     borderBottom: `2px solid ${colors.lightGrey}`,
     justifyContent: "space-between",
-    paddingRight: "30px",
+    flexDirection: 'column',
+    // '& input': {
+    //   // padding: 35,
+    //   height: 45,
+
+    // }
+
   },
   sendWrapper: {
     fontSize: 18,
     textAlign: "center",
     cursor: "pointer",
+    backgroundColor: '#fff'
   },
   sendIcon: {
     borderRadius: 5,
