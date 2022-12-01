@@ -132,7 +132,7 @@ const Chat = () => {
           item
           xs={12}
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
-          style={{ background: "white" }}
+          style={{ background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
           <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody messages={messages} enable={enable} />

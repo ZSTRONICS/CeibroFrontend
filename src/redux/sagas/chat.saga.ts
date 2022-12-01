@@ -272,15 +272,10 @@ function* goToMessage(action: ActionInterface): Generator<any> {
     if (elem) {
       // if message already in dom
       elem?.scrollIntoView();
-
       elem?.setAttribute("class","MuiGrid-root makeStyles-outerWrapper-196 MuiGrid-container new" )
-
       setTimeout(function(){
         elem?.setAttribute("class","MuiGrid-root makeStyles-outerWrapper-196 MuiGrid-container  new2" )
-
-        
-      
-        console.log('its removed')
+       
       },1000);
     
 

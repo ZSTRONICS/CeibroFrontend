@@ -376,7 +376,7 @@ button[disabled]{
   -webkit-box-orient: vertical;
 }
 .new .chatReplyBox{
-  background: antiquewhite !important;
+  background: #cde4f4 !important;
   -webkit-animation: fadeIn 1s;
   animation: fadeOut 1s;
   /* transform: scale(0.5) translate(-100%, -100%); */

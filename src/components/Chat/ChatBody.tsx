@@ -149,6 +149,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
         className={`${classes.wrapper} custom-scrollbar`}
         id="chatBox"
         container
+
       >
         {messages &&
           messages?.map?.((message: ChatMessageInterface) => {
@@ -167,6 +168,7 @@ const useStyles = makeStyles({
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
     overflowY: "auto",
+    height: '100%',
     display: "block",
     position: "relative",
   },
