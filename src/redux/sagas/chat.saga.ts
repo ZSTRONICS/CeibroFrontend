@@ -1,4 +1,5 @@
 import { put, takeLatest, takeEvery, select } from "redux-saga/effects";
+import { socket } from "services/socket.services";
 import { SET_SIDEBAR_CONFIG } from "../../config/app.config";
 import {
   GET_CHAT,
@@ -32,6 +33,9 @@ import {
   GET_DOWN_CHAT_MESSAGE,
   GET_DOWN_MESSAGES,
   CREATE_SINGLE_ROOM,
+  CHAT_EVENT_REQ_OVER_SOCKET,
+  UNREAD_MESSAGE_COUNT,
+  REPLACE_MESSAGE_BY_ID,
 } from "../../config/chat.config";
 import { SAVE_MESSAGES } from "../../config/chat.config";
 import apiCall from "../../utills/apiCall";
@@ -73,9 +77,11 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any> {
     type: GET_CHAT_API,
     payload,
   });
-  yield put({
-    type: GET_UNREAD_CHAT_COUNT,
-  });
+
+  // yield put({
+  //   type: GET_UNREAD_CHAT_COUNT,
+  // });
+
 }
 
 const getRoomMessages = apiCall({
@@ -251,10 +257,11 @@ const createSingleRoom = apiCall({
 });
 
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
+  const { payload: { other },} = action;
   const oldRoutes: any = yield select(
     (state: RootState) => state.app.sidebarRoutes
   );
-  oldRoutes["Chat"].notification = action.payload?.count || 0;
+  oldRoutes["Chat"].notification = other.count || 0;
 
   yield put({
     type: SET_SIDEBAR_CONFIG,
@@ -309,14 +316,21 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
     type: SET_LOADING_MESSAGES,
     payload: [...newLoadingMessages],
   });
+}
+
+
+
+function* replaceMessageById(action: ActionInterface): Generator<any> {
+  const { payload: { other },} = action;
+
+  const messages: any = yield select((state: RootState) => state.chat.messages);
 
   const index = messages?.findIndex((message: any) => {
-    return String(message?.id) === String(other.oldMessageId);
+    return String(message?._id) === String(other.newMessage.id);
   });
+
   if (index > -1) {
-    const myMessage = messages[index];
-    myMessage.id = other.newMessage._id;
-    messages[index] = myMessage;
+    messages[index] = other.newMessage;
   }
   yield put({
     type: SAVE_MESSAGES,
@@ -324,21 +338,17 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   });
 }
 
+
 function* getUpChatMessages(action: ActionInterface): Generator<any> {
-  const isBlocked = yield select(
-    (state: RootState) => state.chat.blockPagination
-  );
-  if (!isBlocked) {
+
     const selectedChat = yield select(
       (state: RootState) => state.chat.selectedChat
     );
+
     const messages: any = yield select(
       (state: RootState) => state.chat.messages
     );
-    yield put({
-      type: SET_VIEWPORT,
-      payload: messages?.[0]?._id,
-    });
+    
     const payload = {
       other: {
         roomId: selectedChat,
@@ -350,14 +360,10 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
       type: GET_UP_MESSAGES,
       payload,
     });
-  }
+  
 }
 
 function* getDownChatMessages(action: ActionInterface): Generator<any> {
-  const isBlocked = yield select(
-    (state: RootState) => state.chat.blockPagination
-  );
-  if (!isBlocked) {
     const selectedChat = yield select(
       (state: RootState) => state.chat.selectedChat
     );
@@ -375,7 +381,7 @@ function* getDownChatMessages(action: ActionInterface): Generator<any> {
       type: GET_DOWN_MESSAGES,
       payload,
     });
-  }
+  
 }
 
 function* chatSaga() {
@@ -393,9 +399,10 @@ function* chatSaga() {
   yield takeLatest(ADD_TO_FAVOURITE, addToFavourite);
   yield takeEvery(SEND_REPLY_MESSAGE, sendReplyMessage);
   yield takeLatest(PIN_MESSAGE, pinMessage);
-  yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
+  //yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
   yield takeLatest(GET_ROOM_MEDIA, getRoomMedia);
-  yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
+  //yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
+  yield takeLatest(GET_UNREAD_CHAT_COUNT, unreadMessagesCount);
   yield takeLatest(ADD_MEMBERS_TO_CHAT, addMemberToChat);
   yield takeLatest(ADD_TEMP_MEMBERS_TO_CHAT, addTempMemberToChat);
   yield takeLatest(SAVE_QUESTIONIAR, saveQuestioniar);
@@ -404,6 +411,7 @@ function* chatSaga() {
   yield takeLatest(DELETE_CONVERSATION, deleteConversation);
   yield takeLatest(FORWARD_CHAT, forwardChat);
   yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
+  yield takeLatest(REPLACE_MESSAGE_BY_ID, replaceMessageById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
   yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
   yield takeLatest(GET_DOWN_CHAT_MESSAGE, getDownChatMessages);
