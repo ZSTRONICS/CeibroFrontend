@@ -18,6 +18,7 @@ import {
   SET_VIEWPORT,
 } from "../../config/chat.config";
 import NoConversation from "./NoConversation";
+import ChatForm from "./ChatForm";
 
 interface ChatBodyInt {
   messages: ChatMessageInterface[];
@@ -148,6 +149,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
         className={`${classes.wrapper} custom-scrollbar`}
         id="chatBox"
         container
+
       >
         {messages && 
           messages?.map?.((message: ChatMessageInterface) => {
@@ -155,6 +157,7 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
           })}
         <AddTempChatMember />
       </Grid>
+
     </>
   );
 });
@@ -163,8 +166,9 @@ export default ChatBody;
 
 const useStyles = makeStyles({
   wrapper: {
-    height: "calc(100vh - 235px)",
+    maxHeight: "calc(100vh - 305px)",
     overflowY: "auto",
+    height: '100%',
     display: "block",
     position: "relative",
   },
