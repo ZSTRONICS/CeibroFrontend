@@ -1,11 +1,8 @@
 
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/reducers';
-
-import { io } from 'socket.io-client';
-import { SERVER_URL } from "../utills/axios";
+import { ALL_MESSAGE_READ, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_READ, UNREAD_MESSAGE_COUNT, USER_JOINED_ROOM } from 'config/chat.config';
 
 class WebSocketService {
+
   public static socket: any 
   public static selectedChat: any 
 
@@ -37,6 +34,50 @@ class WebSocketService {
 
   public setSocket(socket:any){
     WebSocketService.socket = socket
+  }
+
+  public async getUnreadMsgCount(userId: any) {
+    const data = {
+      eventType: UNREAD_MESSAGE_COUNT,
+      data: {
+        userId
+      }
+    }
+    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+  }
+
+  public async sendMessageSeen(userId: any, roomId: any, messageId: any){
+    const data = {
+      eventType: MESSAGE_READ,
+      data: {
+        userId,
+        roomId,
+        messageId,
+      }
+    }
+    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+  }
+
+  public async setAllMessageRead(userId: any, roomId: any){
+    const data = {
+      eventType: ALL_MESSAGE_READ,
+      data: {
+        userId,
+        roomId
+      }
+    }
+    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+  }
+
+  public async joinChatRoom(userId: any, roomId: any){
+    const data = {
+      eventType: USER_JOINED_ROOM,
+      data: {
+        userId,
+        roomId
+      }
+    }
+    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
   }
 
 }

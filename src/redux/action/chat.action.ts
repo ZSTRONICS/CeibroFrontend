@@ -26,6 +26,7 @@ import {
   DELETE_CONVERSATION,
   FORWARD_CHAT,
   UPDATE_MESSAGE_BY_ID,
+  GET_UNREAD_CHAT_COUNT,
   GET_USER_QUESTIONIAR_ANSWER,
   GET_UP_CHAT_MESSAGE,
   GET_PINNED_MESSAGES,
@@ -36,6 +37,7 @@ import {
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
+  REPLACE_MESSAGE_BY_ID,
 } from '../../config/chat.config'
 import { createAction } from './action'
 
@@ -59,6 +61,8 @@ export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS)
 export const deleteConversation = createAction(DELETE_CONVERSATION)
 export const forwardChat = createAction(FORWARD_CHAT)
 export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
+export const replaceMessageById = createAction(REPLACE_MESSAGE_BY_ID)
+export const unreadMessagesCount = createAction(GET_UNREAD_CHAT_COUNT)
 export const getUserQuestioniarAnswer = createAction(GET_USER_QUESTIONIAR_ANSWER)
 export const getUpMessages = createAction(GET_UP_CHAT_MESSAGE)
 export const getDownMessages = createAction(GET_DOWN_CHAT_MESSAGE)

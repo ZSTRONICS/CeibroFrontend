@@ -186,11 +186,11 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
       });
     }
     // bodyRef && bodyRef?.current?.scrollToEnd()
-  };
+  }
+  const senderUserId = (sender?.id === user.id)
 
-  const senderUserId = sender?.id === user.id;
   return (
-    <>
+     <>
       <Grid
         container
         justifyContent={myMessage || senderUserId ? "flex-end" : "flex-start"}
@@ -201,7 +201,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
           <ClipLoader color={colors.textGrey} size={6} />
         )}
         <Grid item xs={6} onClick={handleClick}>
-          <div className={classes.innerWrapper} style={getStyles()}>
+          <div className={`${classes.innerWrapper}`} style={getStyles()}>
             {type === "questioniar" && (
               <div className={classes.questioniarWrapper}>
                 <Typography className={classes.questionText}>
@@ -238,13 +238,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                       </Typography>
                       <Typography className={classes.time}>{time}</Typography>
                     </div>
-                    {!isTabletOrMobile && type !== "questioniar" && (
+                    {/* {!isTabletOrMobile && type !== "questioniar" && (
                       <div className={classes.quickReplyWrapper}>
                         {sender?.id === user.id ? (
                           <></>
                         ) : (
                           <>
-                            {enable && (
+                            { (
                               <>
                                 <button
                                   className={classes.quickBtn}
@@ -272,7 +272,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                           </>
                         )}
                       </div>
-                    )}
+                    )} */}
                   </div>
                   <div className={classes.projectWrapper}>
                     <Typography className={classes.company}>
@@ -345,21 +345,17 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
           </div>
           <div className={classes.seenWrapper}>
             <div className={classes.seenByWrapper}>
-              {readBy?.map((user: UserInterface, i: any) => {
+              {readBy?.map((readyByUser: UserInterface, i: any) => {
+                if (readyByUser.id === user.id  || sender.id !== user.id){
+                  return <></>
+                }
                 return (
-                  <SeenBy
-                    key={i}
-                    url={user?.profilePic}
-                    firstName={user.firstName}
-                    surName={user.surName}
-                  />
-                );
+                  <SeenBy key={i} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
+                )
               })}
             </div>
-            {readBy && readBy?.length > 0 && (
-              <Typography className={classes.visibility}>
-                {seen ? "Seen" : "Unseen"}
-              </Typography>
+            {readBy && readBy?.length > 1 && sender.id === user.id &&(
+              <Typography className={classes.visibility}>{'seen' }</Typography>
             )}
           </div>
         </Grid>
@@ -379,12 +375,14 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
               )}
             </>
           )}
-          {enable ? <ChatMessageMenu message={message} /> : null}
+          { <ChatMessageMenu message={message} /> }
         </Grid>
       </Grid>
     </>
-  );
-};
+);
+
+}
+ 
 
 export default MessageChat;
 
