@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 import { AiFillPushpin, AiOutlinePushpin } from 'react-icons/ai'
 import { BsDownload } from 'react-icons/bs'
@@ -23,13 +23,13 @@ import {
 } from '../../../redux/action/chat.action'
 import FilePreviewer from './FilePreviewer'
 import { SAVE_MESSAGES, PUSH_MESSAGE } from '../../../config/chat.config'
+import $ from 'jquery'
 import assets from '../../../assets/assets'
 import { ClipLoader } from 'react-spinners'
 import { classNames } from 'react-select/src/utils'
 import { UserInterface } from 'constants/interfaces/user.interface'
 import SeenBy from './SeenBy'
 import { useMediaQuery } from 'react-responsive'
-import { AnyARecord } from 'dns'
 
 interface MessageChatProps {
   message: ChatMessageInterface
@@ -63,7 +63,6 @@ const MessageChat: React.FC<MessageChatProps> = props => {
   const dispatch = useDispatch()
   const [view, setView] = useState(false)
   const bodyRef = useRef(null)
-  const [reply, setReply]: any = useState(false);
   const toggleView = () => {
     setView(!view)
   }
@@ -117,9 +116,8 @@ const MessageChat: React.FC<MessageChatProps> = props => {
     })
   }
 
-  const handleReplyClick = (e: any) => {
+  const handleReplyClick = () => {
     dispatch(goToMessage(replyOf.id))
-
   }
 
   const handleClick = () => {
@@ -186,7 +184,6 @@ const MessageChat: React.FC<MessageChatProps> = props => {
   const senderUserId = (sender?.id === user.id)
   return (
     <>
-
       <Grid
         container
         justifyContent={myMessage || senderUserId ? 'flex-end' : 'flex-start'}
@@ -196,26 +193,21 @@ const MessageChat: React.FC<MessageChatProps> = props => {
           <ClipLoader color={colors.textGrey} size={6} />
         )}
         <Grid item xs={6} onClick={handleClick}>
-          <div className={`${classes.innerWrapper} ${'chatReplyBox'}`} style={getStyles()}>
+          <div className={classes.innerWrapper} style={getStyles()}>
             {type === 'questioniar' && (
               <div className={classes.questioniarWrapper}>
                 <Typography className={classes.questionText}>{title}</Typography>
                 <img className="w-16" src={assets.blueDocument} />
               </div>
             )}
-            {replyOf &&
-
-              <>
-
-                <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
-                  {message.type === 'message' && <span>{replyOf?.message}</span>}
-                  {replyOf.type === 'questioniar' && <span>Questioner</span>}
-                  {replyOf.type === 'voice' && <span>Voice</span>}
-                </Grid>
-              </>
-            }
+            {replyOf && (
+              <Grid onClick={handleReplyClick} container className={classes.replyWrapper}>
+                {message.type === 'message' && <span>{replyOf?.message}</span>}
+                {replyOf.type === 'questioniar' && <span>Questioniar</span>}
+                {replyOf.type === 'voice' && <span>Voice</span>}
+              </Grid>
+            )}
             <Grid container ref={bodyRef}>
-
               <Grid item xs={3} md={1} >
                 <NameAvatar
                   firstName={sender?.firstName || ''}
@@ -227,9 +219,8 @@ const MessageChat: React.FC<MessageChatProps> = props => {
                 <div className={classes.titleWrapper}>
                   <div className={classes.usernameWrapper}>
                     <div className={classes.nameWrapper}>
-
                       <Typography className={classes.username}>
-                        {sender?.firstName} {sender?.surName} its here
+                        {sender?.firstName} {sender?.surName}
                       </Typography>
                       <Typography className={classes.time}>{time}</Typography>
                     </div>
@@ -335,7 +326,6 @@ const MessageChat: React.FC<MessageChatProps> = props => {
           {message.type !== 'questioniar' && (
             <>
               {message?.pinnedBy?.includes?.(user?.id) ? (
-
                 <AiFillPushpin className={classes.pinIcon} onClick={handlePinClick} />
               ) : (
                 <AiOutlinePushpin className={classes.pinIcon} onClick={handlePinClick} />
@@ -379,10 +369,6 @@ const useStyles = makeStyles({
     padding: 12,
     background: 'rgba(0, 0, 0, 0.05)',
     marginBottom: 10,
-    '& span': {
-      width: '100%',
-      wordBreak: 'break-all',
-    }
   },
   innerWrapper: {
     border: `1px solid ${colors.grey}`,
@@ -404,7 +390,6 @@ const useStyles = makeStyles({
     wordBreak: 'break-word',
   },
   username: {
-    textTransform: 'capitalize',
     fontSize: 14,
     fontWeight: 'bold',
     color: colors.primary,
@@ -504,15 +489,4 @@ const useStyles = makeStyles({
     gap: 10,
     marginTop: 4,
   },
-  democlass: {
-
-  },
-  anotherclass: {
-
-  },
-  new: {
-    backgroundColor: 'red',
-  }
-
-
 })
