@@ -30,8 +30,8 @@ const RouterConfig: React.FC<Configs> = () => {
           {/* <Route path="/verify-email" component={VerifyEmail} /> */}
           <Route path="/forgot-password" component={ForgetPassword} />
           <Route path="/reset-password" component={ResetPassword} />
-
           <Route path="/register" component={Register} />
+
           <AppLayout>
             <Route path="/profile" component={Profile} />
             <Route path="/projects" component={Projects} />

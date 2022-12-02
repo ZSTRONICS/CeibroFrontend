@@ -104,7 +104,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       (msg: any) => String(msg._id) === String(replyToId)
     );
   }
-
+  
   const handleSend = () => {
     if (!enable) {
       return;
@@ -149,6 +149,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         type: "message",
         myMessage: true,
         _id: myId,
+        pinnedBy:[],
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
@@ -219,7 +220,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       let replyMessage = null;
       const myId = new Date().valueOf();
-
       dispatch({
         type: PUSH_MESSAGE,
         payload: {
@@ -231,9 +231,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           myMessage: true,
           replyOf: replyMessage,
           voiceUrl: blob.url,
+          pinnedBy:[],
           _id: myId,
         },
       });
+
       const payload: any = {
         body: formdata,
         success: (res: any) => {
@@ -248,7 +250,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         },
       };
       dispatch(sendReplyMessage(payload));
-
       handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
