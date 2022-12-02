@@ -101,8 +101,8 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
         chatBox.scrollTop = chatBox.scrollHeight;
         setTimeout(() => {
           setBlockLocal(() => false);
-        }, 5000);
-      }, 300);
+        }, 300);
+      }, 200);
     }
     return () => {
       blockDown
@@ -151,9 +151,9 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
         container
 
       >
-        {messages &&
+        {messages && 
           messages?.map?.((message: ChatMessageInterface) => {
-            return <MessageChat message={message} enable={enable} />;
+            return <MessageChat message={message} enable={enable}/>;           
           })}
         <AddTempChatMember />
       </Grid>

@@ -1,16 +1,12 @@
-
+import React, { useLayoutEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import {
-  Mic,
-  PauseCircleOutlineSharp,
-  PlayArrowOutlined,
-} from "@material-ui/icons";
+import { Mic, PauseCircleOutlineSharp } from "@material-ui/icons";
 // @ts-ignore
 import AudioReactRecorder, { RecordState } from "audio-react-recorder";
-import React, { useEffect, useLayoutEffect, useState } from "react";
 import { BiTrash } from "react-icons/bi";
 import assets from "../../assets/assets";
 import colors from "../../assets/colors";
+import { toast } from "react-toastify";
 
 interface VoiceRecorderInterface {
   onCancel: () => void;
@@ -19,39 +15,31 @@ interface VoiceRecorderInterface {
 
 const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
   const [recordState, setRecordState] = useState(null);
-  const [show, setShow] = useState(false);
   const [pause, setPause] = useState(false);
   const [url, setUrl] = useState<any>(null);
   const [blob, setBlob] = useState<any>(null);
   const [sendOnStop, setSendOnStop] = useState<boolean>(false);
-
   const classes = useStyles();
 
   useLayoutEffect(() => {
-    //@ts-ignore
-    navigator?.getUserMedia?.(
-      // constraints
-      {
-        audio: true,
-      },
-
-      // successCallback
-      function (localMediaStream: any) {
-        setRecordState(RecordState.START);
-      },
-
-      // errorCallback
-      function (err: any) {
-        if (err) {
-          // Explain why you need permission and how to update the permission setting
-        }
+    async function getMedia() {
+      if (!window.MediaRecorder) {
+        toast.error('permission denied for browser');
       }
-    );
+     await navigator?.mediaDevices
+        ?.getUserMedia({ audio: true, video: false })
+        .then((stream: any) => {
+          setRecordState(RecordState.START);
+          stream.audioSrcObject = stream;
+          toast.success('recording')
+        })
+        .catch((err) => {
+          toast.error('permission denied');
+          console.error(err);
+        });
+    }
+    getMedia();
   }, []);
-
-  const start = () => {
-    setRecordState(RecordState.START);
-  };
 
   const stop = (audio: any) => {
     setUrl(audio.url);
@@ -83,12 +71,19 @@ const VoiceRecorder: React.FC<VoiceRecorderInterface> = (props) => {
   };
 
   return (
-    <Grid item xs={12} direction="row-reverse" className={classes.inputWrapper}>
+    <Grid
+      item
+      xs={12}
+      container
+      direction="row-reverse"
+      className={classes.inputWrapper}
+    >
       <div className={classes.sendWrapper}>
         <img
-            src={assets.sendIcon}
+          src={assets.sendIcon}
           onClick={handleSend}
           className={classes.sendIcon}
+          alt=""
         />
       </div>
       {pause ? (

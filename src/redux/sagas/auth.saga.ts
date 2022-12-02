@@ -27,7 +27,7 @@ const verifyEmail = apiCall({
   method: "post",
   path: "/auth/veify-email",
   onFailSaga: (err) => {
-    console.log("it is failed", err);
+    console.error("it is failed", err);
   },
 });
 

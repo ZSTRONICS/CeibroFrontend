@@ -306,12 +306,12 @@ function* goToMessage(action: ActionInterface): Generator<any> {
 
 function* updateMessageById(action: ActionInterface): Generator<any> {
   const { payload: { other },} = action;
-  
   const messages: any = yield select((state: RootState) => state.chat.messages);
 
   const loadingMessages: any = yield select(
     (state: RootState) => state.chat.loadingMessages
   );
+
   const newLoadingMessages = loadingMessages?.filter(
     (id: any) => String(id) !== String(other.oldMessageId)
   );
@@ -321,11 +321,11 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
   });
 
   const index = messages?.findIndex((message: any) => {
-    return String(message?.id) === String(other.oldMessageId);
+    return String(message?._id) === String(other.oldMessageId);
   });
   if (index > -1) {
     const myMessage = messages[index];
-    myMessage.id = other.newMessage._id;
+    myMessage._id = other.newMessage._id;
     messages[index] = myMessage;
   }
   yield put({
