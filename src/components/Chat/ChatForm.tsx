@@ -13,6 +13,7 @@ import {
   PUSH_MESSAGE,
   SET_REPLY_TO_ID,
   SEND_MESSAGE,
+  CHAT_EVENT_REQ_OVER_SOCKET,
 } from "../../config/chat.config";
 import {
   openQuestioniarDrawer,
@@ -26,6 +27,7 @@ import VoiceRecorder from "./VoiceRecorder";
 import CustomImg from "components/CustomImg";
 import { socket } from "services/socket.services";
 import { CBox } from "components/material-ui";
+import React from "react";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -141,6 +143,16 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
+
+
+      const data = {
+        userId: user.id,
+        eventType: SEND_MESSAGE,
+        data: JSON.stringify(payload)
+      }
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    
       const newMessage = {
         sender: user,
         time: "1 seconds ago",
@@ -148,12 +160,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         seen: true,
         type: "message",
         myMessage: true,
+        id: myId,
         _id: myId,
         pinnedBy:[],
+        chat: selectedChat,
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
-      socket.getSocket().emit(SEND_MESSAGE, JSON.stringify(payload));
+
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
@@ -285,7 +299,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                         <CBox>
                           <Typography
                             className={classes.replyToTitle}
-                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`} helo sahi</Typography>
+                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
                         </CBox>
                         <CBox>
                           <Typography
@@ -442,7 +456,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   );
 };
 
-export default ChatForm;
+export default React.memo(ChatForm, (prevProps, nextProps) => prevProps.enable  === nextProps.enable );
 
 const useStyles = makeStyles({
   replyToMesg: {
