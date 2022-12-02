@@ -8,137 +8,125 @@ import {
   getDownMessages,
   getRoomMessages,
   getUpMessages,
+  updateMessageById,
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import MessageChat from "../Utills/ChatChip/MessageChat";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
 import {
+  SAVE_MESSAGES,
   SET_ALLOW_SCROLL,
   SET_PAGINATION_BLOCK,
   SET_VIEWPORT,
 } from "../../config/chat.config";
 import NoConversation from "./NoConversation";
+import React from "react";
+import { socket } from "services/socket.services";
 
 interface ChatBodyInt {
-  messages: ChatMessageInterface[];
   enable: boolean
 }
 
-const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
+const areEqual = (prevProps: any, nextProps: any) => true;
+let chatBox: any = document.getElementById("chatBox")
+const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
+
+
+
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
   );
 
+  const updateChatRoom: boolean = useSelector(
+    (store: RootState) => store.chat?.updateChatRoom
+  );
+
   const [blockLocal, setBlockLocal] = useState(false);
+  const [chatRoomState, setUpdateChatRoom] = useState(updateChatRoom);
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector((store: RootState) => store.chat.selectedChat);
-
+  const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
+  const { user } = useSelector((store: RootState) => store.auth);
+  
   const viewport = useSelector((store: RootState) => store.chat.viewport);
 
   const { blockPagination, allowChangeBlock, blockDown } = useSelector((store: RootState) => store.chat);
 
-  const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
-
-  let chatBox = document.getElementById("chatBox")
+  //API call to get messages of Selected-ROOM
+  // const [upMessagesState, setUpMessagesState] = useState(false);
+  // const [previousScrollHeight, setPreviousScrollHeight] = useState();
+  const [blockAutoDownScroll, setBlockAutoDownScroll] = useState(true);
   useEffect(() => {
 
     if (selectedChat) {
-      const payload = {
-        other: {
-          roomId: selectedChat,
-          limit: 21,
-        },
-      };
-      dispatch(getRoomMessages(payload));
+      socket.getUnreadMsgCount(user.id);
+      
+      dispatch(
+        getRoomMessages({
+          other: {
+            roomId: selectedChat,
+            limit: 21,
+          },
+          success: () => {
+            setBlockAutoDownScroll(true)
+          }
+        })
+      );
     }
     return (): void => {
       selectedChat
-      null
     }
   }, [selectedChat]);
 
-  useEffect(() => {
-    if (!blockLocal) {
-      if (chatBox) {
-        chatBox?.removeEventListener("scroll", () => { });
-      }
-      chatBox?.addEventListener("scroll", () => handleScroll(blockLocal));
-    }
-    return () => {
-      chatBox?.removeEventListener("scroll", () => { });
-
-    };
-  }, [blockPagination, allowChangeBlock, blockLocal]);
-
-  const handleScroll = (blockLocal: boolean) => {
-    if (chatBox && chatBox?.scrollTop <= 0) {
-      if (!blockPagination) {
-        dispatch(getUpMessages());
-      }
-    }
-    if (
-      (chatBox?.clientHeight || 0) > 300 &&
-      (chatBox?.scrollHeight || 0) - (chatBox?.scrollTop || 0) ===
-      chatBox?.clientHeight
-    ) {
-      if (!blockLocal) {
-        dispatch(getDownMessages());
-      }
-    }
-  };
 
   useEffect(() => {
-    if (!viewport && !blockDown) {
-      setBlockLocal(() => true);
-      setTimeout(() => {
-        const chatBox = document.getElementById("chatBox") || {
-          scrollTop: 0,
-          scrollHeight: 0,
-        };
-        chatBox.scrollTop = chatBox.scrollHeight;
-        setTimeout(() => {
-          setBlockLocal(() => false);
-        }, 5000);
-      }, 300);
-    }
-    return () => {
-      blockDown
-      clearTimeout(viewport)
-    }
-  }, [messages?.length, selectedChat, blockDown]);
 
-  useEffect(() => {
-    if (allowScroll) {
-      // will run when something merge at top
-      chatBox || {
-        scrollTop: 0,
-        scrollHeight: 0,
-      };
-      chatBox = document.getElementById(viewport);
-      if (chatBox) {
-        chatBox.scrollTop = chatBox.offsetTop - 20;
-        // chatBox.scrollIntoView({ behavior: "auto" });
-        // scroll.setScroll($(window).scrollTop()  -120- 120);
+    const chatBox: any = document.getElementById("chatBox")
 
-        dispatch({
-          type: SET_VIEWPORT,
-          payload: null,
-        });
-        dispatch({
-          type: SET_ALLOW_SCROLL,
-          payload: false,
-        });
+    if (chatBox && blockAutoDownScroll === true) {
+      chatBox.scrollTop = chatBox.scrollHeight
+    }
+
+
+    if (chatBox) {
+      const currScrollPercentage = (chatBox?.scrollTop / chatBox.scrollHeight) * 100
+      if (currScrollPercentage >= 70) {
+        chatBox.scrollTop = chatBox.scrollHeight
+      } else {
+        // Add view to go-to botton on click 
       }
     }
-    return () => {
-      allowScroll
+
+    return (): void => {
+      messages
     }
-  }, [viewport, allowScroll]);
+  }, [messages]);
 
   if (!selectedChat) {
     return <NoConversation />;
+  }
+  const handleScroll = (e: any) => {
+    console.log("scroll event triggred ");
+
+    let chatBox = e.target;
+
+    const currScrollPercentage = (chatBox.scrollTop / chatBox.scrollHeight) * 100
+
+
+    if (currScrollPercentage <= 70) {
+      setBlockAutoDownScroll(false)
+    } else {
+      setBlockAutoDownScroll(true)
+    }
+
+
+
+    if (chatBox.scrollTop === 0) {
+      // setUpMessagesState(true)
+      // setPreviousScrollHeight(chatBox.scrollHeight)
+      dispatch(getUpMessages());
+    }
   }
 
   return (
@@ -148,16 +136,24 @@ const ChatBody: React.FC<ChatBodyInt> = memo(({ enable }) => {
         className={`${classes.wrapper} custom-scrollbar`}
         id="chatBox"
         container
+        onScroll={handleScroll}
       >
+
         {messages &&
           messages?.map?.((message: ChatMessageInterface) => {
-            return <MessageChat message={message} enable={enable} />;
-          })}
+            if (message.chat === selectedChat) {
+              return <MessageChat message={message} enable={props.enable} />;
+            } else {
+              return <></>
+            }
+          })
+
+        }
         <AddTempChatMember />
       </Grid>
     </>
   );
-});
+}, areEqual);
 
 export default ChatBody;
 

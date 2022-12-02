@@ -23,6 +23,8 @@ const ChatList = () => {
     dispatch(
       getAllChats({
         success: (_res: any) => {
+         socket.getUnreadMsgCount(user.id)
+          
           if (_res?.data?.userallchat.length > 0) {
 
             if (_res?.data?.userallchat[0]._id) {
@@ -38,7 +40,7 @@ const ChatList = () => {
 
   const handleClick = (chat: any) => {
     if (String(chat?._id) !== String(selectedChat)) {
-      socket.getSocket().emit("JOIN_ROOM", { user, selectedChat });
+     // socket.joinChatRoom(user.id, chat._id)
       dispatch(setSelectedChat({ other: chat._id }));
     }
   };

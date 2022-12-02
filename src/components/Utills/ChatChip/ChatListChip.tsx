@@ -1,4 +1,4 @@
-import { Badge, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Badge, Grid,  Typography } from "@material-ui/core";
 import { Star, StarBorder } from "@material-ui/icons";
 import colors from "../../../assets/colors";
 import NameAvatar from "../Others/NameAvatar";
@@ -7,9 +7,8 @@ import { ChatListInterface } from "../../../constants/interfaces/chat.interface"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
-import { ChatListSkeleton } from "./ChatListSkeleton";
 import useStyles from './ChatListStyles'
-import { CBox, CSkeleton } from "components/material-ui";
+import { socket } from "services/socket.services"
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
@@ -54,11 +53,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const handleClick = () => {
     props.handleClick?.(chat);
-
-
   };
 
   const getStyles = () => {
+    if (selectedChat === chat._id && socket.getAppSelectedChat() !== chat._id) {
+      socket.setAppSelectedChat(chat._id);      
+    }
+
     return {
       backgroundColor:
         String(selectedChat) === String(chat._id)

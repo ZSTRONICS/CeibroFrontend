@@ -42,10 +42,12 @@ import {
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
 import { getNewQuestionTemplate } from '../../constants/questioniar.constants'
 import { CREATE_ROOM } from '../../config/auth.config'
+import { ChatMessageInterface } from 'constants/interfaces/chat.interface'
 
 interface ChatReducerInt {
   chat: any
   messages: any
+  updateChatRoom: boolean
   selectedChat: null
   type: 'all' | 'read' | 'unread'
   favouriteFilter: boolean
@@ -82,6 +84,7 @@ interface ChatReducerInt {
 const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
+  updateChatRoom: false,
   isGroupChat: false,
   selectedChat: null,
   createChatLoading: false,

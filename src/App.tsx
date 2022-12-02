@@ -4,16 +4,17 @@ import "fontsource-roboto";
 import "moment-timezone";
 
 // components
-import { CreateQuestioniarDrawer, 
-  ViewQuestioniarDrawer ,
-  CreateProjectDrawer, 
+import {
+  CreateQuestioniarDrawer,
+  ViewQuestioniarDrawer,
+  CreateProjectDrawer,
   CreateTaskDrawer,
   ViewInvitations,
   RouterConfig
 } from 'components'
 
 // socket
-import {socket} from "services/socket.services"
+import { socket } from "services/socket.services"
 import { io } from "socket.io-client";
 
 // material
@@ -32,17 +33,22 @@ import {
   getAllChats,
   setMessagesRead,
   updateMessageById,
+  unreadMessagesCount,
+  replaceMessageById,
 } from "redux/action/chat.action";
 import {
+  CHAT_EVENT_REP_OVER_SOCKET,
+  MESSAGE_SEEN,
   PUSH_MESSAGE,
   RECEIVE_MESSAGE,
   REFRESH_CHAT,
+  UNREAD_MESSAGE_COUNT,
 } from "config/chat.config";
 
 // axios
 import { SERVER_URL } from "utills/axios";
 
-interface MyApp {}
+interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const { isLoggedIn } = useSelector((store: RootState) => store.auth);
@@ -58,7 +64,7 @@ const App: React.FC<MyApp> = () => {
       if (socket.getSocket() !== null) {
         return;
       }
-      
+
       const tokens = localStorage.getItem("tokens") || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
 
@@ -69,55 +75,98 @@ const App: React.FC<MyApp> = () => {
       });
       socket.setSocket(sock)
 
-      socket.getSocket().on(RECEIVE_MESSAGE, (payload: any) => {
-        const selectedChat = socket.getAppSelectedChat();
-        if (selectedChat) {
-          const chatBox: any = document.getElementById("chatBox");
-          chatBox.scrollTop = chatBox.scrollHeight;
-        }
-        const data = payload.data;
+      socket.getSocket().on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
+        const eventType = dataRcvd.eventType
+        const payload = dataRcvd.data
+        switch (eventType) {
+          case RECEIVE_MESSAGE:
+            {
+              const selectedChat = socket.getAppSelectedChat();
+              const data = payload.data;
 
-        if (String(data.from) !== String(user?.id)) {
-          if (String(data.chat) === String(selectedChat)) {
-            dispatch({
-              type: PUSH_MESSAGE,
-              payload: data.message,
-            });
-            dispatch(setMessagesRead({ other: selectedChat }));
-          } else {
-            dispatch(getAllChats());
-          }
-        } else if (String(data.chat) === String(selectedChat)) {
-          if (isMessageInStore(payload.myId)) {
+              if (String(data.from) !== String(user?.id)) {
+                if (String(data.chat) === String(selectedChat)) {
+                  dispatch({
+                    type: PUSH_MESSAGE,
+                    payload: data.message,
+                  });
+                  socket.sendMessageSeen(user.id, selectedChat, data.message._id)
+                } else {
+                  socket.getUnreadMsgCount(user.id);
+                  dispatch(getAllChats());
+                }
+              } else if (String(data.chat) === String(selectedChat)) {
+                if (isMessageInStore(payload.myId)) {
 
-            dispatch(
-              updateMessageById({
-                other: {
-                  oldMessageId: payload.myId,
-                  newMessage: data.message,
-                },
-              })
-            );
-          } else {
-            dispatch({
-              type: PUSH_MESSAGE,
-              payload: data.message,
-            });
-          }
-        } else {
-          dispatch(getAllChats());
+                  dispatch(
+                    updateMessageById({
+                      other: {
+                        oldMessageId: payload.myId,
+                        newMessage: data.message,
+                      },
+                    })
+                  );
+                } else {
+                  dispatch({
+                    type: PUSH_MESSAGE,
+                    payload: data.message,
+                  });
+                }
+              } else {
+                //dispatch(getAllChats());
+                socket.getUnreadMsgCount(user.id);
+              }
+            }
+            break;
+
+          case REFRESH_CHAT:
+            {
+              dispatch(getAllChats());
+            }
+            break;
+
+          case UNREAD_MESSAGE_COUNT:
+            {
+              const count = payload.count;
+              console.log(count);
+
+              dispatch(
+                unreadMessagesCount({ other: { count: count } })
+              );
+            }
+            break;
+
+          case MESSAGE_SEEN:
+            {
+              const selectedChat = socket.getAppSelectedChat();
+              if (payload.roomId === selectedChat) {
+                if (payload.updatedMessage) {
+                  dispatch(
+                    replaceMessageById({
+                      other: {
+                        newMessage: payload.updatedMessage,
+                      },
+                    })
+                  );
+                }
+              }
+            }
+            break;
+
+          default:
+            break
         }
-      });
-      socket.getSocket().on(REFRESH_CHAT, () => {
-        dispatch(getAllChats());
+
       });
     }
   }, [isLoggedIn]);
 
+  console.log('Rendering');
+
   return (
     <div className="App">
-     {/* component used here for availability of modal on all routes*/}
-       <div style={{opacity: 0, visibility: 'hidden',width:0,height:0}}><ViewInvitations /></div> 
+      {/* component used here for availability of modal on all routes*/}
+      <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
-import { socket } from "services/socket.services"
 import colors from "../../assets/colors";
 import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
 import { clearSelectedChat } from "../../redux/action/chat.action";
@@ -17,7 +16,7 @@ import ChatSidebar from "./ChatSidebar";
 import MediaSidebar from "./MediaSidebar";
 import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { useSelect } from "@mui/base";
+import { socket } from "services/socket.services";
 
 const Chat = () => {
   const classes = useStyles();
@@ -34,58 +33,8 @@ const Chat = () => {
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
+  
   const [enable, setEnable] = useState(false);
-
-  const sendMessage = (text: string) => {
-    const today = new Date();
-    const nowTime = (today.getHours() % 12) + ":" + today.getMinutes() + " Pm";
-    setMessage([
-      ...messages,
-      {
-        username: "Kristo Vunukainen",
-        time: nowTime,
-        companyName: "Electrician",
-        message: text,
-        seen: false,
-        myMessage: true,
-        _id: "",
-        type: "message",
-      },
-    ]);
-
-    setTimeout(() => {
-      const chatBox: any = document.getElementById("chatBox") || {
-        scrollTop: 0,
-        scrollHeight: 0,
-      };
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }, 300);
-
-    setTimeout(() => {
-      setMessage((old) => [
-        ...old,
-        {
-          username: "Kristo Vunukainen",
-          time: nowTime,
-          companyName: "Electrician",
-          message: "I am fine . ",
-          seen: false,
-          myMessage: false,
-          _id: "",
-          type: "message",
-        },
-      ]);
-      setTimeout(() => {
-        const chatBox: any = document.getElementById("chatBox") || {
-          scrollTop: 0,
-          scrollHeight: 0,
-        };
-        chatBox.scrollTop = chatBox.scrollHeight;
-      }, 300);
-    }, 6000);
-
-    return text;
-  };
 
   useEffect(() => {
     dispatch({
@@ -99,12 +48,12 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    socket.setAppSelectedChat(selectedChat);
-
     if (selectedChat) {
+      socket.joinChatRoom(user.id, selectedChat)
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
+          
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
@@ -116,10 +65,10 @@ const Chat = () => {
       }
     }
     return (): void => {
-      allChats;
       selectedChat;
     };
-  }, [selectedChat, allChats]);
+  }, [selectedChat]);
+
   return (
     <>
       {/* right sidebar for chat actions */}
@@ -134,8 +83,9 @@ const Chat = () => {
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white" }}
         >
-          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
-          <ChatBody messages={messages} enable={enable} />
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} /> 
+          <ChatBody enable={enable} />
+
           <ChatForm enable={enable} />
         </Grid>
       </Grid>

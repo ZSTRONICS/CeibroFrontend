@@ -182,9 +182,9 @@ const MessageChat: React.FC<MessageChatProps> = props => {
     // bodyRef && bodyRef?.current?.scrollToEnd()
   }
   const senderUserId = (sender?.id === user.id)
-  return (
-    <>
 
+  return (
+     <>
       <Grid
         container
         justifyContent={myMessage || senderUserId ? 'flex-end' : 'flex-start'}
@@ -312,14 +312,17 @@ const MessageChat: React.FC<MessageChatProps> = props => {
           </div>
           <div className={classes.seenWrapper}>
             <div className={classes.seenByWrapper}>
-              {readBy?.map((user: UserInterface, i: any) => {
+              {readBy?.map((readyByUser: UserInterface, i: any) => {
+                if (readyByUser.id === user.id  || sender.id !== user.id){
+                  return <></>
+                }
                 return (
-                  <SeenBy key={i} url={user?.profilePic} firstName={user.firstName} surName={user.surName} />
+                  <SeenBy key={i} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
                 )
               })}
             </div>
-            {readBy && readBy?.length > 0 && (
-              <Typography className={classes.visibility}>{seen ? 'Seen' : 'Unseen'}</Typography>
+            {readBy && readBy?.length > 1 && sender.id === user.id &&(
+              <Typography className={classes.visibility}>{'seen' }</Typography>
             )}
           </div>
         </Grid>
@@ -338,8 +341,10 @@ const MessageChat: React.FC<MessageChatProps> = props => {
         </Grid>
       </Grid>
     </>
-  )
+);
+
 }
+ 
 
 export default MessageChat
 
