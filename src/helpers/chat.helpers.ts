@@ -36,7 +36,7 @@ export function validateQuestions(questioniars: any): boolean {
       }
     });
   } catch (e) {
-    console.log("error i s", e);
+    console.error("error i s", e);
     isValidated = false;
   }
   return isValidated;
