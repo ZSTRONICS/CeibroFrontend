@@ -77,8 +77,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         message.type === "questioniar"
           ? colors.questioniarPrimary
           : myMessage
-            ? colors.lightGrey
-            : colors.white,
+          ? colors.lightGrey
+          : colors.white,
       boxShadow: "none",
     };
   };
