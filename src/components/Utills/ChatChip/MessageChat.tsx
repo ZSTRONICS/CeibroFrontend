@@ -39,6 +39,8 @@ interface MessageChatProps {
 
 const MessageChat: React.FC<MessageChatProps> = (props) => {
   const { message, enable } = props;
+ 
+  
   const {
     replyOf,
     _id,

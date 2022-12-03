@@ -40,6 +40,7 @@ import {
   CHAT_EVENT_REP_OVER_SOCKET,
   MESSAGE_SEEN,
   PUSH_MESSAGE,
+  PUSH_MESSAGE_BY_OTHER,
   RECEIVE_MESSAGE,
   REFRESH_CHAT,
   UNREAD_MESSAGE_COUNT,
@@ -87,7 +88,7 @@ const App: React.FC<MyApp> = () => {
               if (String(data.from) !== String(user?.id)) {
                 if (String(data.chat) === String(selectedChat)) {
                   dispatch({
-                    type: PUSH_MESSAGE,
+                    type: PUSH_MESSAGE_BY_OTHER,
                     payload: data.message,
                   });
                   socket.sendMessageSeen(user.id, selectedChat, data.message._id)
@@ -97,7 +98,6 @@ const App: React.FC<MyApp> = () => {
                 }
               } else if (String(data.chat) === String(selectedChat)) {
                 if (isMessageInStore(payload.myId)) {
-
                   dispatch(
                     updateMessageById({
                       other: {
@@ -137,7 +137,7 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case MESSAGE_SEEN:
-            {
+            {  
               const selectedChat = socket.getAppSelectedChat();
               if (payload.roomId === selectedChat) {
                 if (payload.updatedMessage) {
@@ -160,8 +160,6 @@ const App: React.FC<MyApp> = () => {
       });
     }
   }, [isLoggedIn]);
-
-  console.log('Rendering');
 
   return (
     <div className="App">

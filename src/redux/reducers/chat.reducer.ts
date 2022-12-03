@@ -5,6 +5,7 @@ import {
   GET_CHAT,
   GET_MESSAGES,
   PUSH_MESSAGE,
+  PUSH_MESSAGE_BY_OTHER,
   SET_SELECTED_CHAT,
   SET_CHAT_TYPE,
   SET_CHAT_SEARCH,
@@ -184,10 +185,18 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case PUSH_MESSAGE: {
+      console.log("Message being pushed ", action.payload)
       return {
         ...state,
         messages: [...state.messages, action.payload],
         loadingMessages: [...state.loadingMessages, action.payload._id],
+      }
+    }
+
+    case PUSH_MESSAGE_BY_OTHER: {
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
       }
     }
 

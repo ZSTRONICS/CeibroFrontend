@@ -286,7 +286,7 @@ function* goToMessage(action: ActionInterface): Generator<any> {
       elem?.scrollIntoView();
       setTimeout((elem, oldclass) => {
         elem?.setAttribute("class", oldclass)
-      }, 1000, elem, attrs?.class);
+      }, 500, elem, attrs?.class);
 
     } else {
       // if message is not in dom
@@ -315,18 +315,32 @@ function* goToMessage(action: ActionInterface): Generator<any> {
 
 function* updateMessageById(action: ActionInterface): Generator<any> {
   const { payload: { other }, } = action;
-  const messages: any = yield select((state: RootState) => state.chat.messages);
+
 
   const loadingMessages: any = yield select(
     (state: RootState) => state.chat.loadingMessages
   );
 
   const newLoadingMessages = loadingMessages?.filter(
-    (id: any) => String(id) !== String(other.oldMessageId)
+    (_id: any) => String(_id) !== String(other.oldMessageId)
   );
   yield put({
     type: SET_LOADING_MESSAGES,
     payload: [...newLoadingMessages],
+  });
+
+  const messages: any = yield select((state: RootState) => state.chat.messages);
+  const index = messages?.findIndex((message: any) => {
+    return String(message?._id) === String(other.oldMessageId);
+  });
+
+  if (index > -1) {
+    messages[index] = other.newMessage;
+  }
+
+  yield put({
+    type: SAVE_MESSAGES,
+    payload: [...messages],
   });
 }
 
@@ -334,11 +348,12 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
 
 function* replaceMessageById(action: ActionInterface): Generator<any> {
   const { payload: { other }, } = action;
+  
 
   const messages: any = yield select((state: RootState) => state.chat.messages);
 
   const index = messages?.findIndex((message: any) => {
-    return String(message?._id) === String(other.newMessage.id);
+    return String(message?._id) === String(other.newMessage._id);
   });
 
   if (index > -1) {

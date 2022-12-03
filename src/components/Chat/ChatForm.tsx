@@ -160,7 +160,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         seen: true,
         type: "message",
         myMessage: true,
-        id: myId,
         _id: myId,
         pinnedBy:[],
         chat: selectedChat,

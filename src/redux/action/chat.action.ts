@@ -7,6 +7,7 @@ import {
   MUTE_CHAT,
   ADD_TO_FAVOURITE,
   PUSH_MESSAGE,
+  PUSH_MESSAGE_BY_OTHER,
   SET_MESSAGE_READ,
   SET_SELECTED_CHAT,
   OPEN_QUESTIONIAR_DRAWER,
@@ -46,6 +47,7 @@ export const createSingleRoom = createAction(CREATE_SINGLE_ROOM)
 export const setSelectedChat = createAction(SET_SELECTED_CHAT)
 export const clearSelectedChat = createAction(CLEAR_SELECTED_CHAT)
 export const pushMessage = createAction(PUSH_MESSAGE)
+export const pushMessageByOthers = createAction(PUSH_MESSAGE_BY_OTHER)
 export const getRoomMessages = createAction(GET_MESSAGES)
 export const setMessagesRead = createAction(SET_MESSAGE_READ)
 export const muteChat = createAction(MUTE_CHAT)
