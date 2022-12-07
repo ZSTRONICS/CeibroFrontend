@@ -33,7 +33,7 @@ const Chat = () => {
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
-  
+
   const [enable, setEnable] = useState(false);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ const Chat = () => {
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
-          
+
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
@@ -83,7 +83,7 @@ const Chat = () => {
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
-          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} /> 
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody enable={enable} />
 
           <ChatForm enable={enable} />

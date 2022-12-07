@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     height: 40,
-    background: colors.white,
+    // background: colors.white,
   },
   iconWrapper: {
     flex: 2,
