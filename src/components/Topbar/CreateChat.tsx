@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Avatar, Button, Divider, makeStyles } from "@material-ui/core";
+import { Avatar, Button, Divider, makeStyles, Typography } from "@material-ui/core";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,8 +25,12 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ChatRoomSearch from "components/Chat/ChatRoomSearch";
-import image from "./images/user.png";
-import 
+import image from "../../assets/images/user.png";
+import { getMyConnections } from 'redux/action/user.action'
+import { json } from "stream/consumers";
+import { UserInterface } from "constants/interfaces/user.interface";
+
+
 export let dbUsers = [
   {
     label: "Test 1",
@@ -113,11 +117,17 @@ const CreateChat = () => {
 
   const [chat, setChat] = useState();
   const [chatForm, setChatForm]: any = useState(false)
+  const [connections, setConnection] = useState<any>({})
+  const [loading, setLoading] = useState<boolean>(false)
+  const [chatOptions, setChatOptions] = useState<boolean>(true)
+
 
   const handleChat = (method: string) => {
-    setChat(method)
-    setChatForm(true)
-    setAnchorEl(null);
+    setChat(method);
+    setChatOptions(false)
+
+    // setChatForm(true)
+    // setAnchorEl(null);
 
   }
   const handleChatRoomSearch = (e: any) => {
@@ -160,6 +170,19 @@ const CreateChat = () => {
     dispatch(createChatRoom(payload));
   };
 
+  useEffect(() => {
+    const payload = {
+      success: (res: any) => {
+        setConnection(res?.data?.myConnections)
+      },
+      finallyAction: () => {
+        setLoading(false)
+      },
+    }
+    setLoading(true)
+    dispatch(getMyConnections(payload))
+  }, [])
+
   return (
     <div className="dropdown">
       <Button
@@ -181,73 +204,70 @@ const CreateChat = () => {
           "aria-labelledby": "basic-button"
         }}
       >
-        <MenuItem onClick={() => handleChat('Individual')}>Individual Chat</MenuItem>
-        <Divider />
-        <MenuItem onClick={() => handleChat('group')}>Group Chat</MenuItem>
+        {chatOptions ?
+          <>
+            <MenuItem onClick={() => handleChat('Individual')}>Individual Chat</MenuItem>
+            <Divider />
+            <MenuItem onClick={() => handleChat('group')}>Group Chat</MenuItem>
+          </>
+          :
+          <>
+            {chat === 'Individual' &&
+              <CBox padding={3.1}>
 
-      </Menu>
+                <CBox className={classes.chatbox}>
+                  <ChatRoomSearch onChange={handleChatRoomSearch} />
 
-      <Dialog
-        open={chatForm}
-        className={classes.chatDialog}
-        onClose={() => setChatForm(false)}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        {chat === 'Individual' &&
-          <DialogContent>
-
-            <CBox className={classes.chatbox}>
-              <ChatRoomSearch onChange={handleChatRoomSearch} />
-
-            </CBox>
-            <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
-              Frequently Contacted
-            </CBox>
-            {[...Array(8)].map(() => (
-              <CBox display='flex' mb={2}>
-                <CBox>
-                  <Avatar src={image} alt="contact profile" variant="square" />
                 </CBox>
-                <CBox ml={1.6}>
-                  <CBox fontSize={14} color='#000' fontWeight={600}>
-                    Ilja Nikolajev
-                  </CBox>
-                  <CBox display='flex'>
-                    {[...Array(2)].map(() => (
-                      <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
-                        Company &nbsp;
+                <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
+                  Frequently Contacted
+                </CBox>
+                {connections?.map?.((connection: any) => {
+                  const user: UserInterface = connection?.sentByMe ? connection.to : connection.from;
 
+                  return (
+                    <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
+                      <CBox>
+                        <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
                       </CBox>
+                      <CBox ml={1.6}>
+                        <CBox fontSize={14} color='#000' fontWeight={600}>
+                          {`${user?.firstName} ${user?.surName}`}
+                        </CBox>
+                        <CBox display='flex'>
 
-                    )
+                          <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
+                            {user.companyName} &nbsp;
 
-                    )}
+                          </CBox>
+                        </CBox>
+                      </CBox>
+                    </CBox>
 
 
-                  </CBox>
+                  )
+
+                })}
+                <CBox display='flex' justifyContent='flex-end'>
+                  <Button variant="contained" color='primary' disabled>
+                    Start conversation
+                  </Button>
+                  <Button onClick={() => setChatOptions(true)}>
+                    Cancel
+                  </Button>
                 </CBox>
               </CBox>
-            )
-
-            )}
-
-
-          </DialogContent>
+            }
+          </>
 
         }
-        <DialogActions>
-          <Button variant="contained" color='primary'>
-            Start conversation
-          </Button>
-          <Button onClick={() => setChatForm(false)}>
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+
+      </Menu>
+      {/* individual chat dialog */}
 
 
-    </div >
+
+    </div>
 
   );
 };
@@ -331,6 +351,11 @@ const useStyles = makeStyles((theme) => ({
     right: 5,
   },
   selectChat: {
+    '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper': {
+      width: '100%',
+      maxWidth: '400px !important',
+      top: '60px !important'
+    },
     '& .MuiMenuItem-root': {
       color: '#0076C8',
       fontSize: 14,
@@ -352,5 +377,74 @@ const useStyles = makeStyles((theme) => ({
       width: '100%',
       maxWidth: '400px !important'
     }
+  },
+  ChatList: {
+
+    transitionTimingFunction: ' ease-in',
+    transition: ' 0.2s',
+    // '&:hover': {
+    //   background: 'red',
+    //   padding: 17
+    // }
   }
 }));
+
+{/* <Dialog
+open={chatForm}
+className={classes.chatDialog}
+onClose={() => setChatForm(false)}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+{chat === 'Individual' &&
+  <DialogContent>
+
+    <CBox className={classes.chatbox}>
+      <ChatRoomSearch onChange={handleChatRoomSearch} />
+
+    </CBox>
+    <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
+      Frequently Contacted
+    </CBox>
+    {connections?.map?.((connection: any) => {
+      const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
+      return (
+        <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
+          <CBox>
+            <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
+          </CBox>
+          <CBox ml={1.6}>
+            <CBox fontSize={14} color='#000' fontWeight={600}>
+              {`${user?.firstName} ${user?.surName}`}
+            </CBox>
+            <CBox display='flex'>
+
+              <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
+                {user.companyName} &nbsp;
+
+              </CBox>
+            </CBox>
+          </CBox>
+        </CBox>
+
+      )
+
+    })}
+
+
+
+
+
+
+  </DialogContent>
+
+}
+<DialogActions>
+  <Button variant="contained" color='primary' disabled>
+    Start conversation
+  </Button>
+  <Button onClick={() => setChatForm(false)}>
+    Cancel
+  </Button>
+</DialogActions>
+</Dialog> */}
