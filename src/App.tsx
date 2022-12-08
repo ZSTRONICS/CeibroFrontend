@@ -85,7 +85,7 @@ const App: React.FC<MyApp> = () => {
             {
               const selectedChat = socket.getAppSelectedChat();
               const data = payload.data;
-
+              socket.getUnreadMsgCount(user.id);
               if (String(data.from) !== String(user?.id)) {
                 if (String(data.chat) === String(selectedChat)) {
                   dispatch({

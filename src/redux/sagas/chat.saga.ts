@@ -281,7 +281,6 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
     },
   });
 
-
   yield put({
     type: ROOM_MESSAGE_DATA,
     payload: roomData,
