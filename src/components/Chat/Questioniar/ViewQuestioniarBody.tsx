@@ -26,7 +26,7 @@ import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Switch from "@material-ui/core/Switch";
 import { useEffect, useState } from "react";
-import { dbUsers } from "../../Topbar/CreateChat";
+import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import { formatDate, removeCurrentUser } from "../../../helpers/chat.helpers";
 import { toast } from "react-toastify";
 import assets from "../../../assets/assets";

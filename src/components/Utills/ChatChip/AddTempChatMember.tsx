@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import SelectDropdown from "../Inputs/SelectDropdown";
-import { dbUsers } from "../../Topbar/CreateChat";
+import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 import {

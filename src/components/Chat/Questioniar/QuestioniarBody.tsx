@@ -22,7 +22,7 @@ import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
 import CreateQuestion from "../../Utills/Questioniar/Question.create";
 import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
 import { useEffect, useState } from "react";
-import { dbUsers } from "../../Topbar/CreateChat";
+import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import { PUSH_MESSAGE } from "../../../config/chat.config";
 import { toast } from "react-toastify";
 import {

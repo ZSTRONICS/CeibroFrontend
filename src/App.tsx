@@ -84,6 +84,7 @@ const App: React.FC<MyApp> = () => {
             {
               const selectedChat = socket.getAppSelectedChat();
               const data = payload.data;
+console.log('data', data);
 
               if (String(data.from) !== String(user?.id)) {
                 if (String(data.chat) === String(selectedChat)) {

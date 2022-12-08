@@ -10,8 +10,9 @@ import colors from "../../assets/colors";
 import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import { useMediaQuery } from "react-responsive";
 import { ArrowBack } from "@material-ui/icons";
-import CreateChat from "./CreateChat";
+import CreateChat from "./CreateIndividualChat";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import CreateChat2 from "./CreateChat2";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -127,7 +128,7 @@ const Title = () => {
             <div
               style={{ width: "100%", display: "flex", alignItems: "center" }}
             >
-              <CreateChat />
+              <CreateChat2 />
             </div>
           )}
         </>

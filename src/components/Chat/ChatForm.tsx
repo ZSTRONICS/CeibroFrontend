@@ -143,10 +143,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
-      payload.userId = user.id
+      // payload.userId = user.id
       
       const data = {
         eventType: SEND_MESSAGE,
+        userId: user.id,
         data: JSON.stringify(payload)
       }
 

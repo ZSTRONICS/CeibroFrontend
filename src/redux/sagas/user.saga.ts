@@ -36,6 +36,7 @@ const getMyConnections = apiCall({
   type: GET_MY_CONNECTIONS,
   method: 'get',
   path: '/users/connections',
+  
 })
 
 const deleteMyConnection = apiCall({
@@ -114,6 +115,7 @@ function* userSaga() {
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount)
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers)
   yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers)
+  
 }
 
 export default userSaga
