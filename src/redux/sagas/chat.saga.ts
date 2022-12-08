@@ -12,6 +12,7 @@ import {
   SEND_REPLY_MESSAGE,
   PIN_MESSAGE,
   GET_UNREAD_CHAT_COUNT,
+  GET_UNREAD_ROOM_MESSAGE_COUNT,
   GET_ROOM_MEDIA,
   ADD_MEMBERS_TO_CHAT,
   ADD_TEMP_MEMBERS_TO_CHAT,
@@ -36,6 +37,7 @@ import {
   CHAT_EVENT_REQ_OVER_SOCKET,
   UNREAD_MESSAGE_COUNT,
   REPLACE_MESSAGE_BY_ID,
+  ROOM_MESSAGE_DATA,
 } from "../../config/chat.config";
 import { SAVE_MESSAGES } from "../../config/chat.config";
 import apiCall from "../../utills/apiCall";
@@ -258,16 +260,31 @@ const createSingleRoom = apiCall({
 
 function* unreadMessagesCount(action: ActionInterface): Generator<any> {
   const { payload: { other }, } = action;
+  let totalCount = 0
+  let roomData: Map<String, {}>  = new Map()
+  other?.map((data: any) => {
+    for (var key of Object.keys(data)) {
+      totalCount += data[key].unreadMessageCount
+      roomData.set(String(key), data[key])
+   }});
+
   const oldRoutes: any = yield select(
     (state: RootState) => state.app.sidebarRoutes
   );
-  oldRoutes["Chat"].notification = other.count || 0;
+
+  oldRoutes["Chat"].notification = totalCount || 0;
 
   yield put({
     type: SET_SIDEBAR_CONFIG,
     payload: {
       ...oldRoutes,
     },
+  });
+
+
+  yield put({
+    type: ROOM_MESSAGE_DATA,
+    payload: roomData,
   });
 }
 
@@ -346,22 +363,33 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
 
 
 
-function* replaceMessageById(action: ActionInterface): Generator<any> {
+function* replaceMessagesById(action: ActionInterface): Generator<any> {
   const { payload: { other }, } = action;
   
 
-  const messages: any = yield select((state: RootState) => state.chat.messages);
+  const storeMsgs: any = yield select((state: RootState) => state.chat.messages);
+  
+  
+  other.messages.map((messages: any) => {
 
-  const index = messages?.findIndex((message: any) => {
-    return String(message?._id) === String(other.newMessage._id);
+     for (var key of Object.keys(messages)) {
+
+    const index = storeMsgs?.findIndex((message: any) => {
+      return String(message?._id) === String(key);
+    });
+  
+    if (index > -1) {
+      storeMsgs[index].readBy = [...messages[key]];
+    }
+  } 
+
   });
 
-  if (index > -1) {
-    messages[index] = other.newMessage;
-  }
+
+
   yield put({
     type: SAVE_MESSAGES,
-    payload: [...messages],
+    payload: [...storeMsgs],
   });
 }
 
@@ -412,23 +440,25 @@ function* getDownChatMessages(action: ActionInterface): Generator<any> {
 }
 
 function* chatSaga() {
+  // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
+  //yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
+  //yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
+  //yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
+  // yield takeEvery(SEND_REPLY_MESSAGE, sendReplyMessage);
+  //yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
+  //yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
+  // yield takeLatest(GET_DOWN_CHAT_MESSAGE, getDownChatMessages);
+
   yield takeLatest(GET_CHAT, getUserChatsByFilter);
   yield takeLatest(GET_CHAT_API, getAllChat);
   yield takeLatest(GET_MESSAGES, getRoomMessages);
   yield takeLatest(GET_UP_MESSAGES, getUpRoomMessages);
-  // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
-  yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
-  yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
   yield takeLatest(requestSuccess(DELETE_CONVERSATION), getAllChat);
-  yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
   yield takeLatest(MUTE_CHAT, muteChat);
   yield takeLatest(CREATE_SINGLE_ROOM, createSingleRoom);
   yield takeLatest(ADD_TO_FAVOURITE, addToFavourite);
-  yield takeEvery(SEND_REPLY_MESSAGE, sendReplyMessage);
   yield takeLatest(PIN_MESSAGE, pinMessage);
-  //yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
   yield takeLatest(GET_ROOM_MEDIA, getRoomMedia);
-  //yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);
   yield takeLatest(GET_UNREAD_CHAT_COUNT, unreadMessagesCount);
   yield takeLatest(ADD_MEMBERS_TO_CHAT, addMemberToChat);
   yield takeLatest(ADD_TEMP_MEMBERS_TO_CHAT, addTempMemberToChat);
@@ -438,10 +468,9 @@ function* chatSaga() {
   yield takeLatest(DELETE_CONVERSATION, deleteConversation);
   yield takeLatest(FORWARD_CHAT, forwardChat);
   yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
-  yield takeLatest(REPLACE_MESSAGE_BY_ID, replaceMessageById);
+  yield takeLatest(REPLACE_MESSAGE_BY_ID, replaceMessagesById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
   yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
-  yield takeLatest(GET_DOWN_CHAT_MESSAGE, getDownChatMessages);
   yield takeLatest(GET_PINNED_MESSAGES, getPinnedMessages);
   yield takeLatest(GET_ROOM_QUESTIONIAR, getRoomQuestioniar);
   yield takeLatest(EDIT_ROOM_NAME, editRoomName);

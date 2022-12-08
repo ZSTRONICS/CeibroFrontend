@@ -20,9 +20,10 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const { chat } = props;
 
-  const { name, lastMessage, unreadCount, lastMessageTime, project, } = chat;
+  const { name, unreadCount, lastMessageTime, lastMessage, project, } = chat;
 
   const { user } = useSelector((state: RootState) => state.auth);
+  
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
@@ -81,7 +82,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   };
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
-
+  const unreadLocalCount = unreadCount > 0 ? unreadCount : null
   return (
     <>
 
@@ -116,11 +117,11 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 className={classes.userName}
               >{`${individualFirstName} ${individualSurName}`}</Typography>
             )}
-            {unreadCount && unreadCount > 0 && (
+            
               <Typography className={classes.message}>
                 {lastMessage?.message?.substr(0, 22)}
               </Typography>
-            )}
+            
           </Grid>
 
           <Grid item xs={2} className={classes.timeOuterWrapper}>
@@ -131,14 +132,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 <StarBorder className={classes.bookmarked} />
               )}
             </div>
-            <div className={classes.timeWrapper}>
-              {unreadCount && unreadCount > 0 && (
-                <Badge
-                  overlap="circular"
-                  badgeContent={unreadCount}
-                  color="error"
-                ></Badge>
-              )}
+            <div className={classes.timeWrapper}>  
+            <Badge
+              overlap="circular"
+              badgeContent={unreadLocalCount}
+              color="error"
+            ></Badge>
+          
               <Typography className={classes.time}>{lastMessageTime}</Typography>
             </div>
           </Grid>

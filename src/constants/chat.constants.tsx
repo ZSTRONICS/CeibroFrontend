@@ -25,7 +25,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         companyName: 'Electrician',
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
-        myMessage: true,
+        myMessage: 'asdasd12312',
         _id: "",
         type: 'questioniar'
     },
