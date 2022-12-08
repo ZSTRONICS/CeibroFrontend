@@ -41,6 +41,7 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
     case requestSuccess(GET_MY_CONNECTIONS): {
+      console.log('GET_MY_CONNECTIONS', action.payload)
       return {
         ...state,
         myConnections: action.payload,

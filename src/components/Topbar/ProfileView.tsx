@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 
 // material
-import {Tooltip } from "@material-ui/core";
-import { Menu, IconButton, MenuItem, Typography,Box, Stack, Badge } from "@mui/material";
+import { Menu, IconButton, MenuItem, Typography,Box, Stack, Badge, Tooltip } from "@mui/material";
 
 // router-dom
 import { useHistory } from "react-router";
