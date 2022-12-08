@@ -153,11 +153,11 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
       const myId = String(new Date().valueOf());
       const newMessage = {
         sender: user,
-        time: "1 seconds ago",
+        time: "a few seconds ago",
         message: text,
         seen: true,
         type: "message",
-        myMessage: true,
+        myMessage: String(user.id),
         // id: myId,
         _id: myId,
       };
@@ -189,13 +189,12 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     }
     // bodyRef && bodyRef?.current?.scrollToEnd()
   }
-  const senderUserId = (sender?.id === user.id)
-
+  
   return (
      <>
       <Grid
         container
-        justifyContent={myMessage || senderUserId ? "flex-end" : "flex-start"}
+        justifyContent={myMessage === String(user.id) ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
         id={_id}
       >
