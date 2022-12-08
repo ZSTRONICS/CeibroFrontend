@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
+// @ts-nocheck
+
 import { Grid, makeStyles } from "@material-ui/core";
 import {  useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,8 +26,6 @@ interface ChatBodyInt {
 const areEqual = (prevProps: any, nextProps: any) => true;
 
 const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
-
-
 
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
@@ -64,18 +64,19 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
     }
   }, [selectedChat]);
 
-
   useEffect(() => {
 
     const chatBox: any = document.getElementById("chatBox")
 
+  //   if (chatBox) {
+  //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
+  // }
     if (chatBox && blockAutoDownScroll === true) {
       chatBox.scrollTop = chatBox.scrollHeight
     }
 
-
     if (chatBox) {
-      const currScrollPercentage = (chatBox?.scrollTop / chatBox.scrollHeight) * 100
+      const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
       if (currScrollPercentage >= 70) {
         chatBox.scrollTop = chatBox.scrollHeight
       } else {
@@ -91,11 +92,37 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   if (!selectedChat) {
     return <NoConversation />;
   }
+
+  function preventScroll(e:any){
+    e.preventDefault();
+    e.stopPropagation();
+    return false;
+}
+
+  function diableScroll(){
+    if(document){
+      document?.getElementsByClassName('.custom-scrollbar').addEventListener('scroll', preventScroll);
+      
+    }
+  }
+
+
+  function disableScrolling(){
+    const elem = document?.querySelector('.custom-scrollbar')
+    if(elem){
+      elem.style.overflowY = "hidden";
+      elem.scrollIntoView()
+    }
+}
+
+function enableScrolling(){
+    window.onscroll=function(){};
+}
+
   const handleScroll = (e: any) => {
     let chatBox = e.target;
-
-    const currScrollPercentage = (chatBox.scrollTop / chatBox.scrollHeight) * 100
-
+   
+    const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
 
     if (currScrollPercentage <= 70) {
       setBlockAutoDownScroll(false)
@@ -103,12 +130,12 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
       setBlockAutoDownScroll(true)
     }
 
-
-
-    if (chatBox.scrollTop === 0) {
-      // setUpMessagesState(true)
+    if (currScrollPercentage <= 0 ) {
+            // disableScrolling()
+      //setUpMessagesState(true)
       // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
+
     }
   }
 
@@ -134,7 +161,6 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
         }
         <AddTempChatMember />
       </Grid>
-
     </>
   );
 }, areEqual);
@@ -144,7 +170,7 @@ export default ChatBody;
 const useStyles = makeStyles({
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
-    overflowY: "auto",
+    overflowY: "scroll",
     height: '100%',
     display: "block",
     position: "relative",

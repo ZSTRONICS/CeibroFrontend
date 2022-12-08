@@ -31,7 +31,6 @@ import { RootState } from "./redux/reducers";
 import myStore from "redux/store";
 import {
   getAllChats,
-  setMessagesRead,
   updateMessageById,
   unreadMessagesCount,
   replaceMessageById,
@@ -128,7 +127,6 @@ const App: React.FC<MyApp> = () => {
           case UNREAD_MESSAGE_COUNT:
             {
               const count = payload.count;
-              console.log(count);
 
               dispatch(
                 unreadMessagesCount({ other: { count: count } })

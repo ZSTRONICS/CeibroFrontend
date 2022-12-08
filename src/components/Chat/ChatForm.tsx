@@ -159,7 +159,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         message: text,
         seen: true,
         type: "message",
-        myMessage: true,
+        myMessage: String(user.id),
         _id: myId,
         pinnedBy:[],
         chat: selectedChat,
@@ -176,6 +176,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setFilesPreview(null);
       setText("");
     }
+    // when new message send scroll to bottom
+    // const chatBox = document.getElementById('chatBox')
+    // if(chatBox){
+    //   chatBox.scrollTop = chatBox.scrollHeight
+    // }
   };
 
   const handleFileChange = (e: any) => {
@@ -241,7 +246,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           sender: user,
           time: "1 seconds ago",
           seen: true,
-          myMessage: true,
+          myMessage: String(user.id),
           replyOf: replyMessage,
           voiceUrl: blob.url,
           pinnedBy:[],

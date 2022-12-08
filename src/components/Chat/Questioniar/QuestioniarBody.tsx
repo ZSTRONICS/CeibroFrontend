@@ -105,7 +105,7 @@ const QuestioniarBody = () => {
         title,
         time: "1 seconds ago",
         seen: true,
-        myMessage: true,
+        myMessage: String(user.id),
         replyOf: null,
         id: myId,
       },

@@ -15,7 +15,7 @@ const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.iconWrapper}>
-        <img src={assets.searchIcon} className={`width-16`} />
+        <img src={assets.searchIcon} className={`width-16`} alt="search"/>
         <Typography className={classes.horizontalBreak}>|</Typography>
       </div>
       <div className={classes.inputWrapper}>

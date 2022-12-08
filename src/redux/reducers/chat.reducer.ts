@@ -70,7 +70,7 @@ interface ChatReducerInt {
   sender: any
   questioniarInfo: any
   viewport: any
-  allowScroll: boolean
+  lastMessageIdInChat: any
   upScrollLoading: boolean
   blockPagination: boolean
   mysocket: any
@@ -108,7 +108,7 @@ const intialStatue: ChatReducerInt = {
   sender: null,
   questioniarInfo: null,
   viewport: null,
-  allowScroll: false,
+  lastMessageIdInChat: null,
   upScrollLoading: false,
   blockPagination: false,
   mysocket: null,
@@ -185,7 +185,6 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case PUSH_MESSAGE: {
-      console.log("Message being pushed ", action.payload)
       return {
         ...state,
         messages: [...state.messages, action.payload],
@@ -275,9 +274,10 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_UP_MESSAGES): {
       return {
         ...state,
+        lastMessageIdInChat: state?.messages[0]?._id,
         messages: [...action.payload.message, ...state.messages],
         upScrollLoading: false,
-        allowScroll: true,
+      
       }
     }
 
@@ -305,7 +305,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case SET_ALLOW_SCROLL: {
       return {
         ...state,
-        allowScroll: action.payload,
+        // lastMessageIdInChat: action.payload,
       }
     }
 

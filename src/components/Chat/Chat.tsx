@@ -24,7 +24,8 @@ const Chat = () => {
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const { lastMessageIdInChat } = useSelector((state: RootState) => state.chat);
+const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMessageIdInChat)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const [messages, setMessage] = useState(CHAT_MESSAGE);
@@ -69,6 +70,15 @@ const Chat = () => {
     };
   }, [selectedChat]);
 
+  const scrollToMessage =()=>{
+    if(lastMessageIdInChat===null){
+      return
+    }
+  const elem = document.getElementById(lastMessageIdInChat);
+  elem?.scrollIntoView();
+  // setLastMessageIdInChatClear(null)
+}
+
   return (
     <>
       {/* right sidebar for chat actions */}
@@ -87,6 +97,7 @@ const Chat = () => {
           <ChatBody enable={enable} />
 
           <ChatForm enable={enable} />
+            {/* {scrollToMessage()} */}
         </Grid>
       </Grid>
     </>
@@ -94,8 +105,6 @@ const Chat = () => {
 };
 
 export default Chat;
-
-
 
 const useStyles = makeStyles({
   wrapper: {
