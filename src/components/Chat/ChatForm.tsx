@@ -143,10 +143,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
-
-
+      payload.userId = user.id
+      
       const data = {
-        userId: user.id,
         eventType: SEND_MESSAGE,
         data: JSON.stringify(payload)
       }
@@ -155,7 +154,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     
       const newMessage = {
         sender: user,
-        time: "1 seconds ago",
+        time: "a few seconds ago",
         message: text,
         seen: true,
         type: "message",
@@ -244,7 +243,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           type: "voice",
           username: user?.firstName + " " + user.surName,
           sender: user,
-          time: "1 seconds ago",
+          time: "a few seconds ago",
           seen: true,
           myMessage: String(user.id),
           replyOf: replyMessage,

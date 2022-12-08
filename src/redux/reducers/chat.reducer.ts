@@ -38,6 +38,7 @@ import {
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
+  ROOM_MESSAGE_DATA,
 } from '../../config/chat.config'
 
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
@@ -80,6 +81,7 @@ interface ChatReducerInt {
   createQuestioniarLoading: boolean
   blockDown: boolean
   isGroupChat: boolean
+  roomMessageData : any
 }
 
 const intialStatue: ChatReducerInt = {
@@ -117,6 +119,7 @@ const intialStatue: ChatReducerInt = {
   blockDown: false,
   roomQuestioniars: [],
   createQuestioniarLoading: false,
+  roomMessageData: null
 }
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -141,6 +144,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: false,
       }
     }
+
     case requestFail(CREATE_ROOM): {
       return {
         ...state,
@@ -155,6 +159,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: true,
       }
     }
+
     case requestSuccess(CREATE_SINGLE_ROOM): {
       return {
         ...state,
@@ -162,6 +167,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: false,
       }
     }
+
     case requestFail(CREATE_SINGLE_ROOM): {
       return {
         ...state,
@@ -299,6 +305,13 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         blockDown: action.payload,
+      }
+    }
+
+    case ROOM_MESSAGE_DATA: {
+      return {
+        ...state,
+        roomMessageData: action.payload
       }
     }
 

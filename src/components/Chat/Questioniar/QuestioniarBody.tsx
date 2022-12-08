@@ -103,7 +103,7 @@ const QuestioniarBody = () => {
         username: user?.firstName + " " + user?.surName,
         sender: user,
         title,
-        time: "1 seconds ago",
+        time: "a few seconds ago",
         seen: true,
         myMessage: String(user.id),
         replyOf: null,

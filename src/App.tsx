@@ -33,7 +33,8 @@ import {
   getAllChats,
   updateMessageById,
   unreadMessagesCount,
-  replaceMessageById,
+  replaceMessagesById,
+  unreadRoomMessagesCount,
 } from "redux/action/chat.action";
 import {
   CHAT_EVENT_REP_OVER_SOCKET,
@@ -92,8 +93,9 @@ const App: React.FC<MyApp> = () => {
                   });
                   socket.sendMessageSeen(user.id, selectedChat, data.message._id)
                 } else {
+                  
                   socket.getUnreadMsgCount(user.id);
-                  dispatch(getAllChats());
+                  //dispatch(getAllChats());
                 }
               } else if (String(data.chat) === String(selectedChat)) {
                 if (isMessageInStore(payload.myId)) {
@@ -120,29 +122,42 @@ const App: React.FC<MyApp> = () => {
 
           case REFRESH_CHAT:
             {
+              socket.getUnreadMsgCount(user.id);
               dispatch(getAllChats());
             }
             break;
 
           case UNREAD_MESSAGE_COUNT:
             {
-              const count = payload.count;
-
               dispatch(
-                unreadMessagesCount({ other: { count: count } })
+                unreadMessagesCount({ other: payload.data })
               );
             }
             break;
+          // case ROOM_MESSAGE_DATA:
+          //   {
+          //     const count = payload.count;
+          //     const roomId = payload.roomId;
+          //     const lastMessage = payload.lastMessage;
+          //     console.log(roomId, count, lastMessage);
+
+          //     dispatch(
+          //       unreadRoomMessagesCount({ other: { count , roomId, lastMessage } })
+          //     );
+          //   }
+          //   break;
 
           case MESSAGE_SEEN:
-            {  
+            {
               const selectedChat = socket.getAppSelectedChat();
               if (payload.roomId === selectedChat) {
-                if (payload.updatedMessage) {
+                if (payload.updatedMessage && payload.updatedMessage.length > 0 ) {
+                  const messages = payload.updatedMessage
+                  
                   dispatch(
-                    replaceMessageById({
+                    replaceMessagesById({
                       other: {
-                        newMessage: payload.updatedMessage,
+                        messages: messages,
                       },
                     })
                   );

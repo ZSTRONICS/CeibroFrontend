@@ -45,7 +45,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   useEffect(() => {
 
     if (selectedChat) {
-      socket.getUnreadMsgCount(user.id);
+      //socket.getUnreadMsgCount(user.id);
       
       dispatch(
         getRoomMessages({

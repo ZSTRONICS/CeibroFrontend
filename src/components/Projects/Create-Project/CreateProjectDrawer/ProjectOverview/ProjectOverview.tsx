@@ -60,7 +60,7 @@ const ProjectOverview = () => {
         },
       }
       dispatch(getAvailableUsers(payload))
-    });
+    }, []);
 
   const handleDateChange = (e: any) => {
     const date = e?.target?.value
