@@ -54,7 +54,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
             limit: 21,
           },
           success: () => {
-            setBlockAutoDownScroll(true)
+            //setBlockAutoDownScroll(true)
           }
         })
       );
