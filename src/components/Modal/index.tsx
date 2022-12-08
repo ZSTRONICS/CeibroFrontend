@@ -9,7 +9,7 @@ import {
   Button,
   Grid,
   Typography,
-  
+
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { Clear } from "@material-ui/icons";
@@ -20,15 +20,17 @@ interface Props {
   handleClose: () => void;
   title: string;
   children: any;
+  cancel: any;
+  create: any;
 }
 
-const CustomModal: React.FC<Props> = ({isOpen,handleClose, title, children}) => {
+const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, cancel, create }) => {
   const classes = useStyles()
-  
+
   return (
     <>
       <Dialog
-      fullWidth
+        fullWidth
         maxWidth="sm"
         open={isOpen}
         onClose={handleClose}
@@ -36,29 +38,21 @@ const CustomModal: React.FC<Props> = ({isOpen,handleClose, title, children}) => 
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
-            <Grid container className={classes.titleWraper}>
-                <Grid item>
-                <Typography variant="h6">{title}</Typography>
-                </Grid>
-                <Grid item>
-                <Clear  color="primary"/>
-                </Grid>
+          <Grid container className={classes.titleWraper}>
+            <Grid item>
+              <Typography variant="h6">{title}</Typography>
             </Grid>
-            </DialogTitle>
+            <Grid item>
+              <Clear color="primary" />
+            </Grid>
+          </Grid>
+        </DialogTitle>
         <DialogContent dividers>
           <DialogContentText>{children}</DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button variant="contained" size="medium" color="primary">
-            Start conversation
-          </Button>
-          <Button
-            variant="contained"
-            size="medium"
-            color="primary"
-          >
-            Create task
-          </Button>
+
+
         </DialogActions>
       </Dialog>
     </>
@@ -70,6 +64,8 @@ CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.element,
+  cancel: PropTypes.element,
+  create: PropTypes.element,
 };
 
 export default CustomModal;

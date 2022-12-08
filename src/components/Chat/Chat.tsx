@@ -34,7 +34,7 @@ const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMess
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
-  
+
   const [enable, setEnable] = useState(false);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMess
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
-          
+
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
@@ -93,7 +93,7 @@ const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMess
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
-          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} /> 
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody enable={enable} />
 
           <ChatForm enable={enable} />

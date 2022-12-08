@@ -1,8 +1,12 @@
 
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import { Cancel } from "@material-ui/icons";
+import React from "react";
+import { Avatar, Button, Divider, makeStyles, Typography } from "@material-ui/core";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import { CBox } from "components/material-ui";
+import CustomModal from "components/Modal";
 import { useEffect, useState } from "react";
-import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { removeCurrentUser } from "../../helpers/chat.helpers";
@@ -10,14 +14,22 @@ import { createChatRoom } from "../../redux/action/auth.action";
 import { getAllChats } from "../../redux/action/chat.action";
 import {
   getAllProjectMembers,
-  getAllProjects,
+  getAllProjects
 } from "../../redux/action/project.action";
 import { RootState } from "../../redux/reducers";
-import CustomCheckbox from "../Utills/Inputs/Checkbox";
-import SelectDropdown from "../Utills/Inputs/SelectDropdown";
-import Loading from "../Utills/Loader/Loading";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import TextField from "components/Utills/Inputs/TextField";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import ChatRoomSearch from "components/Chat/ChatRoomSearch";
+import image from "../../assets/images/user.png";
+import { getMyConnections } from 'redux/action/user.action'
+import { json } from "stream/consumers";
+import { UserInterface } from "constants/interfaces/user.interface";
+
 
 export let dbUsers = [
   {
@@ -41,6 +53,8 @@ export let dbUsers = [
     color: "green",
   },
 ];
+
+
 const CreateChat = () => {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
@@ -92,6 +106,38 @@ const CreateChat = () => {
   const removeSelectedUser = (userId: any) => {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleMenuOptions = () => {
+    setAnchorEl(null);
+  }
+
+  const [chat, setChat] = useState();
+  const [chatForm, setChatForm]: any = useState(false)
+  const [connections, setConnection] = useState<any>({})
+  const [loading, setLoading] = useState<boolean>(false)
+  const [chatOptions, setChatOptions] = useState<boolean>(true)
+
+
+  const handleChat = (method: string) => {
+    setChat(method);
+    setChatOptions(false)
+
+    // setChatForm(true)
+    // setAnchorEl(null);
+
+  }
+  const handleChatRoomSearch = (e: any) => {
+    dispatch(clearSelectedChat())
+    dispatch({
+      type: SET_CHAT_SEARCH,
+      payload: e?.target?.value,
+    })
+    dispatch(getAllChats())
+  }
 
   useEffect(() => {
     dispatch(getAllProjects());
@@ -124,142 +170,110 @@ const CreateChat = () => {
     dispatch(createChatRoom(payload));
   };
 
+  useEffect(() => {
+    const payload = {
+      success: (res: any) => {
+        setConnection(res?.data?.myConnections)
+      },
+      finallyAction: () => {
+        setLoading(false)
+      },
+    }
+    setLoading(true)
+    dispatch(getMyConnections(payload))
+  }, [])
+
   return (
     <div className="dropdown">
       <Button
         color="primary"
         variant="contained"
-        onClick={toggle}
+        onClick={handleClick}
         aria-controls="simple-menu"
         aria-haspopup="true"
       >
         New chat
       </Button>
-      {open && (
-        <OutsideClickHandler onOutsideClick={handleOutsideClick}>
-          <div
-            className={`dropdown-content ${classes.outerMenu}`}
-            id="dropdownContent"
-          >
-            <Grid container>
-              <Grid item xs={12}>
-                <TextField
-                  type="text"
-                  value={name}
-                  onChange={(e: any) => setName(e.target.value)}
-                  className={`${classes.searchInput} emptyBorder`}
-                  placeholder="Enter chat name"
-                />
-              </Grid>
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={openMenu}
+        onClose={handleMenuOptions}
+        className={classes.selectChat}
+        MenuListProps={{
+          "aria-labelledby": "basic-button"
+        }}
+      >
+        {chatOptions ?
+          <>
+            <MenuItem onClick={() => handleChat('Individual')}>Individual Chat</MenuItem>
+            <Divider />
+            <MenuItem onClick={() => handleChat('group')}>Group Chat</MenuItem>
+          </>
+          :
+          <>
+            {chat === 'Individual' &&
+              <CBox padding={3.1}>
 
-              <Grid item xs={12} style={{ zIndex: 3, paddingTop: 10 }}>
-                <SelectDropdown
-                  title="Project"
-                  placeholder="Please select a project"
-                  data={allProjects}
-                  value={project}
-                  handleChange={handleProjectChange}
-                />
-              </Grid>
-              {projectMembers?.length > 0 && (
-                <Grid
-                  item
-                  xs={12}
-                  style={{ paddingTop: 10 }}
-                  className={classes.suggestUser}
-                >
-                  <Grid container>
-                    {projectMembers?.map((member: any) => {
-                      if (!users?.includes?.(String(member?.user?.id)))
-                        return null;
+                <CBox className={classes.chatbox}>
+                  <ChatRoomSearch onChange={handleChatRoomSearch} />
 
-                      return (
-                        <Grid
-                          item
-                          xs={4}
-                          md={2}
-                          className={classes.selectedUser}
-                        >
-                          <NameAvatar
-                            firstName={member?.user?.firstName}
-                            surName={member?.user?.surName}
-                            url={member?.user?.profilePic}
-                          />
-                          <Cancel
-                            onClick={() => removeSelectedUser(member.id)}
-                            className={classes.cancelIcon}
-                          />
-                        </Grid>
-                      );
-                    })}
-                  </Grid>
+                </CBox>
+                <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
+                  Frequently Contacted
+                </CBox>
+                {connections?.map?.((connection: any) => {
+                  const user: UserInterface = connection?.sentByMe ? connection.to : connection.from;
 
-                  <Typography className={classes.suggestedUsersTitle}>
-                    Suggested users/groups
-                  </Typography>
+                  return (
+                    <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
+                      <CBox>
+                        <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
+                      </CBox>
+                      <CBox ml={1.6}>
+                        <CBox fontSize={14} color='#000' fontWeight={600}>
+                          {`${user?.firstName} ${user?.surName}`}
+                        </CBox>
+                        <CBox display='flex'>
 
-                  <Grid container>
-                    {projectMembers?.map((member: any, index: number) => {
-                      return (
-                        <Grid container className={classes.wrapper}>
-                          <Grid item xs={2}>
-                            <NameAvatar
-                              firstName={member?.user?.firstName}
-                              surName={member?.user?.surName}
-                              url={member?.user?.profilePic}
-                            />
-                          </Grid>
-                          <Grid item xs={8}>
-                            <div>
-                              <Typography className={classes.titleText}>
-                                {member?.user?.firstName}{" "}
-                                {member?.user?.surName}
-                              </Typography>
-                              <Typography className={classes.subTitleText}>
-                                {member?.role?.name} . {member?.group?.name}
-                              </Typography>
-                            </div>
-                          </Grid>
+                          <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
+                            {user.companyName} &nbsp;
 
-                          <Grid item xs={2}>
-                            <CustomCheckbox
-                              onClick={handleUserChange}
-                              value={member?.user?.id}
-                              name={"s"}
-                              checked={users?.includes?.(member?.user?.id)}
-                            />
-                          </Grid>
-                        </Grid>
-                      );
-                    })}
-                  </Grid>
-                </Grid>
-              )}
+                          </CBox>
+                        </CBox>
+                      </CBox>
+                    </CBox>
 
-              <Grid item xs={12} style={{ paddingTop: 20 }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                  disabled={!project || user?.length < 1}
-                >
-                  {createChatLoading ? (
-                    <Loading type="spin" color="white" height={24} width={24} />
-                  ) : (
-                    "Start conversation"
-                  )}
-                </Button>
-                <Button onClick={handleOutsideClick}>Cancel</Button>
-              </Grid>
-            </Grid>
-          </div>
-        </OutsideClickHandler>
-      )}
+
+                  )
+
+                })}
+                <CBox display='flex' justifyContent='flex-end'>
+                  <Button variant="contained" color='primary' disabled>
+                    Start conversation
+                  </Button>
+                  <Button onClick={() => setChatOptions(true)}>
+                    Cancel
+                  </Button>
+                </CBox>
+              </CBox>
+            }
+          </>
+
+        }
+
+      </Menu>
+      {/* individual chat dialog */}
+
+
+
     </div>
+
   );
 };
 
 export default CreateChat;
+
 
 const useStyles = makeStyles((theme) => ({
   small: {
@@ -336,4 +350,101 @@ const useStyles = makeStyles((theme) => ({
     top: -5,
     right: 5,
   },
+  selectChat: {
+    '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper': {
+      width: '100%',
+      maxWidth: '400px !important',
+      top: '60px !important'
+    },
+    '& .MuiMenuItem-root': {
+      color: '#0076C8',
+      fontSize: 14,
+      fontWeight: 600,
+      fontFamily: 'Inter'
+    }
+  },
+  chatbox: {
+    border: '1px solid #DBDBE5',
+    borderRadius: 4,
+    '& .MuiAvatar-root': {
+      borderRadius: '5px !important',
+      height: '40 !important',
+      weight: '40 !important'
+    }
+  },
+  chatDialog: {
+    '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
+      width: '100%',
+      maxWidth: '400px !important'
+    }
+  },
+  ChatList: {
+
+    transitionTimingFunction: ' ease-in',
+    transition: ' 0.2s',
+    // '&:hover': {
+    //   background: 'red',
+    //   padding: 17
+    // }
+  }
 }));
+
+{/* <Dialog
+open={chatForm}
+className={classes.chatDialog}
+onClose={() => setChatForm(false)}
+aria-labelledby="alert-dialog-title"
+aria-describedby="alert-dialog-description"
+>
+{chat === 'Individual' &&
+  <DialogContent>
+
+    <CBox className={classes.chatbox}>
+      <ChatRoomSearch onChange={handleChatRoomSearch} />
+
+    </CBox>
+    <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
+      Frequently Contacted
+    </CBox>
+    {connections?.map?.((connection: any) => {
+      const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
+      return (
+        <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
+          <CBox>
+            <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
+          </CBox>
+          <CBox ml={1.6}>
+            <CBox fontSize={14} color='#000' fontWeight={600}>
+              {`${user?.firstName} ${user?.surName}`}
+            </CBox>
+            <CBox display='flex'>
+
+              <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
+                {user.companyName} &nbsp;
+
+              </CBox>
+            </CBox>
+          </CBox>
+        </CBox>
+
+      )
+
+    })}
+
+
+
+
+
+
+  </DialogContent>
+
+}
+<DialogActions>
+  <Button variant="contained" color='primary' disabled>
+    Start conversation
+  </Button>
+  <Button onClick={() => setChatForm(false)}>
+    Cancel
+  </Button>
+</DialogActions>
+</Dialog> */}

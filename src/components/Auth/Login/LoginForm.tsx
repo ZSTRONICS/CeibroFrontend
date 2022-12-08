@@ -346,7 +346,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
-                  disabled={checkValidInputs(values) || loginLoading}
+                // disabled={checkValidInputs(values) || loginLoading}
                 >
                   {loginLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />
