@@ -31,7 +31,6 @@ import { RootState } from "./redux/reducers";
 import myStore from "redux/store";
 import {
   getAllChats,
-  setMessagesRead,
   updateMessageById,
   unreadMessagesCount,
   replaceMessagesById,

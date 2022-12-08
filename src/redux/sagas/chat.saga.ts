@@ -294,7 +294,6 @@ function* goToMessage(action: ActionInterface): Generator<any> {
     const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
       return {...acc, [name]: elem?.getAttribute(name)};
     }, {});
-    console.log('elem', attrs?.class)
 
     let newStyle = String(attrs?.class) + " chatReplyBox"
     elem?.setAttribute("class", newStyle);

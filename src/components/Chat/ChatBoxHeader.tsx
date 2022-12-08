@@ -114,6 +114,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                             setName(myChat.name);
                           }}
                           className={classes.editIcon}
+                          alt=""
                         />
                         {/* <img
                       src={assets.EditIcon}

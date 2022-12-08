@@ -175,6 +175,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setFilesPreview(null);
       setText("");
     }
+    // when new message send scroll to bottom
+    // const chatBox = document.getElementById('chatBox')
+    // if(chatBox){
+    //   chatBox.scrollTop = chatBox.scrollHeight
+    // }
   };
 
   const handleFileChange = (e: any) => {

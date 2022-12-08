@@ -36,7 +36,7 @@ const ChatList = () => {
         },
       })
     );
-  }, [type, favouriteFilter]);
+  }, [type]);
 
   const handleClick = (chat: any) => {
     if (String(chat?._id) !== String(selectedChat)) {

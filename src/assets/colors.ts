@@ -5,11 +5,20 @@ const colors = {
   lightPurpuple: "rgb(122, 177, 251)",
   secondaryBlue: "rgb(0, 82, 204)",
   lightSkyBlue: "#81bbe3",
+  
+  replyYellow: '#F1B740',
+  senderBox: '#fffefdba',
+  senderBoxBorder: '#F8DCA2',
+  receiverBoxBg: '#F8FCFF',
+  receiverBoxTitle: '#0076C8',
+  receiverBoxBorder: '#0076c87a',
+  senderBoxTitle: '#F1B740',
+  senderNameColor: '',
+  receiverNameColor: '',
 
   white: "rgb(255, 255, 255)",
   black: "black",
   lightBlack: "rgb(125, 126, 128)",
-
   lightGrey: "#F5F7F8",
   lightGreySecondary: "rgb(213, 213, 213)",
   ternaryGrey: "#D3D4D9",
