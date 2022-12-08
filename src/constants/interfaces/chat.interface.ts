@@ -20,7 +20,7 @@ export interface ChatListInterface {
   name: string;
   username?: string;
   lastMessage?: any;
-  unreadCount?: number;
+  unreadCount: any;
   lastMessageTime?: string;
   _id: string;
   project?: any;
@@ -40,7 +40,7 @@ export interface ChatMessageInterface {
   companyName: string;
   message: string;
   seen: boolean;
-  myMessage: boolean;
+  myMessage: string;
   files?: any;
   replyOf?: any;
   _id: any;

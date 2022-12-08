@@ -13,7 +13,7 @@ const ChatList = () => {
     (state: RootState) => state.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const { roomMessageData } = useSelector((state: RootState) => state.chat);
   //   const members = selectedChat
   //   ? chat.find((room: any) => String(room._id) == String(selectedChat))
   //       ?.members
@@ -23,8 +23,8 @@ const ChatList = () => {
     dispatch(
       getAllChats({
         success: (_res: any) => {
-         socket.getUnreadMsgCount(user.id)
-          
+          socket.getUnreadMsgCount(user.id)
+
           if (_res?.data?.userallchat.length > 0) {
 
             if (_res?.data?.userallchat[0]._id) {
@@ -40,7 +40,6 @@ const ChatList = () => {
 
   const handleClick = (chat: any) => {
     if (String(chat?._id) !== String(selectedChat)) {
-     // socket.joinChatRoom(user.id, chat._id)
       dispatch(setSelectedChat({ other: chat._id }));
     }
   };
@@ -48,14 +47,27 @@ const ChatList = () => {
   return (
     <Grid container>
       {chat &&
-        chat.map((chat: ChatListInterface, index: number) => {
-          const chatMembers = [...chat.members, ...chat.removedMembers];
-          if (chatMembers?.findIndex((item: any) => item?.id === user?.id) > -1) {
-            return (
-              <ChatListChip handleClick={handleClick} chat={chat} key={index} />
-            );
-          } else {
-            return null;
+        chat?.map((localChat: ChatListInterface, index: number) => {
+          try {
+            const chatMembers = [...localChat.members, ...localChat.removedMembers];
+            if ('unreadCount' in localChat && roomMessageData != null) {
+              console.log(roomMessageData,  localChat._id);
+              
+              if (roomMessageData.has(localChat._id)) {
+                localChat.unreadCount = roomMessageData.get(localChat._id).unreadMessageCount
+              }
+            }
+
+            if (chatMembers?.findIndex((item: any) => item?.id === user?.id) > -1) {
+              return (
+
+                <ChatListChip handleClick={handleClick} chat={localChat} key={index} />
+              );
+            } else {
+              return null;
+            }
+          } catch (e: any) {
+            console.log("Erros is ", e);
           }
         })}
     </Grid>
