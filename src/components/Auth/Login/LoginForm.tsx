@@ -9,18 +9,13 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // material
-import {
-  Button,
+import { Box,   Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   IconButton,
   InputAdornment,
-  OutlinedInput,
   Typography,
-  Grid,
-  Box,
-} from "@material-ui/core";
+  Grid, } from '@mui/material';
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
@@ -141,7 +136,7 @@ const LoginForm: React.FC<Props> = (props) => {
     history.push("/forgot-password");
   };
 
-  return (
+  return (<>
     <div>
       <Box>
         <Box className={classes.logoWrapper}>
@@ -369,6 +364,7 @@ const LoginForm: React.FC<Props> = (props) => {
         </Formik>
       </Box>
     </div>
+    </>
   );
 };
 
