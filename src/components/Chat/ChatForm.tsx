@@ -143,11 +143,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
-      payload.userId = user.id
+      // payload.userId = user.id
       
       const data = {
         eventType: SEND_MESSAGE,
-        data: JSON.stringify(payload)
+        data: {
+          userId: user.id,
+          message: JSON.stringify(payload),
+        }
       }
 
       socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
@@ -175,6 +178,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setFilesPreview(null);
       setText("");
     }
+    // when new message send scroll to bottom
+    // const chatBox = document.getElementById('chatBox')
+    // if(chatBox){
+    //   chatBox.scrollTop = chatBox.scrollHeight
+    // }
   };
 
   const handleFileChange = (e: any) => {

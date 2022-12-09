@@ -31,7 +31,6 @@ import { RootState } from "./redux/reducers";
 import myStore from "redux/store";
 import {
   getAllChats,
-  setMessagesRead,
   updateMessageById,
   unreadMessagesCount,
   replaceMessagesById,
@@ -85,7 +84,7 @@ const App: React.FC<MyApp> = () => {
             {
               const selectedChat = socket.getAppSelectedChat();
               const data = payload.data;
-
+              socket.getUnreadMsgCount(user.id);
               if (String(data.from) !== String(user?.id)) {
                 if (String(data.chat) === String(selectedChat)) {
                   dispatch({
@@ -140,7 +139,6 @@ const App: React.FC<MyApp> = () => {
           //     const count = payload.count;
           //     const roomId = payload.roomId;
           //     const lastMessage = payload.lastMessage;
-          //     console.log(roomId, count, lastMessage);
 
           //     dispatch(
           //       unreadRoomMessagesCount({ other: { count , roomId, lastMessage } })

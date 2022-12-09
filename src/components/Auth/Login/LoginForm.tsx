@@ -40,6 +40,7 @@ import Loading from "react-loading";
 import assets from "assets/assets";
 import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
+import { perisitStoreState } from "redux/store";
 
 
 interface Props {
@@ -72,44 +73,48 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
-    const { email, password } = values;
-    const payload = {
-      body: {
-        email,
-        password,
-      },
-      success: (_res: any) => {
-        toast.success(`${t("auth.loggedin_Successfully")}`);
-      },
-      onFailAction: (err: any) => {
-        if (err.response.data.code === 401) {
-          if ((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)) {
-            const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
-            setTimer(remainingTime)
-            setIncorrectAuth(true);
-          } else {
-            setIncorrectEmail(true)
+      const { email, password } = values;
+      const payload = {
+        body: {
+          email,
+          password,
+        },
+        success: (_res: any) => {
+          toast.success(`${t("auth.loggedin_Successfully")}`);
+        },
+        onFailAction: (err: any) => {
+          if (err.response.data.code === 401) {
+            if ((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)) {
+              const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+              setTimer(remainingTime)
+              setIncorrectAuth(true);
+            } else {
+              setIncorrectEmail(true)
+            }
+  
+          } else if (err.response.data.code === 423) {
+            const timer = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+            setTimer(timer)
+            setLockError(true);
+          } else if (err) {
+            setVerifyError(true);
+          }  else{
+            // removed stored state 
+            perisitStoreState()
           }
+          
 
-        } else if (err.response.data.code === 423) {
-          const timer = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
-          setTimer(timer)
-          setLockError(true);
-        } else if (err) {
-          setVerifyError(true);
-        }
-
-        setTimeout(() => {
-          setLockError(false);
-          setVerifyError(false);
-          setIncorrectAuth(false);
-          setIncorrectEmail(false)
-
-        }, 10000);
-      },
-      showErrorToast: true,
-    };
-    dispatch(loginRequest(payload));
+          setTimeout(() => {
+            setLockError(false);
+            setVerifyError(false);
+            setIncorrectAuth(false);
+            setIncorrectEmail(false)
+  
+          }, 10000);
+        },
+        showErrorToast: true,
+      };
+      dispatch(loginRequest(payload));
   };
 
   const checkValidInputs = (values: any) => {
@@ -341,7 +346,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
-                  disabled={checkValidInputs(values) || loginLoading}
+                // disabled={checkValidInputs(values) || loginLoading}
                 >
                   {loginLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />

@@ -26,4 +26,13 @@ let persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 const myStore = { store, persistor };
+
+// remove the saved data in LocalStorage
+export function perisitStoreState(){
+  persistor.purge()
+}
+
+if(window.location.pathname==='/login'){  
+  perisitStoreState()
+}
 export default myStore;

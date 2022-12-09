@@ -59,7 +59,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
             {show && (
                 <OutsideClickHandler onOutsideClick={handleToggle}>
                     <div className={`dropdown-content ${classes.dropdownContent}`}>
-                        {(!message.replyOf || String(message.myMessage) != String(user.id)) && (
+                        {(!message.replyOf || String(message.myMessage) !== (user.id)) && (
                             <div className={`${classes.menuWrapper} dropdown-menu `} onClick={handleClick}>
                                 <BsArrow90DegLeft className={classes.menuIcon} />
                                 <Typography className={classes.menuText}>

@@ -24,7 +24,8 @@ const Chat = () => {
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const { lastMessageIdInChat } = useSelector((state: RootState) => state.chat);
+const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMessageIdInChat)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const [messages, setMessage] = useState(CHAT_MESSAGE);
@@ -33,7 +34,7 @@ const Chat = () => {
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
-  
+
   const [enable, setEnable] = useState(false);
 
   useEffect(() => {
@@ -53,7 +54,7 @@ const Chat = () => {
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
-          
+
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
@@ -69,6 +70,15 @@ const Chat = () => {
     };
   }, [selectedChat]);
 
+  const scrollToMessage =()=>{
+    if(lastMessageIdInChat===null){
+      return
+    }
+  const elem = document.getElementById(lastMessageIdInChat);
+  elem?.scrollIntoView();
+  // setLastMessageIdInChatClear(null)
+}
+
   return (
     <>
       {/* right sidebar for chat actions */}
@@ -83,10 +93,11 @@ const Chat = () => {
           md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{ background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
         >
-          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} /> 
+          <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody enable={enable} />
 
           <ChatForm enable={enable} />
+            {/* {scrollToMessage()} */}
         </Grid>
       </Grid>
     </>
@@ -94,8 +105,6 @@ const Chat = () => {
 };
 
 export default Chat;
-
-
 
 const useStyles = makeStyles({
   wrapper: {

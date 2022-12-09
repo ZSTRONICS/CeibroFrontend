@@ -7,6 +7,7 @@ import {
 } from "../../utills/status";
 import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
 import { UserInterface } from "constants/interfaces/user.interface";
+import { perisitStoreState } from "redux/store";
 
 interface authInterface {
   isLoggedIn: boolean;
@@ -37,6 +38,18 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         loginLoading: true,
       };
     }
+    case requestFail(LOGIN): {
+      localStorage.clear();
+      sessionStorage.clear();
+      perisitStoreState()
+      setTimeout(() => {
+        state.loginLoading = false
+      }, 10000 / 2);
+      return {
+        ...state,
+        loginLoading: false,
+      };
+    }
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
@@ -48,17 +61,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case requestFail(LOGIN): {
-      localStorage.clear();
-      sessionStorage.clear();
-      setTimeout(() => {
-        state.loginLoading = false
-      }, 10000 / 2);
-      return {
-        ...state,
-        loginLoading: false,
-      };
-    }
+
 
     case requestPending(REGISTER): {
       setTimeout(() => {

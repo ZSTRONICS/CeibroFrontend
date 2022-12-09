@@ -378,28 +378,33 @@ button[disabled]{
 
 .chatReplyBox :nth-child(1) >div{
   background: #cde4f4 !important;
-  -webkit-animation: fadeIn 1s;
-  animation: fadeOut 1s;
-
-  /* transform: scale(0.5) translate(-100%, -100%); */
-  /* animation: popup 0.3s; */
-
+  animation: fade 5s linear;
+  -webkit-animation: fade 5s linear;
+   -moz-animation: fadeIn 5s;
+  -o-animation: fadeIn 5s;
+  -ms-animation: fadeIn 5s; 
 }
-/* .new2{
-  margin-left: 15px;
-} */
 
 /* Add animation (fade in the popup) */
-@-webkit-keyframes fadeOut {
-  from {opacity: 0;} 
-  to {opacity: 1;}
+@keyframes fade {
+  0%,100%{ opacity: 1; }
+  100% { opacity: 1; }
 }
 
-@keyframes fadeOut {
-  from {opacity: 0;}
-  to {opacity:1 ;}
+@-webkit-keyframes fade {
+  0%,100%{ opacity: 1; }
+  100% { opacity: 1; }
 }
-@keyframes popup {
+@-ms-keyframes fade {
+  0%,100%{ opacity: 1; }
+  100% { opacity: 1; }
+}
+@-o-keyframes fade {
+  0%,100%{ opacity: 1; }
+  100% { opacity: 1; }
+}
+
+/* @keyframes popup {
   0%{
     transform: scale(1);
   }
@@ -421,4 +426,4 @@ button[disabled]{
   100%{
     transform: scale(1);
   }
-}
+} */
