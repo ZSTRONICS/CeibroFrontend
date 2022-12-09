@@ -31,11 +31,11 @@ import { toast } from "react-toastify";
 // component
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 import colors from "assets/colors";
-import ReactLoading from "react-loading";
 import assets from "assets/assets";
 import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
 import { perisitStoreState } from "redux/store";
+import Loading from "components/Utills/Loader/Loading";
 
 
 interface Props {
@@ -344,7 +344,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 // disabled={checkValidInputs(values) || loginLoading}
                 >
                   {loginLoading ? (
-                    <ReactLoading type="spin" color="white" height={14} width={14} />
+                    <Loading type="spin" color="white" height={14} width={14} />
                   ) : (
                     t("auth.login")
                   )}
