@@ -3,21 +3,19 @@
 // @ts-nocheck
 
 import { Grid, makeStyles } from "@material-ui/core";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {
   getRoomMessages,
-  getUpMessages,
-
+  getUpMessages
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
-import MessageChat from "../Utills/ChatChip/MessageChat";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
+import MessageChat from "../Utills/ChatChip/MessageChat";
 
-import NoConversation from "./NoConversation";
 import React from "react";
-import { socket } from "services/socket.services";
+import NoConversation from "./NoConversation";
 
 interface ChatBodyInt {
   enable: boolean
@@ -35,7 +33,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   const dispatch = useDispatch();
 
   const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
-  const { user } = useSelector((store: RootState) => store.auth);
+  // const { user } = useSelector((store: RootState) => store.auth);
  
 
   //API call to get messages of Selected-ROOM
@@ -93,31 +91,31 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
     return <NoConversation />;
   }
 
-  function preventScroll(e:any){
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-}
+//   function preventScroll(e:any){
+//     e.preventDefault();
+//     e.stopPropagation();
+//     return false;
+// }
 
-  function diableScroll(){
-    if(document){
-      document?.getElementsByClassName('.custom-scrollbar').addEventListener('scroll', preventScroll);
+  // function diableScroll(){
+  //   if(document){
+  //     document?.getElementsByClassName('.custom-scrollbar').addEventListener('scroll', preventScroll);
       
-    }
-  }
+  //   }
+  // }
 
 
-  function disableScrolling(){
-    const elem = document?.querySelector('.custom-scrollbar')
-    if(elem){
-      elem.style.overflowY = "hidden";
-      elem.scrollIntoView()
-    }
-}
+//   function disableScrolling(){
+//     const elem = document?.querySelector('.custom-scrollbar')
+//     if(elem){
+//       elem.style.overflowY = "hidden";
+//       elem.scrollIntoView()
+//     }
+// }
 
-function enableScrolling(){
-    window.onscroll=function(){};
-}
+// function enableScrolling(){
+//     window.onscroll=function(){};
+// }
 
   const handleScroll = (e: any) => {
     let chatBox = e.target;

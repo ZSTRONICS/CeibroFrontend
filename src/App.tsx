@@ -139,7 +139,6 @@ const App: React.FC<MyApp> = () => {
           //     const count = payload.count;
           //     const roomId = payload.roomId;
           //     const lastMessage = payload.lastMessage;
-          //     console.log(roomId, count, lastMessage);
 
           //     dispatch(
           //       unreadRoomMessagesCount({ other: { count , roomId, lastMessage } })

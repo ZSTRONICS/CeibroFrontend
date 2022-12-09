@@ -1,26 +1,22 @@
-import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
-import colors from "../../../assets/colors";
-import SelectDropdown from "../Inputs/SelectDropdown";
-import { dbUsers } from "../../Topbar/CreateIndividualChat";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
-import {
-  addTempMemberToChat,
-  setMembersDialog,
-  setTempMembersDialog,
-} from "../../../redux/action/chat.action";
-import { toast } from "react-toastify";
-import { getAllChats } from "../../../redux/action/chat.action";
 import { mapUsers } from "helpers/user.helper";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { getAvailableChatUsers } from "redux/action/user.action";
+import colors from "../../../assets/colors";
+import {
+  addTempMemberToChat, getAllChats, setTempMembersDialog
+} from "../../../redux/action/chat.action";
+import { RootState } from "../../../redux/reducers";
+import SelectDropdown from "../Inputs/SelectDropdown";
 
 interface AddChatMemberProps {}
 

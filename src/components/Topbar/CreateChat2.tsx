@@ -37,7 +37,6 @@ function CreateChat2() {
     setOpenIndividualChat((prev) => !prev);
     setAnchorElUser(null);
   };
-  console.log(openGroupChat)
 
   return (
     <>

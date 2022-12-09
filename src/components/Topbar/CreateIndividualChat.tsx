@@ -1,23 +1,19 @@
-import React, { useEffect, useState }  from 'react'
+import { useEffect, useState } from 'react';
 
 // material
-import { Avatar, Button, Divider, makeStyles, Typography } from "@material-ui/core";
-import {List,ListItemText, ListItem , Menu, MenuItem} from '@mui/material'
+import { Avatar, Button, makeStyles } from "@material-ui/core";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { removeCurrentUser } from "../../helpers/chat.helpers";
-import { createChatRoom } from "../../redux/action/auth.action";
+import { useDispatch } from "react-redux";
 import { clearSelectedChat, getAllChats } from "../../redux/action/chat.action";
 
 // components
-import { CBox } from "components/material-ui";
-import CustomModal from "components/Modal";
-import colors from "../../assets/colors";
 import ChatRoomSearch from 'components/Chat/ChatRoomSearch';
+import { CBox } from "components/material-ui";
+import { SET_CHAT_SEARCH } from 'config/chat.config';
 import { UserInterface } from 'constants/interfaces/user.interface';
 import { getMyConnections } from 'redux/action/user.action';
-import { SET_CHAT_SEARCH } from 'config/chat.config';
+import colors from "../../assets/colors";
 
 const CreateIndividualChat =(props:any) => {
     const {individualChat}= props

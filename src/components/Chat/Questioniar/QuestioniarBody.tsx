@@ -1,38 +1,36 @@
 import {
-  Button,
-  Divider,
-  Grid,
+  Button, Grid,
   makeStyles,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import IosSwitchMaterialUi from "ios-switch-material-ui";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import colors from "../../../assets/colors";
+import { PUSH_MESSAGE } from "../../../config/chat.config";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
+import {
+  getDate,
+  removeCurrentUser,
+  validateQuestions
+} from "../../../helpers/chat.helpers";
 import {
   closeQuestioniarDrawer,
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById,
+  updateMessageById
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
+import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
-import CreateQuestion from "../../Utills/Questioniar/Question.create";
-import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
-import { useEffect, useState } from "react";
-import { dbUsers } from "../../Topbar/CreateIndividualChat";
-import { PUSH_MESSAGE } from "../../../config/chat.config";
-import { toast } from "react-toastify";
-import {
-  getDate,
-  removeCurrentUser,
-  validateQuestions,
-} from "../../../helpers/chat.helpers";
-import IosSwitchMaterialUi from "ios-switch-material-ui";
-import Loading from "../../Utills/Loader/Loading";
 import TextField from "../../Utills/Inputs/TextField";
+import Loading from "../../Utills/Loader/Loading";
+import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
+import CreateQuestion from "../../Utills/Questioniar/Question.create";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
@@ -42,7 +40,7 @@ const QuestioniarBody = () => {
   /////
   // const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
   const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+    ? chat.find((room: any) => String(room._id) === String(selectedChat))
         ?.members
     : [];
   ////
@@ -60,7 +58,7 @@ const QuestioniarBody = () => {
   const isValidated = validateQuestions(questioniars);
   const [values, setValue] = useState();
   const [title, setTitle] = useState("");
-  const [listOfMembers, setListOfMembers] = useState<any>();
+  // const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
     setValue(removeCurrentUser(dbUsers, user?.id));
@@ -105,7 +103,7 @@ const QuestioniarBody = () => {
         title,
         time: "a few seconds ago",
         seen: true,
-        myMessage: String(user.id),
+        myMessage: user.id,
         replyOf: null,
         id: myId,
       },

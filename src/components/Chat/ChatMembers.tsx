@@ -23,6 +23,7 @@ import { getUserById } from "redux/action/user.action";
 interface Props{
   enable:boolean
 }
+
 const ChatMembers:React.FC<Props> = ({enable}) => {
   const classes = useStyles();
   const history = useHistory();
