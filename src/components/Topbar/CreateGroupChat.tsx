@@ -93,10 +93,10 @@ function CreateGroupChat(props:any) {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
 
-  useEffect(() => {
-    dispatch(getAllProjects());
-    setUsers([]);
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllProjects());
+  //   setUsers([]);
+  // }, []);
 
   useEffect(() => {
     if (openGroupChat) {
