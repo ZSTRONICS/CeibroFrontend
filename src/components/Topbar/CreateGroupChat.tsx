@@ -54,7 +54,8 @@ export let dbUsers = [
   ];
 
 function CreateGroupChat(props:any) {
-    const {openGroupChat, handleOutsideClick} = props
+    const {openGroupChat, handleOutsideClick,
+      setAnchorElUser} = props
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -118,6 +119,7 @@ function CreateGroupChat(props:any) {
         setProject(null);
         setUser(null);
         handleOutsideClick();
+        setAnchorElUser(null)
         dispatch(getAllChats());
       },
     };

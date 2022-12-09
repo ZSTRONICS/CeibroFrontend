@@ -107,11 +107,19 @@ const App: React.FC<MyApp> = () => {
                       },
                     })
                   );
-                } else {
-                  dispatch({
+                } 
+                else {
+                  if (String(data.from) === String(user?.id)) {
+                    dispatch({
+                      type: PUSH_MESSAGE_BY_OTHER,
+                      payload: data.message,
+                    });
+                  } else{
+                    dispatch({
                     type: PUSH_MESSAGE,
                     payload: data.message,
                   });
+                  }
                 }
               } else {
                 //dispatch(getAllChats());

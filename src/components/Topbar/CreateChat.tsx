@@ -1,25 +1,22 @@
 import React from "react";
 
 // material
-import { Tooltip } from "@material-ui/core";
 import {
   Menu,
   MenuItem,
   Typography,
   Box,
-  Stack,
-  Badge,
   Button,
 } from "@mui/material";
 import CreateGroupChat from "./CreateGroupChat";
 import CreateIndividualChat from "./CreateIndividualChat";
 
-function CreateChat2() {
+function CreateChat() {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [openGroupChat, setOpenGroupChat] =React.useState(false)
     const [openIndividualChat, setOpenIndividualChat] =React.useState(false)
-    
+
   const handleOpenChatMenue = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
     }
@@ -41,7 +38,6 @@ function CreateChat2() {
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-        {/* <Tooltip title=""> */}
           <Button
             color="primary"
             variant="contained"
@@ -51,10 +47,8 @@ function CreateChat2() {
           >
             New chat
           </Button>
-          { openGroupChat&& <CreateGroupChat openGroupChat={openGroupChat} handleOutsideClick={handleOutsideClick}/>}
+          { openGroupChat&& <CreateGroupChat openGroupChat={openGroupChat} handleOutsideClick={handleOutsideClick} anchorElUser={anchorElUser} setAnchorElUser={setAnchorElUser} />}
           { openIndividualChat&& <CreateIndividualChat individualChat={openIndividualChat} />}
-
-        {/* </Tooltip> */}
         <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"
@@ -106,4 +100,4 @@ function CreateChat2() {
   );
 }
 
-export default CreateChat2;
+export default CreateChat;

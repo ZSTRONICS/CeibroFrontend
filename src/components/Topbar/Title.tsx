@@ -1,18 +1,15 @@
 
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Typography, Button, makeStyles, IconButton } from "@material-ui/core";
+import { Typography, Button, makeStyles } from "@material-ui/core";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
-import { Link } from "react-router-dom";
 import colors from "../../assets/colors";
-import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import { useMediaQuery } from "react-responsive";
 import { ArrowBack } from "@material-ui/icons";
-import CreateChat from "./CreateIndividualChat";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
-import CreateChat2 from "./CreateChat2";
+import CreateChat from "./CreateChat";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -128,7 +125,7 @@ const Title = () => {
             <div
               style={{ width: "100%", display: "flex", alignItems: "center" }}
             >
-              <CreateChat2 />
+              <CreateChat />
             </div>
           )}
         </>
