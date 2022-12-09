@@ -1,6 +1,7 @@
 import React from "react";
-import {createStyles,Avatar, makeStyles, Theme, Box } from "@material-ui/core";
+import {createStyles, makeStyles,Avatar, Theme } from "@material-ui/core";
 import colors from "assets/colors";
+import { Box} from '@mui/material'
 
 interface SeenByInt {
   url: string | any;

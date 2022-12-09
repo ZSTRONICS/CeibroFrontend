@@ -5780,13 +5780,6 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
-ios-switch-material-ui@^3.7.0:
-  version "3.7.0"
-  resolved "https://registry.yarnpkg.com/ios-switch-material-ui/-/ios-switch-material-ui-3.7.0.tgz#a09f401e30e1b98b8d7d8a0de0c18b14d5424649"
-  integrity sha512-EADpapH/Efb4rZTrWl3SouwIHn32zsuZIp/MoL7a2EZaaBYqZxCWK0oeVzDZXRd1ZzS0gyJ7kuaGunwHgcwg4Q==
-  dependencies:
-    "@material-ui/core" "^4.12.3"
-
 ipaddr.js@1.9.1:
   version "1.9.1"
   resolved "https://registry.yarnpkg.com/ipaddr.js/-/ipaddr.js-1.9.1.tgz#bff38543eeb8984825079ff3a2a8e6cbd46781b3"

@@ -1,11 +1,12 @@
-import React, { FC, useState } from "react";
-import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
+// @ts-nocheck
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
+import { FC } from "react";
 
-import "./inputText.css";
-import { Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
+import "./inputText.css";
 
 interface InputSwitchtInterface {
   label: string;

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react';
 import { withStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { purple } from '@material-ui/core/colors';
