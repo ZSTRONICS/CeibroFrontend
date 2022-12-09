@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Button, Dialog,
   DialogActions,
@@ -18,16 +18,16 @@ const FileViewDrawer: React.FC<AddGroupProps> = () => {
   const classes = useStyles();
   // const roles = ["create", "edit", "delete", "self-made"];
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isRole, setIsRole] = useState(false);
-  const [isMember, setIsMember] = useState(false);
-  const [isTimeProfile, setIsTimeProfile] = useState(false);
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // const [isRole, setIsRole] = useState(false);
+  // const [isMember, setIsMember] = useState(false);
+  // const [isTimeProfile, setIsTimeProfile] = useState(false);
 
-  const [name, setName] = useState();
-  const [groups, setGroups] = useState();
-  const [selectGroups, setSelectGroups] = useState<any>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const isDiabled = !loading ? false : true;
+  // const [name, setName] = useState();
+  // const [groups, setGroups] = useState();
+  // const [selectGroups, setSelectGroups] = useState<any>();
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const isDiabled = !loading ? false : true;
 
   const {
     documentDrawer,

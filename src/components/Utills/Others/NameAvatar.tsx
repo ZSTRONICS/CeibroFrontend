@@ -1,8 +1,8 @@
 import React from "react";
-import {  makeStyles, Box } from "@material-ui/core";
+import {  makeStyles } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import {Avatar} from "@material-ui/core";
-
+import {Box} from '@mui/material'
 interface NameAvatarProps {
   firstName: string;
   surName?: string;
