@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogActions,
   DialogContentText,
-  Button,
   Grid,
   Typography,
 
@@ -20,11 +19,9 @@ interface Props {
   handleClose: () => void;
   title: string;
   children: any;
-  cancel: any;
-  create: any;
 }
 
-const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, cancel, create }) => {
+const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) => {
   const classes = useStyles()
 
   return (
@@ -64,8 +61,6 @@ CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.element,
-  cancel: PropTypes.element,
-  create: PropTypes.element,
 };
 
 export default CustomModal;
