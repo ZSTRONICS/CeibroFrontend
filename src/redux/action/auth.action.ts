@@ -1,4 +1,4 @@
-import { REGISTER } from "redux-persist/es/constants";
+import { REGISTER } from "redux-persist";
 import {
   LOGIN,
   GET_USERS,

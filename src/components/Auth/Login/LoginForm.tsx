@@ -9,18 +9,13 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // material
-import {
-  Button,
+import { Box,   Button,
   Checkbox,
-  FormControl,
   FormControlLabel,
   IconButton,
   InputAdornment,
-  OutlinedInput,
   Typography,
-  Grid,
-  Box,
-} from "@material-ui/core";
+  Grid, } from '@mui/material';
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
@@ -38,6 +33,10 @@ import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 import colors from "assets/colors";
 import Loading from "react-loading";
 import assets from "assets/assets";
+import TextField from "components/Utills/Inputs/TextField";
+import { CBox } from "components/material-ui";
+import { perisitStoreState } from "redux/store";
+
 
 interface Props {
   tokenLoading: boolean;
@@ -56,12 +55,12 @@ const LoginForm: React.FC<Props> = (props) => {
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-  let [timer, setTimer]= useState('')
+  const [incorrectEmail, setIncorrectEmail] = useState<boolean>(false);
+  let [timer, setTimer] = useState('')
   const dispatch = useDispatch();
   const history = useHistory();
 
   const { loginLoading } = useSelector((state: RootState) => state.auth);
-
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
       handleSubmit(values);
@@ -69,37 +68,48 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
-    const { email, password } = values;
-    const payload = {
-      body: {
-        email,
-        password,
-      },
-      success: (_res: any) => {
-        toast.success(`${t("auth.loggedin_Successfully")}`);
-      },
-      onFailAction: (err: any) => {
-        if (err.response.data.code === 401) {
-        const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
-        setTimer(timer)
-        setIncorrectAuth(true);
-        } else if (err.response.data.code === 423) {
-          const  timer= (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0 ,2)
-        setTimer(timer)
-          setLockError(true);
-        } else if (err) {
-          setVerifyError(true);
-        }
+      const { email, password } = values;
+      const payload = {
+        body: {
+          email,
+          password,
+        },
+        success: (_res: any) => {
+          toast.success(`${t("auth.loggedin_Successfully")}`);
+        },
+        onFailAction: (err: any) => {
+          if (err.response.data.code === 401) {
+            if ((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)) {
+              const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+              setTimer(remainingTime)
+              setIncorrectAuth(true);
+            } else {
+              setIncorrectEmail(true)
+            }
+  
+          } else if (err.response.data.code === 423) {
+            const timer = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+            setTimer(timer)
+            setLockError(true);
+          } else if (err) {
+            setVerifyError(true);
+          }  else{
+            // removed stored state 
+            perisitStoreState()
+          }
+          
 
-        setTimeout(() => {
-          setLockError(false);
-          setVerifyError(false);
-          setIncorrectAuth(false);
-        }, 3000);
-      },
-      showErrorToast: true,
-    };
-    dispatch(loginRequest(payload));
+          setTimeout(() => {
+            setLockError(false);
+            setVerifyError(false);
+            setIncorrectAuth(false);
+            setIncorrectEmail(false)
+  
+          }, 10000);
+        },
+        showErrorToast: true,
+      };
+      dispatch(loginRequest(payload));
   };
 
   const checkValidInputs = (values: any) => {
@@ -126,41 +136,35 @@ const LoginForm: React.FC<Props> = (props) => {
     history.push("/forgot-password");
   };
 
-  return (
-    <div className={classes.container}>
-      <Box className={classes.logoTitleWrapper}>
+  return (<>
+    <div>
+      <Box>
         <Box className={classes.logoWrapper}>
           <img src={assets.logo} alt="ceibro-logo" />
         </Box>
         <Box className={classes.titleWrapper}>
           <Typography className={classes.title}>{t("auth.login")}</Typography>
         </Box>
-      </Box>
 
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        validationSchema={signinSchema}
-        onSubmit={handleSubmit}
-      >
-        {({
-          errors,
-          touched,
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          values,
-        }) => (
-          <Form onSubmit={handleSubmit}>
-            <Grid
-              container
-              direction="column"
-              className={`${classes.formWraper}`}
-              xs={8}
-              md={8}
-            >
+
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={signinSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+
               {(showSuccess || tokenLoading) && (
                 <Alert severity="success">
                   {tokenLoading
@@ -196,20 +200,76 @@ const LoginForm: React.FC<Props> = (props) => {
                   {t("auth.account_locked").replace('#', `${timer}`)}
                 </Alert>
               )}
+              {incorrectEmail && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_not_found").replace('#', `${timer}`)}
+                </Alert>
+              )}
               {lockError && (
                 <Alert severity="error">
                   {t("auth.errorAlerts.account_locked_message").replace('#', `${timer}`)}
                 </Alert>
               )}
-              <Grid item>
-                {(showSuccess || tokenLoading) && (
-                  <Alert severity="success">
-                    {tokenLoading
-                      ? `${t("auth.successAlerts.verifying_email")}`
-                      : `${t("auth.successAlerts.email_verified")}`}
-                  </Alert>
+
+              {(showSuccess || tokenLoading) && (
+                <Alert severity="success">
+                  {tokenLoading
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
+                </Alert>
+              )}
+              <CBox mb={3.1}>
+                <TextField
+                  placeholder={t("auth.register.first_name")}
+                  className={classes.inputs}
+                  name="email"
+                  inputProps={{
+                    style: { height: 12, width: "100%" },
+                  }}
+                  value={values.email}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.email && touched.email && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.email}
+                  </Typography>
                 )}
-                <FormControl variant="outlined" className={classes.loginInput}>
+              </CBox>
+              <CBox mb={3.1}>
+                <TextField
+                  placeholder={t("auth.register.first_name")}
+                  type={showPassword ? "text" : "password"}
+                  className={`${classes.inputs} ${classes.inputPass}`}
+                  name="password"
+
+                  inputProps={{
+                    style: { height: 12, width: "100%" },
+                  }}
+                  value={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                      >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+                {errors.password && touched.password && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.password}
+                  </Typography>
+                )}
+              </CBox>
+
+
+              {/* <FormControl variant="outlined" className={classes.loginInput}>
                   <OutlinedInput
                     name="email"
                     required
@@ -219,17 +279,16 @@ const LoginForm: React.FC<Props> = (props) => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                   />
-                </FormControl>
+                </FormControl> */}
 
-                {/* validation error */}
-                {errors.email && touched.email && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.email}
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item>
-                <FormControl variant="outlined" className={classes.loginInput}>
+              {/* validation error */}
+
+
+
+
+
+
+              {/* <FormControl variant="outlined" className={classes.loginInput}>
                   <OutlinedInput
                     required
                     name="password"
@@ -253,40 +312,36 @@ const LoginForm: React.FC<Props> = (props) => {
                       </InputAdornment>
                     }
                   ></OutlinedInput>
-                </FormControl>
+                </FormControl> */}
 
-                {errors.password && touched.password && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.password}
+
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={checked}
+                    onChange={() => setChecked(!checked)}
+                    name="checkedB"
+                    color="primary"
+                    style={{ padding: 0 }}
+                  />
+                }
+                className={classes.remember}
+                style={{ padding: 0 }}
+                label={
+                  <Typography className={classes.rememberText}>
+                    {t("auth.RememberMe")}
                   </Typography>
-                )}
+                }
+              />
 
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={checked}
-                      onChange={() => setChecked(!checked)}
-                      name="checkedB"
-                      color="primary"
-                      style={{ padding: 0 }}
-                    />
-                  }
-                  className={classes.remember}
-                  style={{ padding: 0 }}
-                  label={
-                    <Typography className={classes.rememberText}>
-                      {t("auth.RememberMe")}
-                    </Typography>
-                  }
-                />
-              </Grid>
               <div className={classes.actionWrapper}>
                 <Button
                   type="submit"
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
-                  disabled={checkValidInputs(values) || loginLoading}
+                // disabled={checkValidInputs(values) || loginLoading}
                 >
                   {loginLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />
@@ -303,11 +358,13 @@ const LoginForm: React.FC<Props> = (props) => {
                   {t("auth.ForgetPassword")}
                 </Typography>
               </div>
-            </Grid>
-          </Form>
-        )}
-      </Formik>
+
+            </Form>
+          )}
+        </Formik>
+      </Box>
     </div>
+    </>
   );
 };
 
@@ -316,9 +373,7 @@ const useStyles = makeStyles({
   container: {
     height: "92%",
   },
-  logoTitleWrapper: {
-    padding: "0 30px 33px",
-  },
+
   formWraper: {
     margin: "0 auto",
   },
@@ -359,7 +414,7 @@ const useStyles = makeStyles({
     },
   },
   remember: {
-    marginTop: "35px !important",
+
     fontSize: 14,
     padding: 0,
   },
@@ -392,14 +447,59 @@ const useStyles = makeStyles({
   },
   logoWrapper: {
     paddingTop: "2%",
-    paddingLeft: "7%",
+    // paddingLeft: "7%",
   },
   titleWrapper: {
-    paddingTop: "10%",
-    paddingLeft: "13%",
+    margin: '45px 0px 15px 0px',
+
+
   },
   title: {
     fontSize: 30,
     fontWeight: "bold",
   },
+  inputs: {
+    // marginBottom: 25,
+    width: "100%",
+    maxWidth: 376,
+
+  },
+  inputPass: {
+    position: 'relative',
+    '& .MuiIconButton-edgeEnd': {
+
+      position: 'absolute',
+      right: 10,
+      zIndex: 999,
+      marginleft: 31,
+
+    },
+    '& .MuiInputAdornment-positionEnd': {
+      marginLeft: '0px !important'
+    }
+    // padding: '16px 10px',
+    // borderRadius: 5,
+    // border: '1px solid #DBDBE5',
+    // '&:focus': {
+    //   border: '2px solid !important'
+    // },
+    // '& input': {
+    //   border: 'none !important',
+    //   padding: 'px !important',
+    //   '& :focus': {
+    //     borderColor: 'red !important'
+    //   }
+    // },
+    // '& .MuiInputBase-root': {
+    //   height: 12,
+    //   width: '100%',
+    //   border: '1px solid #DBDBE5'
+    // },
+    // '& .MuiInputBase-input': {
+    //   border: 'none !important',
+    //   '&:focus': {
+    //     border: '2px solid !important'
+    //   }
+    // }
+  }
 });

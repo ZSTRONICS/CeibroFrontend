@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Typography,
   Button,
@@ -53,7 +52,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
 
         setTimeout(() => {
           setError(false);
-        }, 3000);
+        }, 10000);
       },
       showErrorToast: false,
 

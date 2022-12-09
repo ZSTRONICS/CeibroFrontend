@@ -1,4 +1,4 @@
-// @ts-nocheck
+
 import { useState } from "react";
 import {
   CircularProgress,
@@ -40,7 +40,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     upScrollLoading,
     chat: allChats,
     selectedChat,
-  } = useSelector((store: RootState ) => store.chat);
+  } = useSelector((store: RootState) => store.chat);
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
@@ -86,31 +86,37 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   };
 
   return (
-    <Grid container className={classes.wrapper}>
-      <AddChatMember />
-      {upScrollLoading && (
-        <div className={classes.loadingWrapper}>
-          <div className={classes.innerLoading}>
-            <ClipLoader size={20} color={colors.primary} />
-          </div>
-        </div>
-      )}
-      {myChat && (
-        <>
-          <Grid item xs={6} md={2} className={classes.editWrapper}>
-            {!edit && (
-              <>
-                {myChat?.project && (
-                  <div className={classes.iconContainer}>
-                    <img 
-                    src={assets.EditIcon}
-                    onClick={() => {
-                      setEdit(true);
-                      setName(myChat.name);
-                    }}
-                    className={classes.editIcon}
-                    />
-                    {/* <img
+    <>
+
+      < Grid container className={classes.wrapper} >
+        <AddChatMember />
+        {
+          upScrollLoading && (
+            <div className={classes.loadingWrapper}>
+              <div className={classes.innerLoading}>
+                <ClipLoader size={20} color={colors.primary} />
+              </div>
+            </div>
+          )
+        }
+        {
+          myChat && (
+            <>
+              <Grid item xs={6} md={2} className={classes.editWrapper}>
+                {!edit && (
+                  <>
+                    {myChat?.project && (
+                      <div className={classes.iconContainer}>
+                        <img
+                          src={assets.EditIcon}
+                          onClick={() => {
+                            setEdit(true);
+                            setName(myChat.name);
+                          }}
+                          className={classes.editIcon}
+                          alt=""
+                        />
+                        {/* <img
                       src={assets.EditIcon}
                       onClick={() => {
                         setEdit(true);
@@ -118,67 +124,69 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                       }}
                       className={classes.editIcon}
                     /> */}
-                  </div>
+                      </div>
+                    )}
+                  </>
                 )}
-              </>
-            )}
-            {edit ? (
-              <div className={`${classes.editInputWrapper} editInputWrapper`}>
-                <TextField
-                  inputProps={{ maxLength: 20 }}
-                  value={name}
-                  onChange={handleNameChange}
-                  onkeyDown={handleKeyDown}
-                />
-                <IconButton size="small" onClick={handleCancel}>
-                  <Clear className={classes.cancelIcon} />
-                </IconButton>
-                {loading ? (
-                  <div className={classes.loading}>
-                    <CircularProgress disableShrink={false} size={15} />
+                {edit ? (
+                  <div className={`${classes.editInputWrapper} editInputWrapper`}>
+                    <TextField
+                      inputProps={{ maxLength: 20 }}
+                      value={name}
+                      onChange={handleNameChange}
+                      onkeyDown={handleKeyDown}
+                    />
+                    <IconButton size="small" onClick={handleCancel}>
+                      <Clear className={classes.cancelIcon} />
+                    </IconButton>
+                    {loading ? (
+                      <div className={classes.loading}>
+                        <CircularProgress disableShrink={false} size={15} />
+                      </div>
+                    ) : (
+                      <IconButton size="small" onClick={handleUpdate}>
+                        <Check className={classes.checkIcon} />
+                      </IconButton>
+                    )}
                   </div>
                 ) : (
-                  <IconButton size="small" onClick={handleUpdate}>
-                    <Check className={classes.checkIcon} />
-                  </IconButton>
+                  <>
+                    <div className={classes.editProject}>
+                      <Typography className={classes.username}>
+                        {myChat?.name}
+                      </Typography>
+                      {myChat?.project && (
+                        <Typography className={classes.projectName}>
+                          Project:{" "}
+                          <span className={classes.projectTitle}>
+                            {" "}
+                            {myChat?.project?.title}{" "}
+                          </span>
+                        </Typography>
+                      )}
+                    </div>
+                  </>
                 )}
-              </div>
-            ) : (
-              <>
-                <div className={classes.editProject}>
-                  <Typography className={classes.username}>
-                    {myChat?.name}
-                  </Typography>
-                  {myChat?.project && (
-                    <Typography className={classes.projectName}>
-                      Project:{" "}
-                      <span className={classes.projectTitle}>
-                        {" "}
-                        {myChat?.project?.title}{" "}
-                      </span>
-                    </Typography>
-                  )}
-                </div>
-              </>
-            )}
-          </Grid>
-          <Grid item xs={8} className={classes.moreWrapper}>
-            <MessageSearch />
-            <ChatUserMenu enable={props?.enable} />
-          </Grid>
-          {/* <Grid item xs={1} className={classes.moreWrapper}>
+              </Grid>
+              <Grid item xs={8} className={classes.moreWrapper}>
+                <MessageSearch />
+                <ChatUserMenu enable={props?.enable} />
+              </Grid>
+              {/* <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props?.enable} />
           </Grid> */}
-        </>
-      )}
-    </Grid>
+            </>
+          )
+        }
+      </Grid >
+    </>
   );
 };
 
 export default ChatBoxHeader;
 
 const useStyles = makeStyles({
-  iconContainer:{
+  iconContainer: {
     width: '30px'
   },
   editProject: {

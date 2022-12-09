@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import { makeStyles, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import assets from "assets/assets";
@@ -15,7 +15,7 @@ const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
   return (
     <div className={classes.wrapper}>
       <div className={classes.iconWrapper}>
-        <img src={assets.searchIcon} className={`width-16`} />
+        <img src={assets.searchIcon} className={`width-16`} alt="search"/>
         <Typography className={classes.horizontalBreak}>|</Typography>
       </div>
       <div className={classes.inputWrapper}>
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     height: 40,
-    background: colors.white,
+    // background: colors.white,
   },
   iconWrapper: {
     flex: 2,

@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-//@ts-nocheck
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";
@@ -14,6 +13,7 @@ import {
   PUSH_MESSAGE,
   SET_REPLY_TO_ID,
   SEND_MESSAGE,
+  CHAT_EVENT_REQ_OVER_SOCKET,
 } from "../../config/chat.config";
 import {
   openQuestioniarDrawer,
@@ -25,7 +25,9 @@ import { getFileType } from "../../utills/file";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import VoiceRecorder from "./VoiceRecorder";
 import CustomImg from "components/CustomImg";
-import {socket} from "services/socket.services"
+import { socket } from "services/socket.services";
+import { CBox } from "components/material-ui";
+import React from "react";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -98,6 +100,13 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     });
   };
 
+  let replyToMessage = null;
+  if (replyToId) {
+    replyToMessage = messages?.find(
+      (msg: any) => String(msg._id) === String(replyToId)
+    );
+  }
+  
   const handleSend = () => {
     if (!enable) {
       return;
@@ -134,28 +143,46 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
+      // payload.userId = user.id
+      
+      const data = {
+        eventType: SEND_MESSAGE,
+        data: {
+          userId: user.id,
+          message: JSON.stringify(payload),
+        }
+      }
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    
       const newMessage = {
         sender: user,
-        time: "1 seconds ago",
+        time: "a few seconds ago",
         message: text,
         seen: true,
         type: "message",
-        myMessage: true,
-        id: myId,
+        myMessage: String(user.id),
+        _id: myId,
+        pinnedBy:[],
+        chat: selectedChat,
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
-      socket.getSocket().emit(SEND_MESSAGE,JSON.stringify(payload));
+
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
       });
-      handleCloseReply()
+      handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
       setText("");
     }
-    
+    // when new message send scroll to bottom
+    // const chatBox = document.getElementById('chatBox')
+    // if(chatBox){
+    //   chatBox.scrollTop = chatBox.scrollHeight
+    // }
   };
 
   const handleFileChange = (e: any) => {
@@ -213,21 +240,22 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       let replyMessage = null;
       const myId = new Date().valueOf();
-
       dispatch({
         type: PUSH_MESSAGE,
         payload: {
           type: "voice",
           username: user?.firstName + " " + user.surName,
           sender: user,
-          time: "1 seconds ago",
+          time: "a few seconds ago",
           seen: true,
-          myMessage: true,
+          myMessage: String(user.id),
           replyOf: replyMessage,
           voiceUrl: blob.url,
-          id: myId,
+          pinnedBy:[],
+          _id: myId,
         },
       });
+
       const payload: any = {
         body: formdata,
         success: (res: any) => {
@@ -242,7 +270,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         },
       };
       dispatch(sendReplyMessage(payload));
-
       handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
@@ -261,66 +288,91 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       container
       style={{ opacity: enable ? 1 : 0.5 }}
     >
-      {!showRecorder && (
-        <Grid item xs={12} className={classes.inputWrapper}>
-          {replyToId && (
-            <div className={classes.replyTitle}>
-              <Typography>Reply</Typography>
-              <Typography
-                className={classes.closeReply}
-                onClick={handleCloseReply}
-              >
-                <Close />
-              </Typography>
-            </div>
-          )}
-          <input
-            ref={messageRef}
-            value={text}
-            onChange={handleTextChange}
-            onKeyPress={handleKeyDown}
+      {!showRecorder &&
+        <>
+          <Grid item xs={12} className={classes.inputWrapper}>
+            {replyToId && (
+              <>
+                <div className={classes.replyto}>
+                  <Grid container item xs={12} className={classes.chatHeader}>
+                    <CBox
+                      display="flex"
+                      flexDirection="column"
+                      width='100%'
+                      className={classes.chatBox}
+                    >
+                      <CBox display="flex" justifyContent="space-between">
+                        <CBox>
+                          <Typography
+                            className={classes.replyToTitle}
+                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+                        </CBox>
+                        <CBox>
+                          <Typography
+                            className={classes.closeReply}
+                            onClick={handleCloseReply}
+                          >
+                            <Close />
+                          </Typography>
+                        </CBox>
+                      </CBox>
+                      <CBox>
+                        <Typography className={`${classes.replyToMesg} ${'textOverflowY'}`}>{replyToMessage.message}</Typography>
+                      </CBox>
+                    </CBox>
+                  </Grid>
+                </div>
+              </>
+            )}
+            <CBox display='flex' justifyContent='space-between' width='100%'>
+              <input
+                ref={messageRef}
+                value={text}
+                onChange={handleTextChange}
+                onKeyPress={handleKeyDown}
+                type="text"
+                disabled={!selectedChat || !enable}
+                placeholder={
+                  selectedChat
+                    ? enable
+                      ? "Type a message"
+                      : "You were removed from this chat"
+                    : "Select a chat room"
+                }
+                style={
+                  replyToId || showRecorder
+                    ? {
+                      width: "100%",
+                    }
+                    : {
+                      width: "90%",
+                    }
+                }
+                className={`messageInput black-input ${classes.messageInput}`}
+              />
+              <div className={classes.sendWrapper}>
 
-            type="text"
-            disabled={!selectedChat || !enable}
-            placeholder={
-              selectedChat
-                ? enable
-                  ? "Type a message"
-                  : "You were removed from this chat"
-                : "Select a chat room"
-            }
-            style={
-              replyToId || showRecorder
-                ? {
-                    width: "75%",
-                  }
-                : {
-                    width: "90%",
-                  }
-            }
-            className={`messageInput black-input ${classes.messageInput}`}
-          />
-          <div className={classes.sendWrapper}>
-            {/* <img
-              src={assets.sendIcon}
-              onClick={handleSend}
-              className={classes.sendIcon}
-            /> */}
-            <Button onClick={handleSend} disableRipple={true} style={{ backgroundColor: "transparent"}} >
-              
-               <img
-               alt=""
-              src={assets.sendIcon}
-              // onClick={handleSend}
-              className={classes.sendIcon}
-            /> 
-              {/* <assets.SendIcon
+                <Button
+                  onClick={handleSend}
+                  disableRipple={true}
+                  style={{ backgroundColor: "transparent" }}
+                >
+                  <img
+                    alt=""
+                    src={assets.sendIcon}
+                    // onClick={handleSend}
+                    className={classes.sendIcon}
+                  />
+                  {/* <assets.SendIcon
                 className={classes.sendIcon}
               /> */}
-            </Button>
-          </div>
-        </Grid>
-      )}
+                </Button>
+              </div>
+            </CBox>
+          </Grid>
+
+        </>
+      }
       {showRecorder && (
         <VoiceRecorder
           handleSubmit={handleSendVoice}
@@ -345,7 +397,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       )}
       {selectedChat && (
         <Grid item xs={12} className={classes.btnWrapper}>
-      <img
+          <img
+            alt=""
             src={assets.emoji}
             onClick={toggleEmoji}
             className={"width-16 pointer"}
@@ -362,6 +415,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           </label>
 
           <img
+            alt=""
             src={assets.mic}
             onClick={() => {
               if (!enable) return;
@@ -382,12 +436,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           </label> */}
           <Typography className={classes.gapLine}>|</Typography>
           <img
+            alt=""
             src={assets.primaryNudgeIcon}
             className="pointer"
             style={{ height: 18 }}
           />
           <Typography className={classes.gapLine}>|</Typography>
           <img
+            alt=""
             src={assets.blueDocument}
             onClick={handleOpenQuestioniar}
             className={`width-16 pointer`}
@@ -406,9 +462,40 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   );
 };
 
-export default ChatForm;
+export default React.memo(ChatForm, (prevProps, nextProps) => prevProps.enable  === nextProps.enable );
 
 const useStyles = makeStyles({
+  replyToMesg: {
+    color: '#959595',
+    wordBreak: 'break-all',
+
+  },
+  replyToTitle: {
+    color: "#0076C8",
+    fontWeight: 600,
+    fonSize: "16px",
+    textTransform: "capitalize",
+  },
+  replyto: {
+    background: "#ECF0F1",
+    borderColor: "#0076C8",
+    borderRadius: "4px",
+    borderWidth: "2px 2px 0 4px",
+    borderStyle: "solid",
+    width: "98%"
+    // position: "absolute",
+
+  },
+  chatHeader: {
+    width: "100%",
+    backgroundColor: "#f5f7f8",
+    flexDirection: "column",
+  },
+  chatBox: {
+    // backgroundColor: 'antiquewhite',
+    // borderLeft: '2px solid',
+    padding: 15,
+  },
   customFileUpload: {
     paddingTop: "6px",
   },
@@ -436,7 +523,7 @@ const useStyles = makeStyles({
   wrapper: {
     // height: 100,
     borderTop: `2px solid ${colors.lightGrey}`,
-    paddingTop: 10,
+    // paddingTop: 10,
     position: "relative",
   },
   preview: {
@@ -445,16 +532,25 @@ const useStyles = makeStyles({
     padding: 10,
   },
   inputWrapper: {
-    height: 50,
-    paddingLeft: 15,
+    position: "relative",
+    // height: 50,
     display: "flex",
     alignItems: "center",
     borderBottom: `2px solid ${colors.lightGrey}`,
+    justifyContent: "space-between",
+    flexDirection: 'column',
+    // '& input': {
+    //   // padding: 35,
+    //   height: 45,
+
+    // }
+
   },
   sendWrapper: {
     fontSize: 18,
     textAlign: "center",
     cursor: "pointer",
+    backgroundColor: '#fff'
   },
   sendIcon: {
     borderRadius: 5,

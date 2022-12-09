@@ -7,6 +7,7 @@ import {
   MUTE_CHAT,
   ADD_TO_FAVOURITE,
   PUSH_MESSAGE,
+  PUSH_MESSAGE_BY_OTHER,
   SET_MESSAGE_READ,
   SET_SELECTED_CHAT,
   OPEN_QUESTIONIAR_DRAWER,
@@ -26,6 +27,8 @@ import {
   DELETE_CONVERSATION,
   FORWARD_CHAT,
   UPDATE_MESSAGE_BY_ID,
+  GET_UNREAD_CHAT_COUNT,
+  GET_UNREAD_ROOM_MESSAGE_COUNT,
   GET_USER_QUESTIONIAR_ANSWER,
   GET_UP_CHAT_MESSAGE,
   GET_PINNED_MESSAGES,
@@ -36,6 +39,7 @@ import {
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
+  REPLACE_MESSAGE_BY_ID,
 } from '../../config/chat.config'
 import { createAction } from './action'
 
@@ -44,6 +48,7 @@ export const createSingleRoom = createAction(CREATE_SINGLE_ROOM)
 export const setSelectedChat = createAction(SET_SELECTED_CHAT)
 export const clearSelectedChat = createAction(CLEAR_SELECTED_CHAT)
 export const pushMessage = createAction(PUSH_MESSAGE)
+export const pushMessageByOthers = createAction(PUSH_MESSAGE_BY_OTHER)
 export const getRoomMessages = createAction(GET_MESSAGES)
 export const setMessagesRead = createAction(SET_MESSAGE_READ)
 export const muteChat = createAction(MUTE_CHAT)
@@ -59,6 +64,9 @@ export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS)
 export const deleteConversation = createAction(DELETE_CONVERSATION)
 export const forwardChat = createAction(FORWARD_CHAT)
 export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
+export const replaceMessagesById = createAction(REPLACE_MESSAGE_BY_ID)
+export const unreadMessagesCount = createAction(GET_UNREAD_CHAT_COUNT)
+export const unreadRoomMessagesCount = createAction(GET_UNREAD_ROOM_MESSAGE_COUNT)
 export const getUserQuestioniarAnswer = createAction(GET_USER_QUESTIONIAR_ANSWER)
 export const getUpMessages = createAction(GET_UP_CHAT_MESSAGE)
 export const getDownMessages = createAction(GET_DOWN_CHAT_MESSAGE)

@@ -1,23 +1,24 @@
-//@ts-nocheck
+
 import { makeStyles, Typography } from "@material-ui/core"
 import { MoreVert, PersonAddOutlined } from "@material-ui/icons"
 import { useState } from "react"
 import { BiTask } from "react-icons/bi"
 import { BsArrow90DegLeft, BsArrow90DegRight } from "react-icons/bs"
 import OutsideClickHandler from "react-outside-click-handler"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState } from "redux/reducers"
 import colors from "../../../assets/colors"
 import { SET_REPLY_TO_ID } from "../../../config/chat.config"
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface"
 import { setTempMembersDialog } from "../../../redux/action/chat.action"
 import ForwardMessage from './ForwardMessage'
 
-
 interface ChatMessageMenueInt {
     message: ChatMessageInterface
 }
 
 const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
+    const { user } = useSelector((state: RootState) => state.auth);
     const { message } = props;
     const classes = useStyles()
     const [show, setShow] = useState(false);
@@ -33,7 +34,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
         e.stopPropagation();
         dispatch({
             type: SET_REPLY_TO_ID,
-            payload: message._id
+            payload: message?._id
         });
         setShow(false);
     }
@@ -58,7 +59,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
             {show && (
                 <OutsideClickHandler onOutsideClick={handleToggle}>
                     <div className={`dropdown-content ${classes.dropdownContent}`}>
-                        {(!message.replyOf || !message.myMessage) && (
+                        {(!message.replyOf || String(message.myMessage) !== (user.id)) && (
                             <div className={`${classes.menuWrapper} dropdown-menu `} onClick={handleClick}>
                                 <BsArrow90DegLeft className={classes.menuIcon} />
                                 <Typography className={classes.menuText}>

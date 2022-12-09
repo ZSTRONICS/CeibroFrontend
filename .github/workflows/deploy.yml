@@ -1,0 +1,30 @@
+name: CICD for Ceibro Frontend
+
+on:
+  push:
+    branches: [ dev ]
+ 
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js 14.x to Build
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14.x
+    - run: yarn install
+    - run: CI=false yarn build
+    - name: ssh deploy on aws ec2
+      uses: easingthemes/ssh-deploy@v2.1.4
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+        REMOTE_HOST: ${{ secrets.HOST_DEV }}
+        REMOTE_USER: ${{ secrets.USER }}
+        REMOTE_PORT: ${{ secrets.PORT }}
+        SOURCE: "build/"
+        TARGET: ${{ secrets.TARGET_PATH }}
+      with:
+        script: /
+          export PATH=$PATH:/homeubuntu/.nvm/versions/node/v14.21.1/bin
+          pm2 reload all

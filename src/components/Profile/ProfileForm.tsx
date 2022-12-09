@@ -1,5 +1,6 @@
-//@ts-nocheck
 import React, { useEffect, useState, useRef } from "react";
+
+// material & react-icon
 import {
   Button,
   Checkbox,
@@ -9,25 +10,27 @@ import {
   TextField,
   Typography,
   CircularProgress,
-InputAdornment,
-IconButton
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useDispatch, useSelector } from "react-redux";
-
 import { BiTrash } from "react-icons/bi";
 
-import colors from "../../assets/colors";
-import { useMediaQuery } from "react-responsive";
-import { Formik } from "formik";
-import * as Yup from "yup";
+// redux
+import { useDispatch, useSelector } from "react-redux";
 import { getMyProfile, updateMyProfile } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
+import colors from "../../assets/colors";
+
+// formik and yup
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { toast } from "react-toastify";
+
 const ProfileForm = () => {
   const classes = useStyles();
-  // const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const passRef = useRef<HTMLInputElement>(null);
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
@@ -48,7 +51,6 @@ const ProfileForm = () => {
       workEmail,
       phone,
       password,
-      email,
       companyName,
       companyPhone,
       companyVat,
@@ -64,16 +66,16 @@ const ProfileForm = () => {
         phone,
         companyPhone,
         ...(password ? { password } : {}),
+        password,
         companyName,
         companyVat,
         companyLocation,
-        // email,
         currentlyRepresenting,
       },
       success: () => {
-        dispatch(getMyProfile());
-        action?.setFieldValue("password", "");
-        action?.setFieldValue("confirmPassword", "");
+        toast.success("Profile updated successfully");
+        // action?.setFieldValue("password", "");
+        // action?.setFieldValue("confirmPassword", "");
         // if (passRef.current) {
         //   passRef.current.value = "";
         // }
@@ -106,7 +108,7 @@ const ProfileForm = () => {
       [Yup.ref("password"), null],
       "Passwords don't match."
     ),
-    email: Yup.string().email("Invalid email").required("Required"),
+    email: Yup.string().email("Invalid email"),
     companyName: Yup.string()
       .min(2, "Too Short!")
       .max(50, "Too Long!")
@@ -174,6 +176,7 @@ const ProfileForm = () => {
                 <Grid container>
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -198,6 +201,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -220,6 +224,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -249,6 +254,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -275,24 +281,29 @@ const ProfileForm = () => {
                     className={`${classes.rowWrapper} ${classes.passwordRow}`}
                   >
                     <TextField
+                      autoComplete="new-password"
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
                       InputProps={{
-                        endAdornment:(
+                        endAdornment: (
                           <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={() => setShowPassword(!showPassword)}
-                            edge="end"
-                          >
-                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                          </IconButton>
-                        </InputAdornment>
-                        )
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={() => setShowPassword(!showPassword)}
+                              edge="end"
+                            >
+                              {showPassword ? (
+                                <Visibility />
+                              ) : (
+                                <VisibilityOff />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ),
                       }}
                       // disabled={true}
-                      defaultValue={2435455}
                       fullWidth
                       size="small"
                       id="outlined-basic"
@@ -315,11 +326,12 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                    autoComplete="new-password"
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      // disabled={true}
-                      defaultValue={2435455}
+                      defaultValue={""}
                       type="password"
                       fullWidth
                       size="small"
@@ -348,6 +360,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -372,6 +385,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -396,6 +410,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -420,6 +435,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -444,6 +460,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
+                      className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
                       }}
@@ -536,6 +553,9 @@ const ProfileForm = () => {
 export default ProfileForm;
 
 const useStyles = makeStyles({
+  inputBg: {
+    background: "white",
+  },
   rowWrapper: {
     padding: "10px 20px",
   },

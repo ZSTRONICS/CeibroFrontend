@@ -56,7 +56,7 @@ const FileViewDrawer: React.FC<AddGroupProps> = () => {
     dispatch(projectActions.closeFileViewDrawer());
   };
   const onError = (e: any) => {
-    console.log(e, "error in file-viewer");
+    console.error(e, "error in file-viewer");
   };
 
   // const filePath = folderFiles?.map?.((file) => {

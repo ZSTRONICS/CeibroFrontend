@@ -5,6 +5,7 @@ import {
   GET_CHAT,
   GET_MESSAGES,
   PUSH_MESSAGE,
+  PUSH_MESSAGE_BY_OTHER,
   SET_SELECTED_CHAT,
   SET_CHAT_TYPE,
   SET_CHAT_SEARCH,
@@ -37,15 +38,18 @@ import {
   SET_DOWN_BLOCK,
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
+  ROOM_MESSAGE_DATA,
 } from '../../config/chat.config'
 
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
 import { getNewQuestionTemplate } from '../../constants/questioniar.constants'
 import { CREATE_ROOM } from '../../config/auth.config'
+import { ChatMessageInterface } from 'constants/interfaces/chat.interface'
 
 interface ChatReducerInt {
   chat: any
   messages: any
+  updateChatRoom: boolean
   selectedChat: null
   type: 'all' | 'read' | 'unread'
   favouriteFilter: boolean
@@ -67,7 +71,7 @@ interface ChatReducerInt {
   sender: any
   questioniarInfo: any
   viewport: any
-  allowScroll: boolean
+  lastMessageIdInChat: any
   upScrollLoading: boolean
   blockPagination: boolean
   mysocket: any
@@ -77,11 +81,13 @@ interface ChatReducerInt {
   createQuestioniarLoading: boolean
   blockDown: boolean
   isGroupChat: boolean
+  roomMessageData : any
 }
 
 const intialStatue: ChatReducerInt = {
   chat: [],
   messages: [],
+  updateChatRoom: false,
   isGroupChat: false,
   selectedChat: null,
   createChatLoading: false,
@@ -104,7 +110,7 @@ const intialStatue: ChatReducerInt = {
   sender: null,
   questioniarInfo: null,
   viewport: null,
-  allowScroll: false,
+  lastMessageIdInChat: null,
   upScrollLoading: false,
   blockPagination: false,
   mysocket: null,
@@ -113,6 +119,7 @@ const intialStatue: ChatReducerInt = {
   blockDown: false,
   roomQuestioniars: [],
   createQuestioniarLoading: false,
+  roomMessageData: null
 }
 
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
@@ -137,6 +144,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: false,
       }
     }
+
     case requestFail(CREATE_ROOM): {
       return {
         ...state,
@@ -151,6 +159,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: true,
       }
     }
+
     case requestSuccess(CREATE_SINGLE_ROOM): {
       return {
         ...state,
@@ -158,6 +167,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         createChatLoading: false,
       }
     }
+
     case requestFail(CREATE_SINGLE_ROOM): {
       return {
         ...state,
@@ -184,7 +194,14 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         messages: [...state.messages, action.payload],
-        loadingMessages: [...state.loadingMessages, action.payload.id],
+        loadingMessages: [...state.loadingMessages, action.payload._id],
+      }
+    }
+
+    case PUSH_MESSAGE_BY_OTHER: {
+      return {
+        ...state,
+        messages: [...state.messages, action.payload],
       }
     }
 
@@ -263,9 +280,10 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_UP_MESSAGES): {
       return {
         ...state,
+        lastMessageIdInChat: state?.messages[0]?._id,
         messages: [...action.payload.message, ...state.messages],
         upScrollLoading: false,
-        allowScroll: true,
+      
       }
     }
 
@@ -290,10 +308,17 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
 
+    case ROOM_MESSAGE_DATA: {
+      return {
+        ...state,
+        roomMessageData: action.payload
+      }
+    }
+
     case SET_ALLOW_SCROLL: {
       return {
         ...state,
-        allowScroll: action.payload,
+        // lastMessageIdInChat: action.payload,
       }
     }
 

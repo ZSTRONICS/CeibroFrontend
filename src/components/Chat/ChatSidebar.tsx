@@ -1,29 +1,22 @@
-//@ts-nocheck
-import { useRef, useState } from 'react'
+
+import { useState } from 'react'
+// material
 import { Grid, makeStyles, Typography } from '@material-ui/core'
-import {
-  Add,
-  Bookmark,
-  BookmarkBorder,
-  BookmarkOutlined,
-  Chat,
-  ContactPhone,
-  Star,
-  StarBorder,
-} from '@material-ui/icons'
-import assets from 'assets/assets'
-import { useDispatch, useSelector } from 'react-redux'
-import colors from '../../assets/colors'
+
+// redux
+import { useDispatch} from 'react-redux'
 import { SET_CHAT_TYPE, SET_CHAT_SEARCH, SET_FAVOURITE_FILTER } from '../../config/chat.config'
 import { clearSelectedChat, getAllChats } from '../../redux/action/chat.action'
-import { RootState } from '../../redux/reducers'
-import InputText from '../Utills/Inputs/InputText'
+
+// components
+import assets from 'assets/assets'
+import colors from '../../assets/colors'
 import ChatList from './ChatList'
 import ChatRoomSearch from './ChatRoomSearch'
 
 const ChatSidebar = () => {
   const classes = useStyles()
-  const { type, favouriteFilter } = useSelector((store: RootState) => store.chat)
+
   const messageListType = [
     {
       name: 'View all',
@@ -112,7 +105,7 @@ const ChatSidebar = () => {
                 }`}
               >
                  {chatType?.icon && (
-                <img src={chatType.icon} className={`width-16`} style={{ height: 14,paddingRight: 18 }} />
+                <img src={chatType.icon} className={`width-16`} style={{ height: 14,paddingRight: 18 }} alt=""/>
               )}
                 {chatType.name}
               </Typography>

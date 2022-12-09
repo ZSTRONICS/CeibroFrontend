@@ -1,168 +1,175 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-expressions */
+// @ts-nocheck
+
 import { Grid, makeStyles } from "@material-ui/core";
-import { memo, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {
-  getDownMessages,
   getRoomMessages,
-  getUpMessages,
+  getUpMessages
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
-import MessageChat from "../Utills/ChatChip/MessageChat";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
-import {
-  SET_ALLOW_SCROLL,
-  SET_PAGINATION_BLOCK,
-  SET_VIEWPORT,
-} from "../../config/chat.config";
+import MessageChat from "../Utills/ChatChip/MessageChat";
+
+import React from "react";
 import NoConversation from "./NoConversation";
 
 interface ChatBodyInt {
-  messages: ChatMessageInterface[];
-  enable:boolean
+  enable: boolean
 }
 
-const ChatBody: React.FC<ChatBodyInt> = memo(({enable}) => {
+const areEqual = (prevProps: any, nextProps: any) => true;
+
+const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
+
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
   );
 
-  const [blockLocal, setBlockLocal] = useState(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const selectedChat = useSelector( (store: RootState) => store.chat.selectedChat );
+  const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
+  // const { user } = useSelector((store: RootState) => store.auth);
+ 
 
-  const viewport = useSelector((store: RootState) => store.chat.viewport);
-
-  const { blockPagination, allowChangeBlock, blockDown } = useSelector( (store: RootState) => store.chat );
-
-  const allowScroll = useSelector((store: RootState) => store.chat.allowScroll);
-  
-  let chatBox = document.getElementById("chatBox")
-
+  //API call to get messages of Selected-ROOM
+  // const [upMessagesState, setUpMessagesState] = useState(false);
+  // const [previousScrollHeight, setPreviousScrollHeight] = useState();
+  const [blockAutoDownScroll, setBlockAutoDownScroll] = useState(true);
   useEffect(() => {
-   
+
     if (selectedChat) {
-      const payload = {
-        other: {
-          roomId: selectedChat,
-          limit: 21,
-        },
-      };
-      dispatch(getRoomMessages(payload));
+      //socket.getUnreadMsgCount(user.id);
+      
+      dispatch(
+        getRoomMessages({
+          other: {
+            roomId: selectedChat,
+            limit: 21,
+          },
+          success: () => {
+            //setBlockAutoDownScroll(true)
+          }
+        })
+      );
     }
-    return ():void=>{
+    return (): void => {
       selectedChat
-      null
     }
   }, [selectedChat]);
 
   useEffect(() => {
-    if (!blockLocal) {
-      if (chatBox) {
-        chatBox?.removeEventListener("scroll", () => {});
-      }
-      chatBox?.addEventListener("scroll", () => handleScroll(blockLocal));
-    }
-    return () => {
-      chatBox?.removeEventListener("scroll", () => {});
-      
-    };
-  }, [blockPagination, allowChangeBlock, blockLocal]);
 
-  const handleScroll = (blockLocal: boolean) => {
-    if (chatBox && chatBox?.scrollTop <= 0) {
-      if (!blockPagination) {
-        dispatch(getUpMessages());
-      }
+    const chatBox: any = document.getElementById("chatBox")
+
+  //   if (chatBox) {
+  //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
+  // }
+    if (chatBox && blockAutoDownScroll === true) {
+      chatBox.scrollTop = chatBox.scrollHeight
     }
-    if (
-      (chatBox?.clientHeight || 0) > 300 &&
-      (chatBox?.scrollHeight || 0) - (chatBox?.scrollTop || 0) ===
-        chatBox?.clientHeight
-    ) {
-      if (!blockLocal) {
-        dispatch(getDownMessages());
+
+    if (chatBox) {
+      const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
+      if (currScrollPercentage >= 70) {
+        chatBox.scrollTop = chatBox.scrollHeight
+      } else {
+        // Add view to go-to botton on click 
       }
     }
-  };
 
-  useEffect(() => {
-    if (!viewport && !blockDown) {
-      setBlockLocal(()=> true);
-      setTimeout(() => {
-        const chatBox = document.getElementById("chatBox") || {
-          scrollTop: 0,
-          scrollHeight: 0,
-        };
-        chatBox.scrollTop = chatBox.scrollHeight;
-        setTimeout(() => {
-          setBlockLocal(()=> false);
-        }, 5000);
-      }, 300);
+    return (): void => {
+      messages
     }
-    return ()=>{
-      blockDown
-      clearTimeout(viewport)
-    }
-  }, [messages?.length, selectedChat, blockDown]);
-
-  useEffect(() => {
-    if (allowScroll) {
-      // will run when something merge at top
-       chatBox || {
-        scrollTop: 0,
-        scrollHeight: 0,
-      };
-       chatBox = document.getElementById(viewport);
-      if (chatBox) {
-        chatBox.scrollTop = chatBox.offsetTop - 20;
-        // chatBox.scrollIntoView({ behavior: "auto" });
-        // scroll.setScroll($(window).scrollTop()  -120- 120);
-
-        dispatch({
-          type: SET_VIEWPORT,
-          payload: null,
-        });
-        dispatch({
-          type: SET_ALLOW_SCROLL,
-          payload: false,
-        });
-      }
-    }
-  return ()=>{
-      allowScroll
-    }
-  }, [viewport, allowScroll]);
+  }, [messages]);
 
   if (!selectedChat) {
     return <NoConversation />;
   }
-  
+
+//   function preventScroll(e:any){
+//     e.preventDefault();
+//     e.stopPropagation();
+//     return false;
+// }
+
+  // function diableScroll(){
+  //   if(document){
+  //     document?.getElementsByClassName('.custom-scrollbar').addEventListener('scroll', preventScroll);
+      
+  //   }
+  // }
+
+
+//   function disableScrolling(){
+//     const elem = document?.querySelector('.custom-scrollbar')
+//     if(elem){
+//       elem.style.overflowY = "hidden";
+//       elem.scrollIntoView()
+//     }
+// }
+
+// function enableScrolling(){
+//     window.onscroll=function(){};
+// }
+
+  const handleScroll = (e: any) => {
+    let chatBox = e.target;
+   
+    const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
+
+    if (currScrollPercentage <= 70) {
+      setBlockAutoDownScroll(false)
+    } else {
+      setBlockAutoDownScroll(true)
+    }
+
+    if (currScrollPercentage <= 0 ) {
+            // disableScrolling()
+      //setUpMessagesState(true)
+      // setPreviousScrollHeight(chatBox.scrollHeight)
+      dispatch(getUpMessages());
+
+    }
+  }
+
   return (
-    <Grid
-      className={`${classes.wrapper} custom-scrollbar`}
-      id="chatBox"
-      container
-    >
-      {messages &&
-        messages?.map?.((message: ChatMessageInterface) => {
-          return <MessageChat message={message} enable={enable} />;
-        })}
-      <AddTempChatMember />
-    </Grid>
+    <>
+
+      <Grid
+        className={`${classes.wrapper} custom-scrollbar`}
+        id="chatBox"
+        container
+        onScroll={handleScroll}
+      >
+
+        {messages &&
+          messages?.map?.((message: ChatMessageInterface) => {
+            if (message.chat === selectedChat) {
+              return <MessageChat message={message} enable={props.enable} />;
+            } else {
+              return <></>
+            }
+          })
+
+        }
+        <AddTempChatMember />
+      </Grid>
+    </>
   );
-});
+}, areEqual);
 
 export default ChatBody;
 
 const useStyles = makeStyles({
   wrapper: {
-    height: "calc(100vh - 235px)",
-    overflowY: "auto",
+    maxHeight: "calc(100vh - 305px)",
+    overflowY: "scroll",
+    height: '100%',
     display: "block",
     position: "relative",
   },

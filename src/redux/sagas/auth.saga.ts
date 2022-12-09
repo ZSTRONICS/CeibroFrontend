@@ -1,4 +1,4 @@
-import { REGISTER } from "redux-persist/es/constants";
+import { REGISTER } from "redux-persist";
 import { toast } from "react-toastify";
 import { takeLatest } from "redux-saga/effects";
 import {
@@ -27,7 +27,7 @@ const verifyEmail = apiCall({
   method: "post",
   path: "/auth/veify-email",
   onFailSaga: (err) => {
-    console.log("it is failed", err);
+    console.error("it is failed", err);
   },
 });
 
@@ -63,11 +63,9 @@ const otpVerify = apiCall({
 
 const updateMyProfile = apiCall({
   type: UPDATE_MY_PROFILE,
-  method: "post",
-  path: "/users/profile",
-  success: () => {
-    toast.success("Profile updated successfully");
-  },
+  method: "patch",
+  path: "/users/profile"
+  
 });
 
 const forgetPassword = apiCall({

@@ -1,11 +1,19 @@
-//@ts-nocheck
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from 'react'
+
+// material
+import {
+  Typography,
+  Button,
+  Grid, Tooltip
+} from "@mui/material";
+import { makeStyles  } from "@material-ui/core";
+
 import { Cancel } from "@material-ui/icons";
-import { useEffect, useState } from "react";
+
 import OutsideClickHandler from "react-outside-click-handler";
+
+// redux
 import { useDispatch, useSelector } from "react-redux";
-import colors from "../../assets/colors";
-import { removeCurrentUser } from "../../helpers/chat.helpers";
 import { createChatRoom } from "../../redux/action/auth.action";
 import { getAllChats } from "../../redux/action/chat.action";
 import {
@@ -13,60 +21,52 @@ import {
   getAllProjects,
 } from "../../redux/action/project.action";
 import { RootState } from "../../redux/reducers";
+
+// components
+import TextField from "components/Utills/Inputs/TextField";
+import colors from "../../assets/colors";
 import CustomCheckbox from "../Utills/Inputs/Checkbox";
 import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import Loading from "../Utills/Loader/Loading";
 import NameAvatar from "../Utills/Others/NameAvatar";
-import TextField from "components/Utills/Inputs/TextField";
 
 export let dbUsers = [
-  {
-    label: "Test 1",
-    value: "61ec20bb778f854909aec4d2",
-    color: "green",
-  },
-  {
-    label: "Test 2",
-    value: "61ec2121778f854909aec4d7",
-    color: "green",
-  },
-  {
-    label: "Test 3",
-    value: "61ec2139778f854909aec4dc",
-    color: "green",
-  },
-  {
-    label: "Test 4",
-    value: "61ec220d778f854909aec4fa",
-    color: "green",
-  },
-];
-const CreateChat = () => {
+    {
+      label: "Test 1",
+      value: "61ec20bb778f854909aec4d2",
+      color: "green",
+    },
+    {
+      label: "Test 2",
+      value: "61ec2121778f854909aec4d7",
+      color: "green",
+    },
+    {
+      label: "Test 3",
+      value: "61ec2139778f854909aec4dc",
+      color: "green",
+    },
+    {
+      label: "Test 4",
+      value: "61ec220d778f854909aec4fa",
+      color: "green",
+    },
+  ];
+
+function CreateGroupChat(props:any) {
+    const {openGroupChat, handleOutsideClick} = props
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [projects, setProjects] = useState<any>([]);
+  const dispatch = useDispatch();
+
   const [project, setProject] = useState<any>();
   const [user, setUser] = useState<any>();
   const [users, setUsers] = useState<any>([]);
   const [name, setName] = useState("");
-  const dispatch = useDispatch();
-  const userInfo = useSelector((state: RootState) => state.auth?.user);
-  const createChatLoading = useSelector(
-    (state: RootState) => state.chat.createChatLoading
-  );
+  
+  const createChatLoading = useSelector((state: RootState) => state.chat.createChatLoading);
+  
 
-  const values = removeCurrentUser(dbUsers, userInfo?.id);
-  const { allProjects, projectMembers } = useSelector(
-    (store: RootState) => store.project
-  );
-
-  const toggle = () => {
-    setOpen(!open);
-  };
-
-  const handleOutsideClick = () => {
-    setOpen(false);
-  };
+  const { allProjects, projectMembers } = useSelector((store: RootState) => store.project);
 
   const handleProjectChange = (e: any) => {
     setProject(e);
@@ -93,18 +93,18 @@ const CreateChat = () => {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
 
-  useEffect(() => {
-    dispatch(getAllProjects());
-    setUsers([]);
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllProjects());
+  //   setUsers([]);
+  // }, []);
 
   useEffect(() => {
-    if (open) {
+    if (openGroupChat) {
       dispatch(getAllProjects());
     }
     setUsers([]);
     setProject(null);
-  }, [open]);
+  }, [openGroupChat]);
 
   const handleSubmit = () => {
     const payload = {
@@ -118,25 +118,15 @@ const CreateChat = () => {
         setProject(null);
         setUser(null);
         handleOutsideClick();
-         dispatch(getAllChats());
+        dispatch(getAllChats());
       },
     };
     dispatch(createChatRoom(payload));
   };
-
   return (
-    <div className="dropdown">
-      <Button
-        color="primary"
-        variant="contained"
-        onClick={toggle}
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-      >
-        New chat
-      </Button>
-      {open && (
-        <OutsideClickHandler onOutsideClick={handleOutsideClick}>
+<>
+{openGroupChat ===true && (
+        <OutsideClickHandler onOutsideClick={handleOutsideClick()}>
           <div
             className={`dropdown-content ${classes.outerMenu}`}
             id="dropdownContent"
@@ -255,85 +245,87 @@ const CreateChat = () => {
           </div>
         </OutsideClickHandler>
       )}
-    </div>
-  );
-};
+</>    
+  )
+}
 
-export default CreateChat;
+export default CreateGroupChat
 
-const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-  },
-  outerMenu: {
-    width: 350,
-    left: 0,
-  },
-  searchInput: {
-    width: 340,
-    height: 30,
-    border: `1px solid ${colors.borderGrey}`,
-  },
-  smallRadioButton: {
-    fontSize: "14px !important",
-    "& svg": {
-      width: "0.8em",
-      height: "0.8em",
+const useStyles = makeStyles((theme:any) => ({
+    small: {
+      width: theme.spacing(5),
+      height: theme.spacing(5),
     },
-    "&$checked": {
-      color: "green",
+    outerMenu: {
+        left: 300,
+        width: '100%',
+        maxWidth: 370,
     },
-  },
-  suggestedUsersTitle: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-    marginBottom: 10,
-  },
-  wrapper: {
-    // borderBottom: `1px solid ${colors.grey}`,
-    marginBottom: 5,
-  },
-  titleText: {
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  subTitleText: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-  },
-  actionWrapper: {
-    display: "flex",
-    justifyContent: "flex-start",
-    gap: 25,
-    paddingTop: 10,
-    paddingBottom: 15,
-  },
-  actionBtn: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  time: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: colors.textGrey,
-  },
-  suggestUser: {
-    maxHeight: 300,
-    overflow: "auto",
-  },
-  selectedUser: {
-    height: 50,
-    width: 50,
-    position: "relative",
-  },
-  cancelIcon: {
-    fontSize: 14,
-    position: "absolute",
-    color: colors.textGrey,
-    top: -5,
-    right: 5,
-  },
-}));
+    searchInput: {
+      width: 340,
+      height: 30,
+      border: `1px solid ${colors.borderGrey}`,
+    },
+    smallRadioButton: {
+      fontSize: "14px !important",
+      "& svg": {
+        width: "0.8em",
+        height: "0.8em",
+      },
+      "&$checked": {
+        color: "green",
+      },
+    },
+    suggestedUsersTitle: {
+      fontSize: 12,
+      fontWeight: 500,
+      color: colors.textGrey,
+      marginBottom: 10,
+    },
+    wrapper: {
+      // borderBottom: `1px solid ${colors.grey}`,
+      marginBottom: 5,
+    },
+    titleText: {
+      fontSize: 14,
+      fontWeight: "bold",
+    },
+    subTitleText: {
+      fontSize: 12,
+      fontWeight: 500,
+      color: colors.textGrey,
+    },
+    actionWrapper: {
+      display: "flex",
+      justifyContent: "flex-start",
+      gap: 25,
+      paddingTop: 10,
+      paddingBottom: 15,
+    },
+    actionBtn: {
+      fontSize: 12,
+      fontWeight: "bold",
+    },
+    time: {
+      fontSize: 12,
+      fontWeight: "bold",
+      color: colors.textGrey,
+    },
+    suggestUser: {
+      maxHeight: 300,
+      overflow: "auto",
+    },
+    selectedUser: {
+      height: 50,
+      width: 50,
+      position: "relative",
+    },
+    cancelIcon: {
+      fontSize: 14,
+      position: "absolute",
+      color: colors.textGrey,
+      top: -5,
+      right: 5,
+    },
+  }));
+  

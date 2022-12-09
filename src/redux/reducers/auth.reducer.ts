@@ -1,12 +1,13 @@
+import { REGISTER } from "redux-persist";
 import { ActionInterface } from ".";
 import {
   requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
-import { GET_PROFILE, LOGIN, LOGOUT } from "../../config/auth.config";
-import { REGISTER } from "redux-persist/es/constants";
+import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
 import { UserInterface } from "constants/interfaces/user.interface";
+import { perisitStoreState } from "redux/store";
 
 interface authInterface {
   isLoggedIn: boolean;
@@ -29,15 +30,29 @@ const intialStatue: authInterface = {
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestPending(LOGIN): {
+      setTimeout(() => {
+        state.loginLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         loginLoading: true,
       };
     }
+    case requestFail(LOGIN): {
+      localStorage.clear();
+      sessionStorage.clear();
+      perisitStoreState()
+      setTimeout(() => {
+        state.loginLoading = false
+      }, 10000 / 2);
+      return {
+        ...state,
+        loginLoading: false,
+      };
+    }
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
-
       return {
         ...state,
         isLoggedIn: true,
@@ -46,15 +61,12 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case requestFail(LOGIN): {
-      // localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
-      return {
-        ...state,
-        loginLoading: false,
-      };
-    }
+
 
     case requestPending(REGISTER): {
+      setTimeout(() => {
+        state.registerLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         registerLoading: true,
@@ -69,6 +81,11 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(REGISTER): {
+      localStorage.clear();
+      sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading = false
+      }, 10000 / 2);
       return {
         ...state,
         registerLoading: false,
@@ -77,6 +94,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case LOGOUT: {
       localStorage.removeItem("tokens");
+      localStorage.clear();
+      sessionStorage.clear()
       return {
         ...state,
         isLoggedIn: false,
@@ -84,13 +103,26 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case requestSuccess(GET_PROFILE): {
+    case GET_PROFILE: {
       return {
         ...state,
         user: action.payload,
       };
     }
 
+    case UPDATE_MY_PROFILE: {
+      const res = action.payload.body
+      let currUser: any = state.user
+      for (var atrNmae in res) {
+        if (atrNmae in currUser) {
+          currUser[atrNmae] = res[atrNmae]
+        }
+      }
+      return {
+        ...state,
+        user: currUser,
+      };
+    }
     default:
       return state;
   }
