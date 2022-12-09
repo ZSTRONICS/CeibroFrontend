@@ -14,7 +14,28 @@ import { SET_CHAT_SEARCH } from 'config/chat.config';
 import { UserInterface } from 'constants/interfaces/user.interface';
 import { getMyConnections } from 'redux/action/user.action';
 import colors from "../../assets/colors";
-
+export let dbUsers = [
+  {
+    label: "Test 1",
+    value: "61ec20bb778f854909aec4d2",
+    color: "green",
+  },
+  {
+    label: "Test 2",
+    value: "61ec2121778f854909aec4d7",
+    color: "green",
+  },
+  {
+    label: "Test 3",
+    value: "61ec2139778f854909aec4dc",
+    color: "green",
+  },
+  {
+    label: "Test 4",
+    value: "61ec220d778f854909aec4fa",
+    color: "green",
+  },
+];
 const CreateIndividualChat =(props:any) => {
     const {individualChat}= props
     const classes = useStyles();
