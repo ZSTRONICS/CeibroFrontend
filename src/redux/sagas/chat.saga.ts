@@ -111,7 +111,10 @@ const getRoomMessages = apiCall({
     }
     if (payload?.other?.limit) {
       url = url + `?limit=${payload?.other?.limit}`;
+    }else{
+      url = url + `?limit=21`
     }
+
     return url;
   },
 });
@@ -119,10 +122,16 @@ const getRoomMessages = apiCall({
 const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
-  path: (payload: any) =>
-    "/chat/room/messages/" +
-    payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}&limit=21`,
+  path: (payload: any) => {
+    let apiUrl = "/chat/room/messages/" + payload.other.roomId
+    if (payload?.other.lastMessageId !== null){
+      apiUrl = apiUrl + `?lastMessageId=${payload?.other.lastMessageId}&limit=21`
+    }else{
+      apiUrl = apiUrl + `?limit=21`
+    }
+    return apiUrl
+  }
+
 });
 
 const getDownRoomMessages = apiCall({
@@ -280,7 +289,6 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
       ...oldRoutes,
     },
   });
-
 
   yield put({
     type: ROOM_MESSAGE_DATA,

@@ -1,4 +1,4 @@
-import { Badge, Grid,  Typography } from "@material-ui/core";
+import { Badge, Grid, Typography } from "@material-ui/core";
 import { Star, StarBorder } from "@material-ui/icons";
 import colors from "../../../assets/colors";
 import NameAvatar from "../Others/NameAvatar";
@@ -23,7 +23,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const { name, unreadCount, lastMessageTime, lastMessage, project, } = chat;
 
   const { user } = useSelector((state: RootState) => state.auth);
-  
+
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
@@ -58,7 +58,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const getStyles = () => {
     if (selectedChat === chat._id && socket.getAppSelectedChat() !== chat._id) {
-      socket.setAppSelectedChat(chat._id);      
+      socket.setAppSelectedChat(chat._id);
     }
 
     return {
@@ -117,11 +117,12 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 className={classes.userName}
               >{`${individualFirstName} ${individualSurName}`}</Typography>
             )}
-            
-              <Typography className={classes.message}>
-                {lastMessage?.message?.substr(0, 22)}
-              </Typography>
-            
+
+
+            <Typography className={classes.message}>
+              {lastMessage?.message?.substr(0, 22)}
+            </Typography>
+
           </Grid>
 
           <Grid item xs={2} className={classes.timeOuterWrapper}>
@@ -132,13 +133,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
                 <StarBorder className={classes.bookmarked} />
               )}
             </div>
-            <div className={classes.timeWrapper}>  
-            <Badge
-              overlap="circular"
-              badgeContent={unreadLocalCount}
-              color="error"
-            ></Badge>
-          
+            <div className={classes.timeWrapper}>
+              <Badge
+                overlap="circular"
+                badgeContent={unreadLocalCount}
+                color="error"
+              ></Badge>
+
               <Typography className={classes.time}>{lastMessageTime}</Typography>
             </div>
           </Grid>

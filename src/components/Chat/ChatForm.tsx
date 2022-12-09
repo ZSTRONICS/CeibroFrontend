@@ -147,8 +147,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       
       const data = {
         eventType: SEND_MESSAGE,
-        userId: user.id,
-        data: JSON.stringify(payload)
+        data: {
+          userId: user.id,
+          message: JSON.stringify(payload),
+        }
       }
 
       socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));

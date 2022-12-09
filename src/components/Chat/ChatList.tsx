@@ -51,10 +51,10 @@ const ChatList = () => {
           try {
             const chatMembers = [...localChat.members, ...localChat.removedMembers];
             if ('unreadCount' in localChat && roomMessageData != null) {
-              console.log(roomMessageData,  localChat._id);
-              
               if (roomMessageData.has(localChat._id)) {
                 localChat.unreadCount = roomMessageData.get(localChat._id).unreadMessageCount
+
+                localChat.lastMessage = roomMessageData.get(localChat._id).lastMessage
               }
             }
 
