@@ -1,26 +1,15 @@
+import React, { useState } from "react";
 import {
-  Button,
-  CircularProgress,
-  Dialog,
+  Button, Dialog,
   DialogActions,
   DialogContent,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 import colors from "assets/colors";
-import Input from "components/Utills/Inputs/Input";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import { mapGroups } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 // @ts-ignore
 import FileViewer from "react-file-viewer";
-import projectActions, {
-  createFolder,
-  getFolder,
-  getGroup,
-} from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
 interface AddGroupProps {}

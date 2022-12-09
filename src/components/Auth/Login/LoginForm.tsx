@@ -31,7 +31,7 @@ import { toast } from "react-toastify";
 // component
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 import colors from "assets/colors";
-import Loading from "react-loading";
+import ReactLoading from "react-loading";
 import assets from "assets/assets";
 import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
@@ -344,7 +344,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 // disabled={checkValidInputs(values) || loginLoading}
                 >
                   {loginLoading ? (
-                    <Loading type="spin" color="white" height={14} width={14} />
+                    <ReactLoading type="spin" color="white" height={14} width={14} />
                   ) : (
                     t("auth.login")
                   )}
