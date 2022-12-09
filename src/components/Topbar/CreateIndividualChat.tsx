@@ -80,7 +80,7 @@ useEffect(() => {
                   const user: UserInterface = connection?.sentByMe ? connection.to : connection.from;
 
                   return (
-                    <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
+                    <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('')}>
                       <CBox>
                         <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
                       </CBox>
