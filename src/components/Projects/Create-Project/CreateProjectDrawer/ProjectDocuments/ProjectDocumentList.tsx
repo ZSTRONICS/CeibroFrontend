@@ -1,4 +1,3 @@
-
 import {
   CircularProgress,
   makeStyles,
@@ -17,8 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFolder } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
-import Moment from "react-moment";
 import ProjectDocumentMenu from "./ProjectDocsMenu";
+import moment from "moment-timezone";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
@@ -48,7 +47,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   }, [selectedProject]);
 
   const classes = useStyles();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
@@ -78,6 +76,10 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           )}
 
           {folderList?.map((row: FolderInterface) => {
+            const DateString: string = moment(row?.createdAt).format(
+              "YYYY-MM-DD"
+            );
+
             return (
               <TableRow key={row?.name}>
                 <TableCell
@@ -86,7 +88,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   scope="row"
                   className={classes.name}
                 >
-                  <img src={assets.usersFolder} className="width-16" />
+                  <img src={assets.usersFolder} className="width-16" alt="" />
                   <Typography className={`${classes.name}`}>
                     {row?.name}
                   </Typography>
@@ -97,7 +99,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   align="right"
                   className={classes.modifyDate}
                 >
-                  {<Moment format="YYYY-MM-DD">{row?.createdAt}</Moment>}
+                  {DateString}
                 </TableCell>
 
                 <TableCell

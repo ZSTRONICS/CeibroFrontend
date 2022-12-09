@@ -1,21 +1,18 @@
-
-import React, { FC, useEffect } from "react";
+import { FC } from "react";
+import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Chip, Grid, Typography } from "@material-ui/core";
-import Moment from "react-moment";
-
+import styled from "@emotion/styled";
+import assets from "assets/assets";
+import { ProjectInterface } from "constants/interfaces/project.interface";
+import { useDispatch } from "react-redux";
+import projectActions, { getPermissions } from "redux/action/project.action";
 import colors from "../../../assets/colors";
 import {
   getColorByStatus,
   getTextColorByStatus,
 } from "../../../config/project.config";
-import assets from "assets/assets";
-import { ProjectInterface } from "constants/interfaces/project.interface";
-import { useDispatch, useSelector } from "react-redux";
-import projectActions, { getPermissions } from "redux/action/project.action";
-import { UserInterface } from "constants/interfaces/user.interface";
-import { RootState } from "redux/reducers";
-import styled from "@emotion/styled";
+
+import moment from "moment";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -43,7 +40,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   };
 
   const classes = useStyles();
-  const imgSrc =  src ==='undefined' ? assets.Defaulttask: src
+  const imgSrc = src === "undefined" ? assets.Defaulttask : src;
+  const dueDateString: string = moment(dueDate).format("YYYY-MM-DD");
 
   return (
     <>
@@ -52,7 +50,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         onClick={handleProjectClick}
       >
         <ImageCard>
-          <Image   src={ imgSrc} />
+          <Image src={imgSrc} />
           <Status>
             <div
               className={classes.status}
@@ -65,7 +63,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             </div>
             <div className={classes.dateWrapper}>
               <Typography className={classes.statusDate}>
-                {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+                {dueDateString}
               </Typography>
             </div>
           </Status>
@@ -74,7 +72,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           <Grid item xs={5}>
             <Typography className={classes.meta}>Due Date </Typography>
             <Typography className={classes.metaValue}>
-              {<Moment format="YYYY-MM-DD">{dueDate}</Moment>}
+              {dueDateString}
             </Typography>
           </Grid>
           <Grid item xs={7}>
@@ -98,26 +96,26 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         </Grid>
         <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip}>
-            <img src={assets.clipboardIcon} className={`w-16`} />
+            <img src={assets.clipboardIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>
               {tasks} task(s)
             </Typography>
           </div>
 
           <div className={classes.iconChip}>
-             <img src={assets.folderIcon} className={`w-16`} />
+            <img src={assets.folderIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>
               {docsCount} doc(s)
             </Typography>
           </div>
 
           <div className={classes.iconChip}>
-             <img src={assets.blueUser} className={`width-16`} />
+            <img src={assets.blueUser} className={`width-16`} alt="" />
             <Typography className={classes.iconText}>{usersCount}</Typography>
           </div>
 
           <div className={classes.iconChip}>
-             <img src={assets.chatIcon} className={`w-16`} />
+            <img src={assets.chatIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
         </Grid>
@@ -239,7 +237,7 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     minHeight: 40,
     height: "20%",
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   iconChip: {
     display: "flex",
