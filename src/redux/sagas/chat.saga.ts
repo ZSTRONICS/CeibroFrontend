@@ -57,30 +57,31 @@ const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
   path: (payload: any) => {
-    let url = `/chat/room/messages/${payload.other.roomId}`;
+    let url = `/chat/room/messages/${payload.other.roomId}?`;
     if (payload?.other?.search) {
-      url = url + `?search=${payload?.other?.search}`;
+      url = url + `search=${payload?.other?.search}&`;
     }
     if (payload?.other?.username) {
-      url = url + `?username=${payload?.other?.username}`;
+      url = url + `username=${payload?.other?.username}&`;
     }
     if (payload?.other?.company) {
-      url = url + `?company=${payload?.other?.company}`;
+      url = url + `company=${payload?.other?.company}&`;
     }
     if (payload?.other?.group) {
-      url = url + `?group=${payload?.other?.group}`;
+      url = url + `group=${payload?.other?.group}&`;
     }
     if (payload?.other?.startDate) {
-      url = url + `?startDate=${payload?.other?.startDate}`;
+      url = url + `startDate=${payload?.other?.startDate}&`;
     }
     if (payload?.other?.messageId) {
-      url = url + `?messageId=${payload?.other?.messageId}`;
+      url = url + `messageId=${payload?.other?.messageId}&`;
     }
     if (payload?.other?.limit) {
-      url = url + `?limit=${payload?.other?.limit}`;
-    }else{
-      url = url + `?limit=21`
-    }
+      url = url + `limit=${payload?.other?.limit}`;
+     }
+     //else{
+    //   url = url + `limit=21`
+    // }
 
     return url;
   },

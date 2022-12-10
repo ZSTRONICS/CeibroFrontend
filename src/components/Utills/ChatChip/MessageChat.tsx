@@ -118,7 +118,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   };
 
   const handleReplyClick = () => {
-    dispatch(goToMessage(replyOf.id));
+    dispatch(goToMessage(replyOf._id));
   };
 
   const handleClick = () => {
@@ -184,12 +184,12 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
 
   // const senderUserId = (sender?.id === user.id)
 
-  let replyToMessage = null;
-  if (replyOf?.id) {
-    replyToMessage = messages?.find(
-      (msg: any) => String(msg._id) === String(replyOf?.id)
-    );
-  }
+  // let replyToMessage = null;
+  // if (replyOf?.id) {
+  //   replyToMessage = messages?.find(
+  //     (msg: any) => String(msg._id) === String(replyOf?._id)
+  //   );
+  // }
 
   return (
      <>
@@ -221,7 +221,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
                 {message.type === "message" && <><CBox>
                           <Typography
                             className={classes.replyToTitle}
-                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+                          >{`${replyOf.firstName} ${replyOf.surName}`}</Typography>
                         </CBox>
                 <span>{replyOf?.message}</span>
                   </>}
