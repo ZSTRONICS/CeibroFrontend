@@ -69,7 +69,6 @@ const QuestioniarBody = () => {
 
   const handleChangePreview = (e:any) => {
     setPreview(e.target.checked)
-    console.log(e, e.target.checked)
   };
 
   const listOfMember = membersList?.map((member: any) => ({

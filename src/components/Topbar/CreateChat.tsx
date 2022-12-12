@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useRef} from "react";
 
 // material
 import {
@@ -14,41 +14,55 @@ import CreateIndividualChat from "./CreateIndividualChat";
 function CreateChat() {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const [openGroupChat, setOpenGroupChat] =React.useState(false)
-    const [openIndividualChat, setOpenIndividualChat] =React.useState(false)
+    const [individualEl, setAnchorEl] = React.useState<any>(undefined);
+    const [anchorGroupEl, setAnchorGroupEl] = React.useState<any>(undefined);
+    const divRef = useRef();
 
   const handleOpenChatMenue = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget)
     }
     
-
   const handleCloseChatMenu = () => {
     setAnchorElUser(null);
   };
 
-  const handleOutsideClick = () => {
-    setOpenGroupChat((prev) => !prev);
-    setAnchorElUser(null);
-  };
   const handleIndividualChat = () => {
-    setOpenIndividualChat((prev) => !prev);
+    setAnchorEl(divRef.current);
     setAnchorElUser(null);
   };
 
+  const handleGroupChat = () => {
+    setAnchorGroupEl(divRef.current);
+    setAnchorElUser(null);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const handleGroupClose = () => {
+    setAnchorGroupEl(null);
+  };
+
+  const open = Boolean(individualEl);
+  const openGroup = Boolean(anchorGroupEl);
+  const id = open ? 'simple-popover' : undefined
+  const gId = open ? 'group-popover' : undefined
+
   return (
     <>
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={{ flexGrow: 0 }} ref={divRef}>
           <Button
             color="primary"
             variant="contained"
             onClick={handleOpenChatMenue}
             aria-controls="simple-menu"
             aria-haspopup="true"
+            
           >
             New chat
           </Button>
-          { openGroupChat&& <CreateGroupChat openGroupChat={openGroupChat} handleOutsideClick={handleOutsideClick} anchorElUser={anchorElUser} setAnchorElUser={setAnchorElUser} />}
-          { openIndividualChat&& <CreateIndividualChat individualChat={openIndividualChat} />}
+            <CreateGroupChat  ButtonId={gId} openGroup={openGroup} groupEl={anchorGroupEl} handleGroupClose={handleGroupClose} />
+           <CreateIndividualChat ButtonId = {id} open={open} individualEl={individualEl} handleClose= {handleClose} />
         <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"
@@ -67,7 +81,8 @@ function CreateChat() {
         >
           <MenuItem
             disableRipple
-            onClick={handleOutsideClick}
+            aria-describedby={gId}
+            onClick={handleGroupChat}
             divider
             sx={{
               "&.MuiMenuItem-root": {
@@ -78,11 +93,11 @@ function CreateChat() {
               <Box display="flex" alignItems="center">
               <Typography textAlign="center">Group Chat</Typography>
               </Box>
-             
-           
           </MenuItem>
+
           <MenuItem
             disableRipple
+            aria-describedby={id}
             onClick={handleIndividualChat}
             sx={{
               "&.MuiMenuItem-root": {
