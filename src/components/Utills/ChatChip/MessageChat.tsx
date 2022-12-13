@@ -25,6 +25,7 @@ import NameAvatar from "../Others/NameAvatar";
 import ChatMessageMenu from "./ChatMessageMenu";
 import FilePreviewer from "./FilePreviewer";
 import SeenBy from "./SeenBy";
+import moment from "moment-timezone";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -37,13 +38,13 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     replyOf,
     type,
     voiceUrl,
-    time,
     message: messageText,
     files,
     sender,
     title,
     readBy,
     pinnedBy,
+    createdAt
   } = message;
 
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
@@ -52,6 +53,8 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   const { messages, selectedChat } = useSelector(
     (state: RootState) => state.chat
   );
+
+  let time = moment.utc(moment(createdAt)).fromNow()
   let myMessag = sender?.id === user.id
   const dispatch = useDispatch();
   const [view, setView] = useState(false);
@@ -59,6 +62,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   const toggleView = () => {
     setView(!view);
   };
+
 const borderStyle = `1px solid ${colors.senderBoxBorder}`
 const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
 
@@ -183,12 +187,6 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
 
   // const senderUserId = (sender?.id === user.id)
 
-  // let replyToMessage = null;
-  // if (replyOf?.id) {
-  //   replyToMessage = messages?.find(
-  //     (msg: any) => String(msg._id) === String(replyOf?._id)
-  //   );
-  // }
 
   return (
      <>
