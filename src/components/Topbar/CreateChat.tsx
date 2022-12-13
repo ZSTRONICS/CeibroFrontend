@@ -11,7 +11,7 @@ import {
 import CreateGroupChat from "./CreateGroupChat";
 import CreateIndividualChat from "./CreateIndividualChat";
 
-function CreateChat() {
+ function CreateChat() {
 
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
     const [individualEl, setAnchorEl] = React.useState<any>(undefined);
@@ -52,12 +52,16 @@ function CreateChat() {
     <>
       <Box sx={{ flexGrow: 0 }} ref={divRef}>
           <Button
+          sx={{
+              fontFamily: 'Inter',
+              fontWeight: 700,
+              fontSize: 12
+          }}
             color="primary"
             variant="contained"
             onClick={handleOpenChatMenue}
             aria-controls="simple-menu"
             aria-haspopup="true"
-            
           >
             New chat
           </Button>
