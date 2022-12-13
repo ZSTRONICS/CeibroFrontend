@@ -127,8 +127,12 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
       setBlockAutoDownScroll(true)
     }
 
-    if (currScrollPercentage <= 0 && messages[0].type != "bot") {
+    if (currScrollPercentage <= 0 ) {
+            // disableScrolling()
+      //setUpMessagesState(true)
+      // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
+
     }
   }
 

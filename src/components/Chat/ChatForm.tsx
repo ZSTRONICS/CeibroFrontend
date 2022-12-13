@@ -103,7 +103,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   let replyToMessage = null;
   if (replyToId) {
     replyToMessage = messages?.find(
-      (msg: any) => String(msg.id) === String(replyToId)
+      (msg: any) => String(msg._id) === String(replyToId)
     );
   }
   
@@ -129,10 +129,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         payload.messageId = replyToId;
         
         replyMessage = messages?.find(
-          (msg: any) => String(msg.id) === String(replyToId)
+          (msg: any) => String(msg._id) === String(replyToId)
         );
         if (replyMessage) {
-          replyMessage.id = replyMessage.id;
+          replyMessage.id = replyMessage._id;
         }
       }
 
@@ -160,7 +160,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         seen: true,
         type: "message",
         myMessage:user.id,
-        id: myId,
+        _id: myId,
         pinnedBy:[],
         chat: selectedChat,
         replyOf: replyMessage|| replyToId,

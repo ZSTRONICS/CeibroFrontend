@@ -194,7 +194,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         messages: [...state.messages, action.payload],
-        loadingMessages: [...state.loadingMessages, action.payload.id],
+        loadingMessages: [...state.loadingMessages, action.payload._id],
       }
     }
 
