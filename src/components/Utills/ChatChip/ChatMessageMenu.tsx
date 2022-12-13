@@ -34,7 +34,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
         e.stopPropagation();
         dispatch({
             type: SET_REPLY_TO_ID,
-            payload: message?._id
+            payload: message?.id
         });
         setShow(false);
     }
@@ -54,7 +54,7 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
 
     return (
         <div className="dropdown">
-            <ForwardMessage onClose={closeDialog}  messageId={message._id} open={open} />
+            <ForwardMessage onClose={closeDialog}  messageId={message.id} open={open} />
             <MoreVert className={classes.moreIcon} onClick={handleToggle} />
             {show && (
                 <OutsideClickHandler onOutsideClick={handleToggle}>

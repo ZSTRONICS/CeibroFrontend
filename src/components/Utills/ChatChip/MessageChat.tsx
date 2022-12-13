@@ -83,7 +83,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   const handlePinClick = () => {
     let myMsgs = JSON.parse(JSON.stringify(messages));
     const index = messages?.findIndex(
-      (msg: ChatMessageInterface) => String(msg._id) === String(message._id));
+      (msg: ChatMessageInterface) => String(msg.id) === String(message.id));
 
     const myMsg = messages[index];
     if (myMsg?.pinnedBy?.includes(user.id)) {
@@ -98,7 +98,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
     myMsgs[index] = myMsg;
 
     const payload = {
-      other: message._id,
+      other: message.id,
       success: (res: any) => {
         dispatch({
           type: SAVE_MESSAGES,
@@ -121,12 +121,12 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   };
 
   const handleReplyClick = () => {
-    dispatch(goToMessage(replyOf._id));
+    dispatch(goToMessage(replyOf?.id));
   };
 
   const handleClick = () => {
     if (type === "questioniar") {
-      dispatch(setSelectedQuestioniar(message._id));
+      dispatch(setSelectedQuestioniar(message.id));
       dispatch(openViewQuestioniarDrawer());
     }
   };
@@ -186,17 +186,15 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   // }
 
   // const senderUserId = (sender?.id === user.id)
-
-
   return (
      <>
       <Grid
         container
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
-        id={message._id}
+        id={message.id}
       >
-        {message._id && loadingMessages?.includes?.(message._id) && (
+        {message.id && loadingMessages?.includes?.(message.id) && (
           <ClipLoader color={colors.textGrey} size={6} />
         )}
         <Grid item xs={6} onClick={handleClick}>

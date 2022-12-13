@@ -28,7 +28,7 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         message: "Curabitur blandit tempus porttitor. Maecenas sed diam eget risus varius blandit sit amet non magna. ",
         seen: true,
         myMessage: 'asdasd12312',
-        _id: "",
+        id: "",
         type: 'questioniar',
         createdAt: '2017-02-02 08:00:13.567',
     },

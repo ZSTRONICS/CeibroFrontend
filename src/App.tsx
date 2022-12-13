@@ -198,7 +198,7 @@ const App: React.FC<MyApp> = () => {
 function isMessageInStore(msgIdRecieved: any) {
   const messages = myStore.store.getState().chat?.messages;
   const index = messages?.findIndex((message: any) => {
-    return String(message?._id) === String(msgIdRecieved);
+    return String(message?.id) === String(msgIdRecieved);
   });
   return index > -1;
 }

@@ -323,7 +323,7 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
 
   const messages: any = yield select((state: RootState) => state.chat.messages);
   const index = messages?.findIndex((message: any) => {
-    return String(message?._id) === String(other.oldMessageId);
+    return String(message?.id) === String(other.oldMessageId);
   });
 
   if (index > -1) {
@@ -350,7 +350,7 @@ function* replaceMessagesById(action: ActionInterface): Generator<any> {
      for (var key of Object.keys(messages)) {
 
     const index = storeMsgs?.findIndex((message: any) => {
-      return String(message?._id) === String(key);
+      return String(message?.id) === String(key);
     });
   
     if (index > -1) {
@@ -382,9 +382,10 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
   const payload = {
     other: {
       roomId: selectedChat,
-      lastMessageId: messages?.[0]?._id || null,
+      lastMessageId: messages?.[0]?.id || null,
     },
   };
+
 
   yield put({
     type: GET_UP_MESSAGES,
