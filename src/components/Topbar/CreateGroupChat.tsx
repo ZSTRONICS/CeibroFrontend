@@ -124,6 +124,7 @@ function CreateGroupChat(props:any) {
   return (
 <>
 <Popover
+      className={classes.outerGroupWrapper}
         id={ButtonId}
         anchorReference={groupEl}
         open={openGroup}
@@ -229,7 +230,7 @@ function CreateGroupChat(props:any) {
                 </Grid>
               )}
 
-              <Grid item xs={12} style={{ paddingTop: 20, display:'flex', justifyContent:'space-between' }}>
+              <Grid item xs={12} style={{ paddingTop: 20, display:'flex', justifyContent:'flex-end' }}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -260,6 +261,11 @@ const useStyles = makeStyles((theme:any) => ({
     small: {
       width: theme.spacing(5),
       height: theme.spacing(5),
+    },
+    outerGroupWrapper:{
+'& .MuiGrid-root':{
+  padding:8
+}
     },
     outerMenu: {
         width: '100%',
