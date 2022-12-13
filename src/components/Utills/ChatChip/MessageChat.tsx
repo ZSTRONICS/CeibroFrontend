@@ -39,7 +39,6 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     voiceUrl,
     time,
     message: messageText,
-    myMessage,
     files,
     sender,
     title,
@@ -53,7 +52,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   const { messages, selectedChat } = useSelector(
     (state: RootState) => state.chat
   );
-  let myMessag = String(myMessage) === user.id
+  let myMessag = sender?.id === user.id
   const dispatch = useDispatch();
   const [view, setView] = useState(false);
   const bodyRef = useRef(null);
@@ -212,7 +211,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
                 <img className="w-16" src={assets.blueDocument} alt="" />
               </div>
             )}
-            {replyOf && (
+            {replyOf&& (
               <Grid
                 onClick={handleReplyClick}
                 container
@@ -221,9 +220,9 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
                 {message.type === "message" && <><CBox>
                           <Typography
                             className={classes.replyToTitle}
-                          >{`${replyOf.firstName} ${replyOf.surName}`}</Typography>
+                          >{`${replyOf?.sender?.firstName} ${replyOf?.sender?.surName}`}</Typography>
                         </CBox>
-                <span>{replyOf?.message}</span>
+                <span  className={classes.replyToMsg}>{replyOf?.message}</span>
                   </>}
                 {replyOf.type === "questioniar" && <span>Questioniar</span>}
                 {replyOf.type === "voice" && <span>Voice</span>}
@@ -399,6 +398,11 @@ const useStyles = makeStyles({
     fontWeight: 600,
     textTransform: "capitalize",
   },
+  replyToMsg:{
+    fontFamily:'Inter',
+    fontWeight: 500,
+    fontSize: 14
+  },
   sideName: {
     paddingLeft: 15,
   },
@@ -429,6 +433,7 @@ const useStyles = makeStyles({
   },
   replyWrapper: {
     '& .MuiTypography-root':{
+      fontFamily: 'Inter',
       fontSize: 14,
     },
     color: colors.textGrey,

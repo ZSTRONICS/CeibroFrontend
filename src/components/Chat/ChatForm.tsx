@@ -124,12 +124,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         }
       }
 
-      if (replyToId) {
-        payload.messageId = replyToId;
-      }
-
       let replyMessage = null;
       if (replyToId) {
+        payload.messageId = replyToId;
+        
         replyMessage = messages?.find(
           (msg: any) => String(msg._id) === String(replyToId)
         );
@@ -161,11 +159,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         message: text,
         seen: true,
         type: "message",
-        myMessage: String(user.id),
+        myMessage:user.id,
         _id: myId,
         pinnedBy:[],
         chat: selectedChat,
-        replyOf: replyMessage || replyToId,
+        replyOf: replyMessage|| replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
 
@@ -255,7 +253,6 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           _id: myId,
         },
       });
-
       const payload: any = {
         body: formdata,
         success: (res: any) => {
