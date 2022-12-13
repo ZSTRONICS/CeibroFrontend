@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
-import { Grid, makeStyles } from "@material-ui/core";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
@@ -15,6 +15,8 @@ import MessageChat from "../Utills/ChatChip/MessageChat";
 
 import React from "react";
 import NoConversation from "./NoConversation";
+import moment from "moment-timezone";
+import { Box } from "@mui/material";
 
 interface ChatBodyInt {
   enable: boolean
@@ -136,6 +138,12 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
     }
   }
 
+  const messageBot= messages?.map?.((message: any) => {
+     if(message.type ==='bot'){
+      return moment.utc(moment(message.createdAt)).fromNow()
+    }
+  })
+
   return (
     <>
 
@@ -145,11 +153,17 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
         container
         onScroll={handleScroll}
       >
-
+        <Box className={classes.botContainer} >
+          <Typography>
+            {messageBot[0]}
+          </Typography>
+        </Box>
         {messages &&
-          messages?.map?.((message: ChatMessageInterface) => {
+          messages.filter((message:any)=> message.type !=='bot').map?.((message: ChatMessageInterface) => {
             if (message.chat === selectedChat) {
-              return <MessageChat message={message} enable={props.enable} />;
+              return <>
+              <MessageChat message={message} enable={props.enable} />;
+              </>
             } else {
               return <></>
             }
@@ -165,6 +179,19 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
 export default ChatBody;
 
 const useStyles = makeStyles({
+  botContainer:{
+    background: '#ECF0F1',
+    borderRadius: 20,
+    maxWidth: 125,
+    margin: '0 auto',
+    width: '100%',
+    textAlign: 'center',
+    padding: '2px 0',
+    '& .MuiTypography-root':{
+      fontSize: '12px',
+    }
+
+  }, 
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
     overflowY: "scroll",
