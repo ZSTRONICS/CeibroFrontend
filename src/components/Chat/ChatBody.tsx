@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-// @ts-nocheck
 
 import { Grid, makeStyles } from "@material-ui/core";
 import { useEffect, useState } from "react";
