@@ -1,26 +1,15 @@
+import React from "react";
 import {
-  Button,
-  CircularProgress,
-  Dialog,
+  Button, Dialog,
   DialogActions,
   DialogContent,
-  makeStyles,
+  makeStyles
 } from "@material-ui/core";
 import colors from "assets/colors";
-import Input from "components/Utills/Inputs/Input";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import { mapGroups } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
 // @ts-ignore
 import FileViewer from "react-file-viewer";
-import projectActions, {
-  createFolder,
-  getFolder,
-  getGroup,
-} from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
 interface AddGroupProps {}
@@ -29,16 +18,16 @@ const FileViewDrawer: React.FC<AddGroupProps> = () => {
   const classes = useStyles();
   // const roles = ["create", "edit", "delete", "self-made"];
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isRole, setIsRole] = useState(false);
-  const [isMember, setIsMember] = useState(false);
-  const [isTimeProfile, setIsTimeProfile] = useState(false);
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // const [isRole, setIsRole] = useState(false);
+  // const [isMember, setIsMember] = useState(false);
+  // const [isTimeProfile, setIsTimeProfile] = useState(false);
 
-  const [name, setName] = useState();
-  const [groups, setGroups] = useState();
-  const [selectGroups, setSelectGroups] = useState<any>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const isDiabled = !loading ? false : true;
+  // const [name, setName] = useState();
+  // const [groups, setGroups] = useState();
+  // const [selectGroups, setSelectGroups] = useState<any>();
+  // const [loading, setLoading] = useState<boolean>(false);
+  // const isDiabled = !loading ? false : true;
 
   const {
     documentDrawer,

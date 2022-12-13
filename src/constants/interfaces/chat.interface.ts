@@ -53,4 +53,5 @@ export interface ChatMessageInterface {
   dueDate?: any;
   chat?: any;
   type: "message" | "questioniar" | "voice";
+  createdAt:Date
 }

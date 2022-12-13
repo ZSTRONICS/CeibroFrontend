@@ -2,36 +2,30 @@ import { useRef, useState } from "react";
 // material & react-icon
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
-import { IoReturnUpForward } from "react-icons/io5";
 import { BsDownload } from "react-icons/bs";
+import { IoReturnUpForward } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
-import { useMediaQuery } from "react-responsive";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
 import {
-  getPinnedMessages,
-  openViewQuestioniarDrawer,
-  pinMessage,
-  setSelectedQuestioniar,
-  updateMessageById,
-  getRoomMedia,
-  sendReplyMessage,
-  goToMessage,
+  getPinnedMessages, goToMessage, openViewQuestioniarDrawer,
+  pinMessage, setSelectedQuestioniar
 } from "../../../redux/action/chat.action";
+import { RootState } from "../../../redux/reducers";
 
 // components
-import { SAVE_MESSAGES, PUSH_MESSAGE } from "../../../config/chat.config";
-import ChatMessageMenu from "./ChatMessageMenu";
-import colors from "../../../assets/colors";
-import NameAvatar from "../Others/NameAvatar";
-import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface";
-import SeenBy from "./SeenBy";
-import FilePreviewer from "./FilePreviewer";
-import assets from "../../../assets/assets";
-import { UserInterface } from "constants/interfaces/user.interface";
 import { CBox } from "components/material-ui";
+import { UserInterface } from "constants/interfaces/user.interface";
+import assets from "../../../assets/assets";
+import colors from "../../../assets/colors";
+import { SAVE_MESSAGES } from "../../../config/chat.config";
+import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface";
+import NameAvatar from "../Others/NameAvatar";
+import ChatMessageMenu from "./ChatMessageMenu";
+import FilePreviewer from "./FilePreviewer";
+import SeenBy from "./SeenBy";
+import moment from "moment-timezone";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -39,23 +33,18 @@ interface MessageChatProps {
 }
 
 const MessageChat: React.FC<MessageChatProps> = (props) => {
-  const { message, enable } = props;
+  const { message } = props;
   const {
     replyOf,
-    _id,
     type,
     voiceUrl,
-    username,
-    time,
-    companyName,
     message: messageText,
-    seen,
-    myMessage,
     files,
     sender,
     title,
     readBy,
     pinnedBy,
+    createdAt
   } = message;
 
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
@@ -65,26 +54,29 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     (state: RootState) => state.chat
   );
 
+  let time = moment.utc(moment(createdAt)).fromNow()
+  let myMessag = sender?.id === user.id
   const dispatch = useDispatch();
   const [view, setView] = useState(false);
   const bodyRef = useRef(null);
   const toggleView = () => {
     setView(!view);
   };
+
 const borderStyle = `1px solid ${colors.senderBoxBorder}`
-const bgColor = myMessage? colors.senderBox: colors.receiverBoxBg
+const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
 
   const getStyles = () => {
     return {
       background: message.type === "questioniar" ? colors.questioniarPrimary: bgColor,
       boxShadow: "none",
-      border: myMessage? borderStyle:`1px solid ${colors.receiverBoxBorder}`
+      border: myMessag? borderStyle:`1px solid ${colors.receiverBoxBorder}`
     };
   };
 
   function getNameStyle(){
     return{
-      color: myMessage? colors.senderBoxTitle: colors.receiverBoxTitle
+      color: myMessag? colors.senderBoxTitle: colors.receiverBoxTitle
     }
   }
 
@@ -129,7 +121,7 @@ const bgColor = myMessage? colors.senderBox: colors.receiverBoxBg
   };
 
   const handleReplyClick = () => {
-    dispatch(goToMessage(replyOf.id));
+    dispatch(goToMessage(replyOf._id));
   };
 
   const handleClick = () => {
@@ -139,73 +131,68 @@ const bgColor = myMessage? colors.senderBox: colors.receiverBoxBg
     }
   };
 
-  const getQuickBtnStyles = () => {
-    return {
-      background: myMessage ? colors.white : colors.grey,
-      border: myMessage ? colors.grey : colors.white,
-    };
-  };
+  // const getQuickBtnStyles = () => {
+  //   return {
+  //     background: myMessag ? colors.white : colors.grey,
+  //     border: myMessag ? colors.grey : colors.white,
+  //   };
+  // };
 
-  const handleSend = (text: string) => {
-    if (text) {
-      const formdata = new FormData();
+  // const handleSend = (text: string) => {
+  //   if (text) {
+  //     const formdata = new FormData();
 
-      formdata.append("message", text);
-      formdata.append("chat", selectedChat);
+  //     formdata.append("message", text);
+  //     formdata.append("chat", selectedChat);
 
-      const myId = String(new Date().valueOf());
-      const newMessage = {
-        sender: user,
-        time: "a few seconds ago",
-        message: text,
-        seen: true,
-        type: "message",
-        myMessage: String(user.id),
-        // id: myId,
-        _id: myId,
-      };
-      const payload: any = {
-        body: formdata,
-        success: (res: any) => {
-          dispatch(
-            updateMessageById({
-              other: {
-                oldMessageId: myId,
-                newMessage: res.data,
-              },
-            })
-          );
-          dispatch(
-            getRoomMedia({
-              other: selectedChat,
-            })
-          );
-        },
-      };
+  //     const myId = String(new Date().valueOf());
+  //     const newMessage = {
+  //       sender: user,
+  //       time: "a few seconds ago",
+  //       message: text,
+  //       seen: true,
+  //       type: "message",
+  //       myMessage: String(user.id),
+  //       // id: myId,
+  //       _id: myId,
+  //     };
+  //     const payload: any = {
+  //       body: formdata,
+  //       success: (res: any) => {
+  //         dispatch(
+  //           updateMessageById({
+  //             other: {
+  //               oldMessageId: myId,
+  //               newMessage: res.data,
+  //             },
+  //           })
+  //         );
+  //         dispatch(
+  //           getRoomMedia({
+  //             other: selectedChat,
+  //           })
+  //         );
+  //       },
+  //     };
 
-      dispatch(sendReplyMessage(payload));
+  //     dispatch(sendReplyMessage(payload));
 
-      dispatch({
-        type: PUSH_MESSAGE,
-        payload: newMessage,
-      });
-    }
-    // bodyRef && bodyRef?.current?.scrollToEnd()
-  }
+  //     dispatch({
+  //       type: PUSH_MESSAGE,
+  //       payload: newMessage,
+  //     });
+  //   }
+  //   // bodyRef && bodyRef?.current?.scrollToEnd()
+  // }
 
-  const senderUserId = (sender?.id === user.id)
-  let replyToMessage = null;
-  if (replyOf?.id) {
-    replyToMessage = messages?.find(
-      (msg: any) => String(msg._id) === String(replyOf?.id)
-    );
-  }
+  // const senderUserId = (sender?.id === user.id)
+
 
   return (
      <>
       <Grid
         container
-        justifyContent={myMessage === String(user.id) ? "flex-end" : "flex-start"}
+        justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
         id={message._id}
       >
@@ -222,18 +209,18 @@ const bgColor = myMessage? colors.senderBox: colors.receiverBoxBg
                 <img className="w-16" src={assets.blueDocument} alt="" />
               </div>
             )}
-            {replyOf && (
+            {replyOf&& (
               <Grid
                 onClick={handleReplyClick}
                 container
-                className={`${classes.replyWrapper} ${!myMessage&& classes.receiverReply}`}
+                className={`${classes.replyWrapper} ${!myMessag&& classes.receiverReply}`}
               >
                 {message.type === "message" && <><CBox>
                           <Typography
                             className={classes.replyToTitle}
-                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+                          >{`${replyOf?.sender?.firstName} ${replyOf?.sender?.surName}`}</Typography>
                         </CBox>
-                <span>{replyOf?.message}</span>
+                <span  className={classes.replyToMsg}>{replyOf?.message}</span>
                   </>}
                 {replyOf.type === "questioniar" && <span>Questioniar</span>}
                 {replyOf.type === "voice" && <span>Voice</span>}
@@ -401,7 +388,6 @@ const bgColor = myMessage? colors.senderBox: colors.receiverBoxBg
 
 }
  
-
 export default MessageChat;
 
 const useStyles = makeStyles({
@@ -409,6 +395,11 @@ const useStyles = makeStyles({
     color: `${colors.receiverBoxTitle}`,
     fontWeight: 600,
     textTransform: "capitalize",
+  },
+  replyToMsg:{
+    fontFamily:'Inter',
+    fontWeight: 500,
+    fontSize: 14
   },
   sideName: {
     paddingLeft: 15,
@@ -440,6 +431,7 @@ const useStyles = makeStyles({
   },
   replyWrapper: {
     '& .MuiTypography-root':{
+      fontFamily: 'Inter',
       fontSize: 14,
     },
     color: colors.textGrey,

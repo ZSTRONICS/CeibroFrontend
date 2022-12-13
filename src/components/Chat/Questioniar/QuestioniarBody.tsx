@@ -1,38 +1,38 @@
+import { useEffect, useState } from "react";
 import {
-  Button,
-  Divider,
-  Grid,
+  Button, Grid,
   makeStyles,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import { Stack } from "@mui/system";
+import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import colors from "../../../assets/colors";
+import { PUSH_MESSAGE } from "../../../config/chat.config";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
+import {
+  getDate,
+  removeCurrentUser,
+  validateQuestions
+} from "../../../helpers/chat.helpers";
 import {
   closeQuestioniarDrawer,
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById,
+  updateMessageById
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
+import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
-import CreateQuestion from "../../Utills/Questioniar/Question.create";
-import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
-import { useEffect, useState } from "react";
-import { dbUsers } from "../../Topbar/CreateIndividualChat";
-import { PUSH_MESSAGE } from "../../../config/chat.config";
-import { toast } from "react-toastify";
-import {
-  getDate,
-  removeCurrentUser,
-  validateQuestions,
-} from "../../../helpers/chat.helpers";
-import IosSwitchMaterialUi from "ios-switch-material-ui";
-import Loading from "../../Utills/Loader/Loading";
 import TextField from "../../Utills/Inputs/TextField";
+import Loading from "../../Utills/Loader/Loading";
+import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
+import CreateQuestion from "../../Utills/Questioniar/Question.create";
+import CustomizedSwitch from "./IOSSwitch";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
@@ -42,7 +42,7 @@ const QuestioniarBody = () => {
   /////
   // const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
   const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+    ? chat.find((room: any) => String(room._id) === String(selectedChat))
         ?.members
     : [];
   ////
@@ -60,15 +60,15 @@ const QuestioniarBody = () => {
   const isValidated = validateQuestions(questioniars);
   const [values, setValue] = useState();
   const [title, setTitle] = useState("");
-  const [listOfMembers, setListOfMembers] = useState<any>();
+  // const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
     setValue(removeCurrentUser(dbUsers, user?.id));
     // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
   }, []);
 
-  const handleChangePreview = (notShowPreview: boolean) => {
-    setPreview(!notShowPreview);
+  const handleChangePreview = (e:any) => {
+    setPreview(e.target.checked)
   };
 
   const listOfMember = membersList?.map((member: any) => ({
@@ -93,6 +93,7 @@ const QuestioniarBody = () => {
     myQuestions.push(newQuestion);
     dispatch(setQuestions(myQuestions));
   };
+
   const handleSave = () => {
     const myId = new Date().valueOf();
 
@@ -105,7 +106,7 @@ const QuestioniarBody = () => {
         title,
         time: "a few seconds ago",
         seen: true,
-        myMessage: String(user.id),
+        myMessage: user.id,
         replyOf: null,
         id: myId,
       },
@@ -141,8 +142,8 @@ const QuestioniarBody = () => {
     setTitle(e?.target?.value);
   };
 
-  const handleNudgeChange = (notActive: boolean) => {
-    setNudge(!notActive);
+  const handleNudgeChange = (e: any) => {
+    setNudge(e.target.checked);
   };
 
   const validated = validateQuestions(questioniars);
@@ -184,29 +185,19 @@ const QuestioniarBody = () => {
             </div>
           )}
         </Grid>
-        <Grid container item style={{ paddingTop: preview ? 20 : 0 }} xs={12}>
-          <Grid item xs={12} md={4} className={classes.nudge}>
-            <IosSwitchMaterialUi
-              colorKnobOnLeft="#FFFFFF"
-              colorKnobOnRight="#FFFFFF"
-              colorSwitch={nudge ? colors.primary : colors.inputGrey}
-              onChange={handleNudgeChange}
-              defaultKnobOnLeft={true}
+        <CBox>
+        <Stack direction='row'>
+         <CustomizedSwitch 
+            onChange={(e:any)=>handleNudgeChange(e)}
+            label= 'Nudge'
             />
-            <Typography className={classes.nudgeText}>Nudge</Typography>
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.nudge}>
-            <IosSwitchMaterialUi
-              colorKnobOnLeft="#FFFFFF"
-              colorKnobOnRight="#FFFFFF"
-              colorSwitch={preview ? colors.primary : colors.inputGrey}
-              onChange={handleChangePreview}
-              defaultKnobOnLeft={true}
-              disabled={!validated}
+         <CustomizedSwitch 
+            onChange={(e:any) =>handleChangePreview(e)}
+            label= 'Preview'
+            disabled={!validated}
             />
-            <Typography className={classes.nudgeText}>Preview</Typography>
-          </Grid>
-        </Grid>
+        </Stack>
+        </CBox>
       </Grid>
       <Grid container direction="column" className={classes.wrapper3}>
         {/* <Divider  /> */}
@@ -333,18 +324,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: 5,
   },
-  nudge: {
-    display: "flex",
-    // justifyContent: "flex-end",
-    alignItems: "center",
-    padding: 5,
-  },
-  nudgeText: {
-    fontWeight: 500,
-    fontSize: 14,
-    color: colors.black,
-    paddingLeft: 10,
-  },
+
   wrapper2: {
     zIndex: 5,
   },

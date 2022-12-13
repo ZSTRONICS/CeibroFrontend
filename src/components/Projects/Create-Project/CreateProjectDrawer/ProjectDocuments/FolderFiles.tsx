@@ -24,6 +24,7 @@ import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import FileViewDrawer from "./FileViewDrawer";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Moment from "react-moment";
+import moment from "moment-timezone";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
@@ -113,6 +114,10 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           {!isDragActive && !loading && folderFiles?.length > 0 && (
             <TableBody>
               {folderFiles?.map((file: FolderFileInterface) => {
+                const DateString: string = moment(file?.createdAt).format(
+                  "YYYY-MM-DD"
+                );
+
                 return (
                   <TableRow key={file?.name}>
                     <TableCell
@@ -136,9 +141,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       align="right"
                       className={classes.modifyDate}
                     >
-                      <Moment format="YYYY-MM-DD HH:MM">
-                        {file?.createdAt}
-                      </Moment>
+                      {DateString}
                     </TableCell>
 
                     <TableCell

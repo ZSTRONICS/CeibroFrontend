@@ -1,45 +1,12 @@
-import { put, takeLatest, takeEvery, select } from "redux-saga/effects";
-import { socket } from "services/socket.services";
+import { put, select, takeLatest } from "redux-saga/effects";
 import { SET_SIDEBAR_CONFIG } from "../../config/app.config";
 import {
-  GET_CHAT,
-  GET_CHAT_API,
-  GET_MESSAGES,
-  SET_SELECTED_CHAT,
-  SET_MESSAGE_READ,
-  MUTE_CHAT,
-  ADD_TO_FAVOURITE,
-  SEND_REPLY_MESSAGE,
-  PIN_MESSAGE,
-  GET_UNREAD_CHAT_COUNT,
-  GET_UNREAD_ROOM_MESSAGE_COUNT,
-  GET_ROOM_MEDIA,
   ADD_MEMBERS_TO_CHAT,
-  ADD_TEMP_MEMBERS_TO_CHAT,
-  SAVE_QUESTIONIAR,
-  GET_QUESTIONIAR,
-  SAVE_QUESTIONIAR_ANSWERS,
-  DELETE_CONVERSATION,
-  FORWARD_CHAT,
-  UPDATE_MESSAGE_BY_ID,
-  SET_LOADING_MESSAGES,
-  GET_USER_QUESTIONIAR_ANSWER,
-  GET_UP_CHAT_MESSAGE,
-  GET_UP_MESSAGES,
-  SET_VIEWPORT,
-  GET_PINNED_MESSAGES,
-  GET_ROOM_QUESTIONIAR,
-  EDIT_ROOM_NAME,
-  GO_TO_MESSAGES,
-  GET_DOWN_CHAT_MESSAGE,
-  GET_DOWN_MESSAGES,
-  CREATE_SINGLE_ROOM,
-  CHAT_EVENT_REQ_OVER_SOCKET,
-  UNREAD_MESSAGE_COUNT,
-  REPLACE_MESSAGE_BY_ID,
-  ROOM_MESSAGE_DATA,
+  ADD_TEMP_MEMBERS_TO_CHAT, ADD_TO_FAVOURITE, CREATE_SINGLE_ROOM, DELETE_CONVERSATION, EDIT_ROOM_NAME, FORWARD_CHAT, GET_CHAT,
+  GET_CHAT_API, GET_DOWN_MESSAGES, GET_MESSAGES, GET_PINNED_MESSAGES, GET_QUESTIONIAR, GET_ROOM_MEDIA, GET_ROOM_QUESTIONIAR, GET_UNREAD_CHAT_COUNT, GET_UP_CHAT_MESSAGE,
+  GET_UP_MESSAGES, GET_USER_QUESTIONIAR_ANSWER, GO_TO_MESSAGES, MUTE_CHAT, PIN_MESSAGE, REPLACE_MESSAGE_BY_ID,
+  ROOM_MESSAGE_DATA, SAVE_MESSAGES, SAVE_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, SET_LOADING_MESSAGES, UPDATE_MESSAGE_BY_ID
 } from "../../config/chat.config";
-import { SAVE_MESSAGES } from "../../config/chat.config";
 import apiCall from "../../utills/apiCall";
 import { requestSuccess } from "../../utills/status";
 import { ActionInterface, RootState } from "../reducers";
@@ -90,28 +57,32 @@ const getRoomMessages = apiCall({
   type: GET_MESSAGES,
   method: "get",
   path: (payload: any) => {
-    let url = `/chat/room/messages/${payload.other.roomId}`;
+    let url = `/chat/room/messages/${payload.other.roomId}?`;
     if (payload?.other?.search) {
-      url = url + `?search=${payload?.other?.search}`;
+      url = url + `search=${payload?.other?.search}&`;
     }
     if (payload?.other?.username) {
-      url = url + `?username=${payload?.other?.username}`;
+      url = url + `username=${payload?.other?.username}&`;
     }
     if (payload?.other?.company) {
-      url = url + `?company=${payload?.other?.company}`;
+      url = url + `company=${payload?.other?.company}&`;
     }
     if (payload?.other?.group) {
-      url = url + `?group=${payload?.other?.group}`;
+      url = url + `group=${payload?.other?.group}&`;
     }
     if (payload?.other?.startDate) {
-      url = url + `?startDate=${payload?.other?.startDate}`;
+      url = url + `startDate=${payload?.other?.startDate}&`;
     }
     if (payload?.other?.messageId) {
-      url = url + `?messageId=${payload?.other?.messageId}`;
+      url = url + `messageId=${payload?.other?.messageId}&`;
     }
     if (payload?.other?.limit) {
-      url = url + `?limit=${payload?.other?.limit}`;
-    }
+      url = url + `limit=${payload?.other?.limit}`;
+     }
+     //else{
+    //   url = url + `limit=21`
+    // }
+
     return url;
   },
 });
@@ -119,32 +90,38 @@ const getRoomMessages = apiCall({
 const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
-  path: (payload: any) =>
-    "/chat/room/messages/" +
-    payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}&limit=21`,
+  path: (payload: any) => {
+    let apiUrl = "/chat/room/messages/" + payload.other.roomId
+    if (payload?.other.lastMessageId !== null){
+      apiUrl = apiUrl + `?lastMessageId=${payload?.other.lastMessageId}&limit=21`
+    }else{
+      apiUrl = apiUrl + `?limit=21`
+    }
+    return apiUrl
+  }
+
 });
 
-const getDownRoomMessages = apiCall({
-  type: GET_DOWN_MESSAGES,
-  method: "get",
-  path: (payload: any) =>
-    "/chat/room/messages/" +
-    payload.other.roomId +
-    `?lastMessageId=${payload?.other.lastMessageId}&down=true`,
-});
+// const getDownRoomMessages = apiCall({
+//   type: GET_DOWN_MESSAGES,
+//   method: "get",
+//   path: (payload: any) =>
+//     "/chat/room/messages/" +
+//     payload.other.roomId +
+//     `?lastMessageId=${payload?.other.lastMessageId}&down=true`,
+// });
 
-const setAllMessagesRead = apiCall({
-  type: SET_SELECTED_CHAT,
-  method: "put",
-  path: (payload: any) => "/chat/room/read/" + payload.other,
-});
+// const setAllMessagesRead = apiCall({
+//   type: SET_SELECTED_CHAT,
+//   method: "put",
+//   path: (payload: any) => "/chat/room/read/" + payload.other,
+// });
 
-const setCurrentMessageRead = apiCall({
-  type: SET_MESSAGE_READ,
-  method: "put",
-  path: (payload: any) => "/chat/room/read/" + payload.other,
-});
+// const setCurrentMessageRead = apiCall({
+//   type: SET_MESSAGE_READ,
+//   method: "put",
+//   path: (payload: any) => "/chat/room/read/" + payload.other,
+// });
 
 const muteChat = apiCall({
   type: MUTE_CHAT,
@@ -182,11 +159,11 @@ const addToFavourite = apiCall({
   path: (payload: any) => "/chat/room/favourite/" + payload.other,
 });
 
-const sendReplyMessage = apiCall({
-  type: SEND_REPLY_MESSAGE,
-  method: "post",
-  path: "/chat/message/reply",
-});
+// const sendReplyMessage = apiCall({
+//   type: SEND_REPLY_MESSAGE,
+//   method: "post",
+//   path: "/chat/message/reply",
+// });
 
 const pinMessage = apiCall({
   type: PIN_MESSAGE,
@@ -280,7 +257,6 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
       ...oldRoutes,
     },
   });
-
 
   yield put({
     type: ROOM_MESSAGE_DATA,

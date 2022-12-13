@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { Box, Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import assets from "assets/assets";
 import i18n from "translation/i18next";
+import {Box} from '@mui/material'
 
 const Setting = () => {
   const [anchorElem, setAnchorEl] = useState(null);

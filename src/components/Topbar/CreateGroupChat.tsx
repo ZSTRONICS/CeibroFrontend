@@ -4,13 +4,10 @@ import React, { useEffect, useState } from 'react'
 import {
   Typography,
   Button,
-  Grid, Tooltip
+  Grid
 } from "@mui/material";
-import { makeStyles  } from "@material-ui/core";
-
+import { makeStyles, Popover  } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
-
-import OutsideClickHandler from "react-outside-click-handler";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -54,7 +51,8 @@ export let dbUsers = [
   ];
 
 function CreateGroupChat(props:any) {
-    const {openGroupChat, handleOutsideClick} = props
+  
+  const {groupEl, ButtonId, openGroup, handleGroupClose} = props
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -65,7 +63,6 @@ function CreateGroupChat(props:any) {
   
   const createChatLoading = useSelector((state: RootState) => state.chat.createChatLoading);
   
-
   const { allProjects, projectMembers } = useSelector((store: RootState) => store.project);
 
   const handleProjectChange = (e: any) => {
@@ -93,18 +90,18 @@ function CreateGroupChat(props:any) {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
 
-  useEffect(() => {
-    dispatch(getAllProjects());
-    setUsers([]);
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getAllProjects());
+  //   setUsers([]);
+  // }, []);
 
   useEffect(() => {
-    if (openGroupChat) {
+    if (openGroup) {
       dispatch(getAllProjects());
     }
     setUsers([]);
     setProject(null);
-  }, [openGroupChat]);
+  }, [openGroup]);
 
   const handleSubmit = () => {
     const payload = {
@@ -116,22 +113,29 @@ function CreateGroupChat(props:any) {
       success: () => {
         setName("");
         setProject(null);
+        handleGroupClose()
         setUser(null);
-        handleOutsideClick();
         dispatch(getAllChats());
       },
     };
     dispatch(createChatRoom(payload));
   };
+  
   return (
 <>
-{openGroupChat ===true && (
-        <OutsideClickHandler onOutsideClick={handleOutsideClick()}>
-          <div
-            className={`dropdown-content ${classes.outerMenu}`}
-            id="dropdownContent"
-          >
-            <Grid container>
+<Popover
+      className={classes.outerGroupWrapper}
+        id={ButtonId}
+        anchorReference={groupEl}
+        open={openGroup}
+        anchorEl={groupEl}
+        onClose={handleGroupClose}
+        anchorOrigin={{
+          vertical: 45,
+          horizontal: "left",
+        }}
+      >
+    <Grid container  padding={2.5} className={classes.outerMenu}>
               <Grid item xs={12}>
                 <TextField
                   type="text"
@@ -226,7 +230,7 @@ function CreateGroupChat(props:any) {
                 </Grid>
               )}
 
-              <Grid item xs={12} style={{ paddingTop: 20 }}>
+              <Grid item xs={12} style={{ paddingTop: 20, display:'flex', justifyContent:'flex-end' }}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -239,12 +243,14 @@ function CreateGroupChat(props:any) {
                     "Start conversation"
                   )}
                 </Button>
-                <Button onClick={handleOutsideClick}>Cancel</Button>
+                <Button onClick={handleGroupClose}>Cancel</Button>
               </Grid>
             </Grid>
-          </div>
-        </OutsideClickHandler>
-      )}
+      </Popover>
+       
+          
+       
+
 </>    
   )
 }
@@ -256,15 +262,20 @@ const useStyles = makeStyles((theme:any) => ({
       width: theme.spacing(5),
       height: theme.spacing(5),
     },
+    outerGroupWrapper:{
+'& .MuiGrid-root':{
+  padding:8
+}
+    },
     outerMenu: {
-        left: 300,
         width: '100%',
         maxWidth: 370,
+        padding: '10px 14px'
     },
     searchInput: {
       width: 340,
       height: 30,
-      border: `1px solid ${colors.borderGrey}`,
+      // border: `1px solid ${colors.borderGrey}`,
     },
     smallRadioButton: {
       fontSize: "14px !important",
