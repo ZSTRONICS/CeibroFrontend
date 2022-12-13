@@ -275,7 +275,7 @@ const useStyles = makeStyles((theme:any) => ({
     searchInput: {
       width: 340,
       height: 30,
-      border: `1px solid ${colors.borderGrey}`,
+      // border: `1px solid ${colors.borderGrey}`,
     },
     smallRadioButton: {
       fontSize: "14px !important",
