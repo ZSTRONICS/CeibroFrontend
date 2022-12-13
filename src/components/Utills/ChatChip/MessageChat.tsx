@@ -222,7 +222,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
                             className={classes.replyToTitle}
                           >{`${replyOf?.sender?.firstName} ${replyOf?.sender?.surName}`}</Typography>
                         </CBox>
-                <span>{replyOf?.message}</span>
+                <span  className={classes.replyToMsg}>{replyOf?.message}</span>
                   </>}
                 {replyOf.type === "questioniar" && <span>Questioniar</span>}
                 {replyOf.type === "voice" && <span>Voice</span>}
@@ -398,6 +398,11 @@ const useStyles = makeStyles({
     fontWeight: 600,
     textTransform: "capitalize",
   },
+  replyToMsg:{
+    fontFamily:'Inter',
+    fontWeight: 500,
+    fontSize: 14
+  },
   sideName: {
     paddingLeft: 15,
   },
@@ -428,6 +433,7 @@ const useStyles = makeStyles({
   },
   replyWrapper: {
     '& .MuiTypography-root':{
+      fontFamily: 'Inter',
       fontSize: 14,
     },
     color: colors.textGrey,
