@@ -22,7 +22,6 @@ import { requestSuccess } from "utills/status";
 import { GET_CHAT } from "config/chat.config";
 import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
-import CustomImg from "components/CustomImg";
 
 interface ChatBoxHeaderProps {
   enable: boolean;

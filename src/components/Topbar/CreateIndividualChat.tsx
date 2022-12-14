@@ -5,7 +5,7 @@ import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
 
 // redux
 import { useDispatch } from "react-redux";
-import { clearSelectedChat, getAllChats } from "../../redux/action/chat.action";
+import { clearSelectedChat, createSingleRoom, getAllChats, setSelectedChat } from "../../redux/action/chat.action";
 
 // components
 import ChatRoomSearch from "components/Chat/ChatRoomSearch";
@@ -13,7 +13,8 @@ import { CBox } from "components/material-ui";
 import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { getMyConnections } from "redux/action/user.action";
-import colors from "../../assets/colors";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export let dbUsers = [
   {
@@ -37,10 +38,13 @@ export let dbUsers = [
     color: "green",
   },
 ];
+
 const CreateIndividualChat = (props: any) => {
+
   const { ButtonId, open, individualEl, handleClose } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
+  const history = useHistory();
   const [connections, setConnection] = useState<any>({});
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -63,8 +67,19 @@ const CreateIndividualChat = (props: any) => {
       type: SET_CHAT_SEARCH,
       payload: e?.target?.value,
     });
-    dispatch(getAllChats());
+    // dispatch(getAllChats());
   };
+
+  const startSingleRoomChat = (id: string) => {
+    const payload = { other: { id }, success: () =>{
+      //  dispatch(setSelectedChat({ other: id }));
+    toast.success('single chat room started')
+    dispatch(getAllChats());
+  }
+  }
+  dispatch(createSingleRoom(payload))
+  handleClose()
+  }
 
   return (
     <>
@@ -79,7 +94,7 @@ const CreateIndividualChat = (props: any) => {
           horizontal: "left",
         }}
       >
-        <CBox padding={3.1} className={classes.outerMenu}>
+        <CBox padding={2.5} className={classes.outerMenu}>
           <CBox className={classes.chatbox}>
             <ChatRoomSearch onChange={handleChatRoomSearch} />
           </CBox>
@@ -94,6 +109,7 @@ const CreateIndividualChat = (props: any) => {
             Frequently Contacted
           </CBox>
           {connections?.map?.((connection: any) => {
+            const startRoomId = connection.sentByMe?connection.to.id:connection.from.id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
               : connection.from;
@@ -103,6 +119,7 @@ const CreateIndividualChat = (props: any) => {
                 display="flex"
                 mb={2}
                 className={classes.ChatList}
+                 onClick={() => startSingleRoomChat(startRoomId)}
               >
                 <CBox>
                   <Avatar
@@ -131,9 +148,9 @@ const CreateIndividualChat = (props: any) => {
           })}
           
           <CBox display="flex" justifyContent="flex-end" >
-            <Button variant="contained" color="primary" disabled>
+            {/* <Button variant="contained" color="primary" disabled>
               Start conversation
-            </Button>
+            </Button> */}
             <Button onClick={handleClose}>Cancel</Button>
           </CBox>
         </CBox>
@@ -145,18 +162,9 @@ const CreateIndividualChat = (props: any) => {
 export default CreateIndividualChat;
 
 const useStyles = makeStyles((theme) => ({
-  small: {
-    width: theme.spacing(5),
-    height: theme.spacing(5),
-  },
   outerMenu: {
     width: "100%",
     maxWidth: 370,
-  },
-  searchInput: {
-    width: 340,
-    height: 30,
-    border: `1px solid ${colors.borderGrey}`,
   },
   smallRadioButton: {
     fontSize: "14px !important",
@@ -168,71 +176,6 @@ const useStyles = makeStyles((theme) => ({
       color: "green",
     },
   },
-  suggestedUsersTitle: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-    marginBottom: 10,
-  },
-  wrapper: {
-    // borderBottom: `1px solid ${colors.grey}`,
-    marginBottom: 5,
-  },
-  titleText: {
-    fontSize: 14,
-    fontWeight: "bold",
-  },
-  subTitleText: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-  },
-  actionWrapper: {
-    display: "flex",
-    justifyContent: "flex-start",
-    gap: 25,
-    paddingTop: 10,
-    paddingBottom: 15,
-  },
-  actionBtn: {
-    fontSize: 12,
-    fontWeight: "bold",
-  },
-  time: {
-    fontSize: 12,
-    fontWeight: "bold",
-    color: colors.textGrey,
-  },
-  suggestUser: {
-    maxHeight: 300,
-    overflow: "auto",
-  },
-  selectedUser: {
-    height: 50,
-    width: 50,
-    position: "relative",
-  },
-  cancelIcon: {
-    fontSize: 14,
-    position: "absolute",
-    color: colors.textGrey,
-    top: -5,
-    right: 5,
-  },
-  selectChat: {
-    "& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper":
-      {
-        width: "100%",
-        maxWidth: "400px !important",
-        top: "60px !important",
-      },
-    "& .MuiMenuItem-root": {
-      color: "#0076C8",
-      fontSize: 14,
-      fontWeight: 600,
-      fontFamily: "Inter",
-    },
-  },
   chatbox: {
     border: "1px solid #DBDBE5",
     borderRadius: 4,
@@ -242,14 +185,15 @@ const useStyles = makeStyles((theme) => ({
       weight: "40 !important",
     },
   },
-  chatDialog: {
-    "& .css-1t1j96h-MuiPaper-root-MuiDialog-paper": {
-      width: "100%",
-      maxWidth: "400px !important",
-    },
-  },
   ChatList: {
     transitionTimingFunction: " ease-in",
     transition: " 0.2s",
+    padding: '1px 3px',
+    '&:hover':{
+      // boxShadow: '1px 0px 2px 4px #19181833',
+      boxShadow: '1px 0px 2px 4px #eeecec',
+      background:'#f1f1f1',
+      cursor: 'pointer'
+    }
   },
 }));

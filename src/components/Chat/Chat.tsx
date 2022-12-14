@@ -28,7 +28,6 @@ const Chat = () => {
 const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMessageIdInChat)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
-  const [messages, setMessage] = useState(CHAT_MESSAGE);
   const {
     selectedChat,
     sidebarOpen,
