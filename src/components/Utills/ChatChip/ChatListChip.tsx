@@ -9,6 +9,7 @@ import { RootState } from "../../../redux/reducers";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 import useStyles from './ChatListStyles'
 import { socket } from "services/socket.services"
+import { CBox } from "components/material-ui";
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
@@ -82,84 +83,76 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   };
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
-  const unreadLocalCount = unreadCount > 0 ? unreadCount : null
+  const unreadLocalCount = unreadCount > 0 ? unreadCount : '2'
   return (
     <>
-
-      <Grid
-        onClick={handleClick}
-        className={classes.chatListWrapper}
-        container
-        style={getStyles()}
-      >
-        <Grid container>
-          {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
-          {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
-        </Grid> */}
-          <Grid item xs={2} className={classes.avatarWrapper}>
-            {chat.isGroupChat ? (
-              <NameAvatar background="white" firstName={name} />
-            ) : (
-              <NameAvatar
-                background="white"
-                firstName={individualFirstName}
-                surName={individualSurName}
-                url={individualPicUrl}
-              />
-            )}
-          </Grid>
-
-          <Grid item xs={6} className={classes.messageDetailWrapper}>
-            {chat.isGroupChat ? (
-              <Typography className={classes.userName}>{name}</Typography>
-            ) : (
-              <Typography
-                className={classes.userName}
-              >{`${individualFirstName} ${individualSurName}`}</Typography>
-            )}
-
-
-            <Typography className={classes.message}>
-              {lastMessage?.message?.substr(0, 22)}
+      <CBox display='flex' alignItems='center' width='100%' onClick={handleClick} style={getStyles()} className={classes.chatListWrapper} >
+        <CBox flex='1 1 0'>
+          {chat.isGroupChat ? (
+            <NameAvatar background="white" firstName={name} />
+          ) : (
+            <NameAvatar
+              background="white"
+              firstName={individualFirstName}
+              surName={individualSurName}
+              url={individualPicUrl}
+            />
+          )}
+        </CBox>
+        <CBox flex='3 1 0'>
+          {chat.isGroupChat ? (
+            <Typography className={classes.userName}>{name}</Typography>
+          ) : (
+            <Typography
+              className={classes.userName}
+            >{`${individualFirstName} ${individualSurName}`}</Typography>
+          )}
+          <Typography className={classes.message}>
+            {lastMessage?.message?.substr(0, 22)}
+          </Typography>
+          {project?.title && (
+            <Typography className={classes.chatProject}>
+              <span>Project: &nbsp;&nbsp;</span>
+              <span className={classes.chatProjectName}>{project.title}</span>
             </Typography>
+          )}
+        </CBox>
 
-          </Grid>
-
-          <Grid item xs={2} className={classes.timeOuterWrapper}>
-            <div onClick={handleFavouriteClick}>
+        <CBox flex='3 1 0' display='flex' position='relative' justifyContent='space-between' alignItems='center'>
+          <CBox>
+            <CBox display='flex' onClick={handleFavouriteClick}>
               {bookmarked ? (
                 <Star className={classes.startFilled} />
               ) : (
                 <StarBorder className={classes.bookmarked} />
               )}
-            </div>
-            <div className={classes.timeWrapper}>
-              <Badge
-                overlap="circular"
-                badgeContent={unreadLocalCount}
-                color="error"
-              ></Badge>
+            </CBox>
+          </CBox>
+          <CBox display='flex'>
 
-              <Typography className={classes.time}>{lastMessageTime}</Typography>
-            </div>
-          </Grid>
 
-          <Grid item xs={1} className={classes.timeWrapper}>
+            <Typography className={classes.time}>{lastMessageTime}</Typography>
+            <Badge className={classes.unreadCounter} badgeContent={unreadLocalCount} color="primary">&nbsp;</Badge>
+            {/* <CBox className={classes.unreadCounter}>
+              {unreadLocalCount}
+            </CBox> */}
+            {/* <Badge
+              overlap="circular"
+              badgeContent={unreadLocalCount}
+              color="error"
+            className={classes.unreadCounter}
+            ></Badge> */}
+          </CBox>
+          <CBox display='flex'>
+
             <ChatListMenu room={chat} />
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={6} style={{ paddingLeft: 6 }}>
-            {project?.title && (
-              <Typography className={classes.chatProject}>
-                <span>Project: &nbsp;&nbsp;</span>
-                <span className={classes.chatProjectName}>{project.title}</span>
-              </Typography>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
+          </CBox>
+        </CBox>
+
+
+      </CBox>
+
+
       {/* <Grid
         className={classes.chatListWrapper}
         container
@@ -206,7 +199,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
       </Grid> */}
 
     </>
-  );
+  )
 };
 
 export default ChatListChip;

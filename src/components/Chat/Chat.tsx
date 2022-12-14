@@ -25,7 +25,7 @@ const Chat = () => {
   // store
   const { user } = useSelector((state: RootState) => state.auth);
   const { lastMessageIdInChat } = useSelector((state: RootState) => state.chat);
-const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMessageIdInChat)
+  const [lastMessageIdInChatClear, setLastMessageIdInChatClear] = useState(lastMessageIdInChat)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
   const [messages, setMessage] = useState(CHAT_MESSAGE);
@@ -70,14 +70,14 @@ const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMess
     };
   }, [selectedChat]);
 
-  const scrollToMessage =()=>{
-    if(lastMessageIdInChat===null){
+  const scrollToMessage = () => {
+    if (lastMessageIdInChat === null) {
       return
     }
-  const elem = document.getElementById(lastMessageIdInChat);
-  elem?.scrollIntoView();
-  // setLastMessageIdInChatClear(null)
-}
+    const elem = document.getElementById(lastMessageIdInChat);
+    elem?.scrollIntoView();
+    // setLastMessageIdInChatClear(null)
+  }
 
   return (
     <>
@@ -97,7 +97,7 @@ const [lastMessageIdInChatClear, setLastMessageIdInChatClear]= useState(lastMess
           <ChatBody enable={enable} />
 
           <ChatForm enable={enable} />
-            {/* {scrollToMessage()} */}
+          {/* {scrollToMessage()} */}
         </Grid>
       </Grid>
     </>
