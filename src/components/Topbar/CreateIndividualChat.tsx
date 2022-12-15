@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useCallback,useState } from "react";
 
 // material
 import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
 
 // redux
 import { useDispatch } from "react-redux";
-import { clearSelectedChat, createSingleRoom, getAllChats, setSelectedChat } from "../../redux/action/chat.action";
+import { createSingleRoom, getAllChats } from "../../redux/action/chat.action";
 
 // components
 import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
-import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { getMyConnections } from "redux/action/user.action";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
+import { filterList } from "utills/filterList";
 
 export let dbUsers = [
   {
@@ -44,9 +44,10 @@ const CreateIndividualChat = (props: any) => {
   const { ButtonId, open, individualEl, handleClose } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [connections, setConnection] = useState<any>({});
+
+  const [connections, setConnection] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchField] = useState("");
 
   useEffect(() => {
     const payload = {
@@ -61,14 +62,30 @@ const CreateIndividualChat = (props: any) => {
     dispatch(getMyConnections(payload));
   }, []);
 
-  const handleChatRoomSearch = (e: any) => {
-    dispatch(clearSelectedChat());
-    dispatch({
-      type: SET_CHAT_SEARCH,
-      payload: e?.target?.value,
-    });
-    // dispatch(getAllChats());
-  };
+  // const sortCon = connections.sort(function(a:any, b:any){
+  //     const user = a?.sentByMe? a.to: b.from;
+  //     var nameA = user.firstName.toLowerCase(), nameB = user.firstName.toLowerCase();
+  //     if (nameA < nameB) //sort string ascending
+  //      return -1;
+  //     if (nameA < nameB)
+  //      return 1;
+  //     return 0; 
+  //    });
+
+     const filterdList = connections.filter((person:any)=>{
+      const user = person?.sentByMe? person.to: person.from;
+      return (
+        user.firstName.toLowerCase().includes(searchQuery.toLowerCase())||
+        user.surName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
+
+  const handleChatRoomSearch = useCallback((e:any) => {
+    setSearchField(e.target.value)
+  const list = filterList(e.target.value, connections)
+  console.log('list', list);
+  
+  }, []);
 
   const startSingleRoomChat = (id: string) => {
     const payload = { other: { id }, success: () =>{
@@ -108,7 +125,7 @@ const CreateIndividualChat = (props: any) => {
           >
             Frequently Contacted
           </CBox>
-          {connections?.map?.((connection: any) => {
+          {filterdList?.map?.((connection: any) => {
             const startRoomId = connection.sentByMe?connection.to.id:connection.from.id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
