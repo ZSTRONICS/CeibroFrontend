@@ -187,7 +187,6 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
 
   // const senderUserId = (sender?.id === user.id)
 
-
   return (
      <>
       <Grid

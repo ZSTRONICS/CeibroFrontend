@@ -41,24 +41,28 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
 
   const [media, setMedia] = useState<any>(null);
 
-  useEffect(() => {
-    if (selectedChat) {
-      dispatch(
-        getRoomMedia({
-          other: selectedChat,
-        })
-      );
-      dispatch(
-        getPinnedMessages({
-          other: selectedChat,
-        })
-      );
-      const payload = {
-        other: selectedChat,
-      };
-      dispatch(getRoomQuestioniars(payload));
-    }
-  }, [selectedChat, openIndex]);
+  // useEffect(() => {
+    // if (selectedChat) {
+    //   dispatch(
+    //     getRoomMedia({
+    //       other: selectedChat,
+    //     })
+    //   );
+    //   dispatch(
+    //     getPinnedMessages({
+    //       other: selectedChat,
+    //     })
+    //   );
+    //   const payload = {
+    //     other: selectedChat,
+    //   };
+    //   dispatch(getRoomQuestioniars(payload));
+    // }
+    // return () =>{
+    //   selectedChat,
+    //   openIndex
+    // }
+  // }, [selectedChat, openIndex]);
 
   const getStyles = () => {
     return {

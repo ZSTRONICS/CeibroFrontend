@@ -9,7 +9,8 @@ interface IAppProps {
   onChange: (e: any) => void;
 }
 
-const ChatRoomSearch: React.FunctionComponent<IAppProps> = (props) => {
+const ChatRoomSearch: React.FC<IAppProps> = (props) => {
+
   const classes = useStyles();
 
   return (
