@@ -143,7 +143,7 @@ const LoginForm: React.FC<Props> = (props) => {
           <img src={assets.logo} alt="ceibro-logo" />
         </Box>
         <Box className={classes.titleWrapper}>
-          <Typography className={classes.title}>{t("auth.login")}</Typography>
+          <Typography >{t("auth.login")}</Typography>
         </Box>
 
 
@@ -238,7 +238,7 @@ const LoginForm: React.FC<Props> = (props) => {
               </CBox>
               <CBox mb={3.1}>
                 <TextField
-                  placeholder={t("auth.register.first_name")}
+                  placeholder={t("auth.Password")}
                   type={showPassword ? "text" : "password"}
                   className={`${classes.inputs} ${classes.inputPass}`}
                   name="password"
@@ -451,12 +451,10 @@ const useStyles = makeStyles({
   },
   titleWrapper: {
     margin: '45px 0px 15px 0px',
-
-
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
+'& .MuiTypography-root':{
+  fontSize: 30,
+  fontWeight: "bold",
+},
   },
   inputs: {
     // marginBottom: 25,
