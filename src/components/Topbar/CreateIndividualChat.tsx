@@ -137,6 +137,7 @@ const CreateIndividualChat = (props: any) => {
                 mb={2}
                 className={classes.ChatList}
                  onClick={() => startSingleRoomChat(startRoomId)}
+                 key= {startRoomId}
               >
                 <CBox>
                   <Avatar
