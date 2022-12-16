@@ -208,6 +208,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
         id={message._id}
+        key={message._id}
       >
         {message._id && loadingMessages?.includes?.(message._id) && (
           <ClipLoader color={colors.textGrey} size={6} />

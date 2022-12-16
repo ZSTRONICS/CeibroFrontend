@@ -34,15 +34,18 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     upScrollLoading,
     chat: allChats,
     selectedChat,
   } = useSelector((store: RootState) => store.chat);
+
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
+  const individualChatName = myChat?.members.find((member:any)=> member.id !== user.id)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e?.target?.value);
@@ -86,7 +89,6 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
   return (
     <>
-
       < Grid container className={classes.wrapper} >
         <AddChatMember />
         {
@@ -115,18 +117,26 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                           className={classes.editIcon}
                           alt=""
                         />
-                        {/* <img
-                      src={assets.EditIcon}
-                      onClick={() => {
-                        setEdit(true);
-                        setName(myChat.name);
-                      }}
-                      className={classes.editIcon}
-                    /> */}
                       </div>
                     )}
                   </>
                 )}
+                {
+                  myChat?.isGroupChat===false &&  <div className={classes.editProject}>
+                  <Typography className={classes.username}>
+                    {`${individualChatName.firstName} ${individualChatName.surName}`}
+                  </Typography>
+                  {individualChatName.companyName && (
+                    <Typography className={classes.projectName}>
+                      Company:{" "}
+                      <span className={classes.projectTitle}>
+                        {" "}
+                        {individualChatName.companyName}{" "}
+                      </span>
+                    </Typography>
+                  )}
+                </div>
+                }
                 {edit ? (
                   <div className={`${classes.editInputWrapper} editInputWrapper`}>
                     <TextField
@@ -228,7 +238,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     fontStyle: "normal",
     textOverflow: "ellipsis",
-    width: "120px",
+    // width: "120px",
   },
   editWrapper: {
     display: "flex",
