@@ -9,6 +9,7 @@ import config, {
   GET_GROUP,
   GET_MEMBER,
   GET_PROJECTS,
+  GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
@@ -78,6 +79,7 @@ interface ProjectReducerInt {
   allProjects: any;
   projects: ProjectInterface[];
   projectMembers: [];
+  projectWithMembers: [];
   selectedProject: any;
   selectedRole: any;
   filePath: any;
@@ -112,6 +114,7 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: userRolesPermissions | null;
+  allProjectsTitles:[]
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -119,6 +122,7 @@ const projectReducer: ProjectReducerInt = {
   menue: 1,
   projectsLoading: false,
   allProjects: [],
+  allProjectsTitles: [],
   projects: [],
   projectMembers: [],
   selectedProject: null,
@@ -155,6 +159,7 @@ const projectReducer: ProjectReducerInt = {
   projectProfile: [],
   load: false,
   getTimeProfileById: [],
+  projectWithMembers: [],
 };
 
 const AppReducer = (
@@ -207,6 +212,17 @@ const AppReducer = (
           label: project?.title,
           value: project.id,
         })),
+      };
+    }
+    case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
+      return {
+        ...state,
+        projectWithMembers: action.payload?.projectDetails,
+        allProjectsTitles: action.payload?.projectDetails?.map((project: any) => {
+          return{
+          label: project?.title,
+          value: project._id,
+        }}),
       };
     }
 

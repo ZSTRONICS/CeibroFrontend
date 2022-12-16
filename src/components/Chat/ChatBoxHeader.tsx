@@ -238,7 +238,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     fontStyle: "normal",
     textOverflow: "ellipsis",
-    width: "120px",
+    // width: "120px",
   },
   editWrapper: {
     display: "flex",
