@@ -6,8 +6,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {
+  getPinnedMessages,
+  getRoomMedia,
   getRoomMessages,
-  getUpMessages
+  getRoomQuestioniars,
+  getUpMessages,
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
@@ -19,13 +22,12 @@ import moment from "moment-timezone";
 import { Box } from "@mui/material";
 
 interface ChatBodyInt {
-  enable: boolean
+  enable: boolean;
 }
 
 const areEqual = (prevProps: any, nextProps: any) => true;
 
-const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
-
+const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   const messages: ChatMessageInterface[] = useSelector(
     (store: RootState) => store.chat?.messages
   );
@@ -33,59 +35,73 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
+  const selectedChat: any = useSelector(
+    (store: RootState) => store.chat.selectedChat
+  );
   // const { user } = useSelector((store: RootState) => store.auth);
-
 
   //API call to get messages of Selected-ROOM
   // const [upMessagesState, setUpMessagesState] = useState(false);
   // const [previousScrollHeight, setPreviousScrollHeight] = useState();
   const [blockAutoDownScroll, setBlockAutoDownScroll] = useState(true);
+  // useEffect(() => {
+  //   if (selectedChat) {
+  //     //socket.getUnreadMsgCount(user.id);
+
+  //     dispatch(
+  //       getRoomMessages({
+  //         other: {
+  //           roomId: selectedChat,
+  //           limit: 21,
+  //         },
+  //         success: () => {
+  //           dispatch(
+  //             getRoomMedia({
+  //               other: selectedChat,
+  //             })
+  //           );
+  //           dispatch(
+  //             getPinnedMessages({
+  //               other: selectedChat,
+  //             })
+  //           );
+  //           const payload = {
+  //             other: selectedChat,
+  //           };
+  //           dispatch(getRoomQuestioniars(payload));
+  //         },
+  //       })
+  //     );
+  //   }
+  //   return (): void => {
+  //     selectedChat;
+  //   };
+  // }, [selectedChat]);
+
   useEffect(() => {
-
-    if (selectedChat) {
-      //socket.getUnreadMsgCount(user.id);
-
-      dispatch(
-        getRoomMessages({
-          other: {
-            roomId: selectedChat,
-            limit: 21,
-          },
-          success: () => {
-            //setBlockAutoDownScroll(true)
-          }
-        })
-      );
-    }
-    return (): void => {
-      selectedChat
-    }
-  }, [selectedChat]);
-
-  useEffect(() => {
-
-    const chatBox: any = document.getElementById("chatBox")
+    const chatBox: any = document.getElementById("chatBox");
 
     //   if (chatBox) {
     //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
     // }
     if (chatBox && blockAutoDownScroll === true) {
-      chatBox.scrollTop = chatBox.scrollHeight
+      chatBox.scrollTop = chatBox.scrollHeight;
     }
 
     if (chatBox) {
-      const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight - chatBox.clientHeight)
+      const currScrollPercentage =
+        (100 * chatBox.scrollTop) /
+        (chatBox.scrollHeight - chatBox.clientHeight);
       if (currScrollPercentage >= 70) {
-        chatBox.scrollTop = chatBox.scrollHeight
+        chatBox.scrollTop = chatBox.scrollHeight;
       } else {
-        // Add view to go-to botton on click 
+        // Add view to go-to botton on click
       }
     }
 
     return (): void => {
-      messages
-    }
+      messages;
+    };
   }, [messages]);
 
   if (!selectedChat) {
@@ -105,7 +121,6 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   //   }
   // }
 
-
   //   function disableScrolling(){
   //     const elem = document?.querySelector('.custom-scrollbar')
   //     if(elem){
@@ -121,55 +136,54 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
   const handleScroll = (e: any) => {
     let chatBox = e.target;
 
-    const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight - chatBox.clientHeight)
+    const currScrollPercentage =
+      (100 * chatBox.scrollTop) / (chatBox.scrollHeight - chatBox.clientHeight);
 
     if (currScrollPercentage <= 70) {
-      setBlockAutoDownScroll(false)
+      setBlockAutoDownScroll(false);
     } else {
-      setBlockAutoDownScroll(true)
+      setBlockAutoDownScroll(true);
     }
 
-    if (currScrollPercentage <= 0) {
+    if (currScrollPercentage <= 0 && messages[0].type !== "start-bot") {
       // disableScrolling()
       //setUpMessagesState(true)
       // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
-
     }
-  }
+  };
 
   const messageBot = messages?.map?.((message: any) => {
-    if (message.type === 'bot') {
-      return moment.utc(moment(message.createdAt)).fromNow()
+    if (message.type === "start-bot") {
+      return moment.utc(moment(message.createdAt)).fromNow();
     }
-  })
+  });
 
   return (
     <>
-
       <Grid
         className={`${classes.wrapper} custom-scrollbar`}
         id="chatBox"
         container
         onScroll={handleScroll}
       >
-        <Box className={classes.botContainer} >
-          <Typography>
-            {messageBot[0]}
-          </Typography>
+        <Box className={classes.botContainer}>
+          <Typography>{messageBot[0]}</Typography>
         </Box>
         {messages &&
-          messages.filter((message: any) => message.type !== 'bot').map?.((message: ChatMessageInterface) => {
-            if (message.chat === selectedChat) {
-              return <>
-                <MessageChat message={message} enable={props.enable} />
-              </>
-            } else {
-              return <></>
-            }
-          })
-
-        }
+          messages
+            .filter((message: any) => message.type !== "start-bot")
+            .map?.((message: ChatMessageInterface) => {
+              if (message.chat === selectedChat) {
+                return (
+                  <>
+                    <MessageChat message={message} enable={props.enable} />
+                  </>
+                );
+              } else {
+                return <></>;
+              }
+            })}
         <AddTempChatMember />
       </Grid>
     </>
@@ -180,22 +194,21 @@ export default ChatBody;
 
 const useStyles = makeStyles({
   botContainer: {
-    background: '#ECF0F1',
+    background: "#ECF0F1",
     borderRadius: 20,
     maxWidth: 125,
-    margin: '0 auto',
-    width: '100%',
-    textAlign: 'center',
-    padding: '2px 0',
-    '& .MuiTypography-root': {
-      fontSize: '12px',
-    }
-
+    margin: "0 auto",
+    width: "100%",
+    textAlign: "center",
+    padding: "2px 0",
+    "& .MuiTypography-root": {
+      fontSize: "12px",
+    },
   },
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
     overflowY: "scroll",
-    height: '100%',
+    height: "100%",
     display: "block",
     position: "relative",
   },
