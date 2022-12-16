@@ -5,7 +5,7 @@ import colors from "../../../assets/colors";
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         chatListWrapper: {
-            padding: '10px 0 10px 11px',
+            padding: '9px 0 10px 11px',
             // height: 70,
             border: `0.5px solid ${colors.grey}`,
             cursor: "pointer",
@@ -85,7 +85,7 @@ export const useStyles = makeStyles((theme: Theme) =>
         },
         unreadCounter: {
             '& .MuiBadge-anchorOriginTopRightRectangle': {
-                top: '-9px',
+                top: '-6px',
                 right: '34px',
             },
             '& .MuiBadge-colorPrimary': {

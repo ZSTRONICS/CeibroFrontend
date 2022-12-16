@@ -376,7 +376,15 @@ button[disabled]{
   -webkit-box-orient: vertical;
 }
 
-.chatReplyBox :nth-child(1) >div{
+/* .chatReplyBox :nth-child(1) >div{
+  background: #cde4f4 !important;
+  animation: fade 5s linear;
+  -webkit-animation: fade 5s linear;
+   -moz-animation: fadeIn 5s;
+  -o-animation: fadeIn 5s;
+  -ms-animation: fadeIn 5s; 
+} */
+.chatReplyBox .replyMessageBg{
   background: #cde4f4 !important;
   animation: fade 5s linear;
   -webkit-animation: fade 5s linear;

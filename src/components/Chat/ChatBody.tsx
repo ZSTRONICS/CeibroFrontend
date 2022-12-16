@@ -35,7 +35,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
 
   const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
   // const { user } = useSelector((store: RootState) => store.auth);
- 
+
 
   //API call to get messages of Selected-ROOM
   // const [upMessagesState, setUpMessagesState] = useState(false);
@@ -45,7 +45,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
 
     if (selectedChat) {
       //socket.getUnreadMsgCount(user.id);
-      
+
       dispatch(
         getRoomMessages({
           other: {
@@ -67,15 +67,15 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
 
     const chatBox: any = document.getElementById("chatBox")
 
-  //   if (chatBox) {
-  //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
-  // }
+    //   if (chatBox) {
+    //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
+    // }
     if (chatBox && blockAutoDownScroll === true) {
       chatBox.scrollTop = chatBox.scrollHeight
     }
 
     if (chatBox) {
-      const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
+      const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight - chatBox.clientHeight)
       if (currScrollPercentage >= 70) {
         chatBox.scrollTop = chatBox.scrollHeight
       } else {
@@ -92,36 +92,36 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
     return <NoConversation />;
   }
 
-//   function preventScroll(e:any){
-//     e.preventDefault();
-//     e.stopPropagation();
-//     return false;
-// }
+  //   function preventScroll(e:any){
+  //     e.preventDefault();
+  //     e.stopPropagation();
+  //     return false;
+  // }
 
   // function diableScroll(){
   //   if(document){
   //     document?.getElementsByClassName('.custom-scrollbar').addEventListener('scroll', preventScroll);
-      
+
   //   }
   // }
 
 
-//   function disableScrolling(){
-//     const elem = document?.querySelector('.custom-scrollbar')
-//     if(elem){
-//       elem.style.overflowY = "hidden";
-//       elem.scrollIntoView()
-//     }
-// }
+  //   function disableScrolling(){
+  //     const elem = document?.querySelector('.custom-scrollbar')
+  //     if(elem){
+  //       elem.style.overflowY = "hidden";
+  //       elem.scrollIntoView()
+  //     }
+  // }
 
-// function enableScrolling(){
-//     window.onscroll=function(){};
-// }
+  // function enableScrolling(){
+  //     window.onscroll=function(){};
+  // }
 
   const handleScroll = (e: any) => {
     let chatBox = e.target;
-   
-    const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight)
+
+    const currScrollPercentage = 100 * chatBox.scrollTop / (chatBox.scrollHeight - chatBox.clientHeight)
 
     if (currScrollPercentage <= 70) {
       setBlockAutoDownScroll(false)
@@ -129,8 +129,8 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
       setBlockAutoDownScroll(true)
     }
 
-    if (currScrollPercentage <= 0 ) {
-            // disableScrolling()
+    if (currScrollPercentage <= 0) {
+      // disableScrolling()
       //setUpMessagesState(true)
       // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
@@ -138,8 +138,8 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
     }
   }
 
-  const messageBot= messages?.map?.((message: any) => {
-     if(message.type ==='bot'){
+  const messageBot = messages?.map?.((message: any) => {
+    if (message.type === 'bot') {
       return moment.utc(moment(message.createdAt)).fromNow()
     }
   })
@@ -159,10 +159,10 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
           </Typography>
         </Box>
         {messages &&
-          messages.filter((message:any)=> message.type !=='bot').map?.((message: ChatMessageInterface) => {
+          messages.filter((message: any) => message.type !== 'bot').map?.((message: ChatMessageInterface) => {
             if (message.chat === selectedChat) {
               return <>
-              <MessageChat message={message} enable={props.enable} />;
+                <MessageChat message={message} enable={props.enable} />
               </>
             } else {
               return <></>
@@ -179,7 +179,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo(props => {
 export default ChatBody;
 
 const useStyles = makeStyles({
-  botContainer:{
+  botContainer: {
     background: '#ECF0F1',
     borderRadius: 20,
     maxWidth: 125,
@@ -187,11 +187,11 @@ const useStyles = makeStyles({
     width: '100%',
     textAlign: 'center',
     padding: '2px 0',
-    '& .MuiTypography-root':{
+    '& .MuiTypography-root': {
       fontSize: '12px',
     }
 
-  }, 
+  },
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
     overflowY: "scroll",

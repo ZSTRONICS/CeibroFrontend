@@ -128,7 +128,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
               )}
             </CBox>
           </CBox>
-          <CBox display='flex'>
+          <CBox display='flex' mt={1.2}>
 
 
             <Typography className={classes.time}>{lastMessageTime}</Typography>
