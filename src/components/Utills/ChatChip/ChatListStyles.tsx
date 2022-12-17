@@ -46,8 +46,12 @@ export const useStyles = makeStyles((theme: Theme) =>
         message: {
             fontSize: 12,
             fontWeight: 500,
-            color: colors.textGrey,
-            paddingLeft: 2,
+            color: '#000',
+            // paddingLeft: 2,
+            paddingTop: 5,
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
         },
         chatProject: {
             fontSize: 10,
@@ -84,13 +88,25 @@ export const useStyles = makeStyles((theme: Theme) =>
             fontSize: 18,
         },
         unreadCounter: {
-            '& .MuiBadge-anchorOriginTopRightRectangle': {
-                top: '-6px',
-                right: '34px',
-            },
-            '& .MuiBadge-colorPrimary': {
-                backgroundColor: 'red !important'
-            }
+            color: '#fff',
+            fontSize: 12,
+            backgroundColor: '#0076c8',
+            padding: 5,
+            borderRadius: 1000,
+            height: 20,
+            minWidth: 20,
+            width: '100%',
+            display: 'flex',
+
+            alignItems: 'center',
+            justifyContent: 'center',
+            // '& .MuiBadge-anchorOriginTopRightRectangle': {
+            //     top: '-6px',
+            //     right: '34px',
+            // },
+            // '& .MuiBadge-colorPrimary': {
+            //     backgroundColor: 'red !important'
+            // }
             // backgroundColor: 'red',
             // position: 'absolute',
             // left: 73,

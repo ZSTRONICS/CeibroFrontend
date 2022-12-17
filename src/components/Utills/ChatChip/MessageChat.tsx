@@ -90,7 +90,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
       display: myMessag ? 'flex' : 'flex',
       flexDirection: myMessag ? 'column' : 'column',
       alignItems: myMessag && 'flex-end',
-      marginRight: myMessag && 12,
+      marginRight: myMessag && 21,
     }
   }
 
@@ -231,18 +231,51 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                   <Typography className={classes.company}>
                     {sender?.companyName}
                   </Typography>
-                  <span className={classes.separator}>.</span>
-                  <Typography className={classes.company}>
+                  {/* <span className={classes.separator}>.</span> */}
+                  {/* <Typography className={classes.company}>
                     Project manager
-                  </Typography>
+                  </Typography> */}
                 </CBox>
 
               </CBox>
             </CBox>
             <CBox display='flex' justifyContent='space-between' mr={myMessag ? 4 : 0}>
-              <CBox className={`${classes.messageBox} ${'replyMessageBg'}`} style={getStyles()}>
 
-                <CBox flex='23 1 0' display='flex' alignItems={replyOf ? 'flex-start' : 'center'} flexDirection={replyOf && 'column'} style={{ wordBreak: 'break-word', textAlign: 'justify', width: '100%' }}>
+              <CBox className={`${classes.messageBox} ${'replyMessageBg'}`} style={getStyles()}>
+                {message.type !== "questioniar" && (
+                  <>
+                    {pinnedBy?.includes(user?.id) ? (
+
+                      <CBox onClick={handlePinClick} style={{ cursor: 'pointer' }}>
+
+
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M8.07143 15.9286L2.57143 10.4286L15.1429 2.57143L21.4286 8.85714L13.5714 21.4286L8.07143 15.9286Z" fill="#0076C8" />
+                          <path d="M1 23L8.07143 15.9286M1 8.85714L15.1429 23M13.5714 1L23 10.4286M2.57143 10.4286L15.1429 2.57143M13.5714 21.4286L21.4286 8.85714" stroke="#0076C8" />
+                        </svg>
+
+
+                      </CBox>
+                      // <AiFillPushpin
+                      //   className={classes.pinIcon}
+                      //   onClick={handlePinClick}
+                      // />
+                    ) : (
+                      <CBox onClick={handlePinClick} style={{ cursor: 'pointer' }}>
+
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 23L8.07143 15.9286M1 8.85714L15.1429 23M13.5714 1L23 10.4286M2.57143 10.4286L15.1429 2.57143M13.5714 21.4286L21.4286 8.85714" stroke="#0076C8" />
+                        </svg>
+
+                      </CBox>
+                      // <AiOutlinePushpin
+                      //   className={classes.pinIcon}
+                      //   onClick={handlePinClick}
+                      // />
+                    )}
+                  </>
+                )}
+                <CBox flex='1 1 0' display='flex' alignItems={replyOf ? 'flex-start' : 'flex-start'} flexDirection='column' style={{ wordBreak: 'break-word', textAlign: 'justify', width: '100%' }}>
                   {replyOf && (
                     <Grid
                       onClick={handleReplyClick}
@@ -256,9 +289,9 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                             className={classes.replyToTitle}
                           >{`${replyOf?.sender?.firstName} ${replyOf?.sender?.surName}`}</Typography>
                         </CBox>
-                          <span>
-                            {/* // className={classes.replyToMsg}> */}
-                            {replyOf?.message}</span>
+                          <Typography
+                            className={`${classes.replyToMsg} ${'textOverflowY'}`}>
+                            {replyOf?.message}</Typography>
                         </>}
                         {replyOf.type === "questioniar" && <span>Questioniar</span>}
                         {replyOf.type === "voice" && <span>Voice</span>}
@@ -276,37 +309,19 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
                       <source src={voiceUrl} />
                     </audio>
                   )}
-
-
-
-                </CBox>
-                <CBox flex='2 1 0' textAlign='center' className={classes.pinTime}>
-                  {message.type !== "questioniar" && (
-                    <>
-                      {pinnedBy?.includes(user?.id) ? (
-                        <AiFillPushpin
-                          className={classes.pinIcon}
-                          onClick={handlePinClick}
-                        />
-                      ) : (
-                        <AiOutlinePushpin
-                          className={classes.pinIcon}
-                          onClick={handlePinClick}
-                        />
-                      )}
-                    </>
-                  )}
-                  <CBox display='flex' alignItems='flex-end' height='100%'>
-                    <Typography className={classes.time}>{time}</Typography>
+                  <CBox flex='1 1 0' textAlign='center' className={classes.pinTime}>
+                    <CBox display='flex' alignItems='flex-end' height='100%'>
+                      <Typography className={classes.time}>{time}</Typography>
+                    </CBox>
                   </CBox>
-
                 </CBox>
+
               </CBox>
-              <CBox pt={1.2}>
+              <CBox pt={1.5}>
                 {<ChatMessageMenu message={message} />}
               </CBox>
             </CBox>
-            <CBox display='flex' justifyContent='flex-end' width='100%' pr={3.5}>
+            <CBox display='flex' justifyContent='flex-end' width='100%' pr={8.6}>
               {readBy?.map((readyByUser: UserInterface, i: any) => {
                 if (readyByUser.id === user.id || sender.id !== user.id) {
                   return <></>
@@ -337,7 +352,8 @@ const useStyles = makeStyles({
   replyToMsg: {
     fontFamily: 'Inter',
     fontWeight: 500,
-    fontSize: 14
+    fontSize: 14,
+    color: '#787878'
   },
   sideName: {
     paddingLeft: 15,
@@ -422,7 +438,7 @@ const useStyles = makeStyles({
     // textAlign: 'right'
   },
   company: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,
   },
@@ -439,7 +455,7 @@ const useStyles = makeStyles({
   },
   pinIcon: {
     color: colors.textPrimary,
-    fontSize: 20,
+    fontSize: 30,
     cursor: "pointer",
   },
   moreIcon: {
@@ -518,33 +534,37 @@ const useStyles = makeStyles({
   userInfo: {
     '& .MuiAvatar-rounded': {
       borderRadius: '1000px !important',
-      height: 45,
-      width: 45,
+      height: 35,
+      width: 35,
 
     }
   },
   messageBox: {
     display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-end',
     width: '100%',
     border: '1px solid rgba(0, 118, 200, 0.48)',
 
-    padding: '10px 6px 6px 15px',
-    marginBottom: 15,
-    marginLeft: 57,
+    padding: '10px 10px 6px 10px',
+    marginBottom: 7,
+    marginLeft: 42,
     gap: 3,
   },
   pinTime: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'flex-end',
+    width: '100%'
   },
   reply: {
-    backgroundColor: 'antiquewhite',
+    backgroundColor: '#f5f7f8',
     borderLeft: '6px solid #0076C8',
     borderRadius: 5,
     padding: 11,
     display: 'flex',
     flexDirection: 'column',
+    marginBottom: 8,
     '&:hover': {
       cursor: 'pointer'
     }

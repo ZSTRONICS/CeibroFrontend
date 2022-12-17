@@ -83,7 +83,8 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   };
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
-  const unreadLocalCount = unreadCount > 0 ? unreadCount : '2'
+  const unreadLocalCount = unreadCount > 0 ? unreadCount : null;
+  console.log(unreadLocalCount && unreadLocalCount.length, 'length')
   return (
     <>
       <CBox display='flex' alignItems='center' width='100%' onClick={handleClick} style={getStyles()} className={classes.chatListWrapper} >
@@ -99,7 +100,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
             />
           )}
         </CBox>
-        <CBox flex='3 1 0'>
+        <CBox flex='3 1 0' minWidth={0}>
           {chat.isGroupChat ? (
             <Typography className={classes.userName}>{name}</Typography>
           ) : (
@@ -107,19 +108,20 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
               className={classes.userName}
             >{`${individualFirstName} ${individualSurName}`}</Typography>
           )}
-          <Typography className={classes.message}>
-            {lastMessage?.message?.substr(0, 22)}
-          </Typography>
           {project?.title && (
             <Typography className={classes.chatProject}>
               <span>Project: &nbsp;&nbsp;</span>
               <span className={classes.chatProjectName}>{project.title}</span>
             </Typography>
           )}
+          <Typography className={classes.message}>
+            {lastMessage?.message?.substr(0, 22)}
+          </Typography>
+
         </CBox>
 
-        <CBox flex='3 1 0' display='flex' position='relative' justifyContent='space-between' alignItems='center'>
-          <CBox>
+        <CBox flex='4 1 0' style={{ gap: 5 }} display='flex' position='relative' justifyContent='space-between' alignItems='center'>
+          <CBox flex='1'>
             <CBox display='flex' onClick={handleFavouriteClick}>
               {bookmarked ? (
                 <Star className={classes.startFilled} />
@@ -128,22 +130,29 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
               )}
             </CBox>
           </CBox>
-          <CBox display='flex' mt={1.2}>
+          <CBox display='flex' flex='3'>
 
 
             <Typography className={classes.time}>{lastMessageTime}</Typography>
-            <Badge className={classes.unreadCounter} badgeContent={unreadLocalCount} color="primary">&nbsp;</Badge>
-            {/* <CBox className={classes.unreadCounter}>
-              {unreadLocalCount}
-            </CBox> */}
-            {/* <Badge
-              overlap="circular"
-              badgeContent={unreadLocalCount}
-              color="error"
-            className={classes.unreadCounter}
-            ></Badge> */}
+
           </CBox>
-          <CBox display='flex'>
+          {unreadLocalCount && unreadLocalCount.length == null ?
+            <CBox display='flex' flex='1'>
+              <CBox className={classes.unreadCounter}>
+                {unreadLocalCount}
+              </CBox>
+
+            </CBox>
+
+
+
+            :
+            ''
+
+          }
+
+
+          <CBox display='flex' flex='1'>
 
             <ChatListMenu room={chat} />
           </CBox>
@@ -153,50 +162,6 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
       </CBox>
 
 
-      {/* <Grid
-        className={classes.chatListWrapper}
-        container
-      >
-        <Grid container>
-       
-          <Grid item xs={2} className={classes.avatarWrapper}>
-            <CSkeleton variant="circular" width={40} height={40} />
-          </Grid>
-
-          <Grid item xs={6} className={classes.messageDetailWrapper}>
-            <CBox mt={1.6}>
-              <CSkeleton variant="rectangular" width={40} height={10} />
-            </CBox>
-          </Grid>
-
-          <Grid item xs={2} className={classes.timeOuterWrapper}>
-            <div>
-              <CSkeleton variant="rectangular" width={20} height={15} />
-            </div>
-            <div className={classes.timeWrapper}>
-              {unreadCount && unreadCount > 0 && (
-                <Badge
-                  overlap="circular"
-                  badgeContent={unreadCount}
-                  color="error"
-                ></Badge>
-              )}
-              <Typography className={classes.time}>{lastMessageTime}</Typography>
-            </div>
-          </Grid>
-
-          <Grid item xs={1} className={classes.timeWrapper}>
-            <CSkeleton variant="rectangular" width={5} height={20} />
-          
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={6} style={{ paddingLeft: 6 }}>
-            <CSkeleton variant="rectangular" width={80} height={10} />
-          </Grid>
-        </Grid>
-      </Grid> */}
 
     </>
   )

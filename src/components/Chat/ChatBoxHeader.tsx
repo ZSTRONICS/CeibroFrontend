@@ -45,7 +45,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const myChat = allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
-  const individualChatName = myChat?.members.find((member:any)=> member.id !== user.id)
+  const individualChatName = myChat?.members.find((member: any) => member.id !== user.id)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e?.target?.value);
@@ -122,20 +122,20 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                   </>
                 )}
                 {
-                  myChat?.isGroupChat===false &&  <div className={classes.editProject}>
-                  <Typography className={classes.username}>
-                    {`${individualChatName.firstName} ${individualChatName.surName}`}
-                  </Typography>
-                  {individualChatName.companyName && (
-                    <Typography className={classes.projectName}>
-                      Company:{" "}
-                      <span className={classes.projectTitle}>
-                        {" "}
-                        {individualChatName.companyName}{" "}
-                      </span>
+                  myChat?.isGroupChat === false && <div className={classes.editProject}>
+                    <Typography className={classes.username}>
+                      {`${individualChatName.firstName} ${individualChatName.surName}`}
                     </Typography>
-                  )}
-                </div>
+                    {individualChatName.companyName && (
+                      <Typography className={classes.projectName}>
+                        Company:{" "}
+                        <span className={classes.projectTitle}>
+                          {" "}
+                          {individualChatName.companyName}{" "}
+                        </span>
+                      </Typography>
+                    )}
+                  </div>
                 }
                 {edit ? (
                   <div className={`${classes.editInputWrapper} editInputWrapper`}>
@@ -217,7 +217,7 @@ const useStyles = makeStyles({
     justifyContent: " space-between",
     padding: "0 50px 0 0",
     borderBottom: `1px solid ${colors.grey}`,
-    height: 40,
+    height: 55,
     ["@media (max-width:960px)"]: {
       height: 60,
     },

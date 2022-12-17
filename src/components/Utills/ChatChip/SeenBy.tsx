@@ -31,16 +31,16 @@ export default SeenBy;
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     small: {
-      width: 25,
-      height: 25,
-      borderRadius: 4,
+      width: 20,
+      height: 20,
+      borderRadius: '50% !important',
     },
     MuiAvatarSquare: {
       border: `1px solid ${colors.secondaryGrey}`,
       background: colors.secondaryGrey,
       borderRadius: "4px",
       color: colors.black,
-      fontSize: "14px",
+      fontSize: "12px",
       fontWeight: 500,
       textTransform: "uppercase",
     }
