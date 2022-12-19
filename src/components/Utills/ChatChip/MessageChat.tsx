@@ -56,7 +56,6 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   );
 
   let time = moment.utc(moment(createdAt)).fromNow()
-  console.log("moment(createdAt)", moment(createdAt));
 
   time = String(time).replace('a minute ago', '1m ago')
   time = String(time).replace('an hour ago', '1h ago')
@@ -66,9 +65,6 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   time = String(time).replace(' minutes', 'm')
   time = String(time).replace(' months', 'M')
   time = String(time).replace(' years', 'Y')
-
-  // console.log(time);
-
 
   let myMessag = sender?.id === user.id
   const dispatch = useDispatch();

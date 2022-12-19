@@ -1,4 +1,4 @@
-import { useEffect, useCallback,useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 // material
 import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
@@ -72,30 +72,30 @@ const CreateIndividualChat = (props: any) => {
   //     return 0; 
   //    });
 
-     const filterdList = connections.filter((person:any)=>{
-      const user = person?.sentByMe? person.to: person.from;
-      return (
-        user.firstName.toLowerCase().includes(searchQuery.toLowerCase())||
-        user.surName.toLowerCase().includes(searchQuery.toLowerCase())
-        );
-      })
+  const filterdList = connections.filter((person: any) => {
+    const user = person?.sentByMe ? person.to : person.from;
+    return (
+      user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.surName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  })
 
-  const handleChatRoomSearch = useCallback((e:any) => {
+  const handleChatRoomSearch = useCallback((e: any) => {
     setSearchField(e.target.value)
-  const list = filterList(e.target.value, connections)
-  console.log('list', list);
-  
+    const list = filterList(e.target.value, connections)
+
   }, []);
 
   const startSingleRoomChat = (id: string) => {
-    const payload = { other: { id }, success: () =>{
-      //  dispatch(setSelectedChat({ other: id }));
-    toast.success('single chat room started')
-    dispatch(getAllChats());
-  }
-  }
-  dispatch(createSingleRoom(payload))
-  handleClose()
+    const payload = {
+      other: { id }, success: () => {
+        //  dispatch(setSelectedChat({ other: id }));
+        toast.success('single chat room started')
+        dispatch(getAllChats());
+      }
+    }
+    dispatch(createSingleRoom(payload))
+    handleClose()
   }
 
   return (
@@ -126,7 +126,7 @@ const CreateIndividualChat = (props: any) => {
             Frequently Contacted
           </CBox>
           {filterdList?.map?.((connection: any) => {
-            const startRoomId = connection.sentByMe?connection.to.id:connection.from.id
+            const startRoomId = connection.sentByMe ? connection.to.id : connection.from.id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
               : connection.from;
@@ -136,8 +136,8 @@ const CreateIndividualChat = (props: any) => {
                 display="flex"
                 mb={2}
                 className={classes.ChatList}
-                 onClick={() => startSingleRoomChat(startRoomId)}
-                 key= {startRoomId}
+                onClick={() => startSingleRoomChat(startRoomId)}
+                key={startRoomId}
               >
                 <CBox>
                   <Avatar
@@ -164,7 +164,7 @@ const CreateIndividualChat = (props: any) => {
               </CBox>
             );
           })}
-          
+
           <CBox display="flex" justifyContent="flex-end" >
             {/* <Button variant="contained" color="primary" disabled>
               Start conversation
@@ -207,10 +207,10 @@ const useStyles = makeStyles((theme) => ({
     transitionTimingFunction: " ease-in",
     transition: " 0.2s",
     padding: '1px 3px',
-    '&:hover':{
+    '&:hover': {
       // boxShadow: '1px 0px 2px 4px #19181833',
       boxShadow: '1px 0px 2px 4px #eeecec',
-      background:'#f1f1f1',
+      background: '#f1f1f1',
       cursor: 'pointer'
     }
   },

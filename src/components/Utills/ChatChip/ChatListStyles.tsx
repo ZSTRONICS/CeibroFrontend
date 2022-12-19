@@ -10,6 +10,9 @@ export const useStyles = makeStyles((theme: Theme) =>
             border: `0.5px solid ${colors.grey}`,
             cursor: "pointer",
         },
+        font1: {
+            fontSize: "0.5rem",
+        },
         // bookMarkWrapper: {
         //   padding: 0,
         //   display: 'flex',

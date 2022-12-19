@@ -13,7 +13,6 @@ import { CBox } from "components/material-ui";
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
-
 }
 
 const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
@@ -33,6 +32,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
   lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
+  lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
 
   lastMessageTime = String(lastMessageTime)?.replace(' hours', 'h')
   lastMessageTime = String(lastMessageTime)?.replace(' days', 'd')
@@ -93,7 +93,6 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
   const unreadLocalCount = unreadCount > 0 ? unreadCount : null;
-  console.log(unreadLocalCount && unreadLocalCount.length, 'length')
   return (
     <>
       <CBox display='flex' alignItems='center' width='100%' onClick={handleClick} style={getStyles()} className={classes.chatListWrapper} >
@@ -147,14 +146,18 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
           </CBox>
           {unreadLocalCount && unreadLocalCount.length == null ?
             <CBox display='flex' flex='1'>
-              <CBox className={classes.unreadCounter}>
+              <Badge
+                overlap='circular'
+                badgeContent={unreadLocalCount}
+                color="secondary"
+                classes={{
+                  badge: classes.font1,
+                }}
+              ></Badge>
+              {/* <CBox className={classes.unreadCounter}>
                 {unreadLocalCount}
-              </CBox>
-
+              </CBox> */}
             </CBox>
-
-
-
             :
             ''
 
