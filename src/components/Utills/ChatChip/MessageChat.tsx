@@ -210,11 +210,10 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
         id={message._id}
         key={message._id}
       >
-        {message._id && loadingMessages?.includes?.(message._id) && (
-          <ClipLoader color={colors.textGrey} size={6} />
-        )}
+
         <Grid item xs={8} onClick={handleClick}>
           <CBox >
+
             <CBox display='flex' flexDirection={myMessag ? 'row-reverse' : 'row'} alignItems='center' className={classes.userInfo}>
 
               <NameAvatar
@@ -240,20 +239,19 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
               </CBox>
             </CBox>
             <CBox display='flex' justifyContent='space-between' mr={myMessag ? 4 : 0}>
-
+              {message._id && loadingMessages?.includes?.(message._id) && (
+                <ClipLoader color={colors.textGrey} size={6} />
+              )}
               <CBox className={`${classes.messageBox} ${'replyMessageBg'}`} style={getStyles()}>
                 {message.type !== "questioniar" && (
                   <>
                     {pinnedBy?.includes(user?.id) ? (
-
                       <CBox onClick={handlePinClick} style={{ cursor: 'pointer' }}>
-
 
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path d="M8.07143 15.9286L2.57143 10.4286L15.1429 2.57143L21.4286 8.85714L13.5714 21.4286L8.07143 15.9286Z" fill="#0076C8" />
                           <path d="M1 23L8.07143 15.9286M1 8.85714L15.1429 23M13.5714 1L23 10.4286M2.57143 10.4286L15.1429 2.57143M13.5714 21.4286L21.4286 8.85714" stroke="#0076C8" />
                         </svg>
-
 
                       </CBox>
                       // <AiFillPushpin
