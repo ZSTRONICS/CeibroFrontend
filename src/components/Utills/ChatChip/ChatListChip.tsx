@@ -17,20 +17,29 @@ interface ChatListInterfaceProps {
 }
 
 const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
-  const classes = useStyles();
 
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const { chat } = props;
 
-  const { name, unreadCount, lastMessageTime, lastMessage, project, } = chat;
-
+  const { name, unreadCount, lastMessage, project, } = chat;
+  let { lastMessageTime } = chat
   const { user } = useSelector((state: RootState) => state.auth);
 
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
-  // const { projects } = useSelector((state: RootState) => state.project);
 
-  const dispatch = useDispatch();
+
+  lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
+  lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
+
+  lastMessageTime = String(lastMessageTime)?.replace(' hours', 'h')
+  lastMessageTime = String(lastMessageTime)?.replace(' days', 'd')
+  lastMessageTime = String(lastMessageTime)?.replace(' minutes', 'm')
+  lastMessageTime = String(lastMessageTime)?.replace(' months', 'M')
+  lastMessageTime = String(lastMessageTime)?.replace(' years', 'Y')
+
   let avaterInfo: any = {};
   const chatMembers = [...chat.members, ...chat.removedAccess]
 

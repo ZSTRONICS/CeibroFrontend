@@ -56,10 +56,20 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
   );
 
   let time = moment.utc(moment(createdAt)).fromNow()
-  time = time.replace('hours', 'h').replace(/ +/g, "").replace('ago', ' ago')
-  time = time.replace('days', 'd').replace(/ +/g, "").replace('ago', ' ago')
-  time = time.replace('minutes', 'm').replace(/ +/g, "").replace('ago', ' ago')
-  time = time.replace('months', 'M').replace(/ +/g, "").replace('ago', ' ago')
+  console.log("moment(createdAt)", moment(createdAt));
+
+  time = String(time).replace('a minute ago', '1m ago')
+  time = String(time).replace('an hour ago', '1h ago')
+
+  time = String(time).replace(' hours', 'h')
+  time = String(time).replace(' days', 'd')
+  time = String(time).replace(' minutes', 'm')
+  time = String(time).replace(' months', 'M')
+  time = String(time).replace(' years', 'Y')
+
+  // console.log(time);
+
+
   let myMessag = sender?.id === user.id
   const dispatch = useDispatch();
   const [view, setView] = useState(false);
