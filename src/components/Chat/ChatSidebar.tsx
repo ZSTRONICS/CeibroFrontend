@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Grid, makeStyles, Typography } from '@material-ui/core'
 
 // redux
-import { useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { SET_CHAT_TYPE, SET_CHAT_SEARCH, SET_FAVOURITE_FILTER } from '../../config/chat.config'
 import { clearSelectedChat, getAllChats } from '../../redux/action/chat.action'
 
@@ -97,19 +97,18 @@ const ChatSidebar = () => {
         {messageListType.map((chatType: any, index: number) => {
           return (
             // <>
-              <Typography
-                onClick={() => handleMessageTypeClick(chatType, index)}
-                key={index}
-                className={`${classes.messageTypeText} ${index < 2 && classes.borderRight} ${
-                  filter === chatType.name ? classes.activeMessageType : ''
+            <Typography
+              onClick={() => handleMessageTypeClick(chatType, index)}
+              key={index}
+              className={`${classes.messageTypeText} ${index < 2 && classes.borderRight} ${filter === chatType.name ? classes.activeMessageType : ''
                 }`}
-              >
-                 {chatType?.icon && (
-                <img src={chatType.icon} className={`width-16`} style={{ height: 14,paddingRight: 18 }} alt=""/>
+            >
+              {chatType?.icon && (
+                <img src={chatType.icon} className={`width-16`} style={{ height: 14, paddingRight: 18 }} alt="" />
               )}
-                {chatType.name}
-              </Typography>
-              //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
+              {chatType.name}
+            </Typography>
+            //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
             // </>
           )
         })}
@@ -124,7 +123,7 @@ const ChatSidebar = () => {
 export default ChatSidebar
 
 const useStyles = makeStyles({
-  borderRight:{
+  borderRight: {
     borderRight: '2px solid',
     paddingRight: 23
   },
@@ -175,8 +174,10 @@ const useStyles = makeStyles({
   },
   messageTypeWrapper: {
     display: 'flex',
-    justifyContent: 'space-evenly',
-    padding: '10px 2px',
+    justifyContent: 'space-between',
+    padding: '15px 47px',
+    alignItems: 'center'
+
   },
   messageTypeText: {
     fontSize: 12,
