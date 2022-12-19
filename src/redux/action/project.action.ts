@@ -75,6 +75,7 @@ import configs, {
   SELECTED_FILE_TYPE,
   GET_GROUP_USERS,
   ADD_REMOVE_FOLDER_USER,
+  GET_PROJECTS_WITH_MEMBERS,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -263,6 +264,7 @@ export const getProjectsWithPagination = createAction(
   GET_PROJECTS_WITH_PAGINATION
 );
 export const getAllProjects = createAction(GET_PROJECTS);
+export const getAllProjectsWithMembers = createAction(GET_PROJECTS_WITH_MEMBERS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
 export const getAvailableProjectUsers = createAction(

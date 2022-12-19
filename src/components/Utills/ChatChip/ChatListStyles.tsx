@@ -1,13 +1,17 @@
+import { red } from '@material-ui/core/colors';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import colors from "../../../assets/colors";
 
 export const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         chatListWrapper: {
-            padding: 0,
-            height: 70,
+            padding: '9px 0 10px 11px',
+            // height: 70,
             border: `0.5px solid ${colors.grey}`,
             cursor: "pointer",
+        },
+        font1: {
+            fontSize: "0.5rem",
         },
         // bookMarkWrapper: {
         //   padding: 0,
@@ -45,8 +49,12 @@ export const useStyles = makeStyles((theme: Theme) =>
         message: {
             fontSize: 12,
             fontWeight: 500,
-            color: colors.textGrey,
-            paddingLeft: 2,
+            color: '#000',
+            // paddingLeft: 2,
+            paddingTop: 5,
+            whiteSpace: 'nowrap',
+            textOverflow: 'ellipsis',
+            overflow: 'hidden'
         },
         chatProject: {
             fontSize: 10,
@@ -82,6 +90,42 @@ export const useStyles = makeStyles((theme: Theme) =>
             color: colors.darkYellow,
             fontSize: 18,
         },
+        unreadCounter: {
+            color: '#fff',
+            fontSize: 12,
+            backgroundColor: '#0076c8',
+            padding: 5,
+            borderRadius: 1000,
+            height: 20,
+            minWidth: 20,
+            width: '100%',
+            display: 'flex',
+
+            alignItems: 'center',
+            justifyContent: 'center',
+            // '& .MuiBadge-anchorOriginTopRightRectangle': {
+            //     top: '-6px',
+            //     right: '34px',
+            // },
+            // '& .MuiBadge-colorPrimary': {
+            //     backgroundColor: 'red !important'
+            // }
+            // backgroundColor: 'red',
+            // position: 'absolute',
+            // left: 73,
+            // bottom: 27,
+            // padding: 11,
+            // borderRadius: 1000,
+            // height: 18,
+            // width: 21,
+            // textAlign: 'center',
+            // fontSize: 13,
+            // display: 'flex',
+            // alignItems: 'center',
+            // justifyContent: 'center',
+            // color: '#fff',
+            // fontWeight: 400,
+        }
     }),
 );
 

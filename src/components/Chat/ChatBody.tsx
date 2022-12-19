@@ -6,20 +6,16 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {
-  getPinnedMessages,
-  getRoomMedia,
-  getRoomMessages,
-  getRoomQuestioniars,
-  getUpMessages,
+  getUpMessages
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
 import MessageChat from "../Utills/ChatChip/MessageChat";
 
+import { Box } from "@mui/material";
+import moment from "moment-timezone";
 import React from "react";
 import NoConversation from "./NoConversation";
-import moment from "moment-timezone";
-import { Box } from "@mui/material";
 
 interface ChatBodyInt {
   enable: boolean;

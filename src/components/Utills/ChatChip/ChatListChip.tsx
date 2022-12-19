@@ -9,27 +9,37 @@ import { RootState } from "../../../redux/reducers";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 import useStyles from './ChatListStyles'
 import { socket } from "services/socket.services"
+import { CBox } from "components/material-ui";
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
-
 }
 
 const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
-  const classes = useStyles();
 
+  const classes = useStyles();
+  const dispatch = useDispatch();
   const { chat } = props;
 
-  const { name, unreadCount, lastMessageTime, lastMessage, project, } = chat;
-
+  const { name, unreadCount, lastMessage, project, } = chat;
+  let { lastMessageTime } = chat
   const { user } = useSelector((state: RootState) => state.auth);
 
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
-  // const { projects } = useSelector((state: RootState) => state.project);
 
-  const dispatch = useDispatch();
+
+  lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
+  lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
+  lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
+
+  lastMessageTime = String(lastMessageTime)?.replace(' hours', 'h')
+  lastMessageTime = String(lastMessageTime)?.replace(' days', 'd')
+  lastMessageTime = String(lastMessageTime)?.replace(' minutes', 'm')
+  lastMessageTime = String(lastMessageTime)?.replace(' months', 'M')
+  lastMessageTime = String(lastMessageTime)?.replace(' years', 'Y')
+
   let avaterInfo: any = {};
   const chatMembers = [...chat.members, ...chat.removedAccess]
 
@@ -82,131 +92,91 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   };
 
   const bookmarked = chat?.pinnedBy?.includes(user?.id);
-  const unreadLocalCount = unreadCount > 0 ? unreadCount : null
+  const unreadLocalCount = unreadCount > 0 ? unreadCount : null;
   return (
     <>
-
-      <Grid
-        onClick={handleClick}
-        className={classes.chatListWrapper}
-        container
-        style={getStyles()}
-      >
-        <Grid container>
-          {/* <Grid item xs={1} className={classes.bookMarkWrapper}>
-          {unreadCount && unreadCount > 0 && <div className={classes.dot}></div>}
-        </Grid> */}
-          <Grid item xs={2} className={classes.avatarWrapper}>
-            {chat.isGroupChat ? (
-              <NameAvatar background="white" firstName={name} />
-            ) : (
-              <NameAvatar
-                background="white"
-                firstName={individualFirstName}
-                surName={individualSurName}
-                url={individualPicUrl}
-              />
-            )}
-          </Grid>
-
-          <Grid item xs={6} className={classes.messageDetailWrapper}>
-            {chat.isGroupChat ? (
-              <Typography className={classes.userName}>{name}</Typography>
-            ) : (
-              <Typography
-                className={classes.userName}
-              >{`${individualFirstName} ${individualSurName}`}</Typography>
-            )}
-
-
-            <Typography className={classes.message}>
-              {lastMessage?.message?.substr(0, 22)}
+      <CBox display='flex' alignItems='center' width='100%' onClick={handleClick} style={getStyles()} className={classes.chatListWrapper} >
+        <CBox flex='1 1 0'>
+          {chat.isGroupChat ? (
+            <NameAvatar background="white" firstName={name} />
+          ) : (
+            <NameAvatar
+              background="white"
+              firstName={individualFirstName}
+              surName={individualSurName}
+              url={individualPicUrl}
+            />
+          )}
+        </CBox>
+        <CBox flex='3 1 0' minWidth={0}>
+          {chat.isGroupChat ? (
+            <Typography className={classes.userName}>{name}</Typography>
+          ) : (
+            <Typography
+              className={classes.userName}
+            >{`${individualFirstName} ${individualSurName}`}</Typography>
+          )}
+          {project?.title && (
+            <Typography className={classes.chatProject}>
+              <span>Project: &nbsp;&nbsp;</span>
+              <span className={classes.chatProjectName}>{project.title}</span>
             </Typography>
+          )}
+          <Typography className={classes.message}>
+            {lastMessage?.message?.substr(0, 22)}
+          </Typography>
 
-          </Grid>
+        </CBox>
 
-          <Grid item xs={2} className={classes.timeOuterWrapper}>
-            <div onClick={handleFavouriteClick}>
+        <CBox flex='4 1 0' style={{ gap: 5 }} display='flex' position='relative' justifyContent='space-between' alignItems='center'>
+          <CBox flex='1'>
+            <CBox display='flex' onClick={handleFavouriteClick}>
               {bookmarked ? (
                 <Star className={classes.startFilled} />
               ) : (
                 <StarBorder className={classes.bookmarked} />
               )}
-            </div>
-            <div className={classes.timeWrapper}>
-              <Badge
-                overlap="circular"
-                badgeContent={unreadLocalCount}
-                color="error"
-              ></Badge>
-
-              <Typography className={classes.time}>{lastMessageTime}</Typography>
-            </div>
-          </Grid>
-
-          <Grid item xs={1} className={classes.timeWrapper}>
-            <ChatListMenu room={chat} />
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={6} style={{ paddingLeft: 6 }}>
-            {project?.title && (
-              <Typography className={classes.chatProject}>
-                <span>Project: &nbsp;&nbsp;</span>
-                <span className={classes.chatProjectName}>{project.title}</span>
-              </Typography>
-            )}
-          </Grid>
-        </Grid>
-      </Grid>
-      {/* <Grid
-        className={classes.chatListWrapper}
-        container
-      >
-        <Grid container>
-       
-          <Grid item xs={2} className={classes.avatarWrapper}>
-            <CSkeleton variant="circular" width={40} height={40} />
-          </Grid>
-
-          <Grid item xs={6} className={classes.messageDetailWrapper}>
-            <CBox mt={1.6}>
-              <CSkeleton variant="rectangular" width={40} height={10} />
             </CBox>
-          </Grid>
+          </CBox>
+          <CBox display='flex' flex='3'>
 
-          <Grid item xs={2} className={classes.timeOuterWrapper}>
-            <div>
-              <CSkeleton variant="rectangular" width={20} height={15} />
-            </div>
-            <div className={classes.timeWrapper}>
-              {unreadCount && unreadCount > 0 && (
-                <Badge
-                  overlap="circular"
-                  badgeContent={unreadCount}
-                  color="error"
-                ></Badge>
-              )}
-              <Typography className={classes.time}>{lastMessageTime}</Typography>
-            </div>
-          </Grid>
 
-          <Grid item xs={1} className={classes.timeWrapper}>
-            <CSkeleton variant="rectangular" width={5} height={20} />
-          
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item xs={2}></Grid>
-          <Grid item xs={6} style={{ paddingLeft: 6 }}>
-            <CSkeleton variant="rectangular" width={80} height={10} />
-          </Grid>
-        </Grid>
-      </Grid> */}
+            <Typography className={classes.time}>{lastMessageTime}</Typography>
+
+          </CBox>
+          {unreadLocalCount && unreadLocalCount.length == null ?
+            <CBox display='flex' flex='1'>
+              <Badge
+                overlap='circular'
+                badgeContent={unreadLocalCount}
+                color="secondary"
+                classes={{
+                  badge: classes.font1,
+                }}
+              ></Badge>
+              {/* <CBox className={classes.unreadCounter}>
+                {unreadLocalCount}
+              </CBox> */}
+            </CBox>
+            :
+            ''
+
+          }
+
+
+          <CBox display='flex' flex='1'>
+
+            <ChatListMenu room={chat} />
+          </CBox>
+        </CBox>
+
+
+      </CBox>
+
+
 
     </>
-  );
+  )
 };
 
 export default ChatListChip;

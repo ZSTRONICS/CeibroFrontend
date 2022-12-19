@@ -26,6 +26,7 @@ import {
   GET_NEW_WORK,
   GET_PERMISSIONS,
   GET_PROJECTS,
+  GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
@@ -60,6 +61,11 @@ const getProjects = apiCall({
   type: GET_PROJECTS,
   method: "get",
   path: "/project/all",
+});
+const getProjectsWithMembers = apiCall({
+  type: GET_PROJECTS_WITH_MEMBERS,
+  method: "post",
+  path: "/project/getProjectsWithMembers",
 });
 
 const getProjectsWithPagination = apiCall({
@@ -374,6 +380,7 @@ const addRemoveFolderUser = apiCall({
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
+  yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
   // yield takeLatest(GET_FILTER_PROJECTS, getFilterProjects);
