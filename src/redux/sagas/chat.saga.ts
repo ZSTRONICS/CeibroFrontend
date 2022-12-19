@@ -340,27 +340,20 @@ function* updateMessageById(action: ActionInterface): Generator<any> {
 
 function* replaceMessagesById(action: ActionInterface): Generator<any> {
   const { payload: { other }, } = action;
-  
+  var initialIndex = 0;
 
   const storeMsgs: any = yield select((state: RootState) => state.chat.messages);
-  
-  
-  other.messages.map((messages: any) => {
 
-     for (var key of Object.keys(messages)) {
+  other.messages.forEach((element: any) => {
 
-    const index = storeMsgs?.findIndex((message: any) => {
-      return String(message?._id) === String(key);
-    });
-  
-    if (index > -1) {
-      storeMsgs[index].readBy = [...messages[key]];
+    for(var i = initialIndex; i < storeMsgs.length ; i++) {
+        if(String(storeMsgs[i]?._id)  === String(element._id)) {
+            storeMsgs[i].readBy = element.readBy;
+            initialIndex = i
+            break;
+        }
     }
-  } 
-
   });
-
-
 
   yield put({
     type: SAVE_MESSAGES,
