@@ -1,7 +1,7 @@
 
 import { Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_CHAT_SIDE_BAR } from "../../config/chat.config";
@@ -18,12 +18,13 @@ import {
   setMembersDialog,
 } from "../../redux/action/chat.action";
 import colors from "assets/colors";
+import CustomPopover from "components/popover/Popover";
 
-interface Props{
-  enable:boolean
+interface Props {
+  enable: boolean
 }
 
-const MediaSidebar:React.FC<Props> = ({enable}) => {
+const MediaSidebar: React.FC<Props> = ({ enable }) => {
   const classes = useStyles();
   const {
     sidebarOpen,
@@ -39,30 +40,10 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
     (room: any) => String(room._id) == String(selectedChat)
   );
 
-  const [media, setMedia] = useState<any>(null);
 
-  // useEffect(() => {
-    // if (selectedChat) {
-    //   dispatch(
-    //     getRoomMedia({
-    //       other: selectedChat,
-    //     })
-    //   );
-    //   dispatch(
-    //     getPinnedMessages({
-    //       other: selectedChat,
-    //     })
-    //   );
-    //   const payload = {
-    //     other: selectedChat,
-    //   };
-    //   dispatch(getRoomQuestioniars(payload));
-    // }
-    // return () =>{
-    //   selectedChat,
-    //   openIndex
-    // }
-  // }, [selectedChat, openIndex]);
+
+
+
 
   const getStyles = () => {
     return {
@@ -72,31 +53,28 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
   };
 
   const handleClick = (index: number) => {
-    if (!sidebarOpen) {
-      dispatch({
-        type: SET_CHAT_SIDE_BAR,
-        payload: true,
-      });
-    }
-    setOpenIndex((openIndex) => (index === openIndex ? 0 : index));
+    setOpenIndex((openIndex) => (index === openIndex ? 0 : index))
   };
 
-  const handleOutsideClick = () => {
-    if (sidebarOpen) {
-      setOpenIndex(0);
-      dispatch({
-        type: SET_CHAT_SIDE_BAR,
-        payload: false,
-      });
-    }
-  };
+  // const handleOutsideClick = () => {
+  //   if (sidebarOpen) {
+  //     setOpenIndex(0);
+  //     dispatch({
+  //       type: SET_CHAT_SIDE_BAR,
+  //       payload: false,
+  //     });
+  //   }
+  // };
 
   const handleAddMember = (e: any) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
     dispatch(setMembersDialog(true));
   };
+  const handleOutsideClick = () => {
+    setOpenIndex(0)
 
+  }
   return (
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
@@ -110,80 +88,158 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
                 badge: classes.font1,
               }}
             >
-              <div  className={`${classes.addIconContainer}`}>
-              <img alt="usersIcon" src={assets.usersIcon}  className={`${classes.IconSize}`} />
+              <div className={`${classes.addIconContainer}`}>
+                <img alt="usersIcon" src={assets.usersIcon} className={`${classes.IconSize}`} />
               </div>
             </Badge>
             {sidebarOpen && (
               <span
-                className={`accordion-title ${classes.chatMembers} ${
-                  openIndex === 1 ? "active" : ""
-                }`}
+                className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
+                  }`}
               >
                 Chat members
                 <div className={`${classes.addIconContainerSide}`}>
-                {enable &&<img alt="addIcon"
+                  {enable && <img alt="addIcon"
                     src={assets.Add}
-                  onClick={handleAddMember}
-                  className={`${classes.addIcon}`}
-                />}
+                    onClick={handleAddMember}
+                    className={`${classes.addIcon}`}
+                  />}
                 </div>
               </span>
             )}
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
-        {openIndex === 1 && <ChatMembers enable={enable} />}
-
         <button className="accordion" onClick={() => handleClick(2)}>
-          <span>
+          <span className={classes.chatMembersWrapper}>
             <Badge
-            overlap='circular'
-              badgeContent={pinnedMessages?.message?.length}
+              overlap='circular'
+              badgeContent={selectedChatRoom?.members?.length}
               color="secondary"
               classes={{
                 badge: classes.font1,
               }}
             >
-              <img src={assets.pinIcon} alt="" />
+              <div className={`${classes.addIconContainer}`}>
+                <img src={assets.pinIcon} alt="" />
+              </div>
             </Badge>
-            {/* <AiOutlinePushpin style={{ fontSize: 20 }} color="action" /> */}
-            {/* <img src={assets.pinIcon} /> */}
             {sidebarOpen && (
-              <span className="accordion-title">Pinned messages</span>
+              <span
+                className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
+                  }`}
+              >
+                Chat members
+                <div className={`${classes.addIconContainerSide}`}>
+                  {enable && <img alt="addIcon"
+                    src={assets.Add}
+                    onClick={handleAddMember}
+                    className={`${classes.addIcon}`}
+                  />}
+                </div>
+              </span>
             )}
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
-        {openIndex === 2 && <ChatPinned />}
-
         <button className="accordion" onClick={() => handleClick(3)}>
-          <span className={"chat-room-media"}>
+          <span className={classes.chatMembersWrapper}>
             <Badge
-             overlap='circular' badgeContent={chatMedia?.length} color="secondary">
-              <img src={assets.mediaIcon} alt="mediaIcon" />
+              overlap='circular'
+              badgeContent={selectedChatRoom?.members?.length}
+              color="secondary"
+              classes={{
+                badge: classes.font1,
+              }}
+            >
+              <div className={`${classes.addIconContainer}`}>
+                <img src={assets.mediaIcon} alt="mediaIcon" />
+              </div>
             </Badge>
             {sidebarOpen && (
-              <span className="accordion-title">Media & Files</span>
+              <span
+                className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
+                  }`}
+              >
+                Chat members
+                <div className={`${classes.addIconContainerSide}`}>
+                  {enable && <img alt="addIcon"
+                    src={assets.Add}
+                    onClick={handleAddMember}
+                    className={`${classes.addIcon}`}
+                  />}
+                </div>
+              </span>
             )}
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
-        {openIndex === 3 && <ChatMedia media={chatMedia} />}
-
         <button className="accordion" onClick={() => handleClick(4)}>
-          <span>
+          <span className={classes.chatMembersWrapper}>
             <Badge
-            overlap='circular' badgeContent={roomQuestioniars?.length} color="secondary">
-              <img src={assets.documentIcon} alt="documentIcon"/>
+              overlap='circular'
+              badgeContent={selectedChatRoom?.members?.length}
+              color="secondary"
+              classes={{
+                badge: classes.font1,
+              }}
+            >
+              <div className={`${classes.addIconContainer}`}>
+                <img src={assets.documentIcon} alt="documentIcon" />
+              </div>
             </Badge>
             {sidebarOpen && (
-              <span className="accordion-title">Questioniar</span>
+              <span
+                className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
+                  }`}
+              >
+                Chat members
+                <div className={`${classes.addIconContainerSide}`}>
+                  {enable && <img alt="addIcon"
+                    src={assets.Add}
+                    onClick={handleAddMember}
+                    className={`${classes.addIcon}`}
+                  />}
+                </div>
+              </span>
             )}
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
-        {openIndex === 4 && <ChatQuestioniar />}
+        {openIndex === 1 &&
+
+
+          <CustomPopover children={'ok'} openGroup={openIndex} handleGroupClose={handleOutsideClick} />
+
+
+
+        }
+        {openIndex === 2 &&
+
+
+          <CustomPopover children={'new'} openGroup={openIndex} handleGroupClose={handleOutsideClick} />
+
+
+
+        }
+        {openIndex === 3 &&
+
+
+          <CustomPopover children={'3'} openGroup={openIndex} handleGroupClose={handleOutsideClick} />
+
+
+
+        }
+        {openIndex === 4 &&
+
+
+          <CustomPopover children={'4'} openGroup={openIndex} handleGroupClose={handleOutsideClick} />
+
+
+
+        }
+
+
       </div>
     </OutsideClickHandler>
   );
@@ -204,11 +260,11 @@ const useStyles = makeStyles({
   font1: {
     fontSize: "0.5rem",
   },
-  addIconContainer:{
+  addIconContainer: {
     width: 18,
     marginLeft: '0px'
   },
-  addIconContainerSide:{
+  addIconContainerSide: {
     width: 18,
     marginLeft: '5px'
   },

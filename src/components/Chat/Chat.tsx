@@ -17,6 +17,7 @@ import MediaSidebar from "./MediaSidebar";
 import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { socket } from "services/socket.services";
+import { Sidebar } from "./Sidebar";
 
 const Chat = () => {
   const classes = useStyles();
@@ -81,6 +82,7 @@ const Chat = () => {
   return (
     <>
       {/* right sidebar for chat actions */}
+      {/* {selectedChat && <Sidebar />} */}
       {selectedChat && <MediaSidebar enable={enable} />}
       <Grid container className={classes.wrapper}>
         <Grid item xs={12} md={sidebarOpen && !isTabletOrMobile ? 4 : 3}>
