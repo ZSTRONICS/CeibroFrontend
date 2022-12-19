@@ -52,6 +52,6 @@ export interface ChatMessageInterface {
   voiceUrl?: string;
   dueDate?: any;
   chat?: any;
-  type: "message" | "questioniar" | "voice";
+  type: "message" | "questioniar" | "voice" | "bot" | "start-bot";
   createdAt:Date
 }

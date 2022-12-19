@@ -50,7 +50,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
-
+  
   useEffect(() => {
     setFiles(null);
     setFilesPreview(null);
@@ -102,11 +102,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
   let replyToMessage = null;
   if (replyToId) {
+    messageRef.current.focus();
     replyToMessage = messages?.find(
-      (msg: any) => String(msg._id) === String(replyToId)
-    );
+      (msg: any) => String(msg._id) === String(replyToId));
   }
-  
+
   const handleSend = () => {
     if (!enable) {
       return;
@@ -116,7 +116,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       payload.message = text.trim();
       payload.chat = selectedChat;
       payload.type = "message";
-      messageRef.current.focus;
+      messageRef.current.focus();
 
       if (files && Object.values(files)?.length > 0) {
         for (const key of Object.keys(files)) {

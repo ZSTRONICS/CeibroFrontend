@@ -45,7 +45,7 @@ import CreateIndividualChat from "./CreateIndividualChat";
 
   const open = Boolean(individualEl);
   const openGroup = Boolean(anchorGroupEl);
-  const id = open ? 'simple-popover' : undefined
+  const id = open ? 'sigle-popover' : undefined
   const gId = open ? 'group-popover' : undefined
 
   return (

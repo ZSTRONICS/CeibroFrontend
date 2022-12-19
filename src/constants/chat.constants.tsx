@@ -16,7 +16,7 @@ export const CHAT_LIST: ChatListInterface[] = [
         removedMembers: [],
         access:[],
         removedAccess:[],
-        createdAt: new Date(),
+        createdAt:'',
     }
 ]
 

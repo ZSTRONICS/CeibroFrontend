@@ -93,9 +93,9 @@ const getUpRoomMessages = apiCall({
   path: (payload: any) => {
     let apiUrl = "/chat/room/messages/" + payload.other.roomId
     if (payload?.other.lastMessageId !== null){
-      apiUrl = apiUrl + `?lastMessageId=${payload?.other.lastMessageId}&limit=21`
+      apiUrl = apiUrl + `?lastMessageId=${payload?.other.lastMessageId}&limit=100`
     }else{
-      apiUrl = apiUrl + `?limit=21`
+      apiUrl = apiUrl + `?limit=100`
     }
     return apiUrl
   }
