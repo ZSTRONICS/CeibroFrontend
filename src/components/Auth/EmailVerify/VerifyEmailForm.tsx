@@ -15,13 +15,13 @@ import { Alert } from "@material-ui/lab";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
-interface VerifyEmailForm {
+interface Props {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
 
-const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
+const VerifyEmailForm: React.FC<Props> = (props) => {
   const classes = useStyles();
   const { showError } = props;
   const {t} = useTranslation()
@@ -134,7 +134,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     marginTop: 20,
     padding: "10px 13%",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: "10 13%",
     },
   },
