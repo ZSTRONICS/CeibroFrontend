@@ -118,7 +118,7 @@ const getUpRoomMessages = apiCall({
 // });
 
 // const setCurrentMessageRead = apiCall({
-//   type: SET_MESSAGE_READ,
+//   type: SET_MESSAGE_SEEN,
 //   method: "put",
 //   path: (payload: any) => "/chat/room/read/" + payload.other,
 // });
@@ -411,7 +411,7 @@ function* chatSaga() {
   // yield takeLatest(GET_DOWN_MESSAGES, getDownRoomMessages);
   //yield takeLatest(SET_SELECTED_CHAT, setAllMessagesRead);
   //yield takeLatest(requestSuccess(SET_SELECTED_CHAT), getAllChat);
-  //yield takeLatest(SET_MESSAGE_READ, setCurrentMessageRead);
+  //yield takeLatest(SET_MESSAGE_SEEN, setCurrentMessageRead);
   // yield takeEvery(SEND_REPLY_MESSAGE, sendReplyMessage);
   //yield takeLatest(GET_UNREAD_CHAT_COUNT, getUnreadCount);
   //yield takeLatest(requestSuccess(GET_UNREAD_CHAT_COUNT), unreadMessagesCount);

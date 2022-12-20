@@ -69,8 +69,20 @@ import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
 import PeopleAltOutlinedIcon  from '@mui/icons-material/PeopleAltOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
+import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
+import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined';
+import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
+import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 
 const assets= {
+  MoreVertOutlinedIcon,
+  StarOutlineIcon,
+  StarIcon,
+  VolumeOffOutlinedIcon,
+  VolumeUpOutlinedIcon,
+  MarkUnreadChatAltOutlinedIcon,
   LanguageOutlinedIcon,
   ClearOutlinedIcon,
   PeopleAltOutlinedIcon,

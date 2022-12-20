@@ -1,5 +1,5 @@
 
-import { ALL_MESSAGE_READ, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_READ, UNREAD_MESSAGE_COUNT, USER_JOINED_ROOM } from 'config/chat.config';
+import { ALL_MESSAGE_SEEN, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_SEEN, UNREAD_MESSAGE_COUNT, USER_JOINED_ROOM } from 'config/chat.config';
 
 class WebSocketService {
 
@@ -48,7 +48,7 @@ class WebSocketService {
 
   public async sendMessageSeen(userId: any, roomId: any, messageId: any){
     const data = {
-      eventType: MESSAGE_READ,
+      eventType: MESSAGE_SEEN,
       data: {
         userId,
         roomId,
@@ -60,7 +60,7 @@ class WebSocketService {
 
   public async setAllMessageRead(userId: any, roomId: any){
     const data = {
-      eventType: ALL_MESSAGE_READ,
+      eventType: ALL_MESSAGE_SEEN,
       data: {
         userId,
         roomId
