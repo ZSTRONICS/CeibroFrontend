@@ -152,7 +152,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       }
 
       socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
-    
+      const chatBox = document.getElementById('chatBox')
       const newMessage = {
         sender: user,
         time: "a few seconds ago",
@@ -167,6 +167,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
 
+      if(chatBox){
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,

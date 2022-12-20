@@ -1,9 +1,6 @@
-import { useRef, useState } from "react";
+import React from "react";
 // material & react-icon
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
-import { BsDownload } from "react-icons/bs";
-import { IoReturnUpForward } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
 
 // redux
@@ -17,16 +14,13 @@ import { RootState } from "../../../redux/reducers";
 // components
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
-import assets from "../../../assets/assets";
+import moment from "moment-timezone";
 import colors from "../../../assets/colors";
 import { SAVE_MESSAGES } from "../../../config/chat.config";
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface";
 import NameAvatar from "../Others/NameAvatar";
 import ChatMessageMenu from "./ChatMessageMenu";
-import FilePreviewer from "./FilePreviewer";
 import SeenBy from "./SeenBy";
-import moment from "moment-timezone";
-import { borderRadius } from "react-select/src/theme";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
@@ -68,11 +62,6 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
 
   let myMessag = sender?.id === user.id
   const dispatch = useDispatch();
-  const [view, setView] = useState(false);
-  const bodyRef = useRef(null);
-  const toggleView = () => {
-    setView(!view);
-  };
 
   const borderStyle = `1px solid ${colors.senderBoxBorder}`
   const bgColor = myMessag ? colors.senderBox : colors.receiverBoxBg

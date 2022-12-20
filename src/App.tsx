@@ -122,25 +122,23 @@ const App: React.FC<MyApp> = () => {
                   }
                 }
               } else {
-                //dispatch(getAllChats());
+                dispatch(getAllChats());
                 socket.getUnreadMsgCount(user.id);
               }
             }
             break;
 
           case REFRESH_CHAT:
-            {
               socket.getUnreadMsgCount(user.id);
               dispatch(getAllChats());
-            }
             break;
 
           case UNREAD_MESSAGE_COUNT:
-            {
+            
               dispatch(
                 unreadMessagesCount({ other: payload.data })
               );
-            }
+            
             break;
           // case ROOM_MESSAGE_DATA:
           //   {
@@ -156,6 +154,9 @@ const App: React.FC<MyApp> = () => {
 
           case MESSAGE_SEEN:
             {
+              if(payload.updatedMessage.length === 0){
+                return
+              }
               const selectedChat = socket.getAppSelectedChat();
               if (payload.roomId === selectedChat) {
                 if (payload.updatedMessage && payload.updatedMessage.length > 0 ) {

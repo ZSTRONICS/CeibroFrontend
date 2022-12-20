@@ -60,10 +60,11 @@ const ChatList = () => {
       getAllChats({
         success: (_res: any) => {
           socket.getUnreadMsgCount(user.id);
-          if (_res?.data?.userallchat.length > 0) {
-            if (_res?.data?.userallchat[0]._id) {
+          if (_res?.data?.userallchat.length === 0){
+            dispatch(setSelectedChat({ other: null }));
+          }
+          else {
               getChatsMessages(_res?.data?.userallchat[0]._id);
-            }
           }
         },
       })
