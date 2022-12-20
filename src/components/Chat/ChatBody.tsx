@@ -76,10 +76,10 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
 
   useEffect(() => {
     const chatBox: any = document.getElementById("chatBox");
-
-    //   if (chatBox) {
+      if (chatBox) {
+        chatBox.scrollIntoView();
     //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
-    // }
+    }
     if (chatBox && blockAutoDownScroll === true) {
       chatBox.scrollTop = chatBox.scrollHeight;
     }
@@ -88,11 +88,11 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
       const currScrollPercentage =
         (100 * chatBox.scrollTop) /
         (chatBox.scrollHeight - chatBox.clientHeight);
-      if (currScrollPercentage >= 70) {
-        chatBox.scrollTop = chatBox.scrollHeight;
-      } else {
-        // Add view to go-to botton on click
-      }
+      // if (currScrollPercentage >= 70) {
+      //   chatBox.scrollTop = chatBox.scrollHeight;
+      // } else {
+      //   // Add view to go-to botton on click
+      // }
     }
 
     return (): void => {

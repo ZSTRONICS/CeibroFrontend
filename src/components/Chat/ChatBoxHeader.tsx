@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   CircularProgress,
@@ -42,10 +41,10 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     selectedChat,
   } = useSelector((store: RootState) => store.chat);
 
-  const myChat = allChats?.find?.(
+  const myChat = allChats?.length>0 && allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
-  const individualChatName = myChat?.members.find((member: any) => member.id !== user.id)
+  const individualChatName = myChat?.members?.find((member: any) => member.id !== user.id)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e?.target?.value);
@@ -124,14 +123,14 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
                 {
                   myChat?.isGroupChat === false && <div className={classes.editProject}>
                     <Typography className={classes.username}>
-                      {`${individualChatName.firstName} ${individualChatName.surName}`}
+                      {`${individualChatName?.firstName} ${individualChatName?.surName}`}
                     </Typography>
-                    {individualChatName.companyName && (
+                    {individualChatName?.companyName && (
                       <Typography className={classes.projectName}>
                         Company:{" "}
                         <span className={classes.projectTitle}>
                           {" "}
-                          {individualChatName.companyName}{" "}
+                          {individualChatName?.companyName}{" "}
                         </span>
                       </Typography>
                     )}
