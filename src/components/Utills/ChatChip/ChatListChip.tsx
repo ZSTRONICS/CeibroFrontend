@@ -1,15 +1,16 @@
-import { Badge, Grid, Typography } from "@material-ui/core";
+import { Badge, Typography } from "@material-ui/core";
 import { Star, StarBorder } from "@material-ui/icons";
+import { CBox } from "components/material-ui";
 import colors from "../../../assets/colors";
 import NameAvatar from "../Others/NameAvatar";
-import ChatListMenu from "./ChatListMenu";
+import ChatListMenue from "./ChatListMenu";
 import { ChatListInterface } from "../../../constants/interfaces/chat.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 import useStyles from './ChatListStyles'
 import { socket } from "services/socket.services"
-import { CBox } from "components/material-ui";
+
 interface ChatListInterfaceProps {
   chat: ChatListInterface;
   handleClick?: (e: any) => void;
@@ -34,11 +35,11 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
   lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
 
-  lastMessageTime = String(lastMessageTime)?.replace(' hours', 'h')
-  lastMessageTime = String(lastMessageTime)?.replace(' days', 'd')
-  lastMessageTime = String(lastMessageTime)?.replace(' minutes', 'm')
-  lastMessageTime = String(lastMessageTime)?.replace(' months', 'M')
-  lastMessageTime = String(lastMessageTime)?.replace(' years', 'Y')
+  lastMessageTime = String(lastMessageTime).replace(' hours', 'h')
+  lastMessageTime = String(lastMessageTime).replace(' days', 'd')
+  lastMessageTime = String(lastMessageTime).replace(' minutes', 'm')
+  lastMessageTime = String(lastMessageTime).replace(' months', 'M')
+  lastMessageTime = String(lastMessageTime).replace(' years', 'Y')
 
   let avaterInfo: any = {};
   const chatMembers = [...chat.members, ...chat.removedAccess]
@@ -162,18 +163,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
             ''
 
           }
-
-
           <CBox display='flex' flex='1'>
-
-            <ChatListMenu room={chat} />
+            <ChatListMenue room={chat} />
           </CBox>
         </CBox>
 
 
       </CBox>
-
-
 
     </>
   )
