@@ -1,30 +1,19 @@
 import {
-  Avatar,
   Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Typography,
+  Dialog, DialogContent, DialogTitle, makeStyles
 } from '@material-ui/core'
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
-import React, { useRef, useState } from 'react'
+import React, { useRef } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   acceptAllInvites,
   closeViewIvitations,
-  openViewInvitations,
+  openViewInvitations
 } from 'redux/action/user.action'
-import colors from '../../assets/colors'
-import NameAvatar from '../Utills/Others/NameAvatar'
-import InvitationsList from './InvitationsList'
-import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from 'redux/reducers'
+import colors from '../../assets/colors'
+import InvitationsList from './InvitationsList'
 
 interface IViewInvitationsProps {
   hideBtn?: boolean
@@ -34,7 +23,6 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
   const dispatch = useDispatch()
   const ref = useRef()
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
   const { openInvites } = useSelector((state: RootState) => state.user)
   const { hideBtn } = props
 

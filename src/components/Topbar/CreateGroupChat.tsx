@@ -151,7 +151,6 @@ function CreateGroupChat(props: any) {
               placeholder="Enter chat name"
             />
           </Grid>
-
           <Grid item xs={12} style={{ zIndex: 3, paddingTop: 10 }}>
             <SelectDropdown
               title="Project"
