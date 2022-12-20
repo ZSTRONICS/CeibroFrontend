@@ -8,7 +8,7 @@ import {
   ADD_TO_FAVOURITE,
   PUSH_MESSAGE,
   PUSH_MESSAGE_BY_OTHER,
-  SET_MESSAGE_READ,
+  SET_MESSAGE_SEEN,
   SET_SELECTED_CHAT,
   OPEN_QUESTIONIAR_DRAWER,
   CLOSE_QUESTIONIAR_DRAWER,
@@ -50,7 +50,7 @@ export const clearSelectedChat = createAction(CLEAR_SELECTED_CHAT)
 export const pushMessage = createAction(PUSH_MESSAGE)
 export const pushMessageByOthers = createAction(PUSH_MESSAGE_BY_OTHER)
 export const getRoomMessages = createAction(GET_MESSAGES)
-export const setMessagesRead = createAction(SET_MESSAGE_READ)
+export const setMessagesRead = createAction(SET_MESSAGE_SEEN)
 export const muteChat = createAction(MUTE_CHAT)
 export const addToFavourite = createAction(ADD_TO_FAVOURITE)
 export const sendReplyMessage = createAction(SEND_REPLY_MESSAGE)

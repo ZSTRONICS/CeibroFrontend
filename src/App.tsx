@@ -37,6 +37,7 @@ import {
   unreadRoomMessagesCount,
 } from "redux/action/chat.action";
 import {
+  ALL_MESSAGE_SEEN,
   CHAT_EVENT_REP_OVER_SOCKET,
   MESSAGE_SEEN,
   PUSH_MESSAGE,
@@ -151,7 +152,7 @@ const App: React.FC<MyApp> = () => {
           //     );
           //   }
           //   break;
-
+          case ALL_MESSAGE_SEEN:
           case MESSAGE_SEEN:
             {
               if(payload.updatedMessage.length === 0){
