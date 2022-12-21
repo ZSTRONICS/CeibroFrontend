@@ -25,15 +25,14 @@ const areEqual = (prevProps: any, nextProps: any) => true;
 
 const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   const messages: ChatMessageInterface[] = useSelector(
-    (store: RootState) => store.chat?.messages
-  );
+    (store: RootState) => store.chat.messages);
 
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const selectedChat: any = useSelector(
-    (store: RootState) => store.chat.selectedChat
-  );
+    (store: RootState) => store.chat.selectedChat);
+
   // const { user } = useSelector((store: RootState) => store.auth);
 
   //API call to get messages of Selected-ROOM
@@ -74,8 +73,9 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   //   };
   // }, [selectedChat]);
 
+  const chatBox: any = document.getElementById("chatBox");
   useEffect(() => {
-    const chatBox: any = document.getElementById("chatBox");
+    const goToBottom: any = document.getElementById("goToBottom");
       if (chatBox) {
         chatBox.scrollIntoView();
     //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
@@ -94,6 +94,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
       //   // Add view to go-to botton on click
       // }
     }
+    // scrollToBottom()
 
     return (): void => {
       messages;
@@ -104,6 +105,13 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
     return <NoConversation />;
   }
 
+  const goToBottom: any = document.getElementById("goToBottom");
+  const handleGoToBottom=()=>{
+      chatBox.scrollTop= chatBox.scrollHeight
+  }
+  if(goToBottom){
+    goToBottom.onclick = function() {handleGoToBottom()};
+    }
   //   function preventScroll(e:any){
   //     e.preventDefault();
   //     e.stopPropagation();
@@ -128,32 +136,35 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   // function enableScrolling(){
   //     window.onscroll=function(){};
   // }
-
+  const messageBot = messages?.map((message: any) => {
+    if (message.type === "start-bot") {
+      return moment.utc(moment(message.createdAt)).fromNow();
+    }
+  }).find((item:any)=> item);
+  
   const handleScroll = (e: any) => {
     let chatBox = e.target;
 
-    const currScrollPercentage =
-      (100 * chatBox.scrollTop) / (chatBox.scrollHeight - chatBox.clientHeight);
+    const currScrollPercentage = (100 * chatBox.scrollTop) / (chatBox.scrollHeight - chatBox.clientHeight);
 
+    if (currScrollPercentage <= 80) {
+      goToBottom.style.display= 'block'
+    }else if(currScrollPercentage === 100){
+      goToBottom.style.display= 'none'
+    }
     if (currScrollPercentage <= 70) {
       setBlockAutoDownScroll(false);
     } else {
       setBlockAutoDownScroll(true);
     }
 
-    if (currScrollPercentage <= 0 && messages[0].type !== "start-bot") {
+    if (currScrollPercentage <= 0 &&  messageBot === "start-bot") {
       // disableScrolling()
       //setUpMessagesState(true)
       // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
     }
   };
-
-  const messageBot = messages?.map?.((message: any) => {
-    if (message.type === "start-bot") {
-      return moment.utc(moment(message.createdAt)).fromNow();
-    }
-  });
 
   return (
     <>
@@ -163,21 +174,19 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
         container
         onScroll={handleScroll}
       >
-        <Box className={classes.botContainer}>
-          <Typography>{messageBot[0]}</Typography>
-        </Box>
+       {messageBot&& <Box className={classes.botContainer}>
+          <Typography>{messageBot}</Typography>
+        </Box>}
         {messages &&
-          messages
-            .filter((message: any) => message.type !== "start-bot")
-            .map?.((message: ChatMessageInterface) => {
+          messages?.filter((message: any) => message.type !== "start-bot")
+            .map((message: ChatMessageInterface) => {
               if (message.chat === selectedChat) {
-                return (
-                  <>
-                    <MessageChat message={message} enable={props.enable} />
-                  </>
+                return (<>
+                  <MessageChat message={message} enable={props.enable} />
+                </>
                 );
               } else {
-                return <></>;
+                return null;
               }
             })}
         <AddTempChatMember />

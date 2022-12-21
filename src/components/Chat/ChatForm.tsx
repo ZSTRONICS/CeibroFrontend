@@ -2,6 +2,7 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Picker from "emoji-picker-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -282,7 +283,11 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     return null;
   }
 
-  return (
+  return (<>
+        <Box className={`${classes.botContainer} ${classes.goToBottom}`} id="goToBottom">
+          <Typography>Go to Bottom</Typography>
+        </Box>
+ 
     <Grid
       className={classes.wrapper}
       container
@@ -459,12 +464,30 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         </Grid>
       )}
     </Grid>
+    </>
   );
 };
 
 export default React.memo(ChatForm, (prevProps, nextProps) => prevProps.enable  === nextProps.enable );
 
 const useStyles = makeStyles({
+  goToBottom:{
+    "& .MuiTypography-root:hover": {
+      cursor:'pointer'
+    },
+  },
+  botContainer: {
+    background: "#ECF0F1",
+    borderRadius: 20,
+    maxWidth: 125,
+    margin: "0 auto",
+    width: "100%",
+    textAlign: "center",
+    padding: "2px 0",
+    "& .MuiTypography-root": {
+      fontSize: "12px",
+    },
+  },
   replyToMesg: {
     color: '#959595',
     wordBreak: 'break-all',
