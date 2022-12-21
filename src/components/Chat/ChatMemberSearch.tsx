@@ -24,7 +24,7 @@ const ChatMemberSearch: React.FC<SearchInterface> = (props) => {
         <input
           type="text"
           className={`emptyBorder black-input ${classes.input}`}
-          placeholder="Enter @ username"
+          placeholder="Search"
           value={value}
           onChange={handleChange}
         />
@@ -40,7 +40,10 @@ const useStyles = makeStyles({
     display: "flex",
     flex: 1,
     background: colors.white,
-    marginBottom: 3,
+    marginBottom: 25,
+    borderRadius: 12,
+    borderColor: '#FFFFFF',
+    backgroundColor: '#fff',
   },
   iconWrapper: {
     flex: 2,
@@ -48,15 +51,16 @@ const useStyles = makeStyles({
     justifyContent: "space-evenly",
     alignItems: "center",
     paddingLeft: 2,
-    border: `1px solid ${colors.borderGrey}`,
+
     borderRight: "none",
   },
   horizontalBreak: {
-    color: colors.borderGrey,
+    color: '#0076C8',
+    fontWeight: 600
   },
   inputWrapper: {
     flex: 7,
-    border: `1px solid ${colors.borderGrey}`,
+
     borderLeft: "none",
     paddingRight: 5,
   },

@@ -1,4 +1,4 @@
-
+import React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -20,11 +20,18 @@ import { useHistory } from "react-router-dom";
 import CustomModal from "components/Modal";
 import ProfileContent from "components/Profile/ProfileContent";
 import { getUserById } from "redux/action/user.action";
-interface Props{
-  enable:boolean
+
+import Tab, { tabClasses } from '@mui/joy/Tab';
+
+import TabPanel from '@mui/joy/TabPanel';
+import Tabs from '@mui/joy/Tabs';
+import TabList from '@mui/joy/TabList';
+import { CBox } from "components/material-ui";
+interface Props {
+  enable: boolean
 }
 
-const ChatMembers:React.FC<Props> = ({enable}) => {
+const ChatMembers: React.FC<Props> = ({ enable }) => {
   const classes = useStyles();
   const history = useHistory();
   const [open, setOpen] = useState(false)
@@ -34,7 +41,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
 
   const members = selectedChat
     ? chat.find((room: any) => String(room._id) == String(selectedChat))
-        ?.members
+      ?.members
     : [];
 
   const [searchText, setSearchText] = useState("");
@@ -44,12 +51,14 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
   const [btnIndex, setBtnIndex] = useState(null);
   const [show, setShow] = useState(false);
 
+  const [index, setIndex] = React.useState(0);
+
   const handleToggle = (e: any, i: any) => {
     e.stopPropagation();
     setBtnIndex(i);
   };
-  
-   // start singleRoom chat
+
+  // start singleRoom chat
   const startRoom = (id: string) => {
     const payload = { other: { id }, success: () => dispatch(getAllChats()) };
     dispatch(createSingleRoom(payload));
@@ -90,7 +99,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
       );
     });
   }
-  const handleToggleClose = (userId:any) => {
+  const handleToggleClose = (userId: any) => {
     const payload = {
       success: (val: any) => {
         setGetUser(val.data)
@@ -101,108 +110,179 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
     }
     dispatch(getUserById(payload))
 
-    setOpen((prev)=> !prev)
+    setOpen((prev) => !prev)
   }
   return (
-    <div className="chat-members">
-      <ChatMemberFilters handleMembersShow={handleMembersShow} show={show} />
+    <div>
+      {/* <ChatMemberFilters handleMembersShow={handleMembersShow} show={show} /> */}
+
       <ChatMemberSearch value={searchText} handleChange={handleSearchChange} />
-      {myMembers &&
-        myMembers?.map?.((member: UserInterface, i: any) => {
-          return (
-            <Grid key={member.id} container className="chat-member-chip">
-              <Grid item xs={2} style={{ paddingTop: 5 }}>
-                <NameAvatar
-                  // styleAvater={}
-                  firstName={member?.firstName}
-                  surName={member?.surName}
-                  url={member?.profilePic}
-                  variant="small"
-                />
-              </Grid>
-              <Grid item xs={8} className={classes.memberPreview}>
-                <Typography
-                  className={`chat-member-name ${classes.memberName}`}
-                >
-                  {member.firstName} {member.surName}
-                </Typography>
-                {member.companyName && (
-                  <Typography
-                    className={`${classes.memberCompany} chat-member-company`}
-                  >
-                    Company: {member.companyName}
-                  </Typography>
-                )}
-              </Grid>
-              <Grid item xs={2} style={styles.trashWrapper}>
-               {enable&& <IconButton onClick={(e) => handleToggle(e, i)} tabIndex={i}>
-                  <img src={assets.moreIcon} className={classes.moreIcon} />
-                </IconButton>}
-                {btnIndex === i && (
-                  <RollOver handleToggle={handleToggle}>
-                    <div
-                      className={`${classes.menuWrapper} dropdown-menu pointer`}
+      <Tabs
+        aria-label="Pipeline"
+        value={index}
+        onChange={(event, value) => setIndex(value as number)}
+        sx={{ '--Tabs-gap': '0px' }}
+      >
+        <TabList
+          variant="plain"
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            mx: 'auto',
+            pt: 2,
+            alignSelf: 'flex-start',
+            [`& .${tabClasses.root}`]: {
+              bgcolor: 'transparent',
+              boxShadow: 'none',
+              '&:hover': {
+                bgcolor: 'transparent',
+              },
+              [`&.${tabClasses.selected}`]: {
+                color: 'primary.plainColor',
+                fontWeight: 'lg',
+                '&:before': {
+                  content: '""',
+                  display: 'block',
+                  position: 'absolute',
+                  zIndex: 1,
+                  bottom: '-1px',
+                  left: 'var(--List-item-paddingLeft)',
+                  right: 'var(--List-item-paddingRight)',
+                  height: '3px',
+                  borderTopLeftRadius: '3px',
+                  borderTopRightRadius: '3px',
+                  bgcolor: 'primary.500',
+                },
+              },
+            },
+          }}
+
+        >
+          <Tab>All Members  </Tab>
+          <Tab>Admins</Tab>
+
+          <Tab>Group</Tab>
+          <Tab>Companies</Tab>
+        </TabList>
+
+
+        <TabPanel value={0}>
+          {
+            myMembers &&
+            myMembers?.map?.((member: UserInterface, i: any) => {
+              return (
+                <Grid key={member.id} container className="chat-member-chip">
+                  <Grid item xs={2} style={{ paddingTop: 5 }}>
+                    <NameAvatar
+                      // styleAvater={}
+                      firstName={member?.firstName}
+                      surName={member?.surName}
+                      url={member?.profilePic}
+                      variant="small"
+                    />
+                  </Grid>
+                  <Grid item xs={8} className={classes.memberPreview}>
+                    <Typography
+                      className={`chat-member-name ${classes.memberName}`}
                     >
-                      <Button variant="text" className={classes.iconBtn}
-                      onClick={()=>handleToggleClose(member.id)}
-                      startIcon={<assets.PeopleAltOutlinedIcon />}>
-                      View Profile
-                      </Button>
-                      <CustomModal isOpen={open} title="Profile Overview" handleClose={()=>handleToggleClose(member.id)}>
-                       <ProfileContent getUser={getUser} />
-                        </CustomModal>
-                      {/* <img src={assets.usersIcon} className="width-16" />
+                      {member.firstName} {member.surName}
+                    </Typography>
+                    {member.companyName && (
+                      <Typography
+                        className={`${classes.memberCompany} chat-member-company`}
+                      >
+                        Company: {member.companyName}
+                      </Typography>
+                    )}
+                  </Grid>
+                  <Grid item xs={2} style={styles.trashWrapper}>
+                    {enable && <IconButton onClick={(e) => handleToggle(e, i)} tabIndex={i}>
+                      <img src={assets.moreIcon} className={classes.moreIcon} />
+                    </IconButton>}
+                    {btnIndex === i && (
+                      <RollOver handleToggle={handleToggle}>
+                        <div
+                          className={`${classes.menuWrapper} dropdown-menu pointer`}
+                        >
+                          <Button variant="text" className={classes.iconBtn}
+                            onClick={() => handleToggleClose(member.id)}
+                            startIcon={<assets.PeopleAltOutlinedIcon />}>
+                            View Profile
+                          </Button>
+                          <CustomModal isOpen={open} title="Profile Overview" handleClose={() => handleToggleClose(member.id)}>
+                            <ProfileContent getUser={getUser} />
+                          </CustomModal>
+                          {/* <img src={assets.usersIcon} className="width-16" />
                       <Typography
                         className={`${classes.menuText} align-center`}
                       >
                         View Profile
                       </Typography> */}
-                    </div>
-                    <div
-                      className={`${classes.menuWrapper} dropdown-menu pointer`}
-                    >
-                      <Button variant="text" className={classes.iconBtn}
-                       onClick={() => startRoom(member.id)}
-                      startIcon={<assets.ChatOutlinedIcon />}>
-                      Start Chat
-                      </Button>
-                      {/* <img src={assets.chatIcon} className="width-16" />
+                        </div>
+                        <div
+                          className={`${classes.menuWrapper} dropdown-menu pointer`}
+                        >
+                          <Button variant="text" className={classes.iconBtn}
+                            onClick={() => startRoom(member.id)}
+                            startIcon={<assets.ChatOutlinedIcon />}>
+                            Start Chat
+                          </Button>
+                          {/* <img src={assets.chatIcon} className="width-16" />
                     <Typography className={`${classes.menuText} align-center`} >
                       Start Chat
                     </Typography> */}
-                    </div>
-                    {/* make adming and remove admin */}
-                    <div
-                      className={`${classes.menuWrapper} dropdown-menu pointer`}
-                    >
-                      <assets.SupervisorAccountOutlinedIcon className="width-16" />
-                      <Typography
-                        className={`${classes.menuText} align-center`}
-                      >
-                        Remove Admin
-                      </Typography>
-                    </div>
-                    <hr className={classes.break} />
-                    <div
-                      className={`${`${classes.menuWrapper} dropdown-menu`} ${
-                        classes.deleteConversation
-                      }`}
-                      onClick={()=> handleClick(member.id)}
-                    >
-                      <img src={assets.DeleteIcon} className={`width-16`} />
-                      <Typography
-                        className={`${classes.menuText} align-center ${classes.deleteText}`}
-                      >
-                        Delete Member
-                      </Typography>
-                    </div>
-                  </RollOver>
-                )}
-              </Grid>
-            </Grid>
-          );
-        })}
-    </div>
+                        </div>
+                        {/* make adming and remove admin */}
+                        <div
+                          className={`${classes.menuWrapper} dropdown-menu pointer`}
+                        >
+                          <assets.SupervisorAccountOutlinedIcon className="width-16" />
+                          <Typography
+                            className={`${classes.menuText} align-center`}
+                          >
+                            Remove Admin
+                          </Typography>
+                        </div>
+                        <hr className={classes.break} />
+                        <div
+                          className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation
+                            }`}
+                          onClick={() => handleClick(member.id)}
+                        >
+                          <img src={assets.DeleteIcon} className={`width-16`} />
+                          <Typography
+                            className={`${classes.menuText} align-center ${classes.deleteText}`}
+                          >
+                            Delete Member
+                          </Typography>
+                        </div>
+                      </RollOver>
+                    )}
+                  </Grid>
+                </Grid>
+              );
+            })
+          }
+
+
+        </TabPanel>
+        <TabPanel value={1}>
+
+          Library panel
+
+        </TabPanel>
+        <TabPanel value={2}>
+          s
+        </TabPanel>
+        <TabPanel value={3}>
+          s
+        </TabPanel>
+
+
+      </Tabs>
+
+
+    </div >
   );
 };
 
