@@ -73,8 +73,9 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   //   };
   // }, [selectedChat]);
 
+  const chatBox: any = document.getElementById("chatBox");
   useEffect(() => {
-    const chatBox: any = document.getElementById("chatBox");
+    const goToBottom: any = document.getElementById("goToBottom");
       if (chatBox) {
         chatBox.scrollIntoView();
     //     var maxHeight = 100 * chatBox.scrollTop / (chatBox.scrollHeight-chatBox.clientHeight);
@@ -93,6 +94,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
       //   // Add view to go-to botton on click
       // }
     }
+    // scrollToBottom()
 
     return (): void => {
       messages;
@@ -103,6 +105,13 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
     return <NoConversation />;
   }
 
+  const goToBottom: any = document.getElementById("goToBottom");
+  const handleGoToBottom=()=>{
+      chatBox.scrollTop= chatBox.scrollHeight
+  }
+  if(goToBottom){
+    goToBottom.onclick = function() {handleGoToBottom()};
+    }
   //   function preventScroll(e:any){
   //     e.preventDefault();
   //     e.stopPropagation();
@@ -132,12 +141,17 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
       return moment.utc(moment(message.createdAt)).fromNow();
     }
   }).find((item:any)=> item);
+  
   const handleScroll = (e: any) => {
     let chatBox = e.target;
 
-    const currScrollPercentage =
-      (100 * chatBox.scrollTop) / (chatBox.scrollHeight - chatBox.clientHeight);
+    const currScrollPercentage = (100 * chatBox.scrollTop) / (chatBox.scrollHeight - chatBox.clientHeight);
 
+    if (currScrollPercentage <= 80) {
+      goToBottom.style.display= 'block'
+    }else if(currScrollPercentage === 100){
+      goToBottom.style.display= 'none'
+    }
     if (currScrollPercentage <= 70) {
       setBlockAutoDownScroll(false);
     } else {
@@ -167,9 +181,9 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
           messages?.filter((message: any) => message.type !== "start-bot")
             .map((message: ChatMessageInterface) => {
               if (message.chat === selectedChat) {
-                return (
-                  // <div  key={message._id } >Hello</div> 
+                return (<>
                   <MessageChat message={message} enable={props.enable} />
+                </>
                 );
               } else {
                 return null;
