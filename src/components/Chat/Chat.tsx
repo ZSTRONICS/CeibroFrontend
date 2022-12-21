@@ -64,6 +64,8 @@ const Chat = () => {
       } else {
         setEnable(false);
       }
+    }else{
+      socket.setAppSelectedChat(null)
     }
     return (): void => {
       selectedChat;

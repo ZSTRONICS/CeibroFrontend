@@ -142,7 +142,7 @@ const SelectDropdown: FC<My> = props => {
           styles={colourStyles}
           value={value}
           isClearable={isClearAble}
-          menuPlacement="auto"
+          menuPlacement="bottom"
           noOptionsMessage={() => noOptionMessage || 'Nothing found'}
           isDisabled={isDisabled}
         />

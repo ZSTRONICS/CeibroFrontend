@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   CircularProgress,
@@ -42,7 +41,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     selectedChat,
   } = useSelector((store: RootState) => store.chat);
 
-  const myChat = allChats?.length > 0 && allChats?.find(
+  const myChat = allChats?.length > 0 && allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
   const individualChatName = myChat?.members?.find((member: any) => member.id !== user.id)
