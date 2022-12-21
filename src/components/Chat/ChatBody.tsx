@@ -25,15 +25,14 @@ const areEqual = (prevProps: any, nextProps: any) => true;
 
 const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   const messages: ChatMessageInterface[] = useSelector(
-    (store: RootState) => store.chat?.messages
-  );
+    (store: RootState) => store.chat.messages);
 
   const classes = useStyles();
   const dispatch = useDispatch();
 
   const selectedChat: any = useSelector(
-    (store: RootState) => store.chat.selectedChat
-  );
+    (store: RootState) => store.chat.selectedChat);
+
   // const { user } = useSelector((store: RootState) => store.auth);
 
   //API call to get messages of Selected-ROOM
@@ -128,7 +127,11 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   // function enableScrolling(){
   //     window.onscroll=function(){};
   // }
-
+  const messageBot = messages?.map((message: any) => {
+    if (message.type === "start-bot") {
+      return moment.utc(moment(message.createdAt)).fromNow();
+    }
+  }).find((item:any)=> item);
   const handleScroll = (e: any) => {
     let chatBox = e.target;
 
@@ -141,19 +144,13 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
       setBlockAutoDownScroll(true);
     }
 
-    if (currScrollPercentage <= 0 && messages[0].type !== "start-bot") {
+    if (currScrollPercentage <= 0 &&  messageBot === "start-bot") {
       // disableScrolling()
       //setUpMessagesState(true)
       // setPreviousScrollHeight(chatBox.scrollHeight)
       dispatch(getUpMessages());
     }
   };
-
-  const messageBot = messages?.map?.((message: any) => {
-    if (message.type === "start-bot") {
-      return moment.utc(moment(message.createdAt)).fromNow();
-    }
-  });
 
   return (
     <>
@@ -163,21 +160,19 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
         container
         onScroll={handleScroll}
       >
-        <Box className={classes.botContainer}>
-          <Typography>{messageBot[0]}</Typography>
-        </Box>
+       {messageBot&& <Box className={classes.botContainer}>
+          <Typography>{messageBot}</Typography>
+        </Box>}
         {messages &&
-          messages
-            .filter((message: any) => message.type !== "start-bot")
-            .map?.((message: ChatMessageInterface) => {
+          messages?.filter((message: any) => message.type !== "start-bot")
+            .map((message: ChatMessageInterface) => {
               if (message.chat === selectedChat) {
                 return (
-                  <>
-                    <MessageChat message={message} enable={props.enable} />
-                  </>
+                  // <div  key={message._id } >Hello</div> 
+                  <MessageChat message={message} enable={props.enable} />
                 );
               } else {
-                return <></>;
+                return null;
               }
             })}
         <AddTempChatMember />

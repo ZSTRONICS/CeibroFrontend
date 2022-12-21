@@ -27,7 +27,7 @@ interface MessageChatProps {
   enable: boolean;
 }
 
-const MessageChat: React.FC<MessageChatProps> = (props) => {
+const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
   const { message } = props;
   const {
     replyOf,
@@ -332,7 +332,7 @@ const MessageChat: React.FC<MessageChatProps> = (props) => {
     </>
   );
 
-}
+})
 
 export default MessageChat;
 
