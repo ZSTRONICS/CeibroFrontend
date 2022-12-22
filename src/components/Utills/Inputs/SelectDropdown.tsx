@@ -47,10 +47,12 @@ const SelectDropdown: FC<My> = props => {
   } = props
   
   const colourStyles = {
+     
     placeholder: (defaultStyles: any) => {
       return {
         ...defaultStyles,
         fontSize: 14,
+        // menuPortal: (base:any) => ({ ...base, zIndex: 120000 }) ,
         color: colors.inputGrey,
         fontWeight: 500,
         fontFamily: 'Inter',
@@ -133,8 +135,9 @@ const SelectDropdown: FC<My> = props => {
 
   return (
     <InputHOC title={props.title}>
-      <div className={classes.select} style={{ ...(zIndex ? { zIndex } : {}) }}>
+      <div className={classes.select} >
         <Select
+        menuPosition={'fixed'} 
           placeholder={placeholder || 'Select'}
           isMulti={isMulti || false}
           onChange={handleChange}
