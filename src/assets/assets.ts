@@ -59,6 +59,8 @@ import InvitaionIcon from './images/Invitation.svg';
 import filterIcon from './images/filterIcon.svg'
 import DeleteIcon from './images/DeleteIcon.svg'
 import EditIcon from './images/edit.svg';
+import GroupIcon from './images/GroupIcon.svg';
+import GAvatar from './images/GAvatar.png';
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
@@ -78,6 +80,8 @@ import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 const assets= {
+  GroupIcon,
+  GAvatar,
   MoreVertOutlinedIcon,
   StarOutlineIcon,
   StarIcon,

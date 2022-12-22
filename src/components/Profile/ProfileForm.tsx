@@ -31,7 +31,6 @@ import { toast } from "react-toastify";
 
 const ProfileForm = () => {
   const classes = useStyles();
-  const passRef = useRef<HTMLInputElement>(null);
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -236,11 +235,11 @@ const ProfileForm = () => {
                       name="email"
                       value={values.email}
                       onChange={(e: any) => {
-                        e?.preventDefault?.();
+                        e.preventDefault();
                         e.target.blur();
                       }}
                       onFocus={(e: any) => {
-                        e?.preventDefault?.();
+                        e.preventDefault();
                         e.target.blur();
                       }}
                       onBlur={handleBlur}
@@ -313,7 +312,6 @@ const ProfileForm = () => {
                       value={values.password}
                       onChange={handleChange}
                       type={showPassword ? "text" : "password"}
-                      inputRef={passRef}
                       onBlur={handleBlur}
                     />
 
@@ -331,7 +329,6 @@ const ProfileForm = () => {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      defaultValue={""}
                       type="password"
                       fullWidth
                       size="small"
@@ -339,7 +336,7 @@ const ProfileForm = () => {
                       label="Confirm password"
                       variant="outlined"
                       name="confirmPassword"
-                      value={values.confirmPassword}
+                      value={values.confirmPassword||''}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       inputRef={confirmPassRef}

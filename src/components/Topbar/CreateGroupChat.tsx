@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 // material
-import { Typography, Button, Grid } from "@mui/material";
+import { Typography, Button, Grid, Avatar, Stack, Box } from "@mui/material";
 import { makeStyles, Popover } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 
@@ -23,39 +23,19 @@ import CustomCheckbox from "../Utills/Inputs/Checkbox";
 import SelectDropdown from "../Utills/Inputs/SelectDropdown";
 import Loading from "../Utills/Loader/Loading";
 import NameAvatar from "../Utills/Others/NameAvatar";
-
-export let dbUsers = [
-  {
-    label: "Test 1",
-    value: "61ec20bb778f854909aec4d2",
-    color: "green",
-  },
-  {
-    label: "Test 2",
-    value: "61ec2121778f854909aec4d7",
-    color: "green",
-  },
-  {
-    label: "Test 3",
-    value: "61ec2139778f854909aec4dc",
-    color: "green",
-  },
-  {
-    label: "Test 4",
-    value: "61ec220d778f854909aec4fa",
-    color: "green",
-  },
-];
+import assets from "assets/assets";
+import { CustomMuiList } from "components/material-ui";
+import Input from "components/Utills/Inputs/Input";
 
 function CreateGroupChat(props: any) {
   const { groupEl, ButtonId, openGroup, handleGroupClose } = props;
   const classes = useStyles();
   const dispatch = useDispatch();
-
   const [project, setProject] = useState<any>();
   const [user, setUser] = useState<any>();
   const [users, setUsers] = useState<any>([]);
   const [name, setName] = useState("");
+  const [searchQuery, setSearchField] = useState("");
 
   const createChatLoading = useSelector(
     (state: RootState) => state.chat.createChatLoading
@@ -72,6 +52,13 @@ function CreateGroupChat(props: any) {
     setUsers([]);
   };
 
+  const handleUserId = ( id:any) => {
+    if (!users?.includes(id)) {
+      setUsers([...users,id]);
+    } else {
+      removeSelectedUser(id);
+    }
+  }
   const handleUserChange = (e: any) => {
     if (!users?.includes?.(e.target.value)) {
       setUsers([...users, e.target.value]);
@@ -83,12 +70,22 @@ function CreateGroupChat(props: any) {
   const removeSelectedUser = (userId: any) => {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
-  
+
   const groupWithMember:any = projectWithMembers.filter((proj:any) => {
     if(project!==null){
       return proj._id === project.value
     }
     }).find((proj:any)=>proj)
+
+    // const filterdList = groupWithMember?.filter((person: any) => {
+    //   const user = person?.sentByMe ? person.to : person.from;
+    //   const fullName = `${user.firstName} ${user.surName}`
+    //   return (
+    //     fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    //      user?.email?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    //      user?.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) 
+    //   );
+    // })
 
     const handleGroupMember = (e: any, groupId:any) => {
      const groupMembers =  groupWithMember?.groups.find((group:any)=> group._id ===groupId)
@@ -108,7 +105,6 @@ function CreateGroupChat(props: any) {
     setUsers([]);
     setProject(null);
   }, [openGroup]);
-
   const handleSubmit = () => {
     const payload = {
       body: {
@@ -124,15 +120,20 @@ function CreateGroupChat(props: any) {
         dispatch(getAllChats());
       },
     };
+   
     dispatch(createChatRoom(payload));
   };
-
+  const handleGroupSearch = useCallback((e: any) => {
+    const searchVal = e.target.value
+    console.log('searchVal', searchVal);
+    
+    setSearchField(searchVal)
+  }, []);
   return (
     <>
       <Popover
         className={classes.outerGroupWrapper}
         id={ButtonId}
-        anchorReference={groupEl}
         open={openGroup}
         anchorEl={groupEl}
         onClose={handleGroupClose}
@@ -142,7 +143,7 @@ function CreateGroupChat(props: any) {
         }}
       >
         <Grid container padding={2.5} className={classes.outerMenu}>
-          <Grid item xs={12}>
+          <Stack>
             <TextField
               type="text"
               value={name}
@@ -150,21 +151,27 @@ function CreateGroupChat(props: any) {
               className={`${classes.searchInput} emptyBorder`}
               placeholder="Enter chat name"
             />
-          </Grid>
-          <Grid item xs={12} style={{ zIndex: 3, paddingTop: 10 }}>
-            <SelectDropdown
+            <Box mb={1.2}>
+             <SelectDropdown
               title="Project"
               placeholder="Please select a project"
               data={allProjectsTitles}
               value={project}
               handleChange={handleProjectChange}
             />
-          </Grid>
-          {groupWithMember?.projectMembers?.length > 0 && (
+            </Box>
+            <Box mb={1.2}>
+            <Input
+            placeholder="Type the name of person or group"
+            title="Chat with"
+            onChange={handleGroupSearch}
+          />
+            </Box>
+            {groupWithMember?.projectMembers?.length > 0 && (
             <Grid
               item
               xs={12}
-              style={{ paddingTop: 10 }}
+              style={{ paddingTop: 8 }}
               className={classes.suggestUser}
             >
               <Grid container>
@@ -185,7 +192,6 @@ function CreateGroupChat(props: any) {
                     </Grid>
                   );
                 })}
-                
               </Grid>
               {groupWithMember?.groups.length>0 &&
                   <Grid container>
@@ -193,11 +199,11 @@ function CreateGroupChat(props: any) {
                     const mId:any =group.members.find((item:any)=> item)
                     return (<>
                     {group.members.length>0 &&
-                    <Grid container className={classes.wrapper} key={group._id}>
+                    <Grid container className={classes.wrapper} key={group._id+index}>
                     <Grid item xs={2}>
-                      <NameAvatar
-                        firstName={group.name}
-                      />
+                      <Avatar variant="rounded">
+                       <img src = {assets.GroupIcon} alt=""/>
+                    </Avatar>
                     </Grid>
                     <Grid item xs={8}>
                       <div>
@@ -226,46 +232,24 @@ function CreateGroupChat(props: any) {
                   })}
                  </Grid>
                 }
-              <Typography className={classes.suggestedUsersTitle}>
-                Suggested users/groups
-              </Typography>
-
-              <Grid container>
-                {groupWithMember?.projectMembers?.map((member: any, index: number) => {
-                  return (
-                    <Grid container className={classes.wrapper} key={member.id}>
-                      <Grid item xs={2}>
-                        <NameAvatar
-                          firstName={member.firstName}
-                          surName={member.surName}
-                          url={member.profilePic}
-                        />
-                      </Grid>
-                      <Grid item xs={8}>
-                        <div>
-                          <Typography className={classes.titleText}>
-                            {member.firstName} {member.surName}
-                          </Typography>
-                          {/* <Typography className={classes.subTitleText}>
-                            {member?.role?.name} . {member?.group?.name}
-                          </Typography> */}
-                        </div>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <CustomCheckbox
-                          onClick={handleUserChange}
-                          value={member.id}
-                          name={"s"}
-                          checked={users.includes(member.id)}
-                        />
-                      </Grid>
-                    </Grid>
-                  );
-                })}
-              </Grid>
+                <CustomMuiList handleUserId={handleUserId} 
+                subheaderTitle= {"Suggested users/groups/companies"} 
+                groupMembers = {groupWithMember?.projectMembers} 
+                handleUserChange= {handleUserChange} 
+                checkboxChecked = {users}/>
             </Grid>
           )}
+          </Stack>
+          {/* <Grid item xs={12} style={{ zIndex: 3, paddingTop: 10 }}>
+            <SelectDropdown
+              title="Project"
+              placeholder="Please select a project"
+              data={allProjectsTitles}
+              value={project}
+              handleChange={handleProjectChange}
+            />
+          </Grid> */}
+          
 
           <Grid
             item
@@ -305,7 +289,7 @@ const useStyles = makeStyles((theme: any) => ({
   },
   outerGroupWrapper: {
     "& .MuiGrid-root": {
-      padding: 8,
+      // padding: 8,
     },
   },
   outerMenu: {
@@ -316,7 +300,9 @@ const useStyles = makeStyles((theme: any) => ({
   searchInput: {
     width: 340,
     height: 30,
-    // border: `1px solid ${colors.borderGrey}`,
+    paddingBottom: '20px',
+    paddingTop: '10px',
+    marginBottom:10,
   },
   smallRadioButton: {
     fontSize: "14px !important",
@@ -343,6 +329,7 @@ const useStyles = makeStyles((theme: any) => ({
     fontWeight: "bold",
   },
   subTitleText: {
+    display:'inline-block',
     fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,

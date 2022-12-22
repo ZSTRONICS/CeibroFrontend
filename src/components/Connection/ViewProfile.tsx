@@ -1,29 +1,22 @@
 
 import {
-  Avatar,
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Typography,
-  IconButton,
+  Grid, makeStyles,
+  Typography
 } from '@material-ui/core'
-import { Clear, Delete } from '@material-ui/icons'
+import { Clear } from '@material-ui/icons'
 import React, { useState } from 'react'
-import colors from '../../assets/colors'
-import NameAvatar from '../Utills/Others/NameAvatar'
 import { useDispatch } from 'react-redux'
-import taskActions from '../../redux/action/task.action'
-import { getUserById } from 'redux/action/user.action'
-import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
-import { createSingleRoom } from '../../redux/action/chat.action'
 import { useHistory } from 'react-router-dom'
+import { getUserById } from 'redux/action/user.action'
+import colors from '../../assets/colors'
+import { createSingleRoom } from '../../redux/action/chat.action'
+import taskActions from '../../redux/action/task.action'
+import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
+import NameAvatar from '../Utills/Others/NameAvatar'
 interface IViewProfileProps {
   userId: string
   disabled: boolean
