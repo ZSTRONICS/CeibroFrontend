@@ -202,8 +202,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
         container
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
-        id={message._id}
-        key={message._id}
+        key={message._id+(Math.random()*10)}
       >
 
         <Grid item xs={8} onClick={handleClick}>

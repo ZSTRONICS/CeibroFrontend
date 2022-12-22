@@ -25,10 +25,10 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   };
 
   return (<>
-    <Grid container xs={12} className={classes.connectionsContainer}>
-        <Grid item  className={classes.connectionMain}>
+    <Grid container className={classes.connectionsContainer}>
+        <Grid  item  className={classes.connectionMain} xs={12}>
           <div className={classes.iconContainer}>
-            <img src={assets.contactIcon} className={classes.icon}/>
+            <img src={assets.contactIcon} alt="" className={classes.icon}/>
           </div>
           <Typography variant="body1" className={classes.connectionText}>
             My connections

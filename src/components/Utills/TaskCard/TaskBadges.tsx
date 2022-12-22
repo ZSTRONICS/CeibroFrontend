@@ -36,7 +36,7 @@ const TaskBadges = () => {
       {badges?.map((badge) => {
         return (
           <div className={getStyleClass(badge.status)}>
-            <Badge color="primary" badgeContent={badge.count}></Badge>
+            <Badge key={Date.now()} color="primary" badgeContent={badge.count}></Badge>
           </div>
         );
       })}

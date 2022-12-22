@@ -12,9 +12,7 @@ import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { getMyConnections } from "redux/action/user.action";
-import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
-import { filterList } from "utills/filterList";
 
 export let dbUsers = [
   {
@@ -72,18 +70,21 @@ const CreateIndividualChat = (props: any) => {
   //     return 0; 
   //    });
 
-  const filterdList = connections.filter((person: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-use-before-define
+  
+  const filterdList = connections?.filter((person: any) => {
     const user = person?.sentByMe ? person.to : person.from;
+    const fullName = `${user.firstName} ${user.surName}`
     return (
-      user.firstName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.surName.toLowerCase().includes(searchQuery.toLowerCase())
+      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       user?.email?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+       user?.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) 
     );
   })
 
   const handleChatRoomSearch = useCallback((e: any) => {
-    setSearchField(e.target.value)
-    const list = filterList(e.target.value, connections)
-
+    const searchVal = e.target.value
+    setSearchField(searchVal)
   }, []);
 
   const startSingleRoomChat = (id: string) => {
@@ -102,7 +103,6 @@ const CreateIndividualChat = (props: any) => {
     <>
       <Popover
         id={ButtonId}
-        anchorReference={individualEl}
         open={open}
         anchorEl={individualEl}
         onClose={handleClose}
@@ -126,6 +126,8 @@ const CreateIndividualChat = (props: any) => {
             Frequently Contacted
           </CBox>
           {filterdList?.map?.((connection: any) => {
+
+            if(connection.status !== 'accepted' ) return
             const startRoomId = connection.sentByMe ? connection.to.id : connection.from.id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
