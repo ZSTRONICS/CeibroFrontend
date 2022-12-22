@@ -112,7 +112,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         {/* member */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => { handleClick(e, "member"); toggleClass() }}>
+        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "member")}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -149,7 +149,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {/* pin */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => { handleClick(e, "pin"); toggleClass() }}>
+        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "pin")}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -252,7 +252,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
 
         <CustomPopover id={id} open={open} anchorEl={anchorEl} handleClose={handleClose}>
           {content === 'member' && <CBox className={classes.box}>
-            <CBox fontSize={24} color='#000000'>
+            <CBox fontSize={22} fontWeight={600} fontFamily='Inter' color='#000000'>
               Chat Members
               <ChatMembers enable={false} />
             </CBox>
@@ -318,8 +318,9 @@ const useStyles = makeStyles({
     justifyContent: "space-evenly",
   },
   box: {
-    backgroundColor: '#E5F0F8',
-    // height: 713,
+    backgroundColor: '#E8F2F9',
+    minHeight: 713,
+    height: '100%',
     width: 466,
     padding: '15px 20px',
   },

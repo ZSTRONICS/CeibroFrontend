@@ -27,6 +27,12 @@ import TabPanel from '@mui/joy/TabPanel';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
 import { CBox } from "components/material-ui";
+import { ChatIcon, GroupAdminIcon, ProfileIcon, RemoveIcon } from "components/material-ui/icons";
+
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+
 interface Props {
   enable: boolean
 }
@@ -112,6 +118,15 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
 
     setOpen((prev) => !prev)
   }
+
+  const [anchorMenu, setAnchorMenu] = React.useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorMenu);
+  const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorMenu(event.currentTarget);
+  };
+  const handleMenuClose = () => {
+    setAnchorMenu(null);
+  };
   return (
     <div>
       {/* <ChatMemberFilters handleMembersShow={handleMembersShow} show={show} /> */}
@@ -122,33 +137,40 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
         value={index}
         onChange={(event, value) => setIndex(value as number)}
         sx={{ '--Tabs-gap': '0px' }}
+
       >
         <TabList
           variant="plain"
           sx={{
             width: '100%',
             maxWidth: 400,
-            mx: 'auto',
-            pt: 2,
-            alignSelf: 'flex-start',
+            pl: 0,
+            marginBottom: '20px',
+
+            // mx: 'auto',
+            // pt: 2,
+            // alignSelf: 'flex-start',
             [`& .${tabClasses.root}`]: {
-              bgcolor: 'transparent',
               boxShadow: 'none',
+              padding: 0,
+              display: 'flex',
+              justifyContent: 'flex-start',
+              fontSize: '14px',
               '&:hover': {
                 bgcolor: 'transparent',
               },
               [`&.${tabClasses.selected}`]: {
-                color: 'primary.plainColor',
-                fontWeight: 'lg',
+                color: '#0076C8',
                 '&:before': {
                   content: '""',
                   display: 'block',
                   position: 'absolute',
                   zIndex: 1,
                   bottom: '-1px',
-                  left: 'var(--List-item-paddingLeft)',
-                  right: 'var(--List-item-paddingRight)',
-                  height: '3px',
+                  width: '77%',
+                  // left: '0px',
+                  // right: '65px',
+                  height: '2px',
                   borderTopLeftRadius: '3px',
                   borderTopRightRadius: '3px',
                   bgcolor: 'primary.500',
@@ -196,68 +218,59 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                     )}
                   </Grid>
                   <Grid item xs={2} style={styles.trashWrapper}>
-                    {enable && <IconButton onClick={(e) => handleToggle(e, i)} tabIndex={i}>
-                      <img src={assets.moreIcon} className={classes.moreIcon} />
-                    </IconButton>}
-                    {btnIndex === i && (
-                      <RollOver handleToggle={handleToggle}>
-                        <div
-                          className={`${classes.menuWrapper} dropdown-menu pointer`}
-                        >
-                          <Button variant="text" className={classes.iconBtn}
-                            onClick={() => handleToggleClose(member.id)}
-                            startIcon={<assets.PeopleAltOutlinedIcon />}>
-                            View Profile
-                          </Button>
-                          <CustomModal isOpen={open} title="Profile Overview" handleClose={() => handleToggleClose(member.id)}>
-                            <ProfileContent getUser={getUser} />
-                          </CustomModal>
-                          {/* <img src={assets.usersIcon} className="width-16" />
-                      <Typography
-                        className={`${classes.menuText} align-center`}
-                      >
-                        View Profile
-                      </Typography> */}
-                        </div>
-                        <div
-                          className={`${classes.menuWrapper} dropdown-menu pointer`}
-                        >
-                          <Button variant="text" className={classes.iconBtn}
-                            onClick={() => startRoom(member.id)}
-                            startIcon={<assets.ChatOutlinedIcon />}>
-                            Start Chat
-                          </Button>
-                          {/* <img src={assets.chatIcon} className="width-16" />
-                    <Typography className={`${classes.menuText} align-center`} >
-                      Start Chat
-                    </Typography> */}
-                        </div>
-                        {/* make adming and remove admin */}
-                        <div
-                          className={`${classes.menuWrapper} dropdown-menu pointer`}
-                        >
-                          <assets.SupervisorAccountOutlinedIcon className="width-16" />
-                          <Typography
-                            className={`${classes.menuText} align-center`}
-                          >
-                            Remove Admin
-                          </Typography>
-                        </div>
-                        <hr className={classes.break} />
-                        <div
-                          className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation
-                            }`}
-                          onClick={() => handleClick(member.id)}
-                        >
-                          <img src={assets.DeleteIcon} className={`width-16`} />
-                          <Typography
-                            className={`${classes.menuText} align-center ${classes.deleteText}`}
-                          >
-                            Delete Member
-                          </Typography>
-                        </div>
-                      </RollOver>
-                    )}
+
+                    <IconButton
+                      aria-label="more"
+                      id="long-button"
+                      aria-controls={openMenu ? 'long-menu' : undefined}
+                      aria-expanded={openMenu ? 'true' : undefined}
+                      aria-haspopup="true"
+                      onClick={handleMenuOpen}
+
+                    >
+                      {<assets.MoreVertIcon />}
+                    </IconButton>
+                    <Menu
+                      id="long-menu"
+                      MenuListProps={{
+                        'aria-labelledby': 'long-button',
+                      }}
+                      anchorEl={anchorMenu}
+                      open={openMenu}
+                      onClose={handleMenuClose}
+
+                    >
+
+                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                        <ListItemIcon>
+                          <ProfileIcon />
+                        </ListItemIcon>
+                        <Typography variant="inherit" noWrap>
+                          View Profile
+                        </Typography>
+                      </MenuItem>
+                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                        <ListItemIcon >
+                          <ChatIcon />
+                        </ListItemIcon>
+                        Go to chat
+                      </MenuItem>
+                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                        <ListItemIcon>
+                          <GroupAdminIcon />
+                        </ListItemIcon>
+                        Make group admin
+                      </MenuItem>
+                      <hr className={classes.break} />
+                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                        <ListItemIcon>
+                          <RemoveIcon />
+                        </ListItemIcon>
+                        Remove from group
+                      </MenuItem>
+
+                    </Menu>
+
                   </Grid>
                 </Grid>
               );
@@ -295,5 +308,12 @@ const styles = {
   trashImage: {
     cursor: "pointer",
   },
+  tabs: {
+    cursor: "pointer",
+  },
+
+
+
 };
 export default ChatMembers;
+

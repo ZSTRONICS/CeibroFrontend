@@ -75,7 +75,8 @@ import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 const assets= {
   MoreVertOutlinedIcon,
   StarOutlineIcon,
@@ -86,6 +87,7 @@ const assets= {
   LanguageOutlinedIcon,
   ClearOutlinedIcon,
   PeopleAltOutlinedIcon,
+  ChatBubbleOutlineIcon,
   ChatOutlinedIcon,
   SendIcon,
   SendOutlinedIcon,
@@ -150,6 +152,7 @@ const assets= {
   testProject3,
   testProject4,
   membersDelete,
+  MoreVertIcon
 };
 
 export const sounds = {

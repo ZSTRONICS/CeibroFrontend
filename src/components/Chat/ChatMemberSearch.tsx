@@ -41,9 +41,10 @@ const useStyles = makeStyles({
     flex: 1,
     background: colors.white,
     marginBottom: 25,
-    borderRadius: 12,
+    borderRadius: 5,
     borderColor: '#FFFFFF',
     backgroundColor: '#fff',
+    marginTop: 20
   },
   iconWrapper: {
     flex: 2,
