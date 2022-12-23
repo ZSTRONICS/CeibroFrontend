@@ -58,24 +58,27 @@ const getRoomMessages = apiCall({
   method: "get",
   path: (payload: any) => {
     let url = `/chat/room/messages/${payload.other.roomId}?`;
-    if (payload?.other?.search) {
-      url = url + `search=${payload?.other?.search}&`;
-    }
-    if (payload?.other?.username) {
-      url = url + `username=${payload?.other?.username}&`;
-    }
-    if (payload?.other?.company) {
-      url = url + `company=${payload?.other?.company}&`;
-    }
-    if (payload?.other?.group) {
-      url = url + `group=${payload?.other?.group}&`;
-    }
-    if (payload?.other?.startDate) {
-      url = url + `startDate=${payload?.other?.startDate}&`;
-    }
+    // if (payload?.other?.search) {
+    //   url = url + `search=${payload?.other?.search}&`;
+    // }
+    // if (payload?.other?.username) {
+    //   url = url + `username=${payload?.other?.username}&`;
+    // }
+    // if (payload?.other?.company) {
+    //   url = url + `company=${payload?.other?.company}&`;
+    // }
+    // if (payload?.other?.group) {
+    //   url = url + `group=${payload?.other?.group}&`;
+    // }
+    // if (payload?.other?.startDate) {
+    //   url = url + `startDate=${payload?.other?.startDate}&`;
+    // }
     if (payload?.other?.messageId) {
       url = url + `messageId=${payload?.other?.messageId}&`;
     }
+    if (payload?.other?.skip) {
+      url = url + `skip=${payload?.other?.skip}&`;
+     }
     if (payload?.other?.limit) {
       url = url + `limit=${payload?.other?.limit}`;
      }
@@ -91,15 +94,24 @@ const getUpRoomMessages = apiCall({
   type: GET_UP_MESSAGES,
   method: "get",
   path: (payload: any) => {
-    let apiUrl = "/chat/room/messages/" + payload.other.roomId
-    if (payload?.other.lastMessageId !== null){
-      apiUrl = apiUrl + `?lastMessageId=${payload?.other.lastMessageId}&limit=100`
+    let apiUrl = "/chat/room/messages/" + payload.other.roomId + "?"
+
+    if (payload?.other?.messageId) {
+      apiUrl = apiUrl + `messageId=${payload?.other?.messageId}&`;
+    }
+    if (payload?.other?.lastMessageId) {
+      apiUrl = apiUrl + `lastMessageId=${payload?.other?.lastMessageId}&`;
+    }
+    if (payload?.other.skip){
+      apiUrl = apiUrl + `skip=${payload?.other.skip}&`
+    }
+    if (payload?.other?.limit) {
+      apiUrl = apiUrl + `limit=${payload?.other?.limit}`;
     }else{
-      apiUrl = apiUrl + `?limit=100`
+      apiUrl = apiUrl + `limit=10`;
     }
     return apiUrl
   }
-
 });
 
 // const getDownRoomMessages = apiCall({
@@ -266,42 +278,50 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
 
 function* goToMessage(action: ActionInterface): Generator<any> {
   if (action.payload) {
-    const elem = document.getElementById(action.payload);
-    const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
-      return {...acc, [name]: elem?.getAttribute(name)};
-    }, {});
-
-    let newStyle = String(attrs?.class) + " chatReplyBox"
-    elem?.setAttribute("class", newStyle);
-
-    if (elem) {
-      elem?.scrollIntoView();
-      setTimeout((elem, oldclass) => {
-        elem?.setAttribute("class", oldclass)
-      }, 500, elem, attrs?.class);
-
-    } else {
+    const msgId = action.payload.messageId
+    const skip = action.payload.skip
+    const messageFound = gotoMsg(msgId)
+    if (messageFound === false) {
+      console.log('messageFound', messageFound);
+      
       // if message is not in dom
       const roomId = yield select((state: any) => state.chat.selectedChat);
       yield put({
-        type: GET_MESSAGES,
+        type: GET_UP_MESSAGES,
         payload: {
-          success: () => {
-            const elem = document.getElementById(action.payload);
-            if (elem) {
-              // if message already in dom
-              elem?.scrollIntoView();
-
-            }
-          },
           other: {
             roomId: roomId,
-            messageId: action.payload,
+            messageId: msgId,
+            skip: skip
           },
         },
       });
     }
   }
+}
+
+function gotoMsg(messageId: any): Boolean {
+  const elem = document.getElementById(messageId);
+  if (elem === null){
+    return false 
+  }
+  const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
+    return {...acc, [name]: elem?.getAttribute(name)};
+  }, {});
+
+  let newStyle = String(attrs?.class) + " chatReplyBox"
+  elem?.setAttribute("class", newStyle);
+  if (elem) {
+    elem?.scrollIntoView({
+      behavior: 'auto',
+      block: 'center',
+      inline: 'center'
+  });
+    setTimeout((elem, oldclass) => {
+      elem?.setAttribute("class", oldclass)
+    }, 1000, elem, attrs?.class);
+  }
+  return true
 }
 
 
@@ -345,7 +365,6 @@ function* replaceMessagesById(action: ActionInterface): Generator<any> {
   const storeMsgs: any = yield select((state: RootState) => state.chat.messages);
 
   other.messages.forEach((element: any) => {
-
     for(var i = initialIndex; i < storeMsgs.length ; i++) {
         if(String(storeMsgs[i]?._id)  === String(element._id)) {
             storeMsgs[i].readBy = element.readBy;
@@ -376,6 +395,7 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
     other: {
       roomId: selectedChat,
       lastMessageId: messages?.[0]?._id || null,
+      skip: messages.length
     },
   };
 

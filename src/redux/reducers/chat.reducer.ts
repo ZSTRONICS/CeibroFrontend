@@ -39,12 +39,15 @@ import {
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
   ROOM_MESSAGE_DATA,
+  SET_GOTO_MESSAGE_ID,
 } from '../../config/chat.config'
 
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
 import { getNewQuestionTemplate } from '../../constants/questioniar.constants'
 import { CREATE_ROOM } from '../../config/auth.config'
 import { ChatMessageInterface } from 'constants/interfaces/chat.interface'
+import { goToMessage } from 'redux/action/chat.action'
+import { useDispatch } from 'react-redux'
 
 interface ChatReducerInt {
   chat: any
@@ -73,6 +76,7 @@ interface ChatReducerInt {
   viewport: any
   lastMessageIdInChat: any
   upScrollLoading: boolean
+  goToMessageId: string,
   blockPagination: boolean
   mysocket: any
   allowChangeBlock: boolean
@@ -112,11 +116,12 @@ const intialStatue: ChatReducerInt = {
   viewport: null,
   lastMessageIdInChat: null,
   upScrollLoading: false,
+  goToMessageId: '',
   blockPagination: false,
   mysocket: null,
   allowChangeBlock: true,
   pinnedMessages: [],
-  blockDown: false,
+  blockDown: true,
   roomQuestioniars: [],
   createQuestioniarLoading: false,
   roomMessageData: null
@@ -226,6 +231,12 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         messages: state.selectedChat === action.payload ? state.messages : [],
       }
     }
+    case SET_GOTO_MESSAGE_ID: {
+      return {
+        ...state,
+        goToMessageId: action.payload?.other
+      }
+    }
 
     case CLEAR_SELECTED_CHAT: {
       return {
@@ -236,9 +247,14 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestSuccess(GET_MESSAGES): {
+      const newMsgs = [...action.payload.message, ...state.messages]
+      let goto = false
+      if ('messageId' in action.payload){
+        goto = true
+      }
       return {
         ...state,
-        messages: action.payload.message,
+        messages: newMsgs,
         upScrollLoading: false,
       }
     }
@@ -278,12 +294,17 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestSuccess(GET_UP_MESSAGES): {
+      const newMsgs =  [...action.payload.message, ...state.messages]
+      let gotoId = ''
+      if ('messageId' in action.payload){
+        gotoId = action.payload.messageId
+      }
       return {
         ...state,
         lastMessageIdInChat: state?.messages[0]?._id,
-        messages: [state.messages, ...action.payload.message],
+        messages: newMsgs,
         upScrollLoading: false,
-
+        goToMessageId: gotoId
       }
     }
 

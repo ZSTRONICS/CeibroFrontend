@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import colors from "../../assets/colors";
 import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
-import { clearSelectedChat } from "../../redux/action/chat.action";
+import { clearSelectedChat, setDownBlock, setGoToMessageId } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import "./chat.css";
 import ChatBody from "./ChatBody";
@@ -17,6 +17,7 @@ import MediaSidebar from "./MediaSidebar";
 import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { socket } from "services/socket.services";
+import { ChatMessageInterface } from "constants/interfaces/chat.interface";
 
 const Chat = () => {
   const classes = useStyles();
@@ -25,8 +26,12 @@ const Chat = () => {
   // store
   const { user } = useSelector((state: RootState) => state.auth);
   const { lastMessageIdInChat } = useSelector((state: RootState) => state.chat);
-  const [lastMessageIdInChatClear, setLastMessageIdInChatClear] = useState(lastMessageIdInChat)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const goToMessageId: string = useSelector((store: RootState) => store.chat.goToMessageId);
+  const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
+
+  
+  const { blockDown } = useSelector( (state: RootState) => state.chat);
 
   const {
     selectedChat,
@@ -79,6 +84,59 @@ const Chat = () => {
     elem?.scrollIntoView();
     // setLastMessageIdInChatClear(null)
   }
+
+  function gotoMsg(messageId: any): Boolean {
+    const elem = document.getElementById(messageId);
+    if (elem === null){
+      return false 
+    }
+    const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
+      return {...acc, [name]: elem?.getAttribute(name)};
+    }, {});
+  
+    let newStyle = String(attrs?.class) + " chatReplyBox"
+    elem?.setAttribute("class", newStyle);
+    if (elem) {
+      elem?.scrollIntoView({
+        behavior: 'auto',
+        block: 'center',
+        inline: 'center'
+    });
+      setTimeout((elem, oldclass) => {
+        elem?.setAttribute("class", oldclass)
+      }, 1000, elem, attrs?.class);
+    }
+    return true
+  }
+
+
+
+  useEffect(() => {
+    if (goToMessageId !== '') {
+        gotoMsg(goToMessageId)
+      }
+      return (): void => {
+        dispatch(setGoToMessageId({ other: '' }));
+      };
+  }, [goToMessageId]);
+
+
+
+  useEffect(() => {
+    console.log(goToMessageId);
+    const chatBox: any = document.getElementById("chatBox");
+    if (chatBox && goToMessageId.length === 0 && blockDown){
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+    if (!blockDown){
+      dispatch(setDownBlock(true))
+    }
+
+    return (): void => {
+      messages
+    };
+  }, [messages]);
+
 
   return (
     <>
