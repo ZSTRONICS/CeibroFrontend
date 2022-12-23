@@ -70,7 +70,6 @@ const CreateIndividualChat = (props: any) => {
   //     return 0; 
   //    });
 
-  // eslint-disable-next-line @typescript-eslint/no-use-before-define
   
   const filterdList = connections?.filter((person: any) => {
     const user = person?.sentByMe ? person.to : person.from;

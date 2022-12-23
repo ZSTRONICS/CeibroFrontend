@@ -282,8 +282,6 @@ function* goToMessage(action: ActionInterface): Generator<any> {
     const skip = action.payload.skip
     const messageFound = gotoMsg(msgId)
     if (messageFound === false) {
-      console.log('messageFound', messageFound);
-      
       // if message is not in dom
       const roomId = yield select((state: any) => state.chat.selectedChat);
       yield put({

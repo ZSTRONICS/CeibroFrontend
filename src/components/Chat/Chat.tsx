@@ -107,7 +107,6 @@ const Chat = () => {
   }, [goToMessageId]);
 
   useEffect(() => {
-    console.log(goToMessageId);
     const chatBox: any = document.getElementById("chatBox");
     if (chatBox && goToMessageId.length === 0 && blockDown){
       chatBox.scrollTop = chatBox.scrollHeight;

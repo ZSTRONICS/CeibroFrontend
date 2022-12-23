@@ -196,7 +196,7 @@ const CreateWork = () => {
                 onChange={(e: any) =>
                   setData({ ...data, name: e.target.value })
                 }
-                value={data?.name}
+                value={data?.name || ''}
                 placeholder="Select/Add work"
               />
             </Grid>
