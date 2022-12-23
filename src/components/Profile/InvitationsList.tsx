@@ -1,26 +1,20 @@
+import React, {forwardRef, useEffect, useImperativeHandle, useState} from "react";
+
+// mui
 import {
-  Button,
-  Grid,
+  Button, CircularProgress, Grid,
   List,
   ListItem,
-  makeStyles,
-  CircularProgress,
-  Typography,
+  makeStyles, Typography
 } from "@material-ui/core";
-// import * as React from 'react';
-import React, {
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
-import colors from "../../assets/colors";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import { INVITATIONS_LIST } from "../../constants/invitations.constants";
-import { InvitationInterface } from "../../constants/interfaces/invitation.interface";
+
+// redux
 import { useDispatch } from "react-redux";
 import { acceptInvite, getMyAllInvites } from "redux/action/user.action";
-import { data } from "jquery";
+import colors from "../../assets/colors";
+import { InvitationInterface } from "../../constants/interfaces/invitation.interface";
+// components
+import NameAvatar from "../Utills/Others/NameAvatar";
 
 interface IInvitationsListProps {
   ref?: any;
@@ -41,7 +35,7 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
     const getMyInvites = () => {
       const payload = {
         success: (res: any) => {
-          setmyAllInvites(res?.data);
+          setmyAllInvites(res?.data?.invites);
         },
         finallyAction: () => {
           setLoading(false);
