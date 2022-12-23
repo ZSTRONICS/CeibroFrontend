@@ -285,7 +285,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
   return (<>
         <Box className={`${classes.botContainer} ${classes.goToBottom}`} id="goToBottom">
-          <Typography>Go to Bottom</Typography>
+          <Typography>Jump to Latest</Typography>
         </Box>
  
     <Grid

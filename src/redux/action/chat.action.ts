@@ -40,12 +40,14 @@ import {
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
   REPLACE_MESSAGE_BY_ID,
+  SET_GOTO_MESSAGE_ID,
 } from '../../config/chat.config'
 import { createAction } from './action'
 
 export const getAllChats = createAction(GET_CHAT)
 export const createSingleRoom = createAction(CREATE_SINGLE_ROOM)
 export const setSelectedChat = createAction(SET_SELECTED_CHAT)
+export const setGoToMessageId = createAction(SET_GOTO_MESSAGE_ID)
 export const clearSelectedChat = createAction(CLEAR_SELECTED_CHAT)
 export const pushMessage = createAction(PUSH_MESSAGE)
 export const pushMessageByOthers = createAction(PUSH_MESSAGE_BY_OTHER)
@@ -119,9 +121,9 @@ export const setTempMembersDialog = (open: boolean) => ({
   payload: open,
 })
 
-export const goToMessage = (messageId: string) => ({
+export const goToMessage = (messageId: string, skip: number) => ({
   type: GO_TO_MESSAGES,
-  payload: messageId,
+  payload: {messageId, skip},
 })
 
 export const setDownBlock = (block: boolean) => ({
