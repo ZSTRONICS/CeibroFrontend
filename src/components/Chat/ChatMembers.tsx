@@ -68,6 +68,8 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
   const startRoom = (id: string) => {
     const payload = { other: { id }, success: () => dispatch(getAllChats()) };
     dispatch(createSingleRoom(payload));
+
+
   };
 
   const handleMembersShow = (e: any) => {
@@ -156,11 +158,13 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
               display: 'flex',
               justifyContent: 'flex-start',
               fontSize: '14px',
+              fontWeight: 600,
               '&:hover': {
                 bgcolor: 'transparent',
               },
               [`&.${tabClasses.selected}`]: {
                 color: '#0076C8',
+
                 '&:before': {
                   content: '""',
                   display: 'block',
@@ -173,7 +177,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                   height: '2px',
                   borderTopLeftRadius: '3px',
                   borderTopRightRadius: '3px',
-                  bgcolor: 'primary.500',
+                  bgcolor: '#0076C8',
                 },
               },
             },
@@ -210,11 +214,27 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                       {member.firstName} {member.surName}
                     </Typography>
                     {member.companyName && (
-                      <Typography
-                        className={`${classes.memberCompany} chat-member-company`}
-                      >
-                        Company: {member.companyName}
-                      </Typography>
+                      <CBox display='flex' alignItems='center'>
+
+                        <Typography
+                          className={`${classes.memberCompany} chat-member-company`}
+
+                        >
+                          Company
+                        </Typography>
+                        &nbsp;
+                        <Typography
+                          className={`${classes.memberCompany} chat-member-company`}
+                        >
+                          &nbsp;
+                          &nbsp;
+                          &nbsp;
+
+                          {member.companyName}
+                        </Typography>
+
+                      </CBox>
+
                     )}
                   </Grid>
                   <Grid item xs={2} style={styles.trashWrapper}>
@@ -241,7 +261,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
 
                     >
 
-                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                      <MenuItem onClick={() => handleToggleClose(member.id)} className={classes.iconBtn}>
                         <ListItemIcon>
                           <ProfileIcon />
                         </ListItemIcon>
@@ -249,7 +269,10 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                           View Profile
                         </Typography>
                       </MenuItem>
-                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                      <CustomModal isOpen={open} title="Profile Overview" handleClose={() => handleToggleClose(member.id)}>
+                        <ProfileContent getUser={getUser} />
+                      </CustomModal>
+                      <MenuItem onClick={() => startRoom(member.id)} className={classes.iconBtn}>
                         <ListItemIcon >
                           <ChatIcon />
                         </ListItemIcon>
@@ -262,7 +285,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                         Make group admin
                       </MenuItem>
                       <hr className={classes.break} />
-                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                      <MenuItem onClick={() => handleClick(member.id)} className={classes.iconBtn}>
                         <ListItemIcon>
                           <RemoveIcon />
                         </ListItemIcon>

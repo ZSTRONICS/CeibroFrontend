@@ -16,7 +16,7 @@ function CustomPopover(props: any) {
                 onClose={handleClose}
                 className={classes.mainBox}
                 anchorOrigin={{
-                    vertical: "bottom",
+                    vertical: "top",
                     horizontal: "right"
                 }}
             >
@@ -29,9 +29,13 @@ function CustomPopover(props: any) {
 export default CustomPopover;
 const useStyles = makeStyles({
     mainBox: {
+
         '& .MuiPaper-root': {
             // top: '124px !important',
-            left: '1388px !important'
+            left: '1388px !important',
+            top: '70px !important',
+            boxShadow: 'none',
+            borderRadius: '4px 0px 0px'
         }
     },
 

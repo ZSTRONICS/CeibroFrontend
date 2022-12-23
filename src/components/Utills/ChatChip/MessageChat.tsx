@@ -27,7 +27,7 @@ interface MessageChatProps {
   enable: boolean;
 }
 
-const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
+const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   const { message } = props;
   const {
     replyOf,
@@ -202,7 +202,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
         container
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
-        key={message._id+(Math.random()*10)}
+        key={message._id + (Math.random() * 10)}
       >
 
         <Grid item xs={8} onClick={handleClick}>

@@ -88,21 +88,23 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
 
   }
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
-  const [isActive, setActive] = useState(false);
+  const [isActive, setActive] = useState(0);
   const [content, setContent]: any = React.useState(false);
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, content: string) => {
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>, content: string, id: number) => {
     setContent(content);
     setAnchorEl(event.currentTarget);
+    setActive(id)
 
   };
   const toggleClass = () => {
-    setActive(!isActive);
+
   }
   const handleClose = () => {
     setAnchorEl(null);
     setContent(content);
-    setActive(false);
+    setActive(0);
+
   };
 
   const open = Boolean(anchorEl);
@@ -112,7 +114,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         {/* member */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "member")}>
+        <button className={isActive === 1 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "member", 1)}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -149,7 +151,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {/* pin */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "pin")}>
+        <button className={isActive === 2 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "pin", 2)}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -183,7 +185,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {/* media */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "media")}>
+        <button className={isActive === 3 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "media", 3)}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -216,7 +218,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {/* questionnaire */}
-        <button className={isActive ? 'active' : "accordion"} onClick={(e) => handleClick(e, "questionnaire")}>
+        <button className={isActive === 4 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "questionnaire", 4)}>
           <span className={classes.chatMembersWrapper}>
             {/* <Badge
               overlap='circular'
@@ -319,7 +321,7 @@ const useStyles = makeStyles({
   },
   box: {
     backgroundColor: '#E8F2F9',
-    minHeight: 713,
+    minHeight: 775,
     height: '100%',
     width: 466,
     padding: '15px 20px',

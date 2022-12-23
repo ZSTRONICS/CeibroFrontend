@@ -69,6 +69,7 @@ const useStyles = makeStyles({
     padding: "2px 0 0 10px",
     display: "flex",
     flexDirection: "column",
+    alignItem: 'center'
   },
   menuWrapper: {
     display: "flex",
@@ -101,10 +102,27 @@ const useStyles = makeStyles({
   memberCompany: {
     fontSize: 12,
     fontWeight: 500,
-    textOverflow: "ellipsis",
-    width: "110px",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
+    color: '#605C5C',
+    position: 'relative',
+    '&:after': {
+      content: '"."',
+      display: 'block',
+      position: 'absolute',
+      zIndex: 1,
+      color: '#605C5C',
+      top: '-3px',
+      width: '77%',
+      left: '66px',
+      // left: '0px',
+      // right: '65px',
+      height: '2px',
+
+
+    },
+    '&:last-child:after': {
+      content: '""',
+    }
+
   },
   iconBtn: {
     '& svg': {
