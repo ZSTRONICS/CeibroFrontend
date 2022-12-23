@@ -1,5 +1,5 @@
 
-import { Badge, Button } from "@material-ui/core";
+import { Badge, Button, IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import React, { useEffect, useRef, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -252,16 +252,32 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
         </button>
         {/* {openIndex === 1 && */}
 
+
         <CustomPopover id={id} open={open} anchorEl={anchorEl} handleClose={handleClose}>
-          {content === 'member' && <CBox className={classes.box}>
-            <CBox fontSize={22} fontWeight={600} fontFamily='Inter' color='#000000'>
-              Chat Members
-              <ChatMembers enable={false} />
-            </CBox>
-          </CBox>}
+
+          {content === 'member' &&
+            <>
+
+              <CBox className={classes.box}>
+                <CBox fontSize={22} fontWeight={600} fontFamily='Inter' color='#000000'>
+                  Chat Members
+                  <ChatMembers enable={false} />
+                </CBox>
+              </CBox>
+
+              <CBox>
+                <IconButton>
+                  {<assets.ArrowForwardIosIcon />}
+                </IconButton>
+              </CBox>
+            </>
+
+          }
           {content === 'pin' && <CBox className={classes.box}>'pin'</CBox>}
           {content === 'media' && <CBox className={classes.box}>'media'</CBox>}
           {content === 'questionnaire' && <CBox className={classes.box}>'questionnaire'</CBox>}
+
+
 
         </CustomPopover >
 
@@ -325,6 +341,7 @@ const useStyles = makeStyles({
     height: '100%',
     width: 466,
     padding: '15px 20px',
+    position: 'relative'
   },
   active: {
     color: '#444',

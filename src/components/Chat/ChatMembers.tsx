@@ -197,105 +197,113 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
             myMembers &&
             myMembers?.map?.((member: UserInterface, i: any) => {
               return (
-                <Grid key={member.id} container className="chat-member-chip">
-                  <Grid item xs={2} style={{ paddingTop: 5 }}>
-                    <NameAvatar
-                      // styleAvater={}
-                      firstName={member?.firstName}
-                      surName={member?.surName}
-                      url={member?.profilePic}
-                      variant="small"
-                    />
-                  </Grid>
-                  <Grid item xs={8} className={classes.memberPreview}>
-                    <Typography
-                      className={`chat-member-name ${classes.memberName}`}
-                    >
-                      {member.firstName} {member.surName}
-                    </Typography>
-                    {member.companyName && (
-                      <CBox display='flex' alignItems='center'>
+                <div key={member.id} className="chat-member-chip">
+                  <CBox display='flex' justifyContent='space-between'>
+                    <CBox flex='2 1 0' display='flex' alignItems='center'>
+                      <CBox className={classes.imgBox}>
+                        <NameAvatar
+                          // styleAvater={}
+                          firstName={member?.firstName}
+                          surName={member?.surName}
+                          url={member?.profilePic}
+                          variant="small"
 
-                        <Typography
-                          className={`${classes.memberCompany} chat-member-company`}
-
-                        >
-                          Company
-                        </Typography>
-                        &nbsp;
-                        <Typography
-                          className={`${classes.memberCompany} chat-member-company`}
-                        >
-                          &nbsp;
-                          &nbsp;
-                          &nbsp;
-
-                          {member.companyName}
-                        </Typography>
-
+                        />
                       </CBox>
-
-                    )}
-                  </Grid>
-                  <Grid item xs={2} style={styles.trashWrapper}>
-
-                    <IconButton
-                      aria-label="more"
-                      id="long-button"
-                      aria-controls={openMenu ? 'long-menu' : undefined}
-                      aria-expanded={openMenu ? 'true' : undefined}
-                      aria-haspopup="true"
-                      onClick={handleMenuOpen}
-
-                    >
-                      {<assets.MoreVertIcon />}
-                    </IconButton>
-                    <Menu
-                      id="long-menu"
-                      MenuListProps={{
-                        'aria-labelledby': 'long-button',
-                      }}
-                      anchorEl={anchorMenu}
-                      open={openMenu}
-                      onClose={handleMenuClose}
-
-                    >
-
-                      <MenuItem onClick={() => handleToggleClose(member.id)} className={classes.iconBtn}>
-                        <ListItemIcon>
-                          <ProfileIcon />
-                        </ListItemIcon>
-                        <Typography variant="inherit" noWrap>
-                          View Profile
+                      <CBox className={classes.memberPreview}>
+                        <Typography
+                          className={`chat-member-name ${classes.memberName}`}
+                        >
+                          {member.firstName} {member.surName}
                         </Typography>
-                      </MenuItem>
-                      <CustomModal isOpen={open} title="Profile Overview" handleClose={() => handleToggleClose(member.id)}>
-                        <ProfileContent getUser={getUser} />
-                      </CustomModal>
-                      <MenuItem onClick={() => startRoom(member.id)} className={classes.iconBtn}>
-                        <ListItemIcon >
-                          <ChatIcon />
-                        </ListItemIcon>
-                        Go to chat
-                      </MenuItem>
-                      <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
-                        <ListItemIcon>
-                          <GroupAdminIcon />
-                        </ListItemIcon>
-                        Make group admin
-                      </MenuItem>
-                      <hr className={classes.break} />
-                      <MenuItem onClick={() => handleClick(member.id)} className={classes.iconBtn}>
-                        <ListItemIcon>
-                          <RemoveIcon />
-                        </ListItemIcon>
-                        Remove from group
-                      </MenuItem>
+                        {member.companyName && (
+                          <CBox display='flex' alignItems='center'>
 
-                    </Menu>
+                            <Typography
+                              className={`${classes.memberCompany} chat-member-company`}
 
-                  </Grid>
-                </Grid>
+                            >
+                              Company
+                            </Typography>
+                            &nbsp;
+                            <Typography
+                              className={`${classes.memberCompany} chat-member-company`}
+                            >
+                              &nbsp;
+                              &nbsp;
+                              &nbsp;
+
+                              {member.companyName}
+                            </Typography>
+
+                          </CBox>
+
+                        )}
+                      </CBox>
+                    </CBox>
+
+
+                    <CBox display='flex' justifyContent='flex-end' flex='1 1 0'>
+
+                      <IconButton
+                        aria-label="more"
+                        id="long-button"
+                        aria-controls={openMenu ? 'long-menu' : undefined}
+                        aria-expanded={openMenu ? 'true' : undefined}
+                        aria-haspopup="true"
+                        onClick={handleMenuOpen}
+
+                      >
+                        {<assets.MoreVertIcon />}
+                      </IconButton>
+                      <Menu
+                        id="long-menu"
+                        MenuListProps={{
+                          'aria-labelledby': 'long-button',
+                        }}
+                        anchorEl={anchorMenu}
+                        open={openMenu}
+                        onClose={handleMenuClose}
+
+                      >
+
+                        <MenuItem onClick={() => handleToggleClose(member.id)} className={classes.iconBtn}>
+                          <ListItemIcon>
+                            <ProfileIcon />
+                          </ListItemIcon>
+                          <Typography variant="inherit" noWrap>
+                            View Profile
+                          </Typography>
+                        </MenuItem>
+                        <CustomModal isOpen={open} title="Profile Overview" handleClose={() => handleToggleClose(member.id)}>
+                          <ProfileContent getUser={getUser} />
+                        </CustomModal>
+                        <MenuItem onClick={() => startRoom(member.id)} className={classes.iconBtn}>
+                          <ListItemIcon >
+                            <ChatIcon />
+                          </ListItemIcon>
+                          Go to chat
+                        </MenuItem>
+                        <MenuItem onClick={handleMenuClose} className={classes.iconBtn}>
+                          <ListItemIcon>
+                            <GroupAdminIcon />
+                          </ListItemIcon>
+                          Make group admin
+                        </MenuItem>
+                        <hr className={classes.break} />
+                        <MenuItem onClick={() => handleClick(member.id)} className={classes.iconBtn}>
+                          <ListItemIcon>
+                            <RemoveIcon />
+                          </ListItemIcon>
+                          Remove from group
+                        </MenuItem>
+
+                      </Menu>
+                    </CBox>
+                  </CBox>
+
+                </div>
+
               );
             })
           }
@@ -304,14 +312,14 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
         </TabPanel>
         <TabPanel value={1}>
 
-          Library panel
+          Admins
 
         </TabPanel>
         <TabPanel value={2}>
-          s
+          Groups
         </TabPanel>
         <TabPanel value={3}>
-          s
+          Companies
         </TabPanel>
 
 

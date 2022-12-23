@@ -78,6 +78,8 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import SearchIcon from '@mui/icons-material/Search';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 const assets= {
   GroupIcon,
@@ -155,7 +157,9 @@ const assets= {
   testProject3,
   testProject4,
   membersDelete,
-  MoreVertIcon
+  MoreVertIcon,
+  SearchIcon,
+  ArrowForwardIosIcon
 };
 
 export const sounds = {

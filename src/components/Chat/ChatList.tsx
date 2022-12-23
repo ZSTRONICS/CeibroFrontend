@@ -31,7 +31,7 @@ const ChatList = () => {
       getRoomMessages({
         other: {
           roomId: roomId,
-          limit: 100,
+          limit: 20,
         },
         success: () => {},
       })

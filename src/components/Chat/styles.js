@@ -8,6 +8,13 @@ const useStyles = makeStyles({
     '&:hover': {
       backgroundColor: 'transparent',
     },
+    '& svg': {
+      height: '18px !important',
+      width: '18px !important',
+    },
+    '& .MuiTypography-root': {
+      color: '#0076C8 !important'
+    }
   },
   memberContainer: {
     marginBottom: "10px",
@@ -98,6 +105,7 @@ const useStyles = makeStyles({
     whiteSpace: "nowrap",
     overflow: "hidden",
     color: "#0076C8",
+    textTransform: 'capitalize'
   },
   memberCompany: {
     fontSize: 12,
@@ -124,13 +132,11 @@ const useStyles = makeStyles({
     }
 
   },
-  iconBtn: {
-    '& svg': {
-      height: '18px !important',
-      width: '18px !important',
-    },
-    '& .MuiTypography-root': {
-      color: '#0076C8 !important'
+
+  imgBox: {
+    '& .MuiAvatar-root': {
+      width: '40px !important',
+      height: '40px !important',
     }
   }
 

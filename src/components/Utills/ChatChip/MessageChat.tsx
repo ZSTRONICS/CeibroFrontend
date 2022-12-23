@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 // material & react-icon
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { ClipLoader } from "react-spinners";
@@ -7,7 +7,7 @@ import { ClipLoader } from "react-spinners";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getPinnedMessages, goToMessage, openViewQuestioniarDrawer,
-  pinMessage, setSelectedQuestioniar
+  pinMessage, setDownBlock, setSelectedQuestioniar
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 
@@ -90,6 +90,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   }
 
   const handlePinClick = () => {
+    dispatch(setDownBlock(false))
     let myMsgs = JSON.parse(JSON.stringify(messages));
     const index = messages?.findIndex(
       (msg: ChatMessageInterface) => String(msg._id) === String(message._id));
@@ -130,7 +131,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   };
 
   const handleReplyClick = () => {
-    dispatch(goToMessage(replyOf._id));
+    dispatch(goToMessage(replyOf._id, messages.length));
   };
 
   const handleClick = () => {
@@ -202,7 +203,8 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
         container
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
-        key={message._id + (Math.random() * 10)}
+        key={message._id}
+        id={message._id} //id is must fot go-to reply message 
       >
 
         <Grid item xs={8} onClick={handleClick}>
