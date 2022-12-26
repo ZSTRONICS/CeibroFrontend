@@ -54,7 +54,7 @@ const ChatPinned: React.FC<chatMInt> = (props) => {
           {pinnedMessages?.message?.map?.((message: ChatMessageInterface) => {
             return (
               <CBox className={classes.chatBox} onClick={() => handleReplyClick(message._id)}>
-                <CBox display='flex' alignItem='center' flex='7 1 0'>
+                <CBox display='flex' alignItem='center'>
                   <CBox>
                     <NameAvatar
                       // styleAvater={}

@@ -5,7 +5,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import colors from "../../assets/colors";
-import { CHAT_LIST, CHAT_MESSAGE } from "../../constants/chat.constants";
+import { CHAT_LIST } from "../../constants/chat.constants";
 import { clearSelectedChat, setDownBlock, setGoToMessageId } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import "./chat.css";
@@ -25,12 +25,9 @@ const Chat = () => {
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
-  const { lastMessageIdInChat } = useSelector((state: RootState) => state.chat);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
   const goToMessageId: string = useSelector((store: RootState) => store.chat.goToMessageId);
   const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
-
-
   const { blockDown } = useSelector((state: RootState) => state.chat);
 
   const {
@@ -76,15 +73,6 @@ const Chat = () => {
     };
   }, [selectedChat]);
 
-  const scrollToMessage = () => {
-    if (lastMessageIdInChat === null) {
-      return
-    }
-    const elem = document.getElementById(lastMessageIdInChat);
-    elem?.scrollIntoView();
-    // setLastMessageIdInChatClear(null)
-  }
-
   function gotoMsg(messageId: any): Boolean {
     const elem = document.getElementById(messageId);
     if (elem === null) {
@@ -109,8 +97,6 @@ const Chat = () => {
     return true
   }
 
-
-
   useEffect(() => {
     if (goToMessageId !== '') {
       gotoMsg(goToMessageId)
@@ -120,10 +106,7 @@ const Chat = () => {
     };
   }, [goToMessageId]);
 
-
-
   useEffect(() => {
-    console.log(goToMessageId);
     const chatBox: any = document.getElementById("chatBox");
     if (chatBox && goToMessageId.length === 0 && blockDown) {
       chatBox.scrollTop = chatBox.scrollHeight;
@@ -155,9 +138,7 @@ const Chat = () => {
         >
           <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody enable={enable} />
-
           <ChatForm enable={enable} />
-          {/* {scrollToMessage()} */}
         </Grid>
       </Grid>
     </>

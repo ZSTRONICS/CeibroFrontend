@@ -1,18 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 
+import React from "react";
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {getUpMessages} from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
 import MessageChat from "../Utills/ChatChip/MessageChat";
-
 import { Box } from "@mui/material";
 import moment from "moment-timezone";
-import React from "react";
 import NoConversation from "./NoConversation";
 
 interface ChatBodyInt {
