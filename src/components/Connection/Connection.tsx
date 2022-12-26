@@ -57,7 +57,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
         {connections?.map?.((connection: any) => {
           const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
           return (
-            <Grid item xs={12} key={Date.now()} className={classes.chipWrapper}>
+            <Grid item xs={12} key={user.id} id={user.id} className={classes.chipWrapper}>
               <Grid container>
                 <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
                   {!connection.email && (
