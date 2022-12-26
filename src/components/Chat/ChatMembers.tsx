@@ -216,6 +216,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                         >
                           {member.firstName} {member.surName}
                         </Typography>
+
                         {member.companyName && (
                           <CBox display='flex' alignItems='center'>
 

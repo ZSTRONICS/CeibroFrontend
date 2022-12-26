@@ -52,8 +52,6 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
 
 
 
-
-
   const getStyles = () => {
     return {
       width: sidebarOpen ? 240 : 50,
@@ -116,22 +114,22 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
         {/* member */}
         <button className={isActive === 1 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "member", 1)}>
           <span className={classes.chatMembersWrapper}>
-            {/* <Badge
+            <Badge
               overlap='circular'
               badgeContent={selectedChatRoom?.members?.length}
               color="secondary"
               classes={{
                 badge: classes.font1,
               }}
-            > */}
+            >
 
-            <CBox className={`${classes.addIconContainer}`}>
-              <Tooltip title="Delete">
-                <MemberIcon />
-              </Tooltip>
+              <CBox className={`${classes.addIconContainer}`}>
+                <Tooltip title="Delete">
+                  <MemberIcon />
+                </Tooltip>
 
-            </CBox>
-            {/* </Badge> */}
+              </CBox>
+            </Badge>
             {sidebarOpen && (
               <span
                 className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
@@ -153,19 +151,19 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
         {/* pin */}
         <button className={isActive === 2 ? 'active' : "accordion"} onClick={(e) => handleClick(e, "pin", 2)}>
           <span className={classes.chatMembersWrapper}>
-            {/* <Badge
+            <Badge
               overlap='circular'
-              badgeContent={selectedChatRoom?.members?.length}
+              badgeContent={pinnedMessages?.message?.length}
               color="secondary"
               classes={{
                 badge: classes.font1,
               }}
-            > */}
-            <CBox className={`${classes.addIconContainer}`}>
-              <PinIcon />
-              {/* <img src={assets.pinIcon} alt="" /> */}
-            </CBox>
-            {/* </Badge> */}
+            >
+              <CBox className={`${classes.addIconContainer}`}>
+                <PinIcon />
+                {/* <img src={assets.pinIcon} alt="" /> */}
+              </CBox>
+            </Badge>
             {sidebarOpen && (
               <span
                 className={`accordion-title ${classes.chatMembers} ${openIndex === 1 ? "active" : ""
@@ -265,15 +263,19 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
                 </CBox>
               </CBox>
 
-              <CBox>
+              {/* <CBox className={classes.navigateBack}>
                 <IconButton>
                   {<assets.ArrowForwardIosIcon />}
                 </IconButton>
-              </CBox>
+              </CBox> */}
             </>
 
           }
-          {content === 'pin' && <CBox className={classes.box}>'pin'</CBox>}
+
+          {content === 'pin' && <CBox className={classes.box}>
+
+            <ChatPinned /></CBox>}
+
           {content === 'media' && <CBox className={classes.box}>'media'</CBox>}
           {content === 'questionnaire' && <CBox className={classes.box}>'questionnaire'</CBox>}
 
@@ -359,6 +361,12 @@ const useStyles = makeStyles({
     backgroundColor: '#E5F0F8',
     borderBottom: '1px solid #ecf0f1',
 
-  }
+  },
+  // navigateBack: {
+  //   position: 'fixed',
+  //   top: '50%',
+  //   right: '26%',
+  //   backgroundColor: 'red'
+  // }
 
 });
