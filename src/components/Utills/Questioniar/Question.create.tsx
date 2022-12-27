@@ -197,7 +197,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
                     </div>
                     <div className={classes.optionDelete}>
                       <IconButton onClick={() => handleRemove(index)}>
-                        <img src={assets.clearIcon} />
+                        <img src={assets.clearIcon} alt="" />
                       </IconButton>
                     </div>
                   </div>
