@@ -63,6 +63,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       </Grid>
       <Grid item xs={12} md={7} className={classes.actionWrapper}>
         <InputText
+        value={findDoc||""}
           placeholder={isFolder ? "Find folder" : "Find document"}
           onChange={(e: any) => setFindDoc(e.target.value)}
         />

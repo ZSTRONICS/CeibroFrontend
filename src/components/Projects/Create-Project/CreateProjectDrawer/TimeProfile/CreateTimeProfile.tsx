@@ -160,7 +160,7 @@ const MemberDialog = () => {
           <Grid container className={classes.body}>
             <Grid item xs={12}>
               <InputText
-                value={name}
+                value={name||""}
                 placeholder="Enter a profile layout name"
                 onChange={handleNameChange}
               />
