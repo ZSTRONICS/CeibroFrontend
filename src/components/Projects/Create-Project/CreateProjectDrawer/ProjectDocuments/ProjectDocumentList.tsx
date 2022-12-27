@@ -81,7 +81,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             );
 
             return (
-              <TableRow key={row?.name}>
+              <TableRow key={row?.id}>
                 <TableCell
                   onClick={() => handleFolderClick(row)}
                   component="th"

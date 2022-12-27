@@ -36,6 +36,7 @@ function CreateGroupChat(props: any) {
   const [name, setName] = useState("");
   const [searchQuery, setSearchField] = useState("");
   const [selectedGroupIds, setSelectedGroupId] = useState<any>([])
+
   let localGroupMembers: any = null
   let localGroups: any = null
 
@@ -98,6 +99,9 @@ function CreateGroupChat(props: any) {
   const handleProjectChange = (e: any) => {
     setProject(e);
     setUsers([]);
+    setSelectedGroupId([])
+    localGroupMembers = null
+    localGroups = null
   };
 
   const handleGroupMember = (e: any, group: any) => {
@@ -125,6 +129,7 @@ function CreateGroupChat(props: any) {
       dispatch(getAllProjects());
       dispatch(getAllProjectsWithMembers());
     }
+
     setName("");
     setUsers([]);
     setProject(null);

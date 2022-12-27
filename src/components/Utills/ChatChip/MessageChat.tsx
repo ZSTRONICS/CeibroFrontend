@@ -321,7 +321,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
                   return <></>
                 }
                 return (
-                  <SeenBy key={i} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
+                  <SeenBy key={readyByUser.id} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
                 )
               })}
             </CBox>

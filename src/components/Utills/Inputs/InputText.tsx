@@ -19,7 +19,7 @@ const InputText: FC<InputTextInterface> = (props) => {
         type="text"
         className={"input-text emptyBorder " + className}
         onChange={(e: any) => props.onChange?.(e)}
-        value={value}
+        value={value||""}
         name={name}
         disabled={disabled}
       />

@@ -54,7 +54,7 @@ const ProjectOverViewForm = () => {
           onChange={handleLocationChange}
           name="location"
           placeholder="Enter a location address"
-          value={projectOverview.location}
+          value={projectOverview.location||""}
         />
       </Grid>
 

@@ -105,18 +105,18 @@ export default function BasicTable() {
           {getNewWorkList && getNewWorkList.length > 0 ? (
             <>
               {getNewWorkList.map((row: ProfileWork) => (
-                <TableRow key={row.name}>
+                <TableRow key={row.id}>
                   <TableCell component="th" scope="row">
                     <Typography className={classes.name}>{row.name}</Typography>
                   </TableCell>
                   <TableCell>
                     <div className={classes.extrasWrapper}>
-                      {row?.time &&  <img src={assets.clockIcon} />}
+                      {row?.time &&  <img src={assets.clockIcon} alt=""/>}
                       {row?.photo && (
-                         <img src={assets.wrongImage} className="w-16" />
+                         <img src={assets.wrongImage} className="w-16" alt=""/>
                       )}
                       {row?.comment && (
-                         <img src={assets.sidebarChatIcon} className="w-16" />
+                         <img src={assets.sidebarChatIcon} className="w-16" alt=""/>
                       )}
                     </div>
                   </TableCell>

@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import colors from 'assets/colors'
 
 import projectActions, { getProjectsWithPagination } from 'redux/action/project.action'
-import InputText from 'components/Utills/Inputs/InputText'
 import { RootState } from 'redux/reducers'
 import { getAvailableUsers } from 'redux/action/user.action'
 import Input from 'components/Utills/Inputs/Input'
