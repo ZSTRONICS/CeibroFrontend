@@ -128,14 +128,14 @@ const ProfileView = () => {
                 alignItems="center"
                 sx={{ padding: " 0 10px 0" }}
               >
-                <Badge 
+               {connections&& <Badge 
                 sx={{
                         color:"#F1B740"
                 }}
                     color="primary"
                   badgeContent={connections}
                   overlap="circular"
-                />
+                />}
               </Box>
             </Stack>
           </MenuItem>
