@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SET_CHAT_SIDE_BAR } from "../../config/chat.config";
 import { RootState } from "../../redux/reducers";
 import ChatMembers from "./ChatMembers";
-import ChatMedia from "./ChatMedia";
+
 import ChatQuestioniar from "./ChatQuestioniar";
 import ChatPinned from "./ChatPinned";
 import assets from "../../assets/assets";
@@ -24,6 +24,9 @@ import { CBox } from "components/material-ui";
 
 import { MediaIcon, MemberIcon, PinIcon, QuestionnairIcon } from "components/material-ui/icons";
 import Tooltip from '@mui/joy/Tooltip';
+
+import ChatMedia from './ChatMedia'
+import QuestioniarBody from "./Questioniar/ViewQuestioniarBody";
 
 interface Props {
   enable: boolean
@@ -276,8 +279,15 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
 
             <ChatPinned /></CBox>}
 
-          {content === 'media' && <CBox className={classes.box}>'media'</CBox>}
-          {content === 'questionnaire' && <CBox className={classes.box}>'questionnaire'</CBox>}
+          {content === 'media' && <CBox className={classes.box}>
+
+            <ChatMedia media={undefined} />
+
+          </CBox>}
+          {content === 'questionnaire' && <CBox className={classes.box}>
+
+            <ChatQuestioniar />
+          </CBox>}
 
 
 

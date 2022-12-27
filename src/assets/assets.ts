@@ -81,6 +81,9 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import SearchIcon from '@mui/icons-material/Search';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
+import GridViewIcon from '@mui/icons-material/GridView';
+import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+
 const assets= {
   GroupIcon,
   MoreVertOutlinedIcon,
@@ -159,7 +162,9 @@ const assets= {
   membersDelete,
   MoreVertIcon,
   SearchIcon,
-  ArrowForwardIosIcon
+  ArrowForwardIosIcon,
+  GridViewIcon,
+  PlayCircleOutlineIcon
 };
 
 export const sounds = {

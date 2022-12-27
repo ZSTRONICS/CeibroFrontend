@@ -13,8 +13,9 @@ import {
   setSelectedQuestioniar,
 } from "redux/action/chat.action";
 import moment from "moment-timezone";
+import { CBox } from "components/material-ui";
 
-interface chatMInt {}
+interface chatMInt { }
 
 const ChatMembers: React.FC<chatMInt> = (props) => {
   const { roomQuestioniars } = useSelector((state: RootState) => state.chat);
@@ -44,13 +45,19 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
 
 
   return (
-    <Grid container className={`chat-member-chip ${classes.wrapper}`}>
+    <CBox>
+      <CBox fontSize={22} fontWeight={600} fontFamily='Inter' color='#000000' mb={2.5}>
+        Questionarie
+      </CBox>
       <QuestioniarSearch value={searchText} handleChange={handleSearchChange} />
       {myQuestioniars?.map?.((question: ChatMessageInterface) => {
-     const DateString: string = moment(question?.dueDate).format("YYYY-MM-DD");
+        const DateString: string = moment(question?.dueDate).format("YYYY-MM-DD");
         return (
+
           <Grid item xs={12} className={classes.questioniarDetail}>
-            <img src={assets.documentIcon} alt=""/>
+            {JSON.stringify(myQuestioniars)}
+
+            <img src={assets.documentIcon} alt="" />
             <div
               className={classes.innerWrapper}
               onClick={() => handleClick(question.id)}
@@ -65,7 +72,7 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
           </Grid>
         );
       })}
-    </Grid>
+    </CBox>
   );
 };
 
