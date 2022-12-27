@@ -55,7 +55,7 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
         return (
 
           <Grid item xs={12} className={classes.questioniarDetail}>
-            {JSON.stringify(myQuestioniars)}
+
 
             <img src={assets.documentIcon} alt="" />
             <div
