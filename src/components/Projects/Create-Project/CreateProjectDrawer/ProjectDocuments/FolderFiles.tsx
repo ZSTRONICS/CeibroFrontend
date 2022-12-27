@@ -119,7 +119,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                 );
 
                 return (
-                  <TableRow key={file?.name}>
+                  <TableRow key={file?.id}>
                     <TableCell
                       onClick={() => {}}
                       style={{ display: "flex" }}

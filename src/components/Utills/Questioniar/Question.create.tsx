@@ -7,9 +7,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import TextField from "../Inputs/TextField";
-import { Cancel } from "@material-ui/icons";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
-import InputText from "../Inputs/InputText";
 import SelectDropdown from "../Inputs/SelectDropdown";
 import { availableQuestionTypes } from "../../../constants/questioniar.constants";
 // @ts-ignore
@@ -197,7 +195,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
                     </div>
                     <div className={classes.optionDelete}>
                       <IconButton onClick={() => handleRemove(index)}>
-                        <img src={assets.clearIcon} />
+                        <img src={assets.clearIcon} alt="" />
                       </IconButton>
                     </div>
                   </div>
