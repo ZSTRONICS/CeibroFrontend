@@ -165,13 +165,11 @@ const LoginForm: React.FC<Props> = (props) => {
           }) => (
             <Form onSubmit={handleSubmit}>
 
-              {(showSuccess || tokenLoading) && (
+              {/* {tokenLoading && (
                 <Alert severity="success">
-                  {tokenLoading
-                    ? `${t("auth.successAlerts.verifying_email")}`
-                    : `${t("auth.successAlerts.email_verified")}`}
+                  {`${t("auth.successAlerts.verifying_email")}`}
                 </Alert>
-              )}
+              )} */}
 
               {showError && (
                 <Alert severity="error">{t("auth.link_expired")}</Alert>
