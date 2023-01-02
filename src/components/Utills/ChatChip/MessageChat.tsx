@@ -317,7 +317,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
             </CBox>
             <CBox display='flex' justifyContent='flex-end' width='100%' pr={8.6}>
               {readBy?.map((readyByUser: UserInterface, i: any) => {
-                if (readyByUser.id === user.id || sender.id !== user.id) {
+                if (readyByUser?.id === user?.id || sender?.id !== user?.id) {
                   return <></>
                 }
                 return (
