@@ -1,14 +1,10 @@
-import React from 'react'
-import { Grid, makeStyles, Typography } from '@material-ui/core'
-import colors from '../../../assets/colors'
-import HorizontalBreak from '../../Utills/Others/HorizontalBreak'
+import { Grid, makeStyles } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import projectActions from '../../../redux/action/project.action'
+import colors from '../../../assets/colors'
 import { RootState } from '../../../redux/reducers'
+import DatePicker from '../../Utills/Inputs/DatePicker'
 import InputText from '../../Utills/Inputs/InputText'
 import SelectDropdown from '../../Utills/Inputs/SelectDropdown'
-import DatePicker from '../../Utills/Inputs/DatePicker'
-import DrawerSubTasks from './DrawerSubTask'
 import CreateSubTask from '../SubTasks/CreateSubTaskDrawer'
 
 function TaskDrawerMenu() {
@@ -28,7 +24,7 @@ function TaskDrawerMenu() {
                     placeholder="Enter Task title"
                 />
             </Grid>
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
                 <div className={classes.projectWrapper}>
                     <SelectDropdown 
                         title="Project"
@@ -36,7 +32,7 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid xs={12} md={3} >
+            <Grid item xs={12} md={3} >
                 <div className={classes.inputWrapper}>
                     <SelectDropdown 
                         title="Admin"
@@ -44,7 +40,7 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
                 <div className={classes.inputWrapper}>
                     <SelectDropdown 
                         title="Assign to"
@@ -52,13 +48,13 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid xs={12} md={3}>
+            <Grid item xs={12} md={3}>
                 <div className={classes.dateWrapper}>
                     <DatePicker/>
                 </div>
             </Grid>
 
-            <Grid xs={12} >
+            <Grid item xs={12} >
                 <div className={classes.createSubTask}>
                     <CreateSubTask/>
                 </div>
