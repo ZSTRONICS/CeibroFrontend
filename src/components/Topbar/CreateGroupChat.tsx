@@ -73,23 +73,26 @@ let localGroups:any= null
   };
 
     const groupWithMember:any = projectWithMembers.filter((proj:any) => {
-    if(project!==null){
-      if(proj._id === project.value){
+      if(!proj || !project){
+        return
+      }
+    if(project){
+      if(proj?._id === project?.value){
         localGroupMembers= proj?.projectMembers 
         localGroups= proj?.groups
-        return proj._id === project.value
+        return proj?._id === project?.value
     }}
     }).find((proj:any)=>proj)
 
     localGroupMembers = groupWithMember?.projectMembers?.filter((gMember: any) => {
-      const fullName = `${gMember.firstName} ${gMember.surName}`
+      const fullName = `${gMember?.firstName} ${gMember?.surName}`
       return (
           fullName.toLowerCase().includes(searchQuery.toLowerCase()) 
         );
       })
 
     localGroups = groupWithMember?.groups?.filter((group: any) => {
-      const groupName = `${group.name}`
+      const groupName = `${group?.name}`
       return (
         groupName.toLowerCase().includes(searchQuery.toLowerCase()) 
         );
