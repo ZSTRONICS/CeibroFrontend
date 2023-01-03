@@ -36,7 +36,6 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
     message: messageText,
     files,
     sender,
-    title,
     readBy,
     pinnedBy,
     createdAt

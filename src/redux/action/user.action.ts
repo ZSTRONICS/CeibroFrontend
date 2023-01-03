@@ -4,6 +4,8 @@ import {
   GET_AVAILABLE_USERS,
   GET_MY_CONNECTIONS_COUNT,
   OPEN_VIEW_INVITATIONS,
+  RESEND_INVITATION,
+  REVOKE_INVITAION,
   UPDATE_PROFILE_PIC,
 } from 'config/user.config'
 import {
@@ -20,6 +22,8 @@ import { createAction } from './action'
 
 export const sendInvitation = createAction(SEND_INVITATION)
 export const getMyAllInvites = createAction(GET_MY_ALL_INVITES)
+export const resendInvites = createAction(RESEND_INVITATION)
+export const revokeInvites = createAction(REVOKE_INVITAION)
 export const acceptInvite = createAction(ACCEPT_INVITE)
 export const getMyConnections = createAction(GET_MY_CONNECTIONS)
 export const deleteMyConnection = createAction(DELETE_MY_CONNECTION)

@@ -12,6 +12,8 @@ import {
   GET_USER_BY_ID,
   SEND_INVITATION,
   UPDATE_PROFILE_PIC,
+  RESEND_INVITATION,
+  REVOKE_INVITAION,
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
 
@@ -26,6 +28,19 @@ const getMyAllInvites = apiCall({
   method: 'get',
   path: '/users/invite',
 })
+
+const resendInvites = apiCall({
+  type: RESEND_INVITATION,
+  method: 'post',
+  path: 'users/reInvite',
+})
+
+const revokeInvites = apiCall({
+  type: REVOKE_INVITAION,
+  method: 'post',
+  path: 'users/revokeInvite',
+})
+
 const acceptInvite = apiCall({
   type: ACCEPT_INVITE,
   method: 'post',
@@ -103,6 +118,8 @@ const getAvailableUsers = apiCall({
 })
 
 function* userSaga() {
+  yield takeLatest(RESEND_INVITATION, resendInvites)
+  yield takeLatest(REVOKE_INVITAION, revokeInvites)
   yield takeLatest(SEND_INVITATION, inviteUser)
   yield takeLatest(GET_MY_ALL_INVITES, getMyAllInvites)
   yield takeLatest(ACCEPT_INVITE, acceptInvite)
