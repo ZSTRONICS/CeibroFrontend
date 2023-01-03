@@ -5,7 +5,7 @@ import NameAvatar from '../Utills/Others/NameAvatar'
 import ViewProfile from './ViewProfile'
 import React, { useEffect, useState } from 'react'
 import taskActions from '../../redux/action/project.action'
-import { getMyConnections } from 'redux/action/user.action'
+import { getMyConnections, resendInvites, revokeInvites } from 'redux/action/user.action'
 
 import { useDispatch } from 'react-redux'
 import { useMediaQuery } from 'react-responsive'
@@ -46,8 +46,20 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
     dispatch(createSingleRoom(payload))
   }
 
+  const handleResendInvite=(inviteId:string, isEmailInvite:boolean, email:string)=>{
+    const payload = { body: { inviteId, isEmailInvite, email}}
+    dispatch(resendInvites(payload))
+    // dispatch(resendInvites(payload))
+  }
+
+  const handleReInvokeInvite=(inviteId:string, isEmailInvite:boolean,)=>{
+    const payload = { body: { inviteId, isEmailInvite, }}
+    dispatch(revokeInvites(payload))
+    // dispatch(getMyConnections())
+  }
+  
   return (
-    <Grid container className={classes.wrapper} style={{ minHeight: 300 }}>
+    <Grid container className={classes.wrapper} style={{ minHeight: 300 }} >
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {connections.length < 1 && (
         <Typography className={classes.notRecord}>No connection found</Typography>
@@ -55,10 +67,12 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
 
       <Grid item xs={12}>
         {connections?.map?.((connection: any) => {
+          const inviteId = (connection.to===undefined || connection.from ===undefined)&& connection.id
+          const email = (connection.to===undefined || connection.from ===undefined)&& connection.email
           const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
           return (
-            <Grid item xs={12} key={user?.id} id={user?.id} className={classes.chipWrapper}>
-              <Grid container>
+            <Grid item xs={12} key={user?.id} id={user?.id} className={classes.chipWrapper} >
+              <Grid container justifyContent='space-between'>
                 <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
                   {!connection.email && (
                     <>
@@ -72,7 +86,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                           {`${user?.firstName} ${user?.surName}`}
                         </Typography>
                         <Typography className={classes.subTitleText}>
-                          {user?.companyName}
+                          {user?.companyName?user?.companyName:'No company added'}
                         </Typography>
                       </div>
                     </>
@@ -95,7 +109,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                   )}
                 </Grid>
                 <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
-                  <Button
+                 {!connection.email&& <> <Button
                     className={classes.btn}
                     variant="contained"
                     size={isTabletOrMobile ? 'small' : 'medium'}
@@ -115,7 +129,28 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                   >
                     Create task
                   </Button>
-                  <ViewProfile connectionId={connection.id} disabled={connection.email ? true : false} userId={user?.id} />
+                  </>}
+                 { connection.status!=='accepted'&&<>
+                 <Button
+                    className={`${classes.btn} ${classes.centerBtn}`}
+                    variant="contained"
+                    size={isTabletOrMobile ? 'small' : 'medium'}
+                    color="primary"
+                   onClick={()=>handleResendInvite(inviteId,connection.isEmailInvite, email)}
+                  >
+                    Resend 
+                  </Button>
+                  <Button
+                    onClick={()=>handleReInvokeInvite(inviteId,connection.isEmailInvite)}
+                    className={`${classes.btn} ${classes.centerBtn}`}
+                    variant="contained"
+                    size={isTabletOrMobile ? 'small' : 'medium'}
+                    color="primary"
+                  >
+                    Revoke 
+                  </Button>
+                  </>}
+                {!connection.email&&  <ViewProfile connectionId={connection.id} disabled={connection.email ? true : false} userId={user?.id} />}
                 </Grid>
               </Grid>
             </Grid>
@@ -135,6 +170,8 @@ const useStyles = makeStyles({
   },
   chipWrapper: {
     paddingTop: 10,
+    paddingBottom:'10px',
+    borderBottom:'1px solid #ECF0F1',
     '@media (max-width:600px)': {
       paddingTop: 20,
     },
@@ -159,11 +196,11 @@ const useStyles = makeStyles({
   btnWrapper: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'space-evenly',
+    justifyContent:'flex-end',
+    gap: '15px',
     '@media (max-width:960px)': {
-      flexDirection: 'column',
       alignItems: 'center',
-    },
+    }, 
   },
   btn: {
     fontSize: 12,

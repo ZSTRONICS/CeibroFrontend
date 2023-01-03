@@ -86,7 +86,7 @@ const SmartMenuBar = () => {
               >
                 Invitations
               </span>
-            { invites.length>0 && <Badge badgeContent={invites} color="error"></Badge>}
+            {invites>0&& <Badge badgeContent={invites} color="error"></Badge>}
             </span>
           </Typography>
           <Button

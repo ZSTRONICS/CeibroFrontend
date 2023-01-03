@@ -64,7 +64,7 @@ const useStyles = makeStyles((theme) => ({
   },
   children: {
     paddingBottom: 5,
-    padding: "10px 10px",
+    padding: "12px 12px",
     "@media (max-width:960px)": {
       padding: "10px 10px",
     },
