@@ -1,37 +1,47 @@
-import React, { useState, useEffect } from "react";
 import { Badge, makeStyles, Typography } from "@material-ui/core";
-import {
-  getAllStatus,
-  getColorByStatus,
-  SET_SELECTED_STATUS,
-} from "../../../config/project.config";
-import { getStyleClass } from "../../../config/styles.config";
-import colors from "../../../assets/colors";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   getProjectsWithPagination,
-  getStatus,
+  getStatus
 } from "redux/action/project.action";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import colors from "../../../assets/colors";
+import {
+  getColorByStatus
+} from "../../../config/project.config";
+import { getStyleClass } from "../../../config/styles.config";
 
-interface StatusMenuInt {
-  title: string;
-  count: number;
-}
+const options = [
+  {
+    title: "All",
+    count: 21,
+  },
+  {
+    title: "Active",
+    count: 30,
+  },
 
-interface StatusMenuProps {
-  options: StatusMenuInt[];
-}
+  {
+    title: "Done",
+    count: 44,
+  },
+  {
+    title: "Draft",
+    count: 44,
+  },
+];
 
-export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
-  const { options } = props;
+export const StatusMenu = () => {
+  // const { options } = props;
   const { getStatuses, drawerOpen } = useSelector(
     (state: RootState) => state.project
   );
+
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [filter, setFilter] = useState<string>("all");
+  const [filter, setFilter] = useState<string>("All");
   useEffect(() => {
     if (filter) {
       dispatch(projectActions.setSelectedStatus(filter));
@@ -47,23 +57,23 @@ export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
 
   return (
     <>
-      {getStatuses &&
-        getStatuses.map((option: any, index: any) => {
+      {options &&
+        options.map((option: any, index: any) => {
           return (
             <div
-              onClick={() => setFilter(option.name)}
+              onClick={() => setFilter(option.title)}
               key={index}
-              className={`${classes.statusChip} ${getStyleClass(option.name)}`}
+              className={`${classes.statusChip} ${getStyleClass(option.title)}`}
               style={{
                 border:
-                  filter === option.name
+                  filter === option.title
                     ? `1px solid ${colors.inputGrey}`
                     : "none",
                 borderRadius: 5,
               }}
             >
               <Typography className={classes.chipTitle}>
-                {option.name}
+                {option.title}
               </Typography>
               {option.count > 0 && (
                 <Badge
@@ -89,13 +99,11 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    marginRight:'5px',
-    ["@media (max-width:960px)"]: {
-      justifyContent: "space-between",
-    },
+    marginRight: "5px",
+
   },
   statusBage: {
-    marginLeft: 15,
+    marginLeft: 20,
   },
   chipTitle: {
     color: colors.primary,
@@ -103,22 +111,18 @@ const useStyles = makeStyles({
     fontWeight: 500,
     textTransform: "capitalize",
   },
-  ongoing: {
-    background: getColorByStatus("ongoing"),
+
+  all: {
+    background: getColorByStatus("all"),
   },
-  completed: {
-    background: getColorByStatus("completed"),
+  active: {
+    background: getColorByStatus("active"),
+  },
+
+  done: {
+    background: getColorByStatus("done"),
   },
   draft: {
     background: getColorByStatus("draft"),
-  },
-  approved: {
-    background: getColorByStatus("approved"),
-  },
-  submitted: {
-    background: getColorByStatus("submitted"),
-  },
-  rejeced: {
-    background: getColorByStatus("rejected"),
   },
 });

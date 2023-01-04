@@ -17,5 +17,7 @@ export const getStyleClass = (status: string) => {
                 return 'approved-badge';
             case 'draft':
                 return 'draft-badge'
+            case 'active':
+                return 'active-badge'
         }
     }

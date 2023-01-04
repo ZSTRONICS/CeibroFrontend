@@ -211,7 +211,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
-    paddingLeft: 33,
+    paddingLeft: 20,
     gap: 20,
     alignItems: "center",
     ["@media (max-width:960px)"]: {
