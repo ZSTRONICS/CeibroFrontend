@@ -28,11 +28,10 @@ const Project = () => {
                 </Grid>
             </Grid>
 
-            <Grid container className={classes.allStatus}>
+            {/* <Grid container className={classes.allStatus}>
                 <StatusMenu
-                    options={allStatus}
                 />
-            </Grid>
+            </Grid> */}
 
             <SubTaskList/>
         </Grid>

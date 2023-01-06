@@ -76,6 +76,7 @@ const Title = () => {
               size="small"
               color="primary"
               variant="contained"
+              style={{minWidth: '92px'}}
             >
               Create new
             </Button>
@@ -169,7 +170,7 @@ const Title = () => {
 
 export default Title;
 
-const useStyles = makeStyles({
+const useStyles =  makeStyles((theme) => ({
   login: {
     color: colors.white,
     textDecoration: "none",
@@ -187,7 +188,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingLeft: 0,
       minWidth: 300,
     },
@@ -203,19 +204,20 @@ const useStyles = makeStyles({
     width: "100%",
     paddingLeft: 33,
     gap: 20,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
     },
   },
+
   taskTitle: {
     display: "flex",
     justifyContent: "flex-start",
     width: "100%",
-    paddingLeft: 33,
+    paddingLeft: 20,
     gap: 20,
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
-      justifyContent: "space-between",
+    [theme.breakpoints.down(769)]: {
+    paddingLeft: 6,
     },
   },
   dashboardTitle: {
@@ -230,5 +232,9 @@ const useStyles = makeStyles({
   dashboardTitleText: {
     fontSize: 30,
     fontWeight: 500,
+    "@media (max-width:960px)":{
+      fontSize: 22,
+
+    }
   },
-});
+}));

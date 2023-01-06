@@ -96,7 +96,8 @@ const Project = () => {
       </Grid>
 
       <Grid container className={classes.allStatus}>
-        <StatusMenu options={allStatus} />
+        {/* <StatusMenu options={allStatus} /> */}
+        <StatusMenu />
       </Grid>
 
       <ProjectList />

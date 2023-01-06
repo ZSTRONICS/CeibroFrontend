@@ -10,6 +10,7 @@
   --aqua-green: #55bcb3;
   --purple-grey: #DBDBE5;
   --white: white;
+  --dark-gray: #7D7E80;
 }
 
 body {
@@ -26,13 +27,14 @@ iframe
 .Custompopover > div{
   margin-top: 30px;
 }
+
 .MuiTableCell-body {
   color: black !important;
 }
 
 .all-badge .MuiBadge-colorPrimary {
-  background: white;
-  color: var(--black) !important;
+  color: white !important;
+  background: var( --dark-gray);
 }
 
 .ongoing-badge .MuiBadge-colorPrimary {
@@ -46,12 +48,16 @@ iframe
 }
 
 .completed-badge .MuiBadge-colorPrimary {
-  background: var(--medium-grey);
-  color: black;
+  background: var(--aqua-green);
+  color: white;
+}
+.active-badge .MuiBadge-colorPrimary {
+  background: var(--dark-yellow);
+  color: white;
 }
 
 .draft-badge .MuiBadge-colorPrimary {
-  background: var(--light-black);
+  background: var( --dark-gray);
   color: white;
 }
 
@@ -330,10 +336,13 @@ button[disabled]{
   margin: 0px !important;
 }
 
+.MuiTypography-root{
+  font-family: Inter !important;
+}
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   font-size: 14px;
   font-weight: 500; 
-  padding-left: 10px;
+  /* padding-left: 10px; */
 }
 
 /* .MuiDialog-paper{
