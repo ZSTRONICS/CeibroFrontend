@@ -11,6 +11,11 @@ import "./translation/i18next";
 import { ConfirmProvider } from "material-ui-confirm";
 import { theme } from "theme";
 
+// hoist ThemeProvider to static const to avoid rerendering.its ensure that
+//  tag generated would not recalculate on each render.
+// will do it later while refactoring
+// const MuiThemeProvider = <ThemeProvider theme={theme} />
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>

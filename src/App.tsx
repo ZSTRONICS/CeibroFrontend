@@ -94,7 +94,7 @@ const App: React.FC<MyApp> = () => {
                   });
                   socket.sendMessageSeen(user.id, selectedChat, data.message._id)
                 } else {
-                  
+
                   socket.getUnreadMsgCount(user.id);
                   //dispatch(getAllChats());
                 }

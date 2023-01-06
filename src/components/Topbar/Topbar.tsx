@@ -2,12 +2,8 @@ import React from "react";
 import { useMediaQuery } from "react-responsive";
 
 // material
-import {
-  Badge,
-  Grid,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Badge, makeStyles, Typography } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 
 // redux
@@ -33,7 +29,7 @@ const Topbar = (props: any) => {
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const { user } = useSelector((state: RootState) => state.auth);
-  
+  const xsPoint = 1.5;
   const toggleNavbar = () => {
     dispatch(appActions.toggleNavbar());
   };
@@ -47,7 +43,7 @@ const Topbar = (props: any) => {
         className={classes.container}
       >
         {isTabletOrMobile && (
-          <Grid item xs={2} className={classes.menuIconWrapper}>
+          <Grid item xs={xsPoint} className={classes.menuIconWrapper}>
             <MenuIcon onClick={toggleNavbar} />
           </Grid>
         )}
@@ -79,33 +75,39 @@ const Topbar = (props: any) => {
             alignItems: "center",
           }}
         >
-          {!isTabletOrMobile &&
-            !window?.location?.pathname?.includes(`chat`) && (
+          {/* {!isTabletOrMobile && */}
+
+          <div className={classes.searchInputWraper}>
+            {!window?.location?.pathname?.includes(`chat`) && (
               <TopBarSearch onChange={(e: any) => {}} />
             )}
-          {!isTabletOrMobile && (
-            <div className={classes.nameWrapper}>
-              <Typography className={classes.username}>
-                {user?.firstName}
-              </Typography>
-              <Typography className={classes.username}>
-                {user?.surName}
-              </Typography>
-            </div>
-          )}
+          </div>
+
+          {/*  )} */}
+          {/* {isTabletOrMobile && ( */}
+          <div className={classes.nameWrapper}>
+            <Typography className={classes.username}>
+              {user?.firstName}
+            </Typography>
+            <Typography className={classes.username}>
+              {user?.surName}
+            </Typography>
+          </div>
+          {/* )} */}
 
           <ProfileView />
 
-          {!isTabletOrMobile && (
-            <Typography className={classes.notification}>
-              <Badge badgeContent={4}>
-                <img alt="notification"
-                    src={assets.notification}
-                  className={`${classes.bell} width-16`}
-                />
-              </Badge>
-            </Typography>
-          )}
+          {/* {!isTabletOrMobile && ( */}
+          <Typography className={classes.notification}>
+            <Badge badgeContent={4}>
+              <img
+                alt="notification"
+                src={assets.notification}
+                className={`${classes.bell} width-16`}
+              />
+            </Badge>
+          </Typography>
+          {/* )} */}
         </Grid>
       </Grid>
     </div>
@@ -133,6 +135,10 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     height: "100%",
+    [theme.breakpoints.down("sm")]: {
+      rowGap: "0",
+      columnGap: "5px",
+    },
   },
   searchInput: {
     height: 12,
@@ -155,6 +161,14 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     fontSize: 14,
     fontWeight: 500,
+    "@media (max-width:375px)": {
+      display: "none",
+    },
+  },
+  searchInputWraper:{
+    "@media (max-width:600px)": {
+      display: "none",
+    },
   },
   username: {
     fontSize: 14,

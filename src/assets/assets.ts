@@ -61,6 +61,7 @@ import DeleteIcon from './images/DeleteIcon.svg'
 import EditIcon from './images/edit.svg';
 import GroupIcon from './images/GroupIcon.svg';
 import GAvatar from './images/GAvatar.png';
+
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
@@ -77,8 +78,12 @@ import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
 import StarIcon from '@mui/icons-material/Star';
 import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 
 const assets= {
+  ErrorOutlinedIcon,
+  CheckCircleIcon,
   GroupIcon,
   GAvatar,
   MoreVertOutlinedIcon,
