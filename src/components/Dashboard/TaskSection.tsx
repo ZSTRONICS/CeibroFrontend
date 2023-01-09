@@ -74,7 +74,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           md={6}
           lg={8}
         >
-          <StatusMenu options={allStatus} />
+          <StatusMenu/>
         </Grid>
         <Grid item xs={12} md={2} lg={1}>
           <Button

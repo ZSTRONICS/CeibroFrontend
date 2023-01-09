@@ -2,6 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch, { SwitchProps } from '@mui/material/Switch';
+import { Typography } from '@material-ui/core';
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -17,7 +18,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
       transform: 'translateX(16px)',
       color: '#fff',
       '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#1976d2',
+        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#009900',
         opacity: 1,
         border: 0,
       },
@@ -52,14 +53,20 @@ const IOSSwitch = styled((props: SwitchProps) => (
       duration: 500,
     }),
   },
+  '& .MuiTypography-root':{
+    paddingLeft:0,
+    border:'1px solid'
+    }
+
 }));
 
 export default function CustomizedSwitch(props:any) {
     const {onChange, label, disabled} = props
   return (
-      <FormControlLabel 
+      <FormControlLabel
         control={<IOSSwitch sx={{ m: 1 }} defaultChecked ={false} onChange={onChange}  disabled={disabled}/>}
-        label={label}
+        label={<Typography style={{fontSize:'14px', fontWeight:'500'}}>{label}</Typography>}
+       
       />
   );
 }

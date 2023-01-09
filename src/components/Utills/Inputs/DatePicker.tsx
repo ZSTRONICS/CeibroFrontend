@@ -41,7 +41,7 @@ export default DatePicker;
 const useStyles = makeStyles({
   dateInput: {
     border: "none",
-    color: `${colors.black} !important`,
+    color: `#AEADBD !important`,
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 10,

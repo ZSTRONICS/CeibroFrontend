@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Box, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Badge,  Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers";
 import { getMyConnectionsCount } from "redux/action/user.action";

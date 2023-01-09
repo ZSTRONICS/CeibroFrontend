@@ -6,7 +6,7 @@ interface ColorCodes {
 }
 
 export const colorsByStatus: ColorCodes = {
-  all: colors.white,
+  all: colors.black,
   ongoing: colors.darkYellow,
   approved: colors.primary,
   completed: colors.mediumGrey,
@@ -82,10 +82,11 @@ export function getAllStatus(): ProjectMenues[] {
     },
   ];
 }
+
 export function getProjectStatus(): ProjectMenues[] {
   return [
     {
-      title: "Alldf",
+      title: "All",
       count: 3,
     },
     {
@@ -118,6 +119,7 @@ const projectReduxConfigs = {
   CLOSE_DRAWER: "CLOSE_DRAWER",
   SET_MENUE: "SET_MENUE",
 };
+
 export const GET_PROJECTS = "GET_PROJECTS";
 export const GET_PROJECTS_WITH_MEMBERS = "GET_PROJECTS_WITH_MEMBERS";
 export const GET_PROJECTS_WITH_PAGINATION = "GET_PROJECTS_WITH_PAGINATION";
