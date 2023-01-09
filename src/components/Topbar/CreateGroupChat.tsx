@@ -109,15 +109,15 @@ let localGroups:any= null
     const handleGroupMember = (e: any, group:any) => {
       if(selectedGroupIds.includes(group._id)){
         setSelectedGroupId((groupIds: any) => (groupIds.filter((groupId:any) => (groupId !== group._id))))
-        const groupMembersId= group.members.map((member:any)=>member.id)
+        const groupMembersId= group.members.map((member:any)=>member._id)
         setUsers((users: any) => users.filter((user: any) => !groupMembersId.includes(user)));
 
       }else{
         setSelectedGroupId((previousIds: any) => [...previousIds, group._id])
-        const groupMembersId= group.members.map((member:any)=>member.id)
+        const groupMembersId= group.members.map((member:any)=>member._id)
         setUsers((previousIds: any) => [...previousIds, ...groupMembersId])
       }
-   //  const groupMembersId= group.members.map((member:any)=>member.id)
+   //  const groupMembersId= group.members.map((member:any)=>member._id)
      
     //  if (!users?.includes?.(e.target.value)) {
     //    setUsers(groupMembersId);
@@ -209,7 +209,7 @@ let localGroups:any= null
               <Grid container>
                 <Typography p={0.4}>Project Groups</Typography>
                 {groupWithMember?.projectMembers?.map((member: any) => {
-                  if (!users?.includes(String(member.id))) return null;
+                  if (!users?.includes(String(member._id))) return null;
 
                   return (
                     <Grid item xs={4} md={2} className={classes.selectedUser}>
@@ -219,7 +219,7 @@ let localGroups:any= null
                         url={member?.profilePic}
                       />
                       <Cancel
-                        onClick={() => removeSelectedUser(member.id)}
+                        onClick={() => removeSelectedUser(member._id)}
                         className={classes.cancelIcon}
                       />
                     </Grid>

@@ -51,7 +51,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (selectedChat) {
-      socket.joinChatRoom(user.id, selectedChat)
+      socket.joinChatRoom(user._id, selectedChat)
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
@@ -59,7 +59,7 @@ const Chat = () => {
       if (myChat) {
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
-          (member: UserInterface) => member.id === user?.id
+          (member: UserInterface) => member._id === user?._id
         );
         setEnable(myUserIndex > -1);
       } else {

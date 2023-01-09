@@ -67,11 +67,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
 
       <Grid item xs={12}>
         {connections?.map?.((connection: any) => {
-          const inviteId = (connection.to===undefined || connection.from ===undefined)&& connection.id
+          const inviteId = (connection.to===undefined || connection.from ===undefined)&& connection._id
           const email = (connection.to===undefined || connection.from ===undefined)&& connection.email
           const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
           return (
-            <Grid item xs={12} key={user?.id} id={user?.id} className={classes.chipWrapper} >
+            <Grid item xs={12} key={user?._id} id={user?._id} className={classes.chipWrapper} >
               <Grid container justifyContent='space-between'>
                 <Grid item xs={12} md={4} lg={7} className={classes.userWrapper}>
                   {!connection.email && (
@@ -115,7 +115,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                     size={isTabletOrMobile ? 'small' : 'medium'}
                     color="primary"
                     disabled={connection.email}
-                    onClick={() => startRoom(connection.sentByMe?connection.to.id:connection.from.id)}
+                    onClick={() => startRoom(connection.sentByMe?connection.to._id:connection.from._id)}
                   >
                     Start conversation
                   </Button>
@@ -150,7 +150,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                     Revoke 
                   </Button>
                   </>}
-                {!connection.email&&  <ViewProfile connectionId={connection.id} disabled={connection.email ? true : false} userId={user?.id} />}
+                {!connection.email&&  <ViewProfile connectionId={connection._id} disabled={connection.email ? true : false} userId={user?._id} />}
                 </Grid>
               </Grid>
             </Grid>

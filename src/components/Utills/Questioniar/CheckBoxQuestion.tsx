@@ -48,7 +48,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
     //   updating question in global state
     const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
     const myQuestionIndex: number = myQuestioniars?.findIndex(
-      (question: QuestioniarInterface) => question?.id === id
+      (question: QuestioniarInterface) => question?._id === id
     );
     if (myQuestionIndex > -1) {
       const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];
@@ -84,7 +84,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
                       <FormControlLabel
                         key={index}
                         className={`options-text ${classes.smallRadioButton}`}
-                        control={<CustomCheckbox name={option.id} />}
+                        control={<CustomCheckbox name={option._id} />}
                         label={option.option}
                         value={index}
                         disabled={answeredByMe}

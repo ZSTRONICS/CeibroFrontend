@@ -105,7 +105,7 @@ export default function BasicTable() {
           {getNewWorkList && getNewWorkList.length > 0 ? (
             <>
               {getNewWorkList.map((row: ProfileWork) => (
-                <TableRow key={row.id}>
+                <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
                     <Typography className={classes.name}>{row.name}</Typography>
                   </TableCell>
@@ -136,7 +136,7 @@ export default function BasicTable() {
                     <div>
                       <img
                           src={assets.pencilIcon}
-                        onClick={() => handleWorkClick(row?.id)}
+                        onClick={() => handleWorkClick(row?._id)}
                         className="pointer"
                       />
 
@@ -149,7 +149,7 @@ export default function BasicTable() {
                       <img
                           src={assets.DeleteIcon}
                         className="w-16 pointer"
-                        onClick={() => deleteTimeProfileWork(row?.id)}
+                        onClick={() => deleteTimeProfileWork(row?._id)}
                       />
                     </div>
                   </TableCell>

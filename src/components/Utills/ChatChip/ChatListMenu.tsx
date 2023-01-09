@@ -33,8 +33,8 @@ const ChatListMenue: React.FC<Props> = (props) => {
   const { room } = props;
   const classes = useStyles();
   const { user } = useSelector((state: RootState) => state.auth);
-  const isMuted = room?.mutedBy?.includes(user?.id);
-  const isFavourite = room?.pinnedBy?.includes(user?.id);
+  const isMuted = room?.mutedBy?.includes(user?._id);
+  const isFavourite = room?.pinnedBy?.includes(user?._id);
   const dispatch = useDispatch();
   const confirm = useConfirm();
 

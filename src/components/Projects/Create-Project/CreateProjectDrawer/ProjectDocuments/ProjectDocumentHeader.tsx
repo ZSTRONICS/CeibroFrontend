@@ -43,7 +43,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
     if (selectedFolder && findDoc) {
       dispatch(
         getFolderFiles({
-          other: { selectedFolder: selectedFolder?.id, findDoc },
+          other: { selectedFolder: selectedFolder?._id, findDoc },
         })
       );
     }

@@ -44,7 +44,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const myChat = allChats?.length>0 && allChats?.find?.(
     (room: any) => String(room._id) === String(selectedChat)
   );
-  const individualChatName = myChat?.members?.find((member: any) => member.id !== user.id)
+  const individualChatName = myChat?.members?.find((member: any) => member._id !== user._id)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e?.target?.value);

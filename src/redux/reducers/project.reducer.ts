@@ -210,7 +210,7 @@ const AppReducer = (
         ...state,
         allProjects: action.payload?.result?.map?.((project: any) => ({
           label: project?.title,
-          value: project.id,
+          value: project._id,
         })),
       };
     }
@@ -299,7 +299,7 @@ const AppReducer = (
     case requestSuccess(CREATE_NEW_PROFILE): {
       return {
         ...state,
-        selectedTimeProfile: action.payload?.data?.id,
+        selectedTimeProfile: action.payload?.data?._id,
       };
     }
     case GET_FILTER_PROJECTS: {
@@ -349,7 +349,7 @@ const AppReducer = (
         owner: action.payload?.owner?.map((user: UserInterface) => {
           return {
             label: user?.firstName + " " + user?.surName,
-            value: user?.id,
+            value: user?._id,
           };
         }),
       };

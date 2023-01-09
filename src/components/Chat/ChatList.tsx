@@ -59,7 +59,7 @@ const ChatList = () => {
     dispatch(
       getAllChats({
         success: (_res: any) => {
-          socket.getUnreadMsgCount(user.id);
+          socket.getUnreadMsgCount(user._id);
           if (_res?.data?.userallchat.length === 0){
             dispatch(setSelectedChat({ other: null }));
           }
@@ -99,7 +99,7 @@ const ChatList = () => {
             }
 
             if (
-              chatMembers?.findIndex((item: any) => item?.id === user?.id) > -1
+              chatMembers?.findIndex((item: any) => item?._id === user?._id) > -1
             ) {
               return (
                 <ChatListChip

@@ -99,7 +99,7 @@ export default function CreateGroup() {
                         >
                             <Grid container>
                                 {projectMembers?.map((member: any) => {
-                                    if (!users?.includes?.(String(member?.user?.id)))
+                                    if (!users?.includes?.(String(member?.user?._id)))
                                         return null;
 
                                     return (
@@ -115,7 +115,7 @@ export default function CreateGroup() {
                                                 url={member?.user?.profilePic}
                                             />
                                             <Cancel
-                                                onClick={() => removeSelectedUser(member.id)}
+                                                onClick={() => removeSelectedUser(member._id)}
                                                 className={classes.cancelIcon}
                                             />
                                         </Grid>
@@ -153,9 +153,9 @@ export default function CreateGroup() {
                                             <Grid item xs={2}>
                                                 <CustomCheckbox
                                                     onClick={handleUserChange}
-                                                    value={member?.user?.id}
+                                                    value={member?.user?._id}
                                                     name={"s"}
-                                                    checked={users?.includes?.(member?.user?.id)}
+                                                    checked={users?.includes?.(member?.user?._id)}
                                                 />
                                             </Grid>
                                         </Grid>

@@ -86,9 +86,9 @@ const CreateIndividualChat = (props: any) => {
     setSearchField(searchVal)
   }, []);
 
-  const startSingleRoomChat = (id: string) => {
+  const startSingleRoomChat = (_id: string) => {
     const payload = {
-      other: { id }, success: () => {
+      other: { _id }, success: () => {
         //  dispatch(setSelectedChat({ other: id }));
         toast.success('single chat room started')
         dispatch(getAllChats());
@@ -127,7 +127,7 @@ const CreateIndividualChat = (props: any) => {
           {filterdList?.map?.((connection: any) => {
 
             if(connection.status !== 'accepted' ) return
-            const startRoomId = connection.sentByMe ? connection.to.id : connection.from.id
+            const startRoomId = connection.sentByMe ? connection.to._id : connection.from._id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
               : connection.from;

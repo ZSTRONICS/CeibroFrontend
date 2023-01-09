@@ -104,10 +104,17 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case GET_PROFILE: {
-      return {
-        ...state,
-        user: action.payload,
-      };
+      if (action?.payload?.body) {
+
+        return {
+          ...state,
+          user: action.payload,
+        };
+      }else{
+        return {
+          ...state
+        }
+      }
     }
 
     case UPDATE_MY_PROFILE: {

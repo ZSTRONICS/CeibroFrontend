@@ -92,7 +92,7 @@ const RolesTable = () => {
           return (
             <div
               className={classes.roleChip}
-              onClick={() => handleRoleClick(role?.id)}
+              onClick={() => handleRoleClick(role?._id)}
             >
               <div className={classes.roleInner}>
                 <Typography className={classes.roleName}>
@@ -151,7 +151,7 @@ const RolesTable = () => {
                 <RoleMenu
                   permissoin={havePermission}
                   onEdit={handleRoleClick}
-                  onDelete={() => handleDelete(role?.id)}
+                  onDelete={() => handleDelete(role?._id)}
                   name={role?.name}
                 />
               </div>

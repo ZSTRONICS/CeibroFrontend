@@ -48,7 +48,7 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
     //   updating question in global state
     const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
     const myQuestionIndex: number = myQuestioniars?.findIndex(
-      (question: QuestioniarInterface) => question?.id === id
+      (question: QuestioniarInterface) => question?._id === id
     );
     if (myQuestionIndex > -1) {
       const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];

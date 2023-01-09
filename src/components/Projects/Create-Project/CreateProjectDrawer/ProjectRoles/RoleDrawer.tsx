@@ -72,7 +72,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         roles: role.roles,
         member: role.member,
         memberIds: role?.memberIds?.map?.((row: dataInterface) => {
-          return row.id;
+          return row._id;
         }),
         timeProfile: role.timeProfile,
       },

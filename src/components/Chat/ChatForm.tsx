@@ -133,7 +133,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           (msg: any) => String(msg._id) === String(replyToId)
         );
         if (replyMessage) {
-          replyMessage.id = replyMessage._id;
+          replyMessage._id = replyMessage._id;
         }
       }
 
@@ -142,12 +142,12 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
-      // payload.userId = user.id
+      // payload.userId = user._id
       
       const data = {
         eventType: SEND_MESSAGE,
         data: {
-          userId: user.id,
+          userId: user._id,
           message: JSON.stringify(payload),
         }
       }
@@ -160,7 +160,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         message: text,
         seen: true,
         type: "message",
-        myMessage:user.id,
+        myMessage:user._id,
         _id: myId,
         pinnedBy:[],
         chat: selectedChat,
@@ -250,7 +250,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           sender: user,
           time: "a few seconds ago",
           seen: true,
-          myMessage: String(user.id),
+          myMessage: String(user._id),
           replyOf: replyMessage,
           voiceUrl: blob.url,
           pinnedBy:[],
@@ -392,7 +392,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               return (
                 <FilePreviewer
                   file={preview}
-                  id={index}
+                  _id={index}
                   handleClick={handleFileClick}
                   showControls={true}
                 />

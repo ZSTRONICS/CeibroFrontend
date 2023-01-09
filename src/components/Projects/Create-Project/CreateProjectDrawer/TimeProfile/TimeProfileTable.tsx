@@ -93,8 +93,8 @@ const RolesTable = () => {
             <>
               {projectProfile.map((row: any) => (
                 <TableRow
-                  key={row.id}
-                  onClick={() => handleTimeProfileClick(row.id)}
+                  key={row._id}
+                  onClick={() => handleTimeProfileClick(row._id)}
                 >
                   <TableCell
                     component="th"

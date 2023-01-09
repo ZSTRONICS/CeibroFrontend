@@ -41,7 +41,7 @@ export interface userRolesPermissions {
 
 export interface RoleInterface {
   name: string;
-  id?: string;
+  _id?: string;
   roles?: string[];
   admin?: boolean;
   member?: string[];
@@ -51,7 +51,7 @@ export interface RoleInterface {
 
 export interface projectProfileInterface {
   name: string;
-  id?: string;
+  _id?: string;
 }
 
 export const projectOverviewTemplate: ProjectOverviewInterface = {
@@ -94,7 +94,7 @@ export interface FolderFileInterface {
   uploadedBy: UserInterface;
   fileType: string;
   createdAt?: string;
-  id?: string;
+  _id?: string;
 }
 
 export interface MemberInterface {
@@ -111,13 +111,13 @@ export interface MemberInterface {
 
 export interface TimeProfile {
   name: string;
-  id: string;
+  _id: string;
   project: string | ProjectInterface;
 }
 export interface ProfileWork {
   comment: boolean;
   commentRequired: boolean;
-  id: string;
+  _id: string;
   name: string;
   photo: string;
   photoRequired: string;
