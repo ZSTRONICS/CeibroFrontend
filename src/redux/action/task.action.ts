@@ -1,4 +1,5 @@
-import configs from "../../config/task.config"
+import configs, { GET_TASK } from "../../config/task.config"
+import { createAction } from './action';
 
 const taskActions = {
     openDrawer: () => {
@@ -18,5 +19,7 @@ const taskActions = {
         }
     }
 }
+
+export const getAllTask = createAction(GET_TASK)
 
 export default taskActions

@@ -1,22 +1,23 @@
 import React from 'react'
-import {Box, Grid, Paper,  } from '@mui/material';
+// mui-imports
+import { makeStyles } from '@material-ui/core';
+import { Box, Grid, Paper } from '@mui/material';
 
+// components
+import assets from 'assets/assets';
+import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
-import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
-import assets from 'assets/assets';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
-import { makeStyles } from '@material-ui/core';
-import TaskList from './TaskList';
-import TaskCard from 'components/TaskComponent/Tabs/TaskCard';
-import { Stack } from '@mui/system';
-import SubTaskList from '../SubTasks/SubTaskList';
 import TaskList1 from './TaskList1';
+
 const TaskMain=()=> {
   let xsPoint = 12
   let mdPoint = 4
   let lgPoint = 3.2
 const classes = useStyles()
+
+
   return (<>
     <Box sx={{flexGrow:1}}>
     <Grid container spacing={1.7} className={classes.TaskWraper} >

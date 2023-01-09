@@ -1,36 +1,59 @@
 import { ActionInterface } from ".";
-import config from '../../config/task.config'
+import config, { GET_TASK } from '../../config/task.config'
+import { TaskCards } from "constants/interfaces/Tasks.interface";
 
-const intialStatue = {
-    drawerOpen: false,
-    menue: 1
+interface TaskReducerInt {
+    TaskCards: TaskCards[]
+    page: number
+    limit: number
+    totalPages: number
+    totalResults: number
 }
 
-const AppReducer = (state = intialStatue, action: ActionInterface ) => {
+const intialStatue:TaskReducerInt = {
+    TaskCards: [],
+    page: 0,
+    limit: 0,
+    totalPages: 0,
+    totalResults: 0
+}
 
+const TaskReducer = (state = intialStatue, action: ActionInterface ):TaskReducerInt => {
     switch(action.type) {
-        case config.OPEN_TASK_DRAWER:
+        case GET_TASK:
+            console.log(action.payload)
             return {
-                ...state,
-                drawerOpen: true
-            }
+                    ...state,
+                    TaskCards:action.payload
+                }
 
-        case config.CLOSE_TASK_DRAWER: 
-            return {
-                ...state,
-                drawerOpen: false
-            }
-
-        case config.SET_MENUE: 
-            return {
-                ...state,
-                menue: action.payload
-            }
-        
-        default:
+            default:
             return state
+        
     }
+    // switch(action.type) {
+    //     case config.OPEN_TASK_DRAWER:
+    //         return {
+    //             ...state,
+    //             drawerOpen: true
+    //         }
+
+    //     case config.CLOSE_TASK_DRAWER: 
+    //         return {
+    //             ...state,
+    //             drawerOpen: false
+    //         }
+
+    //     case config.SET_MENUE: 
+    //         return {
+    //             ...state,
+    //             menue: action.payload
+    //         }
+        
+    //     default:
+    //         return state
+    // }
         
 } 
 
-export default AppReducer
+export default TaskReducer
