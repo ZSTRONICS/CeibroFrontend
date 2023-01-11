@@ -27,8 +27,7 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
     //   month: "numeric",
   //   year: "numeric",
   // });
-  
-  console.log('Date1', dueDate)
+
   const SubHeader = () => {
     return (
       <>
@@ -94,6 +93,7 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   return (
     //  <Grid item  className={classes.cardContainer}>
       <Card className={classes.cardContainer}
+      key={task._id}
       sx={{
        
         width: "100%",

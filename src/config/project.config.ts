@@ -29,7 +29,6 @@ const textColorsByStatus: ColorCodes = {
 };
 
 export function getColorByStatus(status: string): string {
-  console.log(status)
   return colorsByStatus[status.toLowerCase()];
 }
 

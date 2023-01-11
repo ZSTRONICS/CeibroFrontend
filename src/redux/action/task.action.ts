@@ -1,20 +1,21 @@
-import configs, { GET_TASK } from "../../config/task.config"
+import { GET_TASK, SET_MENUE, OPEN_NEW_TASK, CLOSE_NEW_TASK } from "../../config/task.config"
 import { createAction } from './action';
 
 const taskActions = {
-    openDrawer: () => {
+    
+    openNewTask: () => {
         return {
-                type: configs.OPEN_TASK_DRAWER
+                type: OPEN_NEW_TASK
             }
     },
-    closeDrawer: () => {
-        return {
-            type: configs.CLOSE_TASK_DRAWER
+    closeNewTask: () =>{
+        return{
+            type:CLOSE_NEW_TASK
         }
     },
     setMenue: (id: number) => {
         return {
-            type: configs.SET_MENUE,
+            type: SET_MENUE,
             payload: id
         }
     }

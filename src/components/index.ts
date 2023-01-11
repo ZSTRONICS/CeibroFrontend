@@ -21,6 +21,8 @@ import ViewQuestioniarDrawer from "./Chat/Questioniar/ViewQuestioniar";
 import Tasks from "./Tasks/TaskList/Task";
 import SubTask from "./Tasks/SubTasks/SubTask";
 import CreateTaskDrawer from "./Tasks/Create-Task/CreateTaskDrawer";
+import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
+
 
 // project
 import Projects from "./Projects/ProjectList/Project";
@@ -31,6 +33,7 @@ import RouterConfig from "navigation/RouterConfig";
 
 export {
   RouterConfig,
+  TaskModal,
   CreateQuestioniarDrawer, 
  ViewQuestioniarDrawer ,
  CreateProjectDrawer, 

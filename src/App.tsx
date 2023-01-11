@@ -10,7 +10,7 @@ import {
   CreateProjectDrawer,
   CreateTaskDrawer,
   ViewInvitations,
-  RouterConfig
+  RouterConfig,
 } from 'components'
 
 // socket
@@ -179,14 +179,12 @@ const App: React.FC<MyApp> = () => {
           default:
             break
         }
-
       });
 
       socket.getSocket().on(CEIBRO_LIVE_EVENTS, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const payload = dataRcvd.data
-        console.log(eventType);
-        
+        // console.log(eventType);
       });
     }
   }, [isLoggedIn]);

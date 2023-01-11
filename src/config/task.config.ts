@@ -1,14 +1,13 @@
 
-const taskReduxConfigs = {
-    OPEN_TASK_DRAWER: 'OPEN_TASK_DRAWER',
-    CLOSE_TASK_DRAWER: 'CLOSE_TASK_DRAWER',
-    SET_MENUE: 'SET_MENUE'
-}
-const GET_TASK = 'GET_TASK'
-const CREATE_TASK = 'CREATE_TASK'
-const EDIT_TASK = 'EDIT_TASK'
-const DELETE_TASK = 'DELETE_TASK'
-const OPEN_TASK_MODAL = 'OPEN_TASK_MODAL'
+
+  const SET_MENUE='SET_MENUE',
+        OPEN_NEW_TASK= 'OPEN_NEW_TASK',
+        CLOSE_NEW_TASK= 'CLOSE_NEW_TASK',
+        GET_TASK = 'GET_TASK',
+        CREATE_TASK = 'CREATE_TASK',
+        EDIT_TASK = 'EDIT_TASK',
+        DELETE_TASK = 'DELETE_TASK',
+        OPEN_TASK_MODAL = 'OPEN_TASK_MODAL'
 
 export {
     GET_TASK,
@@ -16,5 +15,7 @@ export {
     EDIT_TASK,
     DELETE_TASK,
     OPEN_TASK_MODAL,
+    OPEN_NEW_TASK,
+    CLOSE_NEW_TASK,
+    SET_MENUE
 }
-export default taskReduxConfigs

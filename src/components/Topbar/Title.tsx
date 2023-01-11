@@ -24,10 +24,11 @@ const Title = () => {
     dispatch(projectActions.openDrawer());
   };
 
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer());
-  };
-
+  const openTaskModal = () => {
+    console.log('open')
+		dispatch(taskActions.openNewTask());
+	  };
+	  
   const goBack = () => {
     history.goBack();
   };
@@ -72,7 +73,7 @@ const Title = () => {
               Task
             </Typography>
             <Button
-              onClick={openTaskDrawer}
+              onClick={openTaskModal}
               size="small"
               color="primary"
               variant="contained"

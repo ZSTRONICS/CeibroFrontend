@@ -7,10 +7,12 @@ import TabsUnstyled from "@mui/base/TabsUnstyled";
 import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
 import TaskMain from "./TaskMain";
 import SubTaskMain from '../SubTasks/SubTaskMain';
+import { TaskModal } from 'components/TaskComponent/TaskModal/TaskModal';
 
 const Task = () => {
 
-  return (
+  return (<>
+      <TaskModal/>
     <Grid item xs={12}>
         <TabsUnstyled defaultValue={0}>
           <TabsList>
@@ -25,6 +27,7 @@ const Task = () => {
           </TabPanel>
         </TabsUnstyled>
     </Grid>
+  </>
   );
 };
 
