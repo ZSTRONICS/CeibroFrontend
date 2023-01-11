@@ -17,10 +17,10 @@ const Task = () => {
             <Tab>Task</Tab>
             <Tab>Subtasks</Tab>
           </TabsList>
-          <TabPanel value={1}>
+          <TabPanel value={0}>
             <TaskMain/>
           </TabPanel>
-          <TabPanel value={0}>
+          <TabPanel value={1}>
             <SubTaskMain/>
           </TabPanel>
         </TabsUnstyled>
