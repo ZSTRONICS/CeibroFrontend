@@ -8,6 +8,7 @@ interface ColorCodes {
 export const colorsByStatus: ColorCodes = {
   all: colors.black,
   ongoing: colors.darkYellow,
+  active: colors.darkYellow,
   approved: colors.primary,
   completed: colors.mediumGrey,
   draft: colors.lightBlack,
@@ -28,6 +29,7 @@ const textColorsByStatus: ColorCodes = {
 };
 
 export function getColorByStatus(status: string): string {
+  console.log(status)
   return colorsByStatus[status.toLowerCase()];
 }
 

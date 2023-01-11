@@ -55,7 +55,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     if (questioniars) {
       const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
       const myQuestion: QuestioniarInterface = myQuestioniars?.find(
-        (question: QuestioniarInterface) => question?.id === id
+        (question: QuestioniarInterface) => question?._id === id
       );
       if (myQuestion) {
         setQuestionText(myQuestion.question);
@@ -84,7 +84,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
         //   updating question in global state
         const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
         const myQuestionIndex: number = myQuestioniars?.findIndex(
-          (question: QuestioniarInterface) => question?.id === id
+          (question: QuestioniarInterface) => question?._id === id
         );
         if (myQuestionIndex > -1) {
           const myQuestion: QuestioniarInterface =

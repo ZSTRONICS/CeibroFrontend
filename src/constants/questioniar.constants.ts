@@ -20,7 +20,7 @@ export const getNewQuestionTemplate = (id: any) => {
   const newQuestionTemplate: QuestioniarInterface = {
     type: "multiple",
     question: "",
-    id,
+    _id: id,
     options: [""],
   };
   return newQuestionTemplate;

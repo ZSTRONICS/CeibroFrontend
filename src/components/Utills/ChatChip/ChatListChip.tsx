@@ -45,13 +45,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const chatMembers = [...chat.members, ...chat.removedAccess]
 
   if (chat.isGroupChat === false) {
-    let chatMember = chatMembers.filter((item) => item.id !== user.id);
+    let chatMember = chatMembers.filter((item) => item._id !== user._id);
     if (chatMember.length === 0) {
       chatMember = chat.removedMembers;
     }
 
     chatMember
-      .filter((item) => item.id !== user.id)
+      .filter((item) => item._id !== user._id)
       .map((item: any) => (
         (avaterInfo.firstName = item.firstName),
         (avaterInfo.surName = item.surName),
@@ -92,7 +92,7 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
     );
   };
 
-  const bookmarked = chat?.pinnedBy?.includes(user?.id);
+  const bookmarked = chat?.pinnedBy?.includes(user?._id);
   const unreadLocalCount = unreadCount > 0 ? unreadCount : null;
   return (
     <>

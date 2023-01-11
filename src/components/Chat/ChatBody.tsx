@@ -11,7 +11,9 @@ import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
 import MessageChat from "../Utills/ChatChip/MessageChat";
 import { Box } from "@mui/material";
 import moment from "moment-timezone";
-import NoConversation from "./NoConversation";
+import NoData from "./NoData";
+import { Chat } from "@material-ui/icons";
+import colors from "assets/colors";
 
 interface ChatBodyInt {
   enable: boolean;
@@ -24,7 +26,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
   const dispatch = useDispatch();
 
   if (!selectedChat) {
-    return <NoConversation />;
+    return <NoData title="There is no conversation" icon={<Chat className={classes.chatIcon} />}/>;
   }
 
   const goToBottom: any = document.getElementById("goToBottom");
@@ -111,4 +113,8 @@ const useStyles = makeStyles({
     display: "block",
     position: "relative",
   },
+  chatIcon: {
+    fontSize: 50,
+    color: colors.lightBlack
+}
 });

@@ -58,7 +58,7 @@ const deleteMyConnection = apiCall({
   type: DELETE_MY_CONNECTION,
   method: 'delete',
   path: (payload: any) => {
-    let url = `/users/connection/${payload?.other?.id}`
+    let url = `/users/connection/${payload?.other?._id}`
 
     const params: string = Object.keys(payload.params).map(
       key => `${key}=${payload.params[key]}&`

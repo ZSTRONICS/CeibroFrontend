@@ -19,14 +19,14 @@ export function formatDate(date: any) {
 export function mapGroups(groups: any) {
   return groups?.map((list: any) => ({
     label: list.name,
-    value: list.id,
+    value: list._id,
   }));
 }
 
 export function mapRoles(roles: RoleInterface[]): dataInterface[] {
   return roles?.map((role: RoleInterface) => ({
     label: role.name || "",
-    value: role.id || "",
+    value: role._id || "",
   }));
 }
 

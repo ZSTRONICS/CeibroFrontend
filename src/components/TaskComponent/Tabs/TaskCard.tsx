@@ -1,6 +1,6 @@
 import * as React from "react";
 import { MoreVert } from "@material-ui/icons";
-import { Box, Button, CardActions, Divider, Grid, Stack } from "@mui/material";
+import { Box, Button, CardActions, Divider, Grid, Stack, Tooltip } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardHeader from "@mui/material/CardHeader";
@@ -9,29 +9,53 @@ import { styled } from "@mui/material/styles";
 import Typography from "@mui/material/Typography";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
-import { makeStyles } from "@material-ui/core";
+import { Badge, makeStyles } from "@material-ui/core";
+import { AssignedTo, Result, State } from "constants/interfaces/Tasks.interface";
+import moment from "moment-timezone";
 
-const TaskCard = (props: any) => {
-  const { ColorByStatus, task } = props;
+interface Props{
+  task: Result
+  ColorByStatus:(state:string)=>string
+}
+
+const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
+  
+  const dueDate =  moment.utc(moment(task.dueDate)).format('DD.MM.YYYY');
   const classes = useStyles();
-  const start = new Date().toLocaleDateString("de-DE", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
-
+  // const dueDate = new Date().toLocaleDateString("de-DE", {
+    //   day: "numeric",
+    //   month: "numeric",
+  //   year: "numeric",
+  // });
+  
+  console.log('Date1', dueDate)
   const SubHeader = () => {
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus>Active</TaskStatus>
+          <TaskStatus sx={{  border: `1px solid ${ColorByStatus(task.state)}`}}>{task.state}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
-            {start}
+            {dueDate}
           </Typography>
         </CustomStack>
       </>
     );
   };
+
+  const AssignedToList = ()=>{
+    return (
+      <CustomStack>
+       {task.assignedTo.map((item:AssignedTo)=>{
+        return (
+          <span>
+        {`${item.firstName} ${item.surName}`}
+        </span>
+        )
+       })
+      }
+      </CustomStack>
+    )
+  }
 
   const Action = () => {
     return (
@@ -49,13 +73,13 @@ const TaskCard = (props: any) => {
               padding: "5px 4px 0",
             }}
           >
-            {task.status === "Done" && (
+            {task.state === State.Done && (
               <assets.CheckCircleIcon
                 sx={{ color: "#55BCB3" }}
                 fontSize="small"
               />
             )}
-            {task.status === "Rejected" && (
+            {task.state === State.Draft && (
               <assets.ErrorOutlinedIcon color="error" fontSize="small" />
             )}
           </Box>
@@ -73,7 +97,7 @@ const TaskCard = (props: any) => {
       sx={{
        
         width: "100%",
-        border: `1px solid ${ColorByStatus(task?.status)}`,
+        border: `1px solid ${ColorByStatus(task.state)}`,
       }}
       elevation={0}
       variant="outlined"
@@ -87,16 +111,37 @@ const TaskCard = (props: any) => {
         <CustomStack gap={2.5}>
           <Box>
             <LabelTag>Task due date</LabelTag>
-            <AssignedTag>{start}</AssignedTag>
+            <AssignedTag>{dueDate}</AssignedTag>
           </Box>
           <Box>
             <LabelTag>Assigned to</LabelTag>
-            <AssignedTag>Kristo vunkainen</AssignedTag>
+           {task.assignedTo.map((item:AssignedTo,i:any) =>{
+            // const TitleList = ()=>{
+            //   return (
+            //     <CustomStack>
+            //       <span>
+            //       {`${item.firstName} ${item.surName}`}
+            //       </span>
+            //     </CustomStack>
+            //   )
+            // }
+            return(<>
+            {i===0&& <AssignedTag sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
+            {i!==0&&<CustomBadge  overlap="circular" color="primary" badgeContent={
+              <Tooltip title={AssignedToList()}>
+                 <span>{task.assignedTo.length-1}</span>
+              </Tooltip>
+            }></CustomBadge>}
+            </>
+           )}) }
           </Box>
         </CustomStack>
         <Box pt={2.5}>
           <AssignedTag sx={{ fontSize: "16px", fontWeight: "600" }}>
-            Elektrikaabli paigaldus
+            {/* project title */}
+            {
+             task.title
+            }
           </AssignedTag>
         </Box>
         <CustomStack
@@ -111,7 +156,7 @@ const TaskCard = (props: any) => {
                 className="width-16"
                 alt="ceibro"
               />
-              <AssignedTag sx={{ fontSize: "11px" }}>45 subtask(s)</AssignedTag>
+              <AssignedTag sx={{ fontSize: "11px" }}>{task.totalSubTaskCount} Subtask(s)</AssignedTag>
             </CustomStack>
           </Box>
 
@@ -140,13 +185,15 @@ const TaskCard = (props: any) => {
                 fill="#0076C8"
               />
             </svg>
-            <AssignedTag sx={{ fontSize: "11px" }}>12</AssignedTag>
+            <AssignedTag sx={{ fontSize: "11px" }}>{task.unSeenSubTaskCommentCount}</AssignedTag>
           </Box>
         </CustomStack>
         <Divider sx={{ paddingBottom: "10px" }} />
       </CardContent>
       <CCardActions>
-        <AssignedTag sx={{ fontWeight: "600" }}>Paevälja 12</AssignedTag>
+        <AssignedTag sx={{ fontWeight: "600" }}>
+          { task.project.title}
+        </AssignedTag>
         <Button
           size="small"
           sx={{ fontSize: "12px", fontFamily: "Inter", fontWeight: "600" }}
@@ -171,33 +218,36 @@ const useStyles = makeStyles((theme) => ({
   },
 
 }));
+const CustomBadge = styled(Badge)`
+padding-left:20px;
+`;
 const CCardActions = styled(CardActions)`
   padding: 14px;
   padding-top: 0;
   padding-bottom: 8px;
   justify-content: space-between;
 `;
-const LabelTag = styled(Typography)`
+export const LabelTag = styled(Typography)`
   font-size: 11px;
   font-weight: 500;
   color: #605c5c;
 `;
-const AssignedTag = styled(Typography)`
+export const AssignedTag = styled(Typography)`
   font-weight: 500;
   font-size: 12.5px;
   color: #000000;
 `;
 
-const CustomStack = styled(Stack)`
+export const CustomStack = styled(Stack)`
   flex-direction: row;
   align-items: center;
 `;
-const TaskStatus = styled(Typography)`
-  border: 1px solid #f1b740;
+export const TaskStatus = styled(Typography)`
   border-radius: 3px;
   padding: 2px 5px;
   color: #000000;
   font-size: 11px;
+  text-transform:capitalize;
 `;
 
 const CounterSpan = styled("span")`

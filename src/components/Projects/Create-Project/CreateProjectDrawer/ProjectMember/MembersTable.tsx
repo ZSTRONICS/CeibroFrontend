@@ -104,7 +104,7 @@ const RolesTable = () => {
       const newGroups = groupList.map((group: GroupInterface) => {
         return {
           title: group.name,
-          value: group.id,
+          value: group._id,
         };
       });
       setGroups(newGroups);
@@ -116,7 +116,7 @@ const RolesTable = () => {
       const newRoles = rolesList?.map((role: RoleInterface) => {
         return {
           title: role.name,
-          value: role.id,
+          value: role._id,
         };
       });
       setRoles(newRoles);
@@ -145,7 +145,7 @@ const RolesTable = () => {
       body: {
         groupId: e ? e : null,
         memberId: row?.id,
-        roleId: row?.role?.id,
+        roleId: row?.role?._id,
       },
       success: () => {
         getMemebers();

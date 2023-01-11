@@ -50,7 +50,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
-    // dispatch(setSelectedFolder(folder?.id));
+    // dispatch(setSelectedFolder(folder?._id));
   };
 
   return (
@@ -81,7 +81,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             );
 
             return (
-              <TableRow key={row?.id}>
+              <TableRow key={row?._id}>
                 <TableCell
                   onClick={() => handleFolderClick(row)}
                   component="th"
@@ -120,11 +120,11 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   {row?.access?.length > 0
                     ? `${row?.access?.length} member(s)`
                     : "Only you"}
-                  {row.creator === user.id && (
+                  {row.creator === user._id && (
                     <ProjectDocumentMenu
-                      folderId={row.id || ""}
+                      folderId={row._id || ""}
                       access={row?.access || []}
-                      groupId={row?.group?.id || ""}
+                      groupId={row?.group?._id || ""}
                     />
                   )}
                 </TableCell>

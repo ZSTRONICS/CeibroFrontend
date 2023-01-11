@@ -27,7 +27,7 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const chatMembers =
     chat?.find((room: any) => room._id === selectedChat)?.members || [];
-  const memberIds = chatMembers?.map((member: any) => member.id);
+  const memberIds = chatMembers?.map((member: any) => member._id);
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<any>();

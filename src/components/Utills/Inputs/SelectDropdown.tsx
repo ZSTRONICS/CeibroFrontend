@@ -16,7 +16,7 @@ export interface dataInterface {
   value: string
   label: string
   color?: string
-  id?: string
+  _id?: string
 }
 
 interface My {

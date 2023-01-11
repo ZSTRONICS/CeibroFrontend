@@ -26,12 +26,12 @@ export const CustomMuiList = (props: any) => {
       }
     >
       {props.groupMembers?.map((member: any) => {
-        const labelId = `checkbox-list-secondary-label-${member.id}`;
+        const labelId = `checkbox-list-secondary-label-${member._id}`;
         return (
           <ListItem
             disablePadding
             aria-disabled
-            key={member.id}
+            key={member._id}
             secondaryAction={
               <Checkbox
                 sx={{
@@ -44,10 +44,10 @@ export const CustomMuiList = (props: any) => {
                 }}
                 disableRipple
                 edge="end"
-                value={member.id}
+                value={member._id}
                 onChange={props.handleUserChange}
                 checked={props.checkboxChecked.some(
-                  (id: any) => id === member.id
+                  (id: any) => id === member._id
                 )}
                 inputProps={{ "aria-labelledby": labelId }}
               />
@@ -56,7 +56,7 @@ export const CustomMuiList = (props: any) => {
             <ListItemButton
               sx={{ p: 0, pb: 0.5 }}
               disableRipple
-              onClick={() => props.handleUserId(member.id)}
+              onClick={() => props.handleUserId(member._id)}
             >
               <ListItemAvatar>
                 <NameAvatar

@@ -29,13 +29,13 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     usersCount,
     chatCount,
     publishStatus: status,
-    id,
+    _id,
   } = project;
 
   const dispatch = useDispatch();
   const handleProjectClick = () => {
-    dispatch(getPermissions({ other: id }));
-    dispatch(projectActions.setSelectedProject(id || null));
+    dispatch(getPermissions({ other: _id }));
+    dispatch(projectActions.setSelectedProject(_id || null));
     dispatch(projectActions.openDrawer());
   };
 

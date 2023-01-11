@@ -65,16 +65,16 @@ const ProjectGroupsList = () => {
       {groupList?.map((group: GroupInterface) => (
         <GroupChip
           name={group.name}
-          groupId={group.id || ""}
-          handleClick={() => handleGroupClick(group?.id)}
-          handleDelete={() => handleGroupDelete(group?.id)}
+          groupId={group._id || ""}
+          handleClick={() => handleGroupClick(group?._id)}
+          handleDelete={() => handleGroupDelete(group?._id)}
         />
       ))}
     </>
   );
 };
 {
-  /* <h2 onClick={() => handleGroupClick(group?.id)}>{group.name}</h2> */
+  /* <h2 onClick={() => handleGroupClick(group?._id)}>{group.name}</h2> */
 }
 export default ProjectGroupsList;
 

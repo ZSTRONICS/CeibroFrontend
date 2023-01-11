@@ -3,6 +3,7 @@ import { Badge } from "@material-ui/core";
 import { getStyleClass } from "config/styles.config";
 
 const TaskBadges = () => {
+  
   const badges = [
     {
       count: 8,

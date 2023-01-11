@@ -1,32 +1,45 @@
 import { ActionInterface } from ".";
-import config, { GET_TASK } from '../../config/task.config'
-import { TaskCards } from "constants/interfaces/Tasks.interface";
+import { GET_TASK } from '../../config/task.config'
+import {  Result, TaskRoot } from "constants/interfaces/Tasks.interface";
+import { requestFail, requestPending, requestSuccess } from "utills/status";
 
 interface TaskReducerInt {
-    TaskCards: TaskCards[]
+    allTask: Result[]
     page: number
     limit: number
     totalPages: number
     totalResults: number
+    taskLoading:boolean
 }
 
 const intialStatue:TaskReducerInt = {
-    TaskCards: [],
+    allTask: [],
     page: 0,
     limit: 0,
     totalPages: 0,
-    totalResults: 0
+    totalResults: 0,
+    taskLoading: false
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface ):TaskReducerInt => {
     switch(action.type) {
-        case GET_TASK:
-            console.log(action.payload)
+        case requestSuccess(GET_TASK):
             return {
                     ...state,
-                    TaskCards:action.payload
+                    allTask:action.payload.results,
                 }
-
+        case requestPending(GET_TASK): {
+            return {
+                ...state,
+                taskLoading: true,
+            };
+            }
+        case requestFail(GET_TASK): {
+        return {
+            ...state,
+            taskLoading: false,
+        };
+    }
             default:
             return state
         

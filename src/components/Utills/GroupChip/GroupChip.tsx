@@ -88,7 +88,7 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
             
             return (
               <Grid
-                key={member.id}
+                key={member._id}
                 container
                 style={{ maxWidth: 300 }}
                 className="chat-member-chip"

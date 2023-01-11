@@ -12,7 +12,7 @@ export interface ChatMembers{
    email:string
    socketId:string
    lockedUntil:Date
-   id:string
+   _id:string
 }
 
 export interface ChatListInterface {

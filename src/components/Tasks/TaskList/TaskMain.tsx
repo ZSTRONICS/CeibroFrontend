@@ -1,4 +1,3 @@
-import React from 'react'
 // mui-imports
 import { makeStyles } from '@material-ui/core';
 import { Box, Grid, Paper } from '@mui/material';
@@ -11,16 +10,17 @@ import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import TaskList1 from './TaskList1';
 
+
 const TaskMain=()=> {
+
   let xsPoint = 12
   let mdPoint = 4
   let lgPoint = 3.2
 const classes = useStyles()
 
-
   return (<>
     <Box sx={{flexGrow:1}}>
-    <Grid container spacing={1.7} className={classes.TaskWraper} >
+      <Grid container spacing={1.7} className={classes.TaskWraper} >
       <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
       <DatePicker  Datetitle='Date'/>
       </Grid>

@@ -5,7 +5,7 @@ import apiCall from "utills/apiCall";
 const getTask = apiCall({
     type: GET_TASK,
     method: "get",
-    path: "/task",
+    path: "/task?state=all&isMultiTask=false",
   });
 
 function* taskSaga() {

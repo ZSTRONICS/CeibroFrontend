@@ -459,7 +459,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniarInfo: {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
-          id: action.payload?.id,
+          id: action.payload?._id,
         },
       }
     }
@@ -479,7 +479,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniarInfo: {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
-          id: action.payload?.id,
+          id: action.payload?._id,
           isAnswered: action.payload.answeredByMe,
         },
       }

@@ -59,7 +59,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
   time = String(time).replace(' months', 'M')
   time = String(time).replace(' years', 'Y')
 
-  let myMessag = sender?.id === user.id
+  let myMessag = sender?._id === user._id
   const dispatch = useDispatch();
 
   const borderStyle = `1px solid ${colors.senderBoxBorder}`
@@ -95,13 +95,13 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
       (msg: ChatMessageInterface) => String(msg._id) === String(message._id));
 
     const myMsg = messages[index];
-    if (myMsg?.pinnedBy?.includes(user.id)) {
+    if (myMsg?.pinnedBy?.includes(user._id)) {
       // un-pin message
       myMsg.pinnedBy = myMsg?.pinnedBy?.filter(
-        (elem: any) => String(elem) !== String(user.id));
+        (elem: any) => String(elem) !== String(user._id));
     } else {
       // pin message
-      myMsg?.pinnedBy?.push(user.id);
+      myMsg?.pinnedBy?.push(user._id);
     }
 
     myMsgs[index] = myMsg;
@@ -161,7 +161,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
   //       message: text,
   //       seen: true,
   //       type: "message",
-  //       myMessage: String(user.id),
+  //       myMessage: String(user._id),
   //       // id: myId,
   //       _id: myId,
   //     };
@@ -194,7 +194,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
   //   // bodyRef && bodyRef?.current?.scrollToEnd()
   // }
 
-  // const senderUserId = (sender?.id === user.id)
+  // const senderUserId = (sender?._id === user._id)
 
   return (
     <>
@@ -240,7 +240,7 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
               <CBox className={`${classes.messageBox} ${'replyMessageBg'}`} style={getStyles()}>
                 {message.type !== "questioniar" && (
                   <>
-                    {pinnedBy?.includes(user?.id) ? (
+                    {pinnedBy?.includes(user?._id) ? (
                       <CBox onClick={handlePinClick} style={{ cursor: 'pointer' }}>
 
                         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -316,11 +316,11 @@ const MessageChat:React.FC<MessageChatProps> = React.memo((props) => {
             </CBox>
             <CBox display='flex' justifyContent='flex-end' width='100%' pr={8.6}>
               {readBy?.map((readyByUser: UserInterface, i: any) => {
-                if (readyByUser?.id === user?.id || sender?.id !== user?.id) {
+                if (readyByUser?._id === user?._id || sender?._id !== user?._id) {
                   return <></>
                 }
                 return (
-                  <SeenBy key={readyByUser.id} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
+                  <SeenBy key={readyByUser._id} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
                 )
               })}
             </CBox>

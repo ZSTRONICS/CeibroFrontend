@@ -8,7 +8,7 @@ import colors from "../../../assets/colors";
 interface FilePreviewerInterface {
   file: any;
   handleClick?: (id: number) => void;
-  id?: any;
+  _id?: any;
   showControls: boolean;
   hideName?: boolean;
 }
@@ -19,7 +19,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
 
   const handleClick = () => {};
   const handleCancelClick = () => {
-    props?.handleClick?.(props.id);
+    props?.handleClick?.(props._id);
   };
 
   return (

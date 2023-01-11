@@ -38,6 +38,7 @@ import {
 } from "redux/action/chat.action";
 import {
   ALL_MESSAGE_SEEN,
+  CEIBRO_LIVE_EVENTS,
   CHAT_EVENT_REP_OVER_SOCKET,
   MESSAGE_SEEN,
   PUSH_MESSAGE,
@@ -85,17 +86,17 @@ const App: React.FC<MyApp> = () => {
             {
               const selectedChat = socket.getAppSelectedChat();
               const data = payload.data;
-              socket.getUnreadMsgCount(user.id);
-              if (String(data.from) !== String(user?.id)) {
+              socket.getUnreadMsgCount(user._id);
+              if (String(data.from) !== String(user?._id)) {
                 if (String(data.chat) === String(selectedChat)) {
                   dispatch({
                     type: PUSH_MESSAGE_BY_OTHER,
                     payload: data.message,
                   });
-                  socket.sendMessageSeen(user.id, selectedChat, data.message._id)
+                  socket.sendMessageSeen(user._id, selectedChat, data.message._id)
                 } else {
-
-                  socket.getUnreadMsgCount(user.id);
+                  
+                  socket.getUnreadMsgCount(user._id);
                   //dispatch(getAllChats());
                 }
               } else if (String(data.chat) === String(selectedChat)) {
@@ -110,7 +111,7 @@ const App: React.FC<MyApp> = () => {
                   );
                 } 
                 else {
-                  if (String(data.from) === String(user?.id)) {
+                  if (String(data.from) === String(user?._id)) {
                     dispatch({
                       type: PUSH_MESSAGE_BY_OTHER,
                       payload: data.message,
@@ -124,13 +125,13 @@ const App: React.FC<MyApp> = () => {
                 }
               } else {
                 dispatch(getAllChats());
-                socket.getUnreadMsgCount(user.id);
+                socket.getUnreadMsgCount(user._id);
               }
             }
             break;
 
           case REFRESH_CHAT:
-              socket.getUnreadMsgCount(user.id);
+              socket.getUnreadMsgCount(user._id);
               dispatch(getAllChats());
             break;
 
@@ -179,6 +180,13 @@ const App: React.FC<MyApp> = () => {
             break
         }
 
+      });
+
+      socket.getSocket().on(CEIBRO_LIVE_EVENTS, (dataRcvd: any) => {
+        const eventType = dataRcvd.eventType
+        const payload = dataRcvd.data
+        console.log(eventType);
+        
       });
     }
   }, [isLoggedIn]);

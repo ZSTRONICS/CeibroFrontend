@@ -64,7 +64,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
   }
 
   const startRoom = () => {
-    const payload = { other: { id: getUser?.id }, success: () => history.push('chat') }
+    const payload = { other: { id: getUser?._id }, success: () => history.push('chat') }
     dispatch(createSingleRoom(payload))
   }
 

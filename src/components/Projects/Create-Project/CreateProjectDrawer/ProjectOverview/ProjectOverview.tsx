@@ -46,7 +46,7 @@ const ProjectOverview = () => {
           setData(res.data)
           // setting current user as default owner
           res?.data?.map((row: dataInterface) => {
-            if (row?.value === user?.id) {
+            if (row?.value === user?._id) {
               if (!selectedProject) {
                 dispatch(
                   projectActions.setProjectOverview({
@@ -115,7 +115,7 @@ const ProjectOverview = () => {
     }
   }, [])
 
-  const isDisabled = !_.map(ProjectOwnerList, 'value').includes(user.id)
+  const isDisabled = !_.map(ProjectOwnerList, 'value').includes(user._id)
 
   return (
     <div style={{ width: '100%' }}>

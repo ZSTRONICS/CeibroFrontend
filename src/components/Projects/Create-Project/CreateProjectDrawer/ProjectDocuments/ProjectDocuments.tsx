@@ -30,7 +30,7 @@ const ProjectDocuments = () => {
         />
         <Grid item xs={12} className={classes.groupsWrapper}>
           {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}
-          {folder && <FolderFiles selectedFolderId={folder?.id} />}
+          {folder && <FolderFiles selectedFolderId={folder?._id} />}
         </Grid>
       </Grid>
     </>

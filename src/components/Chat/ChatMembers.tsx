@@ -110,7 +110,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
       {myMembers &&
         myMembers?.map?.((member: UserInterface, i: any) => {
           return (
-            <Grid key={member.id} container className="chat-member-chip">
+            <Grid key={member._id} container className="chat-member-chip">
               <Grid item xs={2} style={{ paddingTop: 5 }}>
                 <NameAvatar
                   // styleAvater={}
@@ -144,11 +144,11 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                       className={`${classes.menuWrapper} dropdown-menu pointer`}
                     >
                       <Button variant="text" className={classes.iconBtn}
-                      onClick={()=>handleToggleClose(member.id)}
+                      onClick={()=>handleToggleClose(member._id)}
                       startIcon={<assets.PeopleAltOutlinedIcon />}>
                       View Profile
                       </Button>
-                      <CustomModal isOpen={open} title="Profile Overview" handleClose={()=>handleToggleClose(member.id)}>
+                      <CustomModal isOpen={open} title="Profile Overview" handleClose={()=>handleToggleClose(member._id)}>
                        <ProfileContent getUser={getUser} />
                         </CustomModal>
                       {/* <img src={assets.usersIcon} className="width-16" />
@@ -162,7 +162,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                       className={`${classes.menuWrapper} dropdown-menu pointer`}
                     >
                       <Button variant="text" className={classes.iconBtn}
-                       onClick={() => startRoom(member.id)}
+                       onClick={() => startRoom(member._id)}
                       startIcon={<assets.ChatOutlinedIcon />}>
                       Start Chat
                       </Button>
@@ -187,7 +187,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                       className={`${`${classes.menuWrapper} dropdown-menu`} ${
                         classes.deleteConversation
                       }`}
-                      onClick={()=> handleClick(member.id)}
+                      onClick={()=> handleClick(member._id)}
                     >
                       <img src={assets.DeleteIcon} className={`width-16`} />
                       <Typography

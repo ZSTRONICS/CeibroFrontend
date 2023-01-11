@@ -6,7 +6,7 @@ import { Grid, makeStyles } from '@material-ui/core'
 import { getAllStatus, getColorByStatus } from '../../../config/project.config'
 import StatusMenu from '../../Utills/Others/StatusMenu'
 
-const Project = () => {
+const SubTask = () => {
 
     const classes = useStyles()
 
@@ -28,17 +28,17 @@ const Project = () => {
                 </Grid>
             </Grid>
 
-            {/* <Grid container className={classes.allStatus}>
+            <Grid container className={classes.allStatus}>
                 <StatusMenu
                 />
-            </Grid> */}
+            </Grid>
 
-            <SubTaskList/>
+            {/* <SubTaskList/> */}
         </Grid>
     )
 }
 
-export default Project
+export default SubTask
 
 const useStyles = makeStyles({
     datePicker: {

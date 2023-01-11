@@ -70,10 +70,10 @@ const ForwardMessage: React.FC<ForwardMessageInt> = (props) => {
             const chatMembers = [...room.members, ...room.removedAccess];
             if (room.isGroupChat === false) {
               let chatMember = chatMembers.filter(
-                (item) => item.id !== user.id
+                (item) => item._id !== user._id
               );
               chatMember
-                .filter((item) => item.id !== user.id)
+                .filter((item) => item._id !== user._id)
                 .map(
                   (item: any) => (
                     (individualmember.firstName = item.firstName),

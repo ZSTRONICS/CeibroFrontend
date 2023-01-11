@@ -46,7 +46,7 @@ const CreateProjectBody = () => {
         success: res => {
           toast.success('Project created')
           // setLoading(true);
-          dispatch(projectActions.setSelectedProject(res?.data?.id))
+          dispatch(projectActions.setSelectedProject(res?.data?._id))
         },
         finallyAction: () => {
           setLoading(false)

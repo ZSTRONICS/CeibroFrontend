@@ -243,7 +243,7 @@ const getRoomQuestioniar = apiCall({
 const createSingleRoom = apiCall({
   type: CREATE_SINGLE_ROOM,
   method: "post",
-  path: (payload) => `/chat/room/single/${payload?.other?.id}`,
+  path: (payload) => `/chat/room/single/${payload?.other?._id}`,
   // success: payload => payload?.success,
 });
 

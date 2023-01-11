@@ -11,7 +11,7 @@ import CreateTaskBody from './CreateTaskBody'
 import CreateTaskFooter from './CreateTaskFooter'
 
 const CreateTaskDrawer = () => {
-    const drawerOpen = useSelector((store:RootState) => store.task.drawerOpen)
+    // const drawerOpen = useSelector((store:RootState) => store.task.drawerOpen)
     const dispatch = useDispatch()
     const classes = useStyles()
 
@@ -20,7 +20,7 @@ const CreateTaskDrawer = () => {
     }
 
     return (    
-        <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
+        <Drawer onClose={handleClose} open={false} anchor="right">
             <div className={classes.outerWrapper}>
                 <TaskDrawerHeader/>
                 <TaskDrawerMenu/>

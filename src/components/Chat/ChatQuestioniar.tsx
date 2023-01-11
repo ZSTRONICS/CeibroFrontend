@@ -53,7 +53,7 @@ const ChatMembers: React.FC<chatMInt> = (props) => {
             <img src={assets.documentIcon} alt=""/>
             <div
               className={classes.innerWrapper}
-              onClick={() => handleClick(question.id)}
+              onClick={() => handleClick(question._id)}
             >
               <Typography className={classes.title}>
                 {question.title}

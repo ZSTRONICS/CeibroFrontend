@@ -142,9 +142,9 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
                       <Grid item xs={2} className={classes.checkbox}>
                         <CustomCheckbox
                           onClick={handleUserChange}
-                          value={member?.id}
+                          value={member?._id}
                           name={"s"}
-                          checked={selectedUsers?.includes?.(member?.id)}
+                          checked={selectedUsers?.includes?.(member?._id)}
                         />
                       </Grid>
                     </Grid>

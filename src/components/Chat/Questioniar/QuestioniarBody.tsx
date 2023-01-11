@@ -49,7 +49,7 @@ const QuestioniarBody = () => {
 
   // const listOfMember = membersList?.map((member: any) => ({
   //   label: ` ${member?.firstName} ${member?.surName}`,
-  //   value: member?.id,
+  //   value: member?._id,
   // }));
 
   const [preview, setPreview] = useState<boolean>(false);
@@ -63,7 +63,7 @@ const QuestioniarBody = () => {
   // const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
-    setValue(removeCurrentUser(dbUsers, user?.id));
+    setValue(removeCurrentUser(dbUsers, user?._id));
     // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
   }, []);
 
@@ -73,7 +73,7 @@ const QuestioniarBody = () => {
 
   const listOfMember = membersList?.map((member: any) => ({
     label: ` ${member?.firstName} ${member?.surName}`,
-    value: member?.id,
+    value: member?._id,
   }));
 
   const handleDateChange = (e: any) => {
@@ -106,7 +106,7 @@ const QuestioniarBody = () => {
         title,
         time: "a few seconds ago",
         seen: true,
-        myMessage: user.id,
+        myMessage: user._id,
         replyOf: null,
         id: myId,
       },
@@ -213,7 +213,7 @@ const QuestioniarBody = () => {
                 if (preview) {
                   return <PreviewQuestion key={index} question={question} />;
                 }
-                return <CreateQuestion key={index} id={question.id} />;
+                return <CreateQuestion key={index} id={question._id} />;
               }
             )}
         </Grid>
