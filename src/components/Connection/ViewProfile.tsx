@@ -44,8 +44,8 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
 
     setOpen(!open)
   }
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer())
+  const openTaskModal = () => {
+    dispatch(taskActions.openNewTaskModal())
   }
 
   const handleDelete = () => {
@@ -187,7 +187,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
                 variant="contained"
                 size="medium"
                 color="primary"
-                onClick={openTaskDrawer}
+                onClick={openTaskModal}
               >
                 Create task
               </Button>

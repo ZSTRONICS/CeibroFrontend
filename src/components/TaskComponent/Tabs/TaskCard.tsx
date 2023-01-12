@@ -1,17 +1,16 @@
 import * as React from "react";
 import { MoreVert } from "@material-ui/icons";
-import { Box, Button, CardActions, Divider, Grid, Stack, Tooltip } from "@mui/material";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardHeader from "@mui/material/CardHeader";
-// import IconButton, { IconButtonProps } from "@mui/material/IconButton";
+import {Card,CardContent, CardHeader,Box, Button, CardActions, Divider, Grid,Typography, Stack, Tooltip } from "@mui/material";
+
 import { styled } from "@mui/material/styles";
-import Typography from "@mui/material/Typography";
+// import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
 import { AssignedTo, Result, State } from "constants/interfaces/Tasks.interface";
 import moment from "moment-timezone";
+import taskActions from "redux/action/task.action";
+import { useDispatch } from "react-redux";
 
 interface Props{
   task: Result
@@ -22,6 +21,13 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   
   const dueDate =  moment.utc(moment(task.dueDate)).format('DD.MM.YYYY');
   const classes = useStyles();
+  const dispatch = useDispatch()
+
+  const handleCard =()=>{
+    dispatch(taskActions.openTaskDrawer());
+    dispatch(taskActions.selectedTaskId(task._id));
+    }
+    
   // const dueDate = new Date().toLocaleDateString("de-DE", {
     //   day: "numeric",
     //   month: "numeric",
@@ -40,21 +46,6 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
       </>
     );
   };
-
-  const AssignedToList = ()=>{
-    return (
-      <CustomStack>
-       {task.assignedTo.map((item:AssignedTo)=>{
-        return (
-          <span>
-        {`${item.firstName} ${item.surName}`}
-        </span>
-        )
-       })
-      }
-      </CustomStack>
-    )
-  }
 
   const Action = () => {
     return (
@@ -93,9 +84,12 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   return (
     //  <Grid item  className={classes.cardContainer}>
       <Card className={classes.cardContainer}
+      onClick={handleCard}
       key={task._id}
       sx={{
-       
+        '& :hover':{
+          cursor:'pointer'
+        },
         width: "100%",
         border: `1px solid ${ColorByStatus(task.state)}`,
       }}
@@ -116,19 +110,19 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
           <Box>
             <LabelTag>Assigned to</LabelTag>
            {task.assignedTo.map((item:AssignedTo,i:any) =>{
-            // const TitleList = ()=>{
-            //   return (
-            //     <CustomStack>
-            //       <span>
-            //       {`${item.firstName} ${item.surName}`}
-            //       </span>
-            //     </CustomStack>
-            //   )
-            // }
+            const AssignedToList = ()=>{
+              return (
+                <CustomStack>
+                  <span>
+                  {`${item.firstName} ${item.surName}`}
+                  </span>
+                </CustomStack>
+              )
+            }
             return(<>
-            {i===0&& <AssignedTag sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
-            {i!==0&&<CustomBadge  overlap="circular" color="primary" badgeContent={
-              <Tooltip title={AssignedToList()}>
+            {i===0&& <AssignedTag key={item._id} sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
+            {i!==0&&<CustomBadge key={item._id} overlap="circular" color="primary" badgeContent={
+              <Tooltip title={AssignedToList()} key={item._id}>
                  <span>{task.assignedTo.length-1}</span>
               </Tooltip>
             }></CustomBadge>}

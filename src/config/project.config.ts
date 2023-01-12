@@ -115,6 +115,7 @@ export const avaialablePermissions = {
   delete_permission: "delete",
   self_made_permission: "self-made",
 };
+
 const projectReduxConfigs = {
   OPEN_DRAWER: "OPEN_DRAWER",
   CLOSE_DRAWER: "CLOSE_DRAWER",

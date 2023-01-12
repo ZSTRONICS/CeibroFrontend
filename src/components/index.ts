@@ -22,7 +22,7 @@ import Tasks from "./Tasks/TaskList/Task";
 import SubTask from "./Tasks/SubTasks/SubTask";
 import CreateTaskDrawer from "./Tasks/Create-Task/CreateTaskDrawer";
 import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
-
+import CDrawer from "Drawer/CDrawer";
 
 // project
 import Projects from "./Projects/ProjectList/Project";
@@ -34,11 +34,11 @@ import RouterConfig from "navigation/RouterConfig";
 export {
   RouterConfig,
   TaskModal,
-  CreateQuestioniarDrawer, 
- ViewQuestioniarDrawer ,
- CreateProjectDrawer, 
- CreateTaskDrawer, 
- ViewInvitations, 
+  CreateQuestioniarDrawer,
+  ViewQuestioniarDrawer,
+  CreateProjectDrawer,
+  CreateTaskDrawer,
+  ViewInvitations,
   Login,
   Connections,
   ForgetPassword,
@@ -49,5 +49,5 @@ export {
   Profile,
   Tasks,
   SubTask,
-  Chat,
+  Chat, CDrawer,
 };

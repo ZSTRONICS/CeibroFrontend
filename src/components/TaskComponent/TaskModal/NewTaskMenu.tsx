@@ -76,7 +76,6 @@ function NewTaskMenu(props: any) {
                         options={top100Films}
                         onChange={(e, value) => {
                             props.setFieldValue('projects', value !== null ? value : top100Films);
-                            console.log(value)
                         }}
                         renderInput={(params) => <TextField {...params} name='projects' label='Project' placeholder='select project' />}
                     />
@@ -92,7 +91,6 @@ function NewTaskMenu(props: any) {
                         size="small"
                         onChange={(e, value) => {
                             props.setFieldValue('admins', value !== null ? value : top100Films);
-                            console.log(value)
                         }}
                         renderInput={(params) => <TextField {...params} name='admins' label='Admins' />}
                     />
@@ -108,7 +106,6 @@ function NewTaskMenu(props: any) {
                         size="small"
                         onChange={(e, value) => {
                             props.setFieldValue('assignTo', value !== null ? value : top100Films);
-                            console.log(value)
                         }}
                         renderInput={(params) => <TextField {...params} name='assignTo' label='Assign To' placeholder='select memebers(s)' />}
                     />

@@ -1,3 +1,8 @@
+
+// export interface AllTask {
+//   task: TaskRoot[];
+// }
+
 export interface TaskRoot {
   results: Result[]
   page: number

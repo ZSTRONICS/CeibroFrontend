@@ -10,13 +10,12 @@ import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import TaskList1 from './TaskList1';
 
-
 const TaskMain=()=> {
 
   let xsPoint = 12
   let mdPoint = 4
   let lgPoint = 3.2
-const classes = useStyles()
+  const classes = useStyles()
 
   return (<>
     <Box sx={{flexGrow:1}}>

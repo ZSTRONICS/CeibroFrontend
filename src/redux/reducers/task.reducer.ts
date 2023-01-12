@@ -1,5 +1,8 @@
 import { ActionInterface } from ".";
-import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK } from '../../config/task.config'
+import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
+    OPEN_TASK_DRAWER,
+    CLOSE_TASK_DRAWER, 
+    SELECTED_TASK_ID} from '../../config/task.config'
 import { Result } from "constants/interfaces/Tasks.interface";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 
@@ -12,6 +15,8 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
+    selectedTaskId:string
+    taskDrawerOpen:boolean
 }
 
 const intialStatue: TaskReducerInt = {
@@ -22,7 +27,9 @@ const intialStatue: TaskReducerInt = {
     totalPages: 0,
     totalResults: 0,
     taskLoading: false,
-    dialogOpen: false
+    dialogOpen: false,
+    selectedTaskId:'',
+    taskDrawerOpen:false,
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
@@ -55,6 +62,21 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             return {
                 ...state,
                 dialogOpen: false
+            }
+        case OPEN_TASK_DRAWER:
+            return {
+                ...state,
+                taskDrawerOpen: true
+            }
+        case CLOSE_TASK_DRAWER:
+            return {
+                ...state,
+                taskDrawerOpen: false
+            }
+        case SELECTED_TASK_ID:
+            return {
+                ...state,
+                selectedTaskId: action.payload
             }
         default:
             return state

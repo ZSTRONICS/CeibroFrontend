@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../../../assets/colors'
 import projectActions from '../../../../redux/action/project.action'
 import { RootState } from '../../../../redux/reducers'
-import ProjectDrawerHeader from './ProjectDrawerHeader'
+import DrawerHeader from './DrawerHeader'
 import ProjectDrawerMenu from './ProjectDrawerMenu'
 import CreateProjectBody from './CreateProjectBody'
 import CreateProjectFooter from './CreateProjectFooter'
@@ -22,7 +22,7 @@ const CreateProjectDrawer = () => {
     return (    
         <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
             <div className={classes.outerWrapper}>
-                <ProjectDrawerHeader/>
+                <DrawerHeader title='New Project' handleClose={handleClose}/>
                 <ProjectDrawerMenu/>
                 <CreateProjectBody/>
                 <CreateProjectFooter/>
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
         width: 'calc(100vw - 200px)',
         backgroundColor: colors.lightGrey,
         height: '100vh',
-        ['@media (max-width:960px)']: {
+        '@media (max-width:960px)': {
             width: '100vw'
         }
     }

@@ -11,6 +11,8 @@ import {
   CreateTaskDrawer,
   ViewInvitations,
   RouterConfig,
+  TaskModal,
+CDrawer,
 } from 'components'
 
 // socket
@@ -35,7 +37,7 @@ import {
   unreadMessagesCount,
   replaceMessagesById,
   unreadRoomMessagesCount,
-} from "redux/action/chat.action";
+} from "redux/action/chat.action"; 
 import {
   ALL_MESSAGE_SEEN,
   CEIBRO_LIVE_EVENTS,
@@ -60,6 +62,9 @@ const App: React.FC<MyApp> = () => {
 
   const drawerOpen = useSelector(
     (store: RootState) => store.chat.openViewQuestioniar
+  );
+  const taskDrawer = useSelector(
+    (store: RootState) => store.task.taskDrawerOpen
   );
 
   useEffect(() => {
@@ -175,7 +180,6 @@ const App: React.FC<MyApp> = () => {
               }
             }
             break;
-
           default:
             break
         }
@@ -192,10 +196,12 @@ const App: React.FC<MyApp> = () => {
   return (
     <div className="App">
       {/* component used here for availability of modal on all routes*/}
+      <TaskModal/>
       <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
+      {/* {taskDrawer&&<CDrawer/>} */}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />

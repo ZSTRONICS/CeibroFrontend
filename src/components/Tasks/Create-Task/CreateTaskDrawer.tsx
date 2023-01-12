@@ -1,30 +1,32 @@
 
-import { Drawer } from '@material-ui/core'
+import { Drawer, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import colors from '../../../assets/colors'
 import taskActions from '../../../redux/action/task.action'
-import { RootState } from '../../../redux/reducers'
 import TaskDrawerHeader from './TaskDrawerHeader'
 import TaskDrawerMenu from './TaskDrawerMenu'
 import CreateTaskBody from './CreateTaskBody'
 import CreateTaskFooter from './CreateTaskFooter'
+import { RootState } from 'redux/reducers'
+import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader'
 
 const CreateTaskDrawer = () => {
-    // const drawerOpen = useSelector((store:RootState) => store.task.drawerOpen)
     const dispatch = useDispatch()
     const classes = useStyles()
-
+  let  drawerOpen= useSelector((state:RootState)=> state.task.taskDrawerOpen)
     const handleClose = () => {
-        dispatch(taskActions.closeDrawer())
+        dispatch(taskActions.closeTaskDrawer())
     }
 
-    return (    
-        <Drawer onClose={handleClose} open={false} anchor="right">
+    return (
+        <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
             <div className={classes.outerWrapper}>
-                <TaskDrawerHeader/>
-                <TaskDrawerMenu/>
-                <CreateTaskBody/>
+                <DrawerHeader title='New Task' handleClose={handleClose}/>
+                <Grid container>
+                <Grid item md={3}><TaskDrawerMenu/></Grid>
+                <Grid item md={9}> <CreateTaskBody/></Grid>
+                </Grid>
                 <CreateTaskFooter/>
             </div>
           </Drawer>
@@ -37,7 +39,7 @@ const useStyles = makeStyles({
         width: 'calc(100vw - 200px)',
         backgroundColor: colors.lightGrey,
         height: '100vh',
-        ['@media (max-width:960px)']: {
+        '@media (max-width:960px)': {
             width: '100vw'
         }
     }

@@ -25,8 +25,7 @@ const Title = () => {
   };
 
   const openTaskModal = () => {
-    console.log('open')
-		dispatch(taskActions.openNewTask());
+		dispatch(taskActions.openNewTaskModal());
 	  };
 	  
   const goBack = () => {

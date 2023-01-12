@@ -10,7 +10,7 @@ import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
 import TaskCard from "components/TaskComponent/Tabs/TaskCard";
 import { getColorByStatus } from "config/project.config";
-import { Result, TaskRoot } from "constants/interfaces/Tasks.interface";
+import {  Result, TaskRoot } from "constants/interfaces/Tasks.interface";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,7 @@ function TaskList1() {
   }, []);
 
   let allTask: Result[] = useSelector((state: RootState) => state.task.allTask);
-  
+
   return (
     <>
       {!allTask ? (

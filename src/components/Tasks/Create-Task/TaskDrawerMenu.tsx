@@ -19,12 +19,12 @@ function TaskDrawerMenu() {
 
     return (
         <Grid container className={classes.outerWrapper}>
-            <Grid className={classes.titleWrapper} item xs={12}>
+            <Grid className={classes.titleWrapper} item xs={12} md={12}>
                 <InputText 
                     placeholder="Enter Task title"
                 />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.projectWrapper}>
                     <SelectDropdown 
                         title="Project"
@@ -32,7 +32,7 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid item xs={12} md={3} >
+            <Grid item xs={12} md={12} >
                 <div className={classes.inputWrapper}>
                     <SelectDropdown 
                         title="Admin"
@@ -40,7 +40,7 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.inputWrapper}>
                     <SelectDropdown 
                         title="Assign to"
@@ -48,17 +48,17 @@ function TaskDrawerMenu() {
                 </div>
             </Grid>
 
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.dateWrapper}>
                     <DatePicker/>
                 </div>
             </Grid>
 
-            <Grid item xs={12} >
+            {/* <Grid item xs={12} >
                 <div className={classes.createSubTask}>
                     <CreateSubTask/>
                 </div>
-            </Grid>
+            </Grid> */}
 
         </Grid>
     )

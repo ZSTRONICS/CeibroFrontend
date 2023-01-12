@@ -4,7 +4,7 @@ import { INVITATIONS_LIST } from '../../constants/invitations.constants'
 import NameAvatar from '../Utills/Others/NameAvatar'
 import ViewProfile from './ViewProfile'
 import React, { useEffect, useState } from 'react'
-import taskActions from '../../redux/action/project.action'
+
 import { getMyConnections, resendInvites, revokeInvites } from 'redux/action/user.action'
 
 import { useDispatch } from 'react-redux'
@@ -12,6 +12,7 @@ import { useMediaQuery } from 'react-responsive'
 import { UserInterface } from 'constants/interfaces/user.interface'
 import { createSingleRoom } from '../../redux/action/chat.action'
 import { useHistory } from 'react-router-dom'
+import taskActions from 'redux/action/task.action'
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = props => {
@@ -23,8 +24,8 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
 
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })
 
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer())
+  const openTaskModal = () => {
+    dispatch(taskActions.openNewTaskModal());
   }
 
   useEffect(() => {
@@ -122,7 +123,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
                   <Button
                     className={`${classes.btn} ${classes.centerBtn}`}
                     variant="contained"
-                    onClick={openTaskDrawer}
+                    onClick={openTaskModal}
                     size={isTabletOrMobile ? 'small' : 'medium'}
                     color="primary"
                     disabled={connection.email}

@@ -33,22 +33,13 @@ export const TaskModal = () => {
 
     const dialogOpen = useSelector((state: RootState) => state.task.dialogOpen)
     const theme = useTheme();
-    console.log('dialogOpen', dialogOpen)
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
     const handleClose = () => {
         dispatch(taskActions.closeNewTask())
     };
 
-    const label = { inputProps: { 'aria-label': 'Switch demo' } };
-
-    const top100Films = [
-        { label: 'The Shawshank Redemption', year: 1994 },
-        { label: 'The Godfather', year: 1972 },
-    ]
-
     const handleSubmit = (values: any) => {
         // const { dueDate, taskTitle, projects, admins, assignTo } = values;
-        // console.log(values)
         // const payload = {
         //     other: {
         //         body: {
@@ -95,17 +86,13 @@ export const TaskModal = () => {
                                             <CBox color='#0076C8' fontSize={14} fontWeight={600} display='flex' alignItems='center' my={1.8}>
                                                 {open ?
                                                     <>
-                                                        {< assets.KeyboardArrowUpIcon />}
-                                                    </>
+                                                        < assets.KeyboardArrowUpIcon />                                                    </>
                                                     :
                                                     <>
-                                                        {< assets.KeyboardArrowDownIcon />}
-
+                                                        < assets.KeyboardArrowDownIcon />
                                                     </>
                                                 }
-
                                                 Advance Options
-
                                             </CBox>
                                         </Link>
                                         {open ? null

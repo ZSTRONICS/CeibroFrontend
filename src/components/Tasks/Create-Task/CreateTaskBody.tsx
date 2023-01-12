@@ -29,7 +29,6 @@ const CreateProjectBody = () => {
 
 export default CreateProjectBody
 
-
 const useStyles = makeStyles({
     body: {
         padding: 20,

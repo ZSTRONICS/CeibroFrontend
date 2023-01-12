@@ -9,8 +9,8 @@ const TaskList = () => {
   return (
     <Grid container>
       {tasks &&
-        tasks.map((task: TaskInterface, index: number) => {
-          return <TaskCard key={index} task={task} />;
+        tasks.map((task: TaskInterface) => {
+          return <TaskCard task={task} />;
         })}
     </Grid>
   );
