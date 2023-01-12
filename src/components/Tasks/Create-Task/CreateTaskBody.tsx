@@ -17,12 +17,12 @@ const CreateProjectBody = () => {
 
     return (
         <Grid container className={classes.body}>
-            <DrawerSubTask/>
-            <DrawerSubTask/>
-            <DrawerSubTask/>
-            <DrawerSubTask/>
-            <DrawerSubTask/>
-            <DrawerSubTask/>
+            <DrawerSubTask />
+            {/* <DrawerSubTask />
+            <DrawerSubTask />
+            <DrawerSubTask />
+            <DrawerSubTask />
+            <DrawerSubTask /> */}
         </Grid>
     )
 }
@@ -32,7 +32,7 @@ export default CreateProjectBody
 const useStyles = makeStyles({
     body: {
         padding: 20,
-        overflow: 'scroll',
-        height: 'calc(100vh - 230px)',    
+        // overflow: 'scroll',
+        // height: 'calc(100vh - 230px)',    
     }
 })

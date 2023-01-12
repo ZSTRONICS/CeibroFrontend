@@ -14,7 +14,7 @@ import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer
 const CreateTaskDrawer = () => {
     const dispatch = useDispatch()
     const classes = useStyles()
-  let  drawerOpen= useSelector((state:RootState)=> state.task.taskDrawerOpen)
+    let drawerOpen = useSelector((state: RootState) => state.task.taskDrawerOpen)
     const handleClose = () => {
         dispatch(taskActions.closeTaskDrawer())
     }
@@ -22,14 +22,14 @@ const CreateTaskDrawer = () => {
     return (
         <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
             <div className={classes.outerWrapper}>
-                <DrawerHeader title='New Task' handleClose={handleClose}/>
+                <DrawerHeader title='New Task' handleClose={handleClose} />
                 <Grid container>
-                <Grid item md={3}><TaskDrawerMenu/></Grid>
-                <Grid item md={9}> <CreateTaskBody/></Grid>
+                    <Grid item md={3}><TaskDrawerMenu /></Grid>
+                    <Grid item md={9}> <CreateTaskBody /></Grid>
                 </Grid>
-                <CreateTaskFooter/>
+                {/* <CreateTaskFooter/> */}
             </div>
-          </Drawer>
+        </Drawer>
     )
 }
 export default CreateTaskDrawer

@@ -3,12 +3,14 @@ import { useState } from "react";
 // mui
 import { useTheme } from '@mui/material/styles';
 import { makeStyles } from "@material-ui/core";
-import {Dialog, DialogActions,
+import {
+    Dialog, DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Divider} from '@mui/material';
-    import Link from '@mui/material/Link';
+    Divider
+} from '@mui/material';
+import Link from '@mui/material/Link';
 
 // formik
 import { Form, Formik } from 'formik';
@@ -59,7 +61,7 @@ export const TaskModal = () => {
                 onClose={handleClose}
                 aria-labelledby="responsive-dialog-title"
             >
-                <DialogTitle id="responsive-dialog-title" sx={{fontWeight:'600', paddingBottom:'0'}}>
+                <DialogTitle id="responsive-dialog-title" sx={{ fontWeight: '600', paddingBottom: '0' }}>
                     New Task
                 </DialogTitle>
                 <Formik
@@ -77,7 +79,7 @@ export const TaskModal = () => {
                 >
                     {({ errors, touched, values, setFieldValue }) => (
                         <Form>
-                            <DialogContent sx={{padding:'0 20px 24px'}}>
+                            <DialogContent sx={{ padding: '0 20px 24px' }}>
                                 <DialogContentText>
                                     <CBox>
                                         <NewTaskMenu setFieldValue={setFieldValue} values={values} />
@@ -89,7 +91,7 @@ export const TaskModal = () => {
                                                         < assets.KeyboardArrowUpIcon />                                                    </>
                                                     :
                                                     <>
-                                                        < assets.KeyboardArrowDownIcon />
+                                                        < assets.KeyboardArrowRightIcon />
                                                     </>
                                                 }
                                                 Advance Options
@@ -109,8 +111,8 @@ export const TaskModal = () => {
                                         <CButton variant='outlined' styles={{ color: '#0076C8', fontSize: 12, fontWeight: 'bold' }} label={'Save as draft'} />
                                     </CBox>
                                     <div style={{ flex: '1 0 0', display: 'flex', justifyContent: 'flex-end' }}>
-                                         <CButton type='submit' variant='contained' styles={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginRight: 15 }} label={'Assign Task'} /> 
-                                     <CButton onClick={handleClose} variant='contained' styles={{ color: '#605C5C', backgroundColor: '#ECF0F1', fontSize: 12, fontWeight: 'bold' }} label={'Cancel'} />
+                                        <CButton type='submit' variant='contained' styles={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginRight: 15 }} label={'Assign Task'} />
+                                        <CButton onClick={handleClose} variant='contained' styles={{ color: '#605C5C', backgroundColor: '#ECF0F1', fontSize: 12, fontWeight: 'bold' }} label={'Cancel'} />
                                     </div>
                                 </CBox>
                             </DialogActions>
