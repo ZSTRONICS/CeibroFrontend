@@ -70,7 +70,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
         {connections?.map?.((connection: any) => {
           const inviteId = (connection.to===undefined || connection.from ===undefined)&& connection._id
           const email = (connection.to===undefined || connection.from ===undefined)&& connection.email
+          if(!connection?.sentByMe && connection?.status === "pending") {
+            return
+          }
           const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
+
           return (
             <Grid item xs={12} key={user?._id} id={user?._id} className={classes.chipWrapper} >
               <Grid container justifyContent='space-between'>
