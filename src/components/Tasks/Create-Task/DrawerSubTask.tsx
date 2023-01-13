@@ -1,6 +1,7 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { AttachFile, Chat, Create, Delete, Image } from "@material-ui/icons";
 import { CBox } from "components/material-ui";
+import { AttachmentIcon, MesageIcon, PinIcon } from "components/material-ui/icons";
 import React from "react";
 import { connect } from "react-redux";
 import colors from "../../../assets/colors";
@@ -31,12 +32,10 @@ const DrawerSubTask = () => {
 
           </Grid>
           <Grid item xs={8}>
-            <CBox display='flex' justifyContent='flex-end'>
-              <Create className={classes.actionIcons} />
-              <Delete
-                className={classes.actionIcons}
-                style={{ color: colors.btnRed }}
-              />
+            <CBox display='flex' alignItems='center' justifyContent='flex-end'>
+              <AttachmentIcon /> <span>2</span>
+              <MesageIcon />
+
             </CBox>
           </Grid>
         </CBox>
