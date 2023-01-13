@@ -1,7 +1,7 @@
 import React from 'react';
 
 // mui-imports
-import { Grid, TextField } from '@mui/material';
+import { Grid, TextField, Typography } from '@mui/material';
 import Autocomplete from '@mui/material/Autocomplete';
 
 // redux
@@ -11,6 +11,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 // components
 import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
 import useStyles from './TaskDrawerStyles';
+import { CustomStack, TaskStatus } from '../Tabs/TaskCard';
 
 function NewTaskMenu(props: any) {
 
@@ -24,6 +25,7 @@ function NewTaskMenu(props: any) {
         { label: 'Electic', year: 1972 },
     ]
 
+    
     return (
 
         <Grid container className={classes.outerWrapper}>

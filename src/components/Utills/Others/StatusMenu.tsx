@@ -12,28 +12,28 @@ import {
 } from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";
 
-const options = [
-  {
-    title: "All",
-    count: 21,
-  },
-  {
-    title: "Active",
-    count: 30,
-  },
+// const options = [
+//   {
+//     title: "All",
+//     count: 21,
+//   },
+//   {
+//     title: "Active",
+//     count: 30,
+//   },
 
-  {
-    title: "Done",
-    count: 44,
-  },
-  {
-    title: "Draft",
-    count: 44,
-  },
-];
+//   {
+//     title: "Done",
+//     count: 44,
+//   },
+//   {
+//     title: "Draft",
+//     count: 44,
+//   },
+// ];
 
-export const StatusMenu = () => {
-  // const { options } = props;
+export const StatusMenu = (props:any) => {
+  const { options } = props;
   const { getStatuses, drawerOpen } = useSelector(
     (state: RootState) => state.project
   );

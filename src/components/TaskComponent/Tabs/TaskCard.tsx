@@ -70,7 +70,11 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
               />
             )}
             {task.state === State.Draft && (
+              <>
+              <Tooltip title={`${State.Draft}`} placement="bottom">
               <assets.ErrorOutlinedIcon color="error" fontSize="small" />
+              </Tooltip>
+            </>
             )}
           </Box>
           {/* <IconButton aria-label="settings"> */}
@@ -80,7 +84,17 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
       </>
     );
   };
-
+  const AssignedToList = ()=>{
+    return (<>
+       {task.assignedTo.map((item:AssignedTo)=>{
+        return(
+          <span>
+        {`${item.firstName} ${item.surName },`}
+        </span>
+        )
+       }) }
+      </> )
+  }
   return (
     //  <Grid item  className={classes.cardContainer}>
       <Card className={classes.cardContainer}
@@ -110,24 +124,15 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
           <Box>
             <LabelTag>Assigned to</LabelTag>
            {task.assignedTo.map((item:AssignedTo,i:any) =>{
-            const AssignedToList = ()=>{
-              return (
-                <CustomStack>
-                  <span>
-                  {`${item.firstName} ${item.surName}`}
-                  </span>
-                </CustomStack>
-              )
-            }
             return(<>
             {i===0&& <AssignedTag key={item._id} sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
-            {i!==0&&<CustomBadge key={item._id} overlap="circular" color="primary" badgeContent={
-              <Tooltip title={AssignedToList()} key={item._id}>
-                 <span>{task.assignedTo.length-1}</span>
-              </Tooltip>
-            }></CustomBadge>}
             </>
            )}) }
+           {task.assignedTo.length>1&&<CustomBadge  overlap="circular" color="primary" badgeContent={
+             <Tooltip title={AssignedToList()}>
+                <span>{task.assignedTo.length-1}+</span>
+             </Tooltip>
+           }></CustomBadge>}
           </Box>
         </CustomStack>
         <Box pt={2.5}>
@@ -244,7 +249,7 @@ export const TaskStatus = styled(Typography)`
   text-transform:capitalize;
 `;
 
-const CounterSpan = styled("span")`
+export const CounterSpan = styled("span")`
   font-size: 9px;
   border: 1px solid #605c5c;
   padding: 3px 5px;

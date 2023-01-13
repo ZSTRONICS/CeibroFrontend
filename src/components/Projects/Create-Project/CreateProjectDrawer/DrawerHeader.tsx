@@ -43,6 +43,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     paddingLeft: 20,
     paddingRight: 20,
+    borderBottom: '1px solid #dbdbe5',
   },
   headerTitle: {
     fontStyle: "normal",

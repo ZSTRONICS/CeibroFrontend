@@ -21,7 +21,7 @@ function SubTask() {
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: `Yellow` }}>{"active"}</TaskStatus>
+          <TaskStatus sx={{ background: '#F1B740', fontWeight: '500',fontSize: '10px' }}>{"ongoing"}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {dueDate}
           </Typography>
