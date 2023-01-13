@@ -9,7 +9,25 @@ import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import TaskList1 from './TaskList1';
+const options = [
+  {
+    title: "All",
+    count: 21,
+  },
+  {
+    title: "Active",
+    count: 30,
+  },
 
+  {
+    title: "Done",
+    count: 44,
+  },
+  {
+    title: "Draft",
+    count: 44,
+  },
+];
 const TaskMain=()=> {
 
   let xsPoint = 12
@@ -39,7 +57,7 @@ const TaskMain=()=> {
       </Grid>
       <Grid  item xs={12} pt={0}>
         <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
-          <StatusMenu/>
+          <StatusMenu options={options}/>
         </Paper>
       </Grid>
       <Grid item xs={12}>

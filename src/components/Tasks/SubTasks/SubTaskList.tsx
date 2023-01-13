@@ -12,7 +12,6 @@ const SubTaskList = () => {
                 TASKS.map((task: TaskInterface, index: number) => {
                     return (<>
                         <SubTask/>
-                        
                     </>
                     )
                 })

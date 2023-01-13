@@ -9,6 +9,7 @@ import { Grid, makeStyles } from '@material-ui/core'
 import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/reducers'
 import DrawerSubTask from './DrawerSubTask'
+import SubTaskList from '../SubTasks/SubTaskList'
 
 const CreateProjectBody = () => {
     const classes = useStyles()
@@ -17,12 +18,8 @@ const CreateProjectBody = () => {
 
     return (
         <Grid container className={classes.body}>
-            <DrawerSubTask />
-            {/* <DrawerSubTask />
-            <DrawerSubTask />
-            <DrawerSubTask />
-            <DrawerSubTask />
-            <DrawerSubTask /> */}
+            {/* <DrawerSubTask/> */}
+            <SubTaskList />
         </Grid>
     )
 }
@@ -32,7 +29,8 @@ export default CreateProjectBody
 const useStyles = makeStyles({
     body: {
         padding: 20,
-        // overflow: 'scroll',
-        // height: 'calc(100vh - 230px)',    
+        overflow: 'scroll',
+        height: 'calc(100vh - 80px)',
+        background: '#F5F7F8'
     }
 })

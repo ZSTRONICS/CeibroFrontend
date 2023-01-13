@@ -33,8 +33,7 @@ const DrawerSubTask = () => {
           </Grid>
           <Grid item xs={8}>
             <CBox display='flex' alignItems='center' justifyContent='flex-end'>
-              <AttachmentIcon /> <span>2</span>
-              <MesageIcon />
+              <AttachmentIcon /> <span>2</span>w
 
             </CBox>
           </Grid>
