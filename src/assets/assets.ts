@@ -84,6 +84,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import AddIcon from '@mui/icons-material/Add';
 
 const assets= {
   LocationOnOutlinedIcon,
@@ -166,7 +167,8 @@ const assets= {
   testProject3,
   testProject4,
   membersDelete,
-  KeyboardArrowRightIcon
+  KeyboardArrowRightIcon,
+  AddIcon
 };
 
 export const sounds = {

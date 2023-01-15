@@ -91,7 +91,7 @@ export const StatusMenu = (props: any) => {
           );
         })}
       <CButton onClick={() => setSubTask(true)} label="Create SubTask" variant={'contained'} />
-      <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask />} />
+      <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
 
     </>
   );

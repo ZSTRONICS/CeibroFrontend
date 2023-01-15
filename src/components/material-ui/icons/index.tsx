@@ -9,3 +9,7 @@ export { ChatIcon } from './chat/Chat'
 export { ListViewIcon } from './list-view/ListView'
 export { AttachmentIcon } from './attachment/Attachment'
 export { MesageIcon } from './mesage/Mesage'
+export { NotificationIcon } from './notification/Notification'
+export { EditIcon } from './edit/Edit'
+export { DeleteIcon } from './delete/Delete'
+
