@@ -1,5 +1,5 @@
-import React from 'react'
-import { Divider, Grid, TextField } from '@mui/material'
+import React, { useState } from 'react'
+import { Divider, Grid, IconButton, Link, TextField } from '@mui/material'
 import Autocomplete from '@mui/material/Autocomplete'
 import { makeStyles } from "@material-ui/core/styles";
 import colors from "../../../assets/colors";
@@ -12,9 +12,10 @@ import { AttachmentIcon } from 'components/material-ui/icons';
 
 import CreateSubTaskAdvanceOption from './CreateSubTaskAdvanceOption';
 import CButton from 'components/Button/Button';
-
+import CustomModal from "../../Modal/index"
 export default function CreateSubTask({ setSubTask }: any) {
     const classes = useStyles();
+    const [imageAttach, setImageAttach]: any = useState(false);
     const projects = [
         { label: 'Redemption', year: 1994 },
         { label: 'Kristo', year: 1972 },
@@ -106,13 +107,24 @@ export default function CreateSubTask({ setSubTask }: any) {
                     </div>
                 </Grid>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
-                    <TextareaAutosize
+                    <TextField
+                        id="standard-multiline-flexible"
+                        // label="Multiline"
+                        placeholder="Enter subtask description"
+                        multiline
+                        maxRows={4}
+                        minRows={4}
+                        style={{ padding: '10px 10px' }}
+                        variant="standard"
+                        className={classes.textArea}
+                    />
+                    {/* <TextareaAutosize
                         aria-label="empty textarea"
                         placeholder="Enter subtask description"
                         minRows={7}
                         className={classes.textArea}
                     // style={{ }}
-                    />
+                    /> */}
                     <CBox display='flex' alignItems='center' justifyContent='space-between' borderTop='1px solid #DBDBE5' px={1.8}>
                         <CBox className={classes.switch}>
                             <label>Required:</label>
@@ -127,30 +139,32 @@ export default function CreateSubTask({ setSubTask }: any) {
 
                         </CBox>
                         <CBox display='flex' alignItems='center'>
-                            <AttachmentIcon />
-                            &nbsp;
-                            &nbsp;
-                            <MediaIcon />
-                            &nbsp;
-                            &nbsp;
-                            <NotificationIcon />
+                            <IconButton onClick={() => setImageAttach(true)}>
+                                <AttachmentIcon />
+                            </IconButton>
+                            {/* &nbsp;
+                            &nbsp; */}
+                            {/* <MediaIcon /> */}
+                            {/* &nbsp;
+                            &nbsp; */}
+                            {/* <NotificationIcon /> */}
                         </CBox>
                     </CBox>
                 </Grid>
-                <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
+                {/* <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} /> */}
 
-                <CreateSubTaskAdvanceOption />
+                {/* <CreateSubTaskAdvanceOption /> */}
                 <CBox display='flex' width='100%' mt={6.2} mb={1}>
                     <CBox className={classes.btnDraft}>
                         <CButton variant='outlined' styles={{ color: '#0076C8', fontSize: 12, fontWeight: 'bold' }} label={'Save as draft'} />
                     </CBox>
                     <div style={{ flex: '1 0 0', display: 'flex', justifyContent: 'flex-end' }}>
-                        <CButton type='submit' variant='contained' styles={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginRight: 15 }} label={'Assign Task'} />
+                        <CButton type='submit' variant='contained' styles={{ color: '#fff', fontSize: 12, fontWeight: 'bold', marginRight: 15 }} label={'Create Task'} />
                         <CButton onClick={() => setSubTask(false)} variant='contained' styles={{ color: '#605C5C', backgroundColor: '#ECF0F1', fontSize: 12, fontWeight: 'bold' }} label={'Cancel'} />
                     </div>
                 </CBox>
             </Grid>
-
+            <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={'d'} />
 
         </div>
     )

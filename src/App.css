@@ -11,6 +11,7 @@
   --purple-grey: #DBDBE5;
   --white: white;
   --dark-gray: #7D7E80;
+  --diva-violet: #5572BC;
 }
 
 body {
@@ -63,6 +64,10 @@ iframe
 
 .rejected-badge .MuiBadge-colorPrimary {
   background: var(--btn-red);
+  color: white;
+}
+.accepted-badge .MuiBadge-colorPrimary {
+  background: var(--diva-violet);
   color: white;
 }
 

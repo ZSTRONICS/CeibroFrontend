@@ -155,6 +155,19 @@ export const useStyles = makeStyles(() =>
         textAreaBox: {
             border: '1px solid #DBDBE5',
             borderRadius: 5,
+            '&:hover': {
+                borderColor: '#0a95ff',
+                borderWidth: '1px',
+            },
+            '& .css-8q2m5j-MuiInputBase-root-MuiInput-root': {
+                '&:before': {
+                    borderBottom: 'none !important'
+                },
+                '&:after': {
+                    borderBottom: 'none !important'
+                }
+            }
+
         },
         textArea: {
             width: '100%', padding: 15, border: 'none', borderRadius: 5,

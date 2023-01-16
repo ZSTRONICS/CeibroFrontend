@@ -58,6 +58,7 @@ export const StatusMenu = (props: any) => {
     }
   }, [drawerOpen]);
 
+  console.log(props, 'here is list of props')
   return (
     <>
       {options &&
@@ -90,7 +91,12 @@ export const StatusMenu = (props: any) => {
             </div>
           );
         })}
-      <CButton onClick={() => setSubTask(true)} label="Create SubTask" variant={'contained'} />
+      {/* if the props is comming then it will shows create sub task menu */}
+      {props.subMenu === 'subTask' ?
+        <CButton onClick={() => setSubTask(true)} label="Add SubTask" variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+        :
+        null
+      }
       <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
 
     </>
@@ -106,7 +112,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     cursor: "pointer",
     marginRight: "5px",
-
   },
   statusBage: {
     marginLeft: 20,

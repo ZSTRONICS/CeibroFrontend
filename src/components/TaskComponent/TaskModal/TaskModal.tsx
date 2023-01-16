@@ -83,8 +83,8 @@ export const TaskModal = () => {
                                 <DialogContentText>
                                     <CBox>
                                         <NewTaskMenu setFieldValue={setFieldValue} values={values} />
-                                        <Divider />
-                                        <Link href="#" underline="none" onClick={(event) => setOpen(!open)}>
+                                        {/* <Divider /> */}
+                                        {/* <Link href="#" underline="none" onClick={(event) => setOpen(!open)}>
                                             <CBox color='#0076C8' fontSize={14} fontWeight={600} display='flex' alignItems='center' my={1.8}>
                                                 {open ?
                                                     <>
@@ -96,7 +96,7 @@ export const TaskModal = () => {
                                                 }
                                                 Advance Options
                                             </CBox>
-                                        </Link>
+                                        </Link> */}
                                         {open ? null
                                             // <TaskAdvanceOptions />
                                             :
