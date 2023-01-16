@@ -5,7 +5,6 @@ import StatusMenu from 'components/Utills/Others/StatusMenu'
 import ListIcon from '@material-ui/icons/List';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
-import colors from 'assets/colors';
 
 
 function SubTaskStatusDrawer() {
@@ -17,7 +16,7 @@ function SubTaskStatusDrawer() {
                     </Paper>
                 </div>
                 <Grid container gap={2} pl={2.2}>
-                 <Grid item sm ={2} md={2}>
+                 {/* <Grid item md={2.5}>
                     <Button
                             variant="outlined"
                             color="primary"
@@ -26,12 +25,12 @@ function SubTaskStatusDrawer() {
                         >
                             Bulk edit
                         </Button>
-                    </Grid>
+                    </Grid> */}
                
-                <Grid item sm ={3} md={4}>
+                <Grid item  md={4}>
                 <DatePicker  Datetitle='Date'/>
                 </Grid>
-                <Grid item sm ={5} md={4}>
+                <Grid item  md={4}>
                 <SelectDropdown title="Assigned to" />
                 </Grid>
                 </Grid>

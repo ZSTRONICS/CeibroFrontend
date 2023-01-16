@@ -11,6 +11,7 @@ import {
 import { colorsByStatus } from "config/project.config";
 
 function SubTask() {
+  const classes = useStyles()
   const dueDate = new Date().toLocaleDateString("de-DE", {
     day: "numeric",
     month: "numeric",
@@ -31,7 +32,7 @@ function SubTask() {
   };
   return (
     <>
-      <Grid item container justifyContent={"space-between"} pt={1}>
+      <Grid item container justifyContent={"space-between"} pt={1} rowGap={0.5}>
         <Grid item>{SubHeader()}</Grid>
         <Grid item lg={7}>
           <CustomStack columnGap={0.5}>
@@ -40,7 +41,7 @@ function SubTask() {
           </CustomStack>
         </Grid>
         <Grid item>
-          <Box pr={1}>
+          <Box pr={1} className={classes.cardContainer}>
             <CustomStack gap={2}>
               <CustomStack columnGap={0.8}>
                 <svg
@@ -96,11 +97,10 @@ export default SubTask;
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
-    maxWidth: 365,
-    [theme.breakpoints.down(1024)]: {
-      columnGap: "20.04px",
-      maxWidth: "319px",
-    },
+    '@media (max-width:371)': {
+      border:'1px solid red',
+      paddingTop:'8px'
+  }
   },
 }));
 

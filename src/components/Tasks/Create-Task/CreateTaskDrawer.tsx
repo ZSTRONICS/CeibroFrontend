@@ -26,7 +26,7 @@ const CreateTaskDrawer = () => {
     }
 
     return (
-        <Drawer onClose={handleClose} open={drawerOpen} anchor="right" className={classes.drawerContainer}>
+        <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
             <div className={classes.outerWrapper}>
                 <DrawerHeader title='New Task' handleClose={handleClose}/>
                 <Grid container>
@@ -52,9 +52,9 @@ const CreateTaskDrawer = () => {
 export default CreateTaskDrawer
 
 const useStyles = makeStyles({
-    drawerContainer:{
-        background:'#F5F7F8'
-    },
+    // drawerContainer:{
+    //     background:'#F5F7F8'
+    // },
     bodyWrapper:{
         maxWidth: '878px',
         width: '100%',

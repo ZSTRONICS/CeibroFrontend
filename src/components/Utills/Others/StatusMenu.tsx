@@ -100,7 +100,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     cursor: "pointer",
     marginRight: "5px",
-
   },
   statusBage: {
     marginLeft: 20,
