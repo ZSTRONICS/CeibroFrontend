@@ -127,7 +127,7 @@ export default TaskDrawerMenu;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: "10px 20px",
+    padding: "10px 10px",
     // background: colors.white,
   },
   titleWrapper: {

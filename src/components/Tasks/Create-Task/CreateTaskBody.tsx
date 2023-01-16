@@ -10,27 +10,42 @@ import { useSelector } from 'react-redux'
 import { RootState } from '../../../redux/reducers'
 import DrawerSubTask from './DrawerSubTask'
 import SubTaskList from '../SubTasks/SubTaskList'
+import SubTaskStatusDrawer from './SubTaskStatusDrawer'
 
 const CreateProjectBody = () => {
     const classes = useStyles()
 
     const selectedMenue = useSelector((state: RootState) => state.project.menue)
 
-    return (
+    return (<>
+   
+             <div className={classes.subtaskWrapper}>
+                <SubTaskStatusDrawer/>
+            </div>  
         <Grid container className={classes.body}>
             {/* <DrawerSubTask/> */}
             <SubTaskList/>
         </Grid>
+        </>
     )
 }
 
 export default CreateProjectBody
 
 const useStyles = makeStyles({
+    statusWraper:{
+        overflowX:'scroll'
+    },
     body: {
         padding: 20,
         overflow: 'scroll',
         height: 'calc(100vh - 80px)',
         background:'#F5F7F8'
+    },
+    subtaskWrapper:{
+        '@media (max-width:854)': {
+            maxWidth: '319px',
+            width: '100%'
+        }
     }
 })
