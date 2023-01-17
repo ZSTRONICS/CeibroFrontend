@@ -18,6 +18,8 @@ import assets from "assets/assets"
 import { useState } from "react"
 import { AttachmentIcon } from 'components/material-ui/icons'
 import CustomModal from 'components/Modal'
+import CButton from 'components/Button/Button'
+import UploadImage from 'components/uploadImage/UploadImage'
 
 function TaskDrawerMenu() {
   const classes = useStyles();
@@ -40,84 +42,14 @@ function TaskDrawerMenu() {
   return (
     <>
       <Grid container className={classes.outerWrapper}>
-        <Grid className={classes.titleWrapper} item xs={12} md={12}>
-          <TextField
-            size="small"
-            name="taskTitle"
-            fullWidth
-            id="outlined-basic"
-            label="Enter task title"
-            placeholder='enter task title'
-            variant="outlined"
-          />
-          <CBox display='flex' alignItems='center' mt={1}>
-            <CBox className={classes.type}>
-              Draft
-            </CBox>
-            <CBox color='#000' fontSize={12} fontWeight={600} ml={1}>
-              22.05.2021
-            </CBox>
+        <CBox display='flex' alignItems='center' mt={1}>
+          <CBox className={classes.type}>
+            Draft
           </CBox>
-          {/* <InputText
-                    placeholder="Enter Task title"
-                /> */}
-
-        </Grid>
-        <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
-
-        <Grid item xs={12} md={12}>
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              size="small"
-              options={projects}
-              // onChange={(e, value) => {
-              //     props.setFieldValue('projects', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='projects' label='Project' placeholder='select project' />}
-            />
-            {/* <SelectDropdown
-                        title="Project"
-                    /> */}
-          </div>
-        </Grid>
-
-        <Grid item xs={12} md={12} >
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              options={projects}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='admins' label='Admins' />}
-            />
-
-          </div>
-        </Grid>
-        <Grid item xs={12} md={12} >
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              options={projects}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='assignTo' label='Assign To' placeholder='select memebers(s)' />}
-            />
-
-          </div>
-        </Grid>
-
-
-
+          <CBox color='#000' fontSize={12} fontWeight={600} ml={1}>
+            22.05.2021
+          </CBox>
+        </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
             <TextField
@@ -138,7 +70,83 @@ function TaskDrawerMenu() {
           </Grid>
 
         </Grid>
-        <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
+        <Grid className={classes.titleWrapper} item xs={12} md={12}>
+          <TextField
+            size="small"
+            name="taskTitle"
+            fullWidth
+            id="outlined-basic"
+            label="Task title"
+            placeholder='Enter Task Title'
+            variant="outlined"
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+
+          {/* <InputText
+                    placeholder="Enter Task title"
+                /> */}
+
+        </Grid>
+
+        <Grid item xs={12} md={12}>
+          <div className={classes.titleWrapper}>
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              size="small"
+              options={projects}
+              // onChange={(e, value) => {
+              //     props.setFieldValue('projects', value !== null ? value : top100Films);
+              // }}
+              renderInput={(params) => <TextField {...params} name='projects' label='Project' placeholder='select project' InputLabelProps={{
+                shrink: true,
+              }} />}
+            />
+            {/* <SelectDropdown
+                        title="Project"
+                    /> */}
+          </div>
+        </Grid>
+
+        <Grid item xs={12} md={12} >
+          <div className={classes.titleWrapper}>
+            <Autocomplete
+              multiple
+              disablePortal
+              id="combo-box-demo"
+              options={projects}
+              size="small"
+              // onChange={(e, value) => {
+              //     props.setFieldValue('admins', value !== null ? value : top100Films);
+              // }}
+              renderInput={(params) => <TextField {...params} name='admins' label='Admins' InputLabelProps={{
+                shrink: true,
+              }} />}
+            />
+
+          </div>
+        </Grid>
+        <Grid item xs={12} md={12} >
+          <div className={classes.titleWrapper}>
+            <Autocomplete
+              multiple
+              disablePortal
+              id="combo-box-demo"
+              options={projects}
+              size="small"
+              // onChange={(e, value) => {
+              //     props.setFieldValue('admins', value !== null ? value : top100Films);
+              // }}
+              renderInput={(params) => <TextField {...params} name='assignTo' label='Assign To' placeholder='select memebers(s)' InputLabelProps={{
+                shrink: true,
+              }} />}
+            />
+
+          </div>
+        </Grid>
+
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
@@ -150,7 +158,11 @@ function TaskDrawerMenu() {
             style={{ padding: '10px 10px' }}
             variant="standard"
             className={classes.textArea}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
+          <CBox className={classes.titleLabel}>Description</CBox>
           <CBox display='flex' alignItems='center' justifyContent='flex-end' width='100%' borderTop='1px solid #DBDBE5' px={1.8}>
 
             <CBox display='flex' alignItems='center' >
@@ -163,6 +175,21 @@ function TaskDrawerMenu() {
               {/* &nbsp;
                             &nbsp; */}
               {/* <NotificationIcon /> */}
+            </CBox>
+          </CBox>
+        </Grid>
+        <Divider />
+        <Grid item xs={12} md={12}>
+          <CBox display='flex' justifyContent='space-between' alignItems='center' width='100%' p='12px 0px 7px 7px'>
+            <CBox fontSize={14} color='#000' fontWeight={600}>
+              Attachment
+            </CBox>
+            <CBox display='flex'>
+              <CButton label='View All' styles={{ fontSize: 12, color: '#0076C8', fontWeight: 'bold' }} />
+              &nbsp;
+              <Divider sx={{ height: 20, marginTop: 'auto', marginBottom: 'auto', borderColor: '#dbdbe5', }} orientation='vertical' />
+              &nbsp;
+              <CButton label='Add New' styles={{ fontSize: 12, color: '#0076C8', fontWeight: 'bold' }} />
             </CBox>
           </CBox>
         </Grid>
@@ -221,9 +248,7 @@ function TaskDrawerMenu() {
                 </div>
             </Grid> */}
       </Grid>
-      <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={<>
-        <TextField type='file' id="outlined-basic" label="Outlined" variant="outlined" />
-      </>} />
+      <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attachments'} children={<UploadImage />} />
     </>
   );
 }
@@ -237,9 +262,9 @@ const useStyles = makeStyles({
   },
 
   titleWrapper: {
-    marginTop: 10,
+    marginTop: 20,
     '& .MuiFormLabel-root': {
-      fontSize: 12,
+      fontSize: '1rem',
       color: '#605C5C',
       fontFamily: 'Inter',
       fontWeight: 600,
@@ -276,6 +301,8 @@ const useStyles = makeStyles({
   textAreaBox: {
     border: '1px solid #DBDBE5',
     borderRadius: 5,
+    marginTop: 20,
+    position: 'relative',
     '&:hover': {
       borderColor: '#0a95ff',
       borderWidth: '1px',
@@ -312,6 +339,16 @@ const useStyles = makeStyles({
       borderColor: '#0a95ff',
       borderWidth: '1px',
     }
+  },
+  titleLabel: {
+    position: 'absolute',
+    top: '-10px',
+    backgroundColor: '#fff',
+    left: 11,
+    color: '#605C5C',
+    fontSize: 12,
+    fontFamily: 'Inter',
+    fontWeight: 600,
   },
 
 

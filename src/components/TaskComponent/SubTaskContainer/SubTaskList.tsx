@@ -9,6 +9,8 @@ import {
   TaskStatus,
 } from "../Tabs/TaskCard";
 import { colorsByStatus } from "config/project.config";
+import { CBox } from "components/material-ui";
+import CButton from "components/Button/Button";
 
 function SubTask() {
   const classes = useStyles()
@@ -86,7 +88,10 @@ function SubTask() {
           </TaskDescription>
         </Grid>
         <Grid item container>
-
+          <CBox display='flex' justifyContent='flex-end' width='100%'>
+            <CButton label={'Assign'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+            <CButton label={'Delete'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+          </CBox>
         </Grid>
       </Grid>
       <Divider sx={{ padding: "10px 0", width: '100%' }} />

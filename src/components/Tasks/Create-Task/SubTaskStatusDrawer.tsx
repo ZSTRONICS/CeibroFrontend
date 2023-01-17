@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core';
 import { Button, Grid, Paper } from '@mui/material'
 import StatusMenu from 'components/Utills/Others/StatusMenu'
 import ListIcon from '@material-ui/icons/List';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
+import { CBox } from 'components/material-ui';
+import CButton from 'components/Button/Button';
+import CustomModal from 'components/Modal';
+import CreateSubTask from '../SubTasks/CreateSubTask';
 
 
 function SubTaskStatusDrawer() {
   const classes = useStyles()
+  const [subTask, setSubTask]: any = useState(false)
+
   const subMenu = 'subTask'
   return (<>
     <div className={classes.drawerStatusContainer}>
@@ -17,6 +23,18 @@ function SubTaskStatusDrawer() {
       </Paper>
     </div>
     <Grid container gap={2} pl={2.2}>
+      <CBox display='flex' justifyContent='space-between' alignItems='center' width='100%' mr={2.2} mb={2}>
+        <CBox display='flex'>
+          <DatePicker Datetitle='Date' />
+          &nbsp;
+          &nbsp;
+          <SelectDropdown title="Assigned to" />
+        </CBox>
+        <CBox>
+          <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+
+        </CBox>
+      </CBox>
       {/* <Grid item md={2.5}>
                     <Button
                             variant="outlined"
@@ -28,13 +46,10 @@ function SubTaskStatusDrawer() {
                         </Button>
                     </Grid> */}
 
-      <Grid item md={4}>
-        <DatePicker Datetitle='Date' />
-      </Grid>
-      <Grid item md={4}>
-        <SelectDropdown title="Assigned to" />
-      </Grid>
+
     </Grid>
+    <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
+
   </>
   )
 }
