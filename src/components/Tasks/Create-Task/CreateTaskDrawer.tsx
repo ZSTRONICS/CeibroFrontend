@@ -16,6 +16,7 @@ import StatusMenu from 'components/Utills/Others/StatusMenu';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import SubTaskStatusDrawer from './SubTaskStatusDrawer';
+import SubtaskModal from 'components/TaskComponent/CreateSubtask/SubtaskModal';
 
 const CreateTaskDrawer = () => {
     const dispatch = useDispatch()
@@ -27,11 +28,11 @@ const CreateTaskDrawer = () => {
 
     return (
         <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
+            <SubtaskModal />
             <div className={classes.outerWrapper}>
                 <DrawerHeader title='New Task' handleClose={handleClose}/>
                 <Grid container>
                 <Grid item md={3} sx={{background:'white'}}><TaskDrawerMenu/>
-                   
                 </Grid>
 
                     {/* <Grid item> */}

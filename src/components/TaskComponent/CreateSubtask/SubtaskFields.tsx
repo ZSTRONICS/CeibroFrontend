@@ -10,10 +10,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 // components
 import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
-import useStyles from './TaskDrawerStyles';
+import useStyles from '../TaskModal/TaskDrawerStyles';
 import { CustomStack, TaskStatus } from '../Tabs/TaskCard';
 
-function NewTaskMenu(props: any) {
+function SubtaskFields (props: any) {
 
     const classes = useStyles()
     // const dispatch = useDispatch()
@@ -25,13 +25,12 @@ function NewTaskMenu(props: any) {
         { label: 'Electic', year: 1972 },
     ]
 
-    
     return (
 
-        <Grid container className={classes.outerWrapper} rowGap={0.5}>
+        <Grid container className={classes.outerWrapper}>
             <Grid item container columnGap={2} >
                 <Grid item>
-                    <TextField
+                 <TextField
                         id="date"
                         name="dueDate"
                         label="Due date"
@@ -45,28 +44,24 @@ function NewTaskMenu(props: any) {
                         onChange={(e) => {
                             props.setFieldValue('dueDate', e.target.value);
                         }}
-                    />
+                    /> 
                 </Grid>
-                {/* <Grid item>
-                 <CustomizedSwitch
-                                label='Multi-task'
-                                edge='start'
-                            />
-                </Grid> */}
             </Grid>
             <Grid xs={12} md={12}>
                 <div className={classes.titleWrapper}>
-                    <TextField
+                <input type='text' placeholder='enter'/>
+
+                    {/* <TextField
                         size="small"
                         name="taskTitle"
                         fullWidth
                         id="outlined-basic"
-                        label="Enter task title"
-                        placeholder='enter task title'
+                        label="Enter sub task title"
+                        placeholder='Enter sub task title'
                         variant="outlined"
                         onChange={(e) => {
                             props.setFieldValue('taskTitle', e.target.value);
-                        }}/>
+                        }}/> */}
                 </div>
             </Grid>
             <Grid xs={12} md={12}>
@@ -117,6 +112,6 @@ function NewTaskMenu(props: any) {
     )
 }
 
-export default NewTaskMenu
+export default SubtaskFields
 
 

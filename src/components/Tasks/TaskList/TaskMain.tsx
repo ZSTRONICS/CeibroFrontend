@@ -47,14 +47,14 @@ const TaskMain=()=> {
       <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
       <SelectDropdown title="Projects" />
       </Grid>
-      <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
+      {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
           // onChange={(e:any)=>handleChange(e)}
             label= 'Multi-task' />
             <Box sx={{maxWidth:'20px', width:'100%'}} flex={1}>
             <img src={assets.filterIcon} width='100%' alt=""/>
             </Box>
-      </Grid>
+      </Grid> */}
       <Grid  item xs={12} pt={0}>
         <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
           <StatusMenu options={options}/>

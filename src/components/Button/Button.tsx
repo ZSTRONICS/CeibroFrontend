@@ -12,12 +12,12 @@ export default function CButton(props: any) {
     )
 }
 
-CButton.propTypes={
-    label: PropTypes.string.isRequired,
-    variant:PropTypes.string,
-    onClick:PropTypes.func,
-    styles:PropTypes,
-    type: PropTypes,
-    className:PropTypes
-  }
+// CButton.propTypes={
+//     label: PropTypes.string.isRequired,
+//     variant:PropTypes.string,
+//     onClick:PropTypes.func,
+//     styles:PropTypes.func,
+//     type: PropTypes,
+//     className:PropTypes.func
+//   }
   

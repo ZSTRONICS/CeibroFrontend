@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Box, Divider, Drawer, Link, Typography } from "@mui/material";
 import assets from "assets/assets";
@@ -7,7 +8,6 @@ import {
   CustomStack,
   TaskStatus,
 } from "components/TaskComponent/Tabs/TaskCard";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import { RootState } from "../../../redux/reducers";
@@ -19,12 +19,12 @@ import CreateSubTask from "../SubTasks/CreateSubTaskDrawer";
 function TaskDrawerMenu() {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [open, setOpen]: any = useState(false)
-  const selectedMenue = useSelector((state: RootState) => state.project.menue);
+  // const [open, setOpen]: any = useState(false)
 
   const handleClick = (id: number) => {
     // dispatch(projectActions.setMenue(id))
   };
+
   const dueDate = new Date().toLocaleDateString("de-DE", {
     day: "numeric",
     month: "numeric",
@@ -79,13 +79,13 @@ function TaskDrawerMenu() {
         </div>
       </Grid>
 
-      <Grid item xs={12} md={10}>
+      <Grid item xs={12} md={12}>
         <div className={classes.dateWrapper}>
           <DatePicker />
         </div>
       </Grid>
       <Divider sx={{ width: "100%", padding: "15px 0" }} />
-      <CBox>
+      {/* <CBox>
         <Link href="#" underline="none"
          onClick={(event) => setOpen(!open)}
          >
@@ -110,10 +110,9 @@ function TaskDrawerMenu() {
           </CBox>
         </Link>
         {open
-          ? null
-          : // <TaskAdvanceOptions />
-            ""}
-      </CBox>
+          ?  <TaskAdvanceOptions />
+          :  ""}
+      </CBox> */}
       {/* <Grid item xs={12} >
                 <div className={classes.createSubTask}>
                     <CreateSubTask/>
@@ -136,7 +135,7 @@ const useStyles = makeStyles({
   inputWrapper: {
     paddingTop: 10,
     paddingLeft: 10,
-    ["@media (max-width:600px)"]: {
+    "@media (max-width:600px)": {
       paddingLeft: 0,
     },
   },
@@ -146,7 +145,7 @@ const useStyles = makeStyles({
   dateWrapper: {
     paddingTop: 10,
     paddingLeft: 10,
-    ["@media (max-width:600px)"]: {
+    "@media (max-width:600px)": {
       paddingLeft: 0,
     },
   },

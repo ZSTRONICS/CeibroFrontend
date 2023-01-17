@@ -2,7 +2,9 @@ import { ActionInterface } from ".";
 import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
     OPEN_TASK_DRAWER,
     CLOSE_TASK_DRAWER, 
-    SELECTED_TASK_ID} from '../../config/task.config'
+    SELECTED_TASK_ID,
+    OPEN_SUB_TASK,
+    CLOSE_SUB_TASK} from '../../config/task.config'
 import { Result } from "constants/interfaces/Tasks.interface";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 
@@ -15,12 +17,14 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
+    subTaskopen:boolean
     selectedTaskId:string
     taskDrawerOpen:boolean
 }
 
 const intialStatue: TaskReducerInt = {
     allTask: [],
+    subTaskopen:false,
     // showAllTasks:[],
     page: 0,
     limit: 0,
@@ -78,6 +82,17 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 selectedTaskId: action.payload
             }
+            case OPEN_SUB_TASK:
+                return {
+                    ...state,
+                    subTaskopen: true
+                }
+            case CLOSE_SUB_TASK:
+                return {
+                    ...state,
+                    subTaskopen: false
+                }
+        
         default:
             return state
     }

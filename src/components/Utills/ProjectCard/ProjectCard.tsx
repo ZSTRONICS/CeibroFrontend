@@ -41,7 +41,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
   const classes = useStyles();
   const imgSrc = src === "undefined" ? assets.Defaulttask : src;
-  const dueDateString: string = moment(dueDate).format("YYYY-MM-DD");
+  const dueDateString: string = moment(dueDate).format("DD-MM-YYYY");
 
   return (
     <>

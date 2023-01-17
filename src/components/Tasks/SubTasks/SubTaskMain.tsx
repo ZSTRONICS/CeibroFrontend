@@ -30,7 +30,7 @@ const SubTaskMain = () => {
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <SelectDropdown title="Projects" />
           </Grid>
-          <Grid
+          {/* <Grid
             container
             item
             xs={xsPoint}
@@ -48,7 +48,7 @@ const SubTaskMain = () => {
             <Box sx={{ maxWidth: "20px", width: "100%" }} flex={1}>
               <img src={assets.filterIcon} width="100%" alt="" />
             </Box>
-          </Grid>
+          </Grid> */}
           <Grid  item xs={12} pt={0}>
         <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
           <StatusMenu options= {options} />
@@ -62,6 +62,7 @@ const SubTaskMain = () => {
     </>
   );
 };
+
 const options = [
   {
     title: "All",
@@ -80,31 +81,19 @@ const options = [
     count: 2,
   },
   {
-    title: "Blocked",
-    count: 2,
-  },
-
-  {
-    title: "Submitted",
-    count: 3,
-  },
-  {
     title: "Rejected",
     count: 4,
   },
-  // {
-  //   title: "Approve",
-  //   count: 1,
-  // },
   {
     title: "Done",
     count: 1,
   },
   {
     title: "Draft",
-    count: 10,
+    count: 1,
   },
 ];
+
 export default SubTaskMain;
 
 const useStyles = makeStyles({
