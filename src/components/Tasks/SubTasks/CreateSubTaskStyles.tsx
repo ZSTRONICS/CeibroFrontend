@@ -13,6 +13,12 @@ export const useStyles = makeStyles(() =>
             },
             '& .MuiGrid-grid-xs-6': {
                 marginTop: '0px !important'
+            },
+            '& .MuiGrid-grid-xs-4': {
+                marginTop: '0px !important'
+            },
+            '& .MuiGrid-grid-xs-8': {
+                marginTop: '0px !important'
             }
         },
         titleWrapper: {
@@ -146,42 +152,62 @@ export const useStyles = makeStyles(() =>
             right: 19,
             top: 15,
         },
-        textAreaBox:{
-                border:'1px solid #DBDBE5',
-                borderRadius:5,
-        },
-        textArea:{
-            width: '100%', padding: 15, border: 'none', borderRadius: 5,
-        '& textarea:focus' :{ 
-            outline: 'none !important',
-            borderColor: 'none',
-            // boxShadow: '0 0 10px #719ECE',
-        }
-    },
-    switch:{
-        '& label':{
-            fontSize:12,
-            color:'#000',
-            fontWeight:600
-        },
-        '& .MuiTypography-root':{
-            fontSize:12,
-            color:'#000'
-        },
-        '& .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase':{
-                top:'2px !important',
-                left:'3px !important'
-        },
-        '& .css-z4pv70-MuiSwitch-root':{
-            width:'37px !important',
-            height:'18px !important',
-            '& .MuiSwitch-thumb':{
-                width: '10px !important',
-                height: '10px !important',
+        textAreaBox: {
+            border: '1px solid #DBDBE5',
+            borderRadius: 5,
+            '&:hover': {
+                borderColor: '#0a95ff',
+                borderWidth: '1px',
+            },
+            '& .css-8q2m5j-MuiInputBase-root-MuiInput-root': {
+                '&:before': {
+                    borderBottom: 'none !important'
+                },
+                '&:after': {
+                    borderBottom: 'none !important'
+                }
             }
-        }
-    }
-        
+
+        },
+        textArea: {
+            width: '100%', padding: 15, border: 'none', borderRadius: 5,
+            '& textarea:focus': {
+                outline: 'none !important',
+                borderColor: 'none',
+                // boxShadow: '0 0 10px #719ECE',
+            }
+        },
+        switch: {
+            '& label': {
+                fontSize: 12,
+                color: '#000',
+                fontWeight: 600
+            },
+            '& .MuiTypography-root': {
+                fontSize: 12,
+                color: '#000'
+            },
+            '& .css-5ryogn-MuiButtonBase-root-MuiSwitch-switchBase': {
+                top: '2px !important',
+                left: '3px !important'
+            },
+            '& .css-z4pv70-MuiSwitch-root': {
+                width: '37px !important',
+                height: '18px !important',
+                '& .MuiSwitch-thumb': {
+                    width: '10px !important',
+                    height: '10px !important',
+                }
+            }
+        },
+        btnDraft: {
+            [theme.breakpoints.down('md')]: {
+                position: 'absolute',
+                top: 17,
+                right: 25,
+            },
+        },
+
     }),
 );
 export default useStyles;

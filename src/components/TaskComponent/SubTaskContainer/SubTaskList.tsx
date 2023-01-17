@@ -22,7 +22,7 @@ function SubTask() {
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: '#F1B740', fontWeight: '500',fontSize: '10px' }}>{"ongoing"}</TaskStatus>
+          <TaskStatus sx={{ background: '#F1B740', fontWeight: '500', fontSize: '10px' }}>{"ongoing"}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {dueDate}
           </Typography>
@@ -73,6 +73,7 @@ function SubTask() {
                   fill="#FA0808"
                 />
               </svg>
+              <Typography>0</Typography>
             </CustomStack>
           </Box>
         </Grid>
@@ -88,7 +89,7 @@ function SubTask() {
 
         </Grid>
       </Grid>
-        <Divider sx={{ padding: "10px 0", width:'100%' }} />
+      <Divider sx={{ padding: "10px 0", width: '100%' }} />
     </>
   );
 }
@@ -98,9 +99,9 @@ export default SubTask;
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
     '@media (max-width:371)': {
-      border:'1px solid red',
-      paddingTop:'8px'
-  }
+      border: '1px solid red',
+      paddingTop: '8px'
+    }
   },
 }));
 

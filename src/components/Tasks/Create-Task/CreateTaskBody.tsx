@@ -18,31 +18,31 @@ const CreateProjectBody = () => {
     const selectedMenue = useSelector((state: RootState) => state.project.menue)
 
     return (<>
-   
-             <div className={classes.subtaskWrapper}>
-                <SubTaskStatusDrawer/>
-            </div>  
+
+        <div className={classes.subtaskWrapper}>
+            <SubTaskStatusDrawer />
+        </div>
         <Grid container className={classes.body}>
             {/* <DrawerSubTask/> */}
-            <SubTaskList/>
+            <SubTaskList />
         </Grid>
-        </>
+    </>
     )
 }
 
 export default CreateProjectBody
 
 const useStyles = makeStyles({
-    statusWraper:{
-        overflowX:'scroll'
+    statusWraper: {
+        overflowX: 'scroll'
     },
     body: {
         padding: 20,
         overflow: 'scroll',
         height: 'calc(100vh - 80px)',
-        background:'#F5F7F8'
+        background: '#F5F7F8'
     },
-    subtaskWrapper:{
+    subtaskWrapper: {
         '@media (max-width:854)': {
             maxWidth: '319px',
             width: '100%'

@@ -20,7 +20,7 @@ const SubTaskMain = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={1.7} className={classes.TaskWraper}>
+        <Grid container spacing={1.7} className={classes.TaskWraper} rowGap={2}>
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
           </Grid>

@@ -15,13 +15,13 @@ function SubTaskStatusDrawer() {
 
 
   return (<>
-                    <div className={classes.drawerStatusContainer}>
-                    <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
-                    <StatusMenu options={options} />
-                    </Paper>
-                </div>
-                <Grid container gap={2} pl={2.2}>
-                 {/* <Grid item md={2.5}>
+    <div className={classes.drawerStatusContainer}>
+      <Paper className={classes.statusWrapper} sx={{ display: 'flex', '&.MuiPaper-root': { padding: '7px 0 7px 5px' } }} elevation={0} variant='outlined' >
+        <StatusMenu options={options} />
+      </Paper>
+    </div>
+    <Grid container gap={2} pl={2.2}>
+      {/* <Grid item md={2.5}>
                     <Button
                             variant="outlined"
                             color="primary"
@@ -82,18 +82,18 @@ const options = [
 export default SubTaskStatusDrawer
 
 const useStyles = makeStyles({
-    actionButton: { 
-        fontSize: 12,
-        fontWeight: 'bold',
-        fontStyle: 'normal'
-    },
-    drawerStatusContainer:{
-        padding:'11px 18px'
-    },
-    statusWrapper:{
-        "@media(max-width:1024px)":{
-          overflowX: 'scroll',
-        }
-      },
+  actionButton: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    fontStyle: 'normal'
+  },
+  drawerStatusContainer: {
+    padding: '11px 18px'
+  },
+  statusWrapper: {
+    "@media(max-width:1024px)": {
+      overflowX: 'scroll',
+    }
+  },
 
 })

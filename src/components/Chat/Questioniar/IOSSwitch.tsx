@@ -22,9 +22,9 @@ const IOSSwitch = styled((props: SwitchProps) => (
         opacity: 1,
         border: 0,
       },
-    //   '&.Mui-disabled + .MuiSwitch-track': {
-    //     opacity: 0.5,
-    //   },
+      //   '&.Mui-disabled + .MuiSwitch-track': {
+      //     opacity: 0.5,
+      //   },
     },
     '&.Mui-focusVisible .MuiSwitch-thumb': {
       color: '#33cf4d',
@@ -53,20 +53,20 @@ const IOSSwitch = styled((props: SwitchProps) => (
       duration: 500,
     }),
   },
-  '& .MuiTypography-root':{
-    paddingLeft:0,
-    border:'1px solid'
-    }
+  '& .MuiTypography-root': {
+    paddingLeft: 0,
+    border: '1px solid'
+  }
 
 }));
 
-export default function CustomizedSwitch(props:any) {
-    const {onChange, label, disabled} = props
+export default function CustomizedSwitch(props: any) {
+  const { onChange, label, disabled } = props
   return (
-      <FormControlLabel
-        control={<IOSSwitch sx={{ m: 1 }} defaultChecked ={false} onChange={onChange}  disabled={disabled}/>}
-        label={<Typography style={{fontSize:'14px', fontWeight:'500'}}>{label}</Typography>}
-       
-      />
+    <FormControlLabel
+      control={<IOSSwitch sx={{ m: 1, }} defaultChecked={false} onChange={onChange} disabled={disabled} />}
+      label={<Typography style={{ fontSize: '12px', fontWeight: '500' }}>{label}</Typography>}
+
+    />
   );
 }
