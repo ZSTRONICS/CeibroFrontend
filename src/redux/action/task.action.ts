@@ -5,8 +5,6 @@ import {
     SELECTED_TASK_ID, 
     OPEN_TASK_DRAWER,
     CLOSE_TASK_DRAWER,
-    OPEN_SUB_TASK,
-    CLOSE_SUB_TASK
 } from "../../config/task.config"
 import { createAction } from './action';
 
@@ -44,16 +42,7 @@ const taskActions = {
             type: CLOSE_TASK_DRAWER,
         };
     },
-    openSubTask: () => {
-        return {
-            type: OPEN_SUB_TASK,
-        };
-    },
-    closeSubTask: () => {
-        return {
-            type: CLOSE_SUB_TASK,
-        };
-    },
+
 }
 
 export const getAllTask = createAction(GET_TASK)

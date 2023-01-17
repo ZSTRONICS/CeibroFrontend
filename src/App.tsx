@@ -52,7 +52,6 @@ import {
 
 // axios
 import { SERVER_URL } from "utills/axios";
-import SubtaskModal from "components/TaskComponent/CreateSubtask/SubtaskModal";
 
 interface MyApp { }
 
@@ -204,7 +203,6 @@ const App: React.FC<MyApp> = () => {
       {drawerOpen && <ViewQuestioniarDrawer />}
       {/* {taskDrawer&&<CDrawer/>} */}
       <CreateProjectDrawer />
-      {/* <SubtaskModal /> */}
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
       <RouterConfig />

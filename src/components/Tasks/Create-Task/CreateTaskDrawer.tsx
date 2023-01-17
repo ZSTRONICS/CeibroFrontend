@@ -1,22 +1,14 @@
 
-import { Button, Drawer } from '@material-ui/core'
-import { Grid, Paper } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch, useSelector } from 'react-redux'
-import colors from '../../../assets/colors'
-import taskActions from '../../../redux/action/task.action'
-import TaskDrawerHeader from './TaskDrawerHeader'
-import TaskDrawerMenu from './TaskDrawerMenu'
-import CreateTaskBody from './CreateTaskBody'
-import CreateTaskFooter from './CreateTaskFooter'
-import { RootState } from 'redux/reducers'
-import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader'
-import NewTaskMenu from 'components/TaskComponent/TaskModal/NewTaskMenu'
-import StatusMenu from 'components/Utills/Others/StatusMenu';
-import DatePicker from 'components/Utills/Inputs/DatePicker';
-import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
-import SubTaskStatusDrawer from './SubTaskStatusDrawer';
-import SubtaskModal from 'components/TaskComponent/CreateSubtask/SubtaskModal';
+import { Drawer } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Grid } from '@mui/material';
+import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'redux/reducers';
+import colors from '../../../assets/colors';
+import taskActions from '../../../redux/action/task.action';
+import CreateTaskBody from './CreateTaskBody';
+import TaskDrawerMenu from './TaskDrawerMenu';
 
 const CreateTaskDrawer = () => {
     const dispatch = useDispatch()
@@ -28,7 +20,6 @@ const CreateTaskDrawer = () => {
 
     return (
         <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
-            <SubtaskModal />
             <div className={classes.outerWrapper}>
                 <DrawerHeader title='New Task' handleClose={handleClose}/>
                 <Grid container>

@@ -1,22 +1,18 @@
 import React, {useState} from 'react'
 import { makeStyles } from '@material-ui/core';
-import { Button, Grid, Paper } from '@mui/material'
+import {  Grid, Paper } from '@mui/material'
 import StatusMenu from 'components/Utills/Others/StatusMenu'
-import ListIcon from '@material-ui/icons/List';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import CButton from 'components/Button/Button';
-import SubtaskModal from 'components/TaskComponent/CreateSubtask/SubtaskModal';
-import taskActions from 'redux/action/task.action';
-import { useDispatch } from 'react-redux';
-
+import CustomModal from 'components/Modal';
+import CreateSubTask from 'components/TaskComponent/CreateSubtask/SubtaskFields';
 
 function SubTaskStatusDrawer() {
+  const [subTask, setSubTask]: any = React.useState(false)
+
     const classes = useStyles()
-    const dispatch = useDispatch()
-    const openSubTaskModal = () => {
-      dispatch(taskActions.openSubTask());
-    }
+
 
   return (<>
                     <div className={classes.drawerStatusContainer}>
@@ -43,8 +39,9 @@ function SubTaskStatusDrawer() {
                 <SelectDropdown title="Assigned to" />
                 </Grid>
                 <Grid item  md={3.5}>
-                  <Button variant='contained' onClick={openSubTaskModal}>Add SubTask</Button>
-                  {/* <SubtaskModal /> */}
+                  <CButton onClick={() => setSubTask(true)} label="Add SubTask" variant={'contained'} />
+        <CustomModal title="New Sub-task" isOpen={subTask}
+        handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
                
                 </Grid>
                 </Grid>
