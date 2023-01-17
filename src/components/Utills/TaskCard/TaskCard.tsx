@@ -30,6 +30,7 @@ const TaskCard: FC<TaskCardInterface> = (props) => {
 
   return (
     <Grid
+      key={task.id}
       className={classes.cardOuterWrapper}
       item
       xs={12}

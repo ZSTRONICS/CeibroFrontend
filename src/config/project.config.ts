@@ -8,6 +8,7 @@ interface ColorCodes {
 export const colorsByStatus: ColorCodes = {
   all: colors.black,
   ongoing: colors.darkYellow,
+  active: colors.darkYellow,
   approved: colors.primary,
   completed: colors.mediumGrey,
   draft: colors.lightBlack,
@@ -114,6 +115,7 @@ export const avaialablePermissions = {
   delete_permission: "delete",
   self_made_permission: "self-made",
 };
+
 const projectReduxConfigs = {
   OPEN_DRAWER: "OPEN_DRAWER",
   CLOSE_DRAWER: "CLOSE_DRAWER",

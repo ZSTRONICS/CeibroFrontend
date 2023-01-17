@@ -1,22 +1,27 @@
+import React from 'react';
 import { makeStyles, Typography } from '@material-ui/core';
-import { Chat } from '@material-ui/icons';
 import colors from '../../assets/colors';
 
-const NoConversation = () => {
+interface Props{
+    title: string,
+    icon?: any
+}
+
+const NoData:React.FC<Props> = ({title, icon}) => {
     
     const classes = useStyles();
 
     return (
         <div className={classes.wrapper}>
-            <Chat className={classes.chatIcon} />
+           {icon&&icon}
             <Typography className={classes.message}>
-                No conversation selected
+                {title}
             </Typography>
         </div>
     )
 }
 
-export default NoConversation;
+export default NoData;
 
 const useStyles = makeStyles({
     wrapper: {
@@ -29,8 +34,4 @@ const useStyles = makeStyles({
     message: {
         color: colors.lightBlack
     },
-    chatIcon: {
-        fontSize: 50,
-        color: colors.lightBlack
-    }
 })

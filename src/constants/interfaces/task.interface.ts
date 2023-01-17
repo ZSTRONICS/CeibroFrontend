@@ -3,6 +3,7 @@ export interface TaskCardInterface {
 }
 
 export interface TaskInterface {
+  id:string
   dueDate: string;
   assignedTo: string;
   title: string;

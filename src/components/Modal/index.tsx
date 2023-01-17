@@ -13,6 +13,7 @@ import {
 import PropTypes from "prop-types";
 import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
+import { Button } from "@mui/material";
 
 interface Props {
   isOpen: boolean;
@@ -40,7 +41,8 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
               <Typography variant="h6">{title}</Typography>
             </Grid>
             <Grid item>
-              <Clear color="primary" />
+              <Button onClick={handleClose} variant='outlined'>Close</Button>
+
             </Grid>
           </Grid>
         </DialogTitle>

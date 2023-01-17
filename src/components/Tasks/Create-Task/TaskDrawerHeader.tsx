@@ -13,7 +13,7 @@ const TaskDrawerHeader = () => {
     const dispatch = useDispatch()
 
     const handleClose = () => {
-        dispatch(taskActions.closeDrawer())
+        dispatch(taskActions.closeTaskDrawer())
     }
 
     return (

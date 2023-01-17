@@ -6,6 +6,7 @@ import TaskList from "./TaskList";
 import taskActions from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import TaskList1 from "components/Tasks/TaskList/TaskList1";
 
 const myStatus = [
   {
@@ -34,8 +35,8 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const history = useHistory();
   const classes = useStyles();
 
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer());
+  const openTaskModal = () => {
+    dispatch(taskActions.openNewTaskModal());
   };
 
   const handleClick = () => {
@@ -57,7 +58,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
             My Tasks
           </Typography>
           <Button
-            onClick={openTaskDrawer}
+            onClick={openTaskModal}
             variant="contained"
             color="primary"
             size="small"
@@ -89,7 +90,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <TaskList />
+      <TaskList1 />
     </div>
   );
 };

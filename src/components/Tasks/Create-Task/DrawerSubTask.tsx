@@ -1,5 +1,7 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { AttachFile, Chat, Create, Delete, Image } from "@material-ui/icons";
+import { CBox } from "components/material-ui";
+import { AttachmentIcon, MesageIcon, PinIcon } from "components/material-ui/icons";
 import React from "react";
 import { connect } from "react-redux";
 import colors from "../../../assets/colors";
@@ -9,7 +11,34 @@ const DrawerSubTask = () => {
   return (
     <Grid container className={classes.subTaskWrapper}>
       <Grid container>
-        <Grid item xs={2} className={classes.dateWrapper}>
+        <CBox display='flex' justifyContent='space-between' width='100%'>
+          <Grid item xs={2}>
+            <CBox display='flex' alignItems='center'>
+              <Typography className={classes.dateTitle}>Due date:</Typography>
+              <Typography variant="h3" className={classes.dateTitle} style={{ color: '#000 !important' }}> &nbsp; 2/06/2021
+              </Typography>
+
+              {/* <Typography className={classes.date}>2-05-2020</Typography> */}
+            </CBox>
+
+          </Grid>
+          <Grid item xs={2}>
+            <CBox display='flex' alignItems='center' fontSize={12}>
+              <Typography className={classes.dateTitle}>Assigned to:</Typography>
+              Paul Mets
+
+              {/* <Typography className={classes.date}>2-05-2020</Typography> */}
+            </CBox>
+
+          </Grid>
+          <Grid item xs={8}>
+            <CBox display='flex' alignItems='center' justifyContent='flex-end'>
+              <AttachmentIcon /> <span>2</span>w
+
+            </CBox>
+          </Grid>
+        </CBox>
+        {/* <Grid item xs={2} className={classes.dateWrapper}>
           <Typography className={classes.dateTitle}>Due date:</Typography>
           &nbsp;
           <Typography className={classes.date}>2-05-2020</Typography>
@@ -31,16 +60,16 @@ const DrawerSubTask = () => {
           <Typography className={classes.attachments}>
             0 <Image className={classes.attachmentIcon} />
           </Typography>
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={4} className={classes.actionWrapper}>
+        {/* <Grid item xs={4} className={classes.actionWrapper}>
           <Create className={classes.actionIcons} />
           <Delete
             className={classes.actionIcons}
             style={{ color: colors.btnRed }}
           />
-        </Grid>
-      </Grid>
+        </Grid> */}
+      </Grid >
 
       <Grid container>
         <Typography className={classes.title}>
@@ -52,7 +81,7 @@ const DrawerSubTask = () => {
           Nullam id dolor id nibh ultricies vehicula ut id elit.
         </Typography>
       </Grid>
-    </Grid>
+    </Grid >
   );
 };
 
@@ -64,7 +93,7 @@ const useStyles = makeStyles({
     borderBottom: `0.5px solid ${colors.textGrey}`,
     paddingBottom: 20,
     paddingTop: 15,
-    minWidth: 1000,
+    // minWidth: 1000,
   },
   dateWrapper: {
     display: "flex",

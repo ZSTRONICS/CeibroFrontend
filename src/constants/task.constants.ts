@@ -2,6 +2,7 @@ import { TaskInterface } from "./interfaces/task.interface";
 
 export const TASKS: TaskInterface[] = [
   {
+    id:'123-apple12',
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New task Title 1",
@@ -13,6 +14,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple11',
     dueDate: "26-07-2021",
     owner: "Vesse-12",
     title: "New task Title 1",
@@ -24,6 +26,7 @@ export const TASKS: TaskInterface[] = [
     members: 3,
   },
   {
+    id:'123-apple9',
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New task Title 1",
@@ -35,6 +38,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple8',
     dueDate: "26-07-2021",
     owner: "PaeVellja 112-4",
     title: "New task Title 1",
@@ -46,6 +50,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple7',
     dueDate: "26-07-2021",
     owner: "Vesse-12",
     title: "New task Title 1",
@@ -57,6 +62,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple6',
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New task Title 1",
@@ -68,6 +74,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple6',
     dueDate: "26-07-2021",
     owner: "PaeVellja 112-4",
     title: "New task Title 1",
@@ -79,6 +86,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple5',
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New task Title 1",
@@ -90,6 +98,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple4',
     dueDate: "26-07-2021",
     owner: "Vesse-12",
     title: "New task Title 1",
@@ -101,6 +110,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple3',
     dueDate: "26-07-2021",
     owner: "Ilja Nikolajev",
     title: "New task Title 1",
@@ -112,6 +122,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple2',
     dueDate: "26-07-2021",
     owner: "PaeVellja 112-4",
     title: "New task Title 1",
@@ -123,6 +134,7 @@ export const TASKS: TaskInterface[] = [
     members: 1,
   },
   {
+    id:'123-apple1',
     dueDate: "26-07-2021",
     owner: "Vesse-12",
     title: "New task Title 1",

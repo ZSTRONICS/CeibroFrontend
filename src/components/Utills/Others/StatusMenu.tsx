@@ -1,4 +1,6 @@
-import { Badge, makeStyles, Typography } from "@material-ui/core";
+import { Badge, Button, makeStyles, Typography } from "@material-ui/core";
+import CButton from "components/Button/Button";
+import CreateSubTask from "components/Tasks/SubTasks/CreateSubTask";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
@@ -11,29 +13,30 @@ import {
   getColorByStatus
 } from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";
+import CustomModal from "../../Modal/index"
+// const options = [
+//   {
+//     title: "All",
+//     count: 21,
+//   },
+//   {
+//     title: "Active",
+//     count: 30,
+//   },
 
-const options = [
-  {
-    title: "All",
-    count: 21,
-  },
-  {
-    title: "Active",
-    count: 30,
-  },
+//   {
+//     title: "Done",
+//     count: 44,
+//   },
+//   {
+//     title: "Draft",
+//     count: 44,
+//   },
+// ];
 
-  {
-    title: "Done",
-    count: 44,
-  },
-  {
-    title: "Draft",
-    count: 44,
-  },
-];
-
-export const StatusMenu = () => {
-  // const { options } = props;
+export const StatusMenu = (props: any) => {
+  const { options } = props;
+  const [subTask, setSubTask]: any = useState(false)
   const { getStatuses, drawerOpen } = useSelector(
     (state: RootState) => state.project
   );
@@ -55,6 +58,7 @@ export const StatusMenu = () => {
     }
   }, [drawerOpen]);
 
+  console.log(props, 'here is list of props')
   return (
     <>
       {options &&
@@ -87,6 +91,14 @@ export const StatusMenu = () => {
             </div>
           );
         })}
+      {/* if the props is comming then it will shows create sub task menu */}
+      {props.subMenu === 'subTask' ?
+        <CButton onClick={() => setSubTask(true)} label="Add SubTask" variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+        :
+        null
+      }
+      <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
+
     </>
   );
 };
@@ -100,7 +112,6 @@ const useStyles = makeStyles({
     alignItems: "center",
     cursor: "pointer",
     marginRight: "5px",
-
   },
   statusBage: {
     marginLeft: 20,

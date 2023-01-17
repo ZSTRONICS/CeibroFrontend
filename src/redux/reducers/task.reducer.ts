@@ -1,36 +1,89 @@
 import { ActionInterface } from ".";
-import config from '../../config/task.config'
+import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
+    OPEN_TASK_DRAWER,
+    CLOSE_TASK_DRAWER, 
+    SELECTED_TASK_ID,} from '../../config/task.config'
+import { Result } from "constants/interfaces/Tasks.interface";
+import { requestFail, requestPending, requestSuccess } from "utills/status";
 
-const intialStatue = {
-    drawerOpen: false,
-    menue: 1
+interface TaskReducerInt {
+    // showAllTasks:TaskRoot[]
+    allTask: Result[]
+    page: number
+    limit: number
+    totalPages: number
+    totalResults: number
+    taskLoading: boolean
+    dialogOpen: boolean
+    subTaskopen:boolean
+    selectedTaskId:string
+    taskDrawerOpen:boolean
 }
 
-const AppReducer = (state = intialStatue, action: ActionInterface ) => {
+const intialStatue: TaskReducerInt = {
+    allTask: [],
+    subTaskopen:false,
+    // showAllTasks:[],
+    page: 0,
+    limit: 0,
+    totalPages: 0,
+    totalResults: 0,
+    taskLoading: false,
+    dialogOpen: false,
+    selectedTaskId:'',
+    taskDrawerOpen:false,
+}
 
-    switch(action.type) {
-        case config.OPEN_TASK_DRAWER:
+const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
+    switch (action.type) {
+
+        case requestSuccess(GET_TASK):
             return {
                 ...state,
-                drawerOpen: true
+                allTask: action.payload.results,
+                // showAllTasks:action.payload
             }
-
-        case config.CLOSE_TASK_DRAWER: 
+        case requestPending(GET_TASK): {
             return {
                 ...state,
-                drawerOpen: false
+                taskLoading: true,
+            };
+        }
+        case requestFail(GET_TASK): {
+            return {
+                ...state,
+                taskLoading: false,
+            };
+        }
+        case OPEN_NEW_TASK:
+            return {
+                ...state,
+                dialogOpen: true
             }
-
-        case config.SET_MENUE: 
+        case CLOSE_NEW_TASK:
             return {
                 ...state,
-                menue: action.payload
+                dialogOpen: false
+            }
+        case OPEN_TASK_DRAWER:
+            return {
+                ...state,
+                taskDrawerOpen: true
+            }
+        case CLOSE_TASK_DRAWER:
+            return {
+                ...state,
+                taskDrawerOpen: false
+            }
+        case SELECTED_TASK_ID:
+            return {
+                ...state,
+                selectedTaskId: action.payload
             }
         
         default:
             return state
     }
-        
-} 
+}
 
-export default AppReducer
+export default TaskReducer

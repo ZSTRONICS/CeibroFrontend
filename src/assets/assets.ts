@@ -80,8 +80,16 @@ import StarOutlineIcon from '@mui/icons-material/StarOutline';
 import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import AddIcon from '@mui/icons-material/Add';
 
 const assets= {
+  LocationOnOutlinedIcon,
+  KeyboardArrowUpIcon,
+  KeyboardArrowDownIcon,
   ErrorOutlinedIcon,
   CheckCircleIcon,
   GroupIcon,
@@ -159,6 +167,8 @@ const assets= {
   testProject3,
   testProject4,
   membersDelete,
+  KeyboardArrowRightIcon,
+  AddIcon
 };
 
 export const sounds = {

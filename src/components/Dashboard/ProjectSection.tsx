@@ -73,8 +73,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
           md={5}
           lg={6}
         >
-          {/* <StatusMenu options={allStatus} /> */}
-          <StatusMenu  />
+          <StatusMenu options={allStatus} />
         </Grid>
         <Grid item xs={12} md={2} lg={1}>
           <Button
