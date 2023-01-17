@@ -21,9 +21,10 @@ export default function CreateSubTask({ setSubTask }: any) {
         { label: 'Kristo', year: 1972 },
         { label: 'Electic', year: 1972 },
     ]
+    
     return (
         <div>
-            <Grid container className={classes.outerWrapper}>
+            <Grid container className={classes.outerWrapper} rowGap={1}>
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <TextField

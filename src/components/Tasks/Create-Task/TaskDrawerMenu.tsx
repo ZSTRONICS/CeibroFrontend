@@ -145,8 +145,8 @@ function TaskDrawerMenu() {
             // label="Multiline"
             placeholder="Enter subtask description"
             multiline
-            maxRows={4}
-            minRows={4}
+            maxRows={5}
+            minRows={5}
             style={{ padding: '10px 10px' }}
             variant="standard"
             className={classes.textArea}

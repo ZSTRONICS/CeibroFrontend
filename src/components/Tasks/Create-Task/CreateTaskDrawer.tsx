@@ -30,7 +30,7 @@ const CreateTaskDrawer = () => {
         <DrawerHeader title='New Task' handleClose={handleClose} />
         <Grid container>
 
-          <Grid item md={3} sx={{ background: 'white' }}>
+          <Grid item md={3.5} sx={{ background: 'white' }}>
             <TaskDrawerMenu />
           </Grid>
 
@@ -39,7 +39,7 @@ const CreateTaskDrawer = () => {
           {/* <div>
                         <SubTaskStatusDrawer/>
                     </div>  */}
-          <Grid item md={9} className={classes.bodyWrapper} >
+          <Grid item md={8.5} className={classes.bodyWrapper} >
             <CreateTaskBody />
           </Grid>
 

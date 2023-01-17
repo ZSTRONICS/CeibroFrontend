@@ -20,7 +20,7 @@ const SubTaskMain = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={1.7} className={classes.TaskWraper}>
+        <Grid container spacing={1.7} className={classes.TaskWraper} rowGap={2}>
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
           </Grid>
@@ -30,7 +30,7 @@ const SubTaskMain = () => {
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <SelectDropdown title="Projects" />
           </Grid>
-          <Grid
+          {/* <Grid
             container
             item
             xs={xsPoint}
@@ -48,7 +48,7 @@ const SubTaskMain = () => {
             <Box sx={{ maxWidth: "20px", width: "100%" }} flex={1}>
               <img src={assets.filterIcon} width="100%" alt="" />
             </Box>
-          </Grid>
+          </Grid> */}
           <Grid  item xs={12} pt={0}>
         <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
           <StatusMenu options= {options} />

@@ -24,11 +24,9 @@ function NewTaskMenu(props: any) {
         { label: 'Kristo', year: 1972 },
         { label: 'Electic', year: 1972 },
     ]
-
-    
     return (
 
-        <Grid container className={classes.outerWrapper}>
+        <Grid container className={classes.outerWrapper} rowGap={1}>
             <Grid item container columnGap={2} >
                 <Grid item>
                     <TextField
@@ -47,12 +45,12 @@ function NewTaskMenu(props: any) {
                         }}
                     />
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                  <CustomizedSwitch
                                 label='Multi-task'
                                 edge='start'
                             />
-                </Grid>
+                </Grid> */}
             </Grid>
             <Grid xs={12} md={12}>
                 <div className={classes.titleWrapper}>
