@@ -11,26 +11,25 @@ import { RootState } from '../../../redux/reducers'
 import DrawerSubTask from './DrawerSubTask'
 import SubTaskList from '../SubTasks/SubTaskList'
 import SubTaskStatusDrawer from './SubTaskStatusDrawer'
+import { SubtaskOfTaskResults } from 'constants/interfaces/SubtaskOfTask'
 
-const CreateProjectBody = () => {
-    const classes = useStyles()
-
-    const selectedMenue = useSelector((state: RootState) => state.project.menue)
+const CreateTaskBody = () => {
+    const classes = useStyles();
+    let subTaskOfTask:SubtaskOfTaskResults  = useSelector((state:RootState)=> state.task.allSubTaskOfTask)
 
     return (<>
-
         <div className={classes.subtaskWrapper}>
             <SubTaskStatusDrawer />
         </div>
         <Grid container className={classes.body}>
             {/* <DrawerSubTask/> */}
-            <SubTaskList />
+            <SubTaskList allSubTaskList={subTaskOfTask?.subtasks} />
         </Grid>
     </>
     )
 }
 
-export default CreateProjectBody
+export default CreateTaskBody
 
 const useStyles = makeStyles({
     statusWraper: {

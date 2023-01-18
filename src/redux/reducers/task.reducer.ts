@@ -2,9 +2,13 @@ import { ActionInterface } from ".";
 import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
     OPEN_TASK_DRAWER,
     CLOSE_TASK_DRAWER, 
-    SELECTED_TASK_ID,} from '../../config/task.config'
+    SELECTED_TASK_ID,
+    GET_ALL_SUBTASK_LIST,
+    GET_ALL_SUBTASK_OF_TASK,} from '../../config/task.config'
 import { Result } from "constants/interfaces/Tasks.interface";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
+import { AllSubTasResult } from "constants/interfaces/AllSubTask";
+import { SubtaskOfTaskResults } from "constants/interfaces/SubtaskOfTask";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
@@ -18,11 +22,20 @@ interface TaskReducerInt {
     subTaskopen:boolean
     selectedTaskId:string
     taskDrawerOpen:boolean
+    allSubTaskList: AllSubTasResult[]
+    loadingSubTask:boolean
+    loadingSubTaskofTask:boolean
+    allSubTaskOfTask:SubtaskOfTaskResults |any
 }
 
 const intialStatue: TaskReducerInt = {
+    allSubTaskOfTask:{},
     allTask: [],
+    allSubTaskList: [],
+
+    loadingSubTaskofTask:false,
     subTaskopen:false,
+    loadingSubTask:false,
     // showAllTasks:[],
     page: 0,
     limit: 0,
@@ -80,7 +93,40 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 selectedTaskId: action.payload
             }
-        
+            case requestSuccess(GET_ALL_SUBTASK_LIST):
+            return {
+                ...state,
+                allSubTaskList: action.payload.results,
+            }
+        case requestPending(GET_ALL_SUBTASK_LIST): {
+            return {
+                ...state,
+                loadingSubTask: true,
+            };
+        }
+        case requestFail(GET_ALL_SUBTASK_LIST): {
+            return {
+                ...state,
+                loadingSubTask: false,
+            };
+        }
+            case requestSuccess(GET_ALL_SUBTASK_OF_TASK):
+            return {
+                ...state,
+                allSubTaskOfTask: action.payload.results,
+            }
+        case requestPending(GET_ALL_SUBTASK_OF_TASK): {
+            return {
+                ...state,
+                loadingSubTaskofTask: true,
+            };
+        }
+        case requestFail(GET_ALL_SUBTASK_OF_TASK): {
+            return {
+                ...state,
+                loadingSubTaskofTask: false,
+            };
+        }
         default:
             return state
     }

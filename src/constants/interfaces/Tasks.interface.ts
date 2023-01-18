@@ -44,7 +44,7 @@ export interface AdvanceOptions {
   startDate?: string
 }
 
-interface UserInfo {
+export interface UserInfo {
     _id: string
   firstName: string
   surName: string

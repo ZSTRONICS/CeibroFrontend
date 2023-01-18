@@ -3,6 +3,7 @@ import { Drawer } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@mui/material';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
+import { SubtaskOfTaskResults } from 'constants/interfaces/SubtaskOfTask';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
 import colors from '../../../assets/colors';
@@ -17,7 +18,8 @@ const CreateTaskDrawer = () => {
   const handleClose = () => {
     dispatch(taskActions.closeTaskDrawer())
   }
-
+let subTaskOfTask:SubtaskOfTaskResults  = useSelector((state:RootState)=> state.task.allSubTaskOfTask)
+console.log(subTaskOfTask.subtasks)
   return (
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>

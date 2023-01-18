@@ -16,6 +16,7 @@ export default function CDrawer(props: any) {
   const handleCloseDrawer =()=>{
  dispatch(taskActions.closeTaskDrawer())
 }
+
   return (
     <>
       <Drawer  anchor="right"
@@ -24,7 +25,7 @@ export default function CDrawer(props: any) {
       >
         <Box className={classes.outerWrapper}>
           <DrawerHeader title="Subtask Title" handleClose={handleCloseDrawer}/>
-          <SubTaskList />
+          {/* <SubTaskList /> */}
         </Box>
       </Drawer>
     </>

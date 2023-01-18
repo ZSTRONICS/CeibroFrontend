@@ -9,7 +9,7 @@ import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
 import { AssignedTo, Result, State } from "constants/interfaces/Tasks.interface";
 import moment from "moment-timezone";
-import taskActions from "redux/action/task.action";
+import taskActions, { getAllSubTaskOfTask } from "redux/action/task.action";
 import { useDispatch } from "react-redux";
 
 interface Props{
@@ -26,6 +26,12 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   const handleCard =()=>{
     dispatch(taskActions.openTaskDrawer());
     dispatch(taskActions.selectedTaskId(task._id));
+    dispatch(
+    getAllSubTaskOfTask({
+      other: {
+        taskId: task._id
+      }
+    }))
     }
     
   // const dueDate = new Date().toLocaleDateString("de-DE", {
@@ -217,7 +223,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
 }));
-const CustomBadge = styled(Badge)`
+export const CustomBadge = styled(Badge)`
 padding-left:20px;
 `;
 const CCardActions = styled(CardActions)`

@@ -9,25 +9,8 @@ import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import TaskList1 from './TaskList1';
-const options = [
-  {
-    title: "All",
-    count: 21,
-  },
-  {
-    title: "Active",
-    count: 30,
-  },
 
-  {
-    title: "Done",
-    count: 44,
-  },
-  {
-    title: "Draft",
-    count: 44,
-  },
-];
+
 const TaskMain=()=> {
 
   let xsPoint = 12
@@ -70,6 +53,25 @@ const TaskMain=()=> {
   )
 }
 
+const options = [
+  {
+    title: "All",
+    count: 21,
+  },
+  {
+    title: "Active",
+    count: 30,
+  },
+
+  {
+    title: "Done",
+    count: 44,
+  },
+  {
+    title: "Draft",
+    count: 44,
+  },
+];
 export default TaskMain
 
 const useStyles = makeStyles({

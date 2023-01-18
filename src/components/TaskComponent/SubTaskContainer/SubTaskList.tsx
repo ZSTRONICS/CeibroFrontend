@@ -1,45 +1,73 @@
 import React from "react";
-import { Box, Grid, Typography, Divider } from "@mui/material";
+import { Box, Grid, Typography, Divider, Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
 import {
   AssignedTag,
+  CustomBadge,
   CustomStack,
   LabelTag,
   TaskStatus,
 } from "../Tabs/TaskCard";
-import { colorsByStatus } from "config/project.config";
+import { getColorByStatus } from "config/project.config";
 import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
+import { AllSubTasResult, AssignedTo, Member } from "constants/interfaces/AllSubTask";
+import moment from "moment-timezone";
+interface Props{
+  subTaskDetail:AllSubTasResult
+}
 
-function SubTask() {
+function SubTask({subTaskDetail}: Props) {
+  const {_id, dueDate, assignedTo,subTaskState,title, description,files} = subTaskDetail
   const classes = useStyles()
-  const dueDate = new Date().toLocaleDateString("de-DE", {
-    day: "numeric",
-    month: "numeric",
-    year: "numeric",
-  });
+const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
+const subTaskDate =  moment.utc(moment(dueDate)).format('DD.MM.YYYY');
+const bgcolor =  getColorByStatus(subTaskState)
 
+const AssignedToList = ()=>{
+  return (<>
+     {membersList.map((item:Member)=>{
+      return(
+        <span>
+      {`${item.firstName} ${item.surName },`}
+      </span>
+      )
+     }) }
+    </> )
+}
   const SubHeader = () => {
+
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: '#F1B740', fontWeight: '500', fontSize: '10px' }}>{"ongoing"}</TaskStatus>
+          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white',fontWeight: '500', fontSize: '10px' }}>{subTaskState}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
-            {dueDate}
+            {subTaskDate}
           </Typography>
         </CustomStack>
       </>
     );
   };
+
   return (
     <>
-      <Grid item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={'1'+1}>
+      <Grid item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
         <Grid item>{SubHeader()}</Grid>
         <Grid item lg={7}>
           <CustomStack columnGap={0.5}>
             <LabelTag>Assigned to</LabelTag>
-            <AssignedTag>Kristo Kristo</AssignedTag>
+            {membersList.map((member:Member, i:any)=>{
+              return(<>
+              {i===0 &&<AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>}
+              </>
+              )
+            })}
+            {membersList.length>1&&<CustomBadge  overlap="circular" color="primary" badgeContent={
+             <Tooltip title={AssignedToList()}>
+                <span>{membersList.length-1}+</span>
+             </Tooltip>
+           }></CustomBadge>}
           </CustomStack>
         </Grid>
         <Grid item>
@@ -79,12 +107,10 @@ function SubTask() {
             </CustomStack>
           </Box>
         </Grid>
-        <Grid item>
-          <TaskTitle>Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.</TaskTitle>
+        <Grid item width='100%'>
+          <TaskTitle>{title}</TaskTitle>
           <TaskDescription>
-            Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
-            vestibulum. Sed posuere consectetur est at lobortis. Fusce dapibus,
-            tellus ac cursus commodo, tortor mauris condimentum.
+           {description}
           </TaskDescription>
         </Grid>
         <Grid item container>
