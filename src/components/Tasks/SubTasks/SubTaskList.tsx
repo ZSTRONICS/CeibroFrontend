@@ -9,10 +9,10 @@ import {Divider} from '@mui/material'
 const SubTaskList = () => {
     return (
         <Grid container>
-            {TASKS && 
+            {TASKS &&
                 TASKS.map((task: TaskInterface, index: number) => {
                     return (<>
-                        <SubTask/>
+                        <SubTask />
                     </>
                     )
                 })
