@@ -15,11 +15,13 @@ const CreateTaskDrawer = () => {
   const dispatch = useDispatch()
   const classes = useStyles()
   let drawerOpen = useSelector((state: RootState) => state.task.taskDrawerOpen)
+  
+  let subTaskOfTask:SubtaskOfTaskResults  = useSelector((state:RootState)=> state.task.allSubTaskOfTask)
+
   const handleClose = () => {
-    dispatch(taskActions.closeTaskDrawer())
+    dispatch(taskActions.closeTaskDrawer());
+    subTaskOfTask.subtasks=[]
   }
-let subTaskOfTask:SubtaskOfTaskResults  = useSelector((state:RootState)=> state.task.allSubTaskOfTask)
-console.log(subTaskOfTask.subtasks)
   return (
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>
@@ -36,7 +38,7 @@ console.log(subTaskOfTask.subtasks)
                         <SubTaskStatusDrawer/>
                     </div>  */}
           <Grid item md={8.5} className={classes.bodyWrapper} >
-            <CreateTaskBody />
+            <CreateTaskBody subtaskList={subTaskOfTask.subtasks} task={subTaskOfTask.task} />
           </Grid>
 
         </Grid>

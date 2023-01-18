@@ -86,7 +86,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case CLOSE_TASK_DRAWER:
             return {
                 ...state,
-                taskDrawerOpen: false
+                taskDrawerOpen: false,
             }
         case SELECTED_TASK_ID:
             return {
@@ -110,11 +110,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 loadingSubTask: false,
             };
         }
-            case requestSuccess(GET_ALL_SUBTASK_OF_TASK):
-            return {
-                ...state,
-                allSubTaskOfTask: action.payload.results,
-            }
+            
         case requestPending(GET_ALL_SUBTASK_OF_TASK): {
             return {
                 ...state,
@@ -127,6 +123,11 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 loadingSubTaskofTask: false,
             };
         }
+        case requestSuccess(GET_ALL_SUBTASK_OF_TASK):
+            return {
+                ...state,
+                allSubTaskOfTask: action.payload.results,
+            }
         default:
             return state
     }
