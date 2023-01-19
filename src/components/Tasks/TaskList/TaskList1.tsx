@@ -10,7 +10,7 @@ import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
 import TaskCard from "components/TaskComponent/Tabs/TaskCard";
 import { getColorByStatus } from "config/project.config";
-import {  Result, TaskRoot } from "constants/interfaces/Tasks.interface";
+import {  Result } from "constants/interfaces/Tasks.interface";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -21,11 +21,14 @@ function TaskList1() {
 
   const classes = useStyles();
   const dispatch = useDispatch();
+  
+  let allTask: Result[] = useSelector((state: RootState) => state.task.allTask);
+
   useEffect(() => {
     dispatch(getAllTask());
-  }, []);
-
-  let allTask: Result[] = useSelector((state: RootState) => state.task.allTask);
+    // cleanup effect
+    // return (): void => {}
+  }, [allTask.length]);
 
   return (
     <>
