@@ -72,8 +72,8 @@ const CreateIndividualChat = (props: any) => {
 
   
   const filterdList = connections?.filter((person: any) => {
-    const user = person?.sentByMe ? person.to : person.from;
-    const fullName = `${user.firstName} ${user.surName}`
+    const user = person?.sentByMe ? person?.to : person?.from;
+    const fullName = `${user?.firstName} ${user?.surName}`
     return (
       fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
        user?.email?.toLowerCase().includes(searchQuery.toLowerCase()) || 
@@ -124,10 +124,10 @@ const CreateIndividualChat = (props: any) => {
           >
             Frequently Contacted
           </CBox>
-          {filterdList?.map?.((connection: any) => {
+          {filterdList?.map((connection: any) => {
 
             if(connection.status !== 'accepted' ) return
-            const startRoomId = connection.sentByMe ? connection.to._id : connection.from._id
+            const startRoomId = connection.sentByMe ? connection?.to?._id : connection?.from?._id
             const user: UserInterface = connection?.sentByMe
               ? connection.to
               : connection.from;
@@ -158,7 +158,7 @@ const CreateIndividualChat = (props: any) => {
                       fontFamily="Inter"
                       fontWeight={500}
                     >
-                      {user.companyName} &nbsp;
+                      {user?.companyName} &nbsp;
                     </CBox>
                   </CBox>
                 </CBox>
