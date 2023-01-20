@@ -2,11 +2,10 @@ import React from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import { getAllStatus } from "../../config/project.config";
-import TaskList from "./TaskList";
 import taskActions from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-import TaskList1 from "components/Tasks/TaskList/TaskList1";
+import TaskList from "components/Tasks/TaskList/TaskList";
 
 const myStatus = [
   {
@@ -90,7 +89,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <TaskList1 />
+      <TaskList />
     </div>
   );
 };

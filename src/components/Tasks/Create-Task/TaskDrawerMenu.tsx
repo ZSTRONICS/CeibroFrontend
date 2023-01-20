@@ -1,123 +1,99 @@
-import { Grid, makeStyles } from '@material-ui/core'
-import { Divider, IconButton, TextField } from '@mui/material'
+import React, { useState } from "react";
+import { Grid, makeStyles } from "@material-ui/core";
+import { Divider, IconButton, TextField } from "@mui/material";
+import { CBox } from "components/material-ui";
+import { useDispatch, useSelector } from "react-redux";
+import Autocomplete from "@mui/material/Autocomplete";
+import { AttachmentIcon } from "components/material-ui/icons";
+import CustomModal from "components/Modal";
+import CButton from "components/Button/Button";
+import UploadImage from "components/uploadImage/UploadImage";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
+import { RootState } from "redux/reducers";
+import {
+  getSelectedProjectMembers,
+  getUserFormatedDataForAutoComplete,
+} from "components/Utills/Globals/Common";
 
-import { CBox } from 'components/material-ui'
-import { useDispatch, useSelector } from 'react-redux'
+interface Props {
+  taskMenue: TaskInterface;
+}
 
-import colors from '../../../assets/colors'
-import { RootState } from '../../../redux/reducers'
-
-import DatePicker from '../../Utills/Inputs/DatePicker'
-
-import Autocomplete from '@mui/material/Autocomplete'
-import Link from '@mui/material/Link'
-
-import assets from "assets/assets"
-
-
-import { useState } from "react"
-import { AttachmentIcon } from 'components/material-ui/icons'
-import CustomModal from 'components/Modal'
-
-function TaskDrawerMenu() {
+function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [open, setOpen]: any = useState(false)
-  const selectedMenue = useSelector((state: RootState) => state.project.menue);
   const [imageAttach, setImageAttach]: any = useState(false);
+  const { admins, assignedTo, dueDate, project, state, title, description } =
+    taskMenue;
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
 
+  const { user } = useSelector((state: RootState) => state.auth);
 
+  //const projectData = [{ label: project.title, id: project._id }];
 
-  const handleClick = (id: number) => {
-    // dispatch(projectActions.setMenue(id))
+  const adminData = getUserFormatedDataForAutoComplete(admins);
+  const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
+  let allMembersOfProject: any;
+
+  const selectedProjectValue = { label: project.title, id: project._id };
+
+  const currentUserAutoCompleteData = {
+    label: `${user.firstName} ${user.surName}`,
+    id: user._id,
+  };
+
+  const fixedOptions: any = [currentUserAutoCompleteData];
+
+  const [adminsList, setAdminsList] = React.useState<any>([...adminData]);
+  const [adminListOpt, setAdminListOpt] = React.useState<any>([ ...fixedOptions]);
+  const [assignToOpt, setAssignToOpt] = React.useState<any>([]);
+  const [assignToList, setAssignToList] = React.useState<any>([...assignedToData]);
+
+  const [doOnce, setDoOnce] = React.useState<boolean>(true);
+
+  if (doOnce) {
+    const projectMembersData = getSelectedProjectMembers(
+      project?._id,
+      projectWithMembers
+    );
+    allMembersOfProject = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+    setAdminListOpt([...fixedOptions, ...allMembersOfProject]);
+    setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
+    setDoOnce(false)
   }
-  const projects = [
-    { label: 'Redemption', year: 1994 },
-    { label: 'Kristo', year: 1972 },
-    { label: 'Electic', year: 1972 },
-  ]
+
+  const handleProjectChange = (project: any) => {
+    // props.setFieldValue("admins", [fixedOptions[0].id]);
+    if (project === null) {
+      // props.setFieldValue("project", "");
+      // props.setFieldValue("assignedTo", []);
+      setAdminListOpt([]);
+      setAdminsList([...fixedOptions]);
+      setAssignToList([]);
+      setAssignToOpt([]);
+    } else {
+      // props.setFieldValue("project", project?.value);
+      const projectMembersData = getSelectedProjectMembers(
+        project?.value,
+        projectWithMembers
+      );
+      const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+      setAdminListOpt([...fixedOptions, ...projMembers]);
+      setAssignToOpt([...fixedOptions, ...projMembers]);
+    }
+  };
 
   return (
     <>
       <Grid container className={classes.outerWrapper}>
-        <Grid className={classes.titleWrapper} item xs={12} md={12}>
-          <TextField
-            size="small"
-            name="taskTitle"
-            fullWidth
-            id="outlined-basic"
-            label="Enter task title"
-            placeholder='enter task title'
-            variant="outlined"
-          />
-          <CBox display='flex' alignItems='center' mt={1}>
-            <CBox className={classes.type}>
-              Draft
-            </CBox>
-            <CBox color='#000' fontSize={12} fontWeight={600} ml={1}>
-              22.05.2021
-            </CBox>
+        <CBox display="flex" alignItems="center" mt={1}>
+          <CBox className={classes.type}>{state}</CBox>
+          <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
+            {dueDate}
           </CBox>
-          {/* <InputText
-                    placeholder="Enter Task title"
-                /> */}
-
-        </Grid>
-        <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
-
-        <Grid item xs={12} md={12}>
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              disablePortal
-              id="combo-box-demo"
-              size="small"
-              options={projects}
-              // onChange={(e, value) => {
-              //     props.setFieldValue('projects', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='projects' label='Project' placeholder='select project' />}
-            />
-            {/* <SelectDropdown
-                        title="Project"
-                    /> */}
-          </div>
-        </Grid>
-
-        <Grid item xs={12} md={12} >
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              options={projects}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='admins' label='Admins' />}
-            />
-
-          </div>
-        </Grid>
-        <Grid item xs={12} md={12} >
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              options={projects}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='assignTo' label='Assign To' placeholder='select memebers(s)' />}
-            />
-
-          </div>
-        </Grid>
-
-
-
+        </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
             <TextField
@@ -125,35 +101,227 @@ function TaskDrawerMenu() {
               name="dueDate"
               label="Due date"
               type="date"
-              defaultValue="2017-05-24"
+              defaultValue={dueDate}
+              // defaultValue={moment(dueDate).format("yyyy-mm-dd")}
+              // defaultValue={dueDate !=="" ? moment(dueDate).format('DD-MMM-YYYY') : ""}
               size="small"
               sx={{ width: 220 }}
               InputLabelProps={{
                 shrink: true,
               }}
-            // onChange={(e) => {
-            //     props.setFieldValue('dueDate', e.target.value);
-            // }}
+              inputProps={{
+                min: new Date().toISOString().slice(0, 10),
+              }}
             />
           </Grid>
-
         </Grid>
-        <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
+        <Grid className={classes.titleWrapper} item xs={12} md={12}>
+          <TextField
+            required
+            size="small"
+            name="title"
+            fullWidth
+            defaultValue={title}
+            id="outlined-basic"
+            label="Task title"
+            placeholder="Enter task title"
+            variant="outlined"
+            onChange={(e) => {
+              // props.setFieldValue("title", e.target.value);
+            }}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={12}>
+          <div className={classes.titleWrapper}>
+            {state !== "draft" ? (
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                size="small"
+                defaultValue={selectedProjectValue}
+                value={selectedProjectValue}
+                options={[]}
+                disabled={true}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="project"
+                    label="Project"
+                    placeholder="Select project"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo1"
+                size="small"
+                defaultValue={{ label: project.title, id: project._id }}
+                options={allProjectsTitles}
+                onChange={(e, value) => {
+                  handleProjectChange(value);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    required
+                    {...params}
+                    name="projects"
+                    label="Project"
+                    placeholder="Select project"
+                  />
+                )}
+              />
+            )}
+          </div>
+        </Grid>
+
+        <Grid item xs={12} md={12}>
+          <div className={classes.titleWrapper}>
+            {adminData.some(
+              (item: any) => String(item.id) === String(user._id)
+            ) ? (
+              <Autocomplete
+                disableCloseOnSelect
+                multiple
+                disablePortal
+                id="combo-box-demo"
+                value={adminsList}
+                defaultValue={adminsList}
+                options={adminListOpt}
+                size="small"
+                onChange={(event, value) => {
+                  // array.forEach(element => {
+                    
+                  // });
+                  // if(adminData.some((item: any) => String(item.id) === String(value.id))){
+
+                  // }
+
+                  let newValue: any = [
+                    ...fixedOptions,
+                    ...value.filter(
+                      (option: any) => fixedOptions[0].id !== option.id
+                    ),
+                  ];
+
+                  newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                    if (!uniqueArray.find(item => item.id === element.id)) {
+                      uniqueArray.push(element);
+                    }
+                    return uniqueArray;
+                  }, []);
+                  setAdminsList(newValue);
+                  // const admins = newValue.map((value: any) => value.id);
+                  // props.setFieldValue("admins", admins);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="admins"
+                    label="Admins"
+                    placeholder="Select admin(s)"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Autocomplete
+                disableCloseOnSelect
+                multiple
+                disablePortal
+                id="combo-box-demo"
+                value={adminData}
+                size="small"
+                options={[]}
+                disabled={true}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="admins"
+                    label="Admins"
+                    placeholder="Select admin(s)"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
+          </div>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <div className={classes.titleWrapper}>
+            <Autocomplete
+              multiple
+              disablePortal
+              id="combo-box-demo"
+              disableCloseOnSelect
+              options={assignToOpt}
+              size="small"
+              value={assignToList}
+              onChange={(e, newValue) => {
+
+                newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                  if (!uniqueArray.find(item => item.id === element.id)) {
+                    uniqueArray.push(element);
+                  }
+                  return uniqueArray;
+                }, []);
+
+                setAssignToList([...newValue]);
+                // const assign2 = newValue.map((value: any) => value.id);
+                //props.setFieldValue("assignedTo", assign2);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  name="assignTo"
+                  label="Assign To"
+                  placeholder="Select memebers(s)"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
+            />
+          </div>
+        </Grid>
+
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
             // label="Multiline"
-            placeholder="Enter subtask description"
+            placeholder="Enter task description"
             multiline
             maxRows={5}
             minRows={5}
-            style={{ padding: '10px 10px' }}
+            style={{ padding: "10px 10px" }}
             variant="standard"
+            defaultValue={description}
+            onChange={(e) => {
+              // props.setFieldValue("description", e.target.value);
+            }}
             className={classes.textArea}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
-          <CBox display='flex' alignItems='center' justifyContent='flex-end' width='100%' borderTop='1px solid #DBDBE5' px={1.8}>
-
-            <CBox display='flex' alignItems='center' >
+          <CBox className={classes.titleLabel}>Description</CBox>
+          <CBox
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
+            width="100%"
+            borderTop="1px solid #DBDBE5"
+            px={1.8}
+          >
+            <CBox display="flex" alignItems="center">
               <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
               </IconButton>
@@ -163,6 +331,41 @@ function TaskDrawerMenu() {
               {/* &nbsp;
                             &nbsp; */}
               {/* <NotificationIcon /> */}
+            </CBox>
+          </CBox>
+        </Grid>
+        <Divider />
+        <Grid item xs={12} md={12}>
+          <CBox
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+            p="12px 0px 7px 7px"
+          >
+            <CBox fontSize={14} color="#000" fontWeight={600}>
+              Attachment
+            </CBox>
+            <CBox display="flex">
+              <CButton
+                label="View All"
+                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+              />
+              &nbsp;
+              <Divider
+                sx={{
+                  height: 20,
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  borderColor: "#dbdbe5",
+                }}
+                orientation="vertical"
+              />
+              &nbsp;
+              <CButton
+                label="Add New"
+                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+              />
             </CBox>
           </CBox>
         </Grid>
@@ -221,9 +424,12 @@ function TaskDrawerMenu() {
                 </div>
             </Grid> */}
       </Grid>
-      <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={<>
-        <TextField type='file' id="outlined-basic" label="Outlined" variant="outlined" />
-      </>} />
+      <CustomModal
+        isOpen={imageAttach}
+        handleClose={() => setImageAttach(false)}
+        title={"Attachments"}
+        children={<UploadImage />}
+      />
     </>
   );
 }
@@ -237,21 +443,21 @@ const useStyles = makeStyles({
   },
 
   titleWrapper: {
-    marginTop: 10,
-    '& .MuiFormLabel-root': {
-      fontSize: 12,
-      color: '#605C5C',
-      fontFamily: 'Inter',
+    marginTop: 20,
+    "& .MuiFormLabel-root": {
+      fontSize: "1rem",
+      color: "#605C5C",
+      fontFamily: "Inter",
       fontWeight: 600,
     },
     // maxHeight: '41px !important',
-    '&:hover': {
+    "&:hover": {
       // borderColor: '#0a95ff !important',
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#0a95ff !important',
-        borderWidth: '1px',
-      }
-    }
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#0a95ff !important",
+        borderWidth: "1px",
+      },
+    },
   },
   // projectWrapper: {
   //     display: 'flex',
@@ -269,51 +475,64 @@ const useStyles = makeStyles({
   inputWrapper: {
     paddingTop: 10,
     paddingLeft: 10,
-    ['@media (max-width:600px)']: {
-      paddingLeft: 0
-    }
+    ["@media (max-width:600px)"]: {
+      paddingLeft: 0,
+    },
   },
   textAreaBox: {
-    border: '1px solid #DBDBE5',
+    border: "1px solid #DBDBE5",
     borderRadius: 5,
-    '&:hover': {
-      borderColor: '#0a95ff',
-      borderWidth: '1px',
+    marginTop: 20,
+    position: "relative",
+    "&:hover": {
+      borderColor: "#0a95ff",
+      borderWidth: "1px",
     },
-    '& .css-8q2m5j-MuiInputBase-root-MuiInput-root': {
-      '&:before': {
-        borderBottom: 'none !important'
+    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root": {
+      "&:before": {
+        borderBottom: "none !important",
       },
-      '&:after': {
-        borderBottom: 'none !important'
-      }
-    }
-
+      "&:after": {
+        borderBottom: "none !important",
+      },
+    },
   },
   textArea: {
-    width: '100%', padding: 15, border: 'none', borderRadius: 5,
-    '& textarea:focus': {
-      outline: 'none !important',
-      borderColor: 'none',
+    width: "100%",
+    padding: 15,
+    border: "none",
+    borderRadius: 5,
+    "& textarea:focus": {
+      outline: "none !important",
+      borderColor: "none",
       // boxShadow: '0 0 10px #719ECE',
-    }
+    },
   },
   projectWrapper: {
     padding: "10px 0px",
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
 
     // paddingTop: "20px",
     // border: '1px solid #DBDBE5',
     // marginTop: 20,
-    borderRadius: '4px',
-    '&:hover': {
-      borderColor: '#0a95ff',
-      borderWidth: '1px',
-    }
+    borderRadius: "4px",
+    "&:hover": {
+      borderColor: "#0a95ff",
+      borderWidth: "1px",
+    },
   },
-
+  titleLabel: {
+    position: "absolute",
+    top: "-10px",
+    backgroundColor: "#fff",
+    left: 11,
+    color: "#605C5C",
+    fontSize: 12,
+    fontFamily: "Inter",
+    fontWeight: 600,
+  },
 
   dateWrapper: {
     paddingTop: 10,
@@ -323,14 +542,14 @@ const useStyles = makeStyles({
     },
   },
   createSubTask: {
-    display: 'flex',
-    justifyContent: 'flex-end'
+    display: "flex",
+    justifyContent: "flex-end",
   },
   type: {
-    backgroundColor: '#7D7E80',
+    backgroundColor: "#7D7E80",
     borderRadius: 4,
-    padding: '5px 10px',
-    color: '#fff',
-    fontSize: '12px'
-  }
-})
+    padding: "5px 10px",
+    color: "#fff",
+    fontSize: "12px",
+  },
+});

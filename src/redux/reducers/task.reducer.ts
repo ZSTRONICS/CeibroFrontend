@@ -1,28 +1,45 @@
 import { ActionInterface } from ".";
-import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
+import {
+    GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
     OPEN_TASK_DRAWER,
-    CLOSE_TASK_DRAWER, 
-    SELECTED_TASK_ID,} from '../../config/task.config'
-import { Result } from "constants/interfaces/Tasks.interface";
+    CLOSE_TASK_DRAWER,
+    SELECTED_TASK_ID,
+    GET_ALL_SUBTASK_LIST,
+    GET_ALL_SUBTASK_OF_TASK,
+    SET_SELECTED_TASK,
+} from '../../config/task.config'
 import { requestFail, requestPending, requestSuccess } from "utills/status";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
-    allTask: Result[]
+    allTask: TaskInterface[]
     page: number
     limit: number
     totalPages: number
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
-    subTaskopen:boolean
-    selectedTaskId:string
-    taskDrawerOpen:boolean
+    subTaskopen: boolean
+    selectedTaskId: string
+    taskDrawerOpen: boolean
+    allSubTaskList: SubtaskInterface[]
+    loadingSubTask: boolean
+    loadingSubTaskofTask: boolean
+    allSubTaskOfTask: AllSubtasksOfTaskResult | any
+    selectedTask: TaskInterface | any
 }
 
 const intialStatue: TaskReducerInt = {
+    allSubTaskOfTask: {},
     allTask: [],
-    subTaskopen:false,
+    allSubTaskList: [],
+
+    loadingSubTaskofTask: false,
+    subTaskopen: false,
+    loadingSubTask: false,
     // showAllTasks:[],
     page: 0,
     limit: 0,
@@ -30,8 +47,9 @@ const intialStatue: TaskReducerInt = {
     totalResults: 0,
     taskLoading: false,
     dialogOpen: false,
-    selectedTaskId:'',
-    taskDrawerOpen:false,
+    selectedTaskId: '',
+    taskDrawerOpen: false,
+    selectedTask: {}
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
@@ -40,7 +58,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case requestSuccess(GET_TASK):
             return {
                 ...state,
-                allTask: action.payload.results,
+                allTask: action.payload.results.reverse(),
                 // showAllTasks:action.payload
             }
         case requestPending(GET_TASK): {
@@ -73,14 +91,56 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case CLOSE_TASK_DRAWER:
             return {
                 ...state,
-                taskDrawerOpen: false
+                taskDrawerOpen: false,
             }
+
+        case SET_SELECTED_TASK:
+            return {
+                ...state,
+                //selectedTask: action.payload,
+                allSubTaskOfTask:  {task: action.payload, subtasks: []}
+            }
+
         case SELECTED_TASK_ID:
             return {
                 ...state,
                 selectedTaskId: action.payload
             }
-        
+        case requestSuccess(GET_ALL_SUBTASK_LIST):
+            return {
+                ...state,
+                allSubTaskList: action.payload.results,
+            }
+        case requestPending(GET_ALL_SUBTASK_LIST): {
+            return {
+                ...state,
+                loadingSubTask: true,
+            };
+        }
+        case requestFail(GET_ALL_SUBTASK_LIST): {
+            return {
+                ...state,
+                loadingSubTask: false,
+            };
+        }
+
+        case requestPending(GET_ALL_SUBTASK_OF_TASK): {
+            return {
+                ...state,
+                loadingSubTaskofTask: true,
+            };
+        }
+        case requestFail(GET_ALL_SUBTASK_OF_TASK): {
+            return {
+                ...state,
+                loadingSubTaskofTask: false,
+            };
+        }
+        case requestSuccess(GET_ALL_SUBTASK_OF_TASK):
+            return {
+                ...state,
+                allSubTaskOfTask: action.payload.results
+            }
         default:
             return state
     }

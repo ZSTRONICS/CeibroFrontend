@@ -1,36 +1,63 @@
-import * as React from "react";
+import React, { useEffect } from "react";
 import { MoreVert } from "@material-ui/icons";
-import {Card,CardContent, CardHeader,Box, Button, CardActions, Divider, Grid,Typography, Stack, Tooltip } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Box,
+  Button,
+  CardActions,
+  Divider,
+  Grid,
+  Typography,
+  Stack,
+  Tooltip,
+} from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 // import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import { AssignedTo, Result, State } from "constants/interfaces/Tasks.interface";
 import moment from "moment-timezone";
-import taskActions from "redux/action/task.action";
+import taskActions, {
+  getAllSubTaskOfTask,
+} from "redux/action/task.action";
 import { useDispatch } from "react-redux";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
+import { SET_SELECTED_TASK } from "config/task.config";
 
-interface Props{
-  task: Result
-  ColorByStatus:(state:string)=>string
+interface Props {
+  task: TaskInterface;
+  ColorByStatus: (state: string) => string;
 }
 
-const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
-  
-  const dueDate =  moment.utc(moment(task.dueDate)).format('DD.MM.YYYY');
+const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
+  const dueDate = moment.utc(moment(task.dueDate)).format("DD.MM.YYYY");
   const classes = useStyles();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const handleCard =()=>{
+  const handleCard = () => {
+    dispatch({
+      type: SET_SELECTED_TASK,
+      payload: task,
+    });
+
     dispatch(taskActions.openTaskDrawer());
-    dispatch(taskActions.selectedTaskId(task._id));
-    }
-    
+
+    dispatch(
+      getAllSubTaskOfTask({
+        other: {
+          taskId: task._id,
+        }
+      })
+    );
+  };
+
   // const dueDate = new Date().toLocaleDateString("de-DE", {
-    //   day: "numeric",
-    //   month: "numeric",
+  //   day: "numeric",
+  //   month: "numeric",
   //   year: "numeric",
   // });
 
@@ -38,7 +65,9 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{  border: `1px solid ${ColorByStatus(task.state)}`}}>{task.state}</TaskStatus>
+          <TaskStatus sx={{ border: `1px solid ${ColorByStatus(task.state)}` }}>
+            {task.state}
+          </TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {dueDate}
           </Typography>
@@ -71,10 +100,10 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
             )}
             {task.state === State.Draft && (
               <>
-              <Tooltip title={`${State.Draft}`} placement="bottom">
-              <assets.ErrorOutlinedIcon color="error" fontSize="small" />
-              </Tooltip>
-            </>
+                <Tooltip title={`${State.Draft}`} placement="bottom">
+                  <assets.ErrorOutlinedIcon color="error" fontSize="small" />
+                </Tooltip>
+              </>
             )}
           </Box>
           {/* <IconButton aria-label="settings"> */}
@@ -84,25 +113,24 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
       </>
     );
   };
-  const AssignedToList = ()=>{
-    return (<>
-       {task.assignedTo.map((item:AssignedTo)=>{
-        return(
-          <span>
-        {`${item.firstName} ${item.surName },`}
-        </span>
-        )
-       }) }
-      </> )
-  }
+  const AssignedToList = () => {
+    return (
+      <>
+        {task.assignedTo.map((item: UserInfo) => {
+          return <span>{`${item.firstName} ${item.surName},`}</span>;
+        })}
+      </>
+    );
+  };
   return (
     //  <Grid item  className={classes.cardContainer}>
-      <Card className={classes.cardContainer}
+    <Card
+      className={classes.cardContainer}
       onClick={handleCard}
       key={task._id}
       sx={{
-        '& :hover':{
-          cursor:'pointer'
+        "& :hover": {
+          cursor: "pointer",
         },
         width: "100%",
         border: `1px solid ${ColorByStatus(task.state)}`,
@@ -123,24 +151,38 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
           </Box>
           <Box>
             <LabelTag>Assigned to</LabelTag>
-           {task.assignedTo.map((item:AssignedTo,i:any) =>{
-            return(<>
-            {i===0&& <AssignedTag key={item._id} sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
-            </>
-           )}) }
-           {task.assignedTo.length>1&&<CustomBadge  overlap="circular" color="primary" badgeContent={
-             <Tooltip title={AssignedToList()}>
-                <span>{task.assignedTo.length-1}+</span>
-             </Tooltip>
-           }></CustomBadge>}
+            {task.assignedTo.map((item: UserInfo, i: any) => {
+              return (
+                <>
+                  {i === 0 && (
+                    <AssignedTag
+                      key={item._id}
+                      sx={{ display: "inline-block" }}
+                    >
+                      {" "}
+                      {`${item.firstName} ${item.surName}`}
+                    </AssignedTag>
+                  )}
+                </>
+              );
+            })}
+            {task.assignedTo.length > 1 && (
+              <CustomBadge
+                overlap="circular"
+                color="primary"
+                badgeContent={
+                  <Tooltip title={AssignedToList()}>
+                    <span>{task.assignedTo.length - 1}+</span>
+                  </Tooltip>
+                }
+              ></CustomBadge>
+            )}
           </Box>
         </CustomStack>
         <Box pt={2.5}>
           <AssignedTag sx={{ fontSize: "16px", fontWeight: "600" }}>
             {/* project title */}
-            {
-             task.title
-            }
+            {task.title}
           </AssignedTag>
         </Box>
         <CustomStack
@@ -155,7 +197,9 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
                 className="width-16"
                 alt="ceibro"
               />
-              <AssignedTag sx={{ fontSize: "11px" }}>{task.totalSubTaskCount} Subtask(s)</AssignedTag>
+              <AssignedTag sx={{ fontSize: "11px" }}>
+                {task.totalSubTaskCount} Subtask(s)
+              </AssignedTag>
             </CustomStack>
           </Box>
 
@@ -184,14 +228,16 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
                 fill="#0076C8"
               />
             </svg>
-            <AssignedTag sx={{ fontSize: "11px" }}>{task.unSeenSubTaskCommentCount}</AssignedTag>
+            <AssignedTag sx={{ fontSize: "11px" }}>
+              {task.unSeenSubTaskCommentCount}
+            </AssignedTag>
           </Box>
         </CustomStack>
         <Divider sx={{ paddingBottom: "10px" }} />
       </CardContent>
       <CCardActions>
         <AssignedTag sx={{ fontWeight: "600" }}>
-          { task.project.title}
+          {task.project.title}
         </AssignedTag>
         <Button
           size="small"
@@ -202,7 +248,6 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
       </CCardActions>
     </Card>
     //  </Grid>
-    
   );
 };
 
@@ -211,14 +256,13 @@ const useStyles = makeStyles((theme) => ({
   cardContainer: {
     maxWidth: 365,
     [theme.breakpoints.down(1024)]: {
-      columnGap:'20.04px',
-      maxWidth: '319px',
+      columnGap: "20.04px",
+      maxWidth: "319px",
     },
   },
-
 }));
-const CustomBadge = styled(Badge)`
-padding-left:20px;
+export const CustomBadge = styled(Badge)`
+  padding-left: 20px;
 `;
 const CCardActions = styled(CardActions)`
   padding: 14px;
@@ -246,7 +290,7 @@ export const TaskStatus = styled(Typography)`
   padding: 2px 5px;
   color: #000000;
   font-size: 11px;
-  text-transform:capitalize;
+  text-transform: capitalize;
 `;
 
 export const CounterSpan = styled("span")`

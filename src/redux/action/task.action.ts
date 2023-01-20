@@ -5,6 +5,10 @@ import {
     SELECTED_TASK_ID, 
     OPEN_TASK_DRAWER,
     CLOSE_TASK_DRAWER,
+    GET_ALL_SUBTASK_LIST,
+    GET_ALL_SUBTASK_OF_TASK,
+    SET_SELECTED_TASK,
+    CREATE_TASK,
 } from "../../config/task.config"
 import { createAction } from './action';
 
@@ -46,5 +50,9 @@ const taskActions = {
 }
 
 export const getAllTask = createAction(GET_TASK)
+export const createTask = createAction(CREATE_TASK);
+export const setSelectedTask = createAction(SET_SELECTED_TASK)
+export const getAllSubTaskList = createAction(GET_ALL_SUBTASK_LIST)
+export const getAllSubTaskOfTask = createAction(GET_ALL_SUBTASK_OF_TASK)
 
 export default taskActions

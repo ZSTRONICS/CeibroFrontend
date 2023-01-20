@@ -4,6 +4,16 @@ import colors from '../../../assets/colors'
 
 export const useStyles = makeStyles(() =>
     createStyles({
+        titleLabel: {
+            position: 'absolute',
+            top: '-10px',
+            backgroundColor: '#fff',
+            left: 11,
+            color: '#605C5C',
+            fontSize: 12,
+            fontFamily: 'Inter',
+            fontWeight: 600,
+          },
         outerWrapper: {
             marginBottom: '10px',
             // padding: "10px 20px",

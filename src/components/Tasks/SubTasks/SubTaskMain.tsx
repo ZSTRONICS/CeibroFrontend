@@ -3,15 +3,17 @@ import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Paper } from "@mui/material";
 
 // components
-import assets from "assets/assets";
-import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import DatePicker from "components/Utills/Inputs/DatePicker";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
-import TaskList1 from "../TaskList/TaskList1";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
 
 const SubTaskMain = () => {
+
+const {allSubTaskList} = useSelector((state:RootState)=> state.task) 
+
   let xsPoint = 12;
   let mdPoint = 4;
   let lgPoint = 3.2;
@@ -55,7 +57,7 @@ const SubTaskMain = () => {
         </Paper>
       </Grid>
           <Grid item xs={12}>
-            <SubTaskList />
+            <SubTaskList results={allSubTaskList}/>
           </Grid>
         </Grid>
       </Box>

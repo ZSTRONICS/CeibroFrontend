@@ -3,31 +3,12 @@ import { makeStyles } from '@material-ui/core';
 import { Box, Grid, Paper } from '@mui/material';
 
 // components
-import assets from 'assets/assets';
-import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
-import TaskList1 from './TaskList1';
-const options = [
-  {
-    title: "All",
-    count: 21,
-  },
-  {
-    title: "Active",
-    count: 30,
-  },
+import TaskList from './TaskList';
 
-  {
-    title: "Done",
-    count: 44,
-  },
-  {
-    title: "Draft",
-    count: 44,
-  },
-];
+
 const TaskMain=()=> {
 
   let xsPoint = 12
@@ -61,7 +42,7 @@ const TaskMain=()=> {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <TaskList1/>
+        <TaskList/>
       </Grid>
 
     </Grid>
@@ -70,6 +51,29 @@ const TaskMain=()=> {
   )
 }
 
+const options = [
+  {
+    title: "All",
+    count: 21,
+  },
+  {
+    title: "New",
+    count: 2,
+  },
+  {
+    title: "Active",
+    count: 30,
+  },
+
+  {
+    title: "Done",
+    count: 44,
+  },
+  {
+    title: "Draft",
+    count: 44,
+  },
+];
 export default TaskMain
 
 const useStyles = makeStyles({
