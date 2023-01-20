@@ -9,17 +9,18 @@ import TaskMain from "./TaskMain";
 import SubTaskMain from '../SubTasks/SubTaskMain';
 import { useDispatch } from "react-redux";
 import { getAllSubTaskList } from "redux/action/task.action";
+import { getAllProjectsWithMembers } from "redux/action/project.action";
 
 const Task = () => {
 
   const dispatch= useDispatch();
 
   useEffect(()=>{
-    let mount = true
-    if (mount){
-      dispatch(getAllSubTaskList())
-    }
+    dispatch(getAllProjectsWithMembers());
+    dispatch(getAllSubTaskList());
   },[])
+
+  //get all project with members and store in Redux 
 
   return (<>
     <Grid item xs={12}>

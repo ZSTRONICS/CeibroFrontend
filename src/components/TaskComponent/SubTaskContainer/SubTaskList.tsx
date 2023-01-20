@@ -12,14 +12,16 @@ import {
 import { getColorByStatus } from "config/project.config";
 import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
-import { AllSubTasResult, AssignedTo, Member } from "constants/interfaces/AllSubTask";
+
+
 import moment from "moment-timezone";
+import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
 interface Props{
-  subTaskDetail:AllSubTasResult
+  subTaskDetail:SubtaskInterface
 }
 
 function SubTask({subTaskDetail}: Props) {
-  const {_id, dueDate, assignedTo,subTaskState,title, description,files} = subTaskDetail
+  const {_id, dueDate, assignedTo,subTaskState,title, description} = subTaskDetail
   const classes = useStyles()
 const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
 const subTaskDate =  moment.utc(moment(dueDate)).format('DD.MM.YYYY');

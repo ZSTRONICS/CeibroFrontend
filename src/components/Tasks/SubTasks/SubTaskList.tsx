@@ -1,21 +1,16 @@
+import React from 'react'
 
 import { Grid } from '@material-ui/core'
 import SubTask from 'components/TaskComponent/SubTaskContainer/SubTaskList'
-import { AllSubTaskRoot, AllSubTasResult } from 'constants/interfaces/AllSubTask'
-import React from 'react'
-import { TaskInterface } from '../../../constants/interfaces/task.interface'
-import { TASKS } from '../../../constants/task.constants'
+import { AllSubtasksForUserRoot } from 'constants/interfaces/AllSubTask'
+import { SubtaskInterface } from 'constants/interfaces/subtask.interface'
 
-interface Props{
-    allSubTaskList: AllSubTasResult[]
-}
 
-const SubTaskList = ({allSubTaskList}:Props) => {
-
+const SubTaskList = ({results}:AllSubtasksForUserRoot) => {
     return (
         <Grid container>
-            {allSubTaskList &&
-                allSubTaskList.map((subTaskDetail:AllSubTasResult) => {
+            {results &&
+                results.map((subTaskDetail:SubtaskInterface) => {
                     return (<>
                         <SubTask subTaskDetail= {subTaskDetail}/>
                     </>

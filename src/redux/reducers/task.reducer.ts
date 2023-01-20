@@ -1,41 +1,43 @@
 import { ActionInterface } from ".";
-import { GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
+import {
+    GET_TASK, OPEN_NEW_TASK, CLOSE_NEW_TASK,
     OPEN_TASK_DRAWER,
-    CLOSE_TASK_DRAWER, 
+    CLOSE_TASK_DRAWER,
     SELECTED_TASK_ID,
     GET_ALL_SUBTASK_LIST,
-    GET_ALL_SUBTASK_OF_TASK,} from '../../config/task.config'
-import { Result } from "constants/interfaces/Tasks.interface";
+    GET_ALL_SUBTASK_OF_TASK,
+} from '../../config/task.config'
 import { requestFail, requestPending, requestSuccess } from "utills/status";
-import { AllSubTasResult } from "constants/interfaces/AllSubTask";
-import { SubtaskOfTaskResults } from "constants/interfaces/SubtaskOfTask";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
-    allTask: Result[]
+    allTask: TaskInterface[]
     page: number
     limit: number
     totalPages: number
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
-    subTaskopen:boolean
-    selectedTaskId:string
-    taskDrawerOpen:boolean
-    allSubTaskList: AllSubTasResult[]
-    loadingSubTask:boolean
-    loadingSubTaskofTask:boolean
-    allSubTaskOfTask:SubtaskOfTaskResults |any
+    subTaskopen: boolean
+    selectedTaskId: string
+    taskDrawerOpen: boolean
+    allSubTaskList: SubtaskInterface[]
+    loadingSubTask: boolean
+    loadingSubTaskofTask: boolean
+    allSubTaskOfTask: AllSubtasksOfTaskResult | any
 }
 
 const intialStatue: TaskReducerInt = {
-    allSubTaskOfTask:{},
+    allSubTaskOfTask: {},
     allTask: [],
     allSubTaskList: [],
 
-    loadingSubTaskofTask:false,
-    subTaskopen:false,
-    loadingSubTask:false,
+    loadingSubTaskofTask: false,
+    subTaskopen: false,
+    loadingSubTask: false,
     // showAllTasks:[],
     page: 0,
     limit: 0,
@@ -43,8 +45,8 @@ const intialStatue: TaskReducerInt = {
     totalResults: 0,
     taskLoading: false,
     dialogOpen: false,
-    selectedTaskId:'',
-    taskDrawerOpen:false,
+    selectedTaskId: '',
+    taskDrawerOpen: false,
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
@@ -53,7 +55,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case requestSuccess(GET_TASK):
             return {
                 ...state,
-                allTask: action.payload.results,
+                allTask: action.payload.results.reverse(),
                 // showAllTasks:action.payload
             }
         case requestPending(GET_TASK): {
@@ -93,7 +95,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 selectedTaskId: action.payload
             }
-            case requestSuccess(GET_ALL_SUBTASK_LIST):
+        case requestSuccess(GET_ALL_SUBTASK_LIST):
             return {
                 ...state,
                 allSubTaskList: action.payload.results,
@@ -110,7 +112,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 loadingSubTask: false,
             };
         }
-            
+
         case requestPending(GET_ALL_SUBTASK_OF_TASK): {
             return {
                 ...state,

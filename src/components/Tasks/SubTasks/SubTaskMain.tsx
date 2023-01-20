@@ -57,7 +57,7 @@ const {allSubTaskList} = useSelector((state:RootState)=> state.task)
         </Paper>
       </Grid>
           <Grid item xs={12}>
-            <SubTaskList allSubTaskList={allSubTaskList}/>
+            <SubTaskList results={allSubTaskList}/>
           </Grid>
         </Grid>
       </Box>

@@ -1,53 +1,62 @@
-import { Grid, makeStyles } from '@material-ui/core'
-import { Divider, IconButton, TextField } from '@mui/material'
+import { Grid, makeStyles } from "@material-ui/core";
+import { Divider, IconButton, TextField } from "@mui/material";
 
-import { CBox } from 'components/material-ui'
-import { useDispatch, useSelector } from 'react-redux'
-
-import colors from '../../../assets/colors'
-import { RootState } from '../../../redux/reducers'
-
-import DatePicker from '../../Utills/Inputs/DatePicker'
-
-import Autocomplete from '@mui/material/Autocomplete'
-import Link from '@mui/material/Link'
-
-import assets from "assets/assets"
+import { CBox } from "components/material-ui";
+import { useDispatch } from "react-redux";
 
 
-import { useState } from "react"
-import { AttachmentIcon } from 'components/material-ui/icons'
-import CustomModal from 'components/Modal'
-import CButton from 'components/Button/Button'
-import UploadImage from 'components/uploadImage/UploadImage'
+import Autocomplete from "@mui/material/Autocomplete";
 
-function TaskDrawerMenu() {
+import { useState } from "react";
+import { AttachmentIcon } from "components/material-ui/icons";
+import CustomModal from "components/Modal";
+import CButton from "components/Button/Button";
+import UploadImage from "components/uploadImage/UploadImage";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
+
+interface Props {
+  taskMenue: TaskInterface;
+}
+
+function TaskDrawerMenu({ taskMenue }: Props) {
+
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const [open, setOpen]: any = useState(false)
-  const selectedMenue = useSelector((state: RootState) => state.project.menue);
   const [imageAttach, setImageAttach]: any = useState(false);
 
+  // const {
+  //   projectMembers,
+  //   projectWithMembers,
+  //   allProjectsTitles,
+  // } = useSelector((store: RootState) => store.project);
+  // console.log(projectWithMembers)
 
+  const { admins, assignedTo, dueDate, project, state, title, description } =
+    taskMenue;
+  const projectData = [{ label: project.title, id: project._id }];
+  const getUserFormatedDataForAutoComplete = (arr: any) => {
+    return arr.map((user: UserInfo) => {
+      return {
+        label: `${user.firstName} ${user.surName}`,
+        id: user._id,
+      };
+    });
+  };
 
-  const handleClick = (id: number) => {
-    // dispatch(projectActions.setMenue(id))
-  }
-  const projects = [
-    { label: 'Redemption', year: 1994 },
-    { label: 'Kristo', year: 1972 },
-    { label: 'Electic', year: 1972 },
-  ]
+  const adminData = getUserFormatedDataForAutoComplete(admins);
+  const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
+  const availiableMembers = getUserFormatedDataForAutoComplete(assignedTo);
 
+  // const minDateTime = new Date();
+  //const userDate = moment(dueDate, "DDYYYY").toString();
+  const selectedProjectValue = { label: project.title, id: project._id }
   return (
     <>
       <Grid container className={classes.outerWrapper}>
-        <CBox display='flex' alignItems='center' mt={1}>
-          <CBox className={classes.type}>
-            Draft
-          </CBox>
-          <CBox color='#000' fontSize={12} fontWeight={600} ml={1}>
-            22.05.2021
+        <CBox display="flex" alignItems="center" mt={1}>
+          <CBox className={classes.type}>{state}</CBox>
+          <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
+            {dueDate}
           </CBox>
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
@@ -57,27 +66,29 @@ function TaskDrawerMenu() {
               name="dueDate"
               label="Due date"
               type="date"
-              defaultValue="2017-05-24"
+              defaultValue={dueDate}
+              // defaultValue={moment(dueDate).format("yyyy-mm-dd")}
+              // defaultValue={dueDate !=="" ? moment(dueDate).format('DD-MMM-YYYY') : ""}
               size="small"
               sx={{ width: 220 }}
               InputLabelProps={{
                 shrink: true,
               }}
-            // onChange={(e) => {
-            //     props.setFieldValue('dueDate', e.target.value);
-            // }}
+              inputProps={{
+                min: new Date().toISOString().slice(0, 10),
+              }}
             />
           </Grid>
-
         </Grid>
         <Grid className={classes.titleWrapper} item xs={12} md={12}>
           <TextField
             size="small"
             name="taskTitle"
             fullWidth
+            value={title}
             id="outlined-basic"
             label="Task title"
-            placeholder='Enter Task Title'
+            placeholder="Enter Task Title"
             variant="outlined"
             InputLabelProps={{
               shrink: true,
@@ -87,63 +98,109 @@ function TaskDrawerMenu() {
           {/* <InputText
                     placeholder="Enter Task title"
                 /> */}
+        </Grid>
 
+        <Grid item xs={12} md={12}>
+          <div className={classes.titleWrapper}>
+            {state !== "draft" ? (
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                size="small"
+                defaultValue={selectedProjectValue}
+                value={selectedProjectValue}
+                options={[]}
+                disabled ={true}
+                // onChange={(e, value) => {
+                //     props.setFieldValue('projects', value !== null ? value : top100Films);
+                // }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="project"
+                    label="Project"
+                    placeholder="select project"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                size="small"
+                defaultValue={{ label: project.title, id: project._id }}
+                options={projectData}
+                // onChange={(e, value) => {
+                //     props.setFieldValue('projects', value !== null ? value : top100Films);
+                // }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="project"
+                    label="Project"
+                    placeholder="select project"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
+          </div>
         </Grid>
 
         <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
             <Autocomplete
+              multiple
               disablePortal
               id="combo-box-demo"
+              value={adminData}
+              options={availiableMembers}
               size="small"
-              options={projects}
               // onChange={(e, value) => {
-              //     props.setFieldValue('projects', value !== null ? value : top100Films);
+              //     props.setFieldValue('admins', value !== null ? value : top100Films);
               // }}
-              renderInput={(params) => <TextField {...params} name='projects' label='Project' placeholder='select project' InputLabelProps={{
-                shrink: true,
-              }} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  name="admins"
+                  label="Admins"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
             />
-            {/* <SelectDropdown
-                        title="Project"
-                    /> */}
           </div>
         </Grid>
-
-        <Grid item xs={12} md={12} >
+        <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
             <Autocomplete
               multiple
               disablePortal
               id="combo-box-demo"
-              options={projects}
+              options={availiableMembers}
               size="small"
+              value={assignedToData}
               // onChange={(e, value) => {
               //     props.setFieldValue('admins', value !== null ? value : top100Films);
               // }}
-              renderInput={(params) => <TextField {...params} name='admins' label='Admins' InputLabelProps={{
-                shrink: true,
-              }} />}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  name="assignTo"
+                  label="Assign To"
+                  placeholder="select memebers(s)"
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                />
+              )}
             />
-
-          </div>
-        </Grid>
-        <Grid item xs={12} md={12} >
-          <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              options={projects}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => <TextField {...params} name='assignTo' label='Assign To' placeholder='select memebers(s)' InputLabelProps={{
-                shrink: true,
-              }} />}
-            />
-
           </div>
         </Grid>
 
@@ -151,21 +208,28 @@ function TaskDrawerMenu() {
           <TextField
             id="standard-multiline-flexible"
             // label="Multiline"
-            placeholder="Enter subtask description"
+            placeholder="Enter task description"
             multiline
             maxRows={5}
             minRows={5}
-            style={{ padding: '10px 10px' }}
+            style={{ padding: "10px 10px" }}
             variant="standard"
+            value={description}
             className={classes.textArea}
             InputLabelProps={{
               shrink: true,
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-          <CBox display='flex' alignItems='center' justifyContent='flex-end' width='100%' borderTop='1px solid #DBDBE5' px={1.8}>
-
-            <CBox display='flex' alignItems='center' >
+          <CBox
+            display="flex"
+            alignItems="center"
+            justifyContent="flex-end"
+            width="100%"
+            borderTop="1px solid #DBDBE5"
+            px={1.8}
+          >
+            <CBox display="flex" alignItems="center">
               <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
               </IconButton>
@@ -180,16 +244,36 @@ function TaskDrawerMenu() {
         </Grid>
         <Divider />
         <Grid item xs={12} md={12}>
-          <CBox display='flex' justifyContent='space-between' alignItems='center' width='100%' p='12px 0px 7px 7px'>
-            <CBox fontSize={14} color='#000' fontWeight={600}>
+          <CBox
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            width="100%"
+            p="12px 0px 7px 7px"
+          >
+            <CBox fontSize={14} color="#000" fontWeight={600}>
               Attachment
             </CBox>
-            <CBox display='flex'>
-              <CButton label='View All' styles={{ fontSize: 12, color: '#0076C8', fontWeight: 'bold' }} />
+            <CBox display="flex">
+              <CButton
+                label="View All"
+                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+              />
               &nbsp;
-              <Divider sx={{ height: 20, marginTop: 'auto', marginBottom: 'auto', borderColor: '#dbdbe5', }} orientation='vertical' />
+              <Divider
+                sx={{
+                  height: 20,
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  borderColor: "#dbdbe5",
+                }}
+                orientation="vertical"
+              />
               &nbsp;
-              <CButton label='Add New' styles={{ fontSize: 12, color: '#0076C8', fontWeight: 'bold' }} />
+              <CButton
+                label="Add New"
+                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+              />
             </CBox>
           </CBox>
         </Grid>
@@ -248,7 +332,12 @@ function TaskDrawerMenu() {
                 </div>
             </Grid> */}
       </Grid>
-      <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attachments'} children={<UploadImage />} />
+      <CustomModal
+        isOpen={imageAttach}
+        handleClose={() => setImageAttach(false)}
+        title={"Attachments"}
+        children={<UploadImage />}
+      />
     </>
   );
 }
@@ -263,20 +352,20 @@ const useStyles = makeStyles({
 
   titleWrapper: {
     marginTop: 20,
-    '& .MuiFormLabel-root': {
-      fontSize: '1rem',
-      color: '#605C5C',
-      fontFamily: 'Inter',
+    "& .MuiFormLabel-root": {
+      fontSize: "1rem",
+      color: "#605C5C",
+      fontFamily: "Inter",
       fontWeight: 600,
     },
     // maxHeight: '41px !important',
-    '&:hover': {
+    "&:hover": {
       // borderColor: '#0a95ff !important',
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#0a95ff !important',
-        borderWidth: '1px',
-      }
-    }
+      "& .MuiOutlinedInput-notchedOutline": {
+        borderColor: "#0a95ff !important",
+        borderWidth: "1px",
+      },
+    },
   },
   // projectWrapper: {
   //     display: 'flex',
@@ -294,63 +383,64 @@ const useStyles = makeStyles({
   inputWrapper: {
     paddingTop: 10,
     paddingLeft: 10,
-    ['@media (max-width:600px)']: {
-      paddingLeft: 0
-    }
+    ["@media (max-width:600px)"]: {
+      paddingLeft: 0,
+    },
   },
   textAreaBox: {
-    border: '1px solid #DBDBE5',
+    border: "1px solid #DBDBE5",
     borderRadius: 5,
     marginTop: 20,
-    position: 'relative',
-    '&:hover': {
-      borderColor: '#0a95ff',
-      borderWidth: '1px',
+    position: "relative",
+    "&:hover": {
+      borderColor: "#0a95ff",
+      borderWidth: "1px",
     },
-    '& .css-8q2m5j-MuiInputBase-root-MuiInput-root': {
-      '&:before': {
-        borderBottom: 'none !important'
+    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root": {
+      "&:before": {
+        borderBottom: "none !important",
       },
-      '&:after': {
-        borderBottom: 'none !important'
-      }
-    }
-
+      "&:after": {
+        borderBottom: "none !important",
+      },
+    },
   },
   textArea: {
-    width: '100%', padding: 15, border: 'none', borderRadius: 5,
-    '& textarea:focus': {
-      outline: 'none !important',
-      borderColor: 'none',
+    width: "100%",
+    padding: 15,
+    border: "none",
+    borderRadius: 5,
+    "& textarea:focus": {
+      outline: "none !important",
+      borderColor: "none",
       // boxShadow: '0 0 10px #719ECE',
-    }
+    },
   },
   projectWrapper: {
     padding: "10px 0px",
-    display: 'flex',
-    alignItems: 'center',
-    width: '100%',
+    display: "flex",
+    alignItems: "center",
+    width: "100%",
 
     // paddingTop: "20px",
     // border: '1px solid #DBDBE5',
     // marginTop: 20,
-    borderRadius: '4px',
-    '&:hover': {
-      borderColor: '#0a95ff',
-      borderWidth: '1px',
-    }
+    borderRadius: "4px",
+    "&:hover": {
+      borderColor: "#0a95ff",
+      borderWidth: "1px",
+    },
   },
   titleLabel: {
-    position: 'absolute',
-    top: '-10px',
-    backgroundColor: '#fff',
+    position: "absolute",
+    top: "-10px",
+    backgroundColor: "#fff",
     left: 11,
-    color: '#605C5C',
+    color: "#605C5C",
     fontSize: 12,
-    fontFamily: 'Inter',
+    fontFamily: "Inter",
     fontWeight: 600,
   },
-
 
   dateWrapper: {
     paddingTop: 10,
@@ -360,14 +450,14 @@ const useStyles = makeStyles({
     },
   },
   createSubTask: {
-    display: 'flex',
-    justifyContent: 'flex-end'
+    display: "flex",
+    justifyContent: "flex-end",
   },
   type: {
-    backgroundColor: '#7D7E80',
+    backgroundColor: "#7D7E80",
     borderRadius: 4,
-    padding: '5px 10px',
-    color: '#fff',
-    fontSize: '12px'
-  }
-})
+    padding: "5px 10px",
+    color: "#fff",
+    fontSize: "12px",
+  },
+});

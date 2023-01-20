@@ -188,7 +188,6 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENTS, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const payload = dataRcvd.data
-        // console.log(eventType);
       });
     }
   }, [isLoggedIn]);

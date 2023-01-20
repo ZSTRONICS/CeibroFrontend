@@ -6,27 +6,13 @@ import { Grid, makeStyles } from "@material-ui/core";
 // import ProjectGroups from './ProjectGroups/ProjectGroups'
 // import ProjectDocuments from './ProjectDocuments/ProjectDocuments'
 // import TimeProfile from './TimeProfile/TimeProfile'
-import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
-import DrawerSubTask from "./DrawerSubTask";
 import SubTaskList from "../SubTasks/SubTaskList";
 import SubTaskStatusDrawer from "./SubTaskStatusDrawer";
-import { Subtask, SubtaskOfTaskResults, Task } from "constants/interfaces/SubtaskOfTask";
-import { Box } from "@mui/material";
-import NoData from "components/Chat/NoData";
-import {  Result, TaskRoot } from "constants/interfaces/Tasks.interface";
 
-interface Props{
-    subtaskList: Subtask[]
-    task: Task
-}
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
 
-const CreateTaskBody = ({subtaskList,task}:Props) => {
+const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
   const classes = useStyles();
-  let subTaskOfTask: SubtaskOfTaskResults = useSelector(
-    (state: RootState) => state.task.allSubTaskOfTask
-  );
-
   return (
     <>
       <div className={classes.subtaskWrapper}>
@@ -34,8 +20,8 @@ const CreateTaskBody = ({subtaskList,task}:Props) => {
       </div>
       <Grid container className={classes.body}>
         {/* <DrawerSubTask/> */}
-        {subtaskList?.length > 0 ? (
-          <SubTaskList allSubTaskList={subtaskList} />
+        {subtasks?.length > 0 ? (
+          <SubTaskList results={subtasks} />
         ) : (<p style={{width: '100%',
             textAlign: 'center'}}>There is no SubTask</p>
         )}

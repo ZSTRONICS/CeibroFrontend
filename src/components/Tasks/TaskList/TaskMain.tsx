@@ -3,12 +3,10 @@ import { makeStyles } from '@material-ui/core';
 import { Box, Grid, Paper } from '@mui/material';
 
 // components
-import assets from 'assets/assets';
-import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
-import TaskList1 from './TaskList1';
+import TaskList from './TaskList';
 
 
 const TaskMain=()=> {
@@ -44,7 +42,7 @@ const TaskMain=()=> {
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <TaskList1/>
+        <TaskList/>
       </Grid>
 
     </Grid>
@@ -57,6 +55,10 @@ const options = [
   {
     title: "All",
     count: 21,
+  },
+  {
+    title: "New",
+    count: 2,
   },
   {
     title: "Active",

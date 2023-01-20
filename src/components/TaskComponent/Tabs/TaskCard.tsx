@@ -1,4 +1,4 @@
-import * as React from "react";
+import  React, {useEffect} from "react";
 import { MoreVert } from "@material-ui/icons";
 import {Card,CardContent, CardHeader,Box, Button, CardActions, Divider, Grid,Typography, Stack, Tooltip } from "@mui/material";
 
@@ -7,13 +7,14 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import { AssignedTo, Result, State } from "constants/interfaces/Tasks.interface";
 import moment from "moment-timezone";
 import taskActions, { getAllSubTaskOfTask } from "redux/action/task.action";
 import { useDispatch } from "react-redux";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
 
 interface Props{
-  task: Result
+  task: TaskInterface
   ColorByStatus:(state:string)=>string
 }
 
@@ -24,14 +25,20 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   const dispatch = useDispatch()
 
   const handleCard =()=>{
-    dispatch(taskActions.openTaskDrawer());
-    dispatch(taskActions.selectedTaskId(task._id));
+
     dispatch(
     getAllSubTaskOfTask({
       other: {
         taskId: task._id
-      }
+      },
+      success: () => {
+        dispatch(taskActions.openTaskDrawer());
+        dispatch(taskActions.selectedTaskId(task._id));
+      },
+
     }))
+
+   
     }
     
   // const dueDate = new Date().toLocaleDateString("de-DE", {
@@ -92,7 +99,7 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
   };
   const AssignedToList = ()=>{
     return (<>
-       {task.assignedTo.map((item:AssignedTo)=>{
+       {task.assignedTo.map((item:UserInfo)=>{
         return(
           <span>
         {`${item.firstName} ${item.surName },`}
@@ -129,7 +136,7 @@ const TaskCard:React.FC<Props>= ({task, ColorByStatus}) => {
           </Box>
           <Box>
             <LabelTag>Assigned to</LabelTag>
-           {task.assignedTo.map((item:AssignedTo,i:any) =>{
+           {task.assignedTo.map((item:UserInfo,i:any) =>{
             return(<>
             {i===0&& <AssignedTag key={item._id} sx={{display:'inline-block'}}> {`${item.firstName} ${item.surName}`}</AssignedTag>}
             </>

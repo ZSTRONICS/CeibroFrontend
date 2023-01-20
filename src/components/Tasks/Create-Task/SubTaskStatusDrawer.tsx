@@ -47,7 +47,7 @@ function SubTaskStatusDrawer() {
 
 
     </Grid>
-    <CustomModal title="New Sub-task" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
+    <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
 
   </>
   )

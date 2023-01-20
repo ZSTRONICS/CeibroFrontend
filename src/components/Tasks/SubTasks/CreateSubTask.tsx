@@ -13,9 +13,13 @@ import { AttachmentIcon } from 'components/material-ui/icons';
 import CreateSubTaskAdvanceOption from './CreateSubTaskAdvanceOption';
 import CButton from 'components/Button/Button';
 import CustomModal from "../../Modal/index"
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/reducers';
 export default function CreateSubTask({ setSubTask }: any) {
     const classes = useStyles();
     const [imageAttach, setImageAttach]: any = useState(false);
+    const { allProjects, projectMembers } = useSelector((store: RootState) => store.project);
+
     const projects = [
         { label: 'Redemption', year: 1994 },
         { label: 'Kristo', year: 1972 },
@@ -38,6 +42,9 @@ export default function CreateSubTask({ setSubTask }: any) {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            inputProps={{
+                                min: new Date().toISOString().slice(0, 10),
+                              }}
                         // onChange={(e) => {
                         //     props.setFieldValue('dueDate', e.target.value);
                         // }}
@@ -47,16 +54,17 @@ export default function CreateSubTask({ setSubTask }: any) {
                 </Grid>
                 <Grid className={classes.titleWrapper} item xs={12} md={12}>
                     <TextField
+                        required
                         size="small"
                         name="taskTitle"
                         fullWidth
                         id="outlined-basic"
-                        label="Enter task title"
-                        placeholder='enter task title'
+                        label="Sub task title"
+                        placeholder='Enter sub-task title'
                         variant="outlined"
                     />
                 </Grid>
-                <Grid item xs={12} md={12}>
+                {/* <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
                             disablePortal
@@ -68,11 +76,9 @@ export default function CreateSubTask({ setSubTask }: any) {
                             // }}
                             renderInput={(params) => <TextField {...params} name='subTask' label='Sub Task title' placeholder='select a sub-task project' />}
                         />
-                        {/* <SelectDropdown
-                        title="Project"
-                    /> */}
+                        
                     </div>
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
@@ -100,7 +106,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                             // onChange={(e, value) => {
                             //     props.setFieldValue('projects', value !== null ? value : top100Films);
                             // }}
-                            renderInput={(params) => <TextField {...params} name='admin' label='Admin' placeholder='select a admin' />}
+                            renderInput={(params) => <TextField {...params} name='AssignTo' label='Assign To' placeholder='select assign to' />}
                         />
                         {/* <SelectDropdown
                         title="Project"
