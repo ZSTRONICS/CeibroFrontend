@@ -6,9 +6,10 @@ import {
     SELECTED_TASK_ID,
     GET_ALL_SUBTASK_LIST,
     GET_ALL_SUBTASK_OF_TASK,
+    SET_SELECTED_TASK,
 } from '../../config/task.config'
 import { requestFail, requestPending, requestSuccess } from "utills/status";
-import { TaskInterface } from "constants/interfaces/task.interface";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
 
@@ -28,6 +29,7 @@ interface TaskReducerInt {
     loadingSubTask: boolean
     loadingSubTaskofTask: boolean
     allSubTaskOfTask: AllSubtasksOfTaskResult | any
+    selectedTask: TaskInterface | any
 }
 
 const intialStatue: TaskReducerInt = {
@@ -47,6 +49,7 @@ const intialStatue: TaskReducerInt = {
     dialogOpen: false,
     selectedTaskId: '',
     taskDrawerOpen: false,
+    selectedTask: {}
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
@@ -90,6 +93,14 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 taskDrawerOpen: false,
             }
+
+        case SET_SELECTED_TASK:
+            return {
+                ...state,
+                //selectedTask: action.payload,
+                allSubTaskOfTask:  {task: action.payload, subtasks: []}
+            }
+
         case SELECTED_TASK_ID:
             return {
                 ...state,
@@ -128,7 +139,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case requestSuccess(GET_ALL_SUBTASK_OF_TASK):
             return {
                 ...state,
-                allSubTaskOfTask: action.payload.results,
+                allSubTaskOfTask: action.payload.results
             }
         default:
             return state

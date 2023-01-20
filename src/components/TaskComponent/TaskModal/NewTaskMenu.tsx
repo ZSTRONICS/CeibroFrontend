@@ -1,21 +1,16 @@
 import React from "react";
 
 // mui-imports
-import { Grid, TextField, TextFieldProps } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-
-// redux
-// import { useDispatch, useSelector } from 'react-redux';
-// import { RootState } from '../../../redux/reducers';
-
 // components
 import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
 import moment from "moment";
-import { UserInfo } from "constants/interfaces/subtask.interface";
-// import { AttachmentIcon } from 'components/material-ui/icons';
+import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+
 
 function NewTaskMenu(props: any) {
   const { projectWithMembers, allProjectsTitles } = useSelector(
@@ -38,15 +33,6 @@ function NewTaskMenu(props: any) {
   const [assignToOpt, setAssignToOpt] = React.useState<any>([]);
   const [assignToList, setAssignToList] = React.useState<any>([]);
 
-  const getUserFormatedDataForAutoComplete = (arr: any) => {
-    return arr.map((member: UserInfo) => {
-      return {
-        label: `${member.firstName} ${member.surName}`,
-        id: member._id,
-      };
-    });
-  };
-
   const handleProjectChange = (project: any) => {
     props.setFieldValue("admins", [fixedOptions[0].id]);
     if (project === null) {
@@ -57,19 +43,9 @@ function NewTaskMenu(props: any) {
       setAssignToList([]);
       setAssignToOpt([]);
     } else {
-      let projMembersData: any = [];
-      projectWithMembers
-        .filter((proj: any) => {
-          if (project && proj) {
-            if (String(proj?._id) === String(project?.value)) {
-              props.setFieldValue("project", project?.value);
-              projMembersData = proj?.projectMembers;
-            }
-          }
-        })
-        .find((proj: any) => proj);
-
-      let projMembers = getUserFormatedDataForAutoComplete(projMembersData);
+      props.setFieldValue("project", project?.value);
+      const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
+      const projMembers = getUserFormatedDataForAutoComplete(projMembersData?.projectMembers);
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }
@@ -152,6 +128,7 @@ function NewTaskMenu(props: any) {
           <Autocomplete
             multiple
             disablePortal
+            disableCloseOnSelect
             id="combo-box-demo2"
             options={adminListOpt}
             limitTags={2}
@@ -195,6 +172,7 @@ function NewTaskMenu(props: any) {
           <Autocomplete
             multiple
             disablePortal
+            disableCloseOnSelect
             id="combo-box-demo3"
             limitTags={2}
             options={assignToOpt}

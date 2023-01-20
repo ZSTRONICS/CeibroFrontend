@@ -1,55 +1,90 @@
+import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Divider, IconButton, TextField } from "@mui/material";
-
 import { CBox } from "components/material-ui";
-import { useDispatch } from "react-redux";
-
-
+import { useDispatch, useSelector } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
-
-import { useState } from "react";
 import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
 import UploadImage from "components/uploadImage/UploadImage";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
+import { RootState } from "redux/reducers";
+import {
+  getSelectedProjectMembers,
+  getUserFormatedDataForAutoComplete,
+} from "components/Utills/Globals/Common";
 
 interface Props {
   taskMenue: TaskInterface;
 }
 
 function TaskDrawerMenu({ taskMenue }: Props) {
-
   const classes = useStyles();
   const [imageAttach, setImageAttach]: any = useState(false);
-
-  // const {
-  //   projectMembers,
-  //   projectWithMembers,
-  //   allProjectsTitles,
-  // } = useSelector((store: RootState) => store.project);
-  // console.log(projectWithMembers)
-
   const { admins, assignedTo, dueDate, project, state, title, description } =
     taskMenue;
-  const projectData = [{ label: project.title, id: project._id }];
-  const getUserFormatedDataForAutoComplete = (arr: any) => {
-    return arr.map((user: UserInfo) => {
-      return {
-        label: `${user.firstName} ${user.surName}`,
-        id: user._id,
-      };
-    });
-  };
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
+
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  //const projectData = [{ label: project.title, id: project._id }];
 
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
-  const availiableMembers = getUserFormatedDataForAutoComplete(assignedTo);
+  let allMembersOfProject: any;
 
-  // const minDateTime = new Date();
-  //const userDate = moment(dueDate, "DDYYYY").toString();
-  const selectedProjectValue = { label: project.title, id: project._id }
+  const selectedProjectValue = { label: project.title, id: project._id };
+
+  const currentUserAutoCompleteData = {
+    label: `${user.firstName} ${user.surName}`,
+    id: user._id,
+  };
+
+  const fixedOptions: any = [currentUserAutoCompleteData];
+
+  const [adminsList, setAdminsList] = React.useState<any>([...adminData]);
+  const [adminListOpt, setAdminListOpt] = React.useState<any>([ ...fixedOptions]);
+  const [assignToOpt, setAssignToOpt] = React.useState<any>([]);
+  const [assignToList, setAssignToList] = React.useState<any>([...assignedToData]);
+
+  const [doOnce, setDoOnce] = React.useState<boolean>(true);
+
+  if (doOnce) {
+    const projectMembersData = getSelectedProjectMembers(
+      project?._id,
+      projectWithMembers
+    );
+    allMembersOfProject = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+    setAdminListOpt([...fixedOptions, ...allMembersOfProject]);
+    setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
+    setDoOnce(false)
+  }
+
+  const handleProjectChange = (project: any) => {
+    // props.setFieldValue("admins", [fixedOptions[0].id]);
+    if (project === null) {
+      // props.setFieldValue("project", "");
+      // props.setFieldValue("assignedTo", []);
+      setAdminListOpt([]);
+      setAdminsList([...fixedOptions]);
+      setAssignToList([]);
+      setAssignToOpt([]);
+    } else {
+      // props.setFieldValue("project", project?.value);
+      const projectMembersData = getSelectedProjectMembers(
+        project?.value,
+        projectWithMembers
+      );
+      const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+      setAdminListOpt([...fixedOptions, ...projMembers]);
+      setAssignToOpt([...fixedOptions, ...projMembers]);
+    }
+  };
+
   return (
     <>
       <Grid container className={classes.outerWrapper}>
@@ -82,22 +117,19 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         </Grid>
         <Grid className={classes.titleWrapper} item xs={12} md={12}>
           <TextField
+            required
             size="small"
-            name="taskTitle"
+            name="title"
             fullWidth
-            value={title}
+            defaultValue={title}
             id="outlined-basic"
             label="Task title"
-            placeholder="Enter Task Title"
+            placeholder="Enter task title"
             variant="outlined"
-            InputLabelProps={{
-              shrink: true,
+            onChange={(e) => {
+              // props.setFieldValue("title", e.target.value);
             }}
           />
-
-          {/* <InputText
-                    placeholder="Enter Task title"
-                /> */}
         </Grid>
 
         <Grid item xs={12} md={12}>
@@ -110,16 +142,13 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 defaultValue={selectedProjectValue}
                 value={selectedProjectValue}
                 options={[]}
-                disabled ={true}
-                // onChange={(e, value) => {
-                //     props.setFieldValue('projects', value !== null ? value : top100Films);
-                // }}
+                disabled={true}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     name="project"
                     label="Project"
-                    placeholder="select project"
+                    placeholder="Select project"
                     InputLabelProps={{
                       shrink: true,
                     }}
@@ -129,22 +158,20 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             ) : (
               <Autocomplete
                 disablePortal
-                id="combo-box-demo"
+                id="combo-box-demo1"
                 size="small"
                 defaultValue={{ label: project.title, id: project._id }}
-                options={projectData}
-                // onChange={(e, value) => {
-                //     props.setFieldValue('projects', value !== null ? value : top100Films);
-                // }}
+                options={allProjectsTitles}
+                onChange={(e, value) => {
+                  handleProjectChange(value);
+                }}
                 renderInput={(params) => (
                   <TextField
+                    required
                     {...params}
-                    name="project"
+                    name="projects"
                     label="Project"
-                    placeholder="select project"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
+                    placeholder="Select project"
                   />
                 )}
               />
@@ -154,27 +181,78 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
         <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
-            <Autocomplete
-              multiple
-              disablePortal
-              id="combo-box-demo"
-              value={adminData}
-              options={availiableMembers}
-              size="small"
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  name="admins"
-                  label="Admins"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              )}
-            />
+            {adminData.some(
+              (item: any) => String(item.id) === String(user._id)
+            ) ? (
+              <Autocomplete
+                disableCloseOnSelect
+                multiple
+                disablePortal
+                id="combo-box-demo"
+                value={adminsList}
+                defaultValue={adminsList}
+                options={adminListOpt}
+                size="small"
+                onChange={(event, value) => {
+                  // array.forEach(element => {
+                    
+                  // });
+                  // if(adminData.some((item: any) => String(item.id) === String(value.id))){
+
+                  // }
+
+                  let newValue: any = [
+                    ...fixedOptions,
+                    ...value.filter(
+                      (option: any) => fixedOptions[0].id !== option.id
+                    ),
+                  ];
+
+                  newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                    if (!uniqueArray.find(item => item.id === element.id)) {
+                      uniqueArray.push(element);
+                    }
+                    return uniqueArray;
+                  }, []);
+                  setAdminsList(newValue);
+                  // const admins = newValue.map((value: any) => value.id);
+                  // props.setFieldValue("admins", admins);
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="admins"
+                    label="Admins"
+                    placeholder="Select admin(s)"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            ) : (
+              <Autocomplete
+                disableCloseOnSelect
+                multiple
+                disablePortal
+                id="combo-box-demo"
+                value={adminData}
+                size="small"
+                options={[]}
+                disabled={true}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    name="admins"
+                    label="Admins"
+                    placeholder="Select admin(s)"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                )}
+              />
+            )}
           </div>
         </Grid>
         <Grid item xs={12} md={12}>
@@ -183,18 +261,29 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               multiple
               disablePortal
               id="combo-box-demo"
-              options={availiableMembers}
+              disableCloseOnSelect
+              options={assignToOpt}
               size="small"
-              value={assignedToData}
-              // onChange={(e, value) => {
-              //     props.setFieldValue('admins', value !== null ? value : top100Films);
-              // }}
+              value={assignToList}
+              onChange={(e, newValue) => {
+
+                newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                  if (!uniqueArray.find(item => item.id === element.id)) {
+                    uniqueArray.push(element);
+                  }
+                  return uniqueArray;
+                }, []);
+
+                setAssignToList([...newValue]);
+                // const assign2 = newValue.map((value: any) => value.id);
+                //props.setFieldValue("assignedTo", assign2);
+              }}
               renderInput={(params) => (
                 <TextField
                   {...params}
                   name="assignTo"
                   label="Assign To"
-                  placeholder="select memebers(s)"
+                  placeholder="Select memebers(s)"
                   InputLabelProps={{
                     shrink: true,
                   }}
@@ -214,7 +303,10 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             minRows={5}
             style={{ padding: "10px 10px" }}
             variant="standard"
-            value={description}
+            defaultValue={description}
+            onChange={(e) => {
+              // props.setFieldValue("description", e.target.value);
+            }}
             className={classes.textArea}
             InputLabelProps={{
               shrink: true,

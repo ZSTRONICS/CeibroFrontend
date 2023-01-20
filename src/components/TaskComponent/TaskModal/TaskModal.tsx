@@ -22,12 +22,16 @@ import assets from "assets/assets";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "theme";
-import taskActions, { createTask, getAllTask } from "../../../redux/action/task.action";
+import taskActions, {
+  createTask,
+  getAllTask,
+} from "../../../redux/action/task.action";
 import { RootState } from "../../../redux/reducers";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
 import CButton from "components/Button/Button";
 import { toast } from "react-toastify";
+import { SET_SELECTED_TASK } from "config/task.config";
 
 export const TaskModal = () => {
   const classes = useStyles();
@@ -37,43 +41,43 @@ export const TaskModal = () => {
 
   const dialogOpen = useSelector((state: RootState) => state.task.dialogOpen);
   const { user } = useSelector((store: RootState) => store.auth);
-  const [loading, setLoading] = useState<boolean>(false)
   const handleClose = () => {
     dispatch(taskActions.closeNewTask());
   };
 
   const handleSubmit = (values: any) => {
-    const { dueDate, title, project, admins, assignedTo, creator, state, description } =
-      values;
+    const  {dueDate, title,project,admins,assignedTo,creator, state, description } = values;
+    const payload = {dueDate, title,project,admins,assignedTo,creator, state, description };
+    
+    dispatch(
+      createTask({
+        body: payload,
+        success: (res) => {
+          dispatch(taskActions.closeNewTask());
+          if (res?.status === 201) {
+            //New Task Created Successfully
+            //Open Task Drawer with latest Task Data
+            const newTaskData = res?.data?.newTask;
+            if (newTaskData) {
+              dispatch({
+                type: SET_SELECTED_TASK,
+                payload: newTaskData,
+              });
 
-    let payload = {
-      assignedTo,
-      creator,
-      admins,
-      project,
-      dueDate,
-      title,
-      state,
-      description,
-    };
-    setLoading(true)
-      dispatch(
-        createTask({
-          body: payload,
-          success: (res) => {
-              dispatch(getAllTask());
-          },
-          finallyAction: () => {
-            dispatch(taskActions.closeNewTask());
-            toast.success("Task created");
-          },
-          showErrorToast: true,
-          onFailAction: (err) => {
-            toast.error("Failed to create task", err);
-            setLoading(false);
+              dispatch(taskActions.openTaskDrawer());
+            }
           }
-        })
-      );
+  
+        },
+        finallyAction: () => {
+          dispatch(getAllTask());
+        },
+        showErrorToast: true,
+        onFailAction: (err) => {
+          toast.error("Failed to create task", err);
+        },
+      })
+    );
   };
 
   return (
@@ -146,7 +150,7 @@ export const TaskModal = () => {
                       }}
                       label={"Save as draft"}
                       onClick={() => {
-                        values.state = "draft"
+                        values.state = "draft";
                       }}
                     />
                   </CBox>
@@ -168,7 +172,7 @@ export const TaskModal = () => {
                       }}
                       label={"Create Task"}
                       onClick={() => {
-                        values.state = "new"
+                        values.state = "new";
                       }}
                     />
                     <CButton

@@ -30,7 +30,7 @@ const CreateTaskDrawer = () => {
         title: ""
       },
       description: "",
-      state: "new",
+      state: "draft",
     }
   }
 
