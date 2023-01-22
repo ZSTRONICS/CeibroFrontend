@@ -34,7 +34,7 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
-  const dueDate = moment.utc(moment(task.dueDate)).format("DD.MM.YYYY");
+  const dueDate = task.dueDate.replace('-', '.')
   const classes = useStyles();
   const dispatch = useDispatch();
 

@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@mui/material';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
 import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTask';
+import { State } from 'constants/interfaces/task.interface';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
 import colors from '../../../assets/colors';
@@ -20,18 +21,6 @@ const CreateTaskDrawer = () => {
   const handleClose = () => {
     dispatch(taskActions.closeTaskDrawer());
     subTaskOfTask.subtasks=[]
-    subTaskOfTask.task= {
-      dueDate: "",
-      title: "",
-      admins: [],
-      assignedTo: [],
-      project: {
-        _id: "",
-        title: ""
-      },
-      description: "",
-      state: "draft",
-    }
   }
 
   return (

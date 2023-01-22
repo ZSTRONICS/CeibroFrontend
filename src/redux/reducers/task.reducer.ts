@@ -7,6 +7,7 @@ import {
     GET_ALL_SUBTASK_LIST,
     GET_ALL_SUBTASK_OF_TASK,
     SET_SELECTED_TASK,
+    CREATE_TASK,
 } from '../../config/task.config'
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
@@ -54,6 +55,24 @@ const intialStatue: TaskReducerInt = {
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
     switch (action.type) {
+
+        case requestSuccess(CREATE_TASK):
+            console.log(action.payload);
+            return {
+                ...state,
+            }
+        case requestPending(CREATE_TASK): {
+            return {
+                ...state,
+            };
+        }
+        case requestFail(CREATE_TASK): {
+            console.log(action.payload);
+            return {
+                ...state,
+            };
+        }
+
 
         case requestSuccess(GET_TASK):
             return {

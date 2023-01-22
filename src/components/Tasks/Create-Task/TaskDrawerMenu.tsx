@@ -23,12 +23,8 @@ interface Props {
 function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
   const [imageAttach, setImageAttach]: any = useState(false);
-  const { admins, assignedTo, dueDate, project, state, title, description } =
-    taskMenue;
-  const { projectWithMembers, allProjectsTitles } = useSelector(
-    (store: RootState) => store.project
-  );
-
+  const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
+  const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
 
   //const projectData = [{ label: project.title, id: project._id }];
@@ -39,12 +35,12 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
   const selectedProjectValue = { label: project.title, id: project._id };
 
-  const currentUserAutoCompleteData = {
-    label: `${user.firstName} ${user.surName}`,
-    id: user._id,
+  const creatorAutoCompleteData = {
+    label: `${creator.firstName} ${creator.surName}`,
+    id: creator._id,
   };
 
-  const fixedOptions: any = [currentUserAutoCompleteData];
+  let fixedOptions: any = [creatorAutoCompleteData];
 
   const [adminsList, setAdminsList] = React.useState<any>([...adminData]);
   const [adminListOpt, setAdminListOpt] = React.useState<any>([ ...fixedOptions]);
@@ -55,7 +51,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
-      project?._id,
+      project._id,
       projectWithMembers
     );
     allMembersOfProject = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);

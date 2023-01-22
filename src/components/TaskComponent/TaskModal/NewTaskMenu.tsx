@@ -69,8 +69,9 @@ function NewTaskMenu(props: any) {
               shrink: true,
             }}
             onChange={(e) => {
-                const userDate = moment(e.target.value, "DD-MM-YYYY").toString();
-              props.setFieldValue("dueDate", userDate.slice(0,10));
+              const userDate = new Date(String(e.target.value));
+              const currentDate = userDate.toLocaleString('en-GB', {year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-')
+              props.setFieldValue("dueDate", currentDate);
             }}
             InputProps={{
               inputProps: { min: new Date().toISOString().slice(0, 10) },

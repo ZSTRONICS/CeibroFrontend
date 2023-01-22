@@ -53,8 +53,11 @@ export const TaskModal = () => {
       createTask({
         body: payload,
         success: (res) => {
-          dispatch(taskActions.closeNewTask());
-          if (res?.status === 201) {
+          handleClose()
+          if(res?.status >= 400) {
+            toast.error("Failed to create task", res?.message);
+          }
+          else if (res?.status === 201) {
             //New Task Created Successfully
             //Open Task Drawer with latest Task Data
             const newTaskData = res?.data?.newTask;
@@ -67,7 +70,6 @@ export const TaskModal = () => {
               dispatch(taskActions.openTaskDrawer());
             }
           }
-  
         },
         finallyAction: () => {
           dispatch(getAllTask());

@@ -1,11 +1,12 @@
 import { SubtaskInterface } from "./subtask.interface"
+import { TaskInterface } from "./task.interface"
 
 // export interface AllSubtasksOfTaskRoot {
 //     results: AllSubtasksOfTaskResult
 // }
 
 export interface AllSubtasksOfTaskResult {
-    task: Task
+    task: TaskInterface
     subtasks: SubtaskInterface[]
 }
 
