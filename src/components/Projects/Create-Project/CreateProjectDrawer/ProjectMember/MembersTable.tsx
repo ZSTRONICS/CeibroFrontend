@@ -129,7 +129,7 @@ const RolesTable = () => {
         finallyAction: () => {
           setLoading(false);
         },
-        other: { projectId: selectedProject, excludeMe: true },
+        other: { projectId: selectedProject, includeMe: true },
       };
       setLoading(true);
       dispatch(getMember(payload));
