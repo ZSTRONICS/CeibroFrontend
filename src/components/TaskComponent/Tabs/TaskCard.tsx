@@ -34,7 +34,9 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
-  const dueDate = task.dueDate.replace('-', '.')
+  console.log("NEW TASK => ", task);
+  
+  const dueDate = task.dueDate.replaceAll('-', '.')
   const classes = useStyles();
   const dispatch = useDispatch();
 

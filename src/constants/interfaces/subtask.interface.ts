@@ -13,7 +13,7 @@ export interface SubtaskInterface {
   creator: Creator
   dueDate: string
   description: string
-  subTaskState: string
+  state: string
   files: any[]
   createdAt: string
   updatedAt: string

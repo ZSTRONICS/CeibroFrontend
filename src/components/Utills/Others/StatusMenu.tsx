@@ -107,4 +107,7 @@ const useStyles = makeStyles({
   draft: {
     background: getColorByStatus("draft"),
   },
+  new: {
+    background: getColorByStatus("new"),
+  },
 });

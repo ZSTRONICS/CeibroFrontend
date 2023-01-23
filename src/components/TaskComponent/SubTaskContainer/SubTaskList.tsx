@@ -21,11 +21,11 @@ interface Props{
 }
 
 function SubTask({subTaskDetail}: Props) {
-  const {_id, dueDate, assignedTo,subTaskState,title, description} = subTaskDetail
+  const {_id, dueDate, assignedTo,state,title, description} = subTaskDetail
   const classes = useStyles()
 const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
 const subTaskDate =  moment.utc(moment(dueDate)).format('DD.MM.YYYY');
-const bgcolor =  getColorByStatus(subTaskState)
+const bgcolor =  getColorByStatus(state)
 
 const AssignedToList = ()=>{
   return (<>
@@ -43,7 +43,7 @@ const AssignedToList = ()=>{
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white',fontWeight: '500', fontSize: '10px' }}>{subTaskState}</TaskStatus>
+          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white',fontWeight: '500', fontSize: '10px' }}>{state}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {subTaskDate}
           </Typography>

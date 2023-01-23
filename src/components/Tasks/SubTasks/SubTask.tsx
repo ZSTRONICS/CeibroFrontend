@@ -53,20 +53,21 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'space-around'
     },
+    assigned: {
+        background: getColorByStatus('assigned')
+    },
+    accepted: {
+        background: getColorByStatus('accepted')
+    },
     ongoing: {
         background: getColorByStatus('ongoing')
-    }
-
-    ,
-    completed: {
-        background: getColorByStatus('completed')
-    }
-
-    ,
+    },
+    done: {
+        background: getColorByStatus('done')
+    },
     draft: {
         background: getColorByStatus('draft')
     },
-
     approved: {
         background: getColorByStatus('approved')
     },
