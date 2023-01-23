@@ -3,7 +3,7 @@ import { Drawer } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@mui/material';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
-import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTask';
+import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTasks.interface';
 import { State } from 'constants/interfaces/task.interface';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';

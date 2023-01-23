@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Grid } from '@material-ui/core'
 import SubTask from 'components/TaskComponent/SubTaskContainer/SubTaskList'
-import { AllSubtasksForUserRoot } from 'constants/interfaces/AllSubTask'
+import { AllSubtasksForUserRoot } from 'constants/interfaces/AllSubTasks.interface'
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface'
 
 
