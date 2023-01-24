@@ -10,7 +10,7 @@ const DrawerSubTask = () => {
   const classes = useStyles();
   return (
     <Grid container className={classes.subTaskWrapper}>
-      <Grid container>
+      <Grid container item>
         <CBox display='flex' justifyContent='space-between' width='100%'>
           <Grid item xs={2}>
             <CBox display='flex' alignItems='center'>

@@ -85,7 +85,7 @@ const Login: React.FC<LoginInterface> = () => {
               showSuccess={success}
               showError={error}
             />
-            <Grid container className={classes.langContainer}>
+            <Grid container item className={classes.langContainer}>
               <Grid item>
                 <Typography className={classes.dontHave}>
                   {t("auth.dont_have_account")}{" "}
