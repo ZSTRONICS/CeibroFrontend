@@ -2,6 +2,7 @@ export interface SubtaskInterface {
   advanceOptions: AdvanceOptions
   isMultiTaskSubTask: boolean
   access: string[]
+  subTaskFixedForUser: string[]
   doneImageRequired: boolean
   doneCommentsRequired: boolean
   comments: any[]
