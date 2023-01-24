@@ -42,6 +42,7 @@ function TaskList() {
       ) : (
         <Grid
           container
+          item
           rowGap={2.5}
           columnGap={4.38}
           xs={12}

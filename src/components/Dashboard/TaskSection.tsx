@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import StatusMenu from "../Utills/Others/StatusMenu";
-import { getAllStatus } from "../../config/project.config";
 import taskActions from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
+
 
 const myStatus = [
   {
@@ -33,7 +33,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
+ 
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };

@@ -24,18 +24,18 @@ export const StatusMenu = (props: any) => {
   const dispatch = useDispatch();
 
   const [filter, setFilter] = useState<string>("All");
-  useEffect(() => {
-    if (filter) {
-      dispatch(projectActions.setSelectedStatus(filter));
-      dispatch(getProjectsWithPagination());
-    }
-  }, [filter]);
+  // useEffect(() => {
+  //   if (filter) {
+  //     dispatch(projectActions.setSelectedStatus(filter));
+  //     dispatch(getProjectsWithPagination());
+  //   }
+  // }, [filter]);
 
-  useEffect(() => {
-    if (!drawerOpen) {
-      dispatch(getStatus());
-    }
-  }, [drawerOpen]);
+  // useEffect(() => {
+  //   if (!drawerOpen) {
+  //     dispatch(getStatus());
+  //   }
+  // }, [drawerOpen]);
 
 
   return (
