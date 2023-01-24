@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   content: {
-    height: "100vh",
+    // height: "100vh",
     marginLeft: 200,
     overflowX: "hidden",
     overflowY: "auto",
