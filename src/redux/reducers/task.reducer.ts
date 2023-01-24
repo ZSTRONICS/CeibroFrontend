@@ -12,7 +12,7 @@ import {
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]

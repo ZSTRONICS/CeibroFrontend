@@ -5,6 +5,7 @@ const colors = {
   lightPurpuple: "rgb(122, 177, 251)",
   secondaryBlue: "rgb(0, 82, 204)",
   lightSkyBlue: "#81bbe3",
+  new: "#81bbe3",
   
   replyYellow: '#F1B740',
   senderBox: '#fffefdba',

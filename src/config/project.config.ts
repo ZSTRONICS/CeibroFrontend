@@ -1,3 +1,4 @@
+import { color } from "@material-ui/system";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import colors from "../assets/colors";
 
@@ -7,6 +8,7 @@ interface ColorCodes {
 
 export const colorsByStatus: ColorCodes = {
   all: colors.black,
+  new: colors.new,
   ongoing: colors.darkYellow,
   active: colors.darkYellow,
   approved: colors.primary,
@@ -29,7 +31,10 @@ const textColorsByStatus: ColorCodes = {
 };
 
 export function getColorByStatus(status: string): string {
+  if(status)
   return colorsByStatus[status.toLowerCase()];
+  else
+  return colorsByStatus.draft
 }
 
 export function getTextColorByStatus(status: string): string {

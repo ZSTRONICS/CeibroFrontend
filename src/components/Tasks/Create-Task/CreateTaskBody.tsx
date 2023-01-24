@@ -9,7 +9,7 @@ import { Grid, makeStyles } from "@material-ui/core";
 import SubTaskList from "../SubTasks/SubTaskList";
 import SubTaskStatusDrawer from "./SubTaskStatusDrawer";
 
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTask";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 
 const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
   const classes = useStyles();

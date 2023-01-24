@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { MoreVert } from "@material-ui/icons";
 import {
   Card,
@@ -8,7 +8,6 @@ import {
   Button,
   CardActions,
   Divider,
-  Grid,
   Typography,
   Stack,
   Tooltip,
@@ -19,7 +18,6 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import moment from "moment-timezone";
 import taskActions, {
   getAllSubTaskOfTask,
 } from "redux/action/task.action";
@@ -34,9 +32,10 @@ interface Props {
   taskKey:string
 }
 
-const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey: uKey }) => {
+const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
+  console.log("NEW TASK => ", task);
   
-  const dueDate = task.dueDate.replace('-', '.')
+  const dueDate = task.dueDate.replaceAll('-', '.')
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -129,7 +128,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey: uKey }) => {
     <Card
       className={classes.cardContainer}
       onClick={handleCard}
-      key={uKey}
+      key={taskKey}
       sx={{
         "& :hover": {
           cursor: "pointer",
