@@ -111,7 +111,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             />
           </Grid>
         </Grid>
-        <Grid className={classes.titleWrapper} item xs={12} md={12}>
+        <Grid item xs={12} md={12} className={classes.titleWrapper}>
           <TextField
             required
             size="small"

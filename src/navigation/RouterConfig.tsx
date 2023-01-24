@@ -9,7 +9,6 @@ import { Login,
   Dashboard,
   Profile,
   Tasks,
-  SubTask,
   Chat,
 } from 'components'
 
@@ -37,7 +36,6 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/profile" component={Profile} />
             <Route path="/projects" component={Projects} />
             <Route path="/tasks" component={Tasks} />
-            <Route path="/task/:id" component={SubTask} />
             <Route path="/chat" component={Chat} />
             <Route path="/connections" component={Connections} />
             <PrivateRoute path="/dashboard" component={Dashboard} />

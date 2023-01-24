@@ -23,7 +23,7 @@ const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
         {subtasks?.length > 0 ? (
           <SubTaskList results={subtasks} />
         ) : (<p style={{width: '100%',
-            textAlign: 'center'}}>There is no SubTask</p>
+            textAlign: 'center'}}>There is no subtask</p>
         )}
       </Grid>
     </>

@@ -49,7 +49,7 @@ function TaskList() {
         >
           {allTask &&
             allTask.map((task: TaskInterface, index: number) => {
-              return <TaskCard ColorByStatus={getColorByStatus} task={task} key={task._id}/>;
+              return <TaskCard ColorByStatus={getColorByStatus} task={task} taskKey={task._id}/>;
             })}
         </Grid>
       )}

@@ -100,7 +100,7 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
           <div className={`dropdown-content ${classes.dropdownContent}`}>
             <Grid container>
               {loading && (
-                <Grid container>
+                <Grid container item>
                   <Grid
                     item
                     xs={12}

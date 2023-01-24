@@ -33,7 +33,7 @@ export const TaskAdvanceOptions = () => {
     return (
         <div className={classes.outerWrapper}>
 
-            <Grid xs={12} md={12}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <TextField
                         id="date"
@@ -48,7 +48,7 @@ export const TaskAdvanceOptions = () => {
                     />
                 </div>
             </Grid>
-            <Grid xs={12} md={12}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <Autocomplete
                         disablePortal
@@ -59,7 +59,7 @@ export const TaskAdvanceOptions = () => {
                     />
                 </div>
             </Grid>
-            <Grid xs={12} md={12}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <Autocomplete
                         disablePortal
@@ -70,7 +70,7 @@ export const TaskAdvanceOptions = () => {
                     />
                 </div>
             </Grid>
-            <Grid xs={12} md={12}>
+            <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <Autocomplete
                         multiple

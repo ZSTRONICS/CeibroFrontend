@@ -85,7 +85,7 @@ function NewTaskMenu(props: any) {
                             />
                 </Grid> */}
       </Grid>
-      <Grid xs={12} md={12}>
+      <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <TextField
             required
@@ -102,7 +102,7 @@ function NewTaskMenu(props: any) {
           />
         </div>
       </Grid>
-      <Grid xs={12} md={12}>
+      <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
             disablePortal
@@ -124,7 +124,7 @@ function NewTaskMenu(props: any) {
           />
         </div>
       </Grid>
-      <Grid xs={12} md={12}>
+      <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
             multiple
@@ -168,7 +168,7 @@ function NewTaskMenu(props: any) {
           />
         </div>
       </Grid>
-      <Grid xs={12} md={12}>
+      <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
             multiple
@@ -195,7 +195,7 @@ function NewTaskMenu(props: any) {
           />
         </div>
       </Grid>
-      <Grid xs={12} md={12} className={classes.titleWrapper}>
+      <Grid item xs={12} md={12} className={classes.titleWrapper}>
         <TextField
           fullWidth
           id="outlined-multiline-static"
