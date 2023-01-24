@@ -34,12 +34,9 @@ export default CreateTaskBody;
 
 const useStyles = makeStyles({
   statusWraper: {
-    overflowX: "scroll",
+    overflowX: "auto",
   },
   body: {
-    padding: 20,
-    overflow: "scroll",
-    height: "calc(100vh - 80px)",
     background: "#F5F7F8",
   },
   subtaskWrapper: {

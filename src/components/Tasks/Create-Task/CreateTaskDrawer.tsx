@@ -73,7 +73,7 @@ const useStyles = makeStyles({
   },
   statusWrapper: {
     "@media(max-width:1024px)": {
-      overflowX: 'scroll',
+      overflowX: 'auto',
     }
   },
   outerWrapper: {
