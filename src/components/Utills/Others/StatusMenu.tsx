@@ -1,11 +1,5 @@
-import { Badge, Button, makeStyles, Typography } from "@material-ui/core";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import projectActions, {
-  getProjectsWithPagination,
-  getStatus
-} from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { Badge, makeStyles, Typography } from "@material-ui/core";
+import { useState } from "react";
 import colors from "../../../assets/colors";
 import {
   getColorByStatus
@@ -15,27 +9,22 @@ import { getStyleClass } from "../../../config/styles.config";
 
 export const StatusMenu = (props: any) => {
   const { options } = props;
-  const [subTask, setSubTask]: any = useState(false)
-  const { getStatuses, drawerOpen } = useSelector(
-    (state: RootState) => state.project
-  );
 
   const classes = useStyles();
-  const dispatch = useDispatch();
 
   const [filter, setFilter] = useState<string>("All");
-  useEffect(() => {
-    if (filter) {
-      dispatch(projectActions.setSelectedStatus(filter));
-      dispatch(getProjectsWithPagination());
-    }
-  }, [filter]);
+  // useEffect(() => {
+  //   if (filter) {
+  //     dispatch(projectActions.setSelectedStatus(filter));
+  //     dispatch(getProjectsWithPagination());
+  //   }
+  // }, [filter]);
 
-  useEffect(() => {
-    if (!drawerOpen) {
-      dispatch(getStatus());
-    }
-  }, [drawerOpen]);
+  // useEffect(() => {
+  //   if (!drawerOpen) {
+  //     dispatch(getStatus());
+  //   }
+  // }, [drawerOpen]);
 
 
   return (

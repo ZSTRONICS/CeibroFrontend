@@ -33,7 +33,6 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
-  console.log("NEW TASK => ", task);
   
   const dueDate = task.dueDate.replaceAll('-', '.')
   const classes = useStyles();
