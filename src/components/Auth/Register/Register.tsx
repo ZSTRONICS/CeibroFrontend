@@ -31,7 +31,7 @@ const Register = () => {
       <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
         <CBox className={"logoTitleWrapper"}>
           <RegisterForm />
-          <Grid container className={classes.langContainer} justifyContent="space-between">
+          <Grid container item className={classes.langContainer} justifyContent="space-between">
             <Grid item>
               <Typography className={classes.dontHave}>
                 {t('auth.Already_have_an_account')}{" "}

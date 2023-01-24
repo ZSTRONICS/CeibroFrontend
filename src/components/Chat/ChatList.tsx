@@ -112,7 +112,7 @@ const ChatList = () => {
               return null;
             }
           } catch (e: any) {
-            console.log("Erros is ", e);
+            console.error("Erros is ", e);
           }
         })}
     </Grid>

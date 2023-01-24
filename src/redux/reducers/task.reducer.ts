@@ -57,7 +57,6 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
     switch (action.type) {
 
         case requestSuccess(CREATE_TASK):
-            console.log(action.payload);
             return {
                 ...state,
             }
@@ -67,7 +66,6 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             };
         }
         case requestFail(CREATE_TASK): {
-            console.log(action.payload);
             return {
                 ...state,
             };

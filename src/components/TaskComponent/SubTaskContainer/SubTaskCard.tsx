@@ -20,7 +20,7 @@ interface Props{
   subTaskDetail:SubtaskInterface
 }
 
-function SubTask({subTaskDetail}: Props) {
+function SubTaskCard({subTaskDetail}: Props) {
   const {_id, dueDate, assignedTo,state,title, description} = subTaskDetail
   const classes = useStyles()
 const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
@@ -127,7 +127,7 @@ const AssignedToList = ()=>{
   );
 }
 
-export default SubTask;
+export default SubTaskCard;
 
 const useStyles = makeStyles((theme) => ({
   cardContainer: {
