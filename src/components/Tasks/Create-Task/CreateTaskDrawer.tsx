@@ -58,6 +58,7 @@ const useStyles = makeStyles({
   bodyWrapper: {
     maxWidth: '878px',
     width: '100%',
+    backgroundColor:colors.lightGrey,
     "@media(max-width:769)": {
       maxWidth: '767px',
       width: '100%',
@@ -78,7 +79,7 @@ const useStyles = makeStyles({
   },
   outerWrapper: {
     width: 'calc(100vw - 200px)',
-    backgroundColor: colors.lightGrey,
+    backgroundColor: '#fff',
     height: '100vh',
     '@media (max-width:960px)': {
       width: '100vw'

@@ -17,6 +17,7 @@ export const colorsByStatus: ColorCodes = {
   submitted: colors.aquaGreen,
   rejected: colors.btnRed,
   done: colors.mediumGrey,
+  assigned:colors.primary,
 };
 
 const textColorsByStatus: ColorCodes = {

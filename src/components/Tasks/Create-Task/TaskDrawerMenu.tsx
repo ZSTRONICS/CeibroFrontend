@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Divider, IconButton, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
 import UploadImage from "components/uploadImage/UploadImage";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { UserInfo } from "constants/interfaces/subtask.interface";
 import { RootState } from "redux/reducers";
 import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
+import {getColorByStatus } from "config/project.config";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -85,10 +85,10 @@ function TaskDrawerMenu({ taskMenue }: Props) {
     <>
       <Grid container className={classes.outerWrapper}>
         <CBox display="flex" alignItems="center" mt={1}>
-          <CBox className={classes.type}>{state}</CBox>
+           <CBox sx={{  background: `${getColorByStatus(state)}`,fontWeight:'500', }} className={classes.subtaskState}>{state}</CBox> 
           <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
             {dueDate}
-          </CBox>
+          </CBox> 
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
@@ -433,6 +433,11 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 export default TaskDrawerMenu;
 
 const useStyles = makeStyles({
+  subtaskState:{
+    fontSize: '10px',
+    borderRadius: '3px', 
+    padding:'2px 5px',
+  },
   outerWrapper: {
     padding: "10px 10px",
     // background: colors.white,

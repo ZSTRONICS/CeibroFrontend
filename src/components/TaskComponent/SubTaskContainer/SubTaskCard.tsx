@@ -14,7 +14,7 @@ import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
 
 
-import moment from "moment-timezone";
+// import moment from "moment-timezone";
 import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
 interface Props{
   subTaskDetail:SubtaskInterface
@@ -24,7 +24,8 @@ function SubTaskCard({subTaskDetail}: Props) {
   const {_id, dueDate, assignedTo,state,title, description} = subTaskDetail
   const classes = useStyles()
 const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
-const subTaskDate =  moment.utc(moment(dueDate)).format('DD.MM.YYYY');
+// const subTaskDate =  moment(moment(dueDate)).format('DD.MM.YYYY');
+const subTaskDate = dueDate.replaceAll('-', '.')
 const bgcolor =  getColorByStatus(state)
 
 const AssignedToList = ()=>{
@@ -44,7 +45,7 @@ const AssignedToList = ()=>{
       <>
         <CustomStack gap={1.25}>
           <TaskStatus sx={{ background: `${bgcolor}`, color: 'white',fontWeight: '500', fontSize: '10px' }}>{state}</TaskStatus>
-          <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
+         <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {subTaskDate}
           </Typography>
         </CustomStack>
@@ -111,9 +112,9 @@ const AssignedToList = ()=>{
         </Grid>
         <Grid item width='100%'>
           <TaskTitle>{title}</TaskTitle>
-          <TaskDescription>
+          {description&&<TaskDescription>
            {description}
-          </TaskDescription>
+          </TaskDescription>}
         </Grid>
         <Grid item container>
           <CBox display='flex' justifyContent='flex-end' width='100%'>
