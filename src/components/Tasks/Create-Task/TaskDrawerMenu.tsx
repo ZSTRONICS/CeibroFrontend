@@ -437,6 +437,8 @@ const useStyles = makeStyles({
     fontSize: '10px',
     borderRadius: '3px', 
     padding:'2px 5px',
+    textTransform:'capitalize',
+    color:'white'
   },
   outerWrapper: {
     padding: "10px 10px",

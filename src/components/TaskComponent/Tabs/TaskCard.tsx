@@ -180,7 +180,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
           </Box>
         </CustomStack>
         <Box pt={2.5}>
-          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600" }}>
+          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600",textTransform:'capitalize' }}>
             {/* project title */}
             {task.title}
           </AssignedTag>

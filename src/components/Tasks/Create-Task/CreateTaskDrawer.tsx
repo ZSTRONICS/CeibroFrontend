@@ -26,7 +26,7 @@ const CreateTaskDrawer = () => {
   return (
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>
-        <DrawerHeader title='New Task' handleClose={handleClose} />
+        <DrawerHeader title={subTaskOfTask?.task?.title} handleClose={handleClose} />
         <Grid container>
 
           <Grid item md={3.5} sx={{ background: 'white' }}>
