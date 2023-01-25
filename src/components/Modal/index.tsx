@@ -40,13 +40,13 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
             <Grid item>
               <Typography variant="h6">{title}</Typography>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Button onClick={handleClose} variant='outlined'>Close</Button>
 
-            </Grid>
+            </Grid> */}
           </Grid>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent >
           <DialogContentText>{children}</DialogContentText>
         </DialogContent>
         <DialogActions>

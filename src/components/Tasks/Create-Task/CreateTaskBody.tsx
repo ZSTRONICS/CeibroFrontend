@@ -40,6 +40,7 @@ const useStyles = makeStyles({
     background: "#F5F7F8",
   },
   subtaskWrapper: {
+    marginBottom:'16px',
     "@media (max-width:854)": {
       maxWidth: "319px",
       width: "100%",

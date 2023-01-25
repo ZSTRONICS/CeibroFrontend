@@ -193,9 +193,9 @@ export default function CreateSubTask({
               <CustomizedSwitch label="Comment" edge="start" />
             </CBox>
             <CBox display="flex" alignItems="center">
-              <IconButton onClick={() => setImageAttach(true)}>
+              {/* <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
-              </IconButton>
+              </IconButton> */}
               {/* &nbsp;
                             &nbsp; */}
               {/* <MediaIcon /> */}

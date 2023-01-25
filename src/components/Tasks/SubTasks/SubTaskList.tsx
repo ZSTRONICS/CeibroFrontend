@@ -11,7 +11,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   return (
     <>
       {results.length > 0 ? (
-        <CBox style={{ maxHeight: 'calc(100vh - 295px)', height: '100%', overflow: 'auto', width: '100%' }}>
+        <CBox style={{ maxHeight: 'calc(100vh - 307px)', height: '100%', overflow: 'auto', width: '100%' }}>
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               return (

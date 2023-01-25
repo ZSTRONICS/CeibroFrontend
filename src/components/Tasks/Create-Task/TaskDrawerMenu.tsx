@@ -93,7 +93,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   if(assignToOpt){
     dispatch({
       type:TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload:assignToOpt
+      payload:[...assignToOpt,...adminListOpt]
     })
   }
 
@@ -325,26 +325,26 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-          <CBox
+        {/*  <CBox
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
             width="100%"
             borderTop="1px solid #DBDBE5"
             px={1.8}
-          >
-            <CBox display="flex" alignItems="center">
+           >
+              <CBox display="flex" alignItems="center">
               <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
               </IconButton>
-              {/* &nbsp;
+             &nbsp;
                             &nbsp; */}
               {/* <MediaIcon /> */}
               {/* &nbsp;
                             &nbsp; */}
-              {/* <NotificationIcon /> */}
-            </CBox>
-          </CBox>
+              {/* <NotificationIcon />
+            </CBox> 
+          </CBox>*/}
         </Grid>
         <Divider />
         <Grid item xs={12} md={12}>
