@@ -74,6 +74,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
+                        filterSelectedOptions
                             disablePortal
                             id="combo-box-demo"
                             size="small"
@@ -91,6 +92,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
+                        filterSelectedOptions
                             disablePortal
                             id="combo-box-demo"
                             size="small"
