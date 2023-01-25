@@ -8,13 +8,72 @@ import { CBox } from 'components/material-ui';
 import CButton from 'components/Button/Button';
 import CustomModal from 'components/Modal';
 import CreateSubTask from '../SubTasks/CreateSubTask';
+import { Form, Formik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'redux/reducers';
+import { AssignedTo } from 'constants/interfaces/subtask.interface';
+import { createSubTask, getAllSubTaskList } from 'redux/action/task.action';
+import { toast } from 'react-toastify';
+import { TASK_CONFIG } from 'config/task.config';
 
 
 function SubTaskStatusDrawer() {
   const classes = useStyles()
+  const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
+  const { user } = useSelector((store: RootState) => store?.auth);
+  const { selectedTaskId } = useSelector((store: RootState) => store?.task);
 
-  const subMenu = 'subTask'
+  const handleSubmit = (values: any) => {
+    const  {dueDate, title,taskId,assignedTo,creator, state, description } = values;
+    const payload = {dueDate, taskId,title,assignedTo,creator, state, description };
+    dispatch(
+      createSubTask({
+        body: payload,
+        success: (res) => {
+          
+          if(res?.status >= 400) {
+            toast.error("Failed to create subtask", res?.message);
+          }
+          else if (res?.status === 201) {
+            setSubTask(false)
+          }
+        },
+        finallyAction: () => {
+          dispatch(getAllSubTaskList());
+        },
+        showErrorToast: true,
+        onFailAction: (err) => {
+          toast.error("Failed to create subtask", err);
+        },
+      })
+    );
+  };
+
+  const AddSubtask=()=>{
+    return(
+      <Formik
+          initialValues={{
+            dueDate: "",
+            title: "",
+            taskId: String(selectedTaskId),
+            assignedTo: [],
+            creator: user?._id,
+            doneImageRequired: false,
+            doneCommentsRequired: false,
+            description: "",
+            state: "draft",
+          }}
+          onSubmit={handleSubmit}
+        >
+          {({ errors, touched, values, setFieldValue }) => (
+            <Form>
+            <CreateSubTask setSubTask={setSubTask} setFieldValue={setFieldValue}  values={values}/>
+            </Form>
+          )}
+        </Formik>
+    )
+  }
   return (<>
     <div className={classes.drawerStatusContainer}>
       <Paper className={classes.statusWrapper} sx={{ display: 'flex', '&.MuiPaper-root': { padding: '7px 0 7px 5px' } }} elevation={0} variant='outlined' >
@@ -47,7 +106,7 @@ function SubTaskStatusDrawer() {
 
 
     </Grid>
-    <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<CreateSubTask setSubTask={setSubTask} />} />
+    <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
 
   </>
   )

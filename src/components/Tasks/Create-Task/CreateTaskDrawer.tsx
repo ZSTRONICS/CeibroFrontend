@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@mui/material';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
 import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTasks.interface';
-import { State } from 'constants/interfaces/task.interface';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
 import colors from '../../../assets/colors';
@@ -27,19 +26,13 @@ const CreateTaskDrawer = () => {
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>
         <DrawerHeader title={subTaskOfTask?.task?.title} handleClose={handleClose} />
-        <Grid container>
+        <Grid container sx={{ height: '100vh' }}>
 
           <Grid item md={3.5} sx={{ background: 'white' }}>
-            <TaskDrawerMenu taskMenue = {subTaskOfTask.task}/>
+            <TaskDrawerMenu taskMenue = {subTaskOfTask?.task}/>
           </Grid>
-
-          {/* <Grid item> */}
-          {/* </Grid> */}
-          {/* <div>
-                        <SubTaskStatusDrawer/>
-                    </div>  */}
           <Grid item md={8.5} className={classes.bodyWrapper} >
-            <CreateTaskBody subtasks={subTaskOfTask.subtasks} task={subTaskOfTask.task} />
+            <CreateTaskBody subtasks={subTaskOfTask?.subtasks} task={subTaskOfTask?.task} />
           </Grid>
 
         </Grid>
@@ -81,6 +74,7 @@ const useStyles = makeStyles({
     width: 'calc(100vw - 200px)',
     backgroundColor: '#fff',
     height: '100vh',
+    overflow: 'hidden',
     '@media (max-width:960px)': {
       width: '100vw'
     }

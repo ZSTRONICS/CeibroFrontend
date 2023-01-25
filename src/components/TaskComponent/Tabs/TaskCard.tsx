@@ -24,7 +24,8 @@ import taskActions, {
 import { useDispatch } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
-import { SET_SELECTED_TASK } from "config/task.config";
+import { TASK_CONFIG } from "config/task.config";
+
 
 interface Props {
   task: TaskInterface;
@@ -40,8 +41,12 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
 
   const handleCard = () => {
     dispatch({
-      type: SET_SELECTED_TASK,
+      type: TASK_CONFIG.SET_SELECTED_TASK,
       payload: task,
+    });
+    dispatch({
+      type: TASK_CONFIG.SELECTED_TASK_ID,
+      payload: task._id,
     });
 
     dispatch(taskActions.openTaskDrawer());

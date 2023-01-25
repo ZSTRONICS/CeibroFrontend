@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Divider, IconButton, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
-import {  useSelector } from "react-redux";
+import {  useSelector, useDispatch} from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
@@ -15,14 +15,19 @@ import {
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
 import {getColorByStatus } from "config/project.config";
-
+import { TASK_CONFIG } from "config/task.config";
+import { Redirect } from "react-router-dom";
 interface Props {
   taskMenue: TaskInterface;
 }
 
 function TaskDrawerMenu({ taskMenue }: Props) {
+ 
+
   const classes = useStyles();
+  const dispatch=useDispatch()
   const [imageAttach, setImageAttach]: any = useState(false);
+
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
@@ -59,6 +64,12 @@ function TaskDrawerMenu({ taskMenue }: Props) {
     setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
     setDoOnce(false)
   }
+  if(assignToList){
+    dispatch({
+      type:TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS,
+      payload:assignToList
+    })
+  }
 
   const handleProjectChange = (project: any) => {
     // props.setFieldValue("admins", [fixedOptions[0].id]);
@@ -76,10 +87,18 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         projectWithMembers
       );
       const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+     
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }
   };
+
+  if(assignToOpt){
+    dispatch({
+      type:TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
+      payload:assignToOpt
+    })
+  }
 
   return (
     <>

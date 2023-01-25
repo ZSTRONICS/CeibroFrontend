@@ -52,6 +52,7 @@ import {
 // axios
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
+import { TASK_CONFIG } from "config/task.config";
 
 interface MyApp { }
 
@@ -188,6 +189,9 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const payload = dataRcvd.data
+        if(eventType==='SUB_TASK_CREATED'){
+          console.log('GET_ALL_SUBTASK_OF_TASK',payload)
+        }
         console.log(eventType, payload);
         
       });

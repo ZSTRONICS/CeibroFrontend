@@ -31,7 +31,7 @@ import { RootState } from "../../../redux/reducers";
 import NewTaskMenu from "./NewTaskMenu";
 import CButton from "components/Button/Button";
 import { toast } from "react-toastify";
-import { SET_SELECTED_TASK } from "config/task.config";
+import { TASK_CONFIG } from "config/task.config";
 
 export const TaskModal = () => {
   const classes = useStyles();
@@ -63,7 +63,7 @@ export const TaskModal = () => {
             const newTaskData = res?.data?.newTask;
             if (newTaskData) {
               dispatch({
-                type: SET_SELECTED_TASK,
+                type: TASK_CONFIG.SET_SELECTED_TASK,
                 payload: newTaskData,
               });
 

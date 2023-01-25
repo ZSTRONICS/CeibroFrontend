@@ -24,3 +24,9 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
     };
   });
 };
+
+
+// get unique array of object 
+export const getUniqueObjectsFromArr =(arr:any[])=>{
+  return arr.filter((obj, i, self) => self.findIndex(t => JSON.stringify(t) === JSON.stringify(obj)) === i);
+}

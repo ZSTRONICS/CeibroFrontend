@@ -62,6 +62,14 @@ export default TaskList;
 
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
+    maxHeight: 'calc(100vh - 256px)',
+    overflow: 'auto',
+    height: '100%',
+    paddingBottom: 20,
+    [theme.breakpoints.down('sm')]: {
+      maxHeight: 'calc(100vh - 356px)',
+    },
+    
     [theme.breakpoints.down(1024)]: {
       justifyContent: "center",
     },

@@ -8,7 +8,6 @@ import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
-import moment from "moment";
 import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
 
 
