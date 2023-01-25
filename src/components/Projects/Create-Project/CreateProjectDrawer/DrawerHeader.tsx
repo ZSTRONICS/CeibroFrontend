@@ -46,6 +46,7 @@ const useStyles = makeStyles({
     borderBottom: '1px solid #dbdbe5',
   },
   headerTitle: {
+    textTransform:'capitalize',
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,

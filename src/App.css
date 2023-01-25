@@ -10,7 +10,7 @@
   --aqua-green: #55bcb3;
   --purple-grey: #DBDBE5;
   --white: white;
-  --dark-gray: #7D7E80;
+  --dark-gray:#B6B7B8;
   --diva-violet: #5572BC;
 }
 
@@ -309,9 +309,9 @@ button[disabled]{
   font-size: 10px !important;
   font-weight: bold !important;
   color: white !important;
-  padding: 6px !important;
+  /* padding: 6px !important;
   height: 16px !important;
-  min-width: 14px !important;
+  min-width: 14px !important; */
 }
 
 .MuiInputBase-input {
@@ -387,6 +387,14 @@ button[disabled]{
   display: -webkit-box;
   -webkit-line-clamp: 1;
           line-clamp: 1; 
+  -webkit-box-orient: vertical;
+}
+.textOverflowDescription{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+          line-clamp: 3; 
   -webkit-box-orient: vertical;
 }
 

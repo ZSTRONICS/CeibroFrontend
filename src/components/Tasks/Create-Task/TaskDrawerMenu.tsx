@@ -2,26 +2,28 @@ import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Divider, IconButton, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector, useDispatch} from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
 import UploadImage from "components/uploadImage/UploadImage";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { UserInfo } from "constants/interfaces/subtask.interface";
 import { RootState } from "redux/reducers";
 import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
-
+import {getColorByStatus } from "config/project.config";
+import { TASK_CONFIG } from "config/task.config";
+import { Redirect } from "react-router-dom";
 interface Props {
   taskMenue: TaskInterface;
 }
 
 function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
+  const dispatch=useDispatch()
   const [imageAttach, setImageAttach]: any = useState(false);
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
@@ -59,6 +61,12 @@ function TaskDrawerMenu({ taskMenue }: Props) {
     setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
     setDoOnce(false)
   }
+  if(assignToList){
+    dispatch({
+      type:TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS,
+      payload:assignToList
+    })
+  }
 
   const handleProjectChange = (project: any) => {
     // props.setFieldValue("admins", [fixedOptions[0].id]);
@@ -76,19 +84,27 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         projectWithMembers
       );
       const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+     
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }
   };
 
+  if(assignToOpt){
+    dispatch({
+      type:TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
+      payload:[...assignToOpt,...adminListOpt]
+    })
+  }
+
   return (
     <>
       <Grid container className={classes.outerWrapper}>
         <CBox display="flex" alignItems="center" mt={1}>
-          <CBox className={classes.type}>{state}</CBox>
+           <CBox sx={{  background: `${getColorByStatus(state)}`,fontWeight:'500', }} className={classes.subtaskState}>{state}</CBox> 
           <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
             {dueDate}
-          </CBox>
+          </CBox> 
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
@@ -309,26 +325,26 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-          <CBox
+        {/*  <CBox
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
             width="100%"
             borderTop="1px solid #DBDBE5"
             px={1.8}
-          >
-            <CBox display="flex" alignItems="center">
+           >
+              <CBox display="flex" alignItems="center">
               <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
               </IconButton>
-              {/* &nbsp;
+             &nbsp;
                             &nbsp; */}
               {/* <MediaIcon /> */}
               {/* &nbsp;
                             &nbsp; */}
-              {/* <NotificationIcon /> */}
-            </CBox>
-          </CBox>
+              {/* <NotificationIcon />
+            </CBox> 
+          </CBox>*/}
         </Grid>
         <Divider />
         <Grid item xs={12} md={12}>
@@ -433,8 +449,15 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 export default TaskDrawerMenu;
 
 const useStyles = makeStyles({
+  subtaskState:{
+    fontSize: '10px',
+    borderRadius: '3px', 
+    padding:'2px 5px',
+    textTransform:'capitalize',
+    color:'white'
+  },
   outerWrapper: {
-    padding: "10px 10px",
+    padding: "10px 23px",
     // background: colors.white,
   },
 

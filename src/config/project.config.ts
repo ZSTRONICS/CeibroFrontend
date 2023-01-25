@@ -13,10 +13,11 @@ export const colorsByStatus: ColorCodes = {
   active: colors.darkYellow,
   approved: colors.primary,
   completed: colors.mediumGrey,
-  draft: colors.lightBlack,
+  draft: colors.draft,
   submitted: colors.aquaGreen,
   rejected: colors.btnRed,
   done: colors.mediumGrey,
+  assigned:colors.primary,
 };
 
 const textColorsByStatus: ColorCodes = {
@@ -27,7 +28,10 @@ const textColorsByStatus: ColorCodes = {
   draft: colors.white,
   submitted: colors.white,
   rejected: colors.white,
-  done: colors.white,
+  done: colors.mediumGrey,
+  new: colors.new,
+  active: colors.darkYellow,
+
 };
 
 export function getColorByStatus(status: string): string {

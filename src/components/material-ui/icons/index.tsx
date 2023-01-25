@@ -12,4 +12,6 @@ export { MesageIcon } from './mesage/Mesage'
 export { NotificationIcon } from './notification/Notification'
 export { EditIcon } from './edit/Edit'
 export { DeleteIcon } from './delete/Delete'
+export { EyeIcon } from './eye/Eye'
+export { SendIcon } from './send/Send'
 
