@@ -14,8 +14,13 @@ import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
 
 
-// import moment from "moment-timezone";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
 import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
+import moment from "moment-timezone";
+import { useDispatch } from "react-redux";
+import taskActions from "redux/action/task.action";
 interface Props{
   subTaskDetail:SubtaskInterface
 }
@@ -27,6 +32,36 @@ const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
 // const subTaskDate =  moment(moment(dueDate)).format('DD.MM.YYYY');
 const subTaskDate = dueDate.replaceAll('-', '.')
 const bgcolor =  getColorByStatus(state)
+ const dispatch = useDispatch();
+
+  const handleDetailOpen = () => {
+    //dispatch(taskActions.openTaskDetailDrawer())
+  }
+  const options = [
+    'None',
+    'Atria',
+    'Callisto',
+    'Dione',
+    'Ganymede',
+    'Hangouts Call',
+    'Luna',
+    'Oberon',
+    'Phobos',
+    'Pyxis',
+    'Sedna',
+    'Titania',
+    'Triton',
+    'Umbriel',
+  ];
+  const ITEM_HEIGHT = 48;
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
 const AssignedToList = ()=>{
   return (<>
@@ -55,7 +90,7 @@ const AssignedToList = ()=>{
 
   return (
     <>
-      <Grid item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
+      <Grid className={classes.taskDetailContainer} item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id} onClick={handleDetailOpen}>
         <Grid item>{SubHeader()}</Grid>
         <Grid item lg={7}>
           <CustomStack columnGap={0.5}>
@@ -123,7 +158,7 @@ const AssignedToList = ()=>{
           </CBox>
         </Grid>
       </Grid>
-      <Divider sx={{ padding: "10px 0", width: '100%' }} />
+      <Divider sx={{ width: '100%' }} />
     </>
   );
 }
@@ -137,11 +172,18 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: '8px'
     }
   },
+  taskDetailContainer: {
+    padding: 20,
+    '&:hover': {
+      cursor: 'pointer',
+      // backgroundColor: '#D3D4D9'
+    }
+  }
 }));
 
 const TaskTitle = styled(Typography)`
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   color: #000000;
   max-width: 1200px;
   width: 100%;
@@ -153,4 +195,11 @@ const TaskDescription = styled(Typography)`
   color: #605c5c;
   max-width: 1100px;
   width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+    line-clamp: 3; 
+    -webkit-box-orient: vertical;
+  
 `;

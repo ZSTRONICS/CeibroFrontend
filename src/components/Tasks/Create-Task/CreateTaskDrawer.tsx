@@ -29,10 +29,10 @@ const CreateTaskDrawer = () => {
         <Grid container sx={{ height: '100vh' }}>
 
           <Grid item md={3.5} sx={{ background: 'white' }}>
-            <TaskDrawerMenu taskMenue = {subTaskOfTask?.task}/>
+            <TaskDrawerMenu taskMenue={subTaskOfTask.task} />
           </Grid>
           <Grid item md={8.5} className={classes.bodyWrapper} >
-            <CreateTaskBody subtasks={subTaskOfTask?.subtasks} task={subTaskOfTask?.task} />
+            <CreateTaskBody subtasks={subTaskOfTask.subtasks} task={subTaskOfTask.task} />
           </Grid>
 
         </Grid>
@@ -51,7 +51,6 @@ const useStyles = makeStyles({
   bodyWrapper: {
     maxWidth: '878px',
     width: '100%',
-    backgroundColor:colors.lightGrey,
     "@media(max-width:769)": {
       maxWidth: '767px',
       width: '100%',
@@ -72,7 +71,8 @@ const useStyles = makeStyles({
   },
   outerWrapper: {
     width: 'calc(100vw - 200px)',
-    backgroundColor: '#fff',
+    backgroundColor: colors.lightGrey,
+
     height: '100vh',
     overflow: 'hidden',
     '@media (max-width:960px)': {

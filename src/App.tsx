@@ -52,7 +52,7 @@ import {
 // axios
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import { TASK_CONFIG } from "config/task.config";
+import TaskDetailDrawer from "components/Tasks/SubTasks/TaskDetailDrawer";
 
 interface MyApp { }
 
@@ -210,6 +210,7 @@ const App: React.FC<MyApp> = () => {
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
+      <TaskDetailDrawer />
       <RouterConfig />
     </div>
   );

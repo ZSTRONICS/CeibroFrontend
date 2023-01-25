@@ -14,6 +14,7 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
+    taskDetailDrawer:boolean
     subTaskopen: boolean
     selectedTaskId: string
     taskDrawerOpen: boolean
@@ -45,6 +46,7 @@ const intialStatue: TaskReducerInt = {
     dialogOpen: false,
     selectedTaskId: '',
     taskDrawerOpen: false,
+taskDetailDrawer:false,
     selectedTask: {}
 }
 
@@ -163,6 +165,16 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                     ...state,
                     taskAssignedToMembers: action.payload
                 }
+    //    case OPEN_TASK_DETAIL_DRAWER:
+    //         return {
+    //             ...state,
+    //             taskDetailDrawer: true
+    //         }
+    //         case CLOSE_TASK_DETAIL_DRAWER:
+    //             return {
+    //                 ...state,
+    //                 taskDetailDrawer: false
+    //             }
 
         default:
             return state

@@ -52,10 +52,10 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
   },
   content: {
+    height: "100%",
     marginLeft: 200,
     overflowX: "hidden",
     overflowY: "hidden",
-    height: '100%',
     background: colors.lightGrey,
     "@media (max-width:960px)": {
       marginLeft: 0,

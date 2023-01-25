@@ -80,29 +80,21 @@ function SubTaskStatusDrawer() {
         <StatusMenu options={options} />
       </Paper>
     </div>
-    <Grid container gap={2} pl={2.2}>
-      <CBox display='flex' justifyContent='space-between' alignItems='center' width='100%' mr={2.2} mb={2}>
-        <CBox display='flex'>
+    <Grid pl={2.2} pr={1.25} container spacing={{ xs: 1, md: 1 }} >
+      <Grid item sm={5} md={4} lg={5}>
           <DatePicker Datetitle='Date' />
-          &nbsp;
-          &nbsp;
+      </Grid>
+
+      <Grid item sm={5} md={4} lg={5}>
           <SelectDropdown title="Assigned to" />
-        </CBox>
-        <CBox>
+      </Grid>
+      <Grid item sm={2} md={4} lg={2} display='flex' justifyContent='flex-end'>
           <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
 
-        </CBox>
-      </CBox>
-      {/* <Grid item md={2.5}>
-                    <Button
-                            variant="outlined"
-                            color="primary"
-                            startIcon={<ListIcon />}
-                            className={classes.actionButton}
-                        >
-                            Bulk edit
-                        </Button>
-                    </Grid> */}
+      </Grid>
+
+
+
 
 
     </Grid>

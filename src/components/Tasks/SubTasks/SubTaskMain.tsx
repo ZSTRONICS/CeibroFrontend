@@ -56,9 +56,9 @@ const {allSubTaskList} = useSelector((state:RootState)=> state.task)
           <StatusMenu options= {options} />
         </Paper>
       </Grid>
-          <Grid item xs={12}>
-            <SubTaskList results={allSubTaskList}/>
-          </Grid>
+
+          <SubTaskList results={allSubTaskList} />
+
         </Grid>
       </Box>
     </>

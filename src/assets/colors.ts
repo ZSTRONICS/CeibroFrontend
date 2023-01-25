@@ -5,8 +5,7 @@ const colors = {
   lightPurpuple: "rgb(122, 177, 251)",
   secondaryBlue: "rgb(0, 82, 204)",
   lightSkyBlue: "#81bbe3",
-  new: "#81bbe3",
-  
+
   replyYellow: '#F1B740',
   senderBox: '#fffefdba',
   senderBoxBorder: '#F8DCA2',
@@ -46,6 +45,10 @@ const colors = {
 
   darkColor: "rgb(38, 50, 56)",
   green: "#009900",
+
+  new:'#0076C8',
+  draft:'#B6B7B8'
+
 };
 
 export default colors;

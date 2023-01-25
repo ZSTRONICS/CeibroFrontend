@@ -22,12 +22,9 @@ interface Props {
 }
 
 function TaskDrawerMenu({ taskMenue }: Props) {
- 
-
   const classes = useStyles();
   const dispatch=useDispatch()
   const [imageAttach, setImageAttach]: any = useState(false);
-
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
@@ -460,7 +457,7 @@ const useStyles = makeStyles({
     color:'white'
   },
   outerWrapper: {
-    padding: "10px 10px",
+    padding: "10px 23px",
     // background: colors.white,
   },
 

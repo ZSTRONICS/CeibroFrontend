@@ -28,6 +28,17 @@ const taskActions = {
             type: TASK_CONFIG.CLOSE_TASK_DRAWER,
         };
     },
+    // openTaskDetailDrawer: () => {
+    //     return {
+    //         type: OPEN_TASK_DETAIL_DRAWER,
+    //     };
+    // },
+    // closeTaskDetailDrawer: () => {
+    //     return {
+    //         type: CLOSE_TASK_DETAIL_DRAWER,
+    //     };
+    // },
+
 
 }
 

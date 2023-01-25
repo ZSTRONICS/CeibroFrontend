@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 export default function CButton(props: any) {
     return (
         <Fragment>
-            <Button disableRipple={true} {...props} type={props.type} autoFocus variant={props.variant} style={props.styles} className={props.className}>
+            <Button startIcon={props.startIcon} endIcon={props.endIcon} disableRipple={true} {...props} type={props.type} autoFocus variant={props.variant} style={props.styles} className={props.className}>
                 {props.label}
             </Button>
         </Fragment>
@@ -20,4 +20,3 @@ export default function CButton(props: any) {
 //     type: PropTypes,
 //     className:PropTypes.func
 //   }
-  
