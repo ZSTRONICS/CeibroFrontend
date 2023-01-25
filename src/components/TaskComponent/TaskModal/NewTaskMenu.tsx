@@ -126,6 +126,7 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
+          filterSelectedOptions
             multiple
             disablePortal
             disableCloseOnSelect
@@ -170,6 +171,7 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
+          filterSelectedOptions
             multiple
             disablePortal
             disableCloseOnSelect

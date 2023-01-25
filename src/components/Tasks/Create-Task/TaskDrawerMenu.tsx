@@ -84,7 +84,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         projectWithMembers
       );
       const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
-     
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }
@@ -93,7 +92,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   if(assignToOpt){
     dispatch({
       type:TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload:[...assignToOpt,...adminListOpt]
+      payload:[...assignToOpt,...adminListOpt,...adminData]
     })
   }
 
@@ -197,6 +196,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               (item: any) => String(item.id) === String(user._id)
             ) ? (
               <Autocomplete
+              filterSelectedOptions
                 disableCloseOnSelect
                 multiple
                 disablePortal
@@ -244,6 +244,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               />
             ) : (
               <Autocomplete
+              filterSelectedOptions
                 disableCloseOnSelect
                 multiple
                 disablePortal
@@ -270,6 +271,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
             <Autocomplete
+            filterSelectedOptions
               multiple
               disablePortal
               id="combo-box-demo"

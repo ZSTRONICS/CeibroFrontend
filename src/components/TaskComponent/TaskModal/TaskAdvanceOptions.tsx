@@ -62,6 +62,7 @@ export const TaskAdvanceOptions = () => {
             <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <Autocomplete
+                    filterSelectedOptions
                         disablePortal
                         id="combo-box-demo"
                         size="small"
@@ -73,6 +74,7 @@ export const TaskAdvanceOptions = () => {
             <Grid item xs={12} md={12}>
                 <div className={classes.titleWrapper}>
                     <Autocomplete
+                    filterSelectedOptions
                         multiple
                         disablePortal
                         id="combo-box-demo"

@@ -20,13 +20,13 @@ export default function CreateSubTask({
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
   );
-  const [assignToOpt, setAssignToOpt] = useState<any>([]);
+
   const [assignToList, setAssignToList] = useState<any>([
     ...taskAssignedToMembers,
   ]);
   const { user } = useSelector((store: RootState) => store.auth);
 
-  const [imageAttach, setImageAttach]: any = useState(false);
+  // const [imageAttach, setImageAttach]: any = useState(false);
   const { projectMembersOfSelectedTask } = useSelector(
     (store: RootState) => store.task
   );
