@@ -11,12 +11,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 
-export default function CreateSubTask({
-  setSubTask,
-  setFieldValue,
-  values,
-}: any) {
+export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
+
   const classes = useStyles();
+  const [doOnce, setDoOnce] = useState<boolean>(true);
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
   );
@@ -46,13 +44,12 @@ export default function CreateSubTask({
     return assignedList;
   };
 
-
-  const [doOnce, setDoOnce] = useState<boolean>(true);
-
   if (doOnce) {
-    // setFieldValue("assignedTo", assignedListHandler(assignToList));
+    
+    setFieldValue("assignedTo", assignedListHandler(assignToList.map((item:any)=> item.id)));
     setDoOnce(false)
   }
+
   return (
     <div>
       <Grid container className={classes.outerWrapper} rowGap={1}>
@@ -138,17 +135,18 @@ export default function CreateSubTask({
             filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
-            defaultValue={taskAssignedToMembers}
             options={uniqueMembers}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {
               setAssignToList([...newValue]);
               const memberId = newValue.map((item: any) => String(item.id));
+              console.log('assignedListHandler(memberId)',assignedListHandler(memberId))
               setFieldValue("assignedTo", assignedListHandler(memberId));
             }}
             renderInput={(params) => (
               <TextField
+              required
                 {...params}
                 name="assignedTo"
                 label="Assign To"
@@ -157,10 +155,10 @@ export default function CreateSubTask({
             )}
           />
         </Grid>
+
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
-            // label="Multiline"
             placeholder="Enter subtask description"
             multiline
             maxRows={4}
@@ -173,13 +171,7 @@ export default function CreateSubTask({
               setFieldValue("description", e.target.value);
             }}
           />
-          {/* <TextareaAutosize
-                        aria-label="empty textarea"
-                        placeholder="Enter subtask description"
-                        minRows={7}
-                        className={classes.textArea}
-                    // style={{ }}
-                    /> */}
+
           <CBox
             display="flex"
             alignItems="center"
@@ -236,7 +228,7 @@ export default function CreateSubTask({
                 fontWeight: "bold",
                 marginRight: 15,
               }}
-              label={"Create Task"}
+              label={"Create Subtask"}
               onClick={() => {
                 values.state = "assigned";
               }}

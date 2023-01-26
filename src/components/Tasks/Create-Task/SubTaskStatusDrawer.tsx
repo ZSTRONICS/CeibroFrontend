@@ -1,23 +1,26 @@
-import React, {useState} from 'react'
-import { makeStyles } from '@material-ui/core';
-import {  Grid, Paper } from '@mui/material'
-import StatusMenu from 'components/Utills/Others/StatusMenu'
-import DatePicker from 'components/Utills/Inputs/DatePicker';
-import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
-import { CBox } from 'components/material-ui';
-import CButton from 'components/Button/Button';
-import CustomModal from 'components/Modal';
-import CreateSubTask from '../SubTasks/CreateSubTask';
+import { useState } from 'react';
 import { Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
+
+// mui
+import { makeStyles } from '@material-ui/core';
+import { Grid, Paper } from '@mui/material';
+
+// redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
-import { AssignedTo } from 'constants/interfaces/subtask.interface';
 import { createSubTask, getAllSubTaskList } from 'redux/action/task.action';
-import { toast } from 'react-toastify';
-import { TASK_CONFIG } from 'config/task.config';
 
+// components
+import CustomModal from 'components/Modal';
+import CButton from 'components/Button/Button';
+import CreateSubTask from '../SubTasks/CreateSubTask';
+import DatePicker from 'components/Utills/Inputs/DatePicker';
+import StatusMenu from 'components/Utills/Others/StatusMenu';
+import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 
 function SubTaskStatusDrawer() {
+
   const classes = useStyles()
   const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
@@ -36,6 +39,7 @@ function SubTaskStatusDrawer() {
             toast.error("Failed to create subtask", res?.message);
           }
           else if (res?.status === 201) {
+            console.log(res?.data?.newSubtask)
             setSubTask(false)
           }
         },
@@ -80,26 +84,20 @@ function SubTaskStatusDrawer() {
         <StatusMenu options={options} />
       </Paper>
     </div>
-    <Grid pl={2.2} pr={1.25} container spacing={{ xs: 1, md: 1 }} >
-      <Grid item sm={5} md={4} lg={5}>
-          <DatePicker Datetitle='Date' />
-      </Grid>
-
-      <Grid item sm={5} md={4} lg={5}>
-          <SelectDropdown title="Assigned to" />
-      </Grid>
-      <Grid item sm={2} md={4} lg={2} display='flex' justifyContent='flex-end'>
-          <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
-
-      </Grid>
-
-
-
-
-
+    <Grid pl={2.2} pr={1.25} container justifyContent='space-between'gap={1.5}>
+        <Grid item container sm={10}  md={9} gap={2}>
+            <Grid item md={4} >
+                <DatePicker Datetitle='Date' />
+            </Grid>
+            <Grid item md={5} >
+                <SelectDropdown title="Assigned to" />
+            </Grid>
+        </Grid>
+        <Grid item  display='flex' justifyContent='flex-end' pr={1.2}>
+            <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+        </Grid>
     </Grid>
     <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
-
   </>
   )
 }
