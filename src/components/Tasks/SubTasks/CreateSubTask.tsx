@@ -135,7 +135,6 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
             filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
-            // defaultValue={taskAssignedToMembers}
             options={uniqueMembers}
             value={assignToList}
             size="small"
@@ -147,6 +146,7 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
             }}
             renderInput={(params) => (
               <TextField
+              required
                 {...params}
                 name="assignedTo"
                 label="Assign To"

@@ -1,23 +1,26 @@
-import React, {useState} from 'react'
-import { makeStyles } from '@material-ui/core';
-import {  Grid, Paper } from '@mui/material'
-import StatusMenu from 'components/Utills/Others/StatusMenu'
-import DatePicker from 'components/Utills/Inputs/DatePicker';
-import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
-import { CBox } from 'components/material-ui';
-import CButton from 'components/Button/Button';
-import CustomModal from 'components/Modal';
-import CreateSubTask from '../SubTasks/CreateSubTask';
+import { useState } from 'react';
 import { Form, Formik } from 'formik';
+import { toast } from 'react-toastify';
+
+// mui
+import { makeStyles } from '@material-ui/core';
+import { Grid, Paper } from '@mui/material';
+
+// redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
-import { AssignedTo } from 'constants/interfaces/subtask.interface';
 import { createSubTask, getAllSubTaskList } from 'redux/action/task.action';
-import { toast } from 'react-toastify';
-import { TASK_CONFIG } from 'config/task.config';
 
+// components
+import CustomModal from 'components/Modal';
+import CButton from 'components/Button/Button';
+import CreateSubTask from '../SubTasks/CreateSubTask';
+import DatePicker from 'components/Utills/Inputs/DatePicker';
+import StatusMenu from 'components/Utills/Others/StatusMenu';
+import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 
 function SubTaskStatusDrawer() {
+
   const classes = useStyles()
   const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
@@ -36,6 +39,7 @@ function SubTaskStatusDrawer() {
             toast.error("Failed to create subtask", res?.message);
           }
           else if (res?.status === 201) {
+            console.log(res?.data?.newSubtask)
             setSubTask(false)
           }
         },
