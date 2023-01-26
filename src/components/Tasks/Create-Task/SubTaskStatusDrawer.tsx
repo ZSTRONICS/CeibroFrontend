@@ -80,26 +80,20 @@ function SubTaskStatusDrawer() {
         <StatusMenu options={options} />
       </Paper>
     </div>
-    <Grid pl={2.2} pr={1.25} container spacing={{ xs: 1, md: 1 }} >
-      <Grid item sm={5} md={4} lg={5}>
-          <DatePicker Datetitle='Date' />
-      </Grid>
-
-      <Grid item sm={5} md={4} lg={5}>
-          <SelectDropdown title="Assigned to" />
-      </Grid>
-      <Grid item sm={2} md={4} lg={2} display='flex' justifyContent='flex-end'>
-          <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
-
-      </Grid>
-
-
-
-
-
+    <Grid pl={2.2} pr={1.25} container justifyContent='space-between'gap={1.5}>
+        <Grid item container sm={10}  md={9} gap={2}>
+            <Grid item md={4} >
+                <DatePicker Datetitle='Date' />
+            </Grid>
+            <Grid item md={5} >
+                <SelectDropdown title="Assigned to" />
+            </Grid>
+        </Grid>
+        <Grid item  display='flex' justifyContent='flex-end' pr={1.2}>
+            <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+        </Grid>
     </Grid>
     <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
-
   </>
   )
 }
