@@ -11,13 +11,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 
-export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
+export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
 
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const { taskAssignedToMembers } = useSelector(
-    (store: RootState) => store.task
-  );
+  const { taskAssignedToMembers } = useSelector((store: RootState) => store.task);
 
   const [assignToList, setAssignToList] = useState<any>([
     ...taskAssignedToMembers,
@@ -25,7 +23,7 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
   const { user } = useSelector((store: RootState) => store.auth);
 
   // const [imageAttach, setImageAttach]: any = useState(false);
-  const { projectMembersOfSelectedTask } = useSelector(
+  const { projectMembersOfSelectedTask, selectedTaskAdmins } = useSelector(
     (store: RootState) => store.task
   );
   const uniqueMembers = getUniqueObjectsFromArr([
@@ -38,15 +36,15 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
     setAssignToList([]);
   };
 
-  const assignedListHandler = (members:string[]) => {
+  const assignedListHandler = (members: string[]) => {
     const assignedList = [];
     assignedList.push({ addedBy: user._id, members: members });
     return assignedList;
   };
 
   if (doOnce) {
-    
-    setFieldValue("assignedTo", assignedListHandler(assignToList.map((item:any)=> item.id)));
+
+    setFieldValue("assignedTo", assignedListHandler(assignToList.map((item: any) => item.id)));
     setDoOnce(false)
   }
 
@@ -141,12 +139,12 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
             onChange={(e, newValue) => {
               setAssignToList([...newValue]);
               const memberId = newValue.map((item: any) => String(item.id));
-              console.log('assignedListHandler(memberId)',assignedListHandler(memberId))
+              // console.log('assignedListHandler(memberId)', assignedListHandler(memberId))
               setFieldValue("assignedTo", assignedListHandler(memberId));
             }}
             renderInput={(params) => (
               <TextField
-              required
+                // required
                 {...params}
                 name="assignedTo"
                 label="Assign To"
@@ -208,7 +206,8 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
               styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
               label={"Save as draft"}
               onClick={() => {
-                values.state = "draft";
+                values.state.push({ "userId": user._id, "userState": "draft" })
+                values.state = getUniqueObjectsFromArr(values.state)
               }}
             />
           </CBox>
@@ -230,7 +229,29 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
               }}
               label={"Create Subtask"}
               onClick={() => {
-                values.state = "assigned";
+
+                values.state = []
+                let adminState = "assigned"
+                if (values.assignedTo.length > 0) {
+                  let membersList: any[] = []
+                  values.assignedTo[0].members.forEach((member: any) => {
+                    if (member == user._id) {
+                      adminState = "accepted"
+                      values.state.push({ "userId": user._id, "userState": "accepted" })
+                    } else {
+                      values.state.push({ "userId": member, "userState": "assigned" })
+                    }
+                    membersList.push(member)
+                  });
+
+                  selectedTaskAdmins.forEach(admin => {
+                    if (!membersList.includes(String(admin.id))) {
+                      values.state.push({ "userId": admin.id, "userState": adminState })
+                    }
+                  })
+                }
+
+                values.state = getUniqueObjectsFromArr(values.state)
               }}
             />
             <CButton
