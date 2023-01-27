@@ -8,6 +8,16 @@ export enum State {
   Done = "done",
 }
 
+export enum SubtaskState {
+  Assigned = "assigned",
+  Accepted = "accepted",
+  Rejected = "rejected",
+  Draft = "draft",
+  Done = "done",
+  All = "all",
+  Ongoing= "ongoing",
+}
+
 export interface TaskInterface {
   advanceOptions: AdvanceOptions
   isMultiTask: boolean

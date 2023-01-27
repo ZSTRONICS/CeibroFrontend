@@ -46,33 +46,30 @@ export const TaskModal = () => {
   };
 
   const handleSubmit = (values: any) => {
-    const  {dueDate, title,project,admins,assignedTo,creator, state, description } = values;
-    const payload = {dueDate, title,project,admins,assignedTo,creator, state, description };
-    
+    const { dueDate, title, project, admins, assignedTo, creator, state, description } = values;
+    const payload = { dueDate, title, project, admins, assignedTo, creator, state, description };
+
     dispatch(
       createTask({
         body: payload,
         success: (res) => {
           handleClose()
-          if(res?.status >= 400) {
+          if (res?.status >= 400) {
             toast.error("Failed to create task", res?.message);
           }
           else if (res?.status === 201) {
             //New Task Created Successfully
             //Open Task Drawer with latest Task Data
             const newTaskData = res?.data?.newTask;
+
             if (newTaskData) {
               dispatch({
                 type: TASK_CONFIG.SET_SELECTED_TASK,
                 payload: newTaskData,
               });
-
               dispatch(taskActions.openTaskDrawer());
             }
           }
-        },
-        finallyAction: () => {
-          dispatch(getAllTask());
         },
         showErrorToast: true,
         onFailAction: (err) => {

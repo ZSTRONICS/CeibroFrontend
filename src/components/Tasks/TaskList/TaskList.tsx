@@ -20,15 +20,8 @@ import { TaskInterface } from "constants/interfaces/task.interface";
 function TaskList() {
 
   const classes = useStyles();
-  const dispatch = useDispatch();
-  
-  let allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
 
-  useEffect(() => {
-    dispatch(getAllTask());
-    // cleanup effect
-    // return (): void => {}
-  }, []);
+  let allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
 
   return (
     <>
@@ -50,7 +43,7 @@ function TaskList() {
         >
           {allTask &&
             allTask.map((task: TaskInterface, index: number) => {
-              return <TaskCard ColorByStatus={getColorByStatus} task={task} taskKey={task._id}/>;
+              return <TaskCard ColorByStatus={getColorByStatus} task={task} taskKey={task._id} />;
             })}
         </Grid>
       )}
@@ -69,7 +62,7 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       maxHeight: 'calc(100vh - 350px)',
     },
-    
+
     [theme.breakpoints.down(1024)]: {
       justifyContent: "center",
     },

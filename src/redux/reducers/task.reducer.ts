@@ -14,7 +14,7 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
-    taskDetailDrawer:boolean
+    taskDetailDrawer: boolean
     subTaskopen: boolean
     selectedTaskId: string
     taskDrawerOpen: boolean
@@ -22,14 +22,15 @@ interface TaskReducerInt {
     loadingSubTask: boolean
     loadingSubTaskofTask: boolean
     allSubTaskOfTask: AllSubtasksOfTaskResult | any
-    selectedTask: TaskInterface | any
-    projectMembersOfSelectedTask:{label:string,id:string}[]
-    taskAssignedToMembers:{label:string,id:string}[]
+    projectMembersOfSelectedTask: { label: string, id: string }[]
+    selectedTaskAdmins: { label: string, id: string }[]
+    taskAssignedToMembers: { label: string, id: string }[]
 }
 
 const intialStatue: TaskReducerInt = {
-    projectMembersOfSelectedTask:[],
-    taskAssignedToMembers:[],
+    selectedTaskAdmins: [],
+    projectMembersOfSelectedTask: [],
+    taskAssignedToMembers: [],
     allSubTaskOfTask: {},
     allTask: [],
     allSubTaskList: [],
@@ -46,27 +47,48 @@ const intialStatue: TaskReducerInt = {
     dialogOpen: false,
     selectedTaskId: '',
     taskDrawerOpen: false,
-taskDetailDrawer:false,
-    selectedTask: {}
+    taskDetailDrawer: false
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
     switch (action.type) {
 
-        // case requestSuccess(TASK_CONFIG.CREATE_TASK):
-        //     return {
-        //         ...state,
-        //     }
-        // case requestPending(TASK_CONFIG.CREATE_TASK): {
-        //     return {
-        //         ...state,
-        //     };
-        // }
-        // case requestFail(TASK_CONFIG.CREATE_TASK): {
-        //     return {
-        //         ...state,
-        //     };
-        // }
+        case TASK_CONFIG.PUSH_TASK_TO_STORE:
+            return {
+                ...state,
+                allTask: [action.payload, ...state.allTask],
+                allSubTaskOfTask: { task: action.payload, subtasks: [] }
+            }
+
+        case TASK_CONFIG.UPDATE_TASK_IN_STORE:
+            const index = state.allTask.findIndex(task => task._id === action.payload._id)
+            if (index === -1) {
+                state.allTask = [action.payload, ...state.allTask]
+            } else {
+                state.allTask[index] = action.payload
+            }
+            return {
+                ...state,
+            }
+
+        case TASK_CONFIG.PUSH_SUB_TASK_TO_STORE:
+            const taskId = action.payload.taskId
+
+            if (state.allSubTaskOfTask) {
+                const currentTask = state.allSubTaskOfTask.task
+                if (String(currentTask._id) === String(taskId)) {
+                    return {
+                        ...state,
+                        allSubTaskList: [action.payload, ...state.allSubTaskList],
+                        allSubTaskOfTask: { task: currentTask, subtasks: [action.payload, ...state.allSubTaskOfTask.subtasks] }
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                allSubTaskList: [action.payload, ...state.allSubTaskList]
+            }
 
 
         case requestSuccess(TASK_CONFIG.GET_TASK):
@@ -111,8 +133,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case TASK_CONFIG.SET_SELECTED_TASK:
             return {
                 ...state,
-                //selectedTask: action.payload,
-                allSubTaskOfTask:  {task: action.payload, subtasks: []}
+                allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
 
         case TASK_CONFIG.SELECTED_TASK_ID:
@@ -155,26 +176,32 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 allSubTaskOfTask: action.payload.results
             }
-            case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK:
-                return {
-                    ...state,
-                    projectMembersOfSelectedTask: action.payload
-                }
-            case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS:
-                return {
-                    ...state,
-                    taskAssignedToMembers: action.payload
-                }
-    //    case OPEN_TASK_DETAIL_DRAWER:
-    //         return {
-    //             ...state,
-    //             taskDetailDrawer: true
-    //         }
-    //         case CLOSE_TASK_DETAIL_DRAWER:
-    //             return {
-    //                 ...state,
-    //                 taskDetailDrawer: false
-    //             }
+        case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK:
+            return {
+                ...state,
+                projectMembersOfSelectedTask: action.payload
+            }
+
+        case TASK_CONFIG.SELECTED_TASK_ADMINS:
+            return {
+                ...state,
+                selectedTaskAdmins: action.payload
+            }
+        case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS:
+            return {
+                ...state,
+                taskAssignedToMembers: action.payload
+            }
+        //    case OPEN_TASK_DETAIL_DRAWER:
+        //         return {
+        //             ...state,
+        //             taskDetailDrawer: true
+        //         }
+        //         case CLOSE_TASK_DETAIL_DRAWER:
+        //             return {
+        //                 ...state,
+        //                 taskDetailDrawer: false
+        //             }
 
         default:
             return state

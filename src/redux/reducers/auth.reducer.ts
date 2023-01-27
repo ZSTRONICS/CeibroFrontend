@@ -29,27 +29,27 @@ const intialStatue: authInterface = {
 
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
-    case requestPending(LOGIN): {
-      setTimeout(() => {
-        state.loginLoading = false
-      }, 10000 / 2);
-      return {
-        ...state,
-        loginLoading: true,
-      };
-    }
-    case requestFail(LOGIN): {
-      localStorage.clear();
-      sessionStorage.clear();
-      perisitStoreState()
-      setTimeout(() => {
-        state.loginLoading = false
-      }, 10000 / 2);
-      return {
-        ...state,
-        loginLoading: false,
-      };
-    }
+    // case requestPending(LOGIN): {
+    //   setTimeout(() => {
+    //     state.loginLoading = false
+    //   }, 10000 / 2);
+    //   return {
+    //     ...state,
+    //     loginLoading: true,
+    //   };
+    // }
+    // case requestFail(LOGIN): {
+    //   localStorage.clear();
+    //   sessionStorage.clear();
+    //   perisitStoreState()
+    //   setTimeout(() => {
+    //     state.loginLoading = false
+    //   }, 10000 / 2);
+    //   return {
+    //     ...state,
+    //     loginLoading: false,
+    //   };
+    // }
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));

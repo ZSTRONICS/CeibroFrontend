@@ -14,7 +14,7 @@ export interface SubtaskInterface {
   creator: Creator
   dueDate: string
   description: string
-  state: string
+  state: SubtaskState[]
   files: any[]
   createdAt: string
   updatedAt: string
@@ -30,6 +30,12 @@ export interface AdvanceOptions {
   checkList: any[]
 }
 
+export interface SubtaskState {
+  userId: string,
+  _id: string,
+  userState: string
+}
+
 export interface AssignedTo {
   members: Member[]
   _id: string
@@ -37,7 +43,7 @@ export interface AssignedTo {
 }
 
 export interface UserInfo {
-  _id: string
+_id: string
 firstName: string
 surName: string
 profilePic: string

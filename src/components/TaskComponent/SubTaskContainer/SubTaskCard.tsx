@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Grid, Typography, Divider, Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -13,46 +13,28 @@ import { getColorByStatus } from "config/project.config";
 import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
 
-
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
-import moment from "moment-timezone";
-import { useDispatch } from "react-redux";
-import taskActions from "redux/action/task.action";
-interface Props{
-  subTaskDetail:SubtaskInterface
+import { useSelector } from "react-redux";
+import { SubtaskState } from "constants/interfaces/task.interface";
+import { RootState } from "redux/reducers";
+interface Props {
+  subTaskDetail: SubtaskInterface
 }
 
-function SubTaskCard({subTaskDetail}: Props) {
-  const {_id, dueDate, assignedTo,state,title, description} = subTaskDetail
+function SubTaskCard({ subTaskDetail }: Props) {
+  const { user } = useSelector((store: RootState) => store.auth);
+  const { _id, dueDate, assignedTo, title, state, description, creator } = subTaskDetail
   const classes = useStyles()
-const membersList = assignedTo.map((member:AssignedTo)=> member.members).flat(1)
-// const subTaskDate =  moment(moment(dueDate)).format('DD.MM.YYYY');
-const subTaskDate = dueDate.replaceAll('-', '.')
-const bgcolor =  getColorByStatus(state)
- const dispatch = useDispatch();
+  const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
+  const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
+  const myState = state.filter(localState => String(localState.userId) === String(user._id) )[0].userState
+  const subTaskDate = dueDate.replaceAll('-', '.')
+  const bgcolor = getColorByStatus(myState)
 
   const handleDetailOpen = () => {
     //dispatch(taskActions.openTaskDetailDrawer())
   }
-  const options = [
-    'None',
-    'Atria',
-    'Callisto',
-    'Dione',
-    'Ganymede',
-    'Hangouts Call',
-    'Luna',
-    'Oberon',
-    'Phobos',
-    'Pyxis',
-    'Sedna',
-    'Titania',
-    'Triton',
-    'Umbriel',
-  ];
+
   const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -63,24 +45,24 @@ const bgcolor =  getColorByStatus(state)
     setAnchorEl(null);
   };
 
-const AssignedToList = ()=>{
-  return (<>
-     {membersList.map((item:Member)=>{
-      return(
-        <span>
-      {`${item.firstName} ${item.surName },`}
-      </span>
-      )
-     }) }
-    </> )
-}
+  const AssignedToList = () => {
+    return (<>
+      {membersList.map((item: Member) => {
+        return (
+          <span>
+            {`${item.firstName} ${item.surName},`}
+          </span>
+        )
+      })}
+    </>)
+  }
   const SubHeader = () => {
 
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white',fontWeight: '500', fontSize: '10px' }}>{state}</TaskStatus>
-         <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
+          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState}</TaskStatus>
+          <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {subTaskDate}
           </Typography>
         </CustomStack>
@@ -95,17 +77,17 @@ const AssignedToList = ()=>{
         <Grid item lg={7}>
           <CustomStack columnGap={0.5}>
             <LabelTag>Assigned to</LabelTag>
-            {membersList.map((member:Member, i:any)=>{
-              return(<>
-              {i===0 &&<AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>}
+            {membersList.map((member: Member, i: any) => {
+              return (<>
+                {i === 0 && <AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>}
               </>
               )
             })}
-            {membersList.length>1&&<CustomBadge  overlap="circular" color="primary" badgeContent={
-             <Tooltip title={AssignedToList()}>
-                <span>{membersList.length-1}+</span>
-             </Tooltip>
-           }></CustomBadge>}
+            {membersList.length > 1 && <CustomBadge overlap="circular" color="primary" badgeContent={
+              <Tooltip title={AssignedToList()}>
+                <span>{membersList.length - 1}+</span>
+              </Tooltip>
+            }></CustomBadge>}
           </CustomStack>
         </Grid>
         <Grid item>
@@ -147,14 +129,29 @@ const AssignedToList = ()=>{
         </Grid>
         <Grid item width='100%'>
           <TaskTitle>{title}</TaskTitle>
-          {description&&<TaskDescription>
-           {description}
+          {description && <TaskDescription>
+            {description}
           </TaskDescription>}
         </Grid>
         <Grid item container>
           <CBox display='flex' justifyContent='flex-end' width='100%'>
-            <CButton label={'Assign'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
-            <CButton label={'Delete'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+            {assignToMemberIds.includes(user._id) && myState === SubtaskState.Assigned &&
+              <>
+                <CButton label={'Accept'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                <CButton label={'Reject'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+              </>
+            }
+            {myState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
+              <CButton label={'Done'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+            }
+
+            {myState === SubtaskState.Draft && String(creator._id) === String(user._id) &&
+              <>
+                <CButton label={'Assign'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                <CButton label={'Delete'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+              </>
+            }
+
           </CBox>
         </Grid>
       </Grid>

@@ -5,13 +5,14 @@ import { SubtaskInterface } from 'constants/interfaces/subtask.interface'
 import { Box } from "@mui/material";
 import NoData from "components/Chat/NoData";
 import { CBox } from "components/material-ui";
+import { makeStyles } from "@material-ui/core";
 
 const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
-
+  const classes = useStyles();
   return (
     <>
       {results.length > 0 ? (
-        <CBox style={{ maxHeight: 'calc(100vh - 307px)', height: '100%', overflow: 'auto', width: '100%' }}>
+        <CBox className={classes.cardListContainer }>
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               return (
@@ -33,3 +34,28 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
 };
 
 export default SubTaskList;
+
+
+
+const useStyles = makeStyles((theme) => ({
+  cardListContainer: {
+    width: '100%',
+    overflow: 'auto',
+    height: '100%',
+    // [theme.breakpoints.down('lg')]: {
+    //   maxHeight: 'calc(100vh - 350px)',
+    // },
+
+    // [theme.breakpoints.down('md')]: {
+    //   maxHeight: 'calc(100vh - 50vh)'
+    // },
+
+    [theme.breakpoints.between(900, 1024)]: {
+      maxHeight: 'calc(100vh - 40vh)'
+    },
+
+    [theme.breakpoints.down('xl')]: {
+      maxHeight: 'calc(100vh - 23vh)'
+    },
+  }
+}));

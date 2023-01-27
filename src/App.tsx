@@ -12,7 +12,7 @@ import {
   ViewInvitations,
   RouterConfig,
   TaskModal,
-CDrawer,
+  CDrawer,
 } from 'components'
 
 // socket
@@ -37,7 +37,7 @@ import {
   unreadMessagesCount,
   replaceMessagesById,
   unreadRoomMessagesCount,
-} from "redux/action/chat.action"; 
+} from "redux/action/chat.action";
 import {
   ALL_MESSAGE_SEEN,
   CHAT_EVENT_REP_OVER_SOCKET,
@@ -53,6 +53,7 @@ import {
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import TaskDetailDrawer from "components/Tasks/SubTasks/TaskDetailDrawer";
+import { TASK_CONFIG } from "config/task.config";
 
 interface MyApp { }
 
@@ -101,7 +102,7 @@ const App: React.FC<MyApp> = () => {
                   });
                   socket.sendMessageSeen(user._id, selectedChat, data.message._id)
                 } else {
-                  
+
                   socket.getUnreadMsgCount(user._id);
                   //dispatch(getAllChats());
                 }
@@ -115,18 +116,18 @@ const App: React.FC<MyApp> = () => {
                       },
                     })
                   );
-                } 
+                }
                 else {
                   if (String(data.from) === String(user?._id)) {
                     dispatch({
                       type: PUSH_MESSAGE_BY_OTHER,
                       payload: data.message,
                     });
-                  } else{
+                  } else {
                     dispatch({
-                    type: PUSH_MESSAGE,
-                    payload: data.message,
-                  });
+                      type: PUSH_MESSAGE,
+                      payload: data.message,
+                    });
                   }
                 }
               } else {
@@ -137,16 +138,16 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case REFRESH_CHAT:
-              socket.getUnreadMsgCount(user._id);
-              dispatch(getAllChats());
+            socket.getUnreadMsgCount(user._id);
+            dispatch(getAllChats());
             break;
 
           case UNREAD_MESSAGE_COUNT:
-            
-              dispatch(
-                unreadMessagesCount({ other: payload.data })
-              );
-            
+
+            dispatch(
+              unreadMessagesCount({ other: payload.data })
+            );
+
             break;
           // case ROOM_MESSAGE_DATA:
           //   {
@@ -162,14 +163,14 @@ const App: React.FC<MyApp> = () => {
           case ALL_MESSAGE_SEEN:
           case MESSAGE_SEEN:
             {
-              if(payload.updatedMessage.length === 0){
+              if (payload.updatedMessage.length === 0) {
                 return
               }
               const selectedChat = socket.getAppSelectedChat();
               if (payload.roomId === selectedChat) {
-                if (payload.updatedMessage && payload.updatedMessage.length > 0 ) {
+                if (payload.updatedMessage && payload.updatedMessage.length > 0) {
                   const messages = payload.updatedMessage
-                  
+
                   dispatch(
                     replaceMessagesById({
                       other: {
@@ -188,12 +189,54 @@ const App: React.FC<MyApp> = () => {
 
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
-        const payload = dataRcvd.data
-        if(eventType==='SUB_TASK_CREATED'){
-          console.log('GET_ALL_SUBTASK_OF_TASK',payload)
+        const data = dataRcvd.data
+        switch (eventType) {
+          case TASK_CONFIG.TASK_CREATED: {
+            if(!data.access.includes(user._id)){
+              return
+            }
+
+            dispatch({
+              type: TASK_CONFIG.PUSH_TASK_TO_STORE,
+              payload: data,
+            });
+          }
+            break
+
+          case TASK_CONFIG.SUB_TASK_CREATED: {
+            if(!data.access.includes(user._id)){
+              return
+            }
+            dispatch({
+              type: TASK_CONFIG.PUSH_SUB_TASK_TO_STORE,
+              payload: data,
+            });
+          } break
+
+          case TASK_CONFIG.TASK_UPDATE_PUBLIC: {
+
+          } break
+
+          case TASK_CONFIG.TASK_UPDATE_PRIVATE: {
+            if(!data.access.includes(user._id)){
+              return
+            }
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
+              payload: data,
+            });
+          } break
+
+          case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC: {
+
+          } break
+
+          case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE: {
+
+          } break
+
         }
-        console.log(eventType, payload);
-        
+
       });
     }
   }, [isLoggedIn]);
@@ -201,7 +244,7 @@ const App: React.FC<MyApp> = () => {
   return (
     <div className="App">
       {/* component used here for availability of modal on all routes*/}
-      <TaskModal/>
+      <TaskModal />
       <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
       <CreateQuestioniarDrawer />

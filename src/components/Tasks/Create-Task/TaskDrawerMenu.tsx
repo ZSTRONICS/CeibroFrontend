@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
 import { Divider, IconButton, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
-import {  useSelector, useDispatch} from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
 import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
@@ -14,7 +14,7 @@ import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
-import {getColorByStatus } from "config/project.config";
+import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
 import { Redirect } from "react-router-dom";
 interface Props {
@@ -23,7 +23,7 @@ interface Props {
 
 function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
   const [imageAttach, setImageAttach]: any = useState(false);
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
@@ -45,7 +45,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   let fixedOptions: any = [creatorAutoCompleteData];
 
   const [adminsList, setAdminsList] = React.useState<any>([...adminData]);
-  const [adminListOpt, setAdminListOpt] = React.useState<any>([ ...fixedOptions]);
+  const [adminListOpt, setAdminListOpt] = React.useState<any>([...fixedOptions]);
   const [assignToOpt, setAssignToOpt] = React.useState<any>([]);
   const [assignToList, setAssignToList] = React.useState<any>([...assignedToData]);
 
@@ -56,15 +56,15 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       project._id,
       projectWithMembers
     );
-    allMembersOfProject = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+    allMembersOfProject = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
     setAdminListOpt([...fixedOptions, ...allMembersOfProject]);
     setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
     setDoOnce(false)
   }
-  if(assignToList){
+  if (assignToList) {
     dispatch({
-      type:TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS,
-      payload:assignToList
+      type: TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS,
+      payload: assignToList
     })
   }
 
@@ -83,27 +83,36 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         project?.value,
         projectWithMembers
       );
-      const projMembers = getUserFormatedDataForAutoComplete( projectMembersData?.projectMembers);
+      const projMembers = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }
   };
 
-  if(assignToOpt){
+  if (assignToOpt) {
     dispatch({
-      type:TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload:[...assignToOpt,...adminListOpt,...adminData]
+      type: TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
+      payload: [...assignToOpt, ...adminListOpt, ...adminData]
     })
   }
+
+  if (adminsList) {
+    dispatch({
+      type: TASK_CONFIG.SELECTED_TASK_ADMINS,
+      payload: [...adminData]
+    })
+  }
+
+
 
   return (
     <>
       <Grid container className={classes.outerWrapper}>
         <CBox display="flex" alignItems="center" mt={1}>
-           <CBox sx={{  background: `${getColorByStatus(state)}`,fontWeight:'500', }} className={classes.subtaskState}>{state}</CBox> 
+          <CBox sx={{ background: `${getColorByStatus(state)}`, fontWeight: '500', }} className={classes.subtaskState}>{state}</CBox>
           <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
             {dueDate}
-          </CBox> 
+          </CBox>
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
@@ -196,7 +205,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               (item: any) => String(item.id) === String(user._id)
             ) ? (
               <Autocomplete
-              filterSelectedOptions
+                filterSelectedOptions
                 disableCloseOnSelect
                 multiple
                 disablePortal
@@ -207,7 +216,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 size="small"
                 onChange={(event, value) => {
                   // array.forEach(element => {
-                    
+
                   // });
                   // if(adminData.some((item: any) => String(item.id) === String(value.id))){
 
@@ -220,7 +229,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                     ),
                   ];
 
-                  newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                  newValue = newValue.reduce((uniqueArray: any[], element: { label: string, id: string }) => {
                     if (!uniqueArray.find(item => item.id === element.id)) {
                       uniqueArray.push(element);
                     }
@@ -244,7 +253,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               />
             ) : (
               <Autocomplete
-              filterSelectedOptions
+                filterSelectedOptions
                 disableCloseOnSelect
                 multiple
                 disablePortal
@@ -271,7 +280,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
             <Autocomplete
-            filterSelectedOptions
+              filterSelectedOptions
               multiple
               disablePortal
               id="combo-box-demo"
@@ -281,7 +290,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               value={assignToList}
               onChange={(e, newValue) => {
 
-                newValue = newValue.reduce((uniqueArray: any[], element: { label:string, id: string}) => {
+                newValue = newValue.reduce((uniqueArray: any[], element: { label: string, id: string }) => {
                   if (!uniqueArray.find(item => item.id === element.id)) {
                     uniqueArray.push(element);
                   }
@@ -327,7 +336,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-        {/*  <CBox
+          {/*  <CBox
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
@@ -341,10 +350,10 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               </IconButton>
              &nbsp;
                             &nbsp; */}
-              {/* <MediaIcon /> */}
-              {/* &nbsp;
+          {/* <MediaIcon /> */}
+          {/* &nbsp;
                             &nbsp; */}
-              {/* <NotificationIcon />
+          {/* <NotificationIcon />
             </CBox> 
           </CBox>*/}
         </Grid>
@@ -451,12 +460,12 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 export default TaskDrawerMenu;
 
 const useStyles = makeStyles({
-  subtaskState:{
+  subtaskState: {
     fontSize: '10px',
-    borderRadius: '3px', 
-    padding:'2px 5px',
-    textTransform:'capitalize',
-    color:'white'
+    borderRadius: '3px',
+    padding: '2px 5px',
+    textTransform: 'capitalize',
+    color: 'white'
   },
   outerWrapper: {
     padding: "10px 23px",

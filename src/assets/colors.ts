@@ -46,8 +46,14 @@ const colors = {
   darkColor: "rgb(38, 50, 56)",
   green: "#009900",
 
+  assigned: "rgb(0, 118, 200)",
   new:'#0076C8',
-  draft:'#B6B7B8'
+  draft:'#bdc3c7',
+  all: '#B6B7B8',
+  ongoing: '#f1b740',
+  rejected: '#f94340',
+  accepted: '#5572BC',
+  done: "#009900",
 
 };
 

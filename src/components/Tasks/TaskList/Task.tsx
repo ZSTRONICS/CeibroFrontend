@@ -8,7 +8,7 @@ import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
 import TaskMain from "./TaskMain";
 import SubTaskMain from '../SubTasks/SubTaskMain';
 import { useDispatch } from "react-redux";
-import { getAllSubTaskList } from "redux/action/task.action";
+import { getAllSubTaskList, getAllTask } from "redux/action/task.action";
 import { getAllProjectsWithMembers } from "redux/action/project.action";
 
 const Task = () => {
@@ -16,8 +16,9 @@ const Task = () => {
   const dispatch= useDispatch();
 
   useEffect(()=>{
-    dispatch(getAllProjectsWithMembers());
+    dispatch(getAllTask());
     dispatch(getAllSubTaskList());
+    dispatch(getAllProjectsWithMembers());
   },[])
 
   //get all project with members and store in Redux 

@@ -1,11 +1,11 @@
 :root {
-  --primary: rgb(0, 118, 200);
-  --accent: rgb(201, 226, 217);
-  --light-accent: rgb(213, 235, 227, 0.4);
-  --black: rgb(0, 0, 0);
+  --primary: #0076c8;
+  --accent: #c9e2d9;
+  --light-accent: #d5ebe366;
+  --black: #000000;
   --dark-yellow: #f1b740;
   --medium-grey: #bdc3c7;
-  --light-black: rgb(125, 126, 128);
+  --light-black: #7d7e80;
   --btn-red: #f94340;
   --aqua-green: #55bcb3;
   --purple-grey: #DBDBE5;

@@ -19,17 +19,17 @@ import DatePicker from 'components/Utills/Inputs/DatePicker';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 
-function SubTaskStatusDrawer() {
+function SubTaskStatusDrawer(props: any) {
 
   const classes = useStyles()
   const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
   const { user } = useSelector((store: RootState) => store?.auth);
-  const { selectedTaskId } = useSelector((store: RootState) => store?.task);
 
   const handleSubmit = (values: any) => {
     const  {dueDate, title,taskId,assignedTo,creator, state, description } = values;
     const payload = {dueDate, taskId,title,assignedTo,creator, state, description };
+
     dispatch(
       createSubTask({
         body: payload,
@@ -44,7 +44,7 @@ function SubTaskStatusDrawer() {
           }
         },
         finallyAction: () => {
-          dispatch(getAllSubTaskList());
+         // dispatch(getAllSubTaskList());
         },
         showErrorToast: true,
         onFailAction: (err) => {
@@ -60,13 +60,13 @@ function SubTaskStatusDrawer() {
           initialValues={{
             dueDate: "",
             title: "",
-            taskId: String(selectedTaskId),
+            taskId: String(props.task._id),
             assignedTo: [],
             creator: user?._id,
             doneImageRequired: false,
             doneCommentsRequired: false,
             description: "",
-            state: "draft",
+            state: [{"userId": user._id, "userState": "draft"}],
           }}
           onSubmit={handleSubmit}
         >

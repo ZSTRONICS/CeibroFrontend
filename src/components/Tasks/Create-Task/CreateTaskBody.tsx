@@ -16,7 +16,7 @@ const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
   return (
     <>
       <div className={classes.subtaskWrapper}>
-        <SubTaskStatusDrawer />
+        <SubTaskStatusDrawer task={task}/>
       </div>
       <Grid container className={classes.body}>
         {/* <DrawerSubTask/> */}

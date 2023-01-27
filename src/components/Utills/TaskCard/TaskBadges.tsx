@@ -11,7 +11,7 @@ const TaskBadges = () => {
     },
     {
       count: 3,
-      status: "Approvedw",
+      status: "Approved",
     },
     {
       count: 5,

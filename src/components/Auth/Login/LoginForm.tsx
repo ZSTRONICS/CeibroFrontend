@@ -60,7 +60,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { loginLoading } = useSelector((state: RootState) => state.auth);
+  const [showLoading, setShowLoading] = useState(false)
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
       handleSubmit(values);
@@ -68,16 +68,16 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
+      setShowLoading(true)
+      setIncorrectAuth(false);
       const { email, password } = values;
       const payload = {
         body: {
           email,
           password,
         },
-        success: (_res: any) => {
-          toast.success(`${t("auth.loggedin_Successfully")}`);
-        },
         onFailAction: (err: any) => {
+          setShowLoading(false)
           if (err.response.data.code === 401) {
             if ((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)) {
               const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
@@ -105,10 +105,11 @@ const LoginForm: React.FC<Props> = (props) => {
             setIncorrectAuth(false);
             setIncorrectEmail(false)
   
-          }, 10000);
+          }, 5000);
         },
         showErrorToast: true,
       };
+
       dispatch(loginRequest(payload));
   };
 
@@ -339,9 +340,9 @@ const LoginForm: React.FC<Props> = (props) => {
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
-                // disabled={checkValidInputs(values) || loginLoading}
+                // disabled={checkValidInputs(values) || showLoading}
                 >
-                  {loginLoading ? (
+                  {showLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />
                   ) : (
                     t("auth.login")
