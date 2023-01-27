@@ -162,6 +162,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 defaultValue={selectedProjectValue}
                 value={selectedProjectValue}
                 options={[]}
+                getOptionLabel={(option:any)=> option.label}
                 disabled={true}
                 renderInput={(params) => (
                   <TextField
@@ -182,6 +183,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 size="small"
                 defaultValue={{ label: project.title, id: project._id }}
                 options={allProjectsTitles}
+                getOptionLabel={(option:any)=> option.label}
                 onChange={(e, value) => {
                   handleProjectChange(value);
                 }}
@@ -213,6 +215,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 value={adminsList}
                 defaultValue={adminsList}
                 options={adminListOpt}
+                getOptionLabel={(option:any)=> option.label}
                 size="small"
                 onChange={(event, value) => {
                   // array.forEach(element => {
@@ -261,6 +264,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 value={adminData}
                 size="small"
                 options={[]}
+                getOptionLabel={(option:any)=> option.label}
                 disabled={true}
                 renderInput={(params) => (
                   <TextField
@@ -286,6 +290,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               id="combo-box-demo"
               disableCloseOnSelect
               options={assignToOpt}
+              getOptionLabel={(option:any)=> option.label}
               size="small"
               value={assignToList}
               onChange={(e, newValue) => {

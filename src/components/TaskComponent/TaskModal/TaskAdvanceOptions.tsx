@@ -55,6 +55,7 @@ export const TaskAdvanceOptions = () => {
                         id="combo-box-demo"
                         size="small"
                         options={top100Films}
+                        getOptionLabel={(option:any)=> option.label}
                         renderInput={(params) => <TextField {...params} label='Confirm Needed' placeholder='select member(s)' />}
                     />
                 </div>
@@ -67,6 +68,7 @@ export const TaskAdvanceOptions = () => {
                         id="combo-box-demo"
                         size="small"
                         options={top100Films}
+                        getOptionLabel={(option:any)=> option.label}
                         renderInput={(params) => <TextField {...params} label='Category' placeholder='select Categories' />}
                     />
                 </div>

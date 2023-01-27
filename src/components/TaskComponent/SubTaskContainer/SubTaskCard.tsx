@@ -27,9 +27,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const classes = useStyles()
   const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
-  const myState = state.filter(localState => String(localState.userId) === String(user._id) )[0].userState
+  const myState = state.find(localState => String(localState.userId) === String(user._id))
   const subTaskDate = dueDate.replaceAll('-', '.')
-  const bgcolor = getColorByStatus(myState)
+
+  const bgcolor = getColorByStatus(myState?myState.userState:'')
 
   const handleDetailOpen = () => {
     //dispatch(taskActions.openTaskDetailDrawer())
@@ -61,7 +62,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
     return (
       <>
         <CustomStack gap={1.25}>
-          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState}</TaskStatus>
+          <TaskStatus sx={{ background: `${bgcolor}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState?.userState}</TaskStatus>
           <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {subTaskDate}
           </Typography>
@@ -70,8 +71,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
     );
   };
 
-  return (
-    <>
+  return (<>
+   {myState?.userState ?<>
       <Grid className={classes.taskDetailContainer} item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id} onClick={handleDetailOpen}>
         <Grid item>{SubHeader()}</Grid>
         <Grid item lg={7}>
@@ -135,17 +136,17 @@ function SubTaskCard({ subTaskDetail }: Props) {
         </Grid>
         <Grid item container>
           <CBox display='flex' justifyContent='flex-end' width='100%'>
-            {assignToMemberIds.includes(user._id) && myState === SubtaskState.Assigned &&
+            {assignToMemberIds.includes(user._id) && myState?.userState === SubtaskState.Assigned &&
               <>
                 <CButton label={'Accept'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
                 <CButton label={'Reject'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
               </>
             }
-            {myState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
+            {myState?.userState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
               <CButton label={'Done'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
             }
 
-            {myState === SubtaskState.Draft && String(creator._id) === String(user._id) &&
+            {myState?.userState === SubtaskState.Draft && String(creator._id) === String(user._id) &&
               <>
                 <CButton label={'Assign'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
                 <CButton label={'Delete'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
@@ -156,8 +157,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
         </Grid>
       </Grid>
       <Divider sx={{ width: '100%' }} />
-    </>
-  );
+    </>:<></>}
+ </> );
 }
 
 export default SubTaskCard;

@@ -108,6 +108,8 @@ function NewTaskMenu(props: any) {
             id="combo-box-demo1"
             size="small"
             options={allProjectsTitles}
+            getOptionLabel={(option:any)=> option.label}
+            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             onChange={(e, value) => {
               handleProjectChange(value);
             }}
@@ -132,6 +134,8 @@ function NewTaskMenu(props: any) {
             disableCloseOnSelect
             id="combo-box-demo2"
             options={adminListOpt}
+            getOptionLabel={(option:any)=> option.label}
+            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             limitTags={2}
             value={adminsList}
             size="small"
@@ -178,6 +182,8 @@ function NewTaskMenu(props: any) {
             id="combo-box-demo3"
             limitTags={2}
             options={assignToOpt}
+            getOptionLabel={(option:any)=> option.label}
+            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {

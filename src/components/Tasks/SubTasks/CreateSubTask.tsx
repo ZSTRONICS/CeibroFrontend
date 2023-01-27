@@ -134,6 +134,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             id="combo-box-demo3"
             limitTags={2}
             options={uniqueMembers}
+            getOptionLabel={(option:any)=> option.label}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {

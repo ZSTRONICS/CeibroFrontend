@@ -61,6 +61,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                             id="combo-box-demo"
                             size="small"
                             options={projects}
+                            getOptionLabel={(option)=> option.label}
                             // onChange={(e, value) => {
                             //     props.setFieldValue('projects', value !== null ? value : top100Films);
                             // }}
@@ -79,6 +80,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                             id="combo-box-demo"
                             size="small"
                             options={projects}
+                            
                             // onChange={(e, value) => {
                             //     props.setFieldValue('projects', value !== null ? value : top100Films);
                             // }}
