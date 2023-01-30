@@ -25,8 +25,19 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   });
 };
 
-
-// get unique array of object 
+/**
+  * @param array pass the array of objects 
+  * @param return Functino will return the unique objects
+  * **/
 export const getUniqueObjectsFromArr =(arr:any[])=>{
   return arr.filter((obj, i, self) => self.findIndex(t => JSON.stringify(t) === JSON.stringify(obj)) === i);
+}
+
+ /**
+  * @param array the array must have _id
+  * @param itemId must have comparison id string
+  * @param return Functino will return true or false
+  * **/
+export const isTrue =(arr:any[], itemId:string)=>{
+ return arr.some((item:any)=> item._id === itemId)
 }

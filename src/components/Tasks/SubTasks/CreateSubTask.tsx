@@ -1,8 +1,8 @@
-import { Grid, IconButton, TextField } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import { CBox } from "components/material-ui";
-import { AttachmentIcon } from "components/material-ui/icons";
+// import { AttachmentIcon } from "components/material-ui/icons";
 import { useState } from "react";
 import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 
@@ -140,7 +140,6 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             onChange={(e, newValue) => {
               setAssignToList([...newValue]);
               const memberId = newValue.map((item: any) => String(item.id));
-              // console.log('assignedListHandler(memberId)', assignedListHandler(memberId))
               setFieldValue("assignedTo", assignedListHandler(memberId));
             }}
             renderInput={(params) => (
@@ -236,7 +235,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
                 if (values.assignedTo.length > 0) {
                   let membersList: any[] = []
                   values.assignedTo[0].members.forEach((member: any) => {
-                    if (member == user._id) {
+                    if (member === user._id) {
                       adminState = "accepted"
                       values.state.push({ "userId": user._id, "userState": "accepted" })
                     } else {

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Grid, makeStyles } from "@material-ui/core";
-import { Divider, IconButton, TextField } from "@mui/material";
+import { Divider, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { useSelector, useDispatch } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
-import { AttachmentIcon } from "components/material-ui/icons";
+// import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
 import UploadImage from "components/uploadImage/UploadImage";
@@ -12,11 +12,11 @@ import { TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import {
   getSelectedProjectMembers,
+  getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import { Redirect } from "react-router-dom";
 interface Props {
   taskMenue: TaskInterface;
 }
@@ -57,8 +57,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       projectWithMembers
     );
     allMembersOfProject = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
-    setAdminListOpt([...fixedOptions, ...allMembersOfProject]);
-    setAssignToOpt([...fixedOptions, ...allMembersOfProject]);
+    setAdminListOpt(getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject]));
+    setAssignToOpt(getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject]));
     setDoOnce(false)
   }
   if (assignToList) {
@@ -69,23 +69,19 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   }
 
   const handleProjectChange = (project: any) => {
-    // props.setFieldValue("admins", [fixedOptions[0].id]);
     if (project === null) {
-      // props.setFieldValue("project", "");
-      // props.setFieldValue("assignedTo", []);
       setAdminListOpt([]);
       setAdminsList([...fixedOptions]);
       setAssignToList([]);
       setAssignToOpt([]);
     } else {
-      // props.setFieldValue("project", project?.value);
       const projectMembersData = getSelectedProjectMembers(
         project?.value,
         projectWithMembers
       );
       const projMembers = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
-      setAdminListOpt([...fixedOptions, ...projMembers]);
-      setAssignToOpt([...fixedOptions, ...projMembers]);
+      setAdminListOpt(getUniqueObjectsFromArr([...fixedOptions, ...projMembers]));
+      setAssignToOpt(getUniqueObjectsFromArr([...fixedOptions, ...projMembers]));
     }
   };
 
@@ -102,8 +98,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       payload: [...adminData]
     })
   }
-
-
 
   return (
     <>
@@ -218,13 +212,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 getOptionLabel={(option:any)=> option.label}
                 size="small"
                 onChange={(event, value) => {
-                  // array.forEach(element => {
-
-                  // });
-                  // if(adminData.some((item: any) => String(item.id) === String(value.id))){
-
-                  // }
-
                   let newValue: any = [
                     ...fixedOptions,
                     ...value.filter(
@@ -303,8 +290,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 }, []);
 
                 setAssignToList([...newValue]);
-                // const assign2 = newValue.map((value: any) => value.id);
-                //props.setFieldValue("assignedTo", assign2);
               }}
               renderInput={(params) => (
                 <TextField
@@ -324,7 +309,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
-            // label="Multiline"
             placeholder="Enter task description"
             multiline
             maxRows={5}

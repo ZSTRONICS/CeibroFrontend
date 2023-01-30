@@ -9,7 +9,7 @@ import { Grid, Paper } from '@mui/material';
 // redux
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers';
-import { createSubTask, getAllSubTaskList } from 'redux/action/task.action';
+import { createSubTask } from 'redux/action/task.action';
 
 // components
 import CustomModal from 'components/Modal';
@@ -18,34 +18,39 @@ import CreateSubTask from '../SubTasks/CreateSubTask';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
+import { TaskInterface } from 'constants/interfaces/task.interface';
+import { isTrue } from 'components/Utills/Globals/Common';
 
-function SubTaskStatusDrawer(props: any) {
+interface Props {
+  task: TaskInterface}
 
+function SubTaskStatusDrawer({task}:Props) {
+ 
   const classes = useStyles()
   const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
   const { user } = useSelector((store: RootState) => store?.auth);
 
+  const isCreator = task.creator._id=== user?._id
+  const isAdmin = isTrue(task.admins, user?._id)
+
   const handleSubmit = (values: any) => {
     const  {dueDate, title,taskId,assignedTo,creator, state, description } = values;
     const payload = {dueDate, taskId,title,assignedTo,creator, state, description };
-
     dispatch(
       createSubTask({
         body: payload,
         success: (res) => {
-          
           if(res?.status >= 400) {
             toast.error("Failed to create subtask", res?.message);
           }
           else if (res?.status === 201) {
-            console.log(res?.data?.newSubtask)
             setSubTask(false)
           }
         },
-        finallyAction: () => {
+        // finallyAction: () => {
          // dispatch(getAllSubTaskList());
-        },
+        // },
         showErrorToast: true,
         onFailAction: (err) => {
           toast.error("Failed to create subtask", err);
@@ -60,7 +65,7 @@ function SubTaskStatusDrawer(props: any) {
           initialValues={{
             dueDate: "",
             title: "",
-            taskId: String(props.task._id),
+            taskId: String(task._id),
             assignedTo: [],
             creator: user?._id,
             doneImageRequired: false,
@@ -93,9 +98,9 @@ function SubTaskStatusDrawer(props: any) {
                 <SelectDropdown title="Assigned to" />
             </Grid>
         </Grid>
-        <Grid item  display='flex' justifyContent='flex-end' pr={1.2}>
-            <CButton label="Add SubTask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
-        </Grid>
+        {(isCreator || isAdmin) && <Grid item  display='flex' justifyContent='flex-end' pr={1.2}>
+            <CButton label="Add Subtask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
+        </Grid>}
     </Grid>
     <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
   </>
