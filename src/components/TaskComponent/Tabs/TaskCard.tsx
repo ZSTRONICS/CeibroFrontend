@@ -30,10 +30,9 @@ import { TASK_CONFIG } from "config/task.config";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
-  taskKey:string
 }
 
-const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
+const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   
   const dueDate = task.dueDate.replaceAll('-', '.')
   const classes = useStyles();
@@ -132,7 +131,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
     <Card
       className={classes.cardContainer}
       onClick={handleCard}
-      key={taskKey}
+      key={task._id}
+      id={task._id}
       sx={{
         "& :hover": {
           cursor: "pointer",

@@ -17,6 +17,7 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
+import CDatePicker from "components/DatePicker/CDatePicker";
 interface Props {
   taskMenue: TaskInterface;
 }
@@ -33,7 +34,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
-  let allMembersOfProject: any;
+  let allMembersOfProject: any[];
 
   const selectedProjectValue = { label: project.title, id: project._id };
 
@@ -110,7 +111,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
-            <TextField
+            <CDatePicker/>
+            {/* <TextField
               id="date"
               name="dueDate"
               label="Due date"
@@ -126,7 +128,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               inputProps={{
                 min: new Date().toISOString().slice(0, 10),
               }}
-            />
+            /> */}
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} className={classes.titleWrapper}>
