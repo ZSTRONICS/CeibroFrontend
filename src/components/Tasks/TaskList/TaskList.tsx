@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 
 // mui-imports
 import { makeStyles } from "@material-ui/core";
@@ -43,11 +43,14 @@ function TaskList() {
           className={classes.cardListContainer}
         >
           {allTask &&
-            allTask.map((task: TaskInterface, index: number) => (
-              <TaskCard
+            allTask.map((task: TaskInterface) => (
+              <Fragment key={task._id}>
+                <TaskCard
                 ColorByStatus={getColorByStatus}
                 task={task}
               />
+              </Fragment>
+              
             ))}
         </Grid>
       )}

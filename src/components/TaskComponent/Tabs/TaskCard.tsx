@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { MoreVert } from "@material-ui/icons";
 import {
   Card,
@@ -121,7 +121,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     return (
       <>
         {task.assignedTo.map((item: UserInfo) => {
-          return <span>{`${item.firstName} ${item.surName},`}</span>;
+          return <span key={item._id}>{`${item.firstName} ${item.surName},`}</span>;
         })}
       </>
     );
@@ -131,8 +131,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     <Card
       className={classes.cardContainer}
       onClick={handleCard}
-      key={task._id}
-      id={task._id}
+     itemID={task._id}
+     key={task._id}
       sx={{
         "& :hover": {
           cursor: "pointer",
@@ -158,7 +158,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             <LabelTag>Assigned to</LabelTag>
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
-                <>
+                <Fragment key={item._id}>
                   {i === 0 && (
                     <AssignedTag
                       key={item._id}
@@ -168,7 +168,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                       {`${item.firstName} ${item.surName}`}
                     </AssignedTag>
                   )}
-                </>
+                </Fragment>
               );
             })}
             {task.assignedTo.length > 1 && (

@@ -58,6 +58,9 @@ const CreateIndividualChat = (props: any) => {
     };
     setLoading(true);
     dispatch(getMyConnections(payload));
+    return () => {
+      setConnection([])
+    }
   }, []);
 
   // const sortCon = connections.sort(function(a:any, b:any){
@@ -131,7 +134,7 @@ const CreateIndividualChat = (props: any) => {
             const user: UserInterface = connection?.sentByMe
               ? connection.to
               : connection.from;
-
+            if(user===null) return
             return (
               <CBox
                 display="flex"

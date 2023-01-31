@@ -7,7 +7,7 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
-import { Alert } from "@material-ui/lab";
+import Alert from '@mui/material/Alert';
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -178,7 +178,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     marginTop: 20,
     padding: "10px 13%",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: "10 13%",
     },
   },

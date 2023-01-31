@@ -30,7 +30,7 @@ const DrawerHeader = ({title,handleClose}: Props) => {
 export default DrawerHeader;
 
 DrawerHeader.propTypes={
-  title: PropTypes.string.isRequired,
+  title: PropTypes.string,
   handleClose: PropTypes.func.isRequired
 }
 
