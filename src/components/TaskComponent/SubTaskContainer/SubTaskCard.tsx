@@ -28,7 +28,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
   const myState = state.find(localState => String(localState.userId) === String(user._id))
-  const subTaskDate = dueDate.replaceAll('-', '.')
+  const subTaskDate = dueDate.replaceAll('-', '.').replace(',','')
 
   const bgcolor = getColorByStatus(myState?myState.userState:'')
 

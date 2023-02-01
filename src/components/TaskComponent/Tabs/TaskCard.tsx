@@ -33,8 +33,8 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
-  
-  const dueDate = task.dueDate.replaceAll('-', '.')
+
+  const dueDate = task.dueDate.replaceAll('-', '.').replace(',','')
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -159,7 +159,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
                 <Fragment key={item._id}>
-                  {i === 0 && (
+                  {i === 0 && ( 
                     <AssignedTag
                       key={item._id}
                       sx={{ display: "inline-block" }}
