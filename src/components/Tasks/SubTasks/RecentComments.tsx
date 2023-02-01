@@ -7,8 +7,8 @@ import { useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
 export default function RecentComments(props: any) {
-
-    // const [recentComments, setRecentComments] = useState<[]>('');
+    const comments = props.subtaskDetail && props.subtaskDetail.recentComments;
+    // const [recentComments, setRecentComments] = useState<[]>(comments);
     const [userNewComment, setUserNewComment] = useState<string>();
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const classes = useStyles()
@@ -16,12 +16,32 @@ export default function RecentComments(props: any) {
     //     setIsEmpty(true)
     // }
 
+    console.log(props.subtaskDetail && props.subtaskDetail.recentComments, '====recent comments=====')
+    // console.log(recentComments, '-----recent comments-------')
+    const recentComments = [
+        {
+            firstName: 'ali', lastName: 'check', description: 'hay', createdAt: '27-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'ali akbar', lastName: 'check', description: 'hay ali', createdAt: '27-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'mubeen', lastName: 'check', description: 'hay how  are you', createdAt: '27-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'talha', lastName: 'check', description: 'hay i am fine', createdAt: '27-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'khan', lastName: 'check', description: 'hay good', createdAt: '27-02-2022', time: '10:26 PM'
+        },
 
-
+    ]
     return (
         <>
             {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
-            <RecentCommentsList />
+            {recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))}
+
+
             <CBox display='flex'>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
                     <TextField

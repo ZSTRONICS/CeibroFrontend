@@ -20,6 +20,14 @@ export default function RecentCommentsList(props: any) {
                 <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
                     {comment.createdAt}
                 </Typography>
+                &nbsp;
+                &nbsp;
+                <Divider orientation='vertical' style={{ height: 10, width: 2 }} />
+                &nbsp;
+                &nbsp;
+                <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
+                    {comment.time}
+                </Typography>
             </CBox>
             <Typography className={classes.description}>
                 {comment.description}
