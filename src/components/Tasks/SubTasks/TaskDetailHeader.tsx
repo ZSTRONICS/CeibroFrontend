@@ -30,9 +30,6 @@ export default function TaskDetailHeader(props: any) {
                         {props?.subtask?.createdAt}
                     </Typography>
                 </CBox>
-                <CBox flex='1 1 0' display='flex' justifyContent='flex-end'>
-                    <CButton label='close' variant='outlined' />
-                </CBox>
 
             </CBox>
             <CBox mt={3}>
