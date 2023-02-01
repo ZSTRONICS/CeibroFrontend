@@ -1,24 +1,20 @@
-import { Divider, makeStyles, Typography } from '@material-ui/core';
-import { Link } from '@mui/material';
-import { bgcolor } from '@mui/system';
+import { makeStyles } from '@material-ui/core';
 import CButton from 'components/Button/Button';
 import { CBox } from 'components/material-ui';
-import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard';
-import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index'
+import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index';
+import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import TaskDetailHeader from './TaskDetailHeader';
-import Chip from '@mui/material/Chip';
-import { theme } from 'theme';
-import RecentComments from './RecentComments';
-import CenterDivider from 'components/centerDivider/CenterDivider';
 
-export default function TaskDetail() {
+interface Props {
+    subtaskDetail: SubtaskInterface
+}
+export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
-    // const subTaskDate = moment.utc(moment(dueDate)).format('DD.MM.YYYY');
-
+    console.log('subtask--->', subtaskDetail)
     return (
         <div>
             <CBox className={classes.wrapper}>
-                <TaskDetailHeader />
+                <TaskDetailHeader subtaskDetail={subtaskDetail} />
 
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<AttachmentIcon />} label={'See Attachments'} />
@@ -29,7 +25,7 @@ export default function TaskDetail() {
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
                 </CBox>
-                <RecentComments />
+                {/* <RecentComments /> */}
 
             </CBox>
         </div>

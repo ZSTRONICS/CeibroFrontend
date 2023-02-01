@@ -50,7 +50,6 @@ import {
 // axios
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import TaskDetailDrawer from "components/Tasks/SubTasks/TaskDetailDrawer";
 import { TASK_CONFIG } from "config/task.config";
 
 interface MyApp { }
@@ -221,7 +220,7 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
-          case TASK_CONFIG.TASK_SUBTASK_UPDATED: {
+          case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             try {
               const payload = {
                 task: data.results.task,
@@ -232,9 +231,9 @@ const App: React.FC<MyApp> = () => {
                 payload: payload,
               });
             } catch (e) {
-              
+
             }
-          } break
+            break
 
         }
 
@@ -250,11 +249,9 @@ const App: React.FC<MyApp> = () => {
       <CssBaseline />
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
-      {/* {taskDrawer&&<CDrawer/>} */}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
-      <TaskDetailDrawer />
       <RouterConfig />
     </div>
   );
