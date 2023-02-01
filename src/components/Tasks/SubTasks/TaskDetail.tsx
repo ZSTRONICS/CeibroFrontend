@@ -10,15 +10,19 @@ import Chip from '@mui/material/Chip';
 import { theme } from 'theme';
 import RecentComments from './RecentComments';
 import CenterDivider from 'components/centerDivider/CenterDivider';
+import { useSelector } from 'react-redux';
+import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 
-export default function TaskDetail() {
+interface Props {
+    subtaskDetail: SubtaskInterface
+}
+export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
-    // const subTaskDate = moment.utc(moment(dueDate)).format('DD.MM.YYYY');
-
+    console.log('subtask--->', subtaskDetail)
     return (
         <div>
             <CBox className={classes.wrapper}>
-                <TaskDetailHeader />
+                <TaskDetailHeader subtaskDetail={subtaskDetail} />
 
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<AttachmentIcon />} label={'See Attachments'} />
@@ -29,7 +33,7 @@ export default function TaskDetail() {
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
                 </CBox>
-                <RecentComments />
+                {/* <RecentComments /> */}
 
             </CBox>
         </div>

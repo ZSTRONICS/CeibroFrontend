@@ -30,11 +30,11 @@ import { TASK_CONFIG } from "config/task.config";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
-  taskKey:string
+  taskKey: string
 }
 
-const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
-  
+const TaskCard: React.FC<Props> = ({ task, ColorByStatus, taskKey }) => {
+
   const dueDate = task.dueDate.replaceAll('-', '.')
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -185,7 +185,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
           </Box>
         </CustomStack>
         <Box pt={2.5}>
-          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600",textTransform:'capitalize' }}>
+          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600", textTransform: 'capitalize' }}>
             {/* project title */}
             {task.title}
           </AssignedTag>

@@ -1,16 +1,16 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Typography,makeStyles } from "@material-ui/core";
+import { Typography, makeStyles } from "@material-ui/core";
 import CButton from "components/Button/Button";
 import colors from "../../../../assets/colors";
 
-interface Props{
-  title:string
-  handleClose:()=>void
+interface Props {
+  title: string
+  handleClose: () => void
 }
 
-const DrawerHeader = ({title,handleClose}: Props) => {
+const DrawerHeader = ({ title, handleClose }: Props) => {
   const classes = useStyles();
 
   const handleCloseDrawer = () => {
@@ -22,15 +22,15 @@ const DrawerHeader = ({title,handleClose}: Props) => {
       <div>
         <Typography className={classes.headerTitle}>{title}</Typography>
       </div>
-      <CButton label="Close" variant='outlined' onClick={handleCloseDrawer}/>
+      <CButton label="Close" variant='outlined' onClick={handleCloseDrawer} />
     </div>
   );
 };
 
 export default DrawerHeader;
 
-DrawerHeader.propTypes={
-  title: PropTypes.string.isRequired,
+DrawerHeader.propTypes = {
+  title: PropTypes.string,
   handleClose: PropTypes.func.isRequired
 }
 
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
     borderBottom: '1px solid #dbdbe5',
   },
   headerTitle: {
-    textTransform:'capitalize',
+    textTransform: 'capitalize',
     fontStyle: "normal",
     fontWeight: 500,
     fontSize: 30,

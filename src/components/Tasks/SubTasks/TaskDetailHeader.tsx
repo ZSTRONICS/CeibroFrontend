@@ -3,11 +3,17 @@ import { Divider, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
-import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
-
-export default function TaskDetailHeader() {
+import { AssignedTag, TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
+import { AssignedTo, Member } from 'constants/interfaces/subtask.interface'
+import { useState } from 'react'
+interface Props {
+    allSubTaskOfTask: any
+}
+export default function TaskDetailHeader(props: any) {
     const classes = useStyles()
-
+    const [showMore, setShowMore] = useState<boolean>(false);
+    console.log(props && props?.subtaskDetail, 'sub task')
+    const membersList = props?.subtaskDetail?.assignedTo.map((member: AssignedTo) => member.members).flat(1)
     return (
         <>
             <CBox display='flex' alignItems='center' justifyContent='space-between'>
@@ -16,12 +22,12 @@ export default function TaskDetailHeader() {
                     <TaskStatus className={classes.status}>Draft</TaskStatus>
 
                     <Typography style={{ fontSize: "11px", color: '#7D7E80' }}>
-                        Due Date
+                        {props?.subtask?.dueDate}
                     </Typography>
                     &nbsp;
                     <Typography style={{ fontSize: "11px", fontWeight: 600 }}>
                         11.02.2021
-                        {/* {subTaskDate} */}
+                        {props?.subtask?.createdAt}
                     </Typography>
                 </CBox>
                 <CBox flex='1 1 0' display='flex' justifyContent='flex-end'>
@@ -31,22 +37,39 @@ export default function TaskDetailHeader() {
             </CBox>
             <CBox mt={3}>
                 <Typography className={classes.heading} >Title</Typography>
-                <Typography className={classes.description} >Magnis dis parturient montes, nascetur Aenean eu leo quam. Pellentesque ornare </Typography>
+                <Typography className={classes.description} >{props?.subtaskDetail?.title}</Typography>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>
                 <Typography className={classes.heading} >Project</Typography>
-                <Typography className={classes.description} >Paevälja 112-6</Typography>
+                <Typography className={classes.description} >{props?.subtaskDetail?.title}</Typography>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>
                 <Typography className={classes.heading} >Assign to</Typography>
-                <Typography className={classes.description} >Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,</Typography>
+                <Typography className={classes.description}>
+
+                    {membersList.map((member: Member, i: any) => {
+                        if (i === membersList.length - 1) {
+                            return (<> {<AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>} </>)
+                        } else {
+                            return (<>{<AssignedTag>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>} </>)
+                        }
+                    })}
+                </Typography>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>
-                <Typography className={classes.heading} >Description</Typography>
-                <Typography className={classes.description} >Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.</Typography>
+                <Typography className={classes.heading}> Description </Typography>
+                <Typography className={classes.description}>
+                    {showMore ? props.subtaskDetail.description : `${props.subtaskDetail.description.substring(0, 550)}`}
+
+                </Typography>
+                <Typography className={classes.showHideBtn} onClick={() => setShowMore(!showMore)}>
+                    {showMore ? 'show less' : 'show more'}
+                </Typography>
+
+
                 <Divider />
             </CBox></>
     )
@@ -62,7 +85,7 @@ const useStyles = makeStyles({
         color: '#7D7E80'
     },
     description: {
-        fontSize: "12px", fontWeight: 600, color: '#000000', marginBottom: 5
+        display: 'flex', fontSize: "12px", fontWeight: 600, color: '#000000', marginBottom: 5
     },
 
     status: {
@@ -78,6 +101,13 @@ const useStyles = makeStyles({
         height: 19,
         marginRight: '5px !important',
 
+    },
+    showHideBtn: {
+        fontSize: 14,
+        color: '#5ba6da',
+        '&:hover': {
+            cursor: 'pointer'
+        }
     }
 
 })

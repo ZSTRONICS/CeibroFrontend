@@ -3,26 +3,35 @@ import { IconButton, TextField } from '@mui/material'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon, SendIcon } from 'components/material-ui/icons'
+import { useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
-export default function RecentComments() {
+export default function RecentComments(props: any) {
+
+    // const [recentComments, setRecentComments] = useState<[]>('');
+    const [userNewComment, setUserNewComment] = useState<string>();
+    const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const classes = useStyles()
+    // if (recentComments && recentComments.length === 0) {
+    //     setIsEmpty(true)
+    // }
+
+
+
     return (
         <>
-            {[...Array(5)].map(() => (
-
-                <RecentCommentsList />
-
-            )
-
-            )}
-
+            {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
+            <RecentCommentsList />
             <CBox display='flex'>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
                     <TextField
                         id="standard-multiline-flexible"
                         // label="Multiline"
                         placeholder="Enter new comment..."
+                        onChange={(e) => {
+                            setUserNewComment(e.target.value)
+                        }}
+                        value={userNewComment}
                         multiline
                         maxRows={5}
                         minRows={5}
@@ -42,10 +51,13 @@ export default function RecentComments() {
                             </IconButton>
                             <Divider orientation='vertical' flexItem variant='fullWidth' style={{ height: 15, width: 1.5, margin: 'auto 8px' }} />
                             &nbsp;
-                            <CButton startIcon={<SendIcon />} style={{ maxWidth: 45 }} variant='contained' />
-
-
-
+                            <CButton
+                                startIcon={<SendIcon />}
+                                //handle click to send newMessage here
+                                type={"submit"}
+                                style={{ maxWidth: 45 }}
+                                variant='contained'
+                            />
                         </CBox>
                     </CBox>
                 </Grid>

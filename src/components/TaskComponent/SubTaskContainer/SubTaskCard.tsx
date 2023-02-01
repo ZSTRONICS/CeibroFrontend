@@ -14,9 +14,11 @@ import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
 
 import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
+import taskActions from "redux/action/task.action";
+import { TASK_CONFIG } from "config/task.config";
 interface Props {
   subTaskDetail: SubtaskInterface
 }
@@ -30,11 +32,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const myState = state.find(localState => String(localState.userId) === String(user._id))
   const subTaskDate = dueDate.replaceAll('-', '.')
 
-  const bgcolor = getColorByStatus(myState?myState.userState:'')
-
-  const handleDetailOpen = () => {
-    //dispatch(taskActions.openTaskDetailDrawer())
-  }
+  const bgcolor = getColorByStatus(myState ? myState.userState : '')
+  const dispatch = useDispatch();
 
   const ITEM_HEIGHT = 48;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -71,9 +70,24 @@ function SubTaskCard({ subTaskDetail }: Props) {
     );
   };
 
+  const handleSubTaskCard = () => {
+    dispatch({
+      type: TASK_CONFIG.SET_SUBTASK,
+      payload: subTaskDetail,
+    });
+
+    dispatch(taskActions.openSubtaskDetailDrawer())
+
+  }
+
   return (<>
-   {myState?.userState ?<>
-      <Grid className={classes.taskDetailContainer} item container justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id} onClick={handleDetailOpen}>
+    {myState?.userState ? <>
+      <Grid
+        onClick={handleSubTaskCard}
+        className={classes.taskDetailContainer}
+        item container
+        justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
+
         <Grid item>{SubHeader()}</Grid>
         <Grid item lg={7}>
           <CustomStack columnGap={0.5}>
@@ -157,8 +171,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
         </Grid>
       </Grid>
       <Divider sx={{ width: '100%' }} />
-    </>:<></>}
- </> );
+    </> : <></>}
+  </>);
 }
 
 export default SubTaskCard;

@@ -21,7 +21,6 @@ import ViewQuestioniarDrawer from "./Chat/Questioniar/ViewQuestioniar";
 import Tasks from "./Tasks/TaskList/Task";
 import CreateTaskDrawer from "./Tasks/Create-Task/CreateTaskDrawer";
 import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
-import CDrawer from "Drawer/CDrawer";
 
 // project
 import Projects from "./Projects/ProjectList/Project";
@@ -47,5 +46,5 @@ export {
   Dashboard,
   Profile,
   Tasks,
-  Chat, CDrawer,
+  Chat,
 };
