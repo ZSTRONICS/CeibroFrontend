@@ -47,7 +47,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
           </Grid>
         </DialogTitle>
         <DialogContent >
-          <DialogContentText>{children}</DialogContentText>
+          {children}
         </DialogContent>
         <DialogActions>
 

@@ -37,7 +37,7 @@ const SidebarConfig: SidebarConfigInterface = {
     title: "Tasks",
     icon: <AssignmentIndOutlined className="sideBar_icon"/>,
     // icon: <svg xmlns="http://www.w3.org/2000/svg" width="14" height="16" viewBox="0 0 14 16" fill="none">
-    // <path d="M10.5 2H13V14C13 14.5523 12.5523 15 12 15H2C1.44772 15 1 14.5523 1 14V2H3.5M4 1H10V3C10 3.55228 9.55228 4 9 4H5C4.44772 4 4 3.55228 4 3V1Z" stroke="white" stroke-width="1.5"/>
+    // <path d="M10.5 2H13V14C13 14.5523 12.5523 15 12 15H2C1.44772 15 1 14.5523 1 14V2H3.5M4 1H10V3C10 3.55228 9.55228 4 9 4H5C4.44772 4 4 3.55228 4 3V1Z" stroke="white" strokeWidth="1.5"/>
     // </svg>,
     path: "tasks",
     notification: 0,
@@ -46,7 +46,7 @@ const SidebarConfig: SidebarConfigInterface = {
     title: "Projects",
     icon: <FolderOutlined className="sideBar_icon"/>,
     // icon: <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-    // <path d="M1 12.1465V2.14648C1 1.5942 1.44772 1.14648 2 1.14648H4L6 3.14648H12C12.5523 3.14648 13 3.5942 13 4.14648V12.1465C13 12.6988 12.5523 13.1465 12 13.1465H2C1.44772 13.1465 1 12.6988 1 12.1465Z" stroke="white" stroke-width="1.5"/>
+    // <path d="M1 12.1465V2.14648C1 1.5942 1.44772 1.14648 2 1.14648H4L6 3.14648H12C12.5523 3.14648 13 3.5942 13 4.14648V12.1465C13 12.6988 12.5523 13.1465 12 13.1465H2C1.44772 13.1465 1 12.6988 1 12.1465Z" stroke="white" strokeWidth="1.5"/>
     // </svg>,
     path: "projects",
     notification: 0,

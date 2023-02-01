@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { MoreVert } from "@material-ui/icons";
 import {
   Card,
@@ -30,12 +30,11 @@ import { TASK_CONFIG } from "config/task.config";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
-  taskKey:string
 }
 
-const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
-  
-  const dueDate = task.dueDate.replaceAll('-', '.')
+const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
+
+  const dueDate = task.dueDate.replaceAll('-', '.').replace(',','')
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -122,7 +121,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
     return (
       <>
         {task.assignedTo.map((item: UserInfo) => {
-          return <span>{`${item.firstName} ${item.surName},`}</span>;
+          return <span key={item._id}>{`${item.firstName} ${item.surName},`}</span>;
         })}
       </>
     );
@@ -132,7 +131,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
     <Card
       className={classes.cardContainer}
       onClick={handleCard}
-      key={taskKey}
+     itemID={task._id}
+     key={task._id}
       sx={{
         "& :hover": {
           cursor: "pointer",
@@ -158,8 +158,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
             <LabelTag>Assigned to</LabelTag>
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
-                <>
-                  {i === 0 && (
+                <Fragment key={item._id}>
+                  {i === 0 && ( 
                     <AssignedTag
                       key={item._id}
                       sx={{ display: "inline-block" }}
@@ -168,7 +168,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus,taskKey }) => {
                       {`${item.firstName} ${item.surName}`}
                     </AssignedTag>
                   )}
-                </>
+                </Fragment>
               );
             })}
             {task.assignedTo.length > 1 && (

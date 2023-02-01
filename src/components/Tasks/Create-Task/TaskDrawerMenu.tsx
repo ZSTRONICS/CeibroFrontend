@@ -17,6 +17,8 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
+import CDatePicker from "components/DatePicker/CDatePicker";
+
 interface Props {
   taskMenue: TaskInterface;
 }
@@ -24,16 +26,16 @@ interface Props {
 function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
   const dispatch = useDispatch()
+  const [showDate, setShowDate]= useState<any>()
   const [imageAttach, setImageAttach]: any = useState(false);
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
-
   //const projectData = [{ label: project.title, id: project._id }];
 
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
-  let allMembersOfProject: any;
+  let allMembersOfProject: any[];
 
   const selectedProjectValue = { label: project.title, id: project._id };
 
@@ -105,28 +107,23 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         <CBox display="flex" alignItems="center" mt={1}>
           <CBox sx={{ background: `${getColorByStatus(state)}`, fontWeight: '500', }} className={classes.subtaskState}>{state}</CBox>
           <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
-            {dueDate}
+            {dueDate.replace(',','')}
           </CBox>
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
-            <TextField
-              id="date"
-              name="dueDate"
-              label="Due date"
-              type="date"
-              defaultValue={dueDate}
-              // defaultValue={moment(dueDate).format("yyyy-mm-dd")}
-              // defaultValue={dueDate !=="" ? moment(dueDate).format('DD-MMM-YYYY') : ""}
-              size="small"
-              sx={{ width: 220 }}
-              InputLabelProps={{
-                shrink: true,
-              }}
-              inputProps={{
-                min: new Date().toISOString().slice(0, 10),
-              }}
-            />
+          <CDatePicker
+            required
+            value={showDate}
+            id="date1"
+            name="dueDate"
+            onChange={(e:any) => {
+              setShowDate(e)
+              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+              //  props.setFieldValue("dueDate", currentDate);
+            }}
+          />
+            
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} className={classes.titleWrapper}>
@@ -494,7 +491,7 @@ const useStyles = makeStyles({
   inputWrapper: {
     paddingTop: 10,
     paddingLeft: 10,
-    ["@media (max-width:600px)"]: {
+    "@media (max-width:600px)": {
       paddingLeft: 0,
     },
   },

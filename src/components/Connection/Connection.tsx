@@ -74,7 +74,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = props => {
             return
           }
           const user: UserInterface = connection?.sentByMe ? connection.to : connection.from
-
+          if(user === null){
+            return
+          }
           return (
             <Grid item xs={12} key={user?._id} id={user?._id} className={classes.chipWrapper} >
               <Grid container justifyContent='space-between'>

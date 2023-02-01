@@ -10,11 +10,13 @@ import CButton from "components/Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
 
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
+  const [showDate, setShowDate]= useState<any>()
   const { taskAssignedToMembers } = useSelector((store: RootState) => store.task);
 
   const [assignToList, setAssignToList] = useState<any>([
@@ -52,32 +54,15 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
     <div>
       <Grid container className={classes.outerWrapper} rowGap={1}>
         <Grid item xs={12} md={12}>
-          <TextField
+        <CDatePicker
             required
-            className={classes.titleWrapper}
+            value={showDate}
             id="date"
             name="dueDate"
-            label="Due date"
-            type="date"
-            // defaultValue="2017-05-24"
-            size="small"
-            sx={{ width: 220 }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-            inputProps={{
-              min: new Date().toISOString().slice(0, 10),
-            }}
-            onChange={(e) => {
-              const userDate = new Date(String(e.target.value));
-              const currentDate = userDate
-                .toLocaleString("en-GB", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                })
-                .replace(/\//g, "-");
-              setFieldValue("dueDate", currentDate);
+            onChange={(e:any) => {
+              setShowDate(e)
+              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-')
+               setFieldValue("dueDate", currentDate);
             }}
           />
         </Grid>
