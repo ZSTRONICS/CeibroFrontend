@@ -185,7 +185,7 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const data = dataRcvd.data
-        console.log('eventType-->', eventType)
+        console.log('eventType-->', eventType, dataRcvd)
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(user._id)) {
@@ -222,7 +222,18 @@ const App: React.FC<MyApp> = () => {
             break
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED: {
-
+            try {
+              const payload = {
+                task: data.results.task,
+                subtask: data.results.subtasks[0]
+              }
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_SUBTASK,
+                payload: payload,
+              });
+            } catch (e) {
+              
+            }
           } break
 
         }

@@ -40,9 +40,10 @@ const ProfileView = () => {
   };
   
   const handleLogout = () => {
-    history.push("/login");
     dispatch(logoutUser());
     handleCloseUserMenu()
+    window.location.reload()
+    history.push("/login");
   };
 
   const openViewInvitation =() =>{

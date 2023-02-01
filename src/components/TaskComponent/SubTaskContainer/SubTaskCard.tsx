@@ -23,7 +23,7 @@ interface Props {
 
 function SubTaskCard({ subTaskDetail }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { _id, dueDate, assignedTo, title, state, description, creator } = subTaskDetail
+  const { _id, dueDate, assignedTo, title, state, description, creator, taskId } = subTaskDetail
   const classes = useStyles()
   const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
@@ -70,6 +70,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
       </>
     );
   };
+
+
+  const handleRejectSubTask = () => {
+    //_id, taskId, rejectionComment, state="rejected"
+    
+  }
+
 
   return (<>
    {myState?.userState ?<>
@@ -139,7 +146,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
             {assignToMemberIds.includes(user._id) && myState?.userState === SubtaskState.Assigned &&
               <>
                 <CButton label={'Accept'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
-                <CButton label={'Reject'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+                <CButton label={'Reject'} onClick={handleRejectSubTask} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
               </>
             }
             {myState?.userState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
@@ -160,6 +167,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
     </>:<></>}
  </> );
 }
+
+
 
 export default SubTaskCard;
 
