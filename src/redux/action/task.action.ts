@@ -47,5 +47,6 @@ export const setSelectedTask = createAction(TASK_CONFIG.SET_SELECTED_TASK)
 export const setSubTask = createAction(TASK_CONFIG.SET_SUBTASK)
 export const getAllSubTaskList = createAction(TASK_CONFIG.GET_ALL_SUBTASK_LIST)
 export const getAllSubTaskOfTask = createAction(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK)
+export const taskSubtaskStateChange = createAction(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE)
 
 export default taskActions

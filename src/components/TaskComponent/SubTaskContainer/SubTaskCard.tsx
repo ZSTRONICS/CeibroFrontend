@@ -17,7 +17,7 @@ import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subta
 import { useDispatch, useSelector } from "react-redux";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
-import taskActions from "redux/action/task.action";
+import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 import { TASK_CONFIG } from "config/task.config";
 interface Props {
   subTaskDetail: SubtaskInterface
@@ -79,8 +79,19 @@ function SubTaskCard({ subTaskDetail }: Props) {
     dispatch(taskActions.openSubtaskDetailDrawer())
 
   }
-  const handleRejectSubTask = () => {
-    //_id, taskId, rejectionComment, state="rejected"
+  const handleRejectSubTask = () => { 
+  //_id, taskId, rejectionComment, state="rejected"
+    const payload  = {
+      subTaskId:_id,
+      taskId:taskId,
+      comment:'testing',
+      state: "rejected"
+    };
+
+    dispatch(
+      taskSubtaskStateChange({body: payload}))
+        
+   
 
   }
   return (<>
