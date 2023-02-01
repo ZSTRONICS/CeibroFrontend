@@ -91,6 +91,33 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskList: [action.payload, ...state.allSubTaskList]
             }
 
+        case TASK_CONFIG.UPDATE_TASK_SUBTASK:
+            const inComingTask = action.payload.task
+            const incommingSubTask = action.payload.subtask
+            const taskIndex = state.allTask.findIndex(task => task._id === inComingTask._id)
+            if (taskIndex > -1) {
+                state.allTask[taskIndex] = inComingTask
+
+                const allSubTaskIndex = state.allSubTaskList.findIndex((subTask: any) => subTask._id === incommingSubTask._id)
+                if (allSubTaskIndex >= 0) {
+                    state.allSubTaskList[allSubTaskIndex] = incommingSubTask
+                }
+
+                if ("task" in state.allSubTaskOfTask && state.allSubTaskOfTask.task._id === inComingTask._id) {
+                    state.allSubTaskOfTask.task = inComingTask
+
+                    if ("subtasks" in state.allSubTaskOfTask) {
+                        const updateIndex = state.allSubTaskOfTask.subtasks.findIndex((subtask: any) => subtask._id === incommingSubTask._id)
+                        state.allSubTaskOfTask.subtasks[updateIndex] = incommingSubTask
+                    }
+                }
+            }
+
+            return {
+                ...state,
+            }
+
+
 
         case requestSuccess(TASK_CONFIG.GET_TASK):
             return {

@@ -16,6 +16,7 @@ import {
   openViewInvitations,
 } from "redux/action/user.action";
 import ViewInvitations from "components/Profile/ViewInvitations";
+import Box from "@mui/material/Box";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
@@ -42,7 +43,7 @@ const SmartMenuBar = () => {
     <Grid container>
       <Grid item xs={12} md={5} lg={4}>
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
-          <Typography className={classes.connectionTitle}>
+          <Box className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
             <img src={assets.contactIcon} className={classes.connectionIcon} alt="connectionIcon"/>
               </div>
@@ -54,7 +55,7 @@ const SmartMenuBar = () => {
               </span>
               <Badge overlap='circular' badgeContent={connections} color="primary"></Badge>
             </span>
-          </Typography>
+          </Box>
 
           <Button
             size="small"
@@ -76,7 +77,7 @@ const SmartMenuBar = () => {
         className={classes.invitationOuterWrapper}
       >
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
-          <Typography className={classes.connectionTitle}>
+          <Box className={classes.connectionTitle}>
           <div className={classes.smartMenuIcon}>
             <img alt="InvitaionIcon" src={assets.InvitaionIcon} className={classes.connectionIcon} />
               </div>
@@ -88,7 +89,7 @@ const SmartMenuBar = () => {
               </span>
             {invites>0&& <Badge badgeContent={invites} color="error"></Badge>}
             </span>
-          </Typography>
+          </Box>
           <Button
             size="small"
             color="primary"

@@ -35,7 +35,6 @@ import {
   updateMessageById,
   unreadMessagesCount,
   replaceMessagesById,
-  unreadRoomMessagesCount,
 } from "redux/action/chat.action";
 import {
   ALL_MESSAGE_SEEN,
@@ -64,7 +63,6 @@ const App: React.FC<MyApp> = () => {
   const drawerOpen = useSelector(
     (store: RootState) => store.chat.openViewQuestioniar
   );
-
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -189,21 +187,19 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const data = dataRcvd.data
-        console.log('eventType-->', eventType)
+        console.log('eventType-->', eventType, dataRcvd)
         switch (eventType) {
-          case TASK_CONFIG.TASK_CREATED: {
+          case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(user._id)) {
               return
             }
-
             dispatch({
               type: TASK_CONFIG.PUSH_TASK_TO_STORE,
               payload: data,
             });
-          }
             break
 
-          case TASK_CONFIG.SUB_TASK_CREATED: {
+          case TASK_CONFIG.SUB_TASK_CREATED:
             if (!data.access.includes(user._id)) {
               return
             }
@@ -211,13 +207,13 @@ const App: React.FC<MyApp> = () => {
               type: TASK_CONFIG.PUSH_SUB_TASK_TO_STORE,
               payload: data,
             });
-          } break
+            break
 
-          case TASK_CONFIG.TASK_UPDATE_PUBLIC: {
+          // case TASK_CONFIG.TASK_UPDATE_PUBLIC: 
 
-          } break
+          //  break
 
-          case TASK_CONFIG.TASK_UPDATE_PRIVATE: {
+          case TASK_CONFIG.TASK_UPDATE_PRIVATE:
             if (!data.access.includes(user._id)) {
               return
             }
@@ -225,15 +221,22 @@ const App: React.FC<MyApp> = () => {
               type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
               payload: data,
             });
-          } break
+            break
 
-          case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC: {
+          case TASK_CONFIG.TASK_SUBTASK_UPDATED:
+            try {
+              const payload = {
+                task: data.results.task,
+                subtask: data.results.subtasks[0]
+              }
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_SUBTASK,
+                payload: payload,
+              });
+            } catch (e) {
 
-          } break
-
-          case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE: {
-
-          } break
+            }
+            break
 
         }
 

@@ -29,6 +29,7 @@ function SubTaskStatusDrawer({task}:Props) {
   const classes = useStyles()
   const dispatch = useDispatch()
   const [subTask, setSubTask]: any = useState(false)
+  // const [showDate, setShowDate]= useState<any>()
   const { user } = useSelector((store: RootState) => store?.auth);
 
   const isCreator = task.creator._id=== user?._id
@@ -93,6 +94,16 @@ function SubTaskStatusDrawer({task}:Props) {
         <Grid item container sm={10}  md={9} gap={2}>
             <Grid item md={4} >
                 <DatePicker Datetitle='Date' />
+                {/* <CDatePicker
+            required
+            value={showDate}
+            id="date"
+            name="dueDate"
+            onChange={(e:any) => {
+              setShowDate(e)
+              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+            }}
+          /> */}
             </Grid>
             <Grid item md={5} >
                 <SelectDropdown title="Assigned to" />

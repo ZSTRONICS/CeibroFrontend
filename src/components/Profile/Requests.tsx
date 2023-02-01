@@ -24,7 +24,7 @@ export default Requests;
 
 const useStyles = makeStyles({
   wrapper: {
-    ['@media (max-width:960px)']: {
+    '@media (max-width:960px)': {
       paddingTop: 10
     }
   }

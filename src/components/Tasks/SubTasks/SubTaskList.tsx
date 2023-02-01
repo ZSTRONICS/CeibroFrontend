@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import SubTaskCard from 'components/TaskComponent/SubTaskContainer/SubTaskCard'
 import { AllSubtasksForUserRoot } from 'constants/interfaces/AllSubTasks.interface'
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface'
@@ -17,9 +17,9 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               return (
-                <>
+                <Fragment key={subTaskDetail._id}>
                   <SubTaskCard subTaskDetail={subTaskDetail} />
-                </>
+                </Fragment>
               );
             })}
         </CBox>

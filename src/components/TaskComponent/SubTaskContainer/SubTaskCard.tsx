@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { Fragment } from "react";
 import { Box, Grid, Typography, Divider, Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -25,12 +25,12 @@ interface Props {
 
 function SubTaskCard({ subTaskDetail }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { _id, dueDate, assignedTo, title, state, description, creator } = subTaskDetail
+  const { _id, dueDate, assignedTo, title, state, description, creator, taskId } = subTaskDetail
   const classes = useStyles()
   const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
   const myState = state.find(localState => String(localState.userId) === String(user._id))
-  const subTaskDate = dueDate.replaceAll('-', '.')
+  const subTaskDate = dueDate.replaceAll('-', '.').replace(',', '')
 
   const bgcolor = getColorByStatus(myState ? myState.userState : '')
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
     return (<>
       {membersList.map((item: Member) => {
         return (
-          <span>
+          <span key={item._id}>
             {`${item.firstName} ${item.surName},`}
           </span>
         )
@@ -79,7 +79,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
     dispatch(taskActions.openSubtaskDetailDrawer())
 
   }
+  const handleRejectSubTask = () => {
+    //_id, taskId, rejectionComment, state="rejected"
 
+  }
   return (<>
     {myState?.userState ? <>
       <Grid
@@ -93,9 +96,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
           <CustomStack columnGap={0.5}>
             <LabelTag>Assigned to</LabelTag>
             {membersList.map((member: Member, i: any) => {
-              return (<>
+              return (<Fragment key={member._id}>
                 {i === 0 && <AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>}
-              </>
+              </Fragment>
               )
             })}
             {membersList.length > 1 && <CustomBadge overlap="circular" color="primary" badgeContent={
@@ -119,8 +122,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
                   <path
                     d="M13.2218 7.50016L7.71047 12.9834C6.94882 13.7411 5.91581 14.1668 4.83868 14.1668C2.59566 14.1668 0.777344 12.3578 0.777344 10.1262C0.777344 9.05458 1.20523 8.02684 1.96688 7.26908L7.64244 1.62247C8.15021 1.1173 8.83888 0.833496 9.55697 0.833496C11.0523 0.833496 12.2645 2.03952 12.2645 3.52724C12.2645 4.24166 11.9793 4.92682 11.4715 5.432L5.96018 10.9152C5.7063 11.1678 5.36196 11.3097 5.00292 11.3097C4.25525 11.3097 3.64914 10.7067 3.64914 9.96282C3.64914 9.6056 3.79177 9.26302 4.04565 9.01044L9.39273 3.69064"
                     stroke="#0076C8"
-                    stroke-width="1.5"
-                    stroke-linecap="round"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
                   />
                 </svg>
                 <Typography>0</Typography>
@@ -153,7 +156,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
             {assignToMemberIds.includes(user._id) && myState?.userState === SubtaskState.Assigned &&
               <>
                 <CButton label={'Accept'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
-                <CButton label={'Reject'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+                <CButton label={'Reject'} onClick={handleRejectSubTask} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
               </>
             }
             {myState?.userState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
@@ -174,6 +177,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
     </> : <></>}
   </>);
 }
+
+
 
 export default SubTaskCard;
 

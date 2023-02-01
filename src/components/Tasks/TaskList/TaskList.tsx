@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect } from "react";
 
 // mui-imports
 import { makeStyles } from "@material-ui/core";
@@ -12,16 +12,17 @@ import TaskCard from "components/TaskComponent/Tabs/TaskCard";
 import { getColorByStatus } from "config/project.config";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { getAllTask } from "redux/action/task.action";
+import { useSelector } from "react-redux";
+// import { getAllTask } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import { TaskInterface } from "constants/interfaces/task.interface";
 
 function TaskList() {
-
   const classes = useStyles();
 
-  let allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
+  let allTask: TaskInterface[] = useSelector(
+    (state: RootState) => state.task.allTask
+  );
 
   return (
     <>
@@ -42,9 +43,15 @@ function TaskList() {
           className={classes.cardListContainer}
         >
           {allTask &&
-            allTask.map((task: TaskInterface, index: number) => {
-              return <TaskCard ColorByStatus={getColorByStatus} task={task} taskKey={task._id} />;
-            })}
+            allTask.map((task: TaskInterface) => (
+              <Fragment key={task._id}>
+                <TaskCard
+                ColorByStatus={getColorByStatus}
+                task={task}
+              />
+              </Fragment>
+              
+            ))}
         </Grid>
       )}
     </>
@@ -55,12 +62,12 @@ export default TaskList;
 
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
-    maxHeight: 'calc(100vh - 250px)',
-    overflow: 'auto',
-    height: '100%',
+    maxHeight: "calc(100vh - 250px)",
+    overflow: "auto",
+    height: "100%",
     paddingBottom: 20,
-    [theme.breakpoints.down('sm')]: {
-      maxHeight: 'calc(100vh - 350px)',
+    [theme.breakpoints.down("sm")]: {
+      maxHeight: "calc(100vh - 350px)",
     },
 
     [theme.breakpoints.down(1024)]: {

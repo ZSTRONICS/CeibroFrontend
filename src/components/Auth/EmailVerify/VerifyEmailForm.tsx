@@ -11,7 +11,7 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useDispatch } from "react-redux";
 import {  otpVerify } from "../../../redux/action/auth.action";
-import { Alert } from "@material-ui/lab";
+import Alert from '@mui/material/Alert';
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 

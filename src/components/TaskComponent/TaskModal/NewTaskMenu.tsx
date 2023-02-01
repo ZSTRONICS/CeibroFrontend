@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // mui-imports
 import { Grid, TextField } from "@mui/material";
@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
 import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 
 function NewTaskMenu(props: any) {
@@ -17,7 +18,7 @@ function NewTaskMenu(props: any) {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const [showDate, setShowDate]= useState<any>()
   const fixedOptions: any = [
     {
       label: `${user.firstName} ${user.surName}`,
@@ -54,27 +55,19 @@ function NewTaskMenu(props: any) {
     <Grid container className={classes.outerWrapper} rowGap={1}>
       <Grid item container columnGap={2}>
         <Grid item>
-          <TextField
+          <CDatePicker
             required
+            value={showDate}
             id="date"
-            name="datetime-local"
-            label="Due date"
-            type="date"
-            //inputFormat="MM/dd/yyyy"
-            //placeholder="dd/mm/yyy"
-            size="small"
-            sx={{ width: 220 }}
-            InputLabelProps={{
-              shrink: true,
+            name="dueDate"
+            onChange={(e:any) => {
+              setShowDate(e)
+              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+               props.setFieldValue("dueDate", currentDate);
             }}
-            onChange={(e) => {
-              const userDate = new Date(String(e.target.value));
-              const currentDate = userDate.toLocaleString('en-GB', {year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-')
-              props.setFieldValue("dueDate", currentDate);
-            }}
-            InputProps={{
-              inputProps: { min: new Date().toISOString().slice(0, 10) },
-            }}
+            // InputProps={{
+            //   inputProps: { min: new Date().toISOString().slice(0, 10) },
+            // }}
           />
         </Grid>
         {/* <Grid item>
@@ -128,14 +121,12 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
-          filterSelectedOptions
             multiple
             disablePortal
+            filterSelectedOptions
             disableCloseOnSelect
             id="combo-box-demo2"
             options={adminListOpt}
-            getOptionLabel={(option:any)=> option.label}
-            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             limitTags={2}
             value={adminsList}
             size="small"
@@ -175,15 +166,14 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
-          filterSelectedOptions
-            multiple
-            disablePortal
-            disableCloseOnSelect
+           multiple
+           disablePortal
+           disableCloseOnSelect
+           filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
             options={assignToOpt}
             getOptionLabel={(option:any)=> option.label}
-            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {

@@ -109,8 +109,8 @@ export const TaskModal = () => {
           {({ errors, touched, values, setFieldValue }) => (
             <Form>
               <DialogContent sx={{ padding: "0 20px 24px" }}>
-                <DialogContentText>
-                  <CBox>
+                {/* <DialogContentText> */}
+                  {/* <CBox> */}
                     <NewTaskMenu
                       setFieldValue={setFieldValue}
                       values={values}
@@ -133,8 +133,8 @@ export const TaskModal = () => {
                                             :
                                             ''
                                         } */}
-                  </CBox>
-                </DialogContentText>
+                  {/* </CBox> */}
+                {/* </DialogContentText> */}
               </DialogContent>
               <DialogActions>
                 <CBox display="flex" width="100%" pl={1.5} pr={4.3} pb={1}>

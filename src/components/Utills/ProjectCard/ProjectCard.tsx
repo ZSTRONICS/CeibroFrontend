@@ -13,6 +13,7 @@ import {
 } from "../../../config/project.config";
 
 import moment from "moment";
+import Box from "@mui/material/Box";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -77,7 +78,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
-            <Typography
+            <Box
               className={classes.metaValue}
               style={{ display: "flex" }}
             >
@@ -85,7 +86,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
               )}
-            </Typography>
+            </Box>
           </Grid>
         </Grid>
 

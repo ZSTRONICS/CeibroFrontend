@@ -99,7 +99,7 @@ const Topbar = (props: any) => {
 
           {/* {!isTabletOrMobile && ( */}
           <Typography className={classes.notification}>
-            <Badge badgeContent={4}>
+            <Badge badgeContent={4} overlap='rectangular'>
               <img
                 alt="notification"
                 src={assets.notification}

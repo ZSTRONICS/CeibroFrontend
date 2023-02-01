@@ -11,7 +11,7 @@ import { RootState } from 'redux/reducers'
 import Loading from 'components/Utills/Loader/Loading'
 import { Formik } from 'formik'
 import { toast } from 'react-toastify'
-import { Alert } from '@material-ui/lab'
+import Alert from '@mui/material/Alert';
 import queryString from 'query-string'
 import CustomImg from 'components/CustomImg'
 import { Visibility, VisibilityOff } from '@material-ui/icons'
