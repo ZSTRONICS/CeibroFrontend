@@ -185,10 +185,10 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const data = dataRcvd.data
-        console.log('eventType-->',eventType)
+        console.log('eventType-->', eventType)
         switch (eventType) {
-          case TASK_CONFIG.TASK_CREATED: 
-            if(!data.access.includes(user._id)){
+          case TASK_CONFIG.TASK_CREATED:
+            if (!data.access.includes(user._id)) {
               return
             }
             dispatch({
@@ -197,8 +197,8 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
-          case TASK_CONFIG.SUB_TASK_CREATED: 
-            if(!data.access.includes(user._id)){
+          case TASK_CONFIG.SUB_TASK_CREATED:
+            if (!data.access.includes(user._id)) {
               return
             }
             dispatch({
@@ -211,23 +211,19 @@ const App: React.FC<MyApp> = () => {
 
           //  break
 
-          case TASK_CONFIG.TASK_UPDATE_PRIVATE: 
-            if(!data.access.includes(user._id)){
+          case TASK_CONFIG.TASK_UPDATE_PRIVATE:
+            if (!data.access.includes(user._id)) {
               return
             }
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
               payload: data,
             });
-           break
+            break
 
-          // case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC: 
+          case TASK_CONFIG.TASK_SUBTASK_UPDATED: {
 
-          //  break
-
-          // case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE: 
-
-          //  break
+          } break
 
         }
 
