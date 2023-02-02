@@ -18,7 +18,7 @@ interface Props {
 }
 export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
-    console.log('subtask--->', subtaskDetail)
+    // console.log('subtask--->', subtaskDetail)
     return (
         <div>
             <CBox className={classes.wrapper}>

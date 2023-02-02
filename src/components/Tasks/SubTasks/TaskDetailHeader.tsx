@@ -12,7 +12,7 @@ interface Props {
 export default function TaskDetailHeader(props: any) {
     const classes = useStyles()
     const [showMore, setShowMore] = useState<boolean>(false);
-    console.log(props && props?.subtaskDetail, 'sub task')
+    // console.log(props && props?.subtaskDetail, 'sub task')
     const membersList = props?.subtaskDetail?.assignedTo.map((member: AssignedTo) => member.members).flat(1)
     return (
         <>

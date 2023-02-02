@@ -16,7 +16,7 @@ export default function RecentComments(props: any) {
     //     setIsEmpty(true)
     // }
 
-    console.log(props.subtaskDetail && props.subtaskDetail.recentComments, '====recent comments=====')
+    // console.log(props.subtaskDetail && props.subtaskDetail.recentComments, '====recent comments=====')
     // console.log(recentComments, '-----recent comments-------')
     const recentComments = [
         {
