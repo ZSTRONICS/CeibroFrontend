@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import taskActions from 'redux/action/task.action';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
 import { Grid } from '@mui/material';
-import TaskDrawerMenu from '../Create-Task/TaskDrawerMenu';
 import TaskDetail from './TaskDetail';
 import { TASK_CONFIG } from 'config/task.config';
 import { RootState } from 'redux/reducers';
