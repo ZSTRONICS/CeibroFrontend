@@ -52,8 +52,8 @@ const useStyles = makeStyles({
     // },
     subTaskDrawer: {
         '& .MuiDrawer-paper': {
-            maxWidth: '89%',
-            minWidth: '89%'
+            maxWidth: '90%',
+            minWidth: '90%'
         }
     },
     bodyWrapper: {
