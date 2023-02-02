@@ -8,17 +8,25 @@ import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
-import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import { deDateFormat, getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 
-
 function NewTaskMenu(props: any) {
+
+  const [doOnce, setDoOnce] = useState<boolean>(true);
+  const dueDat = new Date()
+  const todayDate = deDateFormat(dueDat)
   const { projectWithMembers, allProjectsTitles } = useSelector(
     (store: RootState) => store.project
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
   const [showDate, setShowDate]= useState<any>()
+
+  if (doOnce) {
+    props.setFieldValue("dueDate", todayDate);
+    setDoOnce(false)
+  }
   const fixedOptions: any = [
     {
       label: `${user.firstName} ${user.surName}`,
@@ -62,7 +70,7 @@ function NewTaskMenu(props: any) {
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+              const currentDate = deDateFormat(e)
                props.setFieldValue("dueDate", currentDate);
             }}
             // InputProps={{

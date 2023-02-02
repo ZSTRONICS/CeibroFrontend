@@ -9,14 +9,16 @@ import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 import CButton from "components/Button/Button";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
+import { deDateFormat, getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 
 export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
+  const dueDat = new Date()
+  const todayDate = deDateFormat(dueDat)
 
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const [showDate, setShowDate]= useState<any>()
+  const [showDate, setShowDate]= useState<any>(new Date())
   const { taskAssignedToMembers } = useSelector((store: RootState) => store.task);
 
   const [assignToList, setAssignToList] = useState<any>([
@@ -45,8 +47,8 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
   };
 
   if (doOnce) {
-
     setFieldValue("assignedTo", assignedListHandler(assignToList.map((item: any) => item.id)));
+    setFieldValue("dueDate", todayDate);
     setDoOnce(false)
   }
 
@@ -61,7 +63,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-')
+              const currentDate = deDateFormat(e)
                setFieldValue("dueDate", currentDate);
             }}
           />

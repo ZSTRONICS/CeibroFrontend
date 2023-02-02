@@ -11,6 +11,7 @@ import UploadImage from "components/uploadImage/UploadImage";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import {
+  deDateFormat,
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
@@ -119,7 +120,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+              const currentDate = deDateFormat(e)
               //  props.setFieldValue("dueDate", currentDate);
             }}
           />

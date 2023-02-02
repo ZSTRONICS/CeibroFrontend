@@ -101,7 +101,7 @@ function SubTaskStatusDrawer({task}:Props) {
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+              const currentDate = deDateFormat(e)
             }}
           /> */}
             </Grid>
