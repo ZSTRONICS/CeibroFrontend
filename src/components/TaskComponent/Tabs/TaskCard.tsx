@@ -238,7 +238,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             </AssignedTag>
           </Box>
         </CustomStack>
-        <Divider sx={{ paddingBottom: "10px" }} />
+        <Divider sx={{ margin: "10px 0px" }} />
       </CardContent>
       <CCardActions>
         <AssignedTag sx={{ fontWeight: "600" }}>
