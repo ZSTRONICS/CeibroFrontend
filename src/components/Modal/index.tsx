@@ -46,13 +46,11 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
             </Grid> */}
           </Grid>
         </DialogTitle>
-        <DialogContent >
+        <DialogContent>
           {children}
         </DialogContent>
-        <DialogActions>
-
-
-        </DialogActions>
+        {/* <DialogActions>
+        </DialogActions> */}
       </Dialog>
     </>
   );

@@ -90,9 +90,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
     dispatch(
       taskSubtaskStateChange({body: payload}))
-        
-   
-
   }
   return (<>
     {myState?.userState ? <>
