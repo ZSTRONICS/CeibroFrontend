@@ -48,16 +48,16 @@ export default function TaskDetailHeader(props: any) {
             </CBox>
             <CBox mt={1.5}>
                 <Typography className={classes.heading} >Assign to</Typography>
-                <Typography className={classes.description}>
+                <CBox className={classes.description}>
 
                     {membersList.map((member: Member, i: any) => {
                         if (i === membersList.length - 1) {
-                            return (<> {<AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>} </>)
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}`}</AssignedTag>)
                         } else {
-                            return (<>{<AssignedTag>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>} </>)
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>)
                         }
                     })}
-                </Typography>
+                </CBox>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>

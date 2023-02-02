@@ -3,7 +3,7 @@ import { IconButton, TextField } from '@mui/material'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon, SendIcon } from 'components/material-ui/icons'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
 export default function RecentComments(props: any) {
@@ -22,26 +22,26 @@ export default function RecentComments(props: any) {
     // console.log(recentComments, '-----recent comments-------')
     const recentComments = [
         {
-            firstName: 'ali', lastName: 'check', description: 'hay', createdAt: '27-02-2022', time: '10:26 PM'
+            firstName: 'ali', lastName: 'check', description: 'hay', createdAt: '27-12-2022', time: '10:26 PM'
         },
         {
-            firstName: 'ali akbar', lastName: 'check', description: 'hay ali', createdAt: '27-02-2022', time: '10:26 PM'
+            firstName: 'ali akbar', lastName: 'check', description: 'hay ali', createdAt: '27-1202-2022', time: '10:26 PM'
         },
         {
-            firstName: 'mubeen', lastName: 'check', description: 'hay how  are you', createdAt: '27-02-2022', time: '10:26 PM'
+            firstName: 'mubeen', lastName: 'check', description: 'hay how  are you', createdAt: '273-02-2022', time: '10:26 PM'
         },
         {
-            firstName: 'talha', lastName: 'check', description: 'hay i am fine', createdAt: '27-02-2022', time: '10:26 PM'
+            firstName: 'talha', lastName: 'check', description: 'hay i am fine', createdAt: '27-024-2022', time: '10:26 PM'
         },
         {
-            firstName: 'khan', lastName: 'check', description: 'hay good', createdAt: '27-02-2022', time: '10:26 PM'
+            firstName: 'khan', lastName: 'check', description: 'hay good', createdAt: '27-02-20224', time: '10:26 PM'
         },
 
     ]
     return (
         <>
             {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
-            {recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))}
+            {recentComments.map((comment: any) => (<Fragment key={comment.createdAt}><RecentCommentsList comment={comment} /></Fragment>))}
 
 
             <CBox display='flex'>
