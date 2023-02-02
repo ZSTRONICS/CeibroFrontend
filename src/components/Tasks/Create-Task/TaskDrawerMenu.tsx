@@ -11,6 +11,7 @@ import UploadImage from "components/uploadImage/UploadImage";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import {
+  deDateFormat,
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
@@ -18,6 +19,7 @@ import {
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import { ProjectTitles } from "constants/interfaces/project.interface";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -32,7 +34,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
   //const projectData = [{ label: project.title, id: project._id }];
-
+  const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
   let allMembersOfProject: any[];
@@ -119,7 +121,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = new Date(String(e)).toLocaleString('de').slice(0,10).replaceAll('.','-');
+              const currentDate = deDateFormat(e)
               //  props.setFieldValue("dueDate", currentDate);
             }}
           />
@@ -173,7 +175,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 id="combo-box-demo1"
                 size="small"
                 defaultValue={{ label: project.title, id: project._id }}
-                options={allProjectsTitles}
+                options={notShowDefaultProject}
                 getOptionLabel={(option:any)=> option.label}
                 onChange={(e, value) => {
                   handleProjectChange(value);

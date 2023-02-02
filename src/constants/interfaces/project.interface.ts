@@ -128,3 +128,8 @@ export interface ProfileWork {
   time: boolean;
   timeRequired: boolean;
 }
+
+export interface ProjectTitles{
+  label: string
+  value: string
+}

@@ -1,24 +1,19 @@
-import { Divider, makeStyles, Typography } from '@material-ui/core';
-import { Link } from '@mui/material';
-import { bgcolor } from '@mui/system';
+import { makeStyles } from '@material-ui/core';
 import CButton from 'components/Button/Button';
 import { CBox } from 'components/material-ui';
-import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard';
-import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index'
-import TaskDetailHeader from './TaskDetailHeader';
-import Chip from '@mui/material/Chip';
-import { theme } from 'theme';
-import RecentComments from './RecentComments';
-import CenterDivider from 'components/centerDivider/CenterDivider';
-import { useSelector } from 'react-redux';
+import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index';
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
+import TaskDetailHeader from './TaskDetailHeader';
+
+import RecentComments from './RecentComments';
+
 
 interface Props {
     subtaskDetail: SubtaskInterface
 }
 export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
-    // console.log('subtask--->', subtaskDetail)
+
     return (
         <div>
             <CBox className={classes.wrapper}>

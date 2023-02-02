@@ -136,7 +136,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
               </Grid>
               <Grid item xs={2} style={styles.trashWrapper}>
                {enable&& <IconButton onClick={(e) => handleToggle(e, i)} tabIndex={i}>
-                  <img src={assets.moreIcon} className={classes.moreIcon} />
+                  <img src={assets.moreIcon} className={classes.moreIcon} alt=""/>
                 </IconButton>}
                 {btnIndex === i && (
                   <RollOver handleToggle={handleToggle}>
@@ -189,7 +189,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                       }`}
                       onClick={()=> handleClick(member._id)}
                     >
-                      <img src={assets.DeleteIcon} className={`width-16`} />
+                      <img src={assets.DeleteIcon} className={`width-16`} alt="deleteIcon"/>
                       <Typography
                         className={`${classes.menuText} align-center ${classes.deleteText}`}
                       >

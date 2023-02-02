@@ -1,18 +1,21 @@
-import { Divider, Typography } from '@material-ui/core'
+import { useState } from 'react'
 
+// mui
+import { Divider, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
-import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
+
+// components
 import { AssignedTag, TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
 import { AssignedTo, Member } from 'constants/interfaces/subtask.interface'
-import { useState } from 'react'
+
 interface Props {
     allSubTaskOfTask: any
 }
+
 export default function TaskDetailHeader(props: any) {
     const classes = useStyles()
     const [showMore, setShowMore] = useState<boolean>(false);
-    // console.log(props && props?.subtaskDetail, 'sub task')
     const membersList = props?.subtaskDetail?.assignedTo.map((member: AssignedTo) => member.members).flat(1)
     return (
         <>

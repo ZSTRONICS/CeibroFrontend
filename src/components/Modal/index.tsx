@@ -4,16 +4,14 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  DialogContentText,
   Grid,
   Typography,
 
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Clear } from "@material-ui/icons";
+// import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 
 interface Props {
   isOpen: boolean;
@@ -46,13 +44,11 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
             </Grid> */}
           </Grid>
         </DialogTitle>
-        <DialogContent >
+        <DialogContent>
           {children}
         </DialogContent>
-        <DialogActions>
-
-
-        </DialogActions>
+        {/* <DialogActions>
+        </DialogActions> */}
       </Dialog>
     </>
   );

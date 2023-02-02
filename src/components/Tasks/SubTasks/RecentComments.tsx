@@ -7,8 +7,10 @@ import { useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
 export default function RecentComments(props: any) {
-    const comments = props.subtaskDetail && props.subtaskDetail.recentComments;
+    // const comments = props.subtaskDetail && props.subtaskDetail.recentComments;
     // const [recentComments, setRecentComments] = useState<[]>(comments);
+
+    // const [recentComments, setRecentComments] = useState<[]>('');
     const [userNewComment, setUserNewComment] = useState<string>();
     const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const classes = useStyles()

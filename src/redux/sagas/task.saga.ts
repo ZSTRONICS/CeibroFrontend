@@ -13,6 +13,11 @@ const createSubTask = apiCall({
   method: "post",
   path: "/task/subtask",
 })
+const taskSubtaskStateChange = apiCall({
+  type: TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE,
+  method: "post",
+  path: "/task/st/statechange",
+})
 
 const getTask = apiCall({
     type: TASK_CONFIG.GET_TASK,
@@ -41,6 +46,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
     yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
     yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)
+    yield takeLatest(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE, taskSubtaskStateChange)
   }
 
  export default taskSaga

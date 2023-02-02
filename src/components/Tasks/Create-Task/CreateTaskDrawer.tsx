@@ -18,10 +18,10 @@ const CreateTaskDrawer = () => {
   let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask)
 
   const handleClose = () => {
-    dispatch(taskActions.closeTaskDrawer());
+    dispatch(taskActions.closeTaskDrawer())
     subTaskOfTask.subtasks = []
   }
-  console.log(subTaskOfTask.task, 'data')
+
 
   return (<>
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
