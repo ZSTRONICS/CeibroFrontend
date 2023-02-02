@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { useState,Fragment } from "react";
 import { Box, Grid, Typography, Divider, Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
 import { styled } from "@mui/material/styles";
@@ -19,6 +19,9 @@ import { SubtaskState } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 import { TASK_CONFIG } from "config/task.config";
+import CustomModal from "components/Modal";
+import StateChangeComment from "./StateChangeComment";
+
 interface Props {
   subTaskDetail: SubtaskInterface
 }
@@ -34,17 +37,18 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   const bgcolor = getColorByStatus(myState ? myState.userState : '')
   const dispatch = useDispatch();
-
-  const ITEM_HEIGHT = 48;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+  const [subTask, setSubTask]: any = useState(false)
+  // const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  // const open = Boolean(anchorEl);
+  // const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
+const handleCloseModal=()=>{
+  setSubTask((prev:any)=>!prev)
+}
   const AssignedToList = () => {
     return (<>
       {membersList.map((item: Member) => {
@@ -79,22 +83,32 @@ function SubTaskCard({ subTaskDetail }: Props) {
     dispatch(taskActions.openSubtaskDetailDrawer())
 
   }
-  const handleRejectSubTask = () => { 
-  //_id, taskId, rejectionComment, state="rejected"
+  const rejectedPayload  = {
+    subTaskId:_id,
+    taskId:taskId,
+    state: "rejected"
+  };
+  const handleRejectSubTask = () => {
+    //_id, taskId, rejectionComment, state="rejected"
+      setSubTask(true)
+  }
+
+  const handleAcceptedSubTask = () => {
     const payload  = {
       subTaskId:_id,
       taskId:taskId,
-      comment:'testing',
-      state: "rejected"
+      state: "accepted"
     };
-
     dispatch(
-      taskSubtaskStateChange({body: payload}))
+      taskSubtaskStateChange({
+        body: payload,
+      })
+    );
   }
   return (<>
     {myState?.userState ? <>
       <Grid
-        onClick={handleSubTaskCard}
+        // onClick={handleSubTaskCard}
         className={classes.taskDetailContainer}
         item container
         justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
@@ -163,7 +177,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
           <CBox display='flex' justifyContent='flex-end' width='100%'>
             {assignToMemberIds.includes(user._id) && myState?.userState === SubtaskState.Assigned &&
               <>
-                <CButton label={'Accept'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                <CButton label={'Accept'} onClick={handleAcceptedSubTask} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
                 <CButton label={'Reject'} onClick={handleRejectSubTask} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
               </>
             }
@@ -177,16 +191,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 <CButton label={'Delete'} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
               </>
             }
-
           </CBox>
         </Grid>
       </Grid>
       <Divider sx={{ width: '100%' }} />
     </>:<></>}
+    <CustomModal title="Comment is required before doing this action" isOpen={subTask} handleClose={handleCloseModal} children={<StateChangeComment handleClose={handleCloseModal} payloadData={rejectedPayload} />} />
  </> );
 }
-
-
 
 export default SubTaskCard;
 

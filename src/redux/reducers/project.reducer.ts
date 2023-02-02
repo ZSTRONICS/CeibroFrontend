@@ -67,6 +67,7 @@ import {
   groupTemplate,
   projectProfileInterface,
   userRolesPermissions,
+  ProjectTitles,
 } from "constants/interfaces/project.interface";
 import { GET_PROFILE } from "config/auth.config";
 import { PlaylistAddOutlined } from "@material-ui/icons";

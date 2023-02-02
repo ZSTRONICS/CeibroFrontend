@@ -38,6 +38,16 @@ const taskActions = {
             type: TASK_CONFIG.CLOSE_TASK_DETAIL_DRAWER,
         };
     },
+    openConfirmModal: () => {
+        return {
+            type: TASK_CONFIG.OPEN_CONFIRM_DRAWER,
+        };
+    },
+    closeConfirmModal: () => {
+        return {
+            type: TASK_CONFIG.CLOSE_CONFIRM_DRAWER,
+        };
+    },
 }
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)

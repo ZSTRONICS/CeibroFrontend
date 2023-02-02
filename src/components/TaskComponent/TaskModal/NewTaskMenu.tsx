@@ -22,7 +22,7 @@ function NewTaskMenu(props: any) {
 
   const { user } = useSelector((state: RootState) => state.auth);
   const [showDate, setShowDate]= useState<any>()
-
+  const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
   if (doOnce) {
     props.setFieldValue("dueDate", todayDate);
     setDoOnce(false)
@@ -108,7 +108,7 @@ function NewTaskMenu(props: any) {
             disablePortal
             id="combo-box-demo1"
             size="small"
-            options={allProjectsTitles}
+            options={notShowDefaultProject}
             getOptionLabel={(option:any)=> option.label}
             isOptionEqualToValue={(option:any,label:any)=> option.label===label}
             onChange={(e, value) => {

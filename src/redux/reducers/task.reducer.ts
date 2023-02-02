@@ -14,6 +14,7 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
+    openConfirmModal: boolean
     subTaskDetailDrawer: boolean
     subTaskopen: boolean
     selectedTaskId: string
@@ -45,6 +46,7 @@ const intialStatue: TaskReducerInt = {
     totalPages: 0,
     totalResults: 0,
     taskLoading: false,
+    openConfirmModal: false,
     dialogOpen: false,
     selectedTaskId: '',
     taskDrawerOpen: false,
@@ -245,6 +247,16 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                         subTaskDetailDrawer: false
                     }
             }
+            case TASK_CONFIG.OPEN_CONFIRM_DRAWER:
+                return {
+                    ...state,
+                    openConfirmModal: true
+                }
+            case TASK_CONFIG.CLOSE_CONFIRM_DRAWER:
+                return {
+                    ...state,
+                    openConfirmModal: false
+                }
         default:
             return state
     }

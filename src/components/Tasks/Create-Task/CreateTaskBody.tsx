@@ -19,7 +19,6 @@ const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
         <SubTaskStatusDrawer task={task}/>
       </div>
       <Grid container className={classes.body}>
-        {/* <DrawerSubTask/> */}
         {subtasks?.length > 0 ? (
           <SubTaskList results={subtasks} />
         ) : (<p style={{width: '100%',
