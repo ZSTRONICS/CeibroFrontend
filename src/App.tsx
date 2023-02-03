@@ -209,10 +209,7 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
-          // case TASK_CONFIG.TASK_UPDATE_PUBLIC: 
-
-          //  break
-
+          case TASK_CONFIG.TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.TASK_UPDATE_PRIVATE:
             if (!data.access.includes(user._id)) {
               return
@@ -223,8 +220,17 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
+          case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
+           // console.log('SUB_TASK_UPDATE_PUBLIC', data)
+            dispatch({
+              type: TASK_CONFIG.UPDATE_SUBTASK_IN_STORE,
+              payload: data,
+            });
+            break
+
+
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
-            console.log('TASK_SUBTASK_UPDATED',data.results)
+           // console.log('TASK_SUBTASK_UPDATED', data.results)
             try {
               const payload = {
                 task: data.results.task,

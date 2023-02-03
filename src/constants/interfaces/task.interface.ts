@@ -11,6 +11,7 @@ export enum State {
 export enum SubtaskState {
   Assigned = "assigned",
   Accepted = "accepted",
+  Start = "start",
   Rejected = "rejected",
   Draft = "draft",
   Done = "done",

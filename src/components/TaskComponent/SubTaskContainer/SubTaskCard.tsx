@@ -35,7 +35,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
   const myState = state.find(localState => String(localState.userId) === String(user._id))
   const subTaskDate = dueDate.replaceAll('-', '.').replace(',', '')
-  let subtaskCreatedAt=  new Date(String()).toLocaleString('de').slice(0,10).replaceAll(',','')
+  let subtaskCreatedAt = new Date(String()).toLocaleString('de').slice(0, 10).replaceAll(',', '')
   const bgcolor = getColorByStatus(myState ? myState.userState : '')
   const dispatch = useDispatch();
   const [subTask, setSubTask]: any = useState(false)
@@ -67,20 +67,20 @@ function SubTaskCard({ subTaskDetail }: Props) {
       <>
         <CustomStack gap={1.25}>
           <TaskStatus sx={{ background: `${bgcolor}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState?.userState}</TaskStatus>
-            <LabelTag sx={{fontSize:'10px'}}>
+          <LabelTag sx={{ fontSize: '10px' }}>
             Due date
-            </LabelTag>
-          <AssignedTag sx={{fontSize:'11px'}}>
+          </LabelTag>
+          <AssignedTag sx={{ fontSize: '11px' }}>
             {subTaskDate}
           </AssignedTag>
-        <CustomStack gap={0.8}>
-        <LabelTag sx={{fontSize:'10px'}}>
-            Created on
+          <CustomStack gap={0.8}>
+            <LabelTag sx={{ fontSize: '10px' }}>
+              Created on
             </LabelTag>
-            <AssignedTag sx={{fontSize:'11px'}}>
-            {subtaskCreatedAt}
+            <AssignedTag sx={{ fontSize: '11px' }}>
+              {subtaskCreatedAt}
             </AssignedTag>
-        </CustomStack>
+          </CustomStack>
         </CustomStack>
       </>
     );
@@ -102,16 +102,15 @@ function SubTaskCard({ subTaskDetail }: Props) {
   };
   const handleRejectSubTask = (event: any) => {
     event.stopPropagation()
-    //_id, taskId, rejectionComment, state="rejected"
     setSubTask(true)
   }
 
-  const handleAcceptedSubTask = (event: any) => {
+  const handleSubTaskStateChange = (event: any, state: string) => {
     event.stopPropagation()
     const payload = {
       subTaskId: _id,
       taskId: taskId,
-      state: "accepted"
+      state: state
     };
     dispatch(
       taskSubtaskStateChange({
@@ -119,22 +118,24 @@ function SubTaskCard({ subTaskDetail }: Props) {
       })
     );
   }
+
+
   return (
     <div className={classes.main}>
       {myState?.userState ? <>
         <Grid
           onClick={handleSubTaskCard}
           className={classes.taskDetailContainer}
-           item container
+          item container
           justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
 
           <Grid item>{SubHeader()}</Grid>
           <Grid item container lg={7} justifyContent='space-between'>
             <CustomStack columnGap={0.5}>
-              <LabelTag sx={{fontSize:'12px'}}>Assigned to</LabelTag>
+              <LabelTag sx={{ fontSize: '12px' }}>Assigned to</LabelTag>
               {membersList.map((member: Member, i: any) => {
                 return (<Fragment key={member._id}>
-                  {i === 0 && <AssignedTag sx={{fontSize:'12px'}}>{`${member.firstName} ${member.surName}`}</AssignedTag>}
+                  {i === 0 && <AssignedTag sx={{ fontSize: '12px' }}>{`${member.firstName} ${member.surName}`}</AssignedTag>}
                 </Fragment>
                 )
               })}
@@ -145,12 +146,12 @@ function SubTaskCard({ subTaskDetail }: Props) {
               }></CustomBadge>}
             </CustomStack>
             <CustomStack gap={0.45}>
-            <LabelTag sx={{fontSize:'12px'}}>
-             Created by
-            </LabelTag>
-            <AssignedTag sx={{fontSize:'12px'}}>
-            {`${subTaskDetail.creator.firstName} ${subTaskDetail.creator.surName}`}
-            </AssignedTag>
+              <LabelTag sx={{ fontSize: '12px' }}>
+                Created by
+              </LabelTag>
+              <AssignedTag sx={{ fontSize: '12px' }}>
+                {`${subTaskDetail.creator.firstName} ${subTaskDetail.creator.surName}`}
+              </AssignedTag>
             </CustomStack>
           </Grid>
           <Grid item>
@@ -200,12 +201,19 @@ function SubTaskCard({ subTaskDetail }: Props) {
             <CBox display='flex' justifyContent='flex-end' width='100%'>
               {assignToMemberIds.includes(user._id) && myState?.userState === SubtaskState.Assigned &&
                 <>
-                  <CButton label={'Accept'} onClick={handleAcceptedSubTask} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                  <CButton label={'Accept'} onClick={(e: any) => handleSubTaskStateChange(e, SubtaskState.Accepted)} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
                   <CButton label={'Reject'} onClick={handleRejectSubTask} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
                 </>
               }
               {myState?.userState === SubtaskState.Ongoing && assignToMemberIds.includes(user._id) &&
-                <CButton label={'Done'} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                <CButton label={'Done'} onClick={(e: any) => handleSubTaskStateChange(e, SubtaskState.Done)} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+              }
+
+              {myState?.userState === SubtaskState.Accepted && assignToMemberIds.includes(user._id) &&
+                <>
+                  <CButton label={'Start'} onClick={(e: any) => handleSubTaskStateChange(e, SubtaskState.Start)} variant='outlined' styles={{ borderColor: '#0076C8', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#0076C8', marginRight: 15 }} />
+                  <CButton label={'Reject'} onClick={handleRejectSubTask} variant='outlined' styles={{ borderColor: '#FA0808', fontSize: 12, fontWeight: 'bold', borderWidth: 2, color: '#FA0808' }} />
+                </>
               }
 
               {myState?.userState === SubtaskState.Draft && String(creator._id) === String(user._id) &&
@@ -232,7 +240,7 @@ export default SubTaskCard;
 const HeaderConfirmation = () => {
   return (
     <CBox display='flex' alignItems='center'>
-      <InfoIcon color='red'/>
+      <InfoIcon color='red' />
       <CBox fontSize={16} color='#FA0808' fontWeight={600} ml={1}>
         Reject Subtask
       </CBox>
