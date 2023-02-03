@@ -6,7 +6,7 @@ type TProps = {
 };
 
  const CustomImg:React.FC<TProps> =(props) =>{
-  return (<img {...props}/>)
+  return (<img {...props} alt=""/>)
 }
 
 export default CustomImg

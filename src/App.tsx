@@ -50,8 +50,8 @@ import {
 // axios
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import TaskDetailDrawer from "components/Tasks/SubTasks/TaskDetailDrawer";
 import { TASK_CONFIG } from "config/task.config";
+import taskActions from "redux/action/task.action";
 
 interface MyApp { }
 
@@ -66,6 +66,8 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      // dispatch(taskActions.openSubtaskDetailDrawer())
+      // dispatch(taskActions.openTaskDrawer())
       if (socket.getSocket() !== null) {
         return;
       }
@@ -221,20 +223,21 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
-          case TASK_CONFIG.TASK_SUBTASK_UPDATED: {
+          case TASK_CONFIG.TASK_SUBTASK_UPDATED:
+            console.log('TASK_SUBTASK_UPDATED',data.results)
             try {
               const payload = {
                 task: data.results.task,
                 subtask: data.results.subtasks[0]
               }
               dispatch({
-                type: TASK_CONFIG.UPDATE_TASK_SUBTASK,
+                type: TASK_CONFIG.TASK_SUBTASK_UPDATED,
                 payload: payload,
               });
             } catch (e) {
-              
+              console.error(e)
             }
-          } break
+            break
 
         }
 
@@ -250,11 +253,9 @@ const App: React.FC<MyApp> = () => {
       <CssBaseline />
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
-      {/* {taskDrawer&&<CDrawer/>} */}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
-      <TaskDetailDrawer />
       <RouterConfig />
     </div>
   );

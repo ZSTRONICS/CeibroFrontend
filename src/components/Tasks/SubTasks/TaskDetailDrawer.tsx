@@ -1,47 +1,65 @@
 import React from 'react'
 import { Drawer } from '@material-ui/core';
-// import { OPEN_TASK_DETAIL_DRAWER } from 'config/task.config';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/reducers';
 import colors from '../../../assets/colors';
 import { makeStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import taskActions from 'redux/action/task.action';
 import DrawerHeader from 'components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader';
 import { Grid } from '@mui/material';
-import TaskDrawerMenu from '../Create-Task/TaskDrawerMenu';
 import TaskDetail from './TaskDetail';
+import { TASK_CONFIG } from 'config/task.config';
+import { RootState } from 'redux/reducers';
+import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTasks.interface';
 
-export default function TaskDetailDrawer() {
+function TaskDetailDrawer() {
+
     const classes = useStyles()
     const dispatch = useDispatch()
+    let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask)
+    
+    const subTaskDetailDrawer = useSelector(
+        (store: RootState) => store.task.subTaskDetailDrawer)
 
-    let drawerDetailOpen = useSelector((state: RootState) => state.task.taskDetailDrawer)
+    const { selectedSubtaskFroDetailView } = useSelector(
+        (store: RootState) => store.task)
+
     const handleClose = () => {
-        // dispatch(taskActions.closeTaskDetailDrawer())
+        dispatch({
+            type: TASK_CONFIG.SET_SUBTASK,
+            payload: null,
+        });
+
+        dispatch(taskActions.closeSubtaskDetailDrawer())
     }
+
     return (
         <div>
-            <Drawer onClose={handleClose} anchor="right" open={drawerDetailOpen}>
+            <Drawer onClose={handleClose} anchor="right" open={subTaskDetailDrawer} className={classes.subTaskDrawer}>
                 <div className={classes.outerWrapper}>
-                    <DrawerHeader title='Task Detail' handleClose={handleClose} />
+                    <DrawerHeader title={subTaskOfTask?.task?.title} handleClose={handleClose} />
                     <Grid container>
-
-                        <Grid item md={12} sx={{ background: 'white' }}>
-                            <TaskDetail />
-                        </Grid>
+                        {selectedSubtaskFroDetailView && selectedSubtaskFroDetailView ? <Grid item md={12} sx={{ background: 'white' }}>
+                            <TaskDetail subtaskDetail={selectedSubtaskFroDetailView} />
+                        </Grid> : <>OOPS! there is no detail available</>}
                     </Grid>
                 </div>
-
-
             </Drawer>
         </div>
     )
 }
+
+export default TaskDetailDrawer
+
 const useStyles = makeStyles({
     // drawerContainer:{
     //     background:'#F5F7F8'
     // },
+    subTaskDrawer: {
+        '& .MuiDrawer-paper': {
+            maxWidth: '90%',
+            minWidth: '90%'
+        }
+    },
     bodyWrapper: {
         maxWidth: '878px',
         width: '100%',
@@ -64,11 +82,9 @@ const useStyles = makeStyles({
         }
     },
     outerWrapper: {
-        width: 'calc(100vw - 200px)',
+        width: '100%',
         backgroundColor: colors.lightGrey,
         height: '100vh',
-        '@media (max-width:960px)': {
-            width: '100vw'
-        }
+
     }
 })

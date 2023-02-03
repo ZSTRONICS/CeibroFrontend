@@ -8,7 +8,7 @@ import { FaTrash } from 'react-icons/fa'
 const CreateProjectBody = () => {
     const classes = useStyles()
 
-    const selectedMenue = useSelector((state: RootState) => state.project.menue)
+    // const selectedMenue = useSelector((state: RootState) => state.project.menue)
 
     return (
         <Grid container justifyContent="flex-end" className={classes.body}>

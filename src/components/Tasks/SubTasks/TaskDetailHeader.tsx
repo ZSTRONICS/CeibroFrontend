@@ -1,56 +1,98 @@
+import { useState } from 'react'
+
+// mui
 import { Divider, Typography } from '@material-ui/core'
-
 import { makeStyles } from '@material-ui/core'
-import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
-import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
 
-export default function TaskDetailHeader() {
+// components
+import { AssignedTag, CustomStack, LabelTag, TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
+import { AssignedTo, Member } from 'constants/interfaces/subtask.interface'
+import { useSelector } from 'react-redux'
+import { RootState } from 'redux/reducers'
+import { getColorByStatus } from 'config/project.config'
+import { Grid } from '@mui/material'
+import { AllSubtasksOfTaskResult } from 'constants/interfaces/AllSubTasks.interface'
+
+export default function TaskDetailHeader(props: any) {
     const classes = useStyles()
+    const [showMore, setShowMore] = useState<boolean>(false);
+    const { user } = useSelector((store: RootState) => store.auth);
 
+    const membersList = props?.subtaskDetail?.assignedTo.map((member: AssignedTo) => member.members).flat(1)
+    const myState = props?.subtaskDetail.state.find((localState:any) => String(localState.userId) === String(user._id))
+    let subtaskCreatedAt=  new Date(String(props?.subtaskDetail?.createdAt)).toLocaleString('de').slice(0,10).replaceAll(',','')
+    let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask)
+    
     return (
         <>
             <CBox display='flex' alignItems='center' justifyContent='space-between'>
-                <CBox flex='1 1 0' display='flex' alignItems='center' >
-                    {/* <Typography >Draft</Typography>  */}
-                    <TaskStatus className={classes.status}>Draft</TaskStatus>
-
-                    <Typography style={{ fontSize: "11px", color: '#7D7E80' }}>
-                        Due Date
-                    </Typography>
-                    &nbsp;
-                    <Typography style={{ fontSize: "11px", fontWeight: 600 }}>
-                        11.02.2021
-                        {/* {subTaskDate} */}
-                    </Typography>
-                </CBox>
-                <CBox flex='1 1 0' display='flex' justifyContent='flex-end'>
-                    <CButton label='close' variant='outlined' />
-                </CBox>
-
+            <CustomStack gap={1.25}>
+          <TaskStatus sx={{ background: `${getColorByStatus(myState ? myState.userState : '')}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState?.userState}</TaskStatus>
+            <LabelTag sx={{fontSize:'10px'}}>
+            Due date
+            </LabelTag>
+          <AssignedTag sx={{fontSize:'11px'}}>
+            {props?.subtaskDetail?.dueDate?.replaceAll('-','.').replace(',','')}
+          </AssignedTag>
+          <Divider orientation='vertical' style={{ height: 10, width: 2 }} />
+        <CustomStack gap={0.8}>
+         <LabelTag sx={{fontSize:'10px'}}>
+            Created on
+            </LabelTag>
+            <AssignedTag sx={{fontSize:'11px'}}>
+            {subtaskCreatedAt}
+            </AssignedTag>
+        </CustomStack>
+        </CustomStack>
             </CBox>
             <CBox mt={3}>
-                <Typography className={classes.heading} >Title</Typography>
-                <Typography className={classes.description} >Magnis dis parturient montes, nascetur Aenean eu leo quam. Pellentesque ornare </Typography>
-                <Divider />
+                <Typography className={classes.heading}>Title</Typography>
+                <Typography className={classes.description} >{props?.subtaskDetail?.title}</Typography>
+                <Divider/>
             </CBox>
-            <CBox mt={1.5}>
-                <Typography className={classes.heading} >Project</Typography>
-                <Typography className={classes.description} >Paevälja 112-6</Typography>
-                <Divider />
-            </CBox>
+            <Grid container mt={3} gap={5}>
+                <Grid item md={4}>
+                    <Typography className={classes.heading} >Creator</Typography>
+                    <Typography className={classes.description} >{`${props?.subtaskDetail?.creator?.firstName} ${props?.subtaskDetail?.creator?.surName}`}</Typography>
+                    <Divider/>
+                </Grid>
+                <Grid item md={4}>
+                    <Typography className={classes.heading} >Project</Typography>
+                    <Typography className={classes.description} >{subTaskOfTask.task.project.title}</Typography>
+                    <Divider />
+                </Grid>
+            </Grid>
+
             <CBox mt={1.5}>
                 <Typography className={classes.heading} >Assign to</Typography>
-                <Typography className={classes.description} >Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,Kristo Vunukainen,</Typography>
+                <CBox className={classes.description}>
+                    {membersList.map((member: Member, i: any) => {
+                        if (i === membersList.length - 1) {
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}`}</AssignedTag>)
+                        } else {
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>)
+                        }
+                    })}
+                </CBox>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>
-                <Typography className={classes.heading} >Description</Typography>
-                <Typography className={classes.description} >Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Sed posuere consectetur est at lobortis. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum.</Typography>
+                <Typography className={classes.heading}> Description </Typography>
+                <Typography className={classes.description}>
+                    {showMore ? props.subtaskDetail.description : `${props.subtaskDetail.description.substring(0, 550)}`}
+
+                </Typography>
+                {props.subtaskDetail.description.length >= 549 ?
+                    <Typography className={classes.showHideBtn} onClick={() => setShowMore(!showMore)}>
+                        {showMore ? 'show less' : 'show more'}
+                    </Typography>
+                    : ''}
                 <Divider />
             </CBox></>
     )
 }
+
 const useStyles = makeStyles({
     wrapper: {
         padding: '25px 20px',
@@ -62,7 +104,7 @@ const useStyles = makeStyles({
         color: '#7D7E80'
     },
     description: {
-        fontSize: "12px", fontWeight: 600, color: '#000000', marginBottom: 5
+        display: 'flex', fontSize: "12px", fontWeight: 600, color: '#000000', marginBottom: 5
     },
 
     status: {
@@ -78,6 +120,15 @@ const useStyles = makeStyles({
         height: 19,
         marginRight: '5px !important',
 
+    },
+    showHideBtn: {
+        fontSize: 16,
+        fontWeight: 600,
+        fontFamily: 'Intel',
+        color: '#5ba6da',
+        '&:hover': {
+            cursor: 'pointer'
+        }
     }
 
 })

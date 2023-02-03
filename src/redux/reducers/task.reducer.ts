@@ -14,7 +14,8 @@ interface TaskReducerInt {
     totalResults: number
     taskLoading: boolean
     dialogOpen: boolean
-    taskDetailDrawer: boolean
+    openConfirmModal: boolean
+    subTaskDetailDrawer: boolean
     subTaskopen: boolean
     selectedTaskId: string
     taskDrawerOpen: boolean
@@ -22,6 +23,7 @@ interface TaskReducerInt {
     loadingSubTask: boolean
     loadingSubTaskofTask: boolean
     allSubTaskOfTask: AllSubtasksOfTaskResult | any
+    selectedSubtaskFroDetailView:SubtaskInterface| any
     projectMembersOfSelectedTask: { label: string, id: string }[]
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
@@ -34,7 +36,7 @@ const intialStatue: TaskReducerInt = {
     allSubTaskOfTask: {},
     allTask: [],
     allSubTaskList: [],
-
+    selectedSubtaskFroDetailView:{},
     loadingSubTaskofTask: false,
     subTaskopen: false,
     loadingSubTask: false,
@@ -44,10 +46,11 @@ const intialStatue: TaskReducerInt = {
     totalPages: 0,
     totalResults: 0,
     taskLoading: false,
+    openConfirmModal: false,
     dialogOpen: false,
     selectedTaskId: '',
     taskDrawerOpen: false,
-    taskDetailDrawer: false
+    subTaskDetailDrawer: false
 }
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
@@ -90,7 +93,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskList: [action.payload, ...state.allSubTaskList]
             }
 
-        case TASK_CONFIG.UPDATE_TASK_SUBTASK:
+        case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             const inComingTask = action.payload.task
             const incommingSubTask = action.payload.subtask
             const taskIndex = state.allTask.findIndex(task => task._id === inComingTask._id)
@@ -162,6 +165,12 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
+       case TASK_CONFIG.SET_SUBTASK:{
+            return{
+                ...state,
+                selectedSubtaskFroDetailView: action.payload
+            }
+        }
 
         case TASK_CONFIG.SELECTED_TASK_ID:
             return {
@@ -198,38 +207,55 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 loadingSubTaskofTask: false,
             };
         }
-        case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK):
+        case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK):{
             return {
                 ...state,
                 allSubTaskOfTask: action.payload.results
             }
-        case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK:
+        }
+        case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK:{
             return {
                 ...state,
                 projectMembersOfSelectedTask: action.payload
             }
-
-        case TASK_CONFIG.SELECTED_TASK_ADMINS:
+        }
+        case TASK_CONFIG.SELECTED_TASK_ADMINS:{
+           
             return {
                 ...state,
-                selectedTaskAdmins: action.payload
+                selectedTaskAdmins: action.payload,
             }
-        case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS:
+            }
+        case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS:{
             return {
                 ...state,
                 taskAssignedToMembers: action.payload
             }
-        //    case OPEN_TASK_DETAIL_DRAWER:
-        //         return {
-        //             ...state,
-        //             taskDetailDrawer: true
-        //         }
-        //         case CLOSE_TASK_DETAIL_DRAWER:
-        //             return {
-        //                 ...state,
-        //                 taskDetailDrawer: false
-        //             }
+        }
+        case TASK_CONFIG.OPEN_SUBTASK_DETAIL_DRAWER:{
+                return {
+                    ...state,
+                    subTaskDetailDrawer: true
+                }
+            }
 
+        case TASK_CONFIG.CLOSE_TASK_DETAIL_DRAWER:{
+            
+                return {
+                        ...state,
+                        subTaskDetailDrawer: false
+                    }
+            }
+            case TASK_CONFIG.OPEN_CONFIRM_DRAWER:
+                return {
+                    ...state,
+                    openConfirmModal: true
+                }
+            case TASK_CONFIG.CLOSE_CONFIRM_DRAWER:
+                return {
+                    ...state,
+                    openConfirmModal: false
+                }
         default:
             return state
     }

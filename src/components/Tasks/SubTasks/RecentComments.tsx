@@ -1,28 +1,53 @@
 import { Divider, Grid, makeStyles } from '@material-ui/core'
-import { IconButton, TextField } from '@mui/material'
+import { Box, IconButton, TextField, Typography } from '@mui/material'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon, SendIcon } from 'components/material-ui/icons'
+import { Fragment, useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
-export default function RecentComments() {
+export default function RecentComments(props: any) {
+    const [userNewComment, setUserNewComment] = useState<string>();
     const classes = useStyles()
+    
+    const recentComments = [
+        {
+            firstName: 'ali', lastName: 'Haider', description: 'hay', createdAt: '27-12-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'ali ', lastName: 'akbar', description: 'hay ali', createdAt: '27-1202-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'mubeen', lastName: 'talha', description: 'hay how  are you', createdAt: '273-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'talha', lastName: 'mubeen', description: 'hay i am fine', createdAt: '27-024-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'khan', lastName: 'mubeen', description: 'hay good', createdAt: '27-02-20224', time: '10:26 PM'
+        },
+
+    ]
     return (
         <>
-            {[...Array(5)].map(() => (
+            <Box>
+                <Typography className= 'recentComment' sx={{}}>
+                Recent Comments
+                </Typography>
+            </Box>
 
-                <RecentCommentsList />
-
-            )
-
-            )}
-
+            {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
+            {recentComments.map((comment: any) => (<Fragment key={comment.createdAt}><RecentCommentsList comment={comment} /></Fragment>))}
             <CBox display='flex'>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
                     <TextField
                         id="standard-multiline-flexible"
                         // label="Multiline"
                         placeholder="Enter new comment..."
+                        onChange={(e) => {
+                            setUserNewComment(e.target.value)
+                        }}
+                        value={userNewComment}
                         multiline
                         maxRows={5}
                         minRows={5}
@@ -42,10 +67,13 @@ export default function RecentComments() {
                             </IconButton>
                             <Divider orientation='vertical' flexItem variant='fullWidth' style={{ height: 15, width: 1.5, margin: 'auto 8px' }} />
                             &nbsp;
-                            <CButton startIcon={<SendIcon />} style={{ maxWidth: 45 }} variant='contained' />
-
-
-
+                            <CButton
+                                startIcon={<SendIcon />}
+                                //handle click to send newMessage here
+                                type={"submit"}
+                                style={{ maxWidth: 45 }}
+                                variant='contained'
+                            />
                         </CBox>
                     </CBox>
                 </Grid>

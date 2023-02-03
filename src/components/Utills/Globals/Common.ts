@@ -1,9 +1,3 @@
-import React from 'react'
-import { UserInfo } from "constants/interfaces/subtask.interface";
-
-
-
-
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: []): any => {
   // eslint-disable-next-line array-callback-return
   return projectWithMembers.filter((proj: any) => {
@@ -16,7 +10,6 @@ export const getSelectedProjectMembers = (projectId: string, projectWithMembers:
 };
 
 export const getUserFormatedDataForAutoComplete = (arr: any) => {
-  
   return arr?.map((member: any) => {
     return {
       label: `${member?.firstName} ${member?.surName}`,
@@ -40,4 +33,13 @@ export const getUniqueObjectsFromArr =(arr:any[])=>{
   * **/
 export const isTrue =(arr:any[], itemId:string)=>{
  return arr.some((item:any)=> item._id === itemId)
+}
+
+// de date format 
+ /**
+  * @param return dd-mm-yyyy
+  * @param dateString date string is required
+  * **/
+export const deDateFormat =(dateStr:Date)=>{
+  return new Date(String(dateStr)).toLocaleString('de').slice(0,10).replaceAll('.','-')
 }

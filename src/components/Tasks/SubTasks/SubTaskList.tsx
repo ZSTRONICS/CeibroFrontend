@@ -6,13 +6,14 @@ import { Box } from "@mui/material";
 import NoData from "components/Chat/NoData";
 import { CBox } from "components/material-ui";
 import { makeStyles } from "@material-ui/core";
+import TaskDetailDrawer from "./TaskDetailDrawer";
 
 const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   const classes = useStyles();
   return (
     <>
       {results.length > 0 ? (
-        <CBox className={classes.cardListContainer }>
+        <CBox className={classes.cardListContainer}>
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               return (
@@ -28,7 +29,8 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
             title="There is no sub task"
           />
         </Box>
-      )} 
+      )}
+      <TaskDetailDrawer />
     </>
   );
 };

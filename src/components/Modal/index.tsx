@@ -4,22 +4,21 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions,
-  DialogContentText,
   Grid,
   Typography,
 
 } from "@material-ui/core";
 import PropTypes from "prop-types";
-import { Clear } from "@material-ui/icons";
+// import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
-import { Button } from "@mui/material";
+// import { Button } from "@mui/material";
 
 interface Props {
   isOpen: boolean;
   handleClose: () => void;
-  title: string;
+  title: any;
   children: any;
+
 }
 
 const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) => {
@@ -32,6 +31,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
         maxWidth="sm"
         open={isOpen}
         onClose={handleClose}
+
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -46,13 +46,11 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
             </Grid> */}
           </Grid>
         </DialogTitle>
-        <DialogContent >
+        <DialogContent>
           {children}
         </DialogContent>
-        <DialogActions>
-
-
-        </DialogActions>
+        {/* <DialogActions>
+        </DialogActions> */}
       </Dialog>
     </>
   );
@@ -61,7 +59,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
 CustomModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.any,
   children: PropTypes.element,
 };
 

@@ -3,7 +3,9 @@ import { CBox } from 'components/material-ui'
 import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
 import React, { Fragment } from 'react'
 
-export default function RecentCommentsList() {
+export default function RecentCommentsList(props: any) {
+    const comment = props?.comment
+    // const [comment, setComment] = useState<[{}]>(props?.comment);
     const classes = useStyles()
 
     return (
@@ -11,15 +13,25 @@ export default function RecentCommentsList() {
             <CBox display='flex' alignItems='center'>
                 <TaskStatus className={classes.status}>Ongoing</TaskStatus>
                 <Typography style={{ fontSize: "11px", fontWeight: 600, color: '#7D7E80' }}>
-                    Kristo Vunukainen
+                    {`${comment.firstName} ${comment.lastName}`}
                 </Typography>
                 &nbsp;
                 &nbsp;
                 <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
-                    12.06.2021 | 10:15
+                    {comment.createdAt}
+                </Typography>
+                &nbsp;
+                &nbsp;
+                <Divider orientation='vertical' style={{ height: 10, width: 2 }} />
+                &nbsp;
+                &nbsp;
+                <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
+                    {comment.time}
                 </Typography>
             </CBox>
-            <Typography className={classes.description} >Magnis dis parturient montes, nascetur Aenean eu leo quam. Pellentesque ornare </Typography>
+            <Typography className={classes.description}>
+                {comment.description}
+            </Typography>
             <Divider />
         </CBox></>
     )
