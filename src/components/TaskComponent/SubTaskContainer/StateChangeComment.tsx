@@ -60,7 +60,7 @@ function StateChangeComment(props: any) {
                 autoFocus
                 margin="dense"
                 id="name"
-                label="comment"
+                label="Reason"
                 placeholder="Type a reason..."
                 type="text"
                 onChange={(e) => {

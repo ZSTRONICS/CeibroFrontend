@@ -203,17 +203,17 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
       <CBox>
         <CustomModal title={<HeaderConfirmation />} isOpen={subTask} handleClose={handleCloseModal} children={<StateChangeComment handleClose={handleCloseModal} payloadData={rejectedPayload} />} />
-
       </CBox>
 
     </div>);
 }
 
 export default SubTaskCard;
+
 const HeaderConfirmation = () => {
   return (
     <CBox display='flex' alignItems='center'>
-      <InfoIcon />
+      <InfoIcon color='red'/>
       <CBox fontSize={16} color='#FA0808' fontWeight={600} ml={1}>
         Reject Subtask
       </CBox>
