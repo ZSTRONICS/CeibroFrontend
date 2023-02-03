@@ -61,7 +61,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                             id="combo-box-demo"
                             size="small"
                             options={projects}
-                            getOptionLabel={(option)=> option.label}
+                            getOptionLabel={(option) => option.label}
                             // onChange={(e, value) => {
                             //     props.setFieldValue('projects', value !== null ? value : top100Films);
                             // }}
@@ -75,12 +75,12 @@ export default function CreateSubTask({ setSubTask }: any) {
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
-                        filterSelectedOptions
+                            filterSelectedOptions
                             disablePortal
                             id="combo-box-demo"
                             size="small"
                             options={projects}
-                            
+
                             // onChange={(e, value) => {
                             //     props.setFieldValue('projects', value !== null ? value : top100Films);
                             // }}
@@ -94,7 +94,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                 <Grid item xs={12} md={12}>
                     <div className={classes.titleWrapper}>
                         <Autocomplete
-                        filterSelectedOptions
+                            filterSelectedOptions
                             disablePortal
                             id="combo-box-demo"
                             size="small"
@@ -141,7 +141,7 @@ export default function CreateSubTask({ setSubTask }: any) {
                         </CBox>
                     </CBox>
                 </Grid>
-                <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8 }} />
+                <Divider orientation='horizontal' flexItem variant='fullWidth' style={{ width: '100%', marginTop: 15, marginBottom: 8, height: 2 }} />
 
                 {/* <CreateSubTaskAdvanceOption /> */}
                 <CBox display='flex' width='100%' mt={6.2} mb={1}>

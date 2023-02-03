@@ -3,10 +3,12 @@ import { IconButton, TextField } from '@mui/material'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon, SendIcon } from 'components/material-ui/icons'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
 export default function RecentComments(props: any) {
+    // const comments = props.subtaskDetail && props.subtaskDetail.recentComments;
+    // const [recentComments, setRecentComments] = useState<[]>(comments);
 
     // const [recentComments, setRecentComments] = useState<[]>('');
     const [userNewComment, setUserNewComment] = useState<string>();
@@ -16,12 +18,32 @@ export default function RecentComments(props: any) {
     //     setIsEmpty(true)
     // }
 
+    // console.log(props.subtaskDetail && props.subtaskDetail.recentComments, '====recent comments=====')
+    // console.log(recentComments, '-----recent comments-------')
+    const recentComments = [
+        {
+            firstName: 'ali', lastName: 'check', description: 'hay', createdAt: '27-12-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'ali akbar', lastName: 'check', description: 'hay ali', createdAt: '27-1202-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'mubeen', lastName: 'check', description: 'hay how  are you', createdAt: '273-02-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'talha', lastName: 'check', description: 'hay i am fine', createdAt: '27-024-2022', time: '10:26 PM'
+        },
+        {
+            firstName: 'khan', lastName: 'check', description: 'hay good', createdAt: '27-02-20224', time: '10:26 PM'
+        },
 
-
+    ]
     return (
         <>
             {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
-            <RecentCommentsList />
+            {recentComments.map((comment: any) => (<Fragment key={comment.createdAt}><RecentCommentsList comment={comment} /></Fragment>))}
+
+
             <CBox display='flex'>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
                     <TextField

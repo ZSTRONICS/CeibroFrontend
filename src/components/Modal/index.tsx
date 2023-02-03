@@ -16,8 +16,9 @@ import useStyles from "./styles";
 interface Props {
   isOpen: boolean;
   handleClose: () => void;
-  title: string;
+  title: any;
   children: any;
+
 }
 
 const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) => {
@@ -30,6 +31,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
         maxWidth="sm"
         open={isOpen}
         onClose={handleClose}
+
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >

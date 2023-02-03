@@ -18,6 +18,7 @@ export interface SubtaskInterface {
   files: any[]
   createdAt: string
   updatedAt: string
+  recentComments:any[]
 }
 
 export interface AdvanceOptions {

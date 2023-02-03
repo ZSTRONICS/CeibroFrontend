@@ -34,7 +34,7 @@ interface Props {
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
-  const dueDate = task.dueDate.replaceAll('-', '.').replace(',','')
+  const dueDate = task.dueDate.replaceAll('-', '.').replace(',', '')
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -131,8 +131,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     <Card
       className={classes.cardContainer}
       onClick={handleCard}
-     itemID={task._id}
-     key={task._id}
+      itemID={task._id}
+      key={task._id}
       sx={{
         "& :hover": {
           cursor: "pointer",
@@ -159,7 +159,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
                 <Fragment key={item._id}>
-                  {i === 0 && ( 
+                  {i === 0 && (
                     <AssignedTag
                       key={item._id}
                       sx={{ display: "inline-block" }}
@@ -185,7 +185,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           </Box>
         </CustomStack>
         <Box pt={2.5}>
-          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600",textTransform:'capitalize' }}>
+          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600", textTransform: 'capitalize' }}>
             {/* project title */}
             {task.title}
           </AssignedTag>
@@ -238,7 +238,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             </AssignedTag>
           </Box>
         </CustomStack>
-        <Divider sx={{ paddingBottom: "10px", background:'none' }}/>
+        <Divider sx={{ margin: "10px 0px" }} />
       </CardContent>
       <CCardActions>
         <AssignedTag sx={{ fontWeight: "600" }}>

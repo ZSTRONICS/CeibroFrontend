@@ -30,7 +30,7 @@ function TaskDetailDrawer() {
 
     return (
         <div>
-            <Drawer onClose={handleClose} anchor="right" open={subTaskDetailDrawer}>
+            <Drawer onClose={handleClose} anchor="right" open={subTaskDetailDrawer} className={classes.subTaskDrawer}>
                 <div className={classes.outerWrapper}>
                     <DrawerHeader title='Subtask Detail' handleClose={handleClose} />
                     <Grid container>
@@ -50,6 +50,12 @@ const useStyles = makeStyles({
     // drawerContainer:{
     //     background:'#F5F7F8'
     // },
+    subTaskDrawer: {
+        '& .MuiDrawer-paper': {
+            maxWidth: '90%',
+            minWidth: '90%'
+        }
+    },
     bodyWrapper: {
         maxWidth: '878px',
         width: '100%',
@@ -72,11 +78,9 @@ const useStyles = makeStyles({
         }
     },
     outerWrapper: {
-        width: 'calc(100vw - 200px)',
+        width: '100%',
         backgroundColor: colors.lightGrey,
         height: '100vh',
-        '@media (max-width:960px)': {
-            width: '100vw'
-        }
+
     }
 })

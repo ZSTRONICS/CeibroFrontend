@@ -17,6 +17,7 @@ export default function TaskDetailHeader(props: any) {
     const classes = useStyles()
     const [showMore, setShowMore] = useState<boolean>(false);
     const membersList = props?.subtaskDetail?.assignedTo.map((member: AssignedTo) => member.members).flat(1)
+
     return (
         <>
             <CBox display='flex' alignItems='center' justifyContent='space-between'>
@@ -47,16 +48,16 @@ export default function TaskDetailHeader(props: any) {
             </CBox>
             <CBox mt={1.5}>
                 <Typography className={classes.heading} >Assign to</Typography>
-                <Typography className={classes.description}>
+                <CBox className={classes.description}>
 
                     {membersList.map((member: Member, i: any) => {
                         if (i === membersList.length - 1) {
-                            return (<> {<AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>} </>)
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}`}</AssignedTag>)
                         } else {
-                            return (<>{<AssignedTag>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>} </>)
+                            return (<AssignedTag key={member._id}>{`${member.firstName} ${member.surName}, `} &nbsp;</AssignedTag>)
                         }
                     })}
-                </Typography>
+                </CBox>
                 <Divider />
             </CBox>
             <CBox mt={1.5}>
@@ -65,9 +66,14 @@ export default function TaskDetailHeader(props: any) {
                     {showMore ? props.subtaskDetail.description : `${props.subtaskDetail.description.substring(0, 550)}`}
 
                 </Typography>
-                <Typography className={classes.showHideBtn} onClick={() => setShowMore(!showMore)}>
-                    {showMore ? 'show less' : 'show more'}
-                </Typography>
+                {props.subtaskDetail.description.length >= 549 ?
+
+                    <Typography className={classes.showHideBtn} onClick={() => setShowMore(!showMore)}>
+
+                        {showMore ? 'show less' : 'show more'}
+                    </Typography>
+                    : ''}
+
 
 
                 <Divider />
@@ -103,7 +109,9 @@ const useStyles = makeStyles({
 
     },
     showHideBtn: {
-        fontSize: 14,
+        fontSize: 16,
+        fontWeight: 600,
+        fontFamily: 'Intel',
         color: '#5ba6da',
         '&:hover': {
             cursor: 'pointer'

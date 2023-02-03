@@ -13,18 +13,18 @@ export default function CDrawer(props: any) {
   const classes = useStyles()
   let taskDrawer = useSelector((state: RootState) => state.task);
 
-  const handleCloseDrawer =()=>{
- dispatch(taskActions.closeTaskDrawer())
-}
+  const handleCloseDrawer = () => {
+    dispatch(taskActions.closeTaskDrawer())
+  }
 
   return (
     <>
-      <Drawer  anchor="right"
+      <Drawer anchor="right"
         open={taskDrawer.taskDrawerOpen}
         onClose={handleCloseDrawer}
       >
         <Box className={classes.outerWrapper}>
-          <DrawerHeader title="Subtask Title" handleClose={handleCloseDrawer}/>
+          <DrawerHeader title="Subtask Title" handleClose={handleCloseDrawer} />
           {/* <SubTaskList /> */}
         </Box>
       </Drawer>
@@ -33,11 +33,11 @@ export default function CDrawer(props: any) {
 }
 const useStyles = makeStyles({
   outerWrapper: {
-      width: 'calc(100vw - 200px)',
-      backgroundColor: colors.lightGrey,
-      height: '100vh',
-      '@media (max-width:960px)': {
-          width: '100vw'
-      }
+    width: 'calc(100vw - 200px)',
+    backgroundColor: colors.lightGrey,
+    height: '100vh',
+    '@media (max-width:960px)': {
+      width: '100vw'
+    }
   }
 })

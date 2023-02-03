@@ -5,11 +5,15 @@ import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index';
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import TaskDetailHeader from './TaskDetailHeader';
 
+import RecentComments from './RecentComments';
+
+
 interface Props {
     subtaskDetail: SubtaskInterface
 }
 export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
+
     return (
         <div>
             <CBox className={classes.wrapper}>
@@ -24,7 +28,7 @@ export default function TaskDetail({ subtaskDetail }: Props) {
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
                 </CBox>
-                {/* <RecentComments /> */}
+                <RecentComments subtaskDetail={subtaskDetail} />
 
             </CBox>
         </div>

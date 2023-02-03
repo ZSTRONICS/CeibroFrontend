@@ -13,7 +13,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   return (
     <>
       {results.length > 0 ? (
-        <CBox className={classes.cardListContainer }>
+        <CBox className={classes.cardListContainer}>
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               return (

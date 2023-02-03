@@ -1,4 +1,5 @@
 import { TASK_CONFIG } from 'config/task.config';
+import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import { createAction } from './action';
 
 const taskActions = {

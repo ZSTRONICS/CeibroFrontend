@@ -51,6 +51,7 @@ import {
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
+import taskActions from "redux/action/task.action";
 
 interface MyApp { }
 
@@ -65,6 +66,8 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      // dispatch(taskActions.openSubtaskDetailDrawer())
+      // dispatch(taskActions.openTaskDrawer())
       if (socket.getSocket() !== null) {
         return;
       }
