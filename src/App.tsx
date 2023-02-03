@@ -224,17 +224,18 @@ const App: React.FC<MyApp> = () => {
             break
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
+            console.log('TASK_SUBTASK_UPDATED',data.results)
             try {
               const payload = {
                 task: data.results.task,
                 subtask: data.results.subtasks[0]
               }
               dispatch({
-                type: TASK_CONFIG.UPDATE_TASK_SUBTASK,
+                type: TASK_CONFIG.TASK_SUBTASK_UPDATED,
                 payload: payload,
               });
             } catch (e) {
-
+              console.error(e)
             }
             break
 

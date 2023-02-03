@@ -109,7 +109,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         <CBox display="flex" alignItems="center" mt={1}>
           <CBox sx={{ background: `${getColorByStatus(state)}`, fontWeight: '500', }} className={classes.subtaskState}>{state}</CBox>
           <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
-            {dueDate.replace(',','')}
+            {dueDate.replaceAll('-','.').replace(',','')}
           </CBox>
         </CBox>
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>

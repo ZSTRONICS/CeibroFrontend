@@ -1,11 +1,12 @@
 import { makeStyles } from '@material-ui/core';
 import CButton from 'components/Button/Button';
 import { CBox } from 'components/material-ui';
-import { AttachmentIcon, EyeIcon } from 'components/material-ui/icons/index';
+import { AttachmentIcon } from 'components/material-ui/icons/index';
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import TaskDetailHeader from './TaskDetailHeader';
-
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import RecentComments from './RecentComments';
+import { CustomStack } from 'components/TaskComponent/Tabs/TaskCard';
 
 
 interface Props {
@@ -18,18 +19,18 @@ export default function TaskDetail({ subtaskDetail }: Props) {
         <div>
             <CBox className={classes.wrapper}>
                 <TaskDetailHeader subtaskDetail={subtaskDetail} />
-
-                <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
-                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<AttachmentIcon />} label={'See Attachments'} />
-
+            <CustomStack justifyContent='flex-end' gap={2} >
+                <CBox display='flex' alignItems='center' mt={1} >
+                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<VisibilityOutlinedIcon />} label={'View Rejections'} />
                 </CBox>
-                {/* <CenterDivider label={'recent comments'} /> */}
-
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
+                    <CButton  styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<AttachmentIcon />} label={'Attachments'} />
+                </CBox>
+            </CustomStack>
+                {/* <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
-                </CBox>
+                </CBox> */}
                 <RecentComments subtaskDetail={subtaskDetail} />
-
             </CBox>
         </div>
     )

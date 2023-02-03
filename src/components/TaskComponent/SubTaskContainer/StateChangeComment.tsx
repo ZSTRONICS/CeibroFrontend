@@ -1,19 +1,20 @@
 // mui
+import { makeStyles } from "@material-ui/core";
 import { DialogActions } from "@mui/material";
 import TextField from "@mui/material/TextField";
+import { Divider } from "@mui/material";
 // formik
 import { Form, Formik } from "formik";
 // reudx
-import { useDispatch } from "react-redux";
-import { taskSubtaskStateChange } from "redux/action/task.action";
+import { useDispatch, useSelector } from "react-redux";
+import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 // components
 import CButton from "components/Button/Button";
-
-import { Divider } from "@mui/material";
 import { CBox } from "components/material-ui";
 import "../../../components/material-ui/theming/CustomMuiStyles.css"
-import { classNames } from "react-select/src/utils";
-import { makeStyles } from "@material-ui/core";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
+import { RootState } from "redux/reducers";
+
 function StateChangeComment(props: any) {
 
   const { handleClose, payloadData } = props;
@@ -29,6 +30,7 @@ function StateChangeComment(props: any) {
         body: payload,
         success: (res) => {
           handleClose();
+          // dispatch(taskActions.closeTaskDrawer())
         },
       })
     );
@@ -40,7 +42,7 @@ function StateChangeComment(props: any) {
   return (
     <>
       <Divider sx={{ width: '100%' }} />
-      <CBox p='16px 24px'>
+      <CBox p='8px 5px'>
         <Formik
           initialValues={{
             state: payloadData.state,

@@ -1,5 +1,5 @@
 import { Divider, Grid, makeStyles } from '@material-ui/core'
-import { IconButton, TextField } from '@mui/material'
+import { Box, IconButton, TextField, Typography } from '@mui/material'
 import CButton from 'components/Button/Button'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon, SendIcon } from 'components/material-ui/icons'
@@ -7,43 +7,37 @@ import { Fragment, useState } from 'react'
 import RecentCommentsList from './RecentCommentsList'
 
 export default function RecentComments(props: any) {
-    // const comments = props.subtaskDetail && props.subtaskDetail.recentComments;
-    // const [recentComments, setRecentComments] = useState<[]>(comments);
-
-    // const [recentComments, setRecentComments] = useState<[]>('');
     const [userNewComment, setUserNewComment] = useState<string>();
-    const [isEmpty, setIsEmpty] = useState<boolean>(false);
     const classes = useStyles()
-    // if (recentComments && recentComments.length === 0) {
-    //     setIsEmpty(true)
-    // }
-
-    // console.log(props.subtaskDetail && props.subtaskDetail.recentComments, '====recent comments=====')
-    // console.log(recentComments, '-----recent comments-------')
+    
     const recentComments = [
         {
-            firstName: 'ali', lastName: 'check', description: 'hay', createdAt: '27-12-2022', time: '10:26 PM'
+            firstName: 'ali', lastName: 'Haider', description: 'hay', createdAt: '27-12-2022', time: '10:26 PM'
         },
         {
-            firstName: 'ali akbar', lastName: 'check', description: 'hay ali', createdAt: '27-1202-2022', time: '10:26 PM'
+            firstName: 'ali ', lastName: 'akbar', description: 'hay ali', createdAt: '27-1202-2022', time: '10:26 PM'
         },
         {
-            firstName: 'mubeen', lastName: 'check', description: 'hay how  are you', createdAt: '273-02-2022', time: '10:26 PM'
+            firstName: 'mubeen', lastName: 'talha', description: 'hay how  are you', createdAt: '273-02-2022', time: '10:26 PM'
         },
         {
-            firstName: 'talha', lastName: 'check', description: 'hay i am fine', createdAt: '27-024-2022', time: '10:26 PM'
+            firstName: 'talha', lastName: 'mubeen', description: 'hay i am fine', createdAt: '27-024-2022', time: '10:26 PM'
         },
         {
-            firstName: 'khan', lastName: 'check', description: 'hay good', createdAt: '27-02-20224', time: '10:26 PM'
+            firstName: 'khan', lastName: 'mubeen', description: 'hay good', createdAt: '27-02-20224', time: '10:26 PM'
         },
 
     ]
     return (
         <>
+            <Box>
+                <Typography className= 'recentComment' sx={{}}>
+                Recent Comments
+                </Typography>
+            </Box>
+
             {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
             {recentComments.map((comment: any) => (<Fragment key={comment.createdAt}><RecentCommentsList comment={comment} /></Fragment>))}
-
-
             <CBox display='flex'>
                 <Grid item xs={12} md={12} className={classes.textAreaBox}>
                     <TextField

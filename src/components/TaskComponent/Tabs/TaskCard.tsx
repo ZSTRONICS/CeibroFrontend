@@ -25,7 +25,7 @@ import { useDispatch } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
-
+import moment from "moment-timezone";
 
 interface Props {
   task: TaskInterface;
@@ -34,6 +34,8 @@ interface Props {
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
+  const {creator, createdAt}= task
+  const taskCreatedOn = moment.utc(moment(createdAt)).format('DD.MM.YYYY')
   const dueDate = task.dueDate.replaceAll('-', '.').replace(',', '')
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -149,12 +151,22 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         action={Action()}
       />
       <CardContent sx={{ paddingBottom: "0px" }}>
-        <CustomStack gap={2.5}>
+      <CustomStack gap={2.5} pb={0.45} justifyContent='space-between'>
           <Box>
-            <LabelTag>Task due date</LabelTag>
-            <AssignedTag>{dueDate}</AssignedTag>
+            <LabelTag>Created by</LabelTag>
+            <AssignedTag>{`${creator.firstName} ${creator.surName}`}</AssignedTag>
           </Box>
           <Box>
+            <LabelTag>Created on</LabelTag>
+                    <AssignedTag
+                      sx={{ display: "inline-block" }}
+                     >
+                     {taskCreatedOn}
+                    </AssignedTag>
+          </Box>
+        </CustomStack>
+        <CustomStack gap={2.5} justifyContent='space-between'>
+         <Box>
             <LabelTag>Assigned to</LabelTag>
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
@@ -165,7 +177,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                       sx={{ display: "inline-block" }}
                     >
                       {" "}
-                      {`${item.firstName} ${item.surName}`}
+                      {`${item.firstName}`}
                     </AssignedTag>
                   )}
                 </Fragment>
@@ -183,6 +195,11 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
               ></CustomBadge>
             )}
           </Box>
+          <Box>
+            <LabelTag>Task due date</LabelTag>
+            <AssignedTag>{dueDate}</AssignedTag>
+          </Box>
+
         </CustomStack>
         <Box pt={2.5}>
           <AssignedTag sx={{ fontSize: "16px", fontWeight: "600", textTransform: 'capitalize' }}>

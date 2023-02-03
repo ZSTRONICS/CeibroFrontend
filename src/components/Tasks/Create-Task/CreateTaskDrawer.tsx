@@ -22,7 +22,6 @@ const CreateTaskDrawer = () => {
     subTaskOfTask.subtasks = []
   }
 
-
   return (<>
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>

@@ -28,14 +28,14 @@ const getTask = apiCall({
 const getAllSubTask = apiCall({
     type: TASK_CONFIG.GET_ALL_SUBTASK_LIST,
     method: "get",
-    path: '/task/subtask?state=all',
+    path: '/task/subtask?state=all&noPaginate=true',
   });
 
 const getAllSubTaskOfTask = apiCall({
     type: TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK,
     method: "get",
     path: (payload) => {
-      let url = `/task/${payload.other.taskId}`;
+      let url = `/task/${payload.other.taskId}?noPaginate=true`
       return url
     }
   });

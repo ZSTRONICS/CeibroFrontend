@@ -93,7 +93,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskList: [action.payload, ...state.allSubTaskList]
             }
 
-        case TASK_CONFIG.UPDATE_TASK_SUBTASK:
+        case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             const inComingTask = action.payload.task
             const incommingSubTask = action.payload.subtask
             const taskIndex = state.allTask.findIndex(task => task._id === inComingTask._id)
@@ -224,7 +224,6 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             return {
                 ...state,
                 selectedTaskAdmins: action.payload,
-                
             }
             }
         case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS:{

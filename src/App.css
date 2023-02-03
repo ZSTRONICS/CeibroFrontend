@@ -227,7 +227,26 @@ input[type="file"] {
   display: flex;
   align-items: center;
 }
-
+.recentComment {
+  display: flex;
+  flex-direction: row;
+  color: #7D7E80;
+  font-size: 14px;
+    font-weight: 500;
+}
+.recentComment::after,.recentComment::before{
+  content: "";
+  flex: 1 1;
+  border-bottom: 1px solid;
+  margin: auto;
+  color: #7D7E80;
+}
+.recentComment:before {
+  margin-right: 10px
+}
+.recentComment:after {
+  margin-left: 10px
+}
 .file-preview svg {
   width: 50px;
   height: 50px;

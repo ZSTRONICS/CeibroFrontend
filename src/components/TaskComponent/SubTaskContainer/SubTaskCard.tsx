@@ -35,7 +35,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
   const myState = state.find(localState => String(localState.userId) === String(user._id))
   const subTaskDate = dueDate.replaceAll('-', '.').replace(',', '')
-
+  let subtaskCreatedAt=  new Date(String()).toLocaleString('de').slice(0,10).replaceAll(',','')
   const bgcolor = getColorByStatus(myState ? myState.userState : '')
   const dispatch = useDispatch();
   const [subTask, setSubTask]: any = useState(false)
@@ -67,9 +67,20 @@ function SubTaskCard({ subTaskDetail }: Props) {
       <>
         <CustomStack gap={1.25}>
           <TaskStatus sx={{ background: `${bgcolor}`, color: 'white', fontWeight: '500', fontSize: '10px' }}>{myState?.userState}</TaskStatus>
-          <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
+            <LabelTag sx={{fontSize:'10px'}}>
+            Due date
+            </LabelTag>
+          <AssignedTag sx={{fontSize:'11px'}}>
             {subTaskDate}
-          </Typography>
+          </AssignedTag>
+        <CustomStack gap={0.8}>
+        <LabelTag sx={{fontSize:'10px'}}>
+            Created on
+            </LabelTag>
+            <AssignedTag sx={{fontSize:'11px'}}>
+            {subtaskCreatedAt}
+            </AssignedTag>
+        </CustomStack>
         </CustomStack>
       </>
     );
@@ -114,16 +125,16 @@ function SubTaskCard({ subTaskDetail }: Props) {
         <Grid
           onClick={handleSubTaskCard}
           className={classes.taskDetailContainer}
-          item container
+           item container
           justifyContent={"space-between"} pt={1} rowGap={0.5} key={_id}>
 
           <Grid item>{SubHeader()}</Grid>
-          <Grid item lg={7}>
+          <Grid item container lg={7} justifyContent='space-between'>
             <CustomStack columnGap={0.5}>
-              <LabelTag>Assigned to</LabelTag>
+              <LabelTag sx={{fontSize:'12px'}}>Assigned to</LabelTag>
               {membersList.map((member: Member, i: any) => {
                 return (<Fragment key={member._id}>
-                  {i === 0 && <AssignedTag>{`${member.firstName} ${member.surName}`}</AssignedTag>}
+                  {i === 0 && <AssignedTag sx={{fontSize:'12px'}}>{`${member.firstName} ${member.surName}`}</AssignedTag>}
                 </Fragment>
                 )
               })}
@@ -132,6 +143,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
                   <span>{membersList.length - 1}+</span>
                 </Tooltip>
               }></CustomBadge>}
+            </CustomStack>
+            <CustomStack gap={0.45}>
+            <LabelTag sx={{fontSize:'12px'}}>
+             Created by
+            </LabelTag>
+            <AssignedTag sx={{fontSize:'12px'}}>
+            {`${subTaskDetail.creator.firstName} ${subTaskDetail.creator.surName}`}
+            </AssignedTag>
             </CustomStack>
           </Grid>
           <Grid item>

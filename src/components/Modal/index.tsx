@@ -59,7 +59,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
 CustomModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.any,
   children: PropTypes.element,
 };
 
