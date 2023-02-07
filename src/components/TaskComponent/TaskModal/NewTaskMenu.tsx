@@ -133,6 +133,7 @@ function NewTaskMenu(props: any) {
             disablePortal
             filterSelectedOptions
             disableCloseOnSelect
+            noOptionsText='project not selected'
             id="combo-box-demo2"
             options={adminListOpt}
             limitTags={2}
@@ -180,6 +181,7 @@ function NewTaskMenu(props: any) {
            filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
+            noOptionsText='project not selected'
             options={assignToOpt}
             getOptionLabel={(option:any)=> option.label}
             value={assignToList}
