@@ -52,6 +52,7 @@ import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import taskActions from "redux/action/task.action";
+import PreviewCollection from "components/uploadImage/PreviewCollection";
 
 interface MyApp { }
 
@@ -257,12 +258,14 @@ const App: React.FC<MyApp> = () => {
       <TaskModal />
       <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
+      <PreviewCollection/>
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
       <RouterConfig />
+
     </div>
   );
 };

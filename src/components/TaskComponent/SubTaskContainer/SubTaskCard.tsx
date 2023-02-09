@@ -350,6 +350,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
       <CBox>
         <CustomModal
+        showCloseBtn={false}
           title={<HeaderConfirmation />}
           isOpen={subTask}
           handleClose={handleCloseModal}

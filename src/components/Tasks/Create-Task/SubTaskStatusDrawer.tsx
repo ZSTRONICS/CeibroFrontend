@@ -113,7 +113,7 @@ function SubTaskStatusDrawer({task}:Props) {
             <CButton label="Add Subtask" onClick={() => setSubTask(true)} variant={'contained'} styles={{ fontSize: 12, textTransform: 'capitalize' }} />
         </Grid>}
     </Grid>
-    <CustomModal title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
+    <CustomModal showCloseBtn={false} title="New Subtask" isOpen={subTask} handleClose={() => setSubTask(false)} children={<AddSubtask/>} />
   </>
   )
 }

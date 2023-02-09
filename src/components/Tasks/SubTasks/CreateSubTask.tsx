@@ -255,7 +255,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
           </div>
         </CBox>
       </Grid>
-      {/* <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={''} /> */}
+      {/* <CustomModal  showCloseBtn={false} isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={''} /> */}
     </div>
   );
 }

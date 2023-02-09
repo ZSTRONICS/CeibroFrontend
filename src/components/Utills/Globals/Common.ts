@@ -43,3 +43,18 @@ export const isTrue =(arr:any[], itemId:string)=>{
 export const deDateFormat =(dateStr:Date)=>{
   return new Date(String(dateStr)).toLocaleString('de').slice(0,10).replaceAll('.','-')
 }
+
+// calculate file size 
+ /**
+  * @param bytes bytes required
+  * **/
+
+ export const filesizes = (bytes:any) => {
+  let decimals = 2
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}

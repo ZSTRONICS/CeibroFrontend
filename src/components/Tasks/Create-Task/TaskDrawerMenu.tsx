@@ -29,7 +29,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const classes = useStyles();
   const dispatch = useDispatch()
   const [showDate, setShowDate]= useState<any>()
-  const [imageAttach, setImageAttach]: any = useState(false);
+  const [imageAttach, setImageAttach] = useState<boolean>(false);
   const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
   const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
   const { user } = useSelector((state: RootState) => state.auth);
@@ -331,18 +331,11 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             width="100%"
             borderTop="1px solid #DBDBE5"
             px={1.8}
-           >
-              <CBox display="flex" alignItems="center">
-              <IconButton onClick={() => setImageAttach(true)}>
-                <AttachmentIcon />
-              </IconButton>
-             &nbsp;
-                            &nbsp; */}
+           > 
           {/* <MediaIcon /> */}
           {/* &nbsp;
                             &nbsp; */}
           {/* <NotificationIcon />
-            </CBox> 
           </CBox>*/}
         </Grid>
         <Divider />
@@ -374,6 +367,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               />
               &nbsp;
               <CButton
+                onClick={() => setImageAttach(true)}
                 label="Add New"
                 styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
               />
@@ -436,6 +430,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             </Grid> */}
       </Grid>
       <CustomModal
+        showCloseBtn={true}
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
