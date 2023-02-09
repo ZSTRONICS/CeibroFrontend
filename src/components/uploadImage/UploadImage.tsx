@@ -137,6 +137,7 @@ return str.substring(0,16)+"... "+ str.substr(-4, str.length)
                 </ListItemAvatar>
                 <ListItemText
                   primary={`${itemName}`}
+                  primaryTypographyProps={{ fontSize: 16, fontWeight: '400' }}
                   secondary={
                     <>
                       <Typography
