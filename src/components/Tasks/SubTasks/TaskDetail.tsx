@@ -30,7 +30,7 @@ export default function TaskDetail({ subtaskDetail }: Props) {
                 {/* <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
                 </CBox> */}
-                <RecentComments subtaskDetail={subtaskDetail} />
+                {/* <RecentComments subtaskDetail={subtaskDetail} /> */}
             </CBox>
         </div>
     )
