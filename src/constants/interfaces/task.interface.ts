@@ -1,4 +1,4 @@
-import { AssignedTo, Member, UserInfo } from "./subtask.interface"
+import { UserInfo } from "./subtask.interface"
 
 export enum State {
   New = "new",

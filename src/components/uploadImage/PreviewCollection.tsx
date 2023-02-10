@@ -5,7 +5,7 @@ import {
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 
 function PreviewCollection() {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <>

@@ -252,13 +252,14 @@ const App: React.FC<MyApp> = () => {
     }
   }, [isLoggedIn]);
 
+let pathnameRoute = window.location.pathname
   return (
     <div className="App">
       {/* component used here for availability of modal on all routes*/}
       <TaskModal />
       <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
-      <PreviewCollection/>
+    {pathnameRoute!=='/login' && <PreviewCollection/>}
       <CreateQuestioniarDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer />

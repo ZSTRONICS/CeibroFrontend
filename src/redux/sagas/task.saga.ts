@@ -8,6 +8,13 @@ const createTask = apiCall({
   path: "/task/",
 })
 
+const uploadDocs = apiCall({
+  type: TASK_CONFIG.UPLOAD_TASK_DOCS,
+  isBlob:true,
+  method: "post",
+  path: "/docs/uploadFiles",
+})
+
 const createSubTask = apiCall({
   type: TASK_CONFIG.CREATE_SUB_TASK,
   method: "post",
@@ -42,6 +49,7 @@ const getAllSubTaskOfTask = apiCall({
 
 function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
+  yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.GET_TASK, getTask)
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)

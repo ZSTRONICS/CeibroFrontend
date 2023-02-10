@@ -53,6 +53,7 @@ const taskActions = {
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)
 export const createTask = createAction(TASK_CONFIG.CREATE_TASK)
+export const uploadDocs = createAction(TASK_CONFIG.UPLOAD_TASK_DOCS)
 export const createSubTask = createAction(TASK_CONFIG.CREATE_SUB_TASK)
 export const setSelectedTask = createAction(TASK_CONFIG.SET_SELECTED_TASK)
 export const setSubTask = createAction(TASK_CONFIG.SET_SUBTASK)

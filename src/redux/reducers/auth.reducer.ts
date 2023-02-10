@@ -61,8 +61,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-
-
     case requestPending(REGISTER): {
       setTimeout(() => {
         state.registerLoading = false
