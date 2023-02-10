@@ -51,8 +51,8 @@ import {
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
-import taskActions from "redux/action/task.action";
 import PreviewCollection from "components/uploadImage/PreviewCollection";
+import { DOCS_CONFIG } from "config/docs.config";
 
 interface MyApp { }
 
@@ -229,6 +229,24 @@ const App: React.FC<MyApp> = () => {
             });
             break
 
+          case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
+            dispatch({
+              type: DOCS_CONFIG.FILE_UPLOAD_PROGRESS,
+              payload: data,
+            });
+            break
+            case DOCS_CONFIG.FILE_UPLOADED:
+              dispatch({
+                type: DOCS_CONFIG.FILE_UPLOADED,
+                payload: data,
+              });
+            break
+            case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
+              dispatch({
+                type: DOCS_CONFIG.FILES_UPLOAD_COMPLETED,
+                payload: data,
+              });
+            break
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
            // console.log('TASK_SUBTASK_UPDATED', data.results)

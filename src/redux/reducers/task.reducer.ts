@@ -63,7 +63,6 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
 
-
         case TASK_CONFIG.UPDATE_TASK_IN_STORE:
             const index = state.allTask.findIndex(task => task._id === action.payload._id)
             if (index === -1) {

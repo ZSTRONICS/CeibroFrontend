@@ -1,0 +1,7 @@
+
+export const DOCS_CONFIG = {
+    // docs status and socket events
+    FILE_UPLOAD_PROGRESS: 'FILE_UPLOAD_PROGRESS',
+    FILE_UPLOADED: 'FILE_UPLOADED',
+    FILES_UPLOAD_COMPLETED: 'FILES_UPLOAD_COMPLETED',
+}
