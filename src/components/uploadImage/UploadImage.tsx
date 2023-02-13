@@ -50,7 +50,6 @@ const UploadImage = () => {
         if(res.status=== 200){
           setSelectedFile([])
         }
-        console.log("res--->", res);
       },
     };
     dispatch(uploadDocs(payload));

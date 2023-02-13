@@ -6,31 +6,43 @@ import { AttachmentIcon } from 'components/material-ui/icons/index';
 import { SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import TaskDetailHeader from './TaskDetailHeader';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import RecentComments from './RecentComments';
+// import RecentComments from './RecentComments';
 import { CustomStack } from 'components/TaskComponent/Tabs/TaskCard';
 import CDrawer from 'Drawer/CDrawer';
 import ViewRejectionComments from './ViewRejectionComments';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllSubTaskRejection } from 'redux/action/task.action';
+import { isTrue } from 'components/Utills/Globals/Common';
+import { RootState } from 'redux/reducers';
 
 
 interface Props {
     subtaskDetail: SubtaskInterface
+    taskAdmin: {id:string,label:string}[]
 }
-export default function TaskDetail({ subtaskDetail }: Props) {
+export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
     const classes = useStyles()
     const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
-
-    const handleOpenCDrawer =()=>{
+    const dispatch = useDispatch()
+    const {user} = useSelector((state:RootState)=> state.auth)
+    const handleCDrawer =()=>{
         setOpenCDrawer((prev:boolean)=> !prev)
+        dispatch(getAllSubTaskRejection({
+            other:{
+                subtaskId:subtaskDetail._id
+            }
+        }))
     }
+    const isTaskAdmin = taskAdmin.some((item:any)=> item.id === user._id)
 
     return (<>
         <div>
             <CBox className={classes.wrapper}>
                 <TaskDetailHeader subtaskDetail={subtaskDetail} />
             <CustomStack justifyContent='flex-end' gap={2} >
-                <CBox display='flex' alignItems='center' mt={1} >
-                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} onClick={handleOpenCDrawer} startIcon={<VisibilityOutlinedIcon />} label={'View Rejections'} />
-                </CBox>
+               {isTaskAdmin&& <CBox display='flex' alignItems='center' mt={1} >
+                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} onClick={handleCDrawer} startIcon={<VisibilityOutlinedIcon />} label={'Rejections'} />
+                </CBox>}
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton  styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<AttachmentIcon />} label={'Attachments'} />
                 </CBox>
@@ -41,7 +53,7 @@ export default function TaskDetail({ subtaskDetail }: Props) {
                 {/* <RecentComments subtaskDetail={subtaskDetail} /> */}
             </CBox>
         </div>
-        <CDrawer openCDrawer={openCDrawer} handleCloseCDrawer={handleOpenCDrawer} children={<ViewRejectionComments/>} />
+        <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} handleCloseCDrawer={handleCDrawer} children={<ViewRejectionComments subTaskHeading="Subtask Rejection" handleCloseCDrawer={handleCDrawer}/>} />
     </>
     )
 }
@@ -73,5 +85,4 @@ const useStyles = makeStyles({
         marginRight: '5px !important',
 
     }
-
 })

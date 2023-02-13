@@ -16,7 +16,7 @@ function TaskDetailDrawer() {
     const classes = useStyles()
     const dispatch = useDispatch()
     let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask)
-    
+    let taskAdmin: any = useSelector((state: RootState) => state.task.selectedTaskAdmins)
     const subTaskDetailDrawer = useSelector(
         (store: RootState) => store.task.subTaskDetailDrawer)
 
@@ -39,7 +39,7 @@ function TaskDetailDrawer() {
                     <DrawerHeader title={subTaskOfTask?.task?.title} handleClose={handleClose} />
                     <Grid container>
                         {selectedSubtaskFroDetailView && selectedSubtaskFroDetailView ? <Grid item md={12} sx={{ background: 'white' }}>
-                            <TaskDetail subtaskDetail={selectedSubtaskFroDetailView} />
+                            <TaskDetail subtaskDetail={selectedSubtaskFroDetailView} taskAdmin={taskAdmin} />
                         </Grid> : <>OOPS! there is no detail available</>}
                     </Grid>
                 </div>

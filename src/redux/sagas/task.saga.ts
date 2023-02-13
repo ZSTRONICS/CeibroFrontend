@@ -47,6 +47,15 @@ const getAllSubTaskOfTask = apiCall({
   }
 });
 
+const getAllSubTaskRejection = apiCall({
+  type: TASK_CONFIG.GET_ALL_SUBTASK_REJECTION,
+  method: "get",
+  path: (payload) => {
+    let url = `/task/st/getRejections/${payload.other.subtaskId}`
+    return url
+  }
+});
+
 function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
@@ -54,6 +63,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)
+  yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION, getAllSubTaskRejection)
   yield takeLatest(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE, taskSubtaskStateChange)
 }
 

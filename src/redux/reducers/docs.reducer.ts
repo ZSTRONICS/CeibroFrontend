@@ -23,8 +23,7 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 ...state,
                 fileUploadProgres: [action.payload, ...state.fileUploadProgres]
             }
-        case DOCS_CONFIG.FILE_UPLOADED: 
-            console.log('DOCS_CONFIG.FILE_UPLOADED',action.payload)
+        case DOCS_CONFIG.FILE_UPLOADED:
             return {
                 ...state,
                 filesUploaded:[action.payload, ...state.filesUploaded]
