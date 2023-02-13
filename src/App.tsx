@@ -12,6 +12,7 @@ import {
   ViewInvitations,
   RouterConfig,
   TaskModal,
+  CDrawer,
 } from 'components'
 
 // socket
@@ -279,6 +280,7 @@ let pathnameRoute = window.location.pathname
       <CssBaseline />
     {pathnameRoute!=='/login' && <PreviewCollection/>}
       <CreateQuestioniarDrawer />
+      <CDrawer/>
       {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />

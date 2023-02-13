@@ -1,3 +1,4 @@
+import react, {useState} from 'react'
 import { makeStyles } from '@material-ui/core';
 import CButton from 'components/Button/Button';
 import { CBox } from 'components/material-ui';
@@ -7,6 +8,8 @@ import TaskDetailHeader from './TaskDetailHeader';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import RecentComments from './RecentComments';
 import { CustomStack } from 'components/TaskComponent/Tabs/TaskCard';
+import CDrawer from 'Drawer/CDrawer';
+import ViewRejectionComments from './ViewRejectionComments';
 
 
 interface Props {
@@ -14,14 +17,19 @@ interface Props {
 }
 export default function TaskDetail({ subtaskDetail }: Props) {
     const classes = useStyles()
+    const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
 
-    return (
+    const handleOpenCDrawer =()=>{
+        setOpenCDrawer((prev:boolean)=> !prev)
+    }
+
+    return (<>
         <div>
             <CBox className={classes.wrapper}>
                 <TaskDetailHeader subtaskDetail={subtaskDetail} />
             <CustomStack justifyContent='flex-end' gap={2} >
                 <CBox display='flex' alignItems='center' mt={1} >
-                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<VisibilityOutlinedIcon />} label={'View Rejections'} />
+                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} onClick={handleOpenCDrawer} startIcon={<VisibilityOutlinedIcon />} label={'View Rejections'} />
                 </CBox>
                 <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton  styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<AttachmentIcon />} label={'Attachments'} />
@@ -33,6 +41,8 @@ export default function TaskDetail({ subtaskDetail }: Props) {
                 {/* <RecentComments subtaskDetail={subtaskDetail} /> */}
             </CBox>
         </div>
+        <CDrawer openCDrawer={openCDrawer} handleCloseCDrawer={handleOpenCDrawer} children={<ViewRejectionComments/>} />
+    </>
     )
 }
 const useStyles = makeStyles({
