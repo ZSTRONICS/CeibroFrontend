@@ -1,4 +1,4 @@
-import { AssignedTo, Member, UserInfo } from "./subtask.interface"
+import { UserInfo } from "./subtask.interface"
 
 export enum State {
   New = "new",
@@ -38,6 +38,7 @@ export interface TaskInterface {
   subTaskStatusCount: any[]
   createdAt: string
   updatedAt: string
+  isEditable?: boolean
 }
 
 export interface Creator extends UserInfo{}

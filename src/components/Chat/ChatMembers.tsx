@@ -148,7 +148,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                       startIcon={<assets.PeopleAltOutlinedIcon />}>
                       View Profile
                       </Button>
-                      <CustomModal isOpen={open} title="Profile Overview" handleClose={()=>handleToggleClose(member._id)}>
+                      <CustomModal showCloseBtn={false} isOpen={open} title="Profile Overview" handleClose={()=>handleToggleClose(member._id)}>
                        <ProfileContent getUser={getUser} />
                         </CustomModal>
                       {/* <img src={assets.usersIcon} className="width-16" />

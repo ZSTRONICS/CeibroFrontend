@@ -43,3 +43,29 @@ export const isTrue =(arr:any[], itemId:string)=>{
 export const deDateFormat =(dateStr:Date)=>{
   return new Date(String(dateStr)).toLocaleString('de').slice(0,10).replaceAll('.','-')
 }
+
+// calculate file size 
+ /**
+  * @param bytes bytes required
+  * **/
+
+ export const filesizes = (bytes:any) => {
+  let decimals = 2
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const dm = decimals < 0 ? 0 : decimals;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+}
+export const onlyUnique =(value: any, index: any, array: any) =>{
+  return array.indexOf(value) === index;
+}
+  // const dueDate = new Date().toLocaleDateString("de-DE", {
+  //   day: "numeric",
+  //   month: "numeric",
+  //   year: "numeric",
+  // });
+
+  // moment(dueDate).format("ddd, MMM Do YYYY, h:mm:ss a")
+  // "Mon, Aug 12 2019, 5:52:00 pm"

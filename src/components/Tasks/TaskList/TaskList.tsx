@@ -19,6 +19,7 @@ import { TaskInterface } from "constants/interfaces/task.interface";
 
 function TaskList() {
   const classes = useStyles();
+  const { user } = useSelector((store: RootState) => store.auth);
 
   let allTask: TaskInterface[] = useSelector(
     (state: RootState) => state.task.allTask
@@ -43,15 +44,16 @@ function TaskList() {
           className={classes.cardListContainer}
         >
           {allTask &&
-            allTask.map((task: TaskInterface) => (
-              <Fragment key={task._id}>
-                <TaskCard
-                ColorByStatus={getColorByStatus}
-                task={task}
-              />
-              </Fragment>
-              
-            ))}
+            allTask.map((task: TaskInterface) => {
+              if (!task.access.includes(user._id)) {
+                return;
+              }
+              return (
+                <Fragment key={task._id}>
+                  <TaskCard ColorByStatus={getColorByStatus} task={task} />
+                </Fragment>
+              );
+            })}
         </Grid>
       )}
     </>

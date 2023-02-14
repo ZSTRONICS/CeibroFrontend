@@ -6,14 +6,12 @@ import { Divider } from "@mui/material";
 // formik
 import { Form, Formik } from "formik";
 // reudx
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 // components
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import "../../../components/material-ui/theming/CustomMuiStyles.css"
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { RootState } from "redux/reducers";
 
 function StateChangeComment(props: any) {
 
@@ -29,8 +27,12 @@ function StateChangeComment(props: any) {
       taskSubtaskStateChange({
         body: payload,
         success: (res) => {
-          handleClose();
-          // dispatch(taskActions.closeTaskDrawer())
+          if(res?.status === 200){
+            handleClose();
+            if(!Object.keys(res?.data.results.task).includes("_id")){
+              dispatch(taskActions.closeTaskDrawer())
+            }
+          }
         },
       })
     );
@@ -39,6 +41,7 @@ function StateChangeComment(props: any) {
   const handleCloseModal = () => {
     handleClose();
   };
+  const currentState = payloadData.state
   return (
     <>
       <Divider sx={{ width: '100%' }} />
@@ -75,15 +78,17 @@ function StateChangeComment(props: any) {
               />
               <DialogActions>
                 <CButton
-                  label={"Reject"}
+                  label={`${currentState}`}
                   type="submit"
                   variant="outlined"
                   styles={{
                     borderColor: "#FA0808",
+                    // borderColor: "#55BCB3",
                     fontSize: 12,
                     fontWeight: "bold",
                     borderWidth: 2,
                     color: "#FA0808",
+                    // color: "#55BCB3",
                   }}
                 />
                 <CButton

@@ -8,6 +8,13 @@ const createTask = apiCall({
   path: "/task/",
 })
 
+const uploadDocs = apiCall({
+  type: TASK_CONFIG.UPLOAD_TASK_DOCS,
+  isBlob:true,
+  method: "post",
+  path: "/docs/uploadFiles",
+})
+
 const createSubTask = apiCall({
   type: TASK_CONFIG.CREATE_SUB_TASK,
   method: "post",
@@ -40,12 +47,46 @@ const getAllSubTaskOfTask = apiCall({
   }
 });
 
+const getAllSubTaskRejection = apiCall({
+  type: TASK_CONFIG.GET_ALL_SUBTASK_REJECTION,
+  method: "get",
+  path: (payload) => {
+    let url = `/task/st/getRejections/${payload.other.subtaskId}`
+    return url
+  }
+});
+
+const updateTaskById = apiCall({
+
+  type: TASK_CONFIG.UPDATE_TASK_BY_ID,
+  method: "patch",
+  path: (payload) => {
+    // console.log(payload.other)
+    let url = `/task/${payload.other}`
+    return url
+  }
+});
+
+const deleteTask = apiCall({
+  type: TASK_CONFIG.DELETE_TASK,
+  method: "delete",
+  path: (payload) => {
+    // console.log(payload.other)
+    let url = `/task/${payload.other}`
+    return url
+  }
+});
+
 function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
+  yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.GET_TASK, getTask)
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
+  yield takeLatest(TASK_CONFIG.DELETE_TASK, deleteTask)
+  yield takeLatest(TASK_CONFIG.UPDATE_TASK_BY_ID, updateTaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)
+  yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION, getAllSubTaskRejection)
   yield takeLatest(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE, taskSubtaskStateChange)
 }
 

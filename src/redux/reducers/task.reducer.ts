@@ -4,6 +4,7 @@ import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
+import { RejectedComment, RejectionComment } from "constants/interfaces/rejectionComments.interface";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
@@ -22,14 +23,20 @@ interface TaskReducerInt {
     allSubTaskList: SubtaskInterface[]
     loadingSubTask: boolean
     loadingSubTaskofTask: boolean
+    loadingSubTaskRejection: boolean
     allSubTaskOfTask: AllSubtasksOfTaskResult | any
     selectedSubtaskFroDetailView: SubtaskInterface | any
     projectMembersOfSelectedTask: { label: string, id: string }[]
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
+    getAllSubtaskRejection: RejectedComment[]
+    isEditing:boolean
 }
 
 const intialStatue: TaskReducerInt = {
+    getAllSubtaskRejection: [],
+    isEditing:false,
+    loadingSubTaskRejection:false,
     selectedTaskAdmins: [],
     projectMembersOfSelectedTask: [],
     taskAssignedToMembers: [],
@@ -55,7 +62,6 @@ const intialStatue: TaskReducerInt = {
 
 const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
     switch (action.type) {
-
         case TASK_CONFIG.PUSH_TASK_TO_STORE:
             return {
                 ...state,
@@ -63,8 +69,18 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
 
+            
+        case TASK_CONFIG.PULL_TASK_FROM_STORE:
+            const removeTaskId = action.payload
+            state.allTask = state.allTask.filter(task => task._id !== removeTaskId)
+            
+            return {
+                ...state,
+                allTask: [...state.allTask]
+            }
 
         case TASK_CONFIG.UPDATE_TASK_IN_STORE:
+            // console.log('UPDATE_TASK_IN_STORE--->',action.payload)
             const index = state.allTask.findIndex(task => task._id === action.payload._id)
             if (index === -1) {
                 state.allTask = [action.payload, ...state.allTask]
@@ -113,9 +129,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                     if ("subtasks" in state.allSubTaskOfTask) {
                         const updateIndex = state.allSubTaskOfTask.subtasks.findIndex((subtask: any) => subtask._id === incommingSubTask._id)
                         if (updateIndex > -1) {
-                            console.log("Updated Opened Task Subtask1", state.allSubTaskOfTask.subtasks[updateIndex])
                             state.allSubTaskOfTask.subtasks[updateIndex] = incommingSubTask
-                            console.log("Updated Opened Task Subtask2", state.allSubTaskOfTask.subtasks[updateIndex])
                         }
                     }
                 }
@@ -158,12 +172,14 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case TASK_CONFIG.OPEN_TASK_DRAWER:
             return {
                 ...state,
-                taskDrawerOpen: true
+                taskDrawerOpen: true,
+                isEditing: action.payload
             }
         case TASK_CONFIG.CLOSE_TASK_DRAWER:
             return {
                 ...state,
                 taskDrawerOpen: false,
+                isEditing: false
             }
 
         case TASK_CONFIG.SET_SELECTED_TASK:
@@ -219,6 +235,32 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskOfTask: action.payload.results
             }
         }
+        case requestPending(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
+            return {
+                ...state,
+                loadingSubTaskRejection: true,
+            };
+        }
+        case requestFail(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
+            return {
+                ...state,
+                loadingSubTaskRejection: false,
+            };
+        }
+        case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
+            const rejectedComment = action.payload.result.rejectionComments.map((item:RejectionComment)=>{
+                return {
+                    name:`${item.creator.firstName} ${item.creator.surName}`,
+                    description: item.comment,
+                    _id: item._id,
+                }
+            })
+
+            return {
+                ...state,
+                getAllSubtaskRejection: rejectedComment
+            }
+        }
         case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK: {
             return {
                 ...state,
@@ -226,10 +268,15 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
         }
         case TASK_CONFIG.SELECTED_TASK_ADMINS: {
-
             return {
                 ...state,
                 selectedTaskAdmins: action.payload,
+            }
+        }
+        case TASK_CONFIG.EDIT_TASK: {
+            return {
+                ...state,
+                isEditing: action.payload,
             }
         }
         case TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS: {

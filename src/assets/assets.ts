@@ -85,8 +85,12 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import AddIcon from '@mui/icons-material/Add';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 
 const assets= {
+  CloudUploadIcon,
+  BorderColorIcon,
   LocationOnOutlinedIcon,
   KeyboardArrowUpIcon,
   KeyboardArrowDownIcon,

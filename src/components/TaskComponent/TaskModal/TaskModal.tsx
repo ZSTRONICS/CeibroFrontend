@@ -67,7 +67,7 @@ export const TaskModal = () => {
                 type: TASK_CONFIG.SET_SELECTED_TASK,
                 payload: newTaskData,
               });
-              dispatch(taskActions.openTaskDrawer());
+              dispatch(taskActions.openTaskDrawer(false));
             }
           }
         },
@@ -137,8 +137,8 @@ export const TaskModal = () => {
                 {/* </DialogContentText> */}
               </DialogContent>
               <DialogActions>
-                <CBox display="flex" width="100%" pl={1.5} pr={4.3} pb={1}>
-                  <CBox className={classes.btnDraft}>
+                <CBox display="flex" width="100%"  sx={{padding:'0 10px 18px'}}>
+                  <CBox className={classes.btnDraft} sx={{ paddingLeft:'2px',}}>
                     <CButton
                       type="submit"
                       variant="outlined"
@@ -177,6 +177,7 @@ export const TaskModal = () => {
                     <CButton
                       onClick={handleClose}
                       variant="contained"
+                      elevation={0}
                       styles={{
                         color: "#605C5C",
                         backgroundColor: "#ECF0F1",

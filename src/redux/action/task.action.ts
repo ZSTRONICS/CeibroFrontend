@@ -19,9 +19,10 @@ const taskActions = {
             payload: id
         }
     },
-    openTaskDrawer: () => {
+    openTaskDrawer: (isEditable: boolean) => {
         return {
             type: TASK_CONFIG.OPEN_TASK_DRAWER,
+            payload: isEditable
         };
     },
     closeTaskDrawer: () => {
@@ -53,10 +54,14 @@ const taskActions = {
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)
 export const createTask = createAction(TASK_CONFIG.CREATE_TASK)
+export const uploadDocs = createAction(TASK_CONFIG.UPLOAD_TASK_DOCS)
 export const createSubTask = createAction(TASK_CONFIG.CREATE_SUB_TASK)
 export const setSelectedTask = createAction(TASK_CONFIG.SET_SELECTED_TASK)
 export const setSubTask = createAction(TASK_CONFIG.SET_SUBTASK)
+export const updateTaskById = createAction(TASK_CONFIG.UPDATE_TASK_BY_ID)
+export const deleteTask = createAction(TASK_CONFIG.DELETE_TASK)
 export const getAllSubTaskList = createAction(TASK_CONFIG.GET_ALL_SUBTASK_LIST)
+export const getAllSubTaskRejection = createAction(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION)
 export const getAllSubTaskOfTask = createAction(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK)
 export const taskSubtaskStateChange = createAction(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE)
 

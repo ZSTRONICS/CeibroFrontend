@@ -11,11 +11,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { deDateFormat, getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import moment from "moment-timezone";
 
 export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
-  const dueDat = new Date()
-  const todayDate = deDateFormat(dueDat)
-
+  const todayDate = moment(new Date()).format("DD-MM-YYYY")
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
   const [showDate, setShowDate]= useState<any>(new Date())
@@ -63,7 +62,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = deDateFormat(e)
+              const currentDate = moment(e).format("DD-MM-YYYY")
                setFieldValue("dueDate", currentDate);
             }}
           />
@@ -255,7 +254,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
           </div>
         </CBox>
       </Grid>
-      {/* <CustomModal isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={''} /> */}
+      {/* <CustomModal  showCloseBtn={false} isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={''} /> */}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useRef } from "react";
 import { MoreVert } from "@material-ui/icons";
 import {
   Card,
@@ -11,6 +11,10 @@ import {
   Typography,
   Stack,
   Tooltip,
+  IconButton,
+  Menu,
+  MenuItem,
+  Popover,
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
@@ -18,14 +22,14 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import taskActions, {
-  getAllSubTaskOfTask,
-} from "redux/action/task.action";
-import { useDispatch } from "react-redux";
+import taskActions, { getAllSubTaskOfTask } from "redux/action/task.action";
+import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
 import moment from "moment-timezone";
+import { RootState } from "redux/reducers";
+import { onlyUnique } from "components/Utills/Globals/Common";
 
 interface Props {
   task: TaskInterface;
@@ -33,14 +37,26 @@ interface Props {
 }
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
+  const { creator, createdAt, admins } = task;
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
 
-  const {creator, createdAt}= task
-  const taskCreatedOn = moment.utc(moment(createdAt)).format('DD.MM.YYYY')
-  const dueDate = task.dueDate.replaceAll('-', '.').replace(',', '')
+  const taskCreatedOn = moment.utc(moment(createdAt)).format("DD.MM.YYYY");
+  const dueDate = task.dueDate.replaceAll("-", ".").replace(",", "");
   const classes = useStyles();
   const dispatch = useDispatch();
+  const divRef = useRef();
+  const { user } = useSelector((state: RootState) => state.auth);
 
-  const handleCard = () => {
+  const adminsList = admins.map((item: UserInfo) => item._id);
+  const allMembers = [creator._id, ...adminsList];
+  const authorizeMembers = allMembers.filter(onlyUnique);
+  const taskRights = authorizeMembers.some((item: string) => item === user._id);
+  const deleteOnlyCreator = creator._id === user._id;
+  const handleCard = (e: any, isEditable: boolean) => {
+    e.stopPropagation();
+ 
     dispatch({
       type: TASK_CONFIG.SET_SELECTED_TASK,
       payload: task,
@@ -50,22 +66,41 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
       payload: task._id,
     });
 
-    dispatch(taskActions.openTaskDrawer());
+    dispatch(taskActions.openTaskDrawer(isEditable));
 
     dispatch(
       getAllSubTaskOfTask({
         other: {
           taskId: task._id,
-        }
+        },
       })
     );
   };
 
-  // const dueDate = new Date().toLocaleDateString("de-DE", {
-  //   day: "numeric",
-  //   month: "numeric",
-  //   year: "numeric",
-  // });
+  const openPopup = (e: any) => {
+    e.stopPropagation();
+    setAnchorElUser(e.currentTarget);
+  };
+
+  const closePopup = (e: any) => {
+    e.stopPropagation();
+    setAnchorElUser(null);
+  };
+  const handleEdit = (e: any) => { 
+
+    e.stopPropagation();
+
+    setAnchorElUser(null);
+ 
+    handleCard(e, true)
+  };
+  const handleDelete = (e: any) => {
+    e.stopPropagation();
+    setAnchorElUser(null);
+  };
+
+  const open = Boolean(anchorElUser);
+  const id = open ? "simple-popover" : undefined;
 
   const SubHeader = () => {
     return (
@@ -74,9 +109,9 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           <TaskStatus sx={{ border: `1px solid ${ColorByStatus(task.state)}` }}>
             {task.state}
           </TaskStatus>
-          <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
+          {/* <Typography sx={{ fontSize: "11px", fontWeight: "500" }}>
             {dueDate}
-          </Typography>
+          </Typography> */}
         </CustomStack>
       </>
     );
@@ -86,13 +121,13 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     return (
       <>
         <CustomStack alignItems="center">
-          <Box
+          {/* <Box
             sx={{
               padding: "0 4px 5px",
             }}
           >
             <CounterSpan>14/2</CounterSpan>
-          </Box>
+          </Box> */}
           <Box
             sx={{
               padding: "5px 4px 0",
@@ -104,26 +139,107 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 fontSize="small"
               />
             )}
-            {task.state === State.Draft && (
+            {/* {task.state === State.Draft && (
               <>
                 <Tooltip title={`${State.Draft}`} placement="bottom">
                   <assets.ErrorOutlinedIcon color="error" fontSize="small" />
                 </Tooltip>
               </>
-            )}
+            )} */}
           </Box>
-          {/* <IconButton aria-label="settings"> */}
-          <MoreVert color="primary" />
-          {/* </IconButton> */}
+          {taskRights && (
+            <Box ref={divRef}>
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                aria-describedby={id}
+                disableRipple={true}
+                onClick={openPopup}
+              >
+                <MoreVert color="primary" />
+              </IconButton>
+              <Menu
+                MenuListProps={{ sx: { py: 0 } }}
+                id={id}
+                open={open}
+                anchorEl={anchorElUser}
+                onClose={closePopup}
+               
+                sx={{'& .MuiMenuList-padding':{padding:0}}}
+                elevation={5}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+              >
+                <MenuItem
+                  // dense={true}
+                  disableRipple
+                  aria-describedby={id}
+                  onClick={handleEdit}
+                  divider={deleteOnlyCreator}
+                  sx={{
+                    "&.MuiMenuItem-root": {
+                      padding: "4px 10px",
+                    },
+                  }}
+                >
+                  <CustomButton
+                    variant="outlined"
+                    disableRipple
+                    sx={{ border: "none", textTransform:'capitalize' }}
+                    
+                  >
+                    Edit
+                  </CustomButton>
+                </MenuItem>
+                {deleteOnlyCreator && (
+                  <MenuItem
+                    disableRipple
+                    onClick={handleDelete}
+                    aria-describedby={id}
+                    sx={{
+                      "&.MuiMenuItem-root": {
+                        padding: "4px 10px",
+                      },
+                    }}
+                  >
+                    <CustomButton
+                      variant="outlined"
+                      disableElevation
+                      disableFocusRipple
+                      disableRipple
+                      sx={{ border: "none", textTransform:'capitalize' }}
+                    >
+                      Delete
+                    </CustomButton>
+                  </MenuItem>
+                )}
+              </Menu>
+            </Box>
+          )}
         </CustomStack>
       </>
     );
   };
+
   const AssignedToList = () => {
     return (
       <>
-        {task.assignedTo.map((item: UserInfo) => {
-          return <span key={item._id}>{`${item.firstName} ${item.surName},`}</span>;
+        {task.assignedTo.map((item: UserInfo, index) => {
+          if(index === task.assignedTo.length -1){
+            return (
+              <span style={{textTransform:'capitalize'}} key={item._id}>{`${item.firstName} ${item.surName}`}</span>
+            );
+          }else{
+          return (
+            <span style={{textTransform:'capitalize'}} key={item._id}>{`${item.firstName} ${item.surName}, `}</span>
+          );
+          }
         })}
       </>
     );
@@ -132,7 +248,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     //  <Grid item  className={classes.cardContainer}>
     <Card
       className={classes.cardContainer}
-      onClick={handleCard}
+      onClick={(e:any) => handleCard(e, false)}
       itemID={task._id}
       key={task._id}
       sx={{
@@ -151,22 +267,20 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         action={Action()}
       />
       <CardContent sx={{ paddingBottom: "0px" }}>
-      <CustomStack gap={2.5} pb={0.45} justifyContent='space-between'>
+        <CustomStack gap={2.5} pb={0.45} justifyContent="space-between">
           <Box>
             <LabelTag>Created by</LabelTag>
             <AssignedTag>{`${creator.firstName} ${creator.surName}`}</AssignedTag>
           </Box>
           <Box>
             <LabelTag>Created on</LabelTag>
-                    <AssignedTag
-                      sx={{ display: "inline-block" }}
-                     >
-                     {taskCreatedOn}
-                    </AssignedTag>
+            <AssignedTag sx={{ display: "inline-block" }}>
+              {taskCreatedOn}
+            </AssignedTag>
           </Box>
         </CustomStack>
-        <CustomStack gap={2.5} justifyContent='space-between'>
-         <Box>
+        <CustomStack gap={2.5} justifyContent="space-between">
+          <Box>
             <LabelTag>Assigned to</LabelTag>
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
@@ -176,8 +290,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                       key={item._id}
                       sx={{ display: "inline-block" }}
                     >
-                      {" "}
-                      {`${item.firstName}`}
+                      {`${item.firstName} ${item.surName}`}
                     </AssignedTag>
                   )}
                 </Fragment>
@@ -196,20 +309,36 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             )}
           </Box>
           <Box>
-            <LabelTag>Task due date</LabelTag>
+            <LabelTag>Due date</LabelTag>
             <AssignedTag>{dueDate}</AssignedTag>
           </Box>
-
         </CustomStack>
-        <Box pt={2.5}>
-          <AssignedTag sx={{ fontSize: "16px", fontWeight: "600", textTransform: 'capitalize' }}>
+        <Box pt={2.5} pb={1.15}>
+          <AssignedTag
+            sx={{
+              fontSize: "16px",
+              fontWeight: "600",
+              textTransform: "capitalize",
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              whiteSpace: 'nowrap',
+              display: 'inline-block',
+              maxWidth: '300px',
+              verticalAlign: 'middle',
+            }}
+          >
             {/* project title */}
             {task.title}
           </AssignedTag>
         </Box>
+        <Divider sx={{ margin: "1px 0px" }} />
         <CustomStack
-          pt={2.5}
-          sx={{ justifyContent: "space-between", flexWrap: "wrap" }}
+          pt={1.4}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexWrap: "wrap",
+          }}
           direction={{ xs: "row", sm: "row" }}
         >
           <Box>
@@ -255,9 +384,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             </AssignedTag>
           </Box>
         </CustomStack>
-        <Divider sx={{ margin: "10px 0px" }} />
       </CardContent>
-      <CCardActions>
+      {/* <CCardActions>
         <AssignedTag sx={{ fontWeight: "600" }}>
           {task.project.title}
         </AssignedTag>
@@ -267,7 +395,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         >
           view map
         </Button>
-      </CCardActions>
+      </CCardActions> */}
     </Card>
     //  </Grid>
   );
@@ -285,6 +413,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 export const CustomBadge = styled(Badge)`
   padding-left: 20px;
+`;
+export const CustomButton = styled(Button)`
+font-size: 14px;
+font-weight: 500;
+  &:hover {
+    background: none;
+    border: none;
+  }
 `;
 const CCardActions = styled(CardActions)`
   padding: 14px;

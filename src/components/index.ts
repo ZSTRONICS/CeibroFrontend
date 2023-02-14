@@ -28,10 +28,12 @@ import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/C
 
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
+import CDrawer from "Drawer/CDrawer";
 
 export {
   RouterConfig,
   TaskModal,
+  CDrawer,
   CreateQuestioniarDrawer,
   ViewQuestioniarDrawer,
   CreateProjectDrawer,

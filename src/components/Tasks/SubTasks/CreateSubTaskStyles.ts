@@ -21,6 +21,15 @@ export const useStyles = makeStyles(() =>
                 marginTop: '0px !important'
             }
         },
+        datePicker:{
+            "& .MuiInputLabel-root": {
+                fontSize: "12px",
+                color: "#605C5C",
+                fontFamily: "Inter",
+                fontWeight: 500,
+                top:-3,
+              }
+        },
         titleWrapper: {
             '& .MuiFormLabel-root': {
                 fontSize: 12,

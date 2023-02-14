@@ -100,8 +100,6 @@ export const TaskAdvanceOptions = () => {
                         <assets.LocationOnOutlinedIcon style={{ fill: '#9f9f9f' }} />
 
                     </CBox>
-
-
                 </Grid>
             </Grid>
             <CBox my={2}>
