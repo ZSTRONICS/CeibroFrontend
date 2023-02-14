@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Grid, makeStyles } from "@material-ui/core";
-import { Divider, TextField } from "@mui/material";
+import React, { useRef, useState } from "react";
+import { makeStyles } from "@material-ui/core";
+import { Divider, Grid, TextField } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { useSelector, useDispatch } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -8,38 +8,90 @@ import Autocomplete from "@mui/material/Autocomplete";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
 import UploadImage from "components/uploadImage/UploadImage";
-import { TaskInterface } from "constants/interfaces/task.interface";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import {
   deDateFormat,
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
+  onlyUnique,
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { ProjectTitles } from "constants/interfaces/project.interface";
+import {
+  SubtaskInterface,
+  UserInfo,
+} from "constants/interfaces/subtask.interface";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import assets from "assets/assets";
+import moment from "moment-timezone";
+import taskActions, {
+  deleteTask,
+  updateTaskById,
+} from "redux/action/task.action";
+import { toast } from "react-toastify";
 
 interface Props {
   taskMenue: TaskInterface;
 }
 
 function TaskDrawerMenu({ taskMenue }: Props) {
+  const cInputRef = useRef<any>(null);
   const classes = useStyles();
-  const dispatch = useDispatch()
-  const [showDate, setShowDate]= useState<any>()
+  const dispatch = useDispatch();
+  const [showDate, setShowDate] = useState<any>();
+  const {
+    _id,
+    admins,
+    assignedTo,
+    dueDate,
+    project,
+    state,
+    title,
+    description,
+    creator,
+  } = taskMenue;
+  let { isEditable } = taskMenue;
+  isEditable = useSelector((state: RootState) => state.task.isEditing);
+
+  const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
-  const { admins, assignedTo, dueDate, project, state, title, description, creator } = taskMenue;
-  const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
   const { user } = useSelector((state: RootState) => state.auth);
+
+  const adminIds = admins.map((item: UserInfo) => item._id);
+  const allMembers = [creator._id, ...adminIds];
+  const authorizeMembers = allMembers.filter(onlyUnique);
+  const taskRights = authorizeMembers.some((item: string) => item === user._id);
+
+  // https://ceibroceibro.atlassian.net/wiki/spaces/CEIBRO/pages/48824321/1.2+Task+detail+view
+  // change task (due date, title , project, description)
+  // only creator if task in draft state
+  const isCreator = creator._id === user._id;
+  const isDraftState = state === State.Draft;
+  const hasEditAccess = isCreator && isDraftState;
+  const canEdit = showUpdateBtn && hasEditAccess;
+  const taskCreatorAndAdmin = taskRights && showUpdateBtn;
+
+  // add/remove admins to/from task
+  // creator but not themselve , admin(but not task creator)
   //const projectData = [{ label: project.title, id: project._id }];
-  const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
+
+  const notShowDefaultProject = allProjectsTitles.filter(
+    (item: any) => item.label !== "Default"
+  );
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
   let allMembersOfProject: any[];
+  // const {isEditing} = useSelector((state:RootState)=> state.task)
 
-  const selectedProjectValue = { label: project.title, id: project._id };
+  // const selectedProjectValue = { label: project.title, id: project._id };
+
 
   const creatorAutoCompleteData = {
     label: `${creator.firstName} ${creator.surName}`,
@@ -49,28 +101,132 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   let fixedOptions: any = [creatorAutoCompleteData];
 
   const [adminsList, setAdminsList] = React.useState<any>([...adminData]);
-  const [adminListOpt, setAdminListOpt] = React.useState<any>([...fixedOptions]);
+  const [adminListOpt, setAdminListOpt] = React.useState<any>([
+    ...fixedOptions,
+  ]);
   const [assignToOpt, setAssignToOpt] = React.useState<any>([]);
-  const [assignToList, setAssignToList] = React.useState<any>([...assignedToData]);
-
+  const [assignToList, setAssignToList] = React.useState<any>([
+    ...assignedToData,
+  ]);
   const [doOnce, setDoOnce] = React.useState<boolean>(true);
+  const adminArr = adminsList.map((item: any) => item.id);
+  const assignArr = assignToList.map((item: any) => item.id);
+
+  const [formData, setFormData] = useState({
+    title: title,
+    dueDate: moment(showDate).format("DD-MM-YYYY"),
+    project: project._id,
+    description: description,
+    admins: adminArr,
+    assignedTo: assignArr,
+    state: state,
+  });
 
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
       project._id,
       projectWithMembers
     );
-    allMembersOfProject = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
-    setAdminListOpt(getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject]));
-    setAssignToOpt(getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject]));
-    setDoOnce(false)
+    allMembersOfProject = getUserFormatedDataForAutoComplete(
+      projectMembersData?.projectMembers
+    );
+    setAdminListOpt(
+      getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject])
+    );
+    setAssignToOpt(
+      getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject])
+    );
+    setDoOnce(false);
   }
   if (assignToList) {
     dispatch({
       type: TASK_CONFIG.TASK_ASSIGNED_TO_MEMBERS,
-      payload: assignToList
-    })
+      payload: assignToList,
+    });
   }
+
+  const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleEditTask = () => {
+    setShowUpdateBtn(true);
+  };
+
+  const handleTaskUpdateAtDraftState = (e: any, isCreateTask: boolean) => {
+    e.stopPropagation();
+    dispatch(
+      updateTaskById({
+        body: formData,
+        other: _id,
+        success: (res) => {
+          if (isCreateTask) {
+            dispatch(taskActions.closeTaskDrawer());
+            toast.success("Task created");  
+          } else {
+            toast.success("Task updated");
+            setShowUpdateBtn(false);
+            // console.log(res);
+          }
+        },
+        onFailAction: () => {
+          toast.error("Failed to update task!");
+        },
+      })
+    );
+  };
+
+  const handleTaskUpdateAtNewState = (e: any) => {
+    e.stopPropagation();
+    dispatch(
+      updateTaskById({
+        body: {
+          description: description,
+          admins: adminArr,
+          assignedTo: assignArr,
+        },
+        other: _id,
+        success: (res) => {
+          toast.success("Task updated");
+          setShowUpdateBtn(false);
+          // console.log(res);
+        },
+        onFailAction: () => {
+          toast.error("Failed to updated task!");
+        },
+      })
+    );
+  };
+  const handleCreateTask = (e: any) => {
+    formData.state = State.New;
+    handleTaskUpdateAtDraftState(e, true);
+  };
+
+  const handleCancel = () => {
+    setShowUpdateBtn(false);
+  };
+
+  const handleDelete = () => {
+    dispatch(
+      deleteTask({
+        other: _id,
+        success: (res) => {
+          dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: _id });
+          dispatch(taskActions.closeTaskDrawer());
+          toast.success("Task deleted");
+          //deleted task id = _id
+        },
+        onFailAction: () => {
+          toast.error("Failed to delete task!");
+        },
+      })
+    );
+    setShowUpdateBtn(false);
+  };
 
   const handleProjectChange = (project: any) => {
     if (project === null) {
@@ -79,118 +235,126 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       setAssignToList([]);
       setAssignToOpt([]);
     } else {
+      if(formData.project !== project.value){
+        setAdminsList([...fixedOptions]);
+        setAssignToList([]);
+      }
+      formData.project = project.value;
       const projectMembersData = getSelectedProjectMembers(
         project?.value,
         projectWithMembers
       );
-      const projMembers = getUserFormatedDataForAutoComplete(projectMembersData?.projectMembers);
-      setAdminListOpt(getUniqueObjectsFromArr([...fixedOptions, ...projMembers]));
-      setAssignToOpt(getUniqueObjectsFromArr([...fixedOptions, ...projMembers]));
+      const projMembers = getUserFormatedDataForAutoComplete(
+        projectMembersData?.projectMembers
+      );
+      setAdminListOpt(
+        getUniqueObjectsFromArr([...fixedOptions, ...projMembers])
+      );
+      setAssignToOpt(
+        getUniqueObjectsFromArr([...fixedOptions, ...projMembers])
+      );
     }
   };
 
   if (assignToOpt) {
     dispatch({
       type: TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload: [...assignToOpt, ...adminListOpt, ...adminData]
-    })
+      payload: [...assignToOpt, ...adminListOpt, ...adminData],
+    });
   }
 
   if (adminsList) {
     dispatch({
       type: TASK_CONFIG.SELECTED_TASK_ADMINS,
-      payload: [...adminData]
-    })
+      payload: [...adminData],
+    });
   }
 
   return (
     <>
-      <Grid container className={classes.outerWrapper}>
-        <CBox display="flex" alignItems="center" mt={1}>
-          <CBox sx={{ background: `${getColorByStatus(state)}`, fontWeight: '500', }} className={classes.subtaskState}>{state}</CBox>
-          <CBox color="#000" fontSize={12} fontWeight={600} ml={1}>
-            {dueDate.replaceAll('-','.').replace(',','')}
+      <Grid container className={classes.outerWrapper} rowGap={2.5}>
+        <Grid item container xs={12} md={12} justifyContent="space-between">
+          <CBox display="flex" alignItems="center">
+            <CBox
+              sx={{
+                background: `${getColorByStatus(state)}`,
+                fontWeight: "500",
+              }}
+              className={classes.subtaskState}
+            >
+              {state}
+            </CBox>
+            <CBox color="#000" fontSize={12} fontWeight={500} ml={1}>
+              {dueDate.replaceAll("-", ".").replace(",", "")}
+            </CBox>
           </CBox>
-        </CBox>
+          <Grid item>
+            {taskRights && (
+              <CBox sx={{ cursor: "pointer" }} onClick={handleEditTask}>
+                <assets.BorderColorIcon
+                  color="primary"
+                  sx={{ opacity: `${showUpdateBtn ? 0.6 : 1}` }}
+                />
+              </CBox>
+            )}
+          </Grid>
+        </Grid>
+
         <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
           <Grid item>
-          <CDatePicker
-            required
-            value={showDate}
-            id="date1"
-            name="dueDate"
-            onChange={(e:any) => {
-              setShowDate(e)
-              const currentDate = deDateFormat(e)
-              //  props.setFieldValue("dueDate", currentDate);
-            }}
-          />
-            
+            <CDatePicker
+              required
+              value={showDate}
+              disabled={!canEdit}
+              id="date1"
+              name="dueDate"
+              onChange={(e: any) => {
+                setShowDate(e);
+                formData.dueDate = moment(e).format("DD-MM-YYYY");
+              }}
+            />
           </Grid>
         </Grid>
         <Grid item xs={12} md={12} className={classes.titleWrapper}>
           <TextField
+            inputRef={cInputRef}
             required
             size="small"
             name="title"
             fullWidth
+            disabled={!canEdit}
             defaultValue={title}
             id="outlined-basic"
             label="Task title"
             placeholder="Enter task title"
             variant="outlined"
-            onChange={(e) => {
-              // props.setFieldValue("title", e.target.value);
-            }}
+            onChange={handleInputChange}
           />
         </Grid>
 
         <Grid item xs={12} md={12}>
           <div className={classes.titleWrapper}>
-            {state !== "draft" ? (
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo"
-                size="small"
-                defaultValue={selectedProjectValue}
-                value={selectedProjectValue}
-                options={[]}
-                getOptionLabel={(option:any)=> option.label}
-                disabled={true}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    name="project"
-                    label="Project"
-                    placeholder="Select project"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                )}
-              />
-            ) : (
-              <Autocomplete
-                disablePortal
-                id="combo-box-demo1"
-                size="small"
-                defaultValue={{ label: project.title, id: project._id }}
-                options={notShowDefaultProject}
-                getOptionLabel={(option:any)=> option.label}
-                onChange={(e, value) => {
-                  handleProjectChange(value);
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    required
-                    {...params}
-                    name="projects"
-                    label="Project"
-                    placeholder="Select project"
-                  />
-                )}
-              />
-            )}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo1"
+              size="small"
+              disabled={!canEdit}
+              defaultValue={{ label: project.title, id: project._id }}
+              options={notShowDefaultProject}
+              getOptionLabel={(option: any) => option.label}
+              onChange={(e, value) => {
+                handleProjectChange(value);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  required
+                  {...params}
+                  name="projects"
+                  label="Project"
+                  placeholder="Select project"
+                />
+              )}
+            />
           </div>
         </Grid>
 
@@ -205,10 +369,11 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 multiple
                 disablePortal
                 id="combo-box-demo"
+                disabled={!taskCreatorAndAdmin}
                 value={adminsList}
                 defaultValue={adminsList}
                 options={adminListOpt}
-                getOptionLabel={(option:any)=> option.label}
+                getOptionLabel={(option: any) => option.label}
                 size="small"
                 onChange={(event, value) => {
                   let newValue: any = [
@@ -218,15 +383,20 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                     ),
                   ];
 
-                  newValue = newValue.reduce((uniqueArray: any[], element: { label: string, id: string }) => {
-                    if (!uniqueArray.find(item => item.id === element.id)) {
-                      uniqueArray.push(element);
-                    }
-                    return uniqueArray;
-                  }, []);
+                  newValue = newValue.reduce(
+                    (
+                      uniqueArray: any[],
+                      element: { label: string; id: string }
+                    ) => {
+                      if (!uniqueArray.find((item) => item.id === element.id)) {
+                        uniqueArray.push(element);
+                      }
+                      return uniqueArray;
+                    },
+                    []
+                  );
                   setAdminsList(newValue);
-                  // const admins = newValue.map((value: any) => value.id);
-                  // props.setFieldValue("admins", admins);
+                  formData.admins = newValue.map((value: any) => value.id);
                 }}
                 renderInput={(params) => (
                   <TextField
@@ -250,7 +420,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 value={adminData}
                 size="small"
                 options={[]}
-                getOptionLabel={(option:any)=> option.label}
+                getOptionLabel={(option: any) => option.label}
                 disabled={true}
                 renderInput={(params) => (
                   <TextField
@@ -274,21 +444,28 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               multiple
               disablePortal
               id="combo-box-demo"
+              disabled={!taskCreatorAndAdmin}
               disableCloseOnSelect
               options={assignToOpt}
-              getOptionLabel={(option:any)=> option.label}
+              getOptionLabel={(option: any) => option.label}
               size="small"
               value={assignToList}
               onChange={(e, newValue) => {
-
-                newValue = newValue.reduce((uniqueArray: any[], element: { label: string, id: string }) => {
-                  if (!uniqueArray.find(item => item.id === element.id)) {
-                    uniqueArray.push(element);
-                  }
-                  return uniqueArray;
-                }, []);
+                newValue = newValue.reduce(
+                  (
+                    uniqueArray: any[],
+                    element: { label: string; id: string }
+                  ) => {
+                    if (!uniqueArray.find((item) => item.id === element.id)) {
+                      uniqueArray.push(element);
+                    }
+                    return uniqueArray;
+                  },
+                  []
+                );
 
                 setAssignToList([...newValue]);
+                formData.assignedTo = newValue.map((value: any) => value.id);
               }}
               renderInput={(params) => (
                 <TextField
@@ -310,14 +487,14 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             id="standard-multiline-flexible"
             placeholder="Enter task description"
             multiline
+            disabled={!taskCreatorAndAdmin}
             maxRows={5}
             minRows={5}
+            name="description"
             style={{ padding: "10px 10px" }}
             variant="standard"
-            defaultValue={description}
-            onChange={(e) => {
-              // props.setFieldValue("description", e.target.value);
-            }}
+            value={formData.description}
+            onChange={handleInputChange}
             className={classes.textArea}
             InputLabelProps={{
               shrink: true,
@@ -374,6 +551,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             </CBox>
           </CBox>
         </Grid>
+
         {/* <Link href="#" underline="none"> */}
         {/* <CBox color='#0076C8' fontSize={14} fontWeight={600} display='flex' alignItems='center' my={1.8}>
           {open ?
@@ -429,6 +607,129 @@ function TaskDrawerMenu({ taskMenue }: Props) {
                 </div>
             </Grid> */}
       </Grid>
+      {state === State.Draft && !showUpdateBtn && (
+        <Grid
+          container
+          justifyContent="flex-end"
+          mt={10}
+          sx={{ padding: "10px 23px" }}
+        >
+          <Grid item>
+            <CButton
+              label="Create Task"
+              onClick={handleCreateTask}
+              variant="contained"
+              styles={{
+                borderColor: "#0076C8",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "white",
+                marginRight: 15,
+                textTransform: "capitalize",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <CButton
+              label={"Delete"}
+              onClick={handleDelete}
+              variant="outlined"
+              styles={{
+                borderColor: "#FA0808",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "#FA0808",
+              }}
+            />
+          </Grid>
+        </Grid>
+      )}
+
+      {state === State.Draft && showUpdateBtn && (
+        <Grid
+          container
+          justifyContent="flex-end"
+          mt={10}
+          sx={{ padding: "10px 23px" }}
+        >
+          <Grid item>
+            <CButton
+              label="Create Task"
+              onClick={handleCreateTask}
+              variant="contained"
+              styles={{
+                borderColor: "#0076C8",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "white",
+                marginRight: 15,
+                textTransform: "capitalize",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <CButton
+              label="Update Draft"
+              onClick={(e: any) => handleTaskUpdateAtDraftState(e, false)}
+              variant="contained"
+              styles={{
+                borderColor: "#0076C8",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "white",
+                marginRight: 15,
+                textTransform: "capitalize",
+              }}
+            />
+          </Grid>
+        </Grid>
+      )}
+
+      {state === State.New && showUpdateBtn && (
+        <Grid
+          container
+          justifyContent="flex-end"
+          mt={10}
+          sx={{ padding: "10px 23px" }}
+        >
+          <Grid item>
+            <CButton
+              label="Update Task"
+              onClick={handleTaskUpdateAtNewState}
+              variant="contained"
+              styles={{
+                borderColor: "#0076C8",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "white",
+                marginRight: 15,
+                textTransform: "capitalize",
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <CButton
+              styles={{
+                borderColor: "#9D9D9D",
+                fontSize: 12,
+                fontWeight: "bold",
+                borderWidth: 2,
+                color: "#9D9D9D",
+                marginRight: 15,
+                textTransform: "capitalize",
+              }}
+              label="Cancel"
+              onClick={handleCancel}
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      )}
       <CustomModal
         showCloseBtn={true}
         isOpen={imageAttach}
@@ -444,11 +745,11 @@ export default TaskDrawerMenu;
 
 const useStyles = makeStyles({
   subtaskState: {
-    fontSize: '10px',
-    borderRadius: '3px',
-    padding: '2px 5px',
-    textTransform: 'capitalize',
-    color: 'white'
+    fontSize: "10px",
+    borderRadius: "3px",
+    padding: "2px 5px",
+    textTransform: "capitalize",
+    color: "white",
   },
   outerWrapper: {
     padding: "10px 23px",
@@ -456,12 +757,12 @@ const useStyles = makeStyles({
   },
 
   titleWrapper: {
-    marginTop: 20,
+    // marginTop: 20,
     "& .MuiFormLabel-root": {
-      fontSize: "1rem",
+      fontSize: "12px",
       color: "#605C5C",
       fontFamily: "Inter",
-      fontWeight: 600,
+      fontWeight: 500,
     },
     // maxHeight: '41px !important',
     "&:hover": {

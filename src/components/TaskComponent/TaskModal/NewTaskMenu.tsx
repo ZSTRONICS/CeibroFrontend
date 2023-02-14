@@ -8,14 +8,15 @@ import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
-import { deDateFormat, getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import moment from "moment-timezone";
 
 function NewTaskMenu(props: any) {
 
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const dueDat = new Date()
-  const todayDate = deDateFormat(dueDat)
+  const dueDat:any =  moment(new Date()).format("DD-MM-YYYY")
+
   const { projectWithMembers, allProjectsTitles } = useSelector(
     (store: RootState) => store.project
   );
@@ -24,7 +25,7 @@ function NewTaskMenu(props: any) {
   const [showDate, setShowDate]= useState<any>()
   const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
   if (doOnce) {
-    props.setFieldValue("dueDate", todayDate);
+    props.setFieldValue("dueDate", dueDat);
     setDoOnce(false)
   }
   const fixedOptions: any = [
@@ -70,7 +71,7 @@ function NewTaskMenu(props: any) {
             name="dueDate"
             onChange={(e:any) => {
               setShowDate(e)
-              const currentDate = deDateFormat(e)
+              const currentDate = moment(e).format("DD-MM-YYYY")
                props.setFieldValue("dueDate", currentDate);
             }}
             // InputProps={{
@@ -133,7 +134,7 @@ function NewTaskMenu(props: any) {
             disablePortal
             filterSelectedOptions
             disableCloseOnSelect
-            noOptionsText='project not selected'
+            
             id="combo-box-demo2"
             options={adminListOpt}
             limitTags={2}
@@ -181,7 +182,7 @@ function NewTaskMenu(props: any) {
            filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
-            noOptionsText='project not selected'
+         
             options={assignToOpt}
             getOptionLabel={(option:any)=> option.label}
             value={assignToList}
@@ -202,7 +203,7 @@ function NewTaskMenu(props: any) {
           />
         </div>
       </Grid>
-      <Grid item xs={12} md={12} className={classes.titleWrapper}>
+      <Grid item xs={12} md={12} className={classes.inputWrapper}>
         <TextField
           fullWidth
           id="outlined-multiline-static"

@@ -1,11 +1,8 @@
 import { Badge, makeStyles, Typography } from "@material-ui/core";
 import { useState } from "react";
 import colors from "../../../assets/colors";
-import {
-  getColorByStatus
-} from "../../../config/project.config";
+import { getColorByStatus } from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";
-
 
 export const StatusMenu = (props: any) => {
   const { options } = props;
@@ -25,7 +22,6 @@ export const StatusMenu = (props: any) => {
   //     dispatch(getStatus());
   //   }
   // }, [drawerOpen]);
-
 
   return (
     <>
@@ -47,15 +43,16 @@ export const StatusMenu = (props: any) => {
               <Typography className={classes.chipTitle}>
                 {option.title}
               </Typography>
-              {option.count > 0 && (
+              {
                 <Badge
+                  showZero={true}
                   overlap="circular"
                   className={classes.statusBage}
                   color="primary"
                   badgeContent={option.count}
                   style={{ marginRight: 20 }}
                 ></Badge>
-              )}
+              }
             </div>
           );
         })}

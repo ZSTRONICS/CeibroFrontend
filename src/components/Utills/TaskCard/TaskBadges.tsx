@@ -6,28 +6,28 @@ const TaskBadges = () => {
   
   const badges = [
     {
-      count: 8,
+      count: 0,
       status: "Ongoing",
     },
     {
-      count: 3,
+      count: 0,
       status: "Approved",
     },
     {
-      count: 5,
+      count: 0,
       status: "Done",
     },
     {
-      count: 1,
+      count: 0,
       status: "Draft",
     },
     {
-      count: 2,
+      count: 0,
       status: "Rejected",
     },
 
     {
-      count: 12,
+      count: 0,
       status: "Submitted",
     },
   ];

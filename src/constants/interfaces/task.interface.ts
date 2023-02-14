@@ -38,6 +38,7 @@ export interface TaskInterface {
   subTaskStatusCount: any[]
   createdAt: string
   updatedAt: string
+  isEditable?: boolean
 }
 
 export interface Creator extends UserInfo{}

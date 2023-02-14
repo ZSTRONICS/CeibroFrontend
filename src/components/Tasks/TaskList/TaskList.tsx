@@ -45,17 +45,15 @@ function TaskList() {
         >
           {allTask &&
             allTask.map((task: TaskInterface) => {
-              if(!task.access.includes(user._id)){
-                return
+              if (!task.access.includes(user._id)) {
+                return;
               }
-             return <Fragment key={task._id}>
-                <TaskCard
-                ColorByStatus={getColorByStatus}
-                task={task}
-              />
-              </Fragment>
-              
-})}
+              return (
+                <Fragment key={task._id}>
+                  <TaskCard ColorByStatus={getColorByStatus} task={task} />
+                </Fragment>
+              );
+            })}
         </Grid>
       )}
     </>

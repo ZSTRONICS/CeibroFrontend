@@ -58,3 +58,14 @@ export const deDateFormat =(dateStr:Date)=>{
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+export const onlyUnique =(value: any, index: any, array: any) =>{
+  return array.indexOf(value) === index;
+}
+  // const dueDate = new Date().toLocaleDateString("de-DE", {
+  //   day: "numeric",
+  //   month: "numeric",
+  //   year: "numeric",
+  // });
+
+  // moment(dueDate).format("ddd, MMM Do YYYY, h:mm:ss a")
+  // "Mon, Aug 12 2019, 5:52:00 pm"

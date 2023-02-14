@@ -13,7 +13,11 @@ import { getColorByStatus } from "config/project.config";
 import { CBox } from "components/material-ui";
 import CButton from "components/Button/Button";
 
-import { AssignedTo, Member, SubtaskInterface } from "constants/interfaces/subtask.interface";
+import {
+  AssignedTo,
+  Member,
+  SubtaskInterface,
+} from "constants/interfaces/subtask.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
@@ -29,14 +33,33 @@ interface Props {
 
 function SubTaskCard({ subTaskDetail }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { _id, dueDate, assignedTo, title, state, description, creator, taskId,createdAt } = subTaskDetail
-  const classes = useStyles()
-  const membersList = assignedTo.map((member: AssignedTo) => member.members).flat(1)
-  const assignToMemberIds = assignedTo.map((member: AssignedTo) => member.members.map(member => member._id)).flat(1)
-  const myState = state.find(localState => String(localState.userId) === String(user._id))
-  const subTaskDate = dueDate.replaceAll('-', '.').replace(',', '')
-  let subtaskCreatedAt = new Date(String(createdAt)).toLocaleString('de').slice(0, 10).replaceAll(',', '')
-  const bgcolor = getColorByStatus(myState ? myState.userState : '')
+  const {
+    _id,
+    dueDate,
+    assignedTo,
+    title,
+    state,
+    description,
+    creator,
+    taskId,
+    createdAt,
+  } = subTaskDetail;
+  const classes = useStyles();
+  const membersList = assignedTo
+    .map((member: AssignedTo) => member.members)
+    .flat(1);
+  const assignToMemberIds = assignedTo
+    .map((member: AssignedTo) => member.members.map((member) => member._id))
+    .flat(1);
+  const myState = state.find(
+    (localState) => String(localState.userId) === String(user._id)
+  );
+  const subTaskDate = dueDate.replaceAll("-", ".").replace(",", "");
+  let subtaskCreatedAt = new Date(String(createdAt))
+    .toLocaleString("de")
+    .slice(0, 10)
+    .replaceAll(",", "");
+  const bgcolor = getColorByStatus(myState ? myState.userState : "");
   const dispatch = useDispatch();
   const [subTask, setSubTask]: any = useState(false);
   const [statePayload, setStatePayload] = useState<any>({
@@ -46,14 +69,21 @@ function SubTaskCard({ subTaskDetail }: Props) {
   });
 
   const handleCloseModal = () => {
-    setSubTask((prev: any) => !prev)}
+    setSubTask((prev: any) => !prev);
+  };
   const AssignedToList = () => {
     return (
       <>
-        {membersList.map((item: Member) => {
-          return (
-            <span key={item._id}>{`${item.firstName} ${item.surName},`}</span>
-          );
+        {membersList.map((item: Member, index) => {
+          if (index === membersList.length - 1) {
+            return (
+              <span style={{textTransform:'capitalize'}} key={item._id}>{`${item.firstName} ${item.surName}`}</span>
+            );
+          } else {
+            return (
+              <span style={{textTransform:'capitalize'}} key={item._id}>{`${item.firstName} ${item.surName}, `}</span>
+            );
+          }
         })}
       </>
     );
@@ -118,11 +148,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
       <CBox display="flex" alignItems="center">
         <InfoIcon color="red" />
         <CBox fontSize={16} color="#FA0808" fontWeight={600} ml={1}>
-         {statePayload.state===SubtaskState.Rejected? "Reject Subtask": "Mark As Done"}
+          {statePayload.state === SubtaskState.Rejected
+            ? "Reject Subtask"
+            : "Mark As Done"}
         </CBox>
       </CBox>
     );
-   };
+  };
   return (
     <div className={classes.main}>
       {myState?.userState ? (
@@ -350,7 +382,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
       <CBox>
         <CustomModal
-        showCloseBtn={false}
+          showCloseBtn={false}
           title={<HeaderConfirmation />}
           isOpen={subTask}
           handleClose={handleCloseModal}

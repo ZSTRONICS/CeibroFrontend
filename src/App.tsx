@@ -189,7 +189,7 @@ const App: React.FC<MyApp> = () => {
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType
         const data = dataRcvd.data
-        console.log('eventType-->', eventType, dataRcvd)
+       console.log('eventType-->', eventType, dataRcvd)
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(user._id)) {

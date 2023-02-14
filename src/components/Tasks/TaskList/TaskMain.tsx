@@ -7,15 +7,42 @@ import { Box, Grid, Paper } from '@mui/material';
 import DatePicker from 'components/Utills/Inputs/DatePicker';
 import SelectDropdown from 'components/Utills/Inputs/SelectDropdown';
 import StatusMenu from 'components/Utills/Others/StatusMenu';
+import { TaskInterface } from 'constants/interfaces/task.interface';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/reducers';
 import TaskList from './TaskList';
 
 
 const TaskMain=()=> {
-  // const [showDate, setShowDate]= useState<any>()
+  const allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
   let xsPoint = 12
   let mdPoint = 4
   let lgPoint = 3.2
   const classes = useStyles()
+
+  const options = [
+    {
+      title: "All",
+      count: allTask.length,
+    },
+    {
+      title: "New",
+      count: allTask.filter(task => task.state==="new").length,
+    },
+    {
+      title: "Active",
+      count: allTask.filter(task => task.state==="active").length,
+    },
+  
+    {
+      title: "Done",
+      count: allTask.filter(task => task.state==="done").length,
+    },
+    {
+      title: "Draft",
+      count: allTask.filter(task => task.state==="draft").length,
+    },
+  ];
 
   return (<>
     <Box sx={{flexGrow:1}}>
@@ -62,29 +89,7 @@ const TaskMain=()=> {
   )
 }
 
-const options = [
-  {
-    title: "All",
-    count: 21,
-  },
-  {
-    title: "New",
-    count: 2,
-  },
-  {
-    title: "Active",
-    count: 30,
-  },
 
-  {
-    title: "Done",
-    count: 44,
-  },
-  {
-    title: "Draft",
-    count: 44,
-  },
-];
 export default TaskMain
 
 const useStyles = makeStyles({

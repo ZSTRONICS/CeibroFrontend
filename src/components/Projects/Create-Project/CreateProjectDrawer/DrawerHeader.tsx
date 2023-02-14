@@ -48,8 +48,8 @@ const useStyles = makeStyles({
   headerTitle: {
     textTransform: 'capitalize',
     fontStyle: "normal",
-    fontWeight: 500,
-    fontSize: 30,
+    fontWeight: 600,
+    fontSize: 24,
   },
 
 });
