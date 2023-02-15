@@ -282,6 +282,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         <CustomStack gap={2.5} justifyContent="space-between">
           <Box>
             <LabelTag>Assigned to</LabelTag>
+            {task.assignedTo.length>0?<>
             {task.assignedTo.map((item: UserInfo, i: any) => {
               return (
                 <Fragment key={item._id}>
@@ -296,6 +297,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 </Fragment>
               );
             })}
+            </>:"No user assigned"}
             {task.assignedTo.length > 1 && (
               <CustomBadge
                 overlap="circular"
