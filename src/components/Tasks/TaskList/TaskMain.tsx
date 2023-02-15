@@ -19,6 +19,9 @@ const TaskMain=()=> {
   let mdPoint = 4
   let lgPoint = 3.2
   const classes = useStyles()
+ 
+  // const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
+  // console.log('localized', localized)
 
   const options = [
     {

@@ -42,7 +42,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const cInputRef = useRef<any>(null);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [showDate, setShowDate] = useState<any>();
+
   const {
     _id,
     admins,
@@ -111,7 +111,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const [doOnce, setDoOnce] = React.useState<boolean>(true);
   const adminArr = adminsList.map((item: any) => item.id);
   const assignArr = assignToList.map((item: any) => item.id);
-
+  const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
+  const [showDate, setShowDate] = useState<any>(localized);
   const [formData, setFormData] = useState({
     title: title,
     dueDate: moment(showDate).format("DD-MM-YYYY"),
@@ -164,6 +165,9 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         body: formData,
         other: _id,
         success: (res) => {
+          if(res.status=== 200){
+             dispatch({ type: TASK_CONFIG.SET_SELECTED_TASK, payload: res?.data.newTask});
+          }
           if (isCreateTask) {
             dispatch(taskActions.closeTaskDrawer());
             toast.success("Task created");  
