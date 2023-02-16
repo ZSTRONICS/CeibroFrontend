@@ -10,7 +10,7 @@ const createTask = apiCall({
 
 const uploadDocs = apiCall({
   type: TASK_CONFIG.UPLOAD_TASK_DOCS,
-  isBlob:true,
+  isFormData:true,
   method: "post",
   path: "/docs/uploadFiles",
 })

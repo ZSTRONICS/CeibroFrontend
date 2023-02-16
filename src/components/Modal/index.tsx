@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 // import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
 import { Button } from "@mui/material";
+import styled from "@emotion/styled";
 
 interface Props {
   isOpen: boolean;
@@ -33,14 +34,13 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, sh
         maxWidth="sm"
         open={isOpen}
         onClose={handleClose}
-
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
         <DialogTitle id="alert-dialog-title">
           <Grid container className={classes.titleWraper}>
             <Grid item>
-              <Typography variant="h6">{title}</Typography>
+              <CustomTitle>{title}</CustomTitle>
             </Grid>
             {showCloseBtn&&<Grid item>
               <Button onClick={handleClose} variant='outlined'>Close</Button>
@@ -66,3 +66,10 @@ CustomModal.propTypes = {
 };
 
 export default CustomModal;
+
+
+const CustomTitle= styled(Typography)`
+font-family: 'Inter';
+font-weight: 600;
+font-size: 26px;
+`
