@@ -137,7 +137,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
 
   const myState = state.find( (localState) => String(localState.userId) === String(user._id))?.userState;
 
-  console.log((myState !== SubtaskState.Done))
+  // console.log((myState !== SubtaskState.Done))
   
   return (
     <>

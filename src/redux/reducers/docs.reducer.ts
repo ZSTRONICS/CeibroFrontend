@@ -7,13 +7,15 @@ interface FileReducerInt {
     filesUploaded: FileUploaded | any,
     filesUploadCompleted: DocsInterface | any
     filesBeingUploaded: File[]
+    allFilesUploadedDone: boolean
 }
 
 const intialStatue: FileReducerInt = {
     fileUploadProgres: [],
+    allFilesUploadedDone:false,
     filesUploaded: [],
     filesUploadCompleted: {},
-    filesBeingUploaded: []
+    filesBeingUploaded: [],
 }
 
 const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducerInt => {
@@ -46,15 +48,25 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 filesBeingUploaded: [...state.filesBeingUploaded, ...newFiles] //40
             }
         case DOCS_CONFIG.FILE_UPLOADED:
+            const upComingFile = action.payload._id
+            const isExist = state.filesUploaded.some((file:File)=> file._id === upComingFile)
+            if (!isExist) {
+                state.allFilesUploadedDone = false;
+            }
             return {
                 ...state,
                 filesUploaded: [action.payload, ...state.filesUploaded]
             }
         case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
-
+             const checkAllStatusDone = action.payload?.files
+             .every((files:File)=> files?.uploadStatus=== action.payload?.files[0].uploadStatus)
+             if (checkAllStatusDone) {
+                state.filesUploaded = [...action.payload.files]
+            }
             return {
                 ...state,
-                filesUploadCompleted: action.payload
+                filesUploadCompleted: action.payload,
+                allFilesUploadedDone: checkAllStatusDone,
             }
         default:
             return state

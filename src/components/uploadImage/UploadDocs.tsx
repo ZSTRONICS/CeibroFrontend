@@ -1,28 +1,18 @@
-import React, { useRef, useState } from "react";
-import { LinearProgress } from "@material-ui/core";
 import {
   Box,
-  Button,
-  ListItem,
-  List,
-  IconButton,
-  Typography,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  styled,
+  Button, List, ListItem, ListItemText,
+  styled
 } from "@mui/material";
-import { filesizes } from "components/Utills/Globals/Common";
-import "./upload.css";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import CButton from "components/Button/Button";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { uploadDocs } from "redux/action/task.action";
-import axios from "axios";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
 import { File } from "constants/interfaces/docs.interface";
-import CButton from "components/Button/Button";
+import { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { uploadDocs } from "redux/action/task.action";
+import { RootState } from "redux/reducers";
+import "./upload.css";
 
 const UploadDocs = (props:any) => {
   const dispatch = useDispatch();
@@ -93,13 +83,9 @@ console.log(filesToUpload)
           if (res.data.results.files.length > 0) {
             let allFiles = res.data.results.files;
             const files = allFiles.map((file: any) => {
-              file.progress = 0;
+              file.progress = 100;
               return file;
             });
-            setSelectedFile([])
-            setFilesToUpload([])
-            handleCancel()
-            console.log(fileName, filesToUpload)
             dispatch({
               type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
               payload: files,
@@ -110,6 +96,9 @@ console.log(filesToUpload)
     };
     
     dispatch(uploadDocs(payload));
+    setSelectedFile([])
+    setFilesToUpload([])
+    handleCancel()
   }
 
   const handleDelteFile = (name: string) => {
@@ -172,7 +161,7 @@ console.log(filesToUpload)
                   LinkComponent="a"
                   className="btn-choose"
                   component="span"
-                  sx={{textTransform:'capitalize'}}
+                  sx={{textTransform:'unset'}}
                 >
                   Select file(s) to upload
                 </Button>
@@ -210,7 +199,6 @@ console.log(filesToUpload)
                         aria-label="comment"
                         onClick={() => handleDelteFile(item.fileName)}
                       />
-                        
                     }
                   >
                     {/* <ListItemAvatar>
