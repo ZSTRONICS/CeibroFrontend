@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer } from '@material-ui/core';
+import { Drawer } from '@material-ui/core'
 import colors from '../../../assets/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -32,9 +32,22 @@ function TaskDetailDrawer() {
         dispatch(taskActions.closeSubtaskDetailDrawer())
     }
 
+    const handleMouseDown = (e:any) => {
+        if (!e.target.closest('.MuiDrawer-root')) {
+          e.stopPropagation();
+        }
+      };
+
     return (
         <div>
-            <Drawer onClose={handleClose} anchor="right" open={subTaskDetailDrawer} className={classes.subTaskDrawer}>
+            <Drawer onClose={handleClose} onMouseDown={handleMouseDown} open={false} 
+            anchor="right" 
+            className={classes.subTaskDrawer}
+            disableAutoFocus
+            disablePortal
+            disableEnforceFocus={true}
+            keepMounted={false}
+            >
                 <div className={classes.outerWrapper}>
                     <DrawerHeader title={subTaskOfTask?.task?.title} handleClose={handleClose} />
                     <Grid container>

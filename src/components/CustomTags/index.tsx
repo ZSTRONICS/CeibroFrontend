@@ -27,3 +27,10 @@ export const CommentDescription = styled(Typography)`
   padding-left:4px;
   color:#494949;
 `;
+export const ListUserName = styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-weight: 600;
+font-size: 16px;
+color: #000000;
+`;

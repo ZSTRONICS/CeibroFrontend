@@ -16,9 +16,9 @@ const Task = () => {
   const dispatch= useDispatch();
 
   useEffect(()=>{
+    dispatch(getAllProjectsWithMembers());
     dispatch(getAllTask());
     dispatch(getAllSubTaskList());
-    dispatch(getAllProjectsWithMembers());
   },[])
 
   //get all project with members and store in Redux 

@@ -78,7 +78,7 @@ function StateChangeComment(props: any) {
               />
               <DialogActions>
                 <CButton
-                  label={`${currentState}`}
+                  label='Reject'
                   type="submit"
                   variant="outlined"
                   styles={{

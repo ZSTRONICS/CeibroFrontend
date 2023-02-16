@@ -15,10 +15,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { File, FileUploadProgress } from "constants/interfaces/docs.interface";
 
-function PreviewCollection() {
+function UploadingDocsPreview() {
   const [open, setOpen] = React.useState(false);
   const { filesUploaded,fileUploadProgres, filesUploadCompleted } = useSelector((state: RootState) => state.docs);
-
+  console.log('filesUploadCompleted', filesUploadCompleted)
   return (
     <>
      { filesUploaded.length>0&&  <Box
@@ -63,7 +63,7 @@ function PreviewCollection() {
                   }}
                 >
                   <ListItemText
-                    primary="Uploading 5 items"
+                    primary={`Uploading ${filesUploaded.length} file(s)`}
                     primaryTypographyProps={{
                       fontSize: 16,
                       fontWeight: "600",
@@ -141,4 +141,4 @@ function PreviewCollection() {
   );
 }
 
-export default PreviewCollection;
+export default UploadingDocsPreview;
