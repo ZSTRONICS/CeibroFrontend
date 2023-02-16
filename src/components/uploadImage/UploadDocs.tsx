@@ -10,6 +10,7 @@ import { DOCS_CONFIG } from "config/docs.config";
 import { File } from "constants/interfaces/docs.interface";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { uploadDocs } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import "./upload.css";
@@ -51,8 +52,6 @@ const UploadDocs = (props:any) => {
     
   };
 
-console.log(filesToUpload)
-
   const handleUploadDocs = (e:any) => {
     e.preventDefault()
     let formData = new FormData();
@@ -80,6 +79,7 @@ console.log(filesToUpload)
       body: formData,
       success: (res: any) => {
         if (res.status === 200) {
+          toast.success('file(s) uploaded')
           if (res.data.results.files.length > 0) {
             let allFiles = res.data.results.files;
             const files = allFiles.map((file: any) => {
