@@ -14,14 +14,20 @@ import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { File, FileUploadProgress } from "constants/interfaces/docs.interface";
-
-function PreviewCollection() {
+import assets from 'assets/assets'
+function UploadingDocsPreview() {
   const [open, setOpen] = React.useState(false);
-  const { filesUploaded,fileUploadProgres, filesUploadCompleted } = useSelector((state: RootState) => state.docs);
-
+  const { filesUploaded,fileUploadProgres, allFilesUploadedDone } = useSelector((state: RootState) => state.docs);
+const [isRemoved,setIsRemoved]= React.useState(false)
+const removeListItem=()=>{
+  setIsRemoved(true)
+}
+React.useEffect(()=>{
+  setIsRemoved(false)
+},[filesUploaded])
   return (
     <>
-     { filesUploaded.length>0&&  <Box
+     { filesUploaded.length>0&&!isRemoved&&<Box
           sx={{
             position: "absolute",
             right: "25px",
@@ -41,7 +47,8 @@ function PreviewCollection() {
               position: "relative",
               overflow: "auto",
               maxHeight: 300,
-              "& ul": { padding: 0 },
+              border:'1px solid #d0d2d3',
+              "& ul": { padding: 0,  },
             }}
           >
             <ListSubheader disableGutters>
@@ -53,17 +60,20 @@ function PreviewCollection() {
               >
                 <ListItemButton
                   disableRipple
+                  key='crosBtn1'
                   alignItems="flex-start"
                   onClick={() => setOpen(!open)}
                   sx={{
                     px: 3,
                     pt: 2.5,
-                    pb: open ? 0 : 2.5,
+                    pb: open ? 0 : 2.2,
                     // "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
                   }}
                 >
                   <ListItemText
-                    primary="Uploading 5 items"
+                    primary={`Uploading ${filesUploaded.length} file(s)`}
+                    // primary={`Uploading file(s)`}
+                    key={filesUploaded[0]._id}
                     primaryTypographyProps={{
                       fontSize: 16,
                       fontWeight: "600",
@@ -79,7 +89,7 @@ function PreviewCollection() {
                     // }}
                     sx={{ my: 0 }}
                   />
-                  <KeyboardArrowDown
+                 {!allFilesUploadedDone? <KeyboardArrowDown
                     sx={{
                       color: "#FFFFFF",
                       mr: -1,
@@ -87,6 +97,12 @@ function PreviewCollection() {
                       transition: "0.2s",
                     }}
                   />
+                  :
+                  // <Box >
+                    <assets.HighlightOffIcon sx={{ color: "#FFFFFF"}} onClick={removeListItem}/>
+                  // </Box>
+                  }
+                     
                 </ListItemButton>
               </Box>
             </ListSubheader>
@@ -95,27 +111,34 @@ function PreviewCollection() {
                 {filesUploaded?.map((item: File) => {
               let inProgress= fileUploadProgres.find((progres:FileUploadProgress)=> progres.fileId === item._id)
                   return (<>{
-                    // inProgress.progress===95?<></>: 
+                 
                       <ListItem
                       divider
-                      key={`${item._id}`}
+                      id={item._id}
+                      key={item._id}
                       secondaryAction={
-                        <CircularProgress
+                        <>
+                       {item.uploadStatus==="done"?
+                       <assets.CheckCircleIcon sx={{color:'#55BCB3', fontSize:'1.2rem'}}/>
+                       : <CircularProgress
                           thickness={6}
                           size="16px"
                           variant="determinate"
                           value={inProgress.progress}
-                        />
+                        />}
+                        </>
                       }
                     >
-                      <ListItemAvatar sx={{ minWidth: "40px" }}>
+                      <ListItemAvatar key={item._id} sx={{ minWidth: "40px" }}>
                         <Avatar
                           sizes="30px"
                           sx={{ width: 24, height: 24 }}
                           alt="img"
+                          src={item.fileUrl}
                         />
                       </ListItemAvatar>
                       <ListItemText
+                        key={item._id}
                         primaryTypographyProps={{
                           overflow: "hidden",
                           textOverflow: "ellipsis",
@@ -141,4 +164,4 @@ function PreviewCollection() {
   );
 }
 
-export default PreviewCollection;
+export default UploadingDocsPreview;

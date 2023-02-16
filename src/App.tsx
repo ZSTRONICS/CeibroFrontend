@@ -52,7 +52,7 @@ import {
 import { SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
-import PreviewCollection from "components/uploadImage/PreviewCollection";
+import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
 
 interface MyApp { }
@@ -278,7 +278,7 @@ let pathnameRoute = window.location.pathname
       <TaskModal />
       <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
       <CssBaseline />
-    {pathnameRoute!=='/login' && <PreviewCollection/>}
+    {pathnameRoute!=='/login' && <UploadingDocsPreview/>}
       <CreateQuestioniarDrawer />
       <CDrawer/>
       {drawerOpen && <ViewQuestioniarDrawer />}

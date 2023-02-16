@@ -7,7 +7,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 // import { AttachmentIcon } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import CButton from "components/Button/Button";
-import UploadImage from "components/uploadImage/UploadImage";
+import UploadDocs from "components/uploadImage/UploadDocs";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import {
@@ -82,9 +82,9 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   // creator but not themselve , admin(but not task creator)
   //const projectData = [{ label: project.title, id: project._id }];
 
-  const notShowDefaultProject = allProjectsTitles.filter(
-    (item: any) => item.label !== "Default"
-  );
+  // const notShowDefaultProject = allProjectsTitles.filter(
+  //   (item: any) => item.label !== "Default"
+  // );
   const adminData = getUserFormatedDataForAutoComplete(admins);
   const assignedToData = getUserFormatedDataForAutoComplete(assignedTo);
   let allMembersOfProject: any[];
@@ -344,7 +344,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
               size="small"
               disabled={!canEdit}
               defaultValue={{ label: project.title, id: project._id }}
-              options={notShowDefaultProject}
+              options={allProjectsTitles}
               getOptionLabel={(option: any) => option.label}
               onChange={(e, value) => {
                 handleProjectChange(value);
@@ -735,11 +735,11 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         </Grid>
       )}
       <CustomModal
-        showCloseBtn={true}
+        showCloseBtn={false}
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
-        children={<UploadImage />}
+        children={<UploadDocs handleClose={() => setImageAttach(false)}/>}
       />
     </>
   );

@@ -87,8 +87,11 @@ import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import AddIcon from '@mui/icons-material/Add';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
+// cross icon
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const assets= {
+  HighlightOffIcon,
   CloudUploadIcon,
   BorderColorIcon,
   LocationOnOutlinedIcon,

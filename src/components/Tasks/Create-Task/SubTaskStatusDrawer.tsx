@@ -208,6 +208,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
     </>
   );
 }
+
 export default SubTaskStatusDrawer;
 
 const useStyles = makeStyles({

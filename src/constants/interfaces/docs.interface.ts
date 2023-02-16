@@ -1,6 +1,6 @@
 
 export interface DocsInterface {
-  results: FileUploadCompleted
+  results: FileUploadResponse
 }
 
 export interface FileUploadProgress {
@@ -10,7 +10,7 @@ export interface FileUploadProgress {
   progress: number
 }
 
-export interface FileUploadCompleted {
+export interface FileUploadResponse {
   files: File[]
   moduleName: string
   moduleId: string
@@ -20,6 +20,7 @@ export interface File {
   access: string[]
   version: number
   _id: string
+  progress?: number
   uploadedBy: string
   fileUrl: string
   fileType: string
@@ -27,9 +28,11 @@ export interface File {
   uploadStatus: string
   moduleType: string
   moduleId: string
-  createdAt: string
-  updatedAt: string
+  createdAt?: string
+  updatedAt?: string
 }
+
+
 
 export interface FileUploaded extends File {
   module: string
