@@ -10,7 +10,7 @@ import CButton from "components/Button/Button";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
-import { File } from "constants/interfaces/docs.interface";
+import { FileInterface } from "constants/interfaces/docs.interface";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -57,13 +57,9 @@ const UploadDocs = (props: any) => {
   const handleUploadDocs = (e: any) => {
     e.preventDefault();
     let formData = new FormData();
-    let fileName = "";
-
     let filesPlaceholderData: any[] = [];
 
     Array.from(filesToUpload).forEach((file: any) => {
-      // Chunk the file into smaller pieces
-      fileName = file.name;
       const chunkSize = 1024 * 1024; // 1MB chunks
       let offset = 0;
       // Create an array of chunks
@@ -83,7 +79,9 @@ const UploadDocs = (props: any) => {
         _id: "",
         uploadedBy: "",
         fileUrl: "",
+        fileSize: file.size,
         fileType: "",
+        progress: 1,
         fileName: file.name,
         uploadStatus: "",
         moduleType: "Task",
@@ -104,7 +102,7 @@ const UploadDocs = (props: any) => {
       body: formData,
       success: (res: any) => {
         if (res.status === 200) {
-          toast.success("file(s) uploaded");
+          //toast.success("file(s) uploaded");
           if (res.data.results.files.length > 0) {
             let allFiles = res.data.results.files;
             const files = allFiles.map((file: any) => {
@@ -127,7 +125,7 @@ const UploadDocs = (props: any) => {
   };
 
   const handleDelteFile = (name: string) => {
-    const result = selectedfile.filter((data: File) => data.fileName !== name);
+    const result = selectedfile.filter((data: FileInterface) => data.fileName !== name);
     setSelectedFile(result);
   };
 
@@ -210,7 +208,7 @@ const UploadDocs = (props: any) => {
                 overflow: "auto",
               }}
             >
-              {selectedfile?.map((item: File, index: any) => {
+              {selectedfile?.map((item: FileInterface, index: any) => {
                 const { fileName, progress } = item;
                 const itemName: string =
                   fileName?.length > 25 ? shortFileName(fileName) : fileName;

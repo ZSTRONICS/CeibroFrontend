@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  CommentDateTime,
+  CDateTime,
   CommentDescription,
   CommentName,
   Heading,
@@ -67,9 +67,9 @@ function ViewRejectionComments(props: any) {
 
                   <Grid item>
                     <CustomStack gap={0.4}>
-                      <CommentDateTime>no Date</CommentDateTime>
+                      <CDateTime>no Date</CDateTime>
                       <Divider orientation="vertical" />
-                      <CommentDateTime variant="body2">no time</CommentDateTime>
+                      <CDateTime variant="body2">no time</CDateTime>
                     </CustomStack>
                   </Grid>
                 </Grid>
@@ -99,6 +99,8 @@ export const Container = styled(Box)(
         max-width:466px;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
+        background: #F5F7F8;
+        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
 export const ContentMain = styled(Box)(
@@ -116,7 +118,7 @@ export const CloseIcon = styled(ExpandCircleDownOutlinedIcon)(
   font-size:43px;
   color:#7D7E80;
   cursor:pointer;
-  background: white;
+  background: #f5f7f8;
   border-radius: 50px;
     `
 );

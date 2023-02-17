@@ -1,28 +1,68 @@
 import React from "react";
 import {
-  CommentDateTime,
-  CommentDescription,
-  CommentName,
   Heading,
+  CDateTime,
+  FileName,
+  Span,
+  CommentName,
 } from "components/CustomTags";
-import { Box, Grid, Divider, useMediaQuery } from "@mui/material";
-import { styled } from "@mui/system";
 import {
-  CustomStack,
-} from "components/TaskComponent/Tabs/TaskCard";
+  Box,
+  Grid,
+  useMediaQuery,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from "@mui/material";
+import { styled } from "@mui/system";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
-// import { getColorByStatus } from "config/project.config";
-import { useSelector } from "react-redux";
+import assets from "assets/assets";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { RejectedComment } from "constants/interfaces/rejectionComments.interface";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import {
+  filesizes,
+  momentdeDateFormat,
+  momentTimeFormat,
+} from "components/Utills/Globals/Common";
+import docsAction from "redux/action/docs.actions";
 
 function ViewAllDocs(props: any) {
-  const taborMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const getAllSubtaskRejection = useSelector(
-    (state: RootState) => state.task.getAllSubtaskRejection
-  );
+  const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
+  const { getAllDocsByModule } = useSelector((files: RootState) => files.docs);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(
+      docsAction.getDocsByModuleNameAndId({
+        other: {
+          moduleName: "Task",
+          moduleId: props.taskId,
+        },
+      })
+    );
+  }, []);
+
+  const ListItemAvat = (fileUrl: any) => {
+    console.log("fileUrl", fileUrl);
+    return fileUrl ? (
+      <ListItemAvatar>
+        <Avatar variant="square" alt="img" src={fileUrl} />
+      </ListItemAvatar>
+    ) : (
+      <ListItemAvatar>
+        <Avatar variant="square" sizes="">
+          <assets.CloudUploadIcon />
+        </Avatar>
+      </ListItemAvatar>
+    );
+  };
   return (
     <>
       <Container>
@@ -32,7 +72,7 @@ function ViewAllDocs(props: any) {
           justifyContent="space-between"
         >
           <Heading>{props.subTaskHeading}</Heading>
-          {taborMobileView && (
+          {tabOrMobileView && (
             <CButton
               label={"Close"}
               variant="outlined"
@@ -41,48 +81,85 @@ function ViewAllDocs(props: any) {
           )}
         </CustomStack>
         <ContentMain>
-          {getAllSubtaskRejection.length>0 ? 
-            getAllSubtaskRejection.map((item: RejectedComment) => (
-              <>
-                <Grid
-                  container
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ padding: "17px 13px 4px 4px" }}
-                  key={item._id}
-                >
-                  <Grid item>
-                    <CustomStack gap={1.5}>
-                      {/* <TaskStatus  sx={{
-              // background: `${getColorByStatus(state)}`,
-              background: 'blue',
-              color: "white",
-              fontWeight: "400",
-              fontSize: "8px",
-            }}>status</TaskStatus> */}
-                      <CommentName>{item.name}</CommentName>
-                    </CustomStack>
-                  </Grid>
+          {/* <Box sx={{ maxWidth: 473 }}> */}
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              {/* <Typography sx={{ mt: 1, mb: 1 }} variant="h6" component="div">
+                All Attachments
+              </Typography> */}
+              <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+                {getAllDocsByModule.length > 0 ? (
+                  getAllDocsByModule.map((file: FileInterface) => {
+                    const docsDate = momentdeDateFormat(file.createdAt);
+                    const docsTiem = momentTimeFormat(file.createdAt);
+                    return (
+                      <ListItem
+                        divider
+                        sx={{ paddingLeft: "0" }}
+                        secondaryAction={
+                          <CustomStack
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "end",
+                            }}
+                          >
+                            <CDateTime>{docsDate}</CDateTime>
+                            <CDateTime
+                              sx={{
+                                display: "flex",
+                                fontSize: "10px",
+                                alignItems: "flex-end",
+                              }}
+                            >
+                              {docsTiem}
+                            </CDateTime>
+                          </CustomStack>
+                        }
+                      >
+                        {ListItemAvat(file.fileUrl)}
+                        <ListItemText
+                          key={file._id}
+                          primary={
+                            <FileName
+                              sx={{ maxWidth: "200px", width: "100%" }}
+                              className="ellipsis"
+                            >
+                              {file.fileName}
+                            </FileName>
+                          }
+                          secondary={
+                            <CustomStack
+                              sx={{
+                                flexDirection: "column",
+                                alignItems: "baseline",
+                              }}
+                            >
+                              {/* <Span>Company. N/A</Span> */}
 
-                  <Grid item>
-                    <CustomStack gap={0.4}>
-                      <CommentDateTime>no Date</CommentDateTime>
-                      <Divider orientation="vertical" />
-                      <CommentDateTime variant="body2">no time</CommentDateTime>
-                    </CustomStack>
-                  </Grid>
-                </Grid>
-                <Box sx={{ padding: "" }}>
-                  <CommentDescription>{item.description}</CommentDescription>
-                  <Divider sx={{ width: "100%" }} />
-                </Box>
-              </>
-            ))
-           :
-           <CommentName>There is no comment</CommentName>}
+                              {"fileSize" in file ? (
+                                <Span>{`Size: ${filesizes(
+                                  file.fileSize
+                                )}`}</Span>
+                              ) : (
+                                <Span>{`Size: N/A`}</Span>
+                              )}
+                            </CustomStack>
+                          }
+                        />
+                      </ListItem>
+                    );
+                  })
+                ) : (
+                  <CommentName>There is no file to show</CommentName>
+                )}
+              </ContentList>
+            </Grid>
+          </Grid>
+          {/* </Box> */}
         </ContentMain>
       </Container>
-      {!taborMobileView && (
+      {!tabOrMobileView && (
         <Box onClick={props.handleCloseCDrawer}>
           <CloseIcon />
         </Box>
@@ -95,14 +172,20 @@ export default ViewAllDocs;
 
 export const Container = styled(Box)(
   ({ theme }) => `
-        max-width:466px;
+        max-width:476px;
+        width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
+        background: #F5F7F8;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
-export const ContentMain = styled(Box)(
+export const ContentMain = styled(Box)`
+  overflow: hidden;
+`;
+export const ContentList = styled(List)(
   ({ theme }) => `
-  height: calc(100vh - 108px);
+  height: calc(100vh - 110px);
   overflow: auto;
     `
 );
@@ -110,12 +193,12 @@ export const CloseIcon = styled(ExpandCircleDownOutlinedIcon)(
   ({ theme }) => `
   position:absolute;
    top:50%;
-   left:-17px;
+   left:-22px;
   transform:rotate(270deg);
   font-size:43px;
   color:#7D7E80;
   cursor:pointer;
-  background: white;
+  background: #f5f7f8;
   border-radius: 50px;
     `
 );
