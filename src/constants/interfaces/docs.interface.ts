@@ -42,3 +42,9 @@ export interface FileUploaded extends File {
 
 export interface Data extends File { }
 
+// get all docs by moduleName and id 
+export interface DocsInterfaceRoot {
+  result: GetAllDocsInterface[]
+}
+
+export interface GetAllDocsInterface extends File {}

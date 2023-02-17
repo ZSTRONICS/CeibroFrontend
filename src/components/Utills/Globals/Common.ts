@@ -1,3 +1,5 @@
+import moment from "moment-timezone";
+
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: []): any => {
   // eslint-disable-next-line array-callback-return
   return projectWithMembers.filter((proj: any) => {
@@ -43,6 +45,22 @@ export const isTrue =(arr:any[], itemId:string)=>{
 export const deDateFormat =(dateStr:Date)=>{
   return new Date(String(dateStr)).toLocaleString('de').slice(0,10).replaceAll('.','-')
 }
+// de date format using moment of utc time mongodb
+ /**
+  * @param return dd.mm.yyyy
+  * @param mongodbUtc date string is required
+  * **/
+export const momentdeDateFormat =(createdAt:Date|any)=>{
+  return moment.utc(moment(createdAt)).format("DD.MM.YYYY")
+}
+// de date format using moment of utc time mongodb
+ /**
+  * @param return 12:00AM
+  * @param mongodbUtc date string is required
+  * **/
+export const momentTimeFormat =(createdAt:Date|any)=>{
+  return moment.utc(moment(createdAt)).format("HH:mmA")
+}
 
 // calculate file size 
  /**
@@ -67,5 +85,3 @@ export const onlyUnique =(value: any, index: any, array: any) =>{
   //   year: "numeric",
   // });
 
-  // moment(dueDate).format("ddd, MMM Do YYYY, h:mm:ss a")
-  // "Mon, Aug 12 2019, 5:52:00 pm"

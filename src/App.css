@@ -33,6 +33,13 @@ iframe
   color: black !important;
 }
 
+/* used to break the text that is too long to fit in the specified container. */
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .all-badge .MuiBadge-colorPrimary {
   color: white !important;
   background: var( --dark-gray);

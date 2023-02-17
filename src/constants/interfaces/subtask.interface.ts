@@ -10,6 +10,7 @@ export interface SubtaskInterface {
   title: string
   taskId: string
   assignedTo: AssignedTo[]
+  rejectedBy: UserInfo[]
   viewer: Viewer[]
   creator: Creator
   dueDate: string

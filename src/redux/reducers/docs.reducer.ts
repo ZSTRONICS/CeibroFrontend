@@ -1,5 +1,6 @@
 import { DOCS_CONFIG } from "config/docs.config";
-import { DocsInterface, FileUploaded, FileUploadProgress, File } from "constants/interfaces/docs.interface";
+import { DocsInterface, FileUploaded, FileUploadProgress, File, DocsInterfaceRoot } from "constants/interfaces/docs.interface";
+import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from ".";
 
 interface FileReducerInt {
@@ -9,10 +10,14 @@ interface FileReducerInt {
     filesUploadCompleted: DocsInterface | any
     filesBeingUploaded: File[]
     allFilesUploadedDone: boolean
+    getAllDocsByModule: DocsInterfaceRoot
+    loadinggetAllDocs:boolean
 }
 
 const intialStatue: FileReducerInt = {
     fileUploadProgres: [],
+    loadinggetAllDocs:false,
+    getAllDocsByModule: {result:[]},
     allFilesUploadedDone: false,
     closeFileUploadPreview: false,
     filesUploaded: [],
@@ -22,6 +27,24 @@ const intialStatue: FileReducerInt = {
 
 const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducerInt => {
     switch (action.type) {
+        case requestSuccess(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID):
+            return {
+                ...state,
+                getAllDocsByModule: {...action.payload}
+            }
+        case requestPending(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                loadinggetAllDocs: true,
+            };
+        }
+        case requestFail(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                loadinggetAllDocs: false,
+
+            };
+        }
 
         case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
             return {

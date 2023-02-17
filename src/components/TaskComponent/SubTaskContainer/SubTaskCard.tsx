@@ -47,6 +47,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
     creator,
     taskId,
     createdAt,
+    rejectedBy,
   } = subTaskDetail;
   const classes = useStyles();
   const membersList = assignedTo
@@ -84,8 +85,18 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleCloseModal = () => {
     setSubTask((prev: any) => !prev);
   };
-
-  const AssignedToList = () => {
+  const showRejectedBy = (rejectedBy:Member[], getColor:string)=>{
+    return (<>
+      {rejectedBy.length===0&& <CustomBadge
+      showZero={true}
+      overlap="circular"
+      color={`${getColor==='red'?"error": 'primary'}`}
+      badgeContent={0}
+    ></CustomBadge>}
+    </>
+    )
+  }
+  const AssignedToList = (membersList:Member[]) => {
     return (
       <>
         {membersList.map((item: Member, index) => {
@@ -159,23 +170,46 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     </Fragment>
                   );
                 })}
-                {membersList.length > 1 && (
+                {membersList.length > 1 ? (
                   <CustomBadge
                     overlap="circular"
                     color="primary"
                     badgeContent={
-                      <Tooltip title={AssignedToList()}>
+                      <Tooltip title={AssignedToList(membersList)}>
                         <span>{membersList.length - 1}+</span>
                       </Tooltip>
                     }
                   ></CustomBadge>
-                )}
+                ):showRejectedBy(membersList,'blue')}
               </CustomStack>
             </Grid>
           </CustomStack>
-          <CustomStack gap={0.8} sx={{ maxWidth: "150px", width: "140px" }}>
+          <CustomStack gap={0.8} >
             <LabelTag sx={{ fontSize: "11px" }}>Rejected by</LabelTag>
-            <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag>
+            {/* <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag> */}
+            {rejectedBy.map((member: Member, i: any) => {
+                  return (
+                    <Fragment key={member._id}>
+                      {i === 0 && (
+                        <AssignedTag
+                          sx={{ fontSize: "12px" }}
+                        >{`${member.firstName} ${member.surName}`}</AssignedTag>
+                      )}
+                    </Fragment>
+                  );
+                })}
+                {rejectedBy.length>1 ? (
+                  <CustomBadge
+                    showZero={true}
+                    overlap="circular"
+                    color="error"
+                    badgeContent={
+                      <Tooltip title={AssignedToList(rejectedBy)}>
+                        <span>{rejectedBy.length - 1}+</span>
+                      </Tooltip>
+                    }
+                  ></CustomBadge>
+                ):showRejectedBy(rejectedBy,'red')}
           </CustomStack>
 
           {/*<Grid

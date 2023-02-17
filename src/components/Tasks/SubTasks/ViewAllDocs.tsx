@@ -4,26 +4,42 @@ import {
   CDateTime,
   FileName,
   Span,
+  CommentName,
 } from "components/CustomTags";
-import { Box, Grid, Divider, useMediaQuery, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+import { Box, Grid, useMediaQuery, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
 import { styled } from "@mui/system";
-import {
-  CustomStack,
-} from "components/TaskComponent/Tabs/TaskCard";
+import {CustomStack} from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
 import assets from "assets/assets";
-// import { useSelector } from "react-redux";
-// import { RootState } from "redux/reducers";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
+import { GetAllDocsInterface } from "constants/interfaces/docs.interface";
+import { momentdeDateFormat, momentTimeFormat } from "components/Utills/Globals/Common";
 
 function ViewAllDocs(props: any) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  // const getAllSubtaskRejection = useSelector(
-  //   (state: RootState) => state.task.getAllSubtaskRejection
-  // );
+  const {getAllDocsByModule} = useSelector((files: RootState) => files.docs);
+
+  const ListItemAvat = (fileUrl:any) => {
+    console.log('fileUrl', fileUrl)
+      return (
+        fileUrl ? 
+          <ListItemAvatar>
+            <Avatar variant="square" alt="img" src={fileUrl} />
+          </ListItemAvatar>
+        : (
+          <ListItemAvatar>
+            <Avatar variant="square" sizes="">
+              <assets.CloudUploadIcon />
+            </Avatar>
+          </ListItemAvatar>
+        )
+      );
+    }
   return (
-    <>
+     <>
       <Container>
         <CustomStack
           sx={{ paddingBottom: "30px" }}
@@ -41,55 +57,72 @@ function ViewAllDocs(props: any) {
         </CustomStack>
         <ContentMain>
           {/* <Box sx={{ maxWidth: 473 }}> */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-              <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-           All Attachments
-          </Typography>
-          <ContentList dense={true}  sx={{  maxWidth: 478, width:'376px' }}>
-              {[1,2,3,4,5, 6,7,8,8,9,10,11,12,13,14].map((item:any)=>{
-                return(
-                  <ListItem  divider sx={{paddingLeft:'0'}}
-                  secondaryAction={
-                    <React.Fragment>
-                      <CDateTime
-                        sx={{ display: 'inline' }}
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              {/* <Typography sx={{ mt: 1, mb: 1 }} variant="h6" component="div">
+                All Attachments
+              </Typography> */}
+              <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+                {getAllDocsByModule.result.length>0?getAllDocsByModule.result.map(
+                  (file: GetAllDocsInterface ) => {
+                    const docsDate = momentdeDateFormat(file.createdAt);
+                    const docsTiem = momentTimeFormat(file.createdAt);
+                    return (
+                      <ListItem
+                        divider
+                        sx={{ paddingLeft: "0" }}
+                        secondaryAction={
+                          <CustomStack
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "end",
+                            }}
+                          >
+                            <CDateTime>{docsDate}</CDateTime>
+                            <CDateTime
+                              sx={{
+                                display: "flex",
+                                fontSize: "8px",
+                                alignItems: "flex-end",
+                              }}
+                            >
+                              {docsTiem}
+                            </CDateTime>
+                          </CustomStack>
+                        }
                       >
-                        22/08/2020
-                      </CDateTime>
-                      <CDateTime sx={{ display: 'inline', fontSize:'8px' }}>
-                        
-                        12:08AM
-                      </CDateTime>
-                    </React.Fragment>
+                       {ListItemAvat(file.fileUrl)}
+                        <ListItemText
+                          key={file._id}
+                          primary={
+                            <FileName
+                              sx={{ maxWidth: "200px", width: "100%" }}
+                              className="ellipsis"
+                            >
+                              {file.fileName}
+                            </FileName>
+                          }
+                          secondary={
+                            <CustomStack
+                              sx={{
+                                flexDirection: "column",
+                                alignItems: "baseline",
+                              }}
+                            >
+                              <Span>Company. N/A</Span>
+                              <Span>{`Size:N/A`}</Span>
+                            </CustomStack>
+                          }
+                        />
+                      </ListItem>
+                    );
                   }
-                  >
-                    <ListItemAvatar>
-                    <Avatar variant='square' sizes=''>
-                      <assets.CloudUploadIcon/>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText 
-                  primary={<FileName>File Name</FileName>}
-                  secondary={
-                    <CustomStack sx={{flexDirection:'column', alignItems:'baseline',}} >
-                      <Span>
-                        Company. Electrician
-                      </Span>
-                      <Span>
-                      Electrician
-                      </Span>
-                    </CustomStack>
-                  }
-                  />
-          
-        
-                  </ListItem>
-                )
-              })}
-            </ContentList>
-              </Grid>
+                ): <CommentName>There is no file to show</CommentName>
+              }
+              </ContentList>
             </Grid>
+          </Grid>
           {/* </Box> */}
         </ContentMain>
       </Container>
@@ -110,13 +143,13 @@ export const Container = styled(Box)(
         width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
+        background: #F5F7F8;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
-export const ContentMain = styled(Box)(
-  ({ theme }) => `
-  overflow: hidden;
-    `
-);
+export const ContentMain = styled(Box)`
+    overflow: hidden;
+    `;
 export const ContentList = styled(List)(
   ({ theme }) => `
   height: calc(100vh - 110px);
@@ -132,7 +165,7 @@ export const CloseIcon = styled(ExpandCircleDownOutlinedIcon)(
   font-size:43px;
   color:#7D7E80;
   cursor:pointer;
-  background: white;
+  background: #f5f7f8;
   border-radius: 50px;
     `
 );

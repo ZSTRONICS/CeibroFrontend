@@ -29,6 +29,7 @@ import taskActions, {
 } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
+import docsAction from "redux/action/docs.actions";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -53,6 +54,13 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   } = taskMenue;
   let { isEditable } = taskMenue;
   isEditable = useSelector((state: RootState) => state.task.isEditing);
+
+  React.useEffect(()=>{
+    dispatch(docsAction.getDocsByModuleNameAndId({other:{
+      moduleName:'Task',
+      moduleId:_id
+    }}))
+  },[])
 
   const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
