@@ -1,11 +1,11 @@
 import React from "react";
 import {
-  CommentDateTime,
-  CommentDescription,
-  CommentName,
   Heading,
+  CDateTime,
+  FileName,
+  Span,
 } from "components/CustomTags";
-import { Box, Grid, Divider, useMediaQuery } from "@mui/material";
+import { Box, Grid, Divider, useMediaQuery, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
 import { styled } from "@mui/system";
 import {
   CustomStack,
@@ -13,16 +13,15 @@ import {
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
-// import { getColorByStatus } from "config/project.config";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { RejectedComment } from "constants/interfaces/rejectionComments.interface";
+import assets from "assets/assets";
+// import { useSelector } from "react-redux";
+// import { RootState } from "redux/reducers";
 
 function ViewAllDocs(props: any) {
-  const taborMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const getAllSubtaskRejection = useSelector(
-    (state: RootState) => state.task.getAllSubtaskRejection
-  );
+  const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
+  // const getAllSubtaskRejection = useSelector(
+  //   (state: RootState) => state.task.getAllSubtaskRejection
+  // );
   return (
     <>
       <Container>
@@ -32,7 +31,7 @@ function ViewAllDocs(props: any) {
           justifyContent="space-between"
         >
           <Heading>{props.subTaskHeading}</Heading>
-          {taborMobileView && (
+          {tabOrMobileView && (
             <CButton
               label={"Close"}
               variant="outlined"
@@ -41,48 +40,60 @@ function ViewAllDocs(props: any) {
           )}
         </CustomStack>
         <ContentMain>
-          {getAllSubtaskRejection.length>0 ? 
-            getAllSubtaskRejection.map((item: RejectedComment) => (
-              <>
-                <Grid
-                  container
-                  alignItems="center"
-                  justifyContent="space-between"
-                  sx={{ padding: "17px 13px 4px 4px" }}
-                  key={item._id}
-                >
-                  <Grid item>
-                    <CustomStack gap={1.5}>
-                      {/* <TaskStatus  sx={{
-              // background: `${getColorByStatus(state)}`,
-              background: 'blue',
-              color: "white",
-              fontWeight: "400",
-              fontSize: "8px",
-            }}>status</TaskStatus> */}
-                      <CommentName>{item.name}</CommentName>
+          {/* <Box sx={{ maxWidth: 473 }}> */}
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+              <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
+           All Attachments
+          </Typography>
+          <ContentList dense={true}  sx={{  maxWidth: 478, width:'376px' }}>
+              {[1,2,3,4,5, 6,7,8,8,9,10,11,12,13,14].map((item:any)=>{
+                return(
+                  <ListItem  divider sx={{paddingLeft:'0'}}
+                  secondaryAction={
+                    <React.Fragment>
+                      <CDateTime
+                        sx={{ display: 'inline' }}
+                      >
+                        22/08/2020
+                      </CDateTime>
+                      <CDateTime sx={{ display: 'inline', fontSize:'8px' }}>
+                        
+                        12:08AM
+                      </CDateTime>
+                    </React.Fragment>
+                  }
+                  >
+                    <ListItemAvatar>
+                    <Avatar variant='square' sizes=''>
+                      <assets.CloudUploadIcon/>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText 
+                  primary={<FileName>File Name</FileName>}
+                  secondary={
+                    <CustomStack sx={{flexDirection:'column', alignItems:'baseline',}} >
+                      <Span>
+                        Company. Electrician
+                      </Span>
+                      <Span>
+                      Electrician
+                      </Span>
                     </CustomStack>
-                  </Grid>
-
-                  <Grid item>
-                    <CustomStack gap={0.4}>
-                      <CommentDateTime>no Date</CommentDateTime>
-                      <Divider orientation="vertical" />
-                      <CommentDateTime variant="body2">no time</CommentDateTime>
-                    </CustomStack>
-                  </Grid>
-                </Grid>
-                <Box sx={{ padding: "" }}>
-                  <CommentDescription>{item.description}</CommentDescription>
-                  <Divider sx={{ width: "100%" }} />
-                </Box>
-              </>
-            ))
-           :
-           <CommentName>There is no comment</CommentName>}
+                  }
+                  />
+          
+        
+                  </ListItem>
+                )
+              })}
+            </ContentList>
+              </Grid>
+            </Grid>
+          {/* </Box> */}
         </ContentMain>
       </Container>
-      {!taborMobileView && (
+      {!tabOrMobileView && (
         <Box onClick={props.handleCloseCDrawer}>
           <CloseIcon />
         </Box>
@@ -95,14 +106,20 @@ export default ViewAllDocs;
 
 export const Container = styled(Box)(
   ({ theme }) => `
-        max-width:466px;
+        max-width:476px;
+        width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
     `
 );
 export const ContentMain = styled(Box)(
   ({ theme }) => `
-  height: calc(100vh - 108px);
+  overflow: hidden;
+    `
+);
+export const ContentList = styled(List)(
+  ({ theme }) => `
+  height: calc(100vh - 110px);
   overflow: auto;
     `
 );
@@ -110,7 +127,7 @@ export const CloseIcon = styled(ExpandCircleDownOutlinedIcon)(
   ({ theme }) => `
   position:absolute;
    top:50%;
-   left:-17px;
+   left:-22px;
   transform:rotate(270deg);
   font-size:43px;
   color:#7D7E80;
