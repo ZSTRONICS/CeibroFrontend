@@ -80,7 +80,7 @@ interface ProjectReducerInt {
   allProjects: any;
   projects: ProjectInterface[];
   projectMembers: [];
-  projectWithMembers: [];
+  projectWithMembers: any[];
   selectedProject: any;
   selectedRole: any;
   filePath: any;
@@ -115,7 +115,7 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: userRolesPermissions | null;
-  allProjectsTitles:[]
+  allProjectsTitles: []
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -216,15 +216,17 @@ const AppReducer = (
       };
     }
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
+      state.allProjectsTitles = action.payload.projectDetails.map((project: any) => {
+        return {
+          label: project.title,
+          value: project._id,
+        }
+      });
+      state.projectWithMembers = action.payload.projectDetails;
       return {
         ...state,
-        projectWithMembers: action.payload?.projectDetails,
-        allProjectsTitles: action.payload?.projectDetails?.map((project: any) => {
-          return{
-          label: project?.title,
-          value: project._id,
-        }}),
-      };
+      }
+
     }
 
     case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {

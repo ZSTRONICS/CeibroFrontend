@@ -54,7 +54,7 @@ function NewTaskMenu(props: any) {
     } else {
       props.setFieldValue("project", project?.value);
       const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
-      const projMembers = getUserFormatedDataForAutoComplete(projMembersData?.projectMembers);
+      const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
     }

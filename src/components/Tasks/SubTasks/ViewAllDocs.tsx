@@ -6,40 +6,65 @@ import {
   Span,
   CommentName,
 } from "components/CustomTags";
-import { Box, Grid, useMediaQuery, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+import {
+  Box,
+  Grid,
+  useMediaQuery,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from "@mui/material";
 import { styled } from "@mui/system";
-import {CustomStack} from "components/TaskComponent/Tabs/TaskCard";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
 import assets from "assets/assets";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { GetAllDocsInterface } from "constants/interfaces/docs.interface";
-import { momentdeDateFormat, momentTimeFormat } from "components/Utills/Globals/Common";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import {
+  filesizes,
+  momentdeDateFormat,
+  momentTimeFormat,
+} from "components/Utills/Globals/Common";
+import docsAction from "redux/action/docs.actions";
 
 function ViewAllDocs(props: any) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const {getAllDocsByModule} = useSelector((files: RootState) => files.docs);
+  const { getAllDocsByModule } = useSelector((files: RootState) => files.docs);
+  const dispatch = useDispatch();
 
-  const ListItemAvat = (fileUrl:any) => {
-    console.log('fileUrl', fileUrl)
-      return (
-        fileUrl ? 
-          <ListItemAvatar>
-            <Avatar variant="square" alt="img" src={fileUrl} />
-          </ListItemAvatar>
-        : (
-          <ListItemAvatar>
-            <Avatar variant="square" sizes="">
-              <assets.CloudUploadIcon />
-            </Avatar>
-          </ListItemAvatar>
-        )
-      );
-    }
+  React.useEffect(() => {
+    dispatch(
+      docsAction.getDocsByModuleNameAndId({
+        other: {
+          moduleName: "Task",
+          moduleId: props.taskId,
+        },
+      })
+    );
+  }, []);
+
+  const ListItemAvat = (fileUrl: any) => {
+    console.log("fileUrl", fileUrl);
+    return fileUrl ? (
+      <ListItemAvatar>
+        <Avatar variant="square" alt="img" src={fileUrl} />
+      </ListItemAvatar>
+    ) : (
+      <ListItemAvatar>
+        <Avatar variant="square" sizes="">
+          <assets.CloudUploadIcon />
+        </Avatar>
+      </ListItemAvatar>
+    );
+  };
   return (
-     <>
+    <>
       <Container>
         <CustomStack
           sx={{ paddingBottom: "30px" }}
@@ -63,8 +88,8 @@ function ViewAllDocs(props: any) {
                 All Attachments
               </Typography> */}
               <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
-                {getAllDocsByModule.result.length>0?getAllDocsByModule.result.map(
-                  (file: GetAllDocsInterface ) => {
+                {getAllDocsByModule.length > 0 ? (
+                  getAllDocsByModule.map((file: FileInterface) => {
                     const docsDate = momentdeDateFormat(file.createdAt);
                     const docsTiem = momentTimeFormat(file.createdAt);
                     return (
@@ -83,7 +108,7 @@ function ViewAllDocs(props: any) {
                             <CDateTime
                               sx={{
                                 display: "flex",
-                                fontSize: "8px",
+                                fontSize: "10px",
                                 alignItems: "flex-end",
                               }}
                             >
@@ -92,7 +117,7 @@ function ViewAllDocs(props: any) {
                           </CustomStack>
                         }
                       >
-                       {ListItemAvat(file.fileUrl)}
+                        {ListItemAvat(file.fileUrl)}
                         <ListItemText
                           key={file._id}
                           primary={
@@ -110,16 +135,24 @@ function ViewAllDocs(props: any) {
                                 alignItems: "baseline",
                               }}
                             >
-                              <Span>Company. N/A</Span>
-                              <Span>{`Size:N/A`}</Span>
+                              {/* <Span>Company. N/A</Span> */}
+
+                              {"fileSize" in file ? (
+                                <Span>{`Size: ${filesizes(
+                                  file.fileSize
+                                )}`}</Span>
+                              ) : (
+                                <Span>{`Size: N/A`}</Span>
+                              )}
                             </CustomStack>
                           }
                         />
                       </ListItem>
                     );
-                  }
-                ): <CommentName>There is no file to show</CommentName>
-              }
+                  })
+                ) : (
+                  <CommentName>There is no file to show</CommentName>
+                )}
               </ContentList>
             </Grid>
           </Grid>
@@ -148,8 +181,8 @@ box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
 export const ContentMain = styled(Box)`
-    overflow: hidden;
-    `;
+  overflow: hidden;
+`;
 export const ContentList = styled(List)(
   ({ theme }) => `
   height: calc(100vh - 110px);

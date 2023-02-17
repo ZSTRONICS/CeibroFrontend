@@ -14,18 +14,18 @@ import {
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
-  onlyUnique
+  onlyUnique,
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import {UserInfo} from "constants/interfaces/subtask.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
 import taskActions, {
   deleteTask,
-  updateTaskById
+  updateTaskById,
 } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
@@ -37,7 +37,7 @@ interface Props {
 
 function TaskDrawerMenu({ taskMenue }: Props) {
   const cInputRef = useRef<any>(null);
-  const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
+  const [openCDrawer, setOpenCDrawer] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -97,7 +97,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
   // const selectedProjectValue = { label: project.title, id: project._id };
 
-
   const creatorAutoCompleteData = {
     label: `${creator.firstName} ${creator.surName}`,
     id: creator._id,
@@ -116,7 +115,9 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const [doOnce, setDoOnce] = React.useState<boolean>(true);
   const adminArr = adminsList.map((item: any) => item.id);
   const assignArr = assignToList.map((item: any) => item.id);
-  const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
+  const localized = moment(dueDate, "DD-MM-YYYY").format(
+    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
+  );
   const [showDate, setShowDate] = useState<any>(localized);
   const [formData, setFormData] = useState({
     title: title,
@@ -133,9 +134,10 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       project._id,
       projectWithMembers
     );
-    allMembersOfProject = getUserFormatedDataForAutoComplete(
-      projectMembersData?.projectMembers
-    );
+
+    allMembersOfProject =
+      getUserFormatedDataForAutoComplete(projectMembersData);
+   // console.log(allMembersOfProject);
     setAdminListOpt(
       getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject])
     );
@@ -170,12 +172,15 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         body: formData,
         other: _id,
         success: (res) => {
-          if(res.status=== 200){
-             dispatch({ type: TASK_CONFIG.SET_SELECTED_TASK, payload: res?.data.newTask});
+          if (res.status === 200) {
+            dispatch({
+              type: TASK_CONFIG.SET_SELECTED_TASK,
+              payload: res?.data.newTask,
+            });
           }
           if (isCreateTask) {
             dispatch(taskActions.closeTaskDrawer());
-            toast.success("Task created");  
+            toast.success("Task created");
           } else {
             toast.success("Task updated");
             setShowUpdateBtn(false);
@@ -244,7 +249,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       setAssignToList([]);
       setAssignToOpt([]);
     } else {
-      if(formData.project !== project.value){
+      if (formData.project !== project.value) {
         setAdminsList([...fixedOptions]);
         setAssignToList([]);
       }
@@ -253,9 +258,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         project?.value,
         projectWithMembers
       );
-      const projMembers = getUserFormatedDataForAutoComplete(
-        projectMembersData?.projectMembers
-      );
+      const projMembers =
+        getUserFormatedDataForAutoComplete(projectMembersData);
       setAdminListOpt(
         getUniqueObjectsFromArr([...fixedOptions, ...projMembers])
       );
@@ -280,17 +284,16 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   }
   const viewAllDocs = (e: any) => {
     e.stopPropagation();
-    setOpenCDrawer((prev:boolean)=> !prev)
+    setOpenCDrawer((prev: boolean) => !prev);
     // dispatch(getAllSubTaskDocs({
     //     other:{
     //         subtaskId:subtaskId
     //     }
     // }))
-
-  }
-  const handleCloseCDrawer =()=>{
-    setOpenCDrawer((prev:boolean)=> !prev)
-}
+  };
+  const handleCloseCDrawer = () => {
+    setOpenCDrawer((prev: boolean) => !prev);
+  };
   return (
     <>
       <Grid container className={classes.outerWrapper} rowGap={2.5}>
@@ -757,11 +760,21 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
-        children={<UploadDocs handleClose={() => setImageAttach(false)}/>}
+        children={<UploadDocs handleClose={() => setImageAttach(false)} />}
       />
-      <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} 
-				handleCloseCDrawer={handleCloseCDrawer} 
-         children={<ViewAllDocs subTaskHeading="Attachments" handleCloseCDrawer={handleCloseCDrawer}/>} />
+      <CDrawer
+        showBoxShadow={true}
+        hideBackDrop={true}
+        openCDrawer={openCDrawer}
+        handleCloseCDrawer={handleCloseCDrawer}
+        children={
+          <ViewAllDocs
+            subTaskHeading="Attachments"
+            handleCloseCDrawer={handleCloseCDrawer}
+            taskId={_id}
+          />
+        }
+      />
     </>
   );
 }

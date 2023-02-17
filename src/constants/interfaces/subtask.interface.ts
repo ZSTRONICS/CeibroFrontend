@@ -20,8 +20,14 @@ export interface SubtaskInterface {
   createdAt: string
   updatedAt: string
   recentComments:any[]
+  taskData:TaskData
 }
 
+export interface TaskData{
+  admins:string[]
+  project:{_id:string,title:string},
+  title:string
+}
 export interface AdvanceOptions {
   confirmNeeded: ConfirmNeeded[]
   viewer: any[]

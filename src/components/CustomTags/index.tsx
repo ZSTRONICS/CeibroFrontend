@@ -15,8 +15,8 @@ export const CommentName = styled(Typography)(
     `
 );
 export const CDateTime = styled(Typography)`
-  font-weight: 500;
-  font-size: 10px;
+  font-weight: 600;
+  font-size: 11px;
 `;
 export const FileName = styled(Typography)`
   font-weight: 700;

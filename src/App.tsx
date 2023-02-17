@@ -13,10 +13,10 @@ import {
   RouterConfig,
   TaskModal,
   CDrawer,
-} from 'components'
+} from "components";
 
 // socket
-import { socket } from "services/socket.services"
+import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
 
 // material
@@ -54,8 +54,9 @@ import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
+import docsAction from "redux/action/docs.actions";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const { isLoggedIn } = useSelector((store: RootState) => store.auth);
@@ -82,11 +83,11 @@ const App: React.FC<MyApp> = () => {
           token: myToken,
         },
       });
-      socket.setSocket(sock)
+      socket.setSocket(sock);
 
       socket.getSocket().on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
-        const eventType = dataRcvd.eventType
-        const payload = dataRcvd.data
+        const eventType = dataRcvd.eventType;
+        const payload = dataRcvd.data;
         switch (eventType) {
           case RECEIVE_MESSAGE:
             {
@@ -99,9 +100,12 @@ const App: React.FC<MyApp> = () => {
                     type: PUSH_MESSAGE_BY_OTHER,
                     payload: data.message,
                   });
-                  socket.sendMessageSeen(user._id, selectedChat, data.message._id)
+                  socket.sendMessageSeen(
+                    user._id,
+                    selectedChat,
+                    data.message._id
+                  );
                 } else {
-
                   socket.getUnreadMsgCount(user._id);
                   //dispatch(getAllChats());
                 }
@@ -115,8 +119,7 @@ const App: React.FC<MyApp> = () => {
                       },
                     })
                   );
-                }
-                else {
+                } else {
                   if (String(data.from) === String(user?._id)) {
                     dispatch({
                       type: PUSH_MESSAGE_BY_OTHER,
@@ -142,10 +145,7 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case UNREAD_MESSAGE_COUNT:
-
-            dispatch(
-              unreadMessagesCount({ other: payload.data })
-            );
+            dispatch(unreadMessagesCount({ other: payload.data }));
 
             break;
           // case ROOM_MESSAGE_DATA:
@@ -163,12 +163,15 @@ const App: React.FC<MyApp> = () => {
           case MESSAGE_SEEN:
             {
               if (payload.updatedMessage.length === 0) {
-                return
+                return;
               }
               const selectedChat = socket.getAppSelectedChat();
               if (payload.roomId === selectedChat) {
-                if (payload.updatedMessage && payload.updatedMessage.length > 0) {
-                  const messages = payload.updatedMessage
+                if (
+                  payload.updatedMessage &&
+                  payload.updatedMessage.length > 0
+                ) {
+                  const messages = payload.updatedMessage;
 
                   dispatch(
                     replaceMessagesById({
@@ -182,111 +185,121 @@ const App: React.FC<MyApp> = () => {
             }
             break;
           default:
-            break
+            break;
         }
       });
 
       socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
-        const eventType = dataRcvd.eventType
-        const data = dataRcvd.data
-       console.log('eventType-->', eventType, dataRcvd)
+        const eventType = dataRcvd.eventType;
+        const data = dataRcvd.data;
+        console.log("eventType-->", eventType, dataRcvd);
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(user._id)) {
-              return
+              return;
             }
             dispatch({
               type: TASK_CONFIG.PUSH_TASK_TO_STORE,
               payload: data,
             });
-            break
+            break;
 
           case TASK_CONFIG.SUB_TASK_CREATED:
             if (!data.access.includes(user._id)) {
-              return
+              return;
             }
             dispatch({
               type: TASK_CONFIG.PUSH_SUB_TASK_TO_STORE,
               payload: data,
             });
-            break
+            break;
 
           case TASK_CONFIG.TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.TASK_UPDATE_PRIVATE:
             if (!data.access.includes(user._id)) {
-              return
+              return;
             }
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
               payload: data,
             });
-            break
+            break;
 
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
-           // console.log('SUB_TASK_UPDATE_PUBLIC', data)
+            // console.log('SUB_TASK_UPDATE_PUBLIC', data)
             dispatch({
               type: TASK_CONFIG.UPDATE_SUBTASK_IN_STORE,
               payload: data,
             });
-            break
+            break;
 
           case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
             dispatch({
               type: DOCS_CONFIG.FILE_UPLOAD_PROGRESS,
               payload: data,
             });
-            break
-            case DOCS_CONFIG.FILE_UPLOADED:
-              dispatch({
-                type: DOCS_CONFIG.FILE_UPLOADED,
-                payload: data,
-              });
-            break
-            case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
-              dispatch({
-                type: DOCS_CONFIG.FILES_UPLOAD_COMPLETED,
-                payload: data,
-              });
-            break
+            break;
+          case DOCS_CONFIG.FILE_UPLOADED:
+            dispatch({
+              type: DOCS_CONFIG.FILE_UPLOADED,
+              payload: data,
+            });
+            break;
+
+          case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
+            //Handle switch case here
+            dispatch(
+              docsAction.getDocsByModuleNameAndId({
+                other: {
+                  moduleName: data.moduleName,
+                  moduleId: data.moduleId,
+                },
+              })
+            );
+
+            dispatch({
+              type: DOCS_CONFIG.FILES_UPLOAD_COMPLETED,
+              payload: data,
+            });
+            break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
-           // console.log('TASK_SUBTASK_UPDATED', data.results)
+            // console.log('TASK_SUBTASK_UPDATED', data.results)
             try {
               const payload = {
                 task: data.results.task,
-                subtask: data.results.subtasks[0]
-              }
+                subtask: data.results.subtasks[0],
+              };
               dispatch({
                 type: TASK_CONFIG.TASK_SUBTASK_UPDATED,
                 payload: payload,
               });
             } catch (e) {
-              console.error(e)
+              console.error(e);
             }
-            break
-
+            break;
         }
-
       });
     }
   }, [isLoggedIn]);
 
-let pathnameRoute = window.location.pathname
+  let pathnameRoute = window.location.pathname;
   return (
     <div className="App">
       {/* component used here for availability of modal on all routes*/}
       <TaskModal />
-      <div style={{ opacity: 0, visibility: 'hidden', width: 0, height: 0 }}><ViewInvitations /></div>
+      <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
+        <ViewInvitations />
+      </div>
       <CssBaseline />
-    {pathnameRoute!=='/login' && <UploadingDocsPreview/>}
+      {pathnameRoute !== "/login" && <UploadingDocsPreview />}
       <CreateQuestioniarDrawer />
-      <CDrawer/>
+      <CDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
       <CreateProjectDrawer />
       <ToastContainer position="bottom-left" theme="colored" />
       <CreateTaskDrawer />
       <RouterConfig />
-
     </div>
   );
 };
