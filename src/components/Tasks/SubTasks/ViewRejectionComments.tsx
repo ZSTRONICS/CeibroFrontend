@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  CommentDateTime,
+  CDateTime,
   CommentDescription,
   CommentName,
   Heading,
@@ -67,9 +67,9 @@ function ViewRejectionComments(props: any) {
 
                   <Grid item>
                     <CustomStack gap={0.4}>
-                      <CommentDateTime>no Date</CommentDateTime>
+                      <CDateTime>no Date</CDateTime>
                       <Divider orientation="vertical" />
-                      <CommentDateTime variant="body2">no time</CommentDateTime>
+                      <CDateTime variant="body2">no time</CDateTime>
                     </CustomStack>
                   </Grid>
                 </Grid>
