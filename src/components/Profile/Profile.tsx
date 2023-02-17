@@ -14,7 +14,7 @@ import Requests from "./Requests";
 const Dashboard = () => {
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((localState: RootState) => localState.auth);
 
   return (
     <Grid container>

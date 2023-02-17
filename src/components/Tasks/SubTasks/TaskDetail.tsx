@@ -25,6 +25,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
     const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
     const dispatch = useDispatch()
     const {user} = useSelector((state:RootState)=> state.auth)
+
     const handleCDrawer =()=>{
         setOpenCDrawer((prev:boolean)=> !prev)
         dispatch(getAllSubTaskRejection({
@@ -32,6 +33,9 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
                 subtaskId:subtaskDetail._id
             }
         }))
+    }
+    const handleCloseCDrawer =()=>{
+        setOpenCDrawer((prev:boolean)=> !prev)
     }
     const isTaskAdmin = taskAdmin.some((item:any)=> item.id === user._id)
 
@@ -53,7 +57,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
                 {/* <RecentComments subtaskDetail={subtaskDetail} /> */}
             </CBox>
         </div>
-        <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} handleCloseCDrawer={handleCDrawer} children={<ViewRejectionComments subTaskHeading="Subtask Rejection" handleCloseCDrawer={handleCDrawer}/>} />
+        <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} handleCloseCDrawer={handleCloseCDrawer} children={<ViewRejectionComments subTaskHeading="Subtask Rejection" handleCloseCDrawer={handleCDrawer}/>} />
     </>
     )
 }

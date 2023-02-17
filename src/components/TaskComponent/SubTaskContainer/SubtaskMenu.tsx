@@ -98,9 +98,10 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
         );
       };
 
-  const handleOpenEditMemberMenu = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setAnchorElMember(event.currentTarget);
+  const handleOpenEditMemberMenu = (e: React.MouseEvent<HTMLElement>) => {
+    
+    e.stopPropagation();
+    setAnchorElMember(e.currentTarget);
   };
 
   const handleCloseMenu = (event: any) => {
@@ -110,6 +111,10 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
 
   const handleCloseModal = () => {
       setOpenEditModal((show) => !show);
+    };
+  const handleCloseEditModal = (e:any) => {
+    e.stopPropagation()
+    setSubTask(false)
     };
 
     const handleEditSubTaskInDraft = (e: any) => {
@@ -145,7 +150,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
         <IconButton
           onClick={handleOpenEditMemberMenu}
           disableRipple
-          sx={{ p: 1 }}
+          sx={{padding:'0px 10px' }}
         >
           <assets.MoreVertOutlinedIcon />
         </IconButton>
@@ -170,7 +175,9 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
 
     {(myState === SubtaskState.Draft)&&
     <>
-        <MenuItem disableRipple sx={{
+        <MenuItem 
+        onClick={handleEditSubTaskInDraft}
+        disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
               },
@@ -179,7 +186,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
             //   sx={{ color: "#0076c8"}} 
-              onClick={handleEditSubTaskInDraft}
+              
             >
               Edit subtask
             </SubTaskButton>
@@ -204,7 +211,9 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
 
     {(myState === SubtaskState.Assigned)&&
     <>
-        <MenuItem disableRipple sx={{
+        <MenuItem 
+         onClick={handleEditSubTaskInAssigned}
+        disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
               },
@@ -213,12 +222,14 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
             //   sx={{ color: "#0076c8" }} 
-              onClick={handleEditSubTaskInAssigned}
+             
             >
               Edit subtask
             </SubTaskButton>
           </MenuItem>
-        <MenuItem disableRipple sx={{
+        <MenuItem
+         onClick={handleEditDetails}
+        disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
               },
@@ -227,12 +238,14 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
             //   sx={{ color: "#0076c8" }} 
-              onClick={handleEditDetails}
+             
             >
               Edit details
             </SubTaskButton>
           </MenuItem>
-          <MenuItem disableRipple sx={{
+          <MenuItem 
+          //   onClick={handleDelteSubtask}
+          disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
               },
@@ -241,7 +254,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
               sx={{ color: "#FA0808" }} 
-            //   onClick={handleToggle}
+            
             >
               Delete subtask
             </SubTaskButton>
@@ -281,7 +294,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             showCloseBtn={false}
             title="Edit Subtask"
             isOpen={subTask}
-            handleClose={() => setSubTask(false)}
+            handleClose={(e:any)=>handleCloseEditModal(e)}
             children={<AddSubtask/>}
         />}
     </>
