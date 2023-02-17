@@ -34,7 +34,8 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
     ...projectMembersOfSelectedTask,
   ]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e:any) => {
+    e.stopPropagation()
     setSubTask(false);
     setAssignToList([]);
   };

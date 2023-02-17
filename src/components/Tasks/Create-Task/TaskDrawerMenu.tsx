@@ -1,38 +1,34 @@
-import React, { useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Divider, Grid, TextField } from "@mui/material";
-import { CBox } from "components/material-ui";
-import { useSelector, useDispatch } from "react-redux";
 import Autocomplete from "@mui/material/Autocomplete";
+import { CBox } from "components/material-ui";
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 // import { AttachmentIcon } from "components/material-ui/icons";
-import CustomModal from "components/Modal";
+import assets from "assets/assets";
 import CButton from "components/Button/Button";
+import CDatePicker from "components/DatePicker/CDatePicker";
+import CustomModal from "components/Modal";
 import UploadDocs from "components/uploadImage/UploadDocs";
-import { State, TaskInterface } from "constants/interfaces/task.interface";
-import { RootState } from "redux/reducers";
 import {
-  deDateFormat,
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
-  onlyUnique,
+  onlyUnique
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import CDatePicker from "components/DatePicker/CDatePicker";
-import { ProjectTitles } from "constants/interfaces/project.interface";
-import {
-  SubtaskInterface,
-  UserInfo,
-} from "constants/interfaces/subtask.interface";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import assets from "assets/assets";
+import {UserInfo} from "constants/interfaces/subtask.interface";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
+import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
+import { toast } from "react-toastify";
 import taskActions, {
   deleteTask,
-  updateTaskById,
+  updateTaskById
 } from "redux/action/task.action";
-import { toast } from "react-toastify";
+import { RootState } from "redux/reducers";
+import ViewAllDocs from "../SubTasks/ViewAllDocs";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -40,6 +36,7 @@ interface Props {
 
 function TaskDrawerMenu({ taskMenue }: Props) {
   const cInputRef = useRef<any>(null);
+  const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -273,7 +270,19 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       payload: [...adminData],
     });
   }
+  const viewAllDocs = (e: any) => {
+    e.stopPropagation();
+    setOpenCDrawer((prev:boolean)=> !prev)
+    // dispatch(getAllSubTaskDocs({
+    //     other:{
+    //         subtaskId:subtaskId
+    //     }
+    // }))
 
+  }
+  const handleCloseCDrawer =()=>{
+    setOpenCDrawer((prev:boolean)=> !prev)
+}
   return (
     <>
       <Grid container className={classes.outerWrapper} rowGap={2.5}>
@@ -534,6 +543,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             <CBox display="flex">
               <CButton
                 label="View All"
+                onClick={viewAllDocs}
                 styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
               />
               &nbsp;
@@ -741,6 +751,9 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         title={"Attachments"}
         children={<UploadDocs handleClose={() => setImageAttach(false)}/>}
       />
+      <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} 
+				handleCloseCDrawer={handleCloseCDrawer} 
+         children={<ViewAllDocs subTaskHeading="Attachments" handleCloseCDrawer={handleCloseCDrawer}/>} />
     </>
   );
 }

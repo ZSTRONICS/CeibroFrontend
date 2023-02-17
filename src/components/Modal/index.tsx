@@ -17,7 +17,7 @@ import styled from "@emotion/styled";
 
 interface Props {
   isOpen: boolean;
-  handleClose: () => void;
+  handleClose: (e:any) => void;
   title: any;
   children: any;
   showCloseBtn:boolean;
@@ -26,14 +26,20 @@ interface Props {
 
 const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, showCloseBtn }) => {
   const classes = useStyles()
-
+  
+  const closeModal =(e:any)=>{
+    if (!e.target.closest('.MuiDrawer-root')) {
+      e.stopPropagation();
+    }
+    handleClose(e)
+  }
   return (
     <>
       <Dialog
         fullWidth
         maxWidth="sm"
         open={isOpen}
-        onClose={handleClose}
+        onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
@@ -43,7 +49,7 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, sh
               <CustomTitle>{title}</CustomTitle>
             </Grid>
             {showCloseBtn&&<Grid item>
-              <Button onClick={handleClose} variant='outlined'>Close</Button>
+              <Button onClick={closeModal} variant='outlined'>Close</Button>
             </Grid>}
           </Grid>
         </DialogTitle>
