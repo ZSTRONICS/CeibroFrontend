@@ -223,17 +223,17 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         {task.assignedTo.map((item: UserInfo, index) => {
           if (index === task.assignedTo.length - 1) {
             return (
-              <span
+              <div
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}`}</span>
+              >{`${item.firstName} ${item.surName}`}</div>
             );
           } else {
             return (
-              <span
+              <div
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}, `}</span>
+              >{`${item.firstName} ${item.surName}, `}</div>
             );
           }
         })}
@@ -253,13 +253,17 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           cursor: "pointer",
         },
         // width: "100%",
-        border: `2px solid ${ColorByStatus(task.state)}`,
+        border: `1.8px solid ${ColorByStatus(task.state)}`,
       }}
       elevation={0}
       variant="outlined"
     >
       <CardHeader
-        sx={{ padding: "10px 5px 0px 15px" }}
+        sx={{
+          mb: "5px",
+          padding: "10px 5px 0px 15px",
+          // display: "flex",
+        }}
         subheader={SubHeader()}
         action={Action()}
       />
@@ -280,13 +284,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             <AssignedTag sx={{ display: "flex" }}>{taskCreatedOn}</AssignedTag>
           </Box>
         </CustomStack>
-        <CustomStack 
-        gap={2.5} 
-        justifyContent="space-between"
-        >
-          <Box
-          pt={0.6}
-          >
+        <CustomStack gap={2.5} justifyContent="space-between">
+          <Box pt={0.6}>
             <LabelTag>Assigned to</LabelTag>
             {task.assignedTo.length > 0 ? (
               <>
@@ -314,7 +313,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 color="primary"
                 badgeContent={
                   <Tooltip title={AssignedToList()}>
-                    <span>{task.assignedTo.length - 1}+</span>
+                    <div>{task.assignedTo.length - 1}+</div>
                   </Tooltip>
                 }
               ></CustomBadge>
@@ -325,10 +324,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
             <AssignedTag>{dueDate}</AssignedTag>
           </Box>
         </CustomStack>
-        <Box 
-        pt={1}
-         pb={0.6}
-         >
+        <Box pt={1} pb={0.6}>
           <AssignedTag
             sx={{
               fontSize: "16px",

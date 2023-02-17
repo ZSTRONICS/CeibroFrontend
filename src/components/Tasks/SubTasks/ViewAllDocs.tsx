@@ -1,15 +1,19 @@
 import React from "react";
+import { Heading, CDateTime, FileName, Span } from "components/CustomTags";
 import {
-  Heading,
-  CDateTime,
-  FileName,
-  Span,
-} from "components/CustomTags";
-import { Box, Grid, Divider, useMediaQuery, Typography, List, ListItem, ListItemAvatar, Avatar, ListItemText } from "@mui/material";
+  Box,
+  Grid,
+  Divider,
+  useMediaQuery,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+} from "@mui/material";
 import { styled } from "@mui/system";
-import {
-  CustomStack,
-} from "components/TaskComponent/Tabs/TaskCard";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
@@ -41,55 +45,66 @@ function ViewAllDocs(props: any) {
         </CustomStack>
         <ContentMain>
           {/* <Box sx={{ maxWidth: 473 }}> */}
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
               <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-           All Attachments
-          </Typography>
-          <ContentList dense={true}  sx={{  maxWidth: 478, width:'376px' }}>
-              {[1,2,3,4,5, 6,7,8,8,9,10,11,12,13,14].map((item:any)=>{
-                return(
-                  <ListItem  divider sx={{paddingLeft:'0'}}
-                  secondaryAction={
-                    <React.Fragment>
-                      <CDateTime
-                        sx={{ display: 'inline' }}
+                All Attachments
+              </Typography>
+              <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+                {[1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14].map(
+                  (item: any) => {
+                    return (
+                      <ListItem
+                        divider
+                        sx={{ paddingLeft: "0" }}
+                        secondaryAction={
+                          <CustomStack
+                            sx={{
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "end",
+                            }}
+                          >
+                            <CDateTime>22/08/2020</CDateTime>
+                            <CDateTime
+                              sx={{
+                                display: "flex",
+                                fontSize: "8px",
+                                alignItems: "flex-end",
+                              }}
+                            >
+                              12:08AM
+                            </CDateTime>
+                          </CustomStack>
+                        }
                       >
-                        22/08/2020
-                      </CDateTime>
-                      <CDateTime sx={{ display: 'inline', fontSize:'8px' }}>
-                        
-                        12:08AM
-                      </CDateTime>
-                    </React.Fragment>
+                        <ListItemAvatar>
+                          <Avatar variant="square" sizes="">
+                            <assets.CloudUploadIcon />
+                          </Avatar>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={<FileName>File Name</FileName>}
+                          secondary={
+                            <CustomStack
+                              sx={{
+                                flexDirection: "column",
+                                alignItems: "baseline",
+                              }}
+                            >
+                              <Span>Company. Electrician</Span>
+                              <Span>Electrician</Span>
+                              <Span>Size:9Mb</Span>
+                            </CustomStack>
+                          }
+                        />
+                      </ListItem>
+                    );
                   }
-                  >
-                    <ListItemAvatar>
-                    <Avatar variant='square' sizes=''>
-                      <assets.CloudUploadIcon/>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText 
-                  primary={<FileName>File Name</FileName>}
-                  secondary={
-                    <CustomStack sx={{flexDirection:'column', alignItems:'baseline',}} >
-                      <Span>
-                        Company. Electrician
-                      </Span>
-                      <Span>
-                      Electrician
-                      </Span>
-                    </CustomStack>
-                  }
-                  />
-          
-        
-                  </ListItem>
-                )
-              })}
-            </ContentList>
-              </Grid>
+                )}
+              </ContentList>
             </Grid>
+          </Grid>
           {/* </Box> */}
         </ContentMain>
       </Container>
