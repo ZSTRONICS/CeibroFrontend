@@ -38,7 +38,6 @@ import {
 import docsAction from "redux/action/docs.actions";
 import TabsUnstyled from "@mui/base/TabsUnstyled";
 import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
-import  {Thumbnail} from 'react-file-utils';
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 
 function ViewAllDocs(props: any) {
