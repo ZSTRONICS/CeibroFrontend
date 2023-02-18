@@ -115,7 +115,7 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: userRolesPermissions | null;
-  allProjectsTitles: []
+  allProjectsTitles:any[]
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -163,7 +163,7 @@ const projectReducer: ProjectReducerInt = {
   projectWithMembers: [],
 };
 
-const AppReducer = (
+const NavigationReducer = (
   state = projectReducer,
   action: ActionInterface
 ): ProjectReducerInt => {
@@ -216,7 +216,7 @@ const AppReducer = (
       };
     }
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
-      state.allProjectsTitles = action.payload.projectDetails.map((project: any) => {
+      const projectLabels = action.payload.projectDetails.map((project: any) => {
         return {
           label: project.title,
           value: project._id,
@@ -225,6 +225,7 @@ const AppReducer = (
       state.projectWithMembers = action.payload.projectDetails;
       return {
         ...state,
+        allProjectsTitles: [...projectLabels]
       }
 
     }
@@ -557,4 +558,4 @@ const AppReducer = (
   }
 };
 
-export default AppReducer;
+export default NavigationReducer;

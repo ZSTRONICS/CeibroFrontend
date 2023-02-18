@@ -20,6 +20,8 @@ import { logoutUser } from "../../redux/action/auth.action";
 // componnents
 import NameAvatar from "components/Utills/Others/NameAvatar";
 import assets from "assets/assets";
+import { purgeStoreStates } from "redux/store";
+import storage from "redux-persist/lib/storage";
 
 const ProfileView = () => {
   const history = useHistory();
@@ -40,9 +42,10 @@ const ProfileView = () => {
   };
   
   const handleLogout = () => {
-    dispatch(logoutUser());
     handleCloseUserMenu()
-    window.location.reload()
+     dispatch(logoutUser());
+     purgeStoreStates();
+     storage.removeItem('persist:root')
     history.push("/login");
   };
 

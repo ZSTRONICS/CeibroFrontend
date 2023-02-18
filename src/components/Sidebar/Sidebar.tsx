@@ -16,8 +16,8 @@ import { socket } from '../../services/socket.services'
 
 function Sidebar() {
   const classes = useStyles()
-  const configs = useSelector((store: RootState) => store.app.sidebarRoutes)
-  const navbarOpen = useSelector((store: RootState) => store.app.navbar)
+  const configs = useSelector((store: RootState) => store.navigation.sidebarRoutes)
+  const navbarOpen = useSelector((store: RootState) => store.navigation.navbar)
   const dispatch = useDispatch()
   const history = useHistory()
   const isTabletOrMobile = useMediaQuery({ query: '(max-width: 960px)' })

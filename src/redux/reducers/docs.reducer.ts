@@ -6,9 +6,10 @@ import { ActionInterface } from ".";
 interface FileReducerInt {
     fileUploadProgres: FileUploadProgress | any,
     filesUploaded: FileUploaded | any,
-    closeFileUploadPreview: boolean
+    showFileUploadPreview: boolean
     filesUploadCompleted: DocsInterface | any
     filesBeingUploaded: FileInterface[]
+    filesBeingUploadedCount: number
     allFilesUploadedDone: boolean
     getAllDocsByModule: FileInterface[]
     loadinggetAllDocs: boolean
@@ -18,8 +19,9 @@ const intialStatue: FileReducerInt = {
     fileUploadProgres: [],
     loadinggetAllDocs: false,
     getAllDocsByModule: [],
+    filesBeingUploadedCount: 0,
     allFilesUploadedDone: false,
-    closeFileUploadPreview: false,
+    showFileUploadPreview: false,
     filesUploaded: [],
     filesUploadCompleted: {},
     filesBeingUploaded: [],
@@ -55,10 +57,13 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 fileUploadProgres: [action.payload, ...state.fileUploadProgres]
             }
         case DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE:
+            state.filesBeingUploaded = [...action.payload, ...state.filesBeingUploaded]
+            state.filesBeingUploadedCount = state.filesBeingUploaded.length
             return {
                 ...state,
-                filesBeingUploaded: [...action.payload, ...state.filesBeingUploaded],
-                closeFileUploadPreview: false,
+                filesBeingUploaded : [...state.filesBeingUploaded],
+                showFileUploadPreview: true,
+                allFilesUploadedDone: false
                 // loadinggetAllDocs: true
             }
 
@@ -77,11 +82,8 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
             const fileUploadCompletedForFile = action.payload
             const fileIndex = state.filesBeingUploaded.findIndex((file: FileInterface) => file._id === fileUploadCompletedForFile._id)
             state.filesBeingUploaded[fileIndex] = action.payload
-
             const uploadProgressIndex = state.fileUploadProgres.findIndex((file: FileUploadProgress) => file.fileId === fileUploadCompletedForFile._id)
             state.fileUploadProgres[uploadProgressIndex].progress = 100
-
-
             return {
                 ...state,
                 filesBeingUploaded: [...state.filesBeingUploaded],
@@ -101,18 +103,22 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
 
             return {
                 ...state,
+                filesBeingUploadedCount: remaingFiles.length,
                 filesBeingUploaded: [...state.filesBeingUploaded],
                 fileUploadProgres: [...state.fileUploadProgres]
             }
 
         case DOCS_CONFIG.CLEAR_FILE_BEING_UPLOADED:
-            state.filesBeingUploaded = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
-            if (state.filesBeingUploaded.length === 0) {
-                state.closeFileUploadPreview = true
+            let previewerVal = true
+            let files  = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
+            if (files.length === 0) {
+                previewerVal = false
             }
+         
             return {
                 ...state,
-                filesBeingUploaded: [...state.filesBeingUploaded]
+                filesBeingUploaded: [...files],
+                showFileUploadPreview: previewerVal
             }
         default:
             return state

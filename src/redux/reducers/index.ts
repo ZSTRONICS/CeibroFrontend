@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import appReducer from "./app.reducer";
+import navigationReducer from "./navigation.reducer";
 import projectReducer from "./project.reducer";
 import TaskReducer from "./task.reducer";
 import authReducer from "./auth.reducer";
@@ -7,8 +7,9 @@ import chatReducer from "./chat.reducer";
 import userReducer from "./user.reducer";
 import DocsReducer from "./docs.reducer";
 
-const rootReducer = combineReducers({
-  app: appReducer,
+
+const appReducer = combineReducers({
+  navigation: navigationReducer,
   project: projectReducer,
   task: TaskReducer,
   docs: DocsReducer,
@@ -17,9 +18,10 @@ const rootReducer = combineReducers({
   user: userReducer,
 });
 
-export default rootReducer;
 
-export type RootState = ReturnType<typeof rootReducer>;
+export default appReducer;
+
+export type RootState = ReturnType<typeof appReducer>;
 
 export interface ActionInterface {
   type: string;

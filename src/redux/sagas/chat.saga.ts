@@ -258,7 +258,7 @@ function* unreadMessagesCount(action: ActionInterface): Generator<any> {
    }});
 
   const oldRoutes: any = yield select(
-    (state: RootState) => state.app.sidebarRoutes
+    (state: RootState) => state.navigation.sidebarRoutes
   );
 
   oldRoutes["Chat"].notification = totalCount || 0;

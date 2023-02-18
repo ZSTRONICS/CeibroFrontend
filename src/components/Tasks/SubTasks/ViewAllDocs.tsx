@@ -1,3 +1,4 @@
+
 import React from "react";
 import {
   Heading,
@@ -10,7 +11,6 @@ import {
   Box,
   Grid,
   useMediaQuery,
-  Typography,
   List,
   ListItem,
   ListItemAvatar,
@@ -28,16 +28,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { FileInterface } from "constants/interfaces/docs.interface";
 import {
+  DOC_EXT,
   filesizes,
+  FILTER_DATA_BY_EXT,
+  MEDIA_EXT,
   momentdeDateFormat,
   momentTimeFormat,
 } from "components/Utills/Globals/Common";
 import docsAction from "redux/action/docs.actions";
+import TabsUnstyled from "@mui/base/TabsUnstyled";
+import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import  {Thumbnail} from 'react-file-utils';
+import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 
 function ViewAllDocs(props: any) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
   const { getAllDocsByModule, loadinggetAllDocs } = useSelector((files: RootState) => files.docs);
-  
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -51,19 +58,6 @@ function ViewAllDocs(props: any) {
     );
   }, []);
 
-  const ListItemAvat = (fileUrl: any) => {
-    return fileUrl ? (
-      <ListItemAvatar>
-        <Avatar variant="square" alt="img" src={fileUrl} />
-      </ListItemAvatar>
-    ) : (
-      <ListItemAvatar>
-        <Avatar variant="square" sizes="">
-          <assets.CloudUploadIcon />
-        </Avatar>
-      </ListItemAvatar>
-    );
-  };
   return (
     <>
       <Container>
@@ -82,8 +76,57 @@ function ViewAllDocs(props: any) {
           )}
         </CustomStack>
         <ContentMain>
-          {/* <Box sx={{ maxWidth: 473 }}> */}
-          <Grid container spacing={2}>
+        <TabsUnstyled defaultValue={0}>
+          <TabsList>
+            <Tab sx={{fontSize:'1rem'}}>All</Tab>
+            <Tab sx={{fontSize:'1rem'}}>Docs</Tab>
+            <Tab sx={{fontSize:'1rem'}}>Media</Tab>
+          </TabsList>
+          <TabPanel value={0}>
+          {DocsContent(loadinggetAllDocs,getAllDocsByModule)}
+          </TabPanel>
+          <TabPanel value={1}>
+          {DocsContent(loadinggetAllDocs,FILTER_DATA_BY_EXT(DOC_EXT,getAllDocsByModule))}
+          </TabPanel>
+          <TabPanel value={2}>
+          {DocsContent(loadinggetAllDocs,FILTER_DATA_BY_EXT(MEDIA_EXT,getAllDocsByModule))}
+          </TabPanel>
+        </TabsUnstyled>
+    
+        </ContentMain>
+      </Container>
+      {!tabOrMobileView && (
+        <Box onClick={props.handleCloseCDrawer}>
+          <CloseIcon />
+        </Box>
+      )}
+    </>
+  );
+}
+
+export default ViewAllDocs;
+
+ const DocsContent=(loadinggetAllDocs:boolean,getAllDocsByModule:FileInterface[] )=>{
+
+  const ListItemAvat = (file: FileInterface) => {
+    let type = file.fileType
+    if(DOC_EXT.includes(file.fileType)){
+      type = file.fileType.replace('.', '')
+    }
+      const preview =  {
+        fileType:type,
+        fileName: file.fileName,
+        url: file.fileUrl,
+      };
+
+    return  (
+      <ListItemAvatar>
+        <FilePreviewer showControls={false} hideName={true} file={preview} />
+      </ListItemAvatar>
+    ) 
+  };
+  return(
+    <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               {loadinggetAllDocs? <ContentList sx={{ mt: 1, mb: 1,textAlign:"center",maxWidth: 478, width: "376px" }}>
               <CircularProgress/>
@@ -117,16 +160,18 @@ function ViewAllDocs(props: any) {
                           </CustomStack>
                         }
                       >
-                        {ListItemAvat(file.fileUrl)}
+                        {ListItemAvat(file)}
                         <ListItemText
                           key={file._id}
                           primary={
+                            <a href={file.fileUrl} download style={{textDecoration:'none'}}>
                             <FileName
-                              sx={{ maxWidth: "200px", width: "100%" }}
+                              sx={{ maxWidth: "200px", width: "100%",color:'#0076C8' }}
                               className="ellipsis"
                             >
                               {file.fileName}
                             </FileName>
+                            </a>
                           }
                           secondary={
                             <CustomStack
@@ -151,24 +196,13 @@ function ViewAllDocs(props: any) {
                     );
                   })
                 ) : (
-                  <CommentName>There is no file to show</CommentName>
+                  <CommentName>No attachments found!</CommentName>
                 )}
               </ContentList>}
             </Grid>
           </Grid>
-          {/* </Box> */}
-        </ContentMain>
-      </Container>
-      {!tabOrMobileView && (
-        <Box onClick={props.handleCloseCDrawer}>
-          <CloseIcon />
-        </Box>
-      )}
-    </>
-  );
+  )
 }
-
-export default ViewAllDocs;
 
 export const Container = styled(Box)(
   ({ theme }) => `
@@ -176,16 +210,18 @@ export const Container = styled(Box)(
         width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
-        background: #F5F7F8;
+        background: #ffffff;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
+
+// height: calc(100vh - 110px);
 export const ContentMain = styled(Box)`
   overflow: hidden;
 `;
 export const ContentList = styled(List)(
   ({ theme }) => `
-  height: calc(100vh - 110px);
+  height: calc(100vh - 150px);
   overflow: auto;
     `
 );
