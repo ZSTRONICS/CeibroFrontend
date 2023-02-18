@@ -27,18 +27,20 @@ const intialStatue: FileReducerInt = {
 
 const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducerInt => {
     switch (action.type) {
-        case requestSuccess(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID):
-            state.getAllDocsByModule = action.payload.result.reverse()
-            return {
-                ...state,
-                getAllDocsByModule: [...state.getAllDocsByModule]
-            }
         case requestPending(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
             return {
                 ...state,
                 loadinggetAllDocs: true,
             };
         }
+        case requestSuccess(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID):
+            state.getAllDocsByModule = action.payload.result.reverse()
+            return {
+                ...state,
+                getAllDocsByModule: [...state.getAllDocsByModule],
+                loadinggetAllDocs: false,
+
+            }
         case requestFail(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
             return {
                 ...state,
@@ -57,7 +59,7 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 ...state,
                 filesBeingUploaded: [...action.payload, ...state.filesBeingUploaded],
                 closeFileUploadPreview: false,
-                loadinggetAllDocs: true
+                // loadinggetAllDocs: true
             }
 
         case DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE:

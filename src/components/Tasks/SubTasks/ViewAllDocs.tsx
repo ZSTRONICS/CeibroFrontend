@@ -16,6 +16,7 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
+  CircularProgress
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -35,7 +36,8 @@ import docsAction from "redux/action/docs.actions";
 
 function ViewAllDocs(props: any) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const { getAllDocsByModule } = useSelector((files: RootState) => files.docs);
+  const { getAllDocsByModule, loadinggetAllDocs } = useSelector((files: RootState) => files.docs);
+  
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -50,7 +52,6 @@ function ViewAllDocs(props: any) {
   }, []);
 
   const ListItemAvat = (fileUrl: any) => {
-    console.log("fileUrl", fileUrl);
     return fileUrl ? (
       <ListItemAvatar>
         <Avatar variant="square" alt="img" src={fileUrl} />
@@ -84,10 +85,9 @@ function ViewAllDocs(props: any) {
           {/* <Box sx={{ maxWidth: 473 }}> */}
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              {/* <Typography sx={{ mt: 1, mb: 1 }} variant="h6" component="div">
-                All Attachments
-              </Typography> */}
-              <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+              {loadinggetAllDocs? <ContentList sx={{ mt: 1, mb: 1,textAlign:"center",maxWidth: 478, width: "376px" }}>
+              <CircularProgress/>
+              </ContentList>: <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
                 {getAllDocsByModule.length > 0 ? (
                   getAllDocsByModule.map((file: FileInterface) => {
                     const docsDate = momentdeDateFormat(file.createdAt);
@@ -153,7 +153,7 @@ function ViewAllDocs(props: any) {
                 ) : (
                   <CommentName>There is no file to show</CommentName>
                 )}
-              </ContentList>
+              </ContentList>}
             </Grid>
           </Grid>
           {/* </Box> */}
