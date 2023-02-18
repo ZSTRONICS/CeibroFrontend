@@ -283,7 +283,6 @@ const App: React.FC<MyApp> = () => {
     }
   }, [isLoggedIn]);
 
-  let pathnameRoute = window.location.pathname;
   return (
     <div className="App">
       {/* component used here for availability of modal on all routes*/}
@@ -292,7 +291,7 @@ const App: React.FC<MyApp> = () => {
         <ViewInvitations />
       </div>
       <CssBaseline />
-      {pathnameRoute !== "/login" && <UploadingDocsPreview />}
+      {window.location.pathname !== "/login" && <UploadingDocsPreview />}
       <CreateQuestioniarDrawer />
       <CDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
