@@ -13,7 +13,7 @@ const intialStatue = {
   sidebarRoutes: SidebarConfig,
 };
 
-const AppReducer = (state = intialStatue, action: ActionInterface) => {
+const NavigationReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case TOGGLE_NAVBAR:
       return {
@@ -41,4 +41,4 @@ const AppReducer = (state = intialStatue, action: ActionInterface) => {
   }
 };
 
-export default AppReducer;
+export default NavigationReducer;

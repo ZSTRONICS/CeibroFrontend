@@ -55,6 +55,7 @@ import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
 import docsAction from "redux/action/docs.actions";
+import { useLocation } from "react-router-dom";
 
 interface MyApp {}
 
@@ -291,7 +292,7 @@ const App: React.FC<MyApp> = () => {
         <ViewInvitations />
       </div>
       <CssBaseline />
-      {window.location.pathname !== "/login" && <UploadingDocsPreview />}
+      { <UploadingDocsPreview /> }
       <CreateQuestioniarDrawer />
       <CDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}

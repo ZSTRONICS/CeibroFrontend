@@ -1,9 +1,9 @@
-
 import { makeStyles } from "@material-ui/core";
 import { Cancel } from "@material-ui/icons";
 // @ts-ignore
 import { defaultStyles, FileIcon } from "react-file-icon";
 import colors from "../../../assets/colors";
+import { MEDIA_EXT } from "../Globals/Common";
 
 interface FilePreviewerInterface {
   file: any;
@@ -36,12 +36,13 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
           className={classes.invisibleWrapper}
         ></div>
       )}
-      {["png", "jpg", "jpeg"].includes(file?.fileType) ? (
+      {MEDIA_EXT.includes(file?.fileType) ? (
         <img
+          alt={file.fileName}
           data-name={file.fileName}
           data-url={file.url}
           data-format={file.fileType}
-            src={file?.url}
+          src={file?.url}
           className={classes.mediaImg}
         />
       ) : (

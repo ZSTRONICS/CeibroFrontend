@@ -14,7 +14,7 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
   const classes = useStyles();
   const history = useHistory();
 
-  const navbarOpen = useSelector((state: RootState) => state.app.navbar);
+  const navbarOpen = useSelector((state: RootState) => state.navigation.navbar);
   const { sidebarOpen } = useSelector((state: RootState) => state.chat);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 

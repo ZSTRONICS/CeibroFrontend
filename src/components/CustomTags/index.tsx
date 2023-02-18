@@ -23,7 +23,6 @@ export const FileName = styled(Typography)`
   font-size: 12px;
   font-family: 'Inter';
   color: #292929;
-
 `;
 export const CommentDescription = styled(Typography)`
   font-weight: 500;
@@ -54,4 +53,8 @@ font-style: normal;
 font-weight: 500;
 font-size: 10px;
 color: #605C5C;
+`
+export const CLink=styled('a')`
+font-family: 'Inter';
+font-style: normal;
 `

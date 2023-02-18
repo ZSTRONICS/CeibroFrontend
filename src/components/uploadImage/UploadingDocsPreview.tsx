@@ -8,7 +8,6 @@ import {
   ListSubheader,
   CircularProgress,
   Box,
-  Avatar,
 } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,27 +24,28 @@ function UploadingDocsPreview() {
   const {
     filesBeingUploaded,
     allFilesUploadedDone,
+    filesBeingUploadedCount,
     fileUploadProgres,
-    closeFileUploadPreview,
+    showFileUploadPreview,
   } = useSelector((state: RootState) => state.docs);
 
   const dispatch = useDispatch();
-  const [isRemoved, setIsRemoved] = React.useState(false);
+  const [showFileUploadProgress, setShowFileUploadProgress] = React.useState(false);
   const removeListItem = () => {
     dispatch({
       type: DOCS_CONFIG.CLEAR_FILE_BEING_UPLOADED,
     });
   };
   React.useEffect(() => {
-    setIsRemoved(closeFileUploadPreview);
-    if (!closeFileUploadPreview) {
+    setShowFileUploadProgress(showFileUploadPreview);
+    if (showFileUploadPreview) {
       setOpen(true);
     }
-  }, [closeFileUploadPreview]);
+  }, [showFileUploadPreview]);
 
   return (
     <>
-      {filesBeingUploaded.length > 0 && !isRemoved && (
+      {showFileUploadProgress && (
         <Box
           sx={{
             position: "absolute",
@@ -89,8 +89,9 @@ function UploadingDocsPreview() {
                     // "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
                   }}
                 >
+                 
                   <ListItemText
-                    primary={`Uploading ${filesBeingUploaded.length} file(s)`}
+                    primary={`Uploading ${filesBeingUploadedCount} file(s)`}
                     primaryTypographyProps={{
                       fontSize: 16,
                       fontWeight: "600",
