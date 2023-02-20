@@ -93,7 +93,6 @@ function ViewAllDocs(props: any) {
                               }}
                             >
                               <Span>Company. Electrician</Span>
-                              <Span>Electrician</Span>
                               <Span>Size:9Mb</Span>
                             </CustomStack>
                           }
