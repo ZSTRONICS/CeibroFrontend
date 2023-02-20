@@ -9,6 +9,7 @@ import { makeStyles } from "@material-ui/core";
 import TaskDetailDrawer from "./TaskDetailDrawer";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import { otpVerify } from "redux/action/auth.action";
 
 const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
 
@@ -46,15 +47,16 @@ export default SubTaskList;
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
     width: "100%",
-    overflow: "auto",
+    overflow: "hidden",
     height: "100%",
-    // [theme.breakpoints.down('lg')]: {
-    //   maxHeight: 'calc(100vh - 350px)',
-    // },
+    [theme.breakpoints.down('lg')]: {
+      maxHeight: 'calc(100vh - 350px)',
+      
+    },
 
-    // [theme.breakpoints.down('md')]: {
-    //   maxHeight: 'calc(100vh - 50vh)'
-    // },
+    [theme.breakpoints.down('md')]: {
+      maxHeight: 'calc(100vh - 50vh)',
+    },
 
     [theme.breakpoints.between(900, 1024)]: {
       maxHeight: "calc(100vh - 40vh)",

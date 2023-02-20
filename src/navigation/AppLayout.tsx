@@ -48,14 +48,14 @@ export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    height: "100vh",
+    // height: "100vh",
     overflow: "hidden",
   },
   content: {
     height: "100%",
     marginLeft: 200,
-    overflowX: "hidden",
-    overflowY: "hidden",
+    // overflowX: "hidden",
+    // overflowY: "hidden",
     background: colors.lightGrey,
     "@media (max-width:960px)": {
       marginLeft: 0,

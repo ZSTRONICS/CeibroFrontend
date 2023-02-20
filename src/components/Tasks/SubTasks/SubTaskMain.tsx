@@ -105,14 +105,14 @@ const useStyles = makeStyles({
     },
   },
   TaskWraper: {
-    // padding: '0 10px',
+    padding: '0 10px',
     "@media(max-width:1024px)": {
-      // padding:''
+      padding:'',
     },
   },
   activeConainer: {
     justifyContent: "space-between",
-    // paddingLeft:'0 !important',
+    paddingLeft:'0 !important',
     "@media(max-width:1024px)": {
       alignItems: "baseline !important",
       justifyContent: "inherit",
