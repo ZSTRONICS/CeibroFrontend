@@ -55,14 +55,14 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   let { isEditable } = taskMenue;
   isEditable = useSelector((state: RootState) => state.task.isEditing);
 
-  React.useEffect(() => {
-    dispatch(docsAction.getDocsByModuleNameAndId({
-      other: {
-        moduleName: 'Task',
-        moduleId: _id
-      }
-    }))
-  }, [])
+  // React.useEffect(() => {
+  //   dispatch(docsAction.getDocsByModuleNameAndId({
+  //     other: {
+  //       moduleName: 'Task',
+  //       moduleId: _id
+  //     }
+  //   }))
+  // }, [])
 
   const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);

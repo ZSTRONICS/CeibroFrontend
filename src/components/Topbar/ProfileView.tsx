@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 // material
-import { Menu, IconButton, MenuItem, Typography,Box, Stack, Badge, Tooltip } from "@mui/material";
+import { Menu, IconButton, MenuItem, Typography, Box, Stack, Badge, Tooltip } from "@mui/material";
 
 // router-dom
 import { useHistory } from "react-router";
@@ -22,11 +22,12 @@ import NameAvatar from "components/Utills/Others/NameAvatar";
 import assets from "assets/assets";
 import { purgeStoreStates } from "redux/store";
 import storage from "redux-persist/lib/storage";
+import { socket } from "services/socket.services";
 
 const ProfileView = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  
+
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -40,16 +41,17 @@ const ProfileView = () => {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-  
+
   const handleLogout = () => {
+    socket.logoutSocketsIO()
     handleCloseUserMenu()
-     dispatch(logoutUser());
-     purgeStoreStates();
-     storage.removeItem('persist:root')
+    dispatch(logoutUser());
+    purgeStoreStates();
+    storage.removeItem('persist:root')
     history.push("/login");
   };
 
-  const openViewInvitation =() =>{
+  const openViewInvitation = () => {
     dispatch(openViewInvitations());
     handleCloseUserMenu()
   }
@@ -61,12 +63,12 @@ const ProfileView = () => {
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="user info">
-          <IconButton onClick={handleOpenUserMenu} disableRipple disableFocusRipple sx={{ p: 1}}>
+          <IconButton onClick={handleOpenUserMenu} disableRipple disableFocusRipple sx={{ p: 1 }}>
             <NameAvatar
-             firstName={user?.firstName}
-             surName={user?.surName}
-             url={user?.profilePic} 
-             variant="rounded" />
+              firstName={user?.firstName}
+              surName={user?.surName}
+              url={user?.profilePic}
+              variant="rounded" />
           </IconButton>
         </Tooltip>
         <Menu
@@ -86,7 +88,7 @@ const ProfileView = () => {
           onClose={handleCloseUserMenu}
         >
           <MenuItem
-          disableRipple
+            disableRipple
             component={Link}
             to="/profile"
             onClick={handleCloseUserMenu}
@@ -106,14 +108,14 @@ const ProfileView = () => {
           </MenuItem>
 
           <MenuItem
-          disableRipple
+            disableRipple
             component={Link}
             to="/connections"
             onClick={handleCloseUserMenu}
             sx={{
-                "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
+              "&.MuiMenuItem-root": {
+                padding: "10px 20px",
+              },
             }}
           >
             <Stack
@@ -132,11 +134,11 @@ const ProfileView = () => {
                 alignItems="center"
                 sx={{ padding: " 0 10px 0" }}
               >
-               {connections.length>0&& <Badge 
-                sx={{
-                        color:"#F1B740"
-                }}
-                    color="primary"
+                {connections.length > 0 && <Badge
+                  sx={{
+                    color: "#F1B740"
+                  }}
+                  color="primary"
                   badgeContent={connections}
                   overlap="circular"
                 />}
@@ -144,9 +146,9 @@ const ProfileView = () => {
             </Stack>
           </MenuItem>
 
-          <MenuItem 
-          disableRipple
-          onClick={openViewInvitation}
+          <MenuItem
+            disableRipple
+            onClick={openViewInvitation}
             divider
             sx={{
               "&.MuiMenuItem-root": {
@@ -163,8 +165,8 @@ const ProfileView = () => {
                 alignItems="center"
                 sx={{ padding: " 0 10px 0" }}
               >
-               {invites>0&& <Badge
-                 color="error"
+                {invites > 0 && <Badge
+                  color="error"
                   badgeContent={invites}
                   overlap="circular"
                 />}
@@ -173,7 +175,7 @@ const ProfileView = () => {
           </MenuItem>
 
           <MenuItem
-          disableRipple
+            disableRipple
             onClick={handleLogout}
             sx={{
               "&.MuiMenuItem-root": {
