@@ -18,7 +18,6 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   const handleScroll = (e: any) => {
     if (doOnce) {
       let subtaskBox = e.target;
-      console.log(subtaskBox.scrollTop);
       subtaskBox.scrollTop = 0
       setDoOnce(false)
     }
