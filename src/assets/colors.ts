@@ -53,7 +53,7 @@ const colors = {
   ongoing: '#f1b740',
   rejected: '#f94340',
   accepted: '#5572BC',
-  done: "#009900",
+  done: "#55bcb3",
 
 };
 
