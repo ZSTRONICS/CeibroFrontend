@@ -5,6 +5,7 @@ import taskActions, { getAllTask } from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
+import { getAllProjectsWithMembers } from "redux/action/project.action";
 
 const myStatus = [
   {
@@ -34,6 +35,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const classes = useStyles();
 
   React.useEffect(() => {
+    dispatch(getAllProjectsWithMembers());
     dispatch(getAllTask());
   }, []);
 
