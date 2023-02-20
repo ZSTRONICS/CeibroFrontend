@@ -201,9 +201,9 @@ function TaskDrawerMenu({ taskMenue }: Props) {
     dispatch(
       updateTaskById({
         body: {
-          description: description,
-          admins: adminArr,
-          assignedTo: assignArr,
+          description: formData.description,
+          admins: formData.admins,
+          assignedTo: formData.assignedTo,
         },
         other: _id,
         success: (res) => {

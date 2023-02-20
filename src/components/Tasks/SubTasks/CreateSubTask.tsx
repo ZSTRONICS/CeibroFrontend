@@ -17,13 +17,15 @@ import CustomModal from "components/Modal";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import { DOCS_CONFIG } from "config/docs.config";
 import { CustomBadge } from "components/TaskComponent/Tabs/TaskCard";
+import { TASK_CONFIG } from "config/task.config";
 
 export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
-  console.log('values', values)
   const todayDate = moment(new Date()).format("DD-MM-YYYY");
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
   const [showDate, setShowDate] = useState<any>(new Date());
+  const [tempValue, setTempValues]= useState<any>({})
+
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
   );
@@ -45,11 +47,31 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
     ...projectMembersOfSelectedTask,
   ]);
 
+const handleOpenAttachmentModal = (e: any)=>{
+  e.stopPropagation();
+  setImageAttach((prev:boolean)=> !prev)
+}
+
+  console.log('tempValue', tempValue)
+  const handleImageAttachment = (e: any) => {
+    let doOne = true
+    e.stopPropagation();
+    if(doOne){
+      setTempValues(values)
+      // dispatch({
+      //   type: TASK_CONFIG.PUSH_TEMPORARY_SUBTASK_DATA,
+      //   payload:values
+      // });
+      doOne= false
+    }
+    console.log('dispatch', imageAttach);
+    handleOpenAttachmentModal(e)
+  }
   const handleCloseModal = (e: any) => {
     e.stopPropagation();
-    dispatch({
-      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
-    });
+      dispatch({
+        type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
+      });
     setSubTask(false);
     setAssignToList([]);
   };
@@ -207,7 +229,7 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
             <CBox
               display="flex"
               alignItems="center"
-              onClick={() => setImageAttach(true)}
+              onClick={handleImageAttachment}
             >
               <CBox className={classes.switch}>
                 <label style={{ color: "#0076C8" }}>Add Attachments</label>
@@ -266,7 +288,7 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
                 marginRight: 15,
               }}
               label={"Create Subtask"}
-              onClick={() => {
+              onClick={(e:any) => {
                 values.state = [];
                 let adminState = "assigned";
                 if (values.assignedTo.length > 0) {
@@ -298,6 +320,7 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
                 }
 
                 values.state = getUniqueObjectsFromArr(values.state);
+                handleCloseModal(e)
               }}
             />
             <CButton
@@ -317,14 +340,14 @@ export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
       <CustomModal
         showCloseBtn={false}
         isOpen={imageAttach}
-        handleClose={() => setImageAttach(false)}
+        handleClose={(e:any)=> handleOpenAttachmentModal(e)}
         title={"Attachments"}
         children={
           <UploadDocs
             showUploadButton={false}
             moduleType={"SubTask"}
             moduleId={""}
-            handleClose={() => setImageAttach(false)}
+            handleClose={()=>setImageAttach((prev:boolean)=> !prev)}
           />
         }
       />

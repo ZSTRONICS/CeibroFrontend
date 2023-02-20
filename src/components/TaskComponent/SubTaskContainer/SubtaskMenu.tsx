@@ -35,7 +35,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
     const [subTask, setSubTask]= useState(false)
     const { user } = useSelector((store: RootState) => store.auth);
     const {state}= subTaskDetail
-
+    
     const handleSubmit = (values: any) => {
         const { dueDate, title, taskId, assignedTo, creator, state, description } =
           values;
@@ -69,7 +69,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
         // );
       };
 
-      const AddSubtask = () => {
+      const EditSubTask =() => {
         return (
           <Formik
             initialValues={{
@@ -294,7 +294,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             title="Edit Subtask"
             isOpen={subTask}
             handleClose={(e:any)=>handleCloseEditModal(e)}
-            children={<AddSubtask/>}
+            children={<EditSubTask/>}
         />}
     </Box>
   );
