@@ -171,14 +171,18 @@ const UploadDocs = (props: Props) => {
       });
 
     }
-    return props.handleClose();
+      return props.handleClose();
+    
   }
 
   const handleDelteFile = (name: string) => {
     const files = Array.from(filesToUpload).filter((file: any) => file.name !== name);
-    //console.log(files);
-
-    setFilesToUpload(files);
+    setFilesToUpload(files);    
+    if(files.length === 0){
+      dispatch({
+        type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+      });
+    }
     const result = selectedfile.filter((data: FileInterface) => data.fileName !== name);
     setSelectedFile(result);
   };

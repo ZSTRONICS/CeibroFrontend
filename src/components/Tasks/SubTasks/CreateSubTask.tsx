@@ -167,21 +167,21 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
           <CBox
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="flex-end"
             borderTop="1px solid #DBDBE5"
             px={1.8}
           >
-            <CBox className={classes.switch}>
+            {/* <CBox className={classes.switch}>
               <label>Required:</label>
               <CustomizedSwitch label="Image" edge="start" />
               <CustomizedSwitch label="Comment" edge="start" />
-            </CBox>
+            </CBox> */}
 
-            <CBox display="flex" alignItems="center">
+            <CBox display="flex" alignItems="center" onClick={() => setImageAttach(true)}>
               <CBox className={classes.switch}>
-                <label>Attachments</label>
+                <label style={{color:'#0076C8'}}>Add Attachments</label>
               </CBox>
-              <IconButton onClick={() => setImageAttach(true)}>
+              <IconButton >
                 <AttachmentIcon />
               </IconButton>
               {/* &nbsp;
