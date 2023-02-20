@@ -3,7 +3,15 @@ import { DocsInterface, FileUploaded, FileUploadProgress, FileInterface, DocsInt
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from ".";
 
+interface FilesToBeUploaded {
+    files: any[],
+    moduleName: string,
+    moduleId: string
+}
+
 interface FileReducerInt {
+    uploadPendingFiles: boolean,
+    selectedFilesToBeUploaded: FilesToBeUploaded,
     fileUploadProgres: FileUploadProgress | any,
     filesUploaded: FileUploaded | any,
     showFileUploadPreview: boolean
@@ -16,6 +24,8 @@ interface FileReducerInt {
 }
 
 const intialStatue: FileReducerInt = {
+    uploadPendingFiles: false,
+    selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
     fileUploadProgres: [],
     loadinggetAllDocs: false,
     getAllDocsByModule: [],
@@ -61,7 +71,7 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
             state.filesBeingUploadedCount = state.filesBeingUploaded.length
             return {
                 ...state,
-                filesBeingUploaded : [...state.filesBeingUploaded],
+                filesBeingUploaded: [...state.filesBeingUploaded],
                 showFileUploadPreview: true,
                 allFilesUploadedDone: false
                 // loadinggetAllDocs: true
@@ -81,9 +91,13 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
         case DOCS_CONFIG.FILE_UPLOADED:
             const fileUploadCompletedForFile = action.payload
             const fileIndex = state.filesBeingUploaded.findIndex((file: FileInterface) => file._id === fileUploadCompletedForFile._id)
-            state.filesBeingUploaded[fileIndex] = action.payload
             const uploadProgressIndex = state.fileUploadProgres.findIndex((file: FileUploadProgress) => file.fileId === fileUploadCompletedForFile._id)
-            state.fileUploadProgres[uploadProgressIndex].progress = 100
+            if (fileIndex > -1) {
+                state.filesBeingUploaded[fileIndex] = action.payload
+            }
+            if (uploadProgressIndex > -1) {
+                state.fileUploadProgres[uploadProgressIndex].progress = 100
+            }
             return {
                 ...state,
                 filesBeingUploaded: [...state.filesBeingUploaded],
@@ -110,16 +124,46 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
 
         case DOCS_CONFIG.CLEAR_FILE_BEING_UPLOADED:
             let previewerVal = true
-            let files  = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
+            let files = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
             if (files.length === 0) {
                 previewerVal = false
             }
-         
+
             return {
                 ...state,
                 filesBeingUploaded: [...files],
                 showFileUploadPreview: previewerVal
             }
+
+        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED:
+            return {
+                ...state,
+                selectedFilesToBeUploaded: action.payload,
+            }
+
+        case DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED:
+            return {
+                ...state,
+                selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
+                uploadPendingFiles: false
+            }
+
+        case DOCS_CONFIG.SET_SELECTED_MODULE_ID:
+            if (state.selectedFilesToBeUploaded.files.length > 0) {
+                state.selectedFilesToBeUploaded.moduleId = action.payload
+                return {
+                    ...state,
+                    selectedFilesToBeUploaded: { ...state.selectedFilesToBeUploaded },
+                    uploadPendingFiles: true
+                }
+            } else {
+                return {
+                    ...state,
+                    selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
+                    uploadPendingFiles: false
+                }
+            }
+
         default:
             return state
     }

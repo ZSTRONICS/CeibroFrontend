@@ -55,12 +55,14 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   let { isEditable } = taskMenue;
   isEditable = useSelector((state: RootState) => state.task.isEditing);
 
-  React.useEffect(()=>{
-    dispatch(docsAction.getDocsByModuleNameAndId({other:{
-      moduleName:'Task',
-      moduleId:_id
-    }}))
-  },[])
+  React.useEffect(() => {
+    dispatch(docsAction.getDocsByModuleNameAndId({
+      other: {
+        moduleName: 'Task',
+        moduleId: _id
+      }
+    }))
+  }, [])
 
   const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
@@ -137,7 +139,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
     allMembersOfProject =
       getUserFormatedDataForAutoComplete(projectMembersData);
-   // console.log(allMembersOfProject);
+    // console.log(allMembersOfProject);
     setAdminListOpt(
       getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject])
     );
@@ -285,11 +287,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
   const viewAllDocs = (e: any) => {
     e.stopPropagation();
     setOpenCDrawer((prev: boolean) => !prev);
-    // dispatch(getAllSubTaskDocs({
-    //     other:{
-    //         subtaskId:subtaskId
-    //     }
-    // }))
   };
   const handleCloseCDrawer = () => {
     setOpenCDrawer((prev: boolean) => !prev);
@@ -760,7 +757,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
-        children={<UploadDocs handleClose={() => setImageAttach(false)} />}
+        children={<UploadDocs showUploadButton={true} moduleType={"Task"} moduleId={_id} handleClose={() => setImageAttach(false)} />}
       />
       <CDrawer
         showBoxShadow={true}
@@ -769,9 +766,10 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         handleCloseCDrawer={handleCloseCDrawer}
         children={
           <ViewAllDocs
-            subTaskHeading="Attachments"
+            heading="Attachments"
             handleCloseCDrawer={handleCloseCDrawer}
-            taskId={_id}
+            moduleName={"Task"}
+            moduleId={_id}
           />
         }
       />

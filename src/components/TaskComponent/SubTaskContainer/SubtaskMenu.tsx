@@ -212,7 +212,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
     {(myState === SubtaskState.Assigned)&&
         <Box>
         <MenuItem 
-         onClick={handleEditSubTaskInAssigned}
+       //  onClick={handleEditSubTaskInAssigned}
         disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
@@ -228,7 +228,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             </SubTaskButton>
           </MenuItem>
         <MenuItem
-         onClick={handleEditDetails}
+       //  onClick={handleEditDetails}
         disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
@@ -271,7 +271,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
             //   sx={{ color: "#0076c8" }} 
-              onClick={handleEditDetails}
+             // onClick={handleEditDetails}
             >
               Edit Details
             </SubTaskButton>

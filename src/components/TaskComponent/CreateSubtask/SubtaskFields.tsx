@@ -8,7 +8,7 @@ import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { CBox } from 'components/material-ui';
 import CustomizedSwitch from 'components/Chat/Questioniar/IOSSwitch';
 // import { MediaIcon, NotificationIcon } from '../../../components/material-ui/icons/index';
-// import { AttachmentIcon } from 'components/material-ui/icons';
+ import { AttachmentIcon } from 'components/material-ui/icons';
 
 // import CreateSubTaskAdvanceOption from './CreateSubTaskAdvanceOption';
 
@@ -131,7 +131,7 @@ export default function CreateSubTask({ setSubTask }: any) {
 
                         </CBox>
                         <CBox display='flex' alignItems='center'>
-                            {/* <AttachmentIcon /> */}
+                            <AttachmentIcon />
                             &nbsp;
                             &nbsp;
                             {/* <MediaIcon /> */}

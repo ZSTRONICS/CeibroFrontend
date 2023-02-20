@@ -11,26 +11,38 @@ import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudU
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { uploadDocs } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import "./upload.css";
 
-const UploadDocs = (props: any) => {
+interface Props {
+  showUploadButton: boolean;
+  moduleType: string;
+  moduleId: string;
+  handleClose: () => void
+}
+
+
+
+const UploadDocs = (props: Props) => {
   const dispatch = useDispatch();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [selectedfile, setSelectedFile] = useState<any>([]);
-  let { selectedTaskId } = useSelector((state: RootState) => state.task);
+  const { selectedFilesToBeUploaded } = useSelector((state: RootState) => state.docs);
   const [filesToUpload, setFilesToUpload] = useState<any>([]);
 
-  const onUploadFiles = (e: any) => {
-    if (e.target.files.length === 0) {
+  const [doOnce, setDoOnce] = useState<boolean>(true);
+
+
+  const setSelectedFilesToUpload = (files: any) => {
+    if (files.length === 0) {
       return;
     }
-    setFilesToUpload(e.target.files);
-    Array.from(e.target.files).forEach((file: any) => {
+    setFilesToUpload(files);
+    Array.from(files).forEach((file: any) => {
       setSelectedFile((prev: any) => {
         return [
           ...prev,
@@ -44,8 +56,8 @@ const UploadDocs = (props: any) => {
             fileType: file.type,
             fileName: file.name,
             uploadStatus: "uploading",
-            moduleType: "Task",
-            moduleId: selectedTaskId,
+            moduleType: props.moduleType,
+            moduleId: props.moduleId,
             createdAt: "",
             updatedAt: "",
           },
@@ -54,8 +66,7 @@ const UploadDocs = (props: any) => {
     });
   };
 
-  const handleUploadDocs = (e: any) => {
-    e.preventDefault();
+  const uploadFiles = () => {
     let formData = new FormData();
     let filesPlaceholderData: any[] = [];
 
@@ -84,14 +95,14 @@ const UploadDocs = (props: any) => {
         progress: 1,
         fileName: file.name,
         uploadStatus: "",
-        moduleType: "Task",
-        moduleId: selectedTaskId,
+        moduleType: props.moduleType,
+        moduleId: props.moduleId,
         createdAt: "",
         updatedAt: "",
       });
     });
-    formData.append("moduleName", "Task");
-    formData.append("_id", selectedTaskId);
+    formData.append("moduleName", props.moduleType);
+    formData.append("_id", props.moduleId);
 
     dispatch({
       type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
@@ -119,12 +130,55 @@ const UploadDocs = (props: any) => {
     };
 
     dispatch(uploadDocs(payload));
+
+    dispatch({
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+    });
+
     setSelectedFile([]);
     setFilesToUpload([]);
     handleCancel();
+  }
+
+  if (doOnce) {
+    setDoOnce(false)
+    if (selectedFilesToBeUploaded.files.length > 0) {
+      setSelectedFilesToUpload(selectedFilesToBeUploaded.files)
+    }
+  }
+
+  const onUploadFiles = (e: any) => {
+    setSelectedFilesToUpload(e.target.files)
   };
 
+  const handleUploadDocs = (e: any) => {
+    e.preventDefault();
+    uploadFiles();
+  };
+
+  const updateFilesToBeUploadedInStore = () => {
+
+    if (Array.from(filesToUpload).length > 0) {
+      const payload = {
+        files: filesToUpload,
+        moduleName: props.moduleType,
+        moduleId: props.moduleId
+      }
+
+      dispatch({
+        type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
+        payload: payload,
+      });
+
+    }
+    return props.handleClose();
+  }
+
   const handleDelteFile = (name: string) => {
+    const files = Array.from(filesToUpload).filter((file: any) => file.name !== name);
+    //console.log(files);
+
+    setFilesToUpload(files);
     const result = selectedfile.filter((data: FileInterface) => data.fileName !== name);
     setSelectedFile(result);
   };
@@ -263,12 +317,20 @@ const UploadDocs = (props: any) => {
         </Box>
         {selectedfile.length > 0 && (
           <CustomStack justifyContent="flex-end" columnGap={1}>
-            <CButton
-              label={"Upload"}
-              onClick={handleUploadDocs}
-              color="primary"
-              variant="contained"
-            />
+            {props.showUploadButton ?
+              <CButton
+                label={"Upload"}
+                onClick={handleUploadDocs}
+                color="primary"
+                variant="contained"
+              /> :
+              <CButton
+                label={"Ok"}
+                onClick={updateFilesToBeUploadedInStore}
+                color="primary"
+                variant="contained"
+              />
+            }
             <CButton
               label={"Cancel"}
               variant="contained"

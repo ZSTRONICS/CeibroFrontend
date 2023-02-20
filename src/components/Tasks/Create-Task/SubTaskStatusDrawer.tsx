@@ -21,6 +21,7 @@ import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { isTrue } from "components/Utills/Globals/Common";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { DOCS_CONFIG } from "config/docs.config";
 
 interface Props {
   task: TaskInterface;
@@ -59,13 +60,11 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
             setSubTask(false);
           }
         },
-        // finallyAction: () => {
-        // dispatch(getAllSubTaskList());
-        // },
+
         showErrorToast: true,
         onFailAction: (err) => {
           toast.error("Failed to create subtask", err);
-        },
+        }
       })
     );
   };
@@ -100,18 +99,18 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
   };
 
 
-  const getSubtaskStateCount = (checkState: any) =>{
+  const getSubtaskStateCount = (checkState: any) => {
     let count = 0
     subtasks.forEach(subtask => {
       subtask.state.every(state => {
-        if(state.userId === user._id && state.userState === checkState){
+        if (state.userId === user._id && state.userState === checkState) {
           count += 1
           return false
         }
         return true
       })
     })
-    return count 
+    return count
   }
 
 
@@ -202,7 +201,12 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         showCloseBtn={false}
         title="New Subtask"
         isOpen={subTask}
-        handleClose={() => setSubTask(false)}
+        handleClose={() => {
+          dispatch({
+            type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+          });
+          setSubTask(false)
+        }}
         children={<AddSubtask />}
       />
     </>
