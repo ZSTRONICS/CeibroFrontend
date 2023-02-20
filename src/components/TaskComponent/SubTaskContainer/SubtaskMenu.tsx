@@ -145,7 +145,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
   // console.log((myState !== SubtaskState.Done))
   
   return (
-    <>
+    <Box>
       <Box sx={{ flexGrow: 0, color: "primary" }}>
         <IconButton
           onClick={handleOpenEditMemberMenu}
@@ -174,7 +174,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
 {/* edit and delete subtask */}
 
     {(myState === SubtaskState.Draft)&&
-    <>
+    <Box>
         <MenuItem 
         onClick={handleEditSubTaskInDraft}
         disableRipple sx={{
@@ -205,14 +205,14 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
               Delete subtask
             </SubTaskButton>
           </MenuItem>
-    </>      
+    </Box>      
     }
 {/* edit details, edit subtask, and delete subtask */}
 
     {(myState === SubtaskState.Assigned)&&
-    <>
+        <Box>
         <MenuItem 
-         onClick={handleEditSubTaskInAssigned}
+       //  onClick={handleEditSubTaskInAssigned}
         disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
@@ -228,7 +228,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             </SubTaskButton>
           </MenuItem>
         <MenuItem
-         onClick={handleEditDetails}
+       //  onClick={handleEditDetails}
         disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
@@ -259,11 +259,10 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
               Delete subtask
             </SubTaskButton>
           </MenuItem>
-    </>      
+    </Box>      
     }
-
-
-          {(myState === SubtaskState.Accepted)&&<MenuItem disableRipple sx={{
+          {((myState === SubtaskState.Accepted)||(myState === SubtaskState.Ongoing))
+          &&<MenuItem disableRipple sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
               },
@@ -272,7 +271,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             <SubTaskButton
               textAlign="center"
             //   sx={{ color: "#0076c8" }} 
-              onClick={handleEditDetails}
+             // onClick={handleEditDetails}
             >
               Edit Details
             </SubTaskButton>
@@ -297,7 +296,7 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
             handleClose={(e:any)=>handleCloseEditModal(e)}
             children={<AddSubtask/>}
         />}
-    </>
+    </Box>
   );
 };
 export default SubTaskMenu;

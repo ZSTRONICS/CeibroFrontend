@@ -1,11 +1,11 @@
 import React from "react";
 import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import StatusMenu from "../Utills/Others/StatusMenu";
-import taskActions from "../../redux/action/task.action";
+import taskActions, { getAllTask } from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
-
+import { getAllProjectsWithMembers } from "redux/action/project.action";
 
 const myStatus = [
   {
@@ -33,7 +33,12 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
- 
+
+  React.useEffect(() => {
+    dispatch(getAllProjectsWithMembers());
+    dispatch(getAllTask());
+  }, []);
+
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
@@ -74,7 +79,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           md={6}
           lg={8}
         >
-          <StatusMenu/>
+          <StatusMenu />
         </Grid>
         <Grid item xs={12} md={2} lg={1}>
           <Button
@@ -98,7 +103,7 @@ export default TaskSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: '30px 0 12px 10px'
+    padding: "30px 0 12px 10px",
   },
   menuWrapper: {
     display: "flex",

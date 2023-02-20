@@ -20,7 +20,10 @@ import {
   UserInfo,
 } from "constants/interfaces/subtask.interface";
 import { useDispatch, useSelector } from "react-redux";
-import { SubtaskState } from "constants/interfaces/task.interface";
+import {
+  SubtaskState,
+  TaskInterface,
+} from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 import { TASK_CONFIG } from "config/task.config";
@@ -36,6 +39,8 @@ interface Props {
 }
 
 function SubTaskCard({ subTaskDetail }: Props) {
+  // console.log(subTaskDetail);
+
   const { user } = useSelector((store: RootState) => store.auth);
   const {
     _id,
@@ -47,6 +52,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
     creator,
     taskId,
     createdAt,
+    rejectedBy,
+    taskData,
   } = subTaskDetail;
   const classes = useStyles();
   const membersList = assignedTo
@@ -58,12 +65,17 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const myState = state.find(
     (localState) => String(localState.userId) === String(user._id)
   );
-  let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
-    (state: RootState) => state.task.allSubTaskOfTask
-  );
-  const { admins } = subTaskOfTask.task;
-  const adminIds = admins.map((item: UserInfo) => item._id);
-  const allMembers = [creator._id, ...adminIds];
+
+  let allMembers: string[] = [creator._id];
+  try {
+    if ("admins" in taskData) {
+      allMembers = [...taskData.admins, ...allMembers];
+    }
+  } catch (e: any) {
+    console.error(e);
+  }
+  // console.log("allMembers", allMembers);
+
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
 
@@ -84,8 +96,21 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleCloseModal = () => {
     setSubTask((prev: any) => !prev);
   };
-
-  const AssignedToList = () => {
+  const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
+    return (
+      <>
+        {rejectedBy.length === 0 && (
+          <CustomBadge
+            showZero={true}
+            overlap="circular"
+            color={`${getColor === "red" ? "error" : "primary"}`}
+            badgeContent={0}
+          ></CustomBadge>
+        )}
+      </>
+    );
+  };
+  const AssignedToList = (membersList: Member[]) => {
     return (
       <>
         {membersList.map((item: Member, index) => {
@@ -159,23 +184,50 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     </Fragment>
                   );
                 })}
-                {membersList.length > 1 && (
+                {membersList.length > 1 ? (
                   <CustomBadge
                     overlap="circular"
                     color="primary"
                     badgeContent={
-                      <Tooltip title={AssignedToList()}>
+                      <Tooltip title={AssignedToList(membersList)}>
                         <span>{membersList.length - 1}+</span>
                       </Tooltip>
                     }
                   ></CustomBadge>
+                ) : (
+                  showRejectedBy(membersList, "blue")
                 )}
               </CustomStack>
             </Grid>
           </CustomStack>
-          <CustomStack gap={0.8} sx={{ maxWidth: "150px", width: "140px" }}>
+          <CustomStack gap={0.8}>
             <LabelTag sx={{ fontSize: "11px" }}>Rejected by</LabelTag>
-            <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag>
+            {/* <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag> */}
+            {rejectedBy.map((member: Member, i: any) => {
+              return (
+                <Fragment key={member._id}>
+                  {i === 0 && (
+                    <AssignedTag
+                      sx={{ fontSize: "12px" }}
+                    >{`${member.firstName} ${member.surName}`}</AssignedTag>
+                  )}
+                </Fragment>
+              );
+            })}
+            {rejectedBy.length > 1 ? (
+              <CustomBadge
+                showZero={true}
+                overlap="circular"
+                color="error"
+                badgeContent={
+                  <Tooltip title={AssignedToList(rejectedBy)}>
+                    <span>{rejectedBy.length - 1}+</span>
+                  </Tooltip>
+                }
+              ></CustomBadge>
+            ) : (
+              showRejectedBy(rejectedBy, "red")
+            )}
           </CustomStack>
 
           {/*<Grid
@@ -233,7 +285,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   };
 
   const handleSubTaskCard = (e: any) => {
-    console.log(e.currentTarget, e.target)
+    //console.log(e.currentTarget, e.target);
     // if(e.currentTarget !== e.target ) return;
     e.stopPropagation();
     dispatch({
@@ -287,7 +339,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
               flexDirection: "row",
               justifyContent: "space-between",
             }}
-            
             className={classes.taskDetailContainer}
             item
             container
@@ -296,9 +347,15 @@ function SubTaskCard({ subTaskDetail }: Props) {
             rowGap={0.5}
             key={_id}
           >
-            <Grid item sx={{"&:hover": {
-      cursor: "pointer",
-    }}} onClick={(e: any) => handleSubTaskCard(e)}>
+            <Grid
+              item
+              sx={{
+                "&:hover": {
+                  cursor: "pointer",
+                },
+              }}
+              onClick={(e: any) => handleSubTaskCard(e)}
+            >
               {SubHeader()}
 
               <Grid item container width="100%">
@@ -324,6 +381,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 flexDirection: "column",
                 justifyContent: "space-between",
                 width: "200px",
+                display: "flex",
+                flexDirection: "column",
+                columnGap: "10px",
               }}
             >
               <Grid    

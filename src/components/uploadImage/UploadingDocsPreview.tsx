@@ -8,37 +8,44 @@ import {
   ListSubheader,
   CircularProgress,
   Box,
-  Avatar,
 } from "@mui/material";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { File, FileUploadProgress } from "constants/interfaces/docs.interface";
+import {
+  FileInterface,
+  FileUploadProgress,
+} from "constants/interfaces/docs.interface";
 import assets from "assets/assets";
 import { DOCS_CONFIG } from "config/docs.config";
+import { FileUploadIcon } from "components/material-ui/icons/attachment/fileUpload";
 function UploadingDocsPreview() {
   const [open, setOpen] = React.useState(true);
   const {
     filesBeingUploaded,
     allFilesUploadedDone,
+    filesBeingUploadedCount,
     fileUploadProgres,
-    closeFileUploadPreview,
+    showFileUploadPreview,
   } = useSelector((state: RootState) => state.docs);
 
   const dispatch = useDispatch();
-  const [isRemoved, setIsRemoved] = React.useState(false);
+  const [showFileUploadProgress, setShowFileUploadProgress] = React.useState(false);
   const removeListItem = () => {
     dispatch({
       type: DOCS_CONFIG.CLEAR_FILE_BEING_UPLOADED,
     });
   };
   React.useEffect(() => {
-    setIsRemoved(closeFileUploadPreview);
-  }, [closeFileUploadPreview]);
+    setShowFileUploadProgress(showFileUploadPreview);
+    if (showFileUploadPreview) {
+      setOpen(true);
+    }
+  }, [showFileUploadPreview]);
 
   return (
     <>
-      {filesBeingUploaded.length > 0 && !isRemoved && (
+      {showFileUploadProgress && (
         <Box
           sx={{
             position: "absolute",
@@ -82,8 +89,9 @@ function UploadingDocsPreview() {
                     // "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
                   }}
                 >
+                 
                   <ListItemText
-                    primary={`Uploading ${filesBeingUploaded.length} file(s)`}
+                    primary={`Uploading ${filesBeingUploadedCount} file(s)`}
                     primaryTypographyProps={{
                       fontSize: 16,
                       fontWeight: "600",
@@ -123,7 +131,7 @@ function UploadingDocsPreview() {
             </ListSubheader>
             {open && (
               <>
-                {filesBeingUploaded?.map((item: File) => {
+                {filesBeingUploaded?.map((item: FileInterface) => {
                   let inProgress = fileUploadProgres.find(
                     (progres: FileUploadProgress) => progres.fileId === item._id
                   );
@@ -142,7 +150,7 @@ function UploadingDocsPreview() {
                                 <CircularProgress
                                   thickness={6}
                                   size="16px"
-                                  variant="determinate"
+                                  variant="indeterminate"
                                   value={inProgress?.progress || 0}
                                 />
                               )}
@@ -150,12 +158,7 @@ function UploadingDocsPreview() {
                           }
                         >
                           <ListItemAvatar sx={{ minWidth: "40px" }}>
-                            <Avatar
-                              sizes="30px"
-                              sx={{ width: 24, height: 24 }}
-                              alt="img"
-                              src={item.fileUrl}
-                            />
+                              <FileUploadIcon />
                           </ListItemAvatar>
                           <ListItemText
                             primaryTypographyProps={{

@@ -1,20 +1,37 @@
 import { DOCS_CONFIG } from "config/docs.config";
-import { DocsInterface, FileUploaded, FileUploadProgress, File } from "constants/interfaces/docs.interface";
+import { DocsInterface, FileUploaded, FileUploadProgress, FileInterface, DocsInterfaceRoot } from "constants/interfaces/docs.interface";
+import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from ".";
 
+interface FilesToBeUploaded {
+    files: any[],
+    moduleName: string,
+    moduleId: string
+}
+
 interface FileReducerInt {
+    uploadPendingFiles: boolean,
+    selectedFilesToBeUploaded: FilesToBeUploaded,
     fileUploadProgres: FileUploadProgress | any,
     filesUploaded: FileUploaded | any,
-    closeFileUploadPreview: boolean
+    showFileUploadPreview: boolean
     filesUploadCompleted: DocsInterface | any
-    filesBeingUploaded: File[]
+    filesBeingUploaded: FileInterface[]
+    filesBeingUploadedCount: number
     allFilesUploadedDone: boolean
+    getAllDocsByModule: FileInterface[]
+    loadinggetAllDocs: boolean
 }
 
 const intialStatue: FileReducerInt = {
+    uploadPendingFiles: false,
+    selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
     fileUploadProgres: [],
+    loadinggetAllDocs: false,
+    getAllDocsByModule: [],
+    filesBeingUploadedCount: 0,
     allFilesUploadedDone: false,
-    closeFileUploadPreview: false,
+    showFileUploadPreview: false,
     filesUploaded: [],
     filesUploadCompleted: {},
     filesBeingUploaded: [],
@@ -22,6 +39,27 @@ const intialStatue: FileReducerInt = {
 
 const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducerInt => {
     switch (action.type) {
+        case requestPending(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                loadinggetAllDocs: true,
+            };
+        }
+        case requestSuccess(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID):
+            state.getAllDocsByModule = action.payload.result.reverse()
+            return {
+                ...state,
+                getAllDocsByModule: [...state.getAllDocsByModule],
+                loadinggetAllDocs: false,
+
+            }
+        case requestFail(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                loadinggetAllDocs: false,
+
+            };
+        }
 
         case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
             return {
@@ -29,30 +67,19 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 fileUploadProgres: [action.payload, ...state.fileUploadProgres]
             }
         case DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE:
-            // let newFiles: File[] = []
-            // action.payload.every((file: File) => {
-            //     let isAdded = false
-            //     state.filesBeingUploaded.every((prevFile: File) => {
-            //         if (prevFile._id !== file._id) {
-            //             isAdded = true
-            //             return false
-            //         }
-            //         return true
-            //     })
-            //     if (isAdded) {
-            //         newFiles = [...newFiles, file]
-            //     }
-            //     return true
-            // })
-            state.closeFileUploadPreview = false
+            state.filesBeingUploaded = [...action.payload, ...state.filesBeingUploaded]
+            state.filesBeingUploadedCount = state.filesBeingUploaded.length
             return {
                 ...state,
-                filesBeingUploaded: [...action.payload, ...state.filesBeingUploaded] //40
+                filesBeingUploaded: [...state.filesBeingUploaded],
+                showFileUploadPreview: true,
+                allFilesUploadedDone: false
+                // loadinggetAllDocs: true
             }
 
         case DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE:
-            action.payload.every((incomingFile: File) => {
-                const fileIndex = state.filesBeingUploaded.findIndex((file: File) => file.fileName === incomingFile.fileName)
+            action.payload.every((incomingFile: FileInterface) => {
+                const fileIndex = state.filesBeingUploaded.findIndex((file: FileInterface) => file.fileName === incomingFile.fileName)
                 state.filesBeingUploaded[fileIndex] = incomingFile
                 return true
             })
@@ -63,13 +90,14 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
             }
         case DOCS_CONFIG.FILE_UPLOADED:
             const fileUploadCompletedForFile = action.payload
-            const fileIndex = state.filesBeingUploaded.findIndex((file: File) => file._id === fileUploadCompletedForFile._id)
-            state.filesBeingUploaded[fileIndex] = action.payload
-
+            const fileIndex = state.filesBeingUploaded.findIndex((file: FileInterface) => file._id === fileUploadCompletedForFile._id)
             const uploadProgressIndex = state.fileUploadProgres.findIndex((file: FileUploadProgress) => file.fileId === fileUploadCompletedForFile._id)
-            state.fileUploadProgres[uploadProgressIndex].progress = 100
-
-
+            if (fileIndex > -1) {
+                state.filesBeingUploaded[fileIndex] = action.payload
+            }
+            if (uploadProgressIndex > -1) {
+                state.fileUploadProgres[uploadProgressIndex].progress = 100
+            }
             return {
                 ...state,
                 filesBeingUploaded: [...state.filesBeingUploaded],
@@ -78,30 +106,64 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
         case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
             const uploadedFiles = action.payload.files
             uploadedFiles.forEach((fileUp: any) => {
-                const index = state.filesBeingUploaded.findIndex((file: File) => file._id === fileUp._id)
+                const index = state.filesBeingUploaded.findIndex((file: FileInterface) => file._id === fileUp._id)
                 state.filesBeingUploaded[index] = fileUp
                 state.fileUploadProgres = state.fileUploadProgres.filter((file: FileUploadProgress) => file.fileId !== fileUp._id)
             })
-            const remaingFiles = state.filesBeingUploaded.filter((file: File) => file.uploadStatus !== "done")
+            const remaingFiles = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
             if (remaingFiles.length === 0) {
                 state.allFilesUploadedDone = true
             }
 
             return {
                 ...state,
+                filesBeingUploadedCount: remaingFiles.length,
                 filesBeingUploaded: [...state.filesBeingUploaded],
                 fileUploadProgres: [...state.fileUploadProgres]
             }
 
         case DOCS_CONFIG.CLEAR_FILE_BEING_UPLOADED:
-            state.filesBeingUploaded = state.filesBeingUploaded.filter((file: File) => file.uploadStatus !== "done")
-            if(state.filesBeingUploaded.length === 0){
-                state.closeFileUploadPreview = true
+            let previewerVal = true
+            let files = state.filesBeingUploaded.filter((file: FileInterface) => file.uploadStatus !== "done")
+            if (files.length === 0) {
+                previewerVal = false
             }
+
             return {
                 ...state,
-                filesBeingUploaded: [...state.filesBeingUploaded]
+                filesBeingUploaded: [...files],
+                showFileUploadPreview: previewerVal
             }
+
+        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED:
+            return {
+                ...state,
+                selectedFilesToBeUploaded: action.payload,
+            }
+
+        case DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED:
+            return {
+                ...state,
+                selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
+                uploadPendingFiles: false
+            }
+
+        case DOCS_CONFIG.SET_SELECTED_MODULE_ID:
+            if (state.selectedFilesToBeUploaded.files.length > 0) {
+                state.selectedFilesToBeUploaded.moduleId = action.payload
+                return {
+                    ...state,
+                    selectedFilesToBeUploaded: { ...state.selectedFilesToBeUploaded },
+                    uploadPendingFiles: true
+                }
+            } else {
+                return {
+                    ...state,
+                    selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
+                    uploadPendingFiles: false
+                }
+            }
+
         default:
             return state
     }

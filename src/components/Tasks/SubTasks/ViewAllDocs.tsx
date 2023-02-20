@@ -1,16 +1,22 @@
+
 import React from "react";
-import { Heading, CDateTime, FileName, Span } from "components/CustomTags";
+import {
+  Heading,
+  CDateTime,
+  FileName,
+  Span,
+  CommentName,
+} from "components/CustomTags";
 import {
   Box,
   Grid,
-  Divider,
   useMediaQuery,
-  Typography,
   List,
   ListItem,
   ListItemAvatar,
   Avatar,
   ListItemText,
+  CircularProgress
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -18,14 +24,47 @@ import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOu
 import CButton from "components/Button/Button";
 import { theme } from "theme";
 import assets from "assets/assets";
-// import { useSelector } from "react-redux";
-// import { RootState } from "redux/reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import {
+  DOC_EXT,
+  filesizes,
+  FILTER_DATA_BY_EXT,
+  MEDIA_EXT,
+  momentdeDateFormat,
+  momentTimeFormat,
+} from "components/Utills/Globals/Common";
+import docsAction from "redux/action/docs.actions";
+import TabsUnstyled from "@mui/base/TabsUnstyled";
+import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 
-function ViewAllDocs(props: any) {
+
+interface Props {
+  heading: string,
+  handleCloseCDrawer: () => void
+  moduleName: string
+  moduleId: string
+}
+
+function ViewAllDocs(props: Props) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  // const getAllSubtaskRejection = useSelector(
-  //   (state: RootState) => state.task.getAllSubtaskRejection
-  // );
+  const { getAllDocsByModule, loadinggetAllDocs } = useSelector((files: RootState) => files.docs);
+
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(
+      docsAction.getDocsByModuleNameAndId({
+        other: {
+          moduleName: props.moduleName,
+          moduleId: props.moduleId,
+        },
+      })
+    );
+  }, []);
+
   return (
     <>
       <Container>
@@ -34,7 +73,7 @@ function ViewAllDocs(props: any) {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Heading>{props.subTaskHeading}</Heading>
+          <Heading>{props.heading}</Heading>
           {tabOrMobileView && (
             <CButton
               label={"Close"}
@@ -44,67 +83,23 @@ function ViewAllDocs(props: any) {
           )}
         </CustomStack>
         <ContentMain>
-          {/* <Box sx={{ maxWidth: 473 }}> */}
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography sx={{ mt: 4, mb: 2 }} variant="h6" component="div">
-                All Attachments
-              </Typography>
-              <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
-                {[1, 2, 3, 4, 5, 6, 7, 8, 8, 9, 10, 11, 12, 13, 14].map(
-                  (item: any) => {
-                    return (
-                      <ListItem
-                        divider
-                        sx={{ paddingLeft: "0" }}
-                        secondaryAction={
-                          <CustomStack
-                            sx={{
-                              display: "flex",
-                              flexDirection: "column",
-                              alignItems: "end",
-                            }}
-                          >
-                            <CDateTime>22/08/2020</CDateTime>
-                            <CDateTime
-                              sx={{
-                                display: "flex",
-                                fontSize: "8px",
-                                alignItems: "flex-end",
-                              }}
-                            >
-                              12:08AM
-                            </CDateTime>
-                          </CustomStack>
-                        }
-                      >
-                        <ListItemAvatar>
-                          <Avatar variant="square" sizes="">
-                            <assets.CloudUploadIcon />
-                          </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={<FileName>File Name</FileName>}
-                          secondary={
-                            <CustomStack
-                              sx={{
-                                flexDirection: "column",
-                                alignItems: "baseline",
-                              }}
-                            >
-                              <Span>Company. Electrician</Span>
-                              <Span>Size:9Mb</Span>
-                            </CustomStack>
-                          }
-                        />
-                      </ListItem>
-                    );
-                  }
-                )}
-              </ContentList>
-            </Grid>
-          </Grid>
-          {/* </Box> */}
+          <TabsUnstyled defaultValue={0}>
+            <TabsList>
+              <Tab sx={{ fontSize: '1rem' }}>All</Tab>
+              <Tab sx={{ fontSize: '1rem' }}>Docs</Tab>
+              <Tab sx={{ fontSize: '1rem' }}>Media</Tab>
+            </TabsList>
+            <TabPanel value={0}>
+              {DocsContent(loadinggetAllDocs, getAllDocsByModule)}
+            </TabPanel>
+            <TabPanel value={1}>
+              {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(DOC_EXT, getAllDocsByModule))}
+            </TabPanel>
+            <TabPanel value={2}>
+              {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(MEDIA_EXT, getAllDocsByModule))}
+            </TabPanel>
+          </TabsUnstyled>
+
         </ContentMain>
       </Container>
       {!tabOrMobileView && (
@@ -118,22 +113,122 @@ function ViewAllDocs(props: any) {
 
 export default ViewAllDocs;
 
+const DocsContent = (loadinggetAllDocs: boolean, getAllDocsByModule: FileInterface[]) => {
+
+  const ListItemAvat = (file: FileInterface) => {
+    let type = file.fileType
+    if (DOC_EXT.includes(file.fileType)) {
+      type = file.fileType.replace('.', '')
+    }
+    const preview = {
+      fileType: type,
+      fileName: file.fileName,
+      url: file.fileUrl,
+    };
+
+    return (
+      <ListItemAvatar>
+        <FilePreviewer showControls={false} hideName={true} file={preview} />
+      </ListItemAvatar>
+    )
+  };
+  return (
+    <Grid container spacing={2}>
+      <Grid item xs={12} md={6}>
+        {loadinggetAllDocs ? <ContentList sx={{ mt: 1, mb: 1, textAlign: "center", maxWidth: 478, width: "376px" }}>
+          <CircularProgress />
+        </ContentList> : <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+          {getAllDocsByModule.length > 0 ? (
+            getAllDocsByModule.map((file: FileInterface) => {
+              const docsDate = momentdeDateFormat(file.createdAt);
+              const docsTiem = momentTimeFormat(file.createdAt);
+              return (
+                <ListItem
+                  divider
+                  sx={{ paddingLeft: "0" }}
+                  secondaryAction={
+                    <CustomStack
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "end",
+                      }}
+                    >
+                      <CDateTime>{docsDate}</CDateTime>
+                      <CDateTime
+                        sx={{
+                          display: "flex",
+                          fontSize: "10px",
+                          alignItems: "flex-end",
+                        }}
+                      >
+                        {docsTiem}
+                      </CDateTime>
+                    </CustomStack>
+                  }
+                >
+                  {ListItemAvat(file)}
+                  <ListItemText
+                    key={file._id}
+                    primary={
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none' }}>
+                        <FileName
+                          sx={{ maxWidth: "200px", width: "100%", color: '#0076C8' }}
+                          className="ellipsis"
+                        >
+                          {file.fileName}
+                        </FileName>
+                      </a>
+                    }
+                    secondary={
+                      <CustomStack
+                        sx={{
+                          flexDirection: "column",
+                          alignItems: "baseline",
+                        }}
+                      >
+                        {/* <Span>Company. N/A</Span> */}
+
+                        {"fileSize" in file ? (
+                          <Span>{`Size: ${filesizes(
+                            file.fileSize
+                          )}`}</Span>
+                        ) : (
+                          <Span>{`Size: N/A`}</Span>
+                        )}
+                      </CustomStack>
+                    }
+                  />
+                </ListItem>
+              );
+            })
+          ) : (
+            <CommentName>No attachments found!</CommentName>
+          )}
+        </ContentList>}
+      </Grid>
+    </Grid>
+  )
+}
+
 export const Container = styled(Box)(
   ({ theme }) => `
         max-width:476px;
         width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
+        background: #ffffff;
+box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );
-export const ContentMain = styled(Box)(
-  ({ theme }) => `
+
+// height: calc(100vh - 110px);
+export const ContentMain = styled(Box)`
   overflow: hidden;
-    `
-);
+`;
 export const ContentList = styled(List)(
   ({ theme }) => `
-  height: calc(100vh - 110px);
+  height: calc(100vh - 150px);
   overflow: auto;
     `
 );
@@ -146,7 +241,7 @@ export const CloseIcon = styled(ExpandCircleDownOutlinedIcon)(
   font-size:43px;
   color:#7D7E80;
   cursor:pointer;
-  background: white;
+  background: #f5f7f8;
   border-radius: 50px;
     `
 );

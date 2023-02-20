@@ -4,6 +4,7 @@ export interface DocsInterface {
 }
 
 export interface FileUploadProgress {
+  file: FileInterface
   fileId: string
   uploadedSize: number
   totalSize: number
@@ -11,15 +12,16 @@ export interface FileUploadProgress {
 }
 
 export interface FileUploadResponse {
-  files: File[]
+  files: FileInterface[]
   moduleName: string
   moduleId: string
 }
 
-export interface File {
+export interface FileInterface {
   access: string[]
   version: number
   _id: string
+  fileSize: number
   progress?: number
   uploadedBy: string
   fileUrl: string
@@ -34,11 +36,15 @@ export interface File {
 
 
 
-export interface FileUploaded extends File {
+export interface FileUploaded extends FileInterface {
   module: string
   eventType: string
-  data: Data
+  data: FileInterface
 }
 
-export interface Data extends File { }
+// get all docs by moduleName and id 
+export interface DocsInterfaceRoot {
+  result: GetAllDocsInterface[]
+}
 
+export interface GetAllDocsInterface extends FileInterface {}
