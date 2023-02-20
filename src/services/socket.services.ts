@@ -36,6 +36,11 @@ class WebSocketService {
     WebSocketService.socket = socket
   }
 
+  public logoutSocketsIO() {    
+    WebSocketService.socket.close();
+    WebSocketService.socket = null
+  }
+
   public async getUnreadMsgCount(userId: any) {
     const data = {
       eventType: UNREAD_MESSAGE_COUNT,

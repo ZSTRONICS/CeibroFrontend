@@ -260,7 +260,6 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     >
       <CardHeader
         sx={{
-          mb: "5px",
           padding: "10px 5px 0px 15px",
           // display: "flex",
         }}
@@ -268,7 +267,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         action={Action()}
       />
 
-      <CardContent sx={{ p: "7px 15px", "&:last-child": { pb: "13px" } }}>
+      <CardContent sx={{ p: "5px 15px", "&:last-child": { pb: "13px" } }}>
         <CustomStack
           gap={2.5}
           // pb="13px"
@@ -281,7 +280,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           </Box>
           <Box>
             <LabelTag>Created on</LabelTag>
-            <AssignedTag sx={{ display: "flex" }}>{taskCreatedOn}</AssignedTag>
+            <AssignedTag sx={{ display: "flex", fontSize:'11.5px' }}>{taskCreatedOn}</AssignedTag>
           </Box>
         </CustomStack>
         <CustomStack gap={2.5} justifyContent="space-between">
@@ -321,10 +320,10 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           </Box>
           <Box>
             <LabelTag>Due date</LabelTag>
-            <AssignedTag>{dueDate}</AssignedTag>
+            <AssignedTag sx={{fontSize:'11.5px'}}>{dueDate}</AssignedTag>
           </Box>
         </CustomStack>
-        <Box pt={1} pb={0.6}>
+        <Box pt={0.87} pb={0.87}>
           <AssignedTag
             sx={{
               fontSize: "16px",
@@ -334,7 +333,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
               textOverflow: "ellipsis",
               whiteSpace: "nowrap",
               display: "inline-block",
-              maxWidth: "300px",
+              maxWidth: "250px",
               verticalAlign: "middle",
             }}
           >

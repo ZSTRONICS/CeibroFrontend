@@ -1,6 +1,6 @@
-import { Grid, TextField } from "@mui/material";
+import { Grid, TextField, Tooltip } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
+// import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import { CBox } from "components/material-ui";
 import { AttachmentIcon } from "components/material-ui/icons";
 import { useState } from "react";
@@ -9,20 +9,27 @@ import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 import CButton from "components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { deDateFormat, getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
+import {getUniqueObjectsFromArr,} from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 import { IconButton } from "@material-ui/core";
 import CustomModal from "components/Modal";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import { DOCS_CONFIG } from "config/docs.config";
+import { CustomBadge } from "components/TaskComponent/Tabs/TaskCard";
 
-export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
-  const todayDate = moment(new Date()).format("DD-MM-YYYY")
+export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
+  console.log('values', values)
+  const todayDate = moment(new Date()).format("DD-MM-YYYY");
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const [showDate, setShowDate] = useState<any>(new Date())
-  const { taskAssignedToMembers } = useSelector((store: RootState) => store.task);
+  const [showDate, setShowDate] = useState<any>(new Date());
+  const { taskAssignedToMembers } = useSelector(
+    (store: RootState) => store.task
+  );
+  const { selectedFilesToBeUploaded } = useSelector(
+    (state: RootState) => state.docs
+  );
   const dispatch = useDispatch();
   const [assignToList, setAssignToList] = useState<any>([
     ...taskAssignedToMembers,
@@ -39,9 +46,9 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
   ]);
 
   const handleCloseModal = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     dispatch({
-      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
     });
     setSubTask(false);
     setAssignToList([]);
@@ -54,10 +61,30 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
   };
 
   if (doOnce) {
-    setFieldValue("assignedTo", assignedListHandler(assignToList.map((item: any) => item.id)));
+    setFieldValue(
+      "assignedTo",
+      assignedListHandler(assignToList.map((item: any) => item.id))
+    );
     setFieldValue("dueDate", todayDate);
-    setDoOnce(false)
+    setDoOnce(false);
   }
+
+  const AttachmentsToolTip = () => {
+    return (
+      <>
+        {Array.from(selectedFilesToBeUploaded.files).map(
+          (file: any, index: any) => {
+            return (
+              <div
+                style={{ textTransform: "capitalize" }}
+                key={file.name}
+              >{`${file.name}\n `}</div>
+            );
+          }
+        )}
+      </>
+    );
+  };
 
   return (
     <div>
@@ -69,8 +96,8 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             id="date"
             name="dueDate"
             onChange={(e: any) => {
-              setShowDate(e)
-              const currentDate = moment(e).format("DD-MM-YYYY")
+              setShowDate(e);
+              const currentDate = moment(e).format("DD-MM-YYYY");
               setFieldValue("dueDate", currentDate);
             }}
           />
@@ -167,25 +194,38 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
           <CBox
             display="flex"
             alignItems="center"
-            justifyContent="space-between"
+            justifyContent="flex-end"
             borderTop="1px solid #DBDBE5"
             px={1.8}
           >
-            <CBox className={classes.switch}>
+            {/* <CBox className={classes.switch}>
               <label>Required:</label>
               <CustomizedSwitch label="Image" edge="start" />
               <CustomizedSwitch label="Comment" edge="start" />
-            </CBox>
+            </CBox> */}
 
-            <CBox display="flex" alignItems="center">
+            <CBox
+              display="flex"
+              alignItems="center"
+              onClick={() => setImageAttach(true)}
+            >
               <CBox className={classes.switch}>
-                <label>Attachments</label>
+                <label style={{ color: "#0076C8" }}>Add Attachments</label>
               </CBox>
-              <IconButton onClick={() => setImageAttach(true)}>
+              <IconButton>
                 <AttachmentIcon />
               </IconButton>
-              {/* &nbsp;
-                            &nbsp; */}
+              &nbsp;
+              {/* <Badge showZero={true} overlap="circular"  color="primary" badgeContent={selectedFilesToBeUploaded.files.length}></Badge> */}
+              <CustomBadge
+                overlap="circular"
+                color="primary"
+                badgeContent={
+                  <Tooltip title={AttachmentsToolTip()}>
+                    <div>{selectedFilesToBeUploaded.files.length}</div>
+                  </Tooltip>
+                }
+              ></CustomBadge>
               {/* <MediaIcon /> */}
               {/* &nbsp;
                             &nbsp; */}
@@ -204,8 +244,8 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
               styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
               label={"Save as draft"}
               onClick={() => {
-                values.state.push({ "userId": user._id, "userState": "draft" })
-                values.state = getUniqueObjectsFromArr(values.state)
+                values.state.push({ userId: user._id, userState: "draft" });
+                values.state = getUniqueObjectsFromArr(values.state);
               }}
             />
           </CBox>
@@ -227,29 +267,37 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
               }}
               label={"Create Subtask"}
               onClick={() => {
-
-                values.state = []
-                let adminState = "assigned"
+                values.state = [];
+                let adminState = "assigned";
                 if (values.assignedTo.length > 0) {
-                  let membersList: any[] = []
+                  let membersList: any[] = [];
                   values.assignedTo[0].members.forEach((member: any) => {
                     if (member === user._id) {
-                      adminState = "accepted"
-                      values.state.push({ "userId": user._id, "userState": "accepted" })
+                      adminState = "accepted";
+                      values.state.push({
+                        userId: user._id,
+                        userState: "accepted",
+                      });
                     } else {
-                      values.state.push({ "userId": member, "userState": "assigned" })
+                      values.state.push({
+                        userId: member,
+                        userState: "assigned",
+                      });
                     }
-                    membersList.push(member)
+                    membersList.push(member);
                   });
 
-                  selectedTaskAdmins.forEach(admin => {
+                  selectedTaskAdmins.forEach((admin) => {
                     if (!membersList.includes(String(admin.id))) {
-                      values.state.push({ "userId": admin.id, "userState": adminState })
+                      values.state.push({
+                        userId: admin.id,
+                        userState: adminState,
+                      });
                     }
-                  })
+                  });
                 }
 
-                values.state = getUniqueObjectsFromArr(values.state)
+                values.state = getUniqueObjectsFromArr(values.state);
               }}
             />
             <CButton
@@ -271,7 +319,14 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
-        children={<UploadDocs showUploadButton={false} moduleType={"SubTask"} moduleId={""} handleClose={() => setImageAttach(false)} />}
+        children={
+          <UploadDocs
+            showUploadButton={false}
+            moduleType={"SubTask"}
+            moduleId={""}
+            handleClose={() => setImageAttach(false)}
+          />
+        }
       />
     </div>
   );

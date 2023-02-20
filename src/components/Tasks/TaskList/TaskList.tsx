@@ -39,7 +39,7 @@ function TaskList() {
           container
           item
           rowGap={2.5}
-          columnGap={4.38}
+          columnGap={1.905}
           xs={12}
           className={classes.cardListContainer}
         >

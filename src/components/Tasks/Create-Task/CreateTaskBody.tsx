@@ -16,8 +16,6 @@ import { RootState } from "redux/reducers";
 const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
   const classes = useStyles();
   const {loadingSubTaskofTask} = useSelector((state: RootState) => state.task);
-
-  console.log('loadingSubTaskofTask', loadingSubTaskofTask);
   
   return (<>
       <div className={classes.subtaskWrapper}>
@@ -45,6 +43,7 @@ const useStyles = makeStyles({
   },
   body: {
     background: "#F5F7F8",
+    padding: "11px 8px",
   },
   subtaskWrapper: {
     marginBottom:'16px',
