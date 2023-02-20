@@ -37,7 +37,7 @@ const TaskBadges = () => {
       {badges?.map((badge, i:any) => {
         return (
           <div className={getStyleClass(badge.status)} key={i} id={i}>
-            <Badge overlap="circular" key={i} color="primary" badgeContent={badge.count}></Badge>
+            <Badge showZero={false} overlap="circular" key={i}  color="primary" badgeContent={badge.count}></Badge>
           </div>
         );
       })}
