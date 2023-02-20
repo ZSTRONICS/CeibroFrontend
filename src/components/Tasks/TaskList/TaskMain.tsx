@@ -49,7 +49,7 @@ const TaskMain = () => {
 
   return (
     <>
-      <Box  sx={{ flexGrow: 1 }}  className={classes.taskMain}>
+      <Box sx={{ flexGrow: 1 }} className={classes.taskMain}>
         <Grid container spacing={1.7} className={classes.TaskWraper}>
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
@@ -112,7 +112,7 @@ const useStyles = makeStyles({
     // padding: '0 10px',
     "@media(max-width:1024px)": {
       color: "red",
-      padding:''
+      padding: "",
     },
   },
   activeConainer: {
@@ -123,12 +123,11 @@ const useStyles = makeStyles({
       justifyContent: "inherit",
     },
   },
-  // taskMain:{
-  //   "@media(max-width:1024px)": {
-  //     overflowX:'hidden',
-  //     overflowY:'hidden',
+  taskMain: {
+    "@media(max-width:1024px)": {
+      overflow: "hidden",
+      // height: "100vh",
 
-  //   }
-  // }
+    },
+  },
 });
-

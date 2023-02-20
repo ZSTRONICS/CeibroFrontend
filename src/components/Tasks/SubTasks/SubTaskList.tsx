@@ -51,7 +51,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     [theme.breakpoints.down('lg')]: {
       maxHeight: 'calc(100vh - 350px)',
-      
     },
 
     [theme.breakpoints.down('md')]: {
