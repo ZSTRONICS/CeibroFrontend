@@ -1,4 +1,4 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import SubTaskCard from "components/TaskComponent/SubTaskContainer/SubTaskCard";
 import { AllSubtasksForUserRoot } from "constants/interfaces/AllSubTasks.interface";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
@@ -14,11 +14,19 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
 
   const classes = useStyles();
   const { user } = useSelector((store: RootState) => store.auth);
-
+  const [doOnce, setDoOnce] = useState(true)
+  const handleScroll = (e: any) => {
+    if (doOnce) {
+      let subtaskBox = e.target;
+      console.log(subtaskBox.scrollTop);
+      subtaskBox.scrollTop = 0
+      setDoOnce(false)
+    }
+  };
   return (
     <>
       {results.length > 0 ? (
-        <CBox className={classes.cardListContainer}>
+        <CBox className={classes.cardListContainer} onScroll={handleScroll}>
           {results &&
             results.map((subTaskDetail: SubtaskInterface) => {
               if (!subTaskDetail.access.includes(user._id)) {
@@ -33,7 +41,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
         </CBox>
       ) : (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <NoData title="There is no sub task" />
+          <NoData title="No subtask found" />
         </Box>
       )}
       <TaskDetailDrawer />
@@ -56,12 +64,12 @@ const useStyles = makeStyles((theme) => ({
     //   maxHeight: 'calc(100vh - 50vh)'
     // },
 
-    [theme.breakpoints.between(900, 1024)]: {
-      maxHeight: "calc(100vh - 40vh)",
-    },
+    // [theme.breakpoints.between(900, 1024)]: {
+    //   maxHeight: "calc(100vh - 40vh)",
+    // },
 
     [theme.breakpoints.down("xl")]: {
-      maxHeight: "calc(100vh - 23vh)",
+      maxHeight: "calc(100vh - 31vh)",
     },
   },
 }));

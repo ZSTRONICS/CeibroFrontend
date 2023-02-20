@@ -68,7 +68,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   let allMembers: string[] = [creator._id];
   try {
-    if ("admins" in taskData) {
+    if (taskData && taskData.hasOwnProperty('admins')) {
       allMembers = [...taskData.admins, ...allMembers];
     }
   } catch (e: any) {
