@@ -14,9 +14,15 @@ export const CommentName = styled(Typography)(
     font-size: 13px;
     `
 );
-export const CommentDateTime = styled(Typography)`
-  font-weight: 500;
-  font-size: 8px;
+export const CDateTime = styled(Typography)`
+  font-weight: 600;
+  font-size: 11px;
+`;
+export const FileName = styled(Typography)`
+  font-weight: 700;
+  font-size: 12px;
+  font-family: 'Inter';
+  color: #292929;
 `;
 export const CommentDescription = styled(Typography)`
   font-weight: 500;
@@ -32,5 +38,23 @@ font-family: 'Inter';
 font-style: normal;
 font-weight: 600;
 font-size: 16px;
-color: #000000;
+color: #292929; 
 `;
+export const DocName = styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-weight: 700;
+font-size: 12px;
+color: #292929;
+`;
+export const Span=styled('span')`
+font-family: 'Inter';
+font-style: normal;
+font-weight: 500;
+font-size: 10px;
+color: #605C5C;
+`
+export const CLink=styled('a')`
+font-family: 'Inter';
+font-style: normal;
+`

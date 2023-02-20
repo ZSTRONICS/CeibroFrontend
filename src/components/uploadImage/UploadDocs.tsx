@@ -1,32 +1,48 @@
 import {
   Box,
-  Button, List, ListItem, ListItemText,
-  styled
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  styled,
 } from "@mui/material";
 import CButton from "components/Button/Button";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
-import { File } from "constants/interfaces/docs.interface";
-import { useRef, useState } from "react";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import { uploadDocs } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import "./upload.css";
 
-const UploadDocs = (props:any) => {
+interface Props {
+  showUploadButton: boolean;
+  moduleType: string;
+  moduleId: string;
+  handleClose: () => void
+}
+
+
+
+const UploadDocs = (props: Props) => {
   const dispatch = useDispatch();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [selectedfile, setSelectedFile] = useState<any>([]);
-  let { selectedTaskId } = useSelector((state: RootState) => state.task);
+  const { selectedFilesToBeUploaded } = useSelector((state: RootState) => state.docs);
   const [filesToUpload, setFilesToUpload] = useState<any>([]);
 
-  const onUploadFiles = (e: any) => {
-    if (e.target.files.length === 0) {
+  const [doOnce, setDoOnce] = useState<boolean>(true);
+
+
+  const setSelectedFilesToUpload = (files: any) => {
+    if (files.length === 0) {
       return;
     }
-    setFilesToUpload(e.target.files)
-    Array.from(e.target.files).forEach((file: any) => {
+    setFilesToUpload(files);
+    Array.from(files).forEach((file: any) => {
       setSelectedFile((prev: any) => {
         return [
           ...prev,
@@ -40,26 +56,21 @@ const UploadDocs = (props:any) => {
             fileType: file.type,
             fileName: file.name,
             uploadStatus: "uploading",
-            moduleType: "Task",
-            moduleId: selectedTaskId,
+            moduleType: props.moduleType,
+            moduleId: props.moduleId,
             createdAt: "",
             updatedAt: "",
           },
         ];
       });
     });
-    
   };
 
-console.log(filesToUpload)
-
-  const handleUploadDocs = (e:any) => {
-    e.preventDefault()
+  const uploadFiles = () => {
     let formData = new FormData();
-    let fileName = ''
+    let filesPlaceholderData: any[] = [];
+
     Array.from(filesToUpload).forEach((file: any) => {
-      // Chunk the file into smaller pieces
-      fileName= file.name
       const chunkSize = 1024 * 1024; // 1MB chunks
       let offset = 0;
       // Create an array of chunks
@@ -72,14 +83,37 @@ console.log(filesToUpload)
       // Create a new Blob object from the array
       const blob = new Blob(chunks);
       formData.append("files", blob, file.name);
-    })
-    formData.append("moduleName", "Task");
-    formData.append("_id", selectedTaskId);
+
+      filesPlaceholderData.push({
+        access: [],
+        version: 1,
+        _id: "",
+        uploadedBy: "",
+        fileUrl: "",
+        fileSize: file.size,
+        fileType: "",
+        progress: 1,
+        fileName: file.name,
+        uploadStatus: "",
+        moduleType: props.moduleType,
+        moduleId: props.moduleId,
+        createdAt: "",
+        updatedAt: "",
+      });
+    });
+    formData.append("moduleName", props.moduleType);
+    formData.append("_id", props.moduleId);
+
+    dispatch({
+      type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
+      payload: filesPlaceholderData,
+    });
 
     const payload = {
       body: formData,
       success: (res: any) => {
         if (res.status === 200) {
+          //toast.success("file(s) uploaded");
           if (res.data.results.files.length > 0) {
             let allFiles = res.data.results.files;
             const files = allFiles.map((file: any) => {
@@ -87,28 +121,71 @@ console.log(filesToUpload)
               return file;
             });
             dispatch({
-              type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
+              type: DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE,
               payload: files,
             });
           }
         }
       },
     };
-    
+
     dispatch(uploadDocs(payload));
-    setSelectedFile([])
-    setFilesToUpload([])
-    handleCancel()
+
+    dispatch({
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+    });
+
+    setSelectedFile([]);
+    setFilesToUpload([]);
+    handleCancel();
+  }
+
+  if (doOnce) {
+    setDoOnce(false)
+    if (selectedFilesToBeUploaded.files.length > 0) {
+      setSelectedFilesToUpload(selectedFilesToBeUploaded.files)
+    }
+  }
+
+  const onUploadFiles = (e: any) => {
+    setSelectedFilesToUpload(e.target.files)
+  };
+
+  const handleUploadDocs = (e: any) => {
+    e.preventDefault();
+    uploadFiles();
+  };
+
+  const updateFilesToBeUploadedInStore = () => {
+
+    if (Array.from(filesToUpload).length > 0) {
+      const payload = {
+        files: filesToUpload,
+        moduleName: props.moduleType,
+        moduleId: props.moduleId
+      }
+
+      dispatch({
+        type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
+        payload: payload,
+      });
+
+    }
+    return props.handleClose();
   }
 
   const handleDelteFile = (name: string) => {
-    const result = selectedfile.filter((data: File) => data.fileName !== name);
+    const files = Array.from(filesToUpload).filter((file: any) => file.name !== name);
+    //console.log(files);
+
+    setFilesToUpload(files);
+    const result = selectedfile.filter((data: FileInterface) => data.fileName !== name);
     setSelectedFile(result);
   };
 
   const handleCancel = () => {
-   return props.handleClose()
-  }
+    return props.handleClose();
+  };
   const shortFileName = (str: string) => {
     return str.substring(0, 16) + "... " + str.substr(-4, str.length);
   };
@@ -161,7 +238,7 @@ console.log(filesToUpload)
                   LinkComponent="a"
                   className="btn-choose"
                   component="span"
-                  sx={{textTransform:'unset'}}
+                  sx={{ textTransform: "unset" }}
                 >
                   Select file(s) to upload
                 </Button>
@@ -173,27 +250,34 @@ console.log(filesToUpload)
             </Box>
           </CustomBox>
         </label>
-        <Box width="100%" sx={{margin:'28px 0'}}>
-         {selectedfile.length>0 && (   <List
-              sx={{ width: "100%", maxWidth: 600, bgcolor: "background.paper", maxHeight: '460px', height: '100%',
-              overflow: 'auto' }}
+        <Box width="100%" sx={{ margin: "28px 0" }}>
+          {selectedfile.length > 0 && (
+            <List
+              sx={{
+                width: "100%",
+                maxWidth: 600,
+                bgcolor: "background.paper",
+                maxHeight: "460px",
+                height: "100%",
+                overflow: "auto",
+              }}
             >
-              {selectedfile?.map((item: File, index: any) => {
+              {selectedfile?.map((item: FileInterface, index: any) => {
                 const { fileName, progress } = item;
                 const itemName: string =
-                fileName?.length > 25 ? shortFileName(fileName) : fileName;
+                  fileName?.length > 25 ? shortFileName(fileName) : fileName;
                 return (
                   <ListItem
                     key={index}
                     alignItems="flex-start"
                     secondaryAction={
                       <CButton
-                        label='X'
-                        size='small'
+                        label="X"
+                        size="small"
                         sx={{
                           "&.MuiButtonBase-root:hover": {
-                            bgcolor: "transparent"
-                          }
+                            bgcolor: "transparent",
+                          },
                         }}
                         variant="raised"
                         aria-label="comment"
@@ -228,18 +312,36 @@ console.log(filesToUpload)
                   </ListItem>
                 );
               })}
-            </List>)}
+            </List>
+          )}
         </Box>
-      {selectedfile.length>0&&  <CustomStack justifyContent='flex-end' columnGap={1}>
-              <CButton label={"Upload"}  onClick={handleUploadDocs} color="primary" variant="contained"/>
-              <CButton label={"Cancel"} variant="contained"
+        {selectedfile.length > 0 && (
+          <CustomStack justifyContent="flex-end" columnGap={1}>
+            {props.showUploadButton ?
+              <CButton
+                label={"Upload"}
+                onClick={handleUploadDocs}
+                color="primary"
+                variant="contained"
+              /> :
+              <CButton
+                label={"Ok"}
+                onClick={updateFilesToBeUploadedInStore}
+                color="primary"
+                variant="contained"
+              />
+            }
+            <CButton
+              label={"Cancel"}
+              variant="contained"
               onClick={handleCancel}
               styles={{
                 color: "#605C5C",
                 backgroundColor: "#ECF0F1",
               }}
             />
-        </CustomStack>}
+          </CustomStack>
+        )}
       </div>
       {/* {selectedfile.length>0&&<Box sx={{mb:1, pb:3}}> <Button
         

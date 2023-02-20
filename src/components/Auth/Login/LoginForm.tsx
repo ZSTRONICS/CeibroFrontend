@@ -34,7 +34,7 @@ import colors from "assets/colors";
 import assets from "assets/assets";
 import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
-import { perisitStoreState } from "redux/store";
+import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
 
 
@@ -95,7 +95,7 @@ const LoginForm: React.FC<Props> = (props) => {
             setVerifyError(true);
           }  else{
             // removed stored state 
-            perisitStoreState()
+            purgeStoreStates()
           }
           
 

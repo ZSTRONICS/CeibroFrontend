@@ -1,4 +1,4 @@
-import react, {useState} from 'react'
+import react, { useState } from 'react'
 import { makeStyles } from '@material-ui/core';
 import CButton from 'components/Button/Button';
 import { CBox } from 'components/material-ui';
@@ -14,46 +14,73 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllSubTaskRejection } from 'redux/action/task.action';
 import { isTrue } from 'components/Utills/Globals/Common';
 import { RootState } from 'redux/reducers';
+import ViewAllDocs from './ViewAllDocs';
 
 
 interface Props {
     subtaskDetail: SubtaskInterface
-    taskAdmin: {id:string,label:string}[]
+    taskAdmin: { id: string, label: string }[]
 }
 export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
     const classes = useStyles()
-    const [openCDrawer, setOpenCDrawer]= useState<boolean>(false)
+    const [openCDrawer, setOpenCDrawer] = useState<boolean>(false)
     const dispatch = useDispatch()
-    const {user} = useSelector((state:RootState)=> state.auth)
-    const handleCDrawer =()=>{
-        setOpenCDrawer((prev:boolean)=> !prev)
+    const { user } = useSelector((state: RootState) => state.auth)
+
+    const handleCDrawer = () => {
+        setOpenCDrawer((prev: boolean) => !prev)
         dispatch(getAllSubTaskRejection({
-            other:{
-                subtaskId:subtaskDetail._id
+            other: {
+                subtaskId: subtaskDetail._id
             }
         }))
     }
-    const isTaskAdmin = taskAdmin.some((item:any)=> item.id === user._id)
+    const handleCloseCDrawer = () => {
+        setOpenCDrawer((prev: boolean) => !prev)
+    }
+    const isTaskAdmin = taskAdmin.some((item: any) => item.id === user._id)
 
     return (<>
         <div>
             <CBox className={classes.wrapper}>
                 <TaskDetailHeader subtaskDetail={subtaskDetail} />
-            <CustomStack justifyContent='flex-end' gap={2} >
-               {isTaskAdmin&& <CBox display='flex' alignItems='center' mt={1} >
-                    <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} onClick={handleCDrawer} startIcon={<VisibilityOutlinedIcon />} label={'Rejections'} />
-                </CBox>}
-                <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
-                    <CButton  styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<AttachmentIcon />} label={'Attachments'} />
-                </CBox>
-            </CustomStack>
+                <CustomStack justifyContent='flex-end' gap={2} >
+                    {isTaskAdmin && <CBox display='flex' alignItems='center' mt={1} >
+                        <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} startIcon={<VisibilityOutlinedIcon />} label={'Rejections'} />
+                    </CBox>}
+                    <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
+                        <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} onClick={handleCDrawer} startIcon={<AttachmentIcon />} label={'Attachments'} />
+                    </CBox>
+                </CustomStack>
                 {/* <CBox display='flex' alignItems='center' justifyContent='flex-end' mt={1}>
                     <CButton styles={{ fontSize: 14, textTransform: 'capitalize' }} endIcon={<EyeIcon />} label={'View all comments'} />
                 </CBox> */}
                 {/* <RecentComments subtaskDetail={subtaskDetail} /> */}
             </CBox>
         </div>
-        <CDrawer showBoxShadow={true} hideBackDrop={true} openCDrawer={openCDrawer} handleCloseCDrawer={handleCDrawer} children={<ViewRejectionComments subTaskHeading="Subtask Rejection" handleCloseCDrawer={handleCDrawer}/>} />
+        {/* <CDrawer
+            showBoxShadow={true}
+            hideBackDrop={true}
+            openCDrawer={openCDrawer}
+            handleCloseCDrawer={handleCloseCDrawer}
+            children={
+                <ViewRejectionComments subTaskHeading="Subtask Rejection" handleCloseCDrawer={handleCDrawer} />
+            } /> */}
+        <CDrawer
+            showBoxShadow={true}
+            hideBackDrop={true}
+            openCDrawer={openCDrawer}
+            handleCloseCDrawer={handleCloseCDrawer}
+            children={
+                <ViewAllDocs
+                    heading="Attachments"
+                    handleCloseCDrawer={handleCloseCDrawer}
+                    moduleName={"SubTask"}
+                    moduleId={subtaskDetail._id}
+                />
+            }
+        />
+
     </>
     )
 }

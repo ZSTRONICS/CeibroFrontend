@@ -1,12 +1,17 @@
-export const getSelectedProjectMembers = (projectId: string, projectWithMembers: []): any => {
+import moment from "moment-timezone";
+
+export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
-  return projectWithMembers.filter((proj: any) => {
-    if (projectId && proj) {
-      if (String(proj._id) === String(projectId)) {
-        return proj.projectMembers;
-      }
+  let projectMembers: any[] = []
+
+  projectWithMembers.every((project: any) => {
+    if (String(project._id) === String(projectId)) {
+      projectMembers = project.projectMembers;
+      return false
     }
-  }).find((proj: any) => proj);
+    return true
+  })
+  return projectMembers;
 };
 
 export const getUserFormatedDataForAutoComplete = (arr: any) => {
@@ -20,36 +25,54 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
 
 /**
   * @param array pass the array of objects 
-  * @param return Functino will return the unique objects
+  * @return Functino will return the unique objects
   * **/
-export const getUniqueObjectsFromArr =(arr:any[])=>{
+export const getUniqueObjectsFromArr = (arr: any[]) => {
   return arr.filter((obj, i, self) => self.findIndex(t => JSON.stringify(t) === JSON.stringify(obj)) === i);
 }
 
- /**
-  * @param array the array must have _id
-  * @param itemId must have comparison id string
-  * @param return Functino will return true or false
-  * **/
-export const isTrue =(arr:any[], itemId:string)=>{
- return arr.some((item:any)=> item._id === itemId)
+/**
+ * @param array the array must have _id
+ * @param itemId must have comparison id string
+ * @return Functino will return true or false
+ * **/
+export const isTrue = (arr: any[], itemId: string) => {
+  return arr.some((item: any) => item._id === itemId)
 }
 
 // de date format 
- /**
-  * @param return dd-mm-yyyy
-  * @param dateString date string is required
-  * **/
-export const deDateFormat =(dateStr:Date)=>{
-  return new Date(String(dateStr)).toLocaleString('de').slice(0,10).replaceAll('.','-')
+/**
+ * @return dd-mm-yyyy
+ * @param dateString date string is required
+ * **/
+export const deDateFormat = (dateStr: Date) => {
+  return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
+}
+// de date format using moment of utc time mongodb
+/**
+ * @return dd.mm.yyyy
+ * @param mongodbUtc date string is required
+ * **/
+export const momentdeDateFormat = (createdAt: Date | any) => {
+  let localTime = moment.utc(moment(createdAt)).toDate()
+  return moment(localTime).local().format("DD.MM.YYYY")
+}
+// de date format using moment of utc time mongodb
+/**
+ * @return 12:00AM
+ * @param mongodbUtc date string is required
+ * **/
+export const momentTimeFormat = (createdAt: Date | any) => {
+  let localTime = moment.utc(moment(createdAt)).toDate()
+  return moment(localTime).local().format('HH:mm');
 }
 
 // calculate file size 
- /**
-  * @param bytes bytes required
-  * **/
+/**
+ * @param bytes bytes required
+ * **/
 
- export const filesizes = (bytes:any) => {
+export const filesizes = (bytes: any) => {
   let decimals = 2
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
@@ -58,7 +81,7 @@ export const deDateFormat =(dateStr:Date)=>{
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
-export const onlyUnique =(value: any, index: any, array: any) =>{
+export const onlyUnique = (value: any, index: any, array: any) => {
   return array.indexOf(value) === index;
 }
   // const dueDate = new Date().toLocaleDateString("de-DE", {
@@ -67,5 +90,23 @@ export const onlyUnique =(value: any, index: any, array: any) =>{
   //   year: "numeric",
   // });
 
-  // moment(dueDate).format("ddd, MMM Do YYYY, h:mm:ss a")
-  // "Mon, Aug 12 2019, 5:52:00 pm"
+export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv','.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf','.odt', '.ods', '.odp', '.odg', '.djvu','.keynote']
+export const MEDIA_EXT =['.jpg','.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav','.indd']
+
+/**
+ * @param extensionKeys array of extension
+ * @param dataSource array of object 
+ * @return array of filtered data
+ * **/
+export const FILTER_DATA_BY_EXT = (extensionKeys: string[],dataSource:any) => {
+  let filesWithExtension: any = [];
+  if(extensionKeys.length===0){
+    return dataSource
+  }
+  for (let object of dataSource) {
+    if (extensionKeys.includes(object.fileType.toLowerCase())) {
+      filesWithExtension.push(object);
+    }
+  }
+  return filesWithExtension
+};

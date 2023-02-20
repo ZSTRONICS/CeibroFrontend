@@ -224,17 +224,19 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 loadingSubTaskofTask: true,
             };
         }
+        case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK): {
+            return {
+                ...state,
+                allSubTaskOfTask: action.payload.results,
+                loadingSubTaskofTask: false,
+
+            }
+        }
         case requestFail(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK): {
             return {
                 ...state,
                 loadingSubTaskofTask: false,
             };
-        }
-        case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK): {
-            return {
-                ...state,
-                allSubTaskOfTask: action.payload.results
-            }
         }
         case requestPending(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
             return {

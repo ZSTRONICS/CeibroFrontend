@@ -2,30 +2,34 @@ import { Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import { CBox } from "components/material-ui";
-// import { AttachmentIcon } from "components/material-ui/icons";
+import { AttachmentIcon } from "components/material-ui/icons";
 import { useState } from "react";
 import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 
 import CButton from "components/Button/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { deDateFormat, getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
+import { IconButton } from "@material-ui/core";
+import CustomModal from "components/Modal";
+import UploadDocs from "components/uploadImage/UploadDocs";
+import { DOCS_CONFIG } from "config/docs.config";
 
 export default function CreateSubTask({ setSubTask, setFieldValue, values, }: any) {
   const todayDate = moment(new Date()).format("DD-MM-YYYY")
   const classes = useStyles();
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const [showDate, setShowDate]= useState<any>(new Date())
+  const [showDate, setShowDate] = useState<any>(new Date())
   const { taskAssignedToMembers } = useSelector((store: RootState) => store.task);
-
+  const dispatch = useDispatch();
   const [assignToList, setAssignToList] = useState<any>([
     ...taskAssignedToMembers,
   ]);
   const { user } = useSelector((store: RootState) => store.auth);
 
-  // const [imageAttach, setImageAttach]: any = useState(false);
+  const [imageAttach, setImageAttach]: any = useState(false);
   const { projectMembersOfSelectedTask, selectedTaskAdmins } = useSelector(
     (store: RootState) => store.task
   );
@@ -34,7 +38,11 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
     ...projectMembersOfSelectedTask,
   ]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (e: any) => {
+    e.stopPropagation()
+    dispatch({
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+    });
     setSubTask(false);
     setAssignToList([]);
   };
@@ -55,15 +63,15 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
     <div>
       <Grid container className={classes.outerWrapper} rowGap={1}>
         <Grid item xs={12} md={12}>
-        <CDatePicker
+          <CDatePicker
             required
             value={showDate}
             id="date"
             name="dueDate"
-            onChange={(e:any) => {
+            onChange={(e: any) => {
               setShowDate(e)
               const currentDate = moment(e).format("DD-MM-YYYY")
-               setFieldValue("dueDate", currentDate);
+              setFieldValue("dueDate", currentDate);
             }}
           />
         </Grid>
@@ -120,7 +128,7 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
             id="combo-box-demo3"
             limitTags={2}
             options={uniqueMembers}
-            getOptionLabel={(option:any)=> option.label}
+            getOptionLabel={(option: any) => option.label}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {
@@ -168,10 +176,14 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
               <CustomizedSwitch label="Image" edge="start" />
               <CustomizedSwitch label="Comment" edge="start" />
             </CBox>
+
             <CBox display="flex" alignItems="center">
-              {/* <IconButton onClick={() => setImageAttach(true)}>
+              <CBox className={classes.switch}>
+                <label>Attachments</label>
+              </CBox>
+              <IconButton onClick={() => setImageAttach(true)}>
                 <AttachmentIcon />
-              </IconButton> */}
+              </IconButton>
               {/* &nbsp;
                             &nbsp; */}
               {/* <MediaIcon /> */}
@@ -254,7 +266,13 @@ export default function CreateSubTask({ setSubTask, setFieldValue, values, }: an
           </div>
         </CBox>
       </Grid>
-      {/* <CustomModal  showCloseBtn={false} isOpen={imageAttach} handleClose={() => setImageAttach(false)} title={'Attach Image'} children={''} /> */}
+      <CustomModal
+        showCloseBtn={false}
+        isOpen={imageAttach}
+        handleClose={() => setImageAttach(false)}
+        title={"Attachments"}
+        children={<UploadDocs showUploadButton={false} moduleType={"SubTask"} moduleId={""} handleClose={() => setImageAttach(false)} />}
+      />
     </div>
   );
 }

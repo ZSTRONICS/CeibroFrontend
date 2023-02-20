@@ -7,7 +7,13 @@ import {
 } from "../../utills/status";
 import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { perisitStoreState } from "redux/store";
+import { purgeStoreStates } from "redux/store";
+import NavigationReducer from "./navigation.reducer";
+import ChatReducer from "./chat.reducer";
+import TaskReducer from "./task.reducer";
+import DocsReducer from "./docs.reducer";
+import UserReducer from "./user.reducer";
+import storage from "redux-persist/lib/storage";
 
 interface authInterface {
   isLoggedIn: boolean;
@@ -41,7 +47,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     // case requestFail(LOGIN): {
     //   localStorage.clear();
     //   sessionStorage.clear();
-    //   perisitStoreState()
+    //   purgeStoreStates()
     //   setTimeout(() => {
     //     state.loginLoading = false
     //   }, 10000 / 2);

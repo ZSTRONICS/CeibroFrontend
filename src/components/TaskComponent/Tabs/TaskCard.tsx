@@ -27,9 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
-import moment from "moment-timezone";
 import { RootState } from "redux/reducers";
-import { onlyUnique } from "components/Utills/Globals/Common";
+import { momentdeDateFormat, onlyUnique } from "components/Utills/Globals/Common";
 
 interface Props {
   task: TaskInterface;
@@ -42,7 +41,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     null
   );
 
-  const taskCreatedOn = moment.utc(moment(createdAt)).format("DD.MM.YYYY");
+  const taskCreatedOn =momentdeDateFormat(createdAt)
+
   const dueDate = task.dueDate.replaceAll("-", ".").replace(",", "");
   const classes = useStyles();
   const dispatch = useDispatch();

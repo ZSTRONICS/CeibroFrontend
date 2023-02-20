@@ -40,7 +40,7 @@ function TaskDetailDrawer() {
 
     return (
         <div>
-            <Drawer onClose={handleClose} onMouseDown={handleMouseDown} open={false} 
+            <Drawer onClose={handleClose} onMouseDown={handleMouseDown} open={subTaskDetailDrawer}
             anchor="right" 
             className={classes.subTaskDrawer}
             disableAutoFocus
