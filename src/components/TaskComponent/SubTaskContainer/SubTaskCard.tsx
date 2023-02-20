@@ -332,7 +332,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
       {myState?.userState ? (
         <>
           <Grid
-            // columnSpacing={100}
             sx={{
               // maxWidth:"75%",
               // width:"60%",
@@ -378,13 +377,16 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
             <Grid
               sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
                 width: "200px",
                 display: "flex",
                 flexDirection: "column",
                 columnGap: "10px",
               }}
             >
-              <Grid
+              <Grid    
                 // mr={2}
                 item
                 sx={{
@@ -440,8 +442,26 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 </Box>
               </Grid>
 
-              <Grid item container>
-                <CBox sx={{ marginTop: "5px" }} display="flex" margin="auto">
+              <Grid
+                item
+                container
+                // mt={2.1}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-around",
+                  rowGap: "42px",
+                  // width: "20%",
+                }}
+              >
+                <CBox
+                  sx={{ marginTop: "5px" }}
+                  display="flex"
+                  // margin="auto"
+                  // padding="50px"
+                  // justifyContent="flex-end"
+                  //  width="60%"
+                >
                   {assignToMemberIds.includes(user._id) &&
                     myState?.userState === SubtaskState.Assigned && (
                       <>
