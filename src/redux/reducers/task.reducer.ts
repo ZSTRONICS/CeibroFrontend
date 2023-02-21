@@ -31,9 +31,11 @@ interface TaskReducerInt {
     taskAssignedToMembers: { label: string, id: string }[]
     getAllSubtaskRejection: RejectedComment[]
     isEditing:boolean
+    temporarySubtask:any
 }
 
 const intialStatue: TaskReducerInt = {
+    temporarySubtask:{},
     getAllSubtaskRejection: [],
     isEditing:false,
     loadingSubTaskRejection:false,
@@ -70,6 +72,13 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
             
+        case TASK_CONFIG.PUSH_TEMPORARY_SUBTASK_DATA:
+            console.log('PUSH_TEMPORARY_SUBTASK_DATA', action.payload)
+            
+            return {
+                ...state,
+                temporarySubtask: action.payload
+            }
         case TASK_CONFIG.PULL_TASK_FROM_STORE:
             const removeTaskId = action.payload
             state.allTask = state.allTask.filter(task => task._id !== removeTaskId)
