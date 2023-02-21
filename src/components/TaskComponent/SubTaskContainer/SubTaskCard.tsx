@@ -68,7 +68,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   let allMembers: string[] = [creator._id];
   try {
-    if (taskData && taskData.hasOwnProperty('admins')) {
+    if (taskData && taskData.hasOwnProperty("admins")) {
       allMembers = [...taskData.admins, ...allMembers];
     }
   } catch (e: any) {
@@ -142,7 +142,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
               sx={{
                 maxWidth: "60px",
                 textAlign: "center",
-                width: "60px",
+                width: "100%",
                 background: `${bgcolor}`,
                 color: "white",
                 fontWeight: "500",
@@ -230,7 +230,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
             )}
           </CustomStack>
 
-          {/*<Grid
+          {/* <Grid
             item
             sx={{
               display: "flex",
@@ -335,7 +335,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
           <Grid
             sx={{
               // maxWidth:"75%",
-              width:"100%",
+              width: "100%",
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
@@ -383,7 +383,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 columnGap: "10px",
               }}
             >
-              <Grid    
+              <Grid
                 // mr={2}
                 item
                 sx={{
@@ -629,7 +629,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   taskDetailContainer: {
-    padding: '15px 10px 10px 20px',
+    padding: "15px 10px 10px 20px",
   },
 }));
 
@@ -654,5 +654,5 @@ const TaskDescription = styled(Typography)`
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
-  text-align:justify;
+  text-align: justify;
 `;

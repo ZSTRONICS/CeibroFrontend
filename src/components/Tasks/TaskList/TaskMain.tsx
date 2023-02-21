@@ -114,6 +114,7 @@ const useStyles = makeStyles({
       color: "red",
       padding: "",
     },
+ 
   },
   activeConainer: {
     justifyContent: "space-between",
@@ -122,12 +123,14 @@ const useStyles = makeStyles({
       alignItems: "baseline !important",
       justifyContent: "inherit",
     },
+    "@media (max-width:600px)": {
+      height: "100vh",
+    },
   },
   taskMain: {
-    "@media(max-width:1024px)": {
-      overflow: "hidden",
-      // height: "100vh",
-
+    "@media(max-width:420px)": {
+      overflowX: "hidden",
     },
+   
   },
 });

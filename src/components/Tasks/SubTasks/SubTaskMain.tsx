@@ -11,8 +11,7 @@ import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
 
 const SubTaskMain = () => {
-
-const {allSubTaskList} = useSelector((state:RootState)=> state.task) 
+  const { allSubTaskList } = useSelector((state: RootState) => state.task);
 
   let xsPoint = 12;
   let mdPoint = 4;
@@ -51,14 +50,21 @@ const {allSubTaskList} = useSelector((state:RootState)=> state.task)
               <img src={assets.filterIcon} width="100%" alt="" />
             </Box>
           </Grid> */}
-          <Grid  item xs={12} pt={0}>
-        <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
-          <StatusMenu options= {options} />
-        </Paper>
-      </Grid>
+          <Grid item xs={12} pt={0}>
+            <Paper
+              className={classes.statusWrapper}
+              sx={{
+                display: "flex",
+                "&.MuiPaper-root": { padding: "7px 0 7px 5px" },
+              }}
+              elevation={0}
+              variant="outlined"
+            >
+              <StatusMenu options={options} />
+            </Paper>
+          </Grid>
 
           <SubTaskList results={allSubTaskList} />
-
         </Grid>
       </Box>
     </>
@@ -105,17 +111,22 @@ const useStyles = makeStyles({
     },
   },
   TaskWraper: {
-    padding: '0 10px',
+    // padding: "0 10px",
     "@media(max-width:1024px)": {
-      padding:'',
+      padding: "",
     },
   },
   activeConainer: {
     justifyContent: "space-between",
-    paddingLeft:'0 !important',
+    paddingLeft: "0 !important",
     "@media(max-width:1024px)": {
       alignItems: "baseline !important",
       justifyContent: "inherit",
     },
   },
+  // subtaskMain: {
+  //   "@media (max-width:600px)": {
+  //     // height: "100vh",
+  //   },
+  // },
 });
