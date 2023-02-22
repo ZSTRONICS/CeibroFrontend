@@ -342,8 +342,6 @@ const UploadDocs = (props: Props) => {
               label={"Cancel"}
               variant="contained"
               onClick={(e: any) => {
-
-                console.log(orignalFiles);
                 
                 //props.selectedAttachments = orignalFiles
                 handleCancel(e, props.selectedAttachments );

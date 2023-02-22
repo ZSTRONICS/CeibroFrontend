@@ -131,8 +131,6 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         case TASK_CONFIG.UPDATE_SUB_TASK_BY_ID:
-            console.log("Response", action.payload);
-            
             const updatedSubTak = action.payload
             const allSubTaskIndex = state.allSubTaskList.findIndex((subTask: any) => subTask._id === updatedSubTak._id)
             if (allSubTaskIndex > -1) {
