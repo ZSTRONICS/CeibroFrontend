@@ -1,3 +1,4 @@
+import { useRef, useEffect, useState } from "react";
 // mui-imports
 import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Paper } from "@mui/material";
@@ -19,10 +20,29 @@ const TaskMain = () => {
   let mdPoint = 4;
   let lgPoint = 3.2;
   const classes = useStyles();
-
+  const headerRef: any = useRef();
   // const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
   // console.log('localized', localized)
 
+  const [showTaskList, setShowTaskList] = useState<boolean>(false);
+  useEffect(() => {
+    if (headerRef.current.clientHeight) {
+      setTimeout(() => {
+        setShowTaskList(true);
+        // console.log("Updated");
+
+        // setHeight(ref.current.clientHeight)
+      }, 200);
+    }
+  });
+
+  const getHeaderHeight = () => {
+    //headerRef.current
+    //console.log(window.innerHeight, headerRef.current.clientHeight + 135);
+    let contentHeight =
+      window.innerHeight - (headerRef.current.clientHeight + 135);
+    return `${contentHeight}px`;
+  };
   const options = [
     {
       title: "All",
@@ -50,7 +70,12 @@ const TaskMain = () => {
   return (
     <>
       <Box sx={{ flexGrow: 1 }} className={classes.taskMain}>
-        <Grid container spacing={1.7} className={classes.TaskWraper}>
+        <Grid
+          container
+          spacing={0.5}
+          className={classes.TaskWraper}
+          ref={headerRef}
+        >
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
             {/* <CDatePicker
@@ -91,11 +116,25 @@ const TaskMain = () => {
               <StatusMenu options={options} />
             </Paper>
           </Grid>
-          <Grid item xs={12}>
-            <TaskList />
-          </Grid>
         </Grid>
       </Box>
+
+      {showTaskList ? (
+        <Box>
+          <Grid
+            paddingTop={"20px"}
+            paddingBottom={"20px"}
+            maxHeight={getHeaderHeight}
+            sx={{ overflowY: "scroll" }}
+            item
+            xs={12}
+          >
+            <TaskList />
+          </Grid>
+        </Box>
+      ) : (
+        <div> Loading tasks</div>
+      )}
     </>
   );
 };
@@ -104,17 +143,25 @@ export default TaskMain;
 
 const useStyles = makeStyles({
   statusWrapper: {
-    "@media(max-width:1024px)": {
-      overflowX: "scroll",
-    },
+    // overflowX: "scroll",
+    // "@media(max-width:1024px)": {
+    // },
   },
+
+  // taskList: {
+  //   paddingTop: "10px",
+  //   overflowY: "scroll",
+  //   // "@media(max-width:1024px)": {
+
+  //   // },
+  // },
+
   TaskWraper: {
     // padding: '0 10px',
     "@media(max-width:1024px)": {
       color: "red",
       padding: "",
     },
- 
   },
   activeConainer: {
     justifyContent: "space-between",
@@ -124,13 +171,13 @@ const useStyles = makeStyles({
       justifyContent: "inherit",
     },
     "@media (max-width:600px)": {
-      height: "100vh",
+      height: "100%",
     },
   },
   taskMain: {
-    "@media(max-width:420px)": {
-      overflowX: "hidden",
-    },
-   
+    overflow: "hidden",
+    // "@media(max-width:420px)": {
+
+    // },
   },
 });

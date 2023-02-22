@@ -168,6 +168,7 @@ const useStyles = makeStyles((theme) => ({
   searchInputWraper: {
     "@media (max-width:600px)": {
       display: "none",
+      
     },
   },
   username: {

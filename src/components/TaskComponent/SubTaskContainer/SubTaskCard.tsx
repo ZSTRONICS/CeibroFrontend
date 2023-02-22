@@ -382,15 +382,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
             >
               {SubHeader()}
 
-              <Grid
-                item
-                container
-                // width="100%"
-              >
+              <Grid item container width="100%">
                 <Grid
                   item
                   sx={{
                     marginTop: "15px",
+                    width: "100%",
+                    maxWidth: "calc(100%-95%)",
                   }}
                 >
                   <TaskTitle className="ellipsis"> {title}</TaskTitle>
@@ -678,36 +676,36 @@ const useStyles = makeStyles((theme) => ({
   },
   actionIcons: {
     display: "flex",
-    // marginLeft: "12px",
-    // alignItems: "right",
+    marginLeft: "12px",
+    alignItems: "right",
   },
   subTaskContent: {
     "@media (max-width:1380px)": {
       display: "flex",
       flexWrap: "wrap",
-      maxWidth: "70%",
+      maxWidth: "38%",
       width: "100%",
     },
-    "@media (max-width:735px)": {
-      maxWidth: "20%",
+    "@media (max-width:745px)": {
+      maxWidth: "calc(100%-10%)",
       width: "100%",
     },
 
     "@media (min-width:1380px)": {
-      maxWidth: "80%",
+      maxWidth: "70%",
       width: "100%",
     },
   },
   subTaskActions: {
     "@media (max-width:1380px)": {
-      position: "sticky",
+      position: "static",
       marginRight: "0",
       paddingRight: "0",
       paddingLeft: "15px",
     },
   },
   cardContainer: {
-    marginTop: "-5px",
+    // marginTop: "-5px",
     alignItems: "center",
     "@media (max-width:371)": {
       border: "1px solid red",
@@ -721,24 +719,17 @@ const useStyles = makeStyles((theme) => ({
 const TaskTitle = styled(Typography)`
   font-weight: 700;
   font-size: 16px;
-  padding-bottom:7px;
+  padding-bottom: 7px;
   color: #000000;
-  max-width: 150px;
-   width: 100%;
-  //  '@media(maxWidth: 400px)' : {
-  //   width: '100%';
-  //   max-width:"150px"
-  // }
-
-}
-
+  max-width: calc(100%-80%);
+  width: 100%;
 `;
 const TaskDescription = styled(Typography)`
   font-weight: 500;
   font-size: 14px;
   color: #605c5c;
   // max-width: 950px;
-  // width: 100%;
+  width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

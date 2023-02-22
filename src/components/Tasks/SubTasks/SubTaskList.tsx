@@ -52,9 +52,9 @@ export default SubTaskList;
 
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
-    // width: "100%",
+    width: "100%",
     overflowX: "hidden",
-    height: "100%",
+    height: "70%",
     [theme.breakpoints.down("lg")]: {
       maxHeight: "calc(100vh - 100px)",
       // [theme.breakpoint.down('lg')]:{
@@ -67,11 +67,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.between(900, 1024)]: {
-      maxHeight: "calc(100vh - 50vh)",
+      maxHeight: "calc(100vh-50vh)",
     },
 
     [theme.breakpoints.down("xl")]: {
-      maxHeight: "calc(100vh - 33vh)",
+      maxHeight: "calc(100vh - 30vh)",
     },
   },
 }));
