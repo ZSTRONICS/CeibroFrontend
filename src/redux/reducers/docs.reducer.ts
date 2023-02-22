@@ -135,10 +135,17 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 showFileUploadPreview: previewerVal
             }
 
-        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED:
+        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED: 
             return {
                 ...state,
                 selectedFilesToBeUploaded: action.payload,
+            }
+
+        case DOCS_CONFIG.UPLAOD_FILES_NOW: 
+            return {
+                ...state,
+                selectedFilesToBeUploaded: action.payload,
+                uploadPendingFiles: true
             }
 
         case DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED:

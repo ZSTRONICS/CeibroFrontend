@@ -27,9 +27,65 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
   * **/
-export const getUniqueObjectsFromArr = (arr: any[]) => {
-  return arr.filter((obj, i, self) => self.findIndex(t => JSON.stringify(t) === JSON.stringify(obj)) === i);
+export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
+  let distinctArray: any = []
+  arr.forEach((member: any) => {
+    let addToArr = true
+    distinctArray.every((added: any) => {
+      if (added.id === member.id) {
+        addToArr = false
+        return false
+      }
+      return true
+    })
+    if (addToArr) {
+      distinctArray.push(member)
+    }
+  })
+  
+  return distinctArray
 }
+
+
+/**
+  * @param array pass the array of objects 
+  * @return Functino will return the unique objects
+  * **/
+export const getDistinctFromTwoArr = (arr: any[], arr2 :any[]) => {
+  let distinctArray: any = []
+  arr.forEach((member: any) => {
+    let addToArr = true
+    arr2.every((added: any) => {
+      if (added.id === member.id) {
+        addToArr = false
+        return false
+      }
+      return true
+    })
+    if (addToArr) {
+      distinctArray.push(member)
+    }
+  })
+
+
+  arr2.forEach((member: any) => {
+    let addToArr = true
+    arr.every((added: any) => {
+      if (added.id === member.id) {
+        addToArr = false
+        return false
+      }
+      return true
+    })
+    if (addToArr) {
+      distinctArray.push(member)
+    }
+  })
+  return distinctArray
+}
+
+
+
 
 /**
  * @param array the array must have _id
@@ -84,23 +140,23 @@ export const filesizes = (bytes: any) => {
 export const onlyUnique = (value: any, index: any, array: any) => {
   return array.indexOf(value) === index;
 }
-  // const dueDate = new Date().toLocaleDateString("de-DE", {
-  //   day: "numeric",
-  //   month: "numeric",
-  //   year: "numeric",
-  // });
+// const dueDate = new Date().toLocaleDateString("de-DE", {
+//   day: "numeric",
+//   month: "numeric",
+//   year: "numeric",
+// });
 
-export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv','.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf','.odt', '.ods', '.odp', '.odg', '.djvu','.keynote']
-export const MEDIA_EXT =['.jpg','.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav','.indd']
+export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv', '.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf', '.odt', '.ods', '.odp', '.odg', '.djvu', '.keynote']
+export const MEDIA_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
 
 /**
  * @param extensionKeys array of extension
  * @param dataSource array of object 
  * @return array of filtered data
  * **/
-export const FILTER_DATA_BY_EXT = (extensionKeys: string[],dataSource:any) => {
+export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => {
   let filesWithExtension: any = [];
-  if(extensionKeys.length===0){
+  if (extensionKeys.length === 0) {
     return dataSource
   }
   for (let object of dataSource) {

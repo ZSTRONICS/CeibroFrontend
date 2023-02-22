@@ -9,7 +9,10 @@ import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 import CButton from "components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import {getUniqueObjectsFromArr,} from "components/Utills/Globals/Common";
+import {
+  getUniqueObjectsFromArr,
+  getUserFormatedDataForAutoComplete,
+} from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 import { IconButton } from "@material-ui/core";
@@ -18,93 +21,187 @@ import UploadDocs from "components/uploadImage/UploadDocs";
 import { DOCS_CONFIG } from "config/docs.config";
 import { CustomBadge } from "components/TaskComponent/Tabs/TaskCard";
 import { TASK_CONFIG } from "config/task.config";
+import { SubtaskState } from "constants/interfaces/task.interface";
+import { AssignedTo } from "constants/interfaces/subtask.interface";
 
-export default function CreateSubTask({setSubTask,setFieldValue,values,}: any) {
-  const todayDate = moment(new Date()).format("DD-MM-YYYY");
+export default function CreateSubTask({
+  setSubTask,
+  values,
+  myState = "new",
+  isEditMode = false,
+}: any) {
+  const dispatch = useDispatch();
+
+  let defaultValues: any = values.subTask;
   const classes = useStyles();
-  const [doOnce, setDoOnce] = useState<boolean>(true);
   const [showDate, setShowDate] = useState<any>(new Date());
-  const [tempValue, setTempValues]= useState<any>({})
+  const localized = moment(defaultValues.dueDate, "DD-MM-YYYY").format(
+    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
+  );
+
+  const [selectedAttachments, setSelectedAttachments] = useState<any>({
+    moduleId: defaultValues._id,
+    moduleName: "SubTask",
+    files: [],
+  });
 
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
   );
-  const { selectedFilesToBeUploaded } = useSelector(
-    (state: RootState) => state.docs
-  );
-  const dispatch = useDispatch();
-  const [assignToList, setAssignToList] = useState<any>([
-    ...taskAssignedToMembers,
-  ]);
-  const { user } = useSelector((store: RootState) => store.auth);
 
-  const [imageAttach, setImageAttach]: any = useState(false);
+  const { user } = useSelector((store: RootState) => store.auth);
+  const [attachmentViewOpen, setAttachmentViewOpen]: any = useState(false);
   const { projectMembersOfSelectedTask, selectedTaskAdmins } = useSelector(
     (store: RootState) => store.task
+  );
+
+  const getAssignedToMembers = () => {
+    const assignToMember = defaultValues.assignedTo
+      .map((member: AssignedTo) => member.members)
+      .flat(1);
+    return getUserFormatedDataForAutoComplete(assignToMember);
+  };
+
+  const [assignToList, setAssignToList] = useState<any>(
+    isEditMode === true ? getAssignedToMembers() : [...taskAssignedToMembers]
   );
   const uniqueMembers = getUniqueObjectsFromArr([
     ...assignToList,
     ...projectMembersOfSelectedTask,
   ]);
 
-const handleOpenAttachmentModal = (e: any)=>{
-  e.stopPropagation();
-  setImageAttach((prev:boolean)=> !prev)
-}
+  const handleOpenCloseAttachmentModal = (e: any) => {
+    e.stopPropagation();
+    setAttachmentViewOpen((value: boolean) => !value);
+  };
 
-  console.log('tempValue', tempValue)
-  const handleImageAttachment = (e: any) => {
-    let doOne = true
+  const handleCloseModal = async (e: any) => {
     e.stopPropagation();
-    if(doOne){
-      setTempValues(values)
-      // dispatch({
-      //   type: TASK_CONFIG.PUSH_TEMPORARY_SUBTASK_DATA,
-      //   payload:values
-      // });
-      doOne= false
-    }
-    console.log('dispatch', imageAttach);
-    handleOpenAttachmentModal(e)
-  }
-  const handleCloseModal = (e: any) => {
-    e.stopPropagation();
-      dispatch({
-        type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
-      });
     setSubTask(false);
     setAssignToList([]);
+    // dispatch({
+    //   type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
+    // });
   };
 
-  const assignedListHandler = (members: string[]) => {
-    const assignedList = [];
-    assignedList.push({ addedBy: user._id, members: members });
-    return assignedList;
+  const assignedToChangeHandler = (members: []) => {
+    let found = false;
+
+    defaultValues.assignedTo[0].members = [...members];
+
+    // defaultValues.assignedTo.every((assignee: any, index: any) => {
+    //   if (isEditMode === false) {
+    //     if (String(assignee.addedBy) === String(user._id)) {
+    //       found = true;
+    //       defaultValues.assignedTo[index].members = members;
+    //       return false;
+    //     }
+    //   } else {
+    //     //since we recieve object from server
+    //     if (String(assignee.addedBy._id) === String(user._id)) {
+    //       found = true;
+    //       defaultValues.assignedTo[index].members = members;
+    //       return false;
+    //     }
+    //   }
+    //   return true;
+    // });
+
+    // if (isEditMode === true) {
+    //   defaultValues.assignedTo = [{ addedBy: user._id, members: members }];
+    // }
+
+    // if (found === false) {
+    //   defaultValues.assignedTo = [{ addedBy: user._id, members: members }];
+    // }
   };
 
-  if (doOnce) {
-    setFieldValue(
-      "assignedTo",
-      assignedListHandler(assignToList.map((item: any) => item.id))
-    );
-    setFieldValue("dueDate", todayDate);
-    setDoOnce(false);
-  }
+  const setAssignToData = () => {
+    if (defaultValues.assignedTo.length > 0) {
+      let payload = {
+        addedBy: "",
+        members: defaultValues.assignedTo[0].members,
+      };
+
+      if (typeof defaultValues.assignedTo[0].addedBy === typeof "") {
+        payload.addedBy = defaultValues.assignedTo[0].addedBy;
+      } else {
+        if (defaultValues.assignedTo[0].addedBy._id === user._id) {
+          payload.addedBy = defaultValues.assignedTo[0].addedBy._id;
+        }
+      }
+
+      defaultValues.assignedTo[0] = payload;
+    }
+  };
+
+  const setSubTaskUserStates = (isDraftState: boolean = false) => {
+    let stateToPush: any = [];
+    let adminState = "assigned";
+    let membersList: any[] = [];
+
+    if (isDraftState) {
+
+      defaultValues.assignedTo[0].members.forEach((member: any) => {
+        if (member === user._id) {
+          adminState = "accepted";
+          stateToPush.push({
+            userId: user._id,
+            userState: "draft",
+          });
+        } else {
+          stateToPush.push({
+            userId: member,
+            userState: "assigned",
+          });
+        }
+        membersList.push(member);
+      });
+
+    } else {
+      defaultValues.assignedTo[0].members.forEach((member: any) => {
+        if (member === user._id) {
+          adminState = "accepted";
+          stateToPush.push({
+            userId: user._id,
+            userState: "accepted",
+          });
+        } else {
+          stateToPush.push({
+            userId: member,
+            userState: "assigned",
+          });
+        }
+        membersList.push(member);
+      });
+    }
+
+    selectedTaskAdmins.forEach((admin) => {
+      if (!membersList.includes(String(admin.id))) {
+        stateToPush.push({
+          userId: admin.id,
+          userState: adminState,
+        });
+      }
+    });
+
+    defaultValues.state = stateToPush;
+  };
 
   const AttachmentsToolTip = () => {
-    return (
+    return selectedAttachments.files.length > 0 ? (
       <>
-        {Array.from(selectedFilesToBeUploaded.files).map(
-          (file: any, index: any) => {
-            return (
-              <div
-                style={{ textTransform: "capitalize" }}
-                key={file.name}
-              >{`${file.name}\n `}</div>
-            );
-          }
-        )}
+        {Array.from(selectedAttachments.files).map((file: any, index: any) => {
+          return (
+            <div
+              style={{ textTransform: "capitalize" }}
+              key={file.name}
+            >{`${file.name}\n `}</div>
+          );
+        })}
       </>
+    ) : (
+      <></>
     );
   };
 
@@ -114,13 +211,13 @@ const handleOpenAttachmentModal = (e: any)=>{
         <Grid item xs={12} md={12}>
           <CDatePicker
             required
-            value={showDate}
+            value={isEditMode === true ? localized : showDate}
             id="date"
             name="dueDate"
             onChange={(e: any) => {
               setShowDate(e);
               const currentDate = moment(e).format("DD-MM-YYYY");
-              setFieldValue("dueDate", currentDate);
+              defaultValues.dueDate = currentDate;
             }}
           />
         </Grid>
@@ -130,12 +227,13 @@ const handleOpenAttachmentModal = (e: any)=>{
             size="small"
             name="taskTitle"
             fullWidth
+            defaultValue={defaultValues.title}
             id="outlined-basic"
             label="Sub task title"
             placeholder="Enter sub-task title"
             variant="outlined"
-            onChange={(e) => {
-              setFieldValue("title", e.target.value);
+            onBlur={(e) => {
+              defaultValues.title = e.target.value;
             }}
           />
         </Grid>
@@ -176,14 +274,19 @@ const handleOpenAttachmentModal = (e: any)=>{
             filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
+            value={assignToList}
             options={uniqueMembers}
             getOptionLabel={(option: any) => option.label}
-            value={assignToList}
             size="small"
             onChange={(e, newValue) => {
               setAssignToList([...newValue]);
-              const memberId = newValue.map((item: any) => String(item.id));
-              setFieldValue("assignedTo", assignedListHandler(memberId));
+              if (newValue.length === 0) {
+                assignedToChangeHandler([]);
+              } else {
+                const memberIds: any = newValue.map((item: any) => item.id);
+                console.log("Adding members to List => ", memberIds);
+                assignedToChangeHandler(memberIds);
+              }
             }}
             renderInput={(params) => (
               <TextField
@@ -207,9 +310,10 @@ const handleOpenAttachmentModal = (e: any)=>{
             style={{ padding: "10px 10px" }}
             variant="standard"
             name="description"
+            defaultValue={defaultValues.description}
             className={classes.textArea}
-            onChange={(e) => {
-              setFieldValue("description", e.target.value);
+            onBlur={(e) => {
+              defaultValues.description = e.target.value;
             }}
           />
 
@@ -229,7 +333,7 @@ const handleOpenAttachmentModal = (e: any)=>{
             <CBox
               display="flex"
               alignItems="center"
-              onClick={handleImageAttachment}
+              onClick={handleOpenCloseAttachmentModal}
             >
               <CBox className={classes.switch}>
                 <label style={{ color: "#0076C8" }}>Add Attachments</label>
@@ -244,7 +348,11 @@ const handleOpenAttachmentModal = (e: any)=>{
                 color="primary"
                 badgeContent={
                   <Tooltip title={AttachmentsToolTip()}>
-                    <div>{selectedFilesToBeUploaded.files.length}</div>
+                    {selectedAttachments.files.length > 0 ? (
+                      <div>{selectedAttachments.files.length}</div>
+                    ) : (
+                      <div>{0}</div>
+                    )}
                   </Tooltip>
                 }
               ></CustomBadge>
@@ -260,16 +368,30 @@ const handleOpenAttachmentModal = (e: any)=>{
         {/* <CreateSubTaskAdvanceOption /> */}
         <CBox display="flex" width="100%" mt={6.2} mb={1}>
           <CBox className={classes.btnDraft}>
+            {!isEditMode && (
             <CButton
               type="submit"
               variant="outlined"
               styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
               label={"Save as draft"}
               onClick={() => {
-                values.state.push({ userId: user._id, userState: "draft" });
-                values.state = getUniqueObjectsFromArr(values.state);
+                defaultValues.state = [{ userId: user._id, userState: "draft" }]
+                defaultValues.files = selectedAttachments;
               }}
             />
+            )}
+            {isEditMode && myState === SubtaskState.Draft && (
+              <CButton
+                type="submit"
+                variant="contained"
+                styles={{ color: "white", fontSize: 12, fontWeight: "bold" }}
+                label={"Update draft"}
+                onClick={() => {
+                  defaultValues.files = selectedAttachments;
+                  setAssignToData();
+                }}
+              />
+            )}
           </CBox>
           <div
             style={{
@@ -278,51 +400,115 @@ const handleOpenAttachmentModal = (e: any)=>{
               justifyContent: "flex-end",
             }}
           >
-            <CButton
-              type="submit"
-              variant="contained"
-              styles={{
-                color: "#fff",
-                fontSize: 12,
-                fontWeight: "bold",
-                marginRight: 15,
-              }}
-              label={"Create Subtask"}
-              onClick={(e:any) => {
-                values.state = [];
-                let adminState = "assigned";
-                if (values.assignedTo.length > 0) {
-                  let membersList: any[] = [];
-                  values.assignedTo[0].members.forEach((member: any) => {
-                    if (member === user._id) {
-                      adminState = "accepted";
-                      values.state.push({
-                        userId: user._id,
-                        userState: "accepted",
-                      });
-                    } else {
-                      values.state.push({
-                        userId: member,
-                        userState: "assigned",
-                      });
-                    }
-                    membersList.push(member);
-                  });
+            {!isEditMode && (
+              <CButton
+                type="submit"
+                variant="contained"
+                styles={{
+                  color: "#fff",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                  marginRight: 15,
+                }}
+                label={"Create Subtask"}
+                onClick={(e: any) => {
+                  defaultValues.files = selectedAttachments;
+                  let stateToPush: any = [];
+                  let adminState = "assigned";
+                  if (defaultValues.assignedTo.length > 0) {
+                    let membersList: any[] = [];
+                    defaultValues.assignedTo[0].members.forEach(
+                      (member: any) => {
+                        if (member === user._id) {
+                          adminState = "accepted";
+                          stateToPush.push({
+                            userId: user._id,
+                            userState: "accepted",
+                          });
+                        } else {
+                          stateToPush.push({
+                            userId: member,
+                            userState: "assigned",
+                          });
+                        }
+                        membersList.push(member);
+                      }
+                    );
+                    selectedTaskAdmins.forEach((admin) => {
+                      if (!membersList.includes(String(admin.id))) {
+                        stateToPush.push({
+                          userId: admin.id,
+                          userState: adminState,
+                        });
+                      }
+                    });
+                  }
 
-                  selectedTaskAdmins.forEach((admin) => {
-                    if (!membersList.includes(String(admin.id))) {
-                      values.state.push({
-                        userId: admin.id,
-                        userState: adminState,
-                      });
-                    }
-                  });
-                }
+                  defaultValues.state = stateToPush;
+                }}
+              />
+            )}
+            {isEditMode && myState !== SubtaskState.Draft && (
+              <CButton
+                type="submit"
+                variant="contained"
+                styles={{
+                  color: "#fff",
+                  fontSize: 12,
+                  fontWeight: "bold",
+                  marginRight: 15,
+                }}
+                label={"Update Subtask"}
+                onClick={(e: any) => {
+                  let stateToPush: any = [];
+                  let adminState = "assigned";
+                  if (defaultValues.assignedTo.length > 0) {
+                    let membersList: any[] = [];
+                    defaultValues.assignedTo[0].members.forEach(
+                      (member: any) => {
+                        if (member === user._id) {
+                          adminState = "accepted";
+                          stateToPush.push({
+                            userId: user._id,
+                            userState: "accepted",
+                          });
+                        } else {
+                          stateToPush.push({
+                            userId: member,
+                            userState: "assigned",
+                          });
+                        }
+                        membersList.push(member);
+                      }
+                    );
 
-                values.state = getUniqueObjectsFromArr(values.state);
-                handleCloseModal(e)
-              }}
-            />
+                    selectedTaskAdmins.forEach((admin) => {
+                      if (!membersList.includes(String(admin.id))) {
+                        stateToPush.push({
+                          userId: admin.id,
+                          userState: adminState,
+                        });
+                      }
+                    });
+                  }
+
+                  defaultValues.state = stateToPush;
+                }}
+              />
+            )}
+            {isEditMode && myState === SubtaskState.Draft && (
+              <CButton
+                type="submit"
+                variant="contained"
+                styles={{ color: "white", fontSize: 12, fontWeight: "bold" }}
+                label={"Assign"}
+                onClick={() => {
+                  setAssignToData();
+                  setSubTaskUserStates();
+                }}
+              />
+            )}
+            &nbsp; &nbsp;
             <CButton
               onClick={handleCloseModal}
               variant="contained"
@@ -339,15 +525,21 @@ const handleOpenAttachmentModal = (e: any)=>{
       </Grid>
       <CustomModal
         showCloseBtn={false}
-        isOpen={imageAttach}
-        handleClose={(e:any)=> handleOpenAttachmentModal(e)}
+        isOpen={attachmentViewOpen}
+        handleClose={(e: any) => {
+          handleOpenCloseAttachmentModal(e);
+        }}
         title={"Attachments"}
         children={
           <UploadDocs
+            selectedAttachments={selectedAttachments}
             showUploadButton={false}
             moduleType={"SubTask"}
             moduleId={""}
-            handleClose={()=>setImageAttach((prev:boolean)=> !prev)}
+            handleClose={(value: any) => {
+              setSelectedAttachments(value);
+              setAttachmentViewOpen((prev: boolean) => !prev);
+            }}
           />
         }
       />

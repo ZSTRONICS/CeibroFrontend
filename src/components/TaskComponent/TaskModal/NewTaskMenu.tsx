@@ -212,7 +212,7 @@ function NewTaskMenu(props: any) {
           multiline
           rows={4}
           defaultValue=""
-          onChange={(e) => {
+          onBlur={(e) => {
             props.setFieldValue("description", e.target.value);
           }}
         />

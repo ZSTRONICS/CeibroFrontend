@@ -22,6 +22,8 @@ import { TaskInterface } from "constants/interfaces/task.interface";
 import { isTrue } from "components/Utills/Globals/Common";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { DOCS_CONFIG } from "config/docs.config";
+import { TASK_CONFIG } from "config/task.config";
+import moment from "moment-timezone";
 
 interface Props {
   task: TaskInterface;
@@ -39,8 +41,21 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
   const isAdmin = isTrue(task.admins, user?._id);
 
   const handleSubmit = (values: any) => {
-    const { dueDate, title, taskId, assignedTo, creator, state, description } =
-      values;
+    const {
+      dueDate,
+      title,
+      taskId,
+      assignedTo,
+      creator,
+      state,
+      description,
+      files,
+    } = values.subTask;
+
+    console.log("Create subtask =>", values.subTask);
+
+    setSubTask(false);
+
     const payload = {
       dueDate,
       taskId,
@@ -50,6 +65,14 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
       state,
       description,
     };
+
+    if (files.files.length > 0) {
+      dispatch({
+        type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
+        payload: files,
+      });
+    }
+
     dispatch(
       createSubTask({
         body: payload,
@@ -64,7 +87,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         showErrorToast: true,
         onFailAction: (err) => {
           toast.error("Failed to create subtask", err);
-        }
+        },
       })
     );
   };
@@ -72,48 +95,50 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
   const AddSubtask = () => {
     return (
       <Formik
+        enableReinitialize={false}
         initialValues={{
-          dueDate: "",
-          title: "",
-          taskId: String(task._id),
-          assignedTo: [],
-          creator: user?._id,
-          doneImageRequired: false,
-          doneCommentsRequired: false,
-          description: "",
-          state: [{ userId: user._id, userState: "draft" }],
+          subTask: {
+            dueDate: moment(new Date()).format("DD-MM-YYYY"),
+            title: "",
+            taskId: String(task._id),
+            assignedTo: [
+              {
+                addedBy: user._id,
+                members: task.assignedTo.map((member) => member._id),
+              },
+            ],
+            creator: user?._id,
+            description: "",
+            state: [],
+            files: {},
+          },
         }}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched, values, setFieldValue }) => (
-          <Form>
-            <CreateSubTask
-              setSubTask={setSubTask}
-              setFieldValue={setFieldValue}
-              values={values}
-            />
-          </Form>
-        )}
+        {({ errors, touched, values, setFieldValue }) => {
+          return (
+            <Form>
+              <CreateSubTask setSubTask={setSubTask} values={values} />
+            </Form>
+          );
+        }}
       </Formik>
     );
   };
 
-
   const getSubtaskStateCount = (checkState: any) => {
-    let count = 0
-    subtasks.forEach(subtask => {
-      subtask.state.every(state => {
+    let count = 0;
+    subtasks.forEach((subtask) => {
+      subtask.state.every((state) => {
         if (state.userId === user._id && state.userState === checkState) {
-          count += 1
-          return false
+          count += 1;
+          return false;
         }
-        return true
-      })
-    })
-    return count
-  }
-
-
+        return true;
+      });
+    });
+    return count;
+  };
 
   const options = [
     {
@@ -122,27 +147,27 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
     },
     {
       title: "Assigned",
-      count: getSubtaskStateCount('assigned')
+      count: getSubtaskStateCount("assigned"),
     },
     {
       title: "Accepted",
-      count: getSubtaskStateCount('accepted')
+      count: getSubtaskStateCount("accepted"),
     },
     {
       title: "Ongoing",
-      count: getSubtaskStateCount('ongoing')
+      count: getSubtaskStateCount("ongoing"),
     },
     {
       title: "Rejected",
-      count: getSubtaskStateCount('rejected')
+      count: getSubtaskStateCount("rejected"),
     },
     {
       title: "Done",
-      count: getSubtaskStateCount('done')
+      count: getSubtaskStateCount("done"),
     },
     {
       title: "Draft",
-      count: getSubtaskStateCount('draft')
+      count: getSubtaskStateCount("draft"),
     },
   ];
 
@@ -201,11 +226,11 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         showCloseBtn={false}
         title="New Subtask"
         isOpen={subTask}
-        handleClose={() => {
+        handleClose={async () => {
+          setSubTask(false);
           dispatch({
-            type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+            type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
           });
-          setSubTask(false)
         }}
         children={<AddSubtask />}
       />

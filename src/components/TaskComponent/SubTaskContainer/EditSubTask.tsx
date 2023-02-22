@@ -29,7 +29,7 @@ import { styled } from "@mui/system";
 
 // import colors from "assets/colors";
 
-function EditSubTask() {
+function EditSubTaskDetails() {
   return (
     <>
       <ListSubheader
@@ -120,7 +120,7 @@ function EditSubTask() {
   );
 }
 
-export default EditSubTask;
+export default EditSubTaskDetails;
 
 const SubtaskState = styled(Box)`
   color: #ffffff;

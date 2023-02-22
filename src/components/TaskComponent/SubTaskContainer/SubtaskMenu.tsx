@@ -13,149 +13,167 @@ import {
 // components
 import assets from "assets/assets";
 import CustomModal from "components/Modal";
-import EditSubTask from "./EditSubTask";
+import EditSubTaskDetails from "./EditSubTask";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import CreateSubTask from "components/Tasks/SubTasks/CreateSubTask";
 import { Formik, Form } from "formik";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
+import { patchSubTaskById } from "redux/action/task.action";
+import { toast } from "react-toastify";
+import { DOCS_CONFIG } from "config/docs.config";
+import { TASK_CONFIG } from "config/task.config";
 
 interface Props {
-    subTaskDetail: SubtaskInterface;
-  }
+  subTaskDetail: SubtaskInterface;
+}
 
-const SubTaskMenu = ({subTaskDetail}:Props) => {
+const SubTaskMenu = ({ subTaskDetail }: Props) => {
+  const dispatch = useDispatch();
+  // let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
+  //   (state: RootState) => state.task.allSubTaskOfTask
+  // );
 
-    let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask);
+  let temporarySubtask = useSelector(
+    (state: RootState) => state.task.temporarySubtask
+  );
 
-    const [openEditModal, setOpenEditModal] = useState(false);
-    const [anchorElMember, setAnchorElMember] = React.useState<null | HTMLElement>(null);
-    const [subTask, setSubTask]= useState(false)
-    const { user } = useSelector((store: RootState) => store.auth);
-    const {state}= subTaskDetail
-    
-    const handleSubmit = (values: any) => {
-        const { dueDate, title, taskId, assignedTo, creator, state, description } =
-          values;
-        const payload = {
-          dueDate,
-          taskId,
-          title,
-          assignedTo,
-          creator,
-          state,
-          description,
-        };
-        // dispatch(
-        //   createSubTask({
-        //     body: payload,
-        //     success: (res) => {
-        //       if (res?.status >= 400) {
-        //         toast.error("Failed to create subtask", res?.message);
-        //       } else if (res?.status === 201) {
-        //         setSubTask(false);
-        //       }
-        //     },
-        //     // finallyAction: () => {
-        //     // dispatch(getAllSubTaskList());
-        //     // },
-        //     showErrorToast: true,
-        //     onFailAction: (err) => {
-        //       toast.error("Failed to create subtask", err);
-        //     },
-        //   })
-        // );
-      };
+  temporarySubtask.taskId = subTaskDetail.taskId;
+  temporarySubtask.assignedTo = subTaskDetail.assignedTo;
+  temporarySubtask.description = subTaskDetail.description;
+  temporarySubtask.dueDate = subTaskDetail.dueDate;
+  temporarySubtask.title = subTaskDetail.title;
+  temporarySubtask.state = subTaskDetail.state;
+  temporarySubtask._id = subTaskDetail._id;
 
-      const EditSubTask =() => {
-        return (
-          <Formik
-            initialValues={{
-              dueDate: "",
-              title: "",
-              taskId: String(subTaskOfTask.task._id),
-              assignedTo: [],
-              creator: user?._id,
-              doneImageRequired: false,
-              doneCommentsRequired: false,
-              description: "",
-              state: [{ userId: user._id, userState: "draft" }],
-            }}
-            onSubmit={handleSubmit}
-          >
-            {({ errors, touched, values, setFieldValue }) => (
-              <Form>
-                <CreateSubTask
-                  setSubTask={setSubTask}
-                  setFieldValue={setFieldValue}
-                  values={values}
-                />
-              </Form>
-            )}
-          </Formik>
-        );
-      };
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [anchorElMember, setAnchorElMember] =
+    React.useState<null | HTMLElement>(null);
+  const [subTask, setSubTask] = useState(false);
+  const { user } = useSelector((store: RootState) => store.auth);
+  const { state } = subTaskDetail;
+
+  const myState = state.find(
+    (localState) => String(localState.userId) === String(user._id)
+  )?.userState;
+
+  const handleSubmit = (values: any) => {
+    const { dueDate, title, assignedTo, state, description, files, _id } =
+      values.subTask;
+
+    const payload = {
+      dueDate,
+      title,
+      assignedTo,
+      state,
+      description,
+    };
+
+    if (files.files.length > 0) {
+      dispatch({
+        type: DOCS_CONFIG.UPLAOD_FILES_NOW,
+        payload: files,
+      });
+    }
+
+    dispatch(
+      patchSubTaskById({
+        body: payload,
+        other: _id,
+        success: (res: any) => {
+          if (res.status === 200) {
+            setSubTask(false);
+
+            dispatch({
+              type: TASK_CONFIG.UPDATE_SUB_TASK_BY_ID,
+              payload: res.data.newSubtask,
+            });
+          }
+          toast.success("Subtask updated");
+        },
+        onFailAction: () => {
+          toast.error("Failed to updated subtask!");
+        },
+      })
+    );
+  };
+
+  const EditSubTask = (subTask: any) => {
+    return (
+      <Formik
+        enableReinitialize={false}
+        initialValues={{ ...subTask }}
+        onSubmit={handleSubmit}
+      >
+        {({ errors, touched, values, setFieldValue }) => (
+          <Form>
+            <CreateSubTask
+              setSubTask={setSubTask}
+              values={values}
+              myState={myState}
+              isEditMode={true}
+            />
+          </Form>
+        )}
+      </Formik>
+    );
+  };
 
   const handleOpenEditMemberMenu = (e: React.MouseEvent<HTMLElement>) => {
-    
     e.stopPropagation();
     setAnchorElMember(e.currentTarget);
   };
 
   const handleCloseMenu = (event: any) => {
-      event.stopPropagation();
+    event.stopPropagation();
     setAnchorElMember(null);
   };
 
   const handleCloseModal = () => {
-      setOpenEditModal((show) => !show);
-    };
-  const handleCloseEditModal = (e:any) => {
-    e.stopPropagation()
-    setSubTask(false)
-    };
+    setOpenEditModal((show) => !show);
+  };
+  const handleCloseEditModal = (e: any) => {
+    e.stopPropagation();
+    setSubTask(false);
+  };
 
-    const handleEditSubTaskInDraft = (e: any) => {
-      e.stopPropagation();
-      setAnchorElMember(null);
-      setSubTask(true)
-    };
+  const handleEditSubTaskInDraft = (e: any) => {
+    e.stopPropagation();
+    setAnchorElMember(null);
+    setSubTask(true);
+  };
 
-    const handleEditDetails = (e: any) => {
-      e.stopPropagation();
-      setAnchorElMember(null);
-      setOpenEditModal((show) => !show);
-    };
+  const handleEditDetails = (e: any) => {
+    e.stopPropagation();
+    setAnchorElMember(null);
+    setOpenEditModal((show) => !show);
+  };
 
-    const handleDeleteSubTask = (e: any) => {
-      e.stopPropagation();
-      setAnchorElMember(null);
-    };
+  const handleDeleteSubTask = (e: any) => {
+    e.stopPropagation();
+    setAnchorElMember(null);
+  };
 
-    const handleEditSubTaskInAssigned = (e: any) => {
-      e.stopPropagation();
-      setAnchorElMember(null);
-      setSubTask(true)
-    };
+  const handleEditSubTaskInAssigned = (e: any) => {
+    e.stopPropagation();
+    setAnchorElMember(null);
+    setSubTask(true);
+  };
 
-  const myState = state.find( (localState) => String(localState.userId) === String(user._id))?.userState;
-
-  // console.log((myState !== SubtaskState.Done))
-  
   return (
     <Box>
       <Box sx={{ flexGrow: 0, color: "primary" }}>
         <IconButton
           onClick={handleOpenEditMemberMenu}
           disableRipple
-          sx={{padding:'0px 10px' }}
+          sx={{ padding: "0px 10px" }}
         >
           <assets.MoreVertOutlinedIcon />
         </IconButton>
         <Menu
-         MenuListProps={{ sx: { py: 0 } }}
+          MenuListProps={{ sx: { py: 0 } }}
           sx={{ mt: "45px" }}
           id="menu-appbar"
           anchorEl={anchorElMember}
@@ -171,141 +189,146 @@ const SubTaskMenu = ({subTaskDetail}:Props) => {
           open={Boolean(anchorElMember)}
           onClose={handleCloseMenu}
         >
-{/* edit and delete subtask */}
+          {/* edit and delete subtask */}
 
-    {(myState === SubtaskState.Draft)&&
-    <Box>
-        <MenuItem 
-        onClick={handleEditSubTaskInDraft}
-        disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-            //   sx={{ color: "#0076c8"}} 
-              
-            >
-              Edit subtask
-            </SubTaskButton>
-          </MenuItem>
-          <MenuItem disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-              sx={{ color: "#FA0808" }} 
-              onClick={handleDeleteSubTask}
-            >
-              Delete subtask
-            </SubTaskButton>
-          </MenuItem>
-    </Box>      
-    }
-{/* edit details, edit subtask, and delete subtask */}
+          {myState === SubtaskState.Draft && (
+            <Box>
+              <MenuItem
+                onClick={handleEditSubTaskInDraft}
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton
+                  textAlign="center"
+                  //   sx={{ color: "#0076c8"}}
+                >
+                  Edit subtask
+                </SubTaskButton>
+              </MenuItem>
+              <MenuItem
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton
+                  textAlign="center"
+                  sx={{ color: "#FA0808" }}
+                  onClick={handleDeleteSubTask}
+                >
+                  Delete subtask
+                </SubTaskButton>
+              </MenuItem>
+            </Box>
+          )}
+          {/* edit details, edit subtask, and delete subtask */}
 
-    {(myState === SubtaskState.Assigned)&&
-        <Box>
-        <MenuItem 
-       //  onClick={handleEditSubTaskInAssigned}
-        disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-            //   sx={{ color: "#0076c8" }} 
-             
+          {myState === SubtaskState.Assigned && (
+            <Box>
+              <MenuItem
+                //  onClick={handleEditSubTaskInAssigned}
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton
+                  textAlign="center"
+                  //   sx={{ color: "#0076c8" }}
+                >
+                  Edit subtask
+                </SubTaskButton>
+              </MenuItem>
+              <MenuItem
+                //  onClick={handleEditDetails}
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton
+                  textAlign="center"
+                  //   sx={{ color: "#0076c8" }}
+                >
+                  Edit details
+                </SubTaskButton>
+              </MenuItem>
+              <MenuItem
+                //   onClick={handleDelteSubtask}
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton textAlign="center" sx={{ color: "#FA0808" }}>
+                  Delete subtask
+                </SubTaskButton>
+              </MenuItem>
+            </Box>
+          )}
+          {(myState === SubtaskState.Accepted ||
+            myState === SubtaskState.Ongoing) && (
+            <MenuItem
+              disableRipple
+              sx={{
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                },
+              }}
             >
-              Edit subtask
-            </SubTaskButton>
-          </MenuItem>
-        <MenuItem
-       //  onClick={handleEditDetails}
-        disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-            //   sx={{ color: "#0076c8" }} 
-             
-            >
-              Edit details
-            </SubTaskButton>
-          </MenuItem>
-          <MenuItem 
-          //   onClick={handleDelteSubtask}
-          disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-              sx={{ color: "#FA0808" }} 
-            
-            >
-              Delete subtask
-            </SubTaskButton>
-          </MenuItem>
-    </Box>      
-    }
-          {((myState === SubtaskState.Accepted)||(myState === SubtaskState.Ongoing))
-          &&<MenuItem disableRipple sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <SubTaskButton
-              textAlign="center"
-            //   sx={{ color: "#0076c8" }} 
-             // onClick={handleEditDetails}
-            >
-              Edit Details
-            </SubTaskButton>
-          </MenuItem>}
+              <SubTaskButton
+                textAlign="center"
+                //   sx={{ color: "#0076c8" }}
+                // onClick={handleEditDetails}
+              >
+                Edit Details
+              </SubTaskButton>
+            </MenuItem>
+          )}
         </Menu>
       </Box>
       <Box>
-     {openEditModal&&   <CustomModal
-        //   showBottomBtn={false}
-          isOpen={openEditModal}
-          handleClose={handleCloseModal}
-          showCloseBtn={true}
-          title="Edit Details"
-          children={<EditSubTask />}
-        />
-}
+        {/* {openEditModal && (
+          <CustomModal
+            //   showBottomBtn={false}
+            isOpen={openEditModal}
+            handleClose={handleCloseModal}
+            showCloseBtn={true}
+            title="Edit Details"
+            children={<EditSubTask />}
+          />
+        )} */}
       </Box>
-    {subTask&& <CustomModal
-            showCloseBtn={false}
-            title="Edit Subtask"
-            isOpen={subTask}
-            handleClose={(e:any)=>handleCloseEditModal(e)}
-            children={<EditSubTask/>}
-        />}
+      {subTask && (
+        <CustomModal
+          showCloseBtn={false}
+          title="Edit Subtask"
+          isOpen={subTask}
+          handleClose={(e: any) => handleCloseEditModal(e)}
+          children={<EditSubTask subTask={temporarySubtask} />}
+        />
+      )}
     </Box>
   );
 };
 export default SubTaskMenu;
 
-
-const SubTaskButton= styled(Typography)`
-font-size: 14px;
-color: #0076C8;
-font-weight: 500;
-line-height: 150%;
-text-transform: capitalize;
-`
+const SubTaskButton = styled(Typography)`
+  font-size: 14px;
+  color: #0076c8;
+  font-weight: 500;
+  line-height: 150%;
+  text-transform: capitalize;
+`;

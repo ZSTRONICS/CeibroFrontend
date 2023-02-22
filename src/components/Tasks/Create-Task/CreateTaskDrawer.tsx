@@ -44,7 +44,7 @@ const CreateTaskDrawer = () => {
           />
           <Grid container sx={{ height: "100vh" }}>
             <Grid item md={3.5} sx={{ background: "white" }}>
-              <TaskDrawerMenu taskMenue={subTaskOfTask.task} />
+              <TaskDrawerMenu taskMenue={subTaskOfTask.task} subtasks={subTaskOfTask.subtasks} />
             </Grid>
             <Grid item md={8.5} className={classes.bodyWrapper}>
               <CreateTaskBody

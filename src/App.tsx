@@ -83,7 +83,7 @@ const App: React.FC<MyApp> = () => {
     const filesToUpload = selectedFilesToBeUploaded.files
     const moduleType = selectedFilesToBeUploaded.moduleName
     const moduleId = selectedFilesToBeUploaded.moduleId
-
+    console.log('selectedFilesToBeUploaded', selectedFilesToBeUploaded.files.length)
     //console.log("Uploading pending Files => ", filesToUpload, moduleId, moduleType);
 
     Array.from(filesToUpload).forEach((file: any) => {

@@ -19,30 +19,28 @@ import { RootState } from "redux/reducers";
 import "./upload.css";
 
 interface Props {
+  selectedAttachments?: {
+    moduleId: "";
+    moduleName: "SubTask";
+    files: [];
+  } | any;
   showUploadButton: boolean;
   moduleType: string;
   moduleId: string;
-  handleClose: () => void
+  handleClose: (value: any) => void;
 }
-
-
 
 const UploadDocs = (props: Props) => {
   const dispatch = useDispatch();
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [selectedfile, setSelectedFile] = useState<any>([]);
-  const { selectedFilesToBeUploaded } = useSelector((state: RootState) => state.docs);
-  const [filesToUpload, setFilesToUpload] = useState<any>([]);
-
   const [doOnce, setDoOnce] = useState<boolean>(true);
-
-
   const setSelectedFilesToUpload = (files: any) => {
     if (files.length === 0) {
       return;
     }
-    setFilesToUpload(files);
-    Array.from(files).forEach((file: any) => {
+
+    files.forEach((file: any) => {
       setSelectedFile((prev: any) => {
         return [
           ...prev,
@@ -66,11 +64,11 @@ const UploadDocs = (props: Props) => {
     });
   };
 
-  const uploadFiles = () => {
+  const uploadFiles = (e: any) => {
     let formData = new FormData();
     let filesPlaceholderData: any[] = [];
 
-    Array.from(filesToUpload).forEach((file: any) => {
+    props.selectedAttachments.files.forEach((file: any) => {
       const chunkSize = 1024 * 1024; // 1MB chunks
       let offset = 0;
       // Create an array of chunks
@@ -131,64 +129,68 @@ const UploadDocs = (props: Props) => {
 
     dispatch(uploadDocs(payload));
 
-    dispatch({
-      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
-    });
+    // dispatch({
+    //   type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
+    // });
 
     setSelectedFile([]);
-    setFilesToUpload([]);
-    handleCancel();
-  }
+    // setFilesToUpload([]);
+    handleCancel(e, {});
+  };
 
-  if (doOnce) {
-    setDoOnce(false)
-    if (selectedFilesToBeUploaded.files.length > 0) {
-      setSelectedFilesToUpload(selectedFilesToBeUploaded.files)
+  try {
+    if (doOnce) {
+      setDoOnce(false);
+      if (
+        props.selectedAttachments &&
+        Object.keys(props.selectedAttachments).length > 0
+      ) {
+        if (props?.selectedAttachments?.files.length > 0) {
+          setSelectedFilesToUpload(props.selectedAttachments.files);
+        }
+      }
     }
+  } catch (e) {
+    console.error(e);
   }
 
   const onUploadFiles = (e: any) => {
-    setSelectedFilesToUpload(e.target.files)
+    let newFiles = Array.from(e.target.files);
+    let addFiles: any = newFiles;
+    let oldNames: any = [];
+    if (props.selectedAttachments.files.length > 0) {
+      oldNames = props.selectedAttachments.files.map((file: any) => file.name);
+      addFiles = newFiles.filter((file: any) => !oldNames.includes(file.name));
+    }
+    if (addFiles.length > 0) {
+      props.selectedAttachments.files.push(...addFiles);
+      setSelectedFilesToUpload(addFiles);
+    }
   };
 
   const handleUploadDocs = (e: any) => {
-    e.preventDefault();
-    uploadFiles();
+    uploadFiles(e);
   };
 
-  const updateFilesToBeUploadedInStore = () => {
-
-    if (Array.from(filesToUpload).length > 0) {
-      const payload = {
-        files: filesToUpload,
-        moduleName: props.moduleType,
-        moduleId: props.moduleId
-      }
-
-      dispatch({
-        type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
-        payload: payload,
-      });
-
-    }
-      return props.handleClose();
-    
-  }
+  const updateFilesToBeUploadedInStore = (e: any) => {
+    handleCancel(e, props.selectedAttachments);
+  };
 
   const handleDelteFile = (name: string) => {
-    const files = Array.from(filesToUpload).filter((file: any) => file.name !== name);
-    setFilesToUpload(files);    
-    if(files.length === 0){
-      dispatch({
-        type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
-      });
-    }
-    const result = selectedfile.filter((data: FileInterface) => data.fileName !== name);
+    const files = props.selectedAttachments.files.filter(
+      (file: any) => file.name !== name
+    );
+    props.selectedAttachments.files = files;
+    const result = selectedfile.filter(
+      (data: FileInterface) => data.fileName !== name
+    );
     setSelectedFile(result);
   };
 
-  const handleCancel = () => {
-    return props.handleClose();
+  const handleCancel = (e: any, payload: any) => {
+    e.stopPropagation();
+   // props.selectedAttachments = payload
+    return props.handleClose(payload);
   };
   const shortFileName = (str: string) => {
     return str.substring(0, 16) + "... " + str.substr(-4, str.length);
@@ -321,29 +323,36 @@ const UploadDocs = (props: Props) => {
         </Box>
         {selectedfile.length > 0 && (
           <CustomStack justifyContent="flex-end" columnGap={1}>
-            {props.showUploadButton ?
+            {props.showUploadButton ? (
               <CButton
                 label={"Upload"}
                 onClick={handleUploadDocs}
                 color="primary"
                 variant="contained"
-              /> :
+              />
+            ) : (
               <CButton
                 label={"Ok"}
                 onClick={updateFilesToBeUploadedInStore}
                 color="primary"
                 variant="contained"
               />
-            }
-            <CButton
+            )}
+            {/* <CButton
               label={"Cancel"}
               variant="contained"
-              onClick={handleCancel}
+              onClick={(e: any) => {
+
+                console.log(orignalFiles);
+                
+                //props.selectedAttachments = orignalFiles
+                handleCancel(e, props.selectedAttachments );
+              }}
               styles={{
                 color: "#605C5C",
                 backgroundColor: "#ECF0F1",
               }}
-            />
+            /> */}
           </CustomStack>
         )}
       </div>

@@ -18,13 +18,14 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import { UserInfo } from "constants/interfaces/subtask.interface";
+import { SubtaskInterface, UserInfo } from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
 import taskActions, {
   deleteTask,
+  patchSubTaskById,
   updateTaskById,
 } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
@@ -32,11 +33,13 @@ import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
 
 interface Props {
-  taskMenue: TaskInterface;
+  taskMenue: TaskInterface
+  subtasks:SubtaskInterface[]
 }
 
-function TaskDrawerMenu({ taskMenue }: Props) {
-  const cInputRef = useRef<any>(null);
+function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
+  const titleInputRef = useRef<any>(null);
+  const descriptionInputRef = useRef<any>(null);
   const [openCDrawer, setOpenCDrawer] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -131,6 +134,18 @@ function TaskDrawerMenu({ taskMenue }: Props) {
     state: state,
   });
 
+  let prevObj = {
+    title: title,
+    dueDate: moment(showDate).format("DD-MM-YYYY"),
+    project: project._id,
+    description: description,
+    admins: adminArr,
+    assignedTo: assignArr,
+    state: state
+  }
+const handleDescription=()=>{
+
+}
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
       project._id,
@@ -139,7 +154,6 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
     allMembersOfProject =
       getUserFormatedDataForAutoComplete(projectMembersData);
-    // console.log(allMembersOfProject);
     setAdminListOpt(
       getUniqueObjectsFromArr([...fixedOptions, ...allMembersOfProject])
     );
@@ -175,10 +189,18 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         other: _id,
         success: (res) => {
           if (res.status === 200) {
-            dispatch({
-              type: TASK_CONFIG.SET_SELECTED_TASK,
-              payload: res?.data.newTask,
-            });
+            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
+            if(subtasks.length===0){
+              dispatch({
+                type: TASK_CONFIG.SET_SELECTED_TASK,
+                payload: res?.data.newTask,
+              });
+            }else{
+              dispatch({
+                type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
+                payload: taskData
+              });
+            }
           }
           if (isCreateTask) {
             dispatch(taskActions.closeTaskDrawer());
@@ -207,9 +229,15 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         },
         other: _id,
         success: (res) => {
+          if (res.status === 200) {
+            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
+            dispatch({
+              type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
+              payload: taskData
+            });
+          }
           toast.success("Task updated");
           setShowUpdateBtn(false);
-          // console.log(res);
         },
         onFailAction: () => {
           toast.error("Failed to updated task!");
@@ -217,6 +245,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
       })
     );
   };
+  
   const handleCreateTask = (e: any) => {
     formData.state = State.New;
     handleTaskUpdateAtDraftState(e, true);
@@ -224,6 +253,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
   const handleCancel = () => {
     setShowUpdateBtn(false);
+    setFormData(prevObj)
+    descriptionInputRef.current.value= prevObj.description
   };
 
   const handleDelete = () => {
@@ -338,7 +369,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
         </Grid>
         <Grid item xs={12} md={12} className={classes.titleWrapper}>
           <TextField
-            inputRef={cInputRef}
+            inputRef={titleInputRef}
             required
             size="small"
             name="title"
@@ -505,6 +536,7 @@ function TaskDrawerMenu({ taskMenue }: Props) {
 
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
+          inputRef={descriptionInputRef}
             id="standard-multiline-flexible"
             placeholder="Enter task description"
             multiline
@@ -514,8 +546,8 @@ function TaskDrawerMenu({ taskMenue }: Props) {
             name="description"
             style={{ padding: "10px 10px" }}
             variant="standard"
-            value={formData.description}
-            onChange={handleInputChange}
+            defaultValue={formData.description}
+            onBlur={handleInputChange}
             className={classes.textArea}
             InputLabelProps={{
               shrink: true,

@@ -30,15 +30,31 @@ interface TaskReducerInt {
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
     getAllSubtaskRejection: RejectedComment[]
-    isEditing:boolean
-    temporarySubtask:any
+    isEditing: boolean
+    temporarySubtask: {
+        taskId: string
+        assignedTo: any
+        description: string
+        dueDate: string
+        title: string
+        state: any
+        _id:string
+    }
 }
 
 const intialStatue: TaskReducerInt = {
-    temporarySubtask:{},
+    temporarySubtask: {
+        taskId: "",
+        _id:"",
+        assignedTo: [],
+        description: "",
+        dueDate: "",
+        title: "",
+        state: []
+    },
     getAllSubtaskRejection: [],
-    isEditing:false,
-    loadingSubTaskRejection:false,
+    isEditing: false,
+    loadingSubTaskRejection: false,
     selectedTaskAdmins: [],
     projectMembersOfSelectedTask: [],
     taskAssignedToMembers: [],
@@ -71,18 +87,11 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
 
-            
-        case TASK_CONFIG.PUSH_TEMPORARY_SUBTASK_DATA:
-            console.log('PUSH_TEMPORARY_SUBTASK_DATA', action.payload)
-            
-            return {
-                ...state,
-                temporarySubtask: action.payload
-            }
+
         case TASK_CONFIG.PULL_TASK_FROM_STORE:
             const removeTaskId = action.payload
             state.allTask = state.allTask.filter(task => task._id !== removeTaskId)
-            
+
             return {
                 ...state,
                 allTask: [...state.allTask]
@@ -93,10 +102,10 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             const index = state.allTask.findIndex(task => task._id === action.payload._id)
             if (index === -1) {
                 state.allTask = [action.payload, ...state.allTask]
-            }  else {
+            } else {
                 state.allTask[index] = action.payload
             }
-          
+
             return {
                 ...state,
                 allTask: [...state.allTask],
@@ -120,6 +129,27 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 allSubTaskList: [action.payload, ...state.allSubTaskList]
             }
+
+        case TASK_CONFIG.UPDATE_SUB_TASK_BY_ID:
+            console.log("Response", action.payload);
+            
+            const updatedSubTak = action.payload
+            const allSubTaskIndex = state.allSubTaskList.findIndex((subTask: any) => subTask._id === updatedSubTak._id)
+            if (allSubTaskIndex > -1) {
+                state.allSubTaskList[allSubTaskIndex] = updatedSubTak
+            }
+            if ("subtasks" in state.allSubTaskOfTask) {
+                const updateIndex = state.allSubTaskOfTask.subtasks.findIndex((subtask: any) => subtask._id === updatedSubTak._id)
+                if (updateIndex > -1) {
+                    state.allSubTaskOfTask.subtasks[updateIndex] = updatedSubTak
+                }
+            }
+            return {
+                ...state,
+                allSubTaskList: [...state.allSubTaskList],
+                allSubTaskOfTask: { ...state.allSubTaskOfTask }
+            }
+
 
         case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             const inComingTask = action.payload.task
@@ -197,6 +227,11 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 ...state,
                 allSubTaskOfTask: { task: action.payload, subtasks: [] }
             }
+        case TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK:
+            return {
+                ...state,
+                allSubTaskOfTask: { task: action.payload.task, subtasks: [...action.payload.subtaskOfTask] }
+            }
         case TASK_CONFIG.SET_SUBTASK: {
             return {
                 ...state,
@@ -260,9 +295,9 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             };
         }
         case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
-            const rejectedComment = action.payload.result.rejectionComments.map((item:RejectionComment)=>{
+            const rejectedComment = action.payload.result.rejectionComments.map((item: RejectionComment) => {
                 return {
-                    name:`${item.creator.firstName} ${item.creator.surName}`,
+                    name: `${item.creator.firstName} ${item.creator.surName}`,
                     description: item.comment,
                     _id: item._id,
                 }

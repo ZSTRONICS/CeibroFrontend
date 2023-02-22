@@ -21,12 +21,10 @@ interface Props {
   title: any;
   children: any;
   showCloseBtn:boolean;
-
 }
 
-const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, showCloseBtn }) => {
+const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, showCloseBtn}) => {
   const classes = useStyles()
-  
   const closeModal =(e:any)=>{
     if (!e.target.closest('.MuiDrawer-root')) {
       e.stopPropagation();

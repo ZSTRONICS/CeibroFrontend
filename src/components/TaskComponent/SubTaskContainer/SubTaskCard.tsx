@@ -310,11 +310,12 @@ function SubTaskCard({ subTaskDetail }: Props) {
       state: state,
     };
     dispatch(
-      taskSubtaskStateChange({
+      taskSubtaskStateChange({  //Patch subtask here
         body: payload,
       })
     );
   };
+
   const HeaderConfirmation = () => {
     return (
       <CBox display="flex" alignItems="center">
@@ -557,6 +558,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         <CButton
                           label={"Assign"}
                           onClick={(e: any) =>
+                            // setAssignToData();
+                            // setSubTaskUserStates();
+
                             handleSubTaskStateChange(e, SubtaskState.Assigned)
                           }
                           variant="outlined"

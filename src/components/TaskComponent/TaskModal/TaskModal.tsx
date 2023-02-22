@@ -48,7 +48,6 @@ export const TaskModal = () => {
   const handleSubmit = (values: any) => {
     const { dueDate, title, project, admins, assignedTo, creator, state, description } = values;
     const payload = { dueDate, title, project, admins, assignedTo, creator, state, description };
-
     dispatch(
       createTask({
         body: payload,
@@ -106,7 +105,7 @@ export const TaskModal = () => {
           }}
           onSubmit={handleSubmit}
         >
-          {({ errors, touched, values, setFieldValue }) => (
+          {({ errors, touched, values, setFieldValue,handleBlur }) => (
             <Form>
               <DialogContent sx={{ padding: "0 20px 24px" }}>
                 {/* <DialogContentText> */}
@@ -114,6 +113,7 @@ export const TaskModal = () => {
                     <NewTaskMenu
                       setFieldValue={setFieldValue}
                       values={values}
+                      handleBlur= {handleBlur}
                     />
                     {/* <Divider /> */}
                     {/* <Link href="#" underline="none" onClick={(event) => setOpen(!open)}>
