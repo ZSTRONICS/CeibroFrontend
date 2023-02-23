@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 // mui-imports
 import { makeStyles } from "@material-ui/core";
@@ -25,6 +25,11 @@ function TaskList() {
     (state: RootState) => state.task.allTask
   );
 
+  let headerHeight = 10;
+  // if(props.props.current){
+  //   console.log(window.innerWidth, props.props.current.clientHeight);
+  // }
+
   return (
     <>
       {!allTask ? (
@@ -41,7 +46,15 @@ function TaskList() {
           rowGap={2.5}
           columnGap={1.905}
           xs={12}
-          className={classes.cardListContainer}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
+          // overflow= {"auto"}
+          // maxHeight={"500px"}
+          // height={"calc(100vh - 30vh)"}
+          // className={classes.cardListContainer}
         >
           {allTask &&
             allTask.map((task: TaskInterface) => {
@@ -64,17 +77,17 @@ export default TaskList;
 
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
-    maxHeight: "calc(100vh - 250px)",
     overflow: "auto",
     height: "100%",
-    paddingBottom: 20,
-    [theme.breakpoints.down("sm")]: {
-      maxHeight: "calc(100vh - 350px)",
-    },
+    //  maxHeight:"100vh",
+    // paddingBottom: 20,
+    // [theme.breakpoints.down("sm")]: {
+    //   maxHeight: "calc(100vh - 350px)",
+    // },
 
-    [theme.breakpoints.down(1024)]: {
-      justifyContent: "center",
-    },
+    // [theme.breakpoints.down(1024)]: {
+    //   justifyContent: "center",
+    // },
   },
   chatIcon: {
     fontSize: 50,

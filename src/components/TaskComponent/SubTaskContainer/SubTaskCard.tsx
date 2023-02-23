@@ -68,7 +68,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   let allMembers: string[] = [creator._id];
   try {
-    if (taskData && taskData.hasOwnProperty('admins')) {
+    if (taskData && taskData.hasOwnProperty("admins")) {
       allMembers = [...taskData.admins, ...allMembers];
     }
   } catch (e: any) {
@@ -136,8 +136,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const SubHeader = () => {
     return (
       <>
-        <CustomStack gap={2}>
-          <CustomStack gap={1}>
+        <CustomStack gap={0.5} className={classes.subHeaderContent}>
+          <CustomStack gap={0.8} display="flex" flexWrap="wrap">
             <TaskStatus
               sx={{
                 maxWidth: "60px",
@@ -151,25 +151,48 @@ function SubTaskCard({ subTaskDetail }: Props) {
             >
               {myState?.userState}
             </TaskStatus>
-            <CustomStack gap={0.5} sx={{ width: "122px" }}>
+            <CustomStack
+              gap={0.4}
+              sx={{
+                width: "122px",
+                //  width: "100%"
+              }}
+            >
               <LabelTag sx={{ fontSize: "11px" }}>Due date</LabelTag>
               <AssignedTag sx={{ fontSize: "12px" }}>{subTaskDate}</AssignedTag>
             </CustomStack>
-            <CustomStack gap={0.5} sx={{ width: "135px" }}>
+            <CustomStack
+              gap={0.5}
+              sx={{
+                width: "135px",
+                //  width: "100%"
+              }}
+            >
               <LabelTag sx={{ fontSize: "11px" }}>Created on</LabelTag>
               <AssignedTag sx={{ fontSize: "12px" }}>
                 {subtaskCreatedAt}
               </AssignedTag>
             </CustomStack>
           </CustomStack>
-          <CustomStack gap={0.5} sx={{ width: "200px" }}>
+          <CustomStack
+            gap={0.5}
+            sx={{
+              width: "200px",
+              // width: "100%"
+            }}
+          >
             <LabelTag sx={{ fontSize: "11px" }}>Created by</LabelTag>
             <AssignedTag sx={{ fontSize: "12px" }}>
               {`${subTaskDetail.creator.firstName} ${subTaskDetail.creator.surName}`}
             </AssignedTag>
           </CustomStack>
-
-          <CustomStack gap={0.5} sx={{ width: "220px" }}>
+          <CustomStack
+            gap={0.5}
+            sx={{
+              width: "220px",
+              // width: "100%"
+            }}
+          >
             <Grid item container justifyContent="space-between">
               <CustomStack columnGap={0.5}>
                 <LabelTag>Assigned to</LabelTag>
@@ -200,7 +223,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
               </CustomStack>
             </Grid>
           </CustomStack>
-          <CustomStack gap={0.8}>
+          <CustomStack gap={0.8} sx={{ width: "180px" }}>
             <LabelTag sx={{ fontSize: "11px" }}>Rejected by</LabelTag>
             {/* <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag> */}
             {rejectedBy.map((member: Member, i: any) => {
@@ -230,7 +253,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
             )}
           </CustomStack>
 
-          {/*<Grid
+          {/* <Grid
             item
             sx={{
               display: "flex",
@@ -336,7 +359,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
           <Grid
             sx={{
               // maxWidth:"75%",
-              width:"100%",
+              width: "100%",
               display: "flex",
               flexDirection: "row",
               justifyContent: "space-between",
@@ -349,6 +372,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
             key={_id}
           >
             <Grid
+              className={classes.subTaskContent}
               item
               sx={{
                 "&:hover": {
@@ -364,6 +388,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
                   item
                   sx={{
                     marginTop: "15px",
+                    width: "100%",
+                    maxWidth: "calc(100%-95%)",
                   }}
                 >
                   <TaskTitle className="ellipsis"> {title}</TaskTitle>
@@ -376,15 +402,17 @@ function SubTaskCard({ subTaskDetail }: Props) {
             </Grid>
 
             <Grid
+              className={classes.subTaskActions}
               sx={{
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
-                width: "200px",
+                // marginRight: "5px",
+                width: "170px",
                 columnGap: "10px",
               }}
             >
-              <Grid    
+              <Grid
                 // mr={2}
                 item
                 sx={{
@@ -395,8 +423,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 }}
               >
                 <Box gap={4} className={classes.cardContainer}>
-                  <CustomStack gap={3}>
-                    <CustomStack columnGap={1.5}>
+                  <CustomStack
+                    gap={1}
+                    className={classes.actionIcons}
+                    sx={{
+                      marginLeft: "57px",
+                    }}
+                  >
+                    <CustomStack columnGap={0.8}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -414,7 +448,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <Typography>0</Typography>
                     </CustomStack>
 
-                    <CustomStack columnGap={1.5}>
+                    <CustomStack columnGap={0.8}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -453,8 +487,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 }}
               >
                 <CBox
-                  sx={{ marginTop: "5px" }}
+                  sx={{
+                    marginTop: "5px",
+                    display: "flex",
+                    justifyContent: " flex-end",
+                  }}
                   display="flex"
+
                   // margin="auto"
                   // padding="50px"
                   // justifyContent="flex-end"
@@ -622,35 +661,82 @@ const useStyles = makeStyles((theme) => ({
         padding: "0px !important",
       },
     },
+    // "@media (max-width:1380px)": {
+    //   display: "flex",
+    //   flexWrap: "wrap",
+    // },
+    // "@media (min-width:1380px)": {
+    // //  minWidth:"80%",
+    //  width:"100%",
+    // },
+  },
+
+  subHeaderContent: {
+    "@media (max-width:1380px)": {
+      display: "flex",
+      flexWrap: "wrap",
+      flexShrink: "3",
+    },
+  },
+  actionIcons: {
+    display: "flex",
+    marginLeft: "12px",
+    alignItems: "right",
+  },
+  subTaskContent: {
+    "@media (max-width:1380px)": {
+      display: "flex",
+      flexWrap: "wrap",
+      maxWidth: "70%",
+      width: "100%",
+    },
+    "@media (max-width:745px)": {
+      maxWidth: "calc(100%-50%)",
+      width: "100%",
+    },
+    "@media (max-width:645px)": {
+      maxWidth: "45%",
+      width: "100%",
+    },
+
+    "@media (min-width:1380px)": {
+      maxWidth: "75%",
+      width: "100%",
+    },
+  },
+  subTaskActions: {
+    "@media (max-width:1380px)": {
+      position: "static",
+      marginRight: "0",
+      paddingRight: "0",
+      // paddingLeft: "15px",
+    },
   },
   cardContainer: {
-    marginTop: "-5px",
-    // padding:"20px",
+    // marginTop: "-5px",
     alignItems: "center",
     "@media (max-width:371)": {
       border: "1px solid red",
-      paddingTop: "8px",
     },
   },
   taskDetailContainer: {
-    padding: '15px 10px 10px 20px',
+    padding: "15px 10px 10px 20px",
   },
 }));
 
 const TaskTitle = styled(Typography)`
   font-weight: 700;
   font-size: 16px;
-  padding-bottom:7px;
+  padding-bottom: 7px;
   color: #000000;
-  max-width: 750px;
-   width: 100%;
-}
+  max-width: calc(100%-80%);
+  width: 100%;
 `;
 const TaskDescription = styled(Typography)`
   font-weight: 500;
   font-size: 14px;
   color: #605c5c;
-  max-width: 950px;
+  // max-width: 950px;
   width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -658,5 +744,5 @@ const TaskDescription = styled(Typography)`
   -webkit-line-clamp: 3;
   line-clamp: 3;
   -webkit-box-orient: vertical;
-  text-align:justify;
+  text-align: justify;
 `;

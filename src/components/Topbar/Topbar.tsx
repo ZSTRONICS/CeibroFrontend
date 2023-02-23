@@ -99,7 +99,7 @@ const Topbar = (props: any) => {
 
           {/* {!isTabletOrMobile && ( */}
           <Typography className={classes.notification}>
-            <Badge badgeContent={4} overlap='rectangular'>
+            <Badge badgeContent={4} overlap="rectangular">
               <img
                 alt="notification"
                 src={assets.notification}
@@ -118,7 +118,7 @@ export default Topbar;
 
 const useStyles = makeStyles((theme) => ({
   topNavbarWrapper: {
-    height: 70,
+    height: 80,
     paddingRight: 20,
     background: colors.white,
   },
@@ -150,10 +150,10 @@ const useStyles = makeStyles((theme) => ({
   },
   titleContainer: {
     display: "flex",
-    // justifyContent: 'space-evenly',
-    // ['@media (max-width:960px)']: {
-    justifyContent: "space-between",
-    // }
+    justifyContent: "space-evenly",
+    // ["@media (max-width:960px)"]: {
+    //   justifyContent: "space-between",
+    // },
   },
   nameWrapper: {
     display: "flex",
@@ -165,9 +165,10 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  searchInputWraper:{
+  searchInputWraper: {
     "@media (max-width:600px)": {
       display: "none",
+      
     },
   },
   username: {

@@ -48,21 +48,28 @@ export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
+    overflowY: "auto",
     height: "100vh",
-    overflow: "hidden",
+    "@media (max-width:600px)": {
+      overflowX: "hidden",
+      overflowY: "auto",
+    },
   },
   content: {
-    height: "100%",
     marginLeft: 200,
-    overflowX: "hidden",
-    overflowY: "hidden",
+    // overflow: "hidden",
     background: colors.lightGrey,
     "@media (max-width:960px)": {
       marginLeft: 0,
       padding: 0,
     },
+    // "@media (max-width:600px)": {
+    //   overflow: "auto",
+    //   // height: "calc(100vh)",
+    // },
   },
   children: {
+    // overflow: "auto",
     paddingBottom: 5,
     padding: "12px 12px",
     "@media (max-width:960px)": {
@@ -76,8 +83,8 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     background: colors.black,
     opacity: 0.3,
-    width: "100vw",
-    height: "100vh",
+    width: "100%",
+    height: "100%",
     zIndex: 3,
   },
 }));

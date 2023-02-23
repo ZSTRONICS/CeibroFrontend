@@ -6,23 +6,34 @@ import { Box, Grid, Paper } from "@mui/material";
 import DatePicker from "components/Utills/Inputs/DatePicker";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
 
 const SubTaskMain = () => {
-
-const {allSubTaskList} = useSelector((state:RootState)=> state.task) 
+  const { allSubTaskList } = useSelector((state: RootState) => state.task);
 
   let xsPoint = 12;
   let mdPoint = 4;
   let lgPoint = 3.2;
   const classes = useStyles();
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
-        <Grid container spacing={1.7} className={classes.TaskWraper} rowGap={2}>
+      <Box
+      // sx={{ flexGrow: 1, maxHeight: "100%" }}
+      >
+        <Grid
+          container
+          spacing={0.5}
+          className={classes.TaskWraper}
+          rowGap={0.5}
+        >
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
           </Grid>
@@ -51,15 +62,23 @@ const {allSubTaskList} = useSelector((state:RootState)=> state.task)
               <img src={assets.filterIcon} width="100%" alt="" />
             </Box>
           </Grid> */}
-          <Grid  item xs={12} pt={0}>
-        <Paper className={classes.statusWrapper} sx={{display:'flex', '&.MuiPaper-root':{padding:'7px 0 7px 5px'}}} elevation={0} variant='outlined' >
-          <StatusMenu options= {options} />
-        </Paper>
-      </Grid>
-
-          <SubTaskList results={allSubTaskList} />
-
+          <Grid item xs={12} pt={0}>
+            <Paper
+              className={classes.statusWrapper}
+              sx={{
+                display: "flex",
+                "&.MuiPaper-root": { padding: "7px 0 7px 5px" },
+              }}
+              elevation={0}
+              variant="outlined"
+            >
+              <StatusMenu options={options} />
+            </Paper>
+          </Grid>
         </Grid>
+      </Box>
+      <Box>
+        <SubTaskList results={allSubTaskList} />
       </Box>
     </>
   );
@@ -104,18 +123,30 @@ const useStyles = makeStyles({
       overflowX: "scroll",
     },
   },
+  subTaskMainContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
   TaskWraper: {
-    // padding: '0 10px',
+    // padding: "0 10px",
     "@media(max-width:1024px)": {
-      // padding:''
+      padding: "",
     },
   },
-  activeConainer: {
-    justifyContent: "space-between",
-    // paddingLeft:'0 !important',
-    "@media(max-width:1024px)": {
-      alignItems: "baseline !important",
-      justifyContent: "inherit",
-    },
-  },
+  // activeConainer: {
+  //   justifyContent: "space-between",
+  //   paddingLeft: "0 !important",
+  //   "@media(max-width:1024px)": {
+  //     alignItems: "baseline !important",
+  //     justifyContent: "inherit",
+  //   },
+  // },
+  // subtaskMain: {
+  //   "@media (max-width:600px)": {
+  //     height: "100vh",
+  //     overflowY: "hidden",
+  //     marginTop: "500px",
+  //   },
+  // },
 });
