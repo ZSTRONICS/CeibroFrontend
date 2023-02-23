@@ -41,16 +41,13 @@ function TaskList() {
         </Box>
       ) : (
         <Grid
+          className={classes.tasklistContainer}
           container
           item
           rowGap={2.5}
           columnGap={1.905}
           xs={12}
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-          }}
+
           // overflow= {"auto"}
           // maxHeight={"500px"}
           // height={"calc(100vh - 30vh)"}
@@ -88,6 +85,14 @@ const useStyles = makeStyles((theme) => ({
     // [theme.breakpoints.down(1024)]: {
     //   justifyContent: "center",
     // },
+  },
+  tasklistContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    "@media(max-width:1240px)": {
+      justifyContent: "center",
+    },
   },
   chatIcon: {
     fontSize: 50,

@@ -123,7 +123,6 @@ const TaskMain = () => {
         <Box>
           <Grid
             sx={{
-       
               overflowY: "scroll",
             }}
             paddingTop={"20px"}
@@ -146,9 +145,9 @@ export default TaskMain;
 
 const useStyles = makeStyles({
   statusWrapper: {
-    overflowX: "scroll",
-    // "@media(max-width:1024px)": {
-    // },
+    "@media(max-width:1024px)": {
+      overflowX: "scroll",
+    },
   },
 
   // taskList: {

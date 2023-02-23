@@ -343,8 +343,9 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         </Box>
         <Divider sx={{ margin: "1px 0px" }} />
         <CustomStack
+         className={classes.taskContainer}
           pt={0.7}
-          pb={-24}
+          // pb={-24}
           sx={{
             justifyContent: "space-between",
             alignItems: "center",
@@ -421,6 +422,9 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "319px",
     },
   },
+  taskContainer:{
+    
+  }
 }));
 export const CustomBadge = styled(Badge)`
   padding-left: 20px;

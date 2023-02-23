@@ -352,7 +352,7 @@ const handleDescription=()=>{
           </Grid>
         </Grid>
 
-        <Grid item xs={12} md={12} style={{ marginTop: 15 }}>
+        <Grid item xs={12} md={12} style={{ marginTop: 10 }}>
           <Grid item>
             <CDatePicker
               required
@@ -554,7 +554,7 @@ const handleDescription=()=>{
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-          {/*  <CBox
+           {/* <CBox
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
@@ -566,7 +566,8 @@ const handleDescription=()=>{
           {/* &nbsp;
                             &nbsp; */}
           {/* <NotificationIcon />
-          </CBox>*/}
+          </CBox> */}
+        
         </Grid>
         <Divider />
         <Grid item xs={12} md={12}>
@@ -578,7 +579,7 @@ const handleDescription=()=>{
             p="12px 0px 7px 7px"
           >
             <CBox fontSize={14} color="#000" fontWeight={600}>
-              Attachment
+              Attachments
             </CBox>
             <CBox display="flex">
               <CButton
@@ -586,7 +587,7 @@ const handleDescription=()=>{
                 onClick={viewAllDocs}
                 styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
               />
-              &nbsp;
+              
               <Divider
                 sx={{
                   height: 20,
@@ -596,7 +597,7 @@ const handleDescription=()=>{
                 }}
                 orientation="vertical"
               />
-              &nbsp;
+            
               <CButton
                 onClick={() => setImageAttach(true)}
                 label="Add New"
@@ -605,62 +606,8 @@ const handleDescription=()=>{
             </CBox>
           </CBox>
         </Grid>
-
-        {/* <Link href="#" underline="none"> */}
-        {/* <CBox color='#0076C8' fontSize={14} fontWeight={600} display='flex' alignItems='center' my={1.8}>
-          {open ?
-          <>
-            < assets.KeyboardArrowRightIcon />                                                    </> */}
-        {/* :
-                                                    <> */}
-        {/* < assets.KeyboardArrowDownIcon /> */}
-        {/* </> */}
-        {/* } */}
-        {/* Advance Options */}
-        {/* </CBox> */}
-        {/* </Link> */}
-
-        {/* <Grid item xs={12} md={10}>
-        <div className={classes.dateWrapper}>
-          <DatePicker />
-        </div>
-      </Grid> */}
-        {/* <Divider sx={{ width: "100%", padding: "15px 0" }} />
-      <CBox>
-        <Link href="#" underline="none"
-          onClick={(event) => setOpen(!open)}
-        >
-          <CBox
-            color="#0076C8"
-            fontSize={14}
-            fontWeight={600}
-            display="flex"
-            alignItems="center"
-            my={1.8}
-          >
-            {open ? (
-              <>
-                <assets.KeyboardArrowUpIcon />{" "}
-              </>
-            ) : (
-              <>
-                <assets.KeyboardArrowDownIcon />
-              </>
-            )}
-            Advance Options
-          </CBox>
-        </Link>
-        {open
-          ? null
-          : // <TaskAdvanceOptions />
-          ""}
-      </CBox> */}
-        {/* <Grid item xs={12} >
-                <div className={classes.createSubTask}>
-                    <CreateSubTask/>
-                </div>
-            </Grid> */}
       </Grid>
+
       {state === State.Draft && !showUpdateBtn && (
         <Grid
           container

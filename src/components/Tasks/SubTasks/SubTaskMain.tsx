@@ -123,11 +123,11 @@ const useStyles = makeStyles({
       overflowX: "scroll",
     },
   },
-  subTaskMainContainer: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-  },
+  // subTaskMainContainer: {
+  //   display: "flex",
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  // },
   TaskWraper: {
     // padding: "0 10px",
     "@media(max-width:1024px)": {

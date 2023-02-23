@@ -187,6 +187,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         </Paper>
       </div>
       <Grid
+        className={classes.editSubTaskinputTypes}
         pl={2.2}
         pr={1.25}
         container
@@ -212,7 +213,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
           </Grid>
         </Grid>
         {(isCreator || isAdmin) && (
-          <Grid item display="flex" justifyContent="flex-end" pr={1.2}>
+          <Grid item display="flex" justifyContent="flex-between" pr={1.7}>
             <CButton
               label="Add Subtask"
               onClick={() => setSubTask(true)}
@@ -252,6 +253,13 @@ const useStyles = makeStyles({
   statusWrapper: {
     "@media(max-width:1024px)": {
       overflowX: "scroll",
+    },
+  },
+  editSubTaskinputTypes: {
+    "& .MuiGrid-grid-sm-10": {
+      flexBasis: "max-content",
+      // width:'100%',
+      // maxWidth:"60%",
     },
   },
 });

@@ -36,6 +36,7 @@ const CreateTaskDrawer = () => {
         disablePortal
         disableEnforceFocus={true}
         keepMounted={false}
+        className={classes.drawerMain}
       >
         <div className={classes.outerWrapper}>
           <DrawerHeader
@@ -43,8 +44,21 @@ const CreateTaskDrawer = () => {
             handleClose={handleClose}
           />
           <Grid container sx={{ height: "100vh" }}>
-            <Grid item md={3.5} sx={{ background: "white" }}>
-              <TaskDrawerMenu taskMenue={subTaskOfTask.task} subtasks={subTaskOfTask.subtasks} />
+            <Grid
+              item
+              // className={classes.taskDrawerMenu}
+              md={3.5}
+              sx={{
+                background: "white",
+                "@media screen and (max-width: 900px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <TaskDrawerMenu
+                taskMenue={subTaskOfTask.task}
+                subtasks={subTaskOfTask.subtasks}
+              />
             </Grid>
             <Grid item md={8.5} className={classes.bodyWrapper}>
               <CreateTaskBody
@@ -66,6 +80,9 @@ const useStyles = makeStyles({
   // drawerContainer:{
   //     background:'#F5F7F8'
   // },
+  drawerMain: {
+    overflow: "auto",
+  },
   bodyWrapper: {
     maxWidth: "878px",
     width: "100%",
@@ -74,6 +91,14 @@ const useStyles = makeStyles({
       width: "100%",
     },
   },
+  // taskDrawerMenu: {
+  //   "@media(max-width:769)": {
+  //     display: "none",
+  //     visibility: "hidden",
+  //     maxHeight: "0",
+  //     height: "100%",
+  //   },
+  // },
   actionButton: {
     fontSize: 12,
     fontWeight: "bold",
@@ -83,16 +108,15 @@ const useStyles = makeStyles({
     padding: "11px 18px",
   },
   statusWrapper: {
-    "@media(max-width:1024px)": {
-      overflowX: "auto",
+    "@media(max-width:1340px)": {
+      overflowX: "scroll",
     },
   },
   outerWrapper: {
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,
-
-    height: "100vh",
-    overflow: "hidden",
+    // height: "100vh",
+    overflow: "auto",
     "@media (max-width:960px)": {
       width: "100vw",
     },
