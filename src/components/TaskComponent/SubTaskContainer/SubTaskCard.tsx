@@ -223,7 +223,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
               </CustomStack>
             </Grid>
           </CustomStack>
-          <CustomStack gap={0.8} sx={{ width: "120px" }}>
+          <CustomStack gap={0.8} sx={{ width: "180px" }}>
             <LabelTag sx={{ fontSize: "11px" }}>Rejected by</LabelTag>
             {/* <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag> */}
             {rejectedBy.map((member: Member, i: any) => {
@@ -671,7 +671,7 @@ const useStyles = makeStyles((theme) => ({
     "@media (max-width:1380px)": {
       display: "flex",
       flexWrap: "wrap",
-      // flexShrink: "3",
+      flexShrink: "3",
     },
   },
   actionIcons: {
@@ -683,16 +683,20 @@ const useStyles = makeStyles((theme) => ({
     "@media (max-width:1380px)": {
       display: "flex",
       flexWrap: "wrap",
-      maxWidth: "38%",
+      maxWidth: "70%",
       width: "100%",
     },
     "@media (max-width:745px)": {
-      maxWidth: "calc(100%-10%)",
+      maxWidth: "calc(100%-50%)",
+      width: "100%",
+    },
+    "@media (max-width:645px)": {
+      maxWidth: "45%",
       width: "100%",
     },
 
     "@media (min-width:1380px)": {
-      maxWidth: "70%",
+      maxWidth: "75%",
       width: "100%",
     },
   },
@@ -701,7 +705,7 @@ const useStyles = makeStyles((theme) => ({
       position: "static",
       marginRight: "0",
       paddingRight: "0",
-      paddingLeft: "15px",
+      // paddingLeft: "15px",
     },
   },
   cardContainer: {

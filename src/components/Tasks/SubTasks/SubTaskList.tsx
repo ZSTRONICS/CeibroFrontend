@@ -54,9 +54,9 @@ const useStyles = makeStyles((theme) => ({
   cardListContainer: {
     width: "100%",
     overflowX: "hidden",
-    height: "70%",
+    height: "100%",
     [theme.breakpoints.down("lg")]: {
-      maxHeight: "calc(100vh - 100px)",
+      maxHeight: "calc(100vh-100px)",
       // [theme.breakpoint.down('lg')]:{
 
       // }
@@ -71,7 +71,11 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.down("xl")]: {
-      maxHeight: "calc(100vh - 30vh)",
+      maxHeight: "calc(100vh - 22vh)",
+    },
+    "@media (max-width:1440)": {
+      maxHeight: "calc(100vh-30vh)",
+      height: "100%",
     },
   },
 }));

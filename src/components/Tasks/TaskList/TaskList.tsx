@@ -25,7 +25,7 @@ function TaskList() {
     (state: RootState) => state.task.allTask
   );
 
-  let headerHeight= 10
+  let headerHeight = 10;
   // if(props.props.current){
   //   console.log(window.innerWidth, props.props.current.clientHeight);
   // }
@@ -46,6 +46,11 @@ function TaskList() {
           rowGap={2.5}
           columnGap={1.905}
           xs={12}
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+          }}
           // overflow= {"auto"}
           // maxHeight={"500px"}
           // height={"calc(100vh - 30vh)"}
@@ -73,9 +78,9 @@ export default TaskList;
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
     overflow: "auto",
-   height: "100%",
-  //  maxHeight:"100vh",
-   // paddingBottom: 20,
+    height: "100%",
+    //  maxHeight:"100vh",
+    // paddingBottom: 20,
     // [theme.breakpoints.down("sm")]: {
     //   maxHeight: "calc(100vh - 350px)",
     // },

@@ -51,7 +51,8 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     height: "100vh",
     "@media (max-width:600px)": {
-      overflow: "auto",
+      overflowX: "hidden",
+      overflowY: "auto",
     },
   },
   content: {

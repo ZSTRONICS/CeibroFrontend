@@ -122,11 +122,13 @@ const TaskMain = () => {
       {showTaskList ? (
         <Box>
           <Grid
-            
+            sx={{
+       
+              overflowY: "scroll",
+            }}
             paddingTop={"20px"}
             paddingBottom={"20px"}
             maxHeight={getHeaderHeight}
-            sx={{ overflowY: "scroll" }}
             item
             xs={12}
           >
@@ -143,7 +145,6 @@ const TaskMain = () => {
 export default TaskMain;
 
 const useStyles = makeStyles({
-
   statusWrapper: {
     overflowX: "scroll",
     // "@media(max-width:1024px)": {

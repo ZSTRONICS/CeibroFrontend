@@ -28,7 +28,12 @@ const SubTaskMain = () => {
       <Box
       // sx={{ flexGrow: 1, maxHeight: "100%" }}
       >
-        <Grid container spacing={0.5} className={classes.TaskWraper} rowGap={0.5}>
+        <Grid
+          container
+          spacing={0.5}
+          className={classes.TaskWraper}
+          rowGap={0.5}
+        >
           <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
             <DatePicker Datetitle="Date" />
           </Grid>
@@ -118,12 +123,17 @@ const useStyles = makeStyles({
       overflowX: "scroll",
     },
   },
-  // TaskWraper: {
-  //   // padding: "0 10px",
-  //   "@media(max-width:1024px)": {
-  //     padding: "",
-  //   },
-  // },
+  subTaskMainContainer: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  TaskWraper: {
+    // padding: "0 10px",
+    "@media(max-width:1024px)": {
+      padding: "",
+    },
+  },
   // activeConainer: {
   //   justifyContent: "space-between",
   //   paddingLeft: "0 !important",
