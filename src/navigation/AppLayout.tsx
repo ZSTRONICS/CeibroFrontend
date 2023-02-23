@@ -48,7 +48,7 @@ export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    overflow: "hidden",
+    overflowY: "auto",
     height: "100vh",
     "@media (max-width:600px)": {
       overflowX: "hidden",
