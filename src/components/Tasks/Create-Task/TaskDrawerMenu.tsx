@@ -305,7 +305,7 @@ const handleDescription=()=>{
   if (assignToOpt) {
     dispatch({
       type: TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload: [...assignToOpt, ...adminListOpt, ...adminData],
+      payload: getUniqueObjectsFromArr([...assignToOpt, ...adminListOpt, ...adminData]),
     });
   }
 

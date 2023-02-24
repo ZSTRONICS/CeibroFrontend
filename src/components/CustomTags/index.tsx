@@ -35,6 +35,7 @@ export const CommentDescription = styled(Typography)`
 `;
 export const ListUserName = styled(Typography)`
 font-family: 'Inter';
+text-transform: capitalize;
 font-style: normal;
 font-weight: 600;
 font-size: 16px;

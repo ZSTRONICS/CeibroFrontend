@@ -317,13 +317,14 @@ const App: React.FC<MyApp> = () => {
               return;
             }
             dispatch({
-              type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
+              type: TASK_CONFIG.UPDATE_SUB_TASK_BY_ID,
               payload: data,
             });
             break;
 
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
-            // console.log('SUB_TASK_UPDATE_PUBLIC', data)
+            console.log(data);
+            
             dispatch({
               type: TASK_CONFIG.UPDATE_SUBTASK_IN_STORE,
               payload: data,

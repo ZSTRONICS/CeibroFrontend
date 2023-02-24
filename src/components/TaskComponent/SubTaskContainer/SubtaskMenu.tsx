@@ -13,7 +13,7 @@ import {
 // components
 import assets from "assets/assets";
 import CustomModal from "components/Modal";
-import EditSubTaskDetails from "./EditSubTask";
+import EditSubTaskDetails from "./EditSubTaskDetails";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -47,8 +47,9 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   temporarySubtask.title = subTaskDetail.title;
   temporarySubtask.state = subTaskDetail.state;
   temporarySubtask._id = subTaskDetail._id;
+  temporarySubtask.assignedToMembersOnly = subTaskDetail.assignedToMembersOnly;
 
-  const [openEditModal, setOpenEditModal] = useState(false);
+  const [openEditDetailsModal, setOpenEditModal] = useState(false);
   const [anchorElMember, setAnchorElMember] =
     React.useState<null | HTMLElement>(null);
   const [subTask, setSubTask] = useState(false);
@@ -258,7 +259,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
               >
                 <SubTaskButton
                   textAlign="center"
-                  //   sx={{ color: "#0076c8" }}
+                  onClick={handleEditDetails}
                 >
                   Edit details
                 </SubTaskButton>
@@ -290,6 +291,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
             >
               <SubTaskButton
                 textAlign="center"
+                onClick={handleEditDetails}
                 //   sx={{ color: "#0076c8" }}
                 // onClick={handleEditDetails}
               >
@@ -300,16 +302,16 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
         </Menu>
       </Box>
       <Box>
-        {/* {openEditModal && (
+        {openEditDetailsModal && (
           <CustomModal
             //   showBottomBtn={false}
-            isOpen={openEditModal}
+            isOpen={openEditDetailsModal}
             handleClose={handleCloseModal}
             showCloseBtn={true}
             title="Edit Details"
-            children={<EditSubTask />}
+            children={<EditSubTaskDetails subTask={temporarySubtask}  handleClose={handleCloseModal}/>}
           />
-        )} */}
+        )}
       </Box>
       {subTask && (
         <CustomModal
