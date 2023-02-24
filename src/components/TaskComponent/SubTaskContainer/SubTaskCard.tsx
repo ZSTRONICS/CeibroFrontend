@@ -1,38 +1,35 @@
-import React, { useState, Fragment } from "react";
-import { Box, Grid, Typography, Divider, Tooltip } from "@mui/material";
 import { makeStyles } from "@material-ui/core";
+import { Box, Divider, Grid, Tooltip, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import CButton from "components/Button/Button";
+import { CBox } from "components/material-ui";
+import { getColorByStatus } from "config/project.config";
+import { Fragment, useState } from "react";
 import {
   AssignedTag,
   CustomBadge,
   CustomStack,
   LabelTag,
-  TaskStatus,
+  TaskStatus
 } from "../Tabs/TaskCard";
-import { getColorByStatus } from "config/project.config";
-import { CBox } from "components/material-ui";
-import CButton from "components/Button/Button";
 
+import { InfoIcon } from "components/material-ui/icons";
+import CustomModal from "components/Modal";
+import { onlyUnique } from "components/Utills/Globals/Common";
+import { TASK_CONFIG } from "config/task.config";
 import {
   AssignedTo,
   Member,
-  SubtaskInterface,
-  UserInfo,
+  SubtaskInterface
 } from "constants/interfaces/subtask.interface";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  SubtaskState,
-  TaskInterface,
+  SubtaskState
 } from "constants/interfaces/task.interface";
-import { RootState } from "redux/reducers";
+import { useDispatch, useSelector } from "react-redux";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
-import { TASK_CONFIG } from "config/task.config";
-import CustomModal from "components/Modal";
+import { RootState } from "redux/reducers";
 import StateChangeComment from "./StateChangeComment";
-import { InfoIcon } from "components/material-ui/icons";
 import SubTaskMenu from "./SubtaskMenu";
-import { isTrue, onlyUnique } from "components/Utills/Globals/Common";
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
