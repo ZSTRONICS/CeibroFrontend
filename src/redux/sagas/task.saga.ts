@@ -73,6 +73,14 @@ const deleteTask = apiCall({
     return url
   }
 });
+const deleteSubtask = apiCall({
+  type: TASK_CONFIG.DELETE_SUBTASK,
+  method: "delete",
+  path: (payload) => {
+    let url = `/task/subtask/${payload.other}`
+    return url
+  }
+});
 
 const deleteSubtaskMember = apiCall({
   type: TASK_CONFIG.DELETE_SUBTASK_MEMBER,
@@ -93,6 +101,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.DELETE_TASK, deleteTask)
   yield takeLatest(TASK_CONFIG.DELETE_SUBTASK_MEMBER, deleteSubtaskMember)
+  yield takeLatest(TASK_CONFIG.DELETE_SUBTASK, deleteSubtask)
   yield takeLatest(TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE, subtaskMemberMarkAsDone)
   yield takeLatest(TASK_CONFIG.PATCH_SUB_TASK_BY_ID, patchSubTaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)

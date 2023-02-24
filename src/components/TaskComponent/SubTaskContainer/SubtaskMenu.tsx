@@ -21,10 +21,11 @@ import { SubtaskState } from "constants/interfaces/task.interface";
 import CreateSubTask from "components/Tasks/SubTasks/CreateSubTask";
 import { Formik, Form } from "formik";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { patchSubTaskById } from "redux/action/task.action";
+import { deleteSubtask, patchSubTaskById } from "redux/action/task.action";
 import { toast } from "react-toastify";
 import { DOCS_CONFIG } from "config/docs.config";
 import { TASK_CONFIG } from "config/task.config";
+import TaskDetail from "components/Tasks/SubTasks/TaskDetail";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -155,6 +156,15 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   const handleDeleteSubTask = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
+    dispatch(deleteSubtask({other:subTaskDetail._id,
+      success: (res: any) => {
+        if (res.status === 200) {
+          setAnchorElMember(null);
+        }
+        toast.success("Subtask deleted");
+      },
+    }))
+
   };
 
   const handleEditSubTaskInAssigned = (e: any) => {
@@ -273,7 +283,8 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   },
                 }}
               >
-                <SubTaskButton textAlign="center" sx={{ color: "#FA0808" }}>
+                <SubTaskButton onClick={handleDeleteSubTask}
+                textAlign="center" sx={{ color: "#FA0808" }}>
                   Delete subtask
                 </SubTaskButton>
               </MenuItem>

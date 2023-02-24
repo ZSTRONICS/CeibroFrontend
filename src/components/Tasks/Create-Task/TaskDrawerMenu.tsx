@@ -143,9 +143,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     assignedTo: assignArr,
     state: state
   }
-const handleDescription=()=>{
 
-}
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
       project._id,
@@ -183,7 +181,11 @@ const handleDescription=()=>{
 
   const handleTaskUpdateAtDraftState = (e: any, isCreateTask: boolean) => {
     e.stopPropagation();
-    dispatch(
+    console.log(e);
+    console.log(formData);
+    
+    try {
+      dispatch(
       updateTaskById({
         body: formData,
         other: _id,
@@ -216,6 +218,11 @@ const handleDescription=()=>{
         },
       })
     );
+    } catch (error) {
+      console.error(error);
+      
+    }
+    
   };
 
   const handleTaskUpdateAtNewState = (e: any) => {
@@ -247,6 +254,7 @@ const handleDescription=()=>{
   };
   
   const handleCreateTask = (e: any) => {
+    e.stopPropagation()
     formData.state = State.New;
     handleTaskUpdateAtDraftState(e, true);
   };
@@ -257,7 +265,8 @@ const handleDescription=()=>{
     descriptionInputRef.current.value= prevObj.description
   };
 
-  const handleDelete = () => {
+  const handleDeleteTask = (e:any) => {
+    e.stopPropagation()
     dispatch(
       deleteTask({
         other: _id,
@@ -687,7 +696,7 @@ const handleDescription=()=>{
           <Grid item>
             <CButton
               label={"Delete"}
-              onClick={handleDelete}
+              onClick={handleDeleteTask}
               variant="outlined"
               styles={{
                 borderColor: "#FA0808",
