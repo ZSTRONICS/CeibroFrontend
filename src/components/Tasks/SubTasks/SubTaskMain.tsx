@@ -119,6 +119,7 @@ export default SubTaskMain;
 
 const useStyles = makeStyles({
   statusWrapper: {
+    marginTop: "12px",
     "@media(max-width:1024px)": {
       overflowX: "scroll",
     },

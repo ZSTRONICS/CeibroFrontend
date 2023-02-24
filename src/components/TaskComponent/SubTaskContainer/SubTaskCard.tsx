@@ -10,7 +10,7 @@ import {
   CustomBadge,
   CustomStack,
   LabelTag,
-  TaskStatus
+  TaskStatus,
 } from "../Tabs/TaskCard";
 
 import { InfoIcon } from "components/material-ui/icons";
@@ -20,11 +20,9 @@ import { TASK_CONFIG } from "config/task.config";
 import {
   AssignedTo,
   Member,
-  SubtaskInterface
+  SubtaskInterface,
 } from "constants/interfaces/subtask.interface";
-import {
-  SubtaskState
-} from "constants/interfaces/task.interface";
+import { SubtaskState } from "constants/interfaces/task.interface";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
@@ -65,8 +63,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   let allMembers: string[] = [creator._id];
   try {
-    if (taskData && taskData.hasOwnProperty('admins')) {
-      allMembers = [...taskData.admins, ...allMembers,...assignToMemberIds];
+    if (taskData && taskData.hasOwnProperty("admins")) {
+      allMembers = [...taskData.admins, ...allMembers, ...assignToMemberIds];
     }
   } catch (e: any) {
     console.error(e);
@@ -76,7 +74,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
 
-console.log('taskRights', taskRights);
+  console.log("taskRights", taskRights);
 
   const subTaskDate = dueDate.replaceAll("-", ".").replace(",", "");
   let subtaskCreatedAt = new Date(String(createdAt))
@@ -332,7 +330,8 @@ console.log('taskRights', taskRights);
       state: state,
     };
     dispatch(
-      taskSubtaskStateChange({  //Patch subtask here
+      taskSubtaskStateChange({
+        //Patch subtask here
         body: payload,
       })
     );
@@ -490,6 +489,7 @@ console.log('taskRights', taskRights);
                     marginTop: "5px",
                     display: "flex",
                     justifyContent: " flex-end",
+                    marginRight: "15px",
                   }}
                   display="flex"
 
@@ -502,6 +502,9 @@ console.log('taskRights', taskRights);
                     myState?.userState === SubtaskState.Assigned && (
                       <>
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Accept"}
                           onClick={(e: any) =>
                             handleSubTaskStateChange(e, SubtaskState.Accepted)
@@ -517,6 +520,9 @@ console.log('taskRights', taskRights);
                           }}
                         />
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Reject"}
                           onClick={(e: any) =>
                             handleSubTaskStateChangeModal(
@@ -538,6 +544,9 @@ console.log('taskRights', taskRights);
                   {myState?.userState === SubtaskState.Ongoing &&
                     assignToMemberIds.includes(user._id) && (
                       <CButton
+                        sx={{
+                          padding: "3px 0px",
+                        }}
                         label={"Done"}
                         onClick={(e: any) =>
                           handleSubTaskStateChange(e, SubtaskState.Done)
@@ -557,6 +566,9 @@ console.log('taskRights', taskRights);
                     assignToMemberIds.includes(user._id) && (
                       <>
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Start"}
                           onClick={(e: any) =>
                             handleSubTaskStateChange(e, SubtaskState.Start)
@@ -572,6 +584,9 @@ console.log('taskRights', taskRights);
                           }}
                         />
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Reject"}
                           onClick={(e: any) =>
                             handleSubTaskStateChangeModal(
@@ -594,6 +609,9 @@ console.log('taskRights', taskRights);
                     String(creator._id) === String(user._id) && (
                       <>
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Assign"}
                           onClick={(e: any) =>
                             // setAssignToData();
@@ -612,6 +630,9 @@ console.log('taskRights', taskRights);
                           }}
                         />
                         <CButton
+                          sx={{
+                            padding: "3px 0px",
+                          }}
                           label={"Delete"}
                           variant="outlined"
                           styles={{
