@@ -69,7 +69,8 @@ export default function CreateSubTask({
     ...assignToList,
     ...projectMembersOfSelectedTask,
   ]);
-
+  console.log('uniqueMembers', uniqueMembers);
+  
   const handleOpenCloseAttachmentModal = (e: any) => {
     e.stopPropagation();
     setAttachmentViewOpen((value: boolean) => !value);
@@ -85,8 +86,6 @@ export default function CreateSubTask({
   };
 
   const assignedToChangeHandler = (members: []) => {
-    let found = false;
-
     defaultValues.assignedTo[0].members = [...members];
 
     // defaultValues.assignedTo.every((assignee: any, index: any) => {
@@ -284,7 +283,6 @@ export default function CreateSubTask({
                 assignedToChangeHandler([]);
               } else {
                 const memberIds: any = newValue.map((item: any) => item.id);
-                console.log("Adding members to List => ", memberIds);
                 assignedToChangeHandler(memberIds);
               }
             }}
@@ -412,6 +410,8 @@ export default function CreateSubTask({
                 }}
                 label={"Create Subtask"}
                 onClick={(e: any) => {
+                  console.log(defaultValues.assignedTo[0].members);
+                  
                   defaultValues.files = selectedAttachments;
                   let stateToPush: any = [];
                   let adminState = "assigned";
@@ -419,7 +419,7 @@ export default function CreateSubTask({
                     let membersList: any[] = [];
                     defaultValues.assignedTo[0].members.forEach(
                       (member: any) => {
-                        if (member === user._id) {
+                        if (String(member) === String(user._id)) {
                           adminState = "accepted";
                           stateToPush.push({
                             userId: user._id,
@@ -431,7 +431,7 @@ export default function CreateSubTask({
                             userState: "assigned",
                           });
                         }
-                        membersList.push(member);
+                        membersList.push(String(member));
                       }
                     );
                     selectedTaskAdmins.forEach((admin) => {
@@ -444,7 +444,7 @@ export default function CreateSubTask({
                     });
                   }
 
-                  defaultValues.state = stateToPush;
+                  defaultValues.state = stateToPush
                 }}
               />
             )}

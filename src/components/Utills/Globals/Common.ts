@@ -42,7 +42,7 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
       distinctArray.push(member)
     }
   })
-  
+
   return distinctArray
 }
 
@@ -51,7 +51,7 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
   * **/
-export const getDistinctFromTwoArr = (arr: any[], arr2 :any[]) => {
+export const getDistinctFromTwoArr = (arr: any[], arr2: any[]) => {
   let distinctArray: any = []
   arr.forEach((member: any) => {
     let addToArr = true
@@ -166,3 +166,22 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
   }
   return filesWithExtension
 };
+
+/**
+ * @param SubtaskMembersArr array of extension
+ * @param SubtaskUserSate array of object 
+ * @return array of members with state
+ * **/
+export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) => {
+  console.log("Common", state, membersArr);
+  
+  let combinedArray = membersArr.map((member: any) => {
+    let tempState = ""
+    state.every((user: any) => { if (String(member._id) === String(user.userId)) { tempState = user.userState; return false } return true; });
+    return {
+      ...member,
+      userState: tempState,
+    };
+  });
+  return combinedArray
+}

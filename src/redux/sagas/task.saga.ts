@@ -74,12 +74,26 @@ const deleteTask = apiCall({
   }
 });
 
+const deleteSubtaskMember = apiCall({
+  type: TASK_CONFIG.DELETE_SUBTASK_MEMBER,
+  method: "post",
+  path: '/task/st/removeMember'
+});
+
+const subtaskMemberMarkAsDone = apiCall({
+  type: TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE,
+  method: 'post',
+  path: '/task/st/markAsDone'
+});
+
 function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.GET_TASK, getTask)
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.DELETE_TASK, deleteTask)
+  yield takeLatest(TASK_CONFIG.DELETE_SUBTASK_MEMBER, deleteSubtaskMember)
+  yield takeLatest(TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE, subtaskMemberMarkAsDone)
   yield takeLatest(TASK_CONFIG.PATCH_SUB_TASK_BY_ID, patchSubTaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)

@@ -21,6 +21,7 @@ export interface SubtaskInterface {
   updatedAt: string
   recentComments:any[]
   taskData:TaskData
+  assignedToMembersOnly: []
 }
 
 export interface TaskData{

@@ -68,16 +68,18 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   let allMembers: string[] = [creator._id];
   try {
-    if (taskData && taskData.hasOwnProperty("admins")) {
-      allMembers = [...taskData.admins, ...allMembers];
+    if (taskData && taskData.hasOwnProperty('admins')) {
+      allMembers = [...taskData.admins, ...allMembers,...assignToMemberIds];
     }
   } catch (e: any) {
     console.error(e);
   }
-  // console.log("allMembers", allMembers);
+  console.log("allMembers", allMembers);
 
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
+
+console.log('taskRights', taskRights);
 
   const subTaskDate = dueDate.replaceAll("-", ".").replace(",", "");
   let subtaskCreatedAt = new Date(String(createdAt))

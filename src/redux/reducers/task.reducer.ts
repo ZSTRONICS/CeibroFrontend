@@ -32,6 +32,7 @@ interface TaskReducerInt {
     getAllSubtaskRejection: RejectedComment[]
     isEditing: boolean
     temporarySubtask: {
+        assignedToMembersOnly: []
         taskId: string
         assignedTo: any
         description: string
@@ -44,6 +45,7 @@ interface TaskReducerInt {
 
 const intialStatue: TaskReducerInt = {
     temporarySubtask: {
+        assignedToMembersOnly: [],
         taskId: "",
         _id:"",
         assignedTo: [],
@@ -131,14 +133,19 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         case TASK_CONFIG.UPDATE_SUB_TASK_BY_ID:
+            
             const updatedSubTak = action.payload
+            console.log( "InReducer", updatedSubTak);
             const allSubTaskIndex = state.allSubTaskList.findIndex((subTask: any) => subTask._id === updatedSubTak._id)
             if (allSubTaskIndex > -1) {
+                console.log( "InReducer", "All subtasks");
                 state.allSubTaskList[allSubTaskIndex] = updatedSubTak
             }
             if ("subtasks" in state.allSubTaskOfTask) {
+                console.log( "InReducer", "task subtasks");
                 const updateIndex = state.allSubTaskOfTask.subtasks.findIndex((subtask: any) => subtask._id === updatedSubTak._id)
                 if (updateIndex > -1) {
+                    console.log( "InReducer", "task subtasks updated");
                     state.allSubTaskOfTask.subtasks[updateIndex] = updatedSubTak
                 }
             }
