@@ -36,8 +36,7 @@ export default function CreateSubTask({
   const classes = useStyles();
   const [showDate, setShowDate] = useState<any>(new Date());
   const localized = moment(defaultValues.dueDate, "DD-MM-YYYY").format(
-    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
-  );
+    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
 
   const [selectedAttachments, setSelectedAttachments] = useState<any>({
     moduleId: defaultValues._id,
@@ -69,7 +68,6 @@ export default function CreateSubTask({
     ...assignToList,
     ...projectMembersOfSelectedTask,
   ]);
-  console.log('uniqueMembers', uniqueMembers);
   
   const handleOpenCloseAttachmentModal = (e: any) => {
     e.stopPropagation();
@@ -116,12 +114,15 @@ export default function CreateSubTask({
   };
 
   const setAssignToData = () => {
+    
     if (defaultValues.assignedTo.length > 0) {
       let payload = {
         addedBy: "",
         members: defaultValues.assignedTo[0].members,
       };
-
+      if(defaultValues.assignedTo[0].members[0]._id){
+        payload.members= defaultValues.assignedTo[0].members.map((item:any)=> item._id)
+      }
       if (typeof defaultValues.assignedTo[0].addedBy === typeof "") {
         payload.addedBy = defaultValues.assignedTo[0].addedBy;
       } else {
@@ -209,6 +210,7 @@ export default function CreateSubTask({
       <Grid container className={classes.outerWrapper} rowGap={1}>
         <Grid item xs={12} md={12}>
           <CDatePicker
+          disabled={myState=== SubtaskState.Assigned}
             required
             value={isEditMode === true ? localized : showDate}
             id="date"
@@ -222,6 +224,7 @@ export default function CreateSubTask({
         </Grid>
         <Grid className={classes.titleWrapper} item xs={12} md={12}>
           <TextField
+            disabled={myState=== SubtaskState.Assigned}
             required
             size="small"
             name="taskTitle"
@@ -268,6 +271,7 @@ export default function CreateSubTask({
           <Autocomplete
             className={classes.titleWrapper}
             multiple
+            disabled={myState=== SubtaskState.Assigned}
             disablePortal
             disableCloseOnSelect
             filterSelectedOptions
@@ -410,8 +414,6 @@ export default function CreateSubTask({
                 }}
                 label={"Create Subtask"}
                 onClick={(e: any) => {
-                  console.log(defaultValues.assignedTo[0].members);
-                  
                   defaultValues.files = selectedAttachments;
                   let stateToPush: any = [];
                   let adminState = "assigned";

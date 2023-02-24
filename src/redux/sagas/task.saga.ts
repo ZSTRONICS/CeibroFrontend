@@ -56,6 +56,17 @@ const getAllSubTaskRejection = apiCall({
   }
 });
 
+const updateTaskById = apiCall({
+
+  type: TASK_CONFIG.UPDATE_TASK_BY_ID,
+  method: "patch",
+  path: (payload) => {
+    let url = `/task/${payload.other}`
+    return url
+  }
+});
+
+
 const patchSubTaskById = apiCall({
   type: TASK_CONFIG.PATCH_SUB_TASK_BY_ID,
   method: "patch",
@@ -104,6 +115,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.DELETE_SUBTASK, deleteSubtask)
   yield takeLatest(TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE, subtaskMemberMarkAsDone)
   yield takeLatest(TASK_CONFIG.PATCH_SUB_TASK_BY_ID, patchSubTaskById)
+  yield takeLatest(TASK_CONFIG.UPDATE_TASK_BY_ID, updateTaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION, getAllSubTaskRejection)

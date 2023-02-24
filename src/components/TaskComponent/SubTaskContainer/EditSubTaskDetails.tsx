@@ -212,7 +212,6 @@ function EditSubTaskDetails(props: any) {
       assignedTo: newAssignToData,
       state: newState,
     };
-    console.log("payload--->", payload);
     dispatch(
       patchSubTaskById({
         body: payload,
@@ -296,7 +295,6 @@ function EditSubTaskDetails(props: any) {
         memberId: memberId,
       },
       success: (res: any) => {
-        console.log('res', res);
         props.handleClose();
         toast.success("Member state updated to done Successfully ");
         const payload = {

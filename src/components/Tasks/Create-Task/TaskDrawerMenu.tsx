@@ -18,7 +18,10 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import { SubtaskInterface, UserInfo } from "constants/interfaces/subtask.interface";
+import {
+  SubtaskInterface,
+  UserInfo,
+} from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
@@ -31,10 +34,11 @@ import taskActions, {
 import { RootState } from "redux/reducers";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
+import { DOCS_CONFIG } from "config/docs.config";
 
 interface Props {
-  taskMenue: TaskInterface
-  subtasks:SubtaskInterface[]
+  taskMenue: TaskInterface;
+  subtasks: SubtaskInterface[];
 }
 
 function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
@@ -72,6 +76,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   const { projectWithMembers, allProjectsTitles } = useSelector(
     (store: RootState) => store.project
   );
+
   const { user } = useSelector((state: RootState) => state.auth);
 
   const adminIds = admins.map((item: UserInfo) => item._id);
@@ -124,6 +129,12 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
   );
   const [showDate, setShowDate] = useState<any>(localized);
+  const [selectedAttachments, setSelectedAttachments] = useState<any>({
+    moduleId: _id,
+    moduleName: "Task",
+    files: [],
+  });
+
   const [formData, setFormData] = useState({
     title: title,
     dueDate: moment(showDate).format("DD-MM-YYYY"),
@@ -141,8 +152,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     description: description,
     admins: adminArr,
     assignedTo: assignArr,
-    state: state
-  }
+    state: state,
+  };
 
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
@@ -181,52 +192,51 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
 
   const handleTaskUpdateAtDraftState = (e: any, isCreateTask: boolean) => {
     e.stopPropagation();
-    console.log(e);
-    console.log(formData);
-    
+
     try {
       dispatch(
-      updateTaskById({
-        body: formData,
-        other: _id,
-        success: (res) => {
-          if (res.status === 200) {
-            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
-            if(subtasks.length===0){
-              dispatch({
-                type: TASK_CONFIG.SET_SELECTED_TASK,
-                payload: res?.data.newTask,
-              });
-            }else{
-              dispatch({
-                type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
-                payload: taskData
-              });
+        updateTaskById({
+          body: formData,
+          other: _id,
+          success: (res) => {
+            if (res.status === 200) {
+              const taskData = {
+                task: res?.data.newTask,
+                subtaskOfTask: subtasks,
+              };
+              if (subtasks.length === 0) {
+                dispatch({
+                  type: TASK_CONFIG.SET_SELECTED_TASK,
+                  payload: res?.data.newTask,
+                });
+              } else {
+                dispatch({
+                  type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
+                  payload: taskData,
+                });
+              }
             }
-          }
-          if (isCreateTask) {
-            dispatch(taskActions.closeTaskDrawer());
-            toast.success("Task created");
-          } else {
-            toast.success("Task updated");
-            setShowUpdateBtn(false);
-            // console.log(res);
-          }
-        },
-        onFailAction: () => {
-          toast.error("Failed to update task!");
-        },
-      })
-    );
+            if (isCreateTask) {
+              dispatch(taskActions.closeTaskDrawer());
+              toast.success("Task created");
+            } else {
+              toast.success("Task updated");
+              setShowUpdateBtn(false);
+              // console.log(res);
+            }
+          },
+          onFailAction: () => {
+            toast.error("Failed to update task!");
+          },
+        })
+      );
     } catch (error) {
       console.error(error);
-      
     }
-    
   };
 
   const handleTaskUpdateAtNewState = (e: any) => {
-    e.stopPropagation();
+    // e.stopPropagation();
     dispatch(
       updateTaskById({
         body: {
@@ -237,10 +247,13 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         other: _id,
         success: (res) => {
           if (res.status === 200) {
-            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
+            const taskData = {
+              task: res?.data.newTask,
+              subtaskOfTask: subtasks,
+            };
             dispatch({
               type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
-              payload: taskData
+              payload: taskData,
             });
           }
           toast.success("Task updated");
@@ -252,21 +265,21 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
       })
     );
   };
-  
+
   const handleCreateTask = (e: any) => {
-    e.stopPropagation()
+    e.stopPropagation();
     formData.state = State.New;
     handleTaskUpdateAtDraftState(e, true);
   };
 
   const handleCancel = () => {
     setShowUpdateBtn(false);
-    setFormData(prevObj)
-    descriptionInputRef.current.value= prevObj.description
+    setFormData(prevObj);
+    descriptionInputRef.current.value = prevObj.description;
   };
 
-  const handleDeleteTask = (e:any) => {
-    e.stopPropagation()
+  const handleDeleteTask = (e: any) => {
+    e.stopPropagation();
     dispatch(
       deleteTask({
         other: _id,
@@ -314,7 +327,11 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   if (assignToOpt) {
     dispatch({
       type: TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload: getUniqueObjectsFromArr([...assignToOpt, ...adminListOpt, ...adminData]),
+      payload: getUniqueObjectsFromArr([
+        ...assignToOpt,
+        ...adminListOpt,
+        ...adminData,
+      ]),
     });
   }
 
@@ -330,6 +347,10 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   };
   const handleCloseCDrawer = () => {
     setOpenCDrawer((prev: boolean) => !prev);
+  };
+  const handleOpenCloseAttachmentModal = (e: any) => {
+    e.stopPropagation();
+    setImageAttach((value: boolean) => !value);
   };
   return (
     <>
@@ -545,7 +566,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
 
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
-          inputRef={descriptionInputRef}
+            inputRef={descriptionInputRef}
             id="standard-multiline-flexible"
             placeholder="Enter task description"
             multiline
@@ -607,7 +628,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               />
               &nbsp;
               <CButton
-                onClick={() => setImageAttach(true)}
+                onClick={(e: any) => handleOpenCloseAttachmentModal(e)}
                 label="Add New"
                 styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
               />
@@ -796,10 +817,27 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
       <CustomModal
         showCloseBtn={false}
         isOpen={imageAttach}
-        handleClose={() => setImageAttach(false)}
+        handleClose={(e: any) => handleOpenCloseAttachmentModal(e)}
         title={"Attachments"}
-        children={<UploadDocs showUploadButton={true} moduleType={"Task"} moduleId={_id} handleClose={() => setImageAttach(false)} />}
+        children={
+          <UploadDocs
+            selectedAttachments={selectedAttachments}
+            showUploadButton={true}
+            moduleType={"Task"}
+            moduleId={_id}
+            //  handleClose={() => setImageAttach(false)}
+            handleClose={(e: any, value: any): void => {
+              setSelectedAttachments({
+                moduleId: _id,
+                moduleName: "Task",
+                files: [],
+              });
+              handleOpenCloseAttachmentModal(e);
+            }}
+          />
+        }
       />
+
       <CDrawer
         showBoxShadow={true}
         hideBackDrop={true}

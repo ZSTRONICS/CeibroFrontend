@@ -52,8 +52,6 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
       files,
     } = values.subTask;
 
-    console.log("Create subtask =>", values.subTask);
-
     setSubTask(false);
 
     const payload = {

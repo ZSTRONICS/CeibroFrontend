@@ -62,9 +62,11 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   )?.userState;
 
   const handleSubmit = (values: any) => {
-    const { dueDate, title, assignedTo, state, description, files, _id } =
-      values.subTask;
-
+    let { dueDate, title, assignedTo, state, description, files, _id } =values.subTask;
+    if(state[0]._id){
+      state= state.map((item:any)=> {return {userId: item._id, userState:item.userState}})
+    }
+    
     const payload = {
       dueDate,
       title,
@@ -243,7 +245,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
           {myState === SubtaskState.Assigned && (
             <Box>
               <MenuItem
-                //  onClick={handleEditSubTaskInAssigned}
+               onClick={handleEditSubTaskInDraft}
                 disableRipple
                 sx={{
                   "&.MuiMenuItem-root": {

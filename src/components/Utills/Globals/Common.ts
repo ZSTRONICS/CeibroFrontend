@@ -140,6 +140,9 @@ export const filesizes = (bytes: any) => {
 export const onlyUnique = (value: any, index: any, array: any) => {
   return array.indexOf(value) === index;
 }
+
+// const distinctArray = Array.from(new Set(array));
+
 // const dueDate = new Date().toLocaleDateString("de-DE", {
 //   day: "numeric",
 //   month: "numeric",
@@ -173,7 +176,6 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
  * @return array of members with state
  * **/
 export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) => {
-  console.log("Common", state, membersArr);
   
   let combinedArray = membersArr.map((member: any) => {
     let tempState = ""
