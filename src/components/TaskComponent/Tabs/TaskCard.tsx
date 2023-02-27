@@ -22,13 +22,14 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import taskActions, { getAllSubTaskOfTask } from "redux/action/task.action";
+import taskActions, { deleteTask, getAllSubTaskOfTask } from "redux/action/task.action";
 import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
 import { RootState } from "redux/reducers";
 import { momentdeDateFormat, onlyUnique } from "components/Utills/Globals/Common";
+import { toast } from "react-toastify";
 
 interface Props {
   task: TaskInterface;
@@ -93,9 +94,24 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
     handleCard(e, true);
   };
-  const handleDelete = (e: any) => {
-    e.stopPropagation();
+
+  const handleDeleteTask = (e:any) => {
+    e.stopPropagation()
     setAnchorElUser(null);
+
+    dispatch(
+      deleteTask({
+        other: task._id,
+        success: (res) => {
+          dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: task._id });
+          dispatch(taskActions.closeTaskDrawer());
+          toast.success("Task deleted");
+        },
+        onFailAction: () => {
+          toast.error("Failed to delete task!");
+        },
+      })
+    );
   };
 
   const open = Boolean(anchorElUser);
@@ -187,10 +203,10 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                     Edit
                   </CustomButton>
                 </MenuItem>
-                {deleteOnlyCreator && (
+                {deleteOnlyCreator&& task.state=== State.Draft && (
                   <MenuItem
                     disableRipple
-                    onClick={handleDelete}
+                    onClick={handleDeleteTask}
                     aria-describedby={id}
                     // sx={{
                     //   "&.MuiMenuItem-root": {
@@ -203,7 +219,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                       disableElevation
                       disableFocusRipple
                       disableRipple
-                      sx={{ border: "none", textTransform: "capitalize" }}
+                      sx={{ border: "none", textTransform: "capitalize", color:"#FA0808" }}
                     >
                       Delete
                     </CustomButton>

@@ -116,7 +116,7 @@ const useStyles = makeStyles({
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,
     // height: "100vh",
-    overflow: "auto",
+    overflow: "hidden",
     "@media (max-width:960px)": {
       width: "100vw",
     },

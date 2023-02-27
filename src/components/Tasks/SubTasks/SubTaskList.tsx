@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     [theme.breakpoints.down("xl")]: {
-      maxHeight: "calc(100vh - 22vh)",
+      maxHeight: "calc(100vh - 30vh)",
     },
     "@media (max-width:1440)": {
       maxHeight: "calc(100vh-30vh)",

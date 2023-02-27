@@ -48,11 +48,11 @@ export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    overflowY: "auto",
+    overflowY: "hidden",
     height: "100vh",
     "@media (max-width:600px)": {
       overflowX: "hidden",
-      overflowY: "auto",
+      // overflowY: "auto",
     },
   },
   content: {
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     // },
   },
   children: {
-    // overflow: "auto",
+    // overflow: "auto",o
     paddingBottom: 5,
     padding: "12px 12px",
     "@media (max-width:960px)": {

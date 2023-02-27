@@ -34,8 +34,6 @@ interface Props {
 }
 
 function SubTaskCard({ subTaskDetail }: Props) {
-  // console.log(subTaskDetail);
-
   const { user } = useSelector((store: RootState) => store.auth);
   const {
     _id,
@@ -69,12 +67,12 @@ function SubTaskCard({ subTaskDetail }: Props) {
   } catch (e: any) {
     console.error(e);
   }
-  console.log("allMembers", allMembers);
+  // console.log("allMembers", allMembers);
 
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
 
-  console.log("taskRights", taskRights);
+  // console.log('taskRights', taskRights);
 
   const subTaskDate = dueDate.replaceAll("-", ".").replace(",", "");
   let subtaskCreatedAt = new Date(String(createdAt))
@@ -422,13 +420,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
               >
                 <Box gap={4} className={classes.cardContainer}>
                   <CustomStack
-                    gap={1}
+                    gap={0.5}
                     className={classes.actionIcons}
                     sx={{
-                      marginLeft: "57px",
+                      marginLeft: "44px",
                     }}
                   >
-                    <CustomStack columnGap={0.8}>
+                    <CustomStack sx={{ width: "49px" }} columnGap={0.8}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -446,7 +444,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <Typography>0</Typography>
                     </CustomStack>
 
-                    <CustomStack columnGap={0.8}>
+                    <CustomStack columnGap={0.8} sx={{ width: "49px" }}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -464,7 +462,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     {myState?.userState !== SubtaskState.Done &&
                       myState?.userState !== SubtaskState.Rejected &&
                       taskRights && (
-                        <CBox display="flex" columnGap={0.8}>
+                        <CBox display="flex">
                           <SubTaskMenu subTaskDetail={subTaskDetail} />
                         </CBox>
                       )}
@@ -503,7 +501,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Accept"}
                           onClick={(e: any) =>
@@ -521,7 +519,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -545,7 +543,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     assignToMemberIds.includes(user._id) && (
                       <CButton
                         sx={{
-                          padding: "3px 0px",
+                          padding: "0px 0px",
                         }}
                         label={"Done"}
                         onClick={(e: any) =>
@@ -567,7 +565,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Start"}
                           onClick={(e: any) =>
@@ -585,7 +583,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -610,7 +608,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Assign"}
                           onClick={(e: any) =>
@@ -631,7 +629,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "3px 0px",
+                            padding: "0px 0px",
                           }}
                           label={"Delete"}
                           variant="outlined"
@@ -692,7 +690,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   subHeaderContent: {
-    "@media (max-width:1380px)": {
+    "@media (max-width:1440px)": {
       display: "flex",
       flexWrap: "wrap",
       flexShrink: "3",

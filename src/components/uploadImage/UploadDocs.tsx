@@ -19,15 +19,17 @@ import { RootState } from "redux/reducers";
 import "./upload.css";
 
 interface Props {
-  selectedAttachments?: {
-    moduleId: "";
-    moduleName: "SubTask";
-    files: [];
-  } | any;
+  selectedAttachments?:
+    | {
+        moduleId: "";
+        moduleName: "SubTask";
+        files: [];
+      }
+    | any;
   showUploadButton: boolean;
   moduleType: string;
   moduleId: string;
-  handleClose: (value: any) => void;
+  handleClose: (e: any, value: any) => void;
 }
 
 const UploadDocs = (props: Props) => {
@@ -127,14 +129,13 @@ const UploadDocs = (props: Props) => {
       },
     };
 
-    dispatch(uploadDocs(payload));
-
-    // dispatch({
-    //   type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
-    // });
-
     setSelectedFile([]);
-    // setFilesToUpload([]);
+    dispatch(uploadDocs(payload));
+    
+    dispatch({
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
+    });
+
     handleCancel(e, {});
   };
 
@@ -169,7 +170,11 @@ const UploadDocs = (props: Props) => {
   };
 
   const handleUploadDocs = (e: any) => {
+    e.stopPropagation();
     uploadFiles(e);
+
+    props.handleClose(e, props.selectedAttachments);
+    handleCancel(e, props.selectedAttachments);
   };
 
   const updateFilesToBeUploadedInStore = (e: any) => {
@@ -189,8 +194,7 @@ const UploadDocs = (props: Props) => {
 
   const handleCancel = (e: any, payload: any) => {
     e.stopPropagation();
-   // props.selectedAttachments = payload
-    return props.handleClose(payload);
+    return props.handleClose(e, payload);
   };
   const shortFileName = (str: string) => {
     return str.substring(0, 16) + "... " + str.substr(-4, str.length);
@@ -326,7 +330,9 @@ const UploadDocs = (props: Props) => {
             {props.showUploadButton ? (
               <CButton
                 label={"Upload"}
-                onClick={handleUploadDocs}
+                onClick={(e: any) => {
+                  handleUploadDocs(e);
+                }}
                 color="primary"
                 variant="contained"
               />

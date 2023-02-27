@@ -21,10 +21,11 @@ import { SubtaskState } from "constants/interfaces/task.interface";
 import CreateSubTask from "components/Tasks/SubTasks/CreateSubTask";
 import { Formik, Form } from "formik";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { patchSubTaskById } from "redux/action/task.action";
+import { deleteSubtask, patchSubTaskById } from "redux/action/task.action";
 import { toast } from "react-toastify";
 import { DOCS_CONFIG } from "config/docs.config";
 import { TASK_CONFIG } from "config/task.config";
+import TaskDetail from "components/Tasks/SubTasks/TaskDetail";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -61,8 +62,13 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   )?.userState;
 
   const handleSubmit = (values: any) => {
-    const { dueDate, title, assignedTo, state, description, files, _id } =
+    let { dueDate, title, assignedTo, state, description, files, _id } =
       values.subTask;
+    if (state[0]._id) {
+      state = state.map((item: any) => {
+        return { userId: item._id, userState: item.userState };
+      });
+    }
 
     const payload = {
       dueDate,
@@ -155,6 +161,17 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   const handleDeleteSubTask = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
+    dispatch(
+      deleteSubtask({
+        other: subTaskDetail._id,
+        success: (res: any) => {
+          if (res.status === 200) {
+            setAnchorElMember(null);
+          }
+          toast.success("Subtask deleted");
+        },
+      })
+    );
   };
 
   const handleEditSubTaskInAssigned = (e: any) => {
@@ -167,9 +184,10 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     <Box>
       <Box sx={{ flexGrow: 0, color: "primary" }}>
         <IconButton
+          color="primary"
           onClick={handleOpenEditMemberMenu}
           disableRipple
-          sx={{ padding: "0px 10px" }}
+          sx={{ padding: "0px 1px" }}
         >
           <assets.MoreVertOutlinedIcon />
         </IconButton>
@@ -233,7 +251,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
           {myState === SubtaskState.Assigned && (
             <Box>
               <MenuItem
-                //  onClick={handleEditSubTaskInAssigned}
+                onClick={handleEditSubTaskInDraft}
                 disableRipple
                 sx={{
                   "&.MuiMenuItem-root": {
@@ -257,10 +275,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   },
                 }}
               >
-                <SubTaskButton
-                  textAlign="center"
-                  onClick={handleEditDetails}
-                >
+                <SubTaskButton textAlign="center" onClick={handleEditDetails}>
                   Edit details
                 </SubTaskButton>
               </MenuItem>
@@ -273,7 +288,11 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   },
                 }}
               >
-                <SubTaskButton textAlign="center" sx={{ color: "#FA0808" }}>
+                <SubTaskButton
+                  onClick={handleDeleteSubTask}
+                  textAlign="center"
+                  sx={{ color: "#FA0808" }}
+                >
                   Delete subtask
                 </SubTaskButton>
               </MenuItem>
@@ -309,7 +328,12 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
             handleClose={handleCloseModal}
             showCloseBtn={true}
             title="Edit Details"
-            children={<EditSubTaskDetails subTask={temporarySubtask}  handleClose={handleCloseModal}/>}
+            children={
+              <EditSubTaskDetails
+                subTask={temporarySubtask}
+                handleClose={handleCloseModal}
+              />
+            }
           />
         )}
       </Box>

@@ -29,10 +29,7 @@ const TaskMain = () => {
     if (headerRef.current.clientHeight) {
       setTimeout(() => {
         setShowTaskList(true);
-        // console.log("Updated");
-
-        // setHeight(ref.current.clientHeight)
-      }, 200);
+      }, 100);
     }
   });
 
@@ -72,11 +69,23 @@ const TaskMain = () => {
       <Box sx={{ flexGrow: 1 }} className={classes.taskMain}>
         <Grid
           container
-          spacing={0.5}
+          spacing={1}
+          rowGap={1}
           className={classes.TaskWraper}
           ref={headerRef}
         >
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid
+            item
+            // xs={xsPoint}
+            // md={mdPoint}
+            // sm={4}
+            // lg={lgPoint}
+
+            sx={{
+              height: "38px",
+              width: "260px",
+            }}
+          >
             <DatePicker Datetitle="Date" />
             {/* <CDatePicker
             required
@@ -89,12 +98,33 @@ const TaskMain = () => {
             }}
           /> */}
           </Grid>
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid
+            item
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+            sx={{
+              height: "38px",
+              width: "280px",
+            }}
+          >
             <SelectDropdown title="Assigned to" />
           </Grid>
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid
+            item
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+            sx={{
+              height: "38px",
+              width: "280px",
+            }}
+          >
             <SelectDropdown title="Projects" />
           </Grid>
+          {/* <Grid>
+            ahmad
+          </Grid>
+          <Grid>
+            ali
+          </Grid> */}
+
           {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
           // onChange={(e:any)=>handleChange(e)}
@@ -120,10 +150,15 @@ const TaskMain = () => {
       </Box>
 
       {showTaskList ? (
-        <Box>
+        <Box
+          sx={{
+            height: "100vh",
+          }}
+        >
           <Grid
             sx={{
               overflowY: "scroll",
+              height: "100vh",
             }}
             paddingTop={"20px"}
             paddingBottom={"20px"}
@@ -179,7 +214,7 @@ const useStyles = makeStyles({
     },
   },
   taskMain: {
-    overflow: "hidden",
+    overflowY: "hidden",
     // "@media(max-width:420px)": {
 
     // },
