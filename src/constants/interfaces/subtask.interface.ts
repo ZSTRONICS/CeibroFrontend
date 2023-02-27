@@ -19,7 +19,7 @@ export interface SubtaskInterface {
   files: any[]
   createdAt: string
   updatedAt: string
-  recentComments:any[]
+  recentComments:RecentCommentsInterface[]
   taskData:TaskData
   assignedToMembersOnly: []
 }
@@ -68,5 +68,22 @@ export interface Viewer {
   addedBy: AddedBy
 }
 
+export interface RecentCommentsInterface {
+  access: string[]
+  isFileAttached: boolean
+  files: any[]
+  seenBy: SeenBy[]
+  _id: string
+  taskId: string
+  subTaskId: string
+  sender: Sender
+  userState: string
+  message: string
+  createdAt: string
+  updatedAt: string
+}
+
 export interface Creator extends UserInfo{}
 export interface ConfirmNeeded extends UserInfo {}
+export interface SeenBy extends UserInfo{}
+export interface Sender extends UserInfo{}

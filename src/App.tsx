@@ -330,6 +330,16 @@ const App: React.FC<MyApp> = () => {
               payload: data,
             });
             break;
+          case TASK_CONFIG.SUBTASK_NEW_COMMENT:
+            console.log("SUBTASK_NEW_COMMENT", data);
+            if (!data.access.includes(user._id)) {
+              return;
+            }
+            dispatch({
+              type: TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE,
+              payload: data,
+            });
+            break;
 
           case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
             dispatch({

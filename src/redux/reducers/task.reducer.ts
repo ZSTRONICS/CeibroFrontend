@@ -2,7 +2,7 @@ import { ActionInterface } from ".";
 import { TASK_CONFIG } from "config/task.config";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import { RejectedComment, RejectionComment } from "constants/interfaces/rejectionComments.interface";
 
@@ -29,7 +29,7 @@ interface TaskReducerInt {
     projectMembersOfSelectedTask: { label: string, id: string }[]
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
-    getAllSubtaskRejection: RejectedComment[]
+    getAllSubtaskRejection: RejectionComment[]
     isEditing: boolean
     temporarySubtask: {
         assignedToMembersOnly: []
@@ -39,15 +39,19 @@ interface TaskReducerInt {
         dueDate: string
         title: string
         state: any
-        _id:string
-    }
+        _id: string
+    },
+    getAllRecentCommentsOfSubtask: RecentCommentsInterface[] | any
+    getAllCommentsOfSubtaskLoading: boolean
 }
 
 const intialStatue: TaskReducerInt = {
+    getAllRecentCommentsOfSubtask: [],
+    getAllCommentsOfSubtaskLoading: false,
     temporarySubtask: {
         assignedToMembersOnly: [],
         taskId: "",
-        _id:"",
+        _id: "",
         assignedTo: [],
         description: "",
         dueDate: "",
@@ -133,7 +137,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         case TASK_CONFIG.UPDATE_SUB_TASK_BY_ID:
-            
+
             const updatedSubTak = action.payload
             // console.log( "InReducer", updatedSubTak);
             const allSubTaskIndex = state.allSubTaskList.findIndex((subTask: any) => subTask._id === updatedSubTak._id)
@@ -311,6 +315,46 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             return {
                 ...state,
                 getAllSubtaskRejection: rejectedComment
+            }
+        }
+        case requestPending(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID): {
+
+            return {
+                ...state,
+                getAllCommentsOfSubtaskLoading: true,
+            }
+        }
+        case requestSuccess(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID): {
+            return {
+                ...state,
+                getAllRecentCommentsOfSubtask: [...action.payload.result, ...state.getAllRecentCommentsOfSubtask],
+                getAllCommentsOfSubtaskLoading: false,
+            }
+        }
+        case requestFail(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID): {
+
+            return {
+                ...state,
+                getAllCommentsOfSubtaskLoading: false,
+            }
+        }
+        case TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE: {
+            if (state.selectedSubtaskFroDetailView._id === String(action.payload.subTaskId)) {
+                state.getAllRecentCommentsOfSubtask = [action.payload, ...state.getAllRecentCommentsOfSubtask]
+                return {
+                    ...state,
+                    getAllRecentCommentsOfSubtask: [...state.getAllRecentCommentsOfSubtask],
+                }
+            }
+            return {
+                ...state
+            }
+
+        }
+        case TASK_CONFIG.CLEAR_SUBTASK_COMMENTS_IN_STORE: {
+            return {
+                ...state,
+                getAllRecentCommentsOfSubtask: [],
             }
         }
         case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK: {

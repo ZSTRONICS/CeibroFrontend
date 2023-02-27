@@ -217,7 +217,7 @@ export const Container = styled(Box)(
         width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
-        background: #ffffff;
+        background: #f5f7f8b0;
 box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     `
 );

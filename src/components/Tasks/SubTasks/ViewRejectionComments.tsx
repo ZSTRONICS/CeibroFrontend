@@ -8,27 +8,24 @@ import {
 import { Box, Grid, Divider, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
 import {
-  CustomStack,
-  TaskStatus,
+  CustomStack, TaskStatus,
 } from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
 import { theme } from "theme";
+import { getColorByStatus } from "config/project.config";
 // import { getColorByStatus } from "config/project.config";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { RejectedComment } from "constants/interfaces/rejectionComments.interface";
 
 function ViewRejectionComments(props: any) {
   const taborMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const getAllSubtaskRejection = useSelector(
-    (state: RootState) => state.task.getAllSubtaskRejection
-  );
+const {cardData }= props
+console.log('cardData--->', cardData);
+
   return (
     <>
       <Container>
         <CustomStack
-          sx={{ paddingBottom: "30px" }}
+          sx={{ paddingBottom: "30px",  width: "376px" }}
           alignItems="center"
           justifyContent="space-between"
         >
@@ -42,9 +39,12 @@ function ViewRejectionComments(props: any) {
           )}
         </CustomStack>
         <ContentMain>
-          {getAllSubtaskRejection.length>0 ? 
-            getAllSubtaskRejection.map((item: RejectedComment) => (
-              <>
+          {cardData.length>0 ? 
+            cardData.map((item: any) => {
+            if(item === undefined){
+              return
+            }
+             return <>
                 <Grid
                   container
                   alignItems="center"
@@ -54,31 +54,30 @@ function ViewRejectionComments(props: any) {
                 >
                   <Grid item>
                     <CustomStack gap={1.5}>
-                      {/* <TaskStatus  sx={{
-              // background: `${getColorByStatus(state)}`,
-              background: 'blue',
-              color: "white",
-              fontWeight: "400",
-              fontSize: "8px",
-            }}>status</TaskStatus> */}
+                     {typeof item.userState !=='undefined' ? <TaskStatus  sx={{
+                    background: `${getColorByStatus(item.userState)}`,
+                    color: "white",
+                    fontWeight: "400",
+                    fontSize: "8px",
+            }}>{item.userState}</TaskStatus>:<></>}
                       <CommentName>{item.name}</CommentName>
                     </CustomStack>
                   </Grid>
 
                   <Grid item>
                     <CustomStack gap={0.4}>
-                      <CDateTime>no Date</CDateTime>
+                      <CDateTime>{item.date}</CDateTime>
                       <Divider orientation="vertical" />
-                      <CDateTime variant="body2">no time</CDateTime>
+                      <CDateTime variant="body2">{item.time}</CDateTime>
                     </CustomStack>
                   </Grid>
                 </Grid>
                 <Box sx={{ padding: "" }}>
-                  <CommentDescription>{item.description}</CommentDescription>
+                  <CommentDescription>{item.message}</CommentDescription>
                   <Divider sx={{ width: "100%" }} />
                 </Box>
               </>
-            ))
+})
            :
            <CommentName>There is no comment</CommentName>}
         </ContentMain>
@@ -96,7 +95,8 @@ export default ViewRejectionComments;
 
 export const Container = styled(Box)(
   ({ theme }) => `
-        max-width:466px;
+        max-width:476px;
+        width:100%;
         margin: 0 auto;
         padding: 26px 10px 25px 23px;
         background: #F5F7F8;

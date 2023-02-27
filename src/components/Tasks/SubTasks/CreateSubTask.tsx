@@ -538,7 +538,8 @@ export default function CreateSubTask({
             showUploadButton={false}
             moduleType={"SubTask"}
             moduleId={""}
-            handleClose={(value: any) => {
+            handleClose={(e: any, value: any): void => {
+              // console.log("value===>", value);
               setSelectedAttachments(value);
               setAttachmentViewOpen((prev: boolean) => !prev);
             }}
