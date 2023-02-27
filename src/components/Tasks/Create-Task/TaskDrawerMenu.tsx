@@ -18,7 +18,10 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import { SubtaskInterface, UserInfo } from "constants/interfaces/subtask.interface";
+import {
+  SubtaskInterface,
+  UserInfo,
+} from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
@@ -33,8 +36,8 @@ import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
 
 interface Props {
-  taskMenue: TaskInterface
-  subtasks:SubtaskInterface[]
+  taskMenue: TaskInterface;
+  subtasks: SubtaskInterface[];
 }
 
 function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
@@ -141,11 +144,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     description: description,
     admins: adminArr,
     assignedTo: assignArr,
-    state: state
-  }
-const handleDescription=()=>{
-
-}
+    state: state,
+  };
+  const handleDescription = () => {};
   if (doOnce) {
     const projectMembersData = getSelectedProjectMembers(
       project._id,
@@ -189,16 +190,19 @@ const handleDescription=()=>{
         other: _id,
         success: (res) => {
           if (res.status === 200) {
-            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
-            if(subtasks.length===0){
+            const taskData = {
+              task: res?.data.newTask,
+              subtaskOfTask: subtasks,
+            };
+            if (subtasks.length === 0) {
               dispatch({
                 type: TASK_CONFIG.SET_SELECTED_TASK,
                 payload: res?.data.newTask,
               });
-            }else{
+            } else {
               dispatch({
                 type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
-                payload: taskData
+                payload: taskData,
               });
             }
           }
@@ -230,10 +234,13 @@ const handleDescription=()=>{
         other: _id,
         success: (res) => {
           if (res.status === 200) {
-            const taskData = { task:res?.data.newTask, subtaskOfTask: subtasks }
+            const taskData = {
+              task: res?.data.newTask,
+              subtaskOfTask: subtasks,
+            };
             dispatch({
               type: TASK_CONFIG.UPDATE_SELECTED_TASK_AND_SUBTASK,
-              payload: taskData
+              payload: taskData,
             });
           }
           toast.success("Task updated");
@@ -245,7 +252,7 @@ const handleDescription=()=>{
       })
     );
   };
-  
+
   const handleCreateTask = (e: any) => {
     formData.state = State.New;
     handleTaskUpdateAtDraftState(e, true);
@@ -253,8 +260,8 @@ const handleDescription=()=>{
 
   const handleCancel = () => {
     setShowUpdateBtn(false);
-    setFormData(prevObj)
-    descriptionInputRef.current.value= prevObj.description
+    setFormData(prevObj);
+    descriptionInputRef.current.value = prevObj.description;
   };
 
   const handleDelete = () => {
@@ -305,7 +312,11 @@ const handleDescription=()=>{
   if (assignToOpt) {
     dispatch({
       type: TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK,
-      payload: getUniqueObjectsFromArr([...assignToOpt, ...adminListOpt, ...adminData]),
+      payload: getUniqueObjectsFromArr([
+        ...assignToOpt,
+        ...adminListOpt,
+        ...adminData,
+      ]),
     });
   }
 
@@ -536,7 +547,7 @@ const handleDescription=()=>{
 
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
-          inputRef={descriptionInputRef}
+            inputRef={descriptionInputRef}
             id="standard-multiline-flexible"
             placeholder="Enter task description"
             multiline
@@ -554,7 +565,7 @@ const handleDescription=()=>{
             }}
           />
           <CBox className={classes.titleLabel}>Description</CBox>
-           {/* <CBox
+          {/* <CBox
             display="flex"
             alignItems="center"
             justifyContent="flex-end"
@@ -567,7 +578,6 @@ const handleDescription=()=>{
                             &nbsp; */}
           {/* <NotificationIcon />
           </CBox> */}
-        
         </Grid>
         <Divider />
         <Grid item xs={12} md={12}>
@@ -587,7 +597,7 @@ const handleDescription=()=>{
                 onClick={viewAllDocs}
                 styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
               />
-              
+
               <Divider
                 sx={{
                   height: 20,
@@ -597,7 +607,7 @@ const handleDescription=()=>{
                 }}
                 orientation="vertical"
               />
-            
+
               <CButton
                 onClick={() => setImageAttach(true)}
                 label="Add New"
@@ -736,7 +746,14 @@ const handleDescription=()=>{
         isOpen={imageAttach}
         handleClose={() => setImageAttach(false)}
         title={"Attachments"}
-        children={<UploadDocs showUploadButton={true} moduleType={"Task"} moduleId={_id} handleClose={() => setImageAttach(false)} />}
+        children={
+          <UploadDocs
+            showUploadButton={true}
+            moduleType={"Task"}
+            moduleId={_id}
+            handleClose={() => setImageAttach(false)}
+          />
+        }
       />
       <CDrawer
         showBoxShadow={true}
