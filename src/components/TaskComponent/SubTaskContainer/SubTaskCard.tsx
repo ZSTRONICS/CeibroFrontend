@@ -184,14 +184,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
           <CustomStack
             gap={0.5}
             sx={{
-              width: "220px",
+              width: "115px",
               // width: "100%"
             }}
           >
             <Grid item container justifyContent="space-between">
               <CustomStack columnGap={0.5}>
                 <LabelTag>Assigned to</LabelTag>
-                {membersList.map((member: Member, i: any) => {
+                {/* {membersList.map((member: Member, i: any) => {
                   return (
                     <Fragment key={member._id}>
                       {i === 0 && (
@@ -201,14 +201,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       )}
                     </Fragment>
                   );
-                })}
-                {membersList.length > 1 ? (
+                })} */}
+                {membersList.length > 0 ? (
                   <CustomBadge
                     overlap="circular"
                     color="primary"
                     badgeContent={
                       <Tooltip title={AssignedToList(membersList)}>
-                        <span>{membersList.length - 1}+</span>
+                        <span>{membersList.length}+</span>
                       </Tooltip>
                     }
                   ></CustomBadge>
@@ -218,10 +218,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
               </CustomStack>
             </Grid>
           </CustomStack>
-          <CustomStack gap={0.8} sx={{ width: "180px" }}>
+          <CustomStack gap={0.8} sx={{ width: "115px" }}>
             <LabelTag sx={{ fontSize: "11px" }}>Rejected by</LabelTag>
             {/* <AssignedTag sx={{ fontSize: "12px" }}>Static name</AssignedTag> */}
-            {rejectedBy.map((member: Member, i: any) => {
+            {/* {rejectedBy.map((member: Member, i: any) => {
               return (
                 <Fragment key={member._id}>
                   {i === 0 && (
@@ -231,15 +231,15 @@ function SubTaskCard({ subTaskDetail }: Props) {
                   )}
                 </Fragment>
               );
-            })}
-            {rejectedBy.length > 1 ? (
+            })} */}
+            {rejectedBy.length > 0 ? (
               <CustomBadge
                 showZero={true}
                 overlap="circular"
                 color="error"
                 badgeContent={
                   <Tooltip title={AssignedToList(rejectedBy)}>
-                    <span>{rejectedBy.length - 1}+</span>
+                    <span>{rejectedBy.length}+</span>
                   </Tooltip>
                 }
               ></CustomBadge>
@@ -501,7 +501,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Accept"}
                           onClick={(e: any) =>
@@ -519,7 +519,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -543,7 +543,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     assignToMemberIds.includes(user._id) && (
                       <CButton
                         sx={{
-                          padding: "0px 0px",
+                          padding: "2px 0px",
                         }}
                         label={"Done"}
                         onClick={(e: any) =>
@@ -565,7 +565,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Start"}
                           onClick={(e: any) =>
@@ -583,7 +583,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -608,7 +608,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Assign"}
                           onClick={(e: any) =>
@@ -629,7 +629,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         />
                         <CButton
                           sx={{
-                            padding: "0px 0px",
+                            padding: "2px 0px",
                           }}
                           label={"Delete"}
                           variant="outlined"
