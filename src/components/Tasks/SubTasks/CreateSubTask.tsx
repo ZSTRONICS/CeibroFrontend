@@ -36,7 +36,8 @@ export default function CreateSubTask({
   const classes = useStyles();
   const [showDate, setShowDate] = useState<any>(new Date());
   const localized = moment(defaultValues.dueDate, "DD-MM-YYYY").format(
-    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+    "ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"
+  );
 
   const [selectedAttachments, setSelectedAttachments] = useState<any>({
     moduleId: defaultValues._id,
@@ -68,7 +69,7 @@ export default function CreateSubTask({
     ...assignToList,
     ...projectMembersOfSelectedTask,
   ]);
-  
+
   const handleOpenCloseAttachmentModal = (e: any) => {
     e.stopPropagation();
     setAttachmentViewOpen((value: boolean) => !value);
@@ -85,7 +86,6 @@ export default function CreateSubTask({
 
   const assignedToChangeHandler = (members: []) => {
     defaultValues.assignedTo[0].members = [...members];
-
     // defaultValues.assignedTo.every((assignee: any, index: any) => {
     //   if (isEditMode === false) {
     //     if (String(assignee.addedBy) === String(user._id)) {
@@ -114,14 +114,15 @@ export default function CreateSubTask({
   };
 
   const setAssignToData = () => {
-    
-    if (defaultValues.assignedTo.length > 0) {
+    if (defaultValues.assignedTo[0].members.length > 0) {
       let payload = {
         addedBy: "",
         members: defaultValues.assignedTo[0].members,
       };
-      if(defaultValues.assignedTo[0].members[0]._id){
-        payload.members= defaultValues.assignedTo[0].members.map((item:any)=> item._id)
+      if (defaultValues.assignedTo[0].members[0]._id) {
+        payload.members = defaultValues.assignedTo[0].members.map(
+          (item: any) => item._id
+        );
       }
       if (typeof defaultValues.assignedTo[0].addedBy === typeof "") {
         payload.addedBy = defaultValues.assignedTo[0].addedBy;
@@ -132,6 +133,12 @@ export default function CreateSubTask({
       }
 
       defaultValues.assignedTo[0] = payload;
+    } else {
+      let payload = {
+        addedBy: String(user._id),
+        members: [],
+      };
+      defaultValues.assignedTo[0] = payload;
     }
   };
 
@@ -141,7 +148,6 @@ export default function CreateSubTask({
     let membersList: any[] = [];
 
     if (isDraftState) {
-
       defaultValues.assignedTo[0].members.forEach((member: any) => {
         if (member === user._id) {
           adminState = "accepted";
@@ -157,7 +163,6 @@ export default function CreateSubTask({
         }
         membersList.push(member);
       });
-
     } else {
       defaultValues.assignedTo[0].members.forEach((member: any) => {
         if (member === user._id) {
@@ -210,7 +215,7 @@ export default function CreateSubTask({
       <Grid container className={classes.outerWrapper} rowGap={1}>
         <Grid item xs={12} md={12}>
           <CDatePicker
-          disabled={myState=== SubtaskState.Assigned}
+            disabled={myState === SubtaskState.Assigned}
             required
             value={isEditMode === true ? localized : showDate}
             id="date"
@@ -224,7 +229,7 @@ export default function CreateSubTask({
         </Grid>
         <Grid className={classes.titleWrapper} item xs={12} md={12}>
           <TextField
-            disabled={myState=== SubtaskState.Assigned}
+            disabled={myState === SubtaskState.Assigned}
             required
             size="small"
             name="taskTitle"
@@ -271,7 +276,7 @@ export default function CreateSubTask({
           <Autocomplete
             className={classes.titleWrapper}
             multiple
-            disabled={myState=== SubtaskState.Assigned}
+            disabled={myState === SubtaskState.Assigned}
             disablePortal
             disableCloseOnSelect
             filterSelectedOptions
@@ -371,16 +376,18 @@ export default function CreateSubTask({
         <CBox display="flex" width="100%" mt={6.2} mb={1}>
           <CBox className={classes.btnDraft}>
             {!isEditMode && (
-            <CButton
-              type="submit"
-              variant="outlined"
-              styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
-              label={"Save as draft"}
-              onClick={() => {
-                defaultValues.state = [{ userId: user._id, userState: "draft" }]
-                defaultValues.files = selectedAttachments;
-              }}
-            />
+              <CButton
+                type="submit"
+                variant="outlined"
+                styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
+                label={"Save as draft"}
+                onClick={() => {
+                  defaultValues.state = [
+                    { userId: user._id, userState: "draft" },
+                  ];
+                  defaultValues.files = selectedAttachments;
+                }}
+              />
             )}
             {isEditMode && myState === SubtaskState.Draft && (
               <CButton
@@ -390,6 +397,9 @@ export default function CreateSubTask({
                 label={"Update draft"}
                 onClick={() => {
                   defaultValues.files = selectedAttachments;
+                  defaultValues.state = [
+                    { userId: user._id, userState: "draft" },
+                  ];
                   setAssignToData();
                 }}
               />
@@ -446,7 +456,7 @@ export default function CreateSubTask({
                     });
                   }
 
-                  defaultValues.state = stateToPush
+                  defaultValues.state = stateToPush;
                 }}
               />
             )}
@@ -538,7 +548,8 @@ export default function CreateSubTask({
             showUploadButton={false}
             moduleType={"SubTask"}
             moduleId={""}
-            handleClose={(value: any) => {
+            handleClose={(e: any, value: any): void => {
+              // console.log("value===>", value);
               setSelectedAttachments(value);
               setAttachmentViewOpen((prev: boolean) => !prev);
             }}

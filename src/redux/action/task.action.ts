@@ -49,6 +49,10 @@ const taskActions = {
             type: TASK_CONFIG.CLOSE_CONFIRM_DRAWER,
         };
     },
+
+    postSubtaskComment: createAction(TASK_CONFIG.POST_SUBTASK_COMMENT),
+    getAllCommentsOfSubtaskById: createAction(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID)
+
 }
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)
@@ -64,6 +68,7 @@ export const deleteSubtask = createAction(TASK_CONFIG.DELETE_SUBTASK)
 export const deleteSubtaskMember = createAction(TASK_CONFIG.DELETE_SUBTASK_MEMBER)
 export const subtaskMemberMarkAsDone = createAction(TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE)
 export const getAllSubTaskList = createAction(TASK_CONFIG.GET_ALL_SUBTASK_LIST)
+// export const postSubtaskComment = createAction(TASK_CONFIG.POST_SUBTASK_COMMENT)
 export const getAllSubTaskRejection = createAction(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION)
 export const getAllSubTaskOfTask = createAction(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK)
 export const taskSubtaskStateChange = createAction(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE)

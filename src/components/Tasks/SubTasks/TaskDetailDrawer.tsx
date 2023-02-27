@@ -28,6 +28,10 @@ function TaskDetailDrawer() {
             type: TASK_CONFIG.SET_SUBTASK,
             payload: null,
         });
+        dispatch({
+            type: TASK_CONFIG.CLEAR_SUBTASK_COMMENTS_IN_STORE,
+            payload: [],
+        });
 
         dispatch(taskActions.closeSubtaskDetailDrawer())
     }
@@ -98,6 +102,6 @@ const useStyles = makeStyles({
         width: '100%',
         backgroundColor: colors.lightGrey,
         height: '100vh',
-
+        overflow:'hidden'
     }
 })

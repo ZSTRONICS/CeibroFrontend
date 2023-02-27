@@ -10,6 +10,8 @@ export interface RejectionCommentRoot {
     _id: string
     creator: Creator
     comment: string
+    createdAt: string
+    updatedAt: string
   }
   export interface RejectedComment{
     name:string,

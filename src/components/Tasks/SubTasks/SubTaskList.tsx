@@ -27,9 +27,12 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
       {results.length > 0 ? (
         <CBox className={classes.cardListContainer} onScroll={handleScroll}>
           {results &&
-            results.map((subTaskDetail: SubtaskInterface) => {
+            results.map((subTaskDetail: SubtaskInterface, index:any) => {
+              if (subTaskDetail === undefined) {
+                return <></>;
+              }
               if (!subTaskDetail.access.includes(user._id)) {
-                return;
+                return <></>;
               }
               return (
                 <Fragment key={subTaskDetail._id}>

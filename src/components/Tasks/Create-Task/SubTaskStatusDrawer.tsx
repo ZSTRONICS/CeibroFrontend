@@ -51,7 +51,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
       description,
       files,
     } = values.subTask;
-
+    
     setSubTask(false);
 
     const payload = {

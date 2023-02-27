@@ -105,6 +105,21 @@ const subtaskMemberMarkAsDone = apiCall({
   path: '/task/st/markAsDone'
 });
 
+const postSubtaskComment = apiCall({
+  type: TASK_CONFIG.POST_SUBTASK_COMMENT,
+  method: 'post',
+  path: '/task/st/comment'
+});
+
+const getAllCommentsOfSubtaskById = apiCall({
+  type: TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID,
+  method: 'get',
+  path: (payload) => {
+    let url = `/task/st/comment/${payload.other}`
+    return url
+  }
+});
+
 function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
@@ -118,6 +133,8 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.UPDATE_TASK_BY_ID, updateTaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_LIST, getAllSubTask)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK, getAllSubTaskOfTask)
+  yield takeLatest(TASK_CONFIG.POST_SUBTASK_COMMENT, postSubtaskComment)
+  yield takeLatest(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID, getAllCommentsOfSubtaskById)
   yield takeLatest(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION, getAllSubTaskRejection)
   yield takeLatest(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE, taskSubtaskStateChange)
 }

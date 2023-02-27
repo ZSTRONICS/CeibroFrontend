@@ -14,20 +14,29 @@ import {
 } from "../Tabs/TaskCard";
 
 import { InfoIcon } from "components/material-ui/icons";
-import CustomModal from "components/Modal";
-import { onlyUnique } from "components/Utills/Globals/Common";
-import { TASK_CONFIG } from "config/task.config";
 import {
   AssignedTo,
   Member,
   SubtaskInterface,
 } from "constants/interfaces/subtask.interface";
-import { SubtaskState } from "constants/interfaces/task.interface";
 import { useDispatch, useSelector } from "react-redux";
-import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
+import {
+  SubtaskState,
+  TaskInterface,
+} from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
+import taskActions, {
+  deleteSubtask,
+  patchSubTaskById,
+  taskSubtaskStateChange,
+} from "redux/action/task.action";
+import { TASK_CONFIG } from "config/task.config";
+import CustomModal from "components/Modal";
 import StateChangeComment from "./StateChangeComment";
 import SubTaskMenu from "./SubtaskMenu";
+import { isTrue, onlyUnique } from "components/Utills/Globals/Common";
+import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
+import { toast } from "react-toastify";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -35,6 +44,8 @@ interface Props {
 
 function SubTaskCard({ subTaskDetail }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
+  const { selectedTaskAdmins } = useSelector((store: RootState) => store.task);
+
   const {
     _id,
     dueDate,
@@ -319,7 +330,19 @@ function SubTaskCard({ subTaskDetail }: Props) {
     setStatePayload({ state: state, taskId: taskId, subTaskId: _id });
     setSubTask(true);
   };
-
+  const handleDeleteSubTask = (e: any) => {
+    e.stopPropagation();
+    dispatch(
+      deleteSubtask({
+        other: subTaskDetail._id,
+        success: (res: any) => {
+          if (res.status === 200) {
+          }
+          toast.success("Subtask deleted");
+        },
+      })
+    );
+  };
   const handleSubTaskStateChange = (event: any, state: string) => {
     event.stopPropagation();
     const payload = {
@@ -334,7 +357,71 @@ function SubTaskCard({ subTaskDetail }: Props) {
       })
     );
   };
+  const setSubTaskUserStates = () => {
+    let stateToPush: any = [];
+    let adminState = "assigned";
+    let membersList: any[] = [];
 
+    subTaskDetail.assignedTo[0].members.forEach((member: any) => {
+      if (member._id === user._id) {
+        adminState = "accepted";
+        stateToPush.push({
+          userId: user._id,
+          userState: "accepted",
+        });
+      } else {
+        stateToPush.push({
+          userId: member._id,
+          userState: "assigned",
+        });
+      }
+      membersList.push(member._id);
+    });
+
+    selectedTaskAdmins.forEach((admin) => {
+      if (!membersList.includes(String(admin.id))) {
+        stateToPush.push({
+          userId: admin.id,
+          userState: adminState,
+        });
+      }
+    });
+
+    return stateToPush;
+  };
+  const handleAssignTo = (e: any) => {
+    const payload = {
+      dueDate: subTaskDetail.dueDate,
+      title: subTaskDetail.title,
+      assignedTo: [
+        {
+          addedBy: subTaskDetail.assignedTo[0].addedBy._id,
+          members: subTaskDetail.assignedTo[0].members.map(
+            (item: any) => item._id
+          ),
+        },
+      ],
+      state: setSubTaskUserStates(),
+      description: subTaskDetail.description,
+    };
+    dispatch(
+      patchSubTaskById({
+        body: payload,
+        other: _id,
+        success: (res: any) => {
+          if (res.status === 200) {
+            // dispatch({
+            //   type: TASK_CONFIG.UPDATE_SUB_TASK_BY_ID,
+            //   payload: res.data.newSubtask,
+            // });
+          }
+        },
+        onFailAction: () => {
+          toast.error("Failed to Assign subtask!");
+        },
+      })
+    );
+  };
   const HeaderConfirmation = () => {
     return (
       <CBox display="flex" alignItems="center">
@@ -350,7 +437,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   return (
     <div className={classes.main}>
-      {myState?.userState ? (
+      {
         <>
           <Grid
             sx={{
@@ -610,13 +697,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           sx={{
                             padding: "2px 0px",
                           }}
+                          disabled={assignedTo[0].members.length === 0}
                           label={"Assign"}
-                          onClick={(e: any) =>
-                            // setAssignToData();
-                            // setSubTaskUserStates();
-
-                            handleSubTaskStateChange(e, SubtaskState.Assigned)
-                          }
+                          onClick={handleAssignTo}
                           variant="outlined"
                           styles={{
                             borderColor: "#0076C8",
@@ -632,6 +715,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             padding: "2px 0px",
                           }}
                           label={"Delete"}
+                          onClick={handleDeleteSubTask}
                           variant="outlined"
                           styles={{
                             borderColor: "#FA0808",
@@ -649,9 +733,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
           </Grid>
           <Divider sx={{ width: "100%" }} />
         </>
-      ) : (
-        <></>
-      )}
+        // : (
+        //   <></>
+        // )
+      }
 
       <CBox>
         <CustomModal
@@ -721,6 +806,10 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "75%",
       width: "100%",
     },
+
+    "@media (max-width:1070px)" :{
+      maxWidth: "60%",
+  }
   },
   subTaskActions: {
     "@media (max-width:1380px)": {

@@ -1,36 +1,52 @@
 import { Typography, Divider, makeStyles } from '@material-ui/core'
 import { CBox } from 'components/material-ui'
 import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
+import { momentdeDateFormat, momentTimeFormat } from 'components/Utills/Globals/Common'
+import { getColorByStatus } from 'config/project.config'
+import { RecentCommentsInterface } from 'constants/interfaces/subtask.interface'
 import React, { Fragment } from 'react'
 
-export default function RecentCommentsList(props: any) {
-    const comment = props?.comment
-    // const [comment, setComment] = useState<[{}]>(props?.comment);
-    const classes = useStyles()
+interface Props {
+    comment: RecentCommentsInterface
+  }
 
+export default function RecentCommentsList({ comment }: Props) {
+    const classes = useStyles()
+    const commentDueDate = momentdeDateFormat(comment.createdAt)
+    const commentTime = momentTimeFormat(comment.createdAt);
     return (
         <>  <CBox mb={2}>
             <CBox display='flex' alignItems='center'>
-                <TaskStatus className={classes.status}>Ongoing</TaskStatus>
-                <Typography style={{ fontSize: "11px", fontWeight: 600, color: '#7D7E80' }}>
-                    {`${comment.firstName} ${comment.lastName}`}
+            <TaskStatus
+            sx={{
+              background: `${getColorByStatus(comment.userState)}`,
+              color: "white",
+              fontWeight: "500",
+              fontSize: "8px",
+              
+            }}
+          >
+            {comment.userState}
+          </TaskStatus>
+                <Typography style={{ fontSize: "12px", fontWeight: 600, color: '#7D7E80',paddingLeft:'14px' }}>
+                    {`${comment.sender.firstName} ${comment.sender.surName}`}
                 </Typography>
                 &nbsp;
                 &nbsp;
-                <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
-                    {comment.createdAt}
+                <Typography style={{ fontSize: "9px",fontWeight: 500, color: '#7D7E80' }}>
+                    {commentDueDate}
                 </Typography>
                 &nbsp;
                 &nbsp;
                 <Divider orientation='vertical' style={{ height: 10, width: 2 }} />
                 &nbsp;
                 &nbsp;
-                <Typography style={{ fontSize: "9px", color: '#7D7E80' }}>
-                    {comment.time}
+                <Typography style={{ fontSize: "9px",fontWeight: 500, color: '#7D7E80' }}>
+                   {commentTime}
                 </Typography>
             </CBox>
             <Typography className={classes.description}>
-                {comment.description}
+                {comment.message}
             </Typography>
             <Divider />
         </CBox></>
@@ -47,7 +63,7 @@ const useStyles = makeStyles({
         color: '#7D7E80'
     },
     description: {
-        fontSize: "12px", fontWeight: 600, color: '#000000', marginBottom: 5
+        fontSize: "14px", fontWeight: 500, color: '#494949', marginBottom: 5
     },
 
     status: {
