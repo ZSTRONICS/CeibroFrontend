@@ -11,15 +11,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
 const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
-
   const classes = useStyles();
   const { user } = useSelector((store: RootState) => store.auth);
-  const [doOnce, setDoOnce] = useState(true)
+  const [doOnce, setDoOnce] = useState(true);
   const handleScroll = (e: any) => {
     if (doOnce) {
       let subtaskBox = e.target;
-      subtaskBox.scrollTop = 0
-      setDoOnce(false)
+      subtaskBox.scrollTop = 0;
+      setDoOnce(false);
     }
   };
   return (
@@ -27,9 +26,12 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
       {results.length > 0 ? (
         <CBox className={classes.cardListContainer} onScroll={handleScroll}>
           {results &&
-            results.map((subTaskDetail: SubtaskInterface) => {
+            results.map((subTaskDetail: SubtaskInterface, index:any) => {
+              if (subTaskDetail === undefined) {
+                return <></>;
+              }
               if (!subTaskDetail.access.includes(user._id)) {
-                return;
+                return <></>;
               }
               return (
                 <Fragment key={subTaskDetail._id}>

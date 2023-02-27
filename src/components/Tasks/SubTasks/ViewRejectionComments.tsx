@@ -19,7 +19,6 @@ import { getColorByStatus } from "config/project.config";
 function ViewRejectionComments(props: any) {
   const taborMobileView = useMediaQuery(theme.breakpoints.down("sm"));
 const {cardData }= props
-console.log('cardData--->', cardData);
 
   return (
     <>
@@ -79,7 +78,7 @@ console.log('cardData--->', cardData);
               </>
 })
            :
-           <CommentName>There is no comment</CommentName>}
+           <CommentName>No data found!</CommentName>}
         </ContentMain>
       </Container>
       {!taborMobileView && (

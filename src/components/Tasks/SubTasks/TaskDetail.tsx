@@ -33,16 +33,15 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
         (state: RootState) => state.task.getAllSubtaskRejection
       );
 
-      const viewRejection = getAllSubtaskRejection.map((item:RejectionComment)=>{
+      const viewRejection = getAllSubtaskRejection.map((item:any)=>{
         return{
-            name:`${item.creator.firstName} ${item.creator.surName}`,
-            message:item.comment,
+            name:`${item.name}`,
+            message:item.message,
             _id:item._id,
             date: momentdeDateFormat(item.createdAt),
             time: momentTimeFormat(item.createdAt)
         }
       })
-    //   console.log(viewRejection);
       
     useEffect(()=>{
         dispatch(taskActions.getAllCommentsOfSubtaskById({other:subtaskDetail._id}))

@@ -75,7 +75,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
       description,
     };
 
-    if (files.files.length > 0) {
+    if (files && files.files.length > 0) {
       dispatch({
         type: DOCS_CONFIG.UPLAOD_FILES_NOW,
         payload: files,

@@ -29,7 +29,7 @@ interface TaskReducerInt {
     projectMembersOfSelectedTask: { label: string, id: string }[]
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
-    getAllSubtaskRejection: RejectionComment[]
+    getAllSubtaskRejection: any[]
     isEditing: boolean
     temporarySubtask: {
         assignedToMembersOnly: []
@@ -304,17 +304,19 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             };
         }
         case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
-            const rejectedComment = action.payload.result.rejectionComments.map((item: RejectionComment) => {
+            
+            const rejectedComment = action.payload.result.map((item: any) => {
                 return {
-                    name: `${item.creator.firstName} ${item.creator.surName}`,
-                    description: item.comment,
+                    name: `${item.sender.firstName} ${item.sender.surName}`,
+                    message: item.message,
                     _id: item._id,
+                    createdAt:item.createdAt
                 }
             })
 
             return {
                 ...state,
-                getAllSubtaskRejection: rejectedComment
+                getAllSubtaskRejection: [...rejectedComment]
             }
         }
         case requestPending(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID): {

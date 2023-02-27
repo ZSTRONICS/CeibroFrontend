@@ -100,6 +100,9 @@ export default function TaskDetailHeader(props: any) {
         <Typography className={classes.heading}>Assign to</Typography>
         <CBox className={classes.description}>
           {membersList.map((member: Member, i: any) => {
+            if(member === undefined){
+              return
+            }
             if (i === membersList.length - 1) {
               return (
                 <AssignedTag
