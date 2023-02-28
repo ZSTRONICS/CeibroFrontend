@@ -58,7 +58,7 @@ import docsAction from "redux/action/docs.actions";
 import { useLocation } from "react-router-dom";
 import { uploadDocs } from "redux/action/task.action";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const { isLoggedIn } = useSelector((store: RootState) => store.auth);
@@ -69,19 +69,21 @@ const App: React.FC<MyApp> = () => {
     (store: RootState) => store.chat.openViewQuestioniar
   );
 
-  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector((state: RootState) => state.docs);
+  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
+    (state: RootState) => state.docs
+  );
 
   useEffect(() => {
     if (!uploadPendingFiles) {
-      return
+      return;
     }
 
     let formData = new FormData();
     let filesPlaceholderData: any[] = [];
 
-    const filesToUpload = selectedFilesToBeUploaded.files
-    const moduleType = selectedFilesToBeUploaded.moduleName
-    const moduleId = selectedFilesToBeUploaded.moduleId
+    const filesToUpload = selectedFilesToBeUploaded.files;
+    const moduleType = selectedFilesToBeUploaded.moduleName;
+    const moduleId = selectedFilesToBeUploaded.moduleId;
     //console.log("Uploading pending Files => ", filesToUpload, moduleId, moduleType);
 
     Array.from(filesToUpload).forEach((file: any) => {
@@ -146,10 +148,9 @@ const App: React.FC<MyApp> = () => {
     dispatch(uploadDocs(payload));
 
     dispatch({
-      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED
+      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
     });
-
-  }, [uploadPendingFiles])
+  }, [uploadPendingFiles]);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -279,7 +280,7 @@ const App: React.FC<MyApp> = () => {
         console.log("eventType-->", eventType, dataRcvd);
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
-            if (!data.access.includes(user._id)) {
+            if (!data.access.includes(String(user._id))) {
               return;
             }
             dispatch({
@@ -294,11 +295,11 @@ const App: React.FC<MyApp> = () => {
             }
 
             try {
-              const moduleId = data._id
+              const moduleId = data._id;
               dispatch({
                 type: DOCS_CONFIG.SET_SELECTED_MODULE_ID,
-                payload: moduleId
-              })
+                payload: moduleId,
+              });
             } catch (e: any) {
               console.error("Failed to upload pending documents", e);
             }
@@ -312,38 +313,42 @@ const App: React.FC<MyApp> = () => {
 
           case TASK_CONFIG.TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.TASK_UPDATE_PRIVATE:
-            if (!data.access.includes(user._id)) {
+            if (!data.access.includes(String(user._id))) {
               return;
             }
             dispatch({
-              type: TASK_CONFIG.UPDATE_SUB_TASK_BY_ID,
+              type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
               payload: data,
             });
             break;
 
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
-
+          case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE:
+            if (!data.access.includes(String(user._id))) {
+              return;
+            }
             dispatch({
               type: TASK_CONFIG.UPDATE_SUBTASK_IN_STORE,
               payload: data,
             });
+
             break;
-          case TASK_CONFIG.SUBTASK_NEW_COMMENT:
-            if (!data.access.includes(user._id)) {
+          
+            case TASK_CONFIG.SUBTASK_NEW_COMMENT:
+              if (!data.access.includes(String(user._id))) {
               return;
             }
             try {
-              const moduleId = data._id
-              console.log("SET_SELECTED_MODULE_ID",moduleId);
+              const moduleId = data._id;
               dispatch({
                 type: DOCS_CONFIG.SET_SELECTED_MODULE_ID,
-                payload: moduleId
-              })
+                payload: moduleId,
+              });
             } catch (e: any) {
               console.error("Failed to upload pending documents", e);
             }
             dispatch({
-              type: TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE,
+              type: TASK_CONFIG.PUSH_NEW_COMMENT_IN_STORE,
               payload: data,
             });
             break;
@@ -354,6 +359,7 @@ const App: React.FC<MyApp> = () => {
               payload: data,
             });
             break;
+          
           case DOCS_CONFIG.FILE_UPLOADED:
             dispatch({
               type: DOCS_CONFIG.FILE_UPLOADED,
@@ -376,6 +382,19 @@ const App: React.FC<MyApp> = () => {
               type: DOCS_CONFIG.FILES_UPLOAD_COMPLETED,
               payload: data,
             });
+
+            break;
+          case DOCS_CONFIG.COMMENT_WITH_FILES:
+            dispatch({
+              type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
+              payload: data,
+            });
+
+            dispatch({
+              type: TASK_CONFIG.UPDATE_COMMENT_WITH_FILES_IN_STORE,
+              payload: data,
+            });
+
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:

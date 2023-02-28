@@ -17,7 +17,6 @@ export default function RecentCommentsList({ comment }: Props) {
     const classes = useStyles()
     const commentDueDate = momentdeDateFormat(comment.createdAt)
     const commentTime = momentTimeFormat(comment.createdAt);
-    console.log(comment);
 
     const ListItemAvat = (files: any) => {
       let type = files.fileType;

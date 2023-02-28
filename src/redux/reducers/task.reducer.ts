@@ -2,7 +2,7 @@ import { ActionInterface } from ".";
 import { TASK_CONFIG } from "config/task.config";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { RecentCommentsInterface, SubtaskInterface, TaskData } from "constants/interfaces/subtask.interface";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import { RejectedComment, RejectionComment } from "constants/interfaces/rejectionComments.interface";
 
@@ -39,7 +39,8 @@ interface TaskReducerInt {
         dueDate: string
         title: string
         state: any
-        _id: string
+        _id: string,
+        taskData: any
     },
     getAllRecentCommentsOfSubtask: RecentCommentsInterface[] | any
     getAllCommentsOfSubtaskLoading: boolean
@@ -56,7 +57,10 @@ const intialStatue: TaskReducerInt = {
         description: "",
         dueDate: "",
         title: "",
-        state: []
+        state: [],
+        taskData: {
+            admins: [],
+        }
     },
     getAllSubtaskRejection: [],
     isEditing: false,
@@ -96,25 +100,67 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
 
         case TASK_CONFIG.PULL_TASK_FROM_STORE:
             const removeTaskId = action.payload
-            state.allTask = state.allTask.filter(task => task._id !== removeTaskId)
-
+            state.allTask = state.allTask.filter(task => String(task._id) !== String(removeTaskId))
             return {
                 ...state,
                 allTask: [...state.allTask]
             }
 
+        case TASK_CONFIG.UPDATE_SUBTASK_IN_STORE:
+            const subTaskToUpdate = action.payload
+            const isExistingSubTask = state.allSubTaskList.findIndex((subTask: any) => subTask._id === subTaskToUpdate._id)
+            if (isExistingSubTask > -1) {
+                state.allSubTaskList[isExistingSubTask] = subTaskToUpdate
+            } else {
+                state.allSubTaskList = [action.payload, ...state.allSubTaskList]
+            }
+            let updated = false
+            if ("subtasks" in state.allSubTaskOfTask) {
+                const updateIndex = state.allSubTaskOfTask.subtasks.findIndex((subtask: any) => subtask._id === subTaskToUpdate._id)
+                if (updateIndex > -1) {
+                    // console.log( "InReducer", "task subtasks updated");
+                    state.allSubTaskOfTask.subtasks[updateIndex] = subTaskToUpdate
+                    updated = true
+                }
+            }
+
+            if (!updated) {
+                state.allSubTaskOfTask.subtasks = [subTaskToUpdate, ...state.allSubTaskOfTask.subtasks]
+            }
+            return {
+                ...state,
+                allSubTaskList: [...state.allSubTaskList],
+                allSubTaskOfTask: { ...state.allSubTaskOfTask }
+            }
+
+
         case TASK_CONFIG.UPDATE_TASK_IN_STORE:
-            // console.log('UPDATE_TASK_IN_STORE--->',action.payload)
-            const index = state.allTask.findIndex(task => task._id === action.payload._id)
+            const index = state.allTask.findIndex((task: any) => String(task._id) === String(action.payload._id))
             if (index === -1) {
                 state.allTask = [action.payload, ...state.allTask]
             } else {
                 state.allTask[index] = action.payload
             }
 
-            return {
-                ...state,
-                allTask: [...state.allTask],
+            let updateCurrentTask = false
+            if (state.allSubTaskOfTask) {
+                const currentTask = state.allSubTaskOfTask.task
+                if (String(currentTask._id) === String(action.payload._id)) {
+                    updateCurrentTask = true
+                }
+            }
+
+            if (updateCurrentTask) {
+                return {
+                    ...state,
+                    allTask: [...state.allTask],
+                    allSubTaskOfTask: { task: action.payload, subtasks: [...state.allSubTaskOfTask.subtasks] }
+                }
+            } else {
+                return {
+                    ...state,
+                    allTask: [...state.allTask]
+                }
             }
 
         case TASK_CONFIG.PUSH_SUB_TASK_TO_STORE:
@@ -304,13 +350,13 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             };
         }
         case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_REJECTION): {
-            
+
             const rejectedComment = action.payload.result.map((item: any) => {
                 return {
                     name: `${item.sender.firstName} ${item.sender.surName}`,
                     message: item.message,
                     _id: item._id,
-                    createdAt:item.createdAt
+                    createdAt: item.createdAt
                 }
             })
 
@@ -340,8 +386,9 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 getAllCommentsOfSubtaskLoading: false,
             }
         }
-        case TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE: {
-            if (state.selectedSubtaskFroDetailView._id === String(action.payload.subTaskId)) {
+
+        case TASK_CONFIG.PUSH_NEW_COMMENT_IN_STORE: {
+            if (String(state.selectedSubtaskFroDetailView._id) === String(action.payload.subTaskId)) {
                 state.getAllRecentCommentsOfSubtask = [action.payload, ...state.getAllRecentCommentsOfSubtask]
                 return {
                     ...state,
@@ -353,10 +400,24 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         }
+
         case TASK_CONFIG.CLEAR_SUBTASK_COMMENTS_IN_STORE: {
             return {
                 ...state,
                 getAllRecentCommentsOfSubtask: [],
+            }
+        }
+
+        case TASK_CONFIG.UPDATE_COMMENT_WITH_FILES_IN_STORE: {
+            const upCommingCommentWithFiles = action.payload._id
+            const existingComment = state.getAllRecentCommentsOfSubtask.findIndex((comment:any)=> String(comment._id)=== String(upCommingCommentWithFiles))
+            if(existingComment>-1){
+                state.getAllRecentCommentsOfSubtask[existingComment]= action.payload
+            }
+
+            return {
+                ...state,
+                getAllRecentCommentsOfSubtask: [...state.getAllRecentCommentsOfSubtask],
             }
         }
         case TASK_CONFIG.PROJECT_MEMBERS_OF_SELECTED_TASK: {

@@ -80,7 +80,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
   } catch (e: any) {
     console.error(e);
   }
-  // console.log("allMembers", allMembers);
 
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
@@ -123,6 +122,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
     return (
       <>
         {membersList.map((item: Member, index) => {
+            if (item === undefined) {
+              return <></>;
+            }
           if (index === membersList.length - 1) {
             return (
               <span
@@ -557,8 +559,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       </svg>
                       <Typography>0</Typography>
                     </CustomStack>
-                    {myState?.userState !== SubtaskState.Done &&
-                      myState?.userState !== SubtaskState.Rejected &&
+                    {
                       taskRights && (
                         <CBox display="flex">
                           <SubTaskMenu subTaskDetail={subTaskDetail} />

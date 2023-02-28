@@ -103,6 +103,8 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 filesBeingUploaded: [...state.filesBeingUploaded],
                 fileUploadProgres: [...state.fileUploadProgres]
             }
+
+        case DOCS_CONFIG.COMMENT_FILES_UPLOADED:
         case DOCS_CONFIG.FILES_UPLOAD_COMPLETED:
             const uploadedFiles = action.payload.files
             uploadedFiles.forEach((fileUp: any) => {
@@ -136,7 +138,6 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
             }
 
         case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED: 
-        console.log('SET_SELECTED_FILES_TO_BE_UPLOADED', action.payload);
         
             return {
                 ...state,

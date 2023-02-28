@@ -48,6 +48,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   temporarySubtask.title = subTaskDetail.title;
   temporarySubtask.state = subTaskDetail.state;
   temporarySubtask._id = subTaskDetail._id;
+  temporarySubtask.taskData = subTaskDetail.taskData;
   temporarySubtask.assignedToMembersOnly = subTaskDetail.assignedToMembersOnly;
 
   const [openEditDetailsModal, setOpenEditModal] = useState(false);
@@ -57,16 +58,20 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
   const { user } = useSelector((store: RootState) => store.auth);
   const { state } = subTaskDetail;
 
-  const myState = state.find(
-    (localState) => String(localState.userId) === String(user._id)
-  )?.userState;
-
   const handleSubmit = (values: any) => {
     let { dueDate, title, assignedTo, state, description, files, _id } =
       values.subTask;
     if (state[0]._id) {
       state = state.map((item: any) => {
         return { userId: item._id, userState: item.userState };
+      });
+    }
+    if (assignedTo && typeof assignedTo[0].addedBy !== typeof "") {
+      assignedTo = assignedTo.map((assigned: any) => {
+        return {
+          members: assigned.members.map((item: any) => item._id),
+          addedBy: assigned.addedBy._id
+        };
       });
     }
 
@@ -106,6 +111,54 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
       })
     );
   };
+
+  let canEdit = false;
+  let canDelete = false;
+  let canEditDetails = false;
+
+  const myState: any = state.find(
+    (localState) => String(localState.userId) === String(user._id)
+  )?.userState;
+
+  // const isAdmin =  temporarySubtask.taskData.admins.includes(user._id)
+
+  if (String(user._id) === String(subTaskDetail.creator._id)) {
+    state.every((localState: any) => {
+      if (
+        localState.userState === "assigned" ||
+        localState.userState === "accepted" ||
+        localState.userState === "draft" ||
+        localState.userState === "rejected"
+      ) {
+        canDelete = true;
+        return true;
+      } else {
+        canDelete = false;
+        return false;
+      }
+    });
+  }
+
+  if (subTaskDetail.taskData.admins.includes(String(user._id))) {
+    canEditDetails = true;
+    state.every((localState: any) => {
+      if (
+        localState.userState === "draft" ||
+        localState.userState === "rejected" ||
+        localState.userState === "assigned"
+      ) {
+        canEdit = true;
+        return true;
+      } else {
+        canEdit = false;
+        return false;
+      }
+    });
+  } else {
+    if (myState === "ongoing" || myState === "accepted" || myState === "done") {
+      canEditDetails = true;
+    }
+  }
 
   const EditSubTask = (subTask: any) => {
     return (
@@ -210,8 +263,9 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
         >
           {/* edit and delete subtask */}
 
-          {myState === SubtaskState.Draft && (
-            <Box>
+          {/* {myState === SubtaskState.Draft && ( */}
+          <Box>
+            {canEdit && (
               <MenuItem
                 onClick={handleEditSubTaskInDraft}
                 disableRipple
@@ -228,6 +282,24 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   Edit subtask
                 </SubTaskButton>
               </MenuItem>
+            )}
+
+            {canEditDetails && (
+              <MenuItem
+                disableRipple
+                sx={{
+                  "&.MuiMenuItem-root": {
+                    padding: "10px 20px",
+                  },
+                }}
+              >
+                <SubTaskButton textAlign="center" onClick={handleEditDetails}>
+                  Edit details
+                </SubTaskButton>
+              </MenuItem>
+            )}
+
+            {canDelete && (
               <MenuItem
                 disableRipple
                 sx={{
@@ -244,11 +316,12 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   Delete subtask
                 </SubTaskButton>
               </MenuItem>
-            </Box>
-          )}
+            )}
+          </Box>
+          {/* )} */}
           {/* edit details, edit subtask, and delete subtask */}
 
-          {myState === SubtaskState.Assigned && (
+          {/* {myState === SubtaskState.Assigned && (
             <Box>
               <MenuItem
                 onClick={handleEditSubTaskInDraft}
@@ -298,6 +371,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
               </MenuItem>
             </Box>
           )}
+
           {(myState === SubtaskState.Accepted ||
             myState === SubtaskState.Ongoing) && (
             <MenuItem
@@ -317,7 +391,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                 Edit Details
               </SubTaskButton>
             </MenuItem>
-          )}
+          )} */}
         </Menu>
       </Box>
       <Box>

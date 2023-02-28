@@ -397,9 +397,13 @@ export default function CreateSubTask({
                 label={"Update draft"}
                 onClick={() => {
                   defaultValues.files = selectedAttachments;
-                  defaultValues.state = [
-                    { userId: user._id, userState: "draft" },
-                  ];
+                  defaultValues.state=[{ userId: user._id, userState: "draft" }]
+                  // let states = [{ userId: user._id, userState: "draft" }]
+                  // states = defaultValues.assignedTo[0].members.map((member:any) => {
+                  //    return {userId: member._id, userState: "draft"}
+                  // })
+                  // defaultValues.state = states
+              
                   setAssignToData();
                 }}
               />
@@ -549,7 +553,6 @@ export default function CreateSubTask({
             moduleType={"SubTask"}
             moduleId={""}
             handleClose={(e: any, value: any): void => {
-              // console.log("value===>", value);
               setSelectedAttachments(value);
               setAttachmentViewOpen((prev: boolean) => !prev);
             }}

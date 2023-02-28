@@ -1,5 +1,12 @@
-import { Divider, makeStyles,  } from "@material-ui/core";
-import { Box, Grid, IconButton, TextField, Tooltip,Typography } from "@mui/material";
+import { Divider, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import {
@@ -8,9 +15,15 @@ import {
   SendIcon,
 } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
-import { CustomBadge, CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import {
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";
-import { momentdeDateFormat, momentTimeFormat } from "components/Utills/Globals/Common";
+import {
+  momentdeDateFormat,
+  momentTimeFormat,
+} from "components/Utills/Globals/Common";
 import { DOCS_CONFIG } from "config/docs.config";
 import {
   RecentCommentsInterface,
@@ -30,16 +43,17 @@ interface Props {
 
 export default function RecentComments({ subtaskDetail }: Props) {
   const dispatch = useDispatch();
-  const [openViewAllCommentsDrawer, setOpenViewAllCommentsDrawer] = useState<boolean>(false)
+  const [openViewAllCommentsDrawer, setOpenViewAllCommentsDrawer] =
+    useState<boolean>(false);
 
   const [userNewComment, setUserNewComment] = useState<string>("");
   const { user } = useSelector((state: RootState) => state.auth);
-  const {
-    getAllCommentsOfSubtaskLoading,
-    getAllRecentCommentsOfSubtask,
-  } = useSelector((state: RootState) => state.task);
+  const { getAllCommentsOfSubtaskLoading, getAllRecentCommentsOfSubtask } =
+    useSelector((state: RootState) => state.task);
   const classes = useStyles();
-  const myState = subtaskDetail.state.find((localState: any) => String(localState.userId) === String(user._id));
+  const myState = subtaskDetail.state.find(
+    (localState: any) => String(localState.userId) === String(user._id)
+  );
   const [attachmentViewOpen, setAttachmentViewOpen]: any = useState(false);
   const [selectedAttachments, setSelectedAttachments] = useState<any>({
     moduleId: "",
@@ -52,12 +66,13 @@ export default function RecentComments({ subtaskDetail }: Props) {
     const payload = {
       taskId: subtaskDetail.taskId,
       subTaskId: subtaskDetail._id,
-      isFileAttached: selectedAttachments.files.length > 0? true: false,
+      isFileAttached: selectedAttachments.files.length > 0 ? true : false,
       sender: user._id,
       userState: myState && myState.userState,
       message: userNewComment,
       seenBy: [user._id],
     };
+
     if (selectedAttachments.files.length > 0) {
       dispatch({
         type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
@@ -69,8 +84,13 @@ export default function RecentComments({ subtaskDetail }: Props) {
         body: payload,
         success: (res) => {
           setUserNewComment("");
+          setSelectedAttachments({
+            moduleId: "",
+            moduleName: "SubTaskComments",
+            files: [],
+          });
           //   dispatch({
-          //     type: TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE,
+          //     type: TASK_CONFIG.PUSH_NEW_COMMENT_IN_STORE,
           //     payload: res.data.result,
           //   });
         },
@@ -78,11 +98,11 @@ export default function RecentComments({ subtaskDetail }: Props) {
     );
   };
 
-const handleViewAllComments=()=>{
-    setOpenViewAllCommentsDrawer((prev:boolean)=> !prev)
-}
+  const handleViewAllComments = () => {
+    setOpenViewAllCommentsDrawer((prev: boolean) => !prev);
+  };
 
-const handleOpenCloseAttachmentModal = (e: any) => {
+  const handleOpenCloseAttachmentModal = (e: any) => {
     e.stopPropagation();
     setAttachmentViewOpen((value: boolean) => !value);
   };
@@ -104,19 +124,26 @@ const handleOpenCloseAttachmentModal = (e: any) => {
     );
   };
 
-const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentCommentsOfSubtask.map((item:RecentCommentsInterface)=>{
-    if(!item.access.includes(String(user._id))){
-        return
-    }
-    return{
-        name:`${item.sender.firstName} ${item.sender.surName}`,
-        message:item.message,
-        _id:item._id,
+  const viewRecentComments =
+    getAllRecentCommentsOfSubtask.length > 0 &&
+    getAllRecentCommentsOfSubtask.map((item: RecentCommentsInterface) => {
+      if (!item.access.includes(String(user._id))) {
+        return;
+      }
+      return {
+        name: `${item.sender.firstName} ${item.sender.surName}`,
+        message: item.message,
+        _id: item._id,
         date: momentdeDateFormat(item.createdAt),
         time: momentTimeFormat(item.createdAt),
-        userState: item.userState
-    }
-  })
+        userState: item.userState,
+      };
+    });
+
+  const recentCommentsBox = document.getElementById("RecentComments");
+  if (recentCommentsBox) {
+    recentCommentsBox.scrollTop = recentCommentsBox.scrollHeight;
+  }
 
   return (
     <>
@@ -124,6 +151,7 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
         <Typography className="recentComment">Recent Comments</Typography>
       </Box>
       <Box
+        id={"RecentComments"}
         sx={{
           overflow: "auto",
           height: "30vh",
@@ -134,15 +162,17 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
         {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
         {getAllRecentCommentsOfSubtask.length > 0 ? (
           getAllRecentCommentsOfSubtask
-            .slice(0, 5)
+            .slice(0, 4)
             .reverse()
             .map((userComment: RecentCommentsInterface) => {
               if (!userComment.access.includes(user._id)) {
-                return
+                return;
               }
-              return <Fragment key={userComment._id}>
+              return (
+                <Box key={userComment._id}>
                   <RecentCommentsList comment={userComment} />
-              </Fragment>
+                </Box>
+              );
             })
         ) : (
           <Box sx={{ textAlign: "center", paddingTop: "3rem", height: "100%" }}>
@@ -192,7 +222,7 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 mt={1}
               >
                 <CButton
-                onClick={handleViewAllComments}
+                  onClick={handleViewAllComments}
                   styles={{ fontSize: 14, textTransform: "capitalize" }}
                   startIcon={<EyeIcon />}
                   label={"all comments"}
@@ -205,22 +235,22 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 style={{ height: 15, width: 1.5, margin: "auto 8px" }}
               />
               <CustomStack>
-              <IconButton onClick={handleOpenCloseAttachmentModal}>
-                <AttachmentIcon />
-              </IconButton>
-              <CustomBadge
-                overlap="circular"
-                color="primary"
-                badgeContent={
-                  <Tooltip title={AttachmentsToolTip()}>
-                    {selectedAttachments.files.length > 0 ? (
-                      <div>{selectedAttachments.files.length}</div>
-                    ) : (
-                      <div>{0}</div>
-                    )}
-                  </Tooltip>
-                }
-              ></CustomBadge>
+                <IconButton onClick={handleOpenCloseAttachmentModal}>
+                  <AttachmentIcon />
+                </IconButton>
+                <CustomBadge
+                  overlap="circular"
+                  color="primary"
+                  badgeContent={
+                    <Tooltip title={AttachmentsToolTip()}>
+                      {selectedAttachments.files.length > 0 ? (
+                        <div>{selectedAttachments.files.length}</div>
+                      ) : (
+                        <div>{0}</div>
+                      )}
+                    </Tooltip>
+                  }
+                ></CustomBadge>
               </CustomStack>
               <Divider
                 orientation="vertical"
@@ -233,9 +263,9 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 startIcon={<SendIcon />}
                 onClick={(e: any) => handleSendRecentComment(e)}
                 //handle click to send newMessage here
-                sx={{paddign:'10px 0'}}
+                sx={{ paddign: "10px 0" }}
                 type={"submit"}
-                style={{ maxWidth: 35}}
+                style={{ maxWidth: 35 }}
                 variant="contained"
               />
             </CBox>
@@ -249,15 +279,20 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 </CBox> */}
       </CBox>
       <CDrawer
-            showBoxShadow={true}
-            hideBackDrop={true}
-            openCDrawer={openViewAllCommentsDrawer}
+        showBoxShadow={true}
+        hideBackDrop={true}
+        openCDrawer={openViewAllCommentsDrawer}
+        handleCloseCDrawer={handleViewAllComments}
+        children={
+          <ViewRejectionComments
+            subTaskHeading="All comments"
             handleCloseCDrawer={handleViewAllComments}
-            children={
-                <ViewRejectionComments subTaskHeading="All comments" handleCloseCDrawer={handleViewAllComments} cardData = {viewRecentComments} />
-            } />
+            cardData={viewRecentComments}
+          />
+        }
+      />
 
-<CustomModal
+      <CustomModal
         showCloseBtn={false}
         isOpen={attachmentViewOpen}
         handleClose={(e: any) => {
@@ -271,7 +306,6 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
             moduleType={"SubTaskComments"}
             moduleId={""}
             handleClose={(e: any, value: any): void => {
-              // console.log("value===>", value);
               setSelectedAttachments(value);
               setAttachmentViewOpen((prev: boolean) => !prev);
             }}

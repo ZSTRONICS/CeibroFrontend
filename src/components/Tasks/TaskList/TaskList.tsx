@@ -55,6 +55,9 @@ function TaskList() {
         >
           {allTask &&
             allTask.map((task: TaskInterface) => {
+              if (task === undefined) {
+                return <></>;
+              }
               if (!task.access.includes(user._id)) {
                 return;
               }
