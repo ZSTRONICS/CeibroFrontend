@@ -40,7 +40,7 @@ export default function CreateSubTask({
   );
 
   const [selectedAttachments, setSelectedAttachments] = useState<any>({
-    moduleId: defaultValues._id,
+    moduleId: "",
     moduleName: "SubTask",
     files: [],
   });

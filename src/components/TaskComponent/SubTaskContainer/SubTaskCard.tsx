@@ -27,6 +27,8 @@ import {
 import { RootState } from "redux/reducers";
 import taskActions, {
   deleteSubtask,
+  getAllSubTaskList,
+  getAllSubTaskOfTask,
   patchSubTaskById,
   taskSubtaskStateChange,
 } from "redux/action/task.action";
@@ -102,7 +104,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleCloseModal = () => {
     setSubTask((prev: any) => !prev);
   };
-  console.log("Rendering card");
   
   const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
     return (
@@ -339,6 +340,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
         other: subTaskDetail._id,
         success: (res: any) => {
           if (res.status === 200) {
+            dispatch(
+              getAllSubTaskOfTask({
+                other: {
+                  taskId: taskId,
+                },
+              })
+            );
+            dispatch(getAllSubTaskList());
           }
           toast.success("Subtask deleted");
         },

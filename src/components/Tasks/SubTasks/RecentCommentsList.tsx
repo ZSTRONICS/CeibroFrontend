@@ -1,8 +1,11 @@
 import { Typography, Divider, makeStyles } from '@material-ui/core'
+import { ListItemAvatar } from '@mui/material'
 import { CBox } from 'components/material-ui'
 import { TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
+import FilePreviewer from 'components/Utills/ChatChip/FilePreviewer'
 import { momentdeDateFormat, momentTimeFormat } from 'components/Utills/Globals/Common'
 import { getColorByStatus } from 'config/project.config'
+import { FileInterface } from 'constants/interfaces/docs.interface'
 import { RecentCommentsInterface } from 'constants/interfaces/subtask.interface'
 import React, { Fragment } from 'react'
 
@@ -14,6 +17,34 @@ export default function RecentCommentsList({ comment }: Props) {
     const classes = useStyles()
     const commentDueDate = momentdeDateFormat(comment.createdAt)
     const commentTime = momentTimeFormat(comment.createdAt);
+    console.log(comment);
+
+    const ListItemAvat = (files: any) => {
+      let type = files.fileType;
+
+     
+
+      return (
+        <>
+          {files.map((file:any) => {
+            const preview = {
+                fileType: type,
+                fileName: file.fileName,
+                url: file.fileUrl,
+            };
+            return (
+              <ListItemAvatar>
+                <FilePreviewer
+                  showControls={false}
+                  hideName={false}
+                  file={preview}
+                />
+              </ListItemAvatar>
+            );
+          })}
+        </>
+      );
+    };
     return (
         <>  <CBox mb={2}>
             <CBox display='flex' alignItems='center'>
@@ -48,6 +79,9 @@ export default function RecentCommentsList({ comment }: Props) {
             <Typography className={classes.description}>
                 {comment.message}
             </Typography>
+            <CBox sx={{display:'flex'}}>
+                {comment.files.length>0&& ListItemAvat(comment.files)}
+            </CBox>
             <Divider />
         </CBox></>
     )

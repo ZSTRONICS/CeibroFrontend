@@ -136,6 +136,8 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
             }
 
         case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED: 
+        console.log('SET_SELECTED_FILES_TO_BE_UPLOADED', action.payload);
+        
             return {
                 ...state,
                 selectedFilesToBeUploaded: action.payload,

@@ -58,7 +58,6 @@ function EditSubTaskDetails(props: any) {
   };
 
   let defaultValues = props.subTask;
-  console.log("defaultValues", defaultValues);
 
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
@@ -257,7 +256,6 @@ function EditSubTaskDetails(props: any) {
     let isAdmin:boolean= false
     if (userState === SubtaskState.Ongoing) {
       isAdmin= selectedTaskAdmins.some((admin) => admin.id === user._id)
-      console.log(isAdmin, user._id);
     return isAdmin
     }
   }

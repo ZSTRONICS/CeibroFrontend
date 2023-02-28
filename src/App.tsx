@@ -71,7 +71,6 @@ const App: React.FC<MyApp> = () => {
 
   const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector((state: RootState) => state.docs);
 
-
   useEffect(() => {
     if (!uploadPendingFiles) {
       return
@@ -323,17 +322,25 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
-            console.log(data);
-            
+
             dispatch({
               type: TASK_CONFIG.UPDATE_SUBTASK_IN_STORE,
               payload: data,
             });
             break;
           case TASK_CONFIG.SUBTASK_NEW_COMMENT:
-            console.log("SUBTASK_NEW_COMMENT", data);
             if (!data.access.includes(user._id)) {
               return;
+            }
+            try {
+              const moduleId = data._id
+              console.log("SET_SELECTED_MODULE_ID",moduleId);
+              dispatch({
+                type: DOCS_CONFIG.SET_SELECTED_MODULE_ID,
+                payload: moduleId
+              })
+            } catch (e: any) {
+              console.error("Failed to upload pending documents", e);
             }
             dispatch({
               type: TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE,
