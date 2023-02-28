@@ -15,6 +15,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   const classes = useStyles();
   const { user } = useSelector((store: RootState) => store.auth);
   const [doOnce, setDoOnce] = useState(true);
+  const [components ,setComponents] = useState<any>([]);
   const handleScroll = (e: any) => {
     if (doOnce) {
       let subtaskBox = e.target;
@@ -25,7 +26,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   return (
     <>
       {results.length > 0 ? (
-        <CBox className={classes.cardListContainer} onScroll={handleScroll}>
+        <CBox className={classes.cardListContainer}>
           {results &&
             results.map((subTaskDetail: SubtaskInterface, index:any) => {
               if (subTaskDetail === undefined) {

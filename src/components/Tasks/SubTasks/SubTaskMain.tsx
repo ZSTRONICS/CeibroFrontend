@@ -19,9 +19,9 @@ const SubTaskMain = () => {
   let lgPoint = 3.2;
   const classes = useStyles();
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
 
   return (
     <>
@@ -78,6 +78,7 @@ const SubTaskMain = () => {
         </Grid>
       </Box>
       <Box>
+
         <SubTaskList results={allSubTaskList} />
       </Box>
     </>

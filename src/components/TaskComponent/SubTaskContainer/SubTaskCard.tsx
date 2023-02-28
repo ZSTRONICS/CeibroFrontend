@@ -102,6 +102,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleCloseModal = () => {
     setSubTask((prev: any) => !prev);
   };
+  console.log("Rendering card");
+  
   const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
     return (
       <>
