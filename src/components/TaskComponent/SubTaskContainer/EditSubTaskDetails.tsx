@@ -58,19 +58,15 @@ function EditSubTaskDetails(props: any) {
   };
 
   let defaultValues = props.subTask;
-  console.log("defaultValues", defaultValues);
 
   const { taskAssignedToMembers } = useSelector(
     (store: RootState) => store.task
   );
+
   const { user } = useSelector((store: RootState) => store.auth);
   const { projectMembersOfSelectedTask, selectedTaskAdmins, selectedTaskId } =
     useSelector((store: RootState) => store.task);
   const [assignedTomembersIds, setAssignedTomembersIds] = useState([]);
-  const [assignToList, setAssignToList] = useState<any>([
-    ...taskAssignedToMembers,
-  ]);
-
   const allAddedIds = defaultValues.assignedToMembersOnly.map(
     (member: any) => member._id
   );
@@ -78,7 +74,9 @@ function EditSubTaskDetails(props: any) {
     (member: any) => allAddedIds.includes(member.id) === false
   );
 
-  // console.log(projectMembersOfSelectedTask);
+  // const [assignToList, setAssignToList] = useState<any>([
+  //   ...uniqueMembers,
+  // ]);
 
   // let filterSelectedMember: any = [];
   // uniqueMembers.forEach((member: any) => {
@@ -233,34 +231,30 @@ function EditSubTaskDetails(props: any) {
     );
   };
 
-  const isSubtaskMemberDeleteAble = (
-    userId: string,
-    userState: string
-  ): boolean => {
-    let isAdmin: boolean = false;
-    if (
-      (userState === SubtaskState.Assigned ||
-      userState === SubtaskState.Accepted) 
-    ) {
-      selectedTaskAdmins.every((admin) => {
-        if (userId === admin.id && user._id === userId) {
-          isAdmin = true;
-          return false;
-        }
+  const showDeleteBtn = ( assignee: string,userState: string, addedByMember: string): boolean => {
+    const isTaskAdmin:boolean = defaultValues.taskData.admins.includes(
+      String(user._id)
+    );
+
+    if (userState === SubtaskState.Assigned ||userState === SubtaskState.Accepted ) {
+      if (isTaskAdmin === true) {
         return true;
-      });
+      }
+
+      if (addedByMember === user._id) {
+        return true;
+      }
     }
-    return !isAdmin;
+    return false;
   };
 
   const isSubtaskMemberMarkAsDoneAble = (userState: string) => {
-    let isAdmin:boolean= false
+    let isAdmin: boolean = false;
     if (userState === SubtaskState.Ongoing) {
-      isAdmin= selectedTaskAdmins.some((admin) => admin.id === user._id)
-      console.log(isAdmin, user._id);
-    return isAdmin
+      isAdmin = selectedTaskAdmins.some((admin) => admin.id === user._id);
+      return isAdmin;
     }
-  }
+  };
 
   const handleDeleteSubtaskMember = (e: any, memberId: string) => {
     e.stopPropagation();
@@ -286,7 +280,7 @@ function EditSubTaskDetails(props: any) {
     dispatch(deleteSubtaskMember(payload));
   };
 
-  const handleMarkAsDone = (e: any, memberId:string) => {
+  const handleMarkAsDone = (e: any, memberId: string) => {
     e.stopPropagation();
     const payload = {
       body: {
@@ -335,12 +329,12 @@ function EditSubTaskDetails(props: any) {
               filterSelectedOptions
               id="combo-box-demo3"
               limitTags={2}
-              value={assignToList}
+              // value={assignToList}
               options={uniqueMembers}
               getOptionLabel={(option: any) => option.label}
               size="small"
               onChange={(e, newValue) => {
-                setAssignToList([...newValue]);
+                // setAssignToList([...newValue]);
                 if (newValue.length === 0) {
                   setAssignedTomembersIds([]);
                 } else {
@@ -409,9 +403,13 @@ function EditSubTaskDetails(props: any) {
                       key={member._id}
                       secondaryAction={
                         <>
-                          {isSubtaskMemberDeleteAble(member._id, userState) ===
-                            true &&
-                            (userState !== SubtaskState.Ongoing)&&(userState !== SubtaskState.Done) && (
+                          {showDeleteBtn(
+                            member._id,
+                            userState,
+                            item.addedBy._id
+                          ) === true &&
+                            userState !== SubtaskState.Ongoing &&
+                            userState !== SubtaskState.Done && (
                               <CButton
                                 onClick={(e: any) =>
                                   handleDeleteSubtaskMember(e, member._id)
@@ -430,7 +428,9 @@ function EditSubTaskDetails(props: any) {
 
                           {isSubtaskMemberMarkAsDoneAble(userState) === true ? (
                             <CButton
-                              onClick={(e: any) =>handleMarkAsDone(e, member._id)}
+                              onClick={(e: any) =>
+                                handleMarkAsDone(e, member._id)
+                              }
                               label={"Mark As Done"}
                               variant="outlined"
                               styles={{
@@ -444,10 +444,11 @@ function EditSubTaskDetails(props: any) {
                           ) : (
                             <></>
                           )}
-                          {userState === SubtaskState.Done &&
-                          <assets.CheckCircleIcon
-                                  sx={{ color: "#55BCB3", fontSize: "2.3rem" }}
-                                />}
+                          {userState === SubtaskState.Done && (
+                            <assets.CheckCircleIcon
+                              sx={{ color: "#55BCB3", fontSize: "2.3rem" }}
+                            />
+                          )}
                         </>
                       }
                     >
