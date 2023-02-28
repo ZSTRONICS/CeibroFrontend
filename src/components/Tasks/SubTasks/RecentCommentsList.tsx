@@ -15,7 +15,7 @@ export default function RecentCommentsList({ comment }: Props) {
     const commentDueDate = momentdeDateFormat(comment.createdAt)
     const commentTime = momentTimeFormat(comment.createdAt);
     return (
-        <>  <CBox mb={2}>
+        <>  <CBox mb={1}>
             <CBox display='flex' alignItems='center'>
             <TaskStatus
             sx={{
@@ -53,10 +53,10 @@ export default function RecentCommentsList({ comment }: Props) {
     )
 }
 const useStyles = makeStyles({
-    wrapper: {
-        padding: '25px 20px',
-        backgroundColor: '#F5F7F8'
-    },
+    // wrapper: {
+    //     // padding: '25px 20px',
+    //     backgroundColor: '#F5F7F8'
+    // },
     heading: {
         fontSize: "12px",
         fontWeight: 600,

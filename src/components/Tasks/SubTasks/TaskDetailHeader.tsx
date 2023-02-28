@@ -72,14 +72,14 @@ export default function TaskDetailHeader(props: any) {
           </CustomStack>
         </CustomStack>
       </CBox>
-      <CBox mt={3}>
+      <CBox mt={1.5}>
         <Typography className={classes.heading}>Title</Typography>
         <Typography className={classes.description}>
           {props?.subtaskDetail?.title}
         </Typography>
         <Divider />
       </CBox>
-      <Grid container mt={3} gap={5}>
+      <Grid container mt={1.5} gap={5}>
         <Grid item md={4}>
           <Typography className={classes.heading}>Creator</Typography>
           <Typography
@@ -100,8 +100,8 @@ export default function TaskDetailHeader(props: any) {
         <Typography className={classes.heading}>Assign to</Typography>
         <CBox className={classes.description}>
           {membersList.map((member: Member, i: any) => {
-            if(member === undefined){
-              return
+            if (member === undefined) {
+              return;
             }
             if (i === membersList.length - 1) {
               return (
@@ -144,10 +144,10 @@ export default function TaskDetailHeader(props: any) {
 }
 
 const useStyles = makeStyles({
-  wrapper: {
-    padding: "25px 20px",
-    backgroundColor: "#F5F7F8",
-  },
+  // wrapper: {
+  //   // padding: "25px 20px",
+  //   backgroundColor: "#F5F7F8",
+  // },
   heading: {
     fontSize: "12px",
     fontWeight: 600,

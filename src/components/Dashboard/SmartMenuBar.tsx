@@ -1,4 +1,3 @@
-
 import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { ContactPhone } from "@material-ui/icons";
 import colors from "../../assets/colors";
@@ -40,20 +39,28 @@ const SmartMenuBar = () => {
   };
 
   return (
-    <Grid container>
+    <Grid container >
       <Grid item xs={12} md={5} lg={4}>
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Box className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
-            <img src={assets.contactIcon} className={classes.connectionIcon} alt="connectionIcon"/>
-              </div>
+              <img
+                src={assets.contactIcon}
+                className={classes.connectionIcon}
+                alt="connectionIcon"
+              />
+            </div>
             <span className="align-center">
               <span
                 className={`${classes.marginLeft} ${classes.myConnections}`}
               >
                 My Connections
               </span>
-              <Badge overlap='circular' badgeContent={connections} color="primary"></Badge>
+              <Badge
+                overlap="circular"
+                badgeContent={connections}
+                color="primary"
+              ></Badge>
             </span>
           </Box>
 
@@ -78,16 +85,22 @@ const SmartMenuBar = () => {
       >
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Box className={classes.connectionTitle}>
-          <div className={classes.smartMenuIcon}>
-            <img alt="InvitaionIcon" src={assets.InvitaionIcon} className={classes.connectionIcon} />
-              </div>
+            <div className={classes.smartMenuIcon}>
+              <img
+                alt="InvitaionIcon"
+                src={assets.InvitaionIcon}
+                className={classes.connectionIcon}
+              />
+            </div>
             <span className="align-center">
               <span
                 className={`${classes.marginLeft} ${classes.myConnections}`}
               >
                 Invitations
               </span>
-            {invites>0&& <Badge badgeContent={invites} color="error"></Badge>}
+              {invites > 0 && (
+                <Badge badgeContent={invites} color="error"></Badge>
+              )}
             </span>
           </Box>
           <Button
@@ -115,9 +128,9 @@ const SmartMenuBar = () => {
 export default SmartMenuBar;
 
 const useStyles = makeStyles({
-  smartMenuIcon:{
-    width:'34px',
-    padding: '3px 5px 0px 4px'
+  smartMenuIcon: {
+    width: "34px",
+    padding: "3px 5px 0px 4px",
   },
   connectionWrapper: {
     background: colors.white,
@@ -137,7 +150,7 @@ const useStyles = makeStyles({
   myConnections: {
     fontSize: 16,
     fontWeight: 600,
-    paddingLeft:'8px'
+    paddingLeft: "8px",
   },
   connectionTitle: {
     fontSize: 14,

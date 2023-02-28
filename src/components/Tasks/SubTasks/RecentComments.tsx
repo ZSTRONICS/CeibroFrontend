@@ -7,7 +7,10 @@ import {
   EyeIcon,
   SendIcon,
 } from "components/material-ui/icons";
-import { momentdeDateFormat, momentTimeFormat } from "components/Utills/Globals/Common";
+import {
+  momentdeDateFormat,
+  momentTimeFormat,
+} from "components/Utills/Globals/Common";
 import { TASK_CONFIG } from "config/task.config";
 import {
   RecentCommentsInterface,
@@ -27,7 +30,8 @@ interface Props {
 
 export default function RecentComments({ subtaskDetail }: Props) {
   const dispatch = useDispatch();
-  const [openViewAllCommentsDrawer, setOpenViewAllCommentsDrawer] = useState<boolean>(false)
+  const [openViewAllCommentsDrawer, setOpenViewAllCommentsDrawer] =
+    useState<boolean>(false);
 
   const [userNewComment, setUserNewComment] = useState<string>("");
   const { user } = useSelector((state: RootState) => state.auth);
@@ -65,23 +69,25 @@ export default function RecentComments({ subtaskDetail }: Props) {
       })
     );
   };
-const handleViewAllComments=()=>{
-    setOpenViewAllCommentsDrawer((prev:boolean)=> !prev)
-}
+  const handleViewAllComments = () => {
+    setOpenViewAllCommentsDrawer((prev: boolean) => !prev);
+  };
 
-const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentCommentsOfSubtask.map((item:RecentCommentsInterface)=>{
-    if(!item.access.includes(String(user._id))){
-        return
-    }
-    return{
-        name:`${item.sender.firstName} ${item.sender.surName}`,
-        message:item.message,
-        _id:item._id,
+  const viewRecentComments =
+    getAllRecentCommentsOfSubtask.length > 0 &&
+    getAllRecentCommentsOfSubtask.map((item: RecentCommentsInterface) => {
+      if (!item.access.includes(String(user._id))) {
+        return;
+      }
+      return {
+        name: `${item.sender.firstName} ${item.sender.surName}`,
+        message: item.message,
+        _id: item._id,
         date: momentdeDateFormat(item.createdAt),
         time: momentTimeFormat(item.createdAt),
-        userState: item.userState
-    }
-  })
+        userState: item.userState,
+      };
+    });
   return (
     <>
       <Box>
@@ -89,8 +95,8 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
       </Box>
       <Box
         sx={{
-          overflow: "auto",
-          height: "30vh",
+          // overflow: "hidden",
+          height: "170px",
           display: " block",
           position: "relative",
         }}
@@ -102,11 +108,13 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
             .reverse()
             .map((userComment: RecentCommentsInterface) => {
               if (!userComment.access.includes(user._id)) {
-                return
+                return;
               }
-              return <Fragment key={userComment._id}>
+              return (
+                <Fragment key={userComment._id}>
                   <RecentCommentsList comment={userComment} />
-              </Fragment>
+                </Fragment>
+              );
             })
         ) : (
           <Box sx={{ textAlign: "center", paddingTop: "3rem", height: "100%" }}>
@@ -114,7 +122,12 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
           </Box>
         )}
       </Box>
-      <CBox display="flex">
+      <CBox
+        display="flex"
+        sx={{
+          position: "static",
+        }}
+      >
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
@@ -125,9 +138,9 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
               setUserNewComment(e.target.value);
             }}
             multiline
-            maxRows={4}
-            minRows={4}
-            style={{ padding: "10px 10px" }}
+            maxRows={3}
+            minRows={3}
+            style={{ padding: "5px 5px" }}
             variant="standard"
             className={classes.textArea}
             InputLabelProps={{
@@ -156,7 +169,7 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 mt={1}
               >
                 <CButton
-                onClick={handleViewAllComments}
+                  onClick={handleViewAllComments}
                   styles={{ fontSize: 14, textTransform: "capitalize" }}
                   startIcon={<EyeIcon />}
                   label={"all comments"}
@@ -182,9 +195,9 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 startIcon={<SendIcon />}
                 onClick={(e: any) => handleSendRecentComment(e)}
                 //handle click to send newMessage here
-                sx={{paddign:'10px 0'}}
+                sx={{ paddign: "10px 0" }}
                 type={"submit"}
-                style={{ maxWidth: 35}}
+                style={{ maxWidth: 35 }}
                 variant="contained"
               />
             </CBox>
@@ -198,19 +211,24 @@ const viewRecentComments =getAllRecentCommentsOfSubtask.length>0&& getAllRecentC
                 </CBox> */}
       </CBox>
       <CDrawer
-            showBoxShadow={true}
-            hideBackDrop={true}
-            openCDrawer={openViewAllCommentsDrawer}
+        showBoxShadow={true}
+        hideBackDrop={true}
+        openCDrawer={openViewAllCommentsDrawer}
+        handleCloseCDrawer={handleViewAllComments}
+        children={
+          <ViewRejectionComments
+            subTaskHeading="All comments"
             handleCloseCDrawer={handleViewAllComments}
-            children={
-                <ViewRejectionComments subTaskHeading="All comments" handleCloseCDrawer={handleViewAllComments} cardData = {viewRecentComments} />
-            } />
+            cardData={viewRecentComments}
+          />
+        }
+      />
     </>
   );
 }
 const useStyles = makeStyles({
   wrapper: {
-    padding: "25px 20px",
+    padding: "10px 10px",
     backgroundColor: "#F5F7F8",
   },
   heading: {
@@ -240,7 +258,7 @@ const useStyles = makeStyles({
   },
   titleLabel: {
     position: "absolute",
-    top: "-10px",
+    // top: "-10px",
     backgroundColor: "#f5f7f8",
     left: 11,
     color: "#605C5C",
@@ -250,7 +268,7 @@ const useStyles = makeStyles({
   },
   textArea: {
     width: "100%",
-    padding: 15,
+    padding: 10,
     border: "none",
     borderRadius: 5,
     "& textarea:focus": {
@@ -262,7 +280,7 @@ const useStyles = makeStyles({
   textAreaBox: {
     border: "1px solid #DBDBE5",
     borderRadius: 2,
-    marginTop: 20,
+    marginTop: 10,
     position: "relative",
     background: "white",
     "&:hover": {
