@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from "react";
 // mui-imports
 import { makeStyles } from "@material-ui/core";
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 
 // components
 import DatePicker from "components/Utills/Inputs/DatePicker";
@@ -11,6 +11,7 @@ import { TaskInterface } from "constants/interfaces/task.interface";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import TaskList from "./TaskList";
+import { IOSSwitch } from "components/Chat/Questioniar/IOSSwitch";
 
 const TaskMain = () => {
   const allTask: TaskInterface[] = useSelector(
@@ -76,31 +77,16 @@ const TaskMain = () => {
         >
           <Grid
             item
-            // xs={xsPoint}
-            // md={mdPoint}
-            // sm={4}
-            // lg={lgPoint}
-
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
             sx={{
               height: "38px",
               width: "260px",
             }}
           >
             <DatePicker Datetitle="Date" />
-            {/* <CDatePicker
-            required
-            value={showDate}
-            id="date"
-            name="dueDate"
-            onChange={(e:any) => {
-              setShowDate(e)
-              const currentDate = deDateFormat(e)
-            }}
-          /> */}
           </Grid>
           <Grid
             item
-            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
             sx={{
               height: "38px",
               width: "280px",
@@ -110,7 +96,6 @@ const TaskMain = () => {
           </Grid>
           <Grid
             item
-            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
             sx={{
               height: "38px",
               width: "280px",
@@ -118,13 +103,56 @@ const TaskMain = () => {
           >
             <SelectDropdown title="Projects" />
           </Grid>
-          {/* <Grid>
-            ahmad
-          </Grid>
-          <Grid>
-            ali
-          </Grid> */}
-
+          <Box
+            mt={2}
+            gap={2.4}
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "baseline",
+            }}
+          >
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "10px",
+                marginLeft: "20px",
+              }}
+            >
+              <IOSSwitch />
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                Created by me
+              </Typography>
+            </Grid>
+            <Grid
+              item
+              sx={{
+                display: "flex",
+                textAlign: "center",
+                justifyContent: "center",
+                gap: "10px",
+                marginLeft: "20px",
+              }}
+            >
+              <IOSSwitch />
+              <Typography
+                sx={{
+                  fontWeight: "bold",
+                }}
+              >
+                Assigned to me
+              </Typography>
+            </Grid>
+          </Box>
           {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
           // onChange={(e:any)=>handleChange(e)}
@@ -196,9 +224,11 @@ const useStyles = makeStyles({
 
   TaskWraper: {
     // padding: '0 10px',
+    display: "flex",
+    alignItems: "center",
 
     "@media(max-width:1024px)": {
-      color: "red",
+      // color: "red",
       padding: "",
     },
   },
@@ -215,6 +245,7 @@ const useStyles = makeStyles({
   },
   taskMain: {
     overflowY: "hidden",
+    alignItems: "center",
     // "@media(max-width:420px)": {
 
     // },

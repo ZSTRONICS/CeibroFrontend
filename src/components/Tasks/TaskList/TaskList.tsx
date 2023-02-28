@@ -96,6 +96,6 @@ const useStyles = makeStyles((theme) => ({
   },
   chatIcon: {
     fontSize: 50,
-    color: colors.lightBlack,
+    color: colors.lightBlack
   },
 }));

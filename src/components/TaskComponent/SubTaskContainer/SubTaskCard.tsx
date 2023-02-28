@@ -103,7 +103,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
     setSubTask((prev: any) => !prev);
   };
   console.log("Rendering card");
-  
+
   const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
     return (
       <>
@@ -795,6 +795,10 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "70%",
       width: "100%",
     },
+    "@media(max-width:471px)": {
+      width: "100%",
+      maxWidth: "40%",
+    },
     "@media (max-width:745px)": {
       maxWidth: "calc(100%-50%)",
       width: "100%",
@@ -809,9 +813,9 @@ const useStyles = makeStyles((theme) => ({
       width: "100%",
     },
 
-    "@media (max-width:1070px)" :{
+    "@media (min-width:961px) and (max-width:1064px)": {
       maxWidth: "60%",
-  }
+    },
   },
   subTaskActions: {
     "@media (max-width:1380px)": {
