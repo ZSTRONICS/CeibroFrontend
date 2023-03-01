@@ -128,20 +128,21 @@ const ProfileView = () => {
               <Box display="flex" alignItems="center">
                 <img src={assets.contactsBlack} className="w-16" alt="" />
               </Box>
-              <Typography textAlign="center"> My connections</Typography>
+              <Typography textAlign="center"> My Connections</Typography>
               <Box
                 display="flex"
                 alignItems="center"
                 sx={{ padding: " 0 10px 0" }}
               >
-                {connections.length > 0 && <Badge
+                <Badge
                   sx={{
                     color: "#F1B740"
                   }}
+                  showZero={true}
                   color="primary"
                   badgeContent={connections}
                   overlap="circular"
-                />}
+                />
               </Box>
             </Stack>
           </MenuItem>
@@ -165,11 +166,12 @@ const ProfileView = () => {
                 alignItems="center"
                 sx={{ padding: " 0 10px 0" }}
               >
-                {invites > 0 && <Badge
+                <Badge
+                  showZero={true}
                   color="error"
                   badgeContent={invites}
                   overlap="circular"
-                />}
+                />
               </Box>
             </Stack>
           </MenuItem>
