@@ -3,6 +3,7 @@ import {
   CDateTime,
   CommentDescription,
   CommentName,
+  FileName,
   Heading,
 } from "components/CustomTags";
 import { Box, Grid, Divider, useMediaQuery } from "@mui/material";
@@ -14,25 +15,24 @@ import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOu
 import CButton from "components/Button/Button";
 import { theme } from "theme";
 import { getColorByStatus } from "config/project.config";
-// import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
-// import { getColorByStatus } from "config/project.config";
+import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 
 function ViewRejectionComments(props: any) {
   const taborMobileView = useMediaQuery(theme.breakpoints.down("sm"));
 const {cardData }= props
 
-// const AttachmentPreview=(file:any)=>{
-//   let type = file.fileType.replace('.', '')
-//   const preview = {
-//     fileType: type,
-//     fileName: file.fileName,
-//     url: file.fileUrl,
-//   };
-//   return (
+const AttachmentPreview=(file:any)=>{
+  let type = file.fileType.replace('.', '')
+  const preview = {
+    fileType: type,
+    fileName: file.fileName,
+    url: file.fileUrl,
+  };
+  return (
     
-//     <FilePreviewer showControls={false} hideName={true} file={preview} />
-//   )
-// }
+    <FilePreviewer showControls={false} hideName={true} file={preview} />
+  )
+}
 
   return (
     <>
@@ -88,11 +88,26 @@ const {cardData }= props
                 </Grid>
                 <Box sx={{ padding: "" }}>
                   <CommentDescription>{item.message}</CommentDescription>
-                  <CustomStack>
-                    {/* {item.allFiles.length>0?item.allFiles.map((file:any)=>{
-
-                    })}
-                  {AttachmentPreview(item.allFiles)} */}
+                  <CustomStack >
+                     {item.allFiles.length>0?item.allFiles.map((file:any)=>{
+                      console.log('file==>' ,file);
+                      if(file=== undefined){
+                        return
+                      }
+                      return (<>
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none' }}>
+                      {AttachmentPreview(file)}
+                        <FileName
+                          sx={{ maxWidth: "100px", width: "100%", color: '#0076C8' }}
+                          className="ellipsis"
+                        >
+                          {file.fileName}
+                        </FileName>
+                      </a>
+                      </>
+                      )
+                    }):<></>}
+                   
                   </CustomStack>
                   <Divider sx={{ width: "100%" }} />
                 </Box>

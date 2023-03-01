@@ -23,7 +23,6 @@ const TaskMain = () => {
   const classes = useStyles();
   const headerRef: any = useRef();
   // const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
-  // console.log('localized', localized)
 
   const [showTaskList, setShowTaskList] = useState<boolean>(false);
   useEffect(() => {

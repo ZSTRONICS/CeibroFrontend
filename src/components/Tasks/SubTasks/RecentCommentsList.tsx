@@ -86,12 +86,6 @@ export default function RecentCommentsList({ comment }: Props) {
               mt={0.85}
               sx={{'& .MuiIconButton-root:hover':{backgroundColor:'none'}}}
             >
-              {/* <CButton
-                styles={{ fontSize: 14, textTransform: "capitalize" }}
-                 onClick={handleCommentsAttachmentDrawer}
-                startIcon={<AttachmentIcon />}
-                 label={"Attachments"}
-              /> */}
               <IconButton disableRipple>
                 <CustomBadge
                   anchorOrigin={{

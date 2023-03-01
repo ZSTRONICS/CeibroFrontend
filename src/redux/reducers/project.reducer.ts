@@ -271,8 +271,6 @@ const NavigationReducer = (
     }
 
     case SET_SELECTED_PROJECT: {
-      console.log("SET_SELECTED_PROJECT",action.payload);
-      
       return {
         ...state,
         selectedProject: action.payload,

@@ -14,9 +14,11 @@ import { getAvailableUsers } from 'redux/action/user.action'
 import Input from 'components/Utills/Inputs/Input'
 
 const Project = () => {
-  const { searchProject, drawerOpen, projectsLoading } = useSelector(
-    (state: RootState) => state.project
-  )
+  const { searchProject, drawerOpen, projectsLoading } = useSelector((state: RootState) => state.project)
+
+  if(window.location.pathname.includes('projects')){
+    document.body.style.background='#f5f7f8'
+  }
   const classes = useStyles()
   const dispatch = useDispatch()
   const allStatus = getProjectStatus()

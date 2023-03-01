@@ -398,7 +398,6 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
-            // console.log('TASK_SUBTASK_UPDATED', data.results)
             try {
               const payload = {
                 task: data.results.task,
