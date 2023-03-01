@@ -42,6 +42,7 @@ function ProjectDrawerMenu() {
   const { menue: selectedMenue, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
+  console.log('selectedProject', selectedProject)
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleClick = (id: number, isDisabled: boolean) => {

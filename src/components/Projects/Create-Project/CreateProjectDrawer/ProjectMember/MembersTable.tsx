@@ -287,6 +287,7 @@ const RolesTable = () => {
                         src={assets.membersDelete}
                         className={"pointer"}
                         onClick={() => handleDelete(row?.id)}
+                        alt=""
                       />
                     )}
                   </TableCell>
