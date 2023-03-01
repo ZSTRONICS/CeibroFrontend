@@ -51,7 +51,7 @@ const MemberDialog = () => {
     // setOpen(true);
     dispatch(projectActions.openProjectMemberDrawer());
   };
-  
+
   const handleClose = () => {
     setOpen(false);
     dispatch(projectActions.closeProjectMemberDrawer());
@@ -136,7 +136,7 @@ const MemberDialog = () => {
                 data={availableUsers}
                 value={selectedEmail}
                 handleChange={(e: any) => setSelectedEmail(e)}
-                zIndex={11}
+                zIndex={12}
                 noOptionMessage={"No user available"}
               />
               {/* <InputText
@@ -144,22 +144,24 @@ const MemberDialog = () => {
                 onChange={handleNameChange}
               /> */}
             </div>
-            <div className={classes.meta} style={{ zIndex: 1000 }}>
+
+            <div className={classes.meta} style={{zIndex:10,position:'relative'}}>
               <SelectDropdown
                 title="Role"
                 data={roles}
                 handleChange={(e: any) => setSelectRoles(e)}
-                zIndex={10}
+                zIndex={12}
                 noOptionMessage="No role available"
               />
             </div>
-            <div className={classes.meta}>
+
+            <div className={classes.meta} >
               <SelectDropdown
                 title="Group"
                 data={groups}
                 noOptionMessage="No group available"
                 handleChange={(e: any) => setSelectGroups(e)}
-                zIndex={8}
+                
               />
             </div>
 
