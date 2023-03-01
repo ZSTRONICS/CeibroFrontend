@@ -1,45 +1,33 @@
 
-import React from "react";
+import TabsUnstyled from "@mui/base/TabsUnstyled";
+import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import {
-  Heading,
-  CDateTime,
-  FileName,
-  Span,
-  CommentName,
-} from "components/CustomTags";
-import {
-  Box,
-  Grid,
-  useMediaQuery,
-  List,
+  Box, CircularProgress, Grid, List,
   ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  CircularProgress
+  ListItemAvatar, ListItemText, useMediaQuery
 } from "@mui/material";
 import { styled } from "@mui/system";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import CButton from "components/Button/Button";
-import { theme } from "theme";
-import assets from "assets/assets";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { FileInterface } from "constants/interfaces/docs.interface";
+import {
+  CDateTime, CommentName, FileName, Heading, Span
+} from "components/CustomTags";
+import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import {
   DOC_EXT,
   filesizes,
   FILTER_DATA_BY_EXT,
   MEDIA_EXT,
   momentdeDateFormat,
-  momentTimeFormat,
+  momentTimeFormat
 } from "components/Utills/Globals/Common";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import docsAction from "redux/action/docs.actions";
-import TabsUnstyled from "@mui/base/TabsUnstyled";
-import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
-import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
-
+import { RootState } from "redux/reducers";
+import { theme } from "theme";
 
 interface Props {
   heading: string,

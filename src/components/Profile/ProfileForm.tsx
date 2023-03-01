@@ -49,7 +49,7 @@ const ProfileForm = () => {
       surName,
       workEmail,
       phone,
-      password,
+      // password,
       companyName,
       companyPhone,
       companyVat,
@@ -64,8 +64,8 @@ const ProfileForm = () => {
         workEmail,
         phone,
         companyPhone,
-        ...(password ? { password } : {}),
-        password,
+        // ...(password ? { password } : {}),
+        // password,
         companyName,
         companyVat,
         companyLocation,
@@ -99,14 +99,14 @@ const ProfileForm = () => {
       .max(50, "Too Long!")
       .required("Required"),
     // workEmail: Yup.string().email("Invalid email").required("Required"),
-    password: Yup.string().matches(
-      /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-      "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    ),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref("password"), null],
-      "Passwords don't match."
-    ),
+    // password: Yup.string().matches(
+    //   /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
+    //   "Password must contain at least 8 characters, one uppercase, one number and one special case character"
+    // ),
+    // confirmPassword: Yup.string().oneOf(
+    //   [Yup.ref("password"), null],
+    //   "Passwords don't match."
+    // ),
     email: Yup.string().email("Invalid email"),
     companyName: Yup.string()
       .min(2, "Too Short!")

@@ -5,32 +5,32 @@ import {
   IconButton,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import {
   AttachmentIcon,
   EyeIcon,
-  SendIcon,
+  SendIcon
 } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import {
   CustomBadge,
-  CustomStack,
+  CustomStack
 } from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import {
   momentdeDateFormat,
-  momentTimeFormat,
+  momentTimeFormat
 } from "components/Utills/Globals/Common";
 import { DOCS_CONFIG } from "config/docs.config";
 import {
   RecentCommentsInterface,
-  SubtaskInterface,
+  SubtaskInterface
 } from "constants/interfaces/subtask.interface";
 import CDrawer from "Drawer/CDrawer";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions from "redux/action/task.action";
 import { RootState } from "redux/reducers";
@@ -137,6 +137,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
         date: momentdeDateFormat(item.createdAt),
         time: momentTimeFormat(item.createdAt),
         userState: item.userState,
+        allFiles:item.files
       };
     });
 
@@ -153,8 +154,8 @@ export default function RecentComments({ subtaskDetail }: Props) {
       <Box
         id={"RecentComments"}
         sx={{
-          // overflow: "hidden",
-          height: "170px",
+          overflow: "auto",
+          height: "30vh",
           display: " block",
           position: "relative",
         }}
@@ -180,12 +181,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
           </Box>
         )}
       </Box>
-      <CBox
-        display="flex"
-        sx={{
-          position: "static",
-        }}
-      >
+      <CBox display="flex">
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField
             id="standard-multiline-flexible"
@@ -198,7 +194,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
             multiline
             maxRows={3}
             minRows={3}
-            style={{ padding: "5px 5px" }}
+            style={{ padding: "7px 7px" }}
             variant="standard"
             className={classes.textArea}
             InputLabelProps={{
@@ -290,7 +286,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
         handleCloseCDrawer={handleViewAllComments}
         children={
           <ViewRejectionComments
-            subTaskHeading="All comments"
+            subTaskHeading="All Comments"
             handleCloseCDrawer={handleViewAllComments}
             cardData={viewRecentComments}
           />

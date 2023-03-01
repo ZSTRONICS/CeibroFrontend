@@ -46,6 +46,8 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
       _id: item._id,
       date: momentdeDateFormat(item.createdAt),
       time: momentTimeFormat(item.createdAt),
+      allFiles:[]
+      
     };
   });
 
