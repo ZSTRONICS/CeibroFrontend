@@ -69,6 +69,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
       })
     );
   };
+
   const handleViewAllComments = () => {
     setOpenViewAllCommentsDrawer((prev: boolean) => !prev);
   };

@@ -601,7 +601,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#0076C8",
                             marginRight: 15,
                           }}
@@ -622,7 +622,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#FA0808",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#FA0808",
                           }}
                         />
@@ -643,7 +643,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           borderColor: "#0076C8",
                           fontSize: 12,
                           fontWeight: "bold",
-                          borderWidth: 2,
+                          borderWidth: 1.5,
                           color: "#0076C8",
                           marginRight: 15,
                         }}
@@ -665,7 +665,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#0076C8",
                             marginRight: 15,
                           }}
@@ -686,7 +686,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#FA0808",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#FA0808",
                           }}
                         />
@@ -707,7 +707,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#0076C8",
                             marginRight: 15,
                           }}
@@ -723,7 +723,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             borderColor: "#FA0808",
                             fontSize: 12,
                             fontWeight: "bold",
-                            borderWidth: 2,
+                            borderWidth: 1.5,
                             color: "#FA0808",
                           }}
                         />

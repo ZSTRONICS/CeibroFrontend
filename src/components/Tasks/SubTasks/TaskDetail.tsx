@@ -139,7 +139,8 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
 }
 const useStyles = makeStyles({
   wrapper: {
-    // overflow: "scroll !important",
+    overflow: "scroll !important",
+    height: "100vh",
     padding: "10px 15px",
     backgroundColor: "#F5F7F8",
   },

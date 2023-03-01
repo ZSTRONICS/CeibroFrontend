@@ -723,10 +723,12 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           container
           justifyContent="flex-end"
           mt={10}
+          ml={1.7}
           sx={{ padding: "10px 23px" }}
         >
           <Grid item>
             <CButton
+              sx={{ padding: "8px 9px" }}
               label="Update Task"
               onClick={handleTaskUpdateAtNewState}
               variant="contained"
@@ -743,6 +745,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           </Grid>
           <Grid item>
             <CButton
+            sx={{
+              padding:"8px 4px",
+            }}
               styles={{
                 borderColor: "#9D9D9D",
                 fontSize: 12,
