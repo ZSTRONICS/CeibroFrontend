@@ -231,12 +231,19 @@ function EditSubTaskDetails(props: any) {
     );
   };
 
-  const showDeleteBtn = ( assignee: string,userState: string, addedByMember: string): boolean => {
-    const isTaskAdmin:boolean = defaultValues.taskData.admins.includes(
+  const showDeleteBtn = (
+    assignee: string,
+    userState: string,
+    addedByMember: string
+  ): boolean => {
+    const isTaskAdmin: boolean = defaultValues.taskData.admins.includes(
       String(user._id)
     );
 
-    if (userState === SubtaskState.Assigned ||userState === SubtaskState.Accepted ) {
+    if (
+      userState === SubtaskState.Assigned ||
+      userState === SubtaskState.Accepted
+    ) {
       if (isTaskAdmin === true) {
         return true;
       }
@@ -311,13 +318,13 @@ function EditSubTaskDetails(props: any) {
         component="div"
         sx={{
           position: "relative",
-          "&.MuiListSubheader-root": { padding: "2px 11px 14px 2px" },
+          "&.MuiListSubheader-root": { padding: "2px 0px 14px 0px" },
         }}
       >
         <Grid
           container
-          sx={{ padding: "0 15px" }}
-          gap={2}
+          sx={{ padding: "0 0" }}
+          gap={3.5}
           alignItems="flex-start"
         >
           <Grid item md={10}>
@@ -383,14 +390,19 @@ function EditSubTaskDetails(props: any) {
               : `Added by ${item.addedBy.firstName} ${item.addedBy.surName}`;
           return (
             <li key={item.addedBy._id}>
-              <ul style={{ paddingInlineStart: "20px", paddingBottom: "10px" }}>
+              <ul
+                style={{
+                  paddingInlineStart: "0px",
+                  paddingBottom: "5px",
+                }}
+              >
                 <AddedByLabel
                   disableGutters
                   disableSticky
                   sx={{
                     borderBottom: "1px solid #ECF0F1",
                     margin: "0px",
-                    lineHeight: "20px",
+                    lineHeight: "25px",
                   }}
                 >
                   {addedByMe}
@@ -401,6 +413,9 @@ function EditSubTaskDetails(props: any) {
                     <ListItem
                       disablePadding
                       key={member._id}
+                      sx={{
+                        "& .MuiListItemSecondaryAction-root": { right: "0px" },
+                      }}
                       secondaryAction={
                         <>
                           {showDeleteBtn(
@@ -456,8 +471,10 @@ function EditSubTaskDetails(props: any) {
                         <Avatar variant="rounded" src={member.profilePic} />
                       </ListItemAvatar>
                       <ListItemText
+                        sx={{ padding: "4px 0px" }}
                         secondaryTypographyProps={{
-                          maxWidth: "80px",
+                          // padding: "10px 10px",
+                          maxWidth: "65px",
                           width: "100%",
                         }}
                         //   primaryTypographyProps={{}}
@@ -500,13 +517,15 @@ function EditSubTaskDetails(props: any) {
 export default EditSubTaskDetails;
 
 const SubTaskStateTag = styled(Box)`
-  font-weight: 500;
+  font-weight: 400;
   font-size: 12px;
   color: white;
-  padding: 3px 7px;
+  padding: 2px 5px;
   border-radius: 3px;
   text-transform: capitalize;
   text-align: center;
+  display: flex;
+  align-item: center;
   font-family: Inter;
 `;
 const AddedByLabel = styled(ListSubheader)`

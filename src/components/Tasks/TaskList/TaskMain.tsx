@@ -89,7 +89,7 @@ const TaskMain = () => {
             item
             sx={{
               height: "38px",
-              width: "280px",
+              width: "350px",
             }}
           >
             <SelectDropdown title="Assigned to" />
@@ -98,7 +98,7 @@ const TaskMain = () => {
             item
             sx={{
               height: "38px",
-              width: "280px",
+              width: "350px",
             }}
           >
             <SelectDropdown title="Projects" />
