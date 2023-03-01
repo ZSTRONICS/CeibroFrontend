@@ -56,11 +56,7 @@ const SmartMenuBar = () => {
               >
                 My Connections
               </span>
-              <Badge
-                overlap="circular"
-                badgeContent={connections}
-                color="primary"
-              ></Badge>
+              <Badge overlap='circular' showZero={true} badgeContent={connections} color="primary"></Badge>
             </span>
           </Box>
 
@@ -98,9 +94,7 @@ const SmartMenuBar = () => {
               >
                 Invitations
               </span>
-              {invites > 0 && (
-                <Badge badgeContent={invites} color="error"></Badge>
-              )}
+            <Badge showZero={true} badgeContent={invites} color="error"></Badge>
             </span>
           </Box>
           <Button

@@ -40,7 +40,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
                 Invitations
               </Typography>
            
-        {invites>0&& <Badge badgeContent={invites} className={classes.badge}></Badge>}
+        <Badge showZero={true} badgeContent={invites} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />
       </Grid>

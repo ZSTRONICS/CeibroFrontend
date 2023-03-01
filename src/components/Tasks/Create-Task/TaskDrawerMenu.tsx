@@ -221,7 +221,6 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
             } else {
               toast.success("Task updated");
               setShowUpdateBtn(false);
-              // console.log(res);
             }
           },
           onFailAction: () => {

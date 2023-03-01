@@ -1,5 +1,12 @@
-import { Divider, Grid, makeStyles } from "@material-ui/core";
-import { Box, IconButton, TextField, Typography } from "@mui/material";
+import { Divider, makeStyles } from "@material-ui/core";
+import {
+  Box,
+  Grid,
+  IconButton,
+  TextField,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import {
@@ -7,11 +14,17 @@ import {
   EyeIcon,
   SendIcon,
 } from "components/material-ui/icons";
+import CustomModal from "components/Modal";
+import {
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
+import UploadDocs from "components/uploadImage/UploadDocs";
 import {
   momentdeDateFormat,
   momentTimeFormat,
 } from "components/Utills/Globals/Common";
-import { TASK_CONFIG } from "config/task.config";
+import { DOCS_CONFIG } from "config/docs.config";
 import {
   RecentCommentsInterface,
   SubtaskInterface,
@@ -35,34 +48,49 @@ export default function RecentComments({ subtaskDetail }: Props) {
 
   const [userNewComment, setUserNewComment] = useState<string>("");
   const { user } = useSelector((state: RootState) => state.auth);
-  const {
-    selectedTaskId,
-    getAllCommentsOfSubtaskLoading,
-    getAllRecentCommentsOfSubtask,
-  } = useSelector((state: RootState) => state.task);
+  const { getAllCommentsOfSubtaskLoading, getAllRecentCommentsOfSubtask } =
+    useSelector((state: RootState) => state.task);
   const classes = useStyles();
   const myState = subtaskDetail.state.find(
     (localState: any) => String(localState.userId) === String(user._id)
   );
+  const [attachmentViewOpen, setAttachmentViewOpen]: any = useState(false);
+  const [selectedAttachments, setSelectedAttachments] = useState<any>({
+    moduleId: "",
+    moduleName: "SubTaskComments",
+    files: [],
+  });
 
   const handleSendRecentComment = (e: any) => {
     e.stopPropagation();
     const payload = {
-      taskId: selectedTaskId,
+      taskId: subtaskDetail.taskId,
       subTaskId: subtaskDetail._id,
-      isFileAttached: false,
+      isFileAttached: selectedAttachments.files.length > 0 ? true : false,
       sender: user._id,
       userState: myState && myState.userState,
       message: userNewComment,
       seenBy: [user._id],
     };
+
+    if (selectedAttachments.files.length > 0) {
+      dispatch({
+        type: DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED,
+        payload: selectedAttachments,
+      });
+    }
     dispatch(
       taskActions.postSubtaskComment({
         body: payload,
         success: (res) => {
           setUserNewComment("");
+          setSelectedAttachments({
+            moduleId: "",
+            moduleName: "SubTaskComments",
+            files: [],
+          });
           //   dispatch({
-          //     type: TASK_CONFIG.UPDATE_NEW_COMMENT_IN_STORE,
+          //     type: TASK_CONFIG.PUSH_NEW_COMMENT_IN_STORE,
           //     payload: res.data.result,
           //   });
         },
@@ -72,6 +100,28 @@ export default function RecentComments({ subtaskDetail }: Props) {
 
   const handleViewAllComments = () => {
     setOpenViewAllCommentsDrawer((prev: boolean) => !prev);
+  };
+
+  const handleOpenCloseAttachmentModal = (e: any) => {
+    e.stopPropagation();
+    setAttachmentViewOpen((value: boolean) => !value);
+  };
+
+  const AttachmentsToolTip = () => {
+    return selectedAttachments.files.length > 0 ? (
+      <>
+        {Array.from(selectedAttachments.files).map((file: any, index: any) => {
+          return (
+            <div
+              style={{ textTransform: "capitalize" }}
+              key={file.name}
+            >{`${file.name}\n `}</div>
+          );
+        })}
+      </>
+    ) : (
+      <></>
+    );
   };
 
   const viewRecentComments =
@@ -89,12 +139,19 @@ export default function RecentComments({ subtaskDetail }: Props) {
         userState: item.userState,
       };
     });
+
+  const recentCommentsBox = document.getElementById("RecentComments");
+  if (recentCommentsBox) {
+    recentCommentsBox.scrollTop = recentCommentsBox.scrollHeight;
+  }
+
   return (
     <>
       <Box>
         <Typography className="recentComment">Recent Comments</Typography>
       </Box>
       <Box
+        id={"RecentComments"}
         sx={{
           // overflow: "hidden",
           height: "170px",
@@ -105,16 +162,16 @@ export default function RecentComments({ subtaskDetail }: Props) {
         {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}
         {getAllRecentCommentsOfSubtask.length > 0 ? (
           getAllRecentCommentsOfSubtask
-            .slice(0, 5)
+            .slice(0, 4)
             .reverse()
             .map((userComment: RecentCommentsInterface) => {
               if (!userComment.access.includes(user._id)) {
                 return;
               }
               return (
-                <Fragment key={userComment._id}>
+                <Box key={userComment._id}>
                   <RecentCommentsList comment={userComment} />
-                </Fragment>
+                </Box>
               );
             })
         ) : (
@@ -182,9 +239,24 @@ export default function RecentComments({ subtaskDetail }: Props) {
                 variant="fullWidth"
                 style={{ height: 15, width: 1.5, margin: "auto 8px" }}
               />
-              <IconButton>
-                <AttachmentIcon />
-              </IconButton>
+              <CustomStack>
+                <IconButton onClick={handleOpenCloseAttachmentModal}>
+                  <AttachmentIcon />
+                </IconButton>
+                <CustomBadge
+                  overlap="circular"
+                  color="primary"
+                  badgeContent={
+                    <Tooltip title={AttachmentsToolTip()}>
+                      {selectedAttachments.files.length > 0 ? (
+                        <div>{selectedAttachments.files.length}</div>
+                      ) : (
+                        <div>{0}</div>
+                      )}
+                    </Tooltip>
+                  }
+                ></CustomBadge>
+              </CustomStack>
               <Divider
                 orientation="vertical"
                 flexItem
@@ -224,9 +296,31 @@ export default function RecentComments({ subtaskDetail }: Props) {
           />
         }
       />
+
+      <CustomModal
+        showCloseBtn={false}
+        isOpen={attachmentViewOpen}
+        handleClose={(e: any) => {
+          handleOpenCloseAttachmentModal(e);
+        }}
+        title={"Attachments"}
+        children={
+          <UploadDocs
+            selectedAttachments={selectedAttachments}
+            showUploadButton={false}
+            moduleType={"SubTaskComments"}
+            moduleId={""}
+            handleClose={(e: any, value: any): void => {
+              setSelectedAttachments(value);
+              setAttachmentViewOpen((prev: boolean) => !prev);
+            }}
+          />
+        }
+      />
     </>
   );
 }
+
 const useStyles = makeStyles({
   wrapper: {
     padding: "10px 10px",

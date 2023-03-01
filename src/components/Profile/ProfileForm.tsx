@@ -54,7 +54,7 @@ const ProfileForm = () => {
       companyPhone,
       companyVat,
       companyLocation,
-      currentlyRepresenting,
+      // currentlyRepresenting,
     } = values;
 
     const payload = {
@@ -69,7 +69,7 @@ const ProfileForm = () => {
         companyName,
         companyVat,
         companyLocation,
-        currentlyRepresenting,
+        currentlyRepresenting:false,
       },
       success: () => {
         toast.success("Profile updated successfully");
@@ -134,9 +134,9 @@ const ProfileForm = () => {
         "Invalid phone"
       )
       .required("Phone is required"),
-    currentlyRepresenting: Yup.boolean()
-      .required("Required")
-      .oneOf([true, false]),
+    // currentlyRepresenting: Yup.boolean()
+    //   .required("Required")
+    //   .oneOf([true, false]),
   });
 
   return (
@@ -480,7 +480,7 @@ const ProfileForm = () => {
                     )}
                   </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
+                  {/* <Grid item xs={12} className={classes.rowWrapper}>
                     <FormGroup>
                       <FormControlLabel
                         control={
@@ -508,7 +508,7 @@ const ProfileForm = () => {
                         </Typography>
                       )}
                     </FormGroup>
-                  </Grid>
+                  </Grid> */}
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <Button

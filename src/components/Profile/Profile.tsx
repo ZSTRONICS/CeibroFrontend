@@ -16,6 +16,10 @@ const Dashboard = () => {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const { user } = useSelector((localState: RootState) => localState.auth);
 
+  if(window.location.pathname.includes('profile')){
+    document.body.style.background='#f5f7f8'
+  }
+
   return (
     <Grid container>
       <ProfileImagePicker profilePic={user?.profilePic} />

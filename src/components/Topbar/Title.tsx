@@ -187,7 +187,7 @@ const useStyles =  makeStyles((theme) => ({
     paddingLeft: 20,
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
     "@media (max-width:960px)": {
       paddingLeft: 0,
       minWidth: 300,

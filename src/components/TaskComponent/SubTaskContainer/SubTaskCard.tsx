@@ -27,6 +27,8 @@ import {
 import { RootState } from "redux/reducers";
 import taskActions, {
   deleteSubtask,
+  getAllSubTaskList,
+  getAllSubTaskOfTask,
   patchSubTaskById,
   taskSubtaskStateChange,
 } from "redux/action/task.action";
@@ -78,7 +80,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
   } catch (e: any) {
     console.error(e);
   }
-  // console.log("allMembers", allMembers);
 
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
@@ -102,8 +103,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleCloseModal = () => {
     setSubTask((prev: any) => !prev);
   };
-  console.log("Rendering card");
-
+  
   const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
     return (
       <>
@@ -122,6 +122,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
     return (
       <>
         {membersList.map((item: Member, index) => {
+            if (item === undefined) {
+              return <></>;
+            }
           if (index === membersList.length - 1) {
             return (
               <span
@@ -339,6 +342,14 @@ function SubTaskCard({ subTaskDetail }: Props) {
         other: subTaskDetail._id,
         success: (res: any) => {
           if (res.status === 200) {
+            dispatch(
+              getAllSubTaskOfTask({
+                other: {
+                  taskId: taskId,
+                },
+              })
+            );
+            dispatch(getAllSubTaskList());
           }
           toast.success("Subtask deleted");
         },
@@ -548,8 +559,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       </svg>
                       <Typography>0</Typography>
                     </CustomStack>
-                    {myState?.userState !== SubtaskState.Done &&
-                      myState?.userState !== SubtaskState.Rejected &&
+                    {
                       taskRights && (
                         <CBox display="flex">
                           <SubTaskMenu subTaskDetail={subTaskDetail} />

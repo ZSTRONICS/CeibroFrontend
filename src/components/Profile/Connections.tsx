@@ -33,12 +33,13 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
             <img src={assets.contactIcon} alt="" className={classes.icon} />
           </div>
           <Typography variant="body1" className={classes.connectionText}>
-            My connections
-           {connections&& <Badge
+            My Connections
+          <Badge
+              showZero={true}
               color="primary"
               badgeContent={connections}
               className={classes.badge}
-            ></Badge>}
+            ></Badge>
           </Typography>
           </Stack>
         </Grid>
