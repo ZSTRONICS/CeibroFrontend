@@ -1,55 +1,58 @@
-
 import {
   Button,
   Dialog,
   DialogContent,
   DialogTitle,
-  Grid, makeStyles,
-  Typography
-} from '@material-ui/core'
-import { Clear } from '@material-ui/icons'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { getUserById } from 'redux/action/user.action'
-import colors from '../../assets/colors'
-import { createSingleRoom } from '../../redux/action/chat.action'
-import taskActions from '../../redux/action/task.action'
-import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
-import NameAvatar from '../Utills/Others/NameAvatar'
+  Grid,
+  makeStyles,
+  Typography,
+} from "@material-ui/core";
+import { Clear } from "@material-ui/icons";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { getUserById } from "redux/action/user.action";
+import colors from "../../assets/colors";
+import { createSingleRoom } from "../../redux/action/chat.action";
+import taskActions from "../../redux/action/task.action";
+import {
+  deleteMyConnection,
+  getMyConnections,
+} from "../../redux/action/user.action";
+import NameAvatar from "../Utills/Others/NameAvatar";
 interface IViewProfileProps {
-  userId: string
-  disabled: boolean
+  userId: string;
+  disabled: boolean;
   connectionId: string;
 }
 
-const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
-  const { userId, disabled, connectionId } = props
-  const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-  const [getUser, setGetUser] = useState<any>({})
-  const dispatch = useDispatch()
-  const history = useHistory()
+const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
+  const { userId, disabled, connectionId } = props;
+  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const [getUser, setGetUser] = useState<any>({});
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const handleToggle = () => {
     const payload = {
       success: (val: any) => {
-        setGetUser(val.data)
+        setGetUser(val.data);
       },
       other: {
         userId,
       },
-    }
-    dispatch(getUserById(payload))
+    };
+    dispatch(getUserById(payload));
 
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
   const openTaskModal = () => {
-    dispatch(taskActions.openNewTaskModal())
-  }
+    dispatch(taskActions.openNewTaskModal());
+  };
 
   const handleDelete = () => {
-    const id: string = connectionId
+    const id: string = connectionId;
     const payload: any = {
       other: {
         id,
@@ -58,27 +61,30 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
         isEmailInvited: false,
       },
       success: () => dispatch(getMyConnections()),
-    }
-    dispatch(deleteMyConnection(payload))
-    handleToggle()
-  }
+    };
+    dispatch(deleteMyConnection(payload));
+    handleToggle();
+  };
 
   const startRoom = () => {
-    const payload = { other: { id: getUser?._id }, success: () => history.push('chat') }
-    dispatch(createSingleRoom(payload))
-  }
+    const payload = {
+      other: { id: getUser?._id },
+      success: () => history.push("chat"),
+    };
+    dispatch(createSingleRoom(payload));
+  };
 
-    // const user = {
-    //   image:
-    //     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
-    //   name: "Kristo",
-    //   surname: "Vaughn",
-    //   email: "abc123@gmail.com",
-    //   contact: "+372 5679 8908",
-    //   company: "My company Ltd.",
-    //   vat: "1324343554",
-    //   location: "Vesse 12, Tallinn, Harjumaa 12345",
-    // };
+  // const user = {
+  //   image:
+  //     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
+  //   name: "Kristo",
+  //   surname: "Vaughn",
+  //   email: "abc123@gmail.com",
+  //   contact: "+372 5679 8908",
+  //   company: "My company Ltd.",
+  //   vat: "1324343554",
+  //   location: "Vesse 12, Tallinn, Harjumaa 12345",
+  // };
 
   return (
     <>
@@ -101,7 +107,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
                 <NameAvatar
                   firstName={getUser?.firstName}
                   surName={getUser?.surName}
-                  url={getUser?.profilePic || ''}
+                  url={getUser?.profilePic || ""}
                   variant="large"
                 />
               )}
@@ -111,17 +117,25 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
         </DialogTitle>
         <DialogContent className={classes.wrapper}>
           <Grid container>
-            <Grid item xs={12} className={classes.detailRow}>
+            <Grid item 
+            xs={12}
+             className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Name</Typography>
-                <Typography className={classes.value}>{getUser?.firstName}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.firstName}
+                </Typography>
               </div>
               <div>
                 <Typography className={classes.title}>Surname</Typography>
-                <Typography className={classes.value}>{getUser?.surName}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.surName}
+                </Typography>
               </div>
             </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
+            <Grid item 
+            xs={12}
+             className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Email</Typography>
                 <Typography className={classes.value}>
@@ -131,39 +145,63 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
+            <Grid item 
+            xs={12}
+             className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Contact</Typography>
-                <Typography className={classes.value}>{getUser?.phone}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.phone}
+                </Typography>
               </div>
             </Grid>
             <br />
             <br />
 
-            <Grid item xs={12} className={`${classes.companyRow} ${classes.detailRow}`}>
+            <Grid
+              item
+              xs={12}
+              className={`${classes.companyRow} ${classes.detailRow}`}
+            >
               <div>
                 <Typography className={classes.title}>Company</Typography>
-                <Typography className={classes.value}>{getUser?.companyName}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.companyName}
+                </Typography>
               </div>
               <div>
                 <Typography className={classes.title}>VAT</Typography>
-                <Typography className={classes.value}>{getUser?.companyVat}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.companyVat}
+                </Typography>
               </div>
             </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
+            <Grid item 
+            xs={12}
+             className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Location</Typography>
-                <Typography className={classes.value}>{getUser?.companyLocation}</Typography>
+                <Typography className={classes.value}>
+                  {getUser?.companyLocation}
+                </Typography>
               </div>
             </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
+            <Grid item 
+            xs={12} 
+            className={classes.detailRow}>
               <div>
-                <Typography className={classes.title}>Company contact number</Typography>
-                <Typography className={classes.value}>{getUser?.companyPhone}</Typography>
+                <Typography className={classes.title}>
+                  Company contact number
+                </Typography>
+                <Typography className={classes.value}>
+                  {getUser?.companyPhone}
+                </Typography>
               </div>
             </Grid>
 
-            <Grid item xs={12} className={classes.btnWrapper}>
+            <Grid item 
+            xs={12} 
+            className={classes.btnWrapper}>
               {/* <IconButton
                 onClick={handleDelete}
                 aria-label="delete"
@@ -196,18 +234,18 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
         </DialogContent>
       </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default ViewProfile
+export default ViewProfile;
 
 const useStyles = makeStyles({
   titleWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     paddingBottom: 0,
     paddingTop: 2,
-    alignItems: 'center',
+    alignItems: "center",
   },
   wrapper: {
     width: 390,
@@ -217,31 +255,35 @@ const useStyles = makeStyles({
     maxHeight: 80,
   },
   img: {
-    width: '100%',
+    width: "100%",
   },
   close: {
     color: colors.primary,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   btn: {
     fontSize: 12,
-    fontWeight: 'bold',
-    '@media (max-width:960px)': {
-      width: '100%',
+    fontWeight: "bold",
+    "@media (max-width:960px)": {
+      width: "100%",
       marginTop: 10,
     },
   },
   btnWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-evenly",
     padding: `25px 0px`,
-    '@media (max-width:960px)': {
-      flexDirection: 'column',
+    "@media (max-width:960px)": {
+      flexDirection: "column",
+      flexWrap: "wrap",
+    },
+    "@media (max-width:450px)": {
+      overflow: "hidden",
     },
   },
   detailRow: {
-    display: 'flex',
+    display: "flex",
     paddingTop: 5,
     gap: 30,
   },
@@ -260,4 +302,4 @@ const useStyles = makeStyles({
   email: {
     color: colors.textPrimary,
   },
-})
+});

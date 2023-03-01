@@ -306,8 +306,8 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
                   }}
                 >
                   <SubTaskButton textAlign="center" sx={{ color: "#FA0808" }}>
-                    Delete subtask
-                  </SubTaskButton>
+                  Delete subtask
+                </SubTaskButton>
                 </MenuItem>
               )}
             </Box>
