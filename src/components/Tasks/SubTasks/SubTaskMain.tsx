@@ -38,7 +38,8 @@ const SubTaskMain = () => {
             item
             sx={{
               height: "38px",
-              width: "350px",
+              width: "100%",
+              maxWidth: "350px",
             }}
             // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
           >
@@ -49,7 +50,7 @@ const SubTaskMain = () => {
           </Grid>
           <Grid
             item
-            sx={{ width: "350px", height: "38px" }}
+            sx={{ width: "100%", maxWidth: "350px", height: "38px" }}
             // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
           >
             <SelectDropdown title="Projects" />
