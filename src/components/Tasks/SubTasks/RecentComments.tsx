@@ -5,32 +5,32 @@ import {
   IconButton,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@mui/material";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import {
   AttachmentIcon,
   EyeIcon,
-  SendIcon,
+  SendIcon
 } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import {
   CustomBadge,
-  CustomStack,
+  CustomStack
 } from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import {
   momentdeDateFormat,
-  momentTimeFormat,
+  momentTimeFormat
 } from "components/Utills/Globals/Common";
 import { DOCS_CONFIG } from "config/docs.config";
 import {
   RecentCommentsInterface,
-  SubtaskInterface,
+  SubtaskInterface
 } from "constants/interfaces/subtask.interface";
 import CDrawer from "Drawer/CDrawer";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions from "redux/action/task.action";
 import { RootState } from "redux/reducers";
@@ -137,6 +137,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
         date: momentdeDateFormat(item.createdAt),
         time: momentTimeFormat(item.createdAt),
         userState: item.userState,
+        allFiles:item.files
       };
     });
 
@@ -191,9 +192,9 @@ export default function RecentComments({ subtaskDetail }: Props) {
               setUserNewComment(e.target.value);
             }}
             multiline
-            maxRows={4}
-            minRows={4}
-            style={{ padding: "10px 10px" }}
+            maxRows={3}
+            minRows={3}
+            style={{ padding: "7px 7px" }}
             variant="standard"
             className={classes.textArea}
             InputLabelProps={{
@@ -285,7 +286,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
         handleCloseCDrawer={handleViewAllComments}
         children={
           <ViewRejectionComments
-            subTaskHeading="All comments"
+            subTaskHeading="All Comments"
             handleCloseCDrawer={handleViewAllComments}
             cardData={viewRecentComments}
           />
@@ -318,7 +319,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
 
 const useStyles = makeStyles({
   wrapper: {
-    padding: "25px 20px",
+    padding: "10px 10px",
     backgroundColor: "#F5F7F8",
   },
   heading: {
@@ -348,7 +349,7 @@ const useStyles = makeStyles({
   },
   titleLabel: {
     position: "absolute",
-    top: "-10px",
+    // top: "-10px",
     backgroundColor: "#f5f7f8",
     left: 11,
     color: "#605C5C",
@@ -358,7 +359,7 @@ const useStyles = makeStyles({
   },
   textArea: {
     width: "100%",
-    padding: 15,
+    padding: 10,
     border: "none",
     borderRadius: 5,
     "& textarea:focus": {
@@ -370,7 +371,7 @@ const useStyles = makeStyles({
   textAreaBox: {
     border: "1px solid #DBDBE5",
     borderRadius: 2,
-    marginTop: 20,
+    marginTop: 10,
     position: "relative",
     background: "white",
     "&:hover": {

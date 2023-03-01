@@ -148,6 +148,7 @@ const SelectDropdown: FC<My> = (props) => {
           value={value}
           isClearable={isClearAble}
           noOptionsMessage={() => noOptionMessage || ""}
+          menuPlacement="bottom"
           // formatCreateLabel={formatCreateLabel}
         />
       </div>

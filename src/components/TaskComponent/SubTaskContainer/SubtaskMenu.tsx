@@ -2,30 +2,27 @@ import React, { useState } from "react";
 
 // material
 import {
-  Menu,
-  IconButton,
-  MenuItem,
-  Typography,
   Box,
+  IconButton,
+  Menu,
+  MenuItem,
   styled,
+  Typography,
 } from "@mui/material";
 
 // components
 import assets from "assets/assets";
 import CustomModal from "components/Modal";
-import EditSubTaskDetails from "./EditSubTaskDetails";
-import { SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { SubtaskState } from "constants/interfaces/task.interface";
 import CreateSubTask from "components/Tasks/SubTasks/CreateSubTask";
-import { Formik, Form } from "formik";
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { deleteSubtask, patchSubTaskById } from "redux/action/task.action";
-import { toast } from "react-toastify";
 import { DOCS_CONFIG } from "config/docs.config";
 import { TASK_CONFIG } from "config/task.config";
-import TaskDetail from "components/Tasks/SubTasks/TaskDetail";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { Form, Formik } from "formik";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { deleteSubtask, patchSubTaskById } from "redux/action/task.action";
+import { RootState } from "redux/reducers";
+import EditSubTaskDetails from "./EditSubTaskDetails";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -70,7 +67,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
       assignedTo = assignedTo.map((assigned: any) => {
         return {
           members: assigned.members.map((item: any) => item._id),
-          addedBy: assigned.addedBy._id
+          addedBy: assigned.addedBy._id,
         };
       });
     }
@@ -227,11 +224,11 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     );
   };
 
-  const handleEditSubTaskInAssigned = (e: any) => {
-    e.stopPropagation();
-    setAnchorElMember(null);
-    setSubTask(true);
-  };
+  // const handleEditSubTaskInAssigned = (e: any) => {
+  //   e.stopPropagation();
+  //   setAnchorElMember(null);
+  //   setSubTask(true);
+  // };
 
   return (
     <Box>
@@ -244,155 +241,78 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
         >
           <assets.MoreVertOutlinedIcon />
         </IconButton>
-        <Menu
-          MenuListProps={{ sx: { py: 0 } }}
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElMember}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElMember)}
-          onClose={handleCloseMenu}
-        >
-          {/* edit and delete subtask */}
-
-          {/* {myState === SubtaskState.Draft && ( */}
-          <Box>
-            {canEdit && (
-              <MenuItem
-                onClick={handleEditSubTaskInDraft}
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton
-                  textAlign="center"
-                  //   sx={{ color: "#0076c8"}}
-                >
-                  Edit subtask
-                </SubTaskButton>
-              </MenuItem>
-            )}
-
-            {canEditDetails && (
-              <MenuItem
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton textAlign="center" onClick={handleEditDetails}>
-                  Edit details
-                </SubTaskButton>
-              </MenuItem>
-            )}
-
-            {canDelete && (
-              <MenuItem
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton
-                  textAlign="center"
-                  sx={{ color: "#FA0808" }}
-                  onClick={handleDeleteSubTask}
-                >
-                  Delete subtask
-                </SubTaskButton>
-              </MenuItem>
-            )}
-          </Box>
-          {/* )} */}
-          {/* edit details, edit subtask, and delete subtask */}
-
-          {/* {myState === SubtaskState.Assigned && (
+        {(canEdit || canDelete || canEditDetails) && (
+          <Menu
+            MenuListProps={{ sx: { py: 0 } }}
+            sx={{ mt: "35px" }}
+            id="menu-appbar"
+            anchorEl={anchorElMember}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            open={Boolean(anchorElMember)}
+            onClose={handleCloseMenu}
+          >
+            {/* edit subtask, edit members and delete subtask */}
             <Box>
-              <MenuItem
-                onClick={handleEditSubTaskInDraft}
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton
-                  textAlign="center"
-                  //   sx={{ color: "#0076c8" }}
+              {canEdit && (
+                <MenuItem
+                  onClick={handleEditSubTaskInDraft}
+                  disableRipple
+                  sx={{
+                    "&.MuiMenuItem-root": {
+                      padding: "10px 10px",
+                    },
+                  }}
                 >
-                  Edit subtask
-                </SubTaskButton>
-              </MenuItem>
-              <MenuItem
-                //  onClick={handleEditDetails}
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton textAlign="center" onClick={handleEditDetails}>
-                  Edit details
-                </SubTaskButton>
-              </MenuItem>
-              <MenuItem
-                //   onClick={handleDelteSubtask}
-                disableRipple
-                sx={{
-                  "&.MuiMenuItem-root": {
-                    padding: "10px 20px",
-                  },
-                }}
-              >
-                <SubTaskButton
+                  <SubTaskButton
+                    textAlign="center"
+                    //   sx={{ color: "#0076c8"}}
+                  >
+                    Edit subtask
+                  </SubTaskButton>
+                </MenuItem>
+              )}
+
+              {canEditDetails && (
+                <MenuItem
+                  disableRipple
+                  onClick={handleEditDetails}
+                  sx={{
+                    "&.MuiMenuItem-root": {
+                      padding: "10px 10px",
+                      // marginRight:"10px",
+                    },
+                  }}
+                >
+                  <SubTaskButton textAlign="center">Edit details</SubTaskButton>
+                </MenuItem>
+              )}
+
+              {canDelete && (
+                <MenuItem
                   onClick={handleDeleteSubTask}
-                  textAlign="center"
-                  sx={{ color: "#FA0808" }}
+                  disableRipple
+                  sx={{
+                    "&.MuiMenuItem-root": {
+                      padding: "10px 10px",
+                    },
+                  }}
                 >
+                  <SubTaskButton textAlign="center" sx={{ color: "#FA0808" }}>
                   Delete subtask
                 </SubTaskButton>
-              </MenuItem>
+                </MenuItem>
+              )}
             </Box>
-          )}
-
-          {(myState === SubtaskState.Accepted ||
-            myState === SubtaskState.Ongoing) && (
-            <MenuItem
-              disableRipple
-              sx={{
-                "&.MuiMenuItem-root": {
-                  padding: "10px 20px",
-                },
-              }}
-            >
-              <SubTaskButton
-                textAlign="center"
-                onClick={handleEditDetails}
-                //   sx={{ color: "#0076c8" }}
-                // onClick={handleEditDetails}
-              >
-                Edit Details
-              </SubTaskButton>
-            </MenuItem>
-          )} */}
-        </Menu>
+          </Menu>
+        )}
       </Box>
       <Box>
         {openEditDetailsModal && (

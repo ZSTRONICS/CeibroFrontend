@@ -74,7 +74,7 @@ function UploadingDocsPreview() {
               <Box
                 sx={{
                   bgcolor: "#0076C8",
-                  pb: open ? 2 : 0,
+                  pb: open ? 1 : 0,
                 }}
               >
                 <ListItemButton
@@ -83,9 +83,9 @@ function UploadingDocsPreview() {
                   alignItems="flex-start"
                   onClick={() => setOpen(!open)}
                   sx={{
-                    px: 3,
-                    pt: 2.5,
-                    pb: open ? 0 : 2.2,
+                    px: 2.5,
+                    pt: 1,
+                    pb: open ? 0 : 1,
                     // "&:hover, &:focus": { "& svg": { opacity: open ? 1 : 0 } },
                   }}
                 >

@@ -46,9 +46,10 @@ export const StatusMenu = (props: any) => {
               </Typography>
               {
                 <Badge
-                  showZero=  {
-                    option.title === 'All' ? true :false
-                  }
+                showZero={true}
+                  // showZero=  {
+                  //   option.title === 'All' ? true :false
+                  // }
                   overlap="circular"
                   className={classes.statusBage}
                   color="primary"

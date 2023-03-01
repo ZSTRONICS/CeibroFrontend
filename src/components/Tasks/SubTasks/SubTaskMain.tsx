@@ -34,13 +34,25 @@ const SubTaskMain = () => {
           className={classes.TaskWraper}
           rowGap={0.5}
         >
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid
+            item
+            sx={{
+              height: "38px",
+              width: "100%",
+              maxWidth: "350px",
+            }}
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+          >
             <DatePicker Datetitle="Date" />
           </Grid>
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid item>
             <SelectDropdown title="Assigned to" />
           </Grid>
-          <Grid item xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}>
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "350px", height: "38px" }}
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+          >
             <SelectDropdown title="Projects" />
           </Grid>
           {/* <Grid
@@ -78,7 +90,6 @@ const SubTaskMain = () => {
         </Grid>
       </Box>
       <Box>
-
         <SubTaskList results={allSubTaskList} />
       </Box>
     </>

@@ -187,6 +187,14 @@ const NavigationReducer = (
         projectsLoading: true,
       };
     }
+    case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
+      return {
+        ...state,
+        projects: action.payload?.result?.results,
+        projectsLoading: false,
+      };
+    }
+
     case requestFail(GET_PROJECTS_WITH_PAGINATION): {
       return {
         ...state,
@@ -206,6 +214,12 @@ const NavigationReducer = (
         menue: action.payload,
       };
 
+      case requestPending(GET_PROJECTS): {
+        return {
+          ...state,
+          projectMembers: [],
+        };
+      }
     case requestSuccess(GET_PROJECTS): {
       return {
         ...state,
@@ -230,13 +244,13 @@ const NavigationReducer = (
 
     }
 
-    case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projects: action.payload?.result?.results,
-        projectsLoading: false,
-      };
-    }
+    // case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
+    //   return {
+    //     ...state,
+    //     projects: action.payload?.result?.results,
+    //     projectsLoading: false,
+    //   };
+    // }
 
     case requestSuccess(GET_PROJECTS_MEMBERS): {
       return {
@@ -245,12 +259,7 @@ const NavigationReducer = (
       };
     }
 
-    case requestPending(GET_PROJECTS): {
-      return {
-        ...state,
-        projectMembers: [],
-      };
-    }
+ 
 
     case SET_PROJECT_OVERVIEW: {
       return {

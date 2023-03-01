@@ -194,7 +194,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         md={12}
         
       >
-        <Grid item container sm={10}  md={9} gap={2}>
+        <Grid item container sm={8}  md={9} gap={2}>
           <Grid item md={5} xs={10}  sm={5}>
             <DatePicker Datetitle="Date" />
             {/* <CDatePicker
@@ -208,7 +208,13 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
             }}
           /> */}
           </Grid>
-          <Grid item md={6} xs={10} sm={5}>
+          <Grid item 
+           md={6} xs={10} sm={5}
+          // sx={{
+          //   width:"260px",
+          //   height:"38px",
+          // }}
+          >
             <SelectDropdown title="Assigned to" />
           </Grid>
         </Grid>

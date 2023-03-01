@@ -27,9 +27,9 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
         : 20,
     };
   };
-
+const profileView = history.location.pathname.includes("profile")
   return (
-    <div className={classes.wrapper}>
+    <div className={`${classes.wrapper} ${profileView? classes.profileWrapper:""}`}>
       <Sidebar />
       {navbarOpen && isTabletOrMobile && (
         <div className={classes.blackWrapper}></div>
@@ -47,13 +47,16 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
 export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
+
   wrapper: {
     overflowY: "hidden",
     height: "100vh",
     "@media (max-width:600px)": {
       overflowX: "hidden",
-      // overflowY: "auto",
     },
+  },
+  profileWrapper:{
+    overflowY: "auto",
   },
   content: {
     marginLeft: 200,
