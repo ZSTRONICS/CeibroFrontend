@@ -24,7 +24,7 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
     if (profilePic) {
       setUrl(profilePic);
     }
-  }, [profilePic]);
+  }, []);
 
   const handleClick = () => {
     if (ref.current !== null) {
