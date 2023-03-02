@@ -37,6 +37,7 @@ const colors = {
   primaryRed: "rgb(234, 96, 104)",
   secondaryRed: "rgb(247, 104, 91)",
   btnRed: "#F94340",
+  btnGreen: "#309616",
 
   darkNavy: "rgb(65, 154, 154)",
 

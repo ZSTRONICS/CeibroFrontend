@@ -171,7 +171,7 @@ const CreateIndividualChat = (props: any) => {
 
           <CBox display="flex" justifyContent="flex-end" >
             {/* <Button variant="contained" color="primary" disabled>
-              Start conversation
+              Message
             </Button> */}
             <Button onClick={handleClose}>Cancel</Button>
           </CBox>

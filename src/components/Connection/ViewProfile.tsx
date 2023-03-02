@@ -1,14 +1,17 @@
 import {
+  Avatar,
   Button,
   Dialog,
-  DialogContent,
   DialogTitle,
+  Divider,
   Grid,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
-import { Clear } from "@material-ui/icons";
+  TextField
+} from "@mui/material";
 import React, { useState } from "react";
+
+import { makeStyles } from "@material-ui/core";
+
+import CButton from "components/Button/Button";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { getUserById } from "redux/action/user.action";
@@ -17,9 +20,9 @@ import { createSingleRoom } from "../../redux/action/chat.action";
 import taskActions from "../../redux/action/task.action";
 import {
   deleteMyConnection,
-  getMyConnections,
+  getMyConnections
 } from "../../redux/action/user.action";
-import NameAvatar from "../Utills/Others/NameAvatar";
+
 interface IViewProfileProps {
   userId: string;
   disabled: boolean;
@@ -38,14 +41,13 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     const payload = {
       success: (val: any) => {
         setGetUser(val.data);
+        setOpen(!open);
       },
       other: {
         userId,
       },
     };
     dispatch(getUserById(payload));
-
-    setOpen(!open);
   };
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
@@ -73,6 +75,8 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     };
     dispatch(createSingleRoom(payload));
   };
+  const letters =
+  getUser.firstName?.[0]?.toUpperCase?.() + (getUser.surName?.[0]?.toUpperCase?.() || "");
 
   // const user = {
   //   image:
@@ -85,7 +89,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   //   vat: "1324343554",
   //   location: "Vesse 12, Tallinn, Harjumaa 12345",
   // };
-
+let smPoint =11
   return (
     <>
       <Button
@@ -103,23 +107,217 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <div className={classes.imgWrapper}>
-              {getUser?.profilePic && (
+              Profile
+              {/* {getUser?.profilePic && (
                 <NameAvatar
                   firstName={getUser?.firstName}
                   surName={getUser?.surName}
                   url={getUser?.profilePic || ""}
                   variant="large"
                 />
-              )}
+              )} */}
             </div>
-            <Clear onClick={handleToggle} className={classes.close} />
+            <CButton label="Close" variant="outlined" onClick={handleToggle} />
           </div>
         </DialogTitle>
-        <DialogContent className={classes.wrapper}>
-          <Grid container>
-            <Grid item 
-            xs={12}
-             className={classes.detailRow}>
+
+        <Divider sx={{ margin: "5px 0 15px 0" }} />
+        {/* <DialogContent className={classes.wrapper}> */}
+        <Grid
+          container
+          className={classes.wrapper}
+          justifyContent="center"
+          rowGap={3}
+        >
+          <Grid
+            item
+            container
+            className={classes.wrapper}
+            justifyContent="center"
+          >
+            <Grid item className={classes.imgWrapper} md={3}>
+              {/* {getUser?.profilePic && ( */}
+              {/* <Avatar
+                firstName={getUser?.firstName}
+                surName={getUser?.surName}
+                  className={classes.ProfileAvatar}
+                  url={getUser?.profilePic || ""}
+                variant="square"
+                sx={{ width: "100px", height: "100px" }}
+              /> */}
+              {/* <NameAvatar
+                  firstName={getUser?.firstName}
+                  surName={getUser?.surName}
+                  url={getUser?.profilePic || ""}
+                  variant="large"
+                /> */}
+              {getUser?.profilePic?  <Avatar alt="avater" src={getUser?.profilePic}  variant= "rounded"   sx={{ width: "100px", height: "100px" }}/>:
+               <Avatar variant= "rounded"   sx={{ width: "100px", height: "100px" }}>
+               {letters}
+             </Avatar>
+          }
+            </Grid>
+
+            <Grid item container flexDirection="column" md={9} sm={smPoint} rowGap={3}>
+              <Grid item sx={{ marginTop: "5px" }}>
+                <TextField
+                  outlined-read-only-input
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                  sx={{
+                    width: "100%",
+                    padding: "0 39px 0 0",
+                    marginLeft: "15px",
+                  }}
+                  id="outlined-basic"
+                  size="small"
+                  label="Name"
+                  variant="outlined"
+                  defaultValue={getUser.firstName??"N/A"}
+                />
+              </Grid>
+
+              <Grid item >
+                <TextField
+                  outlined-read-only-input
+                  // InputProps={{
+                  //   readOnly: true,
+                  // }}
+                  sx={{
+                    width: "100%",
+                    padding: "0 39px 0 0",
+                    marginLeft: "15px",
+                  }}
+                  id="outlined-basic"
+                  size="small"
+                  label="Surname"
+                  variant="outlined"
+                  defaultValue={getUser?.surName??"N/A"}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+
+          <Grid item sm={smPoint} lg={12} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="Email"
+              variant="outlined"
+              defaultValue={getUser?.email}
+            />
+          </Grid>
+          <Grid lg={12}sm={smPoint} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="Phone number"
+              variant="outlined"
+              defaultValue={getUser?.phone??"N/A"}
+            />
+          </Grid>
+          <Grid md={12} sm={smPoint} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="Company"
+              variant="outlined"
+              defaultValue={getUser?.companyName??"N/A"}
+            />
+          </Grid>
+          <Grid md={12} sm={smPoint} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="VAT"
+              variant="outlined"
+              defaultValue={getUser?.companyVat??"N/A"}
+            />
+          </Grid>
+          <Grid md={12} sm={smPoint} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="Location"
+              variant="outlined"
+              defaultValue={getUser?.companyLocation??"N/A"}
+            />
+          </Grid>
+          <Grid md={12} sm={smPoint} mr={3}>
+            <TextField
+              outlined-read-only-input
+              InputProps={{
+                readOnly: true,
+              }}
+              sx={{ width: "100%" }}
+              id="outlined-basic"
+              size="small"
+              label="Work contact number"
+              variant="outlined"
+              defaultValue={getUser?.companyPhone??"N/A"}
+            />
+          </Grid>
+
+          <Grid
+            item
+            container
+           gap={2}
+           justifyContent='flex-end'
+           pr={2.5}
+           pb={2.6}
+          >
+            <Button
+              className={classes.btn}
+              onClick={startRoom}
+              variant="contained"
+              size="medium"
+              color="primary"
+              sx={{textTransform:'capitalize'}}
+            >
+              Message
+            </Button>
+            <Button
+              className={classes.btn}
+              variant="contained"
+              size="medium"
+              color="primary"
+              onClick={openTaskModal}
+              sx={{textTransform:'capitalize'}}
+
+            >
+              Create task
+            </Button>
+          </Grid>
+        </Grid>
+
+        {/* <Grid container>
+            <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Name</Typography>
                 <Typography className={classes.value}>
@@ -133,9 +331,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item 
-            xs={12}
-             className={classes.detailRow}>
+            <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Email</Typography>
                 <Typography className={classes.value}>
@@ -145,9 +341,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item 
-            xs={12}
-             className={classes.detailRow}>
+            <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Contact</Typography>
                 <Typography className={classes.value}>
@@ -176,9 +370,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item 
-            xs={12}
-             className={classes.detailRow}>
+            <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>Location</Typography>
                 <Typography className={classes.value}>
@@ -186,9 +378,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 </Typography>
               </div>
             </Grid>
-            <Grid item 
-            xs={12} 
-            className={classes.detailRow}>
+            <Grid item xs={12} className={classes.detailRow}>
               <div>
                 <Typography className={classes.title}>
                   Company contact number
@@ -199,9 +389,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               </div>
             </Grid>
 
-            <Grid item 
-            xs={12} 
-            className={classes.btnWrapper}>
+            <Grid item xs={12} className={classes.btnWrapper}>
               {/* <IconButton
                 onClick={handleDelete}
                 aria-label="delete"
@@ -210,7 +398,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 color="primary"
               >
                 <Delete />
-              </IconButton> */}
+              </IconButton>
               <Button
                 className={classes.btn}
                 onClick={startRoom}
@@ -218,7 +406,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 size="medium"
                 color="primary"
               >
-                Start conversation
+                Message
               </Button>
               <Button
                 className={classes.btn}
@@ -229,9 +417,9 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               >
                 Create task
               </Button>
-            </Grid>
-          </Grid>
-        </DialogContent>
+           </Grid>
+          </Grid> */}
+        {/* </DialogContent> */}
       </Dialog>
     </>
   );
@@ -247,12 +435,22 @@ const useStyles = makeStyles({
     paddingTop: 2,
     alignItems: "center",
   },
+  ProfileAvatar: {
+    width: "200px",
+    height: "200px",
+  },
   wrapper: {
-    width: 390,
+    // border: "1px solid black",
+    overflowX: "hidden",
+    marginLeft: "20px",
+    width: "100%",
+    maxWidth: "450px",
   },
   imgWrapper: {
-    maxWidth: 80,
-    maxHeight: 80,
+    display: "flex",
+    flexDirection: "row",
+    // maxWidth: 80,
+    // maxHeight: 80,
   },
   img: {
     width: "100%",
@@ -264,16 +462,19 @@ const useStyles = makeStyles({
   btn: {
     fontSize: 12,
     fontWeight: "bold",
+    // textTransform: "capitalize",
     "@media (max-width:960px)": {
       width: "100%",
       marginTop: 10,
     },
   },
   btnWrapper: {
+    // textTransform: "capitalize",
     display: "flex",
     alignItems: "center",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
     padding: `25px 0px`,
+
     "@media (max-width:960px)": {
       flexDirection: "column",
       flexWrap: "wrap",

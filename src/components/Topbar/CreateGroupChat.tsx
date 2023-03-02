@@ -290,7 +290,7 @@ let localGroups:any= null
               {createChatLoading ? (
                 <Loading type="spin" color="white" height={24} width={24} />
               ) : (
-                "Start conversation"
+                "Message"
               )}
             </Button>
             <Button onClick={handleGroupClose}>Cancel</Button>

@@ -41,6 +41,7 @@ function TaskList() {
         </Box>
       ) : (
         <Grid
+          // sx={{ height: "270px", overflowY: "auto" }}
           className={classes.tasklistContainer}
           container
           item
@@ -99,6 +100,6 @@ const useStyles = makeStyles((theme) => ({
   },
   chatIcon: {
     fontSize: 50,
-    color: colors.lightBlack
+    color: colors.lightBlack,
   },
 }));

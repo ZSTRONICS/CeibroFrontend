@@ -155,7 +155,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                   )}
                 </Grid>
                 <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
-                  {!connection.email && (
+                  {!connection.email && connection.status !== "pending" && (
                     <>
                       {" "}
                       <Button
@@ -172,7 +172,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                           )
                         }
                       >
-                        Start conversation
+                        Message
                       </Button>
                       <Button
                         className={`${classes.btn} ${classes.centerBtn}`}
@@ -192,7 +192,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         className={`${classes.btn} ${classes.centerBtn}`}
                         variant="contained"
                         size={isTabletOrMobile ? "small" : "medium"}
-                        color="primary"
+                        style={{background: colors.btnGreen, color: "white"}}
                         onClick={() =>
                           handleResendInvite(
                             inviteId,
@@ -213,7 +213,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         className={`${classes.btn} ${classes.centerBtn}`}
                         variant="contained"
                         size={isTabletOrMobile ? "small" : "medium"}
-                        color="primary"
+                        style={{background: colors.btnRed, color: "white"}}
                       >
                         Revoke
                       </Button>

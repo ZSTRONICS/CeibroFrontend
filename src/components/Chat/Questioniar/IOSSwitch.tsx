@@ -12,7 +12,7 @@ export const IOSSwitch = styled((props: SwitchProps) => (
   padding: 0,
   "& .MuiSwitch-switchBase": {
     padding: 0,
-    margin: 2,
+    margin: 3.3,
     transitionDuration: "300ms",
     "&.Mui-checked": {
       transform: "translateX(16px)",
@@ -42,8 +42,8 @@ export const IOSSwitch = styled((props: SwitchProps) => (
   },
   "& .MuiSwitch-thumb": {
     boxSizing: "border-box",
-    width: 22,
-    height: 22,
+    width: 18,
+    height: 18,
   },
   "& .MuiSwitch-track": {
     borderRadius: 26 / 2,
@@ -72,7 +72,7 @@ export default function CustomizedSwitch(props: any) {
         />
       }
       label={
-        <Typography style={{ fontSize: "12px", fontWeight: "500" }}>
+        <Typography style={{ fontSize: "12px", fontWeight: "400" }}>
           {label}
         </Typography>
       }

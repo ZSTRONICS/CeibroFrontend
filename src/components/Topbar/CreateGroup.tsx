@@ -175,7 +175,7 @@ export default function CreateGroup() {
                             {createChatLoading ? (
                                 <Loading type="spin" color="white" height={24} width={24} />
                             ) : (
-                                "Start conversation"
+                                "Message"
                             )}
                         </Button>
                         <Button>Cancel</Button>

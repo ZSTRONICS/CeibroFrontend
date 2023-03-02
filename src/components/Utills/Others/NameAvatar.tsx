@@ -21,9 +21,9 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     <>
       <Box>
         {!url ?
-          <Avatar variant= "rounded" className={classes.MuiAvatarSquare}>
+          <Avatar variant= "rounded" className={classes.MuiAvatarSquare} >
             {letters}
-          </Avatar> : <Avatar alt="avater" src={url}  variant= "rounded"  />
+          </Avatar> : <Avatar alt="avater" src={url}  variant= "rounded" />
         }
       </Box>
     </>

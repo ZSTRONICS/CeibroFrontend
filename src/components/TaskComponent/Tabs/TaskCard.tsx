@@ -342,8 +342,8 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         <Box pt={0.87} pb={0.87}>
           <AssignedTag
             sx={{
-              fontSize: "16px",
-              fontWeight: "600",
+              fontSize: "14px",
+              fontWeight: "700",
               textTransform: "capitalize",
               overflow: "hidden",
               textOverflow: "ellipsis",

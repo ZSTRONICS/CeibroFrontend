@@ -5,29 +5,29 @@ import {
   IconButton,
   TextField,
   Tooltip,
-  Typography
+  Typography,
 } from "@mui/material";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import {
   AttachmentIcon,
   EyeIcon,
-  SendIcon
+  SendIcon,
 } from "components/material-ui/icons";
 import CustomModal from "components/Modal";
 import {
   CustomBadge,
-  CustomStack
+  CustomStack,
 } from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import {
   momentdeDateFormat,
-  momentTimeFormat
+  momentTimeFormat,
 } from "components/Utills/Globals/Common";
 import { DOCS_CONFIG } from "config/docs.config";
 import {
   RecentCommentsInterface,
-  SubtaskInterface
+  SubtaskInterface,
 } from "constants/interfaces/subtask.interface";
 import CDrawer from "Drawer/CDrawer";
 import { useState } from "react";
@@ -137,7 +137,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
         date: momentdeDateFormat(item.createdAt),
         time: momentTimeFormat(item.createdAt),
         userState: item.userState,
-        allFiles:item.files
+        allFiles: item.files,
       };
     });
 
@@ -181,6 +181,7 @@ export default function RecentComments({ subtaskDetail }: Props) {
           </Box>
         )}
       </Box>
+
       <CBox display="flex">
         <Grid item xs={12} md={12} className={classes.textAreaBox}>
           <TextField

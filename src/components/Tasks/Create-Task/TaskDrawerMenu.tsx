@@ -603,7 +603,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
             justifyContent="space-between"
             alignItems="center"
             width="100%"
-            p="12px 0px 7px 7px"
+            p="12px 0px 7px 0px"
           >
             <CBox fontSize={14} color="#000" fontWeight={600}>
               Attachments
@@ -744,9 +744,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           </Grid>
           <Grid item>
             <CButton
-            sx={{
-              padding:"8px 4px",
-            }}
+              sx={{
+                padding: "8px 4px",
+              }}
               styles={{
                 borderColor: "#9D9D9D",
                 fontSize: 12,
