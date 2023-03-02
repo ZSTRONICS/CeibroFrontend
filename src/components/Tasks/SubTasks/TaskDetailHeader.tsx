@@ -23,9 +23,9 @@ export default function TaskDetailHeader(props: any) {
   const classes = useStyles();
   const [showMore, setShowMore] = useState<boolean>(false);
   const { user } = useSelector((store: RootState) => store.auth);
-  let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
-    (state: RootState) => state.task.allSubTaskOfTask
-  );
+  // let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
+  //   (state: RootState) => state.task.allSubTaskOfTask
+  // );
   let membersList, myState, subtaskCreatedAt;
   try {
     membersList = props?.subtaskDetail?.assignedTo
@@ -41,6 +41,7 @@ export default function TaskDetailHeader(props: any) {
   } catch (e: any) {
     console.error(e);
   }
+
   return (
     <>
       <CBox display="flex" alignItems="center" justifyContent="space-between">
@@ -90,7 +91,7 @@ export default function TaskDetailHeader(props: any) {
         <Grid item md={4}>
           <Typography className={classes.heading}>Project</Typography>
           <Typography className={classes.description}>
-            {subTaskOfTask.task.project.title}
+            {props.subtaskDetail.taskData && props.subtaskDetail.taskData.project.title}
           </Typography>
           <Divider />
         </Grid>
@@ -101,7 +102,7 @@ export default function TaskDetailHeader(props: any) {
         <CBox className={classes.description}>
           {membersList.map((member: Member, i: any) => {
             if (member === undefined) {
-              return;
+              return <></>;
             }
             if (i === membersList.length - 1) {
               return (

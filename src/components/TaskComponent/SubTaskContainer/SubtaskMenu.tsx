@@ -136,7 +136,10 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     });
   }
 
-  if (subTaskDetail.taskData.admins.includes(String(user._id))) {
+  if (subTaskDetail.taskData && subTaskDetail.taskData.admins.includes(String(user._id))) {
+    if(subTaskDetail.taskData.admins === undefined || subTaskDetail.taskData.admins === null){
+      return <></>
+    }
     canEditDetails = true;
     state.every((localState: any) => {
       if (

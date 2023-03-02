@@ -1,7 +1,8 @@
 
 import React from "react";
 import PropTypes from "prop-types";
-import { Typography, makeStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import {makeStyles } from "@material-ui/core";
 import CButton from "components/Button/Button";
 import colors from "../../../../assets/colors";
 
@@ -10,7 +11,7 @@ interface Props {
   handleClose: () => void
 }
 
-const DrawerHeader = ({ title, handleClose }: Props) => {
+const DrawerHeader = ({ title, handleClose }: Props):any => {
   const classes = useStyles();
 
   const handleCloseDrawer = () => {
@@ -20,9 +21,9 @@ const DrawerHeader = ({ title, handleClose }: Props) => {
   return (
     <div className={classes.drawerHeader}>
       <div>
-        <Typography className={classes.headerTitle}>{title}</Typography>
+        <Typography sx={{fontSize:{sm:20,md:24},fontWeight:600}} className={classes.headerTitle}>{title}</Typography>
       </div>
-      <CButton label="Close" variant='outlined' onClick={handleCloseDrawer} />
+      <CButton sx={{padding:'6px 10px'}} label="Close" variant='outlined' onClick={handleCloseDrawer} />
     </div>
   );
 };
@@ -48,8 +49,6 @@ const useStyles = makeStyles({
   headerTitle: {
     textTransform: 'capitalize',
     fontStyle: "normal",
-    fontWeight: 600,
-    fontSize: 24,
   },
 
 });

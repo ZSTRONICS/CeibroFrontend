@@ -5,12 +5,12 @@ export default function CDrawer(props: any) {
   const classes = useStyles()
   return (
     <>
-      <Drawer anchor="right"
+      <Drawer {...props} anchor="right"
         className={`${props.showBoxShadow&&classes.outerWrapper}`}
         elevation={props.showBoxShadow&&0}
         hideBackdrop={props.hideBackDrop}
-        open={props.openCDrawer}
-        onClose={props.handleCloseCDrawer}
+        open={props.opencdrawer}
+        onClose={props.handleclosecdrawer}
       >
       {props.children}
       </Drawer>
@@ -19,8 +19,8 @@ export default function CDrawer(props: any) {
 }
 
 CDrawer.propTypes = {
-  handleCloseCDrawer: PropTypes.func,
-  openCDrawer: PropTypes.bool,
+  handleclosecdrawer: PropTypes.func,
+  opencdrawer: PropTypes.bool,
   children: PropTypes.any,
   showBoxShadow:PropTypes.bool,
   hideBackDrop:PropTypes.bool

@@ -17,22 +17,36 @@ const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
   const classes = useStyles();
   const {loadingSubTaskofTask} = useSelector((state: RootState) => state.task);
   
-  return (<>
+  return (
+    <>
       <div className={classes.subtaskWrapper}>
-        <SubTaskStatusDrawer task={task} subtasks={subtasks}/>
+        <SubTaskStatusDrawer task={task} subtasks={subtasks} />
       </div>
       <Grid container className={classes.body}>
-        {loadingSubTaskofTask? <Grid sx={{flex:1, textAlign:'center', mt:6}}> <CircularProgress/> </Grid> :
-        <>
-        {subtasks?.length > 0 ? (
-          <SubTaskList results={subtasks} />
-        ) : (<p style={{width: '100%',marginTop:'4rem',
-            textAlign: 'center'}}> No subtask found</p>
+        {loadingSubTaskofTask ? (
+          <Grid item sx={{ flex: 1, textAlign: "center", mt: 6 }}>
+            <CircularProgress />
+          </Grid>
+        ) : (
+          <>
+            {subtasks?.length > 0 ? (
+              <SubTaskList results={subtasks} />
+            ) : (
+              <p
+                style={{
+                  width: "100%",
+                  marginTop: "4rem",
+                  textAlign: "center",
+                }}
+              >
+                No subtask found
+              </p>
+            )}
+          </>
         )}
-        </>}
       </Grid>
     </>
- );
+  );
 };
 
 export default CreateTaskBody;

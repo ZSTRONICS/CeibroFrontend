@@ -31,7 +31,7 @@ import { theme } from "theme";
 
 interface Props {
   heading: string,
-  handleCloseCDrawer: () => void
+  handleclosecdrawer: () => void
   moduleName: string
   moduleId: string
 }
@@ -66,7 +66,7 @@ function ViewAllDocs(props: Props) {
             <CButton
               label={"Close"}
               variant="outlined"
-              onClick={props.handleCloseCDrawer}
+              onClick={props.handleclosecdrawer}
             />
           )}
         </CustomStack>
@@ -91,7 +91,7 @@ function ViewAllDocs(props: Props) {
         </ContentMain>
       </Container>
       {!tabOrMobileView && (
-        <Box onClick={props.handleCloseCDrawer}>
+        <Box onClick={props.handleclosecdrawer}>
           <CloseIcon />
         </Box>
       )}

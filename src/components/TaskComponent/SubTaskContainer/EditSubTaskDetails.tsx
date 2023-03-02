@@ -267,7 +267,7 @@ function EditSubTaskDetails(props: any) {
     e.stopPropagation();
     const payload = {
       body: {
-        taskId: selectedTaskId,
+        taskId: defaultValues.taskId,
         subTaskId: defaultValues._id,
         memberId: memberId,
       },
@@ -291,7 +291,7 @@ function EditSubTaskDetails(props: any) {
     e.stopPropagation();
     const payload = {
       body: {
-        taskId: selectedTaskId,
+        taskId: defaultValues.taskId,
         subTaskId: defaultValues._id,
         memberId: memberId,
       },
@@ -361,6 +361,7 @@ function EditSubTaskDetails(props: any) {
             />
           </Grid>
           <CButton
+            disabled={assignedTomembersIds.length>0?false:true}
             type="submit"
             label="Add"
             variant="contained"
