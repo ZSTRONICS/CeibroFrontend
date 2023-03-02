@@ -1,5 +1,5 @@
 import React from "react";
-import { Drawer } from "@material-ui/core";
+import { Backdrop, Drawer } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import TaskDetail from "./TaskDetail";
 import { TASK_CONFIG } from "config/task.config";
 import { RootState } from "redux/reducers";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
+import RecentCommentInput from "./RecentCommentInput";
 
 function TaskDetailDrawer() {
   const classes = useStyles();
@@ -49,6 +50,7 @@ function TaskDetailDrawer() {
 
   return (
     <div>
+      <Backdrop open={subTaskDetailDrawer} onClick={handleClose} />
       <Drawer
         onClose={handleClose}
         onMouseDown={handleMouseDown}
@@ -65,7 +67,8 @@ function TaskDetailDrawer() {
             title={subTaskOfTask?.task?.title}
             handleClose={handleClose}
           />
-          <Grid container>
+    
+          <Grid container sx={{height:"100%" , overflow:'auto',backgroundColor: '#F5F7F8',}}>
             {selectedSubtaskFroDetailView && selectedSubtaskFroDetailView ? (
               <Grid item md={12} sx={{ background: "white" }}>
                 <TaskDetail
@@ -78,6 +81,15 @@ function TaskDetailDrawer() {
             )}
           </Grid>
         </div>
+          <div className={classes.inputCommentWraper}>
+            {selectedSubtaskFroDetailView && selectedSubtaskFroDetailView ? (
+              <RecentCommentInput
+                subtaskDetail={selectedSubtaskFroDetailView}
+              />
+            ) : (
+              <></>
+            )}
+          </div>
       </Drawer>
     </div>
   );
@@ -91,7 +103,12 @@ const useStyles = makeStyles({
   // },
   subTaskDrawer: {
     "& .MuiDrawer-paper": {
-      width: "63%",
+      width: "65%",
+    backgroundColor: colors.lightGrey,
+
+      "@media(max-width:700px)": {
+        width: "100%",
+      }
     },
   },
   bodyWrapper: {
@@ -115,10 +132,18 @@ const useStyles = makeStyles({
       overflowX: "scroll",
     },
   },
+  inputCommentWraper:{
+    backgroundColor: colors.lightGrey,
+    padding:'10px 20px 13px 11px',
+
+  },
   outerWrapper: {
+    "& .MuiGrid-root":{
+      backgroundColor: colors.lightGrey,
+    },
     width: "100%",
     backgroundColor: colors.lightGrey,
-    height: "100vh",
+    // height: "calc(100vh - 215px)",
     overflow:"hidden",
   },
 });

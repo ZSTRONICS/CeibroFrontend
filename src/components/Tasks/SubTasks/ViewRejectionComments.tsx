@@ -47,11 +47,11 @@ const AttachmentPreview=(file:any)=>{
             <CButton
               label={"Close"}
               variant="outlined"
-              onClick={props.handleCloseCDrawer}
+              onClick={props.handleclosecdrawer}
             />
           )}
         </CustomStack>
-        <ContentMain>
+        <ContentMain className="custom-scrollbar">
           {cardData.length>0 ? 
             cardData.map((item: any) => {
             if(item === undefined){
@@ -86,18 +86,18 @@ const AttachmentPreview=(file:any)=>{
                     </CustomStack>
                   </Grid>
                 </Grid>
-                <Box sx={{ padding: "" }}>
-                  <CommentDescription>{item.message}</CommentDescription>
-                  <CustomStack >
+                <Box>
+                  <CommentDescription sx={{textAlign:'justify', padding:'5px 12px'}}>{item.message}</CommentDescription>
+                  <CustomStack flexWrap='wrap' rowGap={1.2}>
                      {item.allFiles.length>0?item.allFiles.map((file:any)=>{
-                      console.log('file==>' ,file);
                       if(file=== undefined){
-                        return
+                        return <></>
                       }
                       return (<>
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none' }}>
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none',margin:'0 10px' }}>
                       {AttachmentPreview(file)}
                         <FileName
+                          key={file._id}
                           sx={{ maxWidth: "100px", width: "100%", color: '#0076C8' }}
                           className="ellipsis"
                         >
@@ -118,7 +118,7 @@ const AttachmentPreview=(file:any)=>{
         </ContentMain>
       </Container>
       {!taborMobileView && (
-        <Box onClick={props.handleCloseCDrawer}>
+        <Box onClick={props.handleclosecdrawer}>
           <CloseIcon />
         </Box>
       )}

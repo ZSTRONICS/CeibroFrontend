@@ -4,41 +4,39 @@ import { styled } from "@mui/material/styles";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
 import { getColorByStatus } from "config/project.config";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import {
   AssignedTag,
   CustomBadge,
   CustomStack,
   LabelTag,
-  TaskStatus,
+  TaskStatus
 } from "../Tabs/TaskCard";
 
 import { InfoIcon } from "components/material-ui/icons";
+import CustomModal from "components/Modal";
+import { onlyUnique } from "components/Utills/Globals/Common";
+import { TASK_CONFIG } from "config/task.config";
 import {
   AssignedTo,
   Member,
-  SubtaskInterface,
+  SubtaskInterface
 } from "constants/interfaces/subtask.interface";
-import { useDispatch, useSelector } from "react-redux";
 import {
-  SubtaskState,
-  TaskInterface,
+  SubtaskState
 } from "constants/interfaces/task.interface";
-import { RootState } from "redux/reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import taskActions, {
   deleteSubtask,
   getAllSubTaskList,
   getAllSubTaskOfTask,
   patchSubTaskById,
-  taskSubtaskStateChange,
+  taskSubtaskStateChange
 } from "redux/action/task.action";
-import { TASK_CONFIG } from "config/task.config";
-import CustomModal from "components/Modal";
+import { RootState } from "redux/reducers";
 import StateChangeComment from "./StateChangeComment";
 import SubTaskMenu from "./SubtaskMenu";
-import { isTrue, onlyUnique } from "components/Utills/Globals/Common";
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { toast } from "react-toastify";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -46,7 +44,6 @@ interface Props {
 
 function SubTaskCard({ subTaskDetail }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { selectedTaskAdmins } = useSelector((store: RootState) => store.task);
 
   const {
     _id,
@@ -83,8 +80,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
 
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
-
-  // console.log('taskRights', taskRights);
 
   const subTaskDate = dueDate.replaceAll("-", ".").replace(",", "");
   let subtaskCreatedAt = new Date(String(createdAt))
@@ -326,6 +321,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
     let membersList: any[] = [];
 
     subTaskDetail.assignedTo[0].members.forEach((member: any) => {
+
       if (member._id === user._id) {
         adminState = "accepted";
         stateToPush.push({
@@ -341,10 +337,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
       membersList.push(member._id);
     });
 
-    selectedTaskAdmins.forEach((admin) => {
-      if (!membersList.includes(String(admin.id))) {
+    taskData.admins.forEach((admin) => {
+      // if(admin === undefined || admin === null){
+      //   return
+      // }
+      if (!membersList.includes(String(admin))) {
         stateToPush.push({
-          userId: admin.id,
+          userId: admin,
           userState: adminState,
         });
       }
@@ -599,12 +598,12 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         }
                         variant="outlined"
                         styles={{
-                          borderColor: "#0076C8",
+                          borderColor: "#55BCB3",
                           fontSize: 12,
                           fontWeight: "bold",
                           borderWidth: 1.5,
-                          color: "#0076C8",
-                          marginRight: 15,
+                          color: "#55BCB3",
+                          // marginRight: 15,
                         }}
                       />
                     )}
@@ -792,7 +791,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   taskDetailContainer: {
-    padding: "15px 10px 10px 20px",
+    padding: "15px 10px 15px 20px",
   },
 }));
 

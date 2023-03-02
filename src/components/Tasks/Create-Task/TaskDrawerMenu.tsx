@@ -44,7 +44,7 @@ interface Props {
 function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   const titleInputRef = useRef<any>(null);
   const descriptionInputRef = useRef<any>(null);
-  const [openCDrawer, setOpenCDrawer] = useState<boolean>(false);
+  const [opencdrawer, setOpenCDrawer] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -343,7 +343,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     e.stopPropagation();
     setOpenCDrawer((prev: boolean) => !prev);
   };
-  const handleCloseCDrawer = () => {
+  const handleclosecdrawer = () => {
     setOpenCDrawer((prev: boolean) => !prev);
   };
   const handleOpenCloseAttachmentModal = (e: any) => {
@@ -790,12 +790,12 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
       <CDrawer
         showBoxShadow={true}
         hideBackDrop={true}
-        openCDrawer={openCDrawer}
-        handleCloseCDrawer={handleCloseCDrawer}
+        opencdrawer={opencdrawer}
+        handleclosecdrawer={handleclosecdrawer}
         children={
           <ViewAllDocs
             heading="Attachments"
-            handleCloseCDrawer={handleCloseCDrawer}
+            handleclosecdrawer={handleclosecdrawer}
             moduleName={"Task"}
             moduleId={_id}
           />

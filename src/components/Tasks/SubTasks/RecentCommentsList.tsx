@@ -1,16 +1,14 @@
-import { Typography, Divider, makeStyles } from '@material-ui/core'
-import { IconButton, ListItemAvatar, Tooltip } from '@mui/material'
-import CButton from 'components/Button/Button'
+import { Divider, makeStyles, Typography } from '@material-ui/core'
+import { IconButton, Tooltip } from '@mui/material'
 import { CBox } from 'components/material-ui'
 import { AttachmentIcon } from 'components/material-ui/icons'
 import { CustomBadge, TaskStatus } from 'components/TaskComponent/Tabs/TaskCard'
-import FilePreviewer from 'components/Utills/ChatChip/FilePreviewer'
 import { momentdeDateFormat, momentTimeFormat } from 'components/Utills/Globals/Common'
 import { getColorByStatus } from 'config/project.config'
-import { FileInterface } from 'constants/interfaces/docs.interface'
 import { RecentCommentsInterface } from 'constants/interfaces/subtask.interface'
-import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
-import React, { Fragment } from 'react'
+import CDrawer from 'Drawer/CDrawer'
+import { useState } from 'react'
+import ViewRejectionComments from './ViewRejectionComments'
 
 interface Props {
     comment: RecentCommentsInterface
@@ -18,6 +16,8 @@ interface Props {
 
 export default function RecentCommentsList({ comment }: Props) {
     const classes = useStyles()
+    const [openViewAllCommentsDrawer, setOpenViewAllCommentsDrawer] =useState<boolean>(false);
+
     const commentDueDate = momentdeDateFormat(comment.createdAt)
     const commentTime = momentTimeFormat(comment.createdAt);
 
@@ -38,6 +38,18 @@ export default function RecentCommentsList({ comment }: Props) {
       );
     };
 
+    const commentCardData= [{
+          name: `${comment.sender.firstName} ${comment.sender.surName}`,
+          message: comment.message,
+          _id: comment._id,
+          date: momentdeDateFormat(comment.createdAt),
+          time: momentTimeFormat(comment.createdAt),
+          userState: comment.userState,
+          allFiles:comment.files
+    }]
+    const openCommentDrawer = () => {
+      setOpenViewAllCommentsDrawer((prev: boolean) => !prev);
+      };
 
     return (
       <>
@@ -56,8 +68,8 @@ export default function RecentCommentsList({ comment }: Props) {
             </TaskStatus>
             <Typography
               style={{
-                fontSize: "12px",
-                fontWeight: 600,
+                fontSize: "13px",
+                fontWeight: 700,
                 color: "#7D7E80",
                 paddingLeft: "14px",
               }}
@@ -66,7 +78,7 @@ export default function RecentCommentsList({ comment }: Props) {
             </Typography>
             &nbsp; &nbsp;
             <Typography
-              style={{ fontSize: "9px", fontWeight: 500, color: "#7D7E80" }}
+              style={{ fontSize: "12px", fontWeight: 500, color: "#7D7E80" }}
             >
               {commentDueDate}
             </Typography>
@@ -74,7 +86,7 @@ export default function RecentCommentsList({ comment }: Props) {
             <Divider orientation="vertical" style={{ height: 10, width: 2 }} />
             &nbsp; &nbsp;
             <Typography
-              style={{ fontSize: "9px", fontWeight: 500, color: "#7D7E80" }}
+              style={{ fontSize: "12px", fontWeight: 500, color: "#7D7E80" }}
             >
               {commentTime}
             </Typography>
@@ -83,15 +95,21 @@ export default function RecentCommentsList({ comment }: Props) {
               display="flex"
               alignItems="center"
               justifyContent="flex-end"
-              mt={0.85}
+              // mt={0.85}
               sx={{'& .MuiIconButton-root:hover':{backgroundColor:'none'}}}
             >
-              <IconButton disableRipple>
+              {/* <IconButton disableRipple onClick={openCommentDrawer}
+               sx={{'& .MuiBadge-anchorOriginTopRightRectangle':{right:'-5px'}, '& .MuiBadge-badge':{fontSize:'9px !important'}}}
+              > */}
+               <IconButton onClick={openCommentDrawer}>
+                  <AttachmentIcon />
+                </IconButton>
                 <CustomBadge
                   anchorOrigin={{
                     vertical: "top",
                     horizontal: "right",
                   }}
+                 overlap="circular"
                   color="primary"
                   badgeContent={
                     <Tooltip title={AttachmentsToolTip()}>
@@ -103,9 +121,9 @@ export default function RecentCommentsList({ comment }: Props) {
                     </Tooltip>
                   }
                 >
-                  < AttachFileOutlinedIcon sx={{fontSize: "1.3rem",rotate: "45deg"}} color="primary" />
+                  {/* < AttachFileOutlinedIcon sx={{fontSize: "1.2rem",rotate: "45deg"}} color="primary" /> */}
                 </CustomBadge>
-              </IconButton>
+              {/* </IconButton> */}
             </CBox>
           </CBox>
           <Typography className={classes.description}>
@@ -113,6 +131,19 @@ export default function RecentCommentsList({ comment }: Props) {
           </Typography>
           <Divider />
         </CBox>
+        <CDrawer
+        showBoxShadow={true}
+        hideBackDrop={true}
+        opencdrawer={openViewAllCommentsDrawer}
+        handleclosecdrawer={openCommentDrawer}
+        children={
+          <ViewRejectionComments
+            subTaskHeading="All Comments"
+            handleclosecdrawer={openCommentDrawer}
+            cardData={commentCardData}
+          />
+        }
+      />
       </>
     );
 }

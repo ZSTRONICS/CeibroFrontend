@@ -466,7 +466,7 @@ export const LabelTag = styled(Typography)`
 `;
 export const AssignedTag = styled(Typography)`
   font-weight: 500;
-  font-size: 12.5px;
+  font-size: 14px;
   color: #000000;
 `;
 

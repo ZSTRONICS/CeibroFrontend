@@ -1,7 +1,8 @@
 
 import React from "react";
 import { useDispatch } from "react-redux";
-import { Typography, Button, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Typography, Button } from "@mui/material";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
@@ -10,6 +11,8 @@ import { useMediaQuery } from "react-responsive";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 import CreateChat from "./CreateChat";
+import CButton from "components/Button/Button";
+import { TopBarTitle } from "components/CustomTags";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -41,21 +44,33 @@ const Title = () => {
       return (
         <>
           <div className={classes.projectTitle}>
-            <Typography
+          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          Project
+          </TopBarTitle>
+            {/* <Typography
               variant="h6"
               component="h6"
               className={classes.dashboardTitleText}
             >
               Project
-            </Typography>
-            <Button
-              onClick={openProjectDrawer}
-              size="small"
-              color="primary"
-              variant="contained"
-            >
-              Create new
-            </Button>
+            </Typography> */}
+            <CButton
+             onClick={openProjectDrawer}
+                  label='Create new'
+                  variant="contained"
+                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
+                  // styles={{
+                  //   borderColor: "#FA0808",
+                  //   // borderColor: "#55BCB3",
+                  //   fontSize: 12,
+                  //   fontWeight: "bold",
+                  //   borderWidth: 2,
+                  //   color: "#FA0808",
+                  //   // color: "#55BCB3",
+                  // }}
+                />
+            
+              
           </div>
         </>
       );
@@ -64,14 +79,17 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
-            <Typography
+            <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+            Task
+            </TopBarTitle>
+            {/* <Typography
               variant="h6"
               component="h6"
               className={classes.dashboardTitleText}
             >
               Task
-            </Typography>
-            <Button
+            </Typography> */}
+            {/* <Button
               onClick={openTaskModal}
               size="small"
               color="primary"
@@ -79,7 +97,13 @@ const Title = () => {
               style={{minWidth: '92px'}}
             >
               Create new
-            </Button>
+            </Button> */}
+            <CButton
+            onClick={openTaskModal}
+                  label='Create new'
+                  variant="contained"
+                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
+                />
           </div>
         </>
       );
@@ -88,13 +112,16 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-            <Typography
+          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          Dashboard
+          </TopBarTitle>
+            {/* <Typography
               variant="h6"
               className={classes.dashboardTitleText}
               component="h6"
             >
               Dashboard
-            </Typography>
+            </Typography> */}
             {/* {!isTabletOrMobile && 
                         <Button 
                             size="small" 
@@ -114,13 +141,16 @@ const Title = () => {
       return (
         <>
           <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
-            <Typography
+          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          Chat
+          </TopBarTitle>
+            {/* <Typography
               variant="h6"
               component="h6"
               className={classes.dashboardTitleText}
             >
               Chat
-            </Typography>
+            </Typography> */}
           </div>
           {!isTabletOrMobile && (
             <div
@@ -137,13 +167,16 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <Typography
+            <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:24, lg:30},fontWeight:500,paddingLeft:'10px'}}>
+            My Connections
+          </TopBarTitle>
+            {/* <Typography
               className={classes.profileTitle}
               variant="h6"
               component="h6"
             >
               My Connections
-            </Typography>
+            </Typography> */}
           </div>
         </>
       );
@@ -153,13 +186,16 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <Typography
+            <TopBarTitle sx={{fontSize:{xs:20,sm:20,md:30},fontWeight:500, paddingLeft:'10px'}}>
+            Profile
+          </TopBarTitle>
+            {/* <Typography
               className={classes.profileTitle}
               variant="h6"
               component="h6"
             >
               Profile
-            </Typography>
+            </Typography> */}
           </div>
         </>
       );
@@ -169,6 +205,9 @@ const Title = () => {
 };
 
 export default Title;
+
+
+
 
 const useStyles =  makeStyles((theme) => ({
   login: {

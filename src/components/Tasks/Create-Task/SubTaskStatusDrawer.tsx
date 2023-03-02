@@ -185,14 +185,12 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         </Paper>
       </div>
       <Grid
+        container
         className={classes.editSubTaskinputTypes}
         pl={2.2}
         pr={1.25}
-        container
         justifyContent="space-between"
         gap={1.5}
-        md={12}
-        
       >
         <Grid item container sm={8}  md={9} gap={2}>
           <Grid item md={5} xs={10}  sm={5}>

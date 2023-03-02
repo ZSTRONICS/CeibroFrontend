@@ -1,28 +1,20 @@
-import react, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import CButton from "components/Button/Button";
 import { CBox } from "components/material-ui";
-import { AttachmentIcon, EyeIcon } from "components/material-ui/icons/index";
-import { SubtaskInterface } from "constants/interfaces/subtask.interface";
-import TaskDetailHeader from "./TaskDetailHeader";
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import RecentComments from "./RecentComments";
+import { AttachmentIcon } from "components/material-ui/icons/index";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import {momentdeDateFormat,momentTimeFormat} from "components/Utills/Globals/Common";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import CDrawer from "Drawer/CDrawer";
-import ViewRejectionComments from "./ViewRejectionComments";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions, { getAllSubTaskRejection } from "redux/action/task.action";
-import {
-  isTrue,
-  momentdeDateFormat,
-  momentTimeFormat,
-} from "components/Utills/Globals/Common";
 import { RootState } from "redux/reducers";
+import RecentComments from "./RecentComments";
+import TaskDetailHeader from "./TaskDetailHeader";
 import ViewAllDocs from "./ViewAllDocs";
-import {
-  RejectedComment,
-  RejectionComment,
-} from "constants/interfaces/rejectionComments.interface";
+import ViewRejectionComments from "./ViewRejectionComments";
 
 interface Props {
   subtaskDetail: SubtaskInterface;
@@ -30,7 +22,7 @@ interface Props {
 }
 export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
   const classes = useStyles();
-  const [openCDrawer, setOpenCDrawer] = useState<boolean>(false);
+  const [opencdrawer, setOpenCDrawer] = useState<boolean>(false);
   const [openRejectionDrawer, setOpenRejectionDrawer] =
     useState<boolean>(false);
   const dispatch = useDispatch();
@@ -47,7 +39,6 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
       date: momentdeDateFormat(item.createdAt),
       time: momentTimeFormat(item.createdAt),
       allFiles:[]
-      
     };
   });
 
@@ -105,19 +96,18 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
               />
             </CBox>
           </CustomStack>
-
-          <RecentComments subtaskDetail={subtaskDetail} />
+          <RecentComments/>
         </CBox>
       </div>
       <CDrawer
         showBoxShadow={true}
         hideBackDrop={true}
-        openCDrawer={openRejectionDrawer}
-        handleCloseCDrawer={handleCloseRejectionDrawer}
+        opencdrawer={openRejectionDrawer}
+        handleclosecdrawer={handleCloseRejectionDrawer}
         children={
           <ViewRejectionComments
             subTaskHeading="Subtask Rejection"
-            handleCloseCDrawer={handleCloseRejectionDrawer}
+            handleclosecdrawer={handleCloseRejectionDrawer}
             cardData={viewRejection}
           />
         }
@@ -125,12 +115,12 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
       <CDrawer
         showBoxShadow={true}
         hideBackDrop={true}
-        openCDrawer={openCDrawer}
-        handleCloseCDrawer={handleAttachmentDrawer}
+        opencdrawer={opencdrawer}
+        handleclosecdrawer={handleAttachmentDrawer}
         children={
           <ViewAllDocs
             heading="Attachments"
-            handleCloseCDrawer={handleAttachmentDrawer}
+            handleclosecdrawer={handleAttachmentDrawer}
             moduleName={"SubTask"}
             moduleId={subtaskDetail._id}
           />
@@ -141,8 +131,8 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
 }
 const useStyles = makeStyles({
   wrapper: {
-    overflow: "scroll !important",
-    height: "100vh",
+    height: "calc(100vh - 237px)",
+    overflow: "auto",
     padding: "10px 15px",
     backgroundColor: "#F5F7F8",
   },
