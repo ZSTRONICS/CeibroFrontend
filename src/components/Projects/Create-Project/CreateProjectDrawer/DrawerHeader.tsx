@@ -21,7 +21,7 @@ const DrawerHeader = ({ title, handleClose }: Props):any => {
   return (
     <div className={classes.drawerHeader}>
       <div>
-        <Typography sx={{fontSize:{sm:20,md:24},fontWeight:600}} className={classes.headerTitle}>{title}</Typography>
+        <Typography sx={{fontSize:{sm:20,md:24,lg:30},fontWeight:500}} className={classes.headerTitle}>{title}</Typography>
       </div>
       <CButton sx={{padding:'6px 10px'}} label="Close" variant='outlined' onClick={handleCloseDrawer} />
     </div>

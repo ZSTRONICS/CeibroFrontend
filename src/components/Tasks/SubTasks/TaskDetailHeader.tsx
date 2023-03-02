@@ -58,38 +58,38 @@ export default function TaskDetailHeader(props: any) {
           >
             {myState?.userState}
           </TaskStatus>
-          <LabelTag sx={{ fontSize: "10px" }}>Due date</LabelTag>
-          <AssignedTag sx={{ fontSize: "11px" }}>
+          <LabelTag sx={{ fontSize: "12px" }}>Due date</LabelTag>
+          <AssignedTag sx={{ fontSize: "12px" }}>
             {props?.subtaskDetail?.dueDate
               ?.replaceAll("-", ".")
               .replace(",", "")}
           </AssignedTag>
           <Divider orientation="vertical" style={{ height: 10, width: 2 }} />
           <CustomStack gap={0.8}>
-            <LabelTag sx={{ fontSize: "10px" }}>Created on</LabelTag>
-            <AssignedTag sx={{ fontSize: "11px" }}>
+            <LabelTag sx={{ fontSize: "12px" }}>Created on</LabelTag>
+            <AssignedTag sx={{ fontSize: "12px" }}>
               {subtaskCreatedAt}
             </AssignedTag>
           </CustomStack>
         </CustomStack>
       </CBox>
       <CBox mt={1.5}>
-        <Typography className={classes.heading}>Title</Typography>
+      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Title</LabelTag>
         <Typography className={classes.description}>
           {props?.subtaskDetail?.title}
         </Typography>
         <Divider />
       </CBox>
-      <Grid container mt={1.5} gap={5}>
+      <Grid container mt={1.5} gap={8}>
         <Grid item md={4}>
-          <Typography className={classes.heading}>Creator</Typography>
+        <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Creator</LabelTag>
           <Typography
             className={classes.description}
           >{`${props?.subtaskDetail?.creator?.firstName} ${props?.subtaskDetail?.creator?.surName}`}</Typography>
           <Divider />
         </Grid>
         <Grid item md={4}>
-          <Typography className={classes.heading}>Project</Typography>
+        <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Project</LabelTag>
           <Typography className={classes.description}>
             {props.subtaskDetail.taskData && props.subtaskDetail.taskData.project.title}
           </Typography>
@@ -98,7 +98,7 @@ export default function TaskDetailHeader(props: any) {
       </Grid>
 
       <CBox mt={1.5}>
-        <Typography className={classes.heading}>Assign to</Typography>
+      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Assign to</LabelTag>
         <CBox className={classes.description}>
           {membersList.map((member: Member, i: any) => {
             if (member === undefined) {
@@ -122,7 +122,7 @@ export default function TaskDetailHeader(props: any) {
         <Divider />
       </CBox>
       <CBox mt={1.5}>
-        <Typography className={classes.heading}> Description </Typography>
+      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Description</LabelTag>
         <Typography className={classes.description}>
           {showMore
             ? props.subtaskDetail.description
@@ -156,8 +156,8 @@ const useStyles = makeStyles({
   },
   description: {
     display: "flex",
-    fontSize: "12px",
-    fontWeight: 600,
+    fontSize: "14px",
+    fontWeight: 500,
     color: "#000000",
     marginBottom: 5,
   },

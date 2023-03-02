@@ -28,10 +28,9 @@ export default function RecentComments() {
         className="custom-scrollbar"
         id={"RecentComments"}
         sx={{
-          overflow: "auto",
-          height: "30vh",
-          display: " block",
-          position: "relative",
+          maxHeight: '350px',
+          overflow: 'auto',
+          height: '100%'
         }}
       >
         {/* {!isEmpty && recentComments.map((comment: any) => (<RecentCommentsList comment={comment} />))} */}

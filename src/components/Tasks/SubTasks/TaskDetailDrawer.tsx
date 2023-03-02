@@ -67,7 +67,8 @@ function TaskDetailDrawer() {
             title={subTaskOfTask?.task?.title}
             handleClose={handleClose}
           />
-          <Grid container sx={{height:"100%" , overflow:'auto'}}>
+    
+          <Grid container sx={{height:"100%" , overflow:'auto',backgroundColor: '#F5F7F8',}}>
             {selectedSubtaskFroDetailView && selectedSubtaskFroDetailView ? (
               <Grid item md={12} sx={{ background: "white" }}>
                 <TaskDetail
@@ -103,6 +104,8 @@ const useStyles = makeStyles({
   subTaskDrawer: {
     "& .MuiDrawer-paper": {
       width: "65%",
+    backgroundColor: colors.lightGrey,
+
       "@media(max-width:700px)": {
         width: "100%",
       }
@@ -135,9 +138,12 @@ const useStyles = makeStyles({
 
   },
   outerWrapper: {
+    "& .MuiGrid-root":{
+      backgroundColor: colors.lightGrey,
+    },
     width: "100%",
     backgroundColor: colors.lightGrey,
-    height: "100vh",
+    // height: "calc(100vh - 215px)",
     overflow:"hidden",
   },
 });

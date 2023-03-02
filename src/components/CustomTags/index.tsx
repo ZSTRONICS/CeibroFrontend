@@ -59,3 +59,9 @@ export const CLink=styled('a')`
 font-family: 'Inter';
 font-style: normal;
 `
+export const TopBarTitle=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 30px;
+font-weight: 500;
+`

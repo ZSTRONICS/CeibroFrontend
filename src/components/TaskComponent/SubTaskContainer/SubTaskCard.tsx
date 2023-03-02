@@ -598,12 +598,12 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         }
                         variant="outlined"
                         styles={{
-                          borderColor: "#0076C8",
+                          borderColor: "#55BCB3",
                           fontSize: 12,
                           fontWeight: "bold",
                           borderWidth: 1.5,
-                          color: "#0076C8",
-                          marginRight: 15,
+                          color: "#55BCB3",
+                          // marginRight: 15,
                         }}
                       />
                     )}
@@ -791,7 +791,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   taskDetailContainer: {
-    padding: "15px 10px 10px 20px",
+    padding: "15px 10px 15px 20px",
   },
 }));
 
