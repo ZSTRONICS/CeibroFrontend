@@ -28,6 +28,7 @@ import colors from "../../assets/colors";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import Divider from "@mui/material/Divider";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -350,11 +351,18 @@ const ProfileForm = () => {
                       </Typography>
                     )}
                   </Grid>
-
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <hr className={classes.break} />
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.rowWrapper}
+                    // sx ={{ padding: "20px 0px" }}
+                  >
+                    <Divider
+                      sx={{
+                        width: "100%",
+                      }}
+                    />
                   </Grid>
-
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
                       className={classes.inputBg}
@@ -510,7 +518,15 @@ const ProfileForm = () => {
                     </FormGroup>
                   </Grid> */}
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
+                  <Grid
+                    item
+                    xs={12}
+                    className={`${classes.rowWrapper} ${classes.btnWrapper}`}
+                    // sx={{
+                    //   marginTop: "25px",
+                    //   gap: "30px",
+                    // }}
+                  >
                     <Button
                       variant="contained"
                       color="primary"
@@ -556,10 +572,13 @@ const useStyles = makeStyles({
   mainContainer: {
     paddingTop: "10px",
   },
+  btnWrapper: {
+    gap: "30px",
+    marginTop: "30px",
+  },
   rowWrapper: {
     display: "flex",
     justifyContent: "flex-end",
-    gap: "20px",
     padding: "10px 20px",
   },
   delete: {
@@ -572,7 +591,7 @@ const useStyles = makeStyles({
   },
   break: {
     border: 0,
-    borderTop: `1px solid ${colors.lightBlack}`,
+    borderTop: `1px solid ${colors.white}`,
   },
   imageWrapper: {},
   userImage: {

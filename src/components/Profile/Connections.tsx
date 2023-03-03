@@ -63,7 +63,6 @@ export default Connections;
 
 const useStyles = makeStyles({
   connectionsContainer: {
-    border: "1px solid red",
     borderTop: `1px solid ${colors.lightGrey}`,
     background: colors.white,
     padding: "10px 15px",

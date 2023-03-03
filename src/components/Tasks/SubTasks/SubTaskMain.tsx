@@ -28,12 +28,18 @@ const SubTaskMain = () => {
       <Box
       // sx={{ flexGrow: 1, maxHeight: "100%" }}
       >
-        <Grid
-          container
-          spacing={0.5}
-          className={classes.TaskWraper}
-          rowGap={0.5}
-        >
+        <Grid container spacing={1} className={classes.TaskWraper} rowGap={1}>
+          <Grid
+            item
+            sx={{
+              height: "38px",
+              width: "100%",
+              maxWidth: "280px",
+            }}
+            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+          >
+            <DatePicker Datetitle="Date" />
+          </Grid>
           <Grid
             item
             sx={{
@@ -41,17 +47,16 @@ const SubTaskMain = () => {
               width: "100%",
               maxWidth: "350px",
             }}
-            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
           >
-            <DatePicker Datetitle="Date" />
-          </Grid>
-          <Grid item>
             <SelectDropdown title="Assigned to" />
           </Grid>
           <Grid
             item
-            sx={{ width: "100%", maxWidth: "350px", height: "38px" }}
-            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
+            sx={{
+              height: "38px",
+              width: "100%",
+              maxWidth: "350px",
+            }}
           >
             <SelectDropdown title="Projects" />
           </Grid>

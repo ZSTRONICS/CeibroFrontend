@@ -361,7 +361,7 @@ function EditSubTaskDetails(props: any) {
             />
           </Grid>
           <CButton
-            disabled={assignedTomembersIds.length>0?false:true}
+            disabled={assignedTomembersIds.length > 0 ? false : true}
             type="submit"
             label="Add"
             variant="contained"
@@ -495,6 +495,8 @@ function EditSubTaskDetails(props: any) {
                           <>
                             <SubTaskStateTag
                               sx={{
+                                display: "flex",
+                                justifyContent: "center",
                                 background: `${getColorByStatus(userState)}`,
                               }}
                             >
