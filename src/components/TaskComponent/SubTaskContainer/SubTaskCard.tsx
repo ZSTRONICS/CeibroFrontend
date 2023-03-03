@@ -57,6 +57,8 @@ function SubTaskCard({ subTaskDetail }: Props) {
     createdAt,
     rejectedBy,
     taskData,
+    unSeenCommentsCount,
+    attachmentsCount
   } = subTaskDetail;
   const classes = useStyles();
   const membersList = assignedTo
@@ -490,7 +492,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           strokeLinecap="round"
                         />
                       </svg>
-                      <Typography>0</Typography>
+                      <Typography sx={{fontSize:'12px', fontWeight:'500'}}>{attachmentsCount}</Typography>
                     </CustomStack>
 
                     <CustomStack columnGap={0.8} sx={{ width: "49px" }}>
@@ -506,7 +508,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           fill="#FA0808"
                         />
                       </svg>
-                      <Typography>0</Typography>
+                       <Typography sx={{fontSize:'12px', fontWeight:'500', color:'#FA0808'}}>{unSeenCommentsCount}</Typography>
                     </CustomStack>
                     {taskRights && (
                       <CBox display="flex">
