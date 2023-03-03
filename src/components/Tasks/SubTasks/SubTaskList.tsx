@@ -23,12 +23,35 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
       setDoOnce(false);
     }
   };
+
+  let getTaskSubTaskFilterByState = useSelector(
+    (state: RootState) => state.task.getTaskSubTaskFilterByState
+  );
+
+  let filterSubTask: SubtaskInterface | any = [];
+  results.forEach((subtask: any) => {
+    subtask.state.every((state: any) => {
+      if (
+        state.userId === user._id &&
+        state.userState === getTaskSubTaskFilterByState
+      ) {
+        filterSubTask.push(subtask);
+        return false;
+      }
+      return true;
+    });
+  });
+
+  if (getTaskSubTaskFilterByState === "all") {
+    filterSubTask = [...results];
+  }
+
   return (
     <>
-      {results.length > 0 ? (
+      {filterSubTask.length > 0 ? (
         <CBox className={classes.cardListContainer}>
-          {results &&
-            results.map((subTaskDetail: SubtaskInterface, index:any) => {
+          {filterSubTask &&
+            filterSubTask.map((subTaskDetail: SubtaskInterface, index:any) => {
               if (subTaskDetail === undefined) {
                 return <></>;
               }

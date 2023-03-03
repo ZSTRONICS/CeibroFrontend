@@ -20,9 +20,13 @@ import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { deleteSubtask, patchSubTaskById } from "redux/action/task.action";
+import { deleteSubtask, getAllSubTaskList, getAllSubTaskOfTask, patchSubTaskById } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import EditSubTaskDetails from "./EditSubTaskDetails";
+import { useConfirm } from "material-ui-confirm";
+import { CustomStack } from "../Tabs/TaskCard";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import CButton from "components/Button/Button";
 
 interface Props {
   subTaskDetail: SubtaskInterface;
@@ -30,6 +34,7 @@ interface Props {
 
 const SubTaskMenu = ({ subTaskDetail }: Props) => {
   const dispatch = useDispatch();
+  const confirm = useConfirm();
   // let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
   //   (state: RootState) => state.task.allSubTaskOfTask
   // );
@@ -123,9 +128,9 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     state.every((localState: any) => {
       if (
         localState.userState === "assigned" ||
-        localState.userState === "accepted" ||
-        localState.userState === "draft" ||
-        localState.userState === "rejected"
+        // localState.userState === "accepted" ||
+        localState.userState === "draft"
+        // localState.userState === "rejected"
       ) {
         canDelete = true;
         return true;
@@ -211,20 +216,66 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     setOpenEditModal((show) => !show);
   };
 
+  // const handleDeleteSubTask = (e: any) => {
+  //   e.stopPropagation();
+  //   setAnchorElMember(null);
+  //   dispatch(
+  //     deleteSubtask({
+  //       other: subTaskDetail._id,
+  //       success: (res: any) => {
+  //         if (res.status === 200) {
+  //           setAnchorElMember(null);
+  //         }
+  //         toast.success("Subtask deleted");
+  //       },
+  //     })
+  //   );
+  // };
+
   const handleDeleteSubTask = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
+    confirm({
+      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+      description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this subtask ?</Typography>,
+      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
+      confirmationText:"Delete",
+      confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
+      cancellationText: <CButton
+      variant="contained"
+      elevation={0}
+      styles={{
+        color: "#605C5C",
+        backgroundColor: "#ECF0F1",
+        fontSize: 12,
+        fontWeight: "bold",
+      }}
+      label={"Cancel"}
+    />,
+      
+    }).then(() => {
+
     dispatch(
       deleteSubtask({
         other: subTaskDetail._id,
         success: (res: any) => {
           if (res.status === 200) {
             setAnchorElMember(null);
+            dispatch(
+              getAllSubTaskOfTask({
+                other: {
+                  taskId: subTaskDetail.taskId,
+                },
+              })
+            );
+            dispatch(getAllSubTaskList());
           }
           toast.success("Subtask deleted");
         },
       })
     );
+
+    });
   };
 
   // const handleEditSubTaskInAssigned = (e: any) => {
