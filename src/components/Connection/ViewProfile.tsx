@@ -6,6 +6,7 @@ import {
   Divider,
   Grid,
   TextField,
+  Typography,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -96,6 +97,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     <>
       <Button
         sx={{
+          padding:'4px 10px',
           textTransform: "capitalize",
           "@media(max-width:960px)": {
             marginTop: "10px",
@@ -115,7 +117,10 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         <DialogTitle>
           <div className={classes.titleWrapper}>
             <div className={classes.imgWrapper}>
-              Profile
+              <Typography sx={{fontSize:'20px', fontWeight:'600'}}>
+                Profile
+              </Typography>
+               
               {/* {getUser?.profilePic && (
                 <NameAvatar
                   firstName={getUser?.firstName}
@@ -125,7 +130,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
                 />
               )} */}
             </div>
-            <CButton label="Close" variant="outlined" onClick={handleToggle} />
+            <CButton label="Close" variant="outlined" sx={{padding:'1px 10px'}} onClick={handleToggle} />
           </div>
         </DialogTitle>
 
@@ -206,9 +211,9 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               <Grid item>
                 <TextField
                   outlined-read-only-input
-                  // InputProps={{
-                  //   readOnly: true,
-                  // }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                   sx={{
                     width: "100%",
                     padding: "0 39px 0 0",

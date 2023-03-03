@@ -477,8 +477,8 @@ function EditSubTaskDetails(props: any) {
                             <assets.CheckCircleIcon
                               sx={{
                                 color: "#55BCB3",
-                                fontSize: "28px",
-                                marginRight: "25px",
+                                fontSize: "30px",
+                                marginRight: "18px",
                               }}
                             />
                           )}

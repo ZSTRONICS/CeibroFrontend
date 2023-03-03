@@ -24,6 +24,7 @@ import { UserInterface } from "constants/interfaces/user.interface";
 import { createSingleRoom } from "../../redux/action/chat.action";
 import { useHistory } from "react-router-dom";
 import taskActions from "redux/action/task.action";
+import { toast } from "react-toastify";
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
@@ -63,15 +64,29 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     isEmailInvite: boolean,
     email: string
   ) => {
-    const payload = { body: { inviteId, isEmailInvite, email } };
+    const payload = { body: { inviteId, isEmailInvite, email },    success: (res: any) => {
+      toast.success('Invite resent successfully')
+    } };
     dispatch(resendInvites(payload));
-    // dispatch(resendInvites(payload))
+    const payload2 = {
+      success: (res: any) => {
+
+        setConnection(res?.data?.myConnections);
+      }
+    };
+    dispatch(getMyConnections(payload2))
   };
 
   const handleReInvokeInvite = (inviteId: string, isEmailInvite: boolean) => {
     const payload = { body: { inviteId, isEmailInvite } };
     dispatch(revokeInvites(payload));
-    // dispatch(getMyConnections())
+    const payload2 = {
+      success: (res: any) => {
+        toast.success('Invite revoked successfully')
+        setConnection(res?.data?.myConnections);
+      }
+    };
+    dispatch(getMyConnections(payload2))
   };
 
   return (

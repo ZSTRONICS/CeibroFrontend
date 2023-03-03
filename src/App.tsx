@@ -56,7 +56,11 @@ import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
 import docsAction from "redux/action/docs.actions";
 import { useLocation } from "react-router-dom";
-import { uploadDocs } from "redux/action/task.action";
+import {
+  getAllSubTaskList,
+  getAllSubTaskOfTask,
+  uploadDocs,
+} from "redux/action/task.action";
 
 interface MyApp {}
 
@@ -168,10 +172,28 @@ const App: React.FC<MyApp> = () => {
         //timeout: 4000,
         // multiplex: false,
         // forceNew: true,
-        query: {
+        auth: {
           token: myToken,
         },
       });
+
+      // Listen for connect event
+      sock.on("connect", () => {
+        console.log("Connected to server");
+      });
+
+      // Listen for disconnect event
+      sock.on("disconnect", (reason: string) => {
+        console.log(`Disconnected from server: ${reason}`);
+        // Attempt to reconnect to the server
+        sock.io.opts.reconnectionAttempts = 10;
+        sock.io.opts.reconnectionDelay = 1000;
+      });
+      // Listen for reconnect event
+      sock.on("reconnect", (attemptNumber: number) => {
+        console.log(`Reconnected to server after ${attemptNumber} attempts`);
+      });
+
       socket.setSocket(sock);
 
       // sock.on("reconnect", (attempt) => {
@@ -342,6 +364,26 @@ const App: React.FC<MyApp> = () => {
             });
             break;
 
+          case TASK_CONFIG.REFRESH_TASK:
+            dispatch({
+              type: TASK_CONFIG.GET_TASK,
+              payload: data,
+            });
+            break;
+
+          case TASK_CONFIG.REFRESH_TASK_SUB_TASK:
+            dispatch(
+              getAllSubTaskOfTask({
+                other: {
+                  taskId: data.taskId,
+                },
+              })
+            );
+            break;
+
+          case TASK_CONFIG.REFRESH_SUB_TASK:
+            dispatch(getAllSubTaskList());
+            break;
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE:
             if (!data.access.includes(String(user._id))) {

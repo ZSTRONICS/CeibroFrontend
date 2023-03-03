@@ -37,7 +37,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
   // const [showDate, setShowDate]= useState<any>()
   const { user } = useSelector((store: RootState) => store?.auth);
 
-  const isCreator = task.creator._id === user?._id;
+  const isCreator = task.creator&&task.creator._id === user?._id;
   const isAdmin = isTrue(task.admins, user?._id);
 
   const handleSubmit = (values: any) => {

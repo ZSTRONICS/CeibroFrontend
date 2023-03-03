@@ -169,7 +169,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
           return{
             ...state,
             getTaskSubTaskFilterByState: action.payload,
-          }  
+          }
         case TASK_CONFIG.PUSH_SUB_TASK_TO_STORE:
             const taskId = action.payload.taskId
 

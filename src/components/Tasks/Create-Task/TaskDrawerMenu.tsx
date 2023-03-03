@@ -65,7 +65,11 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   } = taskMenue;
   let { isEditable } = taskMenue;
   isEditable = useSelector((state: RootState) => state.task.isEditing);
+  // const {taskDrawerOpen} = useSelector((state: RootState) => state.task);
 
+  // if(taskDrawerOpen===true && admins.length===){
+
+  // }
   // React.useEffect(() => {
   //   dispatch(docsAction.getDocsByModuleNameAndId({
   //     other: {
@@ -83,7 +87,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
 
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const adminIds = admins.map((item: UserInfo) => item._id);
+  const adminIds = admins&& admins.length>0?admins.map((item: UserInfo) => item._id):[];
   const allMembers = [creator._id, ...adminIds];
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
@@ -691,8 +695,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               styles={{
                 borderColor: "#0076C8",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1,
                 color: "white",
                 marginRight: 15,
                 textTransform: "capitalize",
@@ -707,8 +711,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               styles={{
                 borderColor: "#FA0808",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1,
                 color: "#FA0808",
               }}
             />
@@ -731,8 +735,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               styles={{
                 borderColor: "#0076C8",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1,
                 color: "white",
                 marginRight: 15,
                 textTransform: "capitalize",
@@ -747,8 +751,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               styles={{
                 borderColor: "#0076C8",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1,
                 color: "white",
                 marginRight: 15,
                 textTransform: "capitalize",
@@ -758,7 +762,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         </Grid>
       )}
 
-      {state === State.New && showUpdateBtn && (
+      { showUpdateBtn && (
         <Grid
           container
           justifyContent="flex-end"
@@ -775,8 +779,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               styles={{
                 borderColor: "#0076C8",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1,
                 color: "white",
                 marginRight: 15,
                 textTransform: "capitalize",
@@ -786,13 +790,13 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           <Grid item>
             <CButton
               sx={{
-                padding: "8px 4px",
+                padding: "7px 4px",
               }}
               styles={{
                 borderColor: "#9D9D9D",
                 fontSize: 12,
-                fontWeight: "bold",
-                borderWidth: 2,
+                fontWeight: "500",
+                borderWidth: 1.5,
                 color: "#9D9D9D",
                 marginRight: 15,
                 textTransform: "capitalize",

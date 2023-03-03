@@ -22,17 +22,23 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import taskActions, { deleteTask, getAllSubTaskOfTask } from "redux/action/task.action";
+import taskActions, {
+  deleteTask,
+  getAllSubTaskOfTask,
+} from "redux/action/task.action";
 import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
 import { RootState } from "redux/reducers";
-import { momentdeDateFormat, onlyUnique } from "components/Utills/Globals/Common";
+import {
+  momentdeDateFormat,
+  onlyUnique,
+} from "components/Utills/Globals/Common";
 import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
 import CButton from "components/Button/Button";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
@@ -45,7 +51,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   );
   const confirm = useConfirm();
 
-  const taskCreatedOn =momentdeDateFormat(createdAt)
+  const taskCreatedOn = momentdeDateFormat(createdAt);
 
   const dueDate = task.dueDate.replaceAll("-", ".").replace(",", "");
   const classes = useStyles();
@@ -94,28 +100,43 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     setAnchorElUser(null);
     handleCard(e, true);
   };
-  
+
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
     setAnchorElUser(null);
-      confirm({
-        title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-        description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this task?</Typography>,
-        titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-        confirmationText:"Delete",
-        confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
-        cancellationText: <CButton
-        variant="contained"
-        elevation={0}
-        styles={{
-          color: "#605C5C",
-          backgroundColor: "#ECF0F1",
-          fontSize: 12,
-          fontWeight: "bold",
-        }}
-        label={"Cancel"}
-      />,
-      
+    confirm({
+      title: (
+        <CustomStack gap={1}>
+          <ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <Typography
+          sx={{ color: "#605C5C", fontSize: 13, fontWeight: "500", pt: 2 }}
+        >
+          Are you sure you want to delete this task?
+        </Typography>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Delete",
+      confirmationButtonProps: {
+        sx: { textTransform: "capitalize" },
+        variant: "outlined",
+        color: "error",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={0}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       dispatch(
         deleteTask({
@@ -194,10 +215,10 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 anchorEl={anchorElUser}
                 onClose={closePopup}
                 sx={{ "& .MuiMenuList-padding": { padding: 0 } }}
-                elevation={5}
+                elevation={3}
                 anchorOrigin={{
                   vertical: "bottom",
-                  horizontal: "right",
+                  horizontal: "center",
                 }}
                 transformOrigin={{
                   vertical: "top",
@@ -207,6 +228,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 <MenuItem
                   // dense={true}
                   disableRipple
+                  disableGutters
                   aria-describedby={id}
                   onClick={handleEdit}
                   divider={deleteOnlyCreator}
@@ -224,28 +246,35 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                     Edit
                   </CustomButton>
                 </MenuItem>
-                {deleteOnlyCreator&& task.state=== State.Draft && (
-                  <MenuItem
-                    disableRipple
-                    onClick={handleDeleteTask}
-                    aria-describedby={id}
-                    // sx={{
-                    //   "&.MuiMenuItem-root": {
-                    //     padding: "4px 10px",
-                    //   },
-                    // }}
-                  >
-                    <CustomButton
-                      variant="outlined"
-                      disableElevation
-                      disableFocusRipple
+                {deleteOnlyCreator &&
+                  (task.state === State.Draft ||  task.totalSubTaskCount === 0)&&(
+                    <MenuItem
+                      disableGutters
                       disableRipple
-                      sx={{ border: "none", textTransform: "capitalize", color:"#FA0808" }}
+                      onClick={handleDeleteTask}
+                      aria-describedby={id}
+                      // sx={{
+                      //   "&.MuiMenuItem-root": {
+                      //     padding: "4px 10px",
+                      //   },
+                      // }}
                     >
-                      Delete
-                    </CustomButton>
-                  </MenuItem>
-                )}
+                      <CustomButton
+                        variant="outlined"
+                        disableElevation
+                        disableFocusRipple
+                        disableRipple
+                        sx={{
+                          // padding:'0',
+                          border: "none",
+                          textTransform: "capitalize",
+                          color: "#FA0808",
+                        }}
+                      >
+                        Delete
+                      </CustomButton>
+                    </MenuItem>
+                  )}
               </Menu>
             </Box>
           )}
@@ -317,7 +346,9 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           </Box>
           <Box>
             <LabelTag>Created on</LabelTag>
-            <AssignedTag sx={{ display: "flex", fontSize:'11.5px' }}>{taskCreatedOn}</AssignedTag>
+            <AssignedTag sx={{ display: "flex", fontSize: "11.5px" }}>
+              {taskCreatedOn}
+            </AssignedTag>
           </Box>
         </CustomStack>
         <CustomStack gap={2.5} justifyContent="space-between">
@@ -349,7 +380,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 color="primary"
                 badgeContent={
                   <Tooltip title={AssignedToList()}>
-                    <div>{task.assignedTo.length - 1}+</div>
+                    <div>+{task.assignedTo.length - 1}</div>
                   </Tooltip>
                 }
               ></CustomBadge>
@@ -357,7 +388,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
           </Box>
           <Box>
             <LabelTag>Due date</LabelTag>
-            <AssignedTag sx={{fontSize:'11.5px'}}>{dueDate}</AssignedTag>
+            <AssignedTag sx={{ fontSize: "11.5px" }}>{dueDate}</AssignedTag>
           </Box>
         </CustomStack>
         <Box pt={0.87} pb={0.87}>
@@ -380,7 +411,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         </Box>
         <Divider sx={{ margin: "1px 0px" }} />
         <CustomStack
-         className={classes.taskContainer}
+          className={classes.taskContainer}
           pt={0.7}
           // pb={-24}
           sx={{
@@ -459,15 +490,13 @@ const useStyles = makeStyles((theme) => ({
       maxWidth: "319px",
     },
   },
-  taskContainer:{
-    
-  }
+  taskContainer: {},
 }));
 export const CustomBadge = styled(Badge)`
   padding-left: 20px;
 `;
 export const CustomButton = styled(Button)`
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   &:hover {
     background: none;

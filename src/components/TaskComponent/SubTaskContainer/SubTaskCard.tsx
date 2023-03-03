@@ -226,7 +226,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                     color="primary"
                     badgeContent={
                       <Tooltip title={AssignedToList(membersList)}>
-                        <span>{membersList.length}+</span>
+                        <span>{membersList.length}</span>
                       </Tooltip>
                     }
                   ></CustomBadge>
@@ -257,7 +257,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                 color="error"
                 badgeContent={
                   <Tooltip title={AssignedToList(rejectedBy)}>
-                    <span>{rejectedBy.length}+</span>
+                    <span>{rejectedBy.length}</span>
                   </Tooltip>
                 }
               ></CustomBadge>
@@ -518,13 +518,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
               >
                 <Box gap={4} className={classes.cardContainer}>
                   <CustomStack
-                    gap={0.5}
+                    gap={.5}
                     className={classes.actionIcons}
                     sx={{
                       marginLeft: "44px",
                     }}
                   >
-                    <CustomStack sx={{ width: "49px" }} columnGap={0.8}>
+                    <CustomStack sx={{ width: "49px" }} columnGap={1}>
                       {/* <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -539,13 +539,13 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           strokeLinecap="round"
                         />
                       </svg> */}
-                      <IconButton onClick={openAttachmentDrawer}>
+                      <IconButton onClick={openAttachmentDrawer} sx={{padding:'0'}}>
                   <AttachmentIcon />
                 </IconButton>
-                      <Typography sx={{fontSize:'12px', fontWeight:'500'}}>{attachmentsCount}</Typography>
+                      <Typography sx={{fontSize:'12px', fontWeight:'500'}}>{attachmentsCount>100?"99+":attachmentsCount}</Typography>
                     </CustomStack>
 
-                    <CustomStack columnGap={0.8} sx={{ width: "49px" }}>
+                    <CustomStack columnGap={1} sx={{ width: "49px" }}>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="14"
@@ -558,7 +558,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           fill="#FA0808"
                         />
                       </svg>
-                       <Typography sx={{fontSize:'12px', fontWeight:'500', color:'#FA0808'}}>{unSeenCommentsCount}</Typography>
+                       <Typography sx={{fontSize:'12px', fontWeight:'500', color:'#FA0808'}}>{unSeenCommentsCount>100?'99+':unSeenCommentsCount}</Typography>
                     </CustomStack>
                     {taskRights && (
                       <CBox display="flex">
@@ -652,7 +652,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         styles={{
                           borderColor: "#55BCB3",
                           fontSize: 12,
-                          fontWeight: "bold",
+                          fontWeight: "500",
                           borderWidth: 1.5,
                           color: "#55BCB3",
                           // marginRight: 15,
@@ -674,7 +674,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           styles={{
                             borderColor: "#0076C8",
                             fontSize: 12,
-                            fontWeight: "bold",
+                            fontWeight: "500",
                             borderWidth: 1.5,
                             color: "#0076C8",
                             marginRight: 15,
@@ -695,7 +695,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           styles={{
                             borderColor: "#FA0808",
                             fontSize: 12,
-                            fontWeight: "bold",
+                            fontWeight: "500",
                             borderWidth: 1.5,
                             color: "#FA0808",
                           }}
@@ -716,7 +716,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           styles={{
                             borderColor: "#0076C8",
                             fontSize: 12,
-                            fontWeight: "bold",
+                            fontWeight: "500",
                             borderWidth: 1.5,
                             color: "#0076C8",
                             marginRight: 15,
@@ -732,7 +732,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           styles={{
                             borderColor: "#FA0808",
                             fontSize: 12,
-                            fontWeight: "bold",
+                            fontWeight: "500",
                             borderWidth: 1.5,
                             color: "#FA0808",
                           }}
