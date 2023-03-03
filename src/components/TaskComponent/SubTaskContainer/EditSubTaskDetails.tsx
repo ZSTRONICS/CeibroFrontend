@@ -444,6 +444,10 @@ function EditSubTaskDetails(props: any) {
 
                           {isSubtaskMemberMarkAsDoneAble(userState) === true ? (
                             <CButton
+                              sx={{
+                                width: "107px",
+                                height: "24px",
+                              }}
                               onClick={(e: any) =>
                                 handleMarkAsDone(e, member._id)
                               }
@@ -462,7 +466,11 @@ function EditSubTaskDetails(props: any) {
                           )}
                           {userState === SubtaskState.Done && (
                             <assets.CheckCircleIcon
-                              sx={{ color: "#55BCB3", fontSize: "2.3rem" }}
+                              sx={{
+                                color: "#55BCB3",
+                                fontSize: "28px",
+                                marginRight: "25px",
+                              }}
                             />
                           )}
                         </>
@@ -475,7 +483,7 @@ function EditSubTaskDetails(props: any) {
                         sx={{ padding: "4px 0px" }}
                         secondaryTypographyProps={{
                           // padding: "10px 10px",
-                          maxWidth: "65px",
+                          maxWidth: "60px",
                           width: "100%",
                         }}
                         //   primaryTypographyProps={{}}

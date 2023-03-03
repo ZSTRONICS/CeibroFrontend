@@ -580,7 +580,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     padding: "10px 20px",
-  },
+     },
   delete: {
     color: colors.btnRed,
     border: `1px solid ${colors.btnRed}`,

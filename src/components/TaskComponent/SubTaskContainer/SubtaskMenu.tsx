@@ -235,7 +235,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
 
   return (
     <Box>
-      <Box sx={{ flexGrow: 0, color: "primary" }}>
+      <Box sx={{ flexGrow: 0, color: "primary"  }}>
         <IconButton
           color="primary"
           onClick={handleOpenEditMemberMenu}
