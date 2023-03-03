@@ -111,9 +111,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
               <Grid container justifyContent="space-between">
                 <Grid
                   item
-                  xs={12}
-                  md={4}
-                  lg={7}
+                  // xs={12} md={5} lg={7}
                   className={classes.userWrapper}
                 >
                   {!connection.email && (
@@ -154,13 +152,19 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                     ></Chip>
                   )}
                 </Grid>
-                <Grid item xs={12} md={8} lg={5} className={classes.btnWrapper}>
+                <Grid
+                  item
+                  // xs={12} sm={12} md={8} lg={5}
+
+                  className={classes.btnWrapper}
+                >
                   {!connection.email && connection.status !== "pending" && (
                     <>
                       {" "}
                       <Button
                         className={classes.btn}
                         variant="contained"
+                        // size="small"
                         size={isTabletOrMobile ? "small" : "medium"}
                         color="primary"
                         disabled={connection.email}
@@ -179,6 +183,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         variant="contained"
                         onClick={openTaskModal}
                         size={isTabletOrMobile ? "small" : "medium"}
+                        // size="small"
                         color="primary"
                         disabled={connection.email}
                       >
@@ -192,7 +197,8 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         className={`${classes.btn} ${classes.centerBtn}`}
                         variant="contained"
                         size={isTabletOrMobile ? "small" : "medium"}
-                        style={{background: colors.btnGreen, color: "white"}}
+                        // size="small"
+                        style={{ background: colors.btnGreen, color: "white" }}
                         onClick={() =>
                           handleResendInvite(
                             inviteId,
@@ -213,7 +219,8 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         className={`${classes.btn} ${classes.centerBtn}`}
                         variant="contained"
                         size={isTabletOrMobile ? "small" : "medium"}
-                        style={{background: colors.btnRed, color: "white"}}
+                        // size="small"
+                        style={{ background: colors.btnRed, color: "white" }}
                       >
                         Revoke
                       </Button>
@@ -271,18 +278,21 @@ const useStyles = makeStyles({
   btnWrapper: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
     gap: "15px",
     "@media (max-width:960px)": {
-      alignItems: "center",
+      // alignItems: "center",
     },
   },
   btn: {
     fontSize: 12,
-    fontWeight: "bold",
+    // padding:"4px 5px"
+    // fontWeight: "bold",
     "@media (max-width:960px)": {
-      width: "100%",
-      marginTop: 10,
+      marginTop: "10px",
+    },
+    "@media (max-width:363px)": {
+      minWidth: "90px",
     },
   },
   progress: {
@@ -315,7 +325,7 @@ const useStyles = makeStyles({
   },
   centerBtn: {
     "@media (max-width:960px)": {
-      marginTop: 10,
+      // marginTop: "10px",
     },
   },
 });

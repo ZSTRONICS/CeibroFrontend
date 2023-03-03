@@ -170,9 +170,10 @@ const TaskMain = () => {
               elevation={0}
               variant="outlined"
             >
-              <StatusMenu options={options} 
-              // showZero={true}
-/>
+              <StatusMenu
+                options={options}
+                // showZero={true}
+              />
             </Paper>
           </Grid>
         </Grid>

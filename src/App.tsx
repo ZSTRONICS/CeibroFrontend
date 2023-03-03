@@ -164,11 +164,31 @@ const App: React.FC<MyApp> = () => {
       const myToken = JSON.parse(tokens)?.access?.token;
 
       const sock = io(SERVER_URL, {
+        reconnectionDelayMax: 3000,
+        //timeout: 4000,
+        // multiplex: false,
+        // forceNew: true,
         query: {
           token: myToken,
         },
       });
       socket.setSocket(sock);
+
+      // sock.on("reconnect", (attempt) => {
+      //   console.log("=>>>> SOCKET RECONNECTED <<<<=");
+
+      //   socket.setSocket(sock);
+      // });
+
+      // sock.on("disconnect", (reason) => {
+      //   console.log("=>>>> SOCKET DISCONNECTED <<<<=");
+      //   if (reason === "io server disconnect") {
+      //     console.log("=>>>> RECONNECTING SOCKET TO SERVER <<<<=");
+      //     // the disconnection was initiated by the server, you need to reconnect manually
+      //     socket.getSocket().connect();
+      //   }
+      //   // else the socket will automatically try to reconnect
+      // });
 
       socket.getSocket().on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
@@ -333,9 +353,9 @@ const App: React.FC<MyApp> = () => {
             });
 
             break;
-          
-            case TASK_CONFIG.SUBTASK_NEW_COMMENT:
-              if (!data.access.includes(String(user._id))) {
+
+          case TASK_CONFIG.SUBTASK_NEW_COMMENT:
+            if (!data.access.includes(String(user._id))) {
               return;
             }
             try {
@@ -359,7 +379,7 @@ const App: React.FC<MyApp> = () => {
               payload: data,
             });
             break;
-          
+
           case DOCS_CONFIG.FILE_UPLOADED:
             dispatch({
               type: DOCS_CONFIG.FILE_UPLOADED,

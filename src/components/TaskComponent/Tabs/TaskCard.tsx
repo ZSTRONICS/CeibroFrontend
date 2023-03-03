@@ -30,7 +30,9 @@ import { TASK_CONFIG } from "config/task.config";
 import { RootState } from "redux/reducers";
 import { momentdeDateFormat, onlyUnique } from "components/Utills/Globals/Common";
 import { toast } from "react-toastify";
-
+import { useConfirm } from "material-ui-confirm";
+import CButton from "components/Button/Button";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
@@ -41,6 +43,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
+  const confirm = useConfirm();
 
   const taskCreatedOn =momentdeDateFormat(createdAt)
 
@@ -55,9 +58,9 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
   const deleteOnlyCreator = creator._id === user._id;
+
   const handleCard = (e: any, isEditable: boolean) => {
     e.stopPropagation();
-
     dispatch({
       type: TASK_CONFIG.SET_SELECTED_TASK,
       payload: task,
@@ -66,9 +69,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
       type: TASK_CONFIG.SELECTED_TASK_ID,
       payload: task._id,
     });
-
     dispatch(taskActions.openTaskDrawer(isEditable));
-
     dispatch(
       getAllSubTaskOfTask({
         other: {
@@ -87,33 +88,53 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
     e.stopPropagation();
     setAnchorElUser(null);
   };
+
   const handleEdit = (e: any) => {
     e.stopPropagation();
-
     setAnchorElUser(null);
-
     handleCard(e, true);
   };
-
-  const handleDeleteTask = (e:any) => {
-    e.stopPropagation()
+  
+  const handleDeleteTask = (e: any) => {
+    e.stopPropagation();
     setAnchorElUser(null);
-
-    dispatch(
-      deleteTask({
-        other: task._id,
-        success: (res) => {
-          dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: task._id });
-          dispatch(taskActions.closeTaskDrawer());
-          toast.success("Task deleted");
-        },
-        onFailAction: () => {
-          toast.error("Failed to delete task!");
-        },
-      })
-    );
+      confirm({
+        title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+        description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this task?</Typography>,
+        titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
+        confirmationText:"Delete",
+        confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
+        cancellationText: <CButton
+        variant="contained"
+        elevation={0}
+        styles={{
+          color: "#605C5C",
+          backgroundColor: "#ECF0F1",
+          fontSize: 12,
+          fontWeight: "bold",
+        }}
+        label={"Cancel"}
+      />,
+      
+    }).then(() => {
+      dispatch(
+        deleteTask({
+          other: task._id,
+          success: (res) => {
+            dispatch({
+              type: TASK_CONFIG.PULL_TASK_FROM_STORE,
+              payload: task._id,
+            });
+            dispatch(taskActions.closeTaskDrawer());
+            toast.success("Task deleted");
+          },
+          onFailAction: () => {
+            toast.error("Failed to delete task!");
+          },
+        })
+      );
+    });
   };
-
   const open = Boolean(anchorElUser);
   const id = open ? "simple-popover" : undefined;
 

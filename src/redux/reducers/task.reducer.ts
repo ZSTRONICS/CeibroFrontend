@@ -30,6 +30,7 @@ interface TaskReducerInt {
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
     getAllSubtaskRejection: any[]
+    getTaskSubTaskFilterByState:string
     isEditing: boolean
     temporarySubtask: {
         assignedToMembersOnly: []
@@ -47,6 +48,7 @@ interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
+    getTaskSubTaskFilterByState:'all',
     getAllRecentCommentsOfSubtask: [],
     getAllCommentsOfSubtaskLoading: false,
     temporarySubtask: {
@@ -163,6 +165,11 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 }
             }
 
+        case TASK_CONFIG.GET_TASK_SUBTASK_FILTER_BY_STATE:
+          return{
+            ...state,
+            getTaskSubTaskFilterByState: action.payload,
+          }  
         case TASK_CONFIG.PUSH_SUB_TASK_TO_STORE:
             const taskId = action.payload.taskId
 
@@ -297,7 +304,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case TASK_CONFIG.SELECTED_TASK_ID:
             return {
                 ...state,
-                selectedTaskId: action.payload
+                selectedTaskId: action.payload,
             }
         case requestSuccess(TASK_CONFIG.GET_ALL_SUBTASK_LIST):
             return {

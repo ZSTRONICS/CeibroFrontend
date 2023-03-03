@@ -35,7 +35,8 @@ import unreadMessage from "./images/unreadMessage.png";
 import favouriteIcon from "./images/favourite.png";
 import favouriteFilledIcon from "./images/favouriteFilled.png";
 import bluePencil from "./images/bluePencil.png";
-import logout from "./images/logout.png";
+// import logout from "./images/logout.png"
+import logoutNew  from "./images/logoutNew.png";
 import contactsBlack from "./images/contactsBlack.png";
 import whitePencil from "./images/whitePencil.png";
 import camera from "./images/camera.svg";
@@ -91,6 +92,8 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 
 const assets= {
+  logoutNew,
+  // logout,
   HighlightOffIcon,
   CloudUploadIcon,
   BorderColorIcon,
@@ -158,7 +161,7 @@ const assets= {
   favouriteFilledIcon,
   bluePencil,
   whitePencil,
-  logout,
+  
   contactsBlack,
   camera,
   mic,

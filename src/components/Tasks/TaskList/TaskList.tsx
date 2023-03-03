@@ -12,23 +12,40 @@ import TaskCard from "components/TaskComponent/Tabs/TaskCard";
 import { getColorByStatus } from "config/project.config";
 
 // redux
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { getAllTask } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import { TaskInterface } from "constants/interfaces/task.interface";
+import { TASK_CONFIG } from "config/task.config";
 
 function TaskList() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
 
   let allTask: TaskInterface[] = useSelector(
     (state: RootState) => state.task.allTask
+  );
+  let getTaskSubTaskFilterByState = useSelector(
+    (state: RootState) => state.task.getTaskSubTaskFilterByState
   );
 
   let headerHeight = 10;
   // if(props.props.current){
   //   console.log(window.innerWidth, props.props.current.clientHeight);
   // }
+  let filterTask=[...allTask]
+
+  filterTask =filterTask.reduce((acc:any, curr:any) => {
+    if (curr.state === getTaskSubTaskFilterByState) {
+      acc.push({ ...curr });
+    }
+    return acc;
+  }, []);
+
+if(getTaskSubTaskFilterByState==='all'){
+  filterTask=[...allTask]
+}
 
   return (
     <>
@@ -54,8 +71,8 @@ function TaskList() {
           // height={"calc(100vh - 30vh)"}
           // className={classes.cardListContainer}
         >
-          {allTask &&
-            allTask.map((task: TaskInterface) => {
+          {filterTask &&
+            filterTask.map((task: TaskInterface) => {
               if (task === undefined) {
                 return <></>;
               }

@@ -7,7 +7,6 @@ import {
   DialogActions,
   Grid,
   Typography,
-
 } from "@material-ui/core";
 import PropTypes from "prop-types";
 // import { Clear } from "@material-ui/icons";
@@ -17,20 +16,26 @@ import styled from "@emotion/styled";
 
 interface Props {
   isOpen: boolean;
-  handleClose: (e:any) => void;
+  handleClose: (e: any) => void;
   title: any;
   children: any;
-  showCloseBtn:boolean;
+  showCloseBtn: boolean;
 }
 
-const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, showCloseBtn}) => {
-  const classes = useStyles()
-  const closeModal =(e:any)=>{
-    if (!e.target.closest('.MuiDrawer-root')) {
+const CustomModal: React.FC<Props> = ({
+  isOpen,
+  handleClose,
+  title,
+  children,
+  showCloseBtn,
+}) => {
+  const classes = useStyles();
+  const closeModal = (e: any) => {
+    if (!e.target.closest(".MuiDrawer-root")) {
       e.stopPropagation();
     }
-    handleClose(e)
-  }
+    handleClose(e);
+  };
   return (
     <>
       <Dialog
@@ -46,14 +51,23 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children, sh
             <Grid item>
               <CustomTitle>{title}</CustomTitle>
             </Grid>
-            {showCloseBtn&&<Grid item>
-              <Button onClick={closeModal} variant='outlined'>Close</Button>
-            </Grid>}
+            {showCloseBtn && (
+              <Grid item>
+                <Button
+                  sx={{
+                    padding: "3px 4px",
+                    textTransform: "capitalize",
+                  }}
+                  onClick={closeModal}
+                  variant="outlined"
+                >
+                  Close
+                </Button>
+              </Grid>
+            )}
           </Grid>
         </DialogTitle>
-        <DialogContent>
-          {children}
-        </DialogContent>
+        <DialogContent>{children}</DialogContent>
         {/* <DialogActions>
         </DialogActions> */}
       </Dialog>
@@ -66,14 +80,13 @@ CustomModal.propTypes = {
   isOpen: PropTypes.bool.isRequired,
   title: PropTypes.any,
   children: PropTypes.element,
-  showCloseBtn:PropTypes.any,
+  showCloseBtn: PropTypes.any,
 };
 
 export default CustomModal;
 
-
-const CustomTitle= styled(Typography)`
-font-family: 'Inter';
-font-weight: 600;
-font-size: 26px;
-`
+const CustomTitle = styled(Typography)`
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 26px;
+`;

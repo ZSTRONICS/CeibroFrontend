@@ -1,7 +1,16 @@
 import React, { useEffect } from "react";
 
 // material
-import { Menu, IconButton, MenuItem, Typography, Box, Stack, Badge, Tooltip } from "@mui/material";
+import {
+  Menu,
+  IconButton,
+  MenuItem,
+  Typography,
+  Box,
+  Stack,
+  Badge,
+  Tooltip,
+} from "@mui/material";
 
 // router-dom
 import { useHistory } from "react-router";
@@ -23,6 +32,10 @@ import assets from "assets/assets";
 import { purgeStoreStates } from "redux/store";
 import storage from "redux-persist/lib/storage";
 import { socket } from "services/socket.services";
+import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
+import { InvitationIcon } from "components/material-ui/icons/invitaiton/invitation";
+import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
+import { MyConnectionsIcon } from "components/material-ui/icons/myConnections/MyConnectionsIcon";
 
 const ProfileView = () => {
   const history = useHistory();
@@ -33,7 +46,9 @@ const ProfileView = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections, invites } = useSelector((state: RootState) => state?.user);
+  const { connections, invites } = useSelector(
+    (state: RootState) => state?.user
+  );
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -43,18 +58,18 @@ const ProfileView = () => {
   };
 
   const handleLogout = () => {
-    socket.logoutSocketsIO()
-    handleCloseUserMenu()
+    socket.logoutSocketsIO();
+    handleCloseUserMenu();
     dispatch(logoutUser());
     purgeStoreStates();
-    storage.removeItem('persist:root')
+    storage.removeItem("persist:root");
     history.push("/login");
   };
 
   const openViewInvitation = () => {
     dispatch(openViewInvitations());
-    handleCloseUserMenu()
-  }
+    handleCloseUserMenu();
+  };
   useEffect(() => {
     dispatch(getMyInvitesCount());
     dispatch(getMyConnectionsCount());
@@ -63,12 +78,18 @@ const ProfileView = () => {
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="user info">
-          <IconButton onClick={handleOpenUserMenu} disableRipple disableFocusRipple sx={{ p: 1 }}>
+          <IconButton
+            onClick={handleOpenUserMenu}
+            disableRipple
+            disableFocusRipple
+            sx={{ p: 1 }}
+          >
             <NameAvatar
               firstName={user?.firstName}
               surName={user?.surName}
               url={user?.profilePic}
-              variant="rounded" />
+              variant="rounded"
+            />
           </IconButton>
         </Tooltip>
         <Menu
@@ -101,7 +122,8 @@ const ProfileView = () => {
           >
             <Stack direction="row" spacing={2}>
               <Box display="flex" alignItems="center">
-                <img src={assets.bluePencil} className={`w-16`} alt="" />
+                <ProfileIcon />
+                {/* <img src={assets.ProfileIcon} className={`w-16`} alt="" /> */}
               </Box>
               <Typography textAlign="center">Profile</Typography>
             </Stack>
@@ -126,7 +148,8 @@ const ProfileView = () => {
               }}
             >
               <Box display="flex" alignItems="center">
-                <img src={assets.contactsBlack} className="w-16" alt="" />
+                <MyConnectionsIcon />
+                {/* <img src={assets.contactsBlack} className="w-16" alt="" /> */}
               </Box>
               <Typography textAlign="center"> My Connections</Typography>
               <Box
@@ -136,7 +159,7 @@ const ProfileView = () => {
               >
                 <Badge
                   sx={{
-                    color: "#F1B740"
+                    color: "#F1B740",
                   }}
                   showZero={true}
                   color="primary"
@@ -159,8 +182,10 @@ const ProfileView = () => {
             }}
           >
             <Stack direction="row" spacing={2}>
-              <img src={assets.addUser} className={`w-16`} alt="" />
+              {/* <img src={assets.addUser} className={`w-16`} alt="" /> */}
+              <InvitationIcon />
               <Typography textAlign="center">Invitations</Typography>
+
               <Box
                 display="flex"
                 alignItems="center"
@@ -187,7 +212,8 @@ const ProfileView = () => {
           >
             <Stack direction="row" spacing={2}>
               <Box display="flex" alignItems="center">
-                <img src={assets.logout} className={"w-16"} alt="logout" />
+                <LogoutIcon />
+                {/* <img src={assets.logoutNew} className={"w-16"} alt="logout" /> */}
               </Box>
               <Typography textAlign="center">Logout</Typography>
             </Stack>

@@ -28,6 +28,7 @@ import colors from "../../assets/colors";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
+import Divider from "@mui/material/Divider";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -69,7 +70,7 @@ const ProfileForm = () => {
         companyName,
         companyVat,
         companyLocation,
-        currentlyRepresenting:false,
+        currentlyRepresenting: false,
       },
       success: () => {
         toast.success("Profile updated successfully");
@@ -140,8 +141,8 @@ const ProfileForm = () => {
   });
 
   return (
-    <Grid item xs={12} md={6}>
-      <Grid container>
+    <Grid container xs={12} md={6}>
+      <Grid item className={classes.mainContainer}>
         <Formik
           enableReinitialize={true}
           initialValues={{
@@ -324,7 +325,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    autoComplete="new-password"
+                      autoComplete="new-password"
                       className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
@@ -336,7 +337,7 @@ const ProfileForm = () => {
                       label="Confirm password"
                       variant="outlined"
                       name="confirmPassword"
-                      value={values.confirmPassword||''}
+                      value={values.confirmPassword || ""}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       inputRef={confirmPassRef}
@@ -350,11 +351,18 @@ const ProfileForm = () => {
                       </Typography>
                     )}
                   </Grid>
-
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <hr className={classes.break} />
+                  <Grid
+                    item
+                    xs={12}
+                    className={classes.rowWrapper}
+                    // sx ={{ padding: "20px 0px" }}
+                  >
+                    <Divider
+                      sx={{
+                        width: "100%",
+                      }}
+                    />
                   </Grid>
-
                   <Grid item xs={12} md={6} className={classes.rowWrapper}>
                     <TextField
                       className={classes.inputBg}
@@ -510,7 +518,15 @@ const ProfileForm = () => {
                     </FormGroup>
                   </Grid> */}
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
+                  <Grid
+                    item
+                    xs={12}
+                    className={`${classes.rowWrapper} ${classes.btnWrapper}`}
+                    // sx={{
+                    //   marginTop: "25px",
+                    //   gap: "30px",
+                    // }}
+                  >
                     <Button
                       variant="contained"
                       color="primary"
@@ -530,7 +546,7 @@ const ProfileForm = () => {
                       )}
                     </Button>
                     <Button
-                      variant="text"
+                      variant="outlined"
                       // type="submit"
                       className={classes.delete}
                       size="medium"
@@ -553,11 +569,22 @@ const useStyles = makeStyles({
   inputBg: {
     background: "white",
   },
-  rowWrapper: {
-    padding: "10px 20px",
+  mainContainer: {
+    paddingTop: "10px",
   },
+  btnWrapper: {
+    gap: "30px",
+    marginTop: "30px",
+  },
+  rowWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
+    padding: "10px 20px",
+     },
   delete: {
     color: colors.btnRed,
+    border: `1px solid ${colors.btnRed}`,
+    padding: "2px 5px",
   },
   deleteIcon: {
     fontSize: 20,

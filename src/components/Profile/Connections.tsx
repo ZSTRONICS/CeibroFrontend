@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge,  Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers";
 import { getMyConnectionsCount } from "redux/action/user.action";
@@ -26,29 +26,34 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
 
   return (
     <>
-      <Grid container xs={12} justifyContent="space-between" className={classes.connectionsContainer}>
+      <Grid
+        container
+        // xs={6}
+        // md={6}
+        justifyContent="space-between"
+        className={classes.connectionsContainer}
+      >
         <Grid item>
           <Stack direction={"row"}>
-           <div className={classes.iconContainer}>
-            <img src={assets.contactIcon} alt="" className={classes.icon} />
-          </div>
-          <Typography variant="body1" className={classes.connectionText}>
-            My Connections
-          <Badge
-              showZero={true}
-              color="primary"
-              badgeContent={connections}
-              className={classes.badge}
-            ></Badge>
-          </Typography>
+            <div className={classes.iconContainer}>
+              <img src={assets.contactIcon} alt="" className={classes.icon} />
+            </div>
+            <Typography variant="body1" className={classes.connectionText}>
+              My Connections
+              <Badge
+                showZero={true}
+                color="primary"
+                badgeContent={connections}
+                className={classes.badge}
+              ></Badge>
+            </Typography>
           </Stack>
         </Grid>
         <Grid item>
-        <Button onClick={handleClick} color="primary" variant="outlined">
-              View
-            </Button>
+          <Button onClick={handleClick} color="primary" variant="outlined">
+            View
+          </Button>
         </Grid>
-
       </Grid>
     </>
   );
@@ -57,7 +62,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
 export default Connections;
 
 const useStyles = makeStyles({
-  connectionsContainer:{
+  connectionsContainer: {
     borderTop: `1px solid ${colors.lightGrey}`,
     background: colors.white,
     padding: "10px 15px",
