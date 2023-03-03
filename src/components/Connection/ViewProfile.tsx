@@ -5,7 +5,7 @@ import {
   DialogTitle,
   Divider,
   Grid,
-  TextField
+  TextField,
 } from "@mui/material";
 import React, { useState } from "react";
 
@@ -20,8 +20,9 @@ import { createSingleRoom } from "../../redux/action/chat.action";
 import taskActions from "../../redux/action/task.action";
 import {
   deleteMyConnection,
-  getMyConnections
+  getMyConnections,
 } from "../../redux/action/user.action";
+import { useMediaQuery } from "react-responsive";
 
 interface IViewProfileProps {
   userId: string;
@@ -36,7 +37,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   const [getUser, setGetUser] = useState<any>({});
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const handleToggle = () => {
     const payload = {
       success: (val: any) => {
@@ -76,7 +77,8 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     dispatch(createSingleRoom(payload));
   };
   const letters =
-  getUser.firstName?.[0]?.toUpperCase?.() + (getUser.surName?.[0]?.toUpperCase?.() || "");
+    getUser.firstName?.[0]?.toUpperCase?.() +
+    (getUser.surName?.[0]?.toUpperCase?.() || "");
 
   // const user = {
   //   image:
@@ -89,14 +91,20 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   //   vat: "1324343554",
   //   location: "Vesse 12, Tallinn, Harjumaa 12345",
   // };
-let smPoint =11
+  let smPoint = 11;
   return (
     <>
       <Button
+        sx={{
+          textTransform: "capitalize",
+          "@media(max-width:960px)": {
+            marginTop: "10px",
+          },
+        }}
         onClick={handleToggle}
-        className={classes.btn}
+        className={`${classes.btn} ${classes.centerBtn}`}
         variant="outlined"
-        size="medium"
+        size={isTabletOrMobile ? "small" : "medium"}
         color="primary"
         disabled={disabled}
       >
@@ -151,14 +159,31 @@ let smPoint =11
                   url={getUser?.profilePic || ""}
                   variant="large"
                 /> */}
-              {getUser?.profilePic?  <Avatar alt="avater" src={getUser?.profilePic}  variant= "rounded"   sx={{ width: "100px", height: "100px" }}/>:
-               <Avatar variant= "rounded"   sx={{ width: "100px", height: "100px" }}>
-               {letters}
-             </Avatar>
-          }
+              {getUser?.profilePic ? (
+                <Avatar
+                  alt="avater"
+                  src={getUser?.profilePic}
+                  variant="rounded"
+                  sx={{ width: "100px", height: "100px" }}
+                />
+              ) : (
+                <Avatar
+                  variant="rounded"
+                  sx={{ width: "100px", height: "100px" }}
+                >
+                  {letters}
+                </Avatar>
+              )}
             </Grid>
 
-            <Grid item container flexDirection="column" md={9} sm={smPoint} rowGap={3}>
+            <Grid
+              item
+              container
+              flexDirection="column"
+              md={9}
+              sm={smPoint}
+              rowGap={3}
+            >
               <Grid item sx={{ marginTop: "5px" }}>
                 <TextField
                   outlined-read-only-input
@@ -174,11 +199,11 @@ let smPoint =11
                   size="small"
                   label="Name"
                   variant="outlined"
-                  defaultValue={getUser.firstName??"N/A"}
+                  defaultValue={getUser.firstName ?? "N/A"}
                 />
               </Grid>
 
-              <Grid item >
+              <Grid item>
                 <TextField
                   outlined-read-only-input
                   // InputProps={{
@@ -193,7 +218,7 @@ let smPoint =11
                   size="small"
                   label="Surname"
                   variant="outlined"
-                  defaultValue={getUser?.surName??"N/A"}
+                  defaultValue={getUser?.surName ?? "N/A"}
                 />
               </Grid>
             </Grid>
@@ -213,7 +238,7 @@ let smPoint =11
               defaultValue={getUser?.email}
             />
           </Grid>
-          <Grid lg={12}sm={smPoint} mr={3}>
+          <Grid lg={12} sm={smPoint} mr={3}>
             <TextField
               outlined-read-only-input
               InputProps={{
@@ -224,7 +249,7 @@ let smPoint =11
               size="small"
               label="Phone number"
               variant="outlined"
-              defaultValue={getUser?.phone??"N/A"}
+              defaultValue={getUser?.phone ?? "N/A"}
             />
           </Grid>
           <Grid md={12} sm={smPoint} mr={3}>
@@ -238,7 +263,7 @@ let smPoint =11
               size="small"
               label="Company"
               variant="outlined"
-              defaultValue={getUser?.companyName??"N/A"}
+              defaultValue={getUser?.companyName ?? "N/A"}
             />
           </Grid>
           <Grid md={12} sm={smPoint} mr={3}>
@@ -252,7 +277,7 @@ let smPoint =11
               size="small"
               label="VAT"
               variant="outlined"
-              defaultValue={getUser?.companyVat??"N/A"}
+              defaultValue={getUser?.companyVat ?? "N/A"}
             />
           </Grid>
           <Grid md={12} sm={smPoint} mr={3}>
@@ -266,7 +291,7 @@ let smPoint =11
               size="small"
               label="Location"
               variant="outlined"
-              defaultValue={getUser?.companyLocation??"N/A"}
+              defaultValue={getUser?.companyLocation ?? "N/A"}
             />
           </Grid>
           <Grid md={12} sm={smPoint} mr={3}>
@@ -280,17 +305,17 @@ let smPoint =11
               size="small"
               label="Work contact number"
               variant="outlined"
-              defaultValue={getUser?.companyPhone??"N/A"}
+              defaultValue={getUser?.companyPhone ?? "N/A"}
             />
           </Grid>
 
           <Grid
             item
             container
-           gap={2}
-           justifyContent='flex-end'
-           pr={2.5}
-           pb={2.6}
+            gap={2}
+            justifyContent="flex-end"
+            pr={2.5}
+            pb={2.6}
           >
             <Button
               className={classes.btn}
@@ -298,7 +323,7 @@ let smPoint =11
               variant="contained"
               size="medium"
               color="primary"
-              sx={{textTransform:'capitalize'}}
+              sx={{ textTransform: "capitalize" }}
             >
               Message
             </Button>
@@ -308,8 +333,7 @@ let smPoint =11
               size="medium"
               color="primary"
               onClick={openTaskModal}
-              sx={{textTransform:'capitalize'}}
-
+              sx={{ textTransform: "capitalize" }}
             >
               Create task
             </Button>
@@ -462,12 +486,9 @@ const useStyles = makeStyles({
   btn: {
     fontSize: 12,
     fontWeight: "bold",
-    // textTransform: "capitalize",
-    "@media (max-width:960px)": {
-      width: "100%",
-      marginTop: 10,
-    },
+    textTransform: "capitalize",
   },
+
   btnWrapper: {
     // textTransform: "capitalize",
     display: "flex",
@@ -502,5 +523,10 @@ const useStyles = makeStyles({
   },
   email: {
     color: colors.textPrimary,
+  },
+  centerBtn: {
+    "@media (max-width:960px)": {
+      marginTop: "20px",
+    },
   },
 });

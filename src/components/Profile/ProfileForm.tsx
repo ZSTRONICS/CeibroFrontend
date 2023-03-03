@@ -69,7 +69,7 @@ const ProfileForm = () => {
         companyName,
         companyVat,
         companyLocation,
-        currentlyRepresenting:false,
+        currentlyRepresenting: false,
       },
       success: () => {
         toast.success("Profile updated successfully");
@@ -140,8 +140,8 @@ const ProfileForm = () => {
   });
 
   return (
-    <Grid item xs={12} md={6}>
-      <Grid container>
+    <Grid container xs={12} md={6}>
+      <Grid item className={classes.mainContainer}>
         <Formik
           enableReinitialize={true}
           initialValues={{
@@ -324,7 +324,7 @@ const ProfileForm = () => {
 
                   <Grid item xs={12} className={classes.rowWrapper}>
                     <TextField
-                    autoComplete="new-password"
+                      autoComplete="new-password"
                       className={classes.inputBg}
                       InputLabelProps={{
                         shrink: true,
@@ -336,7 +336,7 @@ const ProfileForm = () => {
                       label="Confirm password"
                       variant="outlined"
                       name="confirmPassword"
-                      value={values.confirmPassword||''}
+                      value={values.confirmPassword || ""}
                       onChange={handleChange}
                       onBlur={handleBlur}
                       inputRef={confirmPassRef}
@@ -530,7 +530,7 @@ const ProfileForm = () => {
                       )}
                     </Button>
                     <Button
-                      variant="text"
+                      variant="outlined"
                       // type="submit"
                       className={classes.delete}
                       size="medium"
@@ -553,18 +553,26 @@ const useStyles = makeStyles({
   inputBg: {
     background: "white",
   },
+  mainContainer: {
+    paddingTop: "10px",
+  },
   rowWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "20px",
     padding: "10px 20px",
   },
   delete: {
     color: colors.btnRed,
+    border: `1px solid ${colors.btnRed}`,
+    padding: "2px 5px",
   },
   deleteIcon: {
     fontSize: 20,
   },
   break: {
     border: 0,
-    borderTop: `1px solid ${colors.white}`,
+    borderTop: `1px solid ${colors.lightBlack}`,
   },
   imageWrapper: {},
   userImage: {

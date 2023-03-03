@@ -1,4 +1,3 @@
-
 import { Grid, makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import colors from "../../assets/colors";
@@ -66,7 +65,11 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
         className={classes.outerWrapper}
         style={{ background: `url(${url})` }}
       >
-        <img src={assets.whitePencil} className={`width-16 ${classes.icon}`} alt="edit"/>
+        <img
+          src={assets.whitePencil}
+          className={`width-16 ${classes.icon}`}
+          alt="edit"
+        />
       </div>
     </Grid>
   );
@@ -85,7 +88,7 @@ const useStyles = makeStyles({
   },
   icon: {
     position: "absolute",
-    left: 0,
+    right: 0,
     bottom: 0,
     color: colors.white,
     background: colors.primary,
