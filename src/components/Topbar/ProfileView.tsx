@@ -181,7 +181,7 @@ const ProfileView = () => {
               },
             }}
           >
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={2} alignItems='center'>
               {/* <img src={assets.addUser} className={`w-16`} alt="" /> */}
               <InvitationIcon />
               <Typography textAlign="center">Invitations</Typography>
