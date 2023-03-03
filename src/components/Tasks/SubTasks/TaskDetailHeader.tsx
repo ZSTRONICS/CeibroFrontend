@@ -74,7 +74,7 @@ export default function TaskDetailHeader(props: any) {
         </CustomStack>
       </CBox>
       <CBox mt={1.5}>
-      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Title</LabelTag>
+        <LabelTag sx={{ fontSize: "12px", fontWeight: 600 }}>Title</LabelTag>
         <Typography className={classes.description}>
           {props?.subtaskDetail?.title}
         </Typography>
@@ -82,14 +82,14 @@ export default function TaskDetailHeader(props: any) {
       </CBox>
       <Grid container mt={1.5} gap={8}>
         <Grid item md={4}>
-        <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Creator</LabelTag>
+          <LabelTag sx={{ fontSize: "12px", fontWeight: 600 }}>Creator</LabelTag>
           <Typography
             className={classes.description}
-          >{`${props?.subtaskDetail?.creator?.firstName} ${props?.subtaskDetail?.creator?.surName}`}</Typography>
+          >{`${props.subtaskDetail.creator.firstName} ${props.subtaskDetail.creator.surName}`}</Typography>
           <Divider />
         </Grid>
         <Grid item md={4}>
-        <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Project</LabelTag>
+          <LabelTag sx={{ fontSize: "12px", fontWeight: 600 }}>Project</LabelTag>
           <Typography className={classes.description}>
             {props.subtaskDetail.taskData && props.subtaskDetail.taskData.project.title}
           </Typography>
@@ -98,9 +98,9 @@ export default function TaskDetailHeader(props: any) {
       </Grid>
 
       <CBox mt={1.5}>
-      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Assign to</LabelTag>
+        <LabelTag sx={{ fontSize: "12px", fontWeight: 600 }}>Assign to</LabelTag>
         <CBox className={classes.description}>
-          {membersList.map((member: Member, i: any) => {
+          {membersList && membersList.length > 0 ? membersList.map((member: Member, i: any) => {
             if (member === undefined) {
               return <></>;
             }
@@ -117,17 +117,23 @@ export default function TaskDetailHeader(props: any) {
                 </AssignedTag>
               );
             }
-          })}
+          }) : <Typography className={classes.description}> N/A </Typography>}
         </CBox>
         <Divider />
       </CBox>
       <CBox mt={1.5}>
-      <LabelTag sx={{ fontSize: "12px", fontWeight:600 }}>Description</LabelTag>
-        <Typography className={classes.description}>
-          {showMore
-            ? props.subtaskDetail.description
-            : `${props.subtaskDetail.description.substring(0, 550)}`}
-        </Typography>
+        <LabelTag sx={{ fontSize: "12px", fontWeight: 600 }}>Description</LabelTag>
+        <>{
+          props.subtaskDetail.description.length === 0 ? <Typography className={classes.description}> N/A </Typography> :
+            <Typography className={classes.description}>
+              {showMore
+                ? props.subtaskDetail.description
+                : `${props.subtaskDetail.description.substring(0, 550)}`}
+
+            </Typography>
+        }
+
+        </>
         {props.subtaskDetail.description.length >= 549 ? (
           <Typography
             className={classes.showHideBtn}

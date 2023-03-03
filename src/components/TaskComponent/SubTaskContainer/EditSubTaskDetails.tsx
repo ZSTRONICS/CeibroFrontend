@@ -255,10 +255,20 @@ function EditSubTaskDetails(props: any) {
     return false;
   };
 
-  const isSubtaskMemberMarkAsDoneAble = (userState: string) => {
+  const isSubtaskMemberMarkAsDoneAble = (
+    userState: string,
+    memberId: string
+  ) => {
     let isAdmin: boolean = false;
     if (userState === SubtaskState.Ongoing) {
       isAdmin = selectedTaskAdmins.some((admin) => admin.id === user._id);
+
+      if(isAdmin === false){
+        if(String(memberId) === String(user._id)){
+          return true;
+        }
+      }
+
       return isAdmin;
     }
   };
@@ -442,7 +452,10 @@ function EditSubTaskDetails(props: any) {
                               />
                             )}
 
-                          {isSubtaskMemberMarkAsDoneAble(userState) === true ? (
+                          {isSubtaskMemberMarkAsDoneAble(
+                            userState,
+                            member._id
+                          ) === true ? (
                             <CButton
                               onClick={(e: any) =>
                                 handleMarkAsDone(e, member._id)

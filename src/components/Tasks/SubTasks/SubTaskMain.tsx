@@ -13,6 +13,7 @@ import SubTaskList from "./SubTaskList";
 
 const SubTaskMain = () => {
   const { allSubTaskList } = useSelector((state: RootState) => state.task);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   let xsPoint = 12;
   let mdPoint = 4;
@@ -22,6 +23,51 @@ const SubTaskMain = () => {
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
+  const getSubtaskStateCount = (checkState: any) => {
+    let count = 0;
+    allSubTaskList.forEach((subtask:any) => {
+      subtask.state.every((state:any) => {
+        if (state.userId === user._id && state.userState === checkState) {
+          count += 1;
+          return false;
+        }
+        return true;
+      });
+    });
+    return count;
+  };
+
+  const options = [
+    {
+      title: "All",
+      count: allSubTaskList.length,
+    },
+    {
+      title: "Assigned",
+      count: getSubtaskStateCount("assigned"),
+    },
+    {
+      title: "Accepted",
+      count: getSubtaskStateCount("accepted"),
+    },
+    {
+      title: "Ongoing",
+      count: getSubtaskStateCount("ongoing"),
+    },
+    {
+      title: "Rejected",
+      count: getSubtaskStateCount("rejected"),
+    },
+    {
+      title: "Done",
+      count: getSubtaskStateCount("done"),
+    },
+    {
+      title: "Draft",
+      count: getSubtaskStateCount("draft"),
+    },
+  ];
+  
 
   return (
     <>
@@ -101,36 +147,6 @@ const SubTaskMain = () => {
   );
 };
 
-const options = [
-  {
-    title: "All",
-    count: 10,
-  },
-  {
-    title: "Assigned",
-    count: 2,
-  },
-  {
-    title: "Accepted",
-    count: 2,
-  },
-  {
-    title: "Ongoing",
-    count: 2,
-  },
-  {
-    title: "Rejected",
-    count: 4,
-  },
-  {
-    title: "Done",
-    count: 1,
-  },
-  {
-    title: "Draft",
-    count: 1,
-  },
-];
 
 export default SubTaskMain;
 

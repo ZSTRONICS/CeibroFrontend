@@ -5,6 +5,8 @@ export interface SubtaskInterface {
   subTaskFixedForUser: string[]
   doneImageRequired: boolean
   doneCommentsRequired: boolean
+  unSeenCommentsCount:number
+  attachmentsCount:number
   comments: any[]
   _id: string
   title: string

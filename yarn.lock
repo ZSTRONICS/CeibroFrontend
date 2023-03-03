@@ -7128,10 +7128,10 @@ matchmediaquery@^0.3.0:
   dependencies:
     css-mediaquery "^0.1.2"
 
-material-ui-confirm@2.1.3:
-  version "2.1.3"
-  resolved "https://registry.yarnpkg.com/material-ui-confirm/-/material-ui-confirm-2.1.3.tgz#5f75c56d137603f7fcef22125fa82a8892e4dc5f"
-  integrity sha512-3tu1wk5mo7l03QVzo5qiUv8tL28uoVhwUdu/wpIfMsYVAQmak3eFHMWXq/26ZAyqQKJWIqcF3c43hP5+Q7Wi7w==
+material-ui-confirm@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/material-ui-confirm/-/material-ui-confirm-3.0.8.tgz#b64e387e6f315c9ecc8c4358fd57d33f9171eddc"
+  integrity sha512-FiMVNOf1axOoFX4iXvbdDkjrHdv4numwt8v2yan4rOARzcgWXHhm8mOcQiOdGswSVBpfGKxNvHOIR7Xr8HV9NQ==
 
 mdn-data@2.0.14:
   version "2.0.14"

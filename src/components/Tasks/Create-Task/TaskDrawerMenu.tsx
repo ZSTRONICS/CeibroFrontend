@@ -6,6 +6,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { AttachmentIcon } from "components/material-ui/icons";
 import assets from "assets/assets";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import CButton from "components/Button/Button";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import CustomModal from "components/Modal";
@@ -35,6 +36,8 @@ import { RootState } from "redux/reducers";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
 import { DOCS_CONFIG } from "config/docs.config";
+import { useConfirm } from "material-ui-confirm";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -47,6 +50,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   const [opencdrawer, setOpenCDrawer] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
+  const confirm = useConfirm();
 
   const {
     _id,
@@ -276,9 +280,45 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     descriptionInputRef.current.value = prevObj.description;
   };
 
+  // const handleDeleteTask = (e: any) => {
+  //   e.stopPropagation();
+  //   dispatch(
+  //     deleteTask({
+  //       other: _id,
+  //       success: (res) => {
+  //         dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: _id });
+  //         dispatch(taskActions.closeTaskDrawer());
+  //         toast.success("Task deleted");
+  //         //deleted task id = _id
+  //       },
+  //       onFailAction: () => {
+  //         toast.error("Failed to delete task!");
+  //       },
+  //     })
+  //   );
+  //   setShowUpdateBtn(false);
+  // };
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
-    dispatch(
+    confirm({
+      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Are you sure you want to delete the task?</CustomStack>,
+      titleProps: { color: "red" },
+      confirmationText:"Delete",
+      confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant: "contained"},
+      cancellationText: <CButton
+      variant="contained"
+      elevation={0}
+      styles={{
+        color: "#605C5C",
+        backgroundColor: "#ECF0F1",
+        fontSize: 12,
+        fontWeight: "bold",
+      }}
+      label={"Cancel"}
+    />,
+
+    }).then(() => {
+          dispatch(
       deleteTask({
         other: _id,
         success: (res) => {
@@ -293,8 +333,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
       })
     );
     setShowUpdateBtn(false);
+    });
   };
-
   const handleProjectChange = (project: any) => {
     if (project === null) {
       setAdminListOpt([]);
