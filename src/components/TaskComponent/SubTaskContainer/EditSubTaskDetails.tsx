@@ -444,10 +444,6 @@ function EditSubTaskDetails(props: any) {
 
                           {isSubtaskMemberMarkAsDoneAble(userState) === true ? (
                             <CButton
-                              sx={{
-                                width: "107px",
-                                height: "24px",
-                              }}
                               onClick={(e: any) =>
                                 handleMarkAsDone(e, member._id)
                               }
