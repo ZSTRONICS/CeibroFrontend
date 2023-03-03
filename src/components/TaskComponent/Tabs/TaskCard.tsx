@@ -98,22 +98,23 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
     setAnchorElUser(null);
-    confirm({
-      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Are you sure you want to delete the task?</CustomStack>,
-      titleProps: { color: "red" },
-      confirmationText:"Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant: "contained"},
-      cancellationText: <CButton
-      variant="contained"
-      elevation={0}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
+      confirm({
+        title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+        description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this task?</Typography>,
+        titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
+        confirmationText:"Delete",
+        confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
+        cancellationText: <CButton
+        variant="contained"
+        elevation={0}
+        styles={{
+          color: "#605C5C",
+          backgroundColor: "#ECF0F1",
+          fontSize: 12,
+          fontWeight: "bold",
+        }}
+        label={"Cancel"}
+      />,
       
     }).then(() => {
       dispatch(

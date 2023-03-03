@@ -47,9 +47,6 @@ function TaskDetailDrawer() {
     dispatch(taskActions.closeSubtaskDetailDrawer());
   };
 
-  const handleClearStore = (e: any) => {
-    console.log('Backdrop close');
-  }
   const handleMouseDown = (e: any) => {
     if (!e.target.closest(".MuiDrawer-root")) {
       e.stopPropagation();
@@ -58,7 +55,7 @@ function TaskDetailDrawer() {
 
   return (
     <div>
-      <Backdrop open={subTaskDetailDrawer} onClick={handleClearStore} />
+      <Backdrop open={subTaskDetailDrawer} onClick={handleClose} />
       <Drawer
         onClose={handleClose}
         onMouseDown={handleMouseDown}
