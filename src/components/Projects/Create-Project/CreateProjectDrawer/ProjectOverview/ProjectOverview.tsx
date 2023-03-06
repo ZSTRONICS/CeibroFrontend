@@ -1,21 +1,20 @@
 import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import React, { useEffect, useState } from 'react'
-import DatePicker from '../../../../Utills/Inputs/DatePicker'
-import { dataInterface } from '../../../../Utills/Inputs/SelectDropdown'
-import SelectDropdown from '../../../../Utills/Inputs/SelectDropdown'
-import CreatableSelect from '../../../../Utills/Inputs/CreateAbleSelect2'
-import ImagePicker from '../../../../Utills/Inputs/ImagePicker'
-import HorizontalBreak from '../../../../Utills/Others/HorizontalBreak'
-import colors from '../../../../../assets/colors'
-import ProjectOverViewForm from './ProjectOverViewForm'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'redux/reducers'
-import { ProjectOverviewInterface } from 'constants/interfaces/project.interface'
+import CDatePicker from 'components/DatePicker/CDatePicker'
+import { getStatusDropdown } from 'config/project.config'
+import { formatDate } from 'helpers/project.helper'
 import _ from 'lodash'
+import moment from 'moment-timezone'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import projectActions, { getProjectDetail } from 'redux/action/project.action'
 import { getAvailableUsers } from 'redux/action/user.action'
-import { formatDate } from 'helpers/project.helper'
-import { getStatusDropdown } from 'config/project.config'
+import { RootState } from 'redux/reducers'
+import colors from '../../../../../assets/colors'
+import CreatableSelect from '../../../../Utills/Inputs/CreateAbleSelect2'
+import ImagePicker from '../../../../Utills/Inputs/ImagePicker'
+import SelectDropdown, { dataInterface } from '../../../../Utills/Inputs/SelectDropdown'
+import HorizontalBreak from '../../../../Utills/Others/HorizontalBreak'
+import ProjectOverViewForm from './ProjectOverViewForm'
 
 const ProjectOverview = () => {
   const classes = useStyles()
@@ -23,6 +22,9 @@ const ProjectOverview = () => {
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject)
   const { user } = useSelector((state: RootState) => state.auth)
   const [data, setData] = useState<dataInterface[]>([])
+  // const localized = momentdeDateFormat(projectOverview.dueDate);
+
+  const [showDate, setShowDate] = useState<any>(projectOverview.dueDate);
   const [loading, setLoading] = useState<boolean>(false)
   const dispatch = useDispatch()
 
@@ -62,16 +64,18 @@ const ProjectOverview = () => {
       dispatch(getAvailableUsers(payload))
     }, []);
 
-  const handleDateChange = (e: any) => {
-    const date = e?.target?.value
-    date &&
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          dueDate: date,
-        })
-      )
-  }
+  // const handleDateChange = (e: any) => {
+  //   const date = e?.target?.value
+  //   console.log('date',date);
+    
+  //   date &&
+  //     dispatch(
+  //       projectActions.setProjectOverview({
+  //         ...projectOverview,
+  //         dueDate: date,
+  //       })
+  //     )
+  // }
 
   const handleOwnerChange = (users: dataInterface[]) => {
     users &&
@@ -123,7 +127,18 @@ const ProjectOverview = () => {
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid item xs={12} sm={6} md={3} className="black-input">
-          <DatePicker value={my} onChange={handleDateChange} />
+          {/* <DatePicker value={my} onChange={handleDateChange} /> */}
+          <CDatePicker
+              showLabel={true}
+              required
+              value={showDate}
+              id="date1"
+              name="dueDate"
+              onChange={(e: any) => {
+                setShowDate(e);
+                projectOverview.dueDate= moment(e).format("YYYY-MM-DD");
+              }}
+            /> 
         </Grid>
 
         <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>

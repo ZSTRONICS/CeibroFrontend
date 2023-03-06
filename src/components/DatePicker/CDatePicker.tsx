@@ -10,16 +10,20 @@ function CDatePicker(props:any) {
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
       <div className={classes.datePicker}>
+        {/* custom lable for due date leftside */}
       <DatePicker
       {...props}
-        label='Due date'
+        label={props.showLabel===true?"":'Due date'}
         // mask="__-__-____"
         // value={showDate}
         // inputFormat={"dd-MM-yyyy"}
         disablePast={true}
         minDate={new Date().toISOString().slice(0, 10)}
         // onChange={(newValue: any) => setShowDate(newValue)}
-        renderInput={(params: any) => <TextField {...params} sx={{
+        renderInput={(params: any) => <TextField {...params} 
+        error={false}
+        // helperText="incorrect date"
+        sx={{
           ".MuiInputBase-input": { padding: '10px 14px' },
         }}/>}
       />
