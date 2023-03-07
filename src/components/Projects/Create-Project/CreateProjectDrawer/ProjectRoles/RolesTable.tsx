@@ -1,6 +1,8 @@
 import {
+  Box,
   Checkbox,
   CircularProgress,
+  Divider,
   Grid,
   makeStyles,
   Paper,
@@ -10,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import "./roles-table.css";
@@ -29,6 +32,11 @@ import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 import RoleMenu from "./RoleMenu";
 import { toast } from "react-toastify";
+import {
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
+import { fontSize } from "@material-ui/system";
 
 // store?: RootState
 const RolesTable = () => {
@@ -97,10 +105,66 @@ const RolesTable = () => {
               <div className={classes.roleInner}>
                 <Typography className={classes.roleName}>
                   {role.name}
+
+                  <CustomBadge
+                    overlap="circular"
+                    color="primary"
+                    badgeContent={
+                      <Tooltip title={"name"}>
+                        <span
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          5
+                        </span>
+                      </Tooltip>
+                    }
+                  ></CustomBadge>
                 </Typography>
                 <div className={classes.roleDetail}>
                   {role.admin && (
-                    <Typography className={classes.detail}>Admin</Typography>
+                    <CustomStack
+                      divider={
+                        <Divider
+                          orientation="vertical"
+                          flexItem
+                          style={{
+                            padding: "0 1px",
+                          }}
+                        />
+                      }
+                      gap={1}
+                    >
+                      <Typography className={classes.typoHeader}>
+                        Role
+                      </Typography>
+                      <Typography className={classes.Content}>
+                        Create
+                      </Typography>
+                      <Typography className={classes.Content}>Edit</Typography>
+                      <Typography className={classes.Content}>
+                        Delete
+                      </Typography>
+
+                      {/* <Typography
+                        style={{
+                          marginLeft: "250px",
+                          fontSize: "12px",
+                          fontWeight: 800,
+                        }}
+                      >
+                        Member
+                      </Typography>
+                      <Typography className={classes.Content}>
+                        Create
+                      </Typography>
+                      <Typography className={classes.Content}>Edit</Typography>
+                      <Typography className={classes.Content}>
+                        Delete
+                      </Typography> */}
+                    </CustomStack>
                   )}
                   {(role?.roles?.length || 0) > 0 && (
                     <>
@@ -130,23 +194,15 @@ const RolesTable = () => {
                       })}
                     </>
                   )}
-                  {(role?.timeProfile?.length || 0) > 0 && (
-                    <>
-                      <Typography className={classes.detailTitle}>
-                        Work Profile: &nbsp;
-                      </Typography>
-                      {role?.timeProfile?.map((access) => {
-                        return (
-                          <Typography className={classes.detail}>
-                            {access}, &nbsp;
-                          </Typography>
-                        );
-                      })}
-                    </>
-                  )}
                 </div>
               </div>
-              <div className={classes.roleMenu}>
+
+              <div
+                className={classes.roleMenu}
+                // style={{
+                //   border: "2px solid",
+                // }}
+              >
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
                 <RoleMenu
                   permissoin={havePermission}
@@ -168,6 +224,14 @@ export default RolesTable;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+  },
+  typoHeader: {
+    fontWeight: 800,
+    fontSize: "12px",
+  },
+  Content: {
+    fontWeight: 500,
+    fontSize: "12px",
   },
   rowTop: {
     fontWeight: 500,

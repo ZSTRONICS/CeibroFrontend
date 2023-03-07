@@ -15,22 +15,18 @@ const menus = [
   },
   {
     id: 2,
-    title: "Role(s)",
-  },
-  {
-    id: 6,
-    title: "Work Profile",
-  },
-  {
-    id: 3,
     title: "Group(s)",
   },
   {
-    id: 5,
-    title: "Members",
+    id: 3,
+    title: "Role(s)",
   },
   {
     id: 4,
+    title: "Members",
+  },
+  {
+    id: 5,
     title: "Documents",
   },
 ];

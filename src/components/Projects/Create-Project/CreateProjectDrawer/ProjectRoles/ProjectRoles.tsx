@@ -1,4 +1,5 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+// import { Box, Button, Grid, makeStyles, Typography } from "@mui/material";
 import ListIcon from "@material-ui/icons/List";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -25,15 +26,16 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          <Button
+          {/* <Typography>New Role</Typography> */}
+          {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
             className={classes.actionButton}
           >
             Bulk edit
-          </Button>
-
+          </Button> */}
+          <Typography>New Role</Typography>
           <Button
             variant="outlined"
             color="primary"
@@ -45,7 +47,7 @@ const ProjectRoles = () => {
               dispatch(projectActions.openProjectRole());
             }}
           >
-            Add a role
+            Add
           </Button>
           {roleDrawer && <RoleDrawer />}
         </Grid>

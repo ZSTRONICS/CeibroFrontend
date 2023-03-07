@@ -5,12 +5,13 @@ import colors from '../../../assets/colors'
 export const useStyles = makeStyles(() =>
     createStyles({
         outerWrapper: {
+          
             marginBottom: '10px',
-            // padding: "10px 20px",
             background: colors.white,
             '& .MuiGrid-root': {
                 marginTop: 10,
             },
+
             '& .MuiGrid-grid-xs-6': {
                 marginTop: '0px !important'
             },
@@ -27,8 +28,12 @@ export const useStyles = makeStyles(() =>
                 color: "#605C5C",
                 fontFamily: "Inter",
                 fontWeight: 500,
-                top:-3,
+                // top:-3,
               }
+        },
+        select: {
+          // flex: 3,
+          // zIndex: 2,
         },
         titleWrapper: {
             '& .MuiFormLabel-root': {
@@ -45,6 +50,8 @@ export const useStyles = makeStyles(() =>
                     borderWidth: '1px',
                 }
             }
+
+
             // '& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input': {
             //     padding: '10.5px 10.5px !important'
 
@@ -83,6 +90,15 @@ export const useStyles = makeStyles(() =>
       },
       // padding: "15px 20px"
     },
+    
+      // underline: {
+      //   "&&&:before": {
+      //     borderBottom: "none"
+      //   },
+      //   "&&:after": {
+      //     borderBottom: "none"
+      //   }
+      // },
     label: {
       // borderRight: '1px solid #DBDBE5',
       padding: "0px 5px",

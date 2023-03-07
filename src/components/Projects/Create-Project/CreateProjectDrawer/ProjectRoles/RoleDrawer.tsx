@@ -71,9 +71,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         admin: role.admin,
         roles: role.roles,
         member: role.member,
-        memberIds: role?.memberIds?.map?.((row: dataInterface) => {
-          return row._id;
-        }),
+        memberIds: role?.memberIds.map((row: any) =>row.id),
         timeProfile: role.timeProfile,
       },
       success: () => {
@@ -220,7 +218,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       })
     );
   }, []);
-  
+
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
@@ -261,7 +259,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 label=""
               />
             </div>
-
+            {/* <HorizontalBreak /> */}
             {!role.admin && (
               <>
                 <div className={classes.option}>
@@ -272,6 +270,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                     onChange={handleChangeRole}
                   />
                 </div>
+
                 {isRole && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
                     {roles
@@ -290,8 +289,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       })}
                   </div>
                 )}
-                <HorizontalBreak />
-                <div className={classes.option}>
+                {/* <HorizontalBreak /> */}
+                {/* <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Work profile
                   </Typography>
@@ -300,8 +299,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                     label=""
                     onChange={handleChangeTimeProfile}
                   />
-                </div>
-                {isTimeProfile && (
+                </div> */}
+                {/* {isTimeProfile && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
                     {roles
                       ?.filter((item) => item !== "self-made")
@@ -320,7 +319,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                         );
                       })}
                   </div>
-                )}
+                )} */}
                 <HorizontalBreak />
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>

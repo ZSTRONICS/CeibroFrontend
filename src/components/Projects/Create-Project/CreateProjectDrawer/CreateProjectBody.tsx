@@ -52,11 +52,11 @@ const CreateProjectBody = () => {
   return (
     <Grid container className={classes.body}>
       {selectedMenue === 1 && <ProjectOverview />}
-      {selectedMenue === 2 && <ProjectRoles />}
-      {selectedMenue === 3 && <ProjectGroups />}
-      {selectedMenue === 4 && <ProjectDocuments />}
-      {selectedMenue === 5 && <ProjectMembers />}
-      {selectedMenue === 6 && <TimeProfile />}
+      {selectedMenue === 2 && <ProjectGroups />}
+      {selectedMenue === 3 && <ProjectRoles />}
+      {selectedMenue === 4 && <ProjectMembers />}
+      {selectedMenue === 5 && <ProjectDocuments />}
+      {/* {selectedMenue === 6 && <TimeProfile />} */}
     </Grid>
   );
 };
@@ -66,8 +66,7 @@ export default CreateProjectBody;
 const useStyles = makeStyles({
   body: {
     padding: 20,
-    overflowY: "scroll",
-    height: "calc(100vh - 190px)",
+    height: "calc(100vh - 195px)",
     ["@media (max-width:960px)"]: {
       paddingTop: 10,
     },
