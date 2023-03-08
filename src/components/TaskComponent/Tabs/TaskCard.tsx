@@ -46,9 +46,7 @@ interface Props {
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   const { creator, createdAt, admins } = task;
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElTask, setAnchorElTask] = React.useState<null | HTMLElement>(null);
   const confirm = useConfirm();
 
   const taskCreatedOn = momentdeDateFormat(createdAt);
@@ -87,23 +85,23 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
   const openPopup = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(e.currentTarget);
+    setAnchorElTask(e.currentTarget);
   };
 
   const closePopup = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
   };
 
   const handleEdit = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
     handleCard(e, true);
   };
 
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
     confirm({
       title: (
         <CustomStack gap={1}>
@@ -156,7 +154,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
       );
     });
   };
-  const open = Boolean(anchorElUser);
+  const open = Boolean(anchorElTask);
   const id = open ? "simple-popover" : undefined;
 
   const SubHeader = () => {
@@ -212,7 +210,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 MenuListProps={{ sx: { py: 0 } }}
                 id={id}
                 open={open}
-                anchorEl={anchorElUser}
+                anchorEl={anchorElTask}
                 onClose={closePopup}
                 sx={{ "& .MuiMenuList-padding": { padding: 0 } }}
                 elevation={3}

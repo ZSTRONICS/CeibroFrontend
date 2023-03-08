@@ -3,17 +3,19 @@ import { string } from "yup/lib/locale";
 import { UserInterface } from "./user.interface";
 
 export interface ProjectOverviewInterface {
-  dueDate?: any;
-  owner?: UserInterface[] | any;
-  title: string | null;
-  description?: string;
-  location?: string;
-  projectPhoto?: string;
+  dueDate: any;
+  access:string[];
+  owner:  any;
+  title: string;
+  description: string;
+  location: string;
+  projectPhoto: string;
   photoFile?: any; // will be used only while creating a project
   id?: string;
-  publishStatus?: string;
+  publishStatus: string;
   _id?: string;
-  isDefault?:boolean;
+  isDefault:boolean;
+  extraStatus:string[],
 }
 export interface ProjectInterface {
   projectPhoto: string;
@@ -28,7 +30,11 @@ export interface ProjectInterface {
   statusDate: string;
   id?: string;
   _id?: string;
-  isDefault?:boolean;
+  isDefault:boolean;
+  extraStatus:string[],
+  access:string[];
+  description: string;
+  location: string;
 
 }
 
@@ -56,6 +62,15 @@ export interface projectProfileInterface {
 
 export const projectOverviewTemplate: ProjectOverviewInterface = {
   title: "",
+  extraStatus: [],
+  access: [],
+  dueDate: "",
+  owner: [],
+  description: "",
+  location: "",
+  projectPhoto: "",
+  publishStatus: "",
+  isDefault: false
 };
 
 export const rolesTemplate: RoleInterface = {

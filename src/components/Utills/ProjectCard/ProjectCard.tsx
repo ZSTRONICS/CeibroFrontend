@@ -29,14 +29,16 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     docsCount,
     usersCount,
     chatCount,
-    publishStatus: status,
+    publishStatus,
     _id,
   } = project;
 
   const dispatch = useDispatch();
   const handleProjectClick = () => {
+
     dispatch(getPermissions({ other: _id }));
     dispatch(projectActions.setSelectedProject(_id || null));
+    dispatch(projectActions.setProjectOverview(project))
     dispatch(projectActions.openDrawer());
   };
 
@@ -47,7 +49,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   return (
     <>
       <ProjectCardContain
-        style={{ border: `1px solid ${getColorByStatus(status)}` }}
+        // style={{ border: `1px solid ${getColorByStatus(publishStatus)}` }}
         onClick={handleProjectClick}
       >
         <ImageCard>
@@ -56,11 +58,11 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             <div
               className={classes.status}
               style={{
-                background: getColorByStatus(status),
-                color: getTextColorByStatus(status),
+                // background: getColorByStatus(publishStatus),
+                // color: getTextColorByStatus(publishStatus),
               }}
             >
-              <Typography className={classes.statusText}>{status}</Typography>
+              <Typography className={classes.statusText}>{publishStatus}</Typography>
             </div>
             <div className={classes.dateWrapper}>
               <Typography className={classes.statusDate}>

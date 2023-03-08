@@ -221,7 +221,7 @@ const uploadFileToFolder = apiCall({
 });
 const updateProject = apiCall({
   type: UPLOAD_FILE_TO_FOLDER,
-  method: "put",
+  method: "patch",
   path: (payload) => `/project/detail/${payload.other}`,
 });
 

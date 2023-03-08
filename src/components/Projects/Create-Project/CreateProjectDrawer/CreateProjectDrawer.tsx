@@ -9,6 +9,7 @@ import DrawerHeader from './DrawerHeader'
 import ProjectDrawerMenu from './ProjectDrawerMenu'
 import CreateProjectBody from './CreateProjectBody'
 import CreateProjectFooter from './CreateProjectFooter'
+import { projectOverviewTemplate } from 'constants/interfaces/project.interface'
 
 const CreateProjectDrawer = () => {
     const drawerOpen = useSelector((store:RootState) => store.project.drawerOpen)
@@ -17,6 +18,7 @@ const CreateProjectDrawer = () => {
 
     const handleClose = () => {
         dispatch(projectActions.closeDrawer())
+        dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     }
 
     return (    

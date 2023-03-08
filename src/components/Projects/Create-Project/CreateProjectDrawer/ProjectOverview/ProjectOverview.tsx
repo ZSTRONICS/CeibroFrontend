@@ -14,6 +14,7 @@ import CreatableSelect from '../../../../Utills/Inputs/CreateAbleSelect2'
 import ImagePicker from '../../../../Utills/Inputs/ImagePicker'
 import SelectDropdown, { dataInterface } from '../../../../Utills/Inputs/SelectDropdown'
 import HorizontalBreak from '../../../../Utills/Others/HorizontalBreak'
+import CreateProjectStatus from './CreateProjectStatus'
 import ProjectOverViewForm from './ProjectOverViewForm'
 
 const ProjectOverview = () => {
@@ -22,10 +23,9 @@ const ProjectOverview = () => {
   const selectedProject = useSelector((state: RootState) => state.project.selectedProject)
   const { user } = useSelector((state: RootState) => state.auth)
   const [data, setData] = useState<dataInterface[]>([])
-  // const localized = momentdeDateFormat(projectOverview.dueDate);
-
-  const [showDate, setShowDate] = useState<any>(projectOverview.dueDate);
+  const [showDate, setShowDate] = useState<any>(projectOverview&&projectOverview.dueDate);
   const [loading, setLoading] = useState<boolean>(false)
+  const [doOnce, setDoOnce]= useState(true)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -39,7 +39,7 @@ const ProjectOverview = () => {
       setLoading(true)
       dispatch(getProjectDetail(payload))
     }
-  }, [selectedProject])
+  }, [])
 
   useEffect(() => {
     const payload = {
@@ -97,7 +97,7 @@ const ProjectOverview = () => {
       )
   }
 
-  const my = formatDate(projectOverview?.dueDate)
+  // const my = formatDate(projectOverview?.dueDate)
   const statusData = getStatusDropdown()
   const statusValue = projectOverview?.publishStatus
     ? {
@@ -106,6 +106,12 @@ const ProjectOverview = () => {
       }
     : null
 
+    // console.log('statusValue--->',statusValue);
+
+if(doOnce){
+  projectOverview.dueDate= moment(showDate).format("YYYY-MM-DD")
+  setDoOnce(false)
+}
   //  const newArray = Array.from(
   //    new Set(projectOverview?.owner?.map((el: any) => JSON.stringify(el)))
   //  ).map((el: any) => JSON.parse(el));
@@ -152,13 +158,14 @@ const ProjectOverview = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6} md={4} className={classes.datePickerWrapper}>
-          <CreatableSelect
+        <Grid item xs={12} sm={6} md={3} className={classes.datePickerWrapper}>
+          {/* <CreatableSelect
             handleChange={handleStatusChange}
             data={statusData}
             value={statusValue}
             title="Status"
-          />
+          /> */}
+          <CreateProjectStatus/>
         </Grid>
 
         <Grid item xs={12} md={12} style={{ padding: '20px 5px' }}>

@@ -65,17 +65,13 @@ import {
 interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
-  const { isLoggedIn } = useSelector((store: RootState) => store.auth);
-  const { user } = useSelector((store: RootState) => store.auth);
   const dispatch = useDispatch();
 
-  const drawerOpen = useSelector(
-    (store: RootState) => store.chat.openViewQuestioniar
-  );
-
-  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
-    (state: RootState) => state.docs
-  );
+  const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+  let openProjectdrawer = useSelector((store:RootState) => store.project.drawerOpen)
+  let openTaskDrawer = useSelector((state: RootState) => state.task.taskDrawerOpen);
+  const drawerOpen = useSelector((store: RootState) => store.chat.openViewQuestioniar);
+  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector((state: RootState) => state.docs);
 
   useEffect(() => {
     if (!uploadPendingFiles) {
@@ -490,9 +486,9 @@ const App: React.FC<MyApp> = () => {
       <CreateQuestioniarDrawer />
       <CDrawer />
       {drawerOpen && <ViewQuestioniarDrawer />}
-      <CreateProjectDrawer />
+     {openProjectdrawer&& <CreateProjectDrawer />}
       <ToastContainer position="bottom-left" theme="colored" />
-      <CreateTaskDrawer />
+     {openTaskDrawer&& <CreateTaskDrawer />}
       <RouterConfig />
     </div>
   );
