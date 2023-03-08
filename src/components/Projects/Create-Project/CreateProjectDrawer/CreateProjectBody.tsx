@@ -68,7 +68,7 @@ const useStyles = makeStyles({
     padding: 20,
     height: "calc(100vh - 195px)",
     ["@media (max-width:960px)"]: {
-      paddingTop: 10,
+      // paddingTop: 10,
     },
   },
 });

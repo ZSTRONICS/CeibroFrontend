@@ -167,7 +167,7 @@ const RolesTable = () => {
 
                       <CustomStack
                         // ml={20}
-                        className={classes.memberMenu}
+                        // className={classes.memberMenu}
                         mt={1}
                         divider={
                           <Divider

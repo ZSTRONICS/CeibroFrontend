@@ -22,9 +22,7 @@ const CreateProjectBody = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
-  const { projectOverview, projects, selectedProject } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { projectOverview, projects, selectedProject } = useSelector((state: RootState) => state.project);
 
   const confirm = useConfirm();
   useEffect(() => {
@@ -103,28 +101,35 @@ const CreateProjectBody = () => {
       dueDate,
       location,
       description,
-      photoFile,
+      projectPhoto,
       publishStatus,
+      extraStatus,
     } = projectOverview;
+    
     const formData = new FormData();
-    formData.append("title", title || "");
-    formData.append("location", location || "");
-    formData.append("description", description || "");
+    formData.append("title", title);
+    formData.append("location", location);
+    formData.append("description", description);
+    if (extraStatus) {
+      if (extraStatus?.length) {
+        extraStatus?.map?.((row: string) =>
+          formData.append("extraStatus", row)
+        );
+      }
+    }
     if (owner) {
       if (owner?.length > 0) {
         owner?.map?.((row: dataInterface) =>
           formData.append("owner", row.value)
         );
-      } else {
-        formData.append("owner", owner);
       }
     }
     formData.append("dueDate", dueDate);
-    formData.append("projectPhoto", photoFile);
-    formData.append(
-      "publishStatus",
-      saveAsDraft ? "draft" : publishStatus || "draft"
-    );
+    formData.append("projectPhoto", projectPhoto);
+    formData.append("publishStatus", publishStatus);
+    if (saveAsDraft === true) {
+      formData.append("inDraftState", "true");
+    }
 
     return formData;
   };
@@ -172,12 +177,13 @@ export default CreateProjectBody;
 
 const useStyles = makeStyles({
   body: {
-    padding: "30px 20px",
+    padding: "16px 20px",
     width: "100%",
     height: "70px",
     background: colors.white,
     "@media (max-width:960px)": {
       // flexDirection: "row",
+      marginTop:"50px",
       // justifyContent: "flex-end",
     },
   },

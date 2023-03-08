@@ -65,3 +65,10 @@ font-style: normal;
 font-size: 30px;
 font-weight: 500;
 `
+export const AddStatus=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 500;
+color:#ADB5BD;
+`
