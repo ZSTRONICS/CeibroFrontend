@@ -125,46 +125,81 @@ const RolesTable = () => {
                 </Typography>
                 <div className={classes.roleDetail}>
                   {role.admin && (
-                    <CustomStack
-                      divider={
-                        <Divider
-                          orientation="vertical"
-                          flexItem
-                          style={{
-                            padding: "0 1px",
-                          }}
-                        />
-                      }
-                      gap={1}
+                    <Grid
+                      container
+                      // xs={12}
+                      // md={3}
+                      // sm={4}
+                      className={classes.roleItems}
+                      style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        alignItems: "center",
+                        // justifyContent: "center",
+                      }}
                     >
-                      <Typography className={classes.typoHeader}>
-                        Role
-                      </Typography>
-                      <Typography className={classes.Content}>
-                        Create
-                      </Typography>
-                      <Typography className={classes.Content}>Edit</Typography>
-                      <Typography className={classes.Content}>
-                        Delete
-                      </Typography>
-
-                      {/* <Typography
-                        style={{
-                          marginLeft: "250px",
-                          fontSize: "12px",
-                          fontWeight: 800,
-                        }}
+                      <CustomStack
+                        mt={1}
+                        divider={
+                          <Divider
+                            orientation="vertical"
+                            flexItem
+                            style={{
+                              padding: "0 1px",
+                            }}
+                          />
+                        }
+                        gap={1}
                       >
-                        Member
-                      </Typography>
-                      <Typography className={classes.Content}>
-                        Create
-                      </Typography>
-                      <Typography className={classes.Content}>Edit</Typography>
-                      <Typography className={classes.Content}>
-                        Delete
-                      </Typography> */}
-                    </CustomStack>
+                        <Typography className={classes.typoHeader}>
+                          Role
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Create
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Edit
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Delete
+                        </Typography>
+                      </CustomStack>
+
+                      <CustomStack
+                        // ml={20}
+                        className={classes.memberMenu}
+                        mt={1}
+                        divider={
+                          <Divider
+                            orientation="vertical"
+                            flexItem
+                            style={{
+                              padding: "0 1px",
+                            }}
+                          />
+                        }
+                        gap={1}
+                      >
+                        <Typography
+                          style={{
+                            // marginLeft: "150px",
+                            fontSize: "12px",
+                            fontWeight: 800,
+                          }}
+                        >
+                          Member
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Create
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Edit
+                        </Typography>
+                        <Typography className={classes.Content}>
+                          Delete
+                        </Typography>
+                      </CustomStack>
+                    </Grid>
                   )}
                   {(role?.roles?.length || 0) > 0 && (
                     <>
@@ -229,6 +264,16 @@ const useStyles = makeStyles({
     fontWeight: 800,
     fontSize: "12px",
   },
+  roleItems: {
+    "@media(max-width:620px)": {
+      display: "flex",
+      marginLeft: "0px",
+      // flexDirection: "row",
+      flexWrap: "wrap",
+      // justifyContent: "flex-start",
+    },
+  },
+  memberItem: {},
   Content: {
     fontWeight: 500,
     fontSize: "12px",

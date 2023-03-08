@@ -133,7 +133,7 @@ const ProjectOverview = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Grid container>
+      <Grid container spacing={3}>
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid
@@ -157,6 +157,15 @@ const ProjectOverview = () => {
           />
         </Grid>
 
+        <Grid item xs={12} sm={6} md={3} className={classes.datePickerWrapper}>
+          <SelectDropdown
+            handleChange={handleStatusChange}
+            data={statusData}
+            value={statusValue}
+            title="Status"
+          />
+        </Grid>
+
         <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
           <SelectDropdown
             handleChange={handleOwnerChange}
@@ -165,15 +174,6 @@ const ProjectOverview = () => {
             title="Owner"
             isMulti={true}
             // isDisabled={isDisabled}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3} className={classes.datePickerWrapper}>
-          <SelectDropdown
-            handleChange={handleStatusChange}
-            data={statusData}
-            value={statusValue}
-            title="Status"
           />
         </Grid>
 
@@ -187,7 +187,7 @@ const ProjectOverview = () => {
           <ImagePicker />
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={7}>
           <ProjectOverViewForm />
         </Grid>
       </Grid>
@@ -199,22 +199,30 @@ export default ProjectOverview;
 
 const useStyles = makeStyles({
   datePickerWrapper: {
-    paddingLeft: "25px",
+    // paddingLeft: "25px",
     "@media (max-width:600px)": {
       paddingLeft: 0,
       paddingTop: 20,
     },
   },
   secondForm: {
-    paddingTop: 0,
+    justifyContent: "space-evenly",
+    paddingTop: "0px",
     display: "flex",
 
     // alignItems:"center",
   },
   imagePicker: {
-    paddingLeft: "45px",
+    // width: "200px",
+    // paddingLeft: "45px",
+    // paddingRight: "15px",
+    paddingBottom: 10,
     "@media (max-width:600px)": {
       paddingBottom: 20,
+      // display: "flex",
+      // justifyContent: "center",
+      // width:"400px",
+      // height:"150px"
     },
   },
 
