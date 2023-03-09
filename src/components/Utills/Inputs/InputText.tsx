@@ -1,3 +1,4 @@
+import { maxWidth } from "@material-ui/system";
 import { FC } from "react";
 import "./inputText.css";
 
@@ -13,7 +14,7 @@ interface InputTextInterface {
 const InputText: FC<InputTextInterface> = (props) => {
   const { placeholder, value, className, name, disabled } = props;
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", maxWidth:"900px" }}>
       <input
         placeholder={placeholder}
         type="text"

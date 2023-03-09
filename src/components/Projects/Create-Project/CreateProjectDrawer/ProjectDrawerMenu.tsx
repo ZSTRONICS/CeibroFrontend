@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import colors from "../../../../assets/colors";
 import HorizontalBreak from "../../../Utills/Others/HorizontalBreak";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,7 +50,15 @@ function ProjectDrawerMenu() {
   return (
     <>
       {/* <PermissionState> */}
-      <Grid container>
+      <Grid
+        container
+        sx={{
+          paddingLeft: "4px",
+          "@media(max-width:960px)": {
+            paddingLeft: "10px",
+          },
+        }}
+      >
         {menus &&
           menus.map((menu, index) => {
             const isDisabled = index > 0 && !selectedProject;
@@ -100,6 +109,7 @@ const useStyles = makeStyles({
   },
   menu: {
     fontSize: 14,
+    // padding:""
     fontWeight: 500,
     color: colors.primary,
     cursor: "pointer",

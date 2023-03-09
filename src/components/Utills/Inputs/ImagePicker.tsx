@@ -77,6 +77,7 @@ const ImagePicker = () => {
         onClick={handleClick}
         className={classes.outerWrapper}
         style={{
+          margin: "0 auto",
           background: `url(${
             projectOverview.projectPhoto === "undefined"
               ? assets.Defaulttask
@@ -98,7 +99,7 @@ const useStyles = makeStyles({
     border: `1px solid ${colors.purpleGrey}`,
     height: "120px",
     width: "140px",
-    // marginRight:"10px",
+    // margin: "0 auto",
     position: "relative",
     cursor: "pointer",
     backgroundSize: "cover !important",

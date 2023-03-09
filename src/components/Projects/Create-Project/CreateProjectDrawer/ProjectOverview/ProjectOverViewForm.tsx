@@ -149,8 +149,10 @@ const ProjectOverViewForm = () => {
 
   return (
     <Grid container>
-      <Grid item xs={12} style={styles.inputWrapper}>
+      <Grid item xs={12}>
         <InputText
+          // style={styles.input}
+          // className={input}
           onChange={handleTitleChange}
           name="title"
           placeholder="Enter Project title"
@@ -185,9 +187,16 @@ export default ProjectOverViewForm;
 const styles = {
   inputWrapper: {
     marginTop: 15,
+    height: "44px",
   },
-  description:{
+  description: {
     marginTop: 15,
-    width:""
-  }
+    width: "100%",
+    maxWidth: "900px",
+  },
+  input: {
+    width: "100%",
+    maxWidth: "850px",
+    height: "45px",
+  },
 };
