@@ -193,7 +193,7 @@ const RolesTable = () => {
       description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to remove this person from project members?</ConfirmDescriptionTag>,
       titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
       confirmationText:"Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
       cancellationText: <CButton
       variant="contained"
       elevation={0}

@@ -39,6 +39,7 @@ import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
 import CButton from "components/Button/Button";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { ConfirmDescriptionTag } from "components/CustomTags";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
@@ -109,19 +110,13 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         </CustomStack>
       ),
       description: (
-        <Typography
-          sx={{ color: "#605C5C", fontSize: 13, fontWeight: "500", pt: 2 }}
-        >
+        <ConfirmDescriptionTag sx={{pt: 2}}>
           Are you sure you want to delete this task?
-        </Typography>
+        </ConfirmDescriptionTag>
       ),
       titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
       confirmationText: "Delete",
-      confirmationButtonProps: {
-        sx: { textTransform: "capitalize" },
-        variant: "outlined",
-        color: "error",
-      },
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
       cancellationText: (
         <CButton
           variant="contained"
