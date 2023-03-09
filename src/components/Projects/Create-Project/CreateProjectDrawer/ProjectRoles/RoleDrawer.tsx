@@ -4,8 +4,8 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  makeStyles,
   Typography,
+ makeStyles,
 } from "@material-ui/core";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
@@ -21,13 +21,13 @@ import projectActions, {
   createRole,
   getAvailableProjectMembers,
   getMember,
-  getPermissions,
   getRoles,
   getRolesById,
   updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
+import CButton from "components/Button/Button";
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
@@ -71,8 +71,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         admin: role.admin,
         roles: role.roles,
         member: role.member,
-        memberIds: role?.memberIds?.map?.((row: dataInterface) => {
-          return row._id;
+        memberIds: role?.memberIds?.map?.((row: any) => {
+          return row.id;
         }),
         timeProfile: role.timeProfile,
       },
@@ -107,8 +107,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         dispatch(projectActions.closeProjectRole());
         dispatch(getRoles({ other: selectedProject }));
         dispatch(getMember({ other: { projectId: selectedProject } }));
-
-        dispatch(getPermissions({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);
@@ -220,7 +218,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       })
     );
   }, []);
-  
+
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
@@ -291,7 +289,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                   </div>
                 )}
                 <HorizontalBreak />
-                <div className={classes.option}>
+                {/* <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Work profile
                   </Typography>
@@ -321,7 +319,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       })}
                   </div>
                 )}
-                <HorizontalBreak />
+                <HorizontalBreak /> */}
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Member
@@ -354,15 +352,21 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           </div>
         </div>
       </DialogContent>
-      <DialogActions style={{ paddingRight: 22, paddingTop: 0 }}>
-        <Button
+      <DialogActions style={{ paddingRight: 22, paddingTop: 0,gap:'10px', paddingBottom:'16px' }}>
+        {/* <Button
+          variant="outlined"
           className={classes.cancel}
           onClick={handleClose}
           color="secondary"
           autoFocus
         >
           Cancel
-        </Button>
+        </Button> */}
+     <CButton onClick={handleClose}
+      variant='outlined' 
+      styles={{ color: '#605C5C', fontSize: 12, fontWeight: '700',borderColor:'#9D9D9D' }} 
+      label={'Cancel'} />
+
         <Button
           className={classes.ok}
           color="primary"
@@ -370,7 +374,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           disabled={isDiabled}
           onClick={handleSubmit}
         >
-          {selectedRole ? "Update" : "Ok"}
+          {selectedRole ? "Update" : "Add"}
           {loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}
@@ -396,9 +400,10 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 400,
-    width: 400,
-    height: 300,
+    maxWidth: 370,
+    width: 370,
+    maxHeight: 450,
+    height:'100%'
   },
   optionsWrapper: {
     width: "100%",

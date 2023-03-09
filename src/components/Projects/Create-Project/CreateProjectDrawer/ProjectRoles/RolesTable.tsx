@@ -29,6 +29,7 @@ import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 import RoleMenu from "./RoleMenu";
 import { toast } from "react-toastify";
+import { RoleSubHeadingTag } from "components/CustomTags";
 
 // store?: RootState
 const RolesTable = () => {
@@ -58,10 +59,10 @@ const RolesTable = () => {
     avaialablePermissions.edit_permission
   );
   const handleRoleClick = (id: any) => {
-    if (havePermission) {
+    // if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));
       dispatch(projectActions.openProjectRole());
-    }
+    // }
   };
 
   const handleDelete = (id: any) => {
@@ -95,18 +96,18 @@ const RolesTable = () => {
               onClick={() => handleRoleClick(role?._id)}
             >
               <div className={classes.roleInner}>
-                <Typography className={classes.roleName}>
+                <RoleSubHeadingTag>
                   {role.name}
-                </Typography>
+                </RoleSubHeadingTag>
                 <div className={classes.roleDetail}>
                   {role.admin && (
-                    <Typography className={classes.detail}>Admin</Typography>
+                    <RoleSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</RoleSubHeadingTag>
                   )}
                   {(role?.roles?.length || 0) > 0 && (
                     <>
-                      <Typography className={classes.detailTitle}>
+                      <RoleSubHeadingTag>
                         Role: &nbsp;
-                      </Typography>
+                      </RoleSubHeadingTag>
                       {role?.roles?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
@@ -118,9 +119,9 @@ const RolesTable = () => {
                   )}
                   {(role?.member?.length || 0) > 0 && (
                     <>
-                      <Typography className={classes.detailTitle}>
+                      <RoleSubHeadingTag>
                         Member: &nbsp;
-                      </Typography>
+                      </RoleSubHeadingTag>
                       {role?.member?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
@@ -130,7 +131,7 @@ const RolesTable = () => {
                       })}
                     </>
                   )}
-                  {(role?.timeProfile?.length || 0) > 0 && (
+                  {/* {(role?.timeProfile?.length || 0) > 0 && (
                     <>
                       <Typography className={classes.detailTitle}>
                         Work Profile: &nbsp;
@@ -143,13 +144,13 @@ const RolesTable = () => {
                         );
                       })}
                     </>
-                  )}
+                  )} */}
                 </div>
               </div>
               <div className={classes.roleMenu}>
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
                 <RoleMenu
-                  permissoin={havePermission}
+                  // permissoin={havePermission}
                   onEdit={handleRoleClick}
                   onDelete={() => handleDelete(role?._id)}
                   name={role?.name}

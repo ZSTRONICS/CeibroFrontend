@@ -25,9 +25,7 @@ import { RootState } from "redux/reducers";
 import EditSubTaskDetails from "./EditSubTaskDetails";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "../Tabs/TaskCard";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import CButton from "components/Button/Button";
-
 interface Props {
   subTaskDetail: SubtaskInterface;
 }
@@ -236,7 +234,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
     e.stopPropagation();
     setAnchorElMember(null);
     confirm({
-      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
       description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this subtask ?</Typography>,
       titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
       confirmationText:"Delete",

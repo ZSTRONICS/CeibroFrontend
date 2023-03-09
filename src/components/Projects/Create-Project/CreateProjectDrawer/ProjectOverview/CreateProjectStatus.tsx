@@ -11,7 +11,7 @@ import {
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
 import CButton from "components/Button/Button";
-import { AddStatus } from "components/CustomTags";
+import { AddStatusTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import React, { useEffect, useState } from "react";
@@ -33,12 +33,12 @@ function CreateProjectStatus() {
   const [editStatusValue, setEditStatusValue] = useState(" ");
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview);
-
+const options = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined)
 useEffect(()=>{
   dispatch(
     projectActions.setProjectOverview({
       ...projectOverview,
-      publishStatus: projectOverview.extraStatus[selectedIndex],
+      publishStatus: options[selectedIndex],
     })
   );
 },[selectedIndex])
@@ -86,7 +86,7 @@ useEffect(()=>{
     handleClose(event);
   };
 
-  const options: string[] = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined);
+  // const options: string[] = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined);
 
   const openPopup = (e: any, statusValue: string) => {
     e.stopPropagation();
@@ -112,7 +112,7 @@ useEffect(()=>{
           >
             {projectOverview.publishStatus
               ? projectOverview.publishStatus
-              : projectOverview.extraStatus.length>0&&(selectedIndex!==null)?options[selectedIndex]:<AddStatus>Select a status</AddStatus>}
+              : projectOverview.extraStatus.length>0&&(selectedIndex!==null)?options[selectedIndex]:<AddStatusTag>Select a status</AddStatusTag>}
           </Box>
         </InputHOC>
         <Popper

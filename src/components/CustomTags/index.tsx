@@ -65,10 +65,38 @@ font-style: normal;
 font-size: 30px;
 font-weight: 500;
 `
-export const AddStatus=styled(Typography)`
+export const AddStatusTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;
 font-size: 14px;
 font-weight: 500;
 color:#ADB5BD;
+`
+export const RoleSubHeadingTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 16px;
+font-weight: 600;
+color:#000000;
+`
+export const RoleLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 700;
+color:#656565;
+`
+export const RoleSubLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 12px;
+font-weight: 500;
+color:#605C5C;
+`
+export const ConfirmDescriptionTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 13px;
+font-weight: 500;
+color:#605C5C;
 `

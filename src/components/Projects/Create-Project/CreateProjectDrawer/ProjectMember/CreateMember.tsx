@@ -4,6 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import colors from "assets/colors";
+import CButton from "components/Button/Button";
 import { avaialablePermissions } from "config/project.config";
 import { checkMemberPermission, mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
@@ -114,15 +115,16 @@ const MemberDialog = () => {
 
   return (
     <div>
-      <Button
-        variant="outlined"
+      <CButton
+        variant="contained"
         color="primary"
-        className={classes.btn}
-        disabled={havePermission ? false : true}
+        label="Add"
+        sx={{fontSize:14, fontWeight:'700'}}
+        // className={classes.btn}
+        // disabled={havePermission ? false : true}
         onClick={handleClickOpen}
-      >
-        Add a member
-      </Button>
+      />
+      
       <Dialog
         open={memberDrawer}
         onClose={handleClose}

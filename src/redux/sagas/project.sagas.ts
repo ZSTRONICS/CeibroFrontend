@@ -314,11 +314,11 @@ const deleteWork = apiCall({
   path: (payload) => `/project/work/detail/${payload.other}`,
 });
 
-const getPermissions = apiCall({
-  type: GET_PERMISSIONS,
-  method: "get",
-  path: (payload) => `/project/permissions/${payload.other}`,
-});
+// const getPermissions = apiCall({
+//   type: GET_PERMISSIONS,
+//   method: "get",
+//   path: (payload) => `/project/permissions/${payload.other}`,
+// });
 const deleteMember = apiCall({
   type: DELETE_MEMBER,
   method: "delete",
@@ -409,7 +409,7 @@ function* projectSaga() {
   yield takeLatest(GET_WORK_BY_ID, getWorkById);
   yield takeLatest(UPDATE_WORK, updateWork);
   yield takeLatest(DELETE_WORK, deleteWork);
-  yield takeLatest(GET_PERMISSIONS, getPermissions);
+  // yield takeLatest(GET_PERMISSIONS, getPermissions);
   yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
   yield takeLatest(DELETE_GROUP, deleteGroup);
   yield takeLatest(DELETE_ROLE, deleteRole);

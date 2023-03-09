@@ -90,8 +90,10 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const assets= {
+  ErrorOutlineOutlinedIcon,
   logoutNew,
   // logout,
   HighlightOffIcon,

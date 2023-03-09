@@ -1,19 +1,15 @@
-import { FC } from "react";
+import styled from "@emotion/styled";
 import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import styled from "@emotion/styled";
 import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
+import { FC } from "react";
 import { useDispatch } from "react-redux";
-import projectActions, { getPermissions } from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
-import {
-  getColorByStatus,
-  getTextColorByStatus,
-} from "../../../config/project.config";
 
-import moment from "moment";
 import Box from "@mui/material/Box";
+import moment from "moment";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -35,8 +31,6 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
   const dispatch = useDispatch();
   const handleProjectClick = () => {
-
-    dispatch(getPermissions({ other: _id }));
     dispatch(projectActions.setSelectedProject(_id || null));
     dispatch(projectActions.setProjectOverview(project))
     dispatch(projectActions.openDrawer());

@@ -8,6 +8,7 @@ import { rolesTemplate } from "constants/interfaces/project.interface";
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
+import { RoleSubHeadingTag } from "components/CustomTags";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -25,20 +26,23 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          <Button
+          {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
             className={classes.actionButton}
           >
             Bulk edit
-          </Button>
+          </Button> */}
+          <RoleSubHeadingTag>
+          New Role
+          </RoleSubHeadingTag>
 
           <Button
             variant="outlined"
             color="primary"
             className={classes.actionButton}
-            disabled={!havePermission ? true : false}
+            // disabled={!havePermission ? true : false}
             onClick={() => {
               dispatch(projectActions.setRole(rolesTemplate));
               dispatch(projectActions.setSelectedRole(null));
