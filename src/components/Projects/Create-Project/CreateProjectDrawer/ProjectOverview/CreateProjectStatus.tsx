@@ -11,9 +11,11 @@ import {
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
 import CButton from "components/Button/Button";
-import { AddStatus } from "components/CustomTags";
+import { AddStatusTag } from "components/CustomTags";
+import { DropDownIcon } from "components/material-ui/icons/dropdown/DropDownIcon";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -32,16 +34,19 @@ function CreateProjectStatus() {
     React.useState<null | HTMLElement>(null);
   const [editStatusValue, setEditStatusValue] = useState(" ");
   const projectOverview = useSelector(
-    (state: RootState) => state.project.projectOverview);
-
-useEffect(()=>{
-  dispatch(
-    projectActions.setProjectOverview({
-      ...projectOverview,
-      publishStatus: projectOverview.extraStatus[selectedIndex],
-    })
+    (state: RootState) => state.project.projectOverview
   );
-},[selectedIndex])
+  const options = [...projectOverview.extraStatus].filter(
+    (item: string) => item !== "" && item !== undefined
+  );
+  useEffect(() => {
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        publishStatus: options[selectedIndex],
+      })
+    );
+  }, [selectedIndex]);
 
   const handleOpenCloseStatusModal = () => {
     setOpenCloseStatusModal((prev: boolean) => !prev);
@@ -75,7 +80,7 @@ useEffect(()=>{
     event: React.MouseEvent<HTMLElement>,
     index: number
   ) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setSelectedIndex(index);
     dispatch(
       projectActions.setProjectOverview({
@@ -86,7 +91,7 @@ useEffect(()=>{
     handleClose(event);
   };
 
-  const options: string[] = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined);
+  // const options: string[] = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined);
 
   const openPopup = (e: any, statusValue: string) => {
     e.stopPropagation();
@@ -103,16 +108,36 @@ useEffect(()=>{
 
   return (
     <>
-      <div onClick={handleToggle} style={{maxWidth:'280px', width:'100%', cursor:'pointer'}}>
+      <div
+        onClick={handleToggle}
+        style={{ maxWidth: "280px", width: "100%", cursor: "pointer" }}
+      >
+        {/* <SelectDropdown /> */}
         <InputHOC title="Status">
           <Box
             ref={anchorRef}
             // onClick={handleToggle}
             sx={{ fontSize: 14, fontWeight: 500, padding: "5px 10px" }}
           >
-            {projectOverview.publishStatus
-              ? projectOverview.publishStatus
-              : projectOverview.extraStatus.length>0&&(selectedIndex!==null)?options[selectedIndex]:<AddStatus>Select a status</AddStatus>}
+            {projectOverview.publishStatus ? (
+              projectOverview.publishStatus
+            ) : projectOverview.extraStatus.length > 0 &&
+              selectedIndex !== null ? (
+              options[selectedIndex]
+            ) : (
+              <AddStatusTag>Select a status</AddStatusTag>
+            )}
+          </Box>
+          <Box
+            sx={{
+              position: "absolute",
+              right: "0px",
+              borderLeft: "1px solid hsl(0, 0%, 80%)",
+              padding: "0 15px",
+              color:"hsl(0, 0%, 80%)"
+            }}
+          >
+            <DropDownIcon />
           </Box>
         </InputHOC>
         <Popper
@@ -134,7 +159,7 @@ useEffect(()=>{
             >
               <Paper
                 sx={{
-                  maxWidth:'300px',
+                  maxWidth: "300px",
                   width: "100%",
                   maxHeight: "250px",
                   height: "100%",
@@ -144,26 +169,33 @@ useEffect(()=>{
               >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
-                  sx={{
-                    "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
-                      backgroundColor:'#0076c81f',
-                    },
-                    '& .MuiButtonBase-root-MuiButton-root:hover':{backgroundColor:'#0076c81f'}
-                  }}
+                    sx={{
+                      "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
+                        backgroundColor: "#0076c81f",
+                      },
+                      "& .MuiButtonBase-root-MuiButton-root:hover": {
+                        backgroundColor: "#0076c81f",
+                      },
+                    }}
                     subheader={
                       <MenuItem
                         disableTouchRipple
                         disableRipple
                         onClick={handleOpenCloseStatusModal}
                         sx={{
+                          // border:"2px solid",
                           background: "#0076c81f",
                           "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
-                            backgroundColor:'#0076c81f !important',
+                            backgroundColor: "#0076c81f !important",
                           },
                         }}
                       >
                         <CButton
-                        sx={{'& .MuiButtonBase-root-MuiButton-root:hover':{background:'#0076c81f'}}}
+                          sx={{
+                            "& .MuiButtonBase-root-MuiButton-root:hover": {
+                              background: "#0076c81f",
+                            },
+                          }}
                           label="Add new status"
                           startIcon={<AddOutlinedIcon />}
                         />
@@ -178,8 +210,8 @@ useEffect(()=>{
                       return (
                         <CustomStack justifyContent="space-between">
                           <MenuItem
-                          disableRipple
-                          disableTouchRipple
+                            disableRipple
+                            disableTouchRipple
                             onClick={(e: any) => handleMenuItemClick(e, index)}
                           >
                             {item}

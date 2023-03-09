@@ -6,7 +6,7 @@ const CustomCheckbox = (props:CheckboxProps) =>{
       color: '#ADB5BD'
     },
     '&.Mui-checked':{
-      color: '#1976d2'
+      color: '#F1B740'
     }
   }}/>
 }

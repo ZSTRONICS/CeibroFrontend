@@ -9,13 +9,13 @@ import { rolesTemplate } from "constants/interfaces/project.interface";
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
+import { RoleSubHeadingTag } from "components/CustomTags";
+import CButton from "components/Button/Button";
 
 const ProjectRoles = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { roleDrawer, userPermissions } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { roleDrawer, userPermissions } = useSelector((state: RootState) => state.project);
 
   const havePermission = checkRolePermission(
     userPermissions,
@@ -26,7 +26,6 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          {/* <Typography>New Role</Typography> */}
           {/* <Button
             variant="outlined"
             color="primary"
@@ -35,20 +34,22 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <Typography>New Role</Typography>
-          <Button
-            variant="outlined"
+          <RoleSubHeadingTag>
+            New Role
+          </RoleSubHeadingTag>
+
+          <CButton
+            label="Add"
+            variant="contained"
             color="primary"
             className={classes.actionButton}
-            disabled={!havePermission ? true : false}
+            // disabled={!havePermission ? true : false}
             onClick={() => {
               dispatch(projectActions.setRole(rolesTemplate));
               dispatch(projectActions.setSelectedRole(null));
               dispatch(projectActions.openProjectRole());
             }}
-          >
-            Add
-          </Button>
+          />
           {roleDrawer && <RoleDrawer />}
         </Grid>
 

@@ -106,7 +106,8 @@
 
 // export default ProjectOverViewForm;
 
-import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { Grid } from "@mui/material";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -116,6 +117,7 @@ import InputText from "../../../../Utills/Inputs/InputText";
 import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
 
 const ProjectOverViewForm = () => {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
@@ -148,11 +150,10 @@ const ProjectOverViewForm = () => {
   };
 
   return (
-    <Grid container>
+    <Grid container className={classes.outerWrapper}>
       <Grid item xs={12}>
         <InputText
-          // style={styles.input}
-          // className={input}
+          className={classes.input}
           onChange={handleTitleChange}
           name="title"
           placeholder="Enter Project title"
@@ -163,6 +164,7 @@ const ProjectOverViewForm = () => {
 
       <Grid item xs={12} style={styles.inputWrapper}>
         <InputText
+          className={classes.input}
           onChange={handleLocationChange}
           name="location"
           placeholder="Enter a location address"
@@ -187,16 +189,21 @@ export default ProjectOverViewForm;
 const styles = {
   inputWrapper: {
     marginTop: 15,
-    height: "44px",
   },
   description: {
     marginTop: 15,
     width: "100%",
     maxWidth: "900px",
   },
+};
+const useStyles = makeStyles({
+  outerWrapper: {
+    paddingLeft: "25px",
+    "@media(max-width:900px)": {
+      paddingLeft: "0px",
+    },
+  },
   input: {
-    width: "100%",
-    maxWidth: "850px",
     height: "45px",
   },
-};
+});

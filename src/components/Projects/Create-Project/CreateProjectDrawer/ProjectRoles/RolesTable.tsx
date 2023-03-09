@@ -32,11 +32,7 @@ import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 import RoleMenu from "./RoleMenu";
 import { toast } from "react-toastify";
-import {
-  CustomBadge,
-  CustomStack,
-} from "components/TaskComponent/Tabs/TaskCard";
-import { fontSize } from "@material-ui/system";
+import { RoleSubHeadingTag } from "components/CustomTags";
 
 // store?: RootState
 const RolesTable = () => {
@@ -66,10 +62,10 @@ const RolesTable = () => {
     avaialablePermissions.edit_permission
   );
   const handleRoleClick = (id: any) => {
-    if (havePermission) {
+    // if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));
       dispatch(projectActions.openProjectRole());
-    }
+    // }
   };
 
   const handleDelete = (id: any) => {
@@ -103,109 +99,18 @@ const RolesTable = () => {
               onClick={() => handleRoleClick(role?._id)}
             >
               <div className={classes.roleInner}>
-                <Typography className={classes.roleName}>
+                <RoleSubHeadingTag>
                   {role.name}
-
-                  <CustomBadge
-                    overlap="circular"
-                    color="primary"
-                    badgeContent={
-                      <Tooltip title={"name"}>
-                        <span
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          5
-                        </span>
-                      </Tooltip>
-                    }
-                  ></CustomBadge>
-                </Typography>
+                </RoleSubHeadingTag>
                 <div className={classes.roleDetail}>
                   {role.admin && (
-                    <Grid
-                      container
-                      // xs={12}
-                      // md={3}
-                      // sm={4}
-                      className={classes.roleItems}
-                      style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        alignItems: "center",
-                        // justifyContent: "center",
-                      }}
-                    >
-                      <CustomStack
-                        mt={1}
-                        divider={
-                          <Divider
-                            orientation="vertical"
-                            flexItem
-                            style={{
-                              padding: "0 1px",
-                            }}
-                          />
-                        }
-                        gap={1}
-                      >
-                        <Typography className={classes.typoHeader}>
-                          Role
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Create
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Edit
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Delete
-                        </Typography>
-                      </CustomStack>
-
-                      <CustomStack
-                        // ml={20}
-                        // className={classes.memberMenu}
-                        mt={1}
-                        divider={
-                          <Divider
-                            orientation="vertical"
-                            flexItem
-                            style={{
-                              padding: "0 1px",
-                            }}
-                          />
-                        }
-                        gap={1}
-                      >
-                        <Typography
-                          style={{
-                            // marginLeft: "150px",
-                            fontSize: "12px",
-                            fontWeight: 800,
-                          }}
-                        >
-                          Member
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Create
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Edit
-                        </Typography>
-                        <Typography className={classes.Content}>
-                          Delete
-                        </Typography>
-                      </CustomStack>
-                    </Grid>
+                    <RoleSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</RoleSubHeadingTag>
                   )}
                   {(role?.roles?.length || 0) > 0 && (
                     <>
-                      <Typography className={classes.detailTitle}>
+                      <RoleSubHeadingTag>
                         Role: &nbsp;
-                      </Typography>
+                      </RoleSubHeadingTag>
                       {role?.roles?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
@@ -217,9 +122,9 @@ const RolesTable = () => {
                   )}
                   {(role?.member?.length || 0) > 0 && (
                     <>
-                      <Typography className={classes.detailTitle}>
+                      <RoleSubHeadingTag>
                         Member: &nbsp;
-                      </Typography>
+                      </RoleSubHeadingTag>
                       {role?.member?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
@@ -229,6 +134,20 @@ const RolesTable = () => {
                       })}
                     </>
                   )}
+                  {/* {(role?.timeProfile?.length || 0) > 0 && (
+                    <>
+                      <Typography className={classes.detailTitle}>
+                        Work Profile: &nbsp;
+                      </Typography>
+                      {role?.timeProfile?.map((access) => {
+                        return (
+                          <Typography className={classes.detail}>
+                            {access}, &nbsp;
+                          </Typography>
+                        );
+                      })}
+                    </>
+                  )} */}
                 </div>
               </div>
 
@@ -240,7 +159,7 @@ const RolesTable = () => {
               >
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
                 <RoleMenu
-                  permissoin={havePermission}
+                  // permissoin={havePermission}
                   onEdit={handleRoleClick}
                   onDelete={() => handleDelete(role?._id)}
                   name={role?.name}

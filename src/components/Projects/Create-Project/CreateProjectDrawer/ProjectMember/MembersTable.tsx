@@ -41,6 +41,9 @@ import Select from "../../../../Utills/Inputs/Select";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
 import { toast } from "react-toastify";
+import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import CButton from "components/Button/Button";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -186,8 +189,22 @@ const RolesTable = () => {
     setLoading(true);
 
     confirm({
-      title: "Please confirm",
-      description: "Are you confirm want to delete",
+      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to remove this person from project members?</ConfirmDescriptionTag>,
+      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
+      confirmationText:"Delete",
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
+      cancellationText: <CButton
+      variant="contained"
+      elevation={0}
+      styles={{
+        color: "#605C5C",
+        backgroundColor: "#ECF0F1",
+        fontSize: 12,
+        fontWeight: "bold",
+      }}
+      label={"Cancel"}
+    />,
     }).then(() => {
       dispatch(
         deleteMember({
@@ -213,12 +230,12 @@ const RolesTable = () => {
         <TableHead>
           <TableRow>
             <TableCell className={classes.rowTop}>Name</TableCell>
-            {/* <TableCell className={classes.rowTop} align="left">
+            <TableCell className={classes.rowTop} align="left">
               Role
             </TableCell>
             <TableCell className={classes.rowTop} align="left">
               Group
-            </TableCell> */}
+            </TableCell>
             <TableCell className={classes.rowTop} align="left"></TableCell>
           </TableRow>
         </TableHead>
@@ -234,7 +251,7 @@ const RolesTable = () => {
                   <TableCell
                     component="th"
                     scope="row"
-                    style={{ width: "60%" }}
+                    // style={{ width: "60%" }}
                   >
                     <div className={classes.nameWrapper}>
                       <Typography className={classes.name}>
@@ -253,9 +270,15 @@ const RolesTable = () => {
                           `${row?.user?.firstName} ${row?.user?.surName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
-                        {row?.user?.companyName}
+                        Company:{row?.user?.companyName??"N/A"}
                       </Typography>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <AddStatusTag sx={{color:'#000000'}}>Manger</AddStatusTag>
+                  </TableCell>
+                  <TableCell>
+                  <AddStatusTag sx={{color:'#000000'}}>Electrikudwr</AddStatusTag>
                   </TableCell>
                   {/* <TableCell align="right" style={{ width: "20%" }}>
                     <Select
@@ -281,7 +304,7 @@ const RolesTable = () => {
                     />
                   </TableCell> */}
                   <TableCell align="right" style={{ width: "10%" }}>
-                    {haveDeletePermission && (
+                    {/* {haveDeletePermission && ( */}
                       <img
                         style={{ width: 32, height: 32 }}
                         src={assets.membersDelete}
@@ -289,7 +312,7 @@ const RolesTable = () => {
                         onClick={() => handleDelete(row?.id)}
                         alt=""
                       />
-                    )}
+                    {/* )} */}
                   </TableCell>
                 </TableRow>
               ))}
@@ -328,7 +351,7 @@ export default RolesTable;
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    // minWidth: 650,
     // position: "relative",
   },
   nameWrapper: {},

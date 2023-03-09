@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions from "../../../../redux/action/project.action";
 import { RootState } from "../../../../redux/reducers";
 import { useMediaQuery } from "react-responsive";
-import PermissionState from "components/context/PermissionState";
 
 const menus = [
   {
@@ -16,20 +15,27 @@ const menus = [
   },
   {
     id: 2,
-    title: "Group(s)",
-  },
-  {
-    id: 3,
     title: "Role(s)",
   },
   {
-    id: 4,
+    id: 3,
     title: "Members",
+  },
+    {
+    id: 4,
+    title: "Group(s)",
   },
   {
     id: 5,
     title: "Documents",
   },
+  // {
+  //   id: 6,
+  //   title: "Work Profile",
+  // },
+
+
+  
 ];
 
 function ProjectDrawerMenu() {

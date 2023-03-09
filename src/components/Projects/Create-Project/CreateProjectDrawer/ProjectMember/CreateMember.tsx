@@ -4,6 +4,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import colors from "assets/colors";
+import CButton from "components/Button/Button";
 import { avaialablePermissions } from "config/project.config";
 import { checkMemberPermission, mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
@@ -114,15 +115,16 @@ const MemberDialog = () => {
 
   return (
     <div>
-      <Button
-        variant="outlined"
+      <CButton
+        variant="contained"
         color="primary"
-        className={classes.btn}
-        disabled={havePermission ? false : true}
+        label="Add"
+        sx={{ fontSize: 14, fontWeight: "700" }}
+        // className={classes.btn}
+        // disabled={havePermission ? false : true}
         onClick={handleClickOpen}
-      >
-        Add a member
-      </Button>
+      />
+
       <Dialog
         open={memberDrawer}
         onClose={handleClose}
@@ -145,7 +147,10 @@ const MemberDialog = () => {
               /> */}
             </div>
 
-            <div className={classes.meta} style={{zIndex:10,position:'relative'}}>
+            <div
+              className={classes.meta}
+              style={{ zIndex: 10, position: "relative" }}
+            >
               <SelectDropdown
                 title="Role"
                 data={roles}
@@ -155,13 +160,12 @@ const MemberDialog = () => {
               />
             </div>
 
-            <div className={classes.meta} >
+            <div className={classes.meta}>
               <SelectDropdown
                 title="Group"
                 data={groups}
                 noOptionMessage="No group available"
                 handleChange={(e: any) => setSelectGroups(e)}
-                
               />
             </div>
 
@@ -180,7 +184,11 @@ const MemberDialog = () => {
           {/* <InputText/>
           <SelectDropdown title="Role"/> */}
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{
+            paddingRight: "25px",
+          }}
+        >
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>

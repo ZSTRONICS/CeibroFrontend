@@ -15,7 +15,6 @@ import { toast } from "react-toastify";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
-import CButton from "components/Button/Button";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -179,14 +178,11 @@ export default CreateProjectBody;
 
 const useStyles = makeStyles({
   body: {
-    padding: "16px 20px",
-    width: "100%",
-    height: "70px",
+    padding: "10px 20px",
     background: colors.white,
     "@media (max-width:960px)": {
-      // flexDirection: "row",
-      marginTop:"50px",
-      // justifyContent: "flex-end",
+      flexDirection: "row",
+      alignItems: "flex-end",
     },
   },
   create: {

@@ -99,7 +99,6 @@ const useStyles = makeStyles({
     border: `1px solid ${colors.purpleGrey}`,
     height: "120px",
     width: "140px",
-    // margin: "0 auto",
     position: "relative",
     cursor: "pointer",
     backgroundSize: "cover !important",
@@ -112,8 +111,8 @@ const useStyles = makeStyles({
     color: colors.white,
     background: colors.primary,
     padding: 2,
-    height: 22,
-    width: 22,
+    height: 28,
+    width: 28,
   },
   inputFile: {
     visibility: "hidden",
