@@ -164,7 +164,7 @@ const ProjectOverview = () => {
             handleChange={handleOwnerChange}
             data={data}
             value={ProjectOwnerList}
-            title="Owner"
+            title="Project member"
             isMulti={true}
             // isDisabled={isDisabled}
           />

@@ -219,7 +219,9 @@ const useStyle = makeStyles({
   },
   body: {
     width: 360,
-    minHeight: 300,
+    // minHeight: 300,
+    maxHeight: 450,
+    height:'100%'
   },
   meta: {
     marginTop: 10,
