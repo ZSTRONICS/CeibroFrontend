@@ -72,7 +72,7 @@ font-size: 14px;
 font-weight: 500;
 color:#ADB5BD;
 `
-export const RoleSubHeadingTag=styled(Typography)`
+export const ProjectSubHeadingTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;
 font-size: 16px;
@@ -99,4 +99,11 @@ font-style: normal;
 font-size: 13px;
 font-weight: 500;
 color:#605C5C;
+`
+export const GroupMemberNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 15px;
+font-weight: 500;
+color:#656565;
 `

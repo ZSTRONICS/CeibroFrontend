@@ -29,7 +29,7 @@ import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 import RoleMenu from "./RoleMenu";
 import { toast } from "react-toastify";
-import { RoleSubHeadingTag } from "components/CustomTags";
+import { ProjectSubHeadingTag } from "components/CustomTags";
 
 // store?: RootState
 const RolesTable = () => {
@@ -96,18 +96,18 @@ const RolesTable = () => {
               onClick={() => handleRoleClick(role?._id)}
             >
               <div className={classes.roleInner}>
-                <RoleSubHeadingTag>
+                <ProjectSubHeadingTag>
                   {role.name}
-                </RoleSubHeadingTag>
+                </ProjectSubHeadingTag>
                 <div className={classes.roleDetail}>
                   {role.admin && (
-                    <RoleSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</RoleSubHeadingTag>
+                    <ProjectSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</ProjectSubHeadingTag>
                   )}
                   {(role?.roles?.length || 0) > 0 && (
                     <>
-                      <RoleSubHeadingTag>
+                      <ProjectSubHeadingTag>
                         Role: &nbsp;
-                      </RoleSubHeadingTag>
+                      </ProjectSubHeadingTag>
                       {role?.roles?.map((access) => {
                         return (
                           <Typography className={classes.detail}>
@@ -119,9 +119,9 @@ const RolesTable = () => {
                   )}
                   {(role?.member?.length || 0) > 0 && (
                     <>
-                      <RoleSubHeadingTag>
+                      <ProjectSubHeadingTag>
                         Member: &nbsp;
-                      </RoleSubHeadingTag>
+                      </ProjectSubHeadingTag>
                       {role?.member?.map((access) => {
                         return (
                           <Typography className={classes.detail}>

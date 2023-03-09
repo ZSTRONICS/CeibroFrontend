@@ -8,7 +8,7 @@ import { rolesTemplate } from "constants/interfaces/project.interface";
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
-import { RoleSubHeadingTag } from "components/CustomTags";
+import { ProjectSubHeadingTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
 
 const ProjectRoles = () => {
@@ -33,14 +33,15 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <RoleSubHeadingTag>
+          <ProjectSubHeadingTag>
             New Role
-          </RoleSubHeadingTag>
+          </ProjectSubHeadingTag>
 
           <CButton
             label="Add"
-            variant="contained"
+            variant="outlined"
             color="primary"
+            sx={{fontWeight:'700'}}
             className={classes.actionButton}
             // disabled={!havePermission ? true : false}
             onClick={() => {
