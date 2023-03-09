@@ -192,11 +192,11 @@ const RolesTable = () => {
       title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
       description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to remove this person from project members?</ConfirmDescriptionTag>,
       titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Delete",
+      confirmationText:"Remove",
       confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
       cancellationText: <CButton
       variant="contained"
-      elevation={0}
+      elevation={1}
       styles={{
         color: "#605C5C",
         backgroundColor: "#ECF0F1",

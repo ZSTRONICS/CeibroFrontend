@@ -32,7 +32,7 @@ interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete", "self-made"];
+  const roles = ["create", "edit", "delete",];
 
   const roleTempale = {
     memberList: [],

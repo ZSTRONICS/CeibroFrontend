@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
-import { RoleSubHeadingTag } from "components/CustomTags";
+import { ProjectSubHeadingTag } from "components/CustomTags";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -19,7 +19,7 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <RoleSubHeadingTag>New Members</RoleSubHeadingTag>
+          <ProjectSubHeadingTag>New Members</ProjectSubHeadingTag>
           <CreateMember />
         </Grid>
 

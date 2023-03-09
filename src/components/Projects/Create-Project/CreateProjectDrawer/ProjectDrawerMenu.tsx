@@ -19,12 +19,13 @@ const menus = [
   },
   {
     id: 3,
-    title: "Members",
-  },
-    {
-    id: 4,
     title: "Group(s)",
   },
+  {
+    id: 4,
+    title: "Members",
+  },
+    
   {
     id: 5,
     title: "Documents",

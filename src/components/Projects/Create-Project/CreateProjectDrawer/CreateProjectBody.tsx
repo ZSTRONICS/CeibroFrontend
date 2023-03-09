@@ -17,8 +17,8 @@ const CreateProjectBody = () => {
     <Grid container className={classes.body}>
       {selectedMenue === 1 && <ProjectOverview />}
       {selectedMenue === 2 && <ProjectRoles />}
-      {selectedMenue === 3 && <ProjectMembers />}
-      {selectedMenue === 4 && <ProjectGroups />}
+      {selectedMenue === 3 && <ProjectGroups />}
+      {selectedMenue === 4 && <ProjectMembers />}
       {selectedMenue === 5 && <ProjectDocuments />}
       {/* {selectedMenue === 6 && <TimeProfile />} */}
     </Grid>

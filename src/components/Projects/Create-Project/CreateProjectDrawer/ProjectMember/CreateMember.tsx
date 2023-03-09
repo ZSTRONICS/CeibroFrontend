@@ -116,7 +116,7 @@ const MemberDialog = () => {
   return (
     <div>
       <CButton
-        variant="contained"
+        variant="outlined"
         color="primary"
         label="Add"
         sx={{ fontSize: 14, fontWeight: "700" }}

@@ -133,8 +133,9 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           <HorizontalBreak color={colors.grey} />
         </div>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.btnWraper}>
         <Button
+        variant="outlined"
           className={classes.cancel}
           onClick={handleClose}
           color="secondary"
@@ -149,7 +150,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           onClick={handleSubmit}
           disabled={isDiabled}
         >
-          {selectedGroup ? "Update" : "Ok"}
+          {selectedGroup ? "Update" : "Add"}
 
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />
@@ -163,6 +164,14 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 export default AddGroup;
 
 const useStyles = makeStyles({
+  btnWraper:{
+    '& .MuiButton-outlinedSecondary:hover':{
+      backgroundColor:'transparent',
+      border:'1px solid #9D9D9D',
+    },
+    padding:'10px 18px',
+    gap:'10px',
+  },
   menuWrapper: {
     display: "flex",
     alignItems: "baseline",
@@ -176,9 +185,11 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
+    '& .input-text':{fontWeight:'600 !important'},
+
     maxWidth: 370,
     width: 370,
-    height: 300,
+    // height: 300,
   },
   optionsWrapper: {
     width: "100%",
@@ -192,9 +203,11 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   cancel: {
+   
     fontSize: 12,
     fontWeight: 700,
-    color: colors.textGrey,
+    color: "#9D9D9D",
+    borderColor:"#9D9D9D",
   },
   ok: {
     fontSize: 12,
