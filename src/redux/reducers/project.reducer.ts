@@ -190,7 +190,7 @@ const NavigationReducer = (
     case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
       return {
         ...state,
-        projects: action.payload?.result?.results,
+        projects: action.payload.results,
         projectsLoading: false,
       };
     }

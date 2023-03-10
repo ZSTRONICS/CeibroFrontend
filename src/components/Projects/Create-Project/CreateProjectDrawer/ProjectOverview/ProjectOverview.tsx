@@ -20,6 +20,7 @@ import SelectDropdown, {
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import CreateProjectStatus from "./CreateProjectStatus";
+import { DatePicker } from "@mui/x-date-pickers";
 
 const ProjectOverview = () => {
   const classes = useStyles();
@@ -140,12 +141,11 @@ const ProjectOverview = () => {
 
         <Grid
           item
-          sx={{ maxWidth: "240px", width: "100%" }}
+          // sx={{ maxWidth: "240px", width: "100%" }}
           xs={12}
           sm={4}
-          md={2}
+          md={2.8}
         >
-          {/* <DatePicker value={my} onChange={handleDateChange} /> */}
           <CDatePicker
             showLabel={true}
             required
@@ -154,7 +154,7 @@ const ProjectOverview = () => {
             name="dueDate"
             onChange={(e: any) => {
               setShowDate(e);
-              // projectOverview.dueDate = moment(e).format("YYYY-MM-DD");
+              projectOverview.dueDate = moment(e).format("YYYY-MM-DD");
             }}
           />
         </Grid>
@@ -178,8 +178,7 @@ const ProjectOverview = () => {
             title="Status"
           /> */}
           {/* <SelectDropdown title="Status"/> */}
-          <CreateProjectStatus/>
-          
+          <CreateProjectStatus />
         </Grid>
 
         <Grid item xs={12} md={12} style={{ padding: "15px 5px" }}>
