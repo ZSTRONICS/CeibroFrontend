@@ -19,8 +19,6 @@ const ProjectGroupsList = () => {
   const { selectedProject, groupList, selectedGroup } = useSelector(
     (state: RootState) => state?.project
   );
-  console.log('groupList',groupList);
-  
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);

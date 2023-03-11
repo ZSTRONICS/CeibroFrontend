@@ -37,8 +37,6 @@ interface GroupChipInterface {
 
 const GroupChip: React.FC<GroupChipInterface> = (props) => {
     const {group, handleClick, handleDelete } = props;
-    console.log('group',group);
-
   const [groupExpanded, setGroupExpanded] = React.useState<string | false>("admin");
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent,newExpanded: boolean) => {

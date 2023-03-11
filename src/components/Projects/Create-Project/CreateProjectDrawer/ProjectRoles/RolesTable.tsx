@@ -84,7 +84,6 @@ const RolesTable = () => {
       })
     );
   };
-console.log('getAllProjectRoles',getAllProjectRoles);
 
   return (
     <Grid container >
