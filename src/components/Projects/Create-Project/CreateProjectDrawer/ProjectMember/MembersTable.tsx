@@ -28,9 +28,8 @@ import projectActions, {
   deleteMember,
   getGroup,
   getMember,
-  getRoles,
-  getRolesById,
   updateMember,
+  PROJECT_APIS
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { useConfirm } from "material-ui-confirm";
@@ -44,6 +43,7 @@ import { toast } from "react-toastify";
 import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import CButton from "components/Button/Button";
+import { ProjectMemberInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -93,55 +93,47 @@ const RolesTable = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  useEffect(() => {
-    dispatch(getGroup({ other: selectedProject }));
-    dispatch(
-      getRoles({
-        other: selectedProject,
-      })
-    );
-  }, []);
 
   useEffect(() => {
-    if (groupList) {
-      const newGroups = groupList.map((group: GroupInterface) => {
-        return {
-          title: group.name,
-          value: group._id,
-        };
-      });
-      setGroups(newGroups);
-    }
-  }, [groupList]);
+    dispatch(getMember({other:selectedProject}))
+  },[])
+  // useEffect(() => {
+  //   if (groupList) {
+  //     const newGroups = groupList.map((group: GroupInterface) => {
+  //       return {
+  //         title: group.name,
+  //         value: group._id,
+  //       };
+  //     });
+  //     setGroups(newGroups);
+  //   }
+  // }, [groupList]);
 
-  useEffect(() => {
-    if (rolesList) {
-      const newRoles = rolesList?.map((role: RoleInterface) => {
-        return {
-          title: role.name,
-          value: role._id,
-        };
-      });
-      setRoles(newRoles);
-    }
-  }, [rolesList]);
+  // useEffect(() => {
+  //   if (rolesList) {
+  //     const newRoles = rolesList?.map((role: RoleInterface) => {
+  //       return {
+  //         title: role.name,
+  //         value: role._id,
+  //       };
+  //     });
+  //     setRoles(newRoles);
+  //   }
+  // }, [rolesList]);
 
-  const getMemebers = () => {
-    if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: { projectId: selectedProject, includeMe: true },
-      };
-      setLoading(true);
-      dispatch(getMember(payload));
-    }
-  };
+  // const getMemebers = () => {
+  //   if (selectedProject) {
+  //     const payload = {
+  //       finallyAction: () => {
+  //         setLoading(false);
+  //       },
+  //       other: { projectId: selectedProject, includeMe: true },
+  //     };
+  //     setLoading(true);
+  //     dispatch(getMember(payload));
+  //   }
+  // };
 
-  useEffect(() => {
-    getMemebers();
-  }, [selectedProject]);
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
     const payload = {
@@ -149,9 +141,6 @@ const RolesTable = () => {
         groupId: e ? e : null,
         memberId: row?.id,
         roleId: row?.role?._id,
-      },
-      success: () => {
-        getMemebers();
       },
       other: selectedProject,
     };
@@ -165,9 +154,6 @@ const RolesTable = () => {
         groupId: row?.group?.id,
         memberId: row?.id,
         roleId: e,
-      },
-      success: () => {
-        getMemebers();
       },
       other: selectedProject,
     };
@@ -246,8 +232,8 @@ const RolesTable = () => {
 
           {memberList && memberList.length > 0 ? (
             <>
-              {memberList?.map((row: MemberInterface) => (
-                <TableRow key={row.id}>
+              {memberList?.map((member: ProjectMemberInterface|any) => {
+               return <TableRow key={member._id}>
                   <TableCell
                     component="th"
                     scope="row"
@@ -255,30 +241,18 @@ const RolesTable = () => {
                   >
                     <div className={classes.nameWrapper}>
                       <Typography className={classes.name}>
-                        {row.isInvited && (
-                          <span>
-                            {row.invitedEmail}{" "}
-                            <Chip
-                              className={classes.chip}
-                              variant="outlined"
-                              label="Invited"
-                              size="small"
-                            ></Chip>
-                          </span>
-                        )}
-                        {row?.user &&
-                          `${row?.user?.firstName} ${row?.user?.surName}`}
+                        {`${member?.user?.firstName} ${member?.user?.firstName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
-                        Company:{row?.user?.companyName??"N/A"}
+                        Company:{member?.user?.companyName??"N/A"}
                       </Typography>
                     </div>
                   </TableCell>
                   <TableCell>
-                    <AddStatusTag sx={{color:'#000000'}}>Manger</AddStatusTag>
+                    <AddStatusTag sx={{color:'#000000'}}>{member.group.name}</AddStatusTag>
                   </TableCell>
                   <TableCell>
-                  <AddStatusTag sx={{color:'#000000'}}>Electrikudwr</AddStatusTag>
+                  <AddStatusTag sx={{color:'#000000'}}>{member.role.name}</AddStatusTag>
                   </TableCell>
                   {/* <TableCell align="right" style={{ width: "20%" }}>
                     <Select
@@ -309,13 +283,13 @@ const RolesTable = () => {
                         style={{ width: 32, height: 32 }}
                         src={assets.membersDelete}
                         className={"pointer"}
-                        onClick={() => handleDelete(row?.id)}
+                        onClick={() => handleDelete(member?.id)}
                         alt=""
                       />
                     {/* )} */}
                   </TableCell>
                 </TableRow>
-              ))}
+})}
             </>
           ) : (
             <>

@@ -6,7 +6,6 @@ import colors from "../../../../../assets/colors";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
-import { groupTemplate } from "constants/interfaces/project.interface";
 import { ProjectSubHeadingTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
 

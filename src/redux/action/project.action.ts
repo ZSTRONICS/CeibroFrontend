@@ -1,8 +1,9 @@
 import {
   GroupInterface,
-  ProjectOverviewInterface,
+  ProjectInterface,
   RoleInterface,
 } from "constants/interfaces/project.interface";
+
 import configs, {
   CLOSE_ROLE_DRAWER,
   CREATE_PROJECT,
@@ -12,7 +13,6 @@ import configs, {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
-  GET_ROLES,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
@@ -34,7 +34,6 @@ import configs, {
   UPLOAD_FILE_TO_FOLDER,
   UPDATE_PROJECT,
   SET_SELECTED_ROLE,
-  GET_ROLES_BY_ID,
   UPDATE_ROLE,
   SET_SELECTED_GROUP,
   GET_GROUP_BY_ID,
@@ -76,6 +75,7 @@ import configs, {
   GET_GROUP_USERS,
   ADD_REMOVE_FOLDER_USER,
   GET_PROJECTS_WITH_MEMBERS,
+  PROJECT_CONFIG,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -96,7 +96,7 @@ const projectActions = {
       payload: id,
     };
   },
-  setProjectOverview: (projectOverview: ProjectOverviewInterface) => {
+  setProjectOverview: (projectOverview: ProjectInterface) => {
     return {
       type: SET_PROJECT_OVERVIEW,
       payload: projectOverview,
@@ -260,6 +260,10 @@ const projectActions = {
   },
 };
 
+export const PROJECT_APIS = {
+  getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
+};
+
 export const getProjectsWithPagination = createAction(
   GET_PROJECTS_WITH_PAGINATION
 );
@@ -271,9 +275,6 @@ export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
-export const getRoles = createAction(GET_ROLES);
-export const getRolesById = createAction(GET_ROLES_BY_ID);
-
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
@@ -308,7 +309,7 @@ export const deleteWork = createAction(DELETE_WORK);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
-export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
+// export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getGroupUsers = createAction(GET_GROUP_USERS);
 export const addRemoveFolderUser = createAction(ADD_REMOVE_FOLDER_USER);
 export const getAvailableProjectMembers = createAction(

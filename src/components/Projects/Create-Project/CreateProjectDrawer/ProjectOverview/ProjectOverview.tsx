@@ -1,91 +1,61 @@
-import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import CDatePicker from 'components/DatePicker/CDatePicker'
-import { getStatusDropdown } from 'config/project.config'
-import { formatDate } from 'helpers/project.helper'
-import _ from 'lodash'
-import moment from 'moment-timezone'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import projectActions, { getProjectDetail } from 'redux/action/project.action'
-import { getAvailableUsers } from 'redux/action/user.action'
-import { RootState } from 'redux/reducers'
-import colors from '../../../../../assets/colors'
-import CreatableSelect from '../../../../Utills/Inputs/CreateAbleSelect2'
-import ImagePicker from '../../../../Utills/Inputs/ImagePicker'
-import SelectDropdown, { dataInterface } from '../../../../Utills/Inputs/SelectDropdown'
-import HorizontalBreak from '../../../../Utills/Others/HorizontalBreak'
-import CreateProjectStatus from './CreateProjectStatus'
-import ProjectOverViewForm from './ProjectOverViewForm'
+import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import CDatePicker from "components/DatePicker/CDatePicker";
+import { getStatusDropdown } from "config/project.config";
+import { UserInfo } from "constants/interfaces/subtask.interface";
+import { formatDate } from "helpers/project.helper";
+import _ from "lodash";
+import moment from "moment-timezone";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import projectActions, { getProjectDetail } from "redux/action/project.action";
+import { getAvailableUsers } from "redux/action/user.action";
+import { RootState } from "redux/reducers";
+import colors from "../../../../../assets/colors";
+import CreatableSelect from "../../../../Utills/Inputs/CreateAbleSelect2";
+import ImagePicker from "../../../../Utills/Inputs/ImagePicker";
+import SelectDropdown, {
+  dataInterface,
+} from "../../../../Utills/Inputs/SelectDropdown";
+import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
+import CreateProjectStatus from "./CreateProjectStatus";
+import ProjectOverViewForm from "./ProjectOverViewForm";
 
 const ProjectOverview = () => {
-  const classes = useStyles()
-  const projectOverview = useSelector((state: RootState) => state.project.projectOverview)
-  const selectedProject = useSelector((state: RootState) => state.project.selectedProject)
-  const { user } = useSelector((state: RootState) => state.auth)
-  const [data, setData] = useState<dataInterface[]>([])
-  const [showDate, setShowDate] = useState<any>(projectOverview&&projectOverview.dueDate);
-  const [loading, setLoading] = useState<boolean>(false)
-  const [doOnce, setDoOnce]= useState(true)
-  const dispatch = useDispatch()
+  const classes = useStyles();
+  const projectOverview = useSelector(
+    (state: RootState) => state.project.projectOverview
+  );
+  const selectedProject = useSelector(
+    (state: RootState) => state.project.selectedProject
+  );
+  const { user } = useSelector((state: RootState) => state.auth);
+  const [data, setData] = useState<dataInterface[]>([]);
+
+  const [showDate, setShowDate] = useState<any>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [doOnce, setDoOnce] = useState(true);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false)
-        },
-        other: selectedProject,
-      }
-      setLoading(true)
-      dispatch(getProjectDetail(payload))
-    }
-  }, [])
-
-  useEffect(() => {
+    // if (selectedProject !== null) {
+    //   return;
+    // }
     const payload = {
-        other: true,
-        success: (res: any) => {
-          setData(res.data)
-          // setting current user as default owner
-          res?.data?.map((row: dataInterface) => {
-            if (row?.value === user?._id) {
-              if (!selectedProject) {
-                dispatch(
-                  projectActions.setProjectOverview({
-                    ...projectOverview,
-                    owner: [...(projectOverview?.owner || []), row],
-                  })
-                )
-              }
-            }
-          })
-        },
-      }
-      dispatch(getAvailableUsers(payload))
-    }, []);
+      success: (res: any) => {
+        setData(res.data);
+        // // setting current user as default owner
+        // res?.data?.map((row: dataInterface) => {
+        //   if (row?.value === user?._id) {
+        //     if (!selectedProject) {
 
-  // const handleDateChange = (e: any) => {
-  //   const date = e?.target?.value
-  //   console.log('date',date);
-    
-  //   date &&
-  //     dispatch(
-  //       projectActions.setProjectOverview({
-  //         ...projectOverview,
-  //         dueDate: date,
-  //       })
-  //     )
-  // }
+        //     }
+        //   }
+        // });
+      },
+    };
 
-  const handleOwnerChange = (users: dataInterface[]) => {
-    users &&
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          owner: users,
-        })
-      )
-  }
+    dispatch(getAvailableUsers(payload));
+  }, []);
 
   const handleStatusChange = (status: dataInterface) => {
     status?.value &&
@@ -94,67 +64,101 @@ const ProjectOverview = () => {
           ...projectOverview,
           publishStatus: status.value,
         })
-      )
-  }
+      );
+  };
 
   // const my = formatDate(projectOverview?.dueDate)
-  const statusData = getStatusDropdown()
-  const statusValue = projectOverview?.publishStatus
+  const statusData = getStatusDropdown();
+  const statusValue = projectOverview.publishStatus
     ? {
-        label: projectOverview?.publishStatus,
-        value: projectOverview?.publishStatus,
+        label: projectOverview.publishStatus,
+        value: projectOverview.publishStatus,
       }
-    : null
+    : null;
 
-    // console.log('statusValue--->',statusValue);
+  // console.log('statusValue--->',statusValue);
 
-if(doOnce){
-  projectOverview.dueDate= moment(showDate).format("YYYY-MM-DD")
-  setDoOnce(false)
-}
-  //  const newArray = Array.from(
-  //    new Set(projectOverview?.owner?.map((el: any) => JSON.stringify(el)))
-  //  ).map((el: any) => JSON.parse(el));
+  if (doOnce) {
+    const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
+      "ddd MMM DD YYYY"
+    );
+    setShowDate(localized)
+    setDoOnce(false);
+  }
 
-  const ProjectOwnerList = projectOverview?.owner?.reduce?.((acc: any, current: any) => {
-    const x = acc.find((item: any) => item.value === current.value)
-    if (!x) {
-      return acc.concat([current])
-    } else {
-      return acc
-    }
-  }, [])
+  let ownersTemp = projectOverview.owner.map((user: UserInfo) => {
+    let ret = {
+      label: user.firstName + " " + user.surName,
+      value: user._id,
+    };
+    return ret;
+  });
 
-  const isDisabled = !_.map(ProjectOwnerList, 'value').includes(user._id)
+  const [ownersList, setOwnerList] = useState<any>(ownersTemp);
+
+  const handleOwnerChange = (users: dataInterface[]) => {
+    //Current User && Creator can never be removed !!!
+    setOwnerList(users);
+
+    let newOwners: UserInfo[] = [];
+    users.forEach((item: dataInterface) => {
+      let found = false;
+      projectOverview.owner.every((owner: UserInfo) => {
+        if (owner._id === item.value) {
+          found = true;
+          newOwners.push(owner);
+          return false;
+        }
+        return true;
+      });
+
+      if (found === false) {
+        newOwners.push({
+          _id: item.value,
+          firstName: item.label.split(" ")[0],
+          surName: item.label.split(" ")[1],
+          profilePic: "",
+        });
+      }
+    });
+
+    newOwners &&
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          owner: newOwners,
+        })
+      );
+  };
 
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: "100%" }}>
       <Grid container>
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid item xs={12} sm={6} md={3} className="black-input">
           {/* <DatePicker value={my} onChange={handleDateChange} /> */}
           <CDatePicker
-              showLabel={true}
-              required
-              value={showDate}
-              id="date1"
-              name="dueDate"
-              onChange={(e: any) => {
-                setShowDate(e);
-                projectOverview.dueDate= moment(e).format("YYYY-MM-DD");
-              }}
-            /> 
+            showLabel={true}
+            required
+            value={showDate}
+            id="date1"
+            name="dueDate"
+            onChange={(e: any) => {
+              setShowDate(e);
+              projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
+            }}
+          />
         </Grid>
 
         <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
           <SelectDropdown
             handleChange={handleOwnerChange}
             data={data}
-            value={ProjectOwnerList}
+            value={ownersList}
             title="Owner"
             isMulti={true}
-            isDisabled={isDisabled}
+            isDisabled={false}
           />
         </Grid>
 
@@ -165,10 +169,10 @@ if(doOnce){
             value={statusValue}
             title="Status"
           /> */}
-          <CreateProjectStatus/>
+          <CreateProjectStatus />
         </Grid>
 
-        <Grid item xs={12} md={12} style={{ padding: '20px 5px' }}>
+        <Grid item xs={12} md={12} style={{ padding: "20px 5px" }}>
           <HorizontalBreak color={colors.grey} />
         </Grid>
       </Grid>
@@ -183,15 +187,15 @@ if(doOnce){
         </Grid>
       </Grid>
     </div>
-  )
-}
+  );
+};
 
-export default ProjectOverview
+export default ProjectOverview;
 
 const useStyles = makeStyles({
   datePickerWrapper: {
     paddingLeft: 20,
-    '@media (max-width:600px)': {
+    "@media (max-width:600px)": {
       paddingLeft: 0,
       paddingTop: 20,
     },
@@ -200,20 +204,20 @@ const useStyles = makeStyles({
     paddingTop: 0,
   },
   imagePicker: {
-    '@media (max-width:600px)': {
+    "@media (max-width:600px)": {
       paddingBottom: 20,
     },
   },
 
   progress: {
     color: colors.primary,
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
-    margin: 'auto',
-    marginTop: '300px',
+    margin: "auto",
+    marginTop: "300px",
     left: 0,
     right: 0,
     top: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+});

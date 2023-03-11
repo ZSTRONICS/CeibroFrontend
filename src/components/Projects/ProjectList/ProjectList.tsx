@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core";
 import projectActions from "redux/action/project.action";
 
 const ProjectList = () => {
-  const { projects, projectsLoading } = useSelector(
+  const { allProjects } = useSelector(
     (state: RootState) => state.project
   );
   const classes = useStyles();
@@ -24,21 +24,20 @@ const ProjectList = () => {
   };
   return (
     <Grid container>
-      {projects && projects.length > 0 ? (
+      {allProjects && allProjects.length > 0 ? (
         <>
-          {projects?.map((project: ProjectInterface, index: number) => {
+          {allProjects?.map((project: ProjectInterface, index: number) => {
             return <ProjectCard key={index} project={project} />;
           })}
           <CreateProject />
         </>
       ) : (
         <>
-          {!projectsLoading && (
+          {(
             <Grid container style={{ height: 400 }}>
               <Grid item xs={12} className={classes.noProject}>
                 <Typography className={classes.noProjectText}>
-                  Not any project was created by you or you’re not participating
-                  yet
+                  No data found
                 </Typography>
                 <Button
                   style={{ marginTop: 20 }}

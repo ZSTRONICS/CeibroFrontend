@@ -5,7 +5,7 @@ import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import projectActions from "redux/action/project.action";
+import projectActions, { getProjectDetail } from "redux/action/project.action";
 import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
@@ -20,20 +20,23 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     projectPhoto: src,
     dueDate,
     owner,
+    creator,
+    inDraftState,
     title,
-    tasks,
-    docsCount,
-    usersCount,
-    chatCount,
+    // tasksCount,
+    // docsCount,
+    // usersCount,
+    // chatCount,
     publishStatus,
     _id,
   } = project;
 
   const dispatch = useDispatch();
   const handleProjectClick = () => {
-    dispatch(projectActions.setSelectedProject(_id || null));
-    dispatch(projectActions.setProjectOverview(project))
+    dispatch(projectActions.setSelectedProject(_id));
+    dispatch(projectActions.setProjectOverview(project));
     dispatch(projectActions.openDrawer());
+   // dispatch(getProjectDetail({ other: _id }));
   };
 
   const classes = useStyles();
@@ -51,12 +54,16 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           <Status>
             <div
               className={classes.status}
-              style={{
-                // background: getColorByStatus(publishStatus),
-                // color: getTextColorByStatus(publishStatus),
-              }}
+              style={
+                {
+                  // background: getColorByStatus(publishStatus),
+                  // color: getTextColorByStatus(publishStatus),
+                }
+              }
             >
-              <Typography className={classes.statusText}>{publishStatus}</Typography>
+              <Typography className={classes.statusText}>
+                {publishStatus}
+              </Typography>
             </div>
             <div className={classes.dateWrapper}>
               <Typography className={classes.statusDate}>
@@ -74,10 +81,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           </Grid>
           <Grid item xs={7}>
             <Typography className={classes.meta}>Owner</Typography>
-            <Box
-              className={classes.metaValue}
-              style={{ display: "flex" }}
-            >
+            <Box className={classes.metaValue} style={{ display: "flex" }}>
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
               {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
@@ -91,7 +95,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
           <Typography className={classes.viewMap}>View map</Typography>
           <hr className={classes.break} />
         </Grid>
-        <Grid item xs={12} className={classes.iconWrapper}>
+        {/* <Grid item xs={12} className={classes.iconWrapper}>
           <div className={classes.iconChip}>
             <img src={assets.clipboardIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>
@@ -115,7 +119,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             <img src={assets.chatIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>{chatCount}</Typography>
           </div>
-        </Grid>
+        </Grid> */}
       </ProjectCardContain>
     </>
   );

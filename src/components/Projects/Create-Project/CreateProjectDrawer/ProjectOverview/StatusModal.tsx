@@ -57,6 +57,7 @@ function StatusModal(props: any) {
           projectActions.setProjectOverview({
             ...projectOverview,
             extraStatus: [...projectStatus, status],
+            publishStatus: status,
           })
         );
       }

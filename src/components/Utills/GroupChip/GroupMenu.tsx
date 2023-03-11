@@ -20,6 +20,8 @@ interface GroupMenueInt {
 }
 
 const GroupMenu: React.FC<GroupMenueInt> = (props) => {
+  console.log(props);
+  
   const classes = useStyles();
   const [show, setShow] = useState(false);
   const confirm = useConfirm();

@@ -23,7 +23,7 @@ import StatusModal from "./StatusModal";
 
 function CreateProjectStatus() {
   const dispatch = useDispatch();
-  const [selectedIndex, setSelectedIndex] = React.useState<any>(null);
+
   const [openCloseStatusModal, setOpenCloseStatusModal] = useState(false);
   const [openStatusMenu, setOpenStatusMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -32,16 +32,33 @@ function CreateProjectStatus() {
     React.useState<null | HTMLElement>(null);
   const [editStatusValue, setEditStatusValue] = useState(" ");
   const projectOverview = useSelector(
-    (state: RootState) => state.project.projectOverview);
-const options = [...projectOverview.extraStatus].filter((item: string) => item !== "" && item !== undefined)
-useEffect(()=>{
-  dispatch(
-    projectActions.setProjectOverview({
-      ...projectOverview,
-      publishStatus: options[selectedIndex],
-    })
+    (state: RootState) => state.project.projectOverview
   );
-},[selectedIndex])
+
+  const options = projectOverview.extraStatus;
+  let index = projectOverview.extraStatus.findIndex(
+    (item: any) => item === projectOverview.publishStatus
+  );
+  const [selectedIndex, setSelectedIndex] = React.useState<any>(index);
+  useEffect(() => {
+    if (options.length > 0) {
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          publishStatus: options[selectedIndex],
+        })
+      );
+    } else {
+      if (projectOverview.publishStatus !== "") {
+        dispatch(
+          projectActions.setProjectOverview({
+            ...projectOverview,
+            extraStatus: [projectOverview.publishStatus],
+          })
+        );
+      }
+    }
+  }, [selectedIndex]);
 
   const handleOpenCloseStatusModal = () => {
     setOpenCloseStatusModal((prev: boolean) => !prev);
@@ -75,7 +92,7 @@ useEffect(()=>{
     event: React.MouseEvent<HTMLElement>,
     index: number
   ) => {
-    event.stopPropagation()
+    event.stopPropagation();
     setSelectedIndex(index);
     dispatch(
       projectActions.setProjectOverview({
@@ -103,16 +120,24 @@ useEffect(()=>{
 
   return (
     <>
-      <div onClick={handleToggle} style={{maxWidth:'280px', width:'100%', cursor:'pointer'}}>
+      <div
+        onClick={handleToggle}
+        style={{ maxWidth: "280px", width: "100%", cursor: "pointer" }}
+      >
         <InputHOC title="Status">
           <Box
             ref={anchorRef}
             // onClick={handleToggle}
             sx={{ fontSize: 14, fontWeight: 500, padding: "5px 10px" }}
           >
-            {projectOverview.publishStatus
-              ? projectOverview.publishStatus
-              : projectOverview.extraStatus.length>0&&(selectedIndex!==null)?options[selectedIndex]:<AddStatusTag>Select a status</AddStatusTag>}
+            {projectOverview.publishStatus ? (
+              projectOverview.publishStatus
+            ) : projectOverview.extraStatus.length > 0 &&
+              selectedIndex !== null ? (
+              options[selectedIndex]
+            ) : (
+              <AddStatusTag>Select a status</AddStatusTag>
+            )}
           </Box>
         </InputHOC>
         <Popper
@@ -134,7 +159,7 @@ useEffect(()=>{
             >
               <Paper
                 sx={{
-                  maxWidth:'300px',
+                  maxWidth: "300px",
                   width: "100%",
                   maxHeight: "250px",
                   height: "100%",
@@ -144,12 +169,14 @@ useEffect(()=>{
               >
                 <ClickAwayListener onClickAway={handleClose}>
                   <MenuList
-                  sx={{
-                    "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
-                      backgroundColor:'#0076c81f',
-                    },
-                    '& .MuiButtonBase-root-MuiButton-root:hover':{backgroundColor:'#0076c81f'}
-                  }}
+                    sx={{
+                      "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
+                        backgroundColor: "#0076c81f",
+                      },
+                      "& .MuiButtonBase-root-MuiButton-root:hover": {
+                        backgroundColor: "#0076c81f",
+                      },
+                    }}
                     subheader={
                       <MenuItem
                         disableTouchRipple
@@ -158,12 +185,16 @@ useEffect(()=>{
                         sx={{
                           background: "#0076c81f",
                           "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
-                            backgroundColor:'#0076c81f !important',
+                            backgroundColor: "#0076c81f !important",
                           },
                         }}
                       >
                         <CButton
-                        sx={{'& .MuiButtonBase-root-MuiButton-root:hover':{background:'#0076c81f'}}}
+                          sx={{
+                            "& .MuiButtonBase-root-MuiButton-root:hover": {
+                              background: "#0076c81f",
+                            },
+                          }}
                           label="Add new status"
                           startIcon={<AddOutlinedIcon />}
                         />
@@ -178,8 +209,8 @@ useEffect(()=>{
                       return (
                         <CustomStack justifyContent="space-between">
                           <MenuItem
-                          disableRipple
-                          disableTouchRipple
+                            disableRipple
+                            disableTouchRipple
                             onClick={(e: any) => handleMenuItemClick(e, index)}
                           >
                             {item}

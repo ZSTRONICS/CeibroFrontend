@@ -14,7 +14,7 @@ import config, {
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_ROLES,
-  GET_ROLES_BY_ID,
+  PROJECT_CONFIG,
   OPEN_DOCUMENT_DRAWER,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
@@ -57,7 +57,6 @@ import {
 import {
   ProjectInterface,
   RoleInterface,
-  ProjectOverviewInterface,
   projectOverviewTemplate,
   rolesTemplate,
   FolderInterface,
@@ -72,11 +71,12 @@ import {
 import { GET_PROFILE } from "config/auth.config";
 import { PlaylistAddOutlined } from "@material-ui/icons";
 import { UserInterface } from "constants/interfaces/user.interface";
+import { UserInfo } from "constants/interfaces/subtask.interface";
+import { ProjectGroupInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
-  projectsLoading: boolean;
   allProjects: any;
   projects: ProjectInterface[];
   projectMembers: [];
@@ -88,7 +88,8 @@ interface ProjectReducerInt {
   selectedFolder: any;
   selectedGroup: any;
   selectedTimeProfile: any;
-  projectOverview: ProjectOverviewInterface;
+  projectOverview: ProjectInterface;
+  getAllProjectRoles: ProjectRolesInterface[];
   role: RoleInterface;
   filter: any;
   selectedStatus: string | null;
@@ -104,7 +105,7 @@ interface ProjectReducerInt {
   workDrawer: boolean;
   FileViewerDrawer: boolean;
   rolesList: RoleInterface[];
-  groupList: GroupInterface[];
+  groupList: ProjectGroupInterface[];
   group: GroupInterface;
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
@@ -115,13 +116,13 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: userRolesPermissions | null;
-  allProjectsTitles:any[]
+  allProjectsTitles: any[]
 }
 
 const projectReducer: ProjectReducerInt = {
+  getAllProjectRoles:[],
   drawerOpen: false,
   menue: 1,
-  projectsLoading: false,
   allProjects: [],
   allProjectsTitles: [],
   projects: [],
@@ -181,27 +182,6 @@ const NavigationReducer = (
         drawerOpen: true,
       };
 
-    case requestPending(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projectsLoading: true,
-      };
-    }
-    case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projects: action.payload?.result?.results,
-        projectsLoading: false,
-      };
-    }
-
-    case requestFail(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projectsLoading: false,
-      };
-    }
-
     case config.CLOSE_DRAWER:
       return {
         ...state,
@@ -214,21 +194,20 @@ const NavigationReducer = (
         menue: action.payload,
       };
 
-      case requestPending(GET_PROJECTS): {
-        return {
-          ...state,
-          projectMembers: [],
-        };
-      }
-    case requestSuccess(GET_PROJECTS): {
+    case requestPending(GET_PROJECTS): {
       return {
         ...state,
-        allProjects: action.payload?.result?.map?.((project: any) => ({
-          label: project?.title,
-          value: project._id,
-        })),
+        allProjects: [],
       };
     }
+    case requestSuccess(GET_PROJECTS): {
+      let projects = action.payload.results
+      return {
+        ...state,
+        allProjects: [...projects]
+      };
+    }
+
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
       const projectLabels = action.payload.projectDetails.map((project: any) => {
         return {
@@ -244,29 +223,16 @@ const NavigationReducer = (
 
     }
 
-    // case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
-    //   return {
-    //     ...state,
-    //     projects: action.payload?.result?.results,
-    //     projectsLoading: false,
-    //   };
-    // }
-
     case requestSuccess(GET_PROJECTS_MEMBERS): {
       return {
         ...state,
         projectMembers: action.payload,
       };
     }
-
- 
-
     case SET_PROJECT_OVERVIEW: {
       return {
         ...state,
-        projectOverview: {
-          ...action.payload,
-        },
+        projectOverview: { ...action.payload }
       };
     }
 
@@ -357,18 +323,17 @@ const NavigationReducer = (
     }
 
     case requestSuccess(GET_PROJECT_DETAIL): {
-      const projectDetail = {
-        ...action.payload,
-        owner: action.payload?.owner?.map((user: UserInterface) => {
-          return {
-            label: user?.firstName + " " + user?.surName,
-            value: user?._id,
-          };
-        }),
-      };
+      let project = action.payload.result
+
+      project.owner = action.payload.result.owner?.map((user: UserInterface) => {
+        return {
+          label: user?.firstName + " " + user?.surName,
+          value: user?._id,
+        };
+      })
       return {
         ...state,
-        projectOverview: projectDetail,
+        projectOverview: project,
       };
     }
 
@@ -426,15 +391,12 @@ const NavigationReducer = (
       };
     }
 
-    case requestSuccess(GET_ROLES): {
-      return {
-        ...state,
-        rolesList: action.payload,
-        //  finallyAction: () => {
-        //     setLoading(false);
-        //   },
-      };
-    }
+    // case requestSuccess(GET_ROLES): {
+    //   return {
+    //     ...state,
+    //     rolesList: action.payload.result,
+    //   };
+    // }
 
     case SET_ROLE: {
       return {
@@ -453,7 +415,7 @@ const NavigationReducer = (
     case requestSuccess(GET_GROUP): {
       return {
         ...state,
-        groupList: action.payload,
+        groupList: action.payload.result,
       };
     }
 
@@ -506,7 +468,7 @@ const NavigationReducer = (
     case requestSuccess(GET_MEMBER): {
       return {
         ...state,
-        memberList: action.payload,
+        memberList: action.payload.results,
       };
     }
 
@@ -517,10 +479,12 @@ const NavigationReducer = (
       };
     }
 
-    case requestSuccess(GET_ROLES_BY_ID): {
+    case requestSuccess(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID): {
+      console.log('GET_PROJECT_ROLES_BY_ID',action.payload.result);
       return {
         ...state,
-        role: action.payload,
+        role: action.payload.result,
+        getAllProjectRoles: action.payload.result,
       };
     }
 

@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createProfileWork,
   getNewWork,
-  getRoles,
+  PROJECT_APIS,
   getWorkById,
   updateWork,
 } from "redux/action/project.action";
@@ -73,7 +73,7 @@ const CreateWork = () => {
   };
 
   useEffect(() => {
-    dispatch(getRoles({ other: selectedProject }));
+    dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
   }, []);
 
   const classes = useStyle();

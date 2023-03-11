@@ -21,13 +21,13 @@ import projectActions, {
   createRole,
   getAvailableProjectMembers,
   getMember,
-  getRoles,
-  getRolesById,
+  PROJECT_APIS,
   updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { toast } from "react-toastify";
 import CButton from "components/Button/Button";
+import { RoleMembers } from "constants/interfaces/project.interface";
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
@@ -69,17 +69,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       body: {
         name: role.name,
         admin: role.admin,
-        roles: role.roles,
-        member: role.member,
-        memberIds: role?.memberIds?.map?.((row: any) => {
-          return row.id;
-        }),
-        timeProfile: role.timeProfile,
+        members: role.members.map((item:RoleMembers)=> item._id),
+        project:"",
+        rolePermission:role.rolePermission,
+        memberPermission:role.memberPermission
       },
       success: () => {
         toast.success("Role created successfully");
         dispatch(projectActions.closeProjectRole());
-        dispatch(getRoles({ other: selectedProject }));
+        dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);
@@ -98,14 +96,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         // const {name,admin,roles, member,timeProfile} =role
         name: role.name,
         admin: role.admin,
-        roles: role.roles,
-        member: role?.member,
-        timeProfile: role.timeProfile,
+        members: role.members.map((item:RoleMembers)=> item._id),
+        project:"",
+        rolePermission:role.rolePermission,
+        memberPermission:role.memberPermission
       },
       success: () => {
         toast.success("Role Updated successfully");
         dispatch(projectActions.closeProjectRole());
-        dispatch(getRoles({ other: selectedProject }));
+        dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
         dispatch(getMember({ other: { projectId: selectedProject } }));
       },
       finallyAction: () => {
@@ -152,7 +151,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     access: string,
     fieldName: "roles" | "member" | "timeProfile"
   ) => {
-    let existingField = role[fieldName];
+    // let existingField:any = role[fieldName];
+    let existingField:any = {};
     if (existingField) {
       if (checked) {
         existingField?.push?.(access);
@@ -190,18 +190,18 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   useEffect(() => {
     if (selectedRole && roleDrawer) {
       dispatch(
-        getRolesById({
+        PROJECT_APIS.getProjectRolesById ({
           other: selectedRole,
           success: (res) => {
-            if (res.data.roles.length > 0) {
+            if (res.data.result.length > 0) {
               setIsRole(true);
             }
-            if (res.data.member.length > 0) {
+            if (res.data.result.member.length > 0) {
               setIsMember(true);
             }
-            if (res.data.timeProfile.length > 0) {
-              setIsTimeProfile(true);
-            }
+            // if (res.data.timeProfile.length > 0) {
+            //   setIsTimeProfile(true);
+            // }
           },
         })
       );
@@ -241,7 +241,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
               dispatch(
                 projectActions.setRole({
                   ...role,
-                  memberIds: values,
+                  // memberIds: values,
                 })
               );
             }}
@@ -279,7 +279,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                           <InputCheckbox
                             key={i}
                             label={myRole}
-                            checked={role?.roles?.includes(myRole) || false}
+                            checked={true}
                             onChange={(checked) =>
                               handleAccessChange(checked, myRole, "roles")
                             }
@@ -337,7 +337,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                         <InputCheckbox
                           key={i}
                           label={myRole}
-                          checked={role?.member?.includes?.(myRole) || false}
+                          // checked={role?.member?.includes?.(myRole) || false}
+                          checked={ false}
                           onChange={(checked) =>
                             handleAccessChange(checked, myRole, "member")
                           }

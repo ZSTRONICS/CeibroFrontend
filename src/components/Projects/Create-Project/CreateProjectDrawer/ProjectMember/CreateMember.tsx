@@ -15,8 +15,9 @@ import projectActions, {
   getAvailableProjectMembers,
   getGroup,
   getMember,
-  getRoles,
+  PROJECT_APIS,
 } from "redux/action/project.action";
+
 import { RootState } from "redux/reducers";
 import CreateableSelectDropdown from "../../../../Utills/Inputs/CreateAbleSelect";
 import SelectDropdown, {
@@ -58,18 +59,6 @@ const MemberDialog = () => {
     dispatch(projectActions.closeProjectMemberDrawer());
   };
 
-  useEffect(() => {
-    dispatch(getGroup({ other: selectedProject }));
-    dispatch(getRoles({ other: selectedProject }));
-    dispatch(
-      getAvailableProjectMembers({
-        other: selectedProject,
-        success: (res) => {
-          setAvailableUsers(res.data);
-        },
-      })
-    );
-  }, []);
 
   useEffect(() => {
     if (groupList) {

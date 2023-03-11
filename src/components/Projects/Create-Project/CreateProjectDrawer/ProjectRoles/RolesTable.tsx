@@ -1,7 +1,6 @@
 import {
   Checkbox,
   CircularProgress,
-  Grid,
   makeStyles,
   Paper,
   Table,
@@ -12,6 +11,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import {Grid} from "@mui/material";
 import "./roles-table.css";
 import colors from "assets/colors";
 import React, { useEffect, useState } from "react";
@@ -20,37 +20,40 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "redux/reducers";
 import projectActions, {
   deleteRole,
-  getRoles,
-  getRolesById,
+  PROJECT_APIS,
 } from "redux/action/project.action";
 import assets from "assets/assets";
-import { RoleInterface } from "constants/interfaces/project.interface";
+import { CreateEditDeleteBool, RoleInterface } from "constants/interfaces/project.interface";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
 import RoleMenu from "./RoleMenu";
 import { toast } from "react-toastify";
-import { ProjectSubHeadingTag } from "components/CustomTags";
+import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
+import NoData from "components/Chat/NoData";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { Divider } from "@mui/material";
 
 // store?: RootState
 const RolesTable = () => {
-  const { selectedProject, rolesList, selectedRole, userPermissions } =
-    useSelector((state: RootState) => state?.project);
   const dispatch = useDispatch();
   const classes = useStyles();
-
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { selectedProject, getAllProjectRoles, selectedRole, userPermissions } =
+    useSelector((state: RootState) => state.project);
 
   const isDiabled = !loading ? false : true;
   useEffect(() => {
     if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: selectedProject,
-      };
-      setLoading(true);
-      dispatch(getRoles(payload));
+      // const payload = {
+      //   finallyAction: () => {
+      //     setLoading(false);
+      //   },
+      //   other: selectedProject,
+      // };
+      // setLoading(true);
+      dispatch(PROJECT_APIS.getProjectRolesById({other:selectedProject}));
     }
   }, [selectedProject]);
 
@@ -58,6 +61,7 @@ const RolesTable = () => {
     userPermissions,
     avaialablePermissions.edit_permission
   );
+
   const handleRoleClick = (id: any) => {
     // if (havePermission) {
       dispatch(projectActions.setSelectedRole(id));
@@ -71,7 +75,7 @@ const RolesTable = () => {
       deleteRole({
         success: () => {
           toast.success("Deleted Successfully");
-          dispatch(getRoles({ other: selectedProject }));
+          dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
         },
         finallyAction: () => {
           setLoading(false);
@@ -80,72 +84,55 @@ const RolesTable = () => {
       })
     );
   };
+console.log('getAllProjectRoles',getAllProjectRoles);
 
   return (
-    <Grid container>
+    <Grid container >
       <Grid item xs={12} className={classes.titleContainer}>
         <Typography className={classes.name}>Role name</Typography>
       </Grid>
 
       <Grid item xs={12} className={classes.dataContainer}>
         {loading && <CircularProgress size={20} className={classes.progress} />}
-        {rolesList?.map((role: RoleInterface) => {
+        {getAllProjectRoles.length>0? getAllProjectRoles.map((role: ProjectRolesInterface) => {
+            const {rolePermission,memberPermission} =role
           return (
-            <div
-              className={classes.roleChip}
-              onClick={() => handleRoleClick(role?._id)}
-            >
+            <div className={classes.roleChip} key={role._id}>
               <div className={classes.roleInner}>
                 <ProjectSubHeadingTag>
                   {role.name}
                 </ProjectSubHeadingTag>
-                <div className={classes.roleDetail}>
-                  {role.admin && (
+                  {role.admin ===true&& (
                     <ProjectSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</ProjectSubHeadingTag>
                   )}
-                  {(role?.roles?.length || 0) > 0 && (
-                    <>
+               {role.admin !==true &&<Grid container gap={2}>
+            <Grid item>
+              {rolePermission&& (
+                    <CustomStack gap={1} divider={<Divider orientation="vertical" flexItem />}>
+                        <ProjectSubHeadingTag>
+                          Role &nbsp;
+                        </ProjectSubHeadingTag>
+                          {rolePermission.create===true&& <RoleSubLabelTag>Create</RoleSubLabelTag>}
+                          {rolePermission.edit===true&& <RoleSubLabelTag>Edit</RoleSubLabelTag>}
+                          {rolePermission.delete===true&& <RoleSubLabelTag>Delete</RoleSubLabelTag>}
+                      </CustomStack>)
+                    }
+            </Grid>
+          <Grid item>
+          {memberPermission&& (
+                  <CustomStack gap={1} divider={<Divider orientation="vertical" flexItem />}>
                       <ProjectSubHeadingTag>
-                        Role: &nbsp;
+                      Member &nbsp;
                       </ProjectSubHeadingTag>
-                      {role?.roles?.map((access) => {
-                        return (
-                          <Typography className={classes.detail}>
-                            {access}, &nbsp;
-                          </Typography>
-                        );
-                      })}
-                    </>
-                  )}
-                  {(role?.member?.length || 0) > 0 && (
-                    <>
-                      <ProjectSubHeadingTag>
-                        Member: &nbsp;
-                      </ProjectSubHeadingTag>
-                      {role?.member?.map((access) => {
-                        return (
-                          <Typography className={classes.detail}>
-                            {access}, &nbsp;
-                          </Typography>
-                        );
-                      })}
-                    </>
-                  )}
-                  {/* {(role?.timeProfile?.length || 0) > 0 && (
-                    <>
-                      <Typography className={classes.detailTitle}>
-                        Work Profile: &nbsp;
-                      </Typography>
-                      {role?.timeProfile?.map((access) => {
-                        return (
-                          <Typography className={classes.detail}>
-                            {access}, &nbsp;
-                          </Typography>
-                        );
-                      })}
-                    </>
-                  )} */}
-                </div>
+                        {memberPermission.create===true&& <RoleSubLabelTag>Create</RoleSubLabelTag>}
+                        {memberPermission.edit===true&& <RoleSubLabelTag>Edit</RoleSubLabelTag>}
+                        {memberPermission.delete===true&& <RoleSubLabelTag>Delete</RoleSubLabelTag>}
+                     </CustomStack>)
+                   }
+          </Grid>
+                  
+                 
+                </Grid>}
               </div>
               <div className={classes.roleMenu}>
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
@@ -158,7 +145,7 @@ const RolesTable = () => {
               </div>
             </div>
           );
-        })}
+        }):<NoData title="No data found!"/>}
       </Grid>
     </Grid>
   );

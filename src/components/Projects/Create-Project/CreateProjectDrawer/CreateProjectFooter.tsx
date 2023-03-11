@@ -15,6 +15,10 @@ import { toast } from "react-toastify";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ConfirmDescriptionTag } from "components/CustomTags";
+import CButton from "components/Button/Button";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -22,7 +26,9 @@ const CreateProjectBody = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
-  const { projectOverview, projects, selectedProject } = useSelector((state: RootState) => state.project);
+  const { projectOverview, projects, selectedProject } = useSelector(
+    (state: RootState) => state.project
+  );
 
   const confirm = useConfirm();
   useEffect(() => {
@@ -81,7 +87,43 @@ const CreateProjectBody = () => {
   };
 
   const handleDelete = () => {
-    confirm({ description: "Confirm want to  delete this " }).then(() => {
+    confirm({
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you confirm want to delete this project?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
+    }).then(() => {
       const payload = {
         success: () => {
           toast.success("Project Delete Successfully");
@@ -105,24 +147,17 @@ const CreateProjectBody = () => {
       publishStatus,
       extraStatus,
     } = projectOverview;
-    
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("location", location);
     formData.append("description", description);
     if (extraStatus) {
-      if (extraStatus?.length) {
-        extraStatus?.map?.((row: string) =>
-          formData.append("extraStatus", row)
-        );
-      }
+      formData.append("extraStatus", JSON.stringify(extraStatus));
     }
     if (owner) {
-      if (owner?.length > 0) {
-        owner?.map?.((row: dataInterface) =>
-          formData.append("owner", row.value)
-        );
-      }
+      let ownerIds = owner.map((item: any) => item._id);
+      formData.append("owner", JSON.stringify(ownerIds));
     }
     formData.append("dueDate", dueDate);
     formData.append("projectPhoto", projectPhoto);
