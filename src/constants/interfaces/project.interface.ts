@@ -1,3 +1,4 @@
+import { ProjectRolesInterface } from "./ProjectRoleMemberGroup.interface";
 import { UserInfo } from "./subtask.interface";
 import { UserInterface } from "./user.interface";
 
@@ -65,70 +66,18 @@ export const projectOverviewTemplate: ProjectInterface = {
   }
 };
 
-export const rolesTemplate: RoleInterface = {
+export const rolesTemplate: ProjectRolesInterface = {
   name: "",
   project: "",
-  createdAt: "",
-  updatedAt: "",
   rolePermission: { create: false, edit: false, delete: false },
   memberPermission: { create: false, edit: false, delete: false },
   members: [],
   admin: false,
   isDefaultRole: false,
   _id: "",
-  permissions: {
-    admin: {
-      roles: {
-        create: true,
-        edit: true,
-        delete: true
-      },
-      member: {
-        create: false,
-        edit: false,
-        delete: false
-      },
-      timeProfile: {
-        create: false,
-        edit: false,
-        delete: false
-      }
-    },
-    subContractor: {
-      roles: {
-        create: false,
-        edit: false,
-        delete: false
-      },
-      member: {
-        create: false,
-        edit: false,
-        delete: false
-      },
-      timeProfile: {
-        create: false,
-        edit: false,
-        delete: false
-      }
-    },
-    individual: {
-      roles: {
-        create: false,
-        edit: false,
-        delete: false
-      },
-      member: {
-        create: false,
-        edit: false,
-        delete: false
-      },
-      timeProfile: {
-        create: false,
-        edit: false,
-        delete: false
-      }
-    }
-  },
+  creator: "",
+  createdAt: "",
+  updatedAt: ""
 }
 
 export interface GroupInterface {

@@ -61,6 +61,7 @@ import {
   getAllSubTaskOfTask,
   uploadDocs,
 } from "redux/action/task.action";
+import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 
 interface MyApp {}
 
@@ -476,6 +477,7 @@ const App: React.FC<MyApp> = () => {
 
   return (
     <div className="App">
+      {/* <ErrorBoundary> */}
       {/* component used here for availability of modal on all routes*/}
       <TaskModal />
       <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
@@ -490,6 +492,7 @@ const App: React.FC<MyApp> = () => {
       <ToastContainer position="bottom-left" theme="colored" />
      {openTaskDrawer&& <CreateTaskDrawer />}
       <RouterConfig />
+      {/* </ErrorBoundary> */}
     </div>
   );
 };

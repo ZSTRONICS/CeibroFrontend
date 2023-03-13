@@ -1,8 +1,8 @@
 import {
   GroupInterface,
   ProjectInterface,
-  RoleInterface,
 } from "constants/interfaces/project.interface";
+import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 import configs, {
   CLOSE_ROLE_DRAWER,
@@ -102,7 +102,7 @@ const projectActions = {
       payload: projectOverview,
     };
   },
-  setRole: (role: RoleInterface) => {
+  setRole: (role: ProjectRolesInterface) => {
     return {
       type: SET_ROLE,
       payload: role,
@@ -133,10 +133,10 @@ const projectActions = {
       payload: projectId,
     };
   },
-  setSelectedRole: (roleId: string | null) => {
+  setSelectedRole: (role: ProjectRolesInterface) => {
     return {
       type: SET_SELECTED_ROLE,
-      payload: roleId,
+      payload: role,
     };
   },
 
@@ -271,9 +271,7 @@ export const getAllProjects = createAction(GET_PROJECTS);
 export const getAllProjectsWithMembers = createAction(GET_PROJECTS_WITH_MEMBERS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
-export const getAvailableProjectUsers = createAction(
-  GET_AVAILABLE_PROJECT_USERS
-);
+export const getAvailableProjectUsers = createAction(GET_AVAILABLE_PROJECT_USERS);
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);

@@ -46,7 +46,19 @@ const ProjectRoles = () => {
             // disabled={!havePermission ? true : false}
             onClick={() => {
               dispatch(projectActions.setRole(rolesTemplate));
-              dispatch(projectActions.setSelectedRole(null));
+              dispatch(projectActions.setSelectedRole({
+                name: "",
+                project: "",
+                rolePermission: { create: false, edit: false, delete: false },
+                memberPermission: { create: false, edit: false, delete: false },
+                members: [],
+                admin: false,
+                isDefaultRole: false,
+                _id: "",
+                creator: "",
+                createdAt: "",
+                updatedAt: ""
+              }));
               dispatch(projectActions.openProjectRole());
             }}
           />
@@ -68,7 +80,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       alignItems: "flex-start",
       paddingBottom: 20,
     },

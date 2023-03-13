@@ -11,9 +11,7 @@ import config, {
   GET_PROJECTS,
   GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_MEMBERS,
-  GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
-  GET_ROLES,
   PROJECT_CONFIG,
   OPEN_DOCUMENT_DRAWER,
   OPEN_GROUP_DRAWER,
@@ -50,7 +48,6 @@ import config, {
   DELETE_PROJECT,
 } from "../../config/project.config";
 import {
-  requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
@@ -60,19 +57,14 @@ import {
   projectOverviewTemplate,
   rolesTemplate,
   FolderInterface,
-  MemberInterface,
   GroupInterface,
   FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
   userRolesPermissions,
-  ProjectTitles,
 } from "constants/interfaces/project.interface";
-import { GET_PROFILE } from "config/auth.config";
-import { PlaylistAddOutlined } from "@material-ui/icons";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { UserInfo } from "constants/interfaces/subtask.interface";
-import { ProjectGroupInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { ProjectGroupInterface, ProjectMemberInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -90,7 +82,7 @@ interface ProjectReducerInt {
   selectedTimeProfile: any;
   projectOverview: ProjectInterface;
   getAllProjectRoles: ProjectRolesInterface[];
-  role: RoleInterface;
+  role: ProjectRolesInterface;
   filter: any;
   selectedStatus: string | null;
   selectedWork: string | null;
@@ -110,7 +102,7 @@ interface ProjectReducerInt {
   folderList: FolderInterface[];
   folderFiles: FolderFileInterface[];
   projectProfile: projectProfileInterface[];
-  memberList: MemberInterface[];
+  memberList: ProjectMemberInterface[];
   load: boolean;
   getTimeProfileById: any;
   getStatuses: any;
@@ -391,12 +383,6 @@ const NavigationReducer = (
       };
     }
 
-    // case requestSuccess(GET_ROLES): {
-    //   return {
-    //     ...state,
-    //     rolesList: action.payload.result,
-    //   };
-    // }
 
     case SET_ROLE: {
       return {

@@ -1,38 +1,25 @@
 import {
-  Checkbox,
   CircularProgress,
-  makeStyles,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Typography,
+  makeStyles, Typography
 } from "@material-ui/core";
-import {Grid} from "@mui/material";
-import "./roles-table.css";
+import { Divider, Grid, Tooltip } from "@mui/material";
 import colors from "assets/colors";
-import React, { useEffect, useState } from "react";
-import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "redux/reducers";
+import NoData from "components/Chat/NoData";
+import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
+import { CustomBadge, CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { avaialablePermissions } from "config/project.config";
+import { Member, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { checkRolePermission } from "helpers/project.helper";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
   deleteRole,
-  PROJECT_APIS,
+  PROJECT_APIS
 } from "redux/action/project.action";
-import assets from "assets/assets";
-import { CreateEditDeleteBool, RoleInterface } from "constants/interfaces/project.interface";
-import { checkRolePermission } from "helpers/project.helper";
-import { avaialablePermissions } from "config/project.config";
+import { RootState } from "redux/reducers";
 import RoleMenu from "./RoleMenu";
-import { toast } from "react-toastify";
-import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
-import NoData from "components/Chat/NoData";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import { Divider } from "@mui/material";
+import "./roles-table.css";
 
 // store?: RootState
 const RolesTable = () => {
@@ -42,7 +29,6 @@ const RolesTable = () => {
 
   const { selectedProject, getAllProjectRoles, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
-
   const isDiabled = !loading ? false : true;
   useEffect(() => {
     if (selectedProject) {
@@ -62,14 +48,15 @@ const RolesTable = () => {
     avaialablePermissions.edit_permission
   );
 
-  const handleRoleClick = (id: any) => {
+  const handleEditRoles = (editRole: ProjectRolesInterface) => {
     // if (havePermission) {
-      dispatch(projectActions.setSelectedRole(id));
+      // dispatch(projectActions.setSelectedRole(editRole));
+      dispatch(projectActions.setRole(editRole));
       dispatch(projectActions.openProjectRole());
     // }
   };
 
-  const handleDelete = (id: any) => {
+  const handleDeleteRoles = (id: any) => {
     setLoading(true);
     dispatch(
       deleteRole({
@@ -85,6 +72,47 @@ const RolesTable = () => {
     );
   };
 
+  const showProjectMembers = (member: Member[]) => {
+    return (
+      <>
+        {member.length === 0 && (
+          <CustomBadge
+            showZero={true}
+            overlap="circular"
+            color="primary"
+            badgeContent={0}
+          ></CustomBadge>
+        )}
+      </>
+    );
+  };
+
+  const memberToolTipNames = (membersList: Member[]) => {
+    return (
+      <>
+        {membersList.map((item: Member, index) => {
+          if (item === undefined) {
+            return <></>;
+          }
+          if (index === membersList.length - 1) {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}`}</span>
+            );
+          } else {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}, `}</span>
+            );
+          }
+        })}
+      </>
+    );
+  };
   return (
     <Grid container >
       <Grid item xs={12} className={classes.titleContainer}>
@@ -98,9 +126,26 @@ const RolesTable = () => {
           return (
             <div className={classes.roleChip} key={role._id}>
               <div className={classes.roleInner}>
+                <CustomStack>
                 <ProjectSubHeadingTag>
                   {role.name}
                 </ProjectSubHeadingTag>
+                {role.members.length > 0 ? (
+              <CustomBadge
+                showZero={true}
+                overlap="circular"
+                color="primary"
+                badgeContent={
+                  <Tooltip title={memberToolTipNames(role.members)}>
+                    <span>{role.members.length}</span>
+                  </Tooltip>
+                }
+              ></CustomBadge>
+            ) : (
+              showProjectMembers(role.members)
+            )}
+			
+                </CustomStack>
                   {role.admin ===true&& (
                     <ProjectSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</ProjectSubHeadingTag>
                   )}
@@ -137,9 +182,8 @@ const RolesTable = () => {
                 {/* <img src={assets.moreIcon} className={`width-16`} /> */}
                 <RoleMenu
                   // permissoin={havePermission}
-                  onEdit={handleRoleClick}
-                  onDelete={() => handleDelete(role?._id)}
-                  name={role?.name}
+                  onEdit={()=>handleEditRoles(role)}
+                  onDelete={() => handleDeleteRoles(role?._id)}
                 />
               </div>
             </div>

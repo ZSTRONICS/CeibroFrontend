@@ -58,23 +58,22 @@ const RoleMenu = (props: any) => {
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
           <div className={`dropdown-content ${classes.dropdownContent}`}>
-            <div>
+            <div onClick={handleEdit} style={{cursor:'pointer'}}>
                <Button
-                variant="outlined"
-                onClick={handleEdit}
-                startIcon={<EditIcon />}
+                variant="text"
+                // startIcon={<EditIcon />}
                 // disabled={props.permissoin}
               >
-                Edit Role
+                Edit
               </Button>
             </div>
             <hr className={classes.break} />
-            <div>
+            <div  onClick={handleDelete} style={{cursor:'pointer'}}>
               <Button
               //  disabled={props.permissoin}
-                variant="outlined"
-                onClick={handleDelete}
-                startIcon={<DeleteIcon />}
+              sx={{color:"#FA0808", borderColor:'#FA0808'}}
+                variant="text"
+                // startIcon={<DeleteIcon />}
               >
                 Delete
               </Button>

@@ -1,20 +1,18 @@
 import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import { Autocomplete, Chip, TextField } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { getStatusDropdown } from "config/project.config";
 import { UserInfo } from "constants/interfaces/subtask.interface";
-import { formatDate } from "helpers/project.helper";
-import _ from "lodash";
 import moment from "moment-timezone";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions, { getProjectDetail } from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
-import CreatableSelect from "../../../../Utills/Inputs/CreateAbleSelect2";
 import ImagePicker from "../../../../Utills/Inputs/ImagePicker";
-import SelectDropdown, {
-  dataInterface,
+import {
+  dataInterface
 } from "../../../../Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import CreateProjectStatus from "./CreateProjectStatus";
@@ -36,27 +34,6 @@ const ProjectOverview = () => {
   const [doOnce, setDoOnce] = useState(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // if (selectedProject !== null) {
-    //   return;
-    // }
-    const payload = {
-      success: (res: any) => {
-        setData(res.data);
-        // // setting current user as default owner
-        // res?.data?.map((row: dataInterface) => {
-        //   if (row?.value === user?._id) {
-        //     if (!selectedProject) {
-
-        //     }
-        //   }
-        // });
-      },
-    };
-
-    dispatch(getAvailableUsers(payload));
-  }, []);
-
   const handleStatusChange = (status: dataInterface) => {
     status?.value &&
       dispatch(
@@ -76,16 +53,19 @@ const ProjectOverview = () => {
       }
     : null;
 
-  // console.log('statusValue--->',statusValue);
-
   if (doOnce) {
     const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
       "ddd MMM DD YYYY"
     );
-    setShowDate(localized)
+    setShowDate(localized);
     setDoOnce(false);
   }
-
+  let fixedOwner = [
+    {
+      label: user.firstName + " " + user.surName,
+      value: user._id,
+    },
+  ];
   let ownersTemp = projectOverview.owner.map((user: UserInfo) => {
     let ret = {
       label: user.firstName + " " + user.surName,
@@ -94,8 +74,11 @@ const ProjectOverview = () => {
     return ret;
   });
 
-  const [ownersList, setOwnerList] = useState<any>(ownersTemp);
+  if (projectOverview.owner.length === 0) {
+    ownersTemp = fixedOwner
+  }
 
+  const [ownersList, setOwnerList] = useState<any>(ownersTemp);
   const handleOwnerChange = (users: dataInterface[]) => {
     //Current User && Creator can never be removed !!!
     setOwnerList(users);
@@ -131,6 +114,35 @@ const ProjectOverview = () => {
       );
   };
 
+  // const checkV = ownersList.some((item: any) => item.value === user._id);
+
+  useEffect(() => {
+    // if (selectedProject !== null) {
+    //   return;
+    // }
+    const payload = {
+      success: (res: any) => {
+        // res.data = [
+        //   ...res.data.filter(
+        //     (option: any) => fixedOwner[0].value !== option.value
+        //   ),
+        // ];
+
+        setData(res.data);
+        // // setting current user as default owner
+        // res?.data?.map((row: dataInterface) => {
+        //   if (row?.value === user?._id) {
+        //     if (!selectedProject) {
+
+        //     }
+        //   }
+        // });
+      },
+    };
+
+    dispatch(getAvailableUsers(payload));
+  }, []);
+
   return (
     <div style={{ width: "100%" }}>
       <Grid container>
@@ -152,13 +164,68 @@ const ProjectOverview = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
-          <SelectDropdown
+          {/* <SelectDropdown
             handleChange={handleOwnerChange}
-            data={data}
             value={ownersList}
+            data={data}
             title="Owner"
+            isClearAble={false}
             isMulti={true}
             isDisabled={false}
+          /> */}
+
+          <Autocomplete
+            multiple
+            id="project_owners1"
+            disablePortal
+            filterSelectedOptions
+            disableCloseOnSelect
+            limitTags={3}
+            // defaultValue={fixedOwner}
+            value={ownersList}
+            options={data}
+            size="small"
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                return (
+                  <Chip
+                    label={option?.label}
+                    {...getTagProps({ index })}
+                    disabled={String(user._id) === String(option.value)}
+                  />
+                );
+              })
+            }
+            onChange={(event, value) => {
+              let newValue: any = [
+                ...fixedOwner,
+                ...value.filter(
+                  (option: any) => fixedOwner[0].value !== option.value
+                ),
+              ];
+
+              // value.every((option: any) => {
+              //   if (String(user._id) === String(option.id)) {
+              //     found = true;
+              //     return false;
+              //   }
+              //   return true
+              // });
+
+              // if (found === false) {
+              //   value.push(fixedOwner[0]);
+              // }
+
+              handleOwnerChange(newValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                name="owners"
+                label="Owners"
+                placeholder="Select owner(s)"
+              />
+            )}
           />
         </Grid>
 

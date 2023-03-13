@@ -17,15 +17,12 @@ import {
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_GROUP_BY_ID,
-  GET_GROUP_MEMBERS,
   GET_GROUP_USERS,
   GET_MEMBER,
   GET_NEW_WORK,
-  GET_PERMISSIONS,
   GET_PROJECTS, GET_PROJECTS_MEMBERS, GET_PROJECTS_WITH_MEMBERS, GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_PROJECT_PROFILE,
-  GET_ROLES,
   PROJECT_CONFIG,
   GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
@@ -121,15 +118,10 @@ const getProjectDetail = apiCall({
   path: (payload) => `/project/${payload?.other}`,
 });
 
-const getAllRoles = apiCall({
-  type: GET_ROLES,
-  method: "get",
-  path: (payload) => `/project/role/${payload?.other}`,
-});
 const createRoles = apiCall({
   type: CREATE_ROLES,
   method: "post",
-  path: (paylaod) => `/project/role/${paylaod?.other}`,
+  path: (paylaod) => `/project/role/${paylaod.other}`,
 });
 
 const createGroup = apiCall({
@@ -375,11 +367,8 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
-  // yield takeLatest(GET_FILTER_PROJECTS, getFilterProjects);
-
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
-  yield takeLatest(GET_ROLES, getAllRoles);
   yield takeLatest(CREATE_ROLES, createRoles);
   yield takeLatest(CREATE_GROUP, createGroup);
   yield takeLatest(GET_GROUP, getGroup);

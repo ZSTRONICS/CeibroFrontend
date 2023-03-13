@@ -17,8 +17,11 @@ const ProjectList = () => {
   );
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+  
   const openCreateProject = () => {
     dispatch(projectActions.setSelectedProject(null));
+    projectOverviewTemplate.owner= [user]
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };

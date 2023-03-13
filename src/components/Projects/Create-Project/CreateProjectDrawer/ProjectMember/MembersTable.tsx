@@ -1,49 +1,35 @@
 
 import {
-  Checkbox,
-  Chip,
-  CircularProgress,
-  makeStyles,
-  Paper,
-  Table,
+  Button, CircularProgress, Grid, makeStyles, Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Button,
-  Grid,
+  Typography
 } from "@material-ui/core";
 import { avaialablePermissions } from "config/project.config";
 import {
-  GroupInterface,
-  MemberInterface,
-  RoleInterface,
+  MemberInterface
 } from "constants/interfaces/project.interface";
 import { checkMemberPermission } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
+import { useConfirm } from "material-ui-confirm";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  deleteMember,
-  getGroup,
-  getMember,
-  updateMember,
-  PROJECT_APIS
+  deleteMember, getMember,
+  updateMember
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { useConfirm } from "material-ui-confirm";
 
 import colors from "../../../../../assets/colors";
-import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-import Select from "../../../../Utills/Inputs/Select";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
-import { toast } from "react-toastify";
+import CButton from "components/Button/Button";
 import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import CButton from "components/Button/Button";
 import { ProjectMemberInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { toast } from "react-toastify";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -93,7 +79,6 @@ const RolesTable = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
 
-
   useEffect(() => {
     dispatch(getMember({other:selectedProject}))
   },[])
@@ -111,7 +96,7 @@ const RolesTable = () => {
 
   // useEffect(() => {
   //   if (rolesList) {
-  //     const newRoles = rolesList?.map((role: RoleInterface) => {
+  //     const newRoles = rolesList?.map((role: any) => {
   //       return {
   //         title: role.name,
   //         value: role._id,
@@ -232,21 +217,21 @@ const RolesTable = () => {
 
           {memberList && memberList.length > 0 ? (
             <>
-              {memberList?.map((member: ProjectMemberInterface|any) => {
+              {memberList?.map((member: ProjectMemberInterface) => {
                return <TableRow key={member._id}>
                   <TableCell
                     component="th"
                     scope="row"
                     // style={{ width: "60%" }}
                   >
-                    <div className={classes.nameWrapper}>
-                      <Typography className={classes.name}>
+                    {/* <div className={classes.nameWrapper}> */}
+                      <Typography className={classes.nameWrapper}>
                         {`${member?.user?.firstName} ${member?.user?.firstName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
                         Company:{member?.user?.companyName??"N/A"}
                       </Typography>
-                    </div>
+                    {/* </div> */}
                   </TableCell>
                   <TableCell>
                     <AddStatusTag sx={{color:'#000000'}}>{member.group.name}</AddStatusTag>
@@ -283,7 +268,7 @@ const RolesTable = () => {
                         style={{ width: 32, height: 32 }}
                         src={assets.membersDelete}
                         className={"pointer"}
-                        onClick={() => handleDelete(member?.id)}
+                        onClick={() => handleDelete(member._id)}
                         alt=""
                       />
                     {/* )} */}
@@ -328,12 +313,9 @@ const useStyles = makeStyles({
     // minWidth: 650,
     // position: "relative",
   },
-  nameWrapper: {},
-  name: {
-    fontSize: 14,
+  nameWrapper: {fontSize: 14,
     fontWeight: "bold",
-    color: colors.primary,
-  },
+    color: colors.primary,},
   organizationName: {
     fontWeight: 500,
     fontSize: 12,
