@@ -9,7 +9,6 @@ import {
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import { groupTemplate } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -65,8 +64,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 
   const handleNameChange = (e: any) => {
     setName(e.target.value);
-    // dispatch(projectActions.setGroup(groupTemplate));
-
     // if (selectedGroup) {
     //   dispatch(
     //     projectActions.setGroup({

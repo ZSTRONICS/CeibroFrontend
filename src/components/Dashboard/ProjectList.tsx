@@ -3,24 +3,23 @@ import NoData from "components/Chat/NoData";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getProjectsWithPagination } from "redux/action/project.action";
+import {
+  getAllProjects,
+  getProjectsWithPagination,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 
 const ProjectList = () => {
-  const { projects } = useSelector((state: RootState) => state.project);
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProjectsWithPagination());
-  }, []);
+  const { allProjects } = useSelector((state: RootState) => state.project);
 
   return (
     <Grid container>
-      {projects && projects.length > 0 ? (
-        projects.map((project: ProjectInterface, index: number) => {
-          if(project === undefined){
-            return<></>
-          }
+      {allProjects && allProjects.length > 0 ? (
+        allProjects.map((project: ProjectInterface, index: number) => {
+          // if(project === undefined){
+          //   return<></>
+          // }
           return <ProjectCard key={index} project={project} />;
         })
       ) : (

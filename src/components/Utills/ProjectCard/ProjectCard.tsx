@@ -6,7 +6,7 @@ import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import projectActions from "redux/action/project.action";
+import projectActions, { getProjectDetail } from "redux/action/project.action";
 import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
@@ -22,20 +22,23 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     projectPhoto: src,
     dueDate,
     owner,
+    creator,
+    inDraftState,
     title,
-    tasks,
-    docsCount,
-    usersCount,
-    chatCount,
+    // tasksCount,
+    // docsCount,
+    // usersCount,
+    // chatCount,
     publishStatus,
     _id,
   } = project;
 
   const dispatch = useDispatch();
   const handleProjectClick = () => {
-    dispatch(projectActions.setSelectedProject(_id || null));
+    dispatch(projectActions.setSelectedProject(_id));
     dispatch(projectActions.setProjectOverview(project));
     dispatch(projectActions.openDrawer());
+   // dispatch(getProjectDetail({ other: _id }));
   };
 
   const classes = useStyles();

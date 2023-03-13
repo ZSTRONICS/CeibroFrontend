@@ -51,7 +51,7 @@ const getMyConnections = apiCall({
   type: GET_MY_CONNECTIONS,
   method: 'get',
   path: '/users/connections',
-  
+
 })
 
 const deleteMyConnection = apiCall({
@@ -107,12 +107,10 @@ const getAvailableChatUsers = apiCall({
 const getAvailableUsers = apiCall({
   type: GET_AVAILABLE_USERS,
   method: 'get',
- 
+
   path: payload => {
     let url = `/users/available`
-   //if (payload.other) {
-      url = `${url}?includeMe=true`
-  //  }
+    url = `${url}?includeMe=true`
     return url
   },
 })
@@ -132,7 +130,7 @@ function* userSaga() {
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount)
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers)
   yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers)
-  
+
 }
 
 export default userSaga

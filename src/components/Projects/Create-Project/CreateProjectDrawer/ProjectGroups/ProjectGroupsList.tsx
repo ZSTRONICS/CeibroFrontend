@@ -12,27 +12,28 @@ import projectActions, {
 } from "redux/action/project.action";
 import { GroupInterface } from "constants/interfaces/project.interface";
 import { toast } from "react-toastify";
+import { ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import NoData from "components/Chat/NoData";
 
 const ProjectGroupsList = () => {
   const { selectedProject, groupList, selectedGroup } = useSelector(
     (state: RootState) => state?.project
   );
-  
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: selectedProject,
-      };
-      setLoading(true);
-      // dispatch(getGroup({ other: selectedProject }));
-      dispatch(getGroup(payload));
+      // const payload = {
+      //   finallyAction: () => {
+      //     setLoading(false);
+      //   },
+      //   other: selectedProject,
+      // };
+      // setLoading(true);
+      // // dispatch(getGroup(payload));
+      dispatch(getGroup({ other: selectedProject }));
     }
   }, [selectedProject]);
 
@@ -43,7 +44,7 @@ const ProjectGroupsList = () => {
 
   const handleGroupDelete = (id: any) => {
     // alert("deleted");
-    setLoading(true);
+    // setLoading(true);
     dispatch(
       deleteGroup({
         success: () => {
@@ -62,20 +63,28 @@ const ProjectGroupsList = () => {
   return (
     <>
       {loading && <CircularProgress size={20} className={classes.progress} />}
-      {groupList?.map((group: GroupInterface) => (
-        <GroupChip
-          name={group.name}
-          groupId={group._id || ""}
-          handleClick={() => handleGroupClick(group?._id)}
-          handleDelete={() => handleGroupDelete(group?._id)}
-        />
-      ))}
+      {groupList.length > 0 ? (
+        groupList.map((group: ProjectGroupInterface) => {
+          if (group === undefined) {
+            return <></>;
+          }
+          return (
+            <GroupChip
+              // name={group.name}
+              // groupId={group._id}
+              group={group}
+              handleClick={() => handleGroupClick(group?._id)}
+              handleDelete={() => handleGroupDelete(group?._id)}
+            />
+          );
+        })
+      ) : (
+        <NoData title="No Data found!" />
+      )}
     </>
   );
 };
-{
-  /* <h2 onClick={() => handleGroupClick(group?._id)}>{group.name}</h2> */
-}
+
 export default ProjectGroupsList;
 
 const useStyles = makeStyles({

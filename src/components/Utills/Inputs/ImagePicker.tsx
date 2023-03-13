@@ -3,12 +3,13 @@ import React, { useRef, useState } from "react";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
+  getProjectDetail,
   updateProjectPicture,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { ProjectOverviewInterface } from "constants/interfaces/project.interface";
 import assets from "assets/assets";
 import { toast } from "react-toastify";
+import { ProjectInterface } from "constants/interfaces/project.interface";
 
 const ImagePicker = () => {
   const ref = useRef<HTMLInputElement>(null);
@@ -17,7 +18,7 @@ const ImagePicker = () => {
     "https://lh3.googleusercontent.com/proxy/ten4SpJ9QmAd8hrlUGL5gWjVehpKHpO-SJskSTYNRF48cVO69HJdP5NaW_TOGDl2gOKmw1hcFIrlCqRZES_KPYuiGxgQ31L1vqw7o_HVX-uTaPQEq5qWG2jfpYCu"
   );
 
-  const projectOverview: ProjectOverviewInterface = useSelector(
+  const projectOverview: ProjectInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
 
@@ -53,7 +54,7 @@ const ImagePicker = () => {
           updateProjectPicture({
             body: formdata,
             success: () => {
-              // dispatch(getProjectDetail());
+              dispatch(getProjectDetail());
               toast.success("project pic updated");
             },
             other: selectedProject,
@@ -85,7 +86,7 @@ const ImagePicker = () => {
           })`,
         }}
       >
-        <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} />
+        <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} alt=""/>
       </div>
     </>
   );

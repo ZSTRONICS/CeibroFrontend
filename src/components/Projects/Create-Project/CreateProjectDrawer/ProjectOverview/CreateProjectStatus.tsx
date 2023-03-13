@@ -25,7 +25,7 @@ import StatusModal from "./StatusModal";
 
 function CreateProjectStatus() {
   const dispatch = useDispatch();
-  const [selectedIndex, setSelectedIndex] = React.useState<any>(null);
+
   const [openCloseStatusModal, setOpenCloseStatusModal] = useState(false);
   const [openStatusMenu, setOpenStatusMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
@@ -36,16 +36,30 @@ function CreateProjectStatus() {
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const options = [...projectOverview.extraStatus].filter(
-    (item: string) => item !== "" && item !== undefined
+
+  const options = projectOverview.extraStatus;
+  let index = projectOverview.extraStatus.findIndex(
+    (item: any) => item === projectOverview.publishStatus
   );
+  const [selectedIndex, setSelectedIndex] = React.useState<any>(index);
   useEffect(() => {
-    dispatch(
-      projectActions.setProjectOverview({
-        ...projectOverview,
-        publishStatus: options[selectedIndex],
-      })
-    );
+    if (options.length > 0) {
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          publishStatus: options[selectedIndex],
+        })
+      );
+    } else {
+      if (projectOverview.publishStatus !== "") {
+        dispatch(
+          projectActions.setProjectOverview({
+            ...projectOverview,
+            extraStatus: [projectOverview.publishStatus],
+          })
+        );
+      }
+    }
   }, [selectedIndex]);
 
   const handleOpenCloseStatusModal = () => {
@@ -112,7 +126,6 @@ function CreateProjectStatus() {
         onClick={handleToggle}
         style={{ maxWidth: "280px", width: "100%", cursor: "pointer" }}
       >
-        {/* <SelectDropdown /> */}
         <InputHOC title="Status">
           <Box
             ref={anchorRef}
@@ -127,17 +140,6 @@ function CreateProjectStatus() {
             ) : (
               <AddStatusTag>Select a status</AddStatusTag>
             )}
-          </Box>
-          <Box
-            sx={{
-              position: "absolute",
-              right: "0px",
-              borderLeft: "1px solid hsl(0, 0%, 80%)",
-              padding: "0 15px",
-              color:"hsl(0, 0%, 80%)"
-            }}
-          >
-            <DropDownIcon />
           </Box>
         </InputHOC>
         <Popper

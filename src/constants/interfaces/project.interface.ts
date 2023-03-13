@@ -1,40 +1,28 @@
-import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
-import { string } from "yup/lib/locale";
+import { ProjectRolesInterface } from "./ProjectRoleMemberGroup.interface";
+import { UserInfo } from "./subtask.interface";
 import { UserInterface } from "./user.interface";
 
-export interface ProjectOverviewInterface {
-  dueDate: any;
-  access:string[];
-  owner:  any;
-  title: string;
-  description: string;
-  location: string;
-  projectPhoto: string;
-  photoFile?: any; // will be used only while creating a project
-  id?: string;
-  publishStatus: string;
-  _id?: string;
-  isDefault:boolean;
-  extraStatus:string[],
-}
 export interface ProjectInterface {
   projectPhoto: string;
+  photoFile?:string|File,
   dueDate: string;
-  owner: UserInterface[];
+  owner: UserInfo[];
   title: string;
-  tasks: number;
+  tasksCount: number;
   docsCount: number;
   usersCount: number;
   chatCount: number;
   publishStatus: string;
-  statusDate: string;
-  id?: string;
-  _id?: string;
-  isDefault:boolean;
-  extraStatus:string[],
-  access:string[];
+  _id: string;
+  isDefault: boolean;
+  inDraftState: boolean;
+  extraStatus: string[],
+  access: string[];
   description: string;
   location: string;
+  createdAt: string;
+  updatedAt: string;
+  creator: UserInfo
 
 }
 
@@ -45,22 +33,13 @@ export interface userRolesPermissions {
   timeProfile?: string[];
 }
 
-export interface RoleInterface {
-  name: string;
-  _id?: string;
-  roles?: string[];
-  admin?: boolean;
-  member?: string[];
-  timeProfile?: string[];
-  memberIds?: any;
-}
 
 export interface projectProfileInterface {
   name: string;
   _id?: string;
 }
 
-export const projectOverviewTemplate: ProjectOverviewInterface = {
+export const projectOverviewTemplate: ProjectInterface = {
   title: "",
   extraStatus: [],
   access: [],
@@ -70,13 +49,36 @@ export const projectOverviewTemplate: ProjectOverviewInterface = {
   location: "",
   projectPhoto: "",
   publishStatus: "",
-  isDefault: false
+  isDefault: false,
+  tasksCount: 0,
+  docsCount: 0,
+  usersCount: 0,
+  chatCount: 0,
+  _id: "",
+  inDraftState: false,
+  createdAt: "",
+  updatedAt: "",
+  creator: {
+    _id: "",
+    firstName: "",
+    surName: '',
+    profilePic: ""
+  }
 };
 
-export const rolesTemplate: RoleInterface = {
+export const rolesTemplate: ProjectRolesInterface = {
   name: "",
+  project: "",
+  rolePermission: { create: false, edit: false, delete: false },
+  memberPermission: { create: false, edit: false, delete: false },
+  members: [],
   admin: false,
-};
+  isDefaultRole: false,
+  _id: "",
+  creator: "",
+  createdAt: "",
+  updatedAt: ""
+}
 
 export interface GroupInterface {
   name: string;
@@ -124,11 +126,6 @@ export interface MemberInterface {
   invitedEmail?: string;
 }
 
-export interface TimeProfile {
-  name: string;
-  _id: string;
-  project: string | ProjectInterface;
-}
 export interface ProfileWork {
   comment: boolean;
   commentRequired: boolean;
@@ -144,7 +141,52 @@ export interface ProfileWork {
   timeRequired: boolean;
 }
 
-export interface ProjectTitles{
+export interface ProjectTitles {
   label: string
   value: string
 }
+
+export interface RoleInterface {
+  rolePermission: RolePermission
+  memberPermission: MemberPermission
+  members: RoleMembers[]
+  admin: boolean
+  isDefaultRole: boolean
+  _id: string
+  permissions: Permissions
+  name: string
+  project: string
+  createdAt: string
+  updatedAt: string
+}
+
+export interface RoleMembers {
+  _id: string,
+  firstName: string,
+  surName: string
+}
+export interface Permissions {
+  admin: Admin
+  subContractor: SubContractor
+  individual: Individual
+}
+export interface CreateEditDeleteBool {
+  create: boolean
+  edit: boolean
+  delete: boolean
+}
+export interface PermissionsInfo {
+  roles: Roles
+  member: Member
+  timeProfile: TimeProfile
+}
+
+export interface RolePermission extends CreateEditDeleteBool { }
+export interface MemberPermission extends CreateEditDeleteBool { }
+export interface Admin extends PermissionsInfo { }
+export interface Roles extends CreateEditDeleteBool { }
+export interface Member extends CreateEditDeleteBool { }
+export interface TimeProfile extends CreateEditDeleteBool { }
+export interface Individual extends PermissionsInfo { }
+export interface SubContractor extends PermissionsInfo { }
+

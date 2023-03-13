@@ -3,17 +3,19 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import { RootState } from "redux/reducers";
 
 const ProjectCard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
+    projectOverviewTemplate.owner= [user]
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
-
     dispatch(projectActions.openDrawer());
   };
 

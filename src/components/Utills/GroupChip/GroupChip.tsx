@@ -4,11 +4,12 @@ import { makeStyles } from "@material-ui/core";
 import { Divider } from "@mui/material";
 import { CollapseComponent } from "components/Collapse/CollapseComponent";
 import { GroupMemberNameTag, ProjectSubHeadingTag } from "components/CustomTags";
+import { Member, ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
 import React, { useEffect, useState } from "react";
 // import { BiPencil } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { getGroupMembers } from "redux/action/project.action";
+// import { getGroupMembers } from "redux/action/project.action";
 import colors from "../../../assets/colors";
 // import { MenuOptions } from "../Others/MenuButton";
 // import NameAvatar from "../Others/NameAvatar";
@@ -29,15 +30,13 @@ import GroupMenu from "./GroupMenu";
 // ];
 
 interface GroupChipInterface {
-  name: string;
-  groupId: string;
+  group:ProjectGroupInterface
   handleClick: () => void;
   handleDelete: () => void;
 }
 
 const GroupChip: React.FC<GroupChipInterface> = (props) => {
-    const { name, handleClick, groupId, handleDelete } = props;
-
+    const {group, handleClick, handleDelete } = props;
   const [groupExpanded, setGroupExpanded] = React.useState<string | false>("admin");
 
   const handleChange = (panel: string) => (event: React.SyntheticEvent,newExpanded: boolean) => {
@@ -48,41 +47,41 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
   const dispatch = useDispatch();
   const [members, setMembers] = useState<UserInterface[]>([]);
 
-  useEffect(() => {
-    if (groupExpanded) {
-      dispatch(
-        getGroupMembers({
-          other: groupId,
-          success: (res) => {
-            setMembers(res.data);
-          },
-        })
-      );
-    }
-  }, [groupExpanded]);
+  // useEffect(() => {
+  //   if (groupExpanded) {
+  //     dispatch(
+  //       getGroupMembers({
+  //         other: groupId,
+  //         success: (res) => {
+  //           setMembers(res.data);
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [groupExpanded]);
 
   return (<>
       <div className={classes.groupChip}>
         <CollapseComponent.Accordion
           sx={{maxWidth:900, width:'100%'}}
-          expanded={groupExpanded === name}
-          onChange={handleChange(name)}
+          expanded={groupExpanded === group.name}
+          onChange={handleChange(group.name)}
         >
-          <CollapseComponent.AccordionSummary aria-controls={name} id={name+1}>
+          <CollapseComponent.AccordionSummary aria-controls={group.name} id={group.name+1}>
             <ProjectSubHeadingTag
               sx={{ fontSize:14}}>
-              {name}
+              {group.name}
             </ProjectSubHeadingTag>
           </CollapseComponent.AccordionSummary>
           <CollapseComponent.AccordionDetails sx={{display:'flex',gap:0.5, flexWrap:'wrap'}}>
-               {members.length>0? members?.map((member: any, index: any) => {
+               {group.members.length>0? group.members?.map((member: Member, index: any) => {
                if(!member) {
                 return <></>;
               }
-              const memberName = `${member?.firstName} ${member?.surName}`
+              const memberName = `${member.firstName} ${member.surName}`
               return (
-                <GroupMemberNameTag key={member}>
-                  { index === members.length - 1 ? memberName : `${memberName},`}&nbsp;
+                <GroupMemberNameTag key={member._id}>
+                  { index === group.members.length - 1 ? memberName : `${memberName},`}&nbsp;
                 </GroupMemberNameTag> 
               );
             }):<GroupMemberNameTag>No data found!</GroupMemberNameTag>}
@@ -91,9 +90,9 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
         <div className={classes.action}>
           <GroupMenu
             onDelete={handleDelete}
-            groupId={groupId}
+            groupId={group._id}
             onEdit={handleClick}
-            name={name}
+            name={group.name}
           />
         </div>
       </div>

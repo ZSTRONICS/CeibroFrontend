@@ -12,60 +12,27 @@ import StatusMenu from "../../Utills/Others/StatusMenu";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 
-import projectActions, {
-  getProjectsWithPagination,
-} from "redux/action/project.action";
-import { RootState } from "redux/reducers";
-import { getAvailableUsers } from "redux/action/user.action";
-import Input from "components/Utills/Inputs/Input";
+import projectActions, { getAllProjects, getProjectsWithPagination } from 'redux/action/project.action'
+import { RootState } from 'redux/reducers'
+import { getAvailableUsers } from 'redux/action/user.action'
+import Input from 'components/Utills/Inputs/Input'
 
 const Project = () => {
-  const { searchProject, drawerOpen, projectsLoading } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { searchProject, drawerOpen } = useSelector((state: RootState) => state.project)
 
   if (window.location.pathname.includes("projects")) {
     document.body.style.background = "#f5f7f8";
   }
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const allStatus = getProjectStatus();
-  const [date, setDate] = useState<string>("");
-  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [findProject, setFindProject] = useState<string>("");
-
-  const [loading, setLoading] = useState<boolean>(false);
+  const classes = useStyles()
+  const dispatch = useDispatch()
+  const allStatus = getProjectStatus()
+  const [date, setDate] = useState<string>('')
+  
+  const [loading, setLoading] = useState<boolean>(false)
 
   useEffect(() => {
-    if (!drawerOpen) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-      };
-      setLoading(true);
-      dispatch(getProjectsWithPagination(payload));
-    }
-  }, [drawerOpen]);
-
-  useEffect(() => {
-    dispatch(projectActions.setSelectedDate(date));
-  }, [date]);
-
-  useEffect(() => {
-    dispatch(projectActions.setSearchProject(findProject));
-    dispatch(getProjectsWithPagination());
-  }, [findProject]);
-
-  useEffect(() => {
-    dispatch(
-      getAvailableUsers({
-        success: (res) => {
-          setAvailableUsers(res.data);
-        },
-      })
-    );
-  }, []);
+      dispatch(getAllProjects())
+  }, [])
 
   const handleUserChange = (user: dataInterface) => {
     dispatch(projectActions.setSelectedUser(user?.value || null));
@@ -79,9 +46,7 @@ const Project = () => {
 
   return (
     <Grid item xs={12}>
-      {(loading || projectsLoading) && (
-        <CircularProgress size={20} className={classes.progress} />
-      )}
+      {loading && <CircularProgress size={20} className={classes.progress} />}
 
       <Grid container>
         <Grid item xs={12} md={3}>
@@ -92,7 +57,7 @@ const Project = () => {
           <SelectDropdown
             isClearAble={true}
             title="Assigned to"
-            data={availableUsers}
+           // data={availableUsers}
             handleChange={handleUserChange}
           />
         </Grid>
@@ -102,7 +67,7 @@ const Project = () => {
           <Input
             placeholder="Search"
             title="Find Project"
-            onChange={(e: any) => setFindProject(e.target.value)}
+           // onChange={(e: any) => setFindProject(e.target.value)}
           />
         </Grid>
       </Grid>
