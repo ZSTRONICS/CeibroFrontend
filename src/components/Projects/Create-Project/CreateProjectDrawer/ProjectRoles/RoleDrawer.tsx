@@ -1,18 +1,24 @@
 import styled from "@emotion/styled";
 import {
-  Button, Dialog,
+  Button,
+  Dialog,
   DialogActions,
-  DialogContent, makeStyles, Typography
+  DialogContent,
+  makeStyles,
+  Typography,
 } from "@material-ui/core";
-import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import Input from "components/Utills/Inputs/Input";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import {
-  dataInterface
-} from "components/Utills/Inputs/SelectDropdown";
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import { RoleMembers } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
@@ -23,7 +29,7 @@ import projectActions, {
   getAvailableProjectMembers,
   getMember,
   PROJECT_APIS,
-  updateRole
+  updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
@@ -31,7 +37,7 @@ interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete",];
+  const roles = ["create", "edit", "delete"];
 
   const roleTempale = {
     memberList: [],
@@ -43,33 +49,36 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const [isTimeProfile, setIsTimeProfile] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
- 
-
   const [selectedMember, setSelectedMember] = useState<any>(null);
- 
+
   const [data, setData] = useState<any>(roleTempale);
 
   const isDiabled = !loading ? false : true;
 
   const { roleDrawer, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
-    console.log('selectedRole',selectedRole);
+  console.log("selectedRole", selectedRole);
 
-    const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-    const [selectedRolMember,setSelectedRoleMember]= useState<dataInterface[]>([])
-  
-    const [rolePermissionLocal, setRolePermissionLocal]=useState(selectedRole.rolePermission)
-    const [memberPermissionLocal, setmemberPermissionLocal]=useState(selectedRole.memberPermission)
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>(
+    []
+  );
+
+  const [rolePermissionLocal, setRolePermissionLocal] = useState(
+    selectedRole.rolePermission
+  );
+  const [memberPermissionLocal, setmemberPermissionLocal] = useState(
+    selectedRole.memberPermission
+  );
   const dispatch = useDispatch();
 
   const isAnyPermissionTrue =
     Object.values(rolePermissionLocal).some((p) => p) ||
     Object.values(memberPermissionLocal).some((p) => p);
-  
+
   const handleClose = () => {
     dispatch(projectActions.closeProjectRole());
   };
-
 
   // const handleChange = (name: string, value: boolean) => {
   //   setData({
@@ -79,15 +88,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   // };
 
   const handleOk = () => {
-
     const payload = {
       body: {
         name: selectedRole.name,
         admin: selectedRole.admin,
         members: selectedRole.members,
-        project:selectedProject,
-        rolePermission:rolePermissionLocal,
-        memberPermission:memberPermissionLocal
+        project: selectedProject,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       },
       success: () => {
         toast.success("Role created successfully");
@@ -106,15 +114,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   //   return role.value;
   // });
   const handleUpdate = () => {
-
     const payload = {
       body: {
         name: selectedRole.name,
         admin: selectedRole.admin,
         members: selectedRole.members,
-        project:selectedRole.project,
-        rolePermission:selectedRole.rolePermission,
-        memberPermission:selectedRole.memberPermission
+        project: selectedRole.project,
+        rolePermission: selectedRole.rolePermission,
+        memberPermission: selectedRole.memberPermission,
       },
       success: () => {
         toast.success("Role Updated successfully");
@@ -134,7 +141,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   };
 
   const handleSubmit = () => {
-    if (selectedRole._id!=="") {
+    if (selectedRole._id !== "") {
       handleUpdate();
     } else {
       handleOk();
@@ -148,15 +155,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const handleChangeMember = (e: any) => {
     setIsMember(e.target?.checked);
   };
-  
+
   const handleAdminChange = (e: any) => {
-    if(e.target?.checked===true){
-      setRolePermissionLocal({ create: true, edit: true, delete: true })
-      setmemberPermissionLocal({ create: true, edit: true, delete: true })
-    }else {
-      if(e.target?.checked===false){
-        setRolePermissionLocal(selectedRole.rolePermission)
-        setmemberPermissionLocal(selectedRole.memberPermission)
+    if (e.target?.checked === true) {
+      setRolePermissionLocal({ create: true, edit: true, delete: true });
+      setmemberPermissionLocal({ create: true, edit: true, delete: true });
+    } else {
+      if (e.target?.checked === false) {
+        setRolePermissionLocal(selectedRole.rolePermission);
+        setmemberPermissionLocal(selectedRole.memberPermission);
       }
     }
     dispatch(
@@ -167,30 +174,30 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     );
   };
 
-  const handleRolesChange = (e:any)=>{
+  const handleRolesChange = (e: any) => {
     setRolePermissionLocal({
       ...rolePermissionLocal,
-      [e.target.name]:e.target.checked
-    })
+      [e.target.name]: e.target.checked,
+    });
     dispatch(
       projectActions.setSelectedRole({
         ...selectedRole,
-        rolePermission:rolePermissionLocal
+        rolePermission: rolePermissionLocal,
       })
     );
-  }
-  const handleMemberChange = (e:any)=>{
+  };
+  const handleMemberChange = (e: any) => {
     setmemberPermissionLocal({
       ...memberPermissionLocal,
-      [e.target.name]:e.target.checked
-    })
+      [e.target.name]: e.target.checked,
+    });
     dispatch(
       projectActions.setSelectedRole({
         ...selectedRole,
-        rolePermission:rolePermissionLocal
+        rolePermission: rolePermissionLocal,
       })
     );
-  }
+  };
 
   const handleNameChange = (e: any) => {
     dispatch(
@@ -202,7 +209,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   };
   useEffect(() => {
     if (selectedRole._id && roleDrawer) {
-
       // dispatch(
       //   PROJECT_APIS.getProjectRolesById ({
       //     other: selectedProject,
@@ -227,11 +233,12 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       getAvailableProjectMembers({
         other: selectedProject,
         success: (res) => {
-          const availableMembers = res.data.result.map((user:any) => ({
-            label: `${user.firstName} ${user.surName}`,
-            value: user.email,
-            id: user._id,
-          })) || [];
+          const availableMembers =
+            res.data.result.map((user: any) => ({
+              label: `${user.firstName} ${user.surName}`,
+              value: user.email,
+              id: user._id,
+            })) || [];
           setAvailableUsers(availableMembers);
         },
       })
@@ -242,15 +249,16 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     if (selectedRole._id !== "") {
       setIsRole(true);
       setIsMember(true);
-   
-    const availableMembers = selectedRole.members.map((user:any) => ({
-      label: `${user.firstName} ${user.surName}`,
-      value: user._id,
-      id: user._id,
-    })) || [];
-    setSelectedRoleMember(availableMembers)
-    console.log(availableMembers);
-}
+
+      const availableMembers =
+        selectedRole.members.map((user: any) => ({
+          label: `${user.firstName} ${user.surName}`,
+          value: user._id,
+          id: user._id,
+        })) || [];
+      setSelectedRoleMember(availableMembers);
+      console.log(availableMembers);
+    }
   }, [selectedRole._id]);
 
   return (
@@ -283,13 +291,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             }}
           /> */}
 
-      <Autocomplete
+          <Autocomplete
             multiple
             id="project_owners1"
             disablePortal
             filterSelectedOptions
             disableCloseOnSelect
-            limitTags={3}
+            limitTags={2}
             // value={selectedRolMember}
             options={availableUsers}
             size="small"
@@ -373,11 +381,11 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={rolePermissionLocal.create}
                             onChange={handleRolesChange}
                             name="create"
@@ -389,8 +397,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                         control={
                           <MuiCheckbox
                             sx={{
-                              '&.Mui-checked': {
-                                color: '#F1B740',
+                              "&.Mui-checked": {
+                                color: "#F1B740",
                               },
                             }}
                             checked={rolePermissionLocal.edit}
@@ -403,11 +411,11 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={rolePermissionLocal.delete}
                             onChange={handleRolesChange}
                             name="delete"
@@ -418,7 +426,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                     </CustomStack>
                   </div>
                 )}
-                <HorizontalBreak />
+                {/* <HorizontalBreak /> */}
                 {/* <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Work profile
@@ -462,15 +470,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 </div>
                 {isMember && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
-                     <CustomStack>
+                    <CustomStack>
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={memberPermissionLocal.create}
                             onChange={handleMemberChange}
                             name="create"
@@ -482,8 +490,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                         control={
                           <MuiCheckbox
                             sx={{
-                              '&.Mui-checked': {
-                                color: '#F1B740',
+                              "&.Mui-checked": {
+                                color: "#F1B740",
                               },
                             }}
                             checked={memberPermissionLocal.edit}
@@ -496,11 +504,11 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={memberPermissionLocal.delete}
                             onChange={handleMemberChange}
                             name="delete"
@@ -550,10 +558,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           className={classes.ok}
           color="primary"
           variant="contained"
-          disabled={(isAnyPermissionTrue === true ||selectedRole.admin  === true) ? false: true}
+          disabled={
+            isAnyPermissionTrue === true || selectedRole.admin === true
+              ? false
+              : true
+          }
           onClick={handleSubmit}
         >
-          {selectedRole._id!=="" ? "Update" : "Add"}
+          {selectedRole._id !== "" ? "Update" : "Add"}
           {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
           )} */}
@@ -565,8 +577,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
 export default AddRole;
 const MuiCheckbox = styled(Checkbox)`
-  color: #ADB5BD;
-`
+  color: #adb5bd;
+`;
 const useStyles = makeStyles({
   menuWrapper: {
     display: "flex",
@@ -584,7 +596,7 @@ const useStyles = makeStyles({
     maxWidth: 370,
     width: 370,
     maxHeight: 450,
-    height:'100%'
+    height: "100%",
   },
   optionsWrapper: {
     width: "100%",

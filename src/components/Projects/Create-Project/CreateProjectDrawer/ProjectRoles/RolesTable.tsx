@@ -1,21 +1,28 @@
-import {
-  CircularProgress,
-  makeStyles, Typography
-} from "@material-ui/core";
+import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import { Divider, Grid, Tooltip } from "@mui/material";
 import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
-import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
-import { CustomBadge, CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import {
+  ProjectAdminRoleTag,
+  ProjectSubHeadingTag,
+  RoleSubLabelTag,
+} from "components/CustomTags";
+import {
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
 import { avaialablePermissions } from "config/project.config";
-import { Member, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  Member,
+  ProjectRolesInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { checkRolePermission } from "helpers/project.helper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   deleteRole,
-  PROJECT_APIS
+  PROJECT_APIS,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import RoleMenu from "./RoleMenu";
@@ -39,7 +46,7 @@ const RolesTable = () => {
       //   other: selectedProject,
       // };
       // setLoading(true);
-      dispatch(PROJECT_APIS.getProjectRolesById({other:selectedProject}));
+      dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     }
   }, [selectedProject]);
 
@@ -50,9 +57,9 @@ const RolesTable = () => {
 
   const handleEditRoles = (editRole: ProjectRolesInterface) => {
     // if (havePermission) {
-      dispatch(projectActions.setSelectedRole(editRole));
-      // dispatch(projectActions.setRole(editRole));
-      dispatch(projectActions.openProjectRole());
+    dispatch(projectActions.setSelectedRole(editRole));
+    // dispatch(projectActions.setRole(editRole));
+    dispatch(projectActions.openProjectRole());
     // }
   };
 
@@ -62,7 +69,9 @@ const RolesTable = () => {
       deleteRole({
         success: () => {
           toast.success("Deleted Successfully");
-          dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+          dispatch(
+            PROJECT_APIS.getProjectRolesById({ other: selectedProject })
+          );
         },
         finallyAction: () => {
           setLoading(false);
@@ -114,87 +123,122 @@ const RolesTable = () => {
     );
   };
   return (
-    <Grid container >
+    <Grid container>
       <Grid item xs={12} className={classes.titleContainer}>
         <Typography className={classes.name}>Role name</Typography>
       </Grid>
 
       <Grid item xs={12} className={classes.dataContainer}>
         {loading && <CircularProgress size={20} className={classes.progress} />}
-        {getAllProjectRoles.length>0? getAllProjectRoles.map((role: ProjectRolesInterface) => {
-            const {rolePermission,memberPermission} =role
-          return (
-            <div className={classes.roleChip} key={role._id}>
-              <div className={classes.roleInner}>
-                <CustomStack>
-                <ProjectSubHeadingTag>
-                  {role.name}
-                </ProjectSubHeadingTag>
-                {role.members.length > 0 ? (
-              <CustomBadge
-                showZero={true}
-                overlap="circular"
-                color="primary"
-                badgeContent={
-                  <Tooltip title={memberToolTipNames(role.members)}>
-                    <span>{role.members.length}</span>
-                  </Tooltip>
-                }
-              ></CustomBadge>
-            ) : (
-              showProjectMembers(role.members)
-            )}
-			
-                </CustomStack>
-                  {role.admin ===true&& (
-                    <ProjectSubHeadingTag sx={{fontWeight:'500', fontSize:14}}>Project admin</ProjectSubHeadingTag>
+        {getAllProjectRoles.length > 0 ? (
+          getAllProjectRoles.map((role: ProjectRolesInterface) => {
+            const { rolePermission, memberPermission } = role;
+            return (
+              <div className={classes.roleChip} key={role._id}>
+                <div className={classes.roleInner}>
+                  <CustomStack>
+                    <ProjectAdminRoleTag>{role.name}</ProjectAdminRoleTag>
+                    {role.members.length > 0 ? (
+                      <CustomBadge
+                        showZero={true}
+                        overlap="circular"
+                        color="primary"
+                        badgeContent={
+                          <Tooltip title={memberToolTipNames(role.members)}>
+                            <span>{role.members.length}</span>
+                          </Tooltip>
+                        }
+                      ></CustomBadge>
+                    ) : (
+                      showProjectMembers(role.members)
+                    )}
+                  </CustomStack>
+                  {role.admin === true && (
+                    <ProjectSubHeadingTag
+                      sx={{ fontWeight: "500", fontSize: 14 }}
+                    >
+                      Project admin
+                    </ProjectSubHeadingTag>
                   )}
-               {role.admin !==true &&<Grid container gap={2}>
-            <Grid item>
-              {rolePermission&& (
-                    <CustomStack gap={1} divider={<Divider orientation="vertical" flexItem />}>
-                        <ProjectSubHeadingTag>
-                          Role &nbsp;
-                        </ProjectSubHeadingTag>
-                          {rolePermission.create===true&& <RoleSubLabelTag>Create</RoleSubLabelTag>}
-                          {rolePermission.edit===true&& <RoleSubLabelTag>Edit</RoleSubLabelTag>}
-                          {rolePermission.delete===true&& <RoleSubLabelTag>Delete</RoleSubLabelTag>}
-                      </CustomStack>)
-                    }
-            </Grid>
-          <Grid item>
-          {memberPermission&& (
-                  <CustomStack gap={1} divider={<Divider orientation="vertical" flexItem />}>
-                      <ProjectSubHeadingTag>
-                      Member &nbsp;
-                      </ProjectSubHeadingTag>
-                        {memberPermission.create===true&& <RoleSubLabelTag>Create</RoleSubLabelTag>}
-                        {memberPermission.edit===true&& <RoleSubLabelTag>Edit</RoleSubLabelTag>}
-                        {memberPermission.delete===true&& <RoleSubLabelTag>Delete</RoleSubLabelTag>}
-                     </CustomStack>)
-                   }
-          </Grid>
-                  
-                 
-                </Grid>}
-              </div>
+                  {role.admin !== true && (
+                    <Grid container columnGap={20} rowGap={2}>
+                      <Grid item rowGap={2}>
+                        {rolePermission && (
+                          <CustomStack
+                            gap={1}
+                            divider={
+                              <Divider
+                                orientation="vertical"
+                                flexItem
+                                sx={{ borderWidth: "2px" }}
+                              />
+                            }
+                          >
+                            <ProjectSubHeadingTag>
+                              Role &nbsp;
+                            </ProjectSubHeadingTag>
+                            {rolePermission.create === true && (
+                              <RoleSubLabelTag>Create</RoleSubLabelTag>
+                            )}
+                            {rolePermission.edit === true && (
+                              <RoleSubLabelTag>Edit</RoleSubLabelTag>
+                            )}
+                            {rolePermission.delete === true && (
+                              <RoleSubLabelTag>Delete</RoleSubLabelTag>
+                            )}
+                          </CustomStack>
+                        )}
+                      </Grid>
+                      <Grid item>
+                        {memberPermission && (
+                          <CustomStack
+                            gap={1}
+                            divider={
+                              <Divider
+                                orientation="vertical"
+                                flexItem
+                                sx={{ borderWidth: "2px" }}
+                              />
+                            }
+                          >
+                            <ProjectSubHeadingTag>
+                              Member &nbsp;
+                            </ProjectSubHeadingTag>
+                            {memberPermission.create === true && (
+                              <RoleSubLabelTag>Create</RoleSubLabelTag>
+                            )}
+                            {memberPermission.edit === true && (
+                              <RoleSubLabelTag>Edit</RoleSubLabelTag>
+                            )}
+                            {memberPermission.delete === true && (
+                              <RoleSubLabelTag>Delete</RoleSubLabelTag>
+                            )}
+                          </CustomStack>
+                        )}
+                      </Grid>
+                    </Grid>
+                  )}
+                </div>
 
-              <div
-                className={classes.roleMenu}
-                // style={{
-                //   border: "2px solid",
-                // }}
-              >
-                {/* <img src={assets.moreIcon} className={`width-16`} /> */}
-                <RoleMenu
-                  // permissoin={havePermission}
-                  onEdit={()=>handleEditRoles(role)}
-                  onDelete={() => handleDeleteRoles(role?._id)}
-                />
+                <div
+                  className={classes.roleMenu}
+                  // style={{
+                  //   border: "2px solid",
+                  // }}
+                >
+                  {/* <img src={assets.moreIcon} className={`width-16`} /> */}
+                  <RoleMenu
+                    // permissoin={havePermission}
+                    onEdit={() => handleEditRoles(role)}
+                    onDelete={() => handleDeleteRoles(role?._id)}
+                  />
+                </div>
               </div>
-            </div>
-          );
-        }):<NoData title="No data found!"/>}
+            );
+          })
+        ) : (
+          <NoData title="No data found!" />
+        )}
       </Grid>
     </Grid>
   );
@@ -231,7 +275,7 @@ const useStyles = makeStyles({
   },
   titleContainer: {
     padding: "15px 1px",
-    borderBottom: `1px solid ${colors.ternaryGrey}`,
+    borderBottom: "1px solid #D3D4D9",
   },
   name: {
     fontSize: 12,
@@ -244,11 +288,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
     padding: "12px 0px",
-    borderBottom: `1px solid ${colors.grey}`,
+    borderBottom: "1px solid #E0E0E0",
   },
   roleInner: {
     display: "flex",
     flexDirection: "column",
+    rowGap: "10px",
   },
   roleName: {
     fontSize: 14,

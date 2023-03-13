@@ -9,13 +9,15 @@ import { roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interf
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
-import { ProjectSubHeadingTag } from "components/CustomTags";
+import { ProjectAdminRoleTag, ProjectSubHeadingTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
 
 const ProjectRoles = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { roleDrawer, userPermissions } = useSelector((state: RootState) => state.project);
+  const { roleDrawer, userPermissions } = useSelector(
+    (state: RootState) => state.project
+  );
 
   const havePermission = checkRolePermission(
     userPermissions,
@@ -34,15 +36,13 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <ProjectSubHeadingTag>
-            New Role
-          </ProjectSubHeadingTag>
+          <ProjectAdminRoleTag>New Role</ProjectAdminRoleTag>
 
           <CButton
             label="Add"
             variant="outlined"
             color="primary"
-            sx={{fontWeight:'700'}}
+            sx={{ fontWeight: "700" }}
             className={classes.actionButton}
             // disabled={!havePermission ? true : false}
             onClick={() => {

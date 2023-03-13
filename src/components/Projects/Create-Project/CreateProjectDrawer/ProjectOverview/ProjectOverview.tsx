@@ -56,7 +56,7 @@ const ProjectOverview = () => {
 
   if (doOnce) {
     const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
-      "ddd MMM DD YYYY"
+      "ddd MM DD YYYY"
     );
     setShowDate(localized);
     setDoOnce(false);
@@ -187,11 +187,11 @@ const ProjectOverview = () => {
             isMulti={true}
             isDisabled={false}
           /> */}
-          <InputHOC title="Project owners">
+          <InputHOC title="Owners">
             <Autocomplete
               sx={{
                 backgroundColor: "white",
-                maxWidth: "330px",
+                maxWidth: "385px",
                 width: "100%",
                 // border: "1px solid #DBDBE5",
               }}

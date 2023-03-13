@@ -9,9 +9,9 @@ import ProjectRoles from "./ProjectRoles/ProjectRoles";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
-  const {
-    menue: selectedMenue,
-  } = useSelector((state: RootState) => state.project);
+  const { menue: selectedMenue } = useSelector(
+    (state: RootState) => state.project
+  );
 
   return (
     <Grid container className={classes.body}>
@@ -30,7 +30,7 @@ export default CreateProjectBody;
 const useStyles = makeStyles({
   body: {
     padding: 20,
-    overflowY: "scroll",
+    overflowY: "auto",
     height: "calc(100vh - 190px)",
     "@media (max-width:960px)": {
       paddingTop: 10,

@@ -30,18 +30,18 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   // const [isTimeProfile, setIsTimeProfile] = useState(false);
 
   const [loading, setLoading] = useState<boolean>(false);
-  
+
   const { groupDrawer, selectedGroup, selectedProject } = useSelector(
     (state: RootState) => state.project
-    );
-    const [name, setName] = useState(selectedGroup.name);
+  );
+  const [name, setName] = useState(selectedGroup.name);
 
   const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(projectActions.closeProjectGroup());
-    setName("")
+    setName("");
   };
 
   const handleOk = () => {
@@ -51,7 +51,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         toast.success("Group created successfully");
         dispatch(projectActions.closeProjectGroup());
         dispatch(getGroup({ other: selectedProject }));
-        setName("")
+        setName("");
       },
       finallyAction: () => {
         setLoading(false);
@@ -121,18 +121,21 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       <DialogContent>
         <div className={classes.dropdownWrapper}>
           <Input
+            sx={{
+              fontSize: "14px",
+              fontWeight: 500,
+            }}
             value={name}
             title="Group"
             placeholder="Enter group name"
             onChange={handleNameChange}
           />
           <br />
-          <HorizontalBreak color={colors.grey} />
         </div>
       </DialogContent>
       <DialogActions className={classes.btnWraper}>
         <Button
-        variant="outlined"
+          variant="outlined"
           className={classes.cancel}
           onClick={handleClose}
           color="secondary"
@@ -161,13 +164,13 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 export default AddGroup;
 
 const useStyles = makeStyles({
-  btnWraper:{
-    '& .MuiButton-outlinedSecondary:hover':{
-      backgroundColor:'transparent',
-      border:'1px solid #9D9D9D',
+  btnWraper: {
+    "& .MuiButton-outlinedSecondary:hover": {
+      backgroundColor: "transparent",
+      border: "1px solid #9D9D9D",
     },
-    padding:'10px 18px',
-    gap:'10px',
+    padding: "12px 24px",
+    gap: "10px",
   },
   menuWrapper: {
     display: "flex",
@@ -182,7 +185,7 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    '& .input-text':{fontWeight:'600 !important'},
+    "& .input-text": { fontWeight: "600 !important" },
 
     maxWidth: 370,
     width: 370,
@@ -200,11 +203,10 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   cancel: {
-   
     fontSize: 12,
     fontWeight: 700,
     color: "#9D9D9D",
-    borderColor:"#9D9D9D",
+    borderColor: "#9D9D9D",
   },
   ok: {
     fontSize: 12,

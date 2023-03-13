@@ -38,7 +38,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     dispatch(projectActions.setSelectedProject(_id));
     dispatch(projectActions.setProjectOverview(project));
     dispatch(projectActions.openDrawer());
-   // dispatch(getProjectDetail({ other: _id }));
+    // dispatch(getProjectDetail({ other: _id }));
   };
 
   const classes = useStyles();
@@ -54,54 +54,65 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         <ImageCard>
           <Image src={imgSrc} />
           <Status>
-            <div
-              className={classes.status}
-              style={
-                {
-                  // background: getColorByStatus(publishStatus),
-                  // color: getTextColorByStatus(publishStatus),
-                }
-              }
-            >
+            <div className={classes.status}>
               <Typography className={classes.statusText}>
                 {publishStatus}
               </Typography>
             </div>
-            {/* <div className={classes.dateWrapper}>
-              <Typography className={classes.statusDate}>
-                {dueDateString}
-              </Typography>
-            </div> */}
           </Status>
         </ImageCard>
-        <Grid container spacing={2}>
-          <Grid item xs={5}>
-            <DueDateTag fontSize="10px" fontWeight={500}>
+        <Grid container spacing={4}>
+          <Grid item>
+            <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Due date{" "}
             </DueDateTag>
-            <DateStringTag fontSize="12px" fontWeight={700}>
+            <DateStringTag fontSize="12px" fontWeight={600}>
               {dueDateString}
             </DateStringTag>
           </Grid>
-          <Grid item xs={7}>
-            <DueDateTag fontSize="10px" fontWeight={500}>
+          <Grid item>
+            <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Created on
             </DueDateTag>
-            <DateStringTag fontSize="12px" fontWeight={700}>
+            <DateStringTag fontSize="12px" fontWeight={600}>
               {dueDateString}
             </DateStringTag>
           </Grid>
         </Grid>
-        <Grid item xs={7} className={classes.Owner}>
-          <Typography fontSize="10px" fontWeight={500} fontFamily="inter">
-            Owner
-          </Typography>
-          <Box className={classes.metaValue} style={{ display: "flex" }}>
-            {owner?.[0]?.firstName} {owner?.[0]?.surName}
-            {owner?.length > 1 && (
-              <div className={classes.extraOwners}>+{owner.length - 1}</div>
-            )}
-          </Box>
+        <Grid container spacing={4}>
+          <Grid item>
+            <Typography
+              fontSize="10px"
+              fontWeight={500}
+              fontFamily="inter"
+              color="#605C5C"
+            >
+              Owner
+            </Typography>
+            <Box className={classes.metaValue} style={{ display: "flex" }}>
+              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.length > 1 && (
+                <div className={classes.extraOwners}>+{owner.length - 1}</div>
+              )}
+            </Box>
+          </Grid>
+          <Grid item>
+            <Typography
+              fontSize="10px"
+              fontWeight={500}
+              fontFamily="inter"
+              color="#605C5C"
+            >
+              Created by
+            </Typography>
+
+            {/* <Box className={classes.metaValue} style={{ display: "flex" }}>
+              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.length > 1 && (
+                <div className={classes.extraOwners}>+{owner.length - 1}</div>
+              )}
+            </Box> */}
+          </Grid>
         </Grid>
         <Grid item className={classes.title}>
           <TitleWrapper
@@ -110,7 +121,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             fontWeight={700}
             className="ellipsis"
           >
-            title ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf'
+            title ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf'title
+            ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf
           </TitleWrapper>
         </Grid>
 
@@ -214,6 +226,11 @@ const useStyles = makeStyles({
     width: "100px",
     padding: "10px 0",
   },
+  // createdBy: {
+  //   display: "flex",
+  //   justifyContent: "spaceBetween",
+  //   flexDirection: "row",
+  // },
   status: {
     "& .css-ahj2mt-MuiTypography-root": {
       fontSize: "10px",
@@ -258,7 +275,7 @@ const useStyles = makeStyles({
     color: colors.textGrey,
   },
   metaValue: {
-    fontWeight: 500,
+    fontWeight: 600,
     fontSize: 12,
     color: "#000000",
     textTransform: "capitalize",

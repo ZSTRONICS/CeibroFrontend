@@ -25,7 +25,7 @@ const menus = [
     id: 4,
     title: "Members",
   },
-    
+
   {
     id: 5,
     title: "Documents",
@@ -34,9 +34,6 @@ const menus = [
   //   id: 6,
   //   title: "Work Profile",
   // },
-
-
-  
 ];
 
 function ProjectDrawerMenu() {
@@ -78,6 +75,9 @@ function ProjectDrawerMenu() {
                 <Typography
                   className={classes.menu}
                   style={{
+                    fontSize: "15px",
+                    fontFamily: "inter",
+                    fontWeight: 500,
                     color: isDisabled
                       ? colors.lightGreySecondary
                       : selectedMenue === menu.id
@@ -115,10 +115,11 @@ const useStyles = makeStyles({
     },
   },
   menu: {
-    fontSize: 14,
+    fontSize: "14px",
     // padding:""
-    fontWeight: 500,
-    color: colors.primary,
+    fontWeight: 600,
+    // color: colors.primary,
+    color: "red",
     cursor: "pointer",
   },
   breakContainer: {

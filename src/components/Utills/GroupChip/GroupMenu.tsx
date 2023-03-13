@@ -1,6 +1,5 @@
-
-import { IconButton, makeStyles} from "@material-ui/core";
-import { Typography} from "@mui/material";
+import { IconButton, makeStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import CButton from "components/Button/Button";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -20,7 +19,6 @@ interface GroupMenueInt {
 }
 
 const GroupMenu: React.FC<GroupMenueInt> = (props) => {
-
   const classes = useStyles();
   const [show, setShow] = useState(false);
   const confirm = useConfirm();
@@ -37,22 +35,41 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
     confirm({
-      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you confirm want to delete this group?</ConfirmDescriptionTag>,
-      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Remove",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
-      cancellationText: <CButton
-      variant="contained"
-      elevation={1}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you confirm want to delete this group?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       props.onDelete();
     });
@@ -61,7 +78,7 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
   return (
     <div className="dropdown">
       <IconButton onClick={handleToggle}>
-        <img src={assets.moreIcon} className={classes.moreIcon} alt=""/>
+        <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
       </IconButton>
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
@@ -86,9 +103,13 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
             <hr className={classes.break} />
             <div
               onClick={handleDelete}
-              className={`${classes.menuWrapper} dropdown-menu pointer`}>
+              className={`${classes.menuWrapper} dropdown-menu pointer`}
+            >
               {/* <img src={assets.DeleteIcon} className="width-16" alt=""/> */}
-              <Typography sx={{color:'#FA0808'}} className={`${classes.menuText} align-center`}>
+              <Typography
+                sx={{ color: "#FA0808" }}
+                className={`${classes.menuText} align-center`}
+              >
                 Delete
               </Typography>
             </div>
@@ -106,10 +127,10 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
   dropdownContent: {
-    '&.dropdown-content .dropdown-menu:hover':{
-      backgroundColor:'unset',
+    "&.dropdown-content .dropdown-menu:hover": {
+      backgroundColor: "unset",
     },
-    minWidth: 150,
+    minWidth: "100px",
     display: "block",
   },
   menuWrapper: {
@@ -132,11 +153,11 @@ const useStyles = makeStyles({
     alignItems: "",
   },
   menuText: {
-    '&.MuiTypography-root':{
-      fontWeight: '500 !important',
+    "&.MuiTypography-root": {
+      fontWeight: "500 !important",
     },
-    fontSize: 14,
-    fontWeight: 500 ,
+    fontSize: "15px",
+    fontWeight: 500,
     marginLeft: 10,
     height: 30,
     color: colors.textPrimary,

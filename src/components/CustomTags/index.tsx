@@ -75,6 +75,13 @@ color:#ADB5BD;
 export const ProjectSubHeadingTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;
+font-size: 14px;
+font-weight: 700;
+color:#656565;
+`
+export const ProjectAdminRoleTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
 font-size: 16px;
 font-weight: 600;
 color:#000000;
