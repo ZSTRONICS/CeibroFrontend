@@ -132,7 +132,6 @@ const MemberDialog = () => {
               isMulti={true}
                 title="Role"
                 data={availableUsers}
-                // value={selectedEmail}
                 handleChange={(e: any) => setSelectedUser(e)}
                 zIndex={12}
                 noOptionMessage={"No user available"}

@@ -74,7 +74,7 @@ interface ProjectReducerInt {
   projectMembers: [];
   projectWithMembers: any[];
   selectedProject: any;
-  selectedRole: any;
+  selectedRole: ProjectRolesInterface;
   filePath: any;
   fileType: any;
   selectedFolder: any;
@@ -120,7 +120,19 @@ const projectReducer: ProjectReducerInt = {
   projects: [],
   projectMembers: [],
   selectedProject: null,
-  selectedRole: null,
+  selectedRole:{
+    _id:'',
+    admin:false,
+    createdAt:"",
+    updatedAt:'',
+    creator:"",
+    isDefaultRole:false,
+    memberPermission:{create:false,delete:false,edit:false},
+    rolePermission:{create:false,delete:false,edit:false},
+    members:[],
+    name:"",
+    project:"",
+  },
   filePath: null,
   fileType: null,
   selectedFolder: null,

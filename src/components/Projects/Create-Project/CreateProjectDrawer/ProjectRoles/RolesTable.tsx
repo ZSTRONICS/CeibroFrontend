@@ -50,8 +50,8 @@ const RolesTable = () => {
 
   const handleEditRoles = (editRole: ProjectRolesInterface) => {
     // if (havePermission) {
-      // dispatch(projectActions.setSelectedRole(editRole));
-      dispatch(projectActions.setRole(editRole));
+      dispatch(projectActions.setSelectedRole(editRole));
+      // dispatch(projectActions.setRole(editRole));
       dispatch(projectActions.openProjectRole());
     // }
   };

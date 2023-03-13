@@ -22,7 +22,8 @@ import projectActions, {
   createRole,
   getAvailableProjectMembers,
   getMember,
-  PROJECT_APIS
+  PROJECT_APIS,
+  updateRole
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
@@ -50,13 +51,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const isDiabled = !loading ? false : true;
 
-  const { roleDrawer, role, selectedProject, selectedRole, userPermissions } =
+  const { roleDrawer, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
+    console.log('selectedRole',selectedRole);
 
     const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+    const [selectedRolMember,setSelectedRoleMember]= useState<dataInterface[]>([])
   
-    const [rolePermissionLocal, setRolePermissionLocal]=useState(role.rolePermission)
-    const [memberPermissionLocal, setmemberPermissionLocal]=useState(role.memberPermission)
+    const [rolePermissionLocal, setRolePermissionLocal]=useState(selectedRole.rolePermission)
+    const [memberPermissionLocal, setmemberPermissionLocal]=useState(selectedRole.memberPermission)
   const dispatch = useDispatch();
 
   const isAnyPermissionTrue =
@@ -79,9 +82,9 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
     const payload = {
       body: {
-        name: role.name,
-        admin: role.admin,
-        members: role.members,
+        name: selectedRole.name,
+        admin: selectedRole.admin,
+        members: selectedRole.members,
         project:selectedProject,
         rolePermission:rolePermissionLocal,
         memberPermission:memberPermissionLocal
@@ -106,12 +109,12 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
     const payload = {
       body: {
-        name: role.name,
-        admin: role.admin,
-        members: role.members.map((item:RoleMembers)=> item._id),
-        project:role.project,
-        rolePermission:role.rolePermission,
-        memberPermission:role.memberPermission
+        name: selectedRole.name,
+        admin: selectedRole.admin,
+        members: selectedRole.members,
+        project:selectedRole.project,
+        rolePermission:selectedRole.rolePermission,
+        memberPermission:selectedRole.memberPermission
       },
       success: () => {
         toast.success("Role Updated successfully");
@@ -122,11 +125,12 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       finallyAction: () => {
         setLoading(false);
       },
-      other: selectedRole,
+      other: selectedRole._id,
     };
+    console.log("payload--->", payload);
     setLoading(true);
 
-    // dispatch(updateRole(payload));
+    dispatch(updateRole(payload));
   };
 
   const handleSubmit = () => {
@@ -151,13 +155,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       setmemberPermissionLocal({ create: true, edit: true, delete: true })
     }else {
       if(e.target?.checked===false){
-        setRolePermissionLocal(role.rolePermission)
-        setmemberPermissionLocal(role.memberPermission)
+        setRolePermissionLocal(selectedRole.rolePermission)
+        setmemberPermissionLocal(selectedRole.memberPermission)
       }
     }
     dispatch(
-      projectActions.setRole({
-        ...role,
+      projectActions.setSelectedRole({
+        ...selectedRole,
         admin: e.target?.checked,
       })
     );
@@ -169,8 +173,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       [e.target.name]:e.target.checked
     })
     dispatch(
-      projectActions.setRole({
-        ...role,
+      projectActions.setSelectedRole({
+        ...selectedRole,
         rolePermission:rolePermissionLocal
       })
     );
@@ -181,8 +185,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       [e.target.name]:e.target.checked
     })
     dispatch(
-      projectActions.setRole({
-        ...role,
+      projectActions.setSelectedRole({
+        ...selectedRole,
         rolePermission:rolePermissionLocal
       })
     );
@@ -190,8 +194,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const handleNameChange = (e: any) => {
     dispatch(
-      projectActions.setRole({
-        ...role,
+      projectActions.setSelectedRole({
+        ...selectedRole,
         name: e.target.value,
       })
     );
@@ -234,15 +238,27 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     );
   }, [roleDrawer]);
 
-  let editMembers= role.members.map((item: any) => {
-    return { label: item.firstName + " " + item.surName, value: item._id,};
-  })
+  useEffect(() => {
+    if (selectedRole._id !== "") {
+      setIsRole(true);
+      setIsMember(true);
+   
+    const availableMembers = selectedRole.members.map((user:any) => ({
+      label: `${user.firstName} ${user.surName}`,
+      value: user._id,
+      id: user._id,
+    })) || [];
+    setSelectedRoleMember(availableMembers)
+    console.log(availableMembers);
+}
+  }, [selectedRole._id]);
+
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
         <div className={classes.dropdownWrapper}>
           <Input
-            value={role.name}
+            value={selectedRole.name}
             title="Role"
             placeholder="Enter role name"
             onChange={handleNameChange}
@@ -274,15 +290,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             filterSelectedOptions
             disableCloseOnSelect
             limitTags={3}
-            // defaultValue={fixedOwner}
-            // value={availableUsers}
+            // value={selectedRolMember}
             options={availableUsers}
             size="small"
             onChange={(event, value) => {
               const memberIds = value.map((item: any) => item.id);
               dispatch(
-                projectActions.setRole({
-                  ...role,
+                projectActions.setSelectedRole({
+                  ...selectedRole,
                   members: [...memberIds],
                 })
               );
@@ -322,13 +337,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 Project admin
               </Typography>
               <InputSwitch
-                value={role.admin}
+                value={selectedRole.admin}
                 onChange={handleAdminChange}
                 label=""
               />
             </div>
 
-            {!role.admin && (
+            {!selectedRole.admin && (
               <>
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>Role</Typography>
@@ -534,7 +549,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           className={classes.ok}
           color="primary"
           variant="contained"
-          disabled={(isAnyPermissionTrue === true ||role.admin  === true) ? false: true}
+          disabled={(isAnyPermissionTrue === true ||selectedRole.admin  === true) ? false: true}
           onClick={handleSubmit}
         >
           {selectedRole._id!=="" ? "Update" : "Add"}

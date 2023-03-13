@@ -225,7 +225,7 @@ const getProjectRolesById  = apiCall({
 
 const updateRole = apiCall({
   type: UPDATE_ROLE,
-  method: "put",
+  method: "patch",
   path: (payload) => `/project/role/${payload.other}`,
 });
 
@@ -316,7 +316,7 @@ const deleteMember = apiCall({
   type: DELETE_MEMBER,
   method: "delete",
   // path: (payload) => `/project/member/${payload.other}`,
-  path: (payload) => `/member/remove/${payload.other}`,
+  path: (payload) => `/project/member/remove/${payload.other}`,
 });
 
 const updateProjectPic = apiCall({

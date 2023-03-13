@@ -19,7 +19,19 @@ export interface ProjectRoles {
     createdAt: string
     updatedAt: string
   }
-
+  export const roleTemplate:ProjectRolesInterface={
+    _id:'',
+    admin:false,
+    createdAt:"",
+    updatedAt:'',
+    creator:"",
+    isDefaultRole:false,
+    memberPermission:{create:false,delete:false,edit:false},
+    rolePermission:{create:false,delete:false,edit:false},
+    members:[],
+    name:"",
+    project:"",
+  }
   //   project group interface
 
   export interface ProjectGroupInterface {

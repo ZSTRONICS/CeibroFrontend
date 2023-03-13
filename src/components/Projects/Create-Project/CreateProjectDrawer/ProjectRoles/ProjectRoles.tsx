@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import RolesTable from "./RolesTable";
 import RoleDrawer from "./RoleDrawer";
-import { rolesTemplate } from "constants/interfaces/project.interface";
+import { roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
@@ -45,20 +45,8 @@ const ProjectRoles = () => {
             className={classes.actionButton}
             // disabled={!havePermission ? true : false}
             onClick={() => {
-              dispatch(projectActions.setRole(rolesTemplate));
-              dispatch(projectActions.setSelectedRole({
-                name: "",
-                project: "",
-                rolePermission: { create: false, edit: false, delete: false },
-                memberPermission: { create: false, edit: false, delete: false },
-                members: [],
-                admin: false,
-                isDefaultRole: false,
-                _id: "",
-                creator: "",
-                createdAt: "",
-                updatedAt: ""
-              }));
+              dispatch(projectActions.setRole(roleTemplate));
+              dispatch(projectActions.setSelectedRole(roleTemplate));
               dispatch(projectActions.openProjectRole());
             }}
           />
