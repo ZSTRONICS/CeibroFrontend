@@ -19,7 +19,8 @@ function CDatePicker(props: any) {
             <div className={classes.titleWrapper}>
               <Typography
                 sx={{
-                  fontSize: "10px",
+                  fontSize: "11px",
+                  fontWeight: 500,
                   fontFamily: "Inter",
                   width: "50px",
                 }}
@@ -81,7 +82,7 @@ function CDatePicker(props: any) {
 }
 const useStyles = makeStyles({
   titleWrapper: {
-    color: "grey",
+    color: "#605C5C",
     fontFamily: "inter",
     paddingRight: "2px",
   },

@@ -1,4 +1,6 @@
-import { CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
+import { borderRadius } from "@material-ui/system";
 import { Autocomplete, Chip, TextField } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { getStatusDropdown } from "config/project.config";
@@ -11,12 +13,11 @@ import { getAvailableUsers } from "redux/action/user.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import ImagePicker from "../../../../Utills/Inputs/ImagePicker";
-import {
-  dataInterface
-} from "../../../../Utills/Inputs/SelectDropdown";
+import { dataInterface } from "../../../../Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import CreateProjectStatus from "./CreateProjectStatus";
 import ProjectOverViewForm from "./ProjectOverViewForm";
+import InputHOC from "components/Utills/Inputs/InputHOC";
 
 const ProjectOverview = () => {
   const classes = useStyles();
@@ -75,7 +76,7 @@ const ProjectOverview = () => {
   });
 
   if (projectOverview.owner.length === 0) {
-    ownersTemp = fixedOwner
+    ownersTemp = fixedOwner;
   }
 
   const [ownersList, setOwnerList] = useState<any>(ownersTemp);
@@ -145,15 +146,15 @@ const ProjectOverview = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Grid container>
+      <Grid container gap={2.5}>
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid
           item
-          // sx={{ maxWidth: "240px", width: "100%" }}
-          xs={12}
-          sm={4}
-          md={2.8}
+          sx={{ maxWidth: "280px", width: "100%", height: "40px" }}
+          // xs={12}
+          // sm={4}
+          // md={2}
         >
           <CDatePicker
             showLabel={true}
@@ -168,7 +169,15 @@ const ProjectOverview = () => {
           />
         </Grid>
 
-        <Grid item xs={12} sm={6} md={5} className={classes.datePickerWrapper}>
+        <Grid
+          item
+          sx={{
+            width: "100%",
+            height: "40px",
+            maxWidth: "460px",
+          }}
+          className={classes.datePickerWrapper}
+        >
           {/* <SelectDropdown
             handleChange={handleOwnerChange}
             value={ownersList}
@@ -178,63 +187,94 @@ const ProjectOverview = () => {
             isMulti={true}
             isDisabled={false}
           /> */}
+          <InputHOC title="Project owners">
+            <Autocomplete
+              sx={{
+                backgroundColor: "white",
+                maxWidth: "330px",
+                width: "100%",
+                // border: "1px solid #DBDBE5",
+              }}
+              multiple
+              disableClearable
+              clearIcon
+              id="project_owners1"
+              // disablePortal
+              filterSelectedOptions
+              disableCloseOnSelect
+              limitTags={1}
+              defaultValue={fixedOwner}
+              value={ownersList}
+              options={data}
+              size="small"
+              renderTags={(tagValue, getTagProps) =>
+                tagValue.map((option, index) => {
+                  return (
+                    <Chip
+                      sx={{
+                        height: "25px",
+                        backgroundColor: "#F1B740",
+                        color: colors.black,
+                        borderRadius: "4px",
+                      }}
+                      label={option?.label}
+                      {...getTagProps({ index })}
+                      disabled={String(user._id) === String(option.value)}
+                    />
+                  );
+                })
+              }
+              onChange={(event, value) => {
+                let newValue: any = [
+                  ...fixedOwner,
+                  ...value.filter(
+                    (option: any) => fixedOwner[0].value !== option.value
+                  ),
+                ];
+                // value.every((option: any) => {
+                //   if (String(user._id) === String(option.id)) {
+                //     found = true;
+                //     return false;
+                //   }
+                //   return true
+                // });
 
-          <Autocomplete
-            multiple
-            id="project_owners1"
-            disablePortal
-            filterSelectedOptions
-            disableCloseOnSelect
-            limitTags={3}
-            // defaultValue={fixedOwner}
-            value={ownersList}
-            options={data}
-            size="small"
-            renderTags={(tagValue, getTagProps) =>
-              tagValue.map((option, index) => {
-                return (
-                  <Chip
-                    label={option?.label}
-                    {...getTagProps({ index })}
-                    disabled={String(user._id) === String(option.value)}
-                  />
-                );
-              })
-            }
-            onChange={(event, value) => {
-              let newValue: any = [
-                ...fixedOwner,
-                ...value.filter(
-                  (option: any) => fixedOwner[0].value !== option.value
-                ),
-              ];
-
-              // value.every((option: any) => {
-              //   if (String(user._id) === String(option.id)) {
-              //     found = true;
-              //     return false;
-              //   }
-              //   return true
-              // });
-
-              // if (found === false) {
-              //   value.push(fixedOwner[0]);
-              // }
-
-              handleOwnerChange(newValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                name="owners"
-                label="Owners"
-                placeholder="Select owner(s)"
-              />
-            )}
-          />
+                // if (found === false) {
+                //   value.push(fixedOwner[0]);
+                // }
+                handleOwnerChange(newValue);
+              }}
+              renderInput={(params) => (
+                <TextField
+                  sx={{
+                    "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                      padding: "0px",
+                    },
+                    // border: "1px solid #DBDBE5",
+                    // borderRadius: "4px",
+                  }}
+                  {...params}
+                  name="owners"
+                  // label="Owners"
+                  // placeholder="Select owner(s)"
+                />
+              )}
+            />
+          </InputHOC>
         </Grid>
 
-        <Grid item xs={12} sm={6} md={3} className={classes.datePickerWrapper}>
+        <Grid
+          item
+          // xs={12} sm={6} md={3}
+
+          sx={{
+            width: "100%",
+            height: "40px",
+            maxWidth: "280px",
+          }}
+          className={classes.datePickerWrapper}
+        >
           {/* <SelectDropdown
             handleChange={handleStatusChange}
             data={statusData}
@@ -254,7 +294,7 @@ const ProjectOverview = () => {
           item
           xs={2}
           sm={3}
-          md={2.5}
+          // md={2.5}
           // xs={12}
           // md={2}
           className={classes.imagePicker}
@@ -279,10 +319,10 @@ const useStyles = makeStyles({
       paddingLeft: 0,
       // paddingTop: 20,
     },
-    "@media (max-width:600px)": {
-      paddingLeft: 0,
-      paddingTop: 10,
-    },
+    // "@media (max-width:600px)": {
+    //   paddingLeft: 0,
+    //   paddingTop: 10,
+    // },
   },
   secondForm: {
     paddingTop: 0,
