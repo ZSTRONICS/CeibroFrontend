@@ -225,7 +225,7 @@ const getProjectRolesById  = apiCall({
 
 const updateRole = apiCall({
   type: UPDATE_ROLE,
-  method: "put",
+  method: "patch",
   path: (payload) => `/project/role/${payload.other}`,
 });
 
@@ -235,9 +235,10 @@ const getGroupById = apiCall({
   path: (payload) => `/project/group/${payload.other}`,
 });
 
+// patch group by groupId 
 const updateGroup = apiCall({
   type: UPDATE_GROUP,
-  method: "put",
+  method: "patch",
   path: (payload) => `/project/group/${payload.other}`,
 });
 
@@ -314,7 +315,8 @@ const deleteWork = apiCall({
 const deleteMember = apiCall({
   type: DELETE_MEMBER,
   method: "delete",
-  path: (payload) => `/project/member/${payload.other}`,
+  // path: (payload) => `/project/member/${payload.other}`,
+  path: (payload) => `/project/member/remove/${payload.other}`,
 });
 
 const updateProjectPic = apiCall({

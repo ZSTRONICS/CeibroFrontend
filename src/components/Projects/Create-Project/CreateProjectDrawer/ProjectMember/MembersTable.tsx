@@ -218,28 +218,36 @@ const RolesTable = () => {
           {memberList && memberList.length > 0 ? (
             <>
               {memberList?.map((member: ProjectMemberInterface) => {
-               return <TableRow key={member._id}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    // style={{ width: "60%" }}
-                  >
-                    {/* <div className={classes.nameWrapper}> */}
-                      <Typography className={classes.nameWrapper}>
-                        {`${member?.user?.firstName} ${member?.user?.firstName}`}
-                      </Typography>
-                      <Typography className={classes.organizationName}>
-                        Company:{member?.user?.companyName??"N/A"}
-                      </Typography>
-                    {/* </div> */}
-                  </TableCell>
-                  <TableCell>
-                    <AddStatusTag sx={{color:'#000000'}}>{member.group.name}</AddStatusTag>
-                  </TableCell>
-                  <TableCell>
-                  <AddStatusTag sx={{color:'#000000'}}>{member.role.name}</AddStatusTag>
-                  </TableCell>
-                  {/* <TableCell align="right" style={{ width: "20%" }}>
+                if(member===undefined){
+                  return <></>
+                }
+               return (
+                 <TableRow key={member._id}>
+                   <TableCell
+                     component="th"
+                     scope="row"
+                     // style={{ width: "60%" }}
+                   >
+                     {/* <div className={classes.nameWrapper}> */}
+                     <Typography className={classes.nameWrapper}>
+                       {`${member?.user?.firstName} ${member?.user?.firstName}`}
+                     </Typography>
+                     <Typography className={classes.organizationName}>
+                       Company:{member?.user?.companyName ?? "N/A"}
+                     </Typography>
+                     {/* </div> */}
+                   </TableCell>
+                   <TableCell>
+                     <AddStatusTag sx={{ color: "#000000" }}>
+                       {member.role ? member.role.name : "N/A"}
+                     </AddStatusTag>
+                   </TableCell>
+                   <TableCell>
+                     <AddStatusTag sx={{ color: "#000000" }}>
+                       {member.group ? member.group.name : "N/A"}
+                     </AddStatusTag>
+                   </TableCell>
+                   {/* <TableCell align="right" style={{ width: "20%" }}>
                     <Select
                       showDisabled={true}
                       options={role}
@@ -262,18 +270,19 @@ const RolesTable = () => {
                       }
                     />
                   </TableCell> */}
-                  <TableCell align="right" style={{ width: "10%" }}>
-                    {/* {haveDeletePermission && ( */}
-                      <img
-                        style={{ width: 32, height: 32 }}
-                        src={assets.membersDelete}
-                        className={"pointer"}
-                        onClick={() => handleDelete(member._id)}
-                        alt=""
-                      />
-                    {/* )} */}
-                  </TableCell>
-                </TableRow>
+                   <TableCell align="right" style={{ width: "10%" }}>
+                     {/* {haveDeletePermission && ( */}
+                     <img
+                       style={{ width: 32, height: 32 }}
+                       src={assets.membersDelete}
+                       className={"pointer"}
+                       onClick={() => handleDelete(member._id)}
+                       alt=""
+                     />
+                     {/* )} */}
+                   </TableCell>
+                 </TableRow>
+               );
 })}
             </>
           ) : (

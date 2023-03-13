@@ -16,7 +16,6 @@ import { useDispatch, useSelector } from "react-redux";
 // import { getAllTask } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { TASK_CONFIG } from "config/task.config";
 
 function TaskList() {
   const classes = useStyles();
@@ -30,7 +29,7 @@ function TaskList() {
     (state: RootState) => state.task.getTaskSubTaskFilterByState
   );
 
-  let headerHeight = 10;
+  // let headerHeight = 10;
   // if(props.props.current){
   //   console.log(window.innerWidth, props.props.current.clientHeight);
   // }

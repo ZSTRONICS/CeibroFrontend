@@ -74,11 +74,11 @@ interface ProjectReducerInt {
   projectMembers: [];
   projectWithMembers: any[];
   selectedProject: any;
-  selectedRole: any;
+  selectedRole: ProjectRolesInterface;
   filePath: any;
   fileType: any;
   selectedFolder: any;
-  selectedGroup: any;
+  selectedGroup: ProjectGroupInterface;
   selectedTimeProfile: any;
   projectOverview: ProjectInterface;
   getAllProjectRoles: ProjectRolesInterface[];
@@ -120,11 +120,32 @@ const projectReducer: ProjectReducerInt = {
   projects: [],
   projectMembers: [],
   selectedProject: null,
-  selectedRole: null,
+  selectedRole:{
+    _id:'',
+    admin:false,
+    createdAt:"",
+    updatedAt:'',
+    creator:"",
+    isDefaultRole:false,
+    memberPermission:{create:false,delete:false,edit:false},
+    rolePermission:{create:false,delete:false,edit:false},
+    members:[],
+    name:"",
+    project:"",
+  },
   filePath: null,
   fileType: null,
   selectedFolder: null,
-  selectedGroup: null,
+  selectedGroup: {
+    members:[],
+    _id:"",
+    name:"",
+    project:"",
+    createdAt:"",
+    creator:"",
+    isDefaultGroup:false,
+    updatedAt:"",
+  },
   selectedTimeProfile: null,
   projectOverview: projectOverviewTemplate,
   role: rolesTemplate,

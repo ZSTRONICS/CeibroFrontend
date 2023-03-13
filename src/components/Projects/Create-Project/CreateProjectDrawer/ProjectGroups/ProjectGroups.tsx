@@ -8,6 +8,7 @@ import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
 import { ProjectSubHeadingTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
+import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const ProjectGroups = () => {
   const classes = useStyles();
@@ -33,7 +34,7 @@ const ProjectGroups = () => {
             sx={{ fontSize: 14, fontWeight: "700" }}
             onClick={() => {
               dispatch(projectActions.openProjectGroup());
-              dispatch(projectActions.setSelectedGroup(null));
+              dispatch(projectActions.setSelectedGroup(groupTemplate));
             }}
           />
           <ProjectDrawer />

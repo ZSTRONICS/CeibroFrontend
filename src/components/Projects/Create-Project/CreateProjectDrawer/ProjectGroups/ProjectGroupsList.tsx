@@ -1,22 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import NoData from "components/Chat/NoData";
+import { ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import projectActions, { deleteGroup, getGroup } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import GroupChip from "../../../../Utills/GroupChip/GroupChip";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "redux/reducers";
-import projectActions, {
-  deleteGroup,
-  getGroup,
-} from "redux/action/project.action";
-import { GroupInterface } from "constants/interfaces/project.interface";
-import { toast } from "react-toastify";
-import { ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import NoData from "components/Chat/NoData";
 
 const ProjectGroupsList = () => {
-  const { selectedProject, groupList, selectedGroup } = useSelector(
+  const { selectedProject, groupList } = useSelector(
     (state: RootState) => state?.project
   );
   const dispatch = useDispatch();
@@ -37,14 +31,12 @@ const ProjectGroupsList = () => {
     }
   }, [selectedProject]);
 
-  const handleGroupClick = (id: any) => {
-    dispatch(projectActions.setSelectedGroup(id));
+  const handleGroupClick = (group: any) => {
+    dispatch(projectActions.setSelectedGroup(group));
     dispatch(projectActions.openProjectGroup());
   };
 
   const handleGroupDelete = (id: any) => {
-    // alert("deleted");
-    // setLoading(true);
     dispatch(
       deleteGroup({
         success: () => {
@@ -70,10 +62,8 @@ const ProjectGroupsList = () => {
           }
           return (
             <GroupChip
-              // name={group.name}
-              // groupId={group._id}
               group={group}
-              handleClick={() => handleGroupClick(group?._id)}
+              handleClick={() => handleGroupClick(group)}
               handleDelete={() => handleGroupDelete(group?._id)}
             />
           );

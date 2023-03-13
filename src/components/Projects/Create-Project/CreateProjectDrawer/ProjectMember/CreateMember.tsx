@@ -5,30 +5,26 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
-import { avaialablePermissions } from "config/project.config";
-import { checkMemberPermission, mapGroups } from "helpers/project.helper";
+import { mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createMember,
-  getAvailableProjectMembers,
-  getGroup,
-  getMember,
-  PROJECT_APIS,
+  getAvailableProjectMembers, getMember
 } from "redux/action/project.action";
 
 import { RootState } from "redux/reducers";
 import CreateableSelectDropdown from "../../../../Utills/Inputs/CreateAbleSelect";
 import SelectDropdown, {
-  dataInterface,
+  dataInterface
 } from "../../../../Utills/Inputs/SelectDropdown";
 
 const MemberDialog = () => {
   const {
     documentDrawer,
     groupList,
-    rolesList,
+    getAllProjectRoles,
     selectedProject,
     userPermissions,
     memberDrawer,
@@ -42,9 +38,7 @@ const MemberDialog = () => {
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedEmail, setSelectedEmail] = useState<dataInterface | null>(
-    null
-  );
+  const [selectedUser, setSelectedUser] = useState<string[]>([]);
 
   const classes = useStyle();
   const isDiabled = !loading ? false : true;
@@ -58,7 +52,21 @@ const MemberDialog = () => {
     setOpen(false);
     dispatch(projectActions.closeProjectMemberDrawer());
   };
-
+  useEffect(() => {
+    dispatch(
+      getAvailableProjectMembers({
+        other: selectedProject,
+        success: (res) => {
+          const availableMembers = res.data.result.map((user:any) => ({
+            label: `${user.firstName} ${user.surName}`,
+            value: user.email,
+            id: user._id,
+          })) || [];
+          setAvailableUsers(availableMembers);
+        },
+      })
+    );
+  }, [memberDrawer]);
 
   useEffect(() => {
     if (groupList) {
@@ -68,28 +76,27 @@ const MemberDialog = () => {
   }, [groupList]);
 
   useEffect(() => {
-    if (rolesList) {
-      const newRoles = mapGroups(rolesList);
+    if (getAllProjectRoles) {
+      const newRoles = mapGroups(getAllProjectRoles);
       setRoles(newRoles);
     }
-  }, [rolesList]);
+  }, [getAllProjectRoles]);
 
-  const havePermission = checkMemberPermission(
-    userPermissions,
-    avaialablePermissions.create_permission
-  );
+  // const havePermission = checkMemberPermission(
+  //   userPermissions,
+  //   avaialablePermissions.create_permission
+  // );
 
   const handleOk = () => {
     const payload = {
       body: {
-        email: selectedEmail?.value,
-        roleId: selectRoles?.value,
-        groupId: selectGroups?.value,
-        // subContractor: selectGroups?.value,
+        user: selectedUser.map((user:any)=>user.id),
+        role: selectRoles?.value,
+        group: selectGroups?.value,
       },
       success: () => {
         toast.success("Member created successfully");
-        dispatch(getMember({ other: { projectId: selectedProject } }));
+        dispatch(getMember({ other:  selectedProject }));
         handleClose();
       },
       finallyAction: () => {
@@ -98,7 +105,6 @@ const MemberDialog = () => {
       other: selectedProject,
     };
     setLoading(true);
-
     dispatch(createMember(payload));
   };
 
@@ -123,10 +129,10 @@ const MemberDialog = () => {
           <div className={classes.body}>
             <div>
               <CreateableSelectDropdown
+              isMulti={true}
                 title="Role"
                 data={availableUsers}
-                value={selectedEmail}
-                handleChange={(e: any) => setSelectedEmail(e)}
+                handleChange={(e: any) => setSelectedUser(e)}
                 zIndex={12}
                 noOptionMessage={"No user available"}
               />
