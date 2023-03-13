@@ -32,7 +32,16 @@ export interface ProjectRoles {
     createdAt: string
     updatedAt: string
   }
-
+export const groupTemplate:ProjectGroupInterface={
+  members:[],
+  _id:"",
+  name:"",
+  project:"",
+  createdAt:"",
+  creator:"",
+  isDefaultGroup:false,
+  updatedAt:""
+}
   //   project members interface
 
   export interface ProjectMember {

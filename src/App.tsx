@@ -477,7 +477,7 @@ const App: React.FC<MyApp> = () => {
 
   return (
     <div className="App">
-      {/* <ErrorBoundary> */}
+      <ErrorBoundary>
       {/* component used here for availability of modal on all routes*/}
       <TaskModal />
       <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
@@ -492,7 +492,7 @@ const App: React.FC<MyApp> = () => {
       <ToastContainer position="bottom-left" theme="colored" />
      {openTaskDrawer&& <CreateTaskDrawer />}
       <RouterConfig />
-      {/* </ErrorBoundary> */}
+      </ErrorBoundary>
     </div>
   );
 };
