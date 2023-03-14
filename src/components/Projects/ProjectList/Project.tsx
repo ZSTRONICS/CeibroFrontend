@@ -21,6 +21,7 @@ import projectActions, {
 import { RootState } from "redux/reducers";
 import { getAvailableUsers } from "redux/action/user.action";
 import Input from "components/Utills/Inputs/Input";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 const Project = () => {
   const { searchProject, drawerOpen } = useSelector(
@@ -61,7 +62,14 @@ const Project = () => {
           sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
           // xs={12} md={3}
         >
-          <DatePicker onChange={(e: any) => setDate(e.target.value)} />
+          <CDatePicker
+            showLabel={true}
+            required
+            value={date}
+            id="date1"
+            name="dueDate"
+            onChange={(e: any) => setDate(e)}
+          />
         </Grid>
 
         <Grid
@@ -85,7 +93,7 @@ const Project = () => {
           className={classes.datePicker}
         >
           {/* <SelectDropdown title="Projects" /> */}
-          <Input
+          <SelectDropdown
             placeholder="All"
             title="Status"
             // onChange={(e: any) => setFindProject(e.target.value)}

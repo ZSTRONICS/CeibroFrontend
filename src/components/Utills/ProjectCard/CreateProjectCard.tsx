@@ -14,7 +14,7 @@ const ProjectCard = () => {
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
-    projectOverviewTemplate.owner= [user]
+    projectOverviewTemplate.owner = [user];
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
@@ -23,11 +23,11 @@ const ProjectCard = () => {
     <Grid
       className={classes.cardOuterWrapper}
       item
-      xs={12}
-      sm={6}
-      md={3}
-      lg={3}
-      xl={2}
+      // xs={12}
+      // sm={6}
+      // md={3}
+      // lg={3}
+      // xl={2}
       onClick={openProjectDrawer}
     >
       <Add className={classes.icon} />
@@ -40,8 +40,7 @@ export default ProjectCard;
 
 const useStyles = makeStyles({
   cardOuterWrapper: {
-    padding: 5,
-    marginTop: 5,
+    margin: "15px 10px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -51,7 +50,8 @@ const useStyles = makeStyles({
       border: `1px solid ${colors.mediumGrey}`,
       borderRadius: 4,
     },
-    height: 270,
+    height:250,
+    width:285,
   },
   text: {
     fontSize: 14,

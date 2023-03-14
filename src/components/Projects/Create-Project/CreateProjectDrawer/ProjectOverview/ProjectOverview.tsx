@@ -53,15 +53,15 @@ const ProjectOverview = () => {
         value: projectOverview.publishStatus,
       }
     : null;
-    
-    let fixuser = [
-      {
-        _id: user._id,
-        firstName: user.firstName,
-        surName: user.surName,
-        profilePic: "",
-      },
-    ];
+
+  let fixuser = [
+    {
+      _id: user._id,
+      firstName: user.firstName,
+      surName: user.surName,
+      profilePic: "",
+    },
+  ];
 
   if (doOnce) {
     const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
@@ -212,10 +212,10 @@ const ProjectOverview = () => {
                 // border: "1px solid #DBDBE5",
               }}
               multiple
-              disableClearable
-              clearIcon
+              // disableClearable
+              // clearIcon
               id="project_owners1"
-              // disablePortal
+              disablePortal
               filterSelectedOptions
               disableCloseOnSelect
               limitTags={1}
@@ -300,7 +300,7 @@ const ProjectOverview = () => {
           <CreateProjectStatus />
         </Grid>
 
-        <Grid item xs={12} md={12} style={{ padding: "20px 5px" }}>
+        <Grid item xs={12} md={12} style={{ padding: "0px 20px 20px" }}>
           <HorizontalBreak color={colors.grey} />
         </Grid>
       </Grid>

@@ -61,7 +61,7 @@ const styles = {
 const IOSSwitch = withStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: 30,
+      width: 32,
       height: 20,
       padding: 0,
       margin: theme.spacing(1),
@@ -89,7 +89,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
       width: 10,
       height: 10,
       marginTop: 4,
-      marginLeft: 2,
+      marginLeft: 1.8,
     },
     track: {
       borderRadius: 26 / 2,

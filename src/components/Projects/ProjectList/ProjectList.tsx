@@ -24,7 +24,7 @@ const ProjectList = () => {
     dispatch(projectActions.openDrawer());
   };
   return (
-    <Grid container className={classes.outerWrapper}>
+    <Grid container>
       {allProjects && allProjects.length > 0 ? (
         <>
           {allProjects?.map((project: ProjectInterface, index: number) => {
@@ -60,10 +60,6 @@ const ProjectList = () => {
 export default ProjectList;
 
 const useStyles = makeStyles({
-  outerWrapper: {
-    height: "100vh",
-    overflow: "scroll",
-  },
   noProject: {
     display: "flex",
     alignItems: "center",

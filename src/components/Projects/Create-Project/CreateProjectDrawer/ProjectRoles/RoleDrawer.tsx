@@ -5,29 +5,34 @@ import {
   DialogActions,
   DialogContent,
   makeStyles,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   Autocomplete,
   Checkbox,
+  Divider,
   FormControlLabel,
-  TextField
+  TextField,
 } from "@mui/material";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
+import InputHOC from "components/Utills/Inputs/InputHOC";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
+import SelectDropdown, {
+  dataInterface,
+} from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createRole,
-  getAvailableProjectMembers, PROJECT_APIS,
-  updateRole
+  getAvailableProjectMembers,
+  PROJECT_APIS,
+  updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
@@ -48,11 +53,17 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const { roleDrawer, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
 
-    const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-    const [selectedRolMember,setSelectedRoleMember]= useState<dataInterface[]>([])
- 
-    const [rolePermissionLocal, setRolePermissionLocal]=useState(selectedRole.rolePermission)
-    const [memberPermissionLocal, setmemberPermissionLocal]=useState(selectedRole.memberPermission)
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>(
+    []
+  );
+
+  const [rolePermissionLocal, setRolePermissionLocal] = useState(
+    selectedRole.rolePermission
+  );
+  const [memberPermissionLocal, setmemberPermissionLocal] = useState(
+    selectedRole.memberPermission
+  );
   const dispatch = useDispatch();
 
   const isAnyPermissionTrue =
@@ -94,24 +105,24 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     dispatch(createRole(payload));
   };
 
-  const checkKey = (arr:any[], key:any) => {
-    return arr.some((el:any) => el.hasOwnProperty(key))
+  const checkKey = (arr: any[], key: any) => {
+    return arr.some((el: any) => el.hasOwnProperty(key));
+  };
+  let memberIds: string[] = [];
+  const checkKeyInMember = checkKey(selectedRole.members, "_id");
+  if (checkKeyInMember === true) {
+    memberIds = selectedRole.members.map((item: any) => item._id);
   }
-let memberIds:string[]=[]
-  const checkKeyInMember = checkKey(selectedRole.members, '_id')
-  if(checkKeyInMember===true){
-     memberIds = selectedRole.members.map((item: any) => item._id);
-  }
-  
+
   const handleUpdate = () => {
     const payload = {
       body: {
         name: selectedRole.name,
         admin: selectedRole.admin,
-        members: checkKeyInMember?memberIds:selectedRole.members,
-        project:selectedRole.project,
-        rolePermission:rolePermissionLocal,
-        memberPermission:memberPermissionLocal
+        members: checkKeyInMember ? memberIds : selectedRole.members,
+        project: selectedRole.project,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       },
 
       success: () => {
@@ -237,21 +248,23 @@ let memberIds:string[]=[]
     if (selectedRole._id !== "") {
       setIsRole(true);
       setIsMember(true);
-   
-    const availableMembers = selectedRole.members.map((user:any) => ({
-      label: `${user.firstName} ${user.surName}`,
-      value: user._id,
-      id: user._id,
-    })) || [];
-    setSelectedRoleMember(
-      selectedRole._id!==""? availableMembers :availableUsers)
-}
+
+      const availableMembers =
+        selectedRole.members.map((user: any) => ({
+          label: `${user.firstName} ${user.surName}`,
+          value: user._id,
+          id: user._id,
+        })) || [];
+      setSelectedRoleMember(
+        selectedRole._id !== "" ? availableMembers : availableUsers
+      );
+    }
   }, [selectedRole._id]);
 
-const uniqueMember= getUniqueObjectsFromArr([
-  ...selectedRolMember,
-  ...availableUsers
-])
+  const uniqueMember = getUniqueObjectsFromArr([
+    ...selectedRolMember,
+    ...availableUsers,
+  ]);
 
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
@@ -284,6 +297,7 @@ const uniqueMember= getUniqueObjectsFromArr([
           /> */}
 
           <Autocomplete
+            sx={{ border: "none" }}
             multiple
             id="project_owners1"
             disablePortal
@@ -294,7 +308,7 @@ const uniqueMember= getUniqueObjectsFromArr([
             options={uniqueMember}
             size="small"
             onChange={(event, value) => {
-              setSelectedRoleMember([...value])
+              setSelectedRoleMember([...value]);
               const memberIds = value.map((item: any) => item.id);
               dispatch(
                 projectActions.setSelectedRole({
@@ -322,14 +336,33 @@ const uniqueMember= getUniqueObjectsFromArr([
               // }
             }}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                name="members"
-                label="Members"
-                placeholder="Select member(s)"
-              />
+              <InputHOC title="Members">
+                <TextField
+                  {...params}
+                  placeholder="Select member(s)"
+                  sx={{
+                    border: "none",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                    "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                      {
+                        border: "none",
+                      },
+                    "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                      {
+                        border: "none",
+                      },
+                    // "@media(hover) .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                    //   {
+                    //     border: "none",
+                    //   },
+                  }}
+                />
+              </InputHOC>
             )}
           />
+
           <br />
           <HorizontalBreak color={colors.grey} />
           <div className={classes.optionsWrapper}>
@@ -370,7 +403,18 @@ const uniqueMember= getUniqueObjectsFromArr([
                           />
                         );
                       })} */}
-                    <CustomStack >
+                    <CustomStack
+                      gap={1}
+                      divider={
+                        <Divider
+                          textAlign="center"
+                          variant="middle"
+                          orientation="vertical"
+                          flexItem
+                          sx={{ borderWidth: "2px", height: "25px" }}
+                        />
+                      }
+                    >
                       <FormControlLabel
                         control={
                           <MuiCheckbox
@@ -463,7 +507,23 @@ const uniqueMember= getUniqueObjectsFromArr([
                 </div>
                 {isMember && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
-                    <CustomStack>
+                    <CustomStack
+                      gap={1}
+                      divider={
+                        <Divider
+                          orientation="vertical"
+                          textAlign="center"
+                          variant="middle"
+                          flexItem
+                          sx={{
+                            borderWidth: "2px",
+                            height: "25px",
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
+                        />
+                      }
+                    >
                       <FormControlLabel
                         control={
                           <MuiCheckbox

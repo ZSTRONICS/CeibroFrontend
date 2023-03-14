@@ -130,7 +130,7 @@ const useStyles = makeStyles({
     "&.dropdown-content .dropdown-menu:hover": {
       backgroundColor: "unset",
     },
-    minWidth: 110,
+    minWidth: 80,
     display: "block",
   },
   menuWrapper: {
@@ -161,7 +161,7 @@ const useStyles = makeStyles({
     fontSize: 15,
     fontWeight: 500 ,
     marginLeft: 10,
-    height: 30,
+   
     color: colors.textPrimary,
   },
   break: {

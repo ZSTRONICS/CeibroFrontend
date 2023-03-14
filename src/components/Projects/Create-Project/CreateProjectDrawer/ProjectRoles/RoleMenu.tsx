@@ -109,7 +109,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
   dropdownContent: {
-    minWidth: 110,
+    minWidth: 80,
     display: "block",
   },
   break: {

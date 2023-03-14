@@ -12,6 +12,7 @@ import colors from "../../../assets/colors";
 import Box from "@mui/material/Box";
 import moment from "moment";
 import { borderRadius } from "@material-ui/system";
+import { deDateFormat, momentdeDateFormat } from "../Globals/Common";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -31,6 +32,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     // chatCount,
     publishStatus,
     _id,
+    createdAt,
   } = project;
 
   const dispatch = useDispatch();
@@ -43,8 +45,12 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
   const classes = useStyles();
   const imgSrc = src === "undefined" ? assets.Defaulttask : src;
-  const dueDateString: string = moment(dueDate).format("DD-MM-YYYY");
-
+  const dueDateString: string = String(dueDate)
+    .replaceAll("-", ".")
+    .replace(",", "");
+  // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
+  console.log("dueDateString", dueDateString);
+  const creationDate = momentdeDateFormat(createdAt);
   return (
     <>
       <ProjectCardContain
@@ -61,26 +67,42 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             </div>
           </Status>
         </ImageCard>
-        <Grid container spacing={4}>
-          <Grid item>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "10px",
+          }}
+        >
+          <Grid item width="80px">
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Due date{" "}
             </DueDateTag>
             <DateStringTag fontSize="12px" fontWeight={600}>
-              {dueDateString}
+              {dueDate !== undefined ? dueDateString : "N/A"}
             </DateStringTag>
           </Grid>
-          <Grid item>
+          <Grid item width="90px">
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Created on
             </DueDateTag>
             <DateStringTag fontSize="12px" fontWeight={600}>
-              {dueDateString}
+              {creationDate}
             </DateStringTag>
           </Grid>
         </Grid>
-        <Grid container spacing={4}>
-          <Grid item>
+        <Grid
+          container
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: "5px",
+          }}
+        >
+          <Grid item width="120px">
             <Typography
               fontSize="10px"
               fontWeight={500}
@@ -96,7 +118,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               )}
             </Box>
           </Grid>
-          <Grid item>
+          <Grid item width="90px">
             <Typography
               fontSize="10px"
               fontWeight={500}
@@ -106,14 +128,15 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               Created by
             </Typography>
 
-            {/* <Box className={classes.metaValue} style={{ display: "flex" }}>
+            <Box className={classes.metaValue} style={{ display: "flex" }}>
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
-              {owner?.length > 1 && (
+              {/* {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
-              )}
-            </Box> */}
+              )} */}
+            </Box>
           </Grid>
         </Grid>
+
         <Grid item className={classes.title}>
           <TitleWrapper
             fontFamily="inter"
@@ -167,17 +190,17 @@ const ProjectCardContain = styled.div`
   margin: 15px 10px;
   max-width: 285px;
   width: 285px;
-  padding: 10px 20px;
+  padding: 15px 20px;
   background: white;
   cursor: pointer;
-  height: 267px;
+  height: 250px;
 `;
 const ImageCard = styled.div`
   position: relative;
 `;
 const Image = styled.img`
   width: 100%;
-  height: 110px;
+  height: 100px;
   border-radius: 4px;
 `;
 const Status = styled.div`
@@ -215,7 +238,7 @@ const useStyles = makeStyles({
     height: "100%",
     padding: 15,
     background: colors.white,
-    border: `1px solid`,
+    // border: `1px solid`,
     boxSizing: "border-box",
     borderRadius: 5,
   },
