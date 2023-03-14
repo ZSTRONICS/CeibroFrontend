@@ -109,13 +109,13 @@ const useStyles = makeStyles({
     '&.dropdown-content .dropdown-menu:hover':{
       backgroundColor:'unset',
     },
-    minWidth: 150,
+    minWidth: 100,
     display: "block",
   },
   menuWrapper: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   menuIcon: {
     fontSize: 14,
@@ -134,8 +134,10 @@ const useStyles = makeStyles({
   menuText: {
     '&.MuiTypography-root':{
       fontWeight: '500 !important',
+    fontSize: 15,
+
     },
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 500 ,
     marginLeft: 10,
     height: 30,

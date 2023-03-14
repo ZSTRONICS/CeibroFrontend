@@ -52,12 +52,28 @@ const ProjectOverview = () => {
         value: projectOverview.publishStatus,
       }
     : null;
+    
+    let fixuser = [
+      {
+        _id: user._id,
+        firstName: user.firstName,
+        surName: user.surName,
+        profilePic: "",
+      },
+    ];
 
   if (doOnce) {
     const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
       "ddd MMM DD YYYY"
     );
     setShowDate(localized);
+    fixuser &&
+      dispatch(
+        projectActions.setProjectOverview({
+          ...projectOverview,
+          owner: fixuser,
+        })
+      );
     setDoOnce(false);
   }
   let fixedOwner = [

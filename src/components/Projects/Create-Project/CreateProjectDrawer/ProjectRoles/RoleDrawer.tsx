@@ -8,6 +8,7 @@ import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/materi
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import {
@@ -15,6 +16,7 @@ import {
 } from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import { RoleMembers } from "constants/interfaces/project.interface";
+import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -42,6 +44,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [doOnce, setDoOnce] = useState<boolean>(true);
 
  
 
@@ -53,11 +56,10 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const { roleDrawer, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
-    console.log('selectedRole',selectedRole);
 
     const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
     const [selectedRolMember,setSelectedRoleMember]= useState<dataInterface[]>([])
-  
+ 
     const [rolePermissionLocal, setRolePermissionLocal]=useState(selectedRole.rolePermission)
     const [memberPermissionLocal, setmemberPermissionLocal]=useState(selectedRole.memberPermission)
   const dispatch = useDispatch();
@@ -102,34 +104,39 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     setLoading(true);
     dispatch(createRole(payload));
   };
-  // const memberlistt = data?.roles.map((role: dataInterface) => {
-  //   return role.value;
-  // });
+
+  const checkKey = (arr:any[], key:any) => {
+    return arr.some((el:any) => el.hasOwnProperty(key))
+  }
+let memberIds:string[]=[]
+  const checkKeyInMember = checkKey(selectedRole.members, '_id')
+  if(checkKeyInMember===true){
+     memberIds = selectedRole.members.map((item: any) => item._id);
+  }
+  
   const handleUpdate = () => {
 
     const payload = {
       body: {
         name: selectedRole.name,
         admin: selectedRole.admin,
-        members: selectedRole.members,
+        members: checkKeyInMember?memberIds:selectedRole.members,
         project:selectedRole.project,
-        rolePermission:selectedRole.rolePermission,
-        memberPermission:selectedRole.memberPermission
+        rolePermission:rolePermissionLocal,
+        memberPermission:memberPermissionLocal
       },
+
       success: () => {
         toast.success("Role Updated successfully");
         dispatch(projectActions.closeProjectRole());
         dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
-        dispatch(getMember({ other: { projectId: selectedProject } }));
       },
       finallyAction: () => {
         setLoading(false);
       },
       other: selectedRole._id,
     };
-    console.log("payload--->", payload);
     setLoading(true);
-
     dispatch(updateRole(payload));
   };
 
@@ -248,10 +255,15 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       value: user._id,
       id: user._id,
     })) || [];
-    setSelectedRoleMember(availableMembers)
-    console.log(availableMembers);
+    setSelectedRoleMember(
+      selectedRole._id!==""? availableMembers :availableUsers)
 }
   }, [selectedRole._id]);
+
+const uniqueMember= getUniqueObjectsFromArr([
+  ...selectedRolMember,
+  ...availableUsers
+])
 
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
@@ -290,10 +302,11 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             filterSelectedOptions
             disableCloseOnSelect
             limitTags={3}
-            // value={selectedRolMember}
-            options={availableUsers}
+            value={selectedRolMember}
+            options={uniqueMember}
             size="small"
             onChange={(event, value) => {
+              setSelectedRoleMember([...value])
               const memberIds = value.map((item: any) => item.id);
               dispatch(
                 projectActions.setSelectedRole({
