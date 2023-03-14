@@ -12,21 +12,19 @@ import { makeStyles } from "@material-ui/core";
 import projectActions from "redux/action/project.action";
 
 const ProjectList = () => {
-  const { allProjects } = useSelector(
-    (state: RootState) => state.project
-  );
+  const { allProjects } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
-  
+
   const openCreateProject = () => {
     dispatch(projectActions.setSelectedProject(null));
-    projectOverviewTemplate.owner= [user]
+    projectOverviewTemplate.owner = [user];
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
   return (
-    <Grid container>
+    <Grid container className={classes.outerWrapper}>
       {allProjects && allProjects.length > 0 ? (
         <>
           {allProjects?.map((project: ProjectInterface, index: number) => {
@@ -36,7 +34,7 @@ const ProjectList = () => {
         </>
       ) : (
         <>
-          {(
+          {
             <Grid container style={{ height: 400 }}>
               <Grid item xs={12} className={classes.noProject}>
                 <Typography className={classes.noProjectText}>
@@ -52,7 +50,7 @@ const ProjectList = () => {
                 </Button>
               </Grid>
             </Grid>
-          )}
+          }
         </>
       )}
     </Grid>
@@ -62,6 +60,10 @@ const ProjectList = () => {
 export default ProjectList;
 
 const useStyles = makeStyles({
+  outerWrapper: {
+    height: "100vh",
+    overflow: "scroll",
+  },
   noProject: {
     display: "flex",
     alignItems: "center",

@@ -377,7 +377,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                           />
                         );
                       })} */}
-                    <CustomStack>
+                    <CustomStack >
                       <FormControlLabel
                         control={
                           <MuiCheckbox
