@@ -9,7 +9,6 @@ import {
 } from "@material-ui/core";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
@@ -121,10 +120,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       <DialogContent>
         <div className={classes.dropdownWrapper}>
           <Input
-            sx={{
-              fontSize: "14px",
-              fontWeight: 500,
-            }}
             value={name}
             title="Group"
             placeholder="Enter group name"
