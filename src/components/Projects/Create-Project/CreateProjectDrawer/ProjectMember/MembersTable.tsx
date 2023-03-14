@@ -30,6 +30,8 @@ import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ProjectMemberInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { toast } from "react-toastify";
+import RoleMenu from "../ProjectRoles/RoleMenu";
+import RollOverMenu from "./RollOverMenu";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -181,7 +183,7 @@ const RolesTable = () => {
         deleteMember({
           success: () => {
             toast.success("Deleted Successfully");
-            dispatch(getMember({ other: { projectId: selectedProject } }));
+            dispatch(getMember({ other:  selectedProject }));
           },
           finallyAction: () => {
             setLoading(false);
@@ -230,7 +232,7 @@ const RolesTable = () => {
                    >
                      {/* <div className={classes.nameWrapper}> */}
                      <Typography className={classes.nameWrapper}>
-                       {`${member?.user?.firstName} ${member?.user?.firstName}`}
+                       {`${member?.user?.firstName} ${member?.user?.surName}`}
                      </Typography>
                      <Typography className={classes.organizationName}>
                        Company:{member?.user?.companyName ?? "N/A"}
@@ -272,14 +274,27 @@ const RolesTable = () => {
                   </TableCell> */}
                    <TableCell align="right" style={{ width: "10%" }}>
                      {/* {haveDeletePermission && ( */}
-                     <img
+                    
+                     {/* <img
                        style={{ width: 32, height: 32 }}
                        src={assets.membersDelete}
                        className={"pointer"}
                        onClick={() => handleDelete(member._id)}
                        alt=""
-                     />
+                     /> */}
                      {/* )} */}
+                     {/* <RoleMenu
+                  // permissoin={havePermission}
+                  onEdit={()=>handleEditRoles(role)}
+                  onDelete={() => handleDeleteRoles(role?._id)}
+                /> */}
+                     {/* <RoleMenu 
+                      // onEdit={()=>handleEditMember(member)}
+                      onDelete={() =>handleDelete(member._id)}
+                     /> */}
+                     <RollOverMenu
+                     handleDele={() => handleDelete(member._id)}
+                     />
                    </TableCell>
                  </TableRow>
                );

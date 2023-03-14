@@ -4,9 +4,6 @@ import { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import colors from "../../../../../assets/colors";
 import assets from "../../../../../assets/assets";
-import Button from "@mui/material/Button";
-import DeleteIcon from "@mui/icons-material/Delete";
-import EditIcon from "@mui/icons-material/Edit";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
@@ -76,25 +73,14 @@ const RoleMenu = (props: any) => {
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
           <div className={`dropdown-content ${classes.dropdownContent}`}>
-            <div onClick={handleEdit} style={{ cursor: "pointer" }}>
-              <Button
-                variant="text"
-                // startIcon={<EditIcon />}
-                // disabled={props.permissoin}
-              >
-                Edit
-              </Button>
+            <div
+              onClick={handleEdit}
+              className={classes.btnContainer} >
+              Edit
             </div>
             <hr className={classes.break} />
-            <div onClick={handleDelete} style={{ cursor: "pointer" }}>
-              <Button
-                //  disabled={props.permissoin}
-                sx={{ color: "#FA0808", borderColor: "#FA0808" }}
-                variant="text"
-                // startIcon={<DeleteIcon />}
-              >
-                Delete
-              </Button>
+            <div onClick={handleDelete} className={classes.btnContainer} style={{ color: "#FA0808" }}>
+              Delete
             </div>
           </div>
         </OutsideClickHandler>
@@ -106,11 +92,24 @@ const RoleMenu = (props: any) => {
 export default RoleMenu;
 
 const useStyles = makeStyles({
+  btnContainer:{
+    color:'#0076C8',
+    fontSize:'15px',
+    fontWeight:500,
+    cursor:'pointer',
+    paddingLeft:'10px',
+    '&:hover':{
+      background:''
+    }
+  },
+  deleteContainer:{
+
+  },
   moreIcon: {
     cursor: "pointer",
   },
   dropdownContent: {
-    minWidth: "100px",
+    minWidth: 110,
     display: "block",
   },
   break: {

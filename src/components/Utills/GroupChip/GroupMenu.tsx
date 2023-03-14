@@ -130,13 +130,13 @@ const useStyles = makeStyles({
     "&.dropdown-content .dropdown-menu:hover": {
       backgroundColor: "unset",
     },
-    minWidth: "100px",
+    minWidth: 110,
     display: "block",
   },
   menuWrapper: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   menuIcon: {
     fontSize: 14,
@@ -153,11 +153,13 @@ const useStyles = makeStyles({
     alignItems: "",
   },
   menuText: {
-    "&.MuiTypography-root": {
-      fontWeight: "500 !important",
+    '&.MuiTypography-root':{
+      fontWeight: '500 !important',
+    fontSize: 15,
+
     },
-    fontSize: "15px",
-    fontWeight: 500,
+    fontSize: 15,
+    fontWeight: 500 ,
     marginLeft: 10,
     height: 30,
     color: colors.textPrimary,

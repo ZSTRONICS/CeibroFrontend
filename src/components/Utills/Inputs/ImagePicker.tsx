@@ -49,12 +49,11 @@ const ImagePicker = () => {
       if (selectedProject) {
         const formdata = new FormData();
         formdata.append("profilePic", e?.target?.files?.[0]);
-
         dispatch(
           updateProjectPicture({
             body: formdata,
             success: () => {
-              dispatch(getProjectDetail());
+              dispatch(getProjectDetail({other:selectedProject}));
               toast.success("project pic updated");
             },
             other: selectedProject,

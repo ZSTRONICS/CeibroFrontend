@@ -147,7 +147,7 @@ const CreateProjectBody = () => {
       publishStatus,
       extraStatus,
     } = projectOverview;
-
+    
     const formData = new FormData();
     formData.append("title", title);
     formData.append("location", location);
