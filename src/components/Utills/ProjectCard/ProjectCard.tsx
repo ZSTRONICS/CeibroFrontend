@@ -80,7 +80,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Due date{" "}
             </DueDateTag>
-            <DateStringTag fontSize="12px" fontWeight={600}>
+            <DateStringTag fontSize="12px" fontWeight={500}>
               {dueDate !== undefined ? dueDateString : "N/A"}
             </DateStringTag>
           </Grid>
@@ -88,7 +88,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
               Created on
             </DueDateTag>
-            <DateStringTag fontSize="12px" fontWeight={600}>
+            <DateStringTag fontSize="12px" fontWeight={500}>
               {creationDate}
             </DateStringTag>
           </Grid>
@@ -111,7 +111,10 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             >
               Owner
             </Typography>
-            <Box className={classes.metaValue} style={{ display: "flex" }}>
+            <Box
+              className={classes.metaValue}
+              style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
+            >
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
               {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
@@ -128,7 +131,10 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               Created by
             </Typography>
 
-            <Box className={classes.metaValue} style={{ display: "flex" }}>
+            <Box
+              className={classes.metaValue}
+              style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
+            >
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
               {/* {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
@@ -297,8 +303,9 @@ const useStyles = makeStyles({
     color: colors.textGrey,
   },
   metaValue: {
-    fontWeight: 600,
+    fontWeight: 500,
     fontSize: 12,
+    fontFamily: "inter",
     color: "#000000",
     textTransform: "capitalize",
   },

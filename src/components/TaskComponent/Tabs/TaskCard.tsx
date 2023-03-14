@@ -333,7 +333,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
           justifyContent="space-between"
         >
-          <Box width="">
+          <Box>
             <LabelTag>Created by</LabelTag>
             <AssignedTag>{`${creator.firstName} ${creator.surName}`}</AssignedTag>
           </Box>
