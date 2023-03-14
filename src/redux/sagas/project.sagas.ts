@@ -182,7 +182,7 @@ const getMember = apiCall({
 const updateMember = apiCall({
   type: UPDATE_MEMBER,
   method: "patch",
-  path: (payload) => `/project/member/${payload?.other}`,
+  path: (payload) => `/project/member/update/${payload?.other}`,
 });
 
 const getFolderFiles = apiCall({

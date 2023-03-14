@@ -64,7 +64,7 @@ import {
   userRolesPermissions,
 } from "constants/interfaces/project.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { ProjectGroupInterface, ProjectMemberInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { ProjectGroupInterface, ProjectMemberInterface,memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -75,6 +75,7 @@ interface ProjectReducerInt {
   projectWithMembers: any[];
   selectedProject: any;
   selectedRole: ProjectRolesInterface;
+  selectedMember:ProjectMemberInterface;
   filePath: any;
   fileType: any;
   selectedFolder: any;
@@ -133,6 +134,7 @@ const projectReducer: ProjectReducerInt = {
     name:"",
     project:"",
   },
+  selectedMember:memberTemplate,
   filePath: null,
   fileType: null,
   selectedFolder: null,
@@ -273,6 +275,13 @@ const NavigationReducer = (
       return {
         ...state,
         selectedRole: action.payload,
+      };
+    }
+
+    case PROJECT_CONFIG.SET_SELECTED_MEMBER: {
+      return {
+        ...state,
+        selectedMember: action.payload,
       };
     }
 

@@ -17,7 +17,8 @@ import { useConfirm } from "material-ui-confirm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  deleteMember, getMember,
+  deleteMember, getGroup, getMember,
+  PROJECT_APIS,
   updateMember
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -158,6 +159,13 @@ const RolesTable = () => {
     avaialablePermissions.delete_permission
   );
 
+  const handleEditMember = (member: ProjectMemberInterface) => {
+    dispatch(projectActions.setSelectedMember(member));
+    dispatch(projectActions.openProjectMemberDrawer());
+    // dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+    // dispatch(getGroup({ other: selectedProject }));
+  }
+
   const handleDelete = (id: any) => {
     setLoading(true);
 
@@ -228,14 +236,12 @@ const RolesTable = () => {
                    <TableCell
                      component="th"
                      scope="row"
-                     // style={{ width: "60%" }}
                    >
-                     {/* <div className={classes.nameWrapper}> */}
                      <Typography className={classes.nameWrapper}>
-                       {`${member?.user?.firstName} ${member?.user?.surName}`}
+                       {`${member.user.firstName} ${member.user.surName}`}
                      </Typography>
                      <Typography className={classes.organizationName}>
-                       Company:{member?.user?.companyName ?? "N/A"}
+                       Company:{member.user.companyName ?? "N/A"}
                      </Typography>
                      {/* </div> */}
                    </TableCell>
@@ -249,51 +255,10 @@ const RolesTable = () => {
                        {member.group ? member.group.name : "N/A"}
                      </AddStatusTag>
                    </TableCell>
-                   {/* <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={role}
-                      selectedValue={row?.role?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectRoleHandle(e, row)
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={group}
-                      selected="selected"
-                      selectedValue={row?.group?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectGroupHandle(e, row)
-                      }
-                    />
-                  </TableCell> */}
                    <TableCell align="right" style={{ width: "10%" }}>
-                     {/* {haveDeletePermission && ( */}
-                    
-                     {/* <img
-                       style={{ width: 32, height: 32 }}
-                       src={assets.membersDelete}
-                       className={"pointer"}
-                       onClick={() => handleDelete(member._id)}
-                       alt=""
-                     /> */}
-                     {/* )} */}
-                     {/* <RoleMenu
-                  // permissoin={havePermission}
-                  onEdit={()=>handleEditRoles(role)}
-                  onDelete={() => handleDeleteRoles(role?._id)}
-                /> */}
-                     {/* <RoleMenu 
-                      // onEdit={()=>handleEditMember(member)}
-                      onDelete={() =>handleDelete(member._id)}
-                     /> */}
                      <RollOverMenu
                      handleDele={() => handleDelete(member._id)}
+                     handleEdit={()=>{handleEditMember(member)}}
                      />
                    </TableCell>
                  </TableRow>

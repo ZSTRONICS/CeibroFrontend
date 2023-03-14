@@ -19,8 +19,8 @@ function RollOverMenu(props:any) {
   }
   const handleEdit = (e: any) => {
     e.stopPropagation();
+    props.handleEdit()
     setAnchorElMember(null);
-
   }
 
   const closePopup = (e: any) => {

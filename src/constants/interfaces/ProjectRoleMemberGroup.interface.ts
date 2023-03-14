@@ -70,6 +70,50 @@ export const groupTemplate:ProjectGroupInterface={
     createdAt: string
     updatedAt: string
   }
+
+  export const memberTemplate: ProjectMemberInterface = {
+    _id: "",
+    createdAt: "",
+    creator: "",
+    isOwner: false,
+    project: "",
+    updatedAt: "",
+    user: {
+      _id: "",
+      firstName: "",
+      surName: "",
+      profilePic: "",
+      companyName: "",
+      companyPhone: "",
+      workEmail: "",
+    },
+    role: {
+      _id: "",
+      admin: false,
+      isDefaultRole: false,
+      createdAt: "",
+      creator: "",
+      members: [],
+      name: "",
+      updatedAt: "",
+      project: "",
+      memberPermission: { create: false, delete: false, edit: false },
+      rolePermission: { create: false, delete: false, edit: false },
+
+},
+
+    group: {
+      members: [],
+      isDefaultGroup: false,
+      _id: "",
+      name: "",
+      project: "",
+      creator: "",
+      createdAt: "",
+      updatedAt: "",
+    },
+  };
+
   export interface User {
     _id: string
     firstName: string

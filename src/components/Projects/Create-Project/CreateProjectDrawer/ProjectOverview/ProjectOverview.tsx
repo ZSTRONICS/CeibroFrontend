@@ -209,11 +209,9 @@ const ProjectOverview = () => {
                 backgroundColor: "white",
                 maxWidth: "385px",
                 width: "100%",
-                // border: "1px solid #DBDBE5",
               }}
               multiple
-              disableClearable
-              clearIcon
+              // disableClearable
               id="project_owners1"
               // disablePortal
               filterSelectedOptions
