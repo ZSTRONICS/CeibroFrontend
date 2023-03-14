@@ -144,8 +144,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             fontWeight={700}
             className="ellipsis"
           >
-            title ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf'title
-            ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf
+            {title}
           </TitleWrapper>
         </Grid>
 
