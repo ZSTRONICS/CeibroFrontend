@@ -183,6 +183,7 @@ const CreateProjectBody = () => {
       )}
       {/* {!selectedProject?} */}
       {selectedProject && (
+        
         <Button
           className={classes.trash}
           color="primary"
@@ -215,7 +216,7 @@ const useStyles = makeStyles({
     padding: "10px 20px",
     background: colors.white,
     "@media (max-width:960px)": {
-      flexDirection: "column",
+      flexDirection: "row",
       alignItems: "flex-end",
     },
   },

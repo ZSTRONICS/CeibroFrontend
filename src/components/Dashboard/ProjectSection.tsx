@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import { getAllStatus } from "../../config/project.config";
 import ProjectList from "./ProjectList";
@@ -88,7 +89,15 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <ProjectList />
+      <Box
+        sx={{
+          // height: "100%",
+          height: "300px",
+          overflowY: "auto",
+        }}
+      >
+        <ProjectList />
+      </Box>
     </div>
   );
 };
@@ -97,7 +106,7 @@ export default ProjectSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: '30px 0 12px 10px',
+    padding: "30px 0 12px 10px",
   },
   title: {
     fontSize: 24,

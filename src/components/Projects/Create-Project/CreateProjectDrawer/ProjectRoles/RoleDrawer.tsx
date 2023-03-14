@@ -1,30 +1,32 @@
 import styled from "@emotion/styled";
 import {
-  Button, Dialog,
+  Button,
+  Dialog,
   DialogActions,
-  DialogContent, makeStyles, Typography
+  DialogContent,
+  makeStyles,
+  Typography
 } from "@material-ui/core";
-import { Autocomplete, Checkbox, FormControlLabel, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Checkbox,
+  FormControlLabel,
+  TextField
+} from "@mui/material";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import {
-  dataInterface
-} from "components/Utills/Inputs/SelectDropdown";
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import { RoleMembers } from "constants/interfaces/project.interface";
-import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createRole,
-  getAvailableProjectMembers,
-  getMember,
-  PROJECT_APIS,
+  getAvailableProjectMembers, PROJECT_APIS,
   updateRole
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -33,26 +35,15 @@ interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete",];
+  const roles = ["create", "edit", "delete"];
 
   const roleTempale = {
     memberList: [],
   };
 
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
-  const [isTimeProfile, setIsTimeProfile] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [doOnce, setDoOnce] = useState<boolean>(true);
-
- 
-
-  const [selectedMember, setSelectedMember] = useState<any>(null);
- 
-  const [data, setData] = useState<any>(roleTempale);
-
-  const isDiabled = !loading ? false : true;
 
   const { roleDrawer, selectedProject, selectedRole, userPermissions } =
     useSelector((state: RootState) => state.project);
@@ -67,11 +58,10 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const isAnyPermissionTrue =
     Object.values(rolePermissionLocal).some((p) => p) ||
     Object.values(memberPermissionLocal).some((p) => p);
-  
+
   const handleClose = () => {
     dispatch(projectActions.closeProjectRole());
   };
-
 
   // const handleChange = (name: string, value: boolean) => {
   //   setData({
@@ -81,15 +71,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   // };
 
   const handleOk = () => {
-
     const payload = {
       body: {
         name: selectedRole.name,
         admin: selectedRole.admin,
         members: selectedRole.members,
-        project:selectedProject,
-        rolePermission:rolePermissionLocal,
-        memberPermission:memberPermissionLocal
+        project: selectedProject,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       },
       success: () => {
         toast.success("Role created successfully");
@@ -115,7 +104,6 @@ let memberIds:string[]=[]
   }
   
   const handleUpdate = () => {
-
     const payload = {
       body: {
         name: selectedRole.name,
@@ -141,7 +129,7 @@ let memberIds:string[]=[]
   };
 
   const handleSubmit = () => {
-    if (selectedRole._id!=="") {
+    if (selectedRole._id !== "") {
       handleUpdate();
     } else {
       handleOk();
@@ -155,15 +143,15 @@ let memberIds:string[]=[]
   const handleChangeMember = (e: any) => {
     setIsMember(e.target?.checked);
   };
-  
+
   const handleAdminChange = (e: any) => {
-    if(e.target?.checked===true){
-      setRolePermissionLocal({ create: true, edit: true, delete: true })
-      setmemberPermissionLocal({ create: true, edit: true, delete: true })
-    }else {
-      if(e.target?.checked===false){
-        setRolePermissionLocal(selectedRole.rolePermission)
-        setmemberPermissionLocal(selectedRole.memberPermission)
+    if (e.target?.checked === true) {
+      setRolePermissionLocal({ create: true, edit: true, delete: true });
+      setmemberPermissionLocal({ create: true, edit: true, delete: true });
+    } else {
+      if (e.target?.checked === false) {
+        setRolePermissionLocal(selectedRole.rolePermission);
+        setmemberPermissionLocal(selectedRole.memberPermission);
       }
     }
     dispatch(
@@ -174,30 +162,30 @@ let memberIds:string[]=[]
     );
   };
 
-  const handleRolesChange = (e:any)=>{
+  const handleRolesChange = (e: any) => {
     setRolePermissionLocal({
       ...rolePermissionLocal,
-      [e.target.name]:e.target.checked
-    })
+      [e.target.name]: e.target.checked,
+    });
     dispatch(
       projectActions.setSelectedRole({
         ...selectedRole,
-        rolePermission:rolePermissionLocal
+        rolePermission: rolePermissionLocal,
       })
     );
-  }
-  const handleMemberChange = (e:any)=>{
+  };
+  const handleMemberChange = (e: any) => {
     setmemberPermissionLocal({
       ...memberPermissionLocal,
-      [e.target.name]:e.target.checked
-    })
+      [e.target.name]: e.target.checked,
+    });
     dispatch(
       projectActions.setSelectedRole({
         ...selectedRole,
-        rolePermission:rolePermissionLocal
+        rolePermission: rolePermissionLocal,
       })
     );
-  }
+  };
 
   const handleNameChange = (e: any) => {
     dispatch(
@@ -209,7 +197,6 @@ let memberIds:string[]=[]
   };
   useEffect(() => {
     if (selectedRole._id && roleDrawer) {
-
       // dispatch(
       //   PROJECT_APIS.getProjectRolesById ({
       //     other: selectedProject,
@@ -234,11 +221,12 @@ let memberIds:string[]=[]
       getAvailableProjectMembers({
         other: selectedProject,
         success: (res) => {
-          const availableMembers = res.data.result.map((user:any) => ({
-            label: `${user.firstName} ${user.surName}`,
-            value: user.email,
-            id: user._id,
-          })) || [];
+          const availableMembers =
+            res.data.result.map((user: any) => ({
+              label: `${user.firstName} ${user.surName}`,
+              value: user.email,
+              id: user._id,
+            })) || [];
           setAvailableUsers(availableMembers);
         },
       })
@@ -295,7 +283,7 @@ const uniqueMember= getUniqueObjectsFromArr([
             }}
           /> */}
 
-      <Autocomplete
+          <Autocomplete
             multiple
             id="project_owners1"
             disablePortal
@@ -366,6 +354,7 @@ const uniqueMember= getUniqueObjectsFromArr([
                     onChange={handleChangeRole}
                   />
                 </div>
+
                 {isRole && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
                     {/* {roles
@@ -385,11 +374,11 @@ const uniqueMember= getUniqueObjectsFromArr([
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={rolePermissionLocal.create}
                             onChange={handleRolesChange}
                             name="create"
@@ -401,8 +390,8 @@ const uniqueMember= getUniqueObjectsFromArr([
                         control={
                           <MuiCheckbox
                             sx={{
-                              '&.Mui-checked': {
-                                color: '#F1B740',
+                              "&.Mui-checked": {
+                                color: "#F1B740",
                               },
                             }}
                             checked={rolePermissionLocal.edit}
@@ -415,11 +404,11 @@ const uniqueMember= getUniqueObjectsFromArr([
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={rolePermissionLocal.delete}
                             onChange={handleRolesChange}
                             name="delete"
@@ -430,7 +419,7 @@ const uniqueMember= getUniqueObjectsFromArr([
                     </CustomStack>
                   </div>
                 )}
-                <HorizontalBreak />
+                {/* <HorizontalBreak /> */}
                 {/* <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Work profile
@@ -440,8 +429,8 @@ const uniqueMember= getUniqueObjectsFromArr([
                     label=""
                     onChange={handleChangeTimeProfile}
                   />
-                </div>
-                {isTimeProfile && (
+                </div> */}
+                {/* {isTimeProfile && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
                     {roles
                       ?.filter((item) => item !== "self-made")
@@ -474,15 +463,15 @@ const uniqueMember= getUniqueObjectsFromArr([
                 </div>
                 {isMember && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
-                     <CustomStack>
+                    <CustomStack>
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={memberPermissionLocal.create}
                             onChange={handleMemberChange}
                             name="create"
@@ -494,8 +483,8 @@ const uniqueMember= getUniqueObjectsFromArr([
                         control={
                           <MuiCheckbox
                             sx={{
-                              '&.Mui-checked': {
-                                color: '#F1B740',
+                              "&.Mui-checked": {
+                                color: "#F1B740",
                               },
                             }}
                             checked={memberPermissionLocal.edit}
@@ -508,11 +497,11 @@ const uniqueMember= getUniqueObjectsFromArr([
                       <FormControlLabel
                         control={
                           <MuiCheckbox
-                          sx={{
-                            '&.Mui-checked': {
-                              color: '#F1B740',
-                            },
-                          }}
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
                             checked={memberPermissionLocal.delete}
                             onChange={handleMemberChange}
                             name="delete"
@@ -562,10 +551,14 @@ const uniqueMember= getUniqueObjectsFromArr([
           className={classes.ok}
           color="primary"
           variant="contained"
-          disabled={(isAnyPermissionTrue === true ||selectedRole.admin  === true) ? false: true}
+          disabled={
+            isAnyPermissionTrue === true || selectedRole.admin === true
+              ? false
+              : true
+          }
           onClick={handleSubmit}
         >
-          {selectedRole._id!=="" ? "Update" : "Add"}
+          {selectedRole._id !== "" ? "Update" : "Add"}
           {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
           )} */}
@@ -577,8 +570,8 @@ const uniqueMember= getUniqueObjectsFromArr([
 
 export default AddRole;
 const MuiCheckbox = styled(Checkbox)`
-  color: #ADB5BD;
-`
+  color: #adb5bd;
+`;
 const useStyles = makeStyles({
   menuWrapper: {
     display: "flex",
@@ -596,7 +589,7 @@ const useStyles = makeStyles({
     maxWidth: 370,
     width: 370,
     maxHeight: 450,
-    height:'100%'
+    height: "100%",
   },
   optionsWrapper: {
     width: "100%",

@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
-import { Grid, Typography } from "@material-ui/core";
+// import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
 import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
@@ -10,6 +11,7 @@ import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
 import moment from "moment";
+import { borderRadius } from "@material-ui/system";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -36,7 +38,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     dispatch(projectActions.setSelectedProject(_id));
     dispatch(projectActions.setProjectOverview(project));
     dispatch(projectActions.openDrawer());
-   // dispatch(getProjectDetail({ other: _id }));
+    // dispatch(getProjectDetail({ other: _id }));
   };
 
   const classes = useStyles();
@@ -46,41 +48,47 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   return (
     <>
       <ProjectCardContain
-        // style={{ border: `1px solid ${getColorByStatus(publishStatus)}` }}
+        style={{ border: "1px solid #6B737A", borderRadius: "5px" }}
         onClick={handleProjectClick}
       >
         <ImageCard>
           <Image src={imgSrc} />
           <Status>
-            <div
-              className={classes.status}
-              style={
-                {
-                  // background: getColorByStatus(publishStatus),
-                  // color: getTextColorByStatus(publishStatus),
-                }
-              }
-            >
+            <div className={classes.status}>
               <Typography className={classes.statusText}>
                 {publishStatus}
               </Typography>
             </div>
-            <div className={classes.dateWrapper}>
-              <Typography className={classes.statusDate}>
-                {dueDateString}
-              </Typography>
-            </div>
           </Status>
         </ImageCard>
-        <Grid container spacing={2}>
-          <Grid item xs={5}>
-            <Typography className={classes.meta}>Due Date </Typography>
-            <Typography className={classes.metaValue}>
+        <Grid container spacing={4}>
+          <Grid item>
+            <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
+              Due date{" "}
+            </DueDateTag>
+            <DateStringTag fontSize="12px" fontWeight={600}>
               {dueDateString}
-            </Typography>
+            </DateStringTag>
           </Grid>
-          <Grid item xs={7}>
-            <Typography className={classes.meta}>Owner</Typography>
+          <Grid item>
+            <DueDateTag fontSize="10px" fontWeight={500} color="#605C5C">
+              Created on
+            </DueDateTag>
+            <DateStringTag fontSize="12px" fontWeight={600}>
+              {dueDateString}
+            </DateStringTag>
+          </Grid>
+        </Grid>
+        <Grid container spacing={4}>
+          <Grid item>
+            <Typography
+              fontSize="10px"
+              fontWeight={500}
+              fontFamily="inter"
+              color="#605C5C"
+            >
+              Owner
+            </Typography>
             <Box className={classes.metaValue} style={{ display: "flex" }}>
               {owner?.[0]?.firstName} {owner?.[0]?.surName}
               {owner?.length > 1 && (
@@ -88,14 +96,42 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               )}
             </Box>
           </Grid>
+          <Grid item>
+            <Typography
+              fontSize="10px"
+              fontWeight={500}
+              fontFamily="inter"
+              color="#605C5C"
+            >
+              Created by
+            </Typography>
+
+            {/* <Box className={classes.metaValue} style={{ display: "flex" }}>
+              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.length > 1 && (
+                <div className={classes.extraOwners}>+{owner.length - 1}</div>
+              )}
+            </Box> */}
+          </Grid>
+        </Grid>
+        <Grid item className={classes.title}>
+          <TitleWrapper
+            fontFamily="inter"
+            fontSize="14px"
+            fontWeight={700}
+            className="ellipsis"
+          >
+            title ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf'title
+            ajfdljdflasdkf ladskf;kasdfl;k 'alsdkfljkadsf
+          </TitleWrapper>
         </Grid>
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Typography className={classes.title}>{title}</Typography>
           <Typography className={classes.viewMap}>View map</Typography>
           <hr className={classes.break} />
-        </Grid>
-        {/* <Grid item xs={12} className={classes.iconWrapper}>
+        </Grid> */}
+        {/* <Grid item xs={12} sx={{border:"1px solid"}} className={classes.iconWrapper}>
           <div className={classes.iconChip}>
             <img src={assets.clipboardIcon} className={`w-16`} alt="" />
             <Typography className={classes.iconText}>
@@ -128,7 +164,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 export default ProjectCard;
 
 const ProjectCardContain = styled.div`
-  margin: 7px 10px;
+  margin: 15px 10px;
   max-width: 285px;
   width: 285px;
   padding: 10px 20px;
@@ -150,6 +186,21 @@ const Status = styled.div`
   left: 10px;
   display: flex;
 `;
+const DueDateTag = styled(Typography)`
+  fontfamily: inter;
+  fontsize: 10px;
+  fontweight: 500;
+  color: #605c5c;
+`;
+const DateStringTag = styled(Typography)`
+  fontfamily: inter;
+  color: #000000;
+`;
+const TitleWrapper = styled(Typography)`
+  fontfamily: inter;
+  fontweight: 700;
+  fontsize: 14px;
+`;
 const useStyles = makeStyles({
   cardOuterWrapper: {
     padding: 5,
@@ -158,6 +209,7 @@ const useStyles = makeStyles({
   wrapper: {
     height: "80%",
   },
+
   cardWrapper: {
     minHeight: 270,
     height: "100%",
@@ -174,9 +226,17 @@ const useStyles = makeStyles({
     width: "100px",
     padding: "10px 0",
   },
+  // createdBy: {
+  //   display: "flex",
+  //   justifyContent: "spaceBetween",
+  //   flexDirection: "row",
+  // },
   status: {
-    background: colors.darkYellow,
-    borderRadius: 3,
+    "& .css-ahj2mt-MuiTypography-root": {
+      fontSize: "10px",
+    },
+    background: "#6B737A",
+    borderRadius: 4,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
@@ -184,9 +244,11 @@ const useStyles = makeStyles({
     padding: "2px 5px",
   },
   statusText: {
+    // color: "#6B737A",
     color: colors.white,
     fontSize: 10,
     fontWeight: 500,
+    fontFamily: "Inter",
   },
   statusDate: {
     color: colors.black,
@@ -215,12 +277,17 @@ const useStyles = makeStyles({
   metaValue: {
     fontWeight: 600,
     fontSize: 12,
+    color: "#000000",
     textTransform: "capitalize",
+  },
+  Owner: {
+    paddingTop: "5px",
   },
   title: {
     fontWeight: 700,
     fontSize: 14,
-    marginTop: 10,
+    paddingTop: "10px",
+    height: "50px",
     color: colors.black,
   },
   viewMap: {
@@ -247,6 +314,11 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 10,
   },
+  // // ownerWrapper: {
+  // //   ".css-50gs4y-MuiTypography-root": {
+  // //     fontSize: "10px",
+  // //   },
+  // },
   icon: {
     color: colors.primary,
     paddingRight: 3,

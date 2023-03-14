@@ -114,12 +114,12 @@ const MemberDialog = () => {
         variant="outlined"
         color="primary"
         label="Add"
-        sx={{fontSize:14, fontWeight:'700'}}
+        sx={{ fontSize: 14, fontWeight: "700" }}
         // className={classes.btn}
         // disabled={havePermission ? false : true}
         onClick={handleClickOpen}
       />
-      
+
       <Dialog
         open={memberDrawer}
         onClose={handleClose}
@@ -142,7 +142,10 @@ const MemberDialog = () => {
               /> */}
             </div>
 
-            <div className={classes.meta} style={{zIndex:10,position:'relative'}}>
+            <div
+              className={classes.meta}
+              style={{ zIndex: 10, position: "relative" }}
+            >
               <SelectDropdown
                 title="Role"
                 data={roles}
@@ -152,13 +155,12 @@ const MemberDialog = () => {
               />
             </div>
 
-            <div className={classes.meta} >
+            <div className={classes.meta}>
               <SelectDropdown
                 title="Group"
                 data={groups}
                 noOptionMessage="No group available"
                 handleChange={(e: any) => setSelectGroups(e)}
-                
               />
             </div>
 
@@ -177,7 +179,11 @@ const MemberDialog = () => {
           {/* <InputText/>
           <SelectDropdown title="Role"/> */}
         </DialogContent>
-        <DialogActions>
+        <DialogActions
+          style={{
+            paddingRight: "25px",
+          }}
+        >
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
@@ -208,7 +214,9 @@ const useStyle = makeStyles({
   },
   body: {
     width: 360,
-    minHeight: 300,
+    // minHeight: 300,
+    maxHeight: 450,
+    height:'100%'
   },
   meta: {
     marginTop: 10,

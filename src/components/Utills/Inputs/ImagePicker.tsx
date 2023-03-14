@@ -1,4 +1,3 @@
-
 import { makeStyles } from "@material-ui/core";
 import React, { useRef, useState } from "react";
 import colors from "../../../assets/colors";
@@ -77,7 +76,14 @@ const ImagePicker = () => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ background: `url(${projectOverview.projectPhoto==='undefined'?assets.Defaulttask:projectOverview.projectPhoto})` }}
+        style={{
+          margin: "0 auto",
+          background: `url(${
+            projectOverview.projectPhoto === "undefined"
+              ? assets.Defaulttask
+              : projectOverview.projectPhoto
+          })`,
+        }}
       >
         <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} alt=""/>
       </div>
@@ -89,13 +95,14 @@ export default ImagePicker;
 
 const useStyles = makeStyles({
   outerWrapper: {
+    borderRadius: "4px",
     border: `1px solid ${colors.purpleGrey}`,
-    height: 100,
-    maxWidth: 100,
+    height: "120px",
+    width: "140px",
     position: "relative",
     cursor: "pointer",
     backgroundSize: "cover !important",
-    backgroundPosition: 'center !important'
+    backgroundPosition: "center !important",
   },
   icon: {
     position: "absolute",
@@ -104,8 +111,8 @@ const useStyles = makeStyles({
     color: colors.white,
     background: colors.primary,
     padding: 2,
-    height: 22,
-    width: 22,
+    height: 28,
+    width: 28,
   },
   inputFile: {
     visibility: "hidden",

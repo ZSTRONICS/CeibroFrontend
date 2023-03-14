@@ -12,8 +12,10 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
 import CButton from "components/Button/Button";
 import { AddStatusTag } from "components/CustomTags";
+import { DropDownIcon } from "components/material-ui/icons/dropdown/DropDownIcon";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -183,6 +185,7 @@ function CreateProjectStatus() {
                         disableRipple
                         onClick={handleOpenCloseStatusModal}
                         sx={{
+                          // border:"2px solid",
                           background: "#0076c81f",
                           "& .MuiButtonBase-root-MuiMenuItem-root:hover": {
                             backgroundColor: "#0076c81f !important",

@@ -33,18 +33,19 @@ function TaskList() {
   // if(props.props.current){
   //   console.log(window.innerWidth, props.props.current.clientHeight);
   // }
-  let filterTask=[...allTask]
+  let filterTask = [...allTask];
 
-  filterTask =filterTask.reduce((acc:any, curr:any) => {
+  filterTask = filterTask.reduce((acc: any, curr: any) => {
     if (curr.state === getTaskSubTaskFilterByState) {
       acc.push({ ...curr });
     }
     return acc;
   }, []);
 
-if(getTaskSubTaskFilterByState==='all'){
-  filterTask=[...allTask]
-}
+  if (getTaskSubTaskFilterByState === "all") {
+    filterTask = [...allTask];
+  }
+console.log('filterTask-->',filterTask);
 
   return (
     <>
@@ -59,6 +60,7 @@ if(getTaskSubTaskFilterByState==='all'){
         <Grid
           // sx={{ height: "270px", overflowY: "auto" }}
           className={classes.tasklistContainer}
+          justifyContent={`${filterTask.length===0?'center':'flex-start'}`}
           container
           item
           rowGap={2.5}
@@ -70,7 +72,7 @@ if(getTaskSubTaskFilterByState==='all'){
           // height={"calc(100vh - 30vh)"}
           // className={classes.cardListContainer}
         >
-          {filterTask &&
+          {filterTask &&filterTask.length>0?
             filterTask.map((task: TaskInterface) => {
               if (task === undefined) {
                 return <></>;
@@ -83,7 +85,9 @@ if(getTaskSubTaskFilterByState==='all'){
                   <TaskCard ColorByStatus={getColorByStatus} task={task} />
                 </Fragment>
               );
-            })}
+            }):
+            <NoData title="No data found!"/>
+            }
         </Grid>
       )}
     </>

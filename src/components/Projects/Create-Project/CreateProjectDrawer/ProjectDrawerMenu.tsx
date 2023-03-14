@@ -1,5 +1,6 @@
 import React from "react";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import colors from "../../../../assets/colors";
 import HorizontalBreak from "../../../Utills/Others/HorizontalBreak";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,7 +25,7 @@ const menus = [
     id: 4,
     title: "Members",
   },
-    
+
   {
     id: 5,
     title: "Documents",
@@ -33,9 +34,6 @@ const menus = [
   //   id: 6,
   //   title: "Work Profile",
   // },
-
-
-  
 ];
 
 function ProjectDrawerMenu() {
@@ -56,7 +54,15 @@ function ProjectDrawerMenu() {
   return (
     <>
       {/* <PermissionState> */}
-      <Grid container>
+      <Grid
+        container
+        sx={{
+          paddingLeft: "4px",
+          "@media(max-width:960px)": {
+            paddingLeft: "10px",
+          },
+        }}
+      >
         {menus &&
           menus.map((menu, index) => {
             const isDisabled = index > 0 && !selectedProject;
@@ -69,6 +75,9 @@ function ProjectDrawerMenu() {
                 <Typography
                   className={classes.menu}
                   style={{
+                    fontSize: "15px",
+                    fontFamily: "inter",
+                    fontWeight: 500,
                     color: isDisabled
                       ? colors.lightGreySecondary
                       : selectedMenue === menu.id
@@ -106,9 +115,11 @@ const useStyles = makeStyles({
     },
   },
   menu: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: colors.primary,
+    fontSize: "14px",
+    // padding:""
+    fontWeight: 600,
+    // color: colors.primary,
+    color: "red",
     cursor: "pointer",
   },
   breakContainer: {

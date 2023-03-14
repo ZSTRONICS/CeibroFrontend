@@ -1,4 +1,3 @@
-
 import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
@@ -26,22 +25,41 @@ const RoleMenu = (props: any) => {
     e.preventDefault();
     e.stopPropagation();
     confirm({
-      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you confirm want to delete this role?</ConfirmDescriptionTag>,
-      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Remove",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
-      cancellationText: <CButton
-      variant="contained"
-      elevation={1}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you confirm want to delete this role?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       props.onDelete();
     });
@@ -91,7 +109,7 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
   dropdownContent: {
-    minWidth: 100,
+    minWidth: 110,
     display: "block",
   },
   break: {

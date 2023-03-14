@@ -1,14 +1,20 @@
-import {
-  CircularProgress,
-  makeStyles, Typography
-} from "@material-ui/core";
+import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import { Divider, Grid, Tooltip } from "@mui/material";
 import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
-import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
-import { CustomBadge, CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import {
+  ProjectSubHeadingTag,
+  RoleSubLabelTag
+} from "components/CustomTags";
+import {
+  CustomBadge,
+  CustomStack
+} from "components/TaskComponent/Tabs/TaskCard";
 import { avaialablePermissions } from "config/project.config";
-import { Member, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  Member,
+  ProjectRolesInterface
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { checkRolePermission } from "helpers/project.helper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -39,7 +45,7 @@ const RolesTable = () => {
       //   other: selectedProject,
       // };
       // setLoading(true);
-      dispatch(PROJECT_APIS.getProjectRolesById({other:selectedProject}));
+      dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     }
   }, [selectedProject]);
 
@@ -50,9 +56,9 @@ const RolesTable = () => {
 
   const handleEditRoles = (editRole: ProjectRolesInterface) => {
     // if (havePermission) {
-      dispatch(projectActions.setSelectedRole(editRole));
-      // dispatch(projectActions.setRole(editRole));
-      dispatch(projectActions.openProjectRole());
+    dispatch(projectActions.setSelectedRole(editRole));
+    // dispatch(projectActions.setRole(editRole));
+    dispatch(projectActions.openProjectRole());
     // }
   };
 
@@ -62,7 +68,9 @@ const RolesTable = () => {
       deleteRole({
         success: () => {
           toast.success("Deleted Successfully");
-          dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+          dispatch(
+            PROJECT_APIS.getProjectRolesById({ other: selectedProject })
+          );
         },
         finallyAction: () => {
           setLoading(false);
@@ -115,7 +123,7 @@ const RolesTable = () => {
   };
 
   return (
-    <Grid container >
+    <Grid container>
       <Grid item xs={12} className={classes.titleContainer}>
         <Typography className={classes.name}>Role name</Typography>
       </Grid>
@@ -230,6 +238,24 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  typoHeader: {
+    fontWeight: 800,
+    fontSize: "12px",
+  },
+  roleItems: {
+    "@media(max-width:620px)": {
+      display: "flex",
+      marginLeft: "0px",
+      // flexDirection: "row",
+      flexWrap: "wrap",
+      // justifyContent: "flex-start",
+    },
+  },
+  memberItem: {},
+  Content: {
+    fontWeight: 500,
+    fontSize: "12px",
+  },
   rowTop: {
     fontWeight: 500,
     fontSize: 12,
@@ -237,7 +263,7 @@ const useStyles = makeStyles({
   },
   titleContainer: {
     padding: "15px 1px",
-    borderBottom: `1px solid ${colors.ternaryGrey}`,
+    borderBottom: "1px solid #D3D4D9",
   },
   name: {
     fontSize: 12,
@@ -250,11 +276,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
     padding: "12px 0px",
-    borderBottom: `1px solid ${colors.grey}`,
+    borderBottom: "1px solid #E0E0E0",
   },
   roleInner: {
     display: "flex",
     flexDirection: "column",
+    rowGap: "10px",
   },
   roleName: {
     fontSize: 14,

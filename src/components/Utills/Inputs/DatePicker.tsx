@@ -9,7 +9,7 @@ interface DatePickerInt {
   disabled?: boolean;
   min?: string;
   max?: string;
-  Datetitle?:string|any;
+  Datetitle?: string | any;
 }
 
 const DatePicker: React.FC<DatePickerInt> = (props) => {
