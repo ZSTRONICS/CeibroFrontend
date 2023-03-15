@@ -45,7 +45,6 @@ function TaskList() {
   if (getTaskSubTaskFilterByState === "all") {
     filterTask = [...allTask];
   }
-console.log('filterTask-->',filterTask);
 
   return (
     <>

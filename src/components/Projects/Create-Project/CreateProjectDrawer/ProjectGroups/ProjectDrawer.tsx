@@ -33,7 +33,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const { groupDrawer, selectedGroup, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-  const [name, setName] = useState(selectedGroup.name);
+  const [name, setName] = useState<string>(selectedGroup.name);
 
   const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();

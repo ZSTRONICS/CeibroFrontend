@@ -2,7 +2,7 @@ import {
   GroupInterface,
   ProjectInterface,
 } from "constants/interfaces/project.interface";
-import { ProjectGroupInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { ProjectGroupInterface, ProjectMemberInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 import configs, {
   CLOSE_ROLE_DRAWER,
@@ -144,6 +144,12 @@ const projectActions = {
     return {
       type: SET_SELECTED_GROUP,
       payload: group,
+    };
+  },
+  setSelectedMember: (member: ProjectMemberInterface) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_MEMBER,
+      payload: member,
     };
   },
 

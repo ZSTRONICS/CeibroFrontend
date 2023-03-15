@@ -209,16 +209,14 @@ const ProjectOverview = () => {
                 backgroundColor: "white",
                 maxWidth: "385px",
                 width: "100%",
-                // border: "1px solid #DBDBE5",
               }}
               multiple
               // disableClearable
-              // clearIcon
               id="project_owners1"
               disablePortal
               filterSelectedOptions
               disableCloseOnSelect
-              limitTags={1}
+              limitTags={2}
               defaultValue={fixedOwner}
               value={ownersList}
               options={data}

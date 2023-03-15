@@ -114,3 +114,17 @@ font-size: 15px;
 font-weight: 500;
 color:#656565;
 `
+export const EditMemberNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 15px;
+font-weight: 600;
+color:#000000;
+`
+export const EditMemberLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 12px;
+font-weight: 500;
+color:#7D7E80;
+`

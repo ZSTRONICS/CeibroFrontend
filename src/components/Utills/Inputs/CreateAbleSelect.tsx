@@ -33,7 +33,7 @@ const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
+  const { value, title,isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
     props;
 
   const colourStyles = {
@@ -134,13 +134,14 @@ const SelectDropdown: FC<My> = (props) => {
   const formatCreateLabel = (inputValue: string) => `Invite ${inputValue}`;
 
   return (
-    <InputHOC title="Member">
+    <InputHOC title={title}>
       {/* <div className={classes.outerWrapper}> */}
       <div className={classes.select} style={{ ...(zIndex ? { zIndex } : {}) }}>
         <Box className={classes.titleWrapper}></Box>
 
         <div className={`${classes.select} black-input`}>
           <CreatableSelect
+            menuPosition="fixed"
             placeholder={placeholder || "Select"}
             isMulti={isMulti || false}
             onChange={handleChange}

@@ -30,6 +30,7 @@ interface My {
   isClearAble?: boolean;
   noOptionMessage?: string;
   isDisabled?: boolean;
+  defaultValue?:any
 }
 
 const SelectDropdown: FC<My> = (props) => {
@@ -44,6 +45,7 @@ const SelectDropdown: FC<My> = (props) => {
     zIndex,
     noOptionMessage,
     isDisabled = false,
+    defaultValue,
   } = props;
 
   const colourStyles = {
@@ -154,6 +156,7 @@ const SelectDropdown: FC<My> = (props) => {
     <InputHOC title={props.title}>
       <div className={classes.select}>
         <Select
+        defaultValue={defaultValue}
           menuPosition={"fixed"}
           placeholder={placeholder || "Select"}
           isMulti={isMulti || false}
