@@ -24,6 +24,7 @@ import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { DOCS_CONFIG } from "config/docs.config";
 import { TASK_CONFIG } from "config/task.config";
 import moment from "moment-timezone";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 interface Props {
   task: TaskInterface;
@@ -194,17 +195,18 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
       >
         <Grid item container sm={8}  md={9} gap={2}>
           <Grid item md={5} xs={10}  sm={5}>
-            <DatePicker Datetitle="Date" />
-            {/* <CDatePicker
-            required
-            value={showDate}
-            id="date"
-            name="dueDate"
-            onChange={(e:any) => {
-              setShowDate(e)
-              const currentDate = deDateFormat(e)
-            }}
-          /> */}
+            {/* <DatePicker Datetitle="Date" /> */}
+            <CDatePicker
+              showLabel={true}
+              required
+              // value={showDate}
+              id="date1"
+              name="dueDate"
+              // onChange={(e: any) => {
+              //   setShowDate(e);
+              //   projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
+              // }}
+            />
           </Grid>
           <Grid item 
            md={6} xs={10} sm={5}

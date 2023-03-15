@@ -130,7 +130,7 @@ function CreateProjectStatus() {
           <Box
             ref={anchorRef}
             // onClick={handleToggle}
-            sx={{ fontSize: 14, fontWeight: 500, padding: "5px 10px" }}
+            sx={{ fontSize: 14, fontWeight: 500, padding: "10px 10px" }}
           >
             {projectOverview.publishStatus ? (
               projectOverview.publishStatus

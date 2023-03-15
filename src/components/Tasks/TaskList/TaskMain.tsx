@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import TaskList from "./TaskList";
 import { IOSSwitch } from "components/Chat/Questioniar/IOSSwitch";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 const TaskMain = () => {
   const allTask: TaskInterface[] = useSelector(
@@ -82,7 +83,18 @@ const TaskMain = () => {
               width: "260px",
             }}
           >
-            <DatePicker Datetitle="Date" />
+            <CDatePicker
+              showLabel={true}
+              required
+              // value={showDate}
+              id="date1"
+              name="dueDate"
+              // onChange={(e: any) => {
+              //   setShowDate(e);
+              //   projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
+              // }}
+            />
+            {/* <DatePicker Datetitle="Date" /> */}
           </Grid>
           <Grid
             item

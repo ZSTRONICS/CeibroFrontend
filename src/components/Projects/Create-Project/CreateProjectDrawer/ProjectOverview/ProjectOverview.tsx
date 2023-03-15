@@ -166,11 +166,16 @@ const ProjectOverview = () => {
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid
+          className={classes.firstForm}
           item
-          sx={{ maxWidth: "280px", width: "100%", height: "40px" }}
+          sx={{
+            maxWidth: "280px",
+            width: "100%",
+          }}
           // xs={12}
-          // sm={4}
+          // sm={2}
           // md={2}
+          // lg={2.4}
         >
           <CDatePicker
             showLabel={true}
@@ -187,6 +192,9 @@ const ProjectOverview = () => {
 
         <Grid
           item
+          // xs={12}
+          // sm={5}
+          // md={4}
           sx={{
             width: "100%",
             height: "40px",
@@ -207,7 +215,7 @@ const ProjectOverview = () => {
             <Autocomplete
               sx={{
                 backgroundColor: "white",
-                maxWidth: "385px",
+                maxWidth: "100%",
                 width: "100%",
               }}
               multiple
@@ -280,11 +288,11 @@ const ProjectOverview = () => {
 
         <Grid
           item
-          // xs={12} sm={6} md={3}
-
+          // xs={12}
+          // sm={7}
+          // md={3}
           sx={{
             width: "100%",
-            height: "40px",
             maxWidth: "280px",
           }}
           className={classes.datePickerWrapper}
@@ -298,7 +306,7 @@ const ProjectOverview = () => {
           <CreateProjectStatus />
         </Grid>
 
-        <Grid item xs={12} md={12} style={{ padding: "0px 20px 20px" }}>
+        <Grid item xs={12} md={12} style={{ padding: "0px 20px 40px" }}>
           <HorizontalBreak color={colors.grey} />
         </Grid>
       </Grid>
@@ -306,8 +314,8 @@ const ProjectOverview = () => {
       <Grid container className={classes.secondForm}>
         <Grid
           item
-          xs={2}
-          sm={3}
+          // xs={2}
+          // sm={3}
           // md={2.5}
           // xs={12}
           // md={2}
@@ -316,7 +324,10 @@ const ProjectOverview = () => {
           <ImagePicker />
         </Grid>
 
-        <Grid item sm={10} md={8}>
+        <Grid
+          item
+          // sm={10} md={8}
+        >
           <ProjectOverViewForm />
         </Grid>
       </Grid>
@@ -327,8 +338,16 @@ const ProjectOverview = () => {
 export default ProjectOverview;
 
 const useStyles = makeStyles({
+  firstForm: {
+    height: "40px",
+    "@media (max-width:520px)": {
+      width: "100%",
+      maxWidth: "100%",
+    },
+  },
   datePickerWrapper: {
     // paddingLeft: "25px",
+
     "@media (max-width:900px)": {
       paddingLeft: 0,
       // paddingTop: 20,
@@ -341,9 +360,16 @@ const useStyles = makeStyles({
   secondForm: {
     paddingTop: 0,
     display: "flex",
+    "@media (max-width:1183px)": {
+      paddingLeft: 0,
+    },
   },
   imagePicker: {
-    padding: "0 0px",
+    width: "275px",
+    padding: "0",
+    "@media (max-width:1183px)": {
+      paddingBottom: "10px",
+    },
     "@media (max-width:900px)": {
       paddingBottom: 10,
     },

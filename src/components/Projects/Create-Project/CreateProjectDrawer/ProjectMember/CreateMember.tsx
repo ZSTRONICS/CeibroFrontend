@@ -3,7 +3,14 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import { Autocomplete, TextField,Chip,Grid,Avatar, Divider } from "@mui/material";
+import {
+  Autocomplete,
+  TextField,
+  Chip,
+  Grid,
+  Avatar,
+  Divider,
+} from "@mui/material";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
 import InputHOC from "components/Utills/Inputs/InputHOC";
@@ -13,13 +20,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createMember,
-  getAvailableProjectMembers, getGroup, getMember, PROJECT_APIS, updateMember
+  getAvailableProjectMembers,
+  getGroup,
+  getMember,
+  PROJECT_APIS,
+  updateMember,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import SelectDropdown, {
-  dataInterface
+  dataInterface,
 } from "../../../../Utills/Inputs/SelectDropdown";
-import Clear from '@mui/icons-material/Clear';
+import Clear from "@mui/icons-material/Clear";
 import { memberTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -34,7 +45,7 @@ const MemberDialog = () => {
     selectedProject,
     userPermissions,
     memberDrawer,
-    selectedMember
+    selectedMember,
   } = useSelector((state: RootState) => state.project);
   const dispatch = useDispatch();
   const [groups, setGroups] = useState();
@@ -63,7 +74,7 @@ const MemberDialog = () => {
       getAvailableProjectMembers({
         other: selectedProject,
         success: (res) => {
-          const availableMembers = res.data.result.map((user:any) => ({
+          const availableMembers = res.data.result.map((user: any) => ({
             label: `${user.firstName} ${user.surName}`,
             value: user.email,
             id: user._id,
@@ -95,17 +106,17 @@ const MemberDialog = () => {
   //   avaialablePermissions.create_permission
   // );
 
-  const handleOk = (e:any) => {
-    e.stopPropagation()
+  const handleOk = (e: any) => {
+    e.stopPropagation();
     const payload = {
       body: {
-        user: selectedUser.map((user:any)=>user.id),
+        user: selectedUser.map((user: any) => user.id),
         role: selectRoles?.value,
         group: selectGroups?.value,
       },
       success: () => {
         toast.success("Member created successfully");
-        dispatch(getMember({ other:  selectedProject }));
+        dispatch(getMember({ other: selectedProject }));
         handleClose();
       },
       finallyAction: () => {
@@ -117,8 +128,8 @@ const MemberDialog = () => {
     dispatch(createMember(payload));
   };
 
-  const handleUpdate = (e:any) => {
-    e.stopPropagation()
+  const handleUpdate = (e: any) => {
+    e.stopPropagation();
     const payload = {
       body: {
         // user: selectedMember.user._id,
@@ -127,7 +138,7 @@ const MemberDialog = () => {
       },
       success: () => {
         toast.success("Member updated successfully");
-        dispatch(getMember({ other:  selectedProject }));
+        dispatch(getMember({ other: selectedProject }));
         handleClose();
       },
       finallyAction: () => {
@@ -138,15 +149,13 @@ const MemberDialog = () => {
     dispatch(updateMember(payload));
   };
 
-//   useEffect(() => {
-//     if (selectedMember._id !== "") {
+  //   useEffect(() => {
+  //     if (selectedMember._id !== "") {
 
-// }
-//   }, [selectedMember._id]);
+  // }
+  //   }, [selectedMember._id]);
 
-
-
-  const handleSubmit = (e:any) => {
+  const handleSubmit = (e: any) => {
     if (selectedMember._id) {
       handleUpdate(e);
     } else {
@@ -154,16 +163,20 @@ const MemberDialog = () => {
     }
   };
   const letters =
-  selectedMember?.user?.firstName?.[0]?.toUpperCase?.() +
+    selectedMember?.user?.firstName?.[0]?.toUpperCase?.() +
     (selectedMember?.user?.surName?.[0]?.toUpperCase?.() || "");
-  const fixedGroup = [ {
-    label: selectedMember.group.name,
-    value: selectedMember.group._id,
-  }]
-  const fixedRole= [ {
-    label: selectedMember?.role?.name,
-    value: selectedMember.role._id,
-  }]
+  const fixedGroup = [
+    {
+      label: selectedMember.group.name,
+      value: selectedMember.group._id,
+    },
+  ];
+  const fixedRole = [
+    {
+      label: selectedMember?.role?.name,
+      value: selectedMember.role._id,
+    },
+  ];
 
   return (
     <div>
@@ -182,109 +195,124 @@ const MemberDialog = () => {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-           <div className={classes.body}>
-            {selectedMember._id!==""?    <Grid
-            item
-            container
-            gap={0.8}>
-          <Grid item >
-          {selectedMember.user.profilePic ? (
-                <Avatar
-                  alt="avater"
-                  src={selectedMember.user?.profilePic}
-                  variant="rounded"
-                  sx={{ width: "65px", height: "65px" }}
-                />
-              ) : (
-                <Avatar
-                  variant="rounded"
-                  sx={{ width: "65px", height: "65px" }}
-                >
-                  {letters}
-                </Avatar>
-              )}
-          </Grid>
-          <Grid item>
-              <CustomStack gap={0.6}>
-                <EditMemberNameTag>
-                {`${selectedMember.user.firstName} ${selectedMember.user.surName}`}
-                </EditMemberNameTag>
-                <EditMemberLabelTag>
-                  {selectedMember.user.companyName}
-                </EditMemberLabelTag>
-              </CustomStack>
-              <CustomStack gap={0.6}>
-                <assets.EmailIcon sx={{color:'#7D7E80'}}/>
-             {  selectedMember.user.workEmail? <EditMemberNameTag>
-                {`${selectedMember.user.workEmail}`}
-                </EditMemberNameTag>:
-                <EditMemberLabelTag>N/A</EditMemberLabelTag>
-                }
-              </CustomStack>
-
-              <CustomStack gap={0.6}>
-              <assets.CallIcon sx={{color:'#7D7E80',}}/>
-               {selectedMember.user.companyPhone? <EditMemberNameTag>
-                {`${selectedMember.user.companyPhone}`}
-                </EditMemberNameTag>:
-                <EditMemberLabelTag>N/A</EditMemberLabelTag>}
-              </CustomStack>
-          </Grid>
-          <Divider sx={{width:"100%", py:'10px'}}/>
-          </Grid>
-          :  <InputHOC title="Member">
-                <Autocomplete
-                sx={{width:'100%'}}
-                multiple={true}
-                id="project_members1"
-                filterSelectedOptions
-              disableCloseOnSelect
-              limitTags={1}
-              options={availableUsers}
-              size="small"
-              onChange={(event, value) => {
-                setSelectedUser([...value])}
-              }
-              renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
-                  return (
-                    <Chip
-                    sx={{
-                      height: "25px",
-                      fontSize:12,fontWeight:500,
-                      backgroundColor: "#F1B740",
-                      color: colors.white,
-                      borderRadius: "4px",
-                    }}
-                    deleteIcon={<Clear style={{ color: '#f1b740', fontSize:'15px', borderRadius:'50%', background:'white' }}/>}
-                      label={option?.label}
-                      {...getTagProps({ index })}
+          <div className={classes.body}>
+            {selectedMember._id !== "" ? (
+              <Grid item container gap={0.8}>
+                <Grid item>
+                  {selectedMember.user.profilePic ? (
+                    <Avatar
+                      alt="avater"
+                      src={selectedMember.user?.profilePic}
+                      variant="rounded"
+                      sx={{ width: "65px", height: "65px" }}
                     />
-                  );
-                })
-              }
-              renderInput={(params) => (
-                <TextField
-                  sx={{
-                    "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                      border: "none",
-                      padding: "0px",
-                    },
-                    // border: "1px solid #DBDBE5",
-                    // borderRadius: "4px",
+                  ) : (
+                    <Avatar
+                      variant="rounded"
+                      sx={{ width: "65px", height: "65px" }}
+                    >
+                      {letters}
+                    </Avatar>
+                  )}
+                </Grid>
+                <Grid item>
+                  <CustomStack gap={0.6}>
+                    <EditMemberNameTag>
+                      {`${selectedMember.user.firstName} ${selectedMember.user.surName}`}
+                    </EditMemberNameTag>
+                    <EditMemberLabelTag>
+                      {selectedMember.user.companyName}
+                    </EditMemberLabelTag>
+                  </CustomStack>
+                  <CustomStack gap={0.6}>
+                    <assets.EmailIcon sx={{ color: "#7D7E80" }} />
+                    {selectedMember.user.workEmail ? (
+                      <EditMemberNameTag>
+                        {`${selectedMember.user.workEmail}`}
+                      </EditMemberNameTag>
+                    ) : (
+                      <EditMemberLabelTag>N/A</EditMemberLabelTag>
+                    )}
+                  </CustomStack>
+
+                  <CustomStack gap={0.6}>
+                    <assets.CallIcon sx={{ color: "#7D7E80" }} />
+                    {selectedMember.user.companyPhone ? (
+                      <EditMemberNameTag>
+                        {`${selectedMember.user.companyPhone}`}
+                      </EditMemberNameTag>
+                    ) : (
+                      <EditMemberLabelTag>N/A</EditMemberLabelTag>
+                    )}
+                  </CustomStack>
+                </Grid>
+                <Divider sx={{ width: "100%", py: "10px" }} />
+              </Grid>
+            ) : (
+              <InputHOC title="Member">
+                <Autocomplete
+                  sx={{ width: "100%" }}
+                  multiple={true}
+                  id="project_members1"
+                  filterSelectedOptions
+                  disableCloseOnSelect
+                  limitTags={1}
+                  options={availableUsers}
+                  size="small"
+                  onChange={(event, value) => {
+                    setSelectedUser([...value]);
                   }}
-                  {...params}
-                  name="members"
-                  // label="Owners"
-                  placeholder="Select member(s)"
+                  renderTags={(tagValue, getTagProps) =>
+                    tagValue.map((option, index) => {
+                      return (
+                        <Chip
+                          sx={{
+                            height: "25px",
+                            fontSize: 12,
+                            fontWeight: 500,
+                            backgroundColor: "#F1B740",
+                            color: colors.white,
+                            borderRadius: "4px",
+                          }}
+                          deleteIcon={
+                            <Clear
+                              style={{
+                                color: "#f1b740",
+                                fontSize: "15px",
+                                borderRadius: "50%",
+                                background: "white",
+                              }}
+                            />
+                          }
+                          label={option?.label}
+                          {...getTagProps({ index })}
+                        />
+                      );
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
+                      sx={{
+                        "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                          padding: "0px",
+                        },
+                        // border: "1px solid #DBDBE5",
+                        // borderRadius: "4px",
+                      }}
+                      {...params}
+                      name="members"
+                      // label="Owners"
+                      placeholder="Select member(s)"
+                    />
+                  )}
                 />
-              )}
-                />
-               </InputHOC>}
+              </InputHOC>
+            )}
 
             <div
               className={classes.meta}
-              style={{ zIndex: 10, position: "relative" }}
+              style={{ zIndex: 10, position: "relative", margin: "20px 0" }}
             >
               <SelectDropdown
                 title="Role"
@@ -317,9 +345,11 @@ const MemberDialog = () => {
               />
             </div> */}
           </div>
+
           {/* <InputText/>
           <SelectDropdown title="Role"/> */}
         </DialogContent>
+        <Divider sx={{ color: "1px solid #ECF0F1 ", margin: "10px 25px" }} />
         <DialogActions
           style={{
             paddingRight: "25px",
@@ -334,7 +364,7 @@ const MemberDialog = () => {
             variant="contained"
             disabled={isDiabled}
           >
-            {selectedMember._id!==""?"Update":"Add"}
+            {selectedMember._id !== "" ? "Update" : "Add"}
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
@@ -357,7 +387,7 @@ const useStyle = makeStyles({
     width: 360,
     // minHeight: 300,
     maxHeight: 450,
-    height:'100%'
+    height: "100%",
   },
   meta: {
     marginTop: 10,
@@ -377,5 +407,10 @@ const useStyle = makeStyles({
     right: 0,
     top: 10,
     textAlign: "center",
+  },
+  inputHoc: {
+    "& .makeStyles-titleWrapper-69": {
+      padding: 0,
+    },
   },
 });

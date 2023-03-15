@@ -6,6 +6,7 @@ import de from "date-fns/locale/de";
 // import useStyles from "components/Tasks/SubTasks/CreateSubTaskStyles";
 // import { } from "/styles";
 import { makeStyles } from "@material-ui/styles";
+import { colors } from "@material-ui/core";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
@@ -23,6 +24,8 @@ function CDatePicker(props: any) {
                   fontWeight: 500,
                   fontFamily: "Inter",
                   width: "50px",
+                  minWidth: "55px",
+                  padding: "0",
                 }}
               >
                 Due date
@@ -58,7 +61,7 @@ function CDatePicker(props: any) {
           </div>
         ) : (
           <DatePicker
-          inputFormat={"dd.MM.yyyy"}
+            inputFormat={"dd.MM.yyyy"}
             {...props}
             label={props.showLabel === true ? "" : "Due date"}
             disablePast={true}
@@ -86,6 +89,10 @@ const useStyles = makeStyles({
     color: "#605C5C",
     fontFamily: "inter",
     paddingRight: "2px",
+    // padding: 0,
+    // minWidth: 65,
+    // textAlign: "center",
+    // borderRight: `1px solid ${colors.grey}`,
   },
   outerWrapper: {
     "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
@@ -105,8 +112,7 @@ const useStyles = makeStyles({
     borderRadius: "4px",
     width: "100%",
     maxWidth: "330px",
-    paddingRight: "10px",
-    paddingLeft: "10px",
+    padding: "0 10px",
     backgroundColor: "white",
   },
 });

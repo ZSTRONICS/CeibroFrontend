@@ -147,7 +147,7 @@ const CreateProjectBody = () => {
       publishStatus,
       extraStatus,
     } = projectOverview;
-    
+
     const formData = new FormData();
     formData.append("title", title);
     formData.append("location", location);
@@ -183,14 +183,14 @@ const CreateProjectBody = () => {
       )}
       {/* {!selectedProject?} */}
       {selectedProject && (
-        
         <Button
           className={classes.trash}
-          color="primary"
-          onClick={handleDelete}
-          disabled={projectOverview.isDefault}
+          variant="outlined"
+          // onClick={handleDelete}
+          // disabled={projectOverview.isDefault}
         >
-          <img src={assets.DeleteIcon} className={"w-16"} />
+          Cancel
+          {/* <img src={assets.DeleteIcon} className={"w-16"} /> */}
         </Button>
       )}
       <Button
@@ -201,7 +201,9 @@ const CreateProjectBody = () => {
         onClick={() => handleSubmit(false)}
       >
         {isDiabled && loading && (
-          <CircularProgress size={20} className={classes.progress} />
+          <CircularProgress 
+          size={20} 
+          className={classes.progress} />
         )}
         {selectedProject ? "Update" : "Create project"}
       </Button>
@@ -221,16 +223,17 @@ const useStyles = makeStyles({
     },
   },
   create: {
-    marginLeft: 50,
+    marginLeft: 30,
+    padding: "10px",
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: 700,
   },
   draft: {
     fontSize: 12,
     fontWeight: 500,
   },
   trash: {
-    color: "red",
+    // color: "red",
     display: "block",
   },
   notrash: {

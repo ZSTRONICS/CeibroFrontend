@@ -102,7 +102,14 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             marginTop: "5px",
           }}
         >
-          <Grid item width="120px">
+          <Grid
+            item
+            sx={{
+              width: "120px",
+              // // overflow: "hidden",
+              // textOverflow: "ellipsis",
+            }}
+          >
             <Typography
               fontSize="10px"
               fontWeight={500}
@@ -115,7 +122,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               className={classes.metaValue}
               style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
             >
-              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.[0]?.firstName}
+              {/* {owner?.[0]?.surName} */}
               {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
               )}
@@ -135,7 +143,9 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               className={classes.metaValue}
               style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
             >
-              {owner?.[0]?.firstName} {owner?.[0]?.surName}
+              {owner?.[0]?.firstName}
+              {/* {owner?.[0]?.surName} */}
+
               {/* {owner?.length > 1 && (
                 <div className={classes.extraOwners}>+{owner.length - 1}</div>
               )} */}
@@ -150,7 +160,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             fontWeight={700}
             className="ellipsis"
           >
-          {title}
+            {title}
           </TitleWrapper>
         </Grid>
 

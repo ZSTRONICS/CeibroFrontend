@@ -43,13 +43,13 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     border: `1px solid ${colors.borderGrey}`,
-    paddingRight: 8,
+    paddingRight: 5,
     borderRadius: 4,
     maxWidth: "100%",
   },
   titleWrapper: {
-    padding: 11,
-    minWidth: 45,
+    padding: 0,
+    minWidth: 75,
     // flex: 1,
     textAlign: "center",
     borderRight: `1px solid ${colors.borderGrey}`,
@@ -57,7 +57,7 @@ const useStyles = makeStyles({
   title: {
     fontSize: "11px",
     fontWeight: 500,
-    // fontFamily: "Inter",
+    fontFamily: "Inter",
     color: colors.textGrey,
   },
 });
