@@ -62,6 +62,8 @@ import {
   uploadDocs,
 } from "redux/action/task.action";
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
+import { PROJECT_CONFIG } from "config/project.config";
+import { getAllProjectMembers, getAllProjects, getGroup, PROJECT_APIS } from "redux/action/project.action";
 
 interface MyApp {}
 
@@ -456,6 +458,25 @@ const App: React.FC<MyApp> = () => {
               payload: data,
             });
 
+            break;
+          case PROJECT_CONFIG.REFRESH_PROJECTS:
+            dispatch(getAllProjects());
+            break;
+          case PROJECT_CONFIG.REFRESH_ROLES:
+            dispatch(PROJECT_APIS.getProjectRolesById({ other: data.projectId }));
+            break;
+          case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
+            dispatch(getGroup({ other: data.projectId }));
+            break;
+          case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
+            dispatch(
+              getAllProjectMembers({
+                  other: {
+                      projectId: data.projectId,
+                      includeMe: true,
+                  },
+              })
+          );
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
