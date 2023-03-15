@@ -238,10 +238,10 @@ const RolesTable = () => {
                      scope="row"
                    >
                      <Typography className={classes.nameWrapper}>
-                       {`${member.user.firstName} ${member.user.surName}`}
+                       {`${member?.user?.firstName} ${member?.user?.surName}`}
                      </Typography>
                      <Typography className={classes.organizationName}>
-                       Company:{member.user.companyName ?? "N/A"}
+                       Company:{member?.user?.companyName ?? "N/A"}
                      </Typography>
                      {/* </div> */}
                    </TableCell>

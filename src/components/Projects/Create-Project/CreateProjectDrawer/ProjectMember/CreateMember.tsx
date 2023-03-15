@@ -43,13 +43,12 @@ const MemberDialog = () => {
   const [selectRoles, setSelectRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedMemberLocal,setSelectedMemberLocal]= useState<dataInterface[]>([])
+  // const [selectedMemberLocal,setSelectedMemberLocal]= useState<dataInterface[]>([])
 
   const [selectedUser, setSelectedUser] = useState<any[]>([]);
 
   const classes = useStyle();
   const isDiabled = !loading ? false : true;
-  console.log('selectedUser',selectedUser);
   const handleClickOpen = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
@@ -155,14 +154,14 @@ const MemberDialog = () => {
     }
   };
   const letters =
-  selectedMember.user.firstName?.[0]?.toUpperCase?.() +
-    (selectedMember.user.surName?.[0]?.toUpperCase?.() || "");
+  selectedMember?.user?.firstName?.[0]?.toUpperCase?.() +
+    (selectedMember?.user?.surName?.[0]?.toUpperCase?.() || "");
   const fixedGroup = [ {
     label: selectedMember.group.name,
     value: selectedMember.group._id,
   }]
   const fixedRole= [ {
-    label: selectedMember.role.name,
+    label: selectedMember?.role?.name,
     value: selectedMember.role._id,
   }]
 
@@ -183,7 +182,7 @@ const MemberDialog = () => {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          <div className={classes.body}>
+           <div className={classes.body}>
             {selectedMember._id!==""?    <Grid
             item
             container
