@@ -214,8 +214,8 @@ const MemberDialog = () => {
                 </EditMemberLabelTag>
               </CustomStack>
               <CustomStack gap={0.6}>
-                <assets.EmailIcon sx={{color:'#7D7E80'}}/>
-             {  selectedMember.user.workEmail? <EditMemberNameTag>
+                <assets.EmailIcon sx={{color:'#7D7E80', fontSize:'16px'}}/>
+             {  selectedMember.user.workEmail? <EditMemberNameTag sx={{fontSize:12, fontWeight:500}}>
                 {`${selectedMember.user.workEmail}`}
                 </EditMemberNameTag>:
                 <EditMemberLabelTag>N/A</EditMemberLabelTag>
@@ -223,18 +223,18 @@ const MemberDialog = () => {
               </CustomStack>
 
               <CustomStack gap={0.6}>
-              <assets.CallIcon sx={{color:'#7D7E80',}}/>
-               {selectedMember.user.companyPhone? <EditMemberNameTag>
+              <assets.CallIcon sx={{color:'#7D7E80',fontSize:'16px'}}/>
+               {selectedMember.user.companyPhone? <EditMemberNameTag sx={{fontSize:12, fontWeight:500}}>
                 {`${selectedMember.user.companyPhone}`}
                 </EditMemberNameTag>:
                 <EditMemberLabelTag>N/A</EditMemberLabelTag>}
               </CustomStack>
           </Grid>
-          <Divider sx={{width:"100%", py:'10px'}}/>
+          <Divider sx={{width:"100%", py:'5px'}}/>
           </Grid>
           :  <InputHOC title="Member">
                 <Autocomplete
-                sx={{width:'100%'}}
+                sx={{width:'100%',marginTop:'5px'}}
                 multiple={true}
                 id="project_members1"
                 filterSelectedOptions
@@ -284,7 +284,7 @@ const MemberDialog = () => {
 
             <div
               className={classes.meta}
-              style={{ zIndex: 10, position: "relative" }}
+              style={{ zIndex: 10, position: "relative", paddingTop:'10px' }}
             >
               <SelectDropdown
                 title="Role"
@@ -323,6 +323,7 @@ const MemberDialog = () => {
         <DialogActions
           style={{
             paddingRight: "25px",
+            paddingBottom:15
           }}
         >
           <Button onClick={handleClose} color="primary">
