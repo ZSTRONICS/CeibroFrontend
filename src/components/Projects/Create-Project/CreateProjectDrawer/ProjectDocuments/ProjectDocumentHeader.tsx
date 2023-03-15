@@ -100,7 +100,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       </Grid> */}
         <Grid item>
           <CustomStack gap={1.5}>
-                <CButton
+       {isFolder===true&&<CButton
             variant="outlined"
             color="primary"
             label="Create folder"
@@ -108,7 +108,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
             onClick={() => {
               dispatch(projectActions.openProjectDocuments());
             }}
-          />
+          />}
             <CButton
             variant="outlined"
             color="primary"
