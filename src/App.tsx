@@ -74,6 +74,7 @@ const App: React.FC<MyApp> = () => {
   const drawerOpen = useSelector((store: RootState) => store.chat.openViewQuestioniar);
   const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector((state: RootState) => state.docs);
 
+  
   useEffect(() => {
     if (!uploadPendingFiles) {
       return;
@@ -152,6 +153,7 @@ const App: React.FC<MyApp> = () => {
       type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
     });
   }, [uploadPendingFiles]);
+  console.log('uploadPendingFiles',uploadPendingFiles);
 
   useEffect(() => {
     if (isLoggedIn) {

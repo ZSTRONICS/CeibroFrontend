@@ -25,6 +25,7 @@ import FileViewDrawer from "./FileViewDrawer";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import Moment from "react-moment";
 import moment from "moment-timezone";
+import { FileInterface } from "constants/interfaces/docs.interface";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
@@ -34,9 +35,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
   const { selectedProject, folderList, folderFiles, FileViewerDrawer } =
     useSelector((state: RootState) => state?.project);
   const { selectedFolderId } = props;
-
   const dispatch = useDispatch();
-
   const getFiles = () => {
     if (selectedFolderId) {
       dispatch(
@@ -111,15 +110,15 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
               </TableCell>
             </TableRow>
           </TableHead>
-          {!isDragActive && !loading && folderFiles?.length > 0 && (
+          {!isDragActive && !loading && folderFiles.files?.length > 0 && (
             <TableBody>
-              {folderFiles?.map((file: FolderFileInterface) => {
+              {folderFiles.files?.map((file: FileInterface) => {
                 const DateString: string = moment(file?.createdAt).format(
                   "YYYY-MM-DD"
                 );
 
                 return (
-                  <TableRow key={file?._id}>
+                  <TableRow key={file._id}>
                     <TableCell
                       onClick={() => {}}
                       style={{ display: "flex" }}
@@ -129,10 +128,10 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       <Typography
                         className={`${classes.fileName}`}
                         onClick={() =>
-                          handleFileClick(file?.url, file?.fileType)
+                          handleFileClick(file.fileUrl, file.fileType)
                         }
                       >
-                        {file?.name}
+                        {file.fileName}
                       </Typography>
                     </TableCell>
                     <TableCell
@@ -150,7 +149,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       align="right"
                       className={classes.modifyDate}
                     >
-                      {file?.folder?.group?.members?.length || 0} member(s)
+                      {}0 member(s)
                     </TableCell>
                     <TableCell
                       component="th"
@@ -170,7 +169,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           )}
         </Table>
       </TableContainer>
-      {(isDragActive || loading || folderFiles?.length < 1) && (
+
+      {/* {(isDragActive || loading || folderFiles?.length < 1) && (
         <DragMessage
           classes={classes}
           onBtnClick={open}
@@ -186,7 +186,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           }
           loading={loading}
         />
-      )}
+      )} */}
     </div>
   );
 };

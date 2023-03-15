@@ -143,13 +143,13 @@ const geFolder = apiCall({
   //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
   path: (payload) => {
     const selectedProject = payload?.other?.selectedProject;
-    const inputData = payload?.other?.findDoc;
+    // const inputData = payload?.other?.findDoc;
 
-    let url = `/project/folder/${selectedProject}`;
+    let url = `/project/documents/${selectedProject}`;
 
-    if (inputData) {
-      url = `${url}?search=${inputData}`;
-    }
+    // if (inputData) {
+    //   url = `${url}?search=${inputData}`;
+    // }
 
     return url;
   },
@@ -191,7 +191,7 @@ const getFolderFiles = apiCall({
   // path: (payload) => `/project/file/${payload.other}`,
 
   path: (payload) => {
-    let url = "/project/file/";
+    let url = "/project/folder/";
     const selectedFolder = payload?.other?.selectedFolder;
     const inputData = payload?.other?.findDoc;
     if (selectedFolder) {
@@ -204,6 +204,11 @@ const getFolderFiles = apiCall({
 
     return url;
   },
+});
+const updateProjectDocumentsAccess=apiCall({
+  type: PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,
+  method: "patch",
+  path: (payload) => `project/documents/updateAccess/${payload.other}`, //projectId
 });
 
 const uploadFileToFolder = apiCall({
@@ -381,7 +386,10 @@ function* projectSaga() {
   yield takeLatest(UPDATE_MEMBER, updateMember);
   yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
+
+  yield takeLatest(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,updateProjectDocumentsAccess);
   yield takeLatest(UPDATE_PROJECT, updateProject);
+
   yield takeLatest(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID, getProjectRolesById );
   yield takeLatest(GET_GROUP_BY_ID, getGroupById);
   yield takeLatest(UPDATE_GROUP, updateGroup);

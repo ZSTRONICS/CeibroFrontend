@@ -121,6 +121,14 @@ font-size: 15px;
 font-weight: 600;
 color:#000000;
 `
+export const DocumentNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 500;
+line-height:20px;
+color:#000000;
+`
 export const EditMemberLabelTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;

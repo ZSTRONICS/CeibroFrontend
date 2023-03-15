@@ -15,13 +15,13 @@ function RollOverMenu(props: any) {
 
   const handleDelete = (e: any) => {
     e.stopPropagation();
-    props.handleDele();
     setAnchorElMember(null);
+    props.handleDele();
   };
   const handleEdit = (e: any) => {
     e.stopPropagation();
-    props.handleEdit()
     setAnchorElMember(null);
+    props.handleEdit()
   }
 
   const closePopup = (e: any) => {
@@ -59,17 +59,10 @@ function RollOverMenu(props: any) {
         }}
       >
         <MenuItem
-          // dense={true}
           disableRipple
           disableGutters
           // aria-describedby={id}
           onClick={handleEdit}
-          // divider={deleteOnlyCreator}
-          // sx={{
-          //   "&.MuiMenuItem-root": {
-          //     padding: "4px 10px",
-          //   },
-          // }}
         >
           <CustomButton
             variant="outlined"
@@ -79,20 +72,15 @@ function RollOverMenu(props: any) {
               textTransform: "capitalize",
             }}
           >
-            Edit
+            {props.edit}
           </CustomButton>
         </MenuItem>
 
-        <MenuItem
+       {props.showDelBtn===true&& <MenuItem
           disableGutters
           disableRipple
           onClick={handleDelete}
-          // aria-describedby={id}
-          // sx={{
-          //   "&.MuiMenuItem-root": {
-          //     padding: "4px 10px",
-          //   },
-          // }}
+          aria-describedby={id}
         >
           <CustomButton
             variant="outlined"
@@ -100,7 +88,6 @@ function RollOverMenu(props: any) {
             disableFocusRipple
             disableRipple
             sx={{
-              // padding:'0',
               border: "none",
               textTransform: "capitalize",
               color: "#FA0808",
@@ -108,7 +95,7 @@ function RollOverMenu(props: any) {
           >
             Delete
           </CustomButton>
-        </MenuItem>
+        </MenuItem>}
       </Menu>
     </Box>
   );

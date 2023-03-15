@@ -257,6 +257,8 @@ const RolesTable = () => {
                    </TableCell>
                    <TableCell align="right" style={{ width: "10%" }}>
                      <RollOverMenu
+                      edit="Edit"
+                      showDelBtn={true}
                      handleDele={() => handleDelete(member._id)}
                      handleEdit={()=>{handleEditMember(member)}}
                      />
