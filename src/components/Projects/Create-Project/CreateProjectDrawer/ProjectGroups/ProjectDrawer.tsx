@@ -125,7 +125,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
             placeholder="Enter group name"
             onChange={handleNameChange}
           />
-          <br />
+          {/* <br /> */}
         </div>
       </DialogContent>
       <DialogActions className={classes.btnWraper}>
@@ -160,6 +160,7 @@ export default AddGroup;
 
 const useStyles = makeStyles({
   btnWraper: {
+    marginTop: "5px",
     "& .MuiButton-outlinedSecondary:hover": {
       backgroundColor: "transparent",
       border: "1px solid #9D9D9D",

@@ -173,5 +173,6 @@ const useStyles = makeStyles({
   },
   deleteText: {
     color: colors.btnRed,
+    
   },
 });
