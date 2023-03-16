@@ -8,12 +8,14 @@ import {
   TableHead,
   TableRow
 } from "@material-ui/core";
+import { Tooltip } from "@mui/material";
 import { DocumentNameTag } from "components/CustomTags";
 import { CustomMuiList } from "components/material-ui";
 import CustomModal from "components/Modal";
+import { CustomBadge, CustomStack, AssignedTag } from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import { FolderInterface } from "constants/interfaces/project.interface";
+import { Creator, FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getFolder } from "redux/action/project.action";
@@ -21,7 +23,6 @@ import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import RollOverMenu from "../ProjectMember/RollOverMenu";
 import ProjectAccessModal from "./ProjectAccessModal";
-import ProjectDocumentMenu from "./ProjectDocsMenu";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
@@ -34,7 +35,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const { selectedProject, folderList,projectWithMembers, isOpenProjectDocumentModal } = useSelector(
     (state: RootState) => state?.project
   );
-  const [isOpenAccessModal, setIsOpenAccessModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedFolderFile, setSelectedFolderFile]= useState<FolderInterface|FileInterface|any>({})
   const selectedProjectWithMembers = projectWithMembers
@@ -72,7 +72,33 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     e.stopPropagation()
    dispatch(projectActions.closeProjectDocumentModal())
   }
-
+  const AccessMemberList = (membersList: Creator[]) => {
+    return (
+      <>
+        {membersList.map((item: Creator, index) => {
+          if (item === undefined) {
+            return <></>;
+          }
+          if (index === membersList.length - 1) {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}`}</span>
+            );
+          } else {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}\n`}</span>
+            );
+          }
+        })}
+      </>
+    );
+  };
+  
   return (<>
     <TableContainer style={{ height: "100%", overflow: "visible" }}>
       <Table className={classes.table} aria-label="simple table">
@@ -128,7 +154,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   className={classes.modifyDate}
                 >
                   {`${row.creator.firstName} ${row.creator.surName}`}
-                  {/* {row?.group?.members?.length || 0} member(s) */}
                 </TableCell>
                 <TableCell
                   scope="row"
@@ -136,15 +161,21 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   style={{ padding: 6 }}
                   className={classes.modifyDate}
                 >
-                  {row?.access?.length > 0
-                    ? `${row?.access?.length} member(s)`
-                    : "Only you"}
-                  {row.creator === user._id && (
-                    <ProjectDocumentMenu
-                      folderId={row._id || ""}
-                      access={row?.access || []}
-                      groupId={row?.group?._id || ""}
-                    />
+                  {row.access.length > 0 ? (
+                    <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                      <AssignedTag>Member</AssignedTag>
+                      <CustomBadge
+                        overlap="circular"
+                        color="primary"
+                        badgeContent={
+                          <Tooltip title={AccessMemberList(row.access)}>
+                            <span>{row.access.length}</span>
+                          </Tooltip>
+                        }
+                      ></CustomBadge>
+                    </CustomStack>
+                  ) : (
+                    "Only you"
                   )}
                 </TableCell>
                 <TableCell
@@ -155,7 +186,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   <RollOverMenu
                     edit="Access"
                     showDelBtn={false}
-                    handleEdit={(e:any)=>openAccessModal(e,row)}
+                    handleEdit={(e: any) => openAccessModal(e, row)}
                   />
                 </TableCell>
               </TableRow>
@@ -167,7 +198,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
               <TableRow key={file._id} className={classes.rowContainer}>
                 <TableCell
                   scope="row"
-                  // className={classes.name}
                 >
                   <DocumentNameTag>
                     {file.fileName}
@@ -186,7 +216,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   align="center"
                   className={classes.modifyDate}
                 >
-                  Creator Name
+                  {`${file.uploadedBy.firstName} ${file.uploadedBy.surName}`}
                 </TableCell>
                 <TableCell
                   scope="row"
@@ -194,7 +224,20 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                   style={{ padding: 6 }}
                   className={classes.modifyDate}
                 >
-                  {file.access.length===0?"Only You":"N/A"}
+                  {file.access.length>0?
+                   <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                   <AssignedTag>Member</AssignedTag>
+                   <CustomBadge
+                     overlap="circular"
+                     color="primary"
+                     badgeContent={
+                       <Tooltip title={AccessMemberList(file.access)}>
+                         <span>{file.access.length}</span>
+                       </Tooltip>
+                     }
+                   ></CustomBadge>
+                 </CustomStack>
+                  :"N/A"}
                 </TableCell>
                 <TableCell
                   scope="row"
@@ -209,7 +252,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                 </TableCell>
               </TableRow>
             );
-          }):<></>} 
+          }):<></>}
         </TableBody>
       </Table>
           {folderList.folders.length===0&&folderList.files.length===0&& 

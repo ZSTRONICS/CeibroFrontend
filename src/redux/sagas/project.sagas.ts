@@ -94,9 +94,9 @@ const getProjectMembers = apiCall({
   method: "get",
   path: (payload) => {
     let url = `/project/members/${payload?.other?.projectId}`;
-    if (payload.other?.includeMe) {
-      url = `${url}?includeMe=true`;
-    }
+    // if (payload.other?.includeMe) {
+    //   url = `${url}?includeMe=true`;
+    // }
     return url;
   },
 });

@@ -44,6 +44,8 @@ const MemberDialog = () => {
     memberDrawer,
     selectedMember,
   } = useSelector((state: RootState) => state.project);
+  console.log('selectedMember',selectedMember);
+  
   const dispatch = useDispatch();
   const [groups, setGroups] = useState();
   const [roles, setRoles] = useState();
@@ -165,7 +167,7 @@ const MemberDialog = () => {
   const fixedRole = [
     {
       label: selectedMember?.role?.name,
-      value: selectedMember.role._id,
+      value: selectedMember?.role?._id,
     },
   ];
 

@@ -1,37 +1,34 @@
 import { FileInterface } from "./docs.interface";
 import { ProjectRolesInterface } from "./ProjectRoleMemberGroup.interface";
-import { UserInfo } from "./subtask.interface";
 import { UserInterface } from "./user.interface";
 
 export interface ProjectInterface {
+  title: string;
   projectPhoto: string;
   photoFile?:string|File,
   dueDate: string;
-  owner: UserInfo[];
-  title: string;
+  owner: ProjectOwners[];
+  access: string[];
+  isDefault: boolean;
   tasksCount: number;
   docsCount: number;
   usersCount: number;
   chatCount: number;
   publishStatus: string;
   _id: string;
-  isDefault: boolean;
   inDraftState: boolean;
   extraStatus: string[],
-  access: string[];
   description: string;
   location: string;
   createdAt: string;
   updatedAt: string;
-  creator: UserInfo
+  creator: ProjectOwners
 
 }
-
-export interface userRolesPermissions {
-  admin?: boolean;
-  roles?: string[];
-  member?: string[];
-  timeProfile?: string[];
+export interface ProjectOwners{
+  _id: string
+firstName: string
+surName: string
 }
 
 
@@ -63,7 +60,6 @@ export const projectOverviewTemplate: ProjectInterface = {
     _id: "",
     firstName: "",
     surName: '',
-    profilePic: ""
   }
 };
 

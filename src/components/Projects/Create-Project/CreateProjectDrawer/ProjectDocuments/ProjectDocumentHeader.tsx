@@ -1,10 +1,14 @@
 
-import { Button,makeStyles, Typography } from "@material-ui/core";
-import ListItemIcon from "@material-ui/icons/List";
+import { makeStyles } from "@material-ui/core";
+import SearchIcon from '@mui/icons-material/Search';
+import { Divider, Grid, Paper, Typography } from '@mui/material';
+import InputBase from '@mui/material/InputBase';
+import CButton from "components/Button/Button";
+import CustomModal from "components/Modal";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import UploadDocs from "components/uploadImage/UploadDocs";
 import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
-import { AiOutlineUnorderedList } from "react-icons/ai";
-import { BsGrid } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   getFolder,
@@ -12,15 +16,7 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
-import InputText from "../../../../Utills/Inputs/InputText";
 import DocumentDrawer from "./DocumentDrawer";
-import {Grid, Paper,Divider} from '@mui/material'
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
-import CButton from "components/Button/Button";
-import CustomModal from "components/Modal";
-import UploadDocs from "components/uploadImage/UploadDocs";
 
 interface headerInterface {
   selectedFolder?: FolderInterface | null;
@@ -126,9 +122,9 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       </Grid>
 
       <Grid className={classes.breadCrums}>
-        <Typography onClick={handleGoBack} className={classes.breadCrumsText}>
-          Document /
-        </Typography>
+        <Typography onClick={handleGoBack}  className={classes.breadCrumsText}>
+          Document 
+        </Typography> &nbsp;/
         {selectedFolder && (
           <Typography className={classes.breadCrumsFolder}>
             &nbsp;{selectedFolder?.name}
@@ -169,7 +165,7 @@ const useStyles = makeStyles({
   breadCrumsText: {
     fontSize: 14,
     fontWeight: 500,
-    color: colors.textGrey,
+    color: colors.receiverBoxTitle,
     cursor: "pointer",
     "&:hover": {
       textDecoration: "underline",

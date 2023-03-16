@@ -1,3 +1,4 @@
+import { Creator } from "./project.interface"
 
 export interface DocsInterface {
   results: FileUploadResponse
@@ -18,12 +19,12 @@ export interface FileUploadResponse {
 }
 
 export interface FileInterface {
-  access: string[]
+  access: Creator[]
   version: number
   _id: string
   fileSize: number
   progress?: number
-  uploadedBy: string
+  uploadedBy: Creator
   fileUrl: string
   fileType: string
   fileName: string

@@ -164,7 +164,7 @@ const ProjectOverViewForm = () => {
           className={classes.input}
           onChange={handleTitleChange}
           name="title"
-          placeholder="Enter Project title"
+          placeholder="Enter title"
           value={projectOverview.title || ""}
           disabled={projectOverview.isDefault ? true : false}
         />
@@ -175,7 +175,7 @@ const ProjectOverViewForm = () => {
           className={classes.input}
           onChange={handleLocationChange}
           name="location"
-          placeholder="Enter a location address"
+          placeholder="Enter address"
           value={projectOverview.location || ""}
         />
       </Grid>
@@ -183,7 +183,7 @@ const ProjectOverViewForm = () => {
       <Grid item xs={12}>
         <TextField
           id="standard-multiline-flexible"
-          placeholder="Enter project description"
+          placeholder="Enter description"
           multiline
           maxRows={5}
           minRows={5}

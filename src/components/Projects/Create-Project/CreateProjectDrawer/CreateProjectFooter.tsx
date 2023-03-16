@@ -30,10 +30,17 @@ const CreateProjectBody = () => {
     (state: RootState) => state.project
   );
 
+  const isValidData = {
+    title: projectOverview.title,
+    dueDate: projectOverview.dueDate,
+    publishStatus: projectOverview.publishStatus,
+    description: projectOverview.description,
+    location:projectOverview.location,
+  };
   const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
-      .isValid(projectOverview)
+      .isValid(isValidData)
       .then(setIsValid)
       .catch((_err) => {
         setIsValid(false);
@@ -66,8 +73,8 @@ const CreateProjectBody = () => {
     const payload = {
       body: data,
       success: () => {
-        toast.success("Project Saved");
-        dispatch(projectActions.closeDrawer());
+        toast.success("Project updated successfully!");
+        // dispatch(projectActions.closeDrawer());
       },
       finallyAction: () => {
         setLoading(false);
@@ -186,7 +193,7 @@ const CreateProjectBody = () => {
         <Button
           className={classes.trash}
           variant="outlined"
-          // onClick={handleDelete}
+          onClick={()=>dispatch(projectActions.closeDrawer())}
           // disabled={projectOverview.isDefault}
         >
           Cancel
