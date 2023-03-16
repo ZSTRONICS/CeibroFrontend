@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProjectList from "./ProjectList";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown, {
@@ -36,7 +36,7 @@ const Project = () => {
   const dispatch = useDispatch();
   const allStatus = getProjectStatus();
   const [date, setDate] = useState<string>("");
-
+  const headerRef: any = useRef();
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -53,12 +53,29 @@ const Project = () => {
       })
     );
   };
+  const [showProjectList, setShowProjectList] = useState<boolean>(false); 
 
-  return (
+const getHeaderHeight = () => {
+  let contentHeight =
+    window.innerHeight - (headerRef.current.clientHeight + 100);
+  return `${contentHeight}px`;
+}; 
+  useEffect(() => {
+    if (headerRef.current.clientHeight) {
+      setTimeout(() => {
+        setShowProjectList(true);
+      }, 100);
+    }
+window.addEventListener('resize', getHeaderHeight)
+  });
+
+  
+  
+  return (<>
     <Grid item xs={12}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
 
-      <Grid container className={classes.outerWrapper}>
+      <Grid container ref={headerRef} className={classes.outerWrapper}>
         <Grid
           item
           sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
@@ -107,10 +124,18 @@ const Project = () => {
         {/* <StatusMenu options={allStatus} /> */}
         {/* <StatusMenu /> */}
       </Grid>
-
-      <ProjectList />
     </Grid>
-  );
+     {showProjectList===true? <Grid
+        item
+        // className={classes.TaskListMain}
+        sx={{
+          overflow: "auto",
+        }}
+        maxHeight={getHeaderHeight}
+      >
+        <ProjectList />
+      </Grid>: <div> Loading projects....</div>}
+    </>);
 };
 
 export default Project;
@@ -158,4 +183,22 @@ const useStyles = makeStyles({
     top: 10,
     textAlign: "center",
   },
+  // TaskListMain: {
+  //   "@media(max-width:754px)": {
+  //     height: "560px",
+  //     overflow: "auto",
+  //   },
+  //   "@media(max-width:1321px)": {
+  //     height: "615px",
+  //     overflow: "auto",
+  //   },
+  //   "@media(max-width:1870px)": {
+  //     height: "680px",
+  //     overflow: "auto",
+  //   },
+  //   // "@media(max-width:2560px)": {
+  //   //   height: "780px",
+  //   //   overflow: "auto",
+  //   // },
+  // },
 });

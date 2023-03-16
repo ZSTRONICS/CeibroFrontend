@@ -232,6 +232,8 @@ export default FolderFiles;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    // height: "100%",
+    // overflow: "auto",
   },
   uploadMessage: {
     display: "flex",

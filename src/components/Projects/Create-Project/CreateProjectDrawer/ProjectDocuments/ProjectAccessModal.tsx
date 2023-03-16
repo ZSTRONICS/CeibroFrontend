@@ -23,9 +23,9 @@ import { useDispatch } from "react-redux";
 import projectActions, { PROJECT_APIS } from "redux/action/project.action";
 
 function ProjectAccessModal(props: any) {
-    const {selectedFolderFile}= props;
-    
-    const dispatch= useDispatch()
+  const { selectedFolderFile } = props;
+
+  const dispatch = useDispatch();
   const [users, setUsers] = useState<string[]>([]);
   const [selectedGroupIds, setSelectedGroupId] = useState<string[]>([]);
 
@@ -58,105 +58,99 @@ function ProjectAccessModal(props: any) {
     }
   };
 
- const hasKey = (obj:any, key:string) => obj.hasOwnProperty(key);
-let localType:string=""
-let localId :string=""
-if (hasKey(selectedFolderFile, 'name')) {
-    localType= "Folder"
-    localId= selectedFolderFile._id
-} else {
-    localType= "File"
-    localId= selectedFolderFile._id
-}
+  const hasKey = (obj: any, key: string) => obj.hasOwnProperty(key);
+  let localType: string = "";
+  let localId: string = "";
+  if (hasKey(selectedFolderFile, "name")) {
+    localType = "Folder";
+    localId = selectedFolderFile._id;
+  } else {
+    localType = "File";
+    localId = selectedFolderFile._id;
+  }
 
   const handleSubmit = () => {
     const payload = {
       body: {
         access: users,
         group: selectedGroupIds,
-        type: localType, 
-        id: localId, 
+        type: localType,
+        id: localId,
       },
       success: () => {
         setUsers([]);
         setSelectedGroupId([]);
       },
-      other:props.selectedProject
+      other: props.selectedProject,
     };
 
-    dispatch(PROJECT_APIS.updateProjectDocumentsAccess(payload))
-    dispatch(projectActions.closeProjectDocumentModal())
-
+    dispatch(PROJECT_APIS.updateProjectDocumentsAccess(payload));
+    dispatch(projectActions.closeProjectDocumentModal());
   };
 
   const handleCancel = () => {
-    dispatch(projectActions.closeProjectDocumentModal())
+    dispatch(projectActions.closeProjectDocumentModal());
     setUsers([]);
     setSelectedGroupId([]);
-  }
+  };
 
   return (
     <>
-      <Box sx={{width:'350px', overflow:'auto'}}>
+      <Box sx={{ width: "350px", overflowY: "auto" }}>
         <List
-      dense
-      sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-      subheader={
-        <ListSubheader
-          component="div"
-          sx={{ position: "relative", "&.MuiListSubheader-root": { p: 0 } }}
-        >
-          Select groups
-        </ListSubheader>
-      }
-    >
-        {props.projectGroup?.map((group: any) => {
-        const labelId = `checkbox-list-secondary-label-${group._id}`;
-        return (
-          <ListItem
-            disablePadding
-            aria-disabled
-            key={group._id}
-            secondaryAction={
-              <Checkbox
-                sx={{
-                  "&.MuiCheckbox-root": {
-                    color: "#ADB5BD",
-                  },
-                  "&.Mui-checked": {
-                    color: "#1976d2",
-                  },
-                }}
-                disableRipple
-                edge="end"
-                value={group._id}
-                onChange={handleGroupMember}
-                checked={selectedGroupIds.some(
-                  (id: any) => id === group._id
-                )}
-                inputProps={{ "aria-labelledby": labelId }}
-              />
-            }
-          >
-            <ListItemButton
-              sx={{ p: 0, pb: 0.5 }}
-              disableRipple
-              onClick={() => handleGroupMember(group)}
+          dense
+          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          subheader={
+            <ListSubheader
+              component="div"
+              sx={{ position: "relative", "&.MuiListSubheader-root": { p: 0 }, }}
             >
-              <ListItemAvatar>
-                <NameAvatar
-                  firstName={group.name}
-                />
-              </ListItemAvatar>
-              <ListItemText
-                id={labelId}
-                primary={`${group.name}`}
-              />
-            </ListItemButton>
-          </ListItem>
-        );
-      })}
-    </List>
+              Select groups
+            </ListSubheader>
+          }
+        >
+          {props.projectGroup?.map((group: any) => {
+            const labelId = `checkbox-list-secondary-label-${group._id}`;
+            return (
+              <ListItem
+                disablePadding
+                aria-disabled
+                key={group._id}
+                secondaryAction={
+                  <Checkbox
+                    sx={{
+                      "&.MuiCheckbox-root": {
+                        color: "#ADB5BD",
+                      },
+                      "&.Mui-checked": {
+                        color: "#1976d2",
+                      },
+                    }}
+                    disableRipple
+                    edge="end"
+                    value={group._id}
+                    onChange={handleGroupMember}
+                    checked={selectedGroupIds.some(
+                      (id: any) => id === group._id
+                    )}
+                    inputProps={{ "aria-labelledby": labelId }}
+                  />
+                }
+              >
+                <ListItemButton
+                  sx={{ p: 0, pb: 0.5 }}
+                  disableRipple
+                  onClick={() => handleGroupMember(group)}
+                >
+                  <ListItemAvatar>
+                    <NameAvatar firstName={group.name} />
+                  </ListItemAvatar>
+                  <ListItemText id={labelId} primary={`${group.name}`} />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
+        </List>
         <CustomMuiList
           handleUserId={handleUserId}
           subheaderTitle={"Project Members"}
@@ -165,8 +159,9 @@ if (hasKey(selectedFolderFile, 'name')) {
           checkboxChecked={users}
         />
         <Grid
-          container gap={1.5}
-          sx={{pb:1}}
+          container
+          gap={1.5}
+          sx={{ pb: 1 }}
           xs={12}
           style={{
             paddingTop: 20,
@@ -175,21 +170,26 @@ if (hasKey(selectedFolderFile, 'name')) {
           }}
         >
           <Button
-           variant="outlined"
-           sx={{  fontSize: 12,
-            fontWeight: 700,
-            color: "#9D9D9D",
-            borderColor: "#9D9D9D",}}
-          onClick={handleCancel}
-          >Cancel</Button>
+            variant="outlined"
+            sx={{
+              fontSize: 12,
+              fontWeight: 700,
+              color: "#9D9D9D",
+              borderColor: "#9D9D9D",
+            }}
+            onClick={handleCancel}
+          >
+            Cancel
+          </Button>
           <Button
-          sx={{  fontSize: 12,
-            fontWeight: 700,}}
+            sx={{ fontSize: 12, fontWeight: 700 }}
             variant="contained"
             color="primary"
             onClick={handleSubmit}
             disabled={users?.length < 1}
-          >Ok</Button>
+          >
+            Ok
+          </Button>
         </Grid>
       </Box>
     </>

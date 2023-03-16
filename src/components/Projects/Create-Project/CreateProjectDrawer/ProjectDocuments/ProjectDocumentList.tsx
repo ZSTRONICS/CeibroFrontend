@@ -6,11 +6,10 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from "@material-ui/core";
 import { Tooltip } from "@mui/material";
 import { DocumentNameTag } from "components/CustomTags";
-import { CustomMuiList } from "components/material-ui";
 import CustomModal from "components/Modal";
 import { CustomBadge, CustomStack, AssignedTag } from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
@@ -36,7 +35,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     (state: RootState) => state?.project
   );
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedFolderFile, setSelectedFolderFile]= useState<FolderInterface|FileInterface|any>({})
+  const [selectedFolderFile, setSelectedFolderFile] = useState<
+    FolderInterface | FileInterface | any
+  >({});
   const selectedProjectWithMembers = projectWithMembers
     .filter(
       (projectWithMember: any) =>
@@ -98,7 +99,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
       </>
     );
   };
-  
+
   return (<>
     <TableContainer style={{ height: "100%", overflow: "visible" }}>
       <Table className={classes.table} aria-label="simple table">
@@ -124,29 +125,29 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             <CircularProgress size={20} className={classes.progress} />
           )}
 
-          {folderList.folders.map((row: FolderInterface) => {
-            const DateString: string = momentdeDateFormat(row.createdAt)
-            return (
-              <TableRow key={row._id}>
-                <TableCell onClick={() => handleFolderClick(row)} scope="row">
-                  <DocumentNameTag
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      },
-                    }}
+            {folderList.folders.map((row: FolderInterface) => {
+              const DateString: string = momentdeDateFormat(row.createdAt);
+              return (
+                <TableRow key={row._id}>
+                  <TableCell onClick={() => handleFolderClick(row)} scope="row">
+                    <DocumentNameTag
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {row.name}
+                    </DocumentNameTag>
+                  </TableCell>
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    className={classes.modifyDate}
                   >
-                    {row.name}
-                  </DocumentNameTag>
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  {DateString}
-                </TableCell>
+                    {DateString}
+                  </TableCell>
 
                 <TableCell
                   scope="row"
@@ -269,13 +270,12 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             <ProjectAccessModal
             selectedFolderFile={selectedFolderFile}
             selectedProject={selectedProject}
-            handleCloseModal = {closeAccessModal}
+            handleCloseModal={closeAccessModal}
             projectGroup={selectedProjectWithMembers.groups}
-            projectMembers={selectedProjectWithMembers.projectMembers
-            }
-            />
-          }
-        />
+            projectMembers={selectedProjectWithMembers.projectMembers}
+          />
+        }
+      />
     </>
   );
 };
@@ -283,14 +283,15 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 export default ProjectDocumentList;
 
 const useStyles = makeStyles({
-  rowContainer :{
-    '& .MuiTableCell-root':{
-      padding:'6px'
-    }
+  rowContainer: {
+    "& .MuiTableCell-root": {
+      padding: "6px",
+    },
   },
   table: {
     minWidth: 650,
   },
+
   nameWrapper: {
     display: "flex",
     justifyContent: "flex-start",
@@ -343,7 +344,7 @@ const useStyles = makeStyles({
   tableTitle: {
     fontSize: 12,
     fontWeight: 500,
-    paddingBottom:5,
+    paddingBottom: 5,
     color: colors.textGrey,
   },
   progress: {

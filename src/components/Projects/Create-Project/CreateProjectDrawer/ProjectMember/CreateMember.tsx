@@ -160,8 +160,8 @@ const MemberDialog = () => {
     (selectedMember?.user?.surName?.[0]?.toUpperCase?.() || "");
   const fixedGroup = [
     {
-      label: selectedMember.group.name,
-      value: selectedMember.group._id,
+      label: selectedMember?.group?.name,
+      value: selectedMember?.group?._id,
     },
   ];
   const fixedRole = [
