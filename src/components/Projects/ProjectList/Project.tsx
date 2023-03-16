@@ -58,7 +58,6 @@ const Project = () => {
 const getHeaderHeight = () => {
   let contentHeight =
     window.innerHeight - (headerRef.current.clientHeight + 100);
-    console.log('contentHeight',contentHeight);
   return `${contentHeight}px`;
 }; 
   useEffect(() => {
