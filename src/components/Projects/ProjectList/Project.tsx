@@ -53,19 +53,25 @@ const Project = () => {
       })
     );
   };
-  const [showProjectList, setShowProjectList] = useState<boolean>(false);
+  const [showProjectList, setShowProjectList] = useState<boolean>(false); 
+
+const getHeaderHeight = () => {
+  let contentHeight =
+    window.innerHeight - (headerRef.current.clientHeight + 100);
+    console.log('contentHeight',contentHeight);
+  return `${contentHeight}px`;
+}; 
   useEffect(() => {
     if (headerRef.current.clientHeight) {
       setTimeout(() => {
         setShowProjectList(true);
       }, 100);
     }
+window.addEventListener('resize', getHeaderHeight)
   });
-  const getHeaderHeight = () => {
-    let contentHeight =
-      window.innerHeight - (headerRef.current.clientHeight + 100);
-    return `${contentHeight}px`;
-  };
+
+  
+  
   return (<>
     <Grid item xs={12}>
       {loading && <CircularProgress size={20} className={classes.progress} />}

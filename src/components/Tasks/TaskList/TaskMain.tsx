@@ -18,9 +18,9 @@ const TaskMain = () => {
   const allTask: TaskInterface[] = useSelector(
     (state: RootState) => state.task.allTask
   );
-  let xsPoint = 12;
-  let mdPoint = 4;
-  let lgPoint = 3.2;
+  // let xsPoint = 12;
+  // let mdPoint = 4;
+  // let lgPoint = 3.2;
   const classes = useStyles();
   const headerRef: any = useRef();
   // const localized = moment(dueDate, 'DD-MM-YYYY').format('ddd MMM DD YYYY HH:mm:ss [GMT]ZZ')
@@ -32,6 +32,7 @@ const TaskMain = () => {
         setShowTaskList(true);
       }, 100);
     }
+    window.addEventListener('resize', getHeaderHeight)
   });
 
   const getHeaderHeight = () => {
