@@ -16,6 +16,7 @@ import colors from "assets/colors";
 
 import projectActions, {
   getAllProjects,
+  getAllProjectsWithMembers,
   getProjectsWithPagination,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -40,6 +41,7 @@ const Project = () => {
 
   useEffect(() => {
     dispatch(getAllProjects());
+    dispatch(getAllProjectsWithMembers());
   }, []);
 
   const handleUserChange = (user: dataInterface) => {

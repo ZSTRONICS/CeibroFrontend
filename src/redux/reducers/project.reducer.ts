@@ -62,6 +62,7 @@ import {
   groupTemplate,
   projectProfileInterface,
   userRolesPermissions,
+  FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { ProjectGroupInterface, ProjectMemberInterface,memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
@@ -100,8 +101,8 @@ interface ProjectReducerInt {
   rolesList: RoleInterface[];
   groupList: ProjectGroupInterface[];
   group: GroupInterface;
-  folderList: FolderInterface[];
-  folderFiles: FolderFileInterface[];
+  folderList: FolderInterfaceRoot;
+  folderFiles: FolderInterfaceRoot;
   projectProfile: projectProfileInterface[];
   memberList: ProjectMemberInterface[];
   load: boolean;
@@ -109,10 +110,12 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: userRolesPermissions | null;
-  allProjectsTitles: any[]
+  allProjectsTitles: any[],
+  isOpenProjectDocumentModal:boolean
 }
 
 const projectReducer: ProjectReducerInt = {
+  isOpenProjectDocumentModal:false,
   getAllProjectRoles:[],
   drawerOpen: false,
   menue: 1,
@@ -167,12 +170,12 @@ const projectReducer: ProjectReducerInt = {
   rolesList: [],
   groupList: [],
   group: groupTemplate,
-  folderList: [],
+  folderList: {folders:[],files:[]},
   memberList: [],
   getStatuses: [],
   getNewWorkList: [],
   userPermissions: null,
-  folderFiles: [],
+  folderFiles: {folders:[],files:[]},
   projectProfile: [],
   load: false,
   getTimeProfileById: [],
@@ -455,6 +458,18 @@ const NavigationReducer = (
         memberDrawer: true,
       };
     }
+    case PROJECT_CONFIG.OPEN_PROJECT_DOCUMENT_MODAL: {
+      return {
+        ...state,
+        isOpenProjectDocumentModal: true,
+      };
+    }
+    case PROJECT_CONFIG.CLOSE_PROJECT_DOCUMENT_MODAL: {
+      return {
+        ...state,
+        isOpenProjectDocumentModal: false,
+      };
+    }
 
     case CLOSE_MEMBER_DRAWER: {
       return {
@@ -477,7 +492,7 @@ const NavigationReducer = (
     case requestSuccess(GET_FOLDER): {
       return {
         ...state,
-        folderList: action.payload,
+        folderList: action.payload.result,
       };
     }
 
@@ -491,7 +506,7 @@ const NavigationReducer = (
     case requestSuccess(GET_FOLDER_FILES): {
       return {
         ...state,
-        folderFiles: action.payload,
+        folderFiles: action.payload.result,
       };
     }
 

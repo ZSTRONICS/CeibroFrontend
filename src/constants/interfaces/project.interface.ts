@@ -1,3 +1,4 @@
+import { FileInterface } from "./docs.interface";
 import { ProjectRolesInterface } from "./ProjectRoleMemberGroup.interface";
 import { UserInfo } from "./subtask.interface";
 import { UserInterface } from "./user.interface";
@@ -92,14 +93,26 @@ export const groupTemplate: GroupInterface = {
   _id: "",
 };
 
+export interface FolderInterfaceRoot {
+  folders: FolderInterface[]
+  files: FileInterface[]
+}
+
 export interface FolderInterface {
-  name: string;
-  id?: string;
-  _id?: string;
-  access: string[];
-  creator: UserInterface;
-  group: GroupInterface;
-  createdAt: string;
+  name: string
+  group: GroupInterface
+  parentFolder: any
+  access: Creator[]
+  _id: string
+  project: string
+  creator: Creator
+  createdAt: string
+  updatedAt: string
+}
+export interface Creator {
+  _id: string
+  firstName: string
+  surName: string
 }
 
 export interface FolderFileInterface {

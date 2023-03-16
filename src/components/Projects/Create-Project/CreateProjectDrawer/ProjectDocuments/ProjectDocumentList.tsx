@@ -6,32 +6,44 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow,
-  Typography,
+  TableRow
 } from "@material-ui/core";
-import assets from "assets/assets";
+import { DocumentNameTag } from "components/CustomTags";
+import { CustomMuiList } from "components/material-ui";
+import CustomModal from "components/Modal";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
+import { FileInterface } from "constants/interfaces/docs.interface";
 import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFolder } from "redux/action/project.action";
+import projectActions, { getFolder } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
+import RollOverMenu from "../ProjectMember/RollOverMenu";
+import ProjectAccessModal from "./ProjectAccessModal";
 import ProjectDocumentMenu from "./ProjectDocsMenu";
-import moment from "moment-timezone";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
 }
 
 const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
-  const { selectedProject, folderList } = useSelector(
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state?.auth);
+
+  const { selectedProject, folderList,projectWithMembers, isOpenProjectDocumentModal } = useSelector(
     (state: RootState) => state?.project
   );
-  const { user } = useSelector((state: RootState) => state?.auth);
+  const [isOpenAccessModal, setIsOpenAccessModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const isDiabled = !loading ? false : true;
+  const [selectedFolderFile, setSelectedFolderFile]= useState<FolderInterface|FileInterface|any>({})
+  const selectedProjectWithMembers = projectWithMembers
+    .filter(
+      (projectWithMember: any) =>
+        projectWithMember._id.toString() === selectedProject.toString()
+    )
+    .find((item: any) => item);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
       const payload = {
@@ -50,23 +62,34 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
-    // dispatch(setSelectedFolder(folder?._id));
   };
+  // console.log('folderList',folderList);
+  const openAccessModal = (e:any, folder:any) => {
+    setSelectedFolderFile(folder)
+    dispatch(projectActions.openProjectDocumentModal())
+  }
+  const closeAccessModal = (e:any) => {
+    e.stopPropagation()
+   dispatch(projectActions.closeProjectDocumentModal())
+  }
 
-  return (
+  return (<>
     <TableContainer style={{ height: "100%", overflow: "visible" }}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Date modified
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Uploaded On
             </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Members
+            <TableCell className={`${classes.tableTitle}`} align="center">
+              Creator
             </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Who can access
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Members
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+             Action
             </TableCell>
           </TableRow>
         </TableHead>
@@ -75,45 +98,41 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             <CircularProgress size={20} className={classes.progress} />
           )}
 
-          {folderList?.map((row: FolderInterface) => {
-            const DateString: string = moment(row?.createdAt).format(
-              "YYYY-MM-DD"
-            );
-
+          {folderList.folders.map((row: FolderInterface) => {
+            const DateString: string = momentdeDateFormat(row.createdAt)
             return (
-              <TableRow key={row?._id}>
-                <TableCell
-                  onClick={() => handleFolderClick(row)}
-                  component="th"
-                  scope="row"
-                  className={classes.name}
-                >
-                  <img src={assets.usersFolder} className="width-16" alt="" />
-                  <Typography className={`${classes.name}`}>
-                    {row?.name}
-                  </Typography>
+              <TableRow key={row._id}>
+                <TableCell onClick={() => handleFolderClick(row)} scope="row">
+                  <DocumentNameTag
+                    sx={{
+                      "&:hover": {
+                        cursor: "pointer",
+                        textDecoration: "underline",
+                      },
+                    }}
+                  >
+                    {row.name}
+                  </DocumentNameTag>
                 </TableCell>
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
                   className={classes.modifyDate}
                 >
                   {DateString}
                 </TableCell>
 
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
                   className={classes.modifyDate}
                 >
-                  {row?.group?.members?.length || 0} member(s)
+                  {`${row.creator.firstName} ${row.creator.surName}`}
+                  {/* {row?.group?.members?.length || 0} member(s) */}
                 </TableCell>
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
                   style={{ padding: 6 }}
                   className={classes.modifyDate}
                 >
@@ -128,18 +147,104 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                     />
                   )}
                 </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                  <RollOverMenu
+                    edit="Access"
+                    showDelBtn={false}
+                    handleEdit={(e:any)=>openAccessModal(e,row)}
+                  />
+                </TableCell>
               </TableRow>
             );
           })}
+           {folderList.files.length>0?folderList.files.map((file: FileInterface) => {
+            const DateString: string = momentdeDateFormat(file.createdAt)
+            return (
+              <TableRow key={file._id} className={classes.rowContainer}>
+                <TableCell
+                  scope="row"
+                  // className={classes.name}
+                >
+                  <DocumentNameTag>
+                    {file.fileName}
+                  </DocumentNameTag>
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                  {DateString}
+                </TableCell>
+
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                  Creator Name
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  style={{ padding: 6 }}
+                  className={classes.modifyDate}
+                >
+                  {file.access.length===0?"Only You":"N/A"}
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                 <RollOverMenu
+                 edit="Access"
+                 showDelBtn={false}
+                 handleEdit={(e:any)=>openAccessModal(e,file)}
+                 />
+                </TableCell>
+              </TableRow>
+            );
+          }):<></>} 
         </TableBody>
       </Table>
+          {folderList.folders.length===0&&folderList.files.length===0&& 
+            <DocumentNameTag sx={{textAlign:'center', color:'rgb(125, 126, 128)', pt:2.3}}>No data found!</DocumentNameTag>
+            }
     </TableContainer>
+    <CustomModal
+          maxWidth="xs"
+          showCloseBtn={false}
+          title={""}
+          isOpen={isOpenProjectDocumentModal}
+          handleClose={closeAccessModal}
+          children={
+            <ProjectAccessModal
+            selectedFolderFile={selectedFolderFile}
+            selectedProject={selectedProject}
+            handleCloseModal = {closeAccessModal}
+            projectGroup={selectedProjectWithMembers.groups}
+            projectMembers={selectedProjectWithMembers.projectMembers
+            }
+            />
+          }
+        />
+    </>
   );
 };
 
 export default ProjectDocumentList;
 
 const useStyles = makeStyles({
+  rowContainer :{
+    '& .MuiTableCell-root':{
+      padding:'6px'
+    }
+  },
   table: {
     minWidth: 650,
   },
@@ -164,7 +269,7 @@ const useStyles = makeStyles({
   modifyDate: {
     fontSize: 14,
     fontWeight: 500,
-    // paddingLeft: 15,
+    padding: 4,
   },
   folderIcon: {
     fontSize: 20,
@@ -195,6 +300,7 @@ const useStyles = makeStyles({
   tableTitle: {
     fontSize: 12,
     fontWeight: 500,
+    paddingBottom:5,
     color: colors.textGrey,
   },
   progress: {

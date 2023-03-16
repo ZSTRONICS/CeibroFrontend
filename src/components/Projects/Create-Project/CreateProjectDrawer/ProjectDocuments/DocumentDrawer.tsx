@@ -51,7 +51,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const handleOk = () => {
     const payload = {
       body: {
-        groupId: selectGroups?.value,
         name,
       },
       success: () => {
@@ -92,14 +91,14 @@ const AddGroup: React.FC<AddGroupProps> = () => {
             placeholder="Enter name"
             onChange={handleNameChange}
           />
-          <br />
+          {/* <br />
           <SelectDropdown
             title="Group"
             placeholder="Please select"
             data={groups}
             handleChange={(e: any) => setSelectGroups(e)}
           />
-          <HorizontalBreak color={colors.grey} />
+          <HorizontalBreak color={colors.grey} /> */}
         </div>
       </DialogContent>
       <DialogActions>

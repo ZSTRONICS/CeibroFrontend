@@ -49,7 +49,6 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     .replaceAll("-", ".")
     .replace(",", "");
   // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
-  console.log("dueDateString", dueDateString);
   const creationDate = momentdeDateFormat(createdAt);
   return (
     <>

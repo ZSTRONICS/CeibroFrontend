@@ -1,22 +1,26 @@
 
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button,makeStyles, Typography } from "@material-ui/core";
 import ListItemIcon from "@material-ui/icons/List";
-import { TramSharp } from "@material-ui/icons";
+import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { AiOutlineUnorderedList } from "react-icons/ai";
 import { BsGrid } from "react-icons/bs";
-import colors from "../../../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import InputText from "../../../../Utills/Inputs/InputText";
 import projectActions, {
-  getFile,
   getFolder,
-  getFolderFiles,
-  getGroup,
+  getFolderFiles
 } from "redux/action/project.action";
-import DocumentDrawer from "./DocumentDrawer";
-import { FolderInterface } from "constants/interfaces/project.interface";
 import { RootState } from "redux/reducers";
+import colors from "../../../../../assets/colors";
+import InputText from "../../../../Utills/Inputs/InputText";
+import DocumentDrawer from "./DocumentDrawer";
+import {Grid, Paper,Divider} from '@mui/material'
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import InputBase from '@mui/material/InputBase';
+import SearchIcon from '@mui/icons-material/Search';
+import CButton from "components/Button/Button";
+import CustomModal from "components/Modal";
+import UploadDocs from "components/uploadImage/UploadDocs";
 
 interface headerInterface {
   selectedFolder?: FolderInterface | null;
@@ -32,6 +36,19 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   );
   const { selectedFolder, handleGoBack, isFolder } = props;
   const [findDoc, setFindDoc] = useState<any>();
+
+  const [isAttachmentViewOpen, setIsAttachmentViewOpen]: any = useState(false);
+
+  const [selectedAttachments, setSelectedAttachments] = useState<any>({
+    moduleId: "",
+    moduleName: "Project",
+    files: [],
+  });
+
+  const handleOpenCloseAttachmentModal = (e: any) => {
+    e.stopPropagation();
+    setIsAttachmentViewOpen((value: boolean) => !value);
+  };
 
   useEffect(() => {
     if (findDoc) {
@@ -50,42 +67,65 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   }, [selectedFolder, findDoc]);
 
   return (
-    <Grid container>
-      <Grid item xs={12} md={2} className={classes.actionWrapper}>
-        <Button
-          variant="outlined"
-          color="primary"
-          startIcon={<ListItemIcon />}
-          className={classes.actionButton}
-        >
-          Bulk edit
-        </Button>
-      </Grid>
-      <Grid item xs={12} md={7} className={classes.actionWrapper}>
+    <>
+      <Grid container justifyContent="space-between" alignItems='center'>
+        <Grid item sx={{ width: "100%", maxWidth: "415px" }}>
+          <Paper
+            elevation={0}
+            component="form"
+            sx={{
+              p: "1px 10px",
+              display: "flex",
+              alignItems: "center",
+              maxWidth: 415,
+              width: "100%",
+              border: "1px solid #DBDBE5",
+            }}
+          >
+            <SearchIcon />
+            <Divider sx={{ height: 28, m: 0.5, pl: 0.5 }} orientation="vertical"/>
+            <InputBase
+              sx={{ ml: 1, flex: 1 }}
+              placeholder="Find document"
+              inputProps={{ "aria-label": "Find document" }}
+            />
+          </Paper>
+        </Grid>
+        {/* <Grid item xs={12} md={7} className={classes.actionWrapper}>
         <InputText
         value={findDoc||""}
           placeholder={isFolder ? "Find folder" : "Find document"}
           onChange={(e: any) => setFindDoc(e.target.value)}
         />
-      </Grid>
-      <Grid item xs={12} md={3} className={classes.secondActionWrapper}>
-        <Button
-          variant="outlined"
-          color="primary"
-          className={classes.actionButton}
-          onClick={() => {
-            dispatch(projectActions.openProjectDocuments());
-          }}
-        >
-          Create a folder
-        </Button>
-        <DocumentDrawer />
-        <div className={classes.viewIcons}>
+      </Grid> */}
+        <Grid item>
+          <CustomStack gap={1.5}>
+       {isFolder===true&&<CButton
+            variant="outlined"
+            color="primary"
+            label="Create folder"
+            sx={{ fontSize: 12, fontWeight: "700", padding:'8px 16px',textTransform:'unset' }}
+            onClick={() => {
+              dispatch(projectActions.openProjectDocuments());
+            }}
+          />}
+            <CButton
+            variant="outlined"
+            color="primary"
+            label="Upload file(s)"
+            sx={{ fontSize: 12, fontWeight: "700", padding:'8px 16px', textTransform:'unset' }}
+            onClick={handleOpenCloseAttachmentModal}
+          />
+          </CustomStack>
+          <DocumentDrawer />
+          {/* <div className={classes.viewIcons}>
           <BsGrid style={{ color: colors.primary }} />
           <AiOutlineUnorderedList />
-        </div>
+        </div> */}
+        </Grid>
       </Grid>
-      <Grid item xs={12} className={classes.breadCrums}>
+
+      <Grid className={classes.breadCrums}>
         <Typography onClick={handleGoBack} className={classes.breadCrumsText}>
           Document /
         </Typography>
@@ -95,7 +135,27 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
           </Typography>
         )}
       </Grid>
-    </Grid>
+      <CustomModal
+        showCloseBtn={false}
+        isOpen={isAttachmentViewOpen}
+        handleClose={(e: any) => {
+          handleOpenCloseAttachmentModal(e);
+        }}
+        title={"Attachments"}
+        children={
+          <UploadDocs
+            selectedAttachments={selectedAttachments}
+            showUploadButton={true}
+            moduleType={isFolder===true?"Project":"ProjectFolder"}
+            moduleId={isFolder===true?selectedProject:selectedFolder?._id}
+            handleClose={(e: any, value: any): void => {
+              setSelectedAttachments(value);
+              setIsAttachmentViewOpen((prev: boolean) => !prev);
+            }}
+          />
+        }
+      />
+    </>
   );
 };
 
@@ -103,7 +163,7 @@ export default ProjectDocumentHeader;
 
 const useStyles = makeStyles({
   breadCrums: {
-    paddingTop: 10,
+    paddingTop: 16,
     display: "flex",
   },
   breadCrumsText: {

@@ -20,6 +20,7 @@ interface Props {
   title: any;
   children: any;
   showCloseBtn: boolean;
+  maxWidth?:any
 }
 
 const CustomModal: React.FC<Props> = ({
@@ -28,6 +29,7 @@ const CustomModal: React.FC<Props> = ({
   title,
   children,
   showCloseBtn,
+  maxWidth,
 }) => {
   const classes = useStyles();
   const closeModal = (e: any) => {
@@ -36,11 +38,12 @@ const CustomModal: React.FC<Props> = ({
     }
     handleClose(e);
   };
+  const localWidth =  maxWidth ? maxWidth: "sm"
   return (
     <>
       <Dialog
         fullWidth
-        maxWidth="sm"
+        maxWidth={localWidth.toString()}
         open={isOpen}
         onClose={closeModal}
         aria-labelledby="alert-dialog-title"
