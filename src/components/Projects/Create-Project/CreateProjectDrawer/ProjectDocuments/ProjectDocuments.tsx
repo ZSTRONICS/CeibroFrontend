@@ -26,7 +26,7 @@ const ProjectDocuments = () => {
         <ProjectDocumentHeader
           handleGoBack={handleGoBack}
           selectedFolder={folder}
-          isFolder={!folder}
+          isFolder={!folder}    
         />
         <Grid item xs={12} className={classes.groupsWrapper}>
           {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}

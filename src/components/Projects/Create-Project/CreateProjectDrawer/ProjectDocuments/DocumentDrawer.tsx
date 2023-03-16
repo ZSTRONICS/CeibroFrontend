@@ -6,6 +6,7 @@ import {
   DialogContent,
   makeStyles,
 } from "@material-ui/core";
+import { Divider } from "@mui/material";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
@@ -83,8 +84,8 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 
   return (
     <Dialog open={documentDrawer} onClose={handleClose}>
-      <DialogContent>
-        <div className={classes.dropdownWrapper}>
+      <DialogContent className={classes.dropdownWrapper}>
+        <div>
           <Input
             value={name}
             title="Folder"
@@ -101,15 +102,26 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           <HorizontalBreak color={colors.grey} /> */}
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleOk} color="primary" disabled={isDiabled}>
-          Ok
+      <Divider sx={{ margin: "0px  20px 10px" }} />
+      <DialogActions style={{ marginRight: "16px", marginBottom: "10px" }}>
+        <Button
+          onClick={handleClose}
+          color="secondary"
+          variant="outlined"
+          autoFocus
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleOk}
+          color="primary"
+          variant="contained"
+          disabled={isDiabled}
+        >
+          Create
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}
-        </Button>
-        <Button onClick={handleClose} color="secondary" autoFocus>
-          Cancel
         </Button>
       </DialogActions>
     </Dialog>
@@ -132,9 +144,9 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 370,
+    maxWidth: 360,
     width: 370,
-    height: 300,
+    height: 90,
   },
   optionsWrapper: {
     width: "100%",

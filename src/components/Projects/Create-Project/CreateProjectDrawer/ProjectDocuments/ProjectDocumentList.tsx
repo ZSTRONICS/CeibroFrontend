@@ -6,7 +6,7 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TableRow
+  TableRow,
 } from "@material-ui/core";
 import { DocumentNameTag } from "components/CustomTags";
 import { CustomMuiList } from "components/material-ui";
@@ -31,12 +31,17 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state?.auth);
 
-  const { selectedProject, folderList,projectWithMembers, isOpenProjectDocumentModal } = useSelector(
-    (state: RootState) => state?.project
-  );
+  const {
+    selectedProject,
+    folderList,
+    projectWithMembers,
+    isOpenProjectDocumentModal,
+  } = useSelector((state: RootState) => state?.project);
   const [isOpenAccessModal, setIsOpenAccessModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [selectedFolderFile, setSelectedFolderFile]= useState<FolderInterface|FileInterface|any>({})
+  const [selectedFolderFile, setSelectedFolderFile] = useState<
+    FolderInterface | FileInterface | any
+  >({});
   const selectedProjectWithMembers = projectWithMembers
     .filter(
       (projectWithMember: any) =>
@@ -64,175 +69,187 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     props.onFolderClick?.(folder);
   };
   // console.log('folderList',folderList);
-  const openAccessModal = (e:any, folder:any) => {
-    setSelectedFolderFile(folder)
-    dispatch(projectActions.openProjectDocumentModal())
-  }
-  const closeAccessModal = (e:any) => {
-    e.stopPropagation()
-   dispatch(projectActions.closeProjectDocumentModal())
-  }
+  const openAccessModal = (e: any, folder: any) => {
+    setSelectedFolderFile(folder);
+    dispatch(projectActions.openProjectDocumentModal());
+  };
+  const closeAccessModal = (e: any) => {
+    e.stopPropagation();
+    dispatch(projectActions.closeProjectDocumentModal());
+  };
 
-  return (<>
-    <TableContainer style={{ height: "100%", overflow: "visible" }}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="center">
-            Uploaded On
-            </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="center">
-              Creator
-            </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="center">
-            Members
-            </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="center">
-             Action
-            </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {loading && (
-            <CircularProgress size={20} className={classes.progress} />
-          )}
+  return (
+    <>
+      <TableContainer style={{ height: "100%", overflow: "visible" }}>
+        <Table className={classes.table} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
+              <TableCell className={`${classes.tableTitle}`} align="center">
+                Uploaded On
+              </TableCell>
+              <TableCell className={`${classes.tableTitle}`} align="center">
+                Creator
+              </TableCell>
+              <TableCell className={`${classes.tableTitle}`} align="center">
+                Members
+              </TableCell>
+              <TableCell className={`${classes.tableTitle}`} align="center">
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {loading && (
+              <CircularProgress size={20} className={classes.progress} />
+            )}
 
-          {folderList.folders.map((row: FolderInterface) => {
-            const DateString: string = momentdeDateFormat(row.createdAt)
-            return (
-              <TableRow key={row._id}>
-                <TableCell onClick={() => handleFolderClick(row)} scope="row">
-                  <DocumentNameTag
-                    sx={{
-                      "&:hover": {
-                        cursor: "pointer",
-                        textDecoration: "underline",
-                      },
-                    }}
+            {folderList.folders.map((row: FolderInterface) => {
+              const DateString: string = momentdeDateFormat(row.createdAt);
+              return (
+                <TableRow key={row._id}>
+                  <TableCell onClick={() => handleFolderClick(row)} scope="row">
+                    <DocumentNameTag
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {row.name}
+                    </DocumentNameTag>
+                  </TableCell>
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    className={classes.modifyDate}
                   >
-                    {row.name}
-                  </DocumentNameTag>
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  {DateString}
-                </TableCell>
+                    {DateString}
+                  </TableCell>
 
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  {`${row.creator.firstName} ${row.creator.surName}`}
-                  {/* {row?.group?.members?.length || 0} member(s) */}
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  style={{ padding: 6 }}
-                  className={classes.modifyDate}
-                >
-                  {row?.access?.length > 0
-                    ? `${row?.access?.length} member(s)`
-                    : "Only you"}
-                  {row.creator === user._id && (
-                    <ProjectDocumentMenu
-                      folderId={row._id || ""}
-                      access={row?.access || []}
-                      groupId={row?.group?._id || ""}
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    className={classes.modifyDate}
+                  >
+                    {`${row.creator.firstName} ${row.creator.surName}`}
+                    {/* {row?.group?.members?.length || 0} member(s) */}
+                  </TableCell>
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    style={{ padding: 6 }}
+                    className={classes.modifyDate}
+                  >
+                    {row?.access?.length > 0
+                      ? `${row?.access?.length} member(s)`
+                      : "Only you"}
+                    {row.creator === user._id && (
+                      <ProjectDocumentMenu
+                        folderId={row._id || ""}
+                        access={row?.access || []}
+                        groupId={row?.group?._id || ""}
+                      />
+                    )}
+                  </TableCell>
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    className={classes.modifyDate}
+                  >
+                    <RollOverMenu
+                      edit="Access"
+                      showDelBtn={false}
+                      handleEdit={(e: any) => openAccessModal(e, row)}
                     />
-                  )}
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  <RollOverMenu
-                    edit="Access"
-                    showDelBtn={false}
-                    handleEdit={(e:any)=>openAccessModal(e,row)}
-                  />
-                </TableCell>
-              </TableRow>
-            );
-          })}
-           {folderList.files.length>0?folderList.files.map((file: FileInterface) => {
-            const DateString: string = momentdeDateFormat(file.createdAt)
-            return (
-              <TableRow key={file._id} className={classes.rowContainer}>
-                <TableCell
-                  scope="row"
-                  // className={classes.name}
-                >
-                  <DocumentNameTag>
-                    {file.fileName}
-                  </DocumentNameTag>
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  {DateString}
-                </TableCell>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+            {folderList.files.length > 0 ? (
+              folderList.files.map((file: FileInterface) => {
+                const DateString: string = momentdeDateFormat(file.createdAt);
+                return (
+                  <TableRow key={file._id} className={classes.rowContainer}>
+                    <TableCell
+                      scope="row"
+                      // className={classes.name}
+                    >
+                      <DocumentNameTag>{file.fileName}</DocumentNameTag>
+                    </TableCell>
+                    <TableCell
+                      scope="row"
+                      align="center"
+                      className={classes.modifyDate}
+                    >
+                      {DateString}
+                    </TableCell>
 
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                  Creator Name
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  style={{ padding: 6 }}
-                  className={classes.modifyDate}
-                >
-                  {file.access.length===0?"Only You":"N/A"}
-                </TableCell>
-                <TableCell
-                  scope="row"
-                  align="center"
-                  className={classes.modifyDate}
-                >
-                 <RollOverMenu
-                 edit="Access"
-                 showDelBtn={false}
-                 handleEdit={(e:any)=>openAccessModal(e,file)}
-                 />
-                </TableCell>
-              </TableRow>
-            );
-          }):<></>} 
-        </TableBody>
-      </Table>
-          {folderList.folders.length===0&&folderList.files.length===0&& 
-            <DocumentNameTag sx={{textAlign:'center', color:'rgb(125, 126, 128)', pt:2.3}}>No data found!</DocumentNameTag>
-            }
-    </TableContainer>
-    <CustomModal
-          maxWidth="xs"
-          showCloseBtn={false}
-          title={""}
-          isOpen={isOpenProjectDocumentModal}
-          handleClose={closeAccessModal}
-          children={
-            <ProjectAccessModal
+                    <TableCell
+                      scope="row"
+                      align="center"
+                      className={classes.modifyDate}
+                    >
+                      Creator Name
+                    </TableCell>
+                    <TableCell
+                      scope="row"
+                      align="center"
+                      style={{ padding: 6 }}
+                      className={classes.modifyDate}
+                    >
+                      {file.access.length === 0 ? "Only You" : "N/A"}
+                    </TableCell>
+                    <TableCell
+                      scope="row"
+                      align="center"
+                      className={classes.modifyDate}
+                    >
+                      <RollOverMenu
+                        edit="Access"
+                        showDelBtn={false}
+                        handleEdit={(e: any) => openAccessModal(e, file)}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <></>
+            )}
+          </TableBody>
+        </Table>
+        {folderList.folders.length === 0 && folderList.files.length === 0 && (
+          <DocumentNameTag
+            sx={{ textAlign: "center", color: "rgb(125, 126, 128)", pt: 2.3 }}
+          >
+            No data found!
+          </DocumentNameTag>
+        )}
+      </TableContainer>
+
+      <CustomModal
+        // {{
+        //   width: "100%",
+        //   maxWidth: "250px",
+        //   maxHeight: "455px",
+        // }}
+        maxWidth="xs"
+        showCloseBtn={false}
+        title={""}
+        isOpen={isOpenProjectDocumentModal}
+        handleClose={closeAccessModal}
+        children={
+          <ProjectAccessModal
             selectedFolderFile={selectedFolderFile}
             selectedProject={selectedProject}
-            handleCloseModal = {closeAccessModal}
+            handleCloseModal={closeAccessModal}
             projectGroup={selectedProjectWithMembers.groups}
-            projectMembers={selectedProjectWithMembers.projectMembers
-            }
-            />
-          }
-        />
+            projectMembers={selectedProjectWithMembers.projectMembers}
+          />
+        }
+      />
     </>
   );
 };
@@ -240,14 +257,15 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 export default ProjectDocumentList;
 
 const useStyles = makeStyles({
-  rowContainer :{
-    '& .MuiTableCell-root':{
-      padding:'6px'
-    }
+  rowContainer: {
+    "& .MuiTableCell-root": {
+      padding: "6px",
+    },
   },
   table: {
     minWidth: 650,
   },
+
   nameWrapper: {
     display: "flex",
     justifyContent: "flex-start",
@@ -300,7 +318,7 @@ const useStyles = makeStyles({
   tableTitle: {
     fontSize: 12,
     fontWeight: 500,
-    paddingBottom:5,
+    paddingBottom: 5,
     color: colors.textGrey,
   },
   progress: {

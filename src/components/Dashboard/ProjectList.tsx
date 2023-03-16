@@ -1,4 +1,5 @@
-import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import NoData from "components/Chat/NoData";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import React, { useEffect } from "react";
@@ -12,9 +13,17 @@ import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 
 const ProjectList = () => {
   const { allProjects } = useSelector((state: RootState) => state.project);
+  const classes = useStyles();
 
   return (
-    <Grid container>
+    <Grid
+      container
+      // className={classes.ProjectListMain}
+      // style={{
+      //   height: "600px",
+      //   overflowY: "auto",
+      // }}
+    >
       {allProjects && allProjects.length > 0 ? (
         allProjects.map((project: ProjectInterface, index: number) => {
           // if(project === undefined){
@@ -30,3 +39,22 @@ const ProjectList = () => {
 };
 
 export default ProjectList;
+
+const useStyles = makeStyles({
+  ProjectListMain: {
+    // "& .MuiGrid-root MuiGrid-container": {
+    //   height: "600px",
+    //   overflow: "auto",
+    // },
+    // "@media(max-width:1323px)": {
+    //   height: "660px",
+    //   overflow: "auto",
+    //   // scrollBehaviour: "smooth",
+    // },
+    // "@media(min-width:1323px)": {
+    //   height: "660px",
+    //   overflowY: "auto",
+    //   scrollBehaviour: "smooth",
+    // },
+  },
+});
