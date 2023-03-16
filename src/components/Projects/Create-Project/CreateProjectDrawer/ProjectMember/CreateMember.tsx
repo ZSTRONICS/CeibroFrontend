@@ -134,13 +134,6 @@ const MemberDialog = () => {
     dispatch(updateMember(payload));
   };
 
-//   useEffect(() => {
-//     if (selectedMember._id !== "") {
-
-// }
-//   }, [selectedMember._id]);
-
-
 
   const handleSubmit = (e:any) => {
     if (selectedMember._id) {
@@ -168,8 +161,6 @@ const MemberDialog = () => {
         color="primary"
         label="Add"
         sx={{ fontSize: 14, fontWeight: "700" }}
-        // className={classes.btn}
-        // disabled={havePermission ? false : true}
         onClick={handleClickOpen}
       />
       <Dialog
@@ -264,12 +255,9 @@ const MemberDialog = () => {
                       border: "none",
                       padding: "0px",
                     },
-                    // border: "1px solid #DBDBE5",
-                    // borderRadius: "4px",
                   }}
                   {...params}
                   name="members"
-                  // label="Owners"
                   placeholder="Select member(s)"
                 />
               )}
@@ -298,21 +286,7 @@ const MemberDialog = () => {
                 handleChange={(e: any) => setSelectGroups(e)}
               />
             </div>
-
-            {/* <Typography variant="h5" className={classes.subContractor}>
-              Subcontractor Company
-            </Typography>
-            <div className={classes.meta}>
-              <SelectDropdown
-                title="Name"
-                data={groups}
-                handleChange={(e: any) => setSelectGroups(e)}
-                zIndex={5}
-              />
-            </div> */}
           </div>
-          {/* <InputText/>
-          <SelectDropdown title="Role"/> */}
         </DialogContent>
         <DialogActions
           style={{
