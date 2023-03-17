@@ -40,7 +40,7 @@ const CustomModal: React.FC<Props> = ({
   };
   const localWidth =  maxWidth ? maxWidth: "sm"
   return (
-    <>
+    <> 
       <Dialog
         fullWidth
         maxWidth={localWidth.toString()}
@@ -48,7 +48,7 @@ const CustomModal: React.FC<Props> = ({
         onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
-      >
+       > 
         <DialogTitle id="alert-dialog-title">
           <Grid container className={classes.titleWraper}>
             <Grid item>
@@ -70,10 +70,14 @@ const CustomModal: React.FC<Props> = ({
             )}
           </Grid>
         </DialogTitle>
-        <DialogContent>{children}</DialogContent>
+        <div style={{border:'1px solid red',width:'100%'}}>
+        <DialogContent>{children}</DialogContent> 
+        </div>
         {/* <DialogActions>
         </DialogActions> */}
-      </Dialog>
+        
+      </Dialog> 
+     
     </>
   );
 };

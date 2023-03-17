@@ -96,7 +96,7 @@ function ProjectAccessModal(props: any) {
 
   return (
     <>
-      <Box sx={{ width: "350px", overflowY: "auto" }}>
+      <Box sx={{ overflowY: "auto" }}>
         <List
           dense
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
