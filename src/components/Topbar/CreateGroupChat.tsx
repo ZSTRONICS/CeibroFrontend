@@ -50,8 +50,6 @@ let localGroups:any= null
     allProjectsTitles,
   } = useSelector((store: RootState) => store.project);
 
-
-
   const handleUserId = ( id:any) => {
     if (!users?.includes(id)) {
       setUsers([...users,id]);

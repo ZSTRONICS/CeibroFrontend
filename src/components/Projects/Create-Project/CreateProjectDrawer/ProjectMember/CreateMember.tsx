@@ -44,7 +44,6 @@ const MemberDialog = () => {
     memberDrawer,
     selectedMember,
   } = useSelector((state: RootState) => state.project);
-  console.log('selectedMember',selectedMember);
   
   const dispatch = useDispatch();
   const [groups, setGroups] = useState();
@@ -53,7 +52,7 @@ const MemberDialog = () => {
   const [selectRoles, setSelectRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-
+  const [doOnce, setDoOnce]= useState(true)
   const [selectedUser, setSelectedUser] = useState<any[]>([]);
 
   const classes = useStyle();
@@ -126,28 +125,15 @@ const MemberDialog = () => {
     dispatch(createMember(payload));
   };
 
-  const handleUpdate = (e: any) => {
-    e.stopPropagation();
-    const payload = {
-      body: {
-        // user: selectedMember.user._id,
-        roleId: selectRoles?.value,
-        groupId: selectGroups?.value,
-      },
-      success: () => {
-        toast.success("Member updated successfully");
-        dispatch(getMember({ other: selectedProject }));
-        handleClose();
-      },
-      finallyAction: () => {
-        setLoading(false);
-      },
-      other: selectedMember._id,
-    };
-    dispatch(updateMember(payload));
-  };
-
-
+  // let checkRoleId:boolean=false
+  //   let checkGroupId:boolean=false
+  // if(doOnce===true){
+  //   checkRoleId = selectedMember?.role?.hasOwnProperty('_id')
+  //   checkGroupId = selectedMember?.group?.hasOwnProperty('_id')
+  //   setDoOnce(false)
+  // }
+  // console.log('checkRoleId',checkRoleId, 'checkGroupId',checkGroupId);
+  
   const handleSubmit = (e:any) => {
     if (selectedMember._id) {
       handleUpdate(e);
@@ -170,6 +156,49 @@ const MemberDialog = () => {
       value: selectedMember?.role?._id,
     },
   ];
+  useEffect(()=>{
+    let  checkRoleId = selectedMember?.role?.hasOwnProperty('_id')
+    let   checkGroupId = selectedMember?.group?.hasOwnProperty('_id')
+    if(checkRoleId===true){
+      const newRoles = {
+        label: selectedMember?.role.name,
+    value: selectedMember?.role._id,
+      };
+      setSelectRoles(newRoles)
+    }
+    if(checkGroupId===true){
+      const newGroups = {
+        label: selectedMember?.group.name,
+    value: selectedMember?.group._id,
+      };
+      setSelectGroups(newGroups)
+    }
+    
+  },[selectedMember._id])
+
+  console.log('selectRoles',selectRoles?.value, 'selectGroups',selectGroups?.value);
+
+  const handleUpdate = (e: any) => {
+    e.stopPropagation();
+    const payload = {
+      body: {
+        // user: selectedMember.user._id,
+        roleId:  selectRoles?.value,
+        groupId: selectGroups?.value,
+      },
+      success: () => {
+        toast.success("Member updated successfully");
+        dispatch(getMember({ other: selectedProject }));
+        handleClose();
+      },
+      finallyAction: () => {
+        setLoading(false);
+      },
+      other: selectedMember._id,
+    };
+    dispatch(updateMember(payload));
+  };
+
 
   return (
     <div>

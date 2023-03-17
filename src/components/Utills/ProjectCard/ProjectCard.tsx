@@ -1,18 +1,16 @@
 import styled from "@emotion/styled";
 // import { Grid, Typography } from "@material-ui/core";
-import { Grid, Typography } from "@mui/material";
 import { makeStyles } from "@material-ui/core/styles";
+import { Grid, Typography } from "@mui/material";
 import assets from "assets/assets";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import { FC } from "react";
 import { useDispatch } from "react-redux";
-import projectActions, { getProjectDetail } from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
-import moment from "moment";
-import { borderRadius } from "@material-ui/system";
-import { deDateFormat, momentdeDateFormat } from "../Globals/Common";
+import { momentdeDateFormat } from "../Globals/Common";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -24,7 +22,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     dueDate,
     owner,
     creator,
-    inDraftState,
+    isDefault,
+    // inDraftState,
     title,
     // tasksCount,
     // docsCount,
@@ -50,6 +49,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     .replace(",", "");
   // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
   const creationDate = momentdeDateFormat(createdAt);
+
   return (
     <>
       <ProjectCardContain
@@ -142,7 +142,11 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               className={classes.metaValue}
               style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
             >
-              {owner?.[0]?.firstName}
+              {creator
+                ? `${creator?.firstName} ${creator?.surName}`
+                : isDefault === true
+                ? `${owner?.[0]?.firstName} ${owner?.[0]?.surName}`
+                : "N/A"}
               {/* {owner?.[0]?.surName} */}
 
               {/* {owner?.length > 1 && (
