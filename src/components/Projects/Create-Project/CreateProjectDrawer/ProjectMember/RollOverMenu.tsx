@@ -1,23 +1,26 @@
-import React, { useRef } from "react";
+import React, { useCallback, useRef } from "react";
 import { Box, IconButton, Menu, MenuItem } from "@mui/material";
 import assets from "assets/assets";
 import { CustomButton } from "components/TaskComponent/Tabs/TaskCard";
 
 function RollOverMenu(props: any) {
   const divRef = useRef();
-  const [anchorElMember, setAnchorElMember] =
-    React.useState<null | HTMLElement>(null);
+  const [anchorElMember, setAnchorElMember] =React.useState<null | HTMLElement>(null);
 
-  const openPopup = (e: any) => {
+
+  const openPopup = useCallback((e: any) => {
     e.stopPropagation();
-    setAnchorElMember(e.currentTarget);
-  };
+    if(e.currentTarget){
+      setAnchorElMember(e.currentTarget);
+    }
+  }, [anchorElMember]);
 
   const handleDelete = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
     props.handleDele();
   };
+
   const handleEdit = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
@@ -30,6 +33,7 @@ function RollOverMenu(props: any) {
   };
   const open = Boolean(anchorElMember);
   const id = open ? "simple-popover" : undefined;
+  
   return (
     <Box ref={divRef}>
       <IconButton

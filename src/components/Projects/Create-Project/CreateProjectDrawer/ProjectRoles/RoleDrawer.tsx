@@ -40,11 +40,7 @@ interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete"];
-
-  const roleTempale = {
-    memberList: [],
-  };
+  // const roles = ["create", "edit", "delete"];
 
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
@@ -54,9 +50,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     useSelector((state: RootState) => state.project);
 
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>(
-    []
-  );
+  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>([]);
 
   const [rolePermissionLocal, setRolePermissionLocal] = useState(
     selectedRole.rolePermission
@@ -185,6 +179,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       })
     );
   };
+
   const handleMemberChange = (e: any) => {
     setmemberPermissionLocal({
       ...memberPermissionLocal,
@@ -206,6 +201,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       })
     );
   };
+
   useEffect(() => {
     if (selectedRole._id && roleDrawer) {
       // dispatch(
@@ -277,25 +273,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             onChange={handleNameChange}
           />
           <br />
-          {/* <SelectDropdown
-            title="Member"
-            placeholder="Please select"
-            defaultValue= {editMembers}
-            data={availableUsers}
-            isMulti={true}
-            noOptionMessage="No user available"
-            // value={role?.member}
-            handleChange={(values: any) => {
-              const memberIds = values.map((item: any) => item.id);
-              dispatch(
-                projectActions.setRole({
-                  ...role,
-                  members: [...memberIds],
-                })
-              );
-            }}
-          /> */}
-
           <Autocomplete
             sx={{ border: "none" }}
             multiple
@@ -316,24 +293,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                   members: [...memberIds],
                 })
               );
-              // let newValue: any = [
-              //   ...fixedOwner,
-              //   ...value.filter(
-              //     (option: any) => fixedOwner[0].value !== option.value
-              //   ),
-              // ];
-
-              // value.every((option: any) => {
-              //   if (String(user._id) === String(option.id)) {
-              //     found = true;
-              //     return false;
-              //   }
-              //   return true
-              // });
-
-              // if (found === false) {
-              //   value.push(fixedOwner[0]);
-              // }
             }}
             renderInput={(params) => (
               <InputHOC title="Members">

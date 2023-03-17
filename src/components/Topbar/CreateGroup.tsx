@@ -44,7 +44,6 @@ export default function CreateGroup() {
             getAllProjectMembers({
                 other: {
                     projectId: e.value,
-                    includeMe: true,
                 },
             })
         );

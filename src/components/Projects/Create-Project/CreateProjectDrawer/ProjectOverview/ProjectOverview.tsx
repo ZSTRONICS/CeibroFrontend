@@ -18,48 +18,30 @@ import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import CreateProjectStatus from "./CreateProjectStatus";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import { ProjectOwners } from "constants/interfaces/project.interface";
 
 const ProjectOverview = () => {
   const classes = useStyles();
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const selectedProject = useSelector(
-    (state: RootState) => state.project.selectedProject
-  );
+  // const selectedProject = useSelector(
+  //   (state: RootState) => state.project.selectedProject
+  // );
   const { user } = useSelector((state: RootState) => state.auth);
   const [data, setData] = useState<dataInterface[]>([]);
+  const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
 
   const [showDate, setShowDate] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [doOnce, setDoOnce] = useState(true);
   const dispatch = useDispatch();
 
-  const handleStatusChange = (status: dataInterface) => {
-    status?.value &&
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          publishStatus: status.value,
-        })
-      );
-  };
-
-  // const my = formatDate(projectOverview?.dueDate)
-  const statusData = getStatusDropdown();
-  const statusValue = projectOverview.publishStatus
-    ? {
-        label: projectOverview.publishStatus,
-        value: projectOverview.publishStatus,
-      }
-    : null;
-
   let fixuser = [
     {
       _id: user._id,
       firstName: user.firstName,
       surName: user.surName,
-      profilePic: "",
     },
   ];
 
@@ -77,19 +59,23 @@ const ProjectOverview = () => {
       );
     setDoOnce(false);
   }
+
+
+
+  let ownersTemp = projectOverview.owner.map((owner: ProjectOwners) => {
+    let ret = {
+      label: owner.firstName + " " + owner.surName,
+      value: owner._id,
+    };
+    return ret;
+  });
+
   let fixedOwner = [
     {
       label: user.firstName + " " + user.surName,
       value: user._id,
     },
   ];
-  let ownersTemp = projectOverview.owner.map((user: UserInfo) => {
-    let ret = {
-      label: user.firstName + " " + user.surName,
-      value: user._id,
-    };
-    return ret;
-  });
 
   if (projectOverview.owner.length === 0) {
     ownersTemp = fixedOwner;
@@ -100,10 +86,10 @@ const ProjectOverview = () => {
     //Current User && Creator can never be removed !!!
     setOwnerList(users);
 
-    let newOwners: UserInfo[] = [];
+    let newOwners: ProjectOwners[] = [];
     users.forEach((item: dataInterface) => {
       let found = false;
-      projectOverview.owner.every((owner: UserInfo) => {
+      projectOverview.owner.every((owner: ProjectOwners) => {
         if (owner._id === item.value) {
           found = true;
           newOwners.push(owner);
@@ -117,7 +103,6 @@ const ProjectOverview = () => {
           _id: item.value,
           firstName: item.label.split(" ")[0],
           surName: item.label.split(" ")[1],
-          profilePic: "",
         });
       }
     });
@@ -131,34 +116,34 @@ const ProjectOverview = () => {
       );
   };
 
-  // const checkV = ownersList.some((item: any) => item.value === user._id);
-
   useEffect(() => {
-    // if (selectedProject !== null) {
-    //   return;
-    // }
     const payload = {
       success: (res: any) => {
-        // res.data = [
-        //   ...res.data.filter(
-        //     (option: any) => fixedOwner[0].value !== option.value
-        //   ),
-        // ];
-
+        // console.log('res.data',res.data);
+        
         setData(res.data);
-        // // setting current user as default owner
-        // res?.data?.map((row: dataInterface) => {
-        //   if (row?.value === user?._id) {
-        //     if (!selectedProject) {
-
-        //     }
-        //   }
-        // });
       },
     };
 
     dispatch(getAvailableUsers(payload));
   }, []);
+    useEffect(()=>{
+      if(showDate===null){
+        dispatch(
+          projectActions.setProjectOverview({
+            ...projectOverview,
+            dueDate: "",
+          })
+        );
+      }else{
+        dispatch(
+          projectActions.setProjectOverview({
+            ...projectOverview,
+            dueDate:moment(showDate).format("DD-MM-YYYY"),
+          })
+        );
+      }
+    }, [showDate])
 
   return (
     <div style={{ width: "100%" }}>
@@ -185,16 +170,13 @@ const ProjectOverview = () => {
             name="dueDate"
             onChange={(e: any) => {
               setShowDate(e);
-              projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
+                // projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
             }}
           />
         </Grid>
 
         <Grid
           item
-          // xs={12}
-          // sm={5}
-          // md={4}
           sx={{
             width: "100%",
             height: "40px",
@@ -202,15 +184,6 @@ const ProjectOverview = () => {
           }}
           className={classes.datePickerWrapper}
         >
-          {/* <SelectDropdown
-            handleChange={handleOwnerChange}
-            value={ownersList}
-            data={data}
-            title="Owner"
-            isClearAble={false}
-            isMulti={true}
-            isDisabled={false}
-          /> */}
           <InputHOC title="Owners">
             <Autocomplete
               sx={{
@@ -225,7 +198,7 @@ const ProjectOverview = () => {
               filterSelectedOptions
               disableCloseOnSelect
               limitTags={2}
-              defaultValue={fixedOwner}
+              // defaultValue={ownersTemp}
               value={ownersList}
               options={data}
               size="small"
@@ -253,17 +226,6 @@ const ProjectOverview = () => {
                     (option: any) => fixedOwner[0].value !== option.value
                   ),
                 ];
-                // value.every((option: any) => {
-                //   if (String(user._id) === String(option.id)) {
-                //     found = true;
-                //     return false;
-                //   }
-                //   return true
-                // });
-
-                // if (found === false) {
-                //   value.push(fixedOwner[0]);
-                // }
                 handleOwnerChange(newValue);
               }}
               renderInput={(params) => (
