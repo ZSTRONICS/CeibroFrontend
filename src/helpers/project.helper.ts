@@ -30,7 +30,7 @@ export function mapRoles(roles: RoleInterface[]): dataInterface[] {
 }
 
 export function checkRolePermission(
-  permissions:   any,
+  permissions: any,
   permissionToCheck: string
 ) {
   if (permissions?.admin) {
@@ -40,7 +40,7 @@ export function checkRolePermission(
 }
 
 export function checkMemberPermission(
-  permissions:  any,
+  permissions: any,
   permissionToCheck: string
 ) {
   if (permissions?.admin) {

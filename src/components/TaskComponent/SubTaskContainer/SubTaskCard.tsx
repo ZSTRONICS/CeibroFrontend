@@ -848,7 +848,7 @@ const useStyles = makeStyles((theme) => ({
     // marginTop: "-5px",
     alignItems: "center",
     "@media (max-width:371)": {
-      border: "1px solid red",
+      // border: "1px solid red",
     },
   },
   taskDetailContainer: {

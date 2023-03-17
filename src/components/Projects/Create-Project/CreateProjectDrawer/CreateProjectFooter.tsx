@@ -176,6 +176,8 @@ const CreateProjectBody = () => {
     return formData;
   };
   const disableBtn = [projectOverview.isDefault ? true : false];
+  console.log('selectedProject',selectedProject);
+  
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       {!selectedProject && (
@@ -212,7 +214,7 @@ const CreateProjectBody = () => {
           size={20} 
           className={classes.progress} />
         )}
-        {selectedProject ? "Update" : "Create project"}
+        {!selectedProject ? "Create project":"Update"  }
       </Button>
     </Grid>
   );

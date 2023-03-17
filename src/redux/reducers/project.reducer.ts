@@ -108,7 +108,7 @@ interface ProjectReducerInt {
   getTimeProfileById: any;
   getStatuses: any;
   getNewWorkList: any;
-  userPermissions:  any;
+  userPermissions: any;
   allProjectsTitles: any[],
   isOpenProjectDocumentModal:boolean
 }
