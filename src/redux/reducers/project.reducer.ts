@@ -61,7 +61,6 @@ import {
   FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
-  userRolesPermissions,
   FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
@@ -109,7 +108,7 @@ interface ProjectReducerInt {
   getTimeProfileById: any;
   getStatuses: any;
   getNewWorkList: any;
-  userPermissions: userRolesPermissions | null;
+  userPermissions:  any;
   allProjectsTitles: any[],
   isOpenProjectDocumentModal:boolean
 }

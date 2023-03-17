@@ -103,7 +103,7 @@ function ProjectAccessModal(props: any) {
           subheader={
             <ListSubheader
               component="div"
-              sx={{ position: "relative", "&.MuiListSubheader-root": { p: 0 }, }}
+              sx={{ position: "relative", "&.MuiListSubheader-root": { p: 0 } }}
             >
               Select groups
             </ListSubheader>
@@ -153,7 +153,7 @@ function ProjectAccessModal(props: any) {
         </List>
         <CustomMuiList
           handleUserId={handleUserId}
-          subheaderTitle={"Project Members"}
+          subheaderTitle={"Select members"}
           groupMembers={props.projectMembers}
           handleUserChange={handleUserChange}
           checkboxChecked={users}
@@ -186,7 +186,9 @@ function ProjectAccessModal(props: any) {
             variant="contained"
             color="primary"
             onClick={handleSubmit}
-            disabled={users?.length < 1}
+            disabled={
+              users?.length > 0 || selectedGroupIds.length > 0 ? false : true
+            }
           >
             Ok
           </Button>
