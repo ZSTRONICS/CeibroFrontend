@@ -167,7 +167,7 @@ const RolesTable = () => {
   }
 
   const handleDelete = (id: any) => {
-    setLoading(true);
+    // setLoading(true);
 
     confirm({
       title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
@@ -221,9 +221,9 @@ const RolesTable = () => {
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {loading && (
+          {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
-          )}
+          )} */}
 
           {memberList && memberList.length > 0 ? (
             <>

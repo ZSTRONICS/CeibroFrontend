@@ -9,25 +9,23 @@ import {
   ListItemAvatar,
   ListItemButton,
   ListItemText,
-  ListSubheader,
-  TextField,
-  Typography,
+  ListSubheader
 } from "@mui/material";
 import assets from "assets/assets";
 import { CustomMuiList } from "components/material-ui";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import CustomCheckbox from "components/Utills/Inputs/Checkbox";
-import NameAvatar from "components/Utills/Others/NameAvatar";
-import React, { useState } from "react";
+import { uniqueArray } from "components/Utills/Globals/Common";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import projectActions, { PROJECT_APIS } from "redux/action/project.action";
+import projectActions, { getFolder, PROJECT_APIS } from "redux/action/project.action";
 
 function ProjectAccessModal(props: any) {
-  const { selectedFolderFile } = props;
+  const { selectedFolderFile,selectedProject } = props;
 
   const dispatch = useDispatch();
+
   const [users, setUsers] = useState<string[]>([]);
   const [selectedGroupIds, setSelectedGroupId] = useState<string[]>([]);
+  const [hasInitialized, setHasInitialized]= useState(true)
 
   const handleUserId = (id: any) => {
     if (!users?.includes(id)) {
@@ -48,20 +46,41 @@ function ProjectAccessModal(props: any) {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
   };
 
-  const handleGroupMember = (group: any) => {
-    if (selectedGroupIds.includes(group._id)) {
-      setSelectedGroupId((groupIds: any) =>
-        groupIds.filter((groupId: any) => groupId !== group._id)
-      );
-    } else {
-      setSelectedGroupId((previousIds: any) => [...previousIds, group._id]);
+  const handleGroupMember = (group:any) => {
+    if(selectedGroupIds.includes(group._id)){
+      setSelectedGroupId((groupIds: any) => (groupIds.filter((groupId:any) => (groupId !== group._id))))
+      const groupMembersId= group.members.map((member:any)=>member._id)
+      setUsers((users: any) => users.filter((user: any) => !groupMembersId.includes(user)));
+
+    }else{
+      setSelectedGroupId((previousGroupIds: any) => [...previousGroupIds, group._id])
+      const groupMembersId= group.members.map((member:any)=>member._id)
+      setUsers((previousUsers: any) => [...previousUsers, ...groupMembersId])
     }
   };
+  if(hasInitialized===true){
+    const alreadySelectedMembers = selectedFolderFile.access.map((item:any)=> item._id)
+    const alreadySelectedGroups = selectedFolderFile.group.map((item:any)=> item._id)
+    setUsers(alreadySelectedMembers)
+    setSelectedGroupId(alreadySelectedGroups)
+    setHasInitialized(false)
+  }
+  let allProjectMemberAccess = [...props.projectMembers,...selectedFolderFile.access ]
 
-  const hasKey = (obj: any, key: string) => obj.hasOwnProperty(key);
-  let localType: string = "";
-  let localId: string = "";
-  if (hasKey(selectedFolderFile, "name")) {
+const uniqueAccessMember = (arr:any) => {
+  const seen = new Set();
+  return arr.filter((obj:any) => {
+    const id = obj._id;
+    const isDuplicate = seen.has(id);
+    seen.add(id);
+    return !isDuplicate;
+  });
+};
+
+const hasKey = (obj: any, key: string) => obj.hasOwnProperty(key);
+let localType: string = "";
+let localId: string = "";
+if (hasKey(selectedFolderFile, "name")) {
     localType = "Folder";
     localId = selectedFolderFile._id;
   } else {
@@ -72,7 +91,7 @@ function ProjectAccessModal(props: any) {
   const handleSubmit = () => {
     const payload = {
       body: {
-        access: users,
+        access: uniqueArray(users),
         group: selectedGroupIds,
         type: localType,
         id: localId,
@@ -80,8 +99,9 @@ function ProjectAccessModal(props: any) {
       success: () => {
         setUsers([]);
         setSelectedGroupId([]);
+        dispatch(getFolder({ other: { selectedProject } }));
       },
-      other: props.selectedProject,
+      other: selectedProject,
     };
 
     dispatch(PROJECT_APIS.updateProjectDocumentsAccess(payload));
@@ -143,7 +163,9 @@ function ProjectAccessModal(props: any) {
                   onClick={() => handleGroupMember(group)}
                 >
                   <ListItemAvatar>
-                    <NameAvatar firstName={group.name} />
+                  <Avatar variant="rounded">
+                       <img src = {assets.GroupIcon} alt=""/>
+                    </Avatar>
                   </ListItemAvatar>
                   <ListItemText id={labelId} primary={`${group.name}`} />
                 </ListItemButton>
@@ -154,7 +176,7 @@ function ProjectAccessModal(props: any) {
         <CustomMuiList
           handleUserId={handleUserId}
           subheaderTitle={"Select members"}
-          groupMembers={props.projectMembers}
+          groupMembers={uniqueAccessMember(allProjectMemberAccess)}
           handleUserChange={handleUserChange}
           checkboxChecked={users}
         />

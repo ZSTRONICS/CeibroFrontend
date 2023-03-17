@@ -156,36 +156,33 @@ const MemberDialog = () => {
       value: selectedMember?.role?._id,
     },
   ];
-  useEffect(()=>{
-    let  checkRoleId = selectedMember?.role?.hasOwnProperty('_id')
-    let   checkGroupId = selectedMember?.group?.hasOwnProperty('_id')
-    if(checkRoleId===true){
-      const newRoles = {
-        label: selectedMember?.role.name,
-    value: selectedMember?.role._id,
-      };
-      setSelectRoles(newRoles)
+  useEffect(() => {
+    if (!selectedMember._id) {
+      return;
     }
-    if(checkGroupId===true){
-      const newGroups = {
-        label: selectedMember?.group.name,
-    value: selectedMember?.group._id,
-      };
-      setSelectGroups(newGroups)
+    const { role, group } = selectedMember;
+    if (role?._id) {
+      const newRole = { label: role.name, value: role._id };
+      setSelectRoles(newRole);
     }
-    
-  },[selectedMember._id])
 
-  console.log('selectRoles',selectRoles?.value, 'selectGroups',selectGroups?.value);
+    if (group?._id) {
+      const newGroup = { label: group.name, value: group._id };
+      setSelectGroups(newGroup);
+    }
+  }, [selectedMember._id]);
 
   const handleUpdate = (e: any) => {
     e.stopPropagation();
+    const body: any = {};
+    if (selectRoles?.value && selectRoles.value !== "") {
+      body.roleId = selectRoles.value;
+    }
+    if (selectGroups?.value && selectGroups.value !== "") {
+      body.groupId = selectGroups.value;
+    }
     const payload = {
-      body: {
-        // user: selectedMember.user._id,
-        roleId:  selectRoles?.value,
-        groupId: selectGroups?.value,
-      },
+      body,
       success: () => {
         toast.success("Member updated successfully");
         dispatch(getMember({ other: selectedProject }));

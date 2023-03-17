@@ -46,6 +46,24 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
   return distinctArray
 }
 
+/**
+  * @param array pass the array  
+  * @return Functino will return the unique array of elements
+  * **/
+
+export const uniqueArray = (arr:any[]) => {
+  const seen = new Map();  // create a new Map object to keep track of the seen elements
+  const result = [];       // create an empty array to store the unique elements
+  for (let i = 0; i < arr.length; i++) {  
+    const element = arr[i];               // get the current element
+    if (!seen.has(element)) {             // check if the element has not been seen before
+      seen.set(element, true);            // add the element to the seen Map object
+      result.push(element);               // add the element to the result array
+    }
+  }
+  return result;          // return the array of unique elements
+};
+
 
 /**
   * @param array pass the array of objects 

@@ -127,17 +127,17 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                 Date modified
               </TableCell>
               <TableCell className={`${classes.tableTitle}`} align="center">
-                Members
+              Who can access
               </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="right">
+              {/* <TableCell className={`${classes.tableTitle}`} align="right">
                 Who can access
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           </TableHead>
           {!isDragActive && !loading && folderFiles.files?.length > 0 && (
             <TableBody>
               {folderFiles.files?.map((file: FileInterface) => {
-                 const DateString: string = momentdeDateFormat(file.createdAt)
+                 const DateString: string = momentdeDateFormat(file.updatedAt)
                 return (
                   <TableRow key={file._id}>
                     <TableCell
@@ -187,7 +187,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                     "Only you"
                   )}
                     </TableCell>
-                    <TableCell
+                    {/* <TableCell
                       component="th"
                       scope="row"
                       align="right"
@@ -196,7 +196,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       <Typography className={classes.access}>
                         Only you
                       </Typography>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}

@@ -13,6 +13,7 @@ import {
   Divider,
   FormControlLabel,
   TextField,
+  Chip,
 } from "@mui/material";
 import colors from "assets/colors";
 import CButton from "components/Button/Button";
@@ -35,7 +36,7 @@ import projectActions, {
   updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-
+import Clear from "@mui/icons-material/Clear";
 interface AddRoleProps {}
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
@@ -294,6 +295,24 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 })
               );
             }}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                return (
+                  <Chip
+                  sx={{
+                    height: "25px",
+                    fontSize:12,fontWeight:500,
+                    backgroundColor: "#F1B740",
+                    color: colors.white,
+                    borderRadius: "4px",
+                  }}
+                  deleteIcon={<Clear style={{ color: '#f1b740', fontSize:'15px', borderRadius:'50%', background:'white' }}/>}
+                    label={option?.label}
+                    {...getTagProps({ index })}
+                  />
+                );
+              })
+            }
             renderInput={(params) => (
               <InputHOC title="Members">
                 <TextField

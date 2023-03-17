@@ -49,6 +49,7 @@ function RollOverMenu(props: any) {
         MenuListProps={{ sx: { py: 0 } }}
         id={id}
         open={open}
+        disableAutoFocusItem={true}
         anchorEl={anchorElMember}
         onClose={closePopup}
         sx={{ "& .MuiMenuList-padding": { padding: 0 } }}

@@ -92,7 +92,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
               <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}\n`}</span>
+              >{`${item.firstName} ${item.surName},`}</span>
             );
           }
         })}
