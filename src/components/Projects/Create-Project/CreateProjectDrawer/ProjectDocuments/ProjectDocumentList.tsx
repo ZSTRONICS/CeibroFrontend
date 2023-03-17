@@ -263,7 +263,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     <CustomModal
           maxWidth="xs"
           showCloseBtn={false}
-          title={""}
+          title={"Manage access"}
           isOpen={isOpenProjectDocumentModal}
           handleClose={closeAccessModal}
           children={

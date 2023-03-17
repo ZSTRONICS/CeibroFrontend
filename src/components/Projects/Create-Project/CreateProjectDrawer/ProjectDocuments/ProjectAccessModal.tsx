@@ -96,14 +96,29 @@ function ProjectAccessModal(props: any) {
 
   return (
     <>
-      <Box sx={{ overflowY: "auto" }}>
+      <Box sx={{ overflowY: "auto", paddingLeft: "0" }}>
         <List
-          dense
-          sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
+          // dence
+          sx={{
+            width: "100%",
+            bgcolor: "background.paper",
+            "& .css-1rki8sg-MuiListItem-root": {
+              paddingLeft: "0px",
+            },
+          }}
           subheader={
             <ListSubheader
               component="div"
-              sx={{ position: "relative", "&.MuiListSubheader-root": { p: 0 } }}
+              sx={{
+                position: "relative",
+                "&.MuiListSubheader-root": { p: 0 },
+                // "& .css-dfh9eq-MuiListSubheader-root": { lineHeight: 5 },
+                fontFamily: "inter",
+                lineHeight: "30px",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#605C5C",
+              }}
             >
               Select groups
             </ListSubheader>
@@ -113,7 +128,7 @@ function ProjectAccessModal(props: any) {
             const labelId = `checkbox-list-secondary-label-${group._id}`;
             return (
               <ListItem
-                disablePadding
+                // disablePadding
                 aria-disabled
                 key={group._id}
                 secondaryAction={
@@ -138,33 +153,52 @@ function ProjectAccessModal(props: any) {
                 }
               >
                 <ListItemButton
-                  sx={{ p: 0, pb: 0.5 }}
+                  sx={{ p: 0, pb: "10px" }}
                   disableRipple
                   onClick={() => handleGroupMember(group)}
                 >
-                  <ListItemAvatar>
+                  <ListItemAvatar sx={{ width: "30px", height: "30px" }}>
                     <NameAvatar firstName={group.name} />
                   </ListItemAvatar>
-                  <ListItemText id={labelId} primary={`${group.name}`} />
+                  <ListItemText
+                    sx={{
+                      "& .css-10hburv-MuiTypography-root": {
+                        fontFamily: "inter",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        color: "#000000",
+                      },
+                    }}
+                    id={labelId}
+                    primary={`${group.name}`}
+                  />
                 </ListItemButton>
               </ListItem>
             );
           })}
         </List>
         <CustomMuiList
+          sx={{
+            // paddingLeft: "15px",
+            color: "#605C5C",
+            fontSize: "12px",
+            fontWeight: "500",
+            fontFamily: "inter",
+          }}
           handleUserId={handleUserId}
           subheaderTitle={"Select members"}
           groupMembers={props.projectMembers}
           handleUserChange={handleUserChange}
           checkboxChecked={users}
         />
+
         <Grid
           container
-          gap={1.5}
-          sx={{ pb: 1 }}
+          gap="20px"
+          sx={{ padding: "0 15px 10px 10px" }}
           xs={12}
           style={{
-            paddingTop: 20,
+            paddingTop: 10,
             display: "flex",
             justifyContent: "flex-end",
           }}
