@@ -41,11 +41,11 @@ const useStyles = makeStyles({
   outerWrapper: {
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,
-    height: "100vh",
+    height: "calc(100vh-213px)",
     overflowY: "hidden",
     "@media (max-width:960px)": {
       width: "100vw",
-      overflowY: "auto",
+      // overflowY: "auto",
     },
     "$ .MuiDrawer-paper": {
       overflowY: "hidden",
