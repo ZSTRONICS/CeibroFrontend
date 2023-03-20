@@ -158,7 +158,10 @@ const RolesTable = () => {
                   </CustomStack>
                   {role.admin === true && (
                     <ProjectSubHeadingTag
-                      sx={{ fontWeight: "500", fontSize: 14 }}
+                      sx={{
+                        fontWeight: "500",
+                        fontSize: 14,
+                      }}
                     >
                       Project admin
                     </ProjectSubHeadingTag>
@@ -166,7 +169,7 @@ const RolesTable = () => {
                   {role.admin !== true && (
                     <Grid container gap={2}>
                       {rolePermission && (
-                        <Grid item>
+                        <Grid item width="250px">
                           {haveAnyRolePermission === true && (
                             <CustomStack
                               gap={1}
@@ -195,7 +198,7 @@ const RolesTable = () => {
                         </Grid>
                       )}
                       {memberPermission && (
-                        <Grid item>
+                        <Grid item width="250px">
                           {haveAnyMemberPermission === true && (
                             <CustomStack
                               gap={1}
@@ -283,7 +286,10 @@ const useStyles = makeStyles({
     color: colors.textGrey,
     fontWeight: 500,
   },
-  dataContainer: {},
+  dataContainer: {
+    height: "680px",
+    overflow: "auto",
+  },
   roleChip: {
     display: "flex",
     justifyContent: "space-between",

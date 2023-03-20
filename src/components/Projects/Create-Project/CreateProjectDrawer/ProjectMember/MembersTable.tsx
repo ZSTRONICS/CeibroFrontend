@@ -1,25 +1,28 @@
-
 import {
-  Button, CircularProgress, Grid, makeStyles, Table,
+  Button,
+  CircularProgress,
+  Grid,
+  makeStyles,
+  Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { avaialablePermissions } from "config/project.config";
-import {
-  MemberInterface
-} from "constants/interfaces/project.interface";
+import { MemberInterface } from "constants/interfaces/project.interface";
 import { checkMemberPermission } from "helpers/project.helper";
 import { useConfirm } from "material-ui-confirm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  deleteMember, getGroup, getMember,
+  deleteMember,
+  getGroup,
+  getMember,
   PROJECT_APIS,
-  updateMember
+  updateMember,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
@@ -83,8 +86,8 @@ const RolesTable = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getMember({other:selectedProject}))
-  },[])
+    dispatch(getMember({ other: selectedProject }));
+  }, []);
   // useEffect(() => {
   //   if (groupList) {
   //     const newGroups = groupList.map((group: GroupInterface) => {
@@ -121,7 +124,6 @@ const RolesTable = () => {
   //     dispatch(getMember(payload));
   //   }
   // };
-
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
     const payload = {
@@ -164,34 +166,53 @@ const RolesTable = () => {
     dispatch(projectActions.openProjectMemberDrawer());
     // dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     // dispatch(getGroup({ other: selectedProject }));
-  }
+  };
 
   const handleDelete = (id: any) => {
     // setLoading(true);
 
     confirm({
-      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to remove this person from project members?</ConfirmDescriptionTag>,
-      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Remove",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
-      cancellationText: <CButton
-      variant="contained"
-      elevation={1}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you sure you want to remove this person from project members?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       dispatch(
         deleteMember({
           success: () => {
             toast.success("Deleted Successfully");
-            dispatch(getMember({ other:  selectedProject }));
+            dispatch(getMember({ other: selectedProject }));
           },
           finallyAction: () => {
             setLoading(false);
@@ -204,11 +225,11 @@ const RolesTable = () => {
   const openCreateMember = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
-  
+
   return (
-    <TableContainer>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
+    <TableContainer style={{ height: "100%", overflow: "visible" }}>
+      <Table className={classes.table} stickyHeader aria-label="sticky table">
+        <TableHead style={{ overflow: "visible" }}>
           <TableRow>
             <TableCell className={classes.rowTop}>Name</TableCell>
             <TableCell className={classes.rowTop} align="left">
@@ -228,44 +249,43 @@ const RolesTable = () => {
           {memberList && memberList.length > 0 ? (
             <>
               {memberList?.map((member: ProjectMemberInterface) => {
-                if(member===undefined){
-                  return <></>
+                if (member === undefined) {
+                  return <></>;
                 }
-               return (
-                 <TableRow key={member._id}>
-                   <TableCell
-                     component="th"
-                     scope="row"
-                   >
-                     <Typography className={classes.nameWrapper}>
-                       {`${member?.user?.firstName} ${member?.user?.surName}`}
-                     </Typography>
-                     <Typography className={classes.organizationName}>
-                       Company:{member?.user?.companyName ?? "N/A"}
-                     </Typography>
-                     {/* </div> */}
-                   </TableCell>
-                   <TableCell>
-                     <AddStatusTag sx={{ color: "#000000" }}>
-                       {member.role ? member.role.name : "N/A"}
-                     </AddStatusTag>
-                   </TableCell>
-                   <TableCell>
-                     <AddStatusTag sx={{ color: "#000000" }}>
-                       {member.group ? member.group.name : "N/A"}
-                     </AddStatusTag>
-                   </TableCell>
-                   <TableCell align="right" style={{ width: "10%" }}>
-                     <RollOverMenu
-                      edit="Edit"
-                      showDelBtn={true}
-                     handleDele={() => handleDelete(member._id)}
-                     handleEdit={()=>{handleEditMember(member)}}
-                     />
-                   </TableCell>
-                 </TableRow>
-               );
-})}
+                return (
+                  <TableRow key={member._id}>
+                    <TableCell component="th" scope="row">
+                      <Typography className={classes.nameWrapper}>
+                        {`${member?.user?.firstName} ${member?.user?.surName}`}
+                      </Typography>
+                      <Typography className={classes.organizationName}>
+                        Company:{member?.user?.companyName ?? "N/A"}
+                      </Typography>
+                      {/* </div> */}
+                    </TableCell>
+                    <TableCell>
+                      <AddStatusTag sx={{ color: "#000000" }}>
+                        {member.role ? member.role.name : "N/A"}
+                      </AddStatusTag>
+                    </TableCell>
+                    <TableCell>
+                      <AddStatusTag sx={{ color: "#000000" }}>
+                        {member.group ? member.group.name : "N/A"}
+                      </AddStatusTag>
+                    </TableCell>
+                    <TableCell align="right" style={{ width: "10%" }}>
+                      <RollOverMenu
+                        edit="Edit"
+                        showDelBtn={true}
+                        handleDele={() => handleDelete(member._id)}
+                        handleEdit={() => {
+                          handleEditMember(member);
+                        }}
+                      />
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </>
           ) : (
             <>
@@ -301,12 +321,10 @@ export default RolesTable;
 
 const useStyles = makeStyles({
   table: {
-    // minWidth: 650,
-    // position: "relative",
+    // height: "700px",
+    // overflowY: "auto",
   },
-  nameWrapper: {fontSize: 14,
-    fontWeight: "bold",
-    color: colors.primary,},
+  nameWrapper: { fontSize: 14, fontWeight: "bold", color: colors.primary },
   organizationName: {
     fontWeight: 500,
     fontSize: 12,
