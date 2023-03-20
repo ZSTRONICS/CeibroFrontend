@@ -38,8 +38,9 @@ function CDatePicker(props: any) {
                 // mask="__-__-____"
                 // value={showDate}
                 inputFormat={"dd.MM.yyyy"}
-                disablePast={true}
-                minDate={new Date().toISOString().slice(0, 10)}
+                disablePast={props.IsdisablePast===false?false:true}
+                // minDate={new Date().toISOString().slice(0, 10)}
+                minDate
                 // onChange={(newValue: any) => setShowDate(newValue)}
                 renderInput={(params: any) => (
                   <TextField

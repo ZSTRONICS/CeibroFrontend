@@ -1,16 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, memo } from "react";
 import ProjectList from "./ProjectList";
 import SelectDropdown, {
   dataInterface,
 } from "../../Utills/Inputs/SelectDropdown";
 import { CircularProgress, makeStyles } from "@material-ui/core";
-import { Grid } from "@mui/material";
+import { Autocomplete, Chip, Grid, TextField } from "@mui/material";
 import {
   getColorByStatus,
   // getProjectStatus,
 } from "../../../config/project.config";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
+import Clear from "@mui/icons-material/Clear";
 
 import projectActions, {
   getAllProjects,
@@ -19,121 +20,288 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { getAvailableUsers } from "redux/action/user.action";
-import Input from "components/Utills/Inputs/Input";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import moment from "moment-timezone";
+import InputHOC from "components/Utills/Inputs/InputHOC";
+import myStore from "redux/store";
 
 const Project = () => {
-  const { searchProject, drawerOpen } = useSelector(
-    (state: RootState) => state.project
-  );
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const isRenderEffect = useRef<any>(false);
+  const headerRef: any = useRef();
+  const [data, setData] = useState<dataInterface[]>([]);
+  const { allProjects } = useSelector((state: RootState) => state.project);
+  const [filteredData, setFilteredData] = useState(allProjects);
 
   if (window.location.pathname.includes("projects")) {
     document.body.style.background = "#f5f7f8";
   }
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  // const allStatus = getProjectStatus();
+
   const [date, setDate] = useState<string>("");
-  const headerRef: any = useRef();
-  const [loading, setLoading] = useState<boolean>(false);
+
+  const [allProjectPublishStatus, setAllProjetStatus] = useState(
+    allProjects.map((item: any, index: any) => {
+      return {
+        label: item.publishStatus,
+        value: index,
+      };
+    })
+  );
 
   useEffect(() => {
-    dispatch(getAllProjects());
-    dispatch(getAllProjectsWithMembers());
+    if (isRenderEffect.current === false) {
+      dispatch(getAllProjects());
+      dispatch(getAllProjectsWithMembers());
+      const payload = {
+        success: (res: any) => {
+          //get the difference of two arrays
+          setData(res.data);
+        },
+      };
+      dispatch(getAvailableUsers(payload));
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, []);
 
-  const handleUserChange = (user: dataInterface) => {
-    dispatch(projectActions.setSelectedUser(user?.value || null));
-    setLoading(true);
-    dispatch(
-      getProjectsWithPagination({
-        finallyAction: () => setLoading(false),
-      })
-    );
-  };
-  const [showProjectList, setShowProjectList] = useState<boolean>(false); 
+  useEffect(() => {
+    setFilteredData(allProjects);
+  }, [allProjects]);
 
-const getHeaderHeight = () => {
-  let contentHeight =
-    window.innerHeight - (headerRef.current.clientHeight + 100);
-  return `${contentHeight}px`;
-}; 
+  const [filterParams, setFilterParams] = useState({
+    owner: [],
+    dueDate: "",
+    publishStatus: "",
+  });
+
+  const filterDataOnParams = (params: any) => {
+    let filteredDataLocal: any = [...allProjects];
+    if (params.owner.length > 0) {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        return item.owner.some((o: any) => params.owner.includes(o._id));
+      });
+
+      setAllProjetStatus(
+        filteredDataLocal.map((item: any, index: any) => {
+          return {
+            label: item.publishStatus,
+            value: index,
+          };
+        })
+      );
+    }
+
+    if (params.dueDate !== "") {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        let [d1, m1, y1] = String(item.dueDate).split("-");
+        let [d2, m2, y2] = String(params.dueDate).split("-");
+        return d1 === d2 && m1 === m2 && y1 === y2;
+      });
+    }
+
+    if (params.publishStatus !== "") {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        return (
+          String(item.publishStatus).toLowerCase() ===
+          String(params.publishStatus).toLowerCase()
+        );
+      });
+    }
+
+    setFilterParams({ ...params });
+    if (
+      params.owner.length === 0 &&
+      params.dueDate === "" &&
+      params.publishStatus === ""
+    ) {
+      setFilteredData(allProjects);
+    } else {
+      setFilteredData(filteredDataLocal);
+    }
+  };
+
+  const handleUserChange = (user: any) => {
+    if (user === null) {
+      filterDataOnParams({
+        ...filterParams,
+        owner: [],
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        owner: user.value,
+      });
+    }
+  };
+  const [showProjectList, setShowProjectList] = useState<boolean>(false);
+
+  const getHeaderHeight = () => {
+    let contentHeight =
+      window.innerHeight - (headerRef.current.clientHeight + 100);
+    return `${contentHeight}px`;
+  };
+
   useEffect(() => {
     if (headerRef.current.clientHeight) {
       setTimeout(() => {
         setShowProjectList(true);
       }, 100);
     }
-window.addEventListener('resize', getHeaderHeight)
-  });
+    window.addEventListener("resize", getHeaderHeight);
+  }, []);
 
-  
-  
-  return (<>
-    <Grid item xs={12}>
-      {loading && <CircularProgress size={20} className={classes.progress} />}
+  console.log(allProjects, filteredData);
+  return (
+    <>
+      <Grid item xs={12}>
+        {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
 
-      <Grid container ref={headerRef} className={classes.outerWrapper}>
-        <Grid
-          item
-          sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
-          // xs={12} md={3}
-        >
-          <CDatePicker
-            showLabel={true}
-            required
-            value={date}
-            id="date1"
-            name="dueDate"
-            onChange={(e: any) => setDate(e)}
-          />
-        </Grid>
+        <Grid container ref={headerRef} className={classes.outerWrapper}>
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
+            // xs={12} md={3}
+          >
+            <CDatePicker
+              IsdisablePast={false}
+              showLabel={true}
+              required
+              value={date}
+              id="date1"
+              name="dueDate"
+              onChange={(e: any) => {
+                const selectedDate = moment(e).format("DD-MM-YYYY");
+                if (selectedDate === "Invalid date") {
+                  setDate(e);
+                  filterDataOnParams({
+                    ...filterParams,
+                    dueDate: "",
+                  });
+                } else {
+                  setDate(e);
+                  filterDataOnParams({
+                    ...filterParams,
+                    dueDate: selectedDate,
+                  });
+                }
+              }}
+            />
+          </Grid>
 
-        <Grid
-          item
-          sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
-          // xs={12} md={4}
-          className={classes.datePicker}
-        >
-          <SelectDropdown
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
+            // xs={12} md={4}
+            className={classes.datePicker}
+          >
+            {/* <SelectDropdown
             isClearAble={true}
             title="Members"
-            // data={availableUsers}
+            data={data}
             handleChange={handleUserChange}
-          />
-        </Grid>
+          />*/}
+            <InputHOC title="Owner">
+              <Autocomplete
+                disablePortal
+                sx={{ width: "100%", marginTop: "5px" }}
+                // multiple={false}
+                id="project_members1"
+                // filterSelectedOptions
+                options={data}
+                size="small"
+                onChange={(event, value) => handleUserChange(value)}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="owner"
+                    placeholder="Select owner"
+                  />
+                )}
+              />
+            </InputHOC>
+          </Grid>
 
-        <Grid
-          item
-          // xs={12} md={4}
-          sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
-          className={classes.datePicker}
-        >
-          {/* <SelectDropdown title="Projects" /> */}
-          <SelectDropdown
+          <Grid
+            item
+            // xs={12} md={4}
+            sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
+            className={classes.datePicker}
+          >
+            {/* <SelectDropdown title="Projects" /> */}
+            {/* <SelectDropdown
             placeholder="All"
             title="Status"
             // onChange={(e: any) => setFindProject(e.target.value)}
-          />
+          /> */}
+            <InputHOC title="Status">
+              <Autocomplete
+                disablePortal
+                sx={{ width: "100%", marginTop: "5px" }}
+                // multiple={false}
+                id="project_members1"
+                // filterSelectedOptions
+                options={allProjectPublishStatus}
+                size="small"
+                onChange={(event, value: any) => {
+                  if (value === null) {
+                    filterDataOnParams({
+                      ...filterParams,
+                      publishStatus: "",
+                    });
+                  } else {
+                    filterDataOnParams({
+                      ...filterParams,
+                      publishStatus: value.label,
+                    });
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="status"
+                    placeholder="Select status"
+                  />
+                )}
+              />
+            </InputHOC>
+          </Grid>
+        </Grid>
+
+        <Grid container className={classes.allStatus}>
+          {/* <StatusMenu options={allStatus} /> */}
+          {/* <StatusMenu /> */}
         </Grid>
       </Grid>
-
-      <Grid container className={classes.allStatus}>
-        {/* <StatusMenu options={allStatus} /> */}
-        {/* <StatusMenu /> */}
-      </Grid>
-    </Grid>
-     {showProjectList===true? <Grid
-        item
-        // className={classes.TaskListMain}
-        sx={{
-          overflow: "auto",
-        }}
-        maxHeight={getHeaderHeight}
-      >
-        <ProjectList />
-      </Grid>: <div> Loading projects....</div>}
-    </>);
+      {showProjectList === true ? (
+        <Grid
+          item
+          // className={classes.TaskListMain}
+          sx={{
+            overflow: "auto",
+          }}
+          maxHeight={getHeaderHeight}
+        >
+          <ProjectList allProjects={filteredData} />
+        </Grid>
+      ) : (
+        <div> Loading projects....</div>
+      )}
+    </>
+  );
 };
 
 export default Project;

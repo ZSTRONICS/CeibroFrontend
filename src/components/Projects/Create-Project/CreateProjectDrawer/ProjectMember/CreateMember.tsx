@@ -52,7 +52,6 @@ const MemberDialog = () => {
   const [selectRoles, setSelectRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [doOnce, setDoOnce]= useState(true)
   const [selectedUser, setSelectedUser] = useState<any[]>([]);
 
   const classes = useStyle();
