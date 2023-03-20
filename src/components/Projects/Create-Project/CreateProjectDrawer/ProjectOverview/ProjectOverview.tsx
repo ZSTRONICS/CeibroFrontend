@@ -1,12 +1,12 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
-import { Grid } from "@mui/material";
+import { Checkbox, Grid } from "@mui/material";
 import { borderRadius } from "@material-ui/system";
 import { Autocomplete, Chip, TextField } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { getStatusDropdown } from "config/project.config";
 import { UserInfo } from "constants/interfaces/subtask.interface";
 import moment from "moment-timezone";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { getAvailableUsers } from "redux/action/user.action";
@@ -19,9 +19,12 @@ import CreateProjectStatus from "./CreateProjectStatus";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { ProjectOwners } from "constants/interfaces/project.interface";
+import { getUniqueObjectsFromArr, uniqueArray } from "components/Utills/Globals/Common";
 
 const ProjectOverview = () => {
+
   const classes = useStyles();
+  const isRenderEffect = useRef<any>(false)
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
@@ -29,46 +32,43 @@ const ProjectOverview = () => {
   //   (state: RootState) => state.project.selectedProject
   // );
   const { user } = useSelector((state: RootState) => state.auth);
-  const [data, setData] = useState<dataInterface[]>([]);
-  const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
+
+  // const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
 
   const [showDate, setShowDate] = useState<any>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [doOnce, setDoOnce] = useState(true);
+  const MemoizedAutocomplete = memo(Autocomplete);
   const dispatch = useDispatch();
 
-  let fixuser = [
-    {
-      _id: user._id,
-      firstName: user.firstName,
-      surName: user.surName,
-    },
-  ];
+  // let fixuser = [
+  //   {
+  //     _id: user._id,
+  //     firstName: user.firstName,
+  //     surName: user.surName,
+  //   },
+  // ];
 
   if (doOnce) {
     const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
       "ddd MM DD YYYY"
     );
     setShowDate(localized);
-    fixuser &&
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          owner: fixuser,
-        })
-      );
+    // fixuser &&
+    //   dispatch(
+    //     projectActions.setProjectOverview({
+    //       ...projectOverview,
+    //       owner: fixuser,
+    //     })
+    //   );
     setDoOnce(false);
   }
 
+  let ownersTemp = useMemo(() => projectOverview.owner.map((owner: ProjectOwners) => ({
+    label: `${owner.firstName} ${owner.surName}`,
+    value: owner._id,
+  })), [projectOverview.owner]);
 
-
-  let ownersTemp = projectOverview.owner.map((owner: ProjectOwners) => {
-    let ret = {
-      label: owner.firstName + " " + owner.surName,
-      value: owner._id,
-    };
-    return ret;
-  });
 
   let fixedOwner = [
     {
@@ -77,73 +77,89 @@ const ProjectOverview = () => {
     },
   ];
 
+if(projectOverview.creator._id){
+  const {_id, firstName, surName}= projectOverview?.creator
+  fixedOwner[0].value=_id
+  fixedOwner[0].label= `${firstName} ${surName}`
+}
   if (projectOverview.owner.length === 0) {
     ownersTemp = fixedOwner;
+
+    dispatch(projectActions.setProjectOverview({
+      ...projectOverview,
+      owner: ownersTemp.map((item:any)=>{
+      return { _id: item.value,
+        firstName: item.label.split(" ")[0],
+        surName: item.label.split(" ")[1],}
+      }),
+    }));
   }
 
-  const [ownersList, setOwnerList] = useState<any>(ownersTemp);
+  const [ownersList, setOwnersList] = useState<any>([...ownersTemp]);
+  const [data, setData] = useState<dataInterface[]>([]);
+
   const handleOwnerChange = (users: dataInterface[]) => {
-    //Current User && Creator can never be removed !!!
-    setOwnerList(users);
+    setOwnersList(users);
 
-    let newOwners: ProjectOwners[] = [];
-    users.forEach((item: dataInterface) => {
-      let found = false;
-      projectOverview.owner.every((owner: ProjectOwners) => {
-        if (owner._id === item.value) {
-          found = true;
-          newOwners.push(owner);
-          return false;
-        }
-        return true;
-      });
-
-      if (found === false) {
-        newOwners.push({
-          _id: item.value,
-          firstName: item.label.split(" ")[0],
-          surName: item.label.split(" ")[1],
+    const newOwners: ProjectOwners[] = users.reduce((acc: ProjectOwners[], user: dataInterface) => {
+      const ownerIndex = projectOverview.owner.findIndex((owner: ProjectOwners) => owner._id === user.value);
+      if (ownerIndex !== -1) {
+        acc.push(projectOverview.owner[ownerIndex]);
+      } else {
+        acc.push({
+          _id: user.value,
+          firstName: user.label.split(" ")[0],
+          surName: user.label.split(" ")[1],
         });
       }
-    });
-
-    newOwners &&
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          owner: newOwners,
-        })
-      );
+      return acc;
+    }, []);
+    if (newOwners.length > 0) {
+      dispatch(projectActions.setProjectOverview({
+        ...projectOverview,
+        owner: newOwners,
+      }));
+    }
   };
 
   useEffect(() => {
-    const payload = {
-      success: (res: any) => {
-        // console.log('res.data',res.data);
-        
-        setData(res.data);
-      },
-    };
-
-    dispatch(getAvailableUsers(payload));
+    if(isRenderEffect.current===false){
+      const payload = {
+        success: (res: any) => {
+          //get the difference of two arrays
+          const uniqueMembers = res.data.filter((x:any) => !ownersList.some((y:any) => y.value === x.value));
+          setData([...uniqueMembers])
+        },
+      };
+      dispatch(getAvailableUsers(payload));
+    }
+    return ()=>{
+      isRenderEffect.current= true
+    }
   }, []);
+
     useEffect(()=>{
-      if(showDate===null){
         dispatch(
-          projectActions.setProjectOverview({
-            ...projectOverview,
-            dueDate: "",
-          })
-        );
-      }else{
-        dispatch(
-          projectActions.setProjectOverview({
-            ...projectOverview,
-            dueDate:moment(showDate).format("DD-MM-YYYY"),
-          })
-        );
-      }
+    projectActions.setProjectOverview({
+      ...projectOverview,
+      dueDate: showDate === null ? "" : moment(showDate).format("DD-MM-YYYY"),
+    })
+  );
     }, [showDate])
+
+    useEffect(()=>{
+      if(projectOverview._id===""){
+        return
+      }
+
+      const selectedOwnersList = projectOverview.owner.map((member:ProjectOwners)=>{
+        return{
+          label: `${member.firstName} ${member.surName}`,
+          value: member._id
+        }
+      })
+      handleOwnerChange(selectedOwnersList)
+    },[projectOverview._id])
 
   return (
     <div style={{ width: "100%" }}>
@@ -185,7 +201,7 @@ const ProjectOverview = () => {
           className={classes.datePickerWrapper}
         >
           <InputHOC title="Owners">
-            <Autocomplete
+            <MemoizedAutocomplete
               sx={{
                 backgroundColor: "white",
                 maxWidth: "100%",
@@ -195,15 +211,14 @@ const ProjectOverview = () => {
               // disableClearable
               id="project_owners1"
               disablePortal
-              filterSelectedOptions
+              filterSelectedOptions= {true}
               disableCloseOnSelect
               limitTags={2}
-              // defaultValue={ownersTemp}
               value={ownersList}
               options={data}
               size="small"
               renderTags={(tagValue, getTagProps) =>
-                tagValue.map((option, index) => {
+                tagValue.map((option:any, index:any) => {
                   return (
                     <Chip
                       sx={{
@@ -214,12 +229,12 @@ const ProjectOverview = () => {
                       }}
                       label={option?.label}
                       {...getTagProps({ index })}
-                      disabled={String(user._id) === String(option.value)}
+                      disabled={String(fixedOwner[0].value) === String(option.value)}
                     />
                   );
                 })
               }
-              onChange={(event, value) => {
+              onChange={(event, value:any) => {
                 let newValue: any = [
                   ...fixedOwner,
                   ...value.filter(

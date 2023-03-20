@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import ProjectList from "./ProjectList";
-import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown, {
   dataInterface,
 } from "../../Utills/Inputs/SelectDropdown";
@@ -8,9 +7,8 @@ import { CircularProgress, makeStyles } from "@material-ui/core";
 import { Grid } from "@mui/material";
 import {
   getColorByStatus,
-  getProjectStatus,
+  // getProjectStatus,
 } from "../../../config/project.config";
-import StatusMenu from "../../Utills/Others/StatusMenu";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 
@@ -34,7 +32,7 @@ const Project = () => {
   }
   const classes = useStyles();
   const dispatch = useDispatch();
-  const allStatus = getProjectStatus();
+  // const allStatus = getProjectStatus();
   const [date, setDate] = useState<string>("");
   const headerRef: any = useRef();
   const [loading, setLoading] = useState<boolean>(false);

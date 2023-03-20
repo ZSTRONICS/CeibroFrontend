@@ -114,7 +114,7 @@ export default TaskSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: "30px 0 12px 10px",
+    padding: "20px 0 12px 10px",
   },
   tasklistWrapper: {
     // // display:"grid",

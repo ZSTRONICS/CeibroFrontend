@@ -172,12 +172,10 @@ const CreateProjectBody = () => {
     if (saveAsDraft === true) {
       formData.append("inDraftState", "true");
     }
-
     return formData;
   };
-  const disableBtn = [projectOverview.isDefault ? true : false];
-  console.log('selectedProject',selectedProject);
-  
+  // const disableBtn = [projectOverview.isDefault ? true : false];
+
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       {!selectedProject && (

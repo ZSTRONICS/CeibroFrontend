@@ -63,7 +63,12 @@ import {
 } from "redux/action/task.action";
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { PROJECT_CONFIG } from "config/project.config";
-import { getAllProjectMembers, getAllProjects, getGroup, PROJECT_APIS } from "redux/action/project.action";
+import {
+  getAllProjectMembers,
+  getAllProjects,
+  getGroup,
+  PROJECT_APIS,
+} from "redux/action/project.action";
 
 interface MyApp {}
 
@@ -71,12 +76,19 @@ const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
 
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
-  let openProjectdrawer = useSelector((store:RootState) => store.project.drawerOpen)
-  let openTaskDrawer = useSelector((state: RootState) => state.task.taskDrawerOpen);
-  const drawerOpen = useSelector((store: RootState) => store.chat.openViewQuestioniar);
-  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector((state: RootState) => state.docs);
+  let openProjectdrawer = useSelector(
+    (store: RootState) => store.project.drawerOpen
+  );
+  let openTaskDrawer = useSelector(
+    (state: RootState) => state.task.taskDrawerOpen
+  );
+  const drawerOpen = useSelector(
+    (store: RootState) => store.chat.openViewQuestioniar
+  );
+  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
+    (state: RootState) => state.docs
+  );
 
-  
   useEffect(() => {
     if (!uploadPendingFiles) {
       return;
@@ -155,7 +167,6 @@ const App: React.FC<MyApp> = () => {
       type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
     });
   }, [uploadPendingFiles]);
-  console.log('uploadPendingFiles',uploadPendingFiles);
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -463,7 +474,9 @@ const App: React.FC<MyApp> = () => {
             dispatch(getAllProjects());
             break;
           case PROJECT_CONFIG.REFRESH_ROLES:
-            dispatch(PROJECT_APIS.getProjectRolesById({ other: data.projectId }));
+            dispatch(
+              PROJECT_APIS.getProjectRolesById({ other: data.projectId })
+            );
             break;
           case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
             dispatch(getGroup({ other: data.projectId }));
@@ -471,12 +484,12 @@ const App: React.FC<MyApp> = () => {
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
             dispatch(
               getAllProjectMembers({
-                  other: {
-                      projectId: data.projectId,
-                      includeMe: true,
-                  },
+                other: {
+                  projectId: data.projectId,
+                  includeMe: true,
+                },
               })
-          );
+            );
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
@@ -501,20 +514,20 @@ const App: React.FC<MyApp> = () => {
   return (
     <div className="App">
       <ErrorBoundary>
-      {/* component used here for availability of modal on all routes*/}
-      <TaskModal />
-      <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
-        <ViewInvitations />
-      </div>
-      <CssBaseline />
-      {<UploadingDocsPreview />}
-      <CreateQuestioniarDrawer />
-      <CDrawer />
-      {drawerOpen && <ViewQuestioniarDrawer />}
-     {openProjectdrawer&& <CreateProjectDrawer />}
-      <ToastContainer position="bottom-left" theme="colored" />
-     {openTaskDrawer&& <CreateTaskDrawer />}
-      <RouterConfig />
+        {/* component used here for availability of modal on all routes*/}
+        <TaskModal />
+        <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
+          <ViewInvitations />
+        </div>
+        <CssBaseline />
+        {<UploadingDocsPreview />}
+        <CreateQuestioniarDrawer />
+        <CDrawer />
+        {drawerOpen && <ViewQuestioniarDrawer />}
+        {openProjectdrawer && <CreateProjectDrawer />}
+        <ToastContainer position="bottom-left" theme="colored" />
+        {openTaskDrawer && <CreateTaskDrawer />}
+        <RouterConfig />
       </ErrorBoundary>
     </div>
   );

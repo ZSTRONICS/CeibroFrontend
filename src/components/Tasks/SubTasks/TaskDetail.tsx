@@ -70,7 +70,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
     <>
       <div>
         <CBox className={classes.wrapper}>
-          <TaskDetailHeader subtaskDetail={subtaskDetail} />
+          {subtaskDetail.taskData.project !== null && <TaskDetailHeader subtaskDetail={subtaskDetail} />}
           <CustomStack justifyContent="flex-end" gap={3} mr={2}>
             {isTaskAdmin && (
               <CBox display="flex" alignItems="center">

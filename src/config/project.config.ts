@@ -1,4 +1,3 @@
-import { color } from "@material-ui/system";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import colors from "../assets/colors";
 
@@ -17,7 +16,7 @@ export const colorsByStatus: ColorCodes = {
   submitted: colors.aquaGreen,
   rejected: colors.rejected,
   done: colors.done,
-  assigned:colors.assigned,
+  assigned: colors.assigned,
 };
 
 const textColorsByStatus: ColorCodes = {
@@ -34,10 +33,10 @@ const textColorsByStatus: ColorCodes = {
 };
 
 export function getColorByStatus(status: string): string {
-  if(status)
-  return colorsByStatus[status.toLowerCase()];
+  if (status)
+    return colorsByStatus[status.toLowerCase()];
   else
-  return colorsByStatus.draft
+    return colorsByStatus.draft
 }
 
 export function getTextColorByStatus(status: string): string {
@@ -54,12 +53,12 @@ export function getStatusDropdown(): dataInterface[] {
   return data;
 }
 
-interface ProjectMenues {
+interface StatusMenues {
   title: string;
   count: number;
 }
 
-export function getAllStatus(): ProjectMenues[] {
+export function getAllStatus(): StatusMenues[] {
   return [
     {
       title: "All",
@@ -92,7 +91,7 @@ export function getAllStatus(): ProjectMenues[] {
   ];
 }
 
-export function getProjectStatus(): ProjectMenues[] {
+export function getProjectStatus(): StatusMenues[] {
   return [
     {
       title: "All",
@@ -138,10 +137,21 @@ export const PROJECT_CONFIG = {
   UPDATE_PROJECT_DOCUMENT_ACCESS: 'UPDATE_PROJECT_DOCUMENT_ACCESS',
 
   // socket events
-  REFRESH_PROJECTS:'REFRESH_PROJECTS',
-  REFRESH_ROLES:'REFRESH_ROLES',
-  REFRESH_PROJECT_GROUP:'REFRESH_PROJECT_GROUP',
-  REFRESH_PROJECT_MEMBERS:'REFRESH_PROJECT_MEMBERS',
+  PROJECT_CREATED: 'PROJECT_CREATED',
+  PROJECT_UPDATED: 'PROJECT_UPDATED',
+  REFRESH_PROJECTS: 'REFRESH_PROJECTS',
+
+  ROLE_CREATED: 'ROLE_CREATED',
+  ROLE_UPDATED: 'ROLE_UPDATED',
+  REFRESH_ROLES: 'REFRESH_ROLES',
+
+  PROJECT_GROUP_CREATED: 'PROJECT_GROUP_CREATED',
+  PROJECT_GROUP_UPDATED: 'PROJECT_GROUP_UPDATED',
+  REFRESH_PROJECT_GROUP: 'REFRESH_PROJECT_GROUP',
+
+  PROJECT_MEMBERS_ADDED: 'PROJECT_MEMBERS_ADDED',
+  PROJECT_MEMBERS_UPDATED: 'PROJECT_MEMBERS_UPDATED',
+  REFRESH_PROJECT_MEMBERS: 'REFRESH_PROJECT_MEMBERS',
 
 }
 

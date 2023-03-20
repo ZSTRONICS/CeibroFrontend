@@ -249,7 +249,7 @@ const NavigationReducer = (
     case SET_PROJECT_OVERVIEW: {
       return {
         ...state,
-        projectOverview: { ...action.payload }
+        projectOverview: action.payload
       };
     }
 

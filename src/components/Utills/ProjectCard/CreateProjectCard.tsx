@@ -14,7 +14,6 @@ const ProjectCard = () => {
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
-    projectOverviewTemplate.owner = [user];
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
