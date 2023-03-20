@@ -3,11 +3,10 @@ import React from "react";
 import {
   Dialog,
   DialogTitle,
-  DialogContent,
   DialogActions,
-  Grid,
   Typography,
 } from "@material-ui/core";
+import { Grid, DialogContent } from "@mui/material";
 import PropTypes from "prop-types";
 // import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
@@ -20,6 +19,7 @@ interface Props {
   title: any;
   children: any;
   showCloseBtn: boolean;
+  maxWidth?: any;
 }
 
 const CustomModal: React.FC<Props> = ({
@@ -28,6 +28,7 @@ const CustomModal: React.FC<Props> = ({
   title,
   children,
   showCloseBtn,
+  maxWidth,
 }) => {
   const classes = useStyles();
   const closeModal = (e: any) => {
@@ -36,17 +37,23 @@ const CustomModal: React.FC<Props> = ({
     }
     handleClose(e);
   };
+  const localWidth = maxWidth ? maxWidth : "sm";
   return (
     <>
       <Dialog
         fullWidth
-        maxWidth="sm"
+        maxWidth={localWidth.toString()}
         open={isOpen}
         onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
+        <DialogTitle
+          id="alert-dialog-title"
+          style={{
+            paddingBottom: "0",
+          }}
+        >
           <Grid container className={classes.titleWraper}>
             <Grid item>
               <CustomTitle>{title}</CustomTitle>
@@ -67,7 +74,11 @@ const CustomModal: React.FC<Props> = ({
             )}
           </Grid>
         </DialogTitle>
-        <DialogContent>{children}</DialogContent>
+        <div style={{ width: "100%" }}>
+          <DialogContent sx={{ padding: "10px 20px" }}>
+            {children}
+          </DialogContent>
+        </div>
         {/* <DialogActions>
         </DialogActions> */}
       </Dialog>
@@ -89,4 +100,5 @@ const CustomTitle = styled(Typography)`
   font-family: "Inter";
   font-weight: 600;
   font-size: 26px;
+  paddingbottom: 0px;
 `;

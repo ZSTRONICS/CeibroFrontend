@@ -55,10 +55,10 @@ const CreateTaskDrawer = () => {
                 },
               }}
             >
-              <TaskDrawerMenu
+              {subTaskOfTask.task.project !== null &&  <TaskDrawerMenu
                 taskMenue={subTaskOfTask.task}
                 subtasks={subTaskOfTask.subtasks}
-              />
+              />}
             </Grid>
             <Grid item md={8.5} className={classes.bodyWrapper}>
               <CreateTaskBody

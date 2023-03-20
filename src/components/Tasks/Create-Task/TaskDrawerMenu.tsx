@@ -38,6 +38,7 @@ import docsAction from "redux/action/docs.actions";
 import { DOCS_CONFIG } from "config/docs.config";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ConfirmDescriptionTag } from "components/CustomTags";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -81,9 +82,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
 
   const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
-  const { projectWithMembers, allProjectsTitles } = useSelector(
-    (store: RootState) => store.project
-  );
+  const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
 
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -306,10 +305,10 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     e.stopPropagation();
     confirm({
       title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<Typography sx={{color:'#605C5C', fontSize:13, fontWeight:'500', pt:2}}>Are you sure you want to delete this task?</Typography>,
+      description:<ConfirmDescriptionTag sx={{pt:2}}>Are you sure you want to delete this task?</ConfirmDescriptionTag>,
       titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
       confirmationText:"Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize'}, variant:"outlined", color:"error"},
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
       cancellationText: <CButton
       variant="contained"
       elevation={0}

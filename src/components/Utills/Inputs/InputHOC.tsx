@@ -20,7 +20,11 @@ const InputHOC: FC<InputHOCInterface> = (props) => {
       </div>
       {children}
       {showIcon && (
-        <img src={assets.calender} className={`w-16 ${classes.calender}`} alt="calendar" />
+        <img
+          src={assets.calender}
+          className={`w-16 ${classes.calender}`}
+          alt="calendar"
+        />
       )}
     </div>
   );
@@ -38,21 +42,22 @@ const useStyles = makeStyles({
     background: colors.white,
     display: "flex",
     alignItems: "center",
-    border: `1.5px solid ${colors.borderGrey}`,
-    paddingRight: 8,
+    border: `1px solid ${colors.borderGrey}`,
+    paddingRight: 5,
     borderRadius: 4,
     maxWidth: "100%",
   },
   titleWrapper: {
-    padding: 11,
-    minWidth: 45,
+    padding: 0,
+    minWidth: 75,
     // flex: 1,
     textAlign: "center",
     borderRight: `1px solid ${colors.borderGrey}`,
   },
   title: {
-    fontSize: 10,
+    fontSize: "11px",
     fontWeight: 500,
+    fontFamily: "Inter",
     color: colors.textGrey,
   },
 });

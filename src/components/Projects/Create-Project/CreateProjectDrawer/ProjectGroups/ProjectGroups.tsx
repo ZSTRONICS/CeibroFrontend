@@ -6,7 +6,9 @@ import colors from "../../../../../assets/colors";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
-import { groupTemplate } from "constants/interfaces/project.interface";
+import { ProjectSubHeadingTag } from "components/CustomTags";
+import CButton from "components/Button/Button";
+import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const ProjectGroups = () => {
   const classes = useStyles();
@@ -16,26 +18,25 @@ const ProjectGroups = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          <Button
+          {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
             className={classes.actionButton}
           >
             Bulk edit
-          </Button>
-
-          <Button
+          </Button> */}
+          <ProjectSubHeadingTag>New Group</ProjectSubHeadingTag>
+          <CButton
             variant="outlined"
             color="primary"
-            className={classes.actionButton}
+            label="Add"
+            sx={{ fontSize: 14, fontWeight: "700" }}
             onClick={() => {
               dispatch(projectActions.openProjectGroup());
-              dispatch(projectActions.setSelectedGroup(null));
+              dispatch(projectActions.setSelectedGroup(groupTemplate));
             }}
-          >
-            Add a group
-          </Button>
+          />
           <ProjectDrawer />
         </Grid>
         <Grid item xs={12} className={classes.titleWrapper}>

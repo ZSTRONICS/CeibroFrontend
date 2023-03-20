@@ -1,13 +1,16 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+// import { Box, Button, Grid, makeStyles, Typography } from "@mui/material";
 import ListIcon from "@material-ui/icons/List";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import RolesTable from "./RolesTable";
 import RoleDrawer from "./RoleDrawer";
-import { rolesTemplate } from "constants/interfaces/project.interface";
+import { roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { RootState } from "redux/reducers";
 import { checkRolePermission } from "helpers/project.helper";
 import { avaialablePermissions } from "config/project.config";
+import { ProjectAdminRoleTag, ProjectSubHeadingTag } from "components/CustomTags";
+import CButton from "components/Button/Button";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -25,28 +28,29 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          <Button
+          {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
             className={classes.actionButton}
           >
             Bulk edit
-          </Button>
+          </Button> */}
+          <ProjectAdminRoleTag>New Role</ProjectAdminRoleTag>
 
-          <Button
+          <CButton
+            label="Add"
             variant="outlined"
             color="primary"
+            sx={{ fontWeight: "700" }}
             className={classes.actionButton}
-            disabled={!havePermission ? true : false}
+            // disabled={!havePermission ? true : false}
             onClick={() => {
-              dispatch(projectActions.setRole(rolesTemplate));
-              dispatch(projectActions.setSelectedRole(null));
+              dispatch(projectActions.setRole(roleTemplate));
+              dispatch(projectActions.setSelectedRole(roleTemplate));
               dispatch(projectActions.openProjectRole());
             }}
-          >
-            Add a role
-          </Button>
+          />
           {roleDrawer && <RoleDrawer />}
         </Grid>
 
@@ -65,7 +69,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       alignItems: "flex-start",
       paddingBottom: 20,
     },

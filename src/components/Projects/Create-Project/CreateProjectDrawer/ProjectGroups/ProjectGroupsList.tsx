@@ -1,49 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import NoData from "components/Chat/NoData";
+import { ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import projectActions, { deleteGroup, getGroup } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import GroupChip from "../../../../Utills/GroupChip/GroupChip";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "redux/reducers";
-import projectActions, {
-  deleteGroup,
-  getGroup,
-} from "redux/action/project.action";
-import { GroupInterface } from "constants/interfaces/project.interface";
-import { toast } from "react-toastify";
 
 const ProjectGroupsList = () => {
-  const { selectedProject, groupList, selectedGroup } = useSelector(
+  const { selectedProject, groupList } = useSelector(
     (state: RootState) => state?.project
   );
-  
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: selectedProject,
-      };
-      setLoading(true);
-      // dispatch(getGroup({ other: selectedProject }));
-      dispatch(getGroup(payload));
+      // const payload = {
+      //   finallyAction: () => {
+      //     setLoading(false);
+      //   },
+      //   other: selectedProject,
+      // };
+      // setLoading(true);
+      // // dispatch(getGroup(payload));
+      dispatch(getGroup({ other: selectedProject }));
     }
   }, [selectedProject]);
 
-  const handleGroupClick = (id: any) => {
-    dispatch(projectActions.setSelectedGroup(id));
+  const handleGroupClick = (group: any) => {
+    dispatch(projectActions.setSelectedGroup(group));
     dispatch(projectActions.openProjectGroup());
   };
 
   const handleGroupDelete = (id: any) => {
-    // alert("deleted");
-    setLoading(true);
     dispatch(
       deleteGroup({
         success: () => {
@@ -62,20 +55,26 @@ const ProjectGroupsList = () => {
   return (
     <>
       {loading && <CircularProgress size={20} className={classes.progress} />}
-      {groupList?.map((group: GroupInterface) => (
-        <GroupChip
-          name={group.name}
-          groupId={group._id || ""}
-          handleClick={() => handleGroupClick(group?._id)}
-          handleDelete={() => handleGroupDelete(group?._id)}
-        />
-      ))}
+      {groupList.length > 0 ? (
+        groupList.map((group: ProjectGroupInterface) => {
+          if (group === undefined) {
+            return <></>;
+          }
+          return (
+            <GroupChip
+              group={group}
+              handleClick={() => handleGroupClick(group)}
+              handleDelete={() => handleGroupDelete(group?._id)}
+            />
+          );
+        })
+      ) : (
+        <NoData title="No Data found!" />
+      )}
     </>
   );
 };
-{
-  /* <h2 onClick={() => handleGroupClick(group?._id)}>{group.name}</h2> */
-}
+
 export default ProjectGroupsList;
 
 const useStyles = makeStyles({

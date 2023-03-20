@@ -65,3 +65,74 @@ font-style: normal;
 font-size: 30px;
 font-weight: 500;
 `
+export const AddStatusTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 500;
+color:#ADB5BD;
+`
+export const ProjectSubHeadingTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 700;
+color:#656565;
+`
+export const ProjectAdminRoleTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 16px;
+font-weight: 600;
+color:#000000;
+`
+export const RoleLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 700;
+color:#656565;
+`
+export const RoleSubLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 12px;
+font-weight: 500;
+color:#605C5C;
+`
+export const ConfirmDescriptionTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 13px;
+font-weight: 500;
+color:#605C5C;
+`
+export const GroupMemberNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 15px;
+font-weight: 500;
+color:#656565;
+`
+export const EditMemberNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 15px;
+font-weight: 600;
+color:#000000;
+`
+export const DocumentNameTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 14px;
+font-weight: 500;
+line-height:20px;
+color:#000000;
+`
+export const EditMemberLabelTag=styled(Typography)`
+font-family: 'Inter';
+font-style: normal;
+font-size: 12px;
+font-weight: 500;
+color:#7D7E80;
+`

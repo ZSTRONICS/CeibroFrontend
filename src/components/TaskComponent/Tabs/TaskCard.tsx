@@ -39,6 +39,7 @@ import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
 import CButton from "components/Button/Button";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import { ConfirmDescriptionTag } from "components/CustomTags";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
@@ -46,9 +47,7 @@ interface Props {
 
 const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
   const { creator, createdAt, admins } = task;
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElTask, setAnchorElTask] = React.useState<null | HTMLElement>(null);
   const confirm = useConfirm();
 
   const taskCreatedOn = momentdeDateFormat(createdAt);
@@ -87,23 +86,23 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
 
   const openPopup = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(e.currentTarget);
+    setAnchorElTask(e.currentTarget);
   };
 
   const closePopup = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
   };
 
   const handleEdit = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
     handleCard(e, true);
   };
 
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
-    setAnchorElUser(null);
+    setAnchorElTask(null);
     confirm({
       title: (
         <CustomStack gap={1}>
@@ -111,19 +110,13 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         </CustomStack>
       ),
       description: (
-        <Typography
-          sx={{ color: "#605C5C", fontSize: 13, fontWeight: "500", pt: 2 }}
-        >
+        <ConfirmDescriptionTag sx={{pt: 2}}>
           Are you sure you want to delete this task?
-        </Typography>
+        </ConfirmDescriptionTag>
       ),
       titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
       confirmationText: "Delete",
-      confirmationButtonProps: {
-        sx: { textTransform: "capitalize" },
-        variant: "outlined",
-        color: "error",
-      },
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
       cancellationText: (
         <CButton
           variant="contained"
@@ -156,7 +149,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
       );
     });
   };
-  const open = Boolean(anchorElUser);
+  const open = Boolean(anchorElTask);
   const id = open ? "simple-popover" : undefined;
 
   const SubHeader = () => {
@@ -212,7 +205,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                 MenuListProps={{ sx: { py: 0 } }}
                 id={id}
                 open={open}
-                anchorEl={anchorElUser}
+                anchorEl={anchorElTask}
                 onClose={closePopup}
                 sx={{ "& .MuiMenuList-padding": { padding: 0 } }}
                 elevation={3}

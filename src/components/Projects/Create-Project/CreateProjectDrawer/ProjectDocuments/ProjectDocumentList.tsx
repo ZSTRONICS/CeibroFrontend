@@ -7,31 +7,44 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
 } from "@material-ui/core";
-import assets from "assets/assets";
-import { FolderInterface } from "constants/interfaces/project.interface";
+import { Tooltip } from "@mui/material";
+import { DocumentNameTag } from "components/CustomTags";
+import CustomModal from "components/Modal";
+import { CustomBadge, CustomStack, AssignedTag } from "components/TaskComponent/Tabs/TaskCard";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import { Creator, FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFolder } from "redux/action/project.action";
+import projectActions, { getFolder } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
-import ProjectDocumentMenu from "./ProjectDocsMenu";
-import moment from "moment-timezone";
+import RollOverMenu from "../ProjectMember/RollOverMenu";
+import ProjectAccessModal from "./ProjectAccessModal";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
 }
 
 const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
-  const { selectedProject, folderList } = useSelector(
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state?.auth);
+
+  const { selectedProject, folderList,projectWithMembers, isOpenProjectDocumentModal } = useSelector(
     (state: RootState) => state?.project
   );
-  const { user } = useSelector((state: RootState) => state?.auth);
   const [loading, setLoading] = useState<boolean>(false);
-  const isDiabled = !loading ? false : true;
+  const [selectedFolderFile, setSelectedFolderFile] = useState<
+    FolderInterface | FileInterface | any
+  >({});
+  const selectedProjectWithMembers = projectWithMembers
+    .filter(
+      (projectWithMember: any) =>
+        projectWithMember._id.toString() === selectedProject.toString()
+    )
+    .find((item: any) => item);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     if (selectedProject) {
       const payload = {
@@ -50,23 +63,60 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
-    // dispatch(setSelectedFolder(folder?._id));
+  };
+  // console.log('folderList',folderList);
+  const openAccessModal = (e:any, folder:any) => {
+    setSelectedFolderFile(folder)
+    dispatch(projectActions.openProjectDocumentModal())
+  }
+  const closeAccessModal = (e:any) => {
+    e.stopPropagation()
+   dispatch(projectActions.closeProjectDocumentModal())
+  }
+  const AccessMemberList = (membersList: Creator[]) => {
+    return (
+      <>
+        {membersList.map((item: Creator, index) => {
+          if (item === undefined) {
+            return <></>;
+          }
+          if (index === membersList.length - 1) {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}`}</span>
+            );
+          } else {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName},`}</span>
+            );
+          }
+        })}
+      </>
+    );
   };
 
-  return (
+  return (<>
     <TableContainer style={{ height: "100%", overflow: "visible" }}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
             <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Date modified
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Uploaded On
             </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Members
+            <TableCell className={`${classes.tableTitle}`} align="center">
+              Creator
             </TableCell>
-            <TableCell className={`${classes.tableTitle}`} align="right">
-              Who can access
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Members
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+             Action
             </TableCell>
           </TableRow>
         </TableHead>
@@ -75,74 +125,173 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             <CircularProgress size={20} className={classes.progress} />
           )}
 
-          {folderList?.map((row: FolderInterface) => {
-            const DateString: string = moment(row?.createdAt).format(
-              "YYYY-MM-DD"
-            );
+            {folderList.folders.map((row: FolderInterface) => {
+              const DateString: string = momentdeDateFormat(row.createdAt);
+              return (
+                <TableRow key={row._id}>
+                  <TableCell onClick={() => handleFolderClick(row)} scope="row">
+                    <DocumentNameTag
+                      sx={{
+                        "&:hover": {
+                          cursor: "pointer",
+                          textDecoration: "underline",
+                        },
+                      }}
+                    >
+                      {row.name}
+                    </DocumentNameTag>
+                  </TableCell>
+                  <TableCell
+                    scope="row"
+                    align="center"
+                    className={classes.modifyDate}
+                  >
+                    {DateString}
+                  </TableCell>
 
-            return (
-              <TableRow key={row?._id}>
                 <TableCell
-                  onClick={() => handleFolderClick(row)}
-                  component="th"
                   scope="row"
-                  className={classes.name}
+                  align="center"
+                  className={classes.modifyDate}
                 >
-                  <img src={assets.usersFolder} className="width-16" alt="" />
-                  <Typography className={`${classes.name}`}>
-                    {row?.name}
-                  </Typography>
+                  {`${row.creator.firstName} ${row.creator.surName}`}
                 </TableCell>
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
+                  style={{ padding: 6 }}
+                  className={classes.modifyDate}
+                >
+                  {row.access.length > 0 ? (
+                    <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                      <AssignedTag>Member</AssignedTag>
+                      <CustomBadge
+                        overlap="circular"
+                        color="primary"
+                        badgeContent={
+                          <Tooltip title={AccessMemberList(row.access)}>
+                            <span>{row.access.length}</span>
+                          </Tooltip>
+                        }
+                      ></CustomBadge>
+                    </CustomStack>
+                  ) : (
+                    "Only you"
+                  )}
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                  <RollOverMenu
+                    edit="Access"
+                    showDelBtn={false}
+                    handleEdit={(e: any) => openAccessModal(e, row)}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
+           {folderList.files.length>0?folderList.files.map((file: FileInterface) => {
+            const DateString: string = momentdeDateFormat(file.createdAt)
+            return (
+              <TableRow key={file._id} className={classes.rowContainer}>
+                <TableCell
+                  scope="row"
+                >
+                  <DocumentNameTag>
+                    {file.fileName}
+                  </DocumentNameTag>
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
                   className={classes.modifyDate}
                 >
                   {DateString}
                 </TableCell>
 
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
                   className={classes.modifyDate}
                 >
-                  {row?.group?.members?.length || 0} member(s)
+                  {`${file.uploadedBy.firstName} ${file.uploadedBy.surName}`}
                 </TableCell>
                 <TableCell
-                  component="th"
                   scope="row"
-                  align="right"
+                  align="center"
                   style={{ padding: 6 }}
                   className={classes.modifyDate}
                 >
-                  {row?.access?.length > 0
-                    ? `${row?.access?.length} member(s)`
-                    : "Only you"}
-                  {row.creator === user._id && (
-                    <ProjectDocumentMenu
-                      folderId={row._id || ""}
-                      access={row?.access || []}
-                      groupId={row?.group?._id || ""}
-                    />
-                  )}
+                  {file.access.length>0?
+                   <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                   <AssignedTag>Member</AssignedTag>
+                   <CustomBadge
+                     overlap="circular"
+                     color="primary"
+                     badgeContent={
+                       <Tooltip title={AccessMemberList(file.access)}>
+                         <span>{file.access.length}</span>
+                       </Tooltip>
+                     }
+                   ></CustomBadge>
+                 </CustomStack>
+                  :"N/A"}
+                </TableCell>
+                <TableCell
+                  scope="row"
+                  align="center"
+                  className={classes.modifyDate}
+                >
+                 <RollOverMenu
+                 edit="Access"
+                 showDelBtn={false}
+                 handleEdit={(e:any)=>openAccessModal(e,file)}
+                 />
                 </TableCell>
               </TableRow>
             );
-          })}
+          }):<></>}
         </TableBody>
       </Table>
+          {folderList.folders.length===0&&folderList.files.length===0&& 
+            <DocumentNameTag sx={{textAlign:'center', color:'rgb(125, 126, 128)', pt:2.3}}>No data found!</DocumentNameTag>
+            }
     </TableContainer>
+    <CustomModal
+          maxWidth="xs"
+          showCloseBtn={false}
+          title={"Manage access"}
+          isOpen={isOpenProjectDocumentModal}
+          handleClose={closeAccessModal}
+          children={
+            <ProjectAccessModal
+            selectedFolderFile={selectedFolderFile}
+            selectedProject={selectedProject}
+            handleCloseModal={closeAccessModal}
+            projectGroup={selectedProjectWithMembers.groups}
+            projectMembers={selectedProjectWithMembers.projectMembers}
+          />
+        }
+      />
+    </>
   );
 };
 
 export default ProjectDocumentList;
 
 const useStyles = makeStyles({
+  rowContainer: {
+    "& .MuiTableCell-root": {
+      padding: "6px",
+    },
+  },
   table: {
     minWidth: 650,
   },
+
   nameWrapper: {
     display: "flex",
     justifyContent: "flex-start",
@@ -164,7 +313,7 @@ const useStyles = makeStyles({
   modifyDate: {
     fontSize: 14,
     fontWeight: 500,
-    // paddingLeft: 15,
+    padding: 4,
   },
   folderIcon: {
     fontSize: 20,
@@ -195,6 +344,7 @@ const useStyles = makeStyles({
   tableTitle: {
     fontSize: 12,
     fontWeight: 500,
+    paddingBottom: 5,
     color: colors.textGrey,
   },
   progress: {

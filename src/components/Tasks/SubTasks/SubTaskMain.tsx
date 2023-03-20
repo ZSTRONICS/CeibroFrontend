@@ -1,6 +1,7 @@
 // mui-imports
 import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Paper } from "@mui/material";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 // components
 import DatePicker from "components/Utills/Inputs/DatePicker";
@@ -15,9 +16,9 @@ const SubTaskMain = () => {
   const { allSubTaskList } = useSelector((state: RootState) => state.task);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  let xsPoint = 12;
-  let mdPoint = 4;
-  let lgPoint = 3.2;
+  // let xsPoint = 12;
+  // let mdPoint = 4;
+  // let lgPoint = 3.2;
   const classes = useStyles();
 
   // useEffect(() => {
@@ -25,8 +26,8 @@ const SubTaskMain = () => {
   // }, []);
   const getSubtaskStateCount = (checkState: any) => {
     let count = 0;
-    allSubTaskList.forEach((subtask:any) => {
-      subtask.state.every((state:any) => {
+    allSubTaskList.forEach((subtask: any) => {
+      subtask.state.every((state: any) => {
         if (state.userId === user._id && state.userState === checkState) {
           count += 1;
           return false;
@@ -67,7 +68,6 @@ const SubTaskMain = () => {
       count: getSubtaskStateCount("draft"),
     },
   ];
-  
 
   return (
     <>
@@ -84,7 +84,18 @@ const SubTaskMain = () => {
             }}
             // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
           >
-            <DatePicker Datetitle="Date" />
+            <CDatePicker
+              showLabel={true}
+              required
+              // value={showDate}
+              id="date1"
+              name="dueDate"
+              // onChange={(e: any) => {
+              //   setShowDate(e);
+              //   projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
+              // }}
+            />
+            {/* <DatePicker Datetitle="Date" /> */}
           </Grid>
           <Grid
             item
@@ -146,7 +157,6 @@ const SubTaskMain = () => {
     </>
   );
 };
-
 
 export default SubTaskMain;
 

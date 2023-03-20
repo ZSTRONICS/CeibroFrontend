@@ -6,7 +6,7 @@ interface InputTexAreatInterface {
   rows?: number;
   name?: string;
   onChange?: (e: any) => void;
-  value?:string
+  value?: string;
 }
 
 const InputTextArea: FC<InputTexAreatInterface> = (props) => {
@@ -16,7 +16,7 @@ const InputTextArea: FC<InputTexAreatInterface> = (props) => {
       <textarea
         placeholder={placeholder}
         className="input-text-area emptyBorder"
-        rows={rows || 8}
+        rows={rows || 7}
         onChange={onChange}
         name={name}
         value={value}

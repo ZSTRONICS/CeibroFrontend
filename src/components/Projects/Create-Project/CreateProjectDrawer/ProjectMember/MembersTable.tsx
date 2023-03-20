@@ -1,46 +1,38 @@
 
 import {
-  Checkbox,
-  Chip,
-  CircularProgress,
-  makeStyles,
-  Paper,
-  Table,
+  Button, CircularProgress, Grid, makeStyles, Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Typography,
-  Button,
-  Grid,
+  Typography
 } from "@material-ui/core";
 import { avaialablePermissions } from "config/project.config";
 import {
-  GroupInterface,
-  MemberInterface,
-  RoleInterface,
+  MemberInterface
 } from "constants/interfaces/project.interface";
 import { checkMemberPermission } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
+import { useConfirm } from "material-ui-confirm";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  deleteMember,
-  getGroup,
-  getMember,
-  getRoles,
-  getRolesById,
-  updateMember,
+  deleteMember, getGroup, getMember,
+  PROJECT_APIS,
+  updateMember
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { useConfirm } from "material-ui-confirm";
 
 import colors from "../../../../../assets/colors";
-import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-import Select from "../../../../Utills/Inputs/Select";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
+import CButton from "components/Button/Button";
+import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ProjectMemberInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { toast } from "react-toastify";
+import RoleMenu from "../ProjectRoles/RoleMenu";
+import RollOverMenu from "./RollOverMenu";
 
 function createData(name: string, approve: boolean, role: number) {
   return { name, approve, role };
@@ -91,54 +83,45 @@ const RolesTable = () => {
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getGroup({ other: selectedProject }));
-    dispatch(
-      getRoles({
-        other: selectedProject,
-      })
-    );
-  }, []);
+    dispatch(getMember({other:selectedProject}))
+  },[])
+  // useEffect(() => {
+  //   if (groupList) {
+  //     const newGroups = groupList.map((group: GroupInterface) => {
+  //       return {
+  //         title: group.name,
+  //         value: group._id,
+  //       };
+  //     });
+  //     setGroups(newGroups);
+  //   }
+  // }, [groupList]);
 
-  useEffect(() => {
-    if (groupList) {
-      const newGroups = groupList.map((group: GroupInterface) => {
-        return {
-          title: group.name,
-          value: group._id,
-        };
-      });
-      setGroups(newGroups);
-    }
-  }, [groupList]);
+  // useEffect(() => {
+  //   if (rolesList) {
+  //     const newRoles = rolesList?.map((role: any) => {
+  //       return {
+  //         title: role.name,
+  //         value: role._id,
+  //       };
+  //     });
+  //     setRoles(newRoles);
+  //   }
+  // }, [rolesList]);
 
-  useEffect(() => {
-    if (rolesList) {
-      const newRoles = rolesList?.map((role: RoleInterface) => {
-        return {
-          title: role.name,
-          value: role._id,
-        };
-      });
-      setRoles(newRoles);
-    }
-  }, [rolesList]);
+  // const getMemebers = () => {
+  //   if (selectedProject) {
+  //     const payload = {
+  //       finallyAction: () => {
+  //         setLoading(false);
+  //       },
+  //       other: { projectId: selectedProject, includeMe: true },
+  //     };
+  //     setLoading(true);
+  //     dispatch(getMember(payload));
+  //   }
+  // };
 
-  const getMemebers = () => {
-    if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: { projectId: selectedProject, includeMe: true },
-      };
-      setLoading(true);
-      dispatch(getMember(payload));
-    }
-  };
-
-  useEffect(() => {
-    getMemebers();
-  }, [selectedProject]);
 
   const selectGroupHandle = (e: string, row: MemberInterface) => {
     const payload = {
@@ -146,9 +129,6 @@ const RolesTable = () => {
         groupId: e ? e : null,
         memberId: row?.id,
         roleId: row?.role?._id,
-      },
-      success: () => {
-        getMemebers();
       },
       other: selectedProject,
     };
@@ -162,9 +142,6 @@ const RolesTable = () => {
         groupId: row?.group?.id,
         memberId: row?.id,
         roleId: e,
-      },
-      success: () => {
-        getMemebers();
       },
       other: selectedProject,
     };
@@ -182,18 +159,39 @@ const RolesTable = () => {
     avaialablePermissions.delete_permission
   );
 
+  const handleEditMember = (member: ProjectMemberInterface) => {
+    dispatch(projectActions.setSelectedMember(member));
+    dispatch(projectActions.openProjectMemberDrawer());
+    // dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+    // dispatch(getGroup({ other: selectedProject }));
+  }
+
   const handleDelete = (id: any) => {
-    setLoading(true);
+    // setLoading(true);
 
     confirm({
-      title: "Please confirm",
-      description: "Are you confirm want to delete",
+      title: <CustomStack gap={1}><assets.ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
+      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to remove this person from project members?</ConfirmDescriptionTag>,
+      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
+      confirmationText:"Remove",
+      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined",},
+      cancellationText: <CButton
+      variant="contained"
+      elevation={1}
+      styles={{
+        color: "#605C5C",
+        backgroundColor: "#ECF0F1",
+        fontSize: 12,
+        fontWeight: "bold",
+      }}
+      label={"Cancel"}
+    />,
     }).then(() => {
       dispatch(
         deleteMember({
           success: () => {
             toast.success("Deleted Successfully");
-            dispatch(getMember({ other: { projectId: selectedProject } }));
+            dispatch(getMember({ other:  selectedProject }));
           },
           finallyAction: () => {
             setLoading(false);
@@ -213,86 +211,61 @@ const RolesTable = () => {
         <TableHead>
           <TableRow>
             <TableCell className={classes.rowTop}>Name</TableCell>
-            {/* <TableCell className={classes.rowTop} align="left">
+            <TableCell className={classes.rowTop} align="left">
               Role
             </TableCell>
             <TableCell className={classes.rowTop} align="left">
               Group
-            </TableCell> */}
+            </TableCell>
             <TableCell className={classes.rowTop} align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {loading && (
+          {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
-          )}
+          )} */}
 
           {memberList && memberList.length > 0 ? (
             <>
-              {memberList?.map((row: MemberInterface) => (
-                <TableRow key={row.id}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "60%" }}
-                  >
-                    <div className={classes.nameWrapper}>
-                      <Typography className={classes.name}>
-                        {row.isInvited && (
-                          <span>
-                            {row.invitedEmail}{" "}
-                            <Chip
-                              className={classes.chip}
-                              variant="outlined"
-                              label="Invited"
-                              size="small"
-                            ></Chip>
-                          </span>
-                        )}
-                        {row?.user &&
-                          `${row?.user?.firstName} ${row?.user?.surName}`}
-                      </Typography>
-                      <Typography className={classes.organizationName}>
-                        {row?.user?.companyName}
-                      </Typography>
-                    </div>
-                  </TableCell>
-                  {/* <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={role}
-                      selectedValue={row?.role?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectRoleHandle(e, row)
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={group}
-                      selected="selected"
-                      selectedValue={row?.group?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectGroupHandle(e, row)
-                      }
-                    />
-                  </TableCell> */}
-                  <TableCell align="right" style={{ width: "10%" }}>
-                    {haveDeletePermission && (
-                      <img
-                        style={{ width: 32, height: 32 }}
-                        src={assets.membersDelete}
-                        className={"pointer"}
-                        onClick={() => handleDelete(row?.id)}
-                        alt=""
-                      />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+              {memberList?.map((member: ProjectMemberInterface) => {
+                if(member===undefined){
+                  return <></>
+                }
+               return (
+                 <TableRow key={member._id}>
+                   <TableCell
+                     component="th"
+                     scope="row"
+                   >
+                     <Typography className={classes.nameWrapper}>
+                       {`${member?.user?.firstName} ${member?.user?.surName}`}
+                     </Typography>
+                     <Typography className={classes.organizationName}>
+                       Company:{member?.user?.companyName ?? "N/A"}
+                     </Typography>
+                     {/* </div> */}
+                   </TableCell>
+                   <TableCell>
+                     <AddStatusTag sx={{ color: "#000000" }}>
+                       {member.role ? member.role.name : "N/A"}
+                     </AddStatusTag>
+                   </TableCell>
+                   <TableCell>
+                     <AddStatusTag sx={{ color: "#000000" }}>
+                       {member.group ? member.group.name : "N/A"}
+                     </AddStatusTag>
+                   </TableCell>
+                   <TableCell align="right" style={{ width: "10%" }}>
+                     <RollOverMenu
+                      edit="Edit"
+                      showDelBtn={true}
+                     handleDele={() => handleDelete(member._id)}
+                     handleEdit={()=>{handleEditMember(member)}}
+                     />
+                   </TableCell>
+                 </TableRow>
+               );
+})}
             </>
           ) : (
             <>
@@ -328,15 +301,12 @@ export default RolesTable;
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    // minWidth: 650,
     // position: "relative",
   },
-  nameWrapper: {},
-  name: {
-    fontSize: 14,
+  nameWrapper: {fontSize: 14,
     fontWeight: "bold",
-    color: colors.primary,
-  },
+    color: colors.primary,},
   organizationName: {
     fontWeight: 500,
     fontSize: 12,

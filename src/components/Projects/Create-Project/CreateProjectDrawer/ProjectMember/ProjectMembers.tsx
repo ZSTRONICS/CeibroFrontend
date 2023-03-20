@@ -2,6 +2,7 @@ import { Button, Grid, makeStyles } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
+import { ProjectSubHeadingTag } from "components/CustomTags";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -10,15 +11,15 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          <Button
+          {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
             className={classes.actionButton}
           >
             Bulk edit
-          </Button>
-
+          </Button> */}
+          <ProjectSubHeadingTag>New Members</ProjectSubHeadingTag>
           <CreateMember />
         </Grid>
 

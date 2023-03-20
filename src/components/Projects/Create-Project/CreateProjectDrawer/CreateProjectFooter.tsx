@@ -1,121 +1,181 @@
-
-import { Button, CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import colors from '../../../../assets/colors'
-import { FaTrash } from 'react-icons/fa'
-import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from 'redux/reducers'
-import { projectOverviewSchema } from 'constants/schemas/project.schema'
-import { useEffect, useState } from 'react'
+import { Button, CircularProgress, Grid, makeStyles } from "@material-ui/core";
+import colors from "../../../../assets/colors";
+import { FaTrash } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
+import { projectOverviewSchema } from "constants/schemas/project.schema";
+import { useEffect, useState } from "react";
 import projectActions, {
   createProject,
   deleteProject,
   getProjectsWithPagination,
   updateProject,
-} from 'redux/action/project.action'
-import { toast } from 'react-toastify'
-import { dataInterface } from 'components/Utills/Inputs/SelectDropdown'
-import assets from 'assets/assets'
-import { useConfirm } from 'material-ui-confirm'
+} from "redux/action/project.action";
+import { toast } from "react-toastify";
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
+import assets from "assets/assets";
+import { useConfirm } from "material-ui-confirm";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ConfirmDescriptionTag } from "components/CustomTags";
+import CButton from "components/Button/Button";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
 
 const CreateProjectBody = () => {
-  const classes = useStyles()
-  const [isValid, setIsValid] = useState(false)
-  const dispatch = useDispatch()
-  const [loading, setLoading] = useState<boolean>(false)
-  const isDiabled = !loading ? false : true
+  const classes = useStyles();
+  const [isValid, setIsValid] = useState(false);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
+  const isDiabled = !loading ? false : true;
   const { projectOverview, projects, selectedProject } = useSelector(
     (state: RootState) => state.project
-  )
-  
-  const confirm = useConfirm()
+  );
+
+  const isValidData = {
+    title: projectOverview.title,
+    dueDate: projectOverview.dueDate,
+    publishStatus: projectOverview.publishStatus,
+    description: projectOverview.description,
+    location:projectOverview.location,
+  };
+  const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
-      .isValid(projectOverview)
+      .isValid(isValidData)
       .then(setIsValid)
-      .catch(_err => {
-        setIsValid(false)
-      })
-  }, [projectOverview])
+      .catch((_err) => {
+        setIsValid(false);
+      });
+  }, [projectOverview]);
 
   const handleProjectCreate = (saveAsDraft = false) => {
-    const data = getFormValues(saveAsDraft)
-    setLoading(true)
+    const data = getFormValues(saveAsDraft);
+    setLoading(true);
     dispatch(
       createProject({
         body: data,
-        success: res => {
-          toast.success('Project created')
+        success: (res) => {
+          toast.success("Project created");
           // setLoading(true);
-          dispatch(projectActions.setSelectedProject(res.data.createProject._id))
+          dispatch(
+            projectActions.setSelectedProject(res.data.createProject._id)
+          );
         },
         finallyAction: () => {
-          setLoading(false)
+          setLoading(false);
         },
       })
-    )
-  }
+    );
+  };
 
   const handleProjectUpdate = (saveAsDraft = false) => {
-    const data = getFormValues(saveAsDraft)
-    data.delete('projectPhoto')
+    const data = getFormValues(saveAsDraft);
+    data.delete("projectPhoto");
     const payload = {
       body: data,
       success: () => {
-        toast.success('Project Saved')
-        dispatch(projectActions.closeDrawer())
+        toast.success("Project updated successfully!");
+        // dispatch(projectActions.closeDrawer());
       },
       finallyAction: () => {
-        setLoading(false)
+        setLoading(false);
       },
       other: selectedProject,
-    }
-    setLoading(true)
-    dispatch(updateProject(payload))
-  }
+    };
+    setLoading(true);
+    dispatch(updateProject(payload));
+  };
 
   const handleSubmit = (saveAsDrfat = false) => {
     if (selectedProject) {
-      handleProjectUpdate(saveAsDrfat)
+      handleProjectUpdate(saveAsDrfat);
     } else {
-      handleProjectCreate(saveAsDrfat)
+      handleProjectCreate(saveAsDrfat);
     }
-  }
+  };
 
   const handleDelete = () => {
-    confirm({ description: 'Confirm want to  delete this ' }).then(() => {
+    confirm({
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you confirm want to delete this project?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
+    }).then(() => {
       const payload = {
         success: () => {
-          toast.success('Project Delete Successfully')
-          dispatch(projectActions.closeDrawer())
-          dispatch(getProjectsWithPagination())
+          toast.success("Project Delete Successfully");
+          dispatch(projectActions.closeDrawer());
+          dispatch(getProjectsWithPagination());
         },
         other: selectedProject,
-      }
-      dispatch(deleteProject(payload))
-    })
-  }
+      };
+      dispatch(deleteProject(payload));
+    });
+  };
 
   const getFormValues = (saveAsDraft = false) => {
-    const { title, owner, dueDate, location, description, photoFile, publishStatus } =
-      projectOverview
-    const formData = new FormData()
-    formData.append('title', title || '')
-    formData.append('location', location || '')
-    formData.append('description', description || '')
-    if (owner) {
-      if (owner?.length > 0) {
-        owner?.map?.((row: dataInterface) => formData.append('owner', row.value))
-      } else {
-        formData.append('owner', owner)
-      }
-    }
-    formData.append('dueDate', dueDate)
-    formData.append('projectPhoto', photoFile)
-    formData.append('publishStatus', saveAsDraft ? 'draft' : publishStatus || 'draft')
+    const {
+      title,
+      owner,
+      dueDate,
+      location,
+      description,
+      projectPhoto,
+      publishStatus,
+      extraStatus,
+    } = projectOverview;
 
-    return formData
-  }
-const disableBtn = [projectOverview.isDefault? true: false]
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("location", location);
+    formData.append("description", description);
+    if (extraStatus) {
+      formData.append("extraStatus", JSON.stringify(extraStatus));
+    }
+    if (owner) {
+      let ownerIds = owner.map((item: any) => item._id);
+      formData.append("owner", JSON.stringify(ownerIds));
+    }
+    formData.append("dueDate", dueDate);
+    formData.append("projectPhoto", projectPhoto);
+    formData.append("publishStatus", publishStatus);
+    if (saveAsDraft === true) {
+      formData.append("inDraftState", "true");
+    }
+    return formData;
+  };
+  // const disableBtn = [projectOverview.isDefault ? true : false];
+
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       {!selectedProject && (
@@ -132,11 +192,12 @@ const disableBtn = [projectOverview.isDefault? true: false]
       {selectedProject && (
         <Button
           className={classes.trash}
-          color="primary"
-          onClick={handleDelete}
-          disabled={projectOverview.isDefault}
+          variant="outlined"
+          onClick={()=>dispatch(projectActions.closeDrawer())}
+          // disabled={projectOverview.isDefault}
         >
-          <img src={assets.DeleteIcon} className={'w-16'} />
+          Cancel
+          {/* <img src={assets.DeleteIcon} className={"w-16"} /> */}
         </Button>
       )}
       <Button
@@ -146,48 +207,53 @@ const disableBtn = [projectOverview.isDefault? true: false]
         color="primary"
         onClick={() => handleSubmit(false)}
       >
-        {isDiabled && loading && <CircularProgress size={20} className={classes.progress} />}
-        {selectedProject ? 'Update' : 'Create project'}
+        {isDiabled && loading && (
+          <CircularProgress 
+          size={20} 
+          className={classes.progress} />
+        )}
+        {!selectedProject ? "Create project":"Update"  }
       </Button>
     </Grid>
-  )
-}
+  );
+};
 
-export default CreateProjectBody
+export default CreateProjectBody;
 
 const useStyles = makeStyles({
   body: {
-    padding: '10px 20px',
+    padding: "10px 20px",
     background: colors.white,
-    '@media (max-width:960px)': {
-      flexDirection: 'column',
-      alignItems: 'flex-end',
+    "@media (max-width:960px)": {
+      flexDirection: "row",
+      alignItems: "flex-end",
     },
   },
   create: {
-    marginLeft: 50,
+    marginLeft: 30,
+    padding: "10px",
     fontSize: 12,
-    fontWeight: 500,
+    fontWeight: 700,
   },
   draft: {
     fontSize: 12,
     fontWeight: 500,
   },
   trash: {
-    color: 'red',
-    display:'block'
+    // color: "red",
+    display: "block",
   },
-  notrash:{
-    display:'none'
+  notrash: {
+    display: "none",
   },
   progress: {
     color: colors.primary,
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
-    margin: 'auto',
+    margin: "auto",
     left: 0,
     right: 0,
     top: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+});

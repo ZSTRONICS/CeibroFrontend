@@ -3,17 +3,18 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Add } from "@material-ui/icons";
 import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import { RootState } from "redux/reducers";
 
 const ProjectCard = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
-
     dispatch(projectActions.openDrawer());
   };
 
@@ -21,11 +22,11 @@ const ProjectCard = () => {
     <Grid
       className={classes.cardOuterWrapper}
       item
-      xs={12}
-      sm={6}
-      md={3}
-      lg={3}
-      xl={2}
+      // xs={12}
+      // sm={6}
+      // md={3}
+      // lg={3}
+      // xl={2}
       onClick={openProjectDrawer}
     >
       <Add className={classes.icon} />
@@ -38,8 +39,7 @@ export default ProjectCard;
 
 const useStyles = makeStyles({
   cardOuterWrapper: {
-    padding: 5,
-    marginTop: 5,
+    margin: "15px 10px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -49,7 +49,8 @@ const useStyles = makeStyles({
       border: `1px solid ${colors.mediumGrey}`,
       borderRadius: 4,
     },
-    height: 270,
+    height:250,
+    width:285,
   },
   text: {
     fontSize: 14,

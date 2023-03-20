@@ -1,133 +1,103 @@
 
-import { Grid, makeStyles, Typography } from "@material-ui/core";
-import { Delete, PersonAdd } from "@material-ui/icons";
-import assets from "assets/assets";
+import { makeStyles } from "@material-ui/core";
+// import { Delete, PersonAdd } from "@material-ui/icons";
+import { Divider } from "@mui/material";
+import { CollapseComponent } from "components/Collapse/CollapseComponent";
+import { GroupMemberNameTag, ProjectSubHeadingTag } from "components/CustomTags";
+import { Member, ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
 import React, { useEffect, useState } from "react";
-import { BiPencil } from "react-icons/bi";
+// import { BiPencil } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { getGroupMembers } from "redux/action/project.action";
+// import { getGroupMembers } from "redux/action/project.action";
 import colors from "../../../assets/colors";
-import HorizontalBreak from "../Others/HorizontalBreak";
-import { MenuOptions } from "../Others/MenuButton";
-import NameAvatar from "../Others/NameAvatar";
+// import { MenuOptions } from "../Others/MenuButton";
+// import NameAvatar from "../Others/NameAvatar";
 import GroupMenu from "./GroupMenu";
-
-const menue: MenuOptions[] = [
-  {
-    title: "Edit Group",
-    icon: <BiPencil />,
-  },
-  {
-    title: "Add people",
-    icon: <PersonAdd />,
-  },
-  {
-    title: "Delete Group",
-    icon: <Delete />,
-  },
-];
+// const menue: MenuOptions[] = [
+//   {
+//     title: "Edit Group",
+//     icon: <BiPencil />,
+//   },
+//   {
+//     title: "Add people",
+//     icon: <PersonAdd />,
+//   },
+//   {
+//     title: "Delete Group",
+//     icon: <Delete />,
+//   },
+// ];
 
 interface GroupChipInterface {
-  name: string;
-  groupId: string;
+  group:ProjectGroupInterface
   handleClick: () => void;
   handleDelete: () => void;
 }
 
 const GroupChip: React.FC<GroupChipInterface> = (props) => {
-  const { name, handleClick, groupId, handleDelete } = props;
-  const classes = useStyles();
-  const dispatch = useDispatch();
-  const [open, setOpen] = useState(false);
-  const [members, setMembers] = useState<UserInterface[]>([]);
+    const {group, handleClick, handleDelete } = props;
+  const [groupExpanded, setGroupExpanded] = React.useState<string | false>("admin");
 
-  const handleToggle = () => {
-    setOpen(!open);
+  const handleChange = (panel: string) => (event: React.SyntheticEvent,newExpanded: boolean) => {
+    setGroupExpanded(newExpanded ? panel : false);
   };
 
-  useEffect(() => {
-    if (open) {
-      dispatch(
-        getGroupMembers({
-          other: groupId,
-          success: (res) => {
-            setMembers(res.data);
-          },
-        })
-      );
-    }
-  }, [open]);
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  const [members, setMembers] = useState<UserInterface[]>([]);
 
-  return (
-    <div>
-      <div className={classes.groupChip} onClick={handleToggle}>
-        <div className={classes.title}>
-          {open ? (
-            <img src={assets.chevrondown} className="w-16" />
-          ) : (
-            <img src={assets.chevronRight} className="width-16" />
-          )}
-          <Typography className={classes.titleText}>{name}</Typography>
-        </div>
+  // useEffect(() => {
+  //   if (groupExpanded) {
+  //     dispatch(
+  //       getGroupMembers({
+  //         other: groupId,
+  //         success: (res) => {
+  //           setMembers(res.data);
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [groupExpanded]);
+
+  return (<>
+      <div className={classes.groupChip}>
+        <CollapseComponent.Accordion
+          sx={{maxWidth:900, width:'100%'}}
+          expanded={groupExpanded === group.name}
+          onChange={handleChange(group.name)}
+        >
+          <CollapseComponent.AccordionSummary aria-controls={group.name} id={group.name+1}>
+            <ProjectSubHeadingTag
+              sx={{ fontSize:14}}>
+              {group.name}
+            </ProjectSubHeadingTag>
+          </CollapseComponent.AccordionSummary>
+          <CollapseComponent.AccordionDetails sx={{display:'flex',gap:0.5, flexWrap:'wrap'}}>
+               {group.members.length>0? group.members?.map((member: Member, index: any) => {
+               if(!member) {
+                return <></>;
+              }
+              const memberName = `${member.firstName} ${member.surName}`
+              return (
+                <GroupMemberNameTag key={member._id}>
+                  { index === group.members.length - 1 ? memberName : `${memberName},`}&nbsp;
+                </GroupMemberNameTag> 
+              );
+            }):<GroupMemberNameTag>No data found!</GroupMemberNameTag>}
+          </CollapseComponent.AccordionDetails>
+        </CollapseComponent.Accordion>
         <div className={classes.action}>
           <GroupMenu
             onDelete={handleDelete}
-            groupId={groupId}
+            groupId={group._id}
             onEdit={handleClick}
-            name={name}
+            name={group.name}
           />
         </div>
       </div>
-      {open && (
-        <Grid container style={{ flexDirection: "column" }}>
-          {members?.map?.((member: UserInterface) => {
-            if(!member) {
-              return null;
-            }
-            
-            return (
-              <Grid
-                key={member._id}
-                container
-                style={{ maxWidth: 300 }}
-                className="chat-member-chip"
-              >
-                <Grid item xs={2} style={{ paddingTop: 5 }}>
-                  <NameAvatar
-                    firstName={member?.firstName}
-                    surName={member?.surName}
-                    url={member?.profilePic}
-                    variant="small"
-                  />
-                </Grid>
-                <Grid
-                  item
-                  xs={10}
-                  style={{
-                    padding: 2,
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <Typography
-                    className={`chat-member-name ${classes.memberName}`}
-                  >
-                    {member?.firstName} {member?.surName}
-                  </Typography>
-                  <Typography
-                    className={`${classes.memberCompany} chat-member-company`}
-                  >
-                    Company: {member?.companyName}
-                  </Typography>
-                </Grid>
-              </Grid>
-            );
-          })}
-        </Grid>
-      )}
-      <HorizontalBreak color={colors.grey} />
-    </div>
+      <Divider/>
+    </>
   );
 };
 
@@ -137,8 +107,8 @@ const useStyles = makeStyles({
   groupChip: {
     display: "flex",
     justifyContent: "space-between",
-    paddingBottom: 12,
-    cursor: "pointer",
+    alignItems:'center',
+    // paddingBottom: 12,
   },
   title: {
     display: "flex",
@@ -150,7 +120,7 @@ const useStyles = makeStyles({
   },
   titleText: {
     fontSize: 14,
-    fontWeight: 500,
+    fontWeight: 600,
     paddingLeft: 5,
   },
   memberName: {

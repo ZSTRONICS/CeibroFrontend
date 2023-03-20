@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import taskActions, { getAllTask } from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
@@ -79,8 +80,9 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           md={6}
           lg={8}
         >
-          <StatusMenu />
+          <StatusMenu options={allStatus} />
         </Grid>
+
         <Grid item xs={12} md={2} lg={1}>
           <Button
             onClick={handleClick}
@@ -94,7 +96,16 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <TaskList />
+      <Box
+        className={classes.tasklistWrapper}
+        sx={{
+          overflowY: "auto",
+          // height: "calc(100%)",
+          height: "250px",
+        }}
+      >
+        <TaskList />
+      </Box>
     </div>
   );
 };
@@ -103,7 +114,13 @@ export default TaskSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: "30px 0 12px 10px",
+    padding: "20px 0 12px 10px",
+  },
+  tasklistWrapper: {
+    // // display:"grid",
+    // overflowY: "auto",
+    // maxHeight: "150px",
+    // height: "100vh",
   },
   menuWrapper: {
     display: "flex",
@@ -140,8 +157,8 @@ const styles = {
   },
   btn: {
     marginLeft: 10,
-    fontWeight: 500,
-    fontSize: 12,
+    // fontWeight: 500,
+    // fontSize: 12,
   },
   viewAll: {
     fontSize: 10,

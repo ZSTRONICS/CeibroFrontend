@@ -90,8 +90,13 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import EmailIcon from '@mui/icons-material/Email';
+import CallIcon from '@mui/icons-material/Call';
 const assets= {
+  EmailIcon,
+  CallIcon,
+  ErrorOutlineOutlinedIcon,
   logoutNew,
   // logout,
   HighlightOffIcon,

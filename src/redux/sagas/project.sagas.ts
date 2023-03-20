@@ -17,16 +17,13 @@ import {
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_GROUP_BY_ID,
-  GET_GROUP_MEMBERS,
   GET_GROUP_USERS,
   GET_MEMBER,
   GET_NEW_WORK,
-  GET_PERMISSIONS,
   GET_PROJECTS, GET_PROJECTS_MEMBERS, GET_PROJECTS_WITH_MEMBERS, GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_PROJECT_PROFILE,
-  GET_ROLES,
-  GET_ROLES_BY_ID,
+  PROJECT_CONFIG,
   GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
   GET_WORK_BY_ID, UPDATE_GROUP,
@@ -52,7 +49,7 @@ function* fetchUser() {
 const getProjects = apiCall({
   type: GET_PROJECTS,
   method: "get",
-  path: "/project/all",
+  path: "/project",
 });
 const getProjectsWithMembers = apiCall({
   type: GET_PROJECTS_WITH_MEMBERS,
@@ -64,7 +61,7 @@ const getProjectsWithPagination = apiCall({
   type: GET_PROJECTS_WITH_PAGINATION,
   method: "get",
   path: (payload, store: any) => {
-    let url = "/project?";
+    let url = "/project";
     const {
       selectedStatus: status,
       selectedDate,
@@ -96,10 +93,10 @@ const getProjectMembers = apiCall({
   type: GET_PROJECTS_MEMBERS,
   method: "get",
   path: (payload) => {
-    let url = `/project/members/${payload?.other?.projectId}`;
-    if (payload.other?.includeMe) {
-      url = `${url}?includeMe=true`;
-    }
+    let url = `/project/member/${payload?.other?.projectId}`;
+    // if (payload.other?.includeMe) {
+    //   url = `${url}?includeMe=true`;
+    // }
     return url;
   },
 });
@@ -118,18 +115,13 @@ const createProject = apiCall({
 const getProjectDetail = apiCall({
   type: GET_PROJECT_DETAIL,
   method: "get",
-  path: (payload) => `/project/detail/${payload?.other}`,
+  path: (payload) => `/project/${payload?.other}`,
 });
 
-const getAllRoles = apiCall({
-  type: GET_ROLES,
-  method: "get",
-  path: (payload) => `/project/role/${payload?.other}`,
-});
 const createRoles = apiCall({
   type: CREATE_ROLES,
   method: "post",
-  path: (paylaod) => `/project/role/${paylaod?.other}`,
+  path: (paylaod) => `/project/role/${paylaod.other}`,
 });
 
 const createGroup = apiCall({
@@ -151,13 +143,13 @@ const geFolder = apiCall({
   //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
   path: (payload) => {
     const selectedProject = payload?.other?.selectedProject;
-    const inputData = payload?.other?.findDoc;
+    // const inputData = payload?.other?.findDoc;
 
-    let url = `/project/folder/${selectedProject}`;
+    let url = `/project/documents/${selectedProject}`;
 
-    if (inputData) {
-      url = `${url}?search=${inputData}`;
-    }
+    // if (inputData) {
+    //   url = `${url}?search=${inputData}`;
+    // }
 
     return url;
   },
@@ -179,10 +171,10 @@ const getMember = apiCall({
   type: GET_MEMBER,
   method: "get",
   path: (payload) => {
-    let url = `/project/members/${payload?.other?.projectId}`;
-    if (payload.other?.includeMe) {
-      url = `${url}?includeMe=true`;
-    }
+    let url = `/project/member/${payload?.other}`;
+    // if (payload.other?.includeMe) {
+    //   url = `${url}?includeMe=true`;
+    // }
     return url;
   },
 });
@@ -190,7 +182,7 @@ const getMember = apiCall({
 const updateMember = apiCall({
   type: UPDATE_MEMBER,
   method: "patch",
-  path: (payload) => `/project/member/${payload?.other}`,
+  path: (payload) => `/project/member/update/${payload?.other}`,
 });
 
 const getFolderFiles = apiCall({
@@ -199,7 +191,7 @@ const getFolderFiles = apiCall({
   // path: (payload) => `/project/file/${payload.other}`,
 
   path: (payload) => {
-    let url = "/project/file/";
+    let url = "/project/folder/";
     const selectedFolder = payload?.other?.selectedFolder;
     const inputData = payload?.other?.findDoc;
     if (selectedFolder) {
@@ -213,6 +205,11 @@ const getFolderFiles = apiCall({
     return url;
   },
 });
+const updateProjectDocumentsAccess=apiCall({
+  type: PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,
+  method: "patch",
+  path: (payload) => `project/documents/updateAccess/${payload.other}`, //projectId
+});
 
 const uploadFileToFolder = apiCall({
   type: UPLOAD_FILE_TO_FOLDER,
@@ -221,32 +218,33 @@ const uploadFileToFolder = apiCall({
 });
 const updateProject = apiCall({
   type: UPLOAD_FILE_TO_FOLDER,
-  method: "put",
-  path: (payload) => `/project/detail/${payload.other}`,
+  method: "patch",
+  path: (payload) => `/project/${payload.other}`,
 });
 
-const getRolesById = apiCall({
-  type: GET_ROLES_BY_ID,
+const getProjectRolesById  = apiCall({
+  type: PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID,
   method: "get",
-  path: (payload) => `/project/role/detail/${payload.other}`,
+  path: (payload) => `/project/role/${payload.other}`,
 });
 
 const updateRole = apiCall({
   type: UPDATE_ROLE,
-  method: "put",
-  path: (payload) => `/project/role/detail/${payload.other}`,
+  method: "patch",
+  path: (payload) => `/project/role/${payload.other}`,
 });
 
 const getGroupById = apiCall({
   type: GET_GROUP_BY_ID,
   method: "get",
-  path: (payload) => `/project/group/detail/${payload.other}`,
+  path: (payload) => `/project/group/${payload.other}`,
 });
 
+// patch group by groupId 
 const updateGroup = apiCall({
   type: UPDATE_GROUP,
-  method: "put",
-  path: (payload) => `/project/group/detail/${payload.other}`,
+  method: "patch",
+  path: (payload) => `/project/group/${payload.other}`,
 });
 
 const createNewProfile = apiCall({
@@ -264,13 +262,13 @@ const getProjectProfile = apiCall({
 const getTimeProfileById = apiCall({
   type: GET_TIME_PROFILE_BY_ID,
   method: "get",
-  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+  path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const updateTimeProfile = apiCall({
   type: UPDATE_TIME_PROFILE,
   method: "put",
-  path: (payload) => `/project/timeProfile/detail/${payload.other}`,
+  path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const getStatus = apiCall({
@@ -293,36 +291,37 @@ const getNewWork = apiCall({
 const deleteProject = apiCall({
   type: DELETE_PROJECT,
   method: "delete",
-  path: (payload) => `/project/detail/${payload.other}`,
+  path: (payload) => `/project/${payload.other}`,
 });
 
 const getWorkById = apiCall({
   type: GET_WORK_BY_ID,
   method: "get",
-  path: (payload) => `/project/work/detail/${payload.other}`,
+  path: (payload) => `/project/work/${payload.other}`,
 });
 
 const updateWork = apiCall({
   type: UPDATE_WORK,
   method: "put",
-  path: (payload) => `/project/work/detail/${payload.other}`,
+  path: (payload) => `/project/work/${payload.other}`,
 });
 
 const deleteWork = apiCall({
   type: DELETE_WORK,
   method: "delete",
-  path: (payload) => `/project/work/detail/${payload.other}`,
+  path: (payload) => `/project/work/${payload.other}`,
 });
 
-const getPermissions = apiCall({
-  type: GET_PERMISSIONS,
-  method: "get",
-  path: (payload) => `/project/permissions/${payload.other}`,
-});
+// const getPermissions = apiCall({
+//   type: GET_PERMISSIONS,
+//   method: "get",
+//   path: (payload) => `/project/permissions/${payload.other}`,
+// });
 const deleteMember = apiCall({
   type: DELETE_MEMBER,
   method: "delete",
-  path: (payload) => `/project/member/detail/${payload.other}`,
+  // path: (payload) => `/project/member/${payload.other}`,
+  path: (payload) => `/project/member/remove/${payload.other}`,
 });
 
 const updateProjectPic = apiCall({
@@ -335,13 +334,13 @@ const updateProjectPic = apiCall({
 const deleteGroup = apiCall({
   type: DELETE_GROUP,
   method: "delete",
-  path: (payload) => `/project/group/detail/${payload?.other}`,
+  path: (payload) => `/project/group/${payload?.other}`,
 });
 
 const deleteRole = apiCall({
   type: DELETE_ROLE,
   method: "delete",
-  path: (payload) => `/project/role/detail/${payload?.other}`,
+  path: (payload) => `/project/role/${payload?.other}`,
 });
 
 const getAvailableProjectMembers = apiCall({
@@ -350,11 +349,11 @@ const getAvailableProjectMembers = apiCall({
   path: (payload) => `/project/members/available/${payload?.other}`,
 });
 
-const getGroupMembers = apiCall({
-  type: GET_GROUP_MEMBERS,
-  method: "get",
-  path: (payload) => `/project/group/members/${payload?.other}`,
-});
+// const getGroupMembers = apiCall({
+//   type: GET_GROUP_MEMBERS,
+//   method: "get",
+//   path: (payload) => `/project/group/members/${payload?.other}`,
+// });
 
 const getGroupUsers = apiCall({
   type: GET_GROUP_USERS,
@@ -375,11 +374,8 @@ function* projectSaga() {
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
-  // yield takeLatest(GET_FILTER_PROJECTS, getFilterProjects);
-
   yield takeLatest(GET_PROJECTS_WITH_PAGINATION, getProjectsWithPagination);
   yield takeLatest(GET_PROJECT_DETAIL, getProjectDetail);
-  yield takeLatest(GET_ROLES, getAllRoles);
   yield takeLatest(CREATE_ROLES, createRoles);
   yield takeLatest(CREATE_GROUP, createGroup);
   yield takeLatest(GET_GROUP, getGroup);
@@ -390,8 +386,11 @@ function* projectSaga() {
   yield takeLatest(UPDATE_MEMBER, updateMember);
   yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
+
+  yield takeLatest(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,updateProjectDocumentsAccess);
   yield takeLatest(UPDATE_PROJECT, updateProject);
-  yield takeLatest(GET_ROLES_BY_ID, getRolesById);
+
+  yield takeLatest(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID, getProjectRolesById );
   yield takeLatest(GET_GROUP_BY_ID, getGroupById);
   yield takeLatest(UPDATE_GROUP, updateGroup);
   yield takeLatest(DELETE_MEMBER, deleteMember);
@@ -409,12 +408,12 @@ function* projectSaga() {
   yield takeLatest(GET_WORK_BY_ID, getWorkById);
   yield takeLatest(UPDATE_WORK, updateWork);
   yield takeLatest(DELETE_WORK, deleteWork);
-  yield takeLatest(GET_PERMISSIONS, getPermissions);
+  // yield takeLatest(GET_PERMISSIONS, getPermissions);
   yield takeLatest(UPDATE_PROJECT_PICTURE, updateProjectPic);
   yield takeLatest(DELETE_GROUP, deleteGroup);
   yield takeLatest(DELETE_ROLE, deleteRole);
   yield takeLatest(GET_AVAILABLE_PROJECT_MEMBERS, getAvailableProjectMembers);
-  yield takeLatest(GET_GROUP_MEMBERS, getGroupMembers);
+  // yield takeLatest(GET_GROUP_MEMBERS, getGroupMembers);
   yield takeLatest(GET_GROUP_USERS, getGroupUsers);
   yield takeLatest(ADD_REMOVE_FOLDER_USER, addRemoveFolderUser);
 }

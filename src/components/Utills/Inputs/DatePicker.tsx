@@ -9,7 +9,7 @@ interface DatePickerInt {
   disabled?: boolean;
   min?: string;
   max?: string;
-  Datetitle?:string|any;
+  Datetitle?: string | any;
 }
 
 const DatePicker: React.FC<DatePickerInt> = (props) => {
@@ -26,6 +26,7 @@ const DatePicker: React.FC<DatePickerInt> = (props) => {
       <input
         min={props?.min}
         max={props?.max}
+        // placeholder="dd/mm/yyyy"
         disabled={props.disabled}
         onChange={handleChange}
         value={props.value}

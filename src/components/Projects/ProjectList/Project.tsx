@@ -1,150 +1,202 @@
-import React, { useState, useEffect } from 'react'
-import ProjectList from './ProjectList'
-import DatePicker from '../../Utills/Inputs/DatePicker'
-import SelectDropdown, { dataInterface } from '../../Utills/Inputs/SelectDropdown'
-import { CircularProgress, Grid, makeStyles } from '@material-ui/core'
-import { getColorByStatus, getProjectStatus } from '../../../config/project.config'
-import StatusMenu from '../../Utills/Others/StatusMenu'
-import { useDispatch, useSelector } from 'react-redux'
-import colors from 'assets/colors'
+import React, { useState, useEffect, useRef } from "react";
+import ProjectList from "./ProjectList";
+import SelectDropdown, {
+  dataInterface,
+} from "../../Utills/Inputs/SelectDropdown";
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
+import {
+  getColorByStatus,
+  // getProjectStatus,
+} from "../../../config/project.config";
+import { useDispatch, useSelector } from "react-redux";
+import colors from "assets/colors";
 
-import projectActions, { getProjectsWithPagination } from 'redux/action/project.action'
-import { RootState } from 'redux/reducers'
-import { getAvailableUsers } from 'redux/action/user.action'
-import Input from 'components/Utills/Inputs/Input'
+import projectActions, {
+  getAllProjects,
+  getAllProjectsWithMembers,
+  getProjectsWithPagination,
+} from "redux/action/project.action";
+import { RootState } from "redux/reducers";
+import { getAvailableUsers } from "redux/action/user.action";
+import Input from "components/Utills/Inputs/Input";
+import CDatePicker from "components/DatePicker/CDatePicker";
 
 const Project = () => {
-  const { searchProject, drawerOpen, projectsLoading } = useSelector((state: RootState) => state.project)
+  const { searchProject, drawerOpen } = useSelector(
+    (state: RootState) => state.project
+  );
 
-  if(window.location.pathname.includes('projects')){
-    document.body.style.background='#f5f7f8'
+  if (window.location.pathname.includes("projects")) {
+    document.body.style.background = "#f5f7f8";
   }
-  const classes = useStyles()
-  const dispatch = useDispatch()
-  const allStatus = getProjectStatus()
-  const [date, setDate] = useState<string>('')
-  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([])
-  const [findProject, setFindProject] = useState<string>('')
-
-  const [loading, setLoading] = useState<boolean>(false)
+  const classes = useStyles();
+  const dispatch = useDispatch();
+  // const allStatus = getProjectStatus();
+  const [date, setDate] = useState<string>("");
+  const headerRef: any = useRef();
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!drawerOpen) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false)
-        },
-      }
-      setLoading(true)
-      dispatch(getProjectsWithPagination(payload))
-    }
-  }, [drawerOpen])
-
-  useEffect(() => {
-    dispatch(projectActions.setSelectedDate(date))
-  }, [date])
-
-  useEffect(() => {
-    dispatch(projectActions.setSearchProject(findProject))
-    dispatch(getProjectsWithPagination())
-  }, [findProject])
-
-  useEffect(() => {
-    dispatch(
-      getAvailableUsers({
-        success: res => {
-          setAvailableUsers(res.data)
-        },
-      })
-    )
-  }, [])
+    dispatch(getAllProjects());
+    dispatch(getAllProjectsWithMembers());
+  }, []);
 
   const handleUserChange = (user: dataInterface) => {
-    dispatch(projectActions.setSelectedUser(user?.value || null))
-    setLoading(true)
+    dispatch(projectActions.setSelectedUser(user?.value || null));
+    setLoading(true);
     dispatch(
       getProjectsWithPagination({
         finallyAction: () => setLoading(false),
       })
-    )
-  }
+    );
+  };
+  const [showProjectList, setShowProjectList] = useState<boolean>(false); 
 
-  return (
+const getHeaderHeight = () => {
+  let contentHeight =
+    window.innerHeight - (headerRef.current.clientHeight + 100);
+  return `${contentHeight}px`;
+}; 
+  useEffect(() => {
+    if (headerRef.current.clientHeight) {
+      setTimeout(() => {
+        setShowProjectList(true);
+      }, 100);
+    }
+window.addEventListener('resize', getHeaderHeight)
+  });
+
+  
+  
+  return (<>
     <Grid item xs={12}>
-      {(loading || projectsLoading) && <CircularProgress size={20} className={classes.progress} />}
+      {loading && <CircularProgress size={20} className={classes.progress} />}
 
-      <Grid container>
-        <Grid item xs={12} md={3} className={classes.datePicker}>
-          <DatePicker onChange={(e: any) => setDate(e.target.value)} />
+      <Grid container ref={headerRef} className={classes.outerWrapper}>
+        <Grid
+          item
+          sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
+          // xs={12} md={3}
+        >
+          <CDatePicker
+            showLabel={true}
+            required
+            value={date}
+            id="date1"
+            name="dueDate"
+            onChange={(e: any) => setDate(e)}
+          />
         </Grid>
 
-        <Grid item xs={12} md={4} className={classes.datePicker}>
+        <Grid
+          item
+          sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
+          // xs={12} md={4}
+          className={classes.datePicker}
+        >
           <SelectDropdown
             isClearAble={true}
-            title="Assigned to"
-            data={availableUsers}
+            title="Members"
+            // data={availableUsers}
             handleChange={handleUserChange}
           />
         </Grid>
 
-        <Grid item xs={12} md={4} className={classes.datePicker}>
+        <Grid
+          item
+          // xs={12} md={4}
+          sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
+          className={classes.datePicker}
+        >
           {/* <SelectDropdown title="Projects" /> */}
-          <Input
-            placeholder="Search"
-            title="Find Project"
-            onChange={(e: any) => setFindProject(e.target.value)}
+          <SelectDropdown
+            placeholder="All"
+            title="Status"
+            // onChange={(e: any) => setFindProject(e.target.value)}
           />
         </Grid>
       </Grid>
 
       <Grid container className={classes.allStatus}>
-        <StatusMenu options={allStatus} />
+        {/* <StatusMenu options={allStatus} /> */}
         {/* <StatusMenu /> */}
       </Grid>
-
-      <ProjectList />
     </Grid>
-  )
-}
+     {showProjectList===true? <Grid
+        item
+        // className={classes.TaskListMain}
+        sx={{
+          overflow: "auto",
+        }}
+        maxHeight={getHeaderHeight}
+      >
+        <ProjectList />
+      </Grid>: <div> Loading projects....</div>}
+    </>);
+};
 
-export default Project
+export default Project;
 
 const useStyles = makeStyles({
+  outerWrapper: {
+    display: "flex",
+    alignItems: "baseline",
+    gap: "25px",
+  },
   datePicker: {
     padding: 5,
   },
   allStatus: {
-    padding: '10px 5px',
+    padding: "10px 5px",
   },
   statusChip: {
-    padding: '10px 10px',
+    padding: "10px 10px",
     width: 100,
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
   },
   ongoing: {
-    background: getColorByStatus('ongoing'),
+    background: getColorByStatus("ongoing"),
   },
 
   completed: {
-    background: getColorByStatus('completed'),
+    background: getColorByStatus("completed"),
   },
   draft: {
-    background: getColorByStatus('draft'),
+    background: getColorByStatus("draft"),
   },
   approved: {
-    background: getColorByStatus('approved'),
+    background: getColorByStatus("approved"),
   },
   progress: {
     color: colors.primary,
-    position: 'absolute',
+    position: "absolute",
     zIndex: 1,
-    margin: 'auto',
-    marginTop: '300px',
+    margin: "auto",
+    marginTop: "300px",
     left: 0,
     right: 0,
     top: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
-})
+  // TaskListMain: {
+  //   "@media(max-width:754px)": {
+  //     height: "560px",
+  //     overflow: "auto",
+  //   },
+  //   "@media(max-width:1321px)": {
+  //     height: "615px",
+  //     overflow: "auto",
+  //   },
+  //   "@media(max-width:1870px)": {
+  //     height: "680px",
+  //     overflow: "auto",
+  //   },
+  //   // "@media(max-width:2560px)": {
+  //   //   height: "780px",
+  //   //   overflow: "auto",
+  //   // },
+  // },
+});
