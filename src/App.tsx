@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
@@ -49,13 +49,13 @@ import {
 } from "config/chat.config";
 
 // axios
-import { SERVER_URL } from "utills/axios";
+import axios, { baseURL, SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
 import docsAction from "redux/action/docs.actions";
-import { useLocation } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import {
   getAllSubTaskList,
   getAllSubTaskOfTask,
@@ -70,10 +70,11 @@ import {
   PROJECT_APIS,
 } from "redux/action/project.action";
 
-interface MyApp {}
+interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
@@ -88,6 +89,8 @@ const App: React.FC<MyApp> = () => {
   const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
     (state: RootState) => state.docs
   );
+
+  const [authToken, setAuthToken] = useState<string>('')
 
   useEffect(() => {
     if (!uploadPendingFiles) {
@@ -178,6 +181,7 @@ const App: React.FC<MyApp> = () => {
 
       const tokens = localStorage.getItem("tokens") || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
+      setAuthToken(myToken)
 
       const sock = io(SERVER_URL, {
         reconnectionDelayMax: 3000,
@@ -185,7 +189,7 @@ const App: React.FC<MyApp> = () => {
         // multiplex: false,
         // forceNew: true,
         auth: {
-          token: myToken,
+          token: authToken,
         },
       });
 
@@ -205,8 +209,29 @@ const App: React.FC<MyApp> = () => {
       sock.on("reconnect", (attemptNumber: number) => {
         console.log(`Reconnected to server after ${attemptNumber} attempts`);
       });
-
       socket.setSocket(sock);
+
+
+      socket.getSocket().on('token_invalid', async () => {
+        const tokens = localStorage.getItem("tokens") || '{}';
+        const jsonToken = JSON.parse(tokens);
+        if ('refresh' in jsonToken) {
+          await axios
+            .post(`${baseURL}/auth/refresh-tokens`, { refreshToken: String(jsonToken.refresh.token) })
+            .then((response: any) => {
+              console.log(response.data);
+
+              setAuthToken(response.data.access.token)
+              // localStorage.setItem("tokens", JSON.stringify(response));
+            })
+            .catch((err) => {
+              console.error('Failed to connect to socket ', err);
+              return <Redirect to="/login" />;
+            });
+        } else {
+          return <Redirect to="/login" />;
+        }
+      });
 
       // sock.on("reconnect", (attempt) => {
       //   console.log("=>>>> SOCKET RECONNECTED <<<<=");
