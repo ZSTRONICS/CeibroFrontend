@@ -61,6 +61,10 @@ const ProjectDocuments = () => {
 export default ProjectDocuments;
 
 const useStyles = makeStyles({
+  groupsWrapper: {
+    height: "692px",
+    overflow: "auto",
+  },
   titleWrapper: {
     paddingTop: 20,
   },
@@ -70,5 +74,4 @@ const useStyles = makeStyles({
     color: colors.textGrey,
     paddingBottom: 10,
   },
-   
 });

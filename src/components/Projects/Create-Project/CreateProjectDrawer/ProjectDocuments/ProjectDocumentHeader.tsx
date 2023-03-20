@@ -202,7 +202,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingBottom: 10,
     },
   },
@@ -210,7 +210,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
     },
   },
