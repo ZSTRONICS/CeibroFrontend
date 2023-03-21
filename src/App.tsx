@@ -70,7 +70,7 @@ import {
   PROJECT_APIS,
 } from "redux/action/project.action";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
@@ -90,7 +90,7 @@ const App: React.FC<MyApp> = () => {
     (state: RootState) => state.docs
   );
 
-  const [authToken, setAuthToken] = useState<string>('')
+  const [authToken, setAuthToken] = useState<string>("");
 
   useEffect(() => {
     if (!uploadPendingFiles) {
@@ -181,7 +181,6 @@ const App: React.FC<MyApp> = () => {
 
       const tokens = localStorage.getItem("tokens") || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
-      setAuthToken(myToken)
 
       const sock = io(SERVER_URL, {
         reconnectionDelayMax: 3000,
@@ -189,7 +188,7 @@ const App: React.FC<MyApp> = () => {
         // multiplex: false,
         // forceNew: true,
         auth: {
-          token: authToken,
+          token: myToken,
         },
       });
 
@@ -209,27 +208,45 @@ const App: React.FC<MyApp> = () => {
       sock.on("reconnect", (attemptNumber: number) => {
         console.log(`Reconnected to server after ${attemptNumber} attempts`);
       });
+
+      sock.on("connect_error", (err) => {
+        console.error("Socket failed to connect ", err);
+      });
+
       socket.setSocket(sock);
 
-
-      socket.getSocket().on('token_invalid', async () => {
-        const tokens = localStorage.getItem("tokens") || '{}';
+      socket.getSocket().on("token_invalid", () => {
+        console.log("Invalid Token");
+        const tokens = localStorage.getItem("tokens") || "{}";
         const jsonToken = JSON.parse(tokens);
-        if ('refresh' in jsonToken) {
-          await axios
-            .post(`${baseURL}/auth/refresh-tokens`, { refreshToken: String(jsonToken.refresh.token) })
+        if ("refresh" in jsonToken) {
+          axios
+            .post(`${baseURL}/auth/refresh-tokens`, {
+              refreshToken: String(jsonToken.refresh.token),
+            })
             .then((response: any) => {
-              console.log(response.data);
-
-              setAuthToken(response.data.access.token)
-              // localStorage.setItem("tokens", JSON.stringify(response));
+              if (response.status === 200) {
+                localStorage.setItem("tokens", JSON.stringify(response.data));
+                //setAuthToken(response.data.access.token);
+                sock.auth = {
+                  token: response.data.access.token,
+                };
+                sock.connect();
+                socket.setSocket(sock);
+              } else {
+                console.log("failed");
+                history.push("/login");
+              }
             })
             .catch((err) => {
-              console.error('Failed to connect to socket ', err);
-              return <Redirect to="/login" />;
+              console.error("Failed to connect to socket ", err);
+              history.push("/login");
+              alert("Token failed");
+              window.location.reload();
             });
         } else {
-          return <Redirect to="/login" />;
+          console.log("failed");
+          history.push("/login");
         }
       });
 

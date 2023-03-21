@@ -330,8 +330,6 @@ export const deleteRole = createAction(DELETE_ROLE);
 // export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getGroupUsers = createAction(GET_GROUP_USERS);
 export const addRemoveFolderUser = createAction(ADD_REMOVE_FOLDER_USER);
-export const getAvailableProjectMembers = createAction(
-  GET_AVAILABLE_PROJECT_MEMBERS
-);
+export const getAvailableProjectMembers = createAction(GET_AVAILABLE_PROJECT_MEMBERS);
 
 export default projectActions;
