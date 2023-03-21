@@ -1,8 +1,7 @@
-
 import { makeStyles } from "@material-ui/core";
-import SearchIcon from '@mui/icons-material/Search';
-import { Divider, Grid, Paper, Typography } from '@mui/material';
-import InputBase from '@mui/material/InputBase';
+import SearchIcon from "@mui/icons-material/Search";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
+import InputBase from "@mui/material/InputBase";
 import CButton from "components/Button/Button";
 import CustomModal from "components/Modal";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -12,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   getFolder,
-  getFolderFiles
+  getFolderFiles,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
@@ -77,7 +76,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
 
   return (
     <>
-      <Grid container justifyContent="space-between" alignItems='center'>
+      <Grid container justifyContent="space-between" alignItems="center">
         <Grid item sx={{ width: "100%", maxWidth: "415px" }}>
           <Paper
             elevation={0}
@@ -92,7 +91,10 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
             }}
           >
             <SearchIcon />
-            <Divider sx={{ height: 28, m: 0.5, pl: 0.5 }} orientation="vertical"/>
+            <Divider
+              sx={{ height: 28, m: 0.5, pl: 0.5 }}
+              orientation="vertical"
+            />
             <InputBase
             value={findDoc||""}
             onChange={(e: any) => setFindDoc(e.target.value)}
@@ -110,23 +112,42 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
         />
       </Grid> */}
         <Grid item>
-          <CustomStack gap={1.5}>
-       {isFolder===true&&<CButton
-            variant="outlined"
-            color="primary"
-            label="Create folder"
-            sx={{ fontSize: 12, fontWeight: "700", padding:'8px 16px',textTransform:'unset' }}
-            onClick={() => {
-              dispatch(projectActions.openProjectDocuments());
+          <CustomStack
+            gap={2}
+            sx={{
+              "@media(max-width:702px)": {
+                paddingTop: "10px",
+              },
             }}
-          />}
+          >
+            {isFolder === true && (
+              <CButton
+                variant="outlined"
+                color="primary"
+                label="Create folder"
+                sx={{
+                  fontSize: 12,
+                  fontWeight: "700",
+                  padding: "8px 16px",
+                  textTransform: "unset",
+                }}
+                onClick={() => {
+                  dispatch(projectActions.openProjectDocuments());
+                }}
+              />
+            )}
             <CButton
-            variant="outlined"
-            color="primary"
-            label="Upload file(s)"
-            sx={{ fontSize: 12, fontWeight: "700", padding:'8px 16px', textTransform:'unset' }}
-            onClick={handleOpenCloseAttachmentModal}
-          />
+              variant="outlined"
+              color="primary"
+              label="Upload file(s)"
+              sx={{
+                fontSize: 12,
+                fontWeight: "700",
+                padding: "8px 16px",
+                textTransform: "unset",
+              }}
+              onClick={handleOpenCloseAttachmentModal}
+            />
           </CustomStack>
           <DocumentDrawer />
           {/* <div className={classes.viewIcons}>
@@ -137,9 +158,10 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       </Grid>
 
       <Grid className={classes.breadCrums}>
-        <Typography onClick={handleGoBack}  className={classes.breadCrumsText}>
-          Document 
-        </Typography> &nbsp;/
+        <Typography onClick={handleGoBack} className={classes.breadCrumsText}>
+          Document
+        </Typography>{" "}
+        &nbsp;/
         {selectedFolder && (
           <Typography className={classes.breadCrumsFolder}>
             &nbsp;{selectedFolder?.name}
@@ -157,8 +179,8 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
           <UploadDocs
             selectedAttachments={selectedAttachments}
             showUploadButton={true}
-            moduleType={isFolder===true?"Project":"ProjectFolder"}
-            moduleId={isFolder===true?selectedProject:selectedFolder?._id}
+            moduleType={isFolder === true ? "Project" : "ProjectFolder"}
+            moduleId={isFolder === true ? selectedProject : selectedFolder?._id}
             handleClose={(e: any, value: any): void => {
               setSelectedAttachments(value);
               setIsAttachmentViewOpen((prev: boolean) => !prev);
@@ -195,7 +217,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingBottom: 10,
     },
   },
@@ -203,7 +225,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-evenly",
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
     },
   },

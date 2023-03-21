@@ -23,7 +23,7 @@ const ProjectRoles = () => {
           <CreateMember />
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} className={classes.membersTable}>
           <MembersTable />
         </Grid>
       </Grid>
@@ -38,7 +38,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       alignItems: "flex-start",
       paddingBottom: 20,
     },
@@ -47,5 +47,10 @@ const useStyles = makeStyles({
     fontSize: 12,
     fontWeight: "bold",
     fontStyle: "normal",
+  },
+  membersTable: {
+    height: "720px",
+    overflowY: "auto",
+    // backgroundColor: "red",
   },
 });

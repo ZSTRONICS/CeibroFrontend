@@ -36,8 +36,6 @@ const TaskMain = () => {
   });
 
   const getHeaderHeight = () => {
-    //headerRef.current
-    //console.log(window.innerHeight, headerRef.current.clientHeight + 135);
     let contentHeight =
       window.innerHeight - (headerRef.current.clientHeight + 135);
     return `${contentHeight}px`;
