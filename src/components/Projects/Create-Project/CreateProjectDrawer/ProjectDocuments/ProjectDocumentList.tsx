@@ -110,31 +110,30 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     );
   };
 
-  return (
-    <>
-      <TableContainer style={{ height: "100%", overflow: "visible" }}>
-        <Table className={classes.table} stickyHeader aria-label="sticky table">
-          <TableHead>
-            <TableRow>
-              <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="center">
-                Uploaded On
-              </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="center">
-                Creator
-              </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="center">
-                Members
-              </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="center">
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading && (
-              <CircularProgress size={20} className={classes.progress} />
-            )}
+  return (<>
+    <TableContainer style={{ height: "100%", overflow: "visible" }}>
+      <Table className={classes.table} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Uploaded On
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+              Creator
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+            Members
+            </TableCell>
+            <TableCell className={`${classes.tableTitle}`} align="center">
+             Action
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {/* {loading && (
+            <CircularProgress size={20} className={classes.progress} />
+          )} */}
 
             {folderList.folders.map((row: FolderInterface) => {
               const DateString: string = momentdeDateFormat(row.createdAt);

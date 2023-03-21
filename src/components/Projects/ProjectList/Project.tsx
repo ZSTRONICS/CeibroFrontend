@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, memo } from "react";
+import React, { useState, useEffect, useRef, } from "react";
 import ProjectList from "./ProjectList";
 import SelectDropdown, {
   dataInterface,
 } from "../../Utills/Inputs/SelectDropdown";
 import { CircularProgress, makeStyles } from "@material-ui/core";
-import { Autocomplete, Chip, Grid, TextField } from "@mui/material";
+import { Autocomplete,  Grid, TextField } from "@mui/material";
 import {
   getColorByStatus,
   // getProjectStatus,
@@ -13,17 +13,15 @@ import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 import Clear from "@mui/icons-material/Clear";
 
-import projectActions, {
+import  {
   getAllProjects,
   getAllProjectsWithMembers,
-  getProjectsWithPagination,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { getAvailableUsers } from "redux/action/user.action";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-import myStore from "redux/store";
 
 const Project = () => {
   const classes = useStyles();
@@ -39,15 +37,25 @@ const Project = () => {
   }
 
   const [date, setDate] = useState<string>("");
-
-  const [allProjectPublishStatus, setAllProjetStatus] = useState(
-    allProjects.map((item: any, index: any) => {
-      return {
-        label: item.publishStatus,
-        value: index,
-      };
-    })
-  );
+  const projectPublishStatusLocal = allProjects.map((item: any, index: any) => {
+    return {
+      label: item.publishStatus,
+      value: index,
+    };
+  });
+  // get the unique labels object
+  const getUniqueLabels  = (arr:any[])=>{
+   let uniqueLabels=  Object.values(arr.reduce((acc:any, labelObj:any) => {
+      if (!acc[labelObj.label]) {
+        acc[labelObj.label] = labelObj;
+      }
+      return acc;
+    }, {}))
+   return uniqueLabels
+  }
+  
+  const uniqueLabels =getUniqueLabels(projectPublishStatusLocal)
+  const [allProjectPublishStatus, setAllProjetStatus] = useState([...uniqueLabels]);
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
@@ -68,6 +76,7 @@ const Project = () => {
 
   useEffect(() => {
     setFilteredData(allProjects);
+    setAllProjetStatus(uniqueLabels)
   }, [allProjects]);
 
   const [filterParams, setFilterParams] = useState({
@@ -152,7 +161,6 @@ const Project = () => {
     window.addEventListener("resize", getHeaderHeight);
   }, []);
 
-  console.log(allProjects, filteredData);
   return (
     <>
       <Grid item xs={12}>
@@ -248,7 +256,7 @@ const Project = () => {
                 // multiple={false}
                 id="project_members1"
                 // filterSelectedOptions
-                options={allProjectPublishStatus}
+                options={getUniqueLabels(allProjectPublishStatus)}
                 size="small"
                 onChange={(event, value: any) => {
                   if (value === null) {

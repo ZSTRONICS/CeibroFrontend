@@ -37,7 +37,7 @@ const ProjectDocuments = () => {
 
   return (
     <>
-      <Grid item xs={12} alignItems="flex-start">
+      <Grid container item xs={12} alignItems="flex-start">
         <ProjectDocumentHeader
           handleGoBack={handleGoBack}
           selectedFolder={folder}
