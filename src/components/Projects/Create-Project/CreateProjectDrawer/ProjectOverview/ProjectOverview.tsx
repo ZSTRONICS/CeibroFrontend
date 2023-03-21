@@ -213,7 +213,7 @@ if(projectOverview.creator._id){
               disablePortal
               filterSelectedOptions= {true}
               disableCloseOnSelect
-              limitTags={2}
+              limitTags={1}
               value={ownersList}
               options={data}
               size="small"
