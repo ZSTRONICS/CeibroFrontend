@@ -68,7 +68,7 @@ const useStyles = makeStyles({
   },
   titleWrapper: {
     paddingTop: 0,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingBottom: 10,
       paddingTop: 10,
     },
@@ -79,5 +79,9 @@ const useStyles = makeStyles({
     color: colors.textGrey,
     paddingBottom: 10,
   },
-  groupsWrapper: {},
+  groupsWrapper: {
+    height: "660px",
+    overflowY: "auto",
+    paddingBottom: "100px",
+  },
 });

@@ -48,14 +48,9 @@ const ProjectSection = (props: any) => {
     dispatch(getAllProjectsWithMembers());
   }, []);
 
-
   return (
     <div>
-      <Grid
-        container
-        alignItems="center"
-        className={classes.outerWrapper}
-      >
+      <Grid container alignItems="center" className={classes.outerWrapper}>
         <Grid
           item
           xs={12}
@@ -84,7 +79,7 @@ const ProjectSection = (props: any) => {
           md={5}
           lg={6}
         >
-          <StatusMenu options={allStatus} />
+          {/* <StatusMenu options={allStatus} /> */}
         </Grid>
         <Grid item xs={12} md={2} lg={1}>
           <Button

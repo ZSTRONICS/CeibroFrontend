@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import assets from "assets/assets";
 import { CustomMuiList } from "components/material-ui";
-import { uniqueArray } from "components/Utills/Globals/Common";
+import { uniqueStringArray } from "components/Utills/Globals/Common";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import projectActions, { getFolder, PROJECT_APIS } from "redux/action/project.action";
@@ -28,39 +28,55 @@ function ProjectAccessModal(props: any) {
   const [hasInitialized, setHasInitialized]= useState(true)
 
   const handleUserId = (id: any) => {
-    if (!users?.includes(id)) {
+    if (!users.includes(id)) {
       setUsers([...users, id]);
     } else {
       removeSelectedUser(id);
     }
   };
+
   const handleUserChange = (e: any) => {
-    if (!users?.includes?.(e.target.value)) {
+    if (!users.includes(e.target.value)) {
       setUsers([...users, e.target.value]);
     } else {
-      removeSelectedUser(e?.target?.value);
+      removeSelectedUser(e.target.value);
     }
   };
 
   const removeSelectedUser = (userId: any) => {
-    setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
+    setUsers(users.filter((user: any) => String(user) !== String(userId)));
+  };
+
+  const handleGroupMemberChange = (e: any, group:any) => {
+    const groupMembersId= group.members.map((member:any)=>member._id)
+    if (!selectedGroupIds.includes(e.target.value)) {
+      setSelectedGroupId([...selectedGroupIds, e.target.value]);
+      setUsers((previousUsers: any) => [...previousUsers, ...groupMembersId])
+    } else {
+      removeSelectedGroupMember(e.target.value);
+      setUsers((users: any) => users.filter((user: any) => !groupMembersId.includes(user)));
+    }
+  };
+  const removeSelectedGroupMember = (groupId: any) => {
+    setSelectedGroupId(selectedGroupIds.filter((gId: any) => String(gId) !== String(groupId)));
   };
 
   const handleGroupMember = (group:any) => {
-    if(selectedGroupIds.includes(group._id)){
-      setSelectedGroupId((groupIds: any) => (groupIds.filter((groupId:any) => (groupId !== group._id))))
+    if(selectedGroupIds?.includes(group._id)){
+      removeSelectedGroupMember(group._id)
       const groupMembersId= group.members.map((member:any)=>member._id)
       setUsers((users: any) => users.filter((user: any) => !groupMembersId.includes(user)));
-
     }else{
-      setSelectedGroupId((previousGroupIds: any) => [...previousGroupIds, group._id])
+      setSelectedGroupId([...selectedGroupIds, group._id])
       const groupMembersId= group.members.map((member:any)=>member._id)
       setUsers((previousUsers: any) => [...previousUsers, ...groupMembersId])
     }
   };
+
   if(hasInitialized===true){
-    const alreadySelectedMembers = selectedFolderFile.access.map((item:any)=> item._id)
-    const alreadySelectedGroups = selectedFolderFile.group.map((item:any)=> item._id)
+    const alreadySelectedMembers = selectedFolderFile?.access?.map((item:any)=> item._id)
+    const alreadySelectedGroups = selectedFolderFile?.group?.length>0? selectedFolderFile.group.map((item:any)=> item._id):[]
+
     setUsers(alreadySelectedMembers)
     setSelectedGroupId(alreadySelectedGroups)
     setHasInitialized(false)
@@ -91,7 +107,7 @@ if (hasKey(selectedFolderFile, "name")) {
   const handleSubmit = () => {
     const payload = {
       body: {
-        access: uniqueArray(users),
+        access: uniqueStringArray(users),
         group: selectedGroupIds,
         type: localType,
         id: localId,
@@ -163,10 +179,10 @@ if (hasKey(selectedFolderFile, "name")) {
                     }}
                     disableRipple
                     edge="end"
-                    value={group._id}
-                    onChange={handleGroupMember}
-                    checked={selectedGroupIds.some(
-                      (id: any) => id === group._id
+                    value={group?._id}
+                    onChange={(e:any)=>handleGroupMemberChange(e, group)}
+                    checked={selectedGroupIds?.some(
+                      (id: any) => id === group?._id
                     )}
                     inputProps={{ "aria-labelledby": labelId }}
                   />
@@ -192,7 +208,7 @@ if (hasKey(selectedFolderFile, "name")) {
                       },
                     }}
                     id={labelId}
-                    primary={`${group.name}`}
+                    primary={`${group?.name}`}
                   />
                 </ListItemButton>
               </ListItem>
@@ -216,6 +232,7 @@ if (hasKey(selectedFolderFile, "name")) {
 
         <Grid
           container
+          item
           gap="20px"
           sx={{ padding: "0 15px 10px 10px" }}
           xs={12}
@@ -243,7 +260,7 @@ if (hasKey(selectedFolderFile, "name")) {
             color="primary"
             onClick={handleSubmit}
             disabled={
-              users?.length > 0 || selectedGroupIds.length > 0 ? false : true
+              users?.length > 0 || selectedGroupIds?.length > 0 ? false : true
             }
           >
             Ok

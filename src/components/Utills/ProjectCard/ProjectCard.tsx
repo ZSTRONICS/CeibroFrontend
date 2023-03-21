@@ -143,10 +143,12 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
               style={{ display: "flex", fontFamily: "inter", fontWeight: 500 }}
             >
               {creator
-                ? `${creator?.firstName} ${creator?.surName}`
-                : isDefault === true
-                ? `${owner?.[0]?.firstName} ${owner?.[0]?.surName}`
-                : "N/A"}
+                ? `${creator?.firstName}`
+                : // ${creator?.surName}
+                isDefault === true
+                ? `${owner?.[0]?.firstName}`
+                : // ${owner?.[0]?.surName}
+                  "N/A"}
               {/* {owner?.[0]?.surName} */}
 
               {/* {owner?.length > 1 && (

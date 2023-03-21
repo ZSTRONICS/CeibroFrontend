@@ -30,8 +30,11 @@ export default CreateProjectBody;
 const useStyles = makeStyles({
   body: {
     padding: 20,
-    overflowY: "auto",
-    height: "calc(100vh - 213px)",
+    // overflowY: "auto",
+    // height: "100vh",
+    height: "calc(100vh - 210px)",
+    // height: "calc(100vh - 213px)",
+    // height: "auto",
     "@media (max-width:960px)": {
       paddingTop: 10,
     },

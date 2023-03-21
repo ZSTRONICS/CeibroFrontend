@@ -281,7 +281,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
             disablePortal
             filterSelectedOptions
             disableCloseOnSelect
-            limitTags={3}
+            limitTags={1}
             value={selectedRolMember}
             options={uniqueMember}
             size="small"

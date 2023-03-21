@@ -93,7 +93,7 @@ const getProjectMembers = apiCall({
   type: GET_PROJECTS_MEMBERS,
   method: "get",
   path: (payload) => {
-    let url = `/project/member/${payload?.other?.projectId}`;
+    let url = `/project/member/${payload.other.projectId}`;
     // if (payload.other?.includeMe) {
     //   url = `${url}?includeMe=true`;
     // }
@@ -169,7 +169,7 @@ const getMember = apiCall({
   type: GET_MEMBER,
   method: "get",
   path: (payload) => {
-    let url = `/project/member/${payload?.other}`;
+    let url = `/project/member/${payload.other}`;
     // if (payload.other?.includeMe) {
     //   url = `${url}?includeMe=true`;
     // }

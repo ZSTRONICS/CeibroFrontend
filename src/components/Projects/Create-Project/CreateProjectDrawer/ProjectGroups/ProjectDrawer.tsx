@@ -33,14 +33,13 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const { groupDrawer, selectedGroup, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-  const [name, setName] = useState<string>(selectedGroup.name);
+  const [name, setName] = useState<string>(groupDrawer===true?selectedGroup.name:"");
 
   const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();
 
   const handleClose = () => {
     dispatch(projectActions.closeProjectGroup());
-    setName("");
   };
 
   const handleOk = () => {
@@ -113,7 +112,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 
   useEffect(() => {
     setName(selectedGroup.name);
-  }, [selectedGroup]);
+  }, [selectedGroup.name]);
 
   return (
     <Dialog open={groupDrawer} onClose={handleClose}>
