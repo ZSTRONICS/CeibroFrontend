@@ -27,10 +27,9 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { selectedProject, folderList } = useSelector(
-    (state: RootState) => state?.project
-  );
+    (state: RootState) => state?.project);
   const { selectedFolder, handleGoBack, isFolder } = props;
-  const [findDoc, setFindDoc] = useState<any>();
+  const [findDoc, setFindDoc] = useState<any>("");
 
   const [isAttachmentViewOpen, setIsAttachmentViewOpen]: any = useState(false);
 
@@ -51,6 +50,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
     }
   }, [findDoc]);
 
+  // search files inside folder
   useEffect(() => {
     if (selectedFolder && findDoc) {
       dispatch(
@@ -60,6 +60,19 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
       );
     }
   }, [selectedFolder, findDoc]);
+
+  useEffect(()=>{
+    if( findDoc!==""){
+      return
+    }
+    if(findDoc===""){
+      dispatch(
+        getFolder({
+          other: { selectedProject },
+        })
+      );
+    }
+  },[findDoc])
 
   return (
     <>
@@ -83,6 +96,8 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
               orientation="vertical"
             />
             <InputBase
+            value={findDoc||""}
+            onChange={(e: any) => setFindDoc(e.target.value)}
               sx={{ ml: 1, flex: 1 }}
               placeholder="Find document"
               inputProps={{ "aria-label": "Find document" }}

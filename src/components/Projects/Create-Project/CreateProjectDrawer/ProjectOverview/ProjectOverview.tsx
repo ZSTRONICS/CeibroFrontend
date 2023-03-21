@@ -77,7 +77,7 @@ const ProjectOverview = () => {
     },
   ];
 
-if(projectOverview.creator._id){
+if(projectOverview?.creator?._id){
   const {_id, firstName, surName}= projectOverview?.creator
   fixedOwner[0].value=_id
   fixedOwner[0].label= `${firstName} ${surName}`

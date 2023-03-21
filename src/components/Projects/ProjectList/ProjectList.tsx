@@ -11,22 +11,23 @@ import {
 import { makeStyles } from "@material-ui/core";
 import projectActions from "redux/action/project.action";
 
-const ProjectList = () => {
-  const { allProjects } = useSelector((state: RootState) => state.project);
+const ProjectList = (props:any) => {
+  // const { allProjects } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
+  // const { user } = useSelector((state: RootState) => state.auth);
 
   const openCreateProject = () => {
     dispatch(projectActions.setSelectedProject(null));
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
+  
   return (
     <Grid container>
-      {allProjects && allProjects.length > 0 ? (
+      {props.allProjects && props.allProjects.length > 0 ? (
         <>
-          {allProjects?.map((project: ProjectInterface, index: number) => {
+          {props.allProjects?.map((project: ProjectInterface, index: number) => {
             return <ProjectCard key={index} project={project} />;
           })}
           <CreateProject />

@@ -11,8 +11,8 @@ import CreateProjectFooter from "./CreateProjectFooter";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 
 const CreateProjectDrawer = () => {
-  const drawerOpen = useSelector(
-    (store: RootState) => store.project.drawerOpen
+  const {drawerOpen, menue, projectOverview} = useSelector(
+    (store: RootState) => store.project
   );
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -25,10 +25,10 @@ const CreateProjectDrawer = () => {
   return (
     <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
       <div className={classes.outerWrapper}>
-        <DrawerHeader title="New Project" handleClose={handleClose} />
+        <DrawerHeader title={projectOverview._id?projectOverview.title :"New Project"} handleClose={handleClose} />
         <ProjectDrawerMenu />
         <CreateProjectBody />
-        <CreateProjectFooter />
+        {menue===1?<CreateProjectFooter />:<></>}
       </div>
     </Drawer>
   );

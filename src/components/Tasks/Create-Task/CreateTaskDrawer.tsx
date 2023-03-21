@@ -14,13 +14,10 @@ import TaskDrawerMenu from "./TaskDrawerMenu";
 const CreateTaskDrawer = () => {
   const dispatch = useDispatch();
   const classes = useStyles();
-  const drawerOpen = useSelector(
-    (state: RootState) => state.task.taskDrawerOpen
-  );
+  const drawerOpen = useSelector((state: RootState) => state.task.taskDrawerOpen);
 
-  let subTaskOfTask: AllSubtasksOfTaskResult = useSelector(
-    (state: RootState) => state.task.allSubTaskOfTask
-  );
+  let subTaskOfTask: AllSubtasksOfTaskResult = useSelector((state: RootState) => state.task.allSubTaskOfTask);
+
   const handleClose = () => {
     dispatch(taskActions.closeTaskDrawer());
     subTaskOfTask.subtasks = [];

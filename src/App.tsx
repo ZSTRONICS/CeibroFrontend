@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
@@ -49,13 +49,13 @@ import {
 } from "config/chat.config";
 
 // axios
-import { SERVER_URL } from "utills/axios";
+import axios, { baseURL, SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { DOCS_CONFIG } from "config/docs.config";
 import docsAction from "redux/action/docs.actions";
-import { useLocation } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 import {
   getAllSubTaskList,
   getAllSubTaskOfTask,
@@ -74,6 +74,7 @@ interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
@@ -88,6 +89,8 @@ const App: React.FC<MyApp> = () => {
   const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
     (state: RootState) => state.docs
   );
+
+  const [authToken, setAuthToken] = useState<string>("");
 
   useEffect(() => {
     if (!uploadPendingFiles) {
@@ -206,7 +209,46 @@ const App: React.FC<MyApp> = () => {
         console.log(`Reconnected to server after ${attemptNumber} attempts`);
       });
 
+      sock.on("connect_error", (err) => {
+        console.error("Socket failed to connect ", err);
+      });
+
       socket.setSocket(sock);
+
+      socket.getSocket().on("token_invalid", () => {
+        console.log("Invalid Token");
+        const tokens = localStorage.getItem("tokens") || "{}";
+        const jsonToken = JSON.parse(tokens);
+        if ("refresh" in jsonToken) {
+          axios
+            .post(`${baseURL}/auth/refresh-tokens`, {
+              refreshToken: String(jsonToken.refresh.token),
+            })
+            .then((response: any) => {
+              if (response.status === 200) {
+                localStorage.setItem("tokens", JSON.stringify(response.data));
+                //setAuthToken(response.data.access.token);
+                sock.auth = {
+                  token: response.data.access.token,
+                };
+                sock.connect();
+                socket.setSocket(sock);
+              } else {
+                console.log("failed");
+                history.push("/login");
+              }
+            })
+            .catch((err) => {
+              console.error("Failed to connect to socket ", err);
+              history.push("/login");
+              alert("Token failed");
+              window.location.reload();
+            });
+        } else {
+          console.log("failed");
+          history.push("/login");
+        }
+      });
 
       // sock.on("reconnect", (attempt) => {
       //   console.log("=>>>> SOCKET RECONNECTED <<<<=");

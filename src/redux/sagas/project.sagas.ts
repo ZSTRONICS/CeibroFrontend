@@ -82,7 +82,7 @@ const getProjectsWithPagination = apiCall({
     }
 
     if (selectedUser) {
-      url = `${url}assignedTo=${selectedUser}&`;
+      url = `${url}?search=assignedTo=${selectedUser}&`;
     }
 
     return url;
@@ -143,13 +143,11 @@ const geFolder = apiCall({
   //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
   path: (payload) => {
     const selectedProject = payload?.other?.selectedProject;
-    // const inputData = payload?.other?.findDoc;
-
+    const inputData = payload?.other?.findDoc;
     let url = `/project/documents/${selectedProject}`;
-
-    // if (inputData) {
-    //   url = `${url}?search=${inputData}`;
-    // }
+    if (inputData) {
+      url = `${url}?search=${inputData}`;
+    }
 
     return url;
   },
@@ -189,15 +187,13 @@ const getFolderFiles = apiCall({
   type: GET_FOLDER_FILES,
   method: "get",
   // path: (payload) => `/project/file/${payload.other}`,
-
   path: (payload) => {
     let url = "/project/folder/";
-    const selectedFolder = payload?.other?.selectedFolder;
-    const inputData = payload?.other?.findDoc;
+    const selectedFolder = payload.other.selectedFolder;
+    const inputData = payload.other.findDoc;
     if (selectedFolder) {
       url = `${url}${selectedFolder}`;
     }
-
     if (inputData) {
       url = `${url}?search=${inputData}`;
     }
