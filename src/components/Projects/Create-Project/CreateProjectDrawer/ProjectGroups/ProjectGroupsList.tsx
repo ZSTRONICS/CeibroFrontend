@@ -11,8 +11,7 @@ import GroupChip from "../../../../Utills/GroupChip/GroupChip";
 
 const ProjectGroupsList = () => {
   const { selectedProject, groupList } = useSelector(
-    (state: RootState) => state?.project
-  );
+    (state: RootState) => state?.project);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);

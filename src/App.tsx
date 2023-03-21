@@ -67,6 +67,7 @@ import {
   getAllProjectMembers,
   getAllProjects,
   getGroup,
+  getMember,
   PROJECT_APIS,
 } from "redux/action/project.action";
 
@@ -524,14 +525,7 @@ const App: React.FC<MyApp> = () => {
             dispatch(getGroup({ other: data.projectId }));
             break;
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
-            dispatch(
-              getAllProjectMembers({
-                other: {
-                  projectId: data.projectId,
-                  includeMe: true,
-                },
-              })
-            );
+            dispatch(getMember({ other:  data.projectId }));
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:

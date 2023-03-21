@@ -7,7 +7,6 @@ function RollOverMenu(props: any) {
   const divRef = useRef();
   const [anchorElMember, setAnchorElMember] =React.useState<null | HTMLElement>(null);
 
-
   const openPopup = useCallback((e: any) => {
     e.stopPropagation();
     if(e.currentTarget){
@@ -18,7 +17,7 @@ function RollOverMenu(props: any) {
   const handleDelete = (e: any) => {
     e.stopPropagation();
     setAnchorElMember(null);
-    props.handleDele();
+    props.handleDelete();
   };
 
   const handleEdit = (e: any) => {
@@ -33,7 +32,7 @@ function RollOverMenu(props: any) {
   };
   const open = Boolean(anchorElMember);
   const id = open ? "simple-popover" : undefined;
-  
+
   return (
     <Box ref={divRef}>
       <IconButton

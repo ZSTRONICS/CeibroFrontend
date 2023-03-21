@@ -13,8 +13,7 @@ import { projectOverviewTemplate } from 'constants/interfaces/project.interface'
 
 const CreateProjectDrawer = () => {
   const {drawerOpen, menue, projectOverview} = useSelector(
-    (store: RootState) => store.project
-  );
+    (store: RootState) => store.project);
   const dispatch = useDispatch();
   const classes = useStyles();
 
