@@ -121,9 +121,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {loading && (
+          {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
-          )}
+          )} */}
 
             {folderList.folders.map((row: FolderInterface) => {
               const DateString: string = momentdeDateFormat(row.createdAt);

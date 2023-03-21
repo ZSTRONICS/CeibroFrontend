@@ -19,7 +19,7 @@ import CreateProjectStatus from "./CreateProjectStatus";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { ProjectOwners } from "constants/interfaces/project.interface";
-import { getUniqueObjectsFromArr, uniqueArray } from "components/Utills/Globals/Common";
+import { getUniqueObjectsFromArr,  } from "components/Utills/Globals/Common";
 
 const ProjectOverview = () => {
 

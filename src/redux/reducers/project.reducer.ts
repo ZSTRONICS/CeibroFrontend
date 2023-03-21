@@ -203,6 +203,12 @@ const NavigationReducer = (
       return {
         ...state,
         drawerOpen: false,
+        getAllProjectRoles: [],
+        role: rolesTemplate,
+        memberList: [],
+        groupList: [],
+        folderList: { folders: [], files: [] },
+        projectOverview: projectOverviewTemplate,
       };
 
     case config.SET_MENUE:
@@ -218,26 +224,27 @@ const NavigationReducer = (
       };
     }
     case requestSuccess(GET_PROJECTS): {
-      let projects = action.payload.results
+      let projects = action.payload.results;
       return {
         ...state,
-        allProjects: [...projects]
+        allProjects: [...projects],
       };
     }
 
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
-      const projectLabels = action.payload.projectDetails.map((project: any) => {
-        return {
-          label: project.title,
-          value: project._id,
+      const projectLabels = action.payload.projectDetails.map(
+        (project: any) => {
+          return {
+            label: project.title,
+            value: project._id,
+          };
         }
-      });
+      );
       state.projectWithMembers = action.payload.projectDetails;
       return {
         ...state,
-        allProjectsTitles: [...projectLabels]
-      }
-
+        allProjectsTitles: [...projectLabels],
+      };
     }
 
     case requestSuccess(GET_PROJECTS_MEMBERS): {
@@ -249,7 +256,7 @@ const NavigationReducer = (
     case SET_PROJECT_OVERVIEW: {
       return {
         ...state,
-        projectOverview: action.payload
+        projectOverview: action.payload,
       };
     }
 
@@ -347,14 +354,16 @@ const NavigationReducer = (
     }
 
     case requestSuccess(GET_PROJECT_DETAIL): {
-      let project = action.payload.result
+      let project = action.payload.result;
 
-      project.owner = action.payload.result.owner?.map((user: UserInterface) => {
-        return {
-          label: user?.firstName + " " + user?.surName,
-          value: user?._id,
-        };
-      })
+      project.owner = action.payload.result.owner?.map(
+        (user: UserInterface) => {
+          return {
+            label: user?.firstName + " " + user?.surName,
+            value: user?._id,
+          };
+        }
+      );
       return {
         ...state,
         projectOverview: project,
@@ -414,7 +423,6 @@ const NavigationReducer = (
         workDrawer: true,
       };
     }
-
 
     case SET_ROLE: {
       return {

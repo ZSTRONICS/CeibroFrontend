@@ -86,9 +86,9 @@ export const CustomMuiList = (props: any) => {
                 }}
                 id={labelId}
                 primary={`${member.firstName} ${member.surName}`}
-                secondary={`${
+                secondary={`Company. ${
                   member?.companyName
-                    ? "Company ." + member?.companyName
+                    ?  member?.companyName
                     : "N/A"
                 }`}
               />
