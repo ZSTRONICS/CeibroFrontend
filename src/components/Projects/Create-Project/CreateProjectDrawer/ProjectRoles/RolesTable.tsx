@@ -287,8 +287,9 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   dataContainer: {
+    paddingBottom: "100px",
     height: "680px",
-    overflow: "auto",
+    overflowY: "auto",
   },
   roleChip: {
     display: "flex",

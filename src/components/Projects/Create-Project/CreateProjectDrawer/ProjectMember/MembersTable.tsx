@@ -225,11 +225,14 @@ const RolesTable = () => {
   const openCreateMember = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
+  console.log("memberList", memberList);
 
   return (
-    <TableContainer style={{ height: "100%", overflow: "visible" }}>
+    <TableContainer style={{ height: "100%", paddingBottom: "100px" }}>
       <Table className={classes.table} stickyHeader aria-label="sticky table">
-        <TableHead style={{ overflow: "visible" }}>
+        <TableHead
+        // style={{ overflow: "visible" }}
+        >
           <TableRow>
             <TableCell className={classes.rowTop}>Name</TableCell>
             <TableCell className={classes.rowTop} align="left">

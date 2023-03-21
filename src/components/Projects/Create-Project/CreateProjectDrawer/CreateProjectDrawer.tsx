@@ -31,7 +31,6 @@ const CreateProjectDrawer = () => {
         />
         <ProjectDrawerMenu />
         <CreateProjectBody />
-        {/* <CreateProjectFooter /> */}
         {menue === 1 ? <CreateProjectFooter /> : <></>}
       </div>
     </Drawer>
@@ -44,14 +43,16 @@ const useStyles = makeStyles({
   outerWrapper: {
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,
-    height: "calc(100vh-213px)",
+    // height: "calc(100vh-213px)",
+    height: "100vh",
     overflowY: "hidden",
     "@media (max-width:960px)": {
       width: "100vw",
       // overflowY: "auto",
     },
-    "$ .MuiDrawer-paper": {
+    "& .MuiDrawer-paper": {
       overflowY: "hidden",
+      flexDirection: "row",
     },
   },
 });
