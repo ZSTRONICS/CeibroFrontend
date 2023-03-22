@@ -272,7 +272,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
   };
 
   const handleSubTaskCard = (e: any) => {
-    //console.log(e.currentTarget, e.target);
     // if(e.currentTarget !== e.target ) return;
     e.stopPropagation();
     dispatch({

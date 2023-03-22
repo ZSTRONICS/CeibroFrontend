@@ -31,7 +31,6 @@ function TaskList() {
 
   // let headerHeight = 10;
   // if(props.props.current){
-  //   console.log(window.innerWidth, props.props.current.clientHeight);
   // }
   let filterTask = [...allTask];
 

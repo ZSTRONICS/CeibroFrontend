@@ -225,7 +225,6 @@ const RolesTable = () => {
   const openCreateMember = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
-  console.log("memberList", memberList);
 
   return (
     <TableContainer style={{ height: "100%", paddingBottom: "100px" }}>
@@ -280,7 +279,7 @@ const RolesTable = () => {
                       <RollOverMenu
                         edit="Edit"
                         showDelBtn={true}
-                        handleDele={() => handleDelete(member._id)}
+                        handleDelete={() => handleDelete(member._id)}
                         handleEdit={() => {
                           handleEditMember(member);
                         }}

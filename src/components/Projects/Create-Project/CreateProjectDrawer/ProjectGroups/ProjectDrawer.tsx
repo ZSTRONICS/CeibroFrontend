@@ -142,7 +142,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           color="primary"
           variant="contained"
           onClick={handleSubmit}
-          disabled={isDiabled}
+          disabled={String(name).length > 0 ? false : true}
         >
           {selectedGroup._id ? "Update" : "Add"}
 

@@ -131,7 +131,6 @@ const MemberDialog = () => {
   //   checkGroupId = selectedMember?.group?.hasOwnProperty('_id')
   //   setDoOnce(false)
   // }
-  // console.log('checkRoleId',checkRoleId, 'checkGroupId',checkGroupId);
   
   const handleSubmit = (e:any) => {
     if (selectedMember._id) {

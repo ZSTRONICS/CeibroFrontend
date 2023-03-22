@@ -636,7 +636,77 @@ const NavigationReducer = (
         }
       }
     }
+    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+    case PROJECT_CONFIG.PROJECT_GROUP_CREATED: 
+      let newGroup = action.payload;
+      if (String(state.projectOverview._id) !== String(newGroup.project)) {
+        return {
+          ...state,
+        }
+      } else {
+        if (state.groupList.length === 0) {
+          state.groupList.push(newGroup);
+        } else {
+          const isExistingGroup = state.groupList.findIndex((prevRole: any) => String(prevRole._id) === String(newGroup._id))
+          if (isExistingGroup > -1) {
+            state.groupList[isExistingGroup] = newGroup
 
+            if (String(state.role._id) === String(newGroup._id)) {
+              state.role = newGroup
+            }
+          } else {
+            state.groupList = [...state.groupList,newGroup];
+          }
+        }
+
+        return {
+          ...state,
+          groupList: [...state.groupList],
+        }
+      }
+    
+
+    case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
+      let members = action.payload;
+      let newMembers: any = []
+      if (state.memberList.length === 0) {
+        state.memberList = members;
+      } else {
+        members.forEach((member: any) => {
+          const isExistingMember = state.memberList.findIndex((prevMember: any) => String(prevMember._id) === String(member._id))
+          if (isExistingMember > -1) {
+            state.memberList[isExistingMember] = member
+          } else {
+            newMembers.push(member)
+          }
+        });
+      }
+
+      if (newMembers.length > 0) {
+        state.memberList = [ ...state.memberList, ...newMembers];
+      }
+        return {
+          ...state,
+          memberList: [...state.memberList],
+        }
+    }
+
+    case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED: {
+      let member = action.payload;
+      const isExistingMember = state.memberList.findIndex((prevMember: any) => String(prevMember._id) === String(member._id))
+      if (isExistingMember > -1) {
+        state.memberList[isExistingMember] = member
+      }
+
+      if (String(state.projectOverview._id) === String(member._id)) {
+        state.projectOverview = member
+      }
+
+      return {
+        ...state,
+        memberList: [...state.memberList],
+      }
+    }
     case requestSuccess(GET_GROUP_BY_ID): {
       return {
         ...state,
