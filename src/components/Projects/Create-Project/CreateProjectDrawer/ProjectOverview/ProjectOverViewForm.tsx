@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +14,16 @@ const ProjectOverViewForm = () => {
   );
   const [formData, setFormData] = useState({
     title: projectOverview.title,
-    location:projectOverview.location,
-    description:projectOverview.description
+    location: projectOverview.location,
+    description: projectOverview.description,
   });
+  useEffect(() => {
+    setFormData({
+      title: projectOverview.title,
+      location: projectOverview.location,
+      description: projectOverview.description,
+    });
+  }, [projectOverview]);
 
   const handleInputChange = (event: any) => {
     const { name, value } = event.target;
@@ -53,10 +60,7 @@ const ProjectOverViewForm = () => {
 
   return (
     <Grid container className={classes.outerWrapper}>
-      <Grid
-        item
-        xs={12}
-      >
+      <Grid item xs={12}>
         <InputText
           className={classes.input}
           name="title"
@@ -71,7 +75,7 @@ const ProjectOverViewForm = () => {
       <Grid item xs={12} style={styles.inputWrapper}>
         <InputText
           className={classes.input}
-          value={formData.location|| ""}
+          value={formData.location || ""}
           onChange={handleInputChange}
           onBlur={handleLocationBlur}
           name="location"
@@ -98,7 +102,7 @@ const ProjectOverViewForm = () => {
           }}
           variant="standard"
           onBlur={handleDescriptionBlur}
-          value={formData.description||""}
+          value={formData.description || ""}
           onChange={handleInputChange}
         />
       </Grid>
@@ -136,12 +140,13 @@ const useStyles = makeStyles({
     borderRadius: 5,
   },
   textfield: {
-    '& :hover:not(.Mui-disabled)::before':{
+    "& :hover:not(.Mui-disabled)::before": {
       borderBottom: "none",
     },
-    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:after, .MuiInputBase-root-MuiInput-root:after": {
-      borderBottom: "none",
-    },
+    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:after, .MuiInputBase-root-MuiInput-root:after":
+      {
+        borderBottom: "none",
+      },
     "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before, .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before ":
       {
         borderBottom: "none",
