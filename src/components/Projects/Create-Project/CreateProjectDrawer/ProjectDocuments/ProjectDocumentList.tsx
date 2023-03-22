@@ -213,7 +213,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                 return (
                   <TableRow key={file._id} className={classes.rowContainer}>
                     <TableCell scope="row">
-                      <DocumentNameTag>{file.fileName}</DocumentNameTag>
+                    <a href={file.fileUrl} download style={{ textDecoration: 'none',cursor:'pointer'}}>
+                       <DocumentNameTag >{file.fileName}</DocumentNameTag>
+                       </a>
                     </TableCell>
                     <TableCell
                       scope="row"
