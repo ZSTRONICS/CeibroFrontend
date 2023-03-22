@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,14 +27,12 @@ function Sidebar() {
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
+  const [doOnce, setDoOnce] = useState(true)
   const handleRouteClick = (config: SingleConfig) => {
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
     }
-    if (window.location.pathname.includes("projects")) {
-      dispatch(getAllProjects());
-      dispatch(getAllProjectsWithMembers());
-    }
+
     history.push(`/${config.path}`);
     if (isTabletOrMobile && navbarOpen) {
       dispatch(appActions.setNavbarOpen(false));
@@ -55,6 +53,15 @@ function Sidebar() {
     dispatch(appActions.toggleNavbar());
   };
 
+
+  if (doOnce) {
+    if (window.location.pathname.includes("projects")) {
+      dispatch(getAllProjects());
+      dispatch(getAllProjectsWithMembers());
+    }
+    setDoOnce(false)
+  }
+
   return (
     <OutsideClickHandler
       onOutsideClick={toggleSidebar}
@@ -74,11 +81,10 @@ function Sidebar() {
               return (
                 <div
                   key={config.title}
-                  className={`${classes.menue} ${
-                    window.location.pathname.includes(config.path)
+                  className={`${classes.menue} ${window.location.pathname.includes(config.path)
                       ? classes.active
                       : ""
-                  }`}
+                    }`}
                   onClick={() => handleRouteClick(config)}
                 >
                   <div className={classes.iconWrapper}>
