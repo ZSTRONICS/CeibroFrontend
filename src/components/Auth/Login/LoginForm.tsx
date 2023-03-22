@@ -219,7 +219,7 @@ const LoginForm: React.FC<Props> = (props) => {
               )}
               <CBox mb={3.1}>
                 <TextField
-                  placeholder={t("auth.register.first_name")}
+                  placeholder={t("auth.Email")}
                   className={classes.inputs}
                   name="email"
                   inputProps={{

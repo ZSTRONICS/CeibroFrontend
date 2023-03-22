@@ -104,7 +104,6 @@ const App: React.FC<MyApp> = () => {
     const filesToUpload = selectedFilesToBeUploaded.files;
     const moduleType = selectedFilesToBeUploaded.moduleName;
     const moduleId = selectedFilesToBeUploaded.moduleId;
-    //console.log("Uploading pending Files => ", filesToUpload, moduleId, moduleType);
 
     Array.from(filesToUpload).forEach((file: any) => {
       const chunkSize = 1024 * 1024; // 1MB chunks
@@ -252,15 +251,12 @@ const App: React.FC<MyApp> = () => {
       });
 
       // sock.on("reconnect", (attempt) => {
-      //   console.log("=>>>> SOCKET RECONNECTED <<<<=");
 
       //   socket.setSocket(sock);
       // });
 
       // sock.on("disconnect", (reason) => {
-      //   console.log("=>>>> SOCKET DISCONNECTED <<<<=");
       //   if (reason === "io server disconnect") {
-      //     console.log("=>>>> RECONNECTING SOCKET TO SERVER <<<<=");
       //     // the disconnection was initiated by the server, you need to reconnect manually
       //     socket.getSocket().connect();
       //   }
@@ -522,7 +518,6 @@ const App: React.FC<MyApp> = () => {
             if (!data.access.includes(String(user._id))) {
               return;
             }
-            console.log("PROJECT ", eventType, data);
             dispatch({
               type: eventType,
               payload: data,
@@ -531,27 +526,32 @@ const App: React.FC<MyApp> = () => {
 
           case PROJECT_CONFIG.ROLE_UPDATED:
           case PROJECT_CONFIG.ROLE_CREATED:
-            console.log("ROLE ", eventType, data);
             dispatch({
               type: eventType,
               payload: data,
             });
             break;
 
-          case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
-            console.log("PROJECT_GROUP_CREATED ", data);
-            break;
-
-          case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-            console.log("PROJECT_GROUP_UPDATED ", data);
+            case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+            case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+            dispatch({
+              type: eventType,
+              payload: data,
+            });
             break;
 
           case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED:
-            console.log("PROJECT_MEMBERS_ADDED ", data);
+            dispatch({
+              type: PROJECT_CONFIG.PROJECT_MEMBERS_ADDED,
+              payload: data,
+            });
             break;
 
           case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED:
-            console.log("PROJECT_MEMBERS_UPDATED ", data);
+            dispatch({
+              type: PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED,
+              payload: data,
+            });
             break;
 
           case PROJECT_CONFIG.REFRESH_ROLES:

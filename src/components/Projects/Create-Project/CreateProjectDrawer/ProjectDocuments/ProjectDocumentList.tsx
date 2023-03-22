@@ -74,7 +74,6 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const handleFolderClick = (folder: FolderInterface) => {
     props.onFolderClick?.(folder);
   };
-  // console.log('folderList',folderList);
   const openAccessModal = (e: any, folder: any) => {
     setSelectedFolderFile(folder);
     dispatch(projectActions.openProjectDocumentModal());
