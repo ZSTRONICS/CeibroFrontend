@@ -14,7 +14,7 @@ function StatusModal(props: any) {
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const [status, setStatus] = React.useState(props.editStatusValue);
+  const [status, setStatus] = React.useState<string>(props.editStatusValue?props.editStatusValue:"");
 
   const projectStatus = projectOverview.extraStatus.filter(
     (item: string) => item !== "" && item !== undefined
@@ -86,16 +86,8 @@ function StatusModal(props: any) {
             maxLength={15}
             onChange={(e: any) => handleChangeStatusValue(e)}
           />
-          <CustomStack justifyContent="flex-end" py={2.2} gap={1.2}>
-            <CButton
-              variant="contained"
-              label={props.btnLabel}
-              onClick={(e: any) => {
-                handleStatus(e, props.btnLabel === "Add" ? false : true);
-              }}
-              disabled={String(status).length > 0 ? false : true}
-            />
-            <CButton
+          <CustomStack justifyContent="flex-end" py={2.2} gap={1.2}> 
+          <CButton
               styles={{
                 borderColor: "#9D9D9D",
                 fontSize: 12,
@@ -109,6 +101,15 @@ function StatusModal(props: any) {
               onClick={handleCloseModal}
               variant="outlined"
             />
+            <CButton
+              variant="contained"
+              label={props.btnLabel}
+              disabled={String(status).length > 0 ? false : true}
+              onClick={(e: any) => {
+                handleStatus(e, props.btnLabel === "Add" ? false : true);
+              }}
+            />
+           
           </CustomStack>
         </>
       }

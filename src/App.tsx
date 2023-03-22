@@ -513,21 +513,46 @@ const App: React.FC<MyApp> = () => {
             });
 
             break;
+          // projects
           case PROJECT_CONFIG.REFRESH_PROJECTS:
             dispatch(getAllProjects());
             break;
+          // case PROJECT_CONFIG.PROJECT_CREATED:
+
+          //   break;
+          // case PROJECT_CONFIG.PROJECT_UPDATED:
+
+          //   break;
+
+          // projects roles
           case PROJECT_CONFIG.REFRESH_ROLES:
             dispatch(
               PROJECT_APIS.getProjectRolesById({ other: data.projectId })
             );
             break;
+
+          // case PROJECT_CONFIG.ROLE_CREATED:
+          //   break;
+
+          // case PROJECT_CONFIG.ROLE_UPDATED:
+
+          //   break;
+
           case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
             dispatch(getGroup({ other: data.projectId }));
             break;
-          case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
-            dispatch(getMember({ other:  data.projectId }));
-            break;
+          // case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+          //   break;
+          // case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+          //   break;
 
+          case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
+            dispatch(getMember({ other: data.projectId }));
+            break;
+            // case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED:
+            // break  
+            // case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED:
+            // break  
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             try {
               const payload = {
