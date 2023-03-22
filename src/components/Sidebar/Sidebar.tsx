@@ -54,13 +54,13 @@ function Sidebar() {
   };
 
 
-  if (doOnce) {
-    if (window.location.pathname.includes("projects")) {
-      dispatch(getAllProjects());
-      dispatch(getAllProjectsWithMembers());
-    }
-    setDoOnce(false)
-  }
+  // if (doOnce) {
+  //   if (window.location.pathname.includes("projects")) {
+  //     dispatch(getAllProjects());
+  //     dispatch(getAllProjectsWithMembers());
+  //   }
+  //   setDoOnce(false)
+  // }
 
   return (
     <OutsideClickHandler

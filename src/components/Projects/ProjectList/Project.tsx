@@ -59,8 +59,8 @@ const Project = () => {
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
-      // dispatch(getAllProjects());
-      // dispatch(getAllProjectsWithMembers());
+      dispatch(getAllProjects());
+      dispatch(getAllProjectsWithMembers());
       const payload = {
         success: (res: any) => {
           //get the difference of two arrays
