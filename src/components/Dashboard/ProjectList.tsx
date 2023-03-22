@@ -4,10 +4,6 @@ import NoData from "components/Chat/NoData";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllProjects,
-  getProjectsWithPagination,
-} from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 

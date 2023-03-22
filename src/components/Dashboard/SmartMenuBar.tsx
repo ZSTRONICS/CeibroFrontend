@@ -26,14 +26,6 @@ const SmartMenuBar = () => {
   const { connections } = useSelector((state: RootState) => state?.user);
   const { invites } = useSelector((state: RootState) => state?.user);
 
-  useEffect(() => {
-    dispatch(getMyConnectionsCount());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getMyInvitesCount());
-  }, []);
-
   const goToConnections = () => {
     history.push("/connections");
   };

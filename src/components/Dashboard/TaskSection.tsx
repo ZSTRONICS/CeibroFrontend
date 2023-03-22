@@ -35,11 +35,6 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const history = useHistory();
   const classes = useStyles();
 
-  React.useEffect(() => {
-    dispatch(getAllProjectsWithMembers());
-    dispatch(getAllTask());
-  }, []);
-
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };

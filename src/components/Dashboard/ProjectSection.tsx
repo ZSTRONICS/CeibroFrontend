@@ -43,10 +43,6 @@ const ProjectSection = (props: any) => {
   const handleClick = () => {
     history.push("/projects");
   };
-  useEffect(() => {
-    dispatch(getAllProjects());
-    dispatch(getAllProjectsWithMembers());
-  }, []);
 
   return (
     <div>
