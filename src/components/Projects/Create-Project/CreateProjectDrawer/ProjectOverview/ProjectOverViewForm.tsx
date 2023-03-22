@@ -1,122 +1,10 @@
-// import { Grid } from "@mui/material";
-// import React from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import projectActions from "redux/action/project.action";
-// import { RootState } from "redux/reducers";
-// import AuthReducer from "redux/reducers/auth.reducer";
-// import InputText from "../../../../Utills/Inputs/InputText";
-// import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
-
-// const ProjectOverViewForm = () => {
-//   const dispatch = useDispatch();
-//   const projectOverview = useSelector(
-//     (state: RootState) => state.project.projectOverview
-//   );
-
-//   // const handleTitleChange = (e: any) => {
-//   //   dispatch(
-//   //     projectActions.setProjectOverview({
-//   //       ...projectOverview,
-//   //       title: e.target.value,
-//   //     })
-//   //   );
-//   // };
-//   // const handleLocationChange = (e: any) => {
-//   //   dispatch(
-//   //     projectActions.setProjectOverview({
-//   //       ...projectOverview,
-//   //       location: e.target.value,
-//   //     })
-//   //   );
-//   // };
-
-//   const handleDescriptionChange = (e: any) => {
-//     dispatch(
-//       projectActions.setProjectOverview({
-//         ...projectOverview,
-//         description: e.target.value,
-//       })
-//     );
-//   };
-
-//   return (
-//     <Grid container>
-//       {/* <Grid
-//         item
-//         style={{
-//           display: "flex",
-//           flexDirection: "column",
-//           marginTop: "15px",
-//           width: "100%",
-//           maxWidth: "700px",
-//           paddingLeft: "40px",
-//         }}
-//       >
-//         <Grid item
-//         // xs={12}
-//         >
-//           <InputText
-//             onChange={handleTitleChange}
-//             name="title"
-//             placeholder="Enter Project title"
-//             value={projectOverview.title || ""}
-//             disabled={projectOverview.isDefault ? true : false}
-//           />
-//         </Grid>
-
-//         <Grid
-//           item
-//           // xs={12}
-//           // style={styles.inputWrapper}
-//         >
-//           <InputText
-//             onChange={handleLocationChange}
-//             name="location"
-//             placeholder="Enter a location address"
-//             value={projectOverview.location || ""}
-//           />
-//         </Grid>
-//       </Grid> */}
-
-//       <Grid
-//         item
-//         // xs={12}
-//         sx={{
-//           marginTop: "30px",
-//           marginLeft: "45px",
-//           width: "100%",
-//           maxWidth:"940px",
-//           display: "flex",
-//           // flexDirection: "row",
-//           "@media(max-width:1125px)": {
-//             marginLeft: "0px",
-//           },
-//         }}
-//       >
-//         <InputTextArea
-//           onChange={handleDescriptionChange}
-//           name="description"
-//           placeholder="Enter project description"
-//           value={projectOverview.description}
-//         />
-//       </Grid>
-//     </Grid>
-//   );
-// };
-
-// export default ProjectOverViewForm;
-
-import { colors } from "@material-ui/core";
+import { useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, TextField } from "@mui/material";
-import { CBox } from "components/material-ui";
-import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import AuthReducer from "redux/reducers/auth.reducer";
 import InputText from "../../../../Utills/Inputs/InputText";
-import InputTextArea from "../../../../Utills/Inputs/InputTextArea";
 
 const ProjectOverViewForm = () => {
   const classes = useStyles();
@@ -124,29 +12,41 @@ const ProjectOverViewForm = () => {
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
+  const [formData, setFormData] = useState({
+    title: projectOverview.title,
+    location:projectOverview.location,
+    description:projectOverview.description
+  });
 
-  const handleTitleChange = (e: any) => {
+  const handleInputChange = (event: any) => {
+    const { name, value } = event.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+  const handleTitleBlur = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
-        title: e.target.value,
+        title: formData.title,
       })
     );
   };
-  const handleLocationChange = (e: any) => {
+  const handleLocationBlur = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
-        location: e.target.value,
+        location: formData.location,
       })
     );
   };
 
-  const handleDescriptionChange = (e: any) => {
+  const handleDescriptionBlur = (e: any) => {
     dispatch(
       projectActions.setProjectOverview({
         ...projectOverview,
-        description: e.target.value,
+        description: formData.description,
       })
     );
   };
@@ -156,16 +56,14 @@ const ProjectOverViewForm = () => {
       <Grid
         item
         xs={12}
-        // sx={{
-        //   width:"700px",
-        // }}
       >
         <InputText
           className={classes.input}
-          onChange={handleTitleChange}
           name="title"
           placeholder="Enter title"
-          value={projectOverview.title || ""}
+          value={formData.title || ""}
+          onChange={handleInputChange}
+          onBlur={handleTitleBlur}
           disabled={projectOverview.isDefault ? true : false}
         />
       </Grid>
@@ -173,10 +71,11 @@ const ProjectOverViewForm = () => {
       <Grid item xs={12} style={styles.inputWrapper}>
         <InputText
           className={classes.input}
-          onChange={handleLocationChange}
+          value={formData.location|| ""}
+          onChange={handleInputChange}
+          onBlur={handleLocationBlur}
           name="location"
           placeholder="Enter address"
-          value={projectOverview.location || ""}
         />
       </Grid>
 
@@ -198,17 +97,10 @@ const ProjectOverViewForm = () => {
             padding: "10px",
           }}
           variant="standard"
-          onChange={handleDescriptionChange}
-          value={projectOverview.description}
+          onBlur={handleDescriptionBlur}
+          value={formData.description||""}
+          onChange={handleInputChange}
         />
-        {/* <CBox className={classes.titleLabel}>Description</CBox> */}
-
-        {/* <InputTextArea
-          onChange={handleDescriptionChange}
-          name="description"
-          placeholder="Enter project description"
-          value={projectOverview.description}
-        /> */}
       </Grid>
     </Grid>
   );
@@ -244,10 +136,13 @@ const useStyles = makeStyles({
     borderRadius: 5,
   },
   textfield: {
-    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:after": {
+    '& :hover:not(.Mui-disabled)::before':{
       borderBottom: "none",
     },
-    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:after, .MuiInputBase-root-MuiInput-root:after": {
+      borderBottom: "none",
+    },
+    "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before, .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before ":
       {
         borderBottom: "none",
       },

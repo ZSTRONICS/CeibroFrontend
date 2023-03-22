@@ -167,10 +167,9 @@ const RolesTable = () => {
                     </ProjectSubHeadingTag>
                   )}
                   {role.admin !== true && (
-                    <Grid container gap={2}>
-                      {rolePermission && (
-                        <Grid item width="250px">
-                          {haveAnyRolePermission === true && (
+                    <Grid container gap={3}>
+                      {rolePermission && (<>
+                       {haveAnyRolePermission === true && ( <Grid item width="250px">
                             <CustomStack
                               gap={1}
                               divider={
@@ -194,9 +193,8 @@ const RolesTable = () => {
                                 <RoleSubLabelTag>Delete</RoleSubLabelTag>
                               )}
                             </CustomStack>
-                          )}
                         </Grid>
-                      )}
+                      )}</>)}
                       {memberPermission && (
                         <Grid item width="250px">
                           {haveAnyMemberPermission === true && (

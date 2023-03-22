@@ -146,7 +146,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       component="th"
                       scope="row"
                     >
-                      <Typography
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor:'pointer' }}>
+                        <Typography
                         className={`${classes.fileName}`}
                         onClick={() =>
                           handleFileClick(file.fileUrl, file.fileType)
@@ -154,6 +155,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       >
                         {file.fileName}
                       </Typography>
+                      </a>
+                      
                     </TableCell>
                     <TableCell
                       component="th"

@@ -9,10 +9,11 @@ interface InputTextInterface {
   className?: any;
   name?: any;
   disabled?: boolean;
+  onBlur?:any
 }
 
 const InputText: FC<InputTextInterface> = (props) => {
-  const { placeholder, value, className, name, disabled } = props;
+  const { placeholder, value, className, name, onBlur, disabled } = props;
   return (
     <div style={{ width: "100%", maxWidth: "900px" }}>
       <input
@@ -22,6 +23,7 @@ const InputText: FC<InputTextInterface> = (props) => {
         onChange={(e: any) => props.onChange?.(e)}
         value={value || ""}
         name={name}
+        onBlur={onBlur}
         disabled={disabled}
       />
     </div>

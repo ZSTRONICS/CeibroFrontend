@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { ThemeProvider, createTheme, } from '@mui/material/styles';
+
 import de from "date-fns/locale/de";
 // import useStyles from "components/Tasks/SubTasks/CreateSubTaskStyles";
 // import { } from "/styles";
-import { makeStyles } from "@material-ui/styles";
-import { colors } from "@material-ui/core";
+import { colors, makeStyles } from "@material-ui/core";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
@@ -31,8 +32,9 @@ function CDatePicker(props: any) {
                 Due date
               </Typography>
             </div>
-            <div>
+            <div className={classes.datePickerContainer}>
               <DatePicker
+               className={classes.root}
                 {...props}
                 label={props.showLabel === true ? "" : "Due date"}
                 // mask="__-__-____"
@@ -45,7 +47,7 @@ function CDatePicker(props: any) {
                 renderInput={(params: any) => (
                   <TextField
                     // disableUnderline={true}
-                    border="none"
+                    // border="none"
                     variant="standard"
                     {...params}
                     error={false}
@@ -85,9 +87,31 @@ function CDatePicker(props: any) {
     </LocalizationProvider>
   );
 }
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
+  root: {
+    "& > *": {
+        ':hover':{
+              border:'1px solid red'
+        },
+      '.MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before':{
+      // borderBottom: 'none',
+  
+      },
+    },
+    '& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible': {
+      backgroundColor: 'red',
+      color: 'red',
+    },
+    '& .Mui-selected, & .Mui-selected.Mui-focusVisible': {
+      backgroundColor: 'red',
+      color: 'red',
+    },
+  },
   datePickerContainer:{
-    '& MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before':{},
+    '& :hover': {
+      borderBottom: 'none',
+    },
+
     "& .MuiFormControl-root-MuiTextField-root":{
        "& .MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
@@ -127,5 +151,5 @@ const useStyles = makeStyles({
     padding: "0 10px",
     backgroundColor: "white",
   },
-});
+}));
 export default CDatePicker;

@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import projectActions, {
   createProject,
   deleteProject,
+  getAllProjectsWithMembers,
   getProjectsWithPagination,
   updateProject,
 } from "redux/action/project.action";
@@ -37,6 +38,7 @@ const CreateProjectBody = () => {
     description: projectOverview.description,
     location:projectOverview.location,
   };
+  
   const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
@@ -55,10 +57,11 @@ const CreateProjectBody = () => {
         body: data,
         success: (res) => {
           toast.success("Project created");
-          // setLoading(true);
+          dispatch(getAllProjectsWithMembers());
           dispatch(
             projectActions.setSelectedProject(res.data.createProject._id)
-          );
+            );
+            dispatch(projectActions.setProjectOverview(res.data.createProject));
         },
         finallyAction: () => {
           setLoading(false);
