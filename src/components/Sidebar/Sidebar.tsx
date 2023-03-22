@@ -12,10 +12,6 @@ import OutsideClickHandler from "react-outside-click-handler";
 import appActions from "../../redux/action/app.action";
 import "./sidebar.css";
 import { socket } from "../../services/socket.services";
-import {
-  getAllProjects,
-  getAllProjectsWithMembers,
-} from "redux/action/project.action";
 
 function Sidebar() {
   const classes = useStyles();
@@ -27,7 +23,6 @@ function Sidebar() {
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
-  const [doOnce, setDoOnce] = useState(true)
   const handleRouteClick = (config: SingleConfig) => {
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
@@ -52,15 +47,6 @@ function Sidebar() {
   const toggleSidebar = () => {
     dispatch(appActions.toggleNavbar());
   };
-
-
-  if (doOnce) {
-    if (window.location.pathname.includes("projects")) {
-      dispatch(getAllProjects());
-      dispatch(getAllProjectsWithMembers());
-    }
-    setDoOnce(false)
-  }
 
   return (
     <OutsideClickHandler

@@ -71,7 +71,7 @@ import {
   PROJECT_APIS,
 } from "redux/action/project.action";
 
-interface MyApp {}
+interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
@@ -513,46 +513,61 @@ const App: React.FC<MyApp> = () => {
             });
 
             break;
-          // projects
-          case PROJECT_CONFIG.REFRESH_PROJECTS:
-            dispatch(getAllProjects());
+          // case PROJECT_CONFIG.REFRESH_PROJECTS:
+          //   dispatch(getAllProjects());
+          //   break;
+
+          case PROJECT_CONFIG.PROJECT_UPDATED:
+          case PROJECT_CONFIG.PROJECT_CREATED:
+            if (!data.access.includes(String(user._id))) {
+              return;
+            }
+            console.log("PROJECT ", eventType, data);
+            dispatch({
+              type: eventType,
+              payload: data,
+            });
             break;
-          // case PROJECT_CONFIG.PROJECT_CREATED:
 
-          //   break;
-          // case PROJECT_CONFIG.PROJECT_UPDATED:
+          case PROJECT_CONFIG.ROLE_UPDATED:
+          case PROJECT_CONFIG.ROLE_CREATED:
+            console.log("ROLE ", eventType, data);
+            dispatch({
+              type: eventType,
+              payload: data,
+            });
+            break;
 
-          //   break;
+          case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+            console.log("PROJECT_GROUP_CREATED ", data);
+            break;
 
-          // projects roles
+          case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+            console.log("PROJECT_GROUP_UPDATED ", data);
+            break;
+
+          case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED:
+            console.log("PROJECT_MEMBERS_ADDED ", data);
+            break;
+
+          case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED:
+            console.log("PROJECT_MEMBERS_UPDATED ", data);
+            break;
+
           case PROJECT_CONFIG.REFRESH_ROLES:
             dispatch(
               PROJECT_APIS.getProjectRolesById({ other: data.projectId })
             );
             break;
 
-          // case PROJECT_CONFIG.ROLE_CREATED:
-          //   break;
-
-          // case PROJECT_CONFIG.ROLE_UPDATED:
-
-          //   break;
-
           case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
             dispatch(getGroup({ other: data.projectId }));
             break;
-          // case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
-          //   break;
-          // case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-          //   break;
 
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
             dispatch(getMember({ other: data.projectId }));
             break;
-            // case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED:
-            // break  
-            // case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED:
-            // break  
+            
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             try {
               const payload = {

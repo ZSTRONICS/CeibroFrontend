@@ -64,7 +64,7 @@ import {
   FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { ProjectGroupInterface, ProjectMemberInterface,memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { ProjectGroupInterface, ProjectMemberInterface, memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -75,7 +75,7 @@ interface ProjectReducerInt {
   projectWithMembers: any[];
   selectedProject: any;
   selectedRole: ProjectRolesInterface;
-  selectedMember:ProjectMemberInterface;
+  selectedMember: ProjectMemberInterface;
   filePath: any;
   fileType: any;
   selectedFolder: any;
@@ -110,12 +110,12 @@ interface ProjectReducerInt {
   getNewWorkList: any;
   userPermissions: any;
   allProjectsTitles: any[],
-  isOpenProjectDocumentModal:boolean
+  isOpenProjectDocumentModal: boolean
 }
 
 const projectReducer: ProjectReducerInt = {
-  isOpenProjectDocumentModal:false,
-  getAllProjectRoles:[],
+  isOpenProjectDocumentModal: false,
+  getAllProjectRoles: [],
   drawerOpen: false,
   menue: 1,
   allProjects: [],
@@ -123,32 +123,32 @@ const projectReducer: ProjectReducerInt = {
   projects: [],
   projectMembers: [],
   selectedProject: null,
-  selectedRole:{
-    _id:'',
-    admin:false,
-    createdAt:"",
-    updatedAt:'',
-    creator:"",
-    isDefaultRole:false,
-    memberPermission:{create:false,delete:false,edit:false},
-    rolePermission:{create:false,delete:false,edit:false},
-    members:[],
-    name:"",
-    project:"",
+  selectedRole: {
+    _id: '',
+    admin: false,
+    createdAt: "",
+    updatedAt: '',
+    creator: "",
+    isDefaultRole: false,
+    memberPermission: { create: false, delete: false, edit: false },
+    rolePermission: { create: false, delete: false, edit: false },
+    members: [],
+    name: "",
+    project: "",
   },
-  selectedMember:memberTemplate,
+  selectedMember: memberTemplate,
   filePath: null,
   fileType: null,
   selectedFolder: null,
   selectedGroup: {
-    members:[],
-    _id:"",
-    name:"",
-    project:"",
-    createdAt:"",
-    creator:"",
-    isDefaultGroup:false,
-    updatedAt:"",
+    members: [],
+    _id: "",
+    name: "",
+    project: "",
+    createdAt: "",
+    creator: "",
+    isDefaultGroup: false,
+    updatedAt: "",
   },
   selectedTimeProfile: null,
   projectOverview: projectOverviewTemplate,
@@ -169,12 +169,12 @@ const projectReducer: ProjectReducerInt = {
   rolesList: [],
   groupList: [],
   group: groupTemplate,
-  folderList: {folders:[],files:[]},
+  folderList: { folders: [], files: [] },
   memberList: [],
   getStatuses: [],
   getNewWorkList: [],
   userPermissions: null,
-  folderFiles: {folders:[],files:[]},
+  folderFiles: { folders: [], files: [] },
   projectProfile: [],
   load: false,
   getTimeProfileById: [],
@@ -220,15 +220,71 @@ const NavigationReducer = (
     case requestPending(GET_PROJECTS): {
       return {
         ...state,
-        allProjects: [],
       };
     }
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;
+      let newProjects: any = []
+
+      if (state.allProjects.length === 0) {
+        state.allProjects = projects;
+      } else {
+        projects.forEach((project: any) => {
+          const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+          if (isExistingProject > -1) {
+            state.allProjects[isExistingProject] = project
+          } else {
+            newProjects.push(project)
+          }
+        });
+      }
+
+      if (newProjects.length > 0) {
+        state.allProjects = [...newProjects, ...state.allProjects];
+      }
+
       return {
         ...state,
-        allProjects: [...projects],
+        allProjects: [...state.allProjects]
       };
+    }
+
+    case PROJECT_CONFIG.PROJECT_CREATED: {
+      let project = action.payload;
+      if (state.allProjects.length === 0) {
+        state.allProjects.push(project);
+      } else {
+        const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+        if (isExistingProject > -1) {
+          state.allProjects[isExistingProject] = project
+        } else {
+          state.allProjects = [project, ...state.allProjects];
+        }
+      }
+
+      return {
+        ...state,
+        allProjects: [...state.allProjects]
+      }
+    }
+
+    case PROJECT_CONFIG.PROJECT_UPDATED: {
+      let project = action.payload;
+
+      const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+      if (isExistingProject > -1) {
+        state.allProjects[isExistingProject] = project
+      }
+
+      if (String(state.projectOverview._id) === String(project._id)) {
+        state.projectOverview = project
+      }
+
+      return {
+        ...state,
+        allProjects: [...state.allProjects],
+        projectOverview: { ...state.projectOverview }
+      }
     }
 
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
@@ -520,9 +576,65 @@ const NavigationReducer = (
     case requestSuccess(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID): {
       return {
         ...state,
-        role: action.payload.result,
         getAllProjectRoles: action.payload.result,
       };
+    }
+
+    case PROJECT_CONFIG.ROLE_CREATED: {
+      let newRole = action.payload;
+
+      if (String(state.projectOverview._id) !== String(newRole.project)) {
+        return {
+          ...state,
+        }
+      } else {
+        if (state.getAllProjectRoles.length === 0) {
+          state.getAllProjectRoles.push(newRole);
+        } else {
+          const isExistingProject = state.getAllProjectRoles.findIndex((prevRole: any) => String(prevRole._id) === String(newRole._id))
+          if (isExistingProject > -1) {
+            state.getAllProjectRoles[isExistingProject] = newRole
+
+            if (String(state.role._id) === String(newRole._id)) {
+              state.role = newRole
+            }
+
+          } else {
+            state.getAllProjectRoles = [newRole, ...state.getAllProjectRoles];
+          }
+        }
+
+        return {
+          ...state,
+          getAllProjectRoles: [...state.getAllProjectRoles],
+          role: { ...state.role }
+        }
+      }
+    }
+
+    case PROJECT_CONFIG.ROLE_UPDATED: {
+      let updatedRole = action.payload;
+
+      if (String(state.projectOverview._id) !== String(updatedRole.project)) {
+        return {
+          ...state,
+        }
+      } else {
+        const isExistingRole = state.getAllProjectRoles.findIndex((prevRole: any) => String(prevRole._id) === String(updatedRole._id))
+        if (isExistingRole > -1) {
+          state.getAllProjectRoles[isExistingRole] = updatedRole
+        }
+
+        if (String(state.role._id) === String(updatedRole._id)) {
+          state.role = updatedRole
+        }
+
+        return {
+          ...state,
+          getAllProjectRoles: [...state.getAllProjectRoles],
+          role: { ...state.role }
+        }
+      }
     }
 
     case requestSuccess(GET_GROUP_BY_ID): {

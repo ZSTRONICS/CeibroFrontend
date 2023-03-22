@@ -15,20 +15,21 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjectsWithMembers());
     dispatch(getAllTask());
     dispatch(getAllProjects());
     dispatch(getMyConnectionsCount());
     dispatch(getMyInvitesCount());
+    dispatch(getAllProjectsWithMembers());
   }, []);
 
   useEffect(() => {
     if (headerRef.current.clientHeight) {
       setTimeout(() => {
         setShowProjectList(true);
-      }, 100);
+      }, 50);
     }
   });
+  
   const getHeaderHeight = () => {
     if (headerRef.current === undefined) {
       return;
