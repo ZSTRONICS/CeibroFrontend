@@ -63,7 +63,6 @@ const Project = () => {
       dispatch(getAllProjectsWithMembers());
       const payload = {
         success: (res: any) => {
-          //get the difference of two arrays
           setData(res.data);
         },
       };
