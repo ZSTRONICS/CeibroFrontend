@@ -33,12 +33,26 @@ const ProjectOverview = () => {
 
   // const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
 
-  const [showDate, setShowDate] = useState<any>("");
+  const [showDate, setShowDate] = useState<any>(
+    moment(projectOverview.dueDate, "DD-MM-YYYY").format("ddd MM DD YYYY")
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [doOnce, setDoOnce] = useState(true);
   const MemoizedAutocomplete = memo(Autocomplete);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    setShowDate(
+      moment(projectOverview.dueDate, "DD-MM-YYYY").format("ddd MM DD YYYY")
+    );
+    const localOwners = projectOverview.owner.map((owner: ProjectOwners) => {
+      return {
+        label: `${owner.firstName} ${owner.surName}`,
+        value: owner._id,
+      };
+    });
+    setOwnersList(localOwners);
+    
+  }, [projectOverview]);
   // let fixuser = [
   //   {
   //     _id: user._id,
@@ -47,20 +61,20 @@ const ProjectOverview = () => {
   //   },
   // ];
 
-  if (doOnce) {
-    const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
-      "ddd MM DD YYYY"
-    );
-    setShowDate(localized);
-    // fixuser &&
-    //   dispatch(
-    //     projectActions.setProjectOverview({
-    //       ...projectOverview,
-    //       owner: fixuser,
-    //     })
-    //   );
-    setDoOnce(false);
-  }
+  // if (doOnce) {
+  //   const localized = moment(projectOverview.dueDate, "DD-MM-YYYY").format(
+  //     "ddd MM DD YYYY"
+  //   );
+  //   setShowDate(localized);
+  //   // fixuser &&
+  //   //   dispatch(
+  //   //     projectActions.setProjectOverview({
+  //   //       ...projectOverview,
+  //   //       owner: fixuser,
+  //   //     })
+  //   //   );
+  //   setDoOnce(false);
+  // }
 
   let ownersTemp = useMemo(
     () =>

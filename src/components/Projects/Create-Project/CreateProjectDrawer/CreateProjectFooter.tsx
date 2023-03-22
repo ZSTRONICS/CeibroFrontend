@@ -72,7 +72,7 @@ const CreateProjectBody = () => {
 
   const handleProjectUpdate = (saveAsDraft = false) => {
     const data = getFormValues(saveAsDraft);
-    data.delete("projectPhoto");
+    // data.delete("projectPhoto");
     const payload = {
       body: data,
       success: () => {

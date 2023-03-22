@@ -277,6 +277,7 @@ const NavigationReducer = (
       }
 
       if (String(state.projectOverview._id) === String(project._id)) {
+        
         state.projectOverview = project
       }
 
