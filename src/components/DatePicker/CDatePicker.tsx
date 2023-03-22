@@ -86,6 +86,26 @@ function CDatePicker(props: any) {
   );
 }
 const useStyles = makeStyles({
+  datePickerContainer:{
+    '& MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before':{},
+    "& .MuiFormControl-root-MuiTextField-root":{
+       "& .MuiInputBase-root-MuiInput-root:before": {
+      borderBottom: "none",
+    },
+    },
+    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+      {
+        borderBottom: "none",
+   
+
+      },
+    "& .MuiInputBase-root-MuiInput-root:after": {
+      borderBottom: "none",
+    },
+   
+                        // border:'1px solid red',
+
+  },
   titleWrapper: {
     color: "#605C5C",
     fontFamily: "inter",
@@ -96,16 +116,7 @@ const useStyles = makeStyles({
     // borderRight: `1px solid ${colors.grey}`,
   },
   outerWrapper: {
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
-      {
-        borderBottom: "none",
-      },
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
-      borderBottom: "none",
-    },
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before": {
-      borderBottom: "none",
-    },
+
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

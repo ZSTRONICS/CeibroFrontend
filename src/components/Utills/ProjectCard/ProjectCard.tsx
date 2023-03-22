@@ -275,7 +275,7 @@ const useStyles = makeStyles({
   //   flexDirection: "row",
   // },
   status: {
-    "& .css-ahj2mt-MuiTypography-root": {
+    "& .MuiTypography-root": {
       fontSize: "10px",
     },
     background: "#6B737A",
@@ -287,7 +287,6 @@ const useStyles = makeStyles({
     padding: "2px 5px",
   },
   statusText: {
-    // color: "#6B737A",
     color: colors.white,
     fontSize: 10,
     fontWeight: 500,
