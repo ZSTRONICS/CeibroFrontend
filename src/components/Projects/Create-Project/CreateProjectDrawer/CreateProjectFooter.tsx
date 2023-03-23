@@ -36,9 +36,9 @@ const CreateProjectBody = () => {
     dueDate: projectOverview.dueDate,
     publishStatus: projectOverview.publishStatus,
     description: projectOverview.description,
-    location:projectOverview.location,
+    location: projectOverview.location,
   };
-  
+
   const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
@@ -60,8 +60,8 @@ const CreateProjectBody = () => {
           dispatch(getAllProjectsWithMembers());
           dispatch(
             projectActions.setSelectedProject(res.data.createProject._id)
-            );
-            dispatch(projectActions.setProjectOverview(res.data.createProject));
+          );
+          dispatch(projectActions.setProjectOverview(res.data.createProject));
         },
         finallyAction: () => {
           setLoading(false);
@@ -196,7 +196,7 @@ const CreateProjectBody = () => {
         <Button
           className={classes.trash}
           variant="outlined"
-          onClick={()=>dispatch(projectActions.closeDrawer())}
+          onClick={() => dispatch(projectActions.closeDrawer())}
           // disabled={projectOverview.isDefault}
         >
           Cancel
@@ -211,11 +211,9 @@ const CreateProjectBody = () => {
         onClick={() => handleSubmit(false)}
       >
         {isDiabled && loading && (
-          <CircularProgress 
-          size={20} 
-          className={classes.progress} />
+          <CircularProgress size={20} className={classes.progress} />
         )}
-        {!selectedProject ? "Create project":"Update"  }
+        {!selectedProject ? "Create project" : "Update"}
       </Button>
     </Grid>
   );
@@ -228,6 +226,7 @@ const useStyles = makeStyles({
     padding: "10px 20px",
     background: colors.white,
     "@media (max-width:960px)": {
+      // marginBottom: "0",
       flexDirection: "row",
       alignItems: "flex-end",
     },

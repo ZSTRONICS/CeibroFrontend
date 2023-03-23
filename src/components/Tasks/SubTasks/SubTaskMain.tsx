@@ -7,7 +7,7 @@ import CDatePicker from "components/DatePicker/CDatePicker";
 import DatePicker from "components/Utills/Inputs/DatePicker";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
@@ -15,11 +15,20 @@ import SubTaskList from "./SubTaskList";
 const SubTaskMain = () => {
   const { allSubTaskList } = useSelector((state: RootState) => state.task);
   const { user } = useSelector((state: RootState) => state.auth);
-
+  const headerRef: any = useRef();
   // let xsPoint = 12;
   // let mdPoint = 4;
   // let lgPoint = 3.2;
   const classes = useStyles();
+  const [showSubTaskList, setShowSubTaskList] = useState<boolean>(true);
+  useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      setTimeout(() => {
+        setShowSubTaskList(true);
+      }, 100);
+    }
+    window.addEventListener("resize", getHeaderHeight);
+  });
 
   // useEffect(() => {
   //   window.scrollTo(0, 0);
@@ -36,6 +45,14 @@ const SubTaskMain = () => {
       });
     });
     return count;
+  };
+  const getHeaderHeight = () => {
+    let contentHeight: any;
+    if (headerRef.current) {
+      contentHeight = window.innerHeight - headerRef.current.clientHeight + 500;
+    }
+    // window.innerHeight - (headerRef.current.clientHeight + 135);
+    return `${contentHeight}px`;
   };
 
   const options = [
@@ -71,9 +88,7 @@ const SubTaskMain = () => {
 
   return (
     <>
-      <Box
-      // sx={{ flexGrow: 1, maxHeight: "100%" }}
-      >
+      <Box sx={{ flexGrow: 2, maxHeight: "100%" }}>
         <Grid container spacing={1} className={classes.TaskWraper} rowGap={1}>
           <Grid
             item
@@ -151,8 +166,14 @@ const SubTaskMain = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box>
-        <SubTaskList results={allSubTaskList} />
+      <Box
+      sx={{
+        height: "100vh",
+      }}
+      >
+        <Grid item maxHeight={getHeaderHeight}>
+          <SubTaskList results={allSubTaskList} />
+        </Grid>
       </Box>
     </>
   );

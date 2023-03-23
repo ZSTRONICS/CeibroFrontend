@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme, } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import de from "date-fns/locale/de";
 // import useStyles from "components/Tasks/SubTasks/CreateSubTaskStyles";
@@ -34,13 +34,13 @@ function CDatePicker(props: any) {
             </div>
             <div className={classes.datePickerContainer}>
               <DatePicker
-               className={classes.root}
+                className={classes.root}
                 {...props}
                 label={props.showLabel === true ? "" : "Due date"}
                 // mask="__-__-____"
                 // value={showDate}
                 inputFormat={"dd.MM.yyyy"}
-                disablePast={props.IsdisablePast===false?false:true}
+                disablePast={props.IsdisablePast === false ? false : true}
                 // minDate={new Date().toISOString().slice(0, 10)}
                 minDate
                 // onChange={(newValue: any) => setShowDate(newValue)}
@@ -90,45 +90,51 @@ function CDatePicker(props: any) {
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
-        ':hover':{
-              border:'1px solid red'
-        },
-      '.MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before':{
-      // borderBottom: 'none',
-  
+      ":hover": {
+        border: "1px solid red",
+      },
+      ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
+        borderBottom: "none",
       },
     },
-    '& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible': {
-      backgroundColor: 'red',
-      color: 'red',
-    },
-    '& .Mui-selected, & .Mui-selected.Mui-focusVisible': {
-      backgroundColor: 'red',
-      color: 'red',
-    },
-  },
-  datePickerContainer:{
-    '& :hover': {
-      borderBottom: 'none',
-    },
-
-    "& .MuiFormControl-root-MuiTextField-root":{
-       "& .MuiInputBase-root-MuiInput-root:before": {
-      borderBottom: "none",
-    },
-    },
-    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+    "& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible":
       {
         borderBottom: "none",
-   
 
+        // backgroundColor: "red",
+        // color: "red",
       },
-    "& .MuiInputBase-root-MuiInput-root:after": {
+    "& .Mui-selected, & .Mui-selected.Mui-focusVisible": {
       borderBottom: "none",
     },
-   
-                        // border:'1px solid red',
+  },
+  datePickerContainer: {
+    "& .MuiFormControl-root-MuiTextField-root": {
+      "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
+        borderBottom: "none",
+      },
+    },
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before": {
+      borderBottom: "none",
+    },
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+      {
+        borderBottom: "none",
+      },
 
+    // for Dev
+    // "& .css-1vv4lmi:hover:not(.Mui-disabled)::before":{
+
+    // },
+    "& .css-1vv4lmi::before": {
+      borderBottom: "none",
+    },
+    "& .css-1vv4lmi:hover:not(.Mui-disabled)::before": {
+      borderBottom: "none",
+    },
+    "& .css-1vv4lmi::after": {
+      borderBottom: "none",
+    },
   },
   titleWrapper: {
     color: "#605C5C",
@@ -140,7 +146,6 @@ const useStyles = makeStyles((theme) => ({
     // borderRight: `1px solid ${colors.grey}`,
   },
   outerWrapper: {
-
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

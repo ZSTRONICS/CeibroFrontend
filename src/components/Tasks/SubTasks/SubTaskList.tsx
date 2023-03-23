@@ -15,7 +15,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
   const classes = useStyles();
   const { user } = useSelector((store: RootState) => store.auth);
   const [doOnce, setDoOnce] = useState(true);
-  const [components ,setComponents] = useState<any>([]);
+  const [components, setComponents] = useState<any>([]);
   const handleScroll = (e: any) => {
     if (doOnce) {
       let subtaskBox = e.target;
@@ -51,7 +51,7 @@ const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {
       {filterSubTask.length > 0 ? (
         <CBox className={classes.cardListContainer}>
           {filterSubTask &&
-            filterSubTask.map((subTaskDetail: SubtaskInterface, index:any) => {
+            filterSubTask.map((subTaskDetail: SubtaskInterface, index: any) => {
               if (subTaskDetail === undefined) {
                 return <></>;
               }
@@ -83,20 +83,17 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     height: "100%",
     [theme.breakpoints.down("lg")]: {
-      maxHeight: "calc(100vh-100px)",
+      // height: "100%",
+      // maxHeight: "calc(100vh-100px)",
       // [theme.breakpoint.down('lg')]:{
-
       // }
     },
-
     [theme.breakpoints.down("md")]: {
       maxHeight: "calc(100vh - 40vh)",
     },
-
     [theme.breakpoints.between(900, 1024)]: {
       maxHeight: "calc(100vh-50vh)",
     },
-
     [theme.breakpoints.down("xl")]: {
       maxHeight: "calc(100vh - 30vh)",
     },

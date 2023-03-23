@@ -32,7 +32,7 @@ const TaskMain = () => {
         setShowTaskList(true);
       }, 100);
     }
-    window.addEventListener('resize', getHeaderHeight)
+    window.addEventListener("resize", getHeaderHeight);
   });
 
   const getHeaderHeight = () => {

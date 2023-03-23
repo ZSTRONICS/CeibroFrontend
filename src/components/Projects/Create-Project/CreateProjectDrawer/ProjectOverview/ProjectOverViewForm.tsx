@@ -140,6 +140,18 @@ const useStyles = makeStyles({
     borderRadius: 5,
   },
   textfield: {
+    // FOR DEV SERVER
+    "& .css-17g51r8:hover:not(.Mui-disabled)::before": {
+      borderBottom: "none",
+    },
+
+    "& .css-17g51r8::before": {
+      borderBottom: "none",
+    },
+    "& .css-17g51r8::after": {
+      borderBottom: "none",
+    },
+    // FOR LOCAL
     "& :hover:not(.Mui-disabled)::before": {
       borderBottom: "none",
     },
@@ -154,6 +166,9 @@ const useStyles = makeStyles({
     "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
     },
+
+
+
   },
 
   // titleLabel: {
