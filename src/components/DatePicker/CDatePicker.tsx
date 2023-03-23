@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
 import de from "date-fns/locale/de";
-// import useStyles from "components/Tasks/SubTasks/CreateSubTaskStyles";
-// import { } from "/styles";
-import { colors, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
@@ -46,8 +42,9 @@ function CDatePicker(props: any) {
                 // onChange={(newValue: any) => setShowDate(newValue)}
                 renderInput={(params: any) => (
                   <TextField
-                    // disableUnderline={true}
-                    // border="none"
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
                     variant="standard"
                     {...params}
                     error={false}
@@ -72,12 +69,13 @@ function CDatePicker(props: any) {
             // onChange={(newValue: any) => setShowDate(newValue)}
             renderInput={(params: any) => (
               <TextField
+                InputProps={{
+                  disableUnderline: true,
+                }}
                 {...params}
                 error={false}
                 sx={{
-                  ".MuiInputBase-input": {
-                    // padding: "10px 14px",
-                  },
+                  "& fieldset": { border: "none" },
                 }}
               />
             )}
@@ -89,30 +87,33 @@ function CDatePicker(props: any) {
 }
 const useStyles = makeStyles((theme) => ({
   root: {
-    "& > *": {
-      ":hover": {
-        border: "1px solid red",
-      },
-      ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
-        borderBottom: "none",
-      },
-    },
-    "& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible":
-      {
-        borderBottom: "none",
-
-        // backgroundColor: "red",
-        // color: "red",
-      },
-    "& .Mui-selected, & .Mui-selected.Mui-focusVisible": {
-      borderBottom: "none",
-    },
+    //for dev
+    // "& .css-1vv4lmi:hover:not(.Mui-disabled)::before": {
+    //   borderBottom: "none",
+    // },
+    // "& .css-1vv4lmi::after": {
+    //   borderBottom: "none",
+    // },
+    // "& .css-1vv4lmi::before": {
+    //   borderBottom: "none",
+    // },
+    // "& > *": {
+    //   ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
+    //     borderBottom: "none",
+    //   },
+    // },
+    // "& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible":
+    //   {
+    //     borderBottom: "none",
+    //   },
+    // "& .Mui-selected, & .Mui-selected.Mui-focusVisible": {
+    //   borderBottom: "none",
+    // },
   },
   datePickerContainer: {
-    "& .MuiFormControl-root-MuiTextField-root": {
-      "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
-        borderBottom: "none",
-      },
+    // for local
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
+      borderBottom: "none",
     },
     "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
@@ -121,20 +122,6 @@ const useStyles = makeStyles((theme) => ({
       {
         borderBottom: "none",
       },
-
-    // for Dev
-    // "& .css-1vv4lmi:hover:not(.Mui-disabled)::before":{
-
-    // },
-    "& .css-1vv4lmi::before": {
-      borderBottom: "none",
-    },
-    "& .css-1vv4lmi:hover:not(.Mui-disabled)::before": {
-      borderBottom: "none",
-    },
-    "& .css-1vv4lmi::after": {
-      borderBottom: "none",
-    },
   },
   titleWrapper: {
     color: "#605C5C",

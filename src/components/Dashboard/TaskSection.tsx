@@ -2,35 +2,45 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
-import taskActions, { getAllTask } from "../../redux/action/task.action";
+import taskActions from "../../redux/action/task.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
-import { getAllProjectsWithMembers } from "redux/action/project.action";
-
-const myStatus = [
-  {
-    title: "Ongoing",
-    count: 8,
-  },
-  {
-    title: "Approved",
-    count: 1,
-  },
-  {
-    title: "Done",
-    count: 5,
-  },
-  {
-    title: "Draft",
-    count: 2,
-  },
-];
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { RootState } from "redux/reducers";
+import { useSelector } from "react-redux";
 
 interface TaskSectionInt {}
-
 const TaskSection: React.FC<TaskSectionInt> = () => {
-  const allStatus = myStatus;
+  const allTask: TaskInterface[] = useSelector(
+    (state: RootState) => state.task.allTask
+  );
+
+  const options = [
+    {
+      title: "All",
+      count: allTask.length,
+    },
+    {
+      title: "New",
+      count: allTask.filter((task) => task.state === "new").length,
+    },
+    {
+      title: "Active",
+      count: allTask.filter((task) => task.state === "active").length,
+    },
+
+    {
+      title: "Done",
+      count: allTask.filter((task) => task.state === "done").length,
+    },
+    {
+      title: "Draft",
+      count: allTask.filter((task) => task.state === "draft").length,
+    },
+  ];
+
+  const allStatus = options;
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
@@ -121,12 +131,12 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     flexWrap: "wrap",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
   titleContainer: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingTop: 14,
       paddingBottom: 14,
     },
@@ -136,7 +146,7 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   viewAll: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       marginLeft: 10,
       marginTop: 10,
     },

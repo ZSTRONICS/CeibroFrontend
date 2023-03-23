@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Paper, Typography } from "@mui/material";
 
 // components
-import DatePicker from "components/Utills/Inputs/DatePicker";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
 import { TaskInterface } from "constants/interfaces/task.interface";
