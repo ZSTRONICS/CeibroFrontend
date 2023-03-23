@@ -14,10 +14,11 @@ import TaskReducer from "./task.reducer";
 import DocsReducer from "./docs.reducer";
 import UserReducer from "./user.reducer";
 import storage from "redux-persist/lib/storage";
+import { UPDATE_PROFILE_PIC } from "config/user.config";
 
 interface authInterface {
   isLoggedIn: boolean;
-  user: UserInterface | null | undefined;
+  user: UserInterface | any;
   loginLoading: boolean;
   registerLoading: boolean;
   authSuccessMessage: string | null | undefined;
@@ -95,7 +96,15 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         registerLoading: false,
       };
     }
-
+    case requestSuccess(UPDATE_PROFILE_PIC):{
+      if(action.payload.profilePic){
+        state.user.profilePic=action.payload.profilePic
+      }
+      return{
+        ...state,
+        user: {...state.user}
+      }
+    }
     case LOGOUT: {
       localStorage.removeItem("tokens");
       localStorage.clear();
