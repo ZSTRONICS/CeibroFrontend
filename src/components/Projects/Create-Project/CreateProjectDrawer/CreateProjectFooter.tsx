@@ -20,6 +20,7 @@ import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
+import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const CreateProjectBody = () => {
   const classes = useStyles();
@@ -27,6 +28,8 @@ const CreateProjectBody = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState<boolean>(false);
   const isDiabled = !loading ? false : true;
+
+  const { user } = useSelector((state: RootState) => state.auth);
   const { projectOverview, projects, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
@@ -178,7 +181,9 @@ const CreateProjectBody = () => {
     return formData;
   };
   // const disableBtn = [projectOverview.isDefault ? true : false];
-
+    const updateRights= projectOverview.owner.some((item:Member)=>String(item._id)===String(user._id))
+    // console.log('!selectedProject',!selectedProject, 'updateRights',updateRights);
+    
   return (
     <Grid container justifyContent="flex-end" className={classes.body}>
       {!selectedProject && (
@@ -192,7 +197,7 @@ const CreateProjectBody = () => {
         </Button>
       )}
       {/* {!selectedProject?} */}
-      {selectedProject && (
+      {selectedProject &&updateRights&& (
         <Button
           className={classes.trash}
           variant="outlined"
@@ -203,7 +208,7 @@ const CreateProjectBody = () => {
           {/* <img src={assets.DeleteIcon} className={"w-16"} /> */}
         </Button>
       )}
-      <Button
+     {!selectedProject && <Button
         disabled={!isValid || loading}
         className={classes.create}
         variant="contained"
@@ -215,8 +220,25 @@ const CreateProjectBody = () => {
           size={20} 
           className={classes.progress} />
         )}
-        {!selectedProject ? "Create project":"Update"  }
-      </Button>
+         Create project  
+      </Button>}
+{projectOverview._id!==""&&updateRights&& 
+        <Button
+        disabled={!isValid || loading}
+        className={classes.create}
+        variant="contained"
+        color="primary"
+        onClick={() => handleSubmit(false)}
+      >
+        {isDiabled && loading && (
+          <CircularProgress 
+          size={20} 
+          className={classes.progress} />
+        )}
+        Update
+      </Button> 
+}
+      
     </Grid>
   );
 };
