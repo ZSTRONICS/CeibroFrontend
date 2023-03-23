@@ -43,7 +43,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
               <Badge
                 showZero={true}
                 color="primary"
-                badgeContent={connections}
+                badgeContent={connections.count}
                 className={classes.badge}
               ></Badge>
             </Typography>

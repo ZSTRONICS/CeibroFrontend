@@ -16,6 +16,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const { invites } = useSelector((state: RootState) => state?.user);
+console.log();
 
   useEffect(() => {
     dispatch(getMyInvitesCount());
@@ -40,7 +41,7 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
                 Invitations
               </Typography>
            
-        <Badge showZero={true} badgeContent={invites} className={classes.badge}></Badge>
+        <Badge showZero={true} badgeContent={invites.count} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />
       </Grid>

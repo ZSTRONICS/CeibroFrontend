@@ -163,7 +163,7 @@ const ProfileView = () => {
                   }}
                   showZero={true}
                   color="primary"
-                  badgeContent={connections}
+                  badgeContent={connections.count}
                   overlap="circular"
                 />
               </Box>
@@ -194,7 +194,7 @@ const ProfileView = () => {
                 <Badge
                   showZero={true}
                   color="error"
-                  badgeContent={invites}
+                  badgeContent={invites.count}
                   overlap="circular"
                 />
               </Box>

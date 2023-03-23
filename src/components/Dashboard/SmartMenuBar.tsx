@@ -10,8 +10,6 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import {
-  getMyConnectionsCount,
-  getMyInvitesCount,
   openViewInvitations,
 } from "redux/action/user.action";
 import ViewInvitations from "components/Profile/ViewInvitations";
@@ -25,6 +23,7 @@ const SmartMenuBar = () => {
   const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
   const { invites } = useSelector((state: RootState) => state?.user);
+
 
   const goToConnections = () => {
     history.push("/connections");
@@ -48,7 +47,7 @@ const SmartMenuBar = () => {
               >
                 My Connections
               </span>
-              <Badge overlap='circular' showZero={true} badgeContent={connections} color="primary"></Badge>
+              <Badge overlap='circular' showZero={true} badgeContent={connections.count} color="primary"></Badge>
             </span>
           </Box>
 
@@ -86,7 +85,7 @@ const SmartMenuBar = () => {
               >
                 Invitations
               </span>
-            <Badge showZero={true} badgeContent={invites} color="error"></Badge>
+            <Badge showZero={true} badgeContent={invites.count} color="error"></Badge>
             </span>
           </Box>
           <Button
