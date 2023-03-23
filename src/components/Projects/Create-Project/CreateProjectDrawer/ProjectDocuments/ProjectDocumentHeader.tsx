@@ -10,7 +10,7 @@ import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
-  getFolder,
+  getAllDocuments,
   getFolderFiles,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -45,8 +45,10 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   };
 
   useEffect(() => {
-    if (findDoc) {
-      dispatch(getFolder({ other: { selectedProject, findDoc } }));
+    if(findDoc===""){
+      return
+    }else if(findDoc!=="") {
+      dispatch(getAllDocuments({ other: { selectedProject, findDoc } }));
     }
   }, [findDoc]);
 
@@ -67,7 +69,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
     }
     if(findDoc===""){
       dispatch(
-        getFolder({
+        getAllDocuments({
           other: { selectedProject },
         })
       );

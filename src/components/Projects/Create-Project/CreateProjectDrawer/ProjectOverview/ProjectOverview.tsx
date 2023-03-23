@@ -19,6 +19,7 @@ import CreateProjectStatus from "./CreateProjectStatus";
 import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { ProjectOwners } from "constants/interfaces/project.interface";
+import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const ProjectOverview = () => {
   const classes = useStyles();
@@ -32,7 +33,7 @@ const ProjectOverview = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   // const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
-
+  const updateRights= projectOverview.owner.some((item:Member)=>String(item._id)===String(user._id))
   const [showDate, setShowDate] = useState<any>(
     moment(projectOverview.dueDate, "DD-MM-YYYY").format("ddd MM DD YYYY")
   );
@@ -212,6 +213,7 @@ const ProjectOverview = () => {
             showLabel={true}
             required
             value={showDate}
+            disabled={updateRights===true?false:true}
             id="date1"
             name="dueDate"
             onChange={(e: any) => {
@@ -241,6 +243,7 @@ const ProjectOverview = () => {
               // disableClearable
               id="project_owners1"
               disablePortal
+              disabled={updateRights===true?false:true}
               filterSelectedOptions={true}
               disableCloseOnSelect
               limitTags={1}
@@ -277,6 +280,7 @@ const ProjectOverview = () => {
               }}
               renderInput={(params) => (
                 <TextField
+                
                   sx={{
                     "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
                       border: "none",

@@ -21,6 +21,9 @@ const ImagePicker = () => {
   const projectOverview: ProjectInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
+  const {user} = useSelector((state: RootState) => state.auth);
+
+  const updateRights= projectOverview.owner.some((item:any)=>String(item._id)===String(user._id))
 
   const { selectedProject } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
@@ -68,9 +71,11 @@ const ImagePicker = () => {
       <input
         ref={ref}
         id="files"
-        accept="image/*"
+        accept=".png, .jpg, .jpeg"
         className={classes.inputFile}
         type="file"
+        
+        disabled={updateRights===true?false:true}
         onChange={handleFileChange}
       />
       <div
@@ -78,8 +83,8 @@ const ImagePicker = () => {
         className={classes.outerWrapper}
         style={{
           margin: "0 auto",
-          background: `url(${
-            projectOverview.projectPhoto === "undefined"
+          backgroundImage: `url(${
+            projectOverview.projectPhoto === ""
               ? assets.Defaulttask
               : projectOverview.projectPhoto
           })`,

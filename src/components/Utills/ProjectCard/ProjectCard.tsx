@@ -18,7 +18,7 @@ interface ProjectCardInterface {
 const ProjectCard: FC<ProjectCardInterface> = (props) => {
   const { project } = props;
   const {
-    projectPhoto: src,
+    projectPhoto,
     dueDate,
     owner,
     creator,
@@ -43,12 +43,13 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   };
 
   const classes = useStyles();
-  const imgSrc = src === "undefined" ? assets.Defaulttask : src;
+  const imgSrc = projectPhoto === "" ? assets.Defaulttask : projectPhoto;
   const dueDateString: string = String(dueDate)
     .replaceAll("-", ".")
     .replace(",", "");
   // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
   const creationDate = momentdeDateFormat(createdAt);
+// console.log('imgSrc',imgSrc);
 
   return (
     <>

@@ -12,10 +12,8 @@ import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
 import CButton from "components/Button/Button";
 import { AddStatusTag } from "components/CustomTags";
-import { DropDownIcon } from "components/material-ui/icons/dropdown/DropDownIcon";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -30,12 +28,11 @@ function CreateProjectStatus() {
   const [openStatusMenu, setOpenStatusMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const [openPopupMenu, setOpenPopupMenu] = React.useState(false);
-  const [anchorElemStatus, setAnchorElemStatus] =
-    React.useState<null | HTMLElement>(null);
+  const [anchorElemStatus, setAnchorElemStatus] =React.useState<null | HTMLElement>(null);
   const [editStatusValue, setEditStatusValue] = useState(" ");
-  const projectOverview = useSelector(
-    (state: RootState) => state.project.projectOverview
-  );
+  const projectOverview = useSelector((state: RootState) => state.project.projectOverview);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const updateRights= projectOverview.owner.some((item:any)=>String(item._id)===String(user._id))
 
   const options = projectOverview.extraStatus;
   let index = projectOverview.extraStatus.findIndex(
@@ -67,7 +64,9 @@ function CreateProjectStatus() {
   };
 
   const handleToggle = () => {
-    setOpenStatusMenu((prevOpen) => !prevOpen);
+    if(updateRights===true){
+      setOpenStatusMenu((prevOpen) => !prevOpen);
+    }
   };
 
   const handleClose = (event: Event | React.SyntheticEvent) => {
