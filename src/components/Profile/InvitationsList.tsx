@@ -35,7 +35,7 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
     const getMyInvites = () => {
       const payload = {
         success: (res: any) => {
-          setmyAllInvites(res?.data?.invites);
+          setmyAllInvites(res?.data?.invites.count);
         },
         finallyAction: () => {
           setLoading(false);

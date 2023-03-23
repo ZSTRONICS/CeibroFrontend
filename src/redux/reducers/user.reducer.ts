@@ -11,16 +11,16 @@ import {
 } from 'config/user.config'
 
 interface UserReducerInt {
-  invites: number
-  connections: any
+  invites: {count:number}
+  connections: {count:number}
   openInvites: boolean
   id: string
   myConnections:any,
 }
 
 const intialStatue: UserReducerInt = {
-  invites: 0,
-  connections: [],
+  invites: {count:0},
+  connections:  {count:0},
   openInvites: false,
   myConnections:[],
   id: ""
