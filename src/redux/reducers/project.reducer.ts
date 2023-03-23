@@ -4,7 +4,6 @@ import config, {
   CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
-  GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_MEMBER,
@@ -553,7 +552,7 @@ const NavigationReducer = (
         FileViewerDrawer: false,
       };
     }
-    case requestSuccess(GET_FOLDER): {
+    case requestSuccess(PROJECT_CONFIG.GET_ALL_DOCUMENTS): {
       return {
         ...state,
         folderList: action.payload.result,

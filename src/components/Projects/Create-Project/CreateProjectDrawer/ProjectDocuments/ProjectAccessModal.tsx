@@ -16,7 +16,7 @@ import { CustomMuiList } from "components/material-ui";
 import { uniqueStringArray } from "components/Utills/Globals/Common";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import projectActions, { getFolder, PROJECT_APIS } from "redux/action/project.action";
+import projectActions, { getAllDocuments, PROJECT_APIS } from "redux/action/project.action";
 
 function ProjectAccessModal(props: any) {
   const { selectedFolderFile,selectedProject } = props;
@@ -115,7 +115,7 @@ if (hasKey(selectedFolderFile, "name")) {
       success: () => {
         setUsers([]);
         setSelectedGroupId([]);
-        dispatch(getFolder({ other: { selectedProject } }));
+        dispatch(getAllDocuments({ other: { selectedProject } }));
       },
       other: selectedProject,
     };

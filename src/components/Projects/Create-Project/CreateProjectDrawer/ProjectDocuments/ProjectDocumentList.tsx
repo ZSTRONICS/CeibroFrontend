@@ -24,7 +24,7 @@ import {
 } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions, { getFolder } from "redux/action/project.action";
+import projectActions, { getAllDocuments } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
 import RollOverMenu from "../ProjectMember/RollOverMenu";
@@ -65,7 +65,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
       };
       setLoading(true);
 
-      dispatch(getFolder(payload));
+      dispatch(getAllDocuments(payload));
     }
   }, [selectedProject]);
 

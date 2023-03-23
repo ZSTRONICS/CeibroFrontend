@@ -9,7 +9,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addRemoveFolderUser,
-  getFolder,
+  getAllDocuments,
   getGroupUsers,
 } from "redux/action/project.action";
 import assets from "../../../../../assets/assets";
@@ -73,7 +73,7 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
           },
           success: () => {
             dispatch(
-              getFolder({
+              getAllDocuments({
                 other: { selectedProject },
               })
             );

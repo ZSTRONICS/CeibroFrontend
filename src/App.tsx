@@ -64,8 +64,10 @@ import {
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { PROJECT_CONFIG } from "config/project.config";
 import {
-  getAllProjectMembers,
-  getAllProjects,
+  getAllDocuments,
+  // getAllProjectMembers,
+  // getAllProjects,
+  getFolderFiles,
   getGroup,
   getMember,
   PROJECT_APIS,
@@ -91,7 +93,7 @@ const App: React.FC<MyApp> = () => {
     (state: RootState) => state.docs
   );
 
-  const [authToken, setAuthToken] = useState<string>("");
+  // const [authToken, setAuthToken] = useState<string>("");
 
   useEffect(() => {
     if (!uploadPendingFiles) {
@@ -562,6 +564,15 @@ const App: React.FC<MyApp> = () => {
 
           case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
             dispatch(getGroup({ other: data.projectId }));
+            break;
+            // project documents and files socket events
+          case PROJECT_CONFIG.REFRESH_ROOT_DOCUMENTS:
+            dispatch(getAllDocuments({ other: { selectedProject:data.projectId} }));
+            break;
+
+          case PROJECT_CONFIG.REFRESH_FOLDER:
+            dispatch(
+              getFolderFiles({other: { selectedFolder: data.folderId},}));
             break;
 
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:

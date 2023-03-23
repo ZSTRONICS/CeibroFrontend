@@ -9,15 +9,15 @@ import {
 import { Divider } from "@mui/material";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
+// import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
+// import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import { mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createFolder,
-  getFolder,
+  // getAllDocuments,
   getGroup,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -33,7 +33,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
 
-  const [name, setName] = useState();
+  const [name, setName] = useState<string>("");
   const [groups, setGroups] = useState();
   const [selectGroups, setSelectGroups] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -46,6 +46,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
+    setName("")
     dispatch(projectActions.closeProjectDocuments());
   };
 
@@ -57,7 +58,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       success: () => {
         toast.success("Group created successfully");
         dispatch(projectActions.closeProjectDocuments());
-        dispatch(getFolder({ other: { selectedProject } }));
+        // dispatch(getAllDocuments({ other: { selectedProject } }));
       },
       finallyAction: () => {
         setLoading(false);
@@ -87,19 +88,11 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       <DialogContent className={classes.dropdownWrapper}>
         <div>
           <Input
-            value={name}
+            value={name||""}
             title="Folder"
             placeholder="Enter name"
             onChange={handleNameChange}
           />
-          {/* <br />
-          <SelectDropdown
-            title="Group"
-            placeholder="Please select"
-            data={groups}
-            handleChange={(e: any) => setSelectGroups(e)}
-          />
-          <HorizontalBreak color={colors.grey} /> */}
         </div>
       </DialogContent>
       <Divider sx={{ margin: "0px  20px 10px" }} />
@@ -116,7 +109,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           onClick={handleOk}
           color="primary"
           variant="contained"
-          disabled={isDiabled}
+          disabled={String(name).length>0?false:true}
         >
           Create
           {isDiabled && loading && (

@@ -25,7 +25,6 @@ import configs, {
   GET_GROUP,
   CLOSE_DOCUMENT_DRAWER,
   OPEN_DOCUMENT_DRAWER,
-  GET_FOLDER,
   CREATE_FOLDER,
   CREATE_MEMBER,
   GET_MEMBER,
@@ -298,7 +297,7 @@ export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
 export const getGroupById = createAction(GET_GROUP_BY_ID);
 
-export const getFolder = createAction(GET_FOLDER);
+export const getAllDocuments = createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS);
 export const createFolder = createAction(CREATE_FOLDER);
 export const createMember = createAction(CREATE_MEMBER);
 export const getMember = createAction(GET_MEMBER);
