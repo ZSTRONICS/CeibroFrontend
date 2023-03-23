@@ -6,10 +6,10 @@ export const SigninSchemaValidation = (t:TFunction) =>{
         email: yup.string().email(`${t('auth.register.invalid_email')}`).required(`${t('auth.required')}`),
         password: yup.string()
           .required(`${t('auth.plz_Enter_pass')}`)
-          .matches(
-            /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
-            `${t('auth.pass_must_Contain')}`
-          ),
+          // .matches(
+          //   /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
+          //   `${t('auth.pass_must_Contain')}`
+          // ),
       })
 return signinSchema
 }
