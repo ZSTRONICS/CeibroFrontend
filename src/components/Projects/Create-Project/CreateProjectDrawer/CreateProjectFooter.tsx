@@ -30,18 +30,14 @@ const CreateProjectBody = () => {
   const isDiabled = !loading ? false : true;
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { projectOverview, projects, selectedProject } = useSelector(
-    (state: RootState) => state.project
-  );
-
+  const { projectOverview, projects, selectedProject } = useSelector((state: RootState) => state.project);
   const isValidData = {
     title: projectOverview.title,
     dueDate: projectOverview.dueDate,
     publishStatus: projectOverview.publishStatus,
     description: projectOverview.description,
-    location:projectOverview.location,
+    location: projectOverview.location,
   };
-  
   const confirm = useConfirm();
   useEffect(() => {
     projectOverviewSchema
@@ -63,8 +59,8 @@ const CreateProjectBody = () => {
           dispatch(getAllProjectsWithMembers());
           dispatch(
             projectActions.setSelectedProject(res.data.createProject._id)
-            );
-            dispatch(projectActions.setProjectOverview(res.data.createProject));
+          );
+          dispatch(projectActions.setProjectOverview(res.data.createProject));
         },
         finallyAction: () => {
           setLoading(false);
@@ -159,6 +155,7 @@ const CreateProjectBody = () => {
       projectPhoto,
       publishStatus,
       extraStatus,
+      photoFile,
     } = projectOverview;
 
     const formData = new FormData();
@@ -173,7 +170,9 @@ const CreateProjectBody = () => {
       formData.append("owner", JSON.stringify(ownerIds));
     }
     formData.append("dueDate", dueDate);
-    formData.append("projectPhoto", projectPhoto);
+    if(photoFile!==undefined){
+      formData.append("projectPhoto", photoFile);
+    }
     formData.append("publishStatus", publishStatus);
     if (saveAsDraft === true) {
       formData.append("inDraftState", "true");
@@ -181,65 +180,66 @@ const CreateProjectBody = () => {
     return formData;
   };
   // const disableBtn = [projectOverview.isDefault ? true : false];
-    const updateRights= projectOverview.owner.some((item:Member)=>String(item._id)===String(user._id))
-    // console.log('!selectedProject',!selectedProject, 'updateRights',updateRights);
-    
+  const updateRights = projectOverview.owner.some(
+    (item: Member) => String(item._id) === String(user._id)
+  );
   return (
-    <Grid container justifyContent="flex-end" className={classes.body}>
-      {!selectedProject && (
-        <Button
-          onClick={() => handleSubmit(true)}
-          disabled={!isValid}
-          className={classes.draft}
-          color="primary"
-        >
-          Save as draft
-        </Button>
+    <>
+      {updateRights === true && (
+        <Grid container justifyContent="flex-end" className={classes.body}>
+          {!selectedProject && (
+            <Button
+              onClick={() => handleSubmit(true)}
+              disabled={!isValid}
+              className={classes.draft}
+              color="primary"
+            >
+              Save as draft
+            </Button>
+          )}
+          {/* {!selectedProject?} */}
+          {selectedProject && updateRights && (
+            <Button
+              className={classes.trash}
+              variant="outlined"
+              onClick={() => dispatch(projectActions.closeDrawer())}
+              // disabled={projectOverview.isDefault}
+            >
+              Cancel
+              {/* <img src={assets.DeleteIcon} className={"w-16"} /> */}
+            </Button>
+          )}
+          {!selectedProject && (
+            <Button
+              disabled={!isValid || loading}
+              className={classes.create}
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit(false)}
+            >
+              {isDiabled && loading && (
+                <CircularProgress size={20} className={classes.progress} />
+              )}
+              Create project
+            </Button>
+          )}
+          {projectOverview._id !== "" && updateRights && (
+            <Button
+              disabled={!isValid || loading}
+              className={classes.create}
+              variant="contained"
+              color="primary"
+              onClick={() => handleSubmit(false)}
+            >
+              {isDiabled && loading && (
+                <CircularProgress size={20} className={classes.progress} />
+              )}
+              Update
+            </Button>
+          )}
+        </Grid>
       )}
-      {/* {!selectedProject?} */}
-      {selectedProject &&updateRights&& (
-        <Button
-          className={classes.trash}
-          variant="outlined"
-          onClick={()=>dispatch(projectActions.closeDrawer())}
-          // disabled={projectOverview.isDefault}
-        >
-          Cancel
-          {/* <img src={assets.DeleteIcon} className={"w-16"} /> */}
-        </Button>
-      )}
-     {!selectedProject && <Button
-        disabled={!isValid || loading}
-        className={classes.create}
-        variant="contained"
-        color="primary"
-        onClick={() => handleSubmit(false)}
-      >
-        {isDiabled && loading && (
-          <CircularProgress 
-          size={20} 
-          className={classes.progress} />
-        )}
-         Create project  
-      </Button>}
-{projectOverview._id!==""&&updateRights&& 
-        <Button
-        disabled={!isValid || loading}
-        className={classes.create}
-        variant="contained"
-        color="primary"
-        onClick={() => handleSubmit(false)}
-      >
-        {isDiabled && loading && (
-          <CircularProgress 
-          size={20} 
-          className={classes.progress} />
-        )}
-        Update
-      </Button> 
-}
-      
-    </Grid>
+    </>
   );
 };
 

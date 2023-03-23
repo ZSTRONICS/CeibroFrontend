@@ -5,7 +5,7 @@ import { UserInterface } from "./user.interface";
 export interface ProjectInterface {
   title: string;
   projectPhoto: string;
-  photoFile?:string|File,
+  photoFile:string|File|any;
   dueDate: string;
   owner: ProjectOwners[];
   access: string[];
@@ -38,6 +38,7 @@ export interface projectProfileInterface {
 }
 
 export const projectOverviewTemplate: ProjectInterface = {
+  photoFile:"",
   title: "",
   extraStatus: [],
   access: [],
