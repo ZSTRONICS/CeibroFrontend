@@ -78,12 +78,12 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
     disabled: loading,
   });
 
-  const handleFileClick = (url: any, type: any) => {
-    dispatch(projectActions.setSelectedFileUrl(url));
-    dispatch(projectActions.setSelectedFileType(type));
+  // const handleFileClick = (url: any, type: any) => {
+  //   dispatch(projectActions.setSelectedFileUrl(url));
+  //   dispatch(projectActions.setSelectedFileType(type));
 
-    dispatch(projectActions.openFileViewDrawer());
-  };
+  //   dispatch(projectActions.openFileViewDrawer());
+  // };
   const AccessMemberList = (membersList: Creator[]) => {
     return (
       <>
@@ -146,12 +146,10 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       component="th"
                       scope="row"
                     >
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor:'pointer' }}>
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor:'pointer',color:'black' }}>
                         <Typography
                         className={`${classes.fileName}`}
-                        onClick={() =>
-                          handleFileClick(file.fileUrl, file.fileType)
-                        }
+                        // onClick={() =>handleFileClick(file.fileUrl, file.fileType)}
                       >
                         {file.fileName}
                       </Typography>
@@ -263,6 +261,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
+    color:'black',
     display: "flex",
     alignItems: "center",
     cursor: "pointer",

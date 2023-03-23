@@ -13,7 +13,7 @@ import {
   DELETE_PROJECT,
   DELETE_ROLE,
   DELETE_WORK,
-  GET_AVAILABLE_PROJECT_MEMBERS, GET_FOLDER,
+  GET_AVAILABLE_PROJECT_MEMBERS,
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_GROUP_BY_ID,
@@ -136,14 +136,14 @@ const getGroup = apiCall({
   path: (payload) => `/project/group/${payload?.other}`,
 });
 
-const geFolder = apiCall({
-  type: GET_FOLDER,
+const getAllDocuments = apiCall({
+  type: PROJECT_CONFIG.GET_ALL_DOCUMENTS,
   method: "get",
   // path: (payload) =>
   //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
   path: (payload) => {
-    const selectedProject = payload?.other?.selectedProject;
-    const inputData = payload?.other?.findDoc;
+    const selectedProject = payload.other.selectedProject;
+    const inputData = payload.other.findDoc;
     let url = `/project/documents/${selectedProject}`;
     if (inputData) {
       url = `${url}?search=${inputData}`;
@@ -375,7 +375,7 @@ function* projectSaga() {
   yield takeLatest(CREATE_ROLES, createRoles);
   yield takeLatest(CREATE_GROUP, createGroup);
   yield takeLatest(GET_GROUP, getGroup);
-  yield takeLatest(GET_FOLDER, geFolder);
+  yield takeLatest(PROJECT_CONFIG.GET_ALL_DOCUMENTS, getAllDocuments);
   yield takeLatest(CREATE_FOLDER, createFolder);
   yield takeLatest(CREATE_MEMBER, createMember);
   yield takeLatest(GET_MEMBER, getMember);
