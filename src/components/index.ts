@@ -26,12 +26,16 @@ import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
 import Projects from "./Projects/ProjectList/Project";
 import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 
+//admin
+import AdminMain from './Admin/AdminMain'
+
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
 
 export {
   RouterConfig,
+  AdminMain,
   TaskModal,
   CDrawer,
   CreateQuestioniarDrawer,

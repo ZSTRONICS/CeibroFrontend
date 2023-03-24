@@ -7,6 +7,7 @@ import {
   RESEND_INVITATION,
   REVOKE_INVITAION,
   UPDATE_PROFILE_PIC,
+  USER_CONFIG,
 } from 'config/user.config'
 import {
   ACCEPT_INVITE,
@@ -19,6 +20,10 @@ import {
   GET_USER_BY_ID,
 } from '../../config/user.config'
 import { createAction } from './action'
+
+export const userAction={
+  getUsersByRole:createAction(USER_CONFIG.GET_USERS_BY_ROLE)
+}
 
 export const sendInvitation = createAction(SEND_INVITATION)
 export const getMyAllInvites = createAction(GET_MY_ALL_INVITES)

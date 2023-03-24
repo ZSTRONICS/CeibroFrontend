@@ -1,3 +1,8 @@
+
+export const USER_CONFIG = {
+    GET_USERS_BY_ROLE: 'GET_USERS_BY_ROLE'
+}
+
 export const SEND_INVITATION = 'SEND_INVITATION'
 export const GET_MY_ALL_INVITES = 'GET_MY_ALL_INVITES'
 export const ACCEPT_INVITE = 'ACCEPT_INVITE'
