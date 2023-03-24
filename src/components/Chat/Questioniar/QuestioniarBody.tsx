@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button, Grid,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Stack } from "@mui/system";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,14 +11,14 @@ import { getNewQuestionTemplate } from "../../../constants/questioniar.constants
 import {
   getDate,
   removeCurrentUser,
-  validateQuestions
+  validateQuestions,
 } from "../../../helpers/chat.helpers";
 import {
   closeQuestioniarDrawer,
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById
+  updateMessageById,
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import { dbUsers } from "../../Topbar/CreateIndividualChat";
@@ -67,8 +63,8 @@ const QuestioniarBody = () => {
     // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
   }, []);
 
-  const handleChangePreview = (e:any) => {
-    setPreview(e.target.checked)
+  const handleChangePreview = (e: any) => {
+    setPreview(e.target.checked);
   };
 
   const listOfMember = membersList?.map((member: any) => ({
@@ -186,17 +182,17 @@ const QuestioniarBody = () => {
           )}
         </Grid>
         <CBox>
-        <Stack direction='row'>
-         <CustomizedSwitch 
-            onChange={(e:any)=>handleNudgeChange(e)}
-            label= 'Nudge'
+          <Stack direction="row">
+            <CustomizedSwitch
+              onChange={(e: any) => handleNudgeChange(e)}
+              label="Nudge"
             />
-         <CustomizedSwitch 
-            onChange={(e:any) =>handleChangePreview(e)}
-            label= 'Preview'
-            disabled={!validated}
+            <CustomizedSwitch
+              onChange={(e: any) => handleChangePreview(e)}
+              label="Preview"
+              disabled={!validated}
             />
-        </Stack>
+          </Stack>
         </CBox>
       </Grid>
       <Grid container direction="column" className={classes.wrapper3}>

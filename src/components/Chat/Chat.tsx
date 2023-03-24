@@ -1,12 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
 import React, { useEffect, useState } from "react";
-import { Grid, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import colors from "../../assets/colors";
 import { CHAT_LIST } from "../../constants/chat.constants";
-import { clearSelectedChat, setDownBlock, setGoToMessageId } from "../../redux/action/chat.action";
+import {
+  clearSelectedChat,
+  setDownBlock,
+  setGoToMessageId,
+} from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import "./chat.css";
 import ChatBody from "./ChatBody";
@@ -26,9 +31,13 @@ const Chat = () => {
   // store
   const { user } = useSelector((state: RootState) => state.auth);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-  const goToMessageId: string = useSelector((store: RootState) => store.chat.goToMessageId);
-  const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
-  const { blockDown } = useSelector( (state: RootState) => state.chat);
+  const goToMessageId: string = useSelector(
+    (store: RootState) => store.chat.goToMessageId
+  );
+  const messages: ChatMessageInterface[] = useSelector(
+    (store: RootState) => store.chat.messages
+  );
+  const { blockDown } = useSelector((state: RootState) => state.chat);
 
   const {
     selectedChat,
@@ -51,7 +60,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (selectedChat) {
-      socket.joinChatRoom(user._id, selectedChat)
+      socket.joinChatRoom(user._id, selectedChat);
       const myChat = allChats?.find?.(
         (room: any) => String(room._id) === String(selectedChat)
       );
@@ -65,8 +74,8 @@ const Chat = () => {
       } else {
         setEnable(false);
       }
-    }else{
-      socket.setAppSelectedChat(null)
+    } else {
+      socket.setAppSelectedChat(null);
     }
     return (): void => {
       selectedChat;
@@ -75,65 +84,81 @@ const Chat = () => {
 
   function gotoMsg(messageId: any): Boolean {
     const elem = document.getElementById(messageId);
-    if (elem === null){
-      return false 
+    if (elem === null) {
+      return false;
     }
-    const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
-      return {...acc, [name]: elem?.getAttribute(name)};
+    const attrs: any = elem?.getAttributeNames().reduce((acc, name) => {
+      return { ...acc, [name]: elem?.getAttribute(name) };
     }, {});
-  
-    let newStyle = String(attrs?.class) + " chatReplyBox"
+
+    let newStyle = String(attrs?.class) + " chatReplyBox";
     elem?.setAttribute("class", newStyle);
     if (elem) {
       elem?.scrollIntoView({
-        behavior: 'auto',
-        block: 'center',
-        inline: 'center'
-    });
-      setTimeout((elem, oldclass) => {
-        elem?.setAttribute("class", oldclass)
-      }, 1000, elem, attrs?.class);
+        behavior: "auto",
+        block: "center",
+        inline: "center",
+      });
+      setTimeout(
+        (elem, oldclass) => {
+          elem?.setAttribute("class", oldclass);
+        },
+        1000,
+        elem,
+        attrs?.class
+      );
     }
-    return true
+    return true;
   }
 
   useEffect(() => {
-    if (goToMessageId !== '') {
-        gotoMsg(goToMessageId)
-      }
-      return (): void => {
-        dispatch(setGoToMessageId({ other: '' }));
-      };
+    if (goToMessageId !== "") {
+      gotoMsg(goToMessageId);
+    }
+    return (): void => {
+      dispatch(setGoToMessageId({ other: "" }));
+    };
   }, [goToMessageId]);
 
   useEffect(() => {
     const chatBox: any = document.getElementById("chatBox");
-    if (chatBox && goToMessageId.length === 0 && blockDown){
+    if (chatBox && goToMessageId.length === 0 && blockDown) {
       chatBox.scrollTop = chatBox.scrollHeight;
     }
-    if (!blockDown){
-      dispatch(setDownBlock(true))
+    if (!blockDown) {
+      dispatch(setDownBlock(true));
     }
 
     return (): void => {
-      messages
+      messages;
     };
   }, [messages]);
-
 
   return (
     <>
       {/* right sidebar for chat actions */}
       {selectedChat && <MediaSidebar enable={enable} />}
       <Grid container className={classes.wrapper}>
-        <Grid item xs={12} md={sidebarOpen && !isTabletOrMobile ? 4 : 3}>
+        <Grid
+          item
+          sx={{
+            "@media(max-width:1024px)": {},
+          }}
+          xs={12}
+          md={sidebarOpen && !isTabletOrMobile ? 3 : 4}
+        >
           <ChatSidebar />
         </Grid>
         <Grid
           item
           xs={12}
-          md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
-          style={{ background: "white", display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}
+          md={sidebarOpen && !isTabletOrMobile ? 9 : 8}
+          style={{
+            background: "white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+          }}
         >
           <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
           <ChatBody enable={enable} />

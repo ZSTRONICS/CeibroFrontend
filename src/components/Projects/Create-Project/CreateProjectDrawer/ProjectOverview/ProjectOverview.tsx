@@ -33,7 +33,9 @@ const ProjectOverview = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   // const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
-  const updateRights= projectOverview.owner.some((item:Member)=>String(item._id)===String(user._id))
+  const updateRights = projectOverview.owner.some(
+    (item: Member) => String(item._id) === String(user._id)
+  );
   const [showDate, setShowDate] = useState<any>(
     moment(projectOverview.dueDate, "DD-MM-YYYY").format("ddd MM DD YYYY")
   );
@@ -52,7 +54,6 @@ const ProjectOverview = () => {
       };
     });
     setOwnersList(localOwners);
-    
   }, [projectOverview]);
   // let fixuser = [
   //   {
@@ -194,7 +195,17 @@ const ProjectOverview = () => {
 
   return (
     <div style={{ width: "100%" }}>
-      <Grid container gap={2.5}>
+      <Grid
+        container
+        gap={2.5}
+        className={classes.outerWrapper}
+        // sx={{
+        //   overflowX: "auto",
+        //   display: "flex",
+        //   flexWrap: "nowrap",
+        //   boxSizing: "borderBox",
+        // }}
+      >
         {loading && <CircularProgress size={20} className={classes.progress} />}
 
         <Grid
@@ -213,7 +224,7 @@ const ProjectOverview = () => {
             showLabel={true}
             required
             value={showDate}
-            disabled={updateRights===true?false:true}
+            disabled={updateRights === true ? false : true}
             id="date1"
             name="dueDate"
             onChange={(e: any) => {
@@ -243,7 +254,7 @@ const ProjectOverview = () => {
               // disableClearable
               id="project_owners1"
               disablePortal
-              disabled={updateRights===true?false:true}
+              disabled={updateRights === true ? false : true}
               filterSelectedOptions={true}
               disableCloseOnSelect
               limitTags={1}
@@ -280,7 +291,6 @@ const ProjectOverview = () => {
               }}
               renderInput={(params) => (
                 <TextField
-                
                   sx={{
                     "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
                       border: "none",
@@ -310,12 +320,14 @@ const ProjectOverview = () => {
           }}
           className={classes.datePickerWrapper}
         >
-          {/* <SelectDropdown
-            handleChange={handleStatusChange}
-            data={statusData}
-            value={statusValue}
-            title="Status"
-          /> */}
+          {/* {
+            <SelectDropdown
+              handleChange={handleStatusChange}
+              data={statusData}
+              value={statusValue}
+              title="Status"
+            />
+          } */}
           <CreateProjectStatus />
         </Grid>
 
@@ -351,6 +363,17 @@ const ProjectOverview = () => {
 export default ProjectOverview;
 
 const useStyles = makeStyles({
+  // outerWrapper: {
+  //   border: "2px solid green",
+  //   width: "800px",
+  //   overflow: "auto",
+  //   display: "flex",
+  //   flexWrap: "nowrap",
+  //   "@media(max-width:1300px)": {
+  //     overflowX: "scroll",
+  //     width: "800px",
+  //   },
+  // },
   firstForm: {
     height: "40px",
     "@media (max-width:520px)": {

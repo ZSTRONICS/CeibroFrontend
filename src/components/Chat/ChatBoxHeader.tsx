@@ -208,7 +208,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     paddingLeft: 16,
     textOverflow: "ellipsis",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "center",
     },
   },
@@ -217,7 +217,7 @@ const useStyles = makeStyles({
     padding: "0 50px 0 0",
     borderBottom: `1px solid ${colors.grey}`,
     height: 55,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       height: 60,
     },
   },
@@ -270,7 +270,7 @@ const useStyles = makeStyles({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "center",
     },
   },
@@ -285,7 +285,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       display: "none",
     },
   },
