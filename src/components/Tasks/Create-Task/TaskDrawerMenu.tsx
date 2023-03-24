@@ -65,7 +65,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     creator,
   } = taskMenue;
   let { isEditable } = taskMenue;
-  isEditable = useSelector((state: RootState) => state.task.isEditing);
+   isEditable = useSelector((state: RootState) => state.task.isEditing);
   // const {taskDrawerOpen} = useSelector((state: RootState) => state.task);
 
   // if(taskDrawerOpen===true && admins.length===){
@@ -394,6 +394,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     e.stopPropagation();
     setImageAttach((value: boolean) => !value);
   };
+  
   return (
     <>
       <Grid container className={classes.outerWrapper} rowGap={2.5}>
@@ -761,7 +762,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         </Grid>
       )}
 
-      { showUpdateBtn && (
+      {isDraftState===false&& showUpdateBtn && (
         <Grid
           container
           justifyContent="flex-end"

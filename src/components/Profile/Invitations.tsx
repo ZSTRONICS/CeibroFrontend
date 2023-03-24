@@ -16,7 +16,6 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
   const [error, setError] = useState("");
   const dispatch = useDispatch();
   const { invites } = useSelector((state: RootState) => state?.user);
-console.log();
 
   useEffect(() => {
     dispatch(getMyInvitesCount());

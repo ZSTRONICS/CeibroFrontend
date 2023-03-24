@@ -63,7 +63,7 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ background: `url(${url})` }}
+        style={{ backgroundImage: `url(${url})` }}
       >
         <img
           src={assets.whitePencil}
