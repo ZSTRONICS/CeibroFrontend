@@ -1,4 +1,3 @@
-
 import { Grid, TextField, Tooltip } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 // import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
@@ -398,13 +397,15 @@ export default function CreateSubTask({
                 label={"Update draft"}
                 onClick={() => {
                   defaultValues.files = selectedAttachments;
-                  defaultValues.state=[{ userId: user._id, userState: "draft" }]
+                  defaultValues.state = [
+                    { userId: user._id, userState: "draft" },
+                  ];
                   // let states = [{ userId: user._id, userState: "draft" }]
                   // states = defaultValues.assignedTo[0].members.map((member:any) => {
                   //    return {userId: member._id, userState: "draft"}
                   // })
                   // defaultValues.state = states
-              
+
                   setAssignToData();
                 }}
               />
@@ -417,6 +418,18 @@ export default function CreateSubTask({
               justifyContent: "flex-end",
             }}
           >
+            <CButton
+              onClick={handleCloseModal}
+              variant="contained"
+              styles={{
+                color: "#605C5C",
+                backgroundColor: "#ECF0F1",
+                fontSize: 12,
+                fontWeight: "bold",
+              }}
+              label={"Cancel"}
+            />
+            &nbsp; &nbsp;
             {!isEditMode && (
               <CButton
                 type="submit"
@@ -425,7 +438,6 @@ export default function CreateSubTask({
                   color: "#fff",
                   fontSize: 12,
                   fontWeight: "bold",
-                  marginRight: 15,
                 }}
                 label={"Create Subtask"}
                 onClick={(e: any) => {
@@ -525,8 +537,8 @@ export default function CreateSubTask({
                 }}
               />
             )}
-            &nbsp; &nbsp;
-            <CButton
+            {/* &nbsp; &nbsp; */}
+            {/* <CButton
               onClick={handleCloseModal}
               variant="contained"
               styles={{
@@ -536,7 +548,7 @@ export default function CreateSubTask({
                 fontWeight: "bold",
               }}
               label={"Cancel"}
-            />
+            /> */}
           </div>
         </CBox>
       </Grid>

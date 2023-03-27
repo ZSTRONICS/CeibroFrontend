@@ -24,7 +24,7 @@ import assets from "assets/assets";
 
 interface ChatBoxHeaderProps {
   enable: boolean;
-  chat: ChatListInterface
+  chat: ChatListInterface;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -41,10 +41,12 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
     selectedChat,
   } = useSelector((store: RootState) => store.chat);
 
-  const myChat = allChats?.length>0 && allChats?.find?.(
-    (room: any) => String(room._id) === String(selectedChat)
+  const myChat =
+    allChats?.length > 0 &&
+    allChats?.find?.((room: any) => String(room._id) === String(selectedChat));
+  const individualChatName = myChat?.members?.find(
+    (member: any) => member._id !== user._id
   );
-  const individualChatName = myChat?.members?.find((member: any) => member._id !== user._id)
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setName(e?.target?.value);
@@ -88,105 +90,101 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
   return (
     <>
-      < Grid container className={classes.wrapper} >
+      <Grid container className={classes.wrapper}>
         <AddChatMember />
-        {
-          upScrollLoading && (
-            <div className={classes.loadingWrapper}>
-              <div className={classes.innerLoading}>
-                <ClipLoader size={20} color={colors.primary} />
-              </div>
+        {upScrollLoading && (
+          <div className={classes.loadingWrapper}>
+            <div className={classes.innerLoading}>
+              <ClipLoader size={20} color={colors.primary} />
             </div>
-          )
-        }
-        {
-          myChat && (
-            <>
-              <Grid item xs={6} md={2} className={classes.editWrapper}>
-                {!edit && (
-                  <>
-                    {myChat?.project && (
-                      <div className={classes.iconContainer}>
-                        <img
-                          src={assets.EditIcon}
-                          onClick={() => {
-                            setEdit(true);
-                            setName(myChat.name);
-                          }}
-                          className={classes.editIcon}
-                          alt=""
-                        />
-                      </div>
-                    )}
-                  </>
-                )}
-                {
-                  myChat?.isGroupChat === false && <div className={classes.editProject}>
-                    <Typography className={classes.username}>
-                      {`${individualChatName?.firstName} ${individualChatName?.surName}`}
+          </div>
+        )}
+        {myChat && (
+          <>
+            <Grid item xs={6} md={2} className={classes.editWrapper}>
+              {!edit && (
+                <>
+                  {myChat?.project && (
+                    <div className={classes.iconContainer}>
+                      <img
+                        src={assets.EditIcon}
+                        onClick={() => {
+                          setEdit(true);
+                          setName(myChat.name);
+                        }}
+                        className={classes.editIcon}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+              {myChat?.isGroupChat === false && (
+                <div className={classes.editProject}>
+                  <Typography className={classes.username}>
+                    {`${individualChatName?.firstName} ${individualChatName?.surName}`}
+                  </Typography>
+                  {individualChatName?.companyName && (
+                    <Typography className={classes.projectName}>
+                      Company:{" "}
+                      <span className={classes.projectTitle}>
+                        {" "}
+                        {individualChatName?.companyName}{" "}
+                      </span>
                     </Typography>
-                    {individualChatName?.companyName && (
+                  )}
+                </div>
+              )}
+              {edit ? (
+                <div className={`${classes.editInputWrapper} editInputWrapper`}>
+                  <TextField
+                    inputProps={{ maxLength: 20 }}
+                    value={name}
+                    onChange={handleNameChange}
+                    onkeyDown={handleKeyDown}
+                  />
+                  <IconButton size="small" onClick={handleCancel}>
+                    <Clear className={classes.cancelIcon} />
+                  </IconButton>
+                  {loading ? (
+                    <div className={classes.loading}>
+                      <CircularProgress disableShrink={false} size={15} />
+                    </div>
+                  ) : (
+                    <IconButton size="small" onClick={handleUpdate}>
+                      <Check className={classes.checkIcon} />
+                    </IconButton>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <div className={classes.editProject}>
+                    <Typography className={classes.username}>
+                      {myChat?.name}
+                    </Typography>
+                    {myChat?.project && (
                       <Typography className={classes.projectName}>
-                        Company:{" "}
+                        Project:{" "}
                         <span className={classes.projectTitle}>
                           {" "}
-                          {individualChatName?.companyName}{" "}
+                          {myChat?.project?.title}{" "}
                         </span>
                       </Typography>
                     )}
                   </div>
-                }
-                {edit ? (
-                  <div className={`${classes.editInputWrapper} editInputWrapper`}>
-                    <TextField
-                      inputProps={{ maxLength: 20 }}
-                      value={name}
-                      onChange={handleNameChange}
-                      onkeyDown={handleKeyDown}
-                    />
-                    <IconButton size="small" onClick={handleCancel}>
-                      <Clear className={classes.cancelIcon} />
-                    </IconButton>
-                    {loading ? (
-                      <div className={classes.loading}>
-                        <CircularProgress disableShrink={false} size={15} />
-                      </div>
-                    ) : (
-                      <IconButton size="small" onClick={handleUpdate}>
-                        <Check className={classes.checkIcon} />
-                      </IconButton>
-                    )}
-                  </div>
-                ) : (
-                  <>
-                    <div className={classes.editProject}>
-                      <Typography className={classes.username}>
-                        {myChat?.name}
-                      </Typography>
-                      {myChat?.project && (
-                        <Typography className={classes.projectName}>
-                          Project:{" "}
-                          <span className={classes.projectTitle}>
-                            {" "}
-                            {myChat?.project?.title}{" "}
-                          </span>
-                        </Typography>
-                      )}
-                    </div>
-                  </>
-                )}
-              </Grid>
-              <Grid item xs={8} className={classes.moreWrapper}>
-                <MessageSearch />
-                <ChatUserMenu enable={props?.enable} />
-              </Grid>
-              {/* <Grid item xs={1} className={classes.moreWrapper}>
+                </>
+              )}
+            </Grid>
+            <Grid item xs={8} className={classes.moreWrapper}>
+              <MessageSearch />
+              <ChatUserMenu enable={props?.enable} />
+            </Grid>
+            {/* <Grid item xs={1} className={classes.moreWrapper}>
             <ChatUserMenu enable={props?.enable} />
           </Grid> */}
-            </>
-          )
-        }
-      </Grid >
+          </>
+        )}
+      </Grid>
     </>
   );
 };
@@ -195,7 +193,8 @@ export default ChatBoxHeader;
 
 const useStyles = makeStyles({
   iconContainer: {
-    width: '30px'
+    width: "35px",
+    height: "35px",
   },
   editProject: {
     display: "flex",
@@ -228,7 +227,7 @@ const useStyles = makeStyles({
     borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
     padding: 6,
-    width: '100%'
+    width: "100%",
   },
   username: {
     fontSize: 14,
@@ -240,6 +239,7 @@ const useStyles = makeStyles({
     // width: "120px",
   },
   editWrapper: {
+    paddingLeft: "20px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",

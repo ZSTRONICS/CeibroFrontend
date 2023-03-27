@@ -1,4 +1,3 @@
-
 import {
   Grid,
   Typography,
@@ -120,7 +119,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     });
   }
 
-  const availableQuestionsTypesList = availableQuestionTypes
+  const availableQuestionsTypesList = availableQuestionTypes;
 
   // const availableQuestionsTypesList = availableQuestionTypes?.map(
   //   (element: any) =>
@@ -226,15 +225,15 @@ const useStyles = makeStyles({
     padding: "15px 0px",
   },
   questionWrapper: {
-    maxWidth: 450,
+    maxWidth: 460,
     paddingBottom: 10,
   },
   questionType: {
-    maxWidth: 450,
-    paddingBottom: 10,
+    maxWidth: 460,
+    paddingBottom: 20,
   },
   optionsOuterWrapper: {
-    maxWidth: 450,
+    maxWidth: 460,
     background: colors.secondaryGrey,
     padding: 20,
   },

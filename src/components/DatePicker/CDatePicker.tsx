@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers"
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import de from "date-fns/locale/de";
 import { makeStyles } from "@material-ui/core";
 
@@ -63,7 +63,7 @@ function CDatePicker(props: any) {
           <DatePicker
             inputFormat={"dd.MM.yyyy"}
             {...props}
-            label={props.showLabel === true ? "" : "Due date"}
+            label={"Due date"}
             disablePast={true}
             minDate={new Date().toISOString().slice(0, 10)}
             // onChange={(newValue: any) => setShowDate(newValue)}
@@ -75,7 +75,9 @@ function CDatePicker(props: any) {
                 {...params}
                 error={false}
                 sx={{
-                  "& fieldset": { border: "none" },
+                  ".MuiInputBase-input": {
+                    padding: "9px 14px",
+                  },
                 }}
               />
             )}

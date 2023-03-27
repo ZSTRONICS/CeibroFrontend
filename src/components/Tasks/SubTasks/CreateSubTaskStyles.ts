@@ -5,7 +5,6 @@ import colors from '../../../assets/colors'
 export const useStyles = makeStyles(() =>
     createStyles({
         outerWrapper: {
-          
             marginBottom: '10px',
             background: colors.white,
             '& .MuiGrid-root': {
@@ -124,7 +123,7 @@ export const useStyles = makeStyles(() =>
     inputWrapper: {
       paddingTop: 20,
       // paddingLeft: 10,
-      ["@media (max-width:600px)"]: {
+      "@media (max-width:600px)": {
         paddingLeft: 0,
       },
     },
@@ -144,7 +143,7 @@ export const useStyles = makeStyles(() =>
     dateWrapper: {
       paddingTop: 20,
       // paddingLeft: 10,
-      ["@media (max-width:600px)"]: {
+      "@media (max-width:600px)": {
         paddingLeft: 0,
       },
     },

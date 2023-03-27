@@ -45,7 +45,8 @@ const useStyles = makeStyles({
     color: `#AEADBD !important`,
     fontSize: 14,
     fontWeight: 500,
-    paddingLeft: 10,
+    // paddingLeft: 10,
+    padding: "9px 10px",
     background: "transparent",
     flex: 3,
     "&:focus": {

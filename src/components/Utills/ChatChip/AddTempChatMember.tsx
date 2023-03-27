@@ -4,7 +4,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import { mapUsers } from "helpers/user.helper";
 import React, { useEffect, useState } from "react";
@@ -13,7 +13,9 @@ import { toast } from "react-toastify";
 import { getAvailableChatUsers } from "redux/action/user.action";
 import colors from "../../../assets/colors";
 import {
-  addTempMemberToChat, getAllChats, setTempMembersDialog
+  addTempMemberToChat,
+  getAllChats,
+  setTempMembersDialog,
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import SelectDropdown from "../Inputs/SelectDropdown";
@@ -40,7 +42,7 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
           userId: selectedUser?.value,
         },
         success: () => {
-           dispatch(getAllChats());
+          dispatch(getAllChats());
           toast.success("New member added successfully");
           setSelectedUser(null);
         },
@@ -81,12 +83,16 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
           />
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button disabled={!selectedUser} onClick={handleOk} color="primary">
-          Ok
-        </Button>
+      <DialogActions
+        style={{
+          paddingRight: "25px",
+        }}
+      >
         <Button onClick={handleClose} color="secondary" autoFocus>
           Cancel
+        </Button>
+        <Button disabled={!selectedUser} onClick={handleOk} color="primary">
+          Ok
         </Button>
       </DialogActions>
     </Dialog>
@@ -111,6 +117,6 @@ const useStyles = makeStyles({
   dropdownWrapper: {
     maxWidth: 300,
     width: 300,
-    height: 300,
+    height: 70,
   },
 });
