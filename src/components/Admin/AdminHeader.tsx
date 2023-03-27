@@ -20,8 +20,6 @@ function AdminHeader() {
           alignItems="center"
           gap={2}
         flexWrap='nowrap'
-          // className={classes.TaskWraper}
-          // ref={headerRef}
         >
           <Grid item sx={{ width: "100%", maxWidth: "550px" }}>
             <Paper

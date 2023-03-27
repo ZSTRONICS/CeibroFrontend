@@ -1,51 +1,95 @@
-import { Avatar } from '@mui/material';
 import React from 'react'
+import { Avatar } from '@mui/material';
+import { momentdeDateFormat } from 'components/Utills/Globals/Common';
 import { GenericTable, MenuColumn } from './MuiTable/CTable';
+import NameAvatar from "components/Utills/Others/NameAvatar";
+import CustomModal from 'components/Modal';
+import ProfileViewGlobal from 'components/Profile/ProfileViewGlobal';
+import { ConfirmDescriptionTag, DocumentNameTag } from 'components/CustomTags';
 
 function AdminUserTables(props:any) {
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [userDataLocal,setUserData]=React.useState<{}|any>({})
+
+  const handleToggle = (rowData:any) => {
+    setOpen((prev: boolean) => !prev);
+    rowData.firstName=  String(rowData.name).split(" ")[0]
+    rowData.surName=  String(rowData.name).split(" ")[1]
+    setUserData(rowData)
+  };
+
     const columns = [
         { field: 'id', headerName: 'ID', width: 100,  },
         {
             field: 'profilePic',
-            headerName: 'Avatar',
+            headerName: '',
             width: 120,
-            renderCell: (params:any) => (
-              <Avatar alt={params.row.name} src={`https://i.pravatar.cc/150?u=${params.row.id}`} />
-            ),
+            renderCell: (params:any) => {
+            // return  <Avatar alt={params.row.id} src={`${params.value}`} />
+            return    <NameAvatar
+            firstName={String(params.row.name).split(' ')[0]}
+            surName={String(params.row.name).split(' ')[1]}
+            url={params.value}
+            variant="circular"
+          />
+            },
           },
-        { field: 'detail', headerName: 'Personal Details ', width: 320, renderCell: (params:any) => (
+        { field: 'name', headerName: 'Personal Details ', width: 380, renderCell: (params:any) => (
             <div >
-              <div>{params.value}</div>
-              <div>{params.row.email}</div>
-              <div>{params.row.phone}</div>
+              <DocumentNameTag>{params.value}</DocumentNameTag>
+              <ConfirmDescriptionTag sx={{color:'#0076C8'}}>{params.row.email}</ConfirmDescriptionTag>
+              <ConfirmDescriptionTag sx={{color:'#000000'}}>{params.row.phone}</ConfirmDescriptionTag>
             </div>
           )
         },
-        { field: 'work', headerName: 'Work Details ', width: 320, renderCell: (params:any) => (
-            <div >
-              <div>{params.value}</div>
-              <div>{params.row.email}</div>
-              <div>{params.row.phone}</div>
+        { field: 'work', headerName: 'Work Details ', width: 380, renderCell: (params:any) => (
+            <div>
+              <DocumentNameTag>{params.value}</DocumentNameTag>
+              <ConfirmDescriptionTag sx={{color:'#0076C8'}}>{params.row.workEmail}</ConfirmDescriptionTag>
+              <ConfirmDescriptionTag sx={{color:'#000000'}}>{params.row.companyPhone}</ConfirmDescriptionTag>
             </div>
           )
         },
-        { field: 'regDate', headerName: 'Reg Date', width: 150,  },
+        { field: 'regDate', headerName: 'Reg Date', width: 150,  renderCell: (params:any) => (
+          <div>
+            <DocumentNameTag>{params.value}</DocumentNameTag>
+            </div>) },
         MenuColumn({
           field: 'action',
           headerName: 'Action',
-          onClickEdit: (row) => console.log(`Edit row ${row.id}`),
-          onClickDelete: (row) => console.log(`Delete row ${row.id}`),
+          onClickEdit: (row) =>handleToggle(row),
         }),
       ];
-console.log('props',props);
-
-      const rows = [
-        { id: 1,regDate:'22.04.2021', detail: 'John Smith', email: 'john@example.com', phone:'0230439482098', work:'zatronics', profilePic:"pic" },
-        { id: 2, regDate:'22.04.2021',detail: 'Jane Doe', email: 'jane@example.com',phone:'0230439482098', work:'zatronics',profilePic:"pic"  },
-        { id: 3, regDate:'22.04.2021',detail: 'Bob Johnson', email: 'ali@example.com',phone:'0230439482098', work:'zatronics',profilePic:"pic"  },
-      ];
-  return (
+      const rows= props.users&&props.users.map((item:any, index:any)=>{
+        const  localDate = momentdeDateFormat(item.createdAt)
+        return{
+            id:index+1,
+            name:`${item.firstName} ${item.surName}`,
+            email: item.email,
+            regDate:localDate,
+            profilePic:item.profilePic,
+            phone:item.phone===""?"N/A":item.phone,
+            work:item.companyName===""?"N/A":item.companyName,
+            workEmail:item.workEmail===""?"N/A":item.workEmail,
+            companyPhone:item.companyPhone===""?"N/A":item.companyPhone,
+          }
+        })
+  
+  return (<>
     <GenericTable rows={rows} columns={columns} />
+    {open===true&&<CustomModal
+        // maxWidth="450px"
+        showFullWidth={false}
+        showDivider={true}
+        showCloseBtn={true}
+        title={"Personal Details"}
+        isOpen={open}
+        handleClose={()=> setOpen((prev: boolean) => !prev)}
+        children={
+        <ProfileViewGlobal userData={userDataLocal}/>
+        }
+      />}
+  </>
   )
 }
 

@@ -12,23 +12,22 @@ interface TableProps {
   columns: GridColDef[];
 }
 
-function getRowClassName(params:any) {
-    return 'custom-row';
-  }
+// function getRowClassName(params:any) {
+//     return 'custom-row';
+//   }
 const GenericTable = ({ rows, columns }: TableProps) => {
- 
-     // Create a new style element to set the row height its not working!
-  const styleElement = document.createElement('style');
-  styleElement.innerText = `
-    .custom-row .MuiDataGrid-row {
-      height: 72px;
-      border:1px solid red;
-    }
-  `;
-  document.head.appendChild(styleElement);
+
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} getRowClassName={getRowClassName}/>
+      <DataGrid rows={rows} columns={columns} rowHeight={80} sx={{
+        '& .MuiDataGrid-root .MuiDataGrid-cell:focus':{
+        }
+      }}
+      disableColumnFilter={true}
+      disableColumnMenu={true}
+      disableColumnSelector={true}
+      hideFooterPagination={true}
+      />
     </div>
   );
 };
@@ -72,10 +71,9 @@ interface MenuColumnProps {
   field: string;
   headerName: string;
   onClickEdit: (row: Row) => void;
-  onClickDelete: (row: Row) => void;
 }
 
-const MenuColumn = ({ field, headerName, onClickEdit, onClickDelete }: MenuColumnProps) => {
+const MenuColumn = ({ field, headerName, onClickEdit, }: MenuColumnProps) => {
   const column: GridColDef = {
     field,
     headerName,
@@ -84,7 +82,6 @@ const MenuColumn = ({ field, headerName, onClickEdit, onClickDelete }: MenuColum
     width: 100,
     renderCell: (params: { row: Row; }) => {
       const row: Row = params.row as Row;
-
       const handleEdit = () => {
         onClickEdit(row);
 

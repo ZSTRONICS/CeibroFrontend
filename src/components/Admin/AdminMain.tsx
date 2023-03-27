@@ -32,9 +32,7 @@ function AdminMain() {
         <TabsUnstyled defaultValue={0}>
           <Grid container gap={1}>
             <Grid item md={2}>
-              <TabsList
-                sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}
-              >
+              <TabsList sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}>
                 <Tab onClick={() => getUsers("admin")} sx={{ fontSize: 16 }}>
                   Admins
                 </Tab>

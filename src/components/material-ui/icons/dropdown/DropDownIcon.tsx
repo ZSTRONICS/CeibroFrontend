@@ -14,8 +14,8 @@ export function DropDownIcon() {
         <path
           d="M2 2L6 6L10 2"
           stroke="black"
-          stroke-width="1.5"
-          stroke-linecap="square"
+          strokeWidth="1.5"
+          strokeLinecap="square"
           color="hsl(0, 0%, 80%)"
         />
       </svg>

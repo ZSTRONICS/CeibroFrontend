@@ -31,7 +31,6 @@ const SubTaskMain = () => {
           return
         }
       subtask.state.every((state: any) => {
-        // console.log('state',state);
         if (state.userId === user._id && state.userState === checkState) {
           count += 1;
           return false;
