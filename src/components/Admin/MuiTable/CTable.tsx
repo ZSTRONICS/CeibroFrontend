@@ -2,6 +2,7 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import { Menu, MenuItem, IconButton } from '@mui/material';
 import { useState } from 'react';
 import assets from 'assets/assets';
+import { styled } from '@mui/material/styles';
 
 interface Row {
   [key: string]: any;
@@ -12,14 +13,21 @@ interface TableProps {
   columns: GridColDef[];
 }
 
-// function getRowClassName(params:any) {
-//     return 'custom-row';
-//   }
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  '& .MuiDataGrid-columnHeaderMenuIcon': {
+    display: 'none',
+  },
+  '& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus-within': {
+    outline: 'none',
+  },
+}));
+
 const GenericTable = ({ rows, columns }: TableProps) => {
 
   return (
     <div style={{ height: 400, width: '100%' }}>
-      <DataGrid rows={rows} columns={columns} rowHeight={80} sx={{
+      <StyledDataGrid rows={rows} columns={columns} rowHeight={80}
+      sx={{
         '& .MuiDataGrid-root .MuiDataGrid-cell:focus':{
         }
       }}
@@ -79,7 +87,7 @@ const MenuColumn = ({ field, headerName, onClickEdit, }: MenuColumnProps) => {
     headerName,
     sortable: false,
     filterable: false,
-    width: 100,
+    width: 120,
     renderCell: (params: { row: Row; }) => {
       const row: Row = params.row as Row;
       const handleEdit = () => {
