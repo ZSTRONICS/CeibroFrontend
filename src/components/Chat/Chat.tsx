@@ -145,14 +145,14 @@ const Chat = () => {
             "@media(max-width:1024px)": {},
           }}
           xs={12}
-          md={sidebarOpen && !isTabletOrMobile ? 3 : 4}
+          md={sidebarOpen && !isTabletOrMobile ? 4 : 3}
         >
           <ChatSidebar />
         </Grid>
         <Grid
           item
           xs={12}
-          md={sidebarOpen && !isTabletOrMobile ? 9 : 8}
+          md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
           style={{
             background: "white",
             display: "flex",

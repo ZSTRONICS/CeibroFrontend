@@ -9,10 +9,12 @@ import ProjectDrawerMenu from "./ProjectDrawerMenu";
 import CreateProjectBody from "./CreateProjectBody";
 import CreateProjectFooter from "./CreateProjectFooter";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import { Grid } from "@mui/material";
 
 const CreateProjectDrawer = () => {
-  const {drawerOpen, menue, projectOverview} = useSelector(
-    (store: RootState) => store.project);
+  const { drawerOpen, menue, projectOverview } = useSelector(
+    (store: RootState) => store.project
+  );
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -28,7 +30,9 @@ const CreateProjectDrawer = () => {
           title={projectOverview._id ? projectOverview.title : "New Project"}
           handleClose={handleClose}
         />
-        <ProjectDrawerMenu />
+        <Grid container sx={{ overflowX: "scroll", flexWrap: "nowrap" }}>
+          <ProjectDrawerMenu />
+        </Grid>
         <CreateProjectBody />
         {menue === 1 ? <CreateProjectFooter /> : <></>}
       </div>
@@ -44,7 +48,7 @@ const useStyles = makeStyles({
     backgroundColor: colors.lightGrey,
     // height: "calc(100vh-213px)",
     height: "100vh",
-    overflowY: "hidden",
+    // overflowY: "hidden",
     "@media (max-width:960px)": {
       width: "100vw",
       // overflowY: "auto",

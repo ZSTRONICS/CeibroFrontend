@@ -1,6 +1,7 @@
 import { useState } from "react";
 // material
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Box, Grid, Typography } from "@mui/material";
 
 // redux
 import { useDispatch } from "react-redux";
@@ -16,13 +17,16 @@ import assets from "assets/assets";
 import colors from "../../assets/colors";
 import ChatList from "./ChatList";
 import ChatRoomSearch from "./ChatRoomSearch";
+import { Stack } from "@mui/system";
+import { Divider, MenuItem } from "@mui/material";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 
 const ChatSidebar = () => {
   const classes = useStyles();
 
   const messageListType = [
     {
-      name: "View all",
+      name: "All",
       value: "all",
     },
     {
@@ -96,31 +100,43 @@ const ChatSidebar = () => {
       <Grid item xs={12}>
         <ChatRoomSearch onChange={handleChatRoomSearch} />
       </Grid>
-      <Grid item xs={12} className={classes.messageTypeWrapper}>
-        {messageListType.map((chatType: any, index: number) => {
-          return (
-            // <>
-            <Typography
-              onClick={() => handleMessageTypeClick(chatType, index)}
-              key={index}
-              className={`${classes.messageTypeText} ${
-                index < 2 && classes.borderRight
-              } ${filter === chatType.name ? classes.activeMessageType : ""}`}
-            >
-              {chatType?.icon && (
-                <img
-                  src={chatType.icon}
-                  className={`width-16`}
-                  style={{ height: 14, paddingRight: 8 }}
-                  alt=""
-                />
-              )}
-              {chatType.name}
-            </Typography>
-            //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
-            // </>
-          );
-        })}
+      <Grid
+        item
+        xs={12}
+        sx={{
+          "@media(max-width:1500px)": {
+            overflowX: "scroll",
+          },
+        }}
+      >
+        <CustomStack direction="row">
+          {messageListType.map((chatType: any, index: number) => {
+            return (
+              // <>
+              <Box
+                onClick={() => handleMessageTypeClick(chatType, index)}
+                key={index}
+                className={`${classes.messageTypeText} 
+              ${index < 2 && classes.borderRight}
+               ${filter === chatType.name ? classes.activeMessageType : ""}`}
+              >
+                <Typography
+                  sx={{
+                    // padding: "0 20px",
+                    paddingLeft: "20px",
+                    paddingRight: "20px",
+                  }}
+                >
+                  {`${String(chatType.name) === "Favorites" ? "⭐" : ""} ${
+                    chatType.name
+                  }`}
+                </Typography>
+              </Box>
+              //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
+              // </>
+            );
+          })}
+        </CustomStack>
       </Grid>
       <Grid item xs={12} className={`${classes.chatList} hide-scrollbar`}>
         <ChatList />
@@ -133,7 +149,8 @@ export default ChatSidebar;
 
 const useStyles = makeStyles({
   borderRight: {
-    borderRight: "2px solid",
+    borderRight: "2px solid #DBDBE5;",
+    // padding: "0 30px",
     // paddingRight: 23,
     // padding: "0 26px",
   },
@@ -184,17 +201,19 @@ const useStyles = makeStyles({
     fontSize: 20,
   },
   messageTypeWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    padding: "15px 47px",
+    // overflowX: "auto",
+    // display: "flex",
+    // justifyContent: "center",
+    // padding: "15px 20px",
     width: "100%",
     alignItems: "center",
   },
   messageTypeText: {
     // maxWidth: "100px",
-    width: "100px",
+    // width: "100px",
     fontSize: 12,
     fontWeight: 500,
+    fontFamily: "inter",
     color: colors.textPrimary,
     cursor: "pointer",
   },
