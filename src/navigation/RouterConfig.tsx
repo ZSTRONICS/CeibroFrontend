@@ -10,6 +10,7 @@ import { Login,
   Profile,
   Tasks,
   Chat,
+  AdminMain
 } from 'components'
 
 import AppLayout from "./AppLayout";
@@ -39,6 +40,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/chat" component={Chat} />
             <Route path="/connections" component={Connections} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
+            <PrivateRoute path="/admin" component={AdminMain} />
           </AppLayout>
         </Switch>
       </Router> 

@@ -93,6 +93,7 @@ function Sidebar() {
                 </div>
               );
             })}
+            
         </div>
 
         {/* <div className={classes.help}>

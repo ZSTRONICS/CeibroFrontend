@@ -1,15 +1,18 @@
 export interface UserInterface {
-  firstName: string;
-  surName: string;
-  profilePic: string;
-  email: string;
-  workEmail: string;
-  companyName: string;
-  companyVat: string;
-  companyLocation: string;
-  phone: string;
-  companyPhone: string;
-  currentlyRepresenting: string;
-  id: string;
-  _id: string;
+  firstName: string
+  surName: string
+  email: string
+  companyVat: string
+  companyLocation: string
+  workEmail: string
+  companyName: string
+  profilePic: string
+  phone: string
+  companyPhone: string
+  currentlyRepresenting: string
+  id: string
+  _id: string
+  createdAt:string
+  name?:string
+  regDate?:string
 }

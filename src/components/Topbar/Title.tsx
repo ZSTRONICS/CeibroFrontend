@@ -115,24 +115,16 @@ const Title = () => {
           <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
           Dashboard
           </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              className={classes.dashboardTitleText}
-              component="h6"
-            >
-              Dashboard
-            </Typography> */}
-            {/* {!isTabletOrMobile && 
-                        <Button 
-                            size="small" 
-                            color="primary" 
-                            variant="contained"
-                        >
-                            <Link className={classes.login} to="/login">
-                                Login
-                            </Link>
-                        </Button>
-                    } */}
+          </div>
+        </>
+      );
+    if (location.pathname.includes("admin"))
+      return (
+        <>
+          <div className={classes.dashboardTitle}>
+          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          Admin
+          </TopBarTitle>
           </div>
         </>
       );

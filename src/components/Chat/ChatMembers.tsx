@@ -117,7 +117,7 @@ const ChatMembers:React.FC<Props> = ({enable}) => {
                   firstName={member?.firstName}
                   surName={member?.surName}
                   url={member?.profilePic}
-                  variant="small"
+                  size="small"
                 />
               </Grid>
               <Grid item xs={8} className={classes.memberPreview}>
