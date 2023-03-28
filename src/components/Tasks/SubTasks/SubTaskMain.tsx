@@ -26,7 +26,10 @@ const SubTaskMain = () => {
   // }, []);
   const getSubtaskStateCount = (checkState: any) => {
     let count = 0;
-    allSubTaskList.forEach((subtask: any) => {
+    allSubTaskList.length>0&&allSubTaskList?.forEach((subtask: any) => {
+       if(subtask===undefined){
+          return
+        }
       subtask.state.every((state: any) => {
         if (state.userId === user._id && state.userState === checkState) {
           count += 1;

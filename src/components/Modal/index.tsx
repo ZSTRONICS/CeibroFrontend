@@ -6,7 +6,7 @@ import {
   DialogActions,
   Typography,
 } from "@material-ui/core";
-import { Grid, DialogContent } from "@mui/material";
+import { Grid, DialogContent, Divider } from "@mui/material";
 import PropTypes from "prop-types";
 // import { Clear } from "@material-ui/icons";
 import useStyles from "./styles";
@@ -20,6 +20,8 @@ interface Props {
   children: any;
   showCloseBtn: boolean;
   maxWidth?: any;
+  showDivider?:boolean
+  showFullWidth?:boolean
 }
 
 const CustomModal: React.FC<Props> = ({
@@ -29,6 +31,8 @@ const CustomModal: React.FC<Props> = ({
   children,
   showCloseBtn,
   maxWidth,
+  showDivider,
+  showFullWidth,
 }) => {
   const classes = useStyles();
   const closeModal = (e: any) => {
@@ -41,7 +45,7 @@ const CustomModal: React.FC<Props> = ({
   return (
     <>
       <Dialog
-        fullWidth
+        fullWidth={showFullWidth===false?false:true}
         maxWidth={localWidth.toString()}
         open={isOpen}
         onClose={closeModal}
@@ -74,6 +78,7 @@ const CustomModal: React.FC<Props> = ({
             )}
           </Grid>
         </DialogTitle>
+       {showDivider===true&& <Divider sx={{pt:1, pb:2}}/>}
         <div style={{ width: "100%" }}>
           <DialogContent sx={{ padding: "10px 20px" }}>
             {children}

@@ -14,7 +14,7 @@ export default function ProfileContent(props:any) {
            firstName={getUser?.firstName}
            surName={getUser?.surName}
            url={getUser?.profilePic || ''}
-           variant="large"
+           variant="rounded"
         />
       </Box>
       <Grid container>

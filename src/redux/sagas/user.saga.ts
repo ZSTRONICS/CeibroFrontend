@@ -14,6 +14,7 @@ import {
   UPDATE_PROFILE_PIC,
   RESEND_INVITATION,
   REVOKE_INVITAION,
+  USER_CONFIG,
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
 
@@ -79,6 +80,13 @@ const getMyAllInviteCount = apiCall({
   method: 'get',
   path: '/users/invite/count',
 })
+
+const getUsersByRole = apiCall({
+  type: USER_CONFIG.GET_USERS_BY_ROLE,
+  method: 'get',
+  path: payload => `/users?role=${payload.other.role}`,
+})
+
 const getMyConnectionsCount = apiCall({
   type: GET_MY_CONNECTIONS_COUNT,
   method: 'get',
@@ -122,6 +130,7 @@ function* userSaga() {
   yield takeLatest(GET_MY_ALL_INVITES, getMyAllInvites)
   yield takeLatest(ACCEPT_INVITE, acceptInvite)
   yield takeLatest(GET_MY_CONNECTIONS, getMyConnections)
+  yield takeLatest(USER_CONFIG.GET_USERS_BY_ROLE, getUsersByRole)
   yield takeLatest(DELETE_MY_CONNECTION, deleteMyConnection)
   yield takeLatest(ACCEPT_ALL_INVITES, acceptAllInvite)
   yield takeLatest(GET_MY_INVITES_COUNT, getMyAllInviteCount)
