@@ -136,7 +136,6 @@ const TaskMain = () => {
       setFilteredData(filteredDataLocal);
     }
   };
-
   const handleAssignedToMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
