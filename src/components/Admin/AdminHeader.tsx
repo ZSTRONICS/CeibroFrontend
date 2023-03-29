@@ -8,9 +8,18 @@ import {
   Typography,
 } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 
 function AdminHeader() {
   const [findUser, setFindUser] = useState<any>("");
+  const [fromDate, setFromDate]= useState<any>("")
+  const [toDate, setToDate]= useState<any>("")
+  const [isHide, setIsHide] = React.useState(true);
+
+  const handleFromDateChange = (value: any) => {
+    setFromDate(value);
+    setIsHide(false);
+  };
 
   return (
     <>
@@ -50,25 +59,31 @@ function AdminHeader() {
               />
             </Paper>
           </Grid>
-          <Grid
-            item
-            // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
-            // sx={{
-            //   height: "38px",
-            //   width: "260px",
-            // }}
-          >
+          <Grid item
+            sx={{ width: "100%", maxWidth: "650px" }}>
+            <CustomStack>
             <CDatePicker
               showLabel={true}
-              required
-              // value={showDate}
+              dueDateLabel={"By date"}
+              value={fromDate}
               id="date1"
               name="dueDate"
-              // onChange={(e: any) => {
-              //   setShowDate(e);
-              //   projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
-              // }}
+              onChange={handleFromDateChange}
             />
+            <CDatePicker
+              showLabel={true}
+              disabled={isHide}
+              value={toDate}
+              dueDateLabel={"To date"}
+              id="date1"
+              name="dueDate"
+              minDate={fromDate}
+              onChange={(e: any) => {
+                setToDate(e);
+                // moment(e).format("DD-MM-YYYY");
+              }}
+            />
+            </CustomStack>
           </Grid>
         </Grid>
       {/* </Box> */}

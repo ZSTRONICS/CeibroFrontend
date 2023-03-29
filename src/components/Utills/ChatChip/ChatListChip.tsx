@@ -28,16 +28,17 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
+  
+  lastMessageTime = String(lastMessageTime).replace('a few seconds ago', '1s ago')
+  lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
+  lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
+  lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
 
-  lastMessageTime = String(lastMessageTime).replace("a minute ago", "1m ago");
-  lastMessageTime = String(lastMessageTime).replace("an hour ago", "1h ago");
-  lastMessageTime = String(lastMessageTime).replace(" seconds", " s");
-
-  lastMessageTime = String(lastMessageTime).replace(" hours", "h");
-  lastMessageTime = String(lastMessageTime).replace(" days", "d");
-  lastMessageTime = String(lastMessageTime).replace(" minutes", "m");
-  lastMessageTime = String(lastMessageTime).replace(" months", "M");
-  lastMessageTime = String(lastMessageTime).replace(" years", "Y");
+  lastMessageTime = String(lastMessageTime).replace(' hours', 'h')
+  lastMessageTime = String(lastMessageTime).replace(' days', 'd')
+  lastMessageTime = String(lastMessageTime).replace(' minutes', 'm')
+  lastMessageTime = String(lastMessageTime).replace(' months', 'M')
+  lastMessageTime = String(lastMessageTime).replace(' years', 'Y')
 
   let avaterInfo: any = {};
   const chatMembers = [...chat.members, ...chat.removedAccess];

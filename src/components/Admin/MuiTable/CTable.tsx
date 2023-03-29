@@ -25,12 +25,9 @@ const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
 const GenericTable = ({ rows, columns }: TableProps) => {
 
   return (
-    <div style={{ height: 700, width: '100%' }}>
+    <div style={{ height: '100%', width: '100%', minHeight: 400 }}>
       <StyledDataGrid rows={rows} columns={columns} rowHeight={80}
-      sx={{
-        '& .MuiDataGrid-root .MuiDataGrid-cell:focus':{
-        }
-      }}
+      autoHeight={true}
       disableColumnFilter={true}
       disableColumnMenu={true}
       disableColumnSelector={true}

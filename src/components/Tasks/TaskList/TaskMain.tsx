@@ -1,22 +1,56 @@
 import { useRef, useEffect, useState } from "react";
 // mui-imports
 import { makeStyles } from "@material-ui/core";
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, Paper, TextField, Typography } from "@mui/material";
 
 // components
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
+import DatePicker from "components/Utills/Inputs/DatePicker";
+import SelectDropdown, { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import TaskList from "./TaskList";
 import { IOSSwitch } from "components/Chat/Questioniar/IOSSwitch";
 import CDatePicker from "components/DatePicker/CDatePicker";
+import InputHOC from "components/Utills/Inputs/InputHOC";
+import { getAvailableUsers } from "redux/action/user.action";
 
 const TaskMain = () => {
-  const allTask: TaskInterface[] = useSelector(
-    (state: RootState) => state.task.allTask
-  );
+  const dispatch = useDispatch()
+
+  const allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
+  const [filteredData, setFilteredData] = useState(allTask);
+  const isRenderEffect = useRef<any>(false);
+  const [data, setData] = useState<dataInterface[]>([]);
+
+  useEffect(() => {
+    if (isRenderEffect.current === false) {
+      const payload = {
+        success: (res: any) => {
+          setData(res.data);
+        },
+      };
+      dispatch(getAvailableUsers(payload));
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
+  useEffect(() => {
+    setFilteredData(allTask);
+  }, [allTask]);
+
+  const [filterParams, setFilterParams] = useState({
+    dueDate: "",
+    assignedTo: [],
+    project: [],
+    createdByMe:false,
+    assignedToMe:false
+  });
+
+  console.log('allTask',allTask);
+
   // let xsPoint = 12;
   // let mdPoint = 4;
   // let lgPoint = 3.2;
@@ -62,7 +96,46 @@ const TaskMain = () => {
       count: allTask.filter((task) => task.state === "draft").length,
     },
   ];
+  const filterDataOnParams = (params: any) => {
+    let filteredDataLocal: any = [...allTask];
+    if (params.assignedTo.length > 0) {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        return item.assignedTo.some((o: any) => params.assignedTo.includes(o._id));
+      });
+    }
 
+    if (params.dueDate !== "") {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        let [d1, m1, y1] = String(item.dueDate).split("-");
+        let [d2, m2, y2] = String(params.dueDate).split("-");
+        return d1 === d2 && m1 === m2 && y1 === y2;
+      });
+    }
+
+    setFilterParams({ ...params });
+    if (
+      params.assignedTo.length === 0 &&
+      params.dueDate === "" 
+    ) {
+      setFilteredData(allTask);
+    } else {
+      setFilteredData(filteredDataLocal);
+    }
+  };
+
+  const handleUserChange = (user: any) => {
+    if (user === null) {
+      filterDataOnParams({
+        ...filterParams,
+        owner: [],
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        owner: user.value,
+      });
+    }
+  };
   return (
     <>
       <Box sx={{ flexGrow: 1 }} className={classes.taskMain}>
@@ -101,7 +174,33 @@ const TaskMain = () => {
               width: "350px",
             }}
           >
-            <SelectDropdown title="Assigned to" />
+            {/* <SelectDropdown title="Assigned to" /> */}
+            <InputHOC title="Assigned to">
+              <Autocomplete
+                // disablePortal
+                sx={{ width: "100%", marginTop: "5px" }}
+                // multiple={false}
+                id="project_members1"
+                // filterSelectedOptions
+                options={data}
+                size="small"
+                onChange={(event, value) => handleUserChange(value)}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="assignedTo"
+                    placeholder="Assigned to"
+                  />
+                )}
+              />
+            </InputHOC>
+
           </Grid>
           <Grid
             item
@@ -110,7 +209,32 @@ const TaskMain = () => {
               width: "350px",
             }}
           >
-            <SelectDropdown title="Projects" />
+            {/* <SelectDropdown title="Projects" /> */}
+            <InputHOC title="Project">
+              <Autocomplete
+                // disablePortal
+                sx={{ width: "100%", marginTop: "5px" }}
+                // multiple={false}
+                id="project_1"
+                // filterSelectedOptions
+                options={data}
+                size="small"
+                onChange={(event, value) => handleUserChange(value)}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="project"
+                    placeholder="Project"
+                  />
+                )}
+              />
+            </InputHOC>
           </Grid>
           <Box
             mt={2}
