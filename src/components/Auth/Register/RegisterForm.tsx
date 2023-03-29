@@ -68,7 +68,6 @@ const RegisterForm = () => {
       setIncorrectAuth(false);
     }, 5000);
   };
-
   return (
     <div className={`form-container  hide-scrollbar`}>
       <div className={classes.logoWrapper}>
