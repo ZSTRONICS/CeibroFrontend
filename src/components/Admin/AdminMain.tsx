@@ -41,7 +41,7 @@ function AdminMain() {
                 </Tab>
               </TabsList>
             </Grid>
-            <Grid item md={6}>
+            <Grid item md={8}>
               <AdminHeader />
             </Grid>
           </Grid>

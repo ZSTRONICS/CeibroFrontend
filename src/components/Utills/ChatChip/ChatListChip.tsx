@@ -29,8 +29,9 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   const selectedChat = useSelector(
     (state: RootState) => state.chat.selectedChat
   );
+    
 
-
+  lastMessageTime = String(lastMessageTime).replace('a few seconds ago', '1s ago')
   lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
   lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
   lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
