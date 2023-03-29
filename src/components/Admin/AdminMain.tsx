@@ -30,9 +30,22 @@ function AdminMain() {
     <>
       <Box pt={2} pl={2}>
         <TabsUnstyled defaultValue={0}>
-          <Grid container gap={1}>
-            <Grid item md={2}>
-              <TabsList sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}>
+          <Grid
+            container
+            gap={1}
+            sx={{
+              // overflowX: "auto",
+              // width: "100%",
+              // maxWidth: "80%",
+            }}
+          >
+            <Grid
+              item
+              // md={2}
+            >
+              <TabsList
+                sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}
+              >
                 <Tab onClick={() => getUsers("admin")} sx={{ fontSize: 16 }}>
                   Admins
                 </Tab>
@@ -41,7 +54,10 @@ function AdminMain() {
                 </Tab>
               </TabsList>
             </Grid>
-            <Grid item md={8}>
+            <Grid
+              item
+              sm={12}
+            >
               <AdminHeader />
             </Grid>
           </Grid>
