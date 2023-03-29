@@ -105,7 +105,7 @@ const ChatSidebar = () => {
         xs={12}
         sx={{
           "@media(max-width:1500px)": {
-            overflowX: "scroll",
+            overflowX: "auto",
           },
         }}
       >
@@ -122,14 +122,34 @@ const ChatSidebar = () => {
               >
                 <Typography
                   sx={{
-                    // padding: "0 20px",
                     paddingLeft: "20px",
                     paddingRight: "20px",
                   }}
                 >
-                  {`${String(chatType.name) === "Favorites" ? "⭐" : ""} ${
-                    chatType.name
-                  }`}
+                  {chatType.name === "Favorites" ? (
+                    <span
+                      style={{
+                        paddingRight: "8px",
+                        fontSize: "20px",
+                        color: "#f1bb4b",
+                        fontWeight: 900,
+                      }}
+                    >
+                      &#9733;
+                    </span>
+                  ) : (
+                    ""
+                  )}
+                  {chatType.name}
+                  {/* {`${
+                    String(chatType.name) === "Favorites" ? (
+                      <span>
+                        "&#9733;"
+                      </span>
+                    ) : (
+                      ""
+                    )
+                  } ${chatType.name}`} */}
                 </Typography>
               </Box>
               //  {index < 2 && <Typography className={classes.messagetypeBreak}>|</Typography>}
