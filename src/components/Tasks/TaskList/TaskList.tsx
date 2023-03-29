@@ -16,15 +16,18 @@ import { useDispatch, useSelector } from "react-redux";
 // import { getAllTask } from "redux/action/task.action";
 import { RootState } from "redux/reducers";
 import { TaskInterface } from "constants/interfaces/task.interface";
+interface Props{
+  filteredData:TaskInterface[]
+}
 
-function TaskList() {
+function TaskList({filteredData}:Props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
 
-  let allTask: TaskInterface[] = useSelector(
-    (state: RootState) => state.task.allTask
-  );
+  // let allTask: TaskInterface[] = useSelector(
+  //   (state: RootState) => state.task.allTask
+  // );
   let getTaskSubTaskFilterByState = useSelector(
     (state: RootState) => state.task.getTaskSubTaskFilterByState
   );
@@ -32,7 +35,7 @@ function TaskList() {
   // let headerHeight = 10;
   // if(props.props.current){
   // }
-  let filterTask = [...allTask];
+  let filterTask = [...filteredData];
 
   filterTask = filterTask.reduce((acc: any, curr: any) => {
     if (curr.state === getTaskSubTaskFilterByState) {
@@ -42,12 +45,12 @@ function TaskList() {
   }, []);
 
   if (getTaskSubTaskFilterByState === "all") {
-    filterTask = [...allTask];
+    filterTask = [...filteredData];
   }
 
   return (
     <>
-      {!allTask ? (
+      {!filteredData ? (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <NoData
             title="There is no task"

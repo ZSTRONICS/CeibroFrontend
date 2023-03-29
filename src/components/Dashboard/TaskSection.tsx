@@ -3,10 +3,12 @@ import { makeStyles } from "@material-ui/core";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import taskActions, { getAllTask } from "../../redux/action/task.action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
 import { getAllProjectsWithMembers } from "redux/action/project.action";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { RootState } from "redux/reducers";
 
 const myStatus = [
   {
@@ -34,7 +36,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
+  const allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
@@ -99,7 +101,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           height: "250px",
         }}
       >
-        <TaskList />
+        <TaskList filteredData={allTask} />
       </Box>
     </div>
   );
