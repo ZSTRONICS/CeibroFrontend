@@ -167,7 +167,6 @@ const Project = () => {
     <>
       <Grid item xs={12}>
         {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
-
         <Grid container ref={headerRef} className={classes.outerWrapper}>
           <Grid
             item
@@ -177,7 +176,11 @@ const Project = () => {
             <CDatePicker
               IsdisablePast={false}
               showLabel={true}
-              required
+              componentsProps={{
+                actionBar:{
+                  actions:['clear']
+                }
+              }}
               value={date}
               id="date1"
               name="dueDate"
@@ -206,19 +209,11 @@ const Project = () => {
             // xs={12} md={4}
             className={classes.datePicker}
           >
-            {/* <SelectDropdown
-            isClearAble={true}
-            title="Members"
-            data={data}
-            handleChange={handleUserChange}
-          />*/}
             <InputHOC title="Owner">
               <Autocomplete
                 disablePortal
                 sx={{ width: "100%", marginTop: "5px" }}
-                // multiple={false}
                 id="project_members1"
-                // filterSelectedOptions
                 options={data}
                 size="small"
                 onChange={(event, value) => handleUserChange(value)}

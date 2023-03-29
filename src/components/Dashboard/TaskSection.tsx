@@ -2,13 +2,32 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
-import taskActions from "../../redux/action/task.action";
-import { useDispatch } from "react-redux";
+import taskActions, { getAllTask } from "../../redux/action/task.action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
+import { getAllProjectsWithMembers } from "redux/action/project.action";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { RootState } from "redux/reducers";
-import { useSelector } from "react-redux";
+
+const myStatus = [
+  {
+    title: "Ongoing",
+    count: 8,
+  },
+  {
+    title: "Approved",
+    count: 1,
+  },
+  {
+    title: "Done",
+    count: 5,
+  },
+  {
+    title: "Draft",
+    count: 2,
+  },
+];
 
 interface TaskSectionInt {}
 const TaskSection: React.FC<TaskSectionInt> = () => {
@@ -44,7 +63,6 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
@@ -109,7 +127,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           height: "250px",
         }}
       >
-        <TaskList />
+        <TaskList filteredData={allTask} />
       </Box>
     </div>
   );
