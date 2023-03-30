@@ -68,7 +68,7 @@ const TaskMain = () => {
       window.innerHeight - (headerRef.current.clientHeight + 135);
     return `${contentHeight}px`;
   };
-  // console.log('allTask',allTask);
+
   const options = [
     {
       title: "All",
