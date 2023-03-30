@@ -198,7 +198,7 @@ const ProjectOverview = () => {
       <Grid
         container
         gap={2.5}
-        className={classes.outerWrapper}
+        // className={classes.outerWrapper}
         // sx={{
         //   overflowX: "auto",
         //   display: "flex",
@@ -364,7 +364,6 @@ export default ProjectOverview;
 
 const useStyles = makeStyles({
   // outerWrapper: {
-  //   border: "2px solid green",
   //   width: "800px",
   //   overflow: "auto",
   //   display: "flex",
