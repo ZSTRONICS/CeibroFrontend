@@ -46,17 +46,34 @@ export const TaskModal = () => {
   };
 
   const handleSubmit = (values: any) => {
-    const { dueDate, title, project, admins, assignedTo, creator, state, description } = values;
-    const payload = { dueDate, title, project, admins, assignedTo, creator, state, description };
+    const {
+      dueDate,
+      title,
+      project,
+      admins,
+      assignedTo,
+      creator,
+      state,
+      description,
+    } = values;
+    const payload = {
+      dueDate,
+      title,
+      project,
+      admins,
+      assignedTo,
+      creator,
+      state,
+      description,
+    };
     dispatch(
       createTask({
         body: payload,
         success: (res) => {
-          handleClose()
+          handleClose();
           if (res?.status >= 400) {
             toast.error("Failed to create task", res?.message);
-          }
-          else if (res?.status === 201) {
+          } else if (res?.status === 201) {
             //New Task Created Successfully
             //Open Task Drawer with latest Task Data
             const newTaskData = res?.data?.newTask;
@@ -105,18 +122,18 @@ export const TaskModal = () => {
           }}
           onSubmit={handleSubmit}
         >
-          {({ errors, touched, values, setFieldValue,handleBlur }) => (
+          {({ errors, touched, values, setFieldValue, handleBlur }) => (
             <Form>
               <DialogContent sx={{ padding: "0 20px 24px" }}>
                 {/* <DialogContentText> */}
-                  {/* <CBox> */}
-                    <NewTaskMenu
-                      setFieldValue={setFieldValue}
-                      values={values}
-                      handleBlur= {handleBlur}
-                    />
-                    {/* <Divider /> */}
-                    {/* <Link href="#" underline="none" onClick={(event) => setOpen(!open)}>
+                {/* <CBox> */}
+                <NewTaskMenu
+                  setFieldValue={setFieldValue}
+                  values={values}
+                  handleBlur={handleBlur}
+                />
+                {/* <Divider /> */}
+                {/* <Link href="#" underline="none" onClick={(event) => setOpen(!open)}>
                                             <CBox color='#0076C8' fontSize={14} fontWeight={600} display='flex' alignItems='center' my={1.8}>
                                                 {open ?
                                                     <>
@@ -133,12 +150,19 @@ export const TaskModal = () => {
                                             :
                                             ''
                                         } */}
-                  {/* </CBox> */}
+                {/* </CBox> */}
                 {/* </DialogContentText> */}
               </DialogContent>
               <DialogActions>
-                <CBox display="flex" width="100%"  sx={{padding:'0 10px 18px'}}>
-                  <CBox className={classes.btnDraft} sx={{ paddingLeft:'2px',}}>
+                <CBox
+                  display="flex"
+                  width="100%"
+                  sx={{ padding: "0 10px 18px" }}
+                >
+                  <CBox
+                    className={classes.btnDraft}
+                    sx={{ paddingLeft: "2px" }}
+                  >
                     <CButton
                       type="submit"
                       variant="outlined"
@@ -161,20 +185,6 @@ export const TaskModal = () => {
                     }}
                   >
                     <CButton
-                      type="submit"
-                      variant="contained"
-                      styles={{
-                        color: "#fff",
-                        fontSize: 12,
-                        fontWeight: "bold",
-                        marginRight: 15,
-                      }}
-                      label={"Create Task"}
-                      onClick={() => {
-                        values.state = "new";
-                      }}
-                    />
-                    <CButton
                       onClick={handleClose}
                       variant="contained"
                       elevation={0}
@@ -185,6 +195,20 @@ export const TaskModal = () => {
                         fontWeight: "bold",
                       }}
                       label={"Cancel"}
+                    />
+                    <CButton
+                      type="submit"
+                      variant="contained"
+                      styles={{
+                        color: "#fff",
+                        fontSize: 12,
+                        fontWeight: "bold",
+                        marginLeft: 15,
+                      }}
+                      label={"Create Task"}
+                      onClick={() => {
+                        values.state = "new";
+                      }}
                     />
                   </div>
                 </CBox>
