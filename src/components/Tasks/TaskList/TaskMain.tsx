@@ -1,25 +1,21 @@
 import React, { useRef, useEffect, useState } from "react";
 // mui-imports
 import { makeStyles } from "@material-ui/core";
-import { Autocomplete, Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Autocomplete, Box, Grid, Paper, TextField } from "@mui/material";
 
 // components
-import DatePicker from "components/Utills/Inputs/DatePicker";
-import SelectDropdown, { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import StatusMenu from "components/Utills/Others/StatusMenu";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import TaskList from "./TaskList";
-import CustomizedSwitch, { IOSSwitch } from "components/Chat/Questioniar/IOSSwitch";
+import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-import { getAvailableUsers, getMyConnections } from "redux/action/user.action";
 import moment from "moment-timezone";
 import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
 
 const TaskMain = () => {
-  const dispatch = useDispatch()
 
   const allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
   const {projectWithMembers ,allProjectsTitles, } = useSelector((store: RootState) => store.project);
@@ -30,10 +26,9 @@ const TaskMain = () => {
   }]
 
   const [filteredData, setFilteredData] = useState(allTask);
-  const isRenderEffect = useRef<any>(false);
-  // const [assignedToMe, setAssignedToMe] = useState<boolean>(false);
   const [date, setDate] = useState<string>("");
   const [assignToOpt, setAssignToOpt] = useState<any>([]);
+  const [assignToList, setAssignToList] = React.useState<any>([]);
 
   const [filterParams, setFilterParams] = useState({
     dueDate: "",
@@ -165,6 +160,7 @@ const TaskMain = () => {
   }
   
   const handleUserChange = (user: any) => {
+    setAssignToList([...user]);
     if (user.length === 0) {
       filterDataOnParams({
         ...filterParams,
@@ -179,12 +175,17 @@ const TaskMain = () => {
   };
 
   const handleProjectChange = (project: any) => {
+    console.log(project);
     if (project === null) {
+      setAssignToList([]);
+      setAssignToOpt([])
       filterDataOnParams({
         ...filterParams,
         project: "",
+        assignedTo: [],
       });
     } else {
+ 
       const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
       const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
       setAssignToOpt([...projMembers, ...fixedOwner]);
@@ -288,6 +289,7 @@ const TaskMain = () => {
                 id="assignedTo"
                 disabled={filterParams.project!==""?false:true}
                 options={assignToOpt}
+                value={assignToList}
                 size="small"
                 multiple={true}
                 limitTags={1}
