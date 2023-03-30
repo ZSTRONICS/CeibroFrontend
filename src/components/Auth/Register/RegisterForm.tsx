@@ -26,9 +26,10 @@ import colors from "assets/colors";
 import TextField from "components/Utills/Inputs/TextField";
 import Loading from "components/Utills/Loader/Loading";
 
+// i18next
+import { useTranslation } from "react-i18next";
 //formik
 import { Formik } from "formik";
-import { useTranslation } from "react-i18next";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
 import { Grid } from "@mui/material";
 import { CBox } from "components/material-ui";
