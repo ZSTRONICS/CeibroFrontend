@@ -1,8 +1,8 @@
-import { DataGrid, GridColDef } from '@mui/x-data-grid';
-import { Menu, MenuItem, IconButton } from '@mui/material';
-import { useState } from 'react';
-import assets from 'assets/assets';
-import { styled } from '@mui/material/styles';
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { Menu, MenuItem, IconButton } from "@mui/material";
+import { useState } from "react";
+import assets from "assets/assets";
+import { styled } from "@mui/material/styles";
 
 interface Row {
   [key: string]: any;
@@ -14,24 +14,44 @@ interface TableProps {
 }
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
-  '& .MuiDataGrid-columnHeaderMenuIcon': {
-    display: 'none',
+  "& .MuiDataGrid-main": {
+    // remove overflow hidden overwise sticky does not work
+    overflow: "unset",
   },
-  '& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus-within': {
-    outline: 'none',
+  "& .MuiDataGrid-columnHeaders": {
+    position: "sticky",
+  },
+  "& .MuiDataGrid-columnHeaderMenuIcon": {
+    display: "none",
+  },
+  "& .MuiDataGrid-columnHeader:focus-within, .MuiDataGrid-cell:focus-within": {
+    outline: "none",
   },
 }));
 
 const GenericTable = ({ rows, columns }: TableProps) => {
-
   return (
-    <div style={{ height: '100%', width: '100%', minHeight: 400 }}>
-      <StyledDataGrid rows={rows} columns={columns} rowHeight={80}
-      autoHeight={true}
-      disableColumnFilter={true}
-      disableColumnMenu={true}
-      disableColumnSelector={true}
-      hideFooterPagination={true}
+    <div
+      style={{
+        maxHeight: "640px",
+        height: "100%",
+        width: "100%",
+        minHeight: 400,
+        overflowY: "auto",
+        paddingBottom: "50px",
+      }}
+    >
+      <StyledDataGrid
+        rows={rows}
+        columns={columns}
+        rowHeight={80}
+        autoHeight={true}
+        disableColumnFilter={true}
+        disableColumnMenu={true}
+        disableColumnSelector={true}
+        hideFooterPagination={true}
+        hideFooter={true}
+        columnHeaderHeight={60}
       />
     </div>
   );
@@ -52,14 +72,14 @@ const MenuCell = ({ value, onClickEdit }: MenuCellProps) => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-const handleViewProfile=()=>{
-    onClickEdit()
-    handleMenuClose()
-}
+  const handleViewProfile = () => {
+    onClickEdit();
+    handleMenuClose();
+  };
   return (
     <div>
       <IconButton onClick={handleMenuClick}>
-        <assets.MoreVertOutlinedIcon/>
+        <assets.MoreVertOutlinedIcon />
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -78,26 +98,20 @@ interface MenuColumnProps {
   onClickEdit: (row: Row) => void;
 }
 
-const MenuColumn = ({ field, headerName, onClickEdit, }: MenuColumnProps) => {
+const MenuColumn = ({ field, headerName, onClickEdit }: MenuColumnProps) => {
   const column: GridColDef = {
     field,
     headerName,
     sortable: false,
     filterable: false,
     width: 120,
-    renderCell: (params: { row: Row; }) => {
+    renderCell: (params: { row: Row }) => {
       const row: Row = params.row as Row;
       const handleEdit = () => {
         onClickEdit(row);
-
       };
 
-      return (
-        <MenuCell
-          value={row[field]}
-          onClickEdit={handleEdit}
-        />
-      );
+      return <MenuCell value={row[field]} onClickEdit={handleEdit} />;
     },
   };
   return column;

@@ -96,7 +96,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
         setGetUser(res?.data);
         handleOpenClose(e);
       },
-      other: {
+    other: {
         userId,
       },
     };
