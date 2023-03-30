@@ -11,7 +11,6 @@ import CDatePicker from "components/DatePicker/CDatePicker";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 
 function AdminHeader() {
-  const [findUser, setFindUser] = useState<any>("");
   const [fromDate, setFromDate] = useState<any>("");
   const [toDate, setToDate] = useState<any>("");
   const [isHide, setIsHide] = React.useState(true);
