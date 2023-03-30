@@ -81,7 +81,7 @@ function AdminHeader() {
           <CustomStack>
             <CDatePicker
               showLabel={true}
-              dueDateLabel={"By date"}
+              dueDateLabel={"From"}
               value={fromDate}
               id="date1"
               name="dueDate"
@@ -91,7 +91,7 @@ function AdminHeader() {
               showLabel={true}
               disabled={isHide}
               value={toDate}
-              dueDateLabel={"To date"}
+              dueDateLabel={"Due Date"}
               id="date1"
               name="dueDate"
               minDate={fromDate}

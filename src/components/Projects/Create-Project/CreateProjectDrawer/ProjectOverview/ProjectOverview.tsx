@@ -198,7 +198,7 @@ const ProjectOverview = () => {
       <Grid
         container
         gap={2.5}
-        className={classes.outerWrapper}
+        // className={classes.outerWrapper}
         // sx={{
         //   overflowX: "auto",
         //   display: "flex",
