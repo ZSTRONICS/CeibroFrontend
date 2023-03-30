@@ -14,6 +14,7 @@ import CDatePicker from "components/DatePicker/CDatePicker";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import moment from "moment-timezone";
 import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import CButton from "components/Button/Button";
 
 const TaskMain = () => {
 
@@ -24,6 +25,13 @@ const TaskMain = () => {
     label: `${user.firstName} ${user.surName}`,
     id:user._id
   }]
+
+  const projectTitleLocal =allProjectsTitles.map((item:any)=>{
+    return{
+      _id:item.value, 
+      label: item.label
+    }
+  })
 
   const [filteredData, setFilteredData] = useState(allTask);
   const [date, setDate] = useState<string>("");
@@ -60,6 +68,7 @@ const TaskMain = () => {
       window.innerHeight - (headerRef.current.clientHeight + 135);
     return `${contentHeight}px`;
   };
+  // console.log('allTask',allTask);
   const options = [
     {
       title: "All",
@@ -86,19 +95,6 @@ const TaskMain = () => {
 
   const filterDataOnParams = (params: any) => {
     let filteredDataLocal: any = [...allTask];
-    if (params.assignedTo.length>0) {
-      filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return params.assignedTo.every(({ id }: any) =>
-          item.assignedTo.find((item: any) => item._id === id)
-        );
-      });
-    }
-    if (params.project.length>0) {
-      filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return String(item.project._id)=== String(params.project);
-      });
-    }
-
     if (params.dueDate !== "") {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
         let [d1, m1, y1] = String(item.dueDate).split("-");
@@ -106,6 +102,22 @@ const TaskMain = () => {
         return d1 === d2 && m1 === m2 && y1 === y2;
       });
     }
+    
+    if (String(params.project).length>0) {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        console.log(item.project._id,params.project );
+        return String(item.project._id)=== String(params.project);
+      });
+    }
+
+    if (params.assignedTo.length>0) {
+      filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        return params.assignedTo.every(({ id }: any) =>
+          item.assignedTo.find((item: any) => item._id === id)
+        );
+      });
+    }
+  
     if(params.createdByMe===true){
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
         return String(item.creator._id)===String(user._id)
@@ -120,9 +132,9 @@ const TaskMain = () => {
 
     setFilterParams({ ...params });
     if (
-      params.assignedTo.length === 0 &&
       params.dueDate === "" &&
       params.project===""&&
+      params.assignedTo.length === 0 &&
       params.createdByMe===false&&
       params.assignedToMe===false
     ) {
@@ -175,7 +187,7 @@ const TaskMain = () => {
   };
 
   const handleProjectChange = (project: any) => {
-    console.log(project);
+
     if (project === null) {
       setAssignToList([]);
       setAssignToOpt([])
@@ -185,13 +197,12 @@ const TaskMain = () => {
         assignedTo: [],
       });
     } else {
- 
       const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
       const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
       setAssignToOpt([...projMembers, ...fixedOwner]);
       filterDataOnParams({
         ...filterParams,
-        project: project.value,
+        project: project._id,
       });
     }
   }
@@ -254,8 +265,7 @@ const TaskMain = () => {
               <Autocomplete
                 sx={{ width: "100%", marginTop: "5px" }}
                 id="assignedTo"
-                options={allProjectsTitles}
-                isOptionEqualToValue={(option:any,label:any)=> option.label===label}
+                options={projectTitleLocal}
                 size="small"
                 onChange={(event, value) => handleProjectChange(value)}
                 renderInput={(params) => (
@@ -325,9 +335,6 @@ const TaskMain = () => {
             <Grid
               item
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
                 gap: "10px",
                 marginLeft: "20px",
                 '& .MuiTypography-root':{
@@ -344,11 +351,11 @@ const TaskMain = () => {
             <Grid
               item
               sx={{
-                display: "flex",
-                textAlign: "center",
-                justifyContent: "center",
-                gap: "10px",
-                marginLeft: "20px",
+                // display: "flex",
+                // textAlign: "center",
+                // justifyContent: "center",
+                // gap: "10px",
+                // marginLeft: "20px",
                 '& .MuiTypography-root':{
                   fontSize:'14px !important',
                   fontWeight:'500 !important',
@@ -360,6 +367,11 @@ const TaskMain = () => {
             label= 'Assigned to me'
             />
             </Grid>
+            {/* <Grid
+              item
+            >
+            <CButton label="Clear filters" variant="text" onClick={handleClearFilters}/>
+            </Grid> */}
           </Box>
           {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
