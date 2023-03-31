@@ -16,9 +16,7 @@ import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 import TextField from "components/Utills/Inputs/TextField";
-import { editRoomName } from "redux/action/chat.action";
-import { requestSuccess } from "utills/status";
-import { GET_CHAT } from "config/chat.config";
+import { editRoomName, getAllChats } from "redux/action/chat.action";
 import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
 
@@ -59,16 +57,14 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
         body: { name },
         success: () => {
           setEdit(false);
-          let allRooms = JSON.parse(JSON.stringify(allChats));
-          const index = allRooms?.findIndex?.(
-            (room: any) => String(room._id) === String(selectedChat)
-          );
+          // let allRooms = JSON.parse(JSON.stringify(allChats));
+           const index = allChats?.length > 0 &&
+             allChats.findIndex(
+               (room: any) => String(room._id) === String(selectedChat));
+               console.log('index',index);
           if (index > -1) {
-            allRooms[index].name = name;
-            dispatch({
-              type: requestSuccess(GET_CHAT),
-              payload: allRooms,
-            });
+            allChats[index].name = name;
+            dispatch(getAllChats());
           }
         },
         finallyAction: () => {
@@ -87,7 +83,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       handleUpdate();
     }
   };
-
+ 
   return (
     <>
       <Grid container className={classes.wrapper}>

@@ -44,6 +44,7 @@ function NewTaskMenu(props: any) {
 
   const handleProjectChange = (project: any) => {
     props.setFieldValue("admins", [fixedOptions[0].id]);
+    setAssignToList([]);
     if (project === null) {
       props.setFieldValue("project", "");
       props.setFieldValue("assignedTo", []);
