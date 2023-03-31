@@ -66,7 +66,7 @@ function CDatePicker(props: any) {
             inputFormat={"dd.MM.yyyy"}
             {...props}
             label={"Due date"}
-            disablePast={true}
+            // disablePast={true}
             minDate={new Date().toISOString().slice(0, 10)}
             // onChange={(newValue: any) => setShowDate(newValue)}
             renderInput={(params: any) => (

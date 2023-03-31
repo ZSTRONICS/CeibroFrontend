@@ -262,7 +262,7 @@ const TaskMain = () => {
           >
             <InputHOC title="Project">
               <Autocomplete
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%" }}
                 id="assignedTo"
                 options={projectTitleLocal}
                 size="small"
@@ -287,14 +287,14 @@ const TaskMain = () => {
             item
             sx={{
               height: "38px",
-              width: "350px",
+              width: "400px",
             }}
            >
             {/* <SelectDropdown title="Assigned to" /> */}
             <InputHOC title="Member">
               <Autocomplete
               filterSelectedOptions
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%"}}
                 id="assignedTo"
                 disabled={filterParams.project!==""?false:true}
                 options={assignToOpt}
