@@ -598,6 +598,10 @@ const App: React.FC<MyApp> = () => {
     }
   }, [isLoggedIn]);
 
+  useEffect(() => {
+    runOneSignal()
+  }, []);
+
   return (
     <div className="App">
       <ErrorBoundary>
