@@ -93,15 +93,14 @@ const SubTaskMain = () => {
         return d1 === d2 && m1 === m2 && y1 === y2;
       });
     }
+  
     if (String(params.project).length>0) {
-      console.log('call project');
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return String(item?.taskData?.project._id)=== String(params.project);
+        return String(item?.taskData?.project?._id)=== String(params.project);
       });
     }
 
     if (params.assignedTo.length>0) {
-      console.log('params.assignedTo',params.assignedTo);
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
         return params.assignedTo.every(({ id }: any) =>
           item.assignedTo.members.find((item: any) => item._id === id)
