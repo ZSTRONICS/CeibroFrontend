@@ -27,7 +27,7 @@ export const CustomMuiList = (props: any) => {
             fontSize: "12px",
             fontWeight: 500,
             color: "#605C5C",
-            paddingRight: "15px",
+            paddingRight: "27px",
           }}
         >
           {props.subheaderTitle}
@@ -39,21 +39,23 @@ export const CustomMuiList = (props: any) => {
         return (
           <ListItem
             // sx={{ paddingLeft: "15px" }}
+            // sx={{ right: "12px" }}
             disablePadding
             aria-disabled
             key={member._id}
             secondaryAction={
               <Checkbox
                 sx={{
+                  // border: "2px solid red",
+                  // paddingRight: "18px",
                   "&.MuiCheckbox-root": {
                     color: "#ADB5BD",
                   },
                   "&.Mui-checked": {
-                    color: "#1976d2",
+                    color: "#F1B740",
                   },
                 }}
                 disableRipple
-                edge="end"
                 value={member._id}
                 onChange={props.handleUserChange}
                 checked={props.checkboxChecked.some(
@@ -87,9 +89,7 @@ export const CustomMuiList = (props: any) => {
                 id={labelId}
                 primary={`${member.firstName} ${member.surName}`}
                 secondary={`Company. ${
-                  member?.companyName
-                    ?  member?.companyName
-                    : "N/A"
+                  member?.companyName ? member?.companyName : "N/A"
                 }`}
               />
             </ListItemButton>

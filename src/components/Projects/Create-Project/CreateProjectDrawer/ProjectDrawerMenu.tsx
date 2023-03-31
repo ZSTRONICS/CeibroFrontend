@@ -60,6 +60,8 @@ function ProjectDrawerMenu() {
           paddingLeft: "4px",
           "@media(max-width:960px)": {
             paddingLeft: "10px",
+            flexWrap: "nowrap",
+            overflowX: "scroll",
           },
         }}
       >
@@ -91,11 +93,11 @@ function ProjectDrawerMenu() {
             );
           })}
       </Grid>
-      {!isTabletOrMobile && (
+      {/* {!isTabletOrMobile && (
         <Grid container className={classes.breakContainer}>
           <HorizontalBreak />
         </Grid>
-      )}
+      )} */}
       {/* </PermissionState> */}
     </>
   );
@@ -110,7 +112,7 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
@@ -124,5 +126,6 @@ const useStyles = makeStyles({
   },
   breakContainer: {
     padding: "5px 25px 2px 25px",
+    width: "100%",
   },
 });

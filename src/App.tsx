@@ -72,6 +72,7 @@ import {
   getMember,
   PROJECT_APIS,
 } from "redux/action/project.action";
+import runOneSignal from "utills/runOneSignal";
 
 interface MyApp { }
 
@@ -597,6 +598,10 @@ const App: React.FC<MyApp> = () => {
       });
     }
   }, [isLoggedIn]);
+
+  useEffect(() => {
+    runOneSignal()
+  }, []);
 
   return (
     <div className="App">

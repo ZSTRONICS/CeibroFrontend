@@ -1,11 +1,10 @@
 import {
-  Button,
-  Grid,
   makeStyles,
   Typography,
   CircularProgress,
   Chip,
 } from "@material-ui/core";
+import { Grid, Button } from "@mui/material";
 import colors from "../../assets/colors";
 import { INVITATIONS_LIST } from "../../constants/invitations.constants";
 import NameAvatar from "../Utills/Others/NameAvatar";
@@ -64,17 +63,19 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     isEmailInvite: boolean,
     email: string
   ) => {
-    const payload = { body: { inviteId, isEmailInvite, email },    success: (res: any) => {
-      toast.success('Invite resent successfully')
-    } };
+    const payload = {
+      body: { inviteId, isEmailInvite, email },
+      success: (res: any) => {
+        toast.success("Invite resent successfully");
+      },
+    };
     dispatch(resendInvites(payload));
     const payload2 = {
       success: (res: any) => {
-
         setConnection(res?.data?.myConnections);
-      }
+      },
     };
-    dispatch(getMyConnections(payload2))
+    dispatch(getMyConnections(payload2));
   };
 
   const handleReInvokeInvite = (inviteId: string, isEmailInvite: boolean) => {
@@ -82,11 +83,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     dispatch(revokeInvites(payload));
     const payload2 = {
       success: (res: any) => {
-        toast.success('Invite revoked successfully')
+        toast.success("Invite revoked successfully");
         setConnection(res?.data?.myConnections);
-      }
+      },
     };
-    dispatch(getMyConnections(payload2))
+    dispatch(getMyConnections(payload2));
   };
 
   return (
@@ -98,7 +99,15 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         </Typography>
       )}
 
-      <Grid item xs={12}>
+      <Grid
+        item
+        xs={12}
+        sx={{
+          height: "85vh",
+          overflow: "auto",
+          paddingBottom: "50px",
+        }}
+      >
         {connections?.map?.((connection: any) => {
           const inviteId =
             (connection.to === undefined || connection.from === undefined) &&
@@ -194,6 +203,11 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                         Message
                       </Button>
                       <Button
+                        // sx={{
+                        //   "@media(max-width:413px)": {
+                        //     padding: "5px",
+                        //   },
+                        // }}
                         className={`${classes.btn} ${classes.centerBtn}`}
                         variant="contained"
                         onClick={openTaskModal}
@@ -266,11 +280,12 @@ const useStyles = makeStyles({
     padding: 20,
   },
   chipWrapper: {
+    overflowY: "auto",
     paddingTop: 10,
     paddingBottom: "10px",
     borderBottom: "1px solid #ECF0F1",
     "@media (max-width:600px)": {
-      paddingTop: 20,
+      paddingTop: 10,
     },
   },
   userWrapper: {
@@ -293,10 +308,14 @@ const useStyles = makeStyles({
   btnWrapper: {
     display: "flex",
     alignItems: "center",
+    paddingRight: "20px",
     // justifyContent: "flex-end",
     gap: "15px",
     "@media (max-width:960px)": {
       // alignItems: "center",
+    },
+    "@media (max-width:600px)": {
+      paddingTop: "10px",
     },
   },
   btn: {
@@ -339,7 +358,7 @@ const useStyles = makeStyles({
     marginLeft: 10,
   },
   centerBtn: {
-    "@media (max-width:960px)": {
+    "@media (max-width:600px)": {
       // marginTop: "10px",
     },
   },

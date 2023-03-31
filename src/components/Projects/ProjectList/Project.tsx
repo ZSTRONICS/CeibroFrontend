@@ -3,7 +3,7 @@ import ProjectList from "./ProjectList";
 import SelectDropdown, {
   dataInterface,
 } from "../../Utills/Inputs/SelectDropdown";
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { Autocomplete,  Grid, TextField } from "@mui/material";
 import {
   getColorByStatus,
@@ -11,7 +11,6 @@ import {
 } from "../../../config/project.config";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
-import Clear from "@mui/icons-material/Clear";
 
 import  {
   getAllProjects,
@@ -46,9 +45,12 @@ const Project = () => {
   // get the unique labels object
   const getUniqueLabels  = (arr:any[])=>{
    let uniqueLabels=  Object.values(arr.reduce((acc:any, labelObj:any) => {
-      if (!acc[labelObj.label]) {
+    if(labelObj.label===undefined){
+    }else{
+       if (!acc[labelObj.label]) {
         acc[labelObj.label] = labelObj;
       }
+    }
       return acc;
     }, {}))
    return uniqueLabels
@@ -143,6 +145,7 @@ const Project = () => {
       });
     }
   };
+
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
 
   const getHeaderHeight = () => {
@@ -164,7 +167,6 @@ const Project = () => {
     <>
       <Grid item xs={12}>
         {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
-
         <Grid container ref={headerRef} className={classes.outerWrapper}>
           <Grid
             item
@@ -174,7 +176,11 @@ const Project = () => {
             <CDatePicker
               IsdisablePast={false}
               showLabel={true}
-              required
+              componentsProps={{
+                actionBar:{
+                  actions:['clear']
+                }
+              }}
               value={date}
               id="date1"
               name="dueDate"
@@ -203,19 +209,11 @@ const Project = () => {
             // xs={12} md={4}
             className={classes.datePicker}
           >
-            {/* <SelectDropdown
-            isClearAble={true}
-            title="Members"
-            data={data}
-            handleChange={handleUserChange}
-          />*/}
             <InputHOC title="Owner">
               <Autocomplete
                 disablePortal
                 sx={{ width: "100%", marginTop: "5px" }}
-                // multiple={false}
                 id="project_members1"
-                // filterSelectedOptions
                 options={data}
                 size="small"
                 onChange={(event, value) => handleUserChange(value)}

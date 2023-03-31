@@ -3,10 +3,12 @@ import { makeStyles } from "@material-ui/core";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import taskActions, { getAllTask } from "../../redux/action/task.action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
 import { getAllProjectsWithMembers } from "redux/action/project.action";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { RootState } from "redux/reducers";
 
 const myStatus = [
   {
@@ -28,13 +30,39 @@ const myStatus = [
 ];
 
 interface TaskSectionInt {}
-
 const TaskSection: React.FC<TaskSectionInt> = () => {
-  const allStatus = myStatus;
+  const allTask: TaskInterface[] = useSelector(
+    (state: RootState) => state.task.allTask
+  );
+
+  const options = [
+    {
+      title: "All",
+      count: allTask.length,
+    },
+    {
+      title: "New",
+      count: allTask.filter((task) => task.state === "new").length,
+    },
+    {
+      title: "Active",
+      count: allTask.filter((task) => task.state === "active").length,
+    },
+
+    {
+      title: "Done",
+      count: allTask.filter((task) => task.state === "done").length,
+    },
+    {
+      title: "Draft",
+      count: allTask.filter((task) => task.state === "draft").length,
+    },
+  ];
+
+  const allStatus = options;
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
@@ -99,7 +127,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           height: "250px",
         }}
       >
-        <TaskList />
+        <TaskList filteredData={allTask} />
       </Box>
     </div>
   );
@@ -121,12 +149,12 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     flexWrap: "wrap",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
   titleContainer: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingTop: 14,
       paddingBottom: 14,
     },
@@ -136,7 +164,7 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   viewAll: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       marginLeft: 10,
       marginTop: 10,
     },

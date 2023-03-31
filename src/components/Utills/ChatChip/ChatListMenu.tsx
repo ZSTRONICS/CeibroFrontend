@@ -71,7 +71,7 @@ const ChatListMenue: React.FC<Props> = (props) => {
             dispatch(
               getAllChats({
                 success: (_res: any) => {
-                  if (_res?.data?.userallchat.length === 0){
+                  if (_res?.data?.userallchat.length === 0) {
                     dispatch(setSelectedChat({ other: null }));
                   }
                   if (_res?.data?.userallchat[0]?._id) {
@@ -108,12 +108,12 @@ const ChatListMenue: React.FC<Props> = (props) => {
           <assets.MoreVertOutlinedIcon />
         </IconButton>
         <Menu
-          sx={{ mt: "45px" }}
+          sx={{ mt: "40px" }}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{
             vertical: "top",
-            horizontal: "right",
+            horizontal: "left",
           }}
           keepMounted
           transformOrigin={{
@@ -129,7 +129,7 @@ const ChatListMenue: React.FC<Props> = (props) => {
             divider
             sx={{
               "&.MuiMenuItem-root": {
-                padding: "10px 20px",
+                padding: "5px 10px",
               },
             }}
           >
@@ -147,16 +147,18 @@ const ChatListMenue: React.FC<Props> = (props) => {
             onClick={handleCloseMenu}
             sx={{
               "&.MuiMenuItem-root": {
-                padding: "10px 20px",
+                padding: "5px 10px",
               },
             }}
           >
             <Stack
               direction="row"
               spacing={2}
-              sx={{
-                paddingRight: "16px",
-              }}
+              sx={
+                {
+                  // paddingRight: "16px",
+                }
+              }
             >
               <Box display="flex" alignItems="center">
                 {isMuted ? (
@@ -177,16 +179,18 @@ const ChatListMenue: React.FC<Props> = (props) => {
             onClick={handleFavouriteClick}
             sx={{
               "&.MuiMenuItem-root": {
-                padding: "10px 20px",
+                padding: "5px 10px",
               },
             }}
           >
             <Stack
               direction="row"
               spacing={2}
-              sx={{
-                paddingRight: "16px",
-              }}
+              sx={
+                {
+                  // paddingRight: "16px",
+                }
+              }
             >
               <Box display="flex" alignItems="center">
                 {isFavourite ? (
@@ -206,16 +210,18 @@ const ChatListMenue: React.FC<Props> = (props) => {
             onClick={handleDeleteClick}
             sx={{
               "&.MuiMenuItem-root": {
-                padding: "10px 20px",
+                padding: "5px 10px",
               },
             }}
           >
             <Stack
               direction="row"
               spacing={2}
-              sx={{
-                paddingRight: "16px",
-              }}
+              sx={
+                {
+                  // paddingRight: "16px",
+                }
+              }
             >
               <Box display="flex" alignItems="center">
                 <img
@@ -224,7 +230,10 @@ const ChatListMenue: React.FC<Props> = (props) => {
                   alt="delete"
                 />
               </Box>
-              <Typography textAlign="center" pl={1}>
+              <Typography
+                textAlign="center"
+                // pl={1}
+              >
                 Delete Chat
               </Typography>
             </Stack>

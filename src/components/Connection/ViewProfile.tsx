@@ -87,9 +87,12 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         sx={{
           padding: "4px 10px",
           textTransform: "capitalize",
-          "@media(max-width:960px)": {
-            marginTop: "10px",
-          },
+          // "@media(max-width:960px)": {
+          //   marginTop: "10px",
+          // },
+          // "@media(max-width:413px)": {
+          //   padding: "5px",
+          // },
         }}
         onClick={getUserData}
         className={`${classes.btn} ${classes.centerBtn}`}

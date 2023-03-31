@@ -8,7 +8,7 @@ interface Props{
     userData:UserInterface
 }
 
-function ProfileViewGlobal({userData}:Props) {
+function ProfileViewGlobal({userData}:Props) { 
   const classes = useStyles();
   let smPoint = 11;
 

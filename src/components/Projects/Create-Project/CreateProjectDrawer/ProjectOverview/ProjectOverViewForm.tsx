@@ -10,10 +10,14 @@ import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 const ProjectOverViewForm = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
-  const {user} = useSelector((state: RootState) => state.auth);
-  const projectOverview = useSelector((state: RootState) => state.project.projectOverview);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const projectOverview = useSelector(
+    (state: RootState) => state.project.projectOverview
+  );
 
-  const updateRights= projectOverview.owner.some((item:Member)=>String(item._id)===String(user._id))
+  const updateRights = projectOverview.owner.some(
+    (item: Member) => String(item._id) === String(user._id)
+  );
   const [formData, setFormData] = useState({
     title: projectOverview.title,
     location: projectOverview.location,
@@ -70,7 +74,13 @@ const ProjectOverViewForm = () => {
           value={formData.title || ""}
           onChange={handleInputChange}
           onBlur={handleTitleBlur}
-          disabled={projectOverview.isDefault ? true : updateRights===true?false:true}
+          disabled={
+            projectOverview.isDefault
+              ? true
+              : updateRights === true
+              ? false
+              : true
+          }
         />
       </Grid>
       <br />
@@ -82,12 +92,24 @@ const ProjectOverViewForm = () => {
           onBlur={handleLocationBlur}
           name="location"
           placeholder="Enter address"
-          disabled={projectOverview.isDefault ? true : updateRights===true?false:true}
+          disabled={
+            projectOverview.isDefault
+              ? true
+              : updateRights === true
+              ? false
+              : true
+          }
         />
       </Grid>
 
       <Grid item xs={12}>
         <TextField
+          sx={{
+            "& .css-8q2m5j-MuiInputBase-root-MuiInput-root.Mui-disabled:before":
+              {
+                borderBottomStyle: "none",
+              },
+          }}
           id="standard-multiline-flexible"
           placeholder="Enter description"
           multiline
@@ -107,7 +129,13 @@ const ProjectOverViewForm = () => {
           onBlur={handleDescriptionBlur}
           value={formData.description || ""}
           onChange={handleInputChange}
-          disabled={projectOverview.isDefault ? true : updateRights===true?false:true}
+          disabled={
+            projectOverview.isDefault
+              ? true
+              : updateRights === true
+              ? false
+              : true
+          }
         />
       </Grid>
     </Grid>
@@ -144,6 +172,18 @@ const useStyles = makeStyles({
     borderRadius: 5,
   },
   textfield: {
+    // FOR DEV SERVER
+    "& .css-17g51r8:hover:not(.Mui-disabled)::before": {
+      borderBottom: "none",
+    },
+
+    "& .css-17g51r8::before": {
+      borderBottom: "none",
+    },
+    "& .css-17g51r8::after": {
+      borderBottom: "none",
+    },
+    // FOR LOCAL
     "& :hover:not(.Mui-disabled)::before": {
       borderBottom: "none",
     },

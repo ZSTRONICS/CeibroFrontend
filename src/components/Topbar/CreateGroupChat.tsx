@@ -35,28 +35,26 @@ function CreateGroupChat(props: any) {
   const [users, setUsers] = useState<any>([]);
   const [name, setName] = useState("");
   const [searchQuery, setSearchField] = useState("");
-  const [selectedGroupIds,setSelectedGroupId]= useState<any>([])
+  const [selectedGroupIds, setSelectedGroupId] = useState<any>([]);
 
-let localGroupMembers:any= null
-let localGroups:any= null
+  let localGroupMembers: any = null;
+  let localGroups: any = null;
 
   const createChatLoading = useSelector(
     (state: RootState) => state.chat.createChatLoading
   );
 
-  const {
-    projectMembers,
-    projectWithMembers,
-    allProjectsTitles,
-  } = useSelector((store: RootState) => store.project);
+  const { projectMembers, projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
 
-  const handleUserId = ( id:any) => {
+  const handleUserId = (id: any) => {
     if (!users?.includes(id)) {
-      setUsers([...users,id]);
+      setUsers([...users, id]);
     } else {
       removeSelectedUser(id);
     }
-  }
+  };
   const handleUserChange = (e: any) => {
     if (!users?.includes?.(e.target.value)) {
       setUsers([...users, e.target.value]);
@@ -64,72 +62,75 @@ let localGroups:any= null
       removeSelectedUser(e?.target?.value);
     }
   };
-  
+
   const removeSelectedUser = (userId: any) => {
     setUsers(users?.filter?.((user: any) => String(user) !== String(userId)));
-
   };
 
-    const groupWithMember:any = projectWithMembers.filter((proj:any) => {
-      if(!proj || !project){
-        return
+  const groupWithMember: any = projectWithMembers
+    .filter((proj: any) => {
+      if (!proj || !project) {
+        return;
       }
-    if(project){
-      if(proj?._id === project?.value){
-        localGroupMembers= proj?.projectMembers 
-        localGroups= proj?.groups
-        return proj?._id === project?.value
-    }}
-    }).find((proj:any)=>proj)
-
-    localGroupMembers = groupWithMember?.projectMembers?.filter((gMember: any) => {
-      const fullName = `${gMember?.firstName} ${gMember?.surName}`
-      return (
-          fullName.toLowerCase().includes(searchQuery.toLowerCase()) 
-        );
-      })
-
-    localGroups = groupWithMember?.groups?.filter((group: any) => {
-      const groupName = `${group?.name}`
-      return (
-        groupName.toLowerCase().includes(searchQuery.toLowerCase()) 
-        );
-      })
-
-     const handleProjectChange = (e: any) => {
-        setProject(e);
-        setUsers([]);
-        setSelectedGroupId([])
-        localGroupMembers= null
-        localGroups= null
-      };
-
-    const handleGroupMember = (e: any, group:any) => {
-      if(selectedGroupIds.includes(group._id)){
-        setSelectedGroupId((groupIds: any) => (groupIds.filter((groupId:any) => (groupId !== group._id))))
-        const groupMembersId= group.members.map((member:any)=>member._id)
-        setUsers((users: any) => users.filter((user: any) => !groupMembersId.includes(user)));
-
-      }else{
-        setSelectedGroupId((previousIds: any) => [...previousIds, group._id])
-        const groupMembersId= group.members.map((member:any)=>member._id)
-        setUsers((previousIds: any) => [...previousIds, ...groupMembersId])
+      if (project) {
+        if (proj?._id === project?.value) {
+          localGroupMembers = proj?.projectMembers;
+          localGroups = proj?.groups;
+          return proj?._id === project?.value;
+        }
       }
-   //  const groupMembersId= group.members.map((member:any)=>member._id)
-     
+    })
+    .find((proj: any) => proj);
+
+  localGroupMembers = groupWithMember?.projectMembers?.filter(
+    (gMember: any) => {
+      const fullName = `${gMember?.firstName} ${gMember?.surName}`;
+      return fullName.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+  );
+
+  localGroups = groupWithMember?.groups?.filter((group: any) => {
+    const groupName = `${group?.name}`;
+    return groupName.toLowerCase().includes(searchQuery.toLowerCase());
+  });
+
+  const handleProjectChange = (e: any) => {
+    setProject(e);
+    setUsers([]);
+    setSelectedGroupId([]);
+    localGroupMembers = null;
+    localGroups = null;
+  };
+
+  const handleGroupMember = (e: any, group: any) => {
+    if (selectedGroupIds.includes(group._id)) {
+      setSelectedGroupId((groupIds: any) =>
+        groupIds.filter((groupId: any) => groupId !== group._id)
+      );
+      const groupMembersId = group.members.map((member: any) => member._id);
+      setUsers((users: any) =>
+        users.filter((user: any) => !groupMembersId.includes(user))
+      );
+    } else {
+      setSelectedGroupId((previousIds: any) => [...previousIds, group._id]);
+      const groupMembersId = group.members.map((member: any) => member._id);
+      setUsers((previousIds: any) => [...previousIds, ...groupMembersId]);
+    }
+    //  const groupMembersId= group.members.map((member:any)=>member._id)
+
     //  if (!users?.includes?.(e.target.value)) {
     //    setUsers(groupMembersId);
     //   } else {
     //     setUsers([]);
     //   }
-    };
+  };
 
   useEffect(() => {
     if (openGroup) {
       dispatch(getAllProjects());
       dispatch(getAllProjectsWithMembers());
     }
-  
+
     setName("");
     setUsers([]);
     setProject(null);
@@ -150,15 +151,15 @@ let localGroups:any= null
         dispatch(getAllChats());
       },
     };
-   
+
     dispatch(createChatRoom(payload));
   };
 
   const handleGroupSearch = useCallback((e: any) => {
-    const searchVal = e.target.value
-    setSearchField(searchVal)
+    const searchVal = e.target.value;
+    setSearchField(searchVal);
   }, []);
-  
+
   return (
     <>
       <Popover
@@ -176,98 +177,118 @@ let localGroups:any= null
           <Stack>
             <TextField
               type="text"
-              value={name || ''}
+              value={name || ""}
               onChange={(e: any) => setName(e.target.value)}
               className={`${classes.searchInput} emptyBorder`}
               placeholder="Enter chat name"
             />
             <Box mb={1.2}>
-             <SelectDropdown
-              title="Project"
-              placeholder="Please select a project"
-              data={allProjectsTitles}
-              value={project}
-              handleChange={handleProjectChange}
-            />
+              <SelectDropdown
+                title="Project"
+                placeholder="Please select a project"
+                data={allProjectsTitles}
+                value={project}
+                handleChange={handleProjectChange}
+              />
             </Box>
             <Box mb={1.2}>
-           {project!==null && <Input
-            placeholder="Type the name of person or group"
-            title="Chat with"
-            onChange={handleGroupSearch}
-          />}
+              {project !== null && (
+                <Input
+                  placeholder="Type the name of person or group"
+                  title="Chat with"
+                  onChange={handleGroupSearch}
+                />
+              )}
             </Box>
             {groupWithMember?.projectMembers?.length > 0 && (
-            <Grid
-              item
-              xs={12}
-              style={{ paddingTop: 8 }}
-              className={classes.suggestUser}
-            >
-              <Grid container>
-                <Typography p={0.4}>Project Groups</Typography>
-                {groupWithMember?.projectMembers?.map((member: any) => {
-                  if (!users?.includes(String(member._id))) return null;
+              <Grid
+                item
+                xs={12}
+                style={{ paddingTop: 8 }}
+                className={classes.suggestUser}
+              >
+                <Grid container>
+                  <Typography p={0.4}>Project Groups</Typography>
+                  {groupWithMember?.projectMembers?.map((member: any) => {
+                    if (!users?.includes(String(member._id))) return null;
 
-                  return (
-                    <Grid item xs={4} md={2} className={classes.selectedUser}>
-                      <NameAvatar
-                        firstName={member?.firstName}
-                        surName={member?.surName}
-                        url={member?.profilePic}
-                      />
-                      <Cancel
-                        onClick={() => removeSelectedUser(member._id)}
-                        className={classes.cancelIcon}
-                      />
-                    </Grid>
-                  );
-                })}
-              </Grid>
-              
-              {<Grid container>
-                  {localGroups?.map((group: any, index: number) => {
-                    return (<>
-                    { <Grid container className={classes.wrapper} key={group._id+index}>
-                    <Grid item xs={2}>
-                      <Avatar variant="rounded">
-                       <img src = {assets.GroupIcon} alt=""/>
-                    </Avatar>
-                    </Grid>
-                    <Grid item xs={8}>
-                      <div>
-                        <Typography className={classes.titleText}>
-                          {group.name} 
-                        </Typography>
-                        {group?.members?.slice(0,2).map((member:any)=>{
-                         return( <Typography className={classes.subTitleText}>
-                          {member.firstName} {member.surName},
-                        </Typography>)
-                        }) }
-                      </div>
-                    </Grid>
-
-                    <Grid item xs={2}>
-                      <CustomCheckbox
-                        onClick={(e:any)=>handleGroupMember(e, group)}
-                        value={group._id}
-                        name={"s"}
-                        checked={selectedGroupIds.includes(group._id)}
-                      />
-                    </Grid>
-                  </Grid>}
-                    </>
+                    return (
+                      <Grid item xs={4} md={2} className={classes.selectedUser}>
+                        <NameAvatar
+                          firstName={member?.firstName}
+                          surName={member?.surName}
+                          url={member?.profilePic}
+                        />
+                        <Cancel
+                          onClick={() => removeSelectedUser(member._id)}
+                          className={classes.cancelIcon}
+                        />
+                      </Grid>
                     );
                   })}
-                 </Grid>
+                </Grid>
+
+                {
+                  <Grid container>
+                    {localGroups?.map((group: any, index: number) => {
+                      return (
+                        <>
+                          {
+                            <Grid
+                              container
+                              className={classes.wrapper}
+                              key={group._id + index}
+                            >
+                              <Grid item xs={2}>
+                                <Avatar variant="rounded">
+                                  <img src={assets.GroupIcon} alt="" />
+                                </Avatar>
+                              </Grid>
+                              <Grid item xs={8}>
+                                <div>
+                                  <Typography className={classes.titleText}>
+                                    {group.name}
+                                  </Typography>
+                                  {group?.members
+                                    ?.slice(0, 2)
+                                    .map((member: any) => {
+                                      return (
+                                        <Typography
+                                          className={classes.subTitleText}
+                                        >
+                                          {member.firstName} {member.surName},
+                                        </Typography>
+                                      );
+                                    })}
+                                </div>
+                              </Grid>
+
+                              <Grid item xs={2}>
+                                <CustomCheckbox
+                                  onClick={(e: any) =>
+                                    handleGroupMember(e, group)
+                                  }
+                                  value={group._id}
+                                  name={"s"}
+                                  checked={selectedGroupIds.includes(group._id)}
+                                />
+                              </Grid>
+                            </Grid>
+                          }
+                        </>
+                      );
+                    })}
+                  </Grid>
                 }
-                <CustomMuiList handleUserId={handleUserId} 
-                subheaderTitle= {"Project Members"} 
-                groupMembers = {localGroupMembers} 
-                handleUserChange= {handleUserChange} 
-                checkboxChecked = {users}/>
-            </Grid>
-          )}
+                <CustomMuiList
+                  handleUserId={handleUserId}
+                  subheaderTitle={"Project Members"}
+                  groupMembers={localGroupMembers}
+                  handleUserChange={handleUserChange}
+                  checkboxChecked={users}
+                />
+              </Grid>
+            )}
           </Stack>
 
           <Grid
@@ -280,8 +301,19 @@ let localGroups:any= null
             }}
           >
             <Button
+              variant="text"
+              size="small"
+              onClick={handleGroupClose}
+              sx={{ textTransform: "capitalize" }}
+            >
+              Cancel
+            </Button>
+
+            <Button
               variant="contained"
               color="primary"
+              size="small"
+              sx={{ textTransform: "capitalize" }}
               onClick={handleSubmit}
               disabled={!project || user?.length < 1}
             >
@@ -291,7 +323,6 @@ let localGroups:any= null
                 "Message"
               )}
             </Button>
-            <Button onClick={handleGroupClose}>Cancel</Button>
           </Grid>
         </Grid>
       </Popover>
@@ -319,9 +350,9 @@ const useStyles = makeStyles((theme: any) => ({
   searchInput: {
     width: 340,
     height: 30,
-    paddingBottom: '20px',
-    paddingTop: '10px',
-    marginBottom:10,
+    paddingBottom: "20px",
+    paddingTop: "10px",
+    marginBottom: 10,
   },
   smallRadioButton: {
     fontSize: "14px !important",
@@ -348,7 +379,7 @@ const useStyles = makeStyles((theme: any) => ({
     fontWeight: "bold",
   },
   subTitleText: {
-    display:'inline-block',
+    display: "inline-block",
     fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,

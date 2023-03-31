@@ -250,6 +250,7 @@ const useStyles = makeStyles({
     padding: "10px 20px",
     background: colors.white,
     "@media (max-width:960px)": {
+      // marginBottom: "0",
       flexDirection: "row",
       alignItems: "flex-end",
     },

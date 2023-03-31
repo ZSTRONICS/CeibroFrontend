@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { TextField, Typography } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme, } from '@mui/material/styles';
+import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 
 import de from "date-fns/locale/de";
-// import useStyles from "components/Tasks/SubTasks/CreateSubTaskStyles";
-// import { } from "/styles";
-import { colors, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
@@ -29,25 +27,26 @@ function CDatePicker(props: any) {
                   padding: "0",
                 }}
               >
-                Due date
+                {props.dueDateLabel || "Due date"}
               </Typography>
             </div>
             <div className={classes.datePickerContainer}>
               <DatePicker
-               className={classes.root}
+                className={classes.root}
                 {...props}
                 label={props.showLabel === true ? "" : "Due date"}
                 // mask="__-__-____"
                 // value={showDate}
                 inputFormat={"dd.MM.yyyy"}
-                disablePast={props.IsdisablePast===false?false:true}
+                disablePast={props.IsdisablePast === false ? false : true}
                 // minDate={new Date().toISOString().slice(0, 10)}
-                minDate
+                // minDate
                 // onChange={(newValue: any) => setShowDate(newValue)}
                 renderInput={(params: any) => (
                   <TextField
-                    // disableUnderline={true}
-                    // border="none"
+                    InputProps={{
+                      disableUnderline: true,
+                    }}
                     variant="standard"
                     {...params}
                     error={false}
@@ -66,17 +65,20 @@ function CDatePicker(props: any) {
           <DatePicker
             inputFormat={"dd.MM.yyyy"}
             {...props}
-            label={props.showLabel === true ? "" : "Due date"}
-            disablePast={true}
+            label={"Due date"}
+            // disablePast={true}
             minDate={new Date().toISOString().slice(0, 10)}
             // onChange={(newValue: any) => setShowDate(newValue)}
             renderInput={(params: any) => (
               <TextField
+                InputProps={{
+                  // disableUnderline: false,
+                }}
                 {...params}
                 error={false}
                 sx={{
                   ".MuiInputBase-input": {
-                    // padding: "10px 14px",
+                    padding: "9px 14px",
                   },
                 }}
               />
@@ -90,45 +92,34 @@ function CDatePicker(props: any) {
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
-        ':hover':{
-              border:'1px solid red'
-        },
-      '.MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before':{
-      // borderBottom: 'none',
-  
+      ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
+        borderBottom: "none",
       },
     },
-    '& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible': {
-      backgroundColor: 'red',
-      color: 'red',
-    },
-    '& .Mui-selected, & .Mui-selected.Mui-focusVisible': {
-      backgroundColor: 'red',
-      color: 'red',
-    },
+    // '& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible': {
+    //   backgroundColor: 'red',
+    //   color: 'red',
+    // },
+    // '& .Mui-selected, & .Mui-selected.Mui-focusVisible': {
+    //   backgroundColor: 'red',
+    //   color: 'red',
+    // },
   },
-  datePickerContainer:{
-    '& :hover': {
-      borderBottom: 'none',
-    },
-
-    "& .MuiFormControl-root-MuiTextField-root":{
-       "& .MuiInputBase-root-MuiInput-root:before": {
+  datePickerContainer: {
+    // for local
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
       borderBottom: "none",
     },
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before": {
+      borderBottom: "none",
     },
-    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
       {
         borderBottom: "none",
-   
-
       },
-    "& .MuiInputBase-root-MuiInput-root:after": {
-      borderBottom: "none",
+    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root.Mui-disabled:before": {
+      borderBottomStyle: "none",
     },
-   
-                        // border:'1px solid red',
-
   },
   titleWrapper: {
     color: "#605C5C",
@@ -140,7 +131,6 @@ const useStyles = makeStyles((theme) => ({
     // borderRight: `1px solid ${colors.grey}`,
   },
   outerWrapper: {
-
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -153,3 +143,53 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 export default CDatePicker;
+
+// const ValidationTextField = styled(TextField)({
+//   "& input:valid:hover + fieldset": {
+//     border: "none !important"
+//   },
+//   "& input:valid:focus + fieldset": {
+//     border: "none !important"
+//   },
+// })
+
+// const CustomDatePicker = styled(DatePicker)({
+//   "& .MuiInputBase-root": {
+//     "&:hover": {
+//       borderBottom: "none",
+//     },
+//     '& .MuiInput-root:hover:not(.Mui-disabled):before':{
+//       background:'red'
+//     },
+//     "& .MuiInputBase-input": {
+//       textAlign: "center",
+//       "&::before": {
+//         display: "none",
+//       },
+//       "&::after": {
+//         display: "none",
+//       },
+//     },
+//     "& .MuiOutlinedInput-notchedOutline": {
+//       border: "none",
+//     },
+//   },
+//   "& .MuiInputBase-root .MuiInput-root:hover:not(.Mui-disabled):before": {
+//     borderBottom: "none !important",
+//   },
+//   // Remove the default background color and border radius of the day cells
+//   "& .MuiPickersDay-day": {
+//     borderRadius: 0,
+//     "&:hover": {
+//       backgroundColor: "transparent",
+//     },
+//     "&.Mui-selected": {
+//       backgroundColor: "blue",
+//       color: "white",
+//       fontWeight: "bold",
+//     },
+//   },
+//   "& .MuiInputBase-input": {
+//     letterSpacing: "0.1rem",
+//   },
+// });

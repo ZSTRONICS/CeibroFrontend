@@ -1,9 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Button, Grid,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
 import { Stack } from "@mui/system";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,14 +11,14 @@ import { getNewQuestionTemplate } from "../../../constants/questioniar.constants
 import {
   getDate,
   removeCurrentUser,
-  validateQuestions
+  validateQuestions,
 } from "../../../helpers/chat.helpers";
 import {
   closeQuestioniarDrawer,
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById
+  updateMessageById,
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import { dbUsers } from "../../Topbar/CreateIndividualChat";
@@ -67,8 +63,8 @@ const QuestioniarBody = () => {
     // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
   }, []);
 
-  const handleChangePreview = (e:any) => {
-    setPreview(e.target.checked)
+  const handleChangePreview = (e: any) => {
+    setPreview(e.target.checked);
   };
 
   const listOfMember = membersList?.map((member: any) => ({
@@ -185,18 +181,22 @@ const QuestioniarBody = () => {
             </div>
           )}
         </Grid>
-        <CBox>
-        <Stack direction='row'>
-         <CustomizedSwitch 
-            onChange={(e:any)=>handleNudgeChange(e)}
-            label= 'Nudge'
+        <CBox
+          sx={{
+            paddingTop: "10px",
+          }}
+        >
+          <Stack direction="row">
+            <CustomizedSwitch
+              onChange={(e: any) => handleNudgeChange(e)}
+              label="Nudge"
             />
-         <CustomizedSwitch 
-            onChange={(e:any) =>handleChangePreview(e)}
-            label= 'Preview'
-            disabled={!validated}
+            <CustomizedSwitch
+              onChange={(e: any) => handleChangePreview(e)}
+              label="Preview"
+              disabled={!validated}
             />
-        </Stack>
+          </Stack>
         </CBox>
       </Grid>
       <Grid container direction="column" className={classes.wrapper3}>
@@ -231,7 +231,11 @@ const QuestioniarBody = () => {
           </Grid>
         )}
 
-        <Grid item xs={12} className={classes.questionsWrapper}>
+        <Grid item xs={12} className={classes.actionWrapper}>
+          <Button onClick={handleClose} variant="text">
+            cancel
+          </Button>
+
           <Button
             onClick={handleSave}
             variant="contained"
@@ -249,10 +253,6 @@ const QuestioniarBody = () => {
             ) : (
               "Create"
             )}
-          </Button>
-
-          <Button onClick={handleClose} variant="text">
-            cancel
           </Button>
         </Grid>
       </Grid>
@@ -279,9 +279,10 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     color: colors.textPrimary,
+    paddingLeft: "28px",
   },
   wrapper: {
-    padding: 15,
+    padding: "20px",
     paddingTop: 0,
     paddingBottom: 20,
     borderBottom: `1px solid ${colors.grey}`,
@@ -290,33 +291,44 @@ const useStyles = makeStyles({
     width: "100%",
     minWidth: 500,
     maxWidth: 500,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       minWidth: 300,
     },
   },
   wrapper3: {
-    padding: 10,
-    paddingTop: 10,
+    padding: "0px 20px",
+    // paddingTop: 10,
     height: "auto",
     background: colors.white,
     width: "100%",
     minWidth: 500,
     maxWidth: 500,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       minWidth: 300,
     },
   },
+  actionWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "20px",
+    paddingTop: "15px",
+    paddingBottom: "20px",
+    marginTop: "40px",
+  },
   datePickerWrapper: {
-    maxWidth: 250,
+    maxWidth: 230,
     marginTop: 10,
+    // padding: "4px 5px",
   },
   assignedToWrapper: {
-    maxWidth: 450,
-    marginTop: 10,
+    maxWidth: 460,
+    marginTop: 15,
   },
   questionsWrapper: {
+    // display:"flex",
+    // justifyContent:"flex-end",
     paddingTop: 30,
-    maxWidth: 450,
+    maxWidth: 460,
   },
   preview: {
     display: "flex",
