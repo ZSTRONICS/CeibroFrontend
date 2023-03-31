@@ -8,7 +8,6 @@ import ProfileViewGlobal from "./ProfileViewGlobal";
 export default function ProfileContent(props: any) {
   const classes = useStyles();
   const { getUser } = props;
-  console.log("getUser", getUser);
   return (
     <>
       <ProfileViewGlobal userData={getUser} />

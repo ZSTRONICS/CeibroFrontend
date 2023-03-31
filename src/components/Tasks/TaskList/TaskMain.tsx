@@ -105,8 +105,7 @@ const TaskMain = () => {
     
     if (String(params.project).length>0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        console.log(item.project._id,params.project );
-        return String(item.project._id)=== String(params.project);
+        return String(item?.project?._id)=== String(params.project);
       });
     }
 
@@ -197,7 +196,7 @@ const TaskMain = () => {
         assignedTo: [],
       });
     } else {
-      const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
+      const projMembersData = getSelectedProjectMembers(project?._id, projectWithMembers)
       const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
       setAssignToOpt([...projMembers, ...fixedOwner]);
       filterDataOnParams({

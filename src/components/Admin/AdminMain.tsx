@@ -18,13 +18,18 @@ function AdminMain() {
   const [isHide, setIsHide] = useState(true);
 
   const [users, setUsers] = useState<UserInterface[]>([]);
-  const [filterUsersLocal, setFilterUsersLocal]=useState<UserInterface[]>([])
+  const [filterUsersLocal, setFilterUsersLocal] = useState<UserInterface[]>([]);
+  const [filterParams, setFilterParams] = useState({
+    searchWithNameEmail: "",
+    startDate: "",
+    endDate: "",
+  });
 
   const getUsers = (role: string) => {
     const payload = {
       success: (res: any) => {
         setUsers(res.data.result);
-        setFilterUsersLocal(res.data.result)
+        setFilterUsersLocal(res.data.result);
       },
       other: { role: role },
     };
@@ -35,13 +40,10 @@ function AdminMain() {
     getUsers("admin");
   }, []);
 
-  const [filterParams, setFilterParams] = useState({
-    searchWithNameEmail:""
-  });
+
 
   const filterDataOnParams = (params: any) => {
     let filtereLocal: any = [...users];
-
     if (String(params.searchWithNameEmail).length > 0) {
       filtereLocal = filtereLocal.filter((user: any) => {
         const fullName = `${user?.firstName} ${user?.surName}`
@@ -54,52 +56,73 @@ function AdminMain() {
         return finalResult;
       });
     }
+    if (params.startDate !== "" || params.endDate !== "") {
+      filtereLocal = filtereLocal.filter((item: any) => {
+        const itemDate = new Date(item.createdAt);
+        const start = params.startDate ? new Date(params.startDate) : null;
+        const end = params.endDate ? new Date(params.endDate) : null;
+        return (!start || itemDate >= start) && (!end || itemDate <= end);
+      });
+    }
 
     setFilterParams({ ...params });
-    if (params.searchWithNameEmail === "") {
-      setFilterUsersLocal(filtereLocal);
+    if (
+      params.searchWithNameEmail === "" &&
+      params.startDate === "" &&
+      params.endDate === ""
+    ) {
+      setFilterUsersLocal(users);
     } else {
       setFilterUsersLocal(filtereLocal);
     }
   };
 
-  const handleUsersSearch = useCallback((e: any) => {
-    console.log('searchVal', e.target.value);
-    setSearchField(e.target.value);
-    if(e.target.value===""){
-      filterDataOnParams({
-        ...filterParams,
-        searchWithNameEmail:"",
-      });
-    }else{
-         filterDataOnParams({
-      ...filterParams,
-      searchWithNameEmail:e.target.value,
-    });
+  const handleUsersSearch = (e: any) => {
+      if (e.target.value === "") {
+        filterDataOnParams({
+          ...filterParams,
+          searchWithNameEmail: "",
+        });
+      } else {
+        filterDataOnParams({
+          ...filterParams,
+          searchWithNameEmail: e.target.value,
+        });
+      }
     }
- 
-  }, [searchQuery]);
 
   const handleFromDateChange = (value: any) => {
     setFromDate(value);
     setIsHide(false);
-    updateFilteredData(value, toDate)
+    if (value === null) {
+      setIsHide(true);
+      setToDate(null)
+      filterDataOnParams({
+        ...filterParams,
+        startDate: "",
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        startDate: value,
+      });
+    }
   };
-  
+
   const handleToDateChange = (value: any) => {
     setToDate(value);
     setIsHide(false);
-    updateFilteredData(fromDate,value)
-  };
-
-  const updateFilteredData = (startDate: any, endDate: any) => {
-    const newFilteredData = filterUsersLocal.filter((item:any) => {
-      const itemDate = new Date(item.createdAt);
-      const start = startDate ? new Date(startDate) : null;
-      const end = endDate ? new Date(endDate) : null;
-      return (!start || itemDate >= start) && (!end || itemDate <= end);
-    });
-    setFilterUsersLocal(newFilteredData);
+    if (value === null) {
+      filterDataOnParams({
+        ...filterParams,
+        endDate: "",
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        endDate: value,
+      });
+    }
   };
 
   return (
@@ -123,7 +146,6 @@ function AdminMain() {
               </TabsList>
             </Grid>
             <Grid item sm={12}>
-              {/* <AdminHeader /> */}
               <Grid
                 container
                 alignItems="center"
@@ -157,7 +179,7 @@ function AdminMain() {
                       orientation="vertical"
                     />
                     <InputBase
-                      value={searchQuery}
+                      value={filterParams.searchWithNameEmail}
                       onChange={(e: any) => handleUsersSearch(e)}
                       sx={{
                         ml: 1,
@@ -179,15 +201,15 @@ function AdminMain() {
                     }
                   }
                 >
-                  <CustomStack>
+                  <CustomStack gap={2}>
                     <CDatePicker
-                    IsdisablePast={false}
+                      IsdisablePast={false}
                       showLabel={true}
                       dueDateLabel={"From"}
                       componentsProps={{
-                        actionBar:{
-                          actions:['clear']
-                        }
+                        actionBar: {
+                          actions: ["clear"],
+                        },
                       }}
                       value={fromDate}
                       id="date1"
@@ -195,16 +217,16 @@ function AdminMain() {
                       onChange={handleFromDateChange}
                     />
                     <CDatePicker
-                    IsdisablePast={false}
+                      IsdisablePast={false}
                       showLabel={true}
                       disabled={isHide}
                       value={toDate}
                       componentsProps={{
-                        actionBar:{
-                          actions:['clear']
-                        }
+                        actionBar: {
+                          actions: ["clear"],
+                        },
                       }}
-                      dueDateLabel={"Due Date"}
+                      dueDateLabel={"To"}
                       id="date1"
                       name="dueDate"
                       minDate={fromDate}
