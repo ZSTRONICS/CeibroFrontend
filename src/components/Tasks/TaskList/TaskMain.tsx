@@ -142,6 +142,45 @@ const TaskMain = () => {
       setFilteredData(filteredDataLocal);
     }
   };
+
+  const handleProjectChange = (project: any) => {
+    if (project === null) {
+      setAssignToList([]);
+      setAssignToOpt([]);
+      filterDataOnParams({
+        ...filterParams,
+        project: "",
+        assignedTo: [],
+      });
+    } else {
+      const selectedProject = projectWithMembers.find((proj: any) => String(proj._id) === String(project._id));
+      if (String(selectedProject._id)===String(project._id)) {
+        const projMembers = getUserFormatedDataForAutoComplete(selectedProject.projectMembers);
+        setAssignToOpt([...projMembers, ...fixedOwner]);
+        handleUserChange([]); 
+        setAssignToList([]);
+         filterDataOnParams({
+          ...filterParams,
+          project: project._id,
+        });          
+      }
+    }
+  };
+
+  const handleUserChange = (user: any) => {
+    setAssignToList([...user]);
+    if (user.length === 0) {
+      filterDataOnParams({
+        ...filterParams,
+        assignedTo: [],
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        assignedTo: [...user],
+      });
+    }
+  };
   const handleAssignedToMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
@@ -167,42 +206,6 @@ const TaskMain = () => {
       ...filterParams,
       createdByMe:e.target.checked ,
     });
-    }
-  }
-  
-  const handleUserChange = (user: any) => {
-    setAssignToList([...user]);
-    if (user.length === 0) {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [],
-      });
-    } else {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [...user],
-      });
-    }
-  };
-
-  const handleProjectChange = (project: any) => {
-
-    if (project === null) {
-      setAssignToList([]);
-      setAssignToOpt([])
-      filterDataOnParams({
-        ...filterParams,
-        project: "",
-        assignedTo: [],
-      });
-    } else {
-      const projMembersData = getSelectedProjectMembers(project?._id, projectWithMembers)
-      const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
-      setAssignToOpt([...projMembers, ...fixedOwner]);
-      filterDataOnParams({
-        ...filterParams,
-        project: project._id,
-      });
     }
   }
 
@@ -276,7 +279,7 @@ const TaskMain = () => {
                       },
                     }}
                     {...params}
-                    name="assignedTo"
+                    name="project"
                     placeholder="Select project"
                   />
                 )}
@@ -290,8 +293,8 @@ const TaskMain = () => {
               width: "350px",
             }}
            >
-            {/* <SelectDropdown title="Assigned to" /> */}
-            <InputHOC title="Member">
+
+            <InputHOC title="Assigned to">
               <Autocomplete
               filterSelectedOptions
                 sx={{ width: "100%", marginTop: "5px" }}
