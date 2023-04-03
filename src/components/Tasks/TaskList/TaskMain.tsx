@@ -13,25 +13,33 @@ import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import moment from "moment-timezone";
-import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import {
+  getSelectedProjectMembers,
+  getUserFormatedDataForAutoComplete,
+} from "components/Utills/Globals/Common";
 import CButton from "components/Button/Button";
 
 const TaskMain = () => {
-
-  const allTask: TaskInterface[] = useSelector((state: RootState) => state.task.allTask);
-  const {projectWithMembers ,allProjectsTitles, } = useSelector((store: RootState) => store.project);
+  const allTask: TaskInterface[] = useSelector(
+    (state: RootState) => state.task.allTask
+  );
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
   const { user } = useSelector((state: RootState) => state.auth);
-  const fixedOwner= [{
-    label: `${user.firstName} ${user.surName}`,
-    id:user._id
-  }]
+  const fixedOwner = [
+    {
+      label: `${user.firstName} ${user.surName}`,
+      id: user._id,
+    },
+  ];
 
-  const projectTitleLocal =allProjectsTitles.map((item:any)=>{
-    return{
-      _id:item.value, 
-      label: item.label
-    }
-  })
+  const projectTitleLocal = allProjectsTitles.map((item: any) => {
+    return {
+      _id: item.value,
+      label: item.label,
+    };
+  });
 
   const [filteredData, setFilteredData] = useState(allTask);
   const [date, setDate] = useState<string>("");
@@ -42,8 +50,8 @@ const TaskMain = () => {
     dueDate: "",
     assignedTo: [],
     project: "",
-    createdByMe:false,
-    assignedToMe:false
+    createdByMe: false,
+    assignedToMe: false,
   });
 
   useEffect(() => {
@@ -102,40 +110,42 @@ const TaskMain = () => {
         return d1 === d2 && m1 === m2 && y1 === y2;
       });
     }
-    
-    if (String(params.project).length>0) {
+
+    if (String(params.project).length > 0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return String(item?.project?._id)=== String(params.project);
+        return String(item?.project?._id) === String(params.project);
       });
     }
 
-    if (params.assignedTo.length>0) {
+    if (params.assignedTo.length > 0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
         return params.assignedTo.every(({ id }: any) =>
           item.assignedTo.find((item: any) => item._id === id)
         );
       });
     }
-  
-    if(params.createdByMe===true){
+
+    if (params.createdByMe === true) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return String(item.creator._id)===String(user._id)
-      })
+        return String(item.creator._id) === String(user._id);
+      });
     }
 
-    if(params.assignedToMe===true){
+    if (params.assignedToMe === true) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return item.assignedTo.some((item:any)=> item._id ===String(user._id))
-      })
+        return item.assignedTo.some(
+          (item: any) => item._id === String(user._id)
+        );
+      });
     }
 
     setFilterParams({ ...params });
     if (
       params.dueDate === "" &&
-      params.project===""&&
+      params.project === "" &&
       params.assignedTo.length === 0 &&
-      params.createdByMe===false&&
-      params.assignedToMe===false
+      params.createdByMe === false &&
+      params.assignedToMe === false
     ) {
       setFilteredData(allTask);
     } else {
@@ -153,16 +163,20 @@ const TaskMain = () => {
         assignedTo: [],
       });
     } else {
-      const selectedProject = projectWithMembers.find((proj: any) => String(proj._id) === String(project._id));
-      if (String(selectedProject._id)===String(project._id)) {
-        const projMembers = getUserFormatedDataForAutoComplete(selectedProject.projectMembers);
+      const selectedProject = projectWithMembers.find(
+        (proj: any) => String(proj._id) === String(project._id)
+      );
+      if (String(selectedProject._id) === String(project._id)) {
+        const projMembers = getUserFormatedDataForAutoComplete(
+          selectedProject.projectMembers
+        );
         setAssignToOpt([...projMembers, ...fixedOwner]);
-        handleUserChange([]); 
+        handleUserChange([]);
         setAssignToList([]);
-         filterDataOnParams({
+        filterDataOnParams({
           ...filterParams,
           project: project._id,
-        });          
+        });
       }
     }
   };
@@ -185,29 +199,29 @@ const TaskMain = () => {
     if (e.target.checked === false) {
       filterDataOnParams({
         ...filterParams,
-        assignedToMe:false,
+        assignedToMe: false,
       });
-    }else{
-       filterDataOnParams({
-      ...filterParams,
-      assignedToMe:e.target.checked ,
-    });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        assignedToMe: e.target.checked,
+      });
     }
-  }
+  };
 
   const handleCreatedByMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
         ...filterParams,
-        createdByMe:false,
+        createdByMe: false,
       });
-    }else{
-       filterDataOnParams({
-      ...filterParams,
-      createdByMe:e.target.checked ,
-    });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        createdByMe: e.target.checked,
+      });
     }
-  }
+  };
 
   return (
     <>
@@ -227,12 +241,12 @@ const TaskMain = () => {
             }}
           >
             <CDatePicker
-            IsdisablePast={false}
+              IsdisablePast={false}
               showLabel={true}
               componentsProps={{
-                actionBar:{
-                  actions:['clear']
-                }
+                actionBar: {
+                  actions: ["clear"],
+                },
               }}
               value={date}
               id="date1"
@@ -255,7 +269,7 @@ const TaskMain = () => {
               }}
             />
           </Grid>
-          
+
           <Grid
             item
             sx={{
@@ -292,14 +306,13 @@ const TaskMain = () => {
               height: "38px",
               width: "400px",
             }}
-           >
-
+          >
             <InputHOC title="Assigned to">
               <Autocomplete
-              filterSelectedOptions
-                sx={{ width: "100%"}}
+                filterSelectedOptions
+                sx={{ width: "100%" }}
                 id="assignedTo"
-                disabled={filterParams.project!==""?false:true}
+                disabled={filterParams.project !== "" ? false : true}
                 options={assignToOpt}
                 value={assignToList}
                 size="small"
@@ -321,8 +334,8 @@ const TaskMain = () => {
                 )}
               />
             </InputHOC>
-
           </Grid>
+
           <Box
             mt={2}
             gap={2.4}
@@ -339,16 +352,16 @@ const TaskMain = () => {
               sx={{
                 gap: "10px",
                 marginLeft: "20px",
-                '& .MuiTypography-root':{
-                  fontSize:'14px !important',
-                  fontWeight:'500 !important',
-                }
+                "& .MuiTypography-root": {
+                  fontSize: "14px !important",
+                  fontWeight: "500 !important",
+                },
               }}
             >
               <CustomizedSwitch
-            onChange={(e:any)=>handleCreatedByMeChange(e)}
-            label= 'Created by me'
-            />
+                onChange={(e: any) => handleCreatedByMeChange(e)}
+                label="Created by me"
+              />
             </Grid>
             <Grid
               item
@@ -358,16 +371,16 @@ const TaskMain = () => {
                 // justifyContent: "center",
                 // gap: "10px",
                 // marginLeft: "20px",
-                '& .MuiTypography-root':{
-                  fontSize:'14px !important',
-                  fontWeight:'500 !important',
-                }
+                "& .MuiTypography-root": {
+                  fontSize: "14px !important",
+                  fontWeight: "500 !important",
+                },
               }}
             >
-               <CustomizedSwitch
-            onChange={(e:any)=>handleAssignedToMeChange(e)}
-            label= 'Assigned to me'
-            />
+              <CustomizedSwitch
+                onChange={(e: any) => handleAssignedToMeChange(e)}
+                label="Assigned to me"
+              />
             </Grid>
             {/* <Grid
               item
