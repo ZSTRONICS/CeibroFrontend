@@ -157,8 +157,8 @@ const TaskMain = () => {
       if (String(selectedProject._id)===String(project._id)) {
         const projMembers = getUserFormatedDataForAutoComplete(selectedProject.projectMembers);
         setAssignToOpt([...projMembers, ...fixedOwner]);
-        handleUserChange([]); 
-        setAssignToList([]);
+         setAssignToList([]);
+         filterParams.assignedTo=[]
          filterDataOnParams({
           ...filterParams,
           project: project._id,
@@ -169,18 +169,19 @@ const TaskMain = () => {
 
   const handleUserChange = (user: any) => {
     setAssignToList([...user]);
-    if (user.length === 0) {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [],
-      });
-    } else {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [...user],
-      });
-    }
-  };
+     if (user.length === 0) {
+       filterDataOnParams({
+         ...filterParams,
+         assignedTo: [],
+       });
+     } else {
+       filterDataOnParams({
+         ...filterParams,
+         assignedTo: [...user],
+       });
+     }
+   };
+  
   const handleAssignedToMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
@@ -204,7 +205,7 @@ const TaskMain = () => {
     }else{
        filterDataOnParams({
       ...filterParams,
-      createdByMe:e.target.checked ,
+      createdByMe:e.target.checked,
     });
     }
   }
@@ -305,7 +306,7 @@ const TaskMain = () => {
                 size="small"
                 multiple={true}
                 limitTags={1}
-                onChange={(event, value) => handleUserChange(value)}
+                onChange={(event, value) =>handleUserChange(value)}
                 renderInput={(params) => (
                   <TextField
                     sx={{

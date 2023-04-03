@@ -102,8 +102,9 @@ const SubTaskMain = () => {
 
     if (params.assignedTo.length>0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
+        let localMembers= item.assignedTo.map((item:any)=>item.members).flat()
         return params.assignedTo.every(({ id }: any) =>
-          item.assignedTo.members.find((item: any) => item._id === id)
+        localMembers.find((item: any) =>String(item._id) === String(id))
         );
       });
     }
@@ -134,8 +135,8 @@ const SubTaskMain = () => {
       if (String(selectedProject._id)===String(project._id)) {
         const projMembers = getUserFormatedDataForAutoComplete(selectedProject.projectMembers);
         setAssignToOpt([...projMembers, ...fixedOwner]);
-        handleUserChange([]); 
         setAssignToList([]);
+        filterParams.assignedTo=[]
          filterDataOnParams({
           ...filterParams,
           project: project._id,
@@ -145,7 +146,6 @@ const SubTaskMain = () => {
   };
 
   const handleUserChange = (user: any) => {
-    console.log(user);
     setAssignToList([...user]);
     if (user.length === 0) {
       filterDataOnParams({

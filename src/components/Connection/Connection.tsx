@@ -53,8 +53,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   }, []);
 
   const startRoom = (id: string) => {
-    const payload = { other: { id }, success: () => history.push("chat") };
-
+    const payload = { other: { _id: id }, success: () => history.push("chat") };
     dispatch(createSingleRoom(payload));
   };
 
@@ -109,12 +108,8 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         }}
       >
         {connections?.map?.((connection: any) => {
-          const inviteId =
-            (connection.to === undefined || connection.from === undefined) &&
-            connection._id;
-          const email =
-            (connection.to === undefined || connection.from === undefined) &&
-            connection.email;
+          const inviteId = connection?._id;
+          const email = connection?.email;
           if (!connection?.sentByMe && connection?.status === "pending") {
             return;
           }
