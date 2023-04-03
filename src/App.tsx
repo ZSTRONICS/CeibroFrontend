@@ -72,7 +72,7 @@ import {
   getMember,
   PROJECT_APIS,
 } from "redux/action/project.action";
-import runOneSignal from "utills/runOneSignal";
+import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 
 interface MyApp { }
 
@@ -93,6 +93,10 @@ const App: React.FC<MyApp> = () => {
   const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
     (state: RootState) => state.docs
   );
+
+  useEffect(() => {
+    runOneSignal()
+  }, []);
 
   // const [authToken, setAuthToken] = useState<string>("");
 
@@ -176,6 +180,9 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+
+      InitOneSignal(String(user._id))
+
       // dispatch(taskActions.openSubtaskDetailDrawer())
       // dispatch(taskActions.openTaskDrawer())
       if (socket.getSocket() !== null) {
@@ -599,9 +606,6 @@ const App: React.FC<MyApp> = () => {
     }
   }, [isLoggedIn]);
 
-  useEffect(() => {
-    runOneSignal()
-  }, []);
 
   return (
     <div className="App">
