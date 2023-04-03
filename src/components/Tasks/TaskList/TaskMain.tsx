@@ -171,9 +171,9 @@ const TaskMain = () => {
           selectedProject.projectMembers
         );
         setAssignToOpt([...projMembers, ...fixedOwner]);
-        handleUserChange([]);
-        setAssignToList([]);
-        filterDataOnParams({
+         setAssignToList([]);
+         filterParams.assignedTo=[]
+         filterDataOnParams({
           ...filterParams,
           project: project._id,
         });
@@ -183,18 +183,19 @@ const TaskMain = () => {
 
   const handleUserChange = (user: any) => {
     setAssignToList([...user]);
-    if (user.length === 0) {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [],
-      });
-    } else {
-      filterDataOnParams({
-        ...filterParams,
-        assignedTo: [...user],
-      });
-    }
-  };
+     if (user.length === 0) {
+       filterDataOnParams({
+         ...filterParams,
+         assignedTo: [],
+       });
+     } else {
+       filterDataOnParams({
+         ...filterParams,
+         assignedTo: [...user],
+       });
+     }
+   };
+  
   const handleAssignedToMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
@@ -318,7 +319,7 @@ const TaskMain = () => {
                 size="small"
                 multiple={true}
                 limitTags={1}
-                onChange={(event, value) => handleUserChange(value)}
+                onChange={(event, value) =>handleUserChange(value)}
                 renderInput={(params) => (
                   <TextField
                     sx={{

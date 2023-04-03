@@ -61,7 +61,6 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
            const index = allChats?.length > 0 &&
              allChats.findIndex(
                (room: any) => String(room._id) === String(selectedChat));
-               console.log('index',index);
           if (index > -1) {
             allChats[index].name = name;
             dispatch(getAllChats());
