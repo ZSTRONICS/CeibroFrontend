@@ -1,12 +1,14 @@
 // mui-imports
 import { makeStyles } from "@material-ui/core";
 import { Autocomplete, Box, Grid, Paper, TextField } from "@mui/material";
+import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
 
 // components
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import StatusMenu from "components/Utills/Others/StatusMenu";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import moment from "moment-timezone";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
@@ -14,11 +16,12 @@ import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
 
 const SubTaskMain = () => {
-
   const headerRef: any = useRef();
   const classes = useStyles();
   const { allSubTaskList } = useSelector((state: RootState) => state.task);
-  const {projectWithMembers ,allProjectsTitles, } = useSelector((store: RootState) => store.project);
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
   const [filteredData, setFilteredData] = useState(allSubTaskList);
   const { user } = useSelector((state: RootState) => state.auth);
   const [showSubTaskList, setShowSubTaskList] = useState<boolean>(true);
@@ -29,19 +32,23 @@ const SubTaskMain = () => {
     dueDate: "",
     assignedTo: [],
     project: "",
+    createdByMe: false,
+    assignedToMe: false,
   });
 
-  const projectTitleLocal =allProjectsTitles.map((item:any)=>{
-    return{
-      _id:item.value, 
-      label: item.label
-    }
-  })
+  const projectTitleLocal = allProjectsTitles.map((item: any) => {
+    return {
+      _id: item.value,
+      label: item.label,
+    };
+  });
 
-  const fixedOwner= [{
-    label: `${user.firstName} ${user.surName}`,
-    id:user._id
-  }]
+  const fixedOwner = [
+    {
+      label: `${user.firstName} ${user.surName}`,
+      id: user._id,
+    },
+  ];
 
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
@@ -61,26 +68,28 @@ const SubTaskMain = () => {
   // }, []);
   const getSubtaskStateCount = (checkState: any) => {
     let count = 0;
-    filteredData.length>0&&filteredData?.forEach((subtask: any) => {
-       if(subtask===undefined){
-          return
+    filteredData.length > 0 &&
+      filteredData?.forEach((subtask: any) => {
+        if (subtask === undefined) {
+          return;
         }
-      subtask.state.every((state: any) => {
-        if (state.userId === user._id && state.userState === checkState) {
-          count += 1;
-          return false;
-        }
-        return true;
+        subtask.state.every((state: any) => {
+          if (state.userId === user._id && state.userState === checkState) {
+            count += 1;
+            return false;
+          }
+          return true;
+        });
       });
-    });
     return count;
   };
   const getHeaderHeight = () => {
     let contentHeight: any;
     if (headerRef.current) {
-      contentHeight = window.innerHeight - headerRef.current.clientHeight + 500;
+      contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 135);
+      // contentHeight = window.innerHeight - headerRef.current.clientHeight + 500;
     }
-    // window.innerHeight - (headerRef.current.clientHeight + 135);
     return `${contentHeight}px`;
   };
 
@@ -93,27 +102,44 @@ const SubTaskMain = () => {
         return d1 === d2 && m1 === m2 && y1 === y2;
       });
     }
-  
-    if (String(params.project).length>0) {
+
+    if (String(params.project).length > 0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        return String(item?.taskData?.project?._id)=== String(params.project);
+        return String(item?.taskData?.project?._id) === String(params.project);
       });
     }
 
-    if (params.assignedTo.length>0) {
+    if (params.assignedTo.length > 0) {
       filteredDataLocal = filteredDataLocal.filter((item: any) => {
-        let localMembers= item.assignedTo.map((item:any)=>item.members).flat()
+        let localMembers = item.assignedTo
+          .map((item: any) => item.members)
+          .flat();
         return params.assignedTo.every(({ id }: any) =>
-        localMembers.find((item: any) =>String(item._id) === String(id))
+          localMembers.find((item: any) => String(item._id) === String(id))
         );
       });
     }
-  
+
+    if (params.createdByMe === true) {
+      filteredDataLocal = filteredDataLocal.filter((subtask: SubtaskInterface) => {
+        return String(subtask.creator._id) === String(user._id);
+      });
+    }
+
+    if (params.assignedToMe === true) {
+      filteredDataLocal = filteredDataLocal.filter((subtask: SubtaskInterface) => {
+        let localMembers = subtask.assignedTo.map((item: any) => item.members).flat();
+        return localMembers.some((item: any) => item._id === String(user._id));
+      });
+    }
+
     setFilterParams({ ...params });
     if (
       params.dueDate === "" &&
-      params.project===""&&
-      params.assignedTo.length === 0
+      params.project === "" &&
+      params.assignedTo.length === 0 &&
+      params.createdByMe === false &&
+      params.assignedToMe === false
     ) {
       setFilteredData(allSubTaskList);
     } else {
@@ -131,17 +157,49 @@ const SubTaskMain = () => {
         assignedTo: [],
       });
     } else {
-      const selectedProject = projectWithMembers.find((proj: any) => String(proj._id) === String(project._id));
-      if (String(selectedProject._id)===String(project._id)) {
-        const projMembers = getUserFormatedDataForAutoComplete(selectedProject.projectMembers);
+      const selectedProject = projectWithMembers.find(
+        (proj: any) => String(proj._id) === String(project._id)
+      );
+      if (String(selectedProject._id) === String(project._id)) {
+        const projMembers = getUserFormatedDataForAutoComplete(
+          selectedProject.projectMembers
+        );
         setAssignToOpt([...projMembers, ...fixedOwner]);
         setAssignToList([]);
-        filterParams.assignedTo=[]
-         filterDataOnParams({
+        filterParams.assignedTo = [];
+        filterDataOnParams({
           ...filterParams,
           project: project._id,
-        });          
+        });
       }
+    }
+  };
+
+  const handleAssignedToMeChange = (e: any) => {
+    if (e.target.checked === false) {
+      filterDataOnParams({
+        ...filterParams,
+        assignedToMe: false,
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        assignedToMe: e.target.checked,
+      });
+    }
+  };
+
+  const handleCreatedByMeChange = (e: any) => {
+    if (e.target.checked === false) {
+      filterDataOnParams({
+        ...filterParams,
+        createdByMe: false,
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        createdByMe: e.target.checked,
+      });
     }
   };
 
@@ -205,12 +263,12 @@ const SubTaskMain = () => {
             // xs={xsPoint} md={mdPoint} sm={4} lg={lgPoint}
           >
             <CDatePicker
-            IsdisablePast={false}
+              IsdisablePast={false}
               showLabel={true}
               componentsProps={{
-                actionBar:{
-                  actions:['clear']
-                }
+                actionBar: {
+                  actions: ["clear"],
+                },
               }}
               value={date}
               id="date1"
@@ -241,7 +299,7 @@ const SubTaskMain = () => {
               maxWidth: "350px",
             }}
           >
-             <InputHOC title="Project">
+            <InputHOC title="Project">
               <Autocomplete
                 sx={{ width: "100%", marginTop: "5px" }}
                 id="assignedTo"
@@ -263,7 +321,6 @@ const SubTaskMain = () => {
                 )}
               />
             </InputHOC>
-
           </Grid>
           <Grid
             item
@@ -273,12 +330,12 @@ const SubTaskMain = () => {
               maxWidth: "350px",
             }}
           >
-          <InputHOC title="Assigned to">
+            <InputHOC title="Assigned to">
               <Autocomplete
-              filterSelectedOptions
+                filterSelectedOptions
                 sx={{ width: "100%", marginTop: "5px" }}
                 id="assignedTo"
-                disabled={filterParams.project!==""?false:true}
+                disabled={filterParams.project !== "" ? false : true}
                 options={assignToOpt}
                 value={assignToList}
                 size="small"
@@ -301,25 +358,56 @@ const SubTaskMain = () => {
               />
             </InputHOC>
           </Grid>
-          {/* <Grid
-            container
-            item
-            xs={xsPoint}
-            md={3}
-            sm={12}
-            lg={2}
-            gap={2}
-            alignItems="baseline"
-            className={classes.activeConainer}
+
+          <Box
+            pt={2}
+            // mt={1}
+            // gap={2.4}
+            sx={{
+              display: "flex",
+              flexWrap: "wrap",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "baseline",
+            }}
           >
-            <CustomizedSwitch
-              // onChange={(e:any)=>handleChange(e)}
-              label="Multi-task"
-            />
-            <Box sx={{ maxWidth: "20px", width: "100%" }} flex={1}>
-              <img src={assets.filterIcon} width="100%" alt="" />
-            </Box>
-          </Grid> */}
+            <Grid
+              item
+              sx={{
+                // gap: "10px",
+                marginLeft: "20px",
+                "& .MuiTypography-root": {
+                  fontSize: "14px !important",
+                  fontWeight: "500 !important",
+                },
+              }}
+            >
+              <CustomizedSwitch
+                onChange={(e: any) => handleCreatedByMeChange(e)}
+                label="Created by me"
+              />
+            </Grid>
+            <Grid
+              item
+              sx={{
+                // display: "flex",
+                // textAlign: "center",
+                // justifyContent: "center",
+                // gap: "10px",
+                // marginLeft: "20px",
+                "& .MuiTypography-root": {
+                  fontSize: "14px !important",
+                  fontWeight: "500 !important",
+                },
+              }}
+            >
+              <CustomizedSwitch
+                onChange={(e: any) => handleAssignedToMeChange(e)}
+                label="Assigned to me"
+              />
+            </Grid>
+          </Box>
+
           <Grid item xs={12} pt={0}>
             <Paper
               className={classes.statusWrapper}
@@ -335,11 +423,7 @@ const SubTaskMain = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box
-      sx={{
-        height: "100vh",
-      }}
-      >
+      <Box>
         <Grid item maxHeight={getHeaderHeight}>
           <SubTaskList results={filteredData} />
         </Grid>
