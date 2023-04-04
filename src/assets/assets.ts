@@ -65,6 +65,7 @@ import GAvatar from './images/GAvatar.png';
 
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
@@ -95,6 +96,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
 const assets= {
   EmailIcon,
+  NotificationsOutlinedIcon,
   CallIcon,
   ErrorOutlineOutlinedIcon,
   logoutNew,
