@@ -99,8 +99,8 @@ export default TaskList;
 
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
-    overflow: "auto",
-    height: "100%",
+    // overflow: "auto",
+    // height: "100%",
     //  maxHeight:"100vh",
     // paddingBottom: 20,
     // [theme.breakpoints.down("sm")]: {

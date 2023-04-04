@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useRef, } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ProjectList from "./ProjectList";
 import SelectDropdown, {
   dataInterface,
 } from "../../Utills/Inputs/SelectDropdown";
 import { makeStyles } from "@material-ui/core";
-import { Autocomplete,  Grid, TextField } from "@mui/material";
+import { Autocomplete, Grid, TextField } from "@mui/material";
 import {
   getColorByStatus,
   // getProjectStatus,
@@ -12,7 +12,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
 
-import  {
+import {
   getAllProjects,
   getAllProjectsWithMembers,
 } from "redux/action/project.action";
@@ -43,21 +43,25 @@ const Project = () => {
     };
   });
   // get the unique labels object
-  const getUniqueLabels  = (arr:any[])=>{
-   let uniqueLabels=  Object.values(arr.reduce((acc:any, labelObj:any) => {
-    if(labelObj.label===undefined){
-    }else{
-       if (!acc[labelObj.label]) {
-        acc[labelObj.label] = labelObj;
-      }
-    }
-      return acc;
-    }, {}))
-   return uniqueLabels
-  }
-  
-  const uniqueLabels =getUniqueLabels(projectPublishStatusLocal)
-  const [allProjectPublishStatus, setAllProjetStatus] = useState([...uniqueLabels]);
+  const getUniqueLabels = (arr: any[]) => {
+    let uniqueLabels = Object.values(
+      arr.reduce((acc: any, labelObj: any) => {
+        if (labelObj.label === undefined) {
+        } else {
+          if (!acc[labelObj.label]) {
+            acc[labelObj.label] = labelObj;
+          }
+        }
+        return acc;
+      }, {})
+    );
+    return uniqueLabels;
+  };
+
+  const uniqueLabels = getUniqueLabels(projectPublishStatusLocal);
+  const [allProjectPublishStatus, setAllProjetStatus] = useState([
+    ...uniqueLabels,
+  ]);
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
@@ -77,7 +81,7 @@ const Project = () => {
 
   useEffect(() => {
     setFilteredData(allProjects);
-    setAllProjetStatus(uniqueLabels)
+    setAllProjetStatus(uniqueLabels);
   }, [allProjects]);
 
   const [filterParams, setFilterParams] = useState({
@@ -177,9 +181,9 @@ const Project = () => {
               IsdisablePast={false}
               showLabel={true}
               componentsProps={{
-                actionBar:{
-                  actions:['clear']
-                }
+                actionBar: {
+                  actions: ["clear"],
+                },
               }}
               value={date}
               id="date1"
@@ -212,7 +216,7 @@ const Project = () => {
             <InputHOC title="Owner">
               <Autocomplete
                 disablePortal
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%" }}
                 id="project_members1"
                 options={data}
                 size="small"
@@ -249,7 +253,7 @@ const Project = () => {
             <InputHOC title="Status">
               <Autocomplete
                 disablePortal
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%" }}
                 // multiple={false}
                 id="project_members1"
                 // filterSelectedOptions
