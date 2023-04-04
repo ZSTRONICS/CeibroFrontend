@@ -171,9 +171,9 @@ const TaskMain = () => {
           selectedProject.projectMembers
         );
         setAssignToOpt([...projMembers, ...fixedOwner]);
-         setAssignToList([]);
-         filterParams.assignedTo=[]
-         filterDataOnParams({
+        setAssignToList([]);
+        filterParams.assignedTo = [];
+        filterDataOnParams({
           ...filterParams,
           project: project._id,
         });
@@ -183,19 +183,19 @@ const TaskMain = () => {
 
   const handleUserChange = (user: any) => {
     setAssignToList([...user]);
-     if (user.length === 0) {
-       filterDataOnParams({
-         ...filterParams,
-         assignedTo: [],
-       });
-     } else {
-       filterDataOnParams({
-         ...filterParams,
-         assignedTo: [...user],
-       });
-     }
-   };
-  
+    if (user.length === 0) {
+      filterDataOnParams({
+        ...filterParams,
+        assignedTo: [],
+      });
+    } else {
+      filterDataOnParams({
+        ...filterParams,
+        assignedTo: [...user],
+      });
+    }
+  };
+
   const handleAssignedToMeChange = (e: any) => {
     if (e.target.checked === false) {
       filterDataOnParams({
@@ -319,7 +319,7 @@ const TaskMain = () => {
                 size="small"
                 multiple={true}
                 limitTags={1}
-                onChange={(event, value) =>handleUserChange(value)}
+                onChange={(event, value) => handleUserChange(value)}
                 renderInput={(params) => (
                   <TextField
                     sx={{
@@ -338,7 +338,7 @@ const TaskMain = () => {
           </Grid>
 
           <Box
-            mt={2}
+            mt={1}
             gap={2.4}
             sx={{
               display: "flex",
@@ -418,14 +418,15 @@ const TaskMain = () => {
 
       {showTaskList ? (
         <Box
-          sx={{
-            height: "100vh",
-          }}
+        // sx={{
+        //   height: "100vh",
+        // }}
         >
           <Grid
             sx={{
-              overflowY: "scroll",
+              overflowY: "auto",
               height: "100vh",
+              paddingBottom: "50px",
             }}
             paddingTop={"20px"}
             paddingBottom={"20px"}

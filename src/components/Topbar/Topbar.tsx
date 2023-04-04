@@ -118,7 +118,7 @@ export default Topbar;
 
 const useStyles = makeStyles((theme) => ({
   topNavbarWrapper: {
-    height: 70,
+    // height: 70,
     paddingRight: 20,
     background: colors.white,
   },

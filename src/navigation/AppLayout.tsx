@@ -52,14 +52,15 @@ export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
   wrapper: {
-    overflowY: "hidden",
+    // overflowY: "hidden",
     // height: "100vh",
+    // height: "calc(100vh-213px)",
     "@media (max-width:600px)": {
       overflowX: "hidden",
     },
   },
   profileWrapper: {
-    overflowY: "auto",
+  //   overflowY: "auto",
   },
   content: {
     marginLeft: 200,
@@ -77,7 +78,6 @@ const useStyles = makeStyles((theme) => ({
   },
   children: {
     // overflow: "auto",o
-    paddingBottom: 5,
     padding: "12px 12px",
     "@media (max-width:960px)": {
       padding: "10px 10px",

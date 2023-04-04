@@ -121,16 +121,24 @@ const SubTaskMain = () => {
     }
 
     if (params.createdByMe === true) {
-      filteredDataLocal = filteredDataLocal.filter((subtask: SubtaskInterface) => {
-        return String(subtask.creator._id) === String(user._id);
-      });
+      filteredDataLocal = filteredDataLocal.filter(
+        (subtask: SubtaskInterface) => {
+          return String(subtask.creator._id) === String(user._id);
+        }
+      );
     }
 
     if (params.assignedToMe === true) {
-      filteredDataLocal = filteredDataLocal.filter((subtask: SubtaskInterface) => {
-        let localMembers = subtask.assignedTo.map((item: any) => item.members).flat();
-        return localMembers.some((item: any) => item._id === String(user._id));
-      });
+      filteredDataLocal = filteredDataLocal.filter(
+        (subtask: SubtaskInterface) => {
+          let localMembers = subtask.assignedTo
+            .map((item: any) => item.members)
+            .flat();
+          return localMembers.some(
+            (item: any) => item._id === String(user._id)
+          );
+        }
+      );
     }
 
     setFilterParams({ ...params });
@@ -251,8 +259,23 @@ const SubTaskMain = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 2, maxHeight: "100%" }}>
-        <Grid container spacing={1} className={classes.TaskWraper} rowGap={1}>
+      <Box
+        sx={{
+          flexGrow: 2,
+          // maxHeight: "100%"
+        }}
+      >
+        <Grid
+          container
+          spacing={1}
+          className={classes.TaskWraper}
+          rowGap={1}
+          // sx={{
+          //   "@media(max-width:1220px)": {
+          //     rowGap: "10px",
+          //   },
+          // }}
+        >
           <Grid
             item
             sx={{
@@ -301,7 +324,7 @@ const SubTaskMain = () => {
           >
             <InputHOC title="Project">
               <Autocomplete
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%" }}
                 id="assignedTo"
                 options={projectTitleLocal}
                 size="small"
@@ -333,7 +356,7 @@ const SubTaskMain = () => {
             <InputHOC title="Assigned to">
               <Autocomplete
                 filterSelectedOptions
-                sx={{ width: "100%", marginTop: "5px" }}
+                sx={{ width: "100%" }}
                 id="assignedTo"
                 disabled={filterParams.project !== "" ? false : true}
                 options={assignToOpt}
@@ -360,22 +383,22 @@ const SubTaskMain = () => {
           </Grid>
 
           <Box
-            pt={2}
-            // mt={1}
-            // gap={2.4}
+            mt={1}
             sx={{
               display: "flex",
               flexWrap: "wrap",
               flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "baseline",
+              alignItems: "baseline",
             }}
           >
             <Grid
               item
               sx={{
                 // gap: "10px",
-                marginLeft: "20px",
+                // paddingLeft: "20px",
+                // "@media (max-width:800px)": {
+                //   marginLeft: "0px",
+                // },
                 "& .MuiTypography-root": {
                   fontSize: "14px !important",
                   fontWeight: "500 !important",
