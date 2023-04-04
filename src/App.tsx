@@ -192,7 +192,7 @@ const App: React.FC<MyApp> = () => {
       const tokens = localStorage.getItem("tokens") || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
 
-      const sock = io(SERVER_URL, {
+      let sock = io(SERVER_URL, {
         reconnectionDelayMax: 3000,
         //timeout: 4000,
         // multiplex: false,
@@ -205,13 +205,14 @@ const App: React.FC<MyApp> = () => {
       // Listen for connect event
       sock.on("connect", () => {
         console.log("Connected to server");
+        socket.setSocket(sock);
       });
 
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
         // Attempt to reconnect to the server
-        sock.io.opts.reconnectionAttempts = 10;
+        sock.io.opts.reconnectionAttempts = 1000;
         sock.io.opts.reconnectionDelay = 1000;
       });
       // Listen for reconnect event
@@ -220,12 +221,18 @@ const App: React.FC<MyApp> = () => {
       });
 
       sock.on("connect_error", (err) => {
+        console.log(`Socket Connection Error`);
+        const tokens = localStorage.getItem("tokens") || "{}";
+        const newToken = JSON.parse(tokens)?.access?.token;
         console.error("Socket failed to connect ", err);
+
+        sock.auth = {
+          token: newToken,
+        };
+        sock.connect();
       });
 
-      socket.setSocket(sock);
-
-      socket.getSocket().on("token_invalid", () => {
+      sock.on("token_invalid", () => {
         console.log("Invalid Token");
         const tokens = localStorage.getItem("tokens") || "{}";
         const jsonToken = JSON.parse(tokens);
@@ -237,12 +244,14 @@ const App: React.FC<MyApp> = () => {
             .then((response: any) => {
               if (response.status === 200) {
                 localStorage.setItem("tokens", JSON.stringify(response.data));
-                //setAuthToken(response.data.access.token);
+
+                const tokens = localStorage.getItem("tokens") || "{}";
+                const newToken = JSON.parse(tokens)?.access?.token;
+
                 sock.auth = {
-                  token: response.data.access.token,
+                  token: newToken,
                 };
                 sock.connect();
-                socket.setSocket(sock);
               } else {
                 console.log("failed");
                 history.push("/login");
@@ -273,7 +282,7 @@ const App: React.FC<MyApp> = () => {
       //   // else the socket will automatically try to reconnect
       // });
 
-      socket.getSocket().on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
+      sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
         switch (eventType) {
@@ -377,7 +386,7 @@ const App: React.FC<MyApp> = () => {
         }
       });
 
-      socket.getSocket().on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
+      sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
         console.log("eventType--->", eventType, dataRcvd);
@@ -542,8 +551,8 @@ const App: React.FC<MyApp> = () => {
             });
             break;
 
-            case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-            case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+          case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+          case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
             dispatch({
               type: eventType,
               payload: data,
@@ -573,14 +582,14 @@ const App: React.FC<MyApp> = () => {
           case PROJECT_CONFIG.REFRESH_PROJECT_GROUP:
             dispatch(getGroup({ other: data.projectId }));
             break;
-            // project documents and files socket events
+          // project documents and files socket events
           case PROJECT_CONFIG.REFRESH_ROOT_DOCUMENTS:
-            dispatch(getAllDocuments({ other: { selectedProject:data.projectId} }));
+            dispatch(getAllDocuments({ other: { selectedProject: data.projectId } }));
             break;
 
           case PROJECT_CONFIG.REFRESH_FOLDER:
             dispatch(
-              getFolderFiles({other: { selectedFolder: data.folderId},}));
+              getFolderFiles({ other: { selectedFolder: data.folderId }, }));
             break;
 
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
