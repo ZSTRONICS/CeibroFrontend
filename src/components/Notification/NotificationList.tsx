@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { CDateTime } from "components/CustomTags";
-let mapItem = [1, 2, 3, 4];
+let mapItem: any[] = [];
 const NotificationList = () => {
   return (
     <>
@@ -21,7 +21,7 @@ const NotificationList = () => {
           bgcolor: "background.paper",
           position: "relative",
           maxHeight: "500px",
-          minHeight: 250,
+          minHeight: 200,
           height: "100%",
           overflow: "auto",
           // padding:'8px 0px',
@@ -64,6 +64,7 @@ const NotificationList = () => {
               </ListItemAvatar>
 
               <ListItemText
+              
                 primary={
                   <>
                     <div style={{ display: "flex", gap: "5px" }}>
@@ -85,6 +86,7 @@ const NotificationList = () => {
           ))
         ) : (
           <ListItemText
+          sx={{pt:3, textAlign:'center'}}
             primary={
               <>
                 <Typography>No data found!</Typography>
