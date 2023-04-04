@@ -21,6 +21,7 @@ import "./topbar.css";
 import Title from "./Title";
 import TopBarSearch from "./TopBarSearch";
 import ProfileView from "./ProfileView";
+import Notification from "components/Notification/Notification";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
@@ -98,15 +99,16 @@ const Topbar = (props: any) => {
           <ProfileView />
 
           {/* {!isTabletOrMobile && ( */}
-          <Typography className={classes.notification}>
-            <Badge badgeContent={4} overlap="rectangular">
+          {/* <Typography className={classes.notification}> */}
+          <Notification value={""} />
+            {/* <Badge badgeContent={4} overlap="rectangular">
               <img
                 alt="notification"
                 src={assets.notification}
                 className={`${classes.bell} width-16`}
               />
-            </Badge>
-          </Typography>
+            </Badge> */}
+          {/* </Typography> */}
           {/* )} */}
         </Grid>
       </Grid>
