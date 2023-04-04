@@ -19,7 +19,7 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <ProjectSubHeadingTag>New Members</ProjectSubHeadingTag>
+          <ProjectSubHeadingTag>Add New Members</ProjectSubHeadingTag>
           <CreateMember />
         </Grid>
 

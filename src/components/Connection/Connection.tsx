@@ -123,8 +123,8 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
             <Grid
               item
               xs={12}
-              key={user?._id}
-              id={user?._id}
+              key={user._id}
+              id={user._id}
               className={classes.chipWrapper}
             >
               <Grid container justifyContent="space-between">
@@ -254,7 +254,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                     <ViewProfile
                       connectionId={connection._id}
                       disabled={connection.email ? true : false}
-                      userId={user?._id}
+                      userId={user._id}
                     />
                   )}
                 </Grid>
