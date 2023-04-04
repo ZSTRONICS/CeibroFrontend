@@ -25,7 +25,7 @@ const Notification = ({ value }: MenuCellProps) => {
   return (
     <div>
       <IconButton onClick={handleMenuClick}>
-      <Badge badgeContent={4} overlap="rectangular">
+      <Badge badgeContent={0} showZero={true} overlap="rectangular">
              <assets.NotificationsOutlinedIcon/>
             </Badge>
       </IconButton>
