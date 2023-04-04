@@ -19,6 +19,7 @@ function Sidebar() {
     (store: RootState) => store.navigation.sidebarRoutes
   );
   const navbarOpen = useSelector((store: RootState) => store.navigation.navbar);
+  const { user } = useSelector((store: RootState) => store.auth);
   const dispatch = useDispatch();
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
@@ -64,12 +65,16 @@ function Sidebar() {
         <div className={classes.menueWrapper}>
           {configs &&
             Object.values(configs).map((config: any) => {
+              if (config.title === "Admin" && user.role !== "admin") {
+                return <React.Fragment key= {config.title}/> 
+              }
+
               return (
                 <div
                   key={config.title}
                   className={`${classes.menue} ${window.location.pathname.includes(config.path)
-                      ? classes.active
-                      : ""
+                    ? classes.active
+                    : ""
                     }`}
                   onClick={() => handleRouteClick(config)}
                 >
@@ -93,7 +98,7 @@ function Sidebar() {
                 </div>
               );
             })}
-            
+
         </div>
 
         {/* <div className={classes.help}>

@@ -9,12 +9,25 @@ export default async function runOneSignal() {
   requiresUserPrivacyConsent: false,
   autoResubscribe: true
 });
-  OneSignal.showSlidedownPrompt();
-  OneSignal.registerForPushNotifications();
+
+}
+
+
+export const  InitOneSignal = async (userId: string) => {
+  await OneSignal.showSlidedownPrompt();
+  await OneSignal.showNativePrompt();
+  await OneSignal.setExternalUserId(userId)
+  await OneSignal.registerForPushNotifications();
+
   OneSignal.on('notificationDisplay', (event) => {
     console.log('OneSignal notification displayed:', event);
   });
 }
+
+export const unSubOneSignal = async () => {
+  await OneSignal.removeExternalUserId();
+}
+
 
 
 //   function handleNotificationDisplay(event:any) {

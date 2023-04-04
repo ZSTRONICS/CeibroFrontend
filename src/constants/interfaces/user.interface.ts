@@ -9,6 +9,7 @@ export interface UserInterface {
   profilePic: string
   phone: string
   companyPhone: string
+  role: string
   currentlyRepresenting: string
   id: string
   _id: string
