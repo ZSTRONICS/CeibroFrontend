@@ -65,7 +65,7 @@ function Sidebar() {
         <div className={classes.menueWrapper}>
           {configs &&
             Object.values(configs).map((config: any) => {
-              if (config.title === "Admin" && user.role !== "admin") {
+              if (user && config.title === "Admin" && user.role !== "admin") {
                 return <React.Fragment key= {config.title}/> 
               }
 

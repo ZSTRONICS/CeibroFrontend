@@ -90,16 +90,18 @@ const ProfileForm = () => {
     dispatch(updateMyProfile(payload));
   };
 
+  const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
+
   const profileSchema = Yup.object().shape({
     firstName: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
+      .max(50, "Too Long!"),
+      // .required("Required"),
     surName: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    // workEmail: Yup.string().email("Invalid email").required("Required"),
+      .max(50, "Too Long!"),
+      // .required("Required"),
+     workEmail: Yup.string().email("Invalid email"),
     // password: Yup.string().matches(
     //   /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
     //   "Password must contain at least 8 characters, one uppercase, one number and one special case character"
@@ -111,30 +113,30 @@ const ProfileForm = () => {
     email: Yup.string().email("Invalid email"),
     companyName: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
+      .max(50, "Too Long!"),
+      // .required("Required"),
     companyVat: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
+      .max(50, "Too Long!"),
+      // .required("Required"),
     companyLocation: Yup.string()
       .min(2, "Too Short!")
-      .max(50, "Too Long!")
-      .required("Required"),
-    phone: Yup.string()
-      .required("Required")
-      .matches(
-        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
-        "Invalid phone"
-      )
-      .required("Phone is required"),
-    companyPhone: Yup.string()
-      .required("Required")
-      .matches(
-        /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
-        "Invalid phone"
-      )
-      .required("Phone is required"),
+      .max(50, "Too Long!"),
+      // .required("Required"),
+    phone: Yup.string().matches(phoneRegExp, 'Invalid phone number'),
+      // .required("Required")
+      // .matches(
+      //   /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
+      //   "Invalid phone"
+      // ),
+      // .required("Phone is required"),
+    companyPhone: Yup.string().matches(phoneRegExp, 'Invalid phone number'),
+      // .required("Required")
+      // .matches(
+      //   /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
+      //   "Invalid phone"
+      // ),
+      // .required("Phone is required"),
     // currentlyRepresenting: Yup.boolean()
     //   .required("Required")
     //   .oneOf([true, false]),
