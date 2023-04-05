@@ -29,6 +29,7 @@ import CustomImg from "components/CustomImg";
 import { socket } from "services/socket.services";
 import { CBox } from "components/material-ui";
 import React from "react";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -51,7 +52,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
-
+  const myChat = chats?.find((room: any) => String(room._id) === String(selectedChat));
+  const canEditMessg =myChat?.members?.some((member:UserInterface)=>String(member._id)===String(user._id))
+  console.log('myChat', myChat?.members, canEditMessg)
   useEffect(() => {
     setFiles(null);
     setFilesPreview(null);
@@ -59,7 +62,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   }, [selectedChat]);
 
   const onEmojiClick = (e: any, emojiObj: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setText(`${text}${emojiObj.emoji}`);
@@ -68,21 +71,21 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const toggleEmoji = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setOpen(!open);
   };
 
   const handleTextChange = (e: FormEvent<HTMLInputElement>) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setText(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     if (e.key === "Enter") {
@@ -92,7 +95,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleCloseReply = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     dispatch({
@@ -110,7 +113,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   }
 
   const handleSend = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     if (text) {
@@ -189,7 +192,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileChange = (e: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     const newFiles = e.target.files;
@@ -210,7 +213,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileClick = (id: number) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setFiles((file: any) => {
@@ -223,7 +226,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleOpenQuestioniar = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     dispatch(openQuestioniarDrawer());
@@ -296,7 +299,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       <Grid
         className={classes.wrapper}
         container
-        style={{ opacity: enable ? 1 : 0.5 }}
+        style={{ opacity: canEditMessg ? 1 : 0.5 }}
       >
         {!showRecorder && (
           <>
@@ -347,10 +350,10 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   onChange={handleTextChange}
                   onKeyPress={handleKeyDown}
                   type="text"
-                  disabled={!selectedChat || !enable}
+                  disabled={!selectedChat || !canEditMessg}
                   placeholder={
                     selectedChat
-                      ? enable
+                      ? canEditMessg
                         ? "Type a message"
                         : "You were removed from this chat"
                       : "Select a chat room"
@@ -425,7 +428,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 className="width-16 pointer"
               />
               <input
-                disabled={!enable}
+                disabled={!canEditMessg}
                 type="file"
                 onChange={handleFileChange}
                 multiple={true}
@@ -436,7 +439,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               alt=""
               src={assets.mic}
               onClick={() => {
-                if (!enable) return;
+                if (!canEditMessg) return;
                 setShowRecorder(!showRecorder);
               }}
               className={`width-16 pointer`}
@@ -481,10 +484,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   );
 };
 
-export default React.memo(
-  ChatForm,
-  (prevProps, nextProps) => prevProps.enable === nextProps.enable
-);
+export default React.memo(ChatForm);
 
 const useStyles = makeStyles({
   goToBottom: {

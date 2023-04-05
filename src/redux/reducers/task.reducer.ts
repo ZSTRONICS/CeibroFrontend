@@ -30,7 +30,7 @@ interface TaskReducerInt {
     selectedTaskAdmins: { label: string, id: string }[]
     taskAssignedToMembers: { label: string, id: string }[]
     getAllSubtaskRejection: any[]
-    getTaskSubTaskFilterByState:string
+    getTaskSubTaskFilterByState: string
     isEditing: boolean
     temporarySubtask: {
         assignedToMembersOnly: []
@@ -48,7 +48,7 @@ interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
-    getTaskSubTaskFilterByState:'all',
+    getTaskSubTaskFilterByState: 'all',
     getAllRecentCommentsOfSubtask: [],
     getAllCommentsOfSubtaskLoading: false,
     temporarySubtask: {
@@ -165,10 +165,10 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         case TASK_CONFIG.GET_TASK_SUBTASK_FILTER_BY_STATE:
-          return{
-            ...state,
-            getTaskSubTaskFilterByState: action.payload,
-          }
+            return {
+                ...state,
+                getTaskSubTaskFilterByState: action.payload,
+            }
         case TASK_CONFIG.PUSH_SUB_TASK_TO_STORE:
             const taskId = action.payload.taskId
 
@@ -377,7 +377,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         case requestSuccess(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID): {
             return {
                 ...state,
-                getAllRecentCommentsOfSubtask: [...action.payload.result, ...state.getAllRecentCommentsOfSubtask],
+                getAllRecentCommentsOfSubtask: [...action.payload.result],
                 getAllCommentsOfSubtaskLoading: false,
             }
         }
@@ -391,7 +391,13 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
 
         case TASK_CONFIG.PUSH_NEW_COMMENT_IN_STORE: {
             if (String(state.selectedSubtaskFroDetailView._id) === String(action.payload.subTaskId)) {
-                state.getAllRecentCommentsOfSubtask = [action.payload, ...state.getAllRecentCommentsOfSubtask]
+
+                const commentIndex = state.getAllRecentCommentsOfSubtask.findIndex((comment: any) => comment._id === action.payload._id)
+                if (commentIndex > -1) {
+                    state.getAllRecentCommentsOfSubtask[commentIndex] = action.payload
+                } else {
+                    state.getAllRecentCommentsOfSubtask = [action.payload, ...state.getAllRecentCommentsOfSubtask]
+                }
                 return {
                     ...state,
                     getAllRecentCommentsOfSubtask: [...state.getAllRecentCommentsOfSubtask],
@@ -412,9 +418,9 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
 
         case TASK_CONFIG.UPDATE_COMMENT_WITH_FILES_IN_STORE: {
             const upCommingCommentWithFiles = action.payload._id
-            const existingComment = state.getAllRecentCommentsOfSubtask.findIndex((comment:any)=> String(comment._id)=== String(upCommingCommentWithFiles))
-            if(existingComment>-1){
-                state.getAllRecentCommentsOfSubtask[existingComment]= action.payload
+            const existingComment = state.getAllRecentCommentsOfSubtask.findIndex((comment: any) => String(comment._id) === String(upCommingCommentWithFiles))
+            if (existingComment > -1) {
+                state.getAllRecentCommentsOfSubtask[existingComment] = action.payload
             }
 
             return {
