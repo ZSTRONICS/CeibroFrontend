@@ -20,13 +20,21 @@ import {
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { createSingleRoom, setSelectedChat } from "../../redux/action/chat.action";
+import {
+  createSingleRoom,
+  setSelectedChat,
+} from "../../redux/action/chat.action";
 
-import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars } from "../../redux/action/chat.action";
+import {
+  getPinnedMessages,
+  getRoomMedia,
+  getRoomMessages,
+  getRoomQuestioniars,
+} from "../../redux/action/chat.action";
 import { useHistory } from "react-router-dom";
 import taskActions from "redux/action/task.action";
 import { toast } from "react-toastify";
-interface IConnectionsProps { }
+interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const [connections, setConnection] = useState<any>({});
@@ -61,7 +69,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
           roomId: roomId,
           limit: 20,
         },
-        success: () => { },
+        success: () => {},
       })
     );
 
@@ -87,10 +95,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     const payload = {
       other: { _id: id },
       success: (res: any) => {
-        history.push("chat")
-        startChatRoom(res.data.newChat._id)
-        
-      }
+        history.push("chat");
+        startChatRoom(res.data.newChat._id);
+      },
     };
     dispatch(createSingleRoom(payload));
   };
@@ -128,7 +135,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   };
 
   return (
-    <Grid container className={classes.wrapper} style={{ height: "100vh" }}>
+    <Grid container className={classes.wrapper}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {connections.length < 1 && (
         <Typography className={classes.notRecord}>

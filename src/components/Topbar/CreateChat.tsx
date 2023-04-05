@@ -1,27 +1,22 @@
-import React,{useRef} from "react";
+import React, { useRef } from "react";
 
 // material
-import {
-  Menu,
-  MenuItem,
-  Typography,
-  Box,
-  Button,
-} from "@mui/material";
+import { Menu, MenuItem, Typography, Box, Button } from "@mui/material";
 import CreateGroupChat from "./CreateGroupChat";
 import CreateIndividualChat from "./CreateIndividualChat";
 
- function CreateChat() {
-
-    const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
-    const [individualEl, setAnchorEl] = React.useState<any>(undefined);
-    const [anchorGroupEl, setAnchorGroupEl] = React.useState<any>(undefined);
-    const divRef = useRef();
+function CreateChat() {
+  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+    null
+  );
+  const [individualEl, setAnchorEl] = React.useState<any>(undefined);
+  const [anchorGroupEl, setAnchorGroupEl] = React.useState<any>(undefined);
+  const divRef = useRef();
 
   const handleOpenChatMenue = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget)
-    }
-    
+    setAnchorElUser(event.currentTarget);
+  };
+
   const handleCloseChatMenu = () => {
     setAnchorElUser(null);
   };
@@ -45,28 +40,39 @@ import CreateIndividualChat from "./CreateIndividualChat";
 
   const open = Boolean(individualEl);
   const openGroup = Boolean(anchorGroupEl);
-  const id = open ? 'sigle-popover' : undefined
-  const gId = open ? 'group-popover' : undefined
+  const id = open ? "sigle-popover" : undefined;
+  const gId = open ? "group-popover" : undefined;
 
   return (
     <>
       <Box sx={{ flexGrow: 0 }} ref={divRef}>
-          <Button
+        <Button
           sx={{
-              fontFamily: 'Inter',
-              fontWeight: 700,
-              fontSize: 12
+            fontFamily: "Inter",
+            fontWeight: 700,
+            fontSize: 12,
+            textTransform: "capitalize",
           }}
-            color="primary"
-            variant="contained"
-            onClick={handleOpenChatMenue}
-            aria-controls="simple-menu"
-            aria-haspopup="true"
-          >
-            New chat
-          </Button>
-            <CreateGroupChat  ButtonId={gId} openGroup={openGroup} groupEl={anchorGroupEl} handleGroupClose={handleGroupClose} />
-           <CreateIndividualChat ButtonId = {id} open={open} individualEl={individualEl} handleClose= {handleClose} />
+          color="primary"
+          variant="contained"
+          onClick={handleOpenChatMenue}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+        >
+          New chat
+        </Button>
+        <CreateGroupChat
+          ButtonId={gId}
+          openGroup={openGroup}
+          groupEl={anchorGroupEl}
+          handleGroupClose={handleGroupClose}
+        />
+        <CreateIndividualChat
+          ButtonId={id}
+          open={open}
+          individualEl={individualEl}
+          handleClose={handleClose}
+        />
         <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"
@@ -94,9 +100,9 @@ import CreateIndividualChat from "./CreateIndividualChat";
               },
             }}
           >
-              <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center">
               <Typography textAlign="center">Group Chat</Typography>
-              </Box>
+            </Box>
           </MenuItem>
 
           <MenuItem
@@ -109,9 +115,9 @@ import CreateIndividualChat from "./CreateIndividualChat";
               },
             }}
           >
-              <Box display="flex" alignItems="center">
+            <Box display="flex" alignItems="center">
               <Typography textAlign="center">Individual Chat</Typography>
-              </Box>
+            </Box>
           </MenuItem>
         </Menu>
       </Box>

@@ -8,25 +8,27 @@ import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { Chip } from "@material-ui/core";
-import { getSelectedProjectMembers, getUserFormatedDataForAutoComplete } from "components/Utills/Globals/Common";
+import {
+  getSelectedProjectMembers,
+  getUserFormatedDataForAutoComplete,
+} from "components/Utills/Globals/Common";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 
 function NewTaskMenu(props: any) {
-
   const [doOnce, setDoOnce] = useState<boolean>(true);
-  const dueDat:any =  moment(new Date()).format("DD-MM-YYYY")
+  const dueDat: any = moment(new Date()).format("DD-MM-YYYY");
 
   const { projectWithMembers, allProjectsTitles } = useSelector(
     (store: RootState) => store.project
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const [showDate, setShowDate]= useState<any>()
- // const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
+  const [showDate, setShowDate] = useState<any>();
+  // const notShowDefaultProject = allProjectsTitles.filter((item:any)=> item.label!=='Default')
   if (doOnce) {
     props.setFieldValue("dueDate", dueDat);
-    setDoOnce(false)
+    setDoOnce(false);
   }
   const fixedOptions: any = [
     {
@@ -49,12 +51,15 @@ function NewTaskMenu(props: any) {
       props.setFieldValue("project", "");
       props.setFieldValue("assignedTo", []);
       setAdminListOpt([]);
-      setAdminsList([...fixedOptions])
+      setAdminsList([...fixedOptions]);
       setAssignToList([]);
       setAssignToOpt([]);
     } else {
       props.setFieldValue("project", project?.value);
-      const projMembersData = getSelectedProjectMembers(project?.value, projectWithMembers)
+      const projMembersData = getSelectedProjectMembers(
+        project?.value,
+        projectWithMembers
+      );
       const projMembers = getUserFormatedDataForAutoComplete(projMembersData);
       setAdminListOpt([...fixedOptions, ...projMembers]);
       setAssignToOpt([...fixedOptions, ...projMembers]);
@@ -70,10 +75,15 @@ function NewTaskMenu(props: any) {
             value={showDate}
             id="date"
             name="dueDate"
-            onChange={(e:any) => {
-              setShowDate(e)
-              const currentDate = moment(e).format("DD-MM-YYYY")
-               props.setFieldValue("dueDate", currentDate);
+            componentsProps={{
+              actionBar: {
+                actions: ["clear"],
+              },
+            }}
+            onChange={(e: any) => {
+              setShowDate(e);
+              const currentDate = moment(e).format("DD-MM-YYYY");
+              props.setFieldValue("dueDate", currentDate);
             }}
             // InputProps={{
             //   inputProps: { min: new Date().toISOString().slice(0, 10) },
@@ -111,8 +121,10 @@ function NewTaskMenu(props: any) {
             id="combo-box-demo1"
             size="small"
             options={allProjectsTitles}
-            getOptionLabel={(option:any)=> option.label}
-            isOptionEqualToValue={(option:any,label:any)=> option.label===label}
+            getOptionLabel={(option: any) => option.label}
+            isOptionEqualToValue={(option: any, label: any) =>
+              option.label === label
+            }
             onChange={(e, value) => {
               handleProjectChange(value);
             }}
@@ -135,7 +147,6 @@ function NewTaskMenu(props: any) {
             disablePortal
             filterSelectedOptions
             disableCloseOnSelect
-            
             id="combo-box-demo2"
             options={adminListOpt}
             limitTags={2}
@@ -177,15 +188,14 @@ function NewTaskMenu(props: any) {
       <Grid item xs={12} md={12}>
         <div className={classes.titleWrapper}>
           <Autocomplete
-           multiple
-           disablePortal
-           disableCloseOnSelect
-           filterSelectedOptions
+            multiple
+            disablePortal
+            disableCloseOnSelect
+            filterSelectedOptions
             id="combo-box-demo3"
             limitTags={2}
-         
             options={assignToOpt}
-            getOptionLabel={(option:any)=> option.label}
+            getOptionLabel={(option: any) => option.label}
             value={assignToList}
             size="small"
             onChange={(e, newValue) => {
