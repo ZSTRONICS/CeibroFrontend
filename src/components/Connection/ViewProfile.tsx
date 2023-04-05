@@ -16,6 +16,8 @@ import { useHistory } from "react-router-dom";
 import { getUserById } from "redux/action/user.action";
 import colors from "../../assets/colors";
 import { createSingleRoom } from "../../redux/action/chat.action";
+import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
+
 import taskActions from "../../redux/action/task.action";
 import {
   deleteMyConnection,
@@ -73,10 +75,43 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   //   handleToggle();
   // };
 
+  const startChatRoom = (roomId: string) => {
+    dispatch(
+      getRoomMessages({
+        other: {
+          roomId: roomId,
+          limit: 20,
+        },
+        success: () => { },
+      })
+    );
+
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
+
+    dispatch(setSelectedChat({ other: roomId }));
+  };
+
   const startRoom = () => {
     const payload = {
       other: { _id: userId },
-      success: () => history.push("chat"),
+      success: (res: any) => {
+        history.push("chat")
+        startChatRoom(res.data.newChat._id)
+       
+      }
     };
     dispatch(createSingleRoom(payload));
   };

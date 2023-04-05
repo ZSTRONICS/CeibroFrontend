@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
 import { Grid, IconButton, Typography, Button } from "@material-ui/core";
 // redux-imports
-import { addMemberToChat, getAllChats } from "../../redux/action/chat.action";
+import { addMemberToChat, getAllChats, getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 // components
 import { UserInterface } from "constants/interfaces/user.interface";
@@ -34,7 +34,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
 
   const members = selectedChat
     ? chat.find((room: any) => String(room._id) == String(selectedChat))
-        ?.members
+      ?.members
     : [];
 
   const [searchText, setSearchText] = useState("");
@@ -49,9 +49,44 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
     setBtnIndex(i);
   };
 
+
+  const startChatRoom = (roomId: string) => {
+    dispatch(
+      getRoomMessages({
+        other: {
+          roomId: roomId,
+          limit: 20,
+        },
+        success: () => { },
+      })
+    );
+
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
+
+    dispatch(setSelectedChat({ other: roomId }));
+  };
+
   // start singleRoom chat
   const startRoom = (id: string) => {
-    const payload = { other: { id }, success: () => dispatch(getAllChats()) };
+    const payload = {
+      other: { id }, success: (res: any) => {
+        startChatRoom(res.data.newChat._id);
+        dispatch(getAllChats())
+      }
+    };
     dispatch(createSingleRoom(payload));
   };
 
@@ -90,20 +125,20 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
       );
     });
   }
-  const handleToggleClose = (e:any,userId: any) => {
+  const handleToggleClose = (e: any, userId: any) => {
     const payload = {
       success: (res: any) => {
         setGetUser(res?.data);
         handleOpenClose(e);
       },
-    other: {
+      other: {
         userId,
       },
     };
     dispatch(getUserById(payload));
   };
 
-  const handleOpenClose=(e:any)=>{
+  const handleOpenClose = (e: any) => {
     e.stopPropagation();
     setOpen((prev) => !prev);
   }
@@ -164,7 +199,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                         <Button
                           variant="text"
                           className={classes.iconBtn}
-                          onClick={(e:any) => handleToggleClose(e,member._id)}
+                          onClick={(e: any) => handleToggleClose(e, member._id)}
                           startIcon={<assets.PeopleAltOutlinedIcon />}
                         >
                           View Profile
@@ -199,9 +234,8 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                       </div>
                       <hr className={classes.break} />
                       <div
-                        className={`${`${classes.menuWrapper} dropdown-menu`} ${
-                          classes.deleteConversation
-                        }`}
+                        className={`${`${classes.menuWrapper} dropdown-menu`} ${classes.deleteConversation
+                          }`}
                         onClick={() => handleClick(member._id)}
                       >
                         <img

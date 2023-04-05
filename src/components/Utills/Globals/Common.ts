@@ -1,4 +1,6 @@
 import moment from "moment-timezone";
+import { useDispatch } from "react-redux";
+import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "redux/action/chat.action";
 
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
@@ -51,10 +53,10 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
   * @return Functino will return the unique array of elements
   * **/
 
-export const uniqueStringArray = (arr:any[]) => {
+export const uniqueStringArray = (arr: any[]) => {
   const seen = new Map();  // create a new Map object to keep track of the seen elements
   const result = [];       // create an empty array to store the unique elements
-  for (let i = 0; i < arr.length; i++) {  
+  for (let i = 0; i < arr.length; i++) {
     const element = arr[i];               // get the current element
     if (!seen.has(element)) {             // check if the element has not been seen before
       seen.set(element, true);            // add the element to the seen Map object
@@ -194,7 +196,7 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
  * @return array of members with state
  * **/
 export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) => {
-  
+
   let combinedArray = membersArr.map((member: any) => {
     let tempState = ""
     state.every((user: any) => { if (String(member._id) === String(user.userId)) { tempState = user.userState; return false } return true; });

@@ -14,9 +14,10 @@ import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { Grid } from "@material-ui/core";
 import { socket } from "services/socket.services";
 
+
 const ChatList = () => {
   const dispatch = useDispatch();
-  const { chat, type,  selectedChat } = useSelector(
+  const { chat, type, selectedChat } = useSelector(
     (state: RootState) => state.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -26,31 +27,32 @@ const ChatList = () => {
   //       ?.members
   //   : [];
 
-  const getChatsMessages = (roomId: string) => {
+
+  const startChatRoom = (roomId: string) => {
     dispatch(
       getRoomMessages({
         other: {
           roomId: roomId,
           limit: 20,
         },
-        success: () => {},
+        success: () => { },
       })
     );
 
-    dispatch(
-      getRoomMedia({
-        other: roomId,
-      })
-    );
-    dispatch(
-      getPinnedMessages({
-        other: roomId,
-      })
-    );
-    const payload = {
-      other: roomId,
-    };
-    dispatch(getRoomQuestioniars(payload));
+    // dispatch(
+    //   getRoomMedia({
+    //     other: roomId,
+    //   })
+    // );
+    // dispatch(
+    //   getPinnedMessages({
+    //     other: roomId,
+    //   })
+    // );
+    // const payload = {
+    //   other: roomId,
+    // };
+    // dispatch(getRoomQuestioniars(payload));
 
     dispatch(setSelectedChat({ other: roomId }));
   };
@@ -60,11 +62,11 @@ const ChatList = () => {
       getAllChats({
         success: (_res: any) => {
           socket.getUnreadMsgCount(user._id);
-          if (_res?.data?.userallchat.length === 0){
+          if (_res?.data?.userallchat.length === 0) {
             dispatch(setSelectedChat({ other: null }));
           }
           else {
-              getChatsMessages(_res?.data?.userallchat[0]._id);
+            startChatRoom(_res?.data?.userallchat[0]._id);
           }
         },
       })
@@ -73,7 +75,7 @@ const ChatList = () => {
 
   const handleClick = (chat: any) => {
     if (String(chat?._id) !== String(selectedChat)) {
-      getChatsMessages(chat._id);
+      startChatRoom(chat._id);
     }
   };
 
@@ -119,4 +121,8 @@ const ChatList = () => {
   );
 };
 
+
+
+
 export default ChatList;
+

@@ -20,11 +20,13 @@ import {
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { createSingleRoom } from "../../redux/action/chat.action";
+import { createSingleRoom, setSelectedChat } from "../../redux/action/chat.action";
+
+import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars } from "../../redux/action/chat.action";
 import { useHistory } from "react-router-dom";
 import taskActions from "redux/action/task.action";
 import { toast } from "react-toastify";
-interface IConnectionsProps {}
+interface IConnectionsProps { }
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const [connections, setConnection] = useState<any>({});
@@ -52,8 +54,44 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     dispatch(getMyConnections(payload));
   }, []);
 
+  const startChatRoom = (roomId: string) => {
+    dispatch(
+      getRoomMessages({
+        other: {
+          roomId: roomId,
+          limit: 20,
+        },
+        success: () => { },
+      })
+    );
+
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
+
+    dispatch(setSelectedChat({ other: roomId }));
+  };
+
   const startRoom = (id: string) => {
-    const payload = { other: { _id: id }, success: () => history.push("chat") };
+    const payload = {
+      other: { _id: id },
+      success: (res: any) => {
+        history.push("chat")
+        startChatRoom(res.data.newChat._id)
+        
+      }
+    };
     dispatch(createSingleRoom(payload));
   };
 

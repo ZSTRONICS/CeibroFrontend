@@ -5,14 +5,13 @@ import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
 
 // redux
 import { useDispatch } from "react-redux";
-import { createSingleRoom, getAllChats } from "../../redux/action/chat.action";
-
+import { createSingleRoom } from "../../redux/action/chat.action";
+import { addMemberToChat, getAllChats, getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
 // components
 import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { getMyConnections } from "redux/action/user.action";
-import { toast } from "react-toastify";
 
 export let dbUsers = [
   {
@@ -46,6 +45,36 @@ const CreateIndividualChat = (props: any) => {
   const [connections, setConnection] = useState<any>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchField] = useState("");
+
+
+  const startChatRoom = (roomId: string) => {
+    dispatch(
+      getRoomMessages({
+        other: {
+          roomId: roomId,
+          limit: 20,
+        },
+        success: () => { },
+      })
+    );
+
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
+
+    dispatch(setSelectedChat({ other: roomId }));
+  };
 
   useEffect(() => {
     const payload = {
@@ -91,9 +120,10 @@ const CreateIndividualChat = (props: any) => {
 
   const startSingleRoomChat = (_id: string) => {
     const payload = {
-      other: { _id }, success: () => {
-        //  dispatch(setSelectedChat({ other: id }));
-        toast.success('single chat room started')
+      other: { _id }, success: (res: any) => {
+        
+        startChatRoom(res.data.newChat._id)
+        // toast.success('single chat room started')
         dispatch(getAllChats());
       }
     }
