@@ -146,11 +146,13 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
       <Grid
         item
         xs={12}
-        sx={{
-          height: "85vh",
-          overflow: "auto",
-          paddingBottom: "50px",
-        }}
+        sx={
+          {
+            // height: "85vh",
+            // overflow: "auto",
+            // paddingBottom: "50px",
+          }
+        }
       >
         {connections?.map?.((connection: any) => {
           const inviteId = connection?._id;
@@ -316,11 +318,12 @@ export default Connections;
 
 const useStyles = makeStyles({
   wrapper: {
+    // overflowY: "auto",
+    // border: "1px solid",
     background: colors.white,
     padding: 20,
   },
   chipWrapper: {
-    overflowY: "auto",
     paddingTop: 10,
     paddingBottom: "10px",
     borderBottom: "1px solid #ECF0F1",
