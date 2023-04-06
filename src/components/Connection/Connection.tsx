@@ -20,13 +20,21 @@ import {
 import { useDispatch } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { createSingleRoom, setSelectedChat } from "../../redux/action/chat.action";
+import {
+  createSingleRoom,
+  setSelectedChat,
+} from "../../redux/action/chat.action";
 
-import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars } from "../../redux/action/chat.action";
+import {
+  getPinnedMessages,
+  getRoomMedia,
+  getRoomMessages,
+  getRoomQuestioniars,
+} from "../../redux/action/chat.action";
 import { useHistory } from "react-router-dom";
 import taskActions from "redux/action/task.action";
 import { toast } from "react-toastify";
-interface IConnectionsProps { }
+interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const [connections, setConnection] = useState<any>({});
@@ -61,7 +69,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
           roomId: roomId,
           limit: 20,
         },
-        success: () => { },
+        success: () => {},
       })
     );
 
@@ -87,10 +95,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     const payload = {
       other: { _id: id },
       success: (res: any) => {
-        history.push("chat")
-        startChatRoom(res.data.newChat._id)
-        
-      }
+        history.push("chat");
+        startChatRoom(res.data.newChat._id);
+      },
     };
     dispatch(createSingleRoom(payload));
   };
@@ -128,7 +135,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   };
 
   return (
-    <Grid container className={classes.wrapper} >
+    <Grid container className={classes.wrapper}>
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {connections.length < 1 && (
         <Typography className={classes.notRecord}>
@@ -139,11 +146,13 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
       <Grid
         item
         xs={12}
-        sx={{
-          height: "85vh",
-          overflow: "auto",
-          paddingBottom: "50px",
-        }}
+        sx={
+          {
+            // height: "85vh",
+            // overflow: "auto",
+            // paddingBottom: "50px",
+          }
+        }
       >
         {connections?.map?.((connection: any) => {
           const inviteId = connection?._id;
@@ -309,11 +318,12 @@ export default Connections;
 
 const useStyles = makeStyles({
   wrapper: {
+    // overflowY: "auto",
+    // border: "1px solid",
     background: colors.white,
     padding: 20,
   },
   chipWrapper: {
-    overflowY: "auto",
     paddingTop: 10,
     paddingBottom: "10px",
     borderBottom: "1px solid #ECF0F1",

@@ -227,6 +227,11 @@ const ProjectOverview = () => {
             disabled={updateRights === true ? false : true}
             id="date1"
             name="dueDate"
+            componentsProps={{
+              actionBar: {
+                actions: ["clear"],
+              },
+            }}
             onChange={(e: any) => {
               setShowDate(e);
               // projectOverview.dueDate = moment(e).format("DD-MM-YYYY");

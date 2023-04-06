@@ -38,7 +38,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
   // const [showDate, setShowDate]= useState<any>()
   const { user } = useSelector((store: RootState) => store?.auth);
 
-  const isCreator = task.creator&&task.creator._id === user?._id;
+  const isCreator = task.creator && task.creator._id === user?._id;
   const isAdmin = isTrue(task.admins, user?._id);
 
   const handleSubmit = (values: any) => {
@@ -52,7 +52,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
       description,
       files,
     } = values.subTask;
-    
+
     setSubTask(false);
 
     const payload = {
@@ -193,8 +193,8 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
         justifyContent="space-between"
         gap={1.5}
       >
-        <Grid item container sm={8}  md={9} gap={2}>
-          <Grid item md={5} xs={10}  sm={5}>
+        <Grid item container sm={8} md={9} gap={2}>
+          <Grid item md={5} xs={10} sm={5}>
             {/* <DatePicker Datetitle="Date" /> */}
             <CDatePicker
               showLabel={true}
@@ -202,18 +202,26 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
               // value={showDate}
               id="date1"
               name="dueDate"
+              componentsProps={{
+                actionBar: {
+                  actions: ["clear"],
+                },
+              }}
               // onChange={(e: any) => {
               //   setShowDate(e);
               //   projectOverview.dueDate = moment(e).format("DD-MM-YYYY");
               // }}
             />
           </Grid>
-          <Grid item 
-           md={6} xs={10} sm={5}
-          // sx={{
-          //   width:"260px",
-          //   height:"38px",
-          // }}
+          <Grid
+            item
+            md={6}
+            xs={10}
+            sm={5}
+            // sx={{
+            //   width:"260px",
+            //   height:"38px",
+            // }}
           >
             <SelectDropdown title="Assigned to" />
           </Grid>

@@ -24,13 +24,18 @@ const CreateProjectDrawer = () => {
   };
 
   return (
-    <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
+    <Drawer
+      onClose={handleClose}
+      open={drawerOpen}
+      anchor="right"
+      className={classes.DrawerWrapper}
+    >
       <div className={classes.outerWrapper}>
         <DrawerHeader
           title={projectOverview._id ? projectOverview.title : "New Project"}
           handleClose={handleClose}
         />
-        <Grid container sx={{ overflowX: "scroll", flexWrap: "nowrap" }}>
+        <Grid container sx={{ overflowX: "auto", flexWrap: "nowrap" }}>
           <ProjectDrawerMenu />
         </Grid>
         <CreateProjectBody />
@@ -43,6 +48,11 @@ const CreateProjectDrawer = () => {
 export default CreateProjectDrawer;
 
 const useStyles = makeStyles({
+  DrawerWrapper: {
+    "& .MuiDrawer-paper": {
+      overflowY: "hidden",
+    },
+  },
   outerWrapper: {
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,
