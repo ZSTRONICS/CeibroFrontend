@@ -129,7 +129,7 @@ const CreateIndividualChat = (props: any) => {
 
   const startSingleRoomChat = (_id: string) => {
     const payload = {
-      other: { _id }, success: (res: any) => {
+      other: { _id:_id }, success: (res: any) => {
         
         startChatRoom(res.data.newChat._id)
         // toast.success('single chat room started')

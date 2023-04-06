@@ -96,7 +96,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
         )}
         {myChat && (
           <>
-            <Grid item xs={6} md={2} className={classes.editWrapper}>
+            <Grid item xs={6} md={2} className={`${myChat?.isGroupChat !== false?classes.editWrapper:classes.eidtContainer}`}>
               {!edit && (
                 <>
                   {myChat?.project && (
@@ -133,6 +133,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               {edit ? (
                 <div className={`${classes.editInputWrapper} editInputWrapper`}>
                   <TextField
+                    style={{ textTransform:'capitalize'}}
                     inputProps={{ maxLength: 20 }}
                     value={name}
                     onChange={handleNameChange}
@@ -172,11 +173,8 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             </Grid>
             <Grid item xs={8} className={classes.moreWrapper}>
               <MessageSearch />
-              <ChatUserMenu enable={props?.enable} />
+             {myChat?.isGroupChat !== false&& <ChatUserMenu enable={props?.enable} />}
             </Grid>
-            {/* <Grid item xs={1} className={classes.moreWrapper}>
-            <ChatUserMenu enable={props?.enable} />
-          </Grid> */}
           </>
         )}
       </Grid>
@@ -225,6 +223,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   username: {
+   textTransform:'capitalize',
     fontSize: 14,
     fontWeight: "bold",
     whiteSpace: "nowrap",
@@ -232,6 +231,10 @@ const useStyles = makeStyles({
     fontStyle: "normal",
     textOverflow: "ellipsis",
     // width: "120px",
+  },
+  eidtContainer:{
+    display: "flex",
+    alignItems: "center",
   },
   editWrapper: {
     paddingLeft: "20px",

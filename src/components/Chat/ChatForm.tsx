@@ -390,14 +390,14 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
             </Grid>
           </>
         )}
-        {showRecorder && (
+        {/* {showRecorder && (
           <VoiceRecorder
             handleSubmit={handleSendVoice}
             onCancel={handleCancelVoice}
           />
-        )}
+        )} */}
 
-        {filesPreview && filesPreview.length > 0 && (
+        {/* {filesPreview && filesPreview.length > 0 && (
           <Grid item xs={12} className={classes.filePreviewer}>
             {filesPreview &&
               filesPreview.map((preview: any, index: number) => {
@@ -411,39 +411,39 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 );
               })}
           </Grid>
-        )}
-        {selectedChat && (
-          <Grid item xs={12} className={classes.btnWrapper}>
-            <img
-              alt=""
-              src={assets.emoji}
-              onClick={toggleEmoji}
-              className={"width-16 pointer"}
-            />
+        )} */}
+        {/* {selectedChat && (
+          // <Grid item xs={12} className={classes.btnWrapper}>
+          //   <img
+          //     alt=""
+          //     src={assets.emoji}
+          //     onClick={toggleEmoji}
+          //     className={"width-16 pointer"}
+          //   />
 
-            <label className={classes.customFileUpload}>
-              <CustomImg
-                alt=""
-                src={assets.clip}
-                className="width-16 pointer"
-              />
-              <input
-                disabled={!canEditMessg}
-                type="file"
-                onChange={handleFileChange}
-                multiple={true}
-              />
-            </label>
+          //   <label className={classes.customFileUpload}>
+          //     <CustomImg
+          //       alt=""
+          //       src={assets.clip}
+          //       className="width-16 pointer"
+          //     />
+          //     <input
+          //       disabled={!canEditMessg}
+          //       type="file"
+          //       onChange={handleFileChange}
+          //       multiple={true}
+          //     />
+          //   </label>
 
-            <img
-              alt=""
-              src={assets.mic}
-              onClick={() => {
-                if (!canEditMessg) return;
-                setShowRecorder(!showRecorder);
-              }}
-              className={`width-16 pointer`}
-            />
+          //   <img
+          //     alt=""
+          //     src={assets.mic}
+          //     onClick={() => {
+          //       if (!canEditMessg) return;
+          //       setShowRecorder(!showRecorder);
+          //     }}
+          //     className={`width-16 pointer`}
+          //   />
 
             {/* <label className="custom-file-upload">
             <img src={assets.camera} className={`width-16 pointer`} />
@@ -454,8 +454,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               multiple={true}
               disabled={!enable}
             />
-          </label> */}
-            <Typography className={classes.gapLine}>|</Typography>
+          </label> 
+            {/* <Typography className={classes.gapLine}>|</Typography>
             <img
               alt=""
               src={assets.primaryNudgeIcon}
@@ -477,8 +477,8 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                 </div>
               </OutsideClickHandler>
             )}
-          </Grid>
-        )}
+          </Grid> 
+        )} */}
       </Grid>
     </>
   );

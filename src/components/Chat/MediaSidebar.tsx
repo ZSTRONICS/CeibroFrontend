@@ -39,6 +39,9 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
   );
 
   const [media, setMedia] = useState<any>(null);
+  const isGroupChat = selectedChat
+    ? chat.find((room: any) => String(room._id) === String(selectedChat))?.isGroupChat
+    : [];
 
   // useEffect(() => {
   // if (selectedChat) {
@@ -100,44 +103,44 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         <button className="accordion" onClick={() => handleClick(1)}>
-        
           {/* {console.log(" GroupChat", chat.isGroupChat)} */}
 
           {/* {selectedChat.isGroupChat === "true" ? ( */}
           <span className={classes.chatMembersWrapper}>
-          <Badge
-            overlap="circular"
-            badgeContent={selectedChatRoom?.members?.length}
-            color="secondary"
-            classes={{
-              badge: classes.font1,
-            }}
-          >
-            <div className={`${classes.addIconContainer}`}>
-              <img
-                alt="usersIcon"
-                src={assets.usersIcon}
-                className={`${classes.IconSize}`}
-              />
-            </div>
-          </Badge>
+            <Badge
+              overlap="circular"
+              badgeContent={selectedChatRoom?.members?.length}
+              color="secondary"
+              classes={{
+                badge: classes.font1,
+              }}
+            >
+              <div className={`${classes.addIconContainer}`}>
+                <img
+                  alt="usersIcon"
+                  src={assets.usersIcon}
+                  className={`${classes.IconSize}`}
+                />
+              </div>
+            </Badge>
             {sidebarOpen && (
               <span
                 className={`accordion-title ${classes.chatMembers} ${
                   openIndex === 1 ? "active" : ""
-                }`}
-              >
+                }`}>
                 Chat members
-                <div className={`${classes.addIconContainerSide}`}>
-                  {enable && (
-                    <img
-                      alt="addIcon"
-                      src={assets.Add}
-                      onClick={handleAddMember}
-                      className={`${classes.addIcon}`}
-                    />
-                  )}
-                </div>
+                {isGroupChat !== false && (
+                  <div className={`${classes.addIconContainerSide}`}>
+                    {enable && (
+                      <img
+                        alt="addIcon"
+                        src={assets.Add}
+                        onClick={handleAddMember}
+                        className={`${classes.addIcon}`}
+                      />
+                    )}
+                  </div>
+                )}
               </span>
             )}
           </span>
@@ -169,7 +172,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
         </button>
         {openIndex === 2 && <ChatPinned />}
 
-        <button className="accordion" onClick={() => handleClick(3)}>
+        {/* <button className="accordion" onClick={() => handleClick(3)}>
           <span className={"chat-room-media"}>
             <Badge
               overlap="circular"
@@ -184,9 +187,9 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
-        {openIndex === 3 && <ChatMedia media={chatMedia} />}
+        {openIndex === 3 && <ChatMedia media={chatMedia} />} 
 
-        <button className="accordion" onClick={() => handleClick(4)}>
+         <button className="accordion" onClick={() => handleClick(4)}>
           <span>
             <Badge
               overlap="circular"
@@ -200,8 +203,8 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
             )}
           </span>
           {sidebarOpen && <assets.KeyboardArrowDown />}
-        </button>
-        {openIndex === 4 && <ChatQuestioniar />}
+        </button> */}
+        {/* {openIndex === 4 && <ChatQuestioniar />} */}
       </div>
     </OutsideClickHandler>
   );
