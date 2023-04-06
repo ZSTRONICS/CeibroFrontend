@@ -131,9 +131,10 @@ const groups = groupByDate(mapItem)
               </CustomStack>
             }
           >
-            <ListItemAvatar sx={{ width: 60, height: 60 }}>
+            <ListItemAvatar sx={{ width: 50, height: 60,minWidth:40, '& .MuiAvatar-root':{
+              width: 40, height: 40
+            } }}>
               <Avatar
-                sx={{ width: 60, height: 60 }}
                 variant="circular">
                 AK
               </Avatar>

@@ -54,7 +54,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [filesPreview, setFilesPreview] = useState<any>([]);
   const myChat = chats?.find((room: any) => String(room._id) === String(selectedChat));
   const canEditMessg =myChat?.members?.some((member:UserInterface)=>String(member._id)===String(user._id))
-  console.log('myChat', myChat?.members, canEditMessg)
+
   useEffect(() => {
     setFiles(null);
     setFilesPreview(null);

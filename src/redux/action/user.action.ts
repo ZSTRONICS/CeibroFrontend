@@ -8,6 +8,7 @@ import {
   REVOKE_INVITAION,
   UPDATE_PROFILE_PIC,
   USER_CONFIG,
+  DISABLE_REFRESH_CONNECTIONS,
 } from 'config/user.config'
 import {
   ACCEPT_INVITE,
@@ -41,3 +42,4 @@ export const getAvailableChatUsers = createAction(GET_AVAILABLE_CHAT_USER)
 export const getAvailableUsers = createAction(GET_AVAILABLE_USERS)
 export const openViewInvitations = createAction(OPEN_VIEW_INVITATIONS)
 export const closeViewIvitations = createAction(CLOSE_VIEW_INVITATIONS)
+export const resetRefresConnections = createAction(DISABLE_REFRESH_CONNECTIONS)

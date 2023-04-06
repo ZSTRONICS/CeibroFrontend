@@ -19,10 +19,6 @@ import { createSingleRoom } from "../../redux/action/chat.action";
 import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
 
 import taskActions from "../../redux/action/task.action";
-import {
-  deleteMyConnection,
-  getMyConnections,
-} from "../../redux/action/user.action";
 import { useMediaQuery } from "react-responsive";
 import ProfileViewGlobal from "components/Profile/ProfileViewGlobal";
 
@@ -59,21 +55,6 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
-
-  // const handleDelete = () => {
-  //   const id: string = connectionId;
-  //   const payload: any = {
-  //     other: {
-  //       id,
-  //     },
-  //     params: {
-  //       isEmailInvited: false,
-  //     },
-  //     success: () => dispatch(getMyConnections()),
-  //   };
-  //   dispatch(deleteMyConnection(payload));
-  //   handleToggle();
-  // };
 
   const startChatRoom = (roomId: string) => {
     dispatch(

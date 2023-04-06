@@ -8,9 +8,11 @@ import {
   OPEN_VIEW_INVITATIONS,
   DELETE_MY_CONNECTION,
   GET_MY_CONNECTIONS,
+  DISABLE_REFRESH_CONNECTIONS,
 } from 'config/user.config'
 
 interface UserReducerInt {
+  refreshMyconnections: boolean;
   invites: {count:number}
   connections: {count:number}
   openInvites: boolean
@@ -19,6 +21,7 @@ interface UserReducerInt {
 }
 
 const intialStatue: UserReducerInt = {
+  refreshMyconnections: false,
   invites: {count:0},
   connections:  {count:0},
   openInvites: false,
@@ -43,7 +46,15 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(GET_MY_CONNECTIONS): {
       return {
         ...state,
-        myConnections: action.payload,
+        myConnections: action.payload.myConnections,
+        refreshMyconnections: true
+      }
+    }
+
+    case DISABLE_REFRESH_CONNECTIONS: {
+      return {
+        ...state,
+        refreshMyconnections: false
       }
     }
 

@@ -15,6 +15,7 @@ import DocsReducer from "./docs.reducer";
 import UserReducer from "./user.reducer";
 import storage from "redux-persist/lib/storage";
 import { UPDATE_PROFILE_PIC } from "config/user.config";
+import { unSubOneSignal } from "utills/runOneSignal";
 
 interface authInterface {
   isLoggedIn: boolean;
@@ -109,6 +110,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.removeItem("tokens");
       localStorage.clear();
       sessionStorage.clear()
+      unSubOneSignal()
       return {
         ...state,
         isLoggedIn: false,
