@@ -600,7 +600,7 @@ const NavigationReducer = (
             }
 
           } else {
-            state.getAllProjectRoles = [newRole, ...state.getAllProjectRoles];
+            state.getAllProjectRoles = [...state.getAllProjectRoles, newRole];
           }
         }
 
@@ -655,7 +655,7 @@ const NavigationReducer = (
               state.role = newGroup
             }
           } else {
-            state.groupList = [...state.groupList,newGroup];
+            state.groupList = [...state.groupList, newGroup];
           }
         }
 

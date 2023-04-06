@@ -3,15 +3,41 @@ import ListIcon from "@material-ui/icons/List";
 import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
 import { ProjectSubHeadingTag } from "components/CustomTags";
+import { RootState } from "redux/reducers";
+import { useSelector } from "react-redux";
+import {
+  Member,
+  ProjectRolesInterface,
+  roleTemplate,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
-const ProjectRoles = () => {
+const ProjectMembers = () => {
   const classes = useStyles();
+  const { getAllProjectRoles } = useSelector(
+    (state: RootState) => state.project
+  );
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const getMyRole = () => {
+    let rolePermissionLocal =
+      getAllProjectRoles &&
+      getAllProjectRoles
+        .filter((permission: any) =>
+          permission.members.some(
+            (member: Member) => String(member._id) === String(user._id)
+          )
+        )
+        .find((item: any) => item?.rolePermission);
+    return rolePermissionLocal || roleTemplate;
+  };
+  const myRole: ProjectRolesInterface = getMyRole();
 
   return (
     <>
       <Grid item xs={12}>
-        <Grid item xs={12} className={classes.actionWrapper}>
-          {/* <Button
+        {myRole.memberPermission.create === true && (
+          <Grid item xs={12} className={classes.actionWrapper}>
+            {/* <Button
             variant="outlined"
             color="primary"
             startIcon={<ListIcon />}
@@ -19,9 +45,10 @@ const ProjectRoles = () => {
           >
             Bulk edit
           </Button> */}
-          <ProjectSubHeadingTag>Add New Members</ProjectSubHeadingTag>
-          <CreateMember />
-        </Grid>
+            <ProjectSubHeadingTag>Add New Members</ProjectSubHeadingTag>
+            <CreateMember />
+          </Grid>
+        )}
 
         <Grid item xs={12} className={classes.membersTable}>
           <MembersTable />
@@ -31,7 +58,7 @@ const ProjectRoles = () => {
   );
 };
 
-export default ProjectRoles;
+export default ProjectMembers;
 
 const useStyles = makeStyles({
   actionWrapper: {

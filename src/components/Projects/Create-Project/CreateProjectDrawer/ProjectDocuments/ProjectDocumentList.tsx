@@ -201,8 +201,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                     <RollOverMenu
                       edit="Access"
                       showDelBtn={false}
-                      handleEdit={(e: any) => openAccessModal(e, row)}
-                    />
+                      handleEdit={(e: any) => openAccessModal(e, row)} handleDelete={undefined}                    />
                   </TableCell>
                 </TableRow>
               );
@@ -267,7 +266,8 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                       <RollOverMenu
                         edit="Access"
                         showDelBtn={false}
-                        handleEdit={(e: any) => openAccessModal(e, file)}
+                        handleEdit={(e: any) => openAccessModal(e, file)} 
+                        handleDelete={undefined}   
                       />
                     </TableCell>
                   </TableRow>

@@ -1,4 +1,4 @@
-import { IconButton, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography } from "@material-ui/core";
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -7,21 +7,55 @@ import assets from "../../../../../assets/assets";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
+import { IconButton } from "@mui/material";
+import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
-const RoleMenu = (props: any) => {
+interface RoleMenuProps {
+  role: ProjectRolesInterface;
+  userRole: ProjectRolesInterface;
+  onEdit: any;
+  onDelete: any;
+}
+const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   const classes = useStyles();
   const [show, setShow] = useState(false);
   const confirm = useConfirm();
+  let canEdit = props.userRole.rolePermission.edit;
+  let canDelete = props.userRole.rolePermission.delete;
+  const userRole = props.userRole;
+  const role = props.role;
+
+  if (canEdit === true && userRole.admin === false) {
+    if (role.admin === true) {
+      canEdit = false;
+    }
+    if (String(role._id) === String(userRole._id)) {
+      canEdit = false;
+    }
+  }
+  
+  if (canDelete === true && userRole.admin === false) {
+    if (role.admin === true) {
+      canDelete = false;
+    }
+    if (String(role._id) === String(userRole._id)) {
+      canDelete = false;
+    }
+  }
+
   const handleToggle = (e: any) => {
     e.stopPropagation();
-    setShow(!show);
+    setShow((prev) => !prev);
   };
 
-  const handleEdit = () => {
+  const handleEdit = (e: any) => {
+    handleToggle(e);
     props.onEdit();
+
   };
 
   const handleDelete = (e: any) => {
+    handleToggle(e);
     e.preventDefault();
     e.stopPropagation();
     confirm({
@@ -64,47 +98,57 @@ const RoleMenu = (props: any) => {
       props.onDelete();
     });
   };
+  const showDropdown = canEdit===false && canDelete===false
 
-  return (
-    <div className="dropdown">
-      <IconButton onClick={handleToggle}>
+  return (<>{ showDropdown===false &&  <div className="dropdown">
+      <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
         <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
       </IconButton>
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
           <div className={`dropdown-content ${classes.dropdownContent}`}>
-            <div
-              onClick={handleEdit}
-              className={classes.btnContainer} >
-              Edit
-            </div>
-            <hr className={classes.break} />
-            <div onClick={handleDelete} className={classes.btnContainer} style={{ color: "#FA0808" }}>
-              Delete
-            </div>
+            {canEdit === true && (
+              <div onClick={handleEdit} className={classes.btnContainer}>
+                Edit
+              </div>
+            )}
+
+            {canDelete === true && (
+              <>
+                {" "}
+                {canEdit === true && <hr className={classes.break} />}
+                <div
+                  onClick={handleDelete}
+                  className={classes.btnContainer}
+                  style={{ color: "#FA0808" }}
+                >
+                  Delete
+                </div>
+              </>
+            )}
           </div>
         </OutsideClickHandler>
       )}
-    </div>
+    </div>}
+  </>
+    
   );
 };
 
 export default RoleMenu;
 
 const useStyles = makeStyles({
-  btnContainer:{
-    color:'#0076C8',
-    fontSize:'15px',
-    fontWeight:500,
-    cursor:'pointer',
-    paddingLeft:'10px',
-    '&:hover':{
-      background:''
-    }
+  btnContainer: {
+    color: "#0076C8",
+    fontSize: "15px",
+    fontWeight: 500,
+    cursor: "pointer",
+    paddingLeft: "10px",
+    "&:hover": {
+      background: "",
+    },
   },
-  deleteContainer:{
-
-  },
+  deleteContainer: {},
   moreIcon: {
     cursor: "pointer",
   },

@@ -11,6 +11,7 @@ import { avaialablePermissions } from "config/project.config";
 import {
   Member,
   ProjectRolesInterface,
+  roleTemplate,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { checkRolePermission } from "helpers/project.helper";
 import { useEffect, useState } from "react";
@@ -30,9 +31,12 @@ const RolesTable = () => {
   const classes = useStyles();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { selectedProject, getAllProjectRoles, selectedRole, userPermissions } =
-    useSelector((state: RootState) => state.project);
-  const isDiabled = !loading ? false : true;
+  const { selectedProject, getAllProjectRoles } = useSelector(
+    (state: RootState) => state.project
+  );
+  const { user } = useSelector((state: RootState) => state.auth);
+  // const isDiabled = !loading ? false : true;
+
   useEffect(() => {
     if (selectedProject) {
       // const payload = {
@@ -45,11 +49,6 @@ const RolesTable = () => {
       dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     }
   }, [selectedProject]);
-
-  const havePermission = checkRolePermission(
-    userPermissions,
-    avaialablePermissions.edit_permission
-  );
 
   const handleEditRoles = (editRole: ProjectRolesInterface) => {
     // if (havePermission) {
@@ -119,6 +118,20 @@ const RolesTable = () => {
     );
   };
 
+  const getMyRole = () => {
+    let rolePermissionLocal =
+      getAllProjectRoles &&
+      getAllProjectRoles
+        .filter((permission: any) =>
+          permission.members.some(
+            (member: Member) => String(member._id) === String(user._id)
+          )
+        )
+        .find((item: any) => item?.rolePermission);
+    return rolePermissionLocal || roleTemplate;
+  };
+  const myRole: ProjectRolesInterface = getMyRole();
+  const myRolePermissions = myRole.rolePermission;
   return (
     <Grid container>
       <Grid item xs={12} className={classes.titleContainer}>
@@ -140,7 +153,7 @@ const RolesTable = () => {
               <div className={classes.roleChip} key={role._id}>
                 <div className={classes.roleInner}>
                   <CustomStack>
-                    <ProjectSubHeadingTag>{role.name}</ProjectSubHeadingTag>
+                    <ProjectSubHeadingTag sx={{textTransform: 'capitalize'}}>{role.name}</ProjectSubHeadingTag>
                     {role.members.length > 0 ? (
                       <CustomBadge
                         showZero={true}
@@ -168,33 +181,37 @@ const RolesTable = () => {
                   )}
                   {role.admin !== true && (
                     <Grid container gap={3}>
-                      {rolePermission && (<>
-                       {haveAnyRolePermission === true && ( <Grid item width="250px">
-                            <CustomStack
-                              gap={1}
-                              divider={
-                                <Divider
-                                  orientation="vertical"
-                                  flexItem
-                                  sx={{ borderWidth: "2px" }}
-                                />
-                              }
-                            >
-                              <ProjectSubHeadingTag>
-                                Role &nbsp;
-                              </ProjectSubHeadingTag>
-                              {rolePermission.create === true && (
-                                <RoleSubLabelTag>Create</RoleSubLabelTag>
-                              )}
-                              {rolePermission.edit === true && (
-                                <RoleSubLabelTag>Edit</RoleSubLabelTag>
-                              )}
-                              {rolePermission.delete === true && (
-                                <RoleSubLabelTag>Delete</RoleSubLabelTag>
-                              )}
-                            </CustomStack>
-                        </Grid>
-                      )}</>)}
+                      {rolePermission && (
+                        <>
+                          {haveAnyRolePermission === true && (
+                            <Grid item width="250px">
+                              <CustomStack
+                                gap={1}
+                                divider={
+                                  <Divider
+                                    orientation="vertical"
+                                    flexItem
+                                    sx={{ borderWidth: "1px" }}
+                                  />
+                                }
+                              >
+                                <ProjectSubHeadingTag>
+                                  Role &nbsp;
+                                </ProjectSubHeadingTag>
+                                {rolePermission.create === true && (
+                                  <RoleSubLabelTag>Create</RoleSubLabelTag>
+                                )}
+                                {rolePermission.edit === true && (
+                                  <RoleSubLabelTag>Edit</RoleSubLabelTag>
+                                )}
+                                {rolePermission.delete === true && (
+                                  <RoleSubLabelTag>Delete</RoleSubLabelTag>
+                                )}
+                              </CustomStack>
+                            </Grid>
+                          )}
+                        </>
+                      )}
                       {memberPermission && (
                         <Grid item width="250px">
                           {haveAnyMemberPermission === true && (
@@ -229,11 +246,15 @@ const RolesTable = () => {
                 </div>
                 <div className={classes.roleMenu}>
                   {/* <img src={assets.moreIcon} className={`width-16`} /> */}
-                  <RoleMenu
-                    // permissoin={havePermission}
-                    onEdit={() => handleEditRoles(role)}
-                    onDelete={() => handleDeleteRoles(role?._id)}
-                  />
+                  {(myRolePermissions.edit === true ||
+                    myRolePermissions.delete === true) && (
+                    <RoleMenu
+                      role={role}
+                      userRole={myRole}
+                      onEdit={() => handleEditRoles(role)}
+                      onDelete={() => handleDeleteRoles(role?._id)}
+                    />
+                  )}
                 </div>
               </div>
             );

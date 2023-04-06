@@ -115,6 +115,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
+    paddingLeft:'0.2rem',
     "@media(max-width:1240px)": {
       justifyContent: "center",
     },

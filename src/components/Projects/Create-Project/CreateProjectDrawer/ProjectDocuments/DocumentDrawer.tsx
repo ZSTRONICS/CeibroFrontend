@@ -56,6 +56,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         name,
       },
       success: () => {
+        setName("")
         toast.success("Group created successfully");
         dispatch(projectActions.closeProjectDocuments());
         // dispatch(getAllDocuments({ other: { selectedProject } }));

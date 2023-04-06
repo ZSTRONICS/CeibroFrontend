@@ -105,10 +105,12 @@ const ChatListMenue: React.FC<Props> = (props) => {
           disableFocusRipple
           sx={{ p: 1 }}
         >
-          <assets.MoreVertOutlinedIcon />
+          <assets.MoreVertOutlinedIcon sx={{fontSize:'1.27rem'}} />
         </IconButton>
         <Menu
-          sx={{ mt: "40px" }}
+          sx={{ mt: "40px", '& .MuiTypography-root':{
+            fontSize:12
+          } }}
           id="menu-appbar"
           anchorEl={anchorElUser}
           anchorOrigin={{
@@ -135,7 +137,7 @@ const ChatListMenue: React.FC<Props> = (props) => {
           >
             <Stack direction="row" spacing={2}>
               <Box display="flex" alignItems="center">
-                <assets.MarkUnreadChatAltOutlinedIcon />
+                <assets.MarkUnreadChatAltOutlinedIcon sx={{fontSize:'1.27rem'}} />
               </Box>
               <Typography textAlign="center">Mark unread</Typography>
             </Stack>
@@ -162,9 +164,9 @@ const ChatListMenue: React.FC<Props> = (props) => {
             >
               <Box display="flex" alignItems="center">
                 {isMuted ? (
-                  <assets.VolumeOffOutlinedIcon />
+                  <assets.VolumeOffOutlinedIcon sx={{fontSize:'1.27rem'}} />
                 ) : (
-                  <assets.VolumeUpOutlinedIcon />
+                  <assets.VolumeUpOutlinedIcon sx={{fontSize:'1.27rem'}} />
                 )}
               </Box>
               <Typography textAlign="center">
@@ -194,9 +196,9 @@ const ChatListMenue: React.FC<Props> = (props) => {
             >
               <Box display="flex" alignItems="center">
                 {isFavourite ? (
-                  <assets.StarIcon className={classes.star} />
+                  <assets.StarIcon className={classes.star} sx={{fontSize:'1.27rem'}} />
                 ) : (
-                  <assets.StarOutlineIcon className={classes.star} />
+                  <assets.StarOutlineIcon className={classes.star} sx={{fontSize:'1.27rem'}} />
                 )}
               </Box>
               <Typography textAlign="center">
@@ -232,7 +234,7 @@ const ChatListMenue: React.FC<Props> = (props) => {
               </Box>
               <Typography
                 textAlign="center"
-                // pl={1}
+                pl={.38}
               >
                 Delete Chat
               </Typography>
@@ -247,6 +249,7 @@ const ChatListMenue: React.FC<Props> = (props) => {
 export default ChatListMenue;
 
 const useStyles = makeStyles({
+
   star: {
     color: colors.darkYellow,
   },

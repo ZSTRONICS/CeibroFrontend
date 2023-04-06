@@ -1,19 +1,25 @@
-
 import { makeStyles } from "@material-ui/core";
 // import { Delete, PersonAdd } from "@material-ui/icons";
 import { Divider } from "@mui/material";
 import { CollapseComponent } from "components/Collapse/CollapseComponent";
-import { GroupMemberNameTag, ProjectSubHeadingTag } from "components/CustomTags";
-import { Member, ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  GroupMemberNameTag,
+  ProjectSubHeadingTag,
+} from "components/CustomTags";
+import {
+  Member,
+  ProjectGroupInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
 import React, { useEffect, useState } from "react";
 // import { BiPencil } from "react-icons/bi";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 // import { getGroupMembers } from "redux/action/project.action";
 import colors from "../../../assets/colors";
 // import { MenuOptions } from "../Others/MenuButton";
 // import NameAvatar from "../Others/NameAvatar";
 import GroupMenu from "./GroupMenu";
+import { RootState } from "redux/reducers";
 // const menue: MenuOptions[] = [
 //   {
 //     title: "Edit Group",
@@ -30,18 +36,22 @@ import GroupMenu from "./GroupMenu";
 // ];
 
 interface GroupChipInterface {
-  group:ProjectGroupInterface
+  group: ProjectGroupInterface;
   handleClick: () => void;
   handleDelete: () => void;
 }
 
 const GroupChip: React.FC<GroupChipInterface> = (props) => {
-    const {group, handleClick, handleDelete } = props;
-  const [groupExpanded, setGroupExpanded] = React.useState<string | false>("admin");
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { group, handleClick, handleDelete } = props;
+  const [groupExpanded, setGroupExpanded] = React.useState<string | false>(
+    "admin"
+  );
 
-  const handleChange = (panel: string) => (event: React.SyntheticEvent,newExpanded: boolean) => {
-    setGroupExpanded(newExpanded ? panel : false);
-  };
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+      setGroupExpanded(newExpanded ? panel : false);
+    };
 
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -60,31 +70,47 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
   //   }
   // }, [groupExpanded]);
 
-  return (<>
+  return (
+    <>
       <div className={classes.groupChip}>
         <CollapseComponent.Accordion
-          sx={{maxWidth:900, width:'100%'}}
+          sx={{ maxWidth: 900, width: "100%" }}
           expanded={groupExpanded === group.name}
           onChange={handleChange(group.name)}
         >
-          <CollapseComponent.AccordionSummary aria-controls={group.name} id={group.name+1}>
-            <ProjectSubHeadingTag
-              sx={{ fontSize:14}}>
+          <CollapseComponent.AccordionSummary
+            aria-controls={group.name}
+            id={group.name + 1}
+          >
+            <ProjectSubHeadingTag sx={{ textTransform: 'capitalize', fontSize: 14 }}>
               {group.name}
             </ProjectSubHeadingTag>
           </CollapseComponent.AccordionSummary>
-          <CollapseComponent.AccordionDetails sx={{display:'flex',gap:0.5, flexWrap:'wrap'}}>
-               {group.members.length>0? group.members?.map((member: Member, index: any) => {
-               if(!member) {
-                return <></>;
-              }
-              const memberName = `${member.firstName} ${member.surName}`
-              return (
-                <GroupMemberNameTag key={member._id}>
-                  { index === group.members.length - 1 ? memberName : `${memberName},`}&nbsp;
-                </GroupMemberNameTag> 
-              );
-            }):<GroupMemberNameTag>No data found!</GroupMemberNameTag>}
+          <CollapseComponent.AccordionDetails
+            sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}
+          >
+            {group.members.length > 0 ? (
+              group.members?.map((member: Member, index: any) => {
+                if (!member) {
+                  return <></>;
+                }
+                let memberName = "Me";
+                if (String(member._id) !== String(user._id)) {
+                  memberName = `${member.firstName} ${member.surName}`;
+                }
+
+                return (
+                  <GroupMemberNameTag sx={{textTransform: 'capitalize'}} key={member._id}>
+                    {index === group.members.length - 1
+                      ? memberName
+                      : `${memberName}, `}
+                    &nbsp;
+                  </GroupMemberNameTag>
+                );
+              })
+            ) : (
+              <GroupMemberNameTag>No data found!</GroupMemberNameTag>
+            )}
           </CollapseComponent.AccordionDetails>
         </CollapseComponent.Accordion>
         <div className={classes.action}>
@@ -96,7 +122,7 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
           />
         </div>
       </div>
-      <Divider/>
+      <Divider />
     </>
   );
 };
@@ -107,7 +133,7 @@ const useStyles = makeStyles({
   groupChip: {
     display: "flex",
     justifyContent: "space-between",
-    alignItems:'center',
+    alignItems: "center",
     // paddingBottom: 12,
   },
   title: {

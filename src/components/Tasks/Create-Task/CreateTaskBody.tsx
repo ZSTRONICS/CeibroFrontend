@@ -1,11 +1,5 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-// import ProjectOverview from './ProjectOverview/ProjectOverview'
-// import ProjectRoles from './ProjectRoles/ProjectRoles'
-// import ProjectMembers from './ProjectMember/ProjectMembers'
-// import ProjectGroups from './ProjectGroups/ProjectGroups'
-// import ProjectDocuments from './ProjectDocuments/ProjectDocuments'
-// import TimeProfile from './TimeProfile/TimeProfile'
 import SubTaskList from "../SubTasks/SubTaskList";
 import SubTaskStatusDrawer from "./SubTaskStatusDrawer";
  import { Grid,CircularProgress } from "@mui/material";
