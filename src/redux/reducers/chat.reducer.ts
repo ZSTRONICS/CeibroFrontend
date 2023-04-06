@@ -130,9 +130,10 @@ const intialStatue: ChatReducerInt = {
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestSuccess(GET_CHAT): {
+      state.chat = []
       return {
         ...state,
-        chat: action.payload?.userallchat,
+        chat: [...action.payload?.userallchat],
       }
     }
 
