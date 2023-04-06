@@ -128,7 +128,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   };
 
   return (
-    <Grid container className={classes.wrapper} style={{ height: "100vh" }}>
+    <Grid container className={classes.wrapper} >
       {loading && <CircularProgress size={20} className={classes.progress} />}
       {connections.length < 1 && (
         <Typography className={classes.notRecord}>
