@@ -344,8 +344,7 @@ const MemberDialog = () => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={isDiabled}
-          >
+            disabled={(selectedUser.length>0||selectedMember._id !== "")?false:true}>
             {selectedMember._id !== "" ? "Update" : "Add"}
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
