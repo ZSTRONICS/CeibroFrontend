@@ -61,7 +61,6 @@ const ChatList = () => {
     dispatch(
       getAllChats({
         success: (_res: any) => {
-          socket.getUnreadMsgCount(user._id);
           if (_res?.data?.userallchat.length === 0) {
             dispatch(setSelectedChat({ other: null }));
           }

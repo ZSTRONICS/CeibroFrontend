@@ -65,6 +65,7 @@ import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { PROJECT_CONFIG } from "config/project.config";
 import {
   getAllDocuments,
+  getAllProjectMembers,
   // getAllProjectMembers,
   // getAllProjects,
   getFolderFiles,
@@ -73,6 +74,8 @@ import {
   PROJECT_APIS,
 } from "redux/action/project.action";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
+import { USER_CONFIG } from "config/user.config";
+import { getMyAllInvites, getMyConnections, getMyConnectionsCount, getMyInvitesCount } from "redux/action/user.action";
 
 interface MyApp { }
 
@@ -285,13 +288,16 @@ const App: React.FC<MyApp> = () => {
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
-        console.log('event received',eventType, payload);
+        console.log('event received', eventType, payload);
         switch (eventType) {
           case RECEIVE_MESSAGE:
             {
+              dispatch(getAllChats());
+              socket.getUnreadMsgCount(user._id);
+
               const selectedChat = socket.getAppSelectedChat();
               const data = payload.data;
-              socket.getUnreadMsgCount(user._id);
+
               if (String(data.from) !== String(user?._id)) {
                 if (String(data.chat) === String(selectedChat)) {
                   dispatch({
@@ -330,21 +336,17 @@ const App: React.FC<MyApp> = () => {
                     });
                   }
                 }
-              } else {
-                dispatch(getAllChats());
-                socket.getUnreadMsgCount(user._id);
               }
             }
             break;
 
           case REFRESH_CHAT:
-            socket.getUnreadMsgCount(user._id);
             dispatch(getAllChats());
+            socket.getUnreadMsgCount(user._id);
             break;
 
           case UNREAD_MESSAGE_COUNT:
             dispatch(unreadMessagesCount({ other: payload.data }));
-
             break;
           // case ROOM_MESSAGE_DATA:
           //   {
@@ -596,6 +598,25 @@ const App: React.FC<MyApp> = () => {
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
             dispatch(getMember({ other: data.projectId }));
             break;
+
+          case USER_CONFIG.REFRESH_INVITATIONS:
+            dispatch(getMyInvitesCount());
+            break
+
+          case USER_CONFIG.REFRESH_PROJECT_MEMBERS:
+            dispatch(
+              getAllProjectMembers({
+                other: {
+                  projectId: data.projectId,
+                },
+              })
+            );
+            break
+
+          case USER_CONFIG.REFRESH_CONNECTIONS:
+            dispatch(getMyConnections());
+            dispatch(getMyConnectionsCount());
+            break
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             try {

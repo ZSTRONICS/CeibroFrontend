@@ -66,6 +66,7 @@ const Chat = () => {
       );
 
       if (myChat) {
+        socket.getUnreadMsgCount(user._id);
         let members = myChat?.members || [];
         let myUserIndex = members?.findIndex?.(
           (member: UserInterface) => member._id === user?._id

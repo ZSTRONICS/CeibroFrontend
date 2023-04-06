@@ -4,14 +4,15 @@ import { useEffect, useCallback, useState } from "react";
 import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createSingleRoom } from "../../redux/action/chat.action";
 import { addMemberToChat, getAllChats, getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
 // components
 import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { getMyConnections } from "redux/action/user.action";
+import { getMyConnections, resetRefresConnections } from "redux/action/user.action";
+import { RootState } from "redux/reducers";
 
 export let dbUsers = [
   {
@@ -46,6 +47,7 @@ const CreateIndividualChat = (props: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [searchQuery, setSearchField] = useState("");
 
+  const { refreshMyconnections, myConnections } = useSelector((store: RootState) => store.user);
 
   const startChatRoom = (roomId: string) => {
     dispatch(
@@ -92,6 +94,14 @@ const CreateIndividualChat = (props: any) => {
     }
   }, []);
 
+
+  useEffect(() => {
+    if(refreshMyconnections === false){
+      return 
+    }
+    setConnection(myConnections);
+    dispatch(resetRefresConnections())
+  }, [refreshMyconnections]);
   // const sortCon = connections.sort(function(a:any, b:any){
   //     const user = a?.sentByMe? a.to: b.from;
   //     var nameA = user.firstName.toLowerCase(), nameB = user.firstName.toLowerCase();
@@ -102,8 +112,7 @@ const CreateIndividualChat = (props: any) => {
   //     return 0; 
   //    });
 
-  
-  const filterdList = connections?.filter((person: any) => {
+  const filterdList = connections && connections?.filter((person: any) => {
     const user = person?.sentByMe ? person?.to : person?.from;
     const fullName = `${user?.firstName} ${user?.surName}`
     return (

@@ -14,10 +14,11 @@ import React, { useEffect, useState } from "react";
 import {
   getMyConnections,
   resendInvites,
+  resetRefresConnections,
   revokeInvites,
 } from "redux/action/user.action";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { createSingleRoom, setSelectedChat } from "../../redux/action/chat.action";
@@ -26,6 +27,7 @@ import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars }
 import { useHistory } from "react-router-dom";
 import taskActions from "redux/action/task.action";
 import { toast } from "react-toastify";
+import { RootState } from "redux/reducers";
 interface IConnectionsProps { }
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
@@ -35,11 +37,21 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
+  const { refreshMyconnections, myConnections } = useSelector((store: RootState) => store.user);
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const openTaskModal = () => {
     dispatch(taskActions.openNewTaskModal());
   };
+
+
+  useEffect(() => {
+    if(refreshMyconnections === false){
+      return 
+    }
+    setConnection(myConnections);
+    dispatch(resetRefresConnections())
+  }, [refreshMyconnections]);
 
   useEffect(() => {
     const payload = {
