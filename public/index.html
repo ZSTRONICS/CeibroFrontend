@@ -19,7 +19,17 @@
     -->
   <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" defer></script>
-  <script>window.OneSignal = window.OneSignal || [];</script>
+  <script>
+    window.OneSignal = window.OneSignal || [];
+    OneSignal.push(function () {
+      OneSignal.init({
+        appId: "53bac888-fbfe-483b-8746-73bdf9dc3663",
+        allowLocalhostAsSecureOrigin: true,
+        requiresUserPrivacyConsent: false,
+        autoResubscribe: true
+      });
+    });
+  </script>
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
