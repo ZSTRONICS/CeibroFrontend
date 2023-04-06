@@ -1,4 +1,3 @@
-
 import { IconButton, makeStyles, Typography } from "@material-ui/core";
 import {
   DeleteOutlined,
@@ -73,15 +72,17 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
           <div className={`dropdown-content ${classes.dropdownContent}`}>
+            {/* {selectedChat.isGroupChat === "true" && ( */}
             <div
               onClick={openMembersDialog}
               className={`${classes.menuWrapper} dropdown-menu`}
             >
               <div className={classes.iconContainer}>
-              <img src={assets.addUser}  className={classes.menuIcon}/>
+                <img src={assets.addUser} className={classes.menuIcon} />
               </div>
               <Typography className={classes.menuText}>Add People</Typography>
             </div>
+            {/* )} */}
 
             <hr className={classes.break} />
 
@@ -91,8 +92,8 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
                 classes.deleteConversation
               }`}
             >
-              <div  className={classes.iconContainer}>
-              <img src={assets.DeleteIcon} className={classes.menuIcon} />
+              <div className={classes.iconContainer}>
+                <img src={assets.DeleteIcon} className={classes.menuIcon} />
               </div>
               <Typography
                 className={`${classes.menuText} ${classes.deleteText}`}
@@ -122,11 +123,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     justifyContent: "flex-start",
   },
-  iconContainer:{
-    width: '20px'
+  iconContainer: {
+    width: "20px",
   },
   menuIcon: {
-    width:'100%'
+    width: "100%",
   },
   menuText: {
     fontSize: 14,

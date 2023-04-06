@@ -318,8 +318,8 @@ export default Connections;
 
 const useStyles = makeStyles({
   wrapper: {
-    // overflowY: "auto",
-    // border: "1px solid",
+    overflowY: "auto",
+    height: "calc(100vh - 80px)",
     background: colors.white,
     padding: 20,
   },

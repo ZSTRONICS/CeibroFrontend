@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
       padding: "10px 10px",
     },
     "@media (max-width:1280px)": {
-      padding: "10px 20px",
+      padding: "10px 10px",
     },
   },
   blackWrapper: {

@@ -1,4 +1,3 @@
-
 import { Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
@@ -19,11 +18,11 @@ import {
 } from "../../redux/action/chat.action";
 import colors from "assets/colors";
 
-interface Props{
-  enable:boolean
+interface Props {
+  enable: boolean;
 }
 
-const MediaSidebar:React.FC<Props> = ({enable}) => {
+const MediaSidebar: React.FC<Props> = ({ enable }) => {
   const classes = useStyles();
   const {
     sidebarOpen,
@@ -42,26 +41,26 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
   const [media, setMedia] = useState<any>(null);
 
   // useEffect(() => {
-    // if (selectedChat) {
-    //   dispatch(
-    //     getRoomMedia({
-    //       other: selectedChat,
-    //     })
-    //   );
-    //   dispatch(
-    //     getPinnedMessages({
-    //       other: selectedChat,
-    //     })
-    //   );
-    //   const payload = {
-    //     other: selectedChat,
-    //   };
-    //   dispatch(getRoomQuestioniars(payload));
-    // }
-    // return () =>{
-    //   selectedChat,
-    //   openIndex
-    // }
+  // if (selectedChat) {
+  //   dispatch(
+  //     getRoomMedia({
+  //       other: selectedChat,
+  //     })
+  //   );
+  //   dispatch(
+  //     getPinnedMessages({
+  //       other: selectedChat,
+  //     })
+  //   );
+  //   const payload = {
+  //     other: selectedChat,
+  //   };
+  //   dispatch(getRoomQuestioniars(payload));
+  // }
+  // return () =>{
+  //   selectedChat,
+  //   openIndex
+  // }
   // }, [selectedChat, openIndex]);
 
   const getStyles = () => {
@@ -101,19 +100,27 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         <button className="accordion" onClick={() => handleClick(1)}>
+        
+          {/* {console.log(" GroupChat", chat.isGroupChat)} */}
+
+          {/* {selectedChat.isGroupChat === "true" ? ( */}
           <span className={classes.chatMembersWrapper}>
-            <Badge
-              overlap='circular'
-              badgeContent={selectedChatRoom?.members?.length}
-              color="secondary"
-              classes={{
-                badge: classes.font1,
-              }}
-            >
-              <div  className={`${classes.addIconContainer}`}>
-              <img alt="usersIcon" src={assets.usersIcon}  className={`${classes.IconSize}`} />
-              </div>
-            </Badge>
+          <Badge
+            overlap="circular"
+            badgeContent={selectedChatRoom?.members?.length}
+            color="secondary"
+            classes={{
+              badge: classes.font1,
+            }}
+          >
+            <div className={`${classes.addIconContainer}`}>
+              <img
+                alt="usersIcon"
+                src={assets.usersIcon}
+                className={`${classes.IconSize}`}
+              />
+            </div>
+          </Badge>
             {sidebarOpen && (
               <span
                 className={`accordion-title ${classes.chatMembers} ${
@@ -122,23 +129,28 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
               >
                 Chat members
                 <div className={`${classes.addIconContainerSide}`}>
-                {enable &&<img alt="addIcon"
-                    src={assets.Add}
-                  onClick={handleAddMember}
-                  className={`${classes.addIcon}`}
-                />}
+                  {enable && (
+                    <img
+                      alt="addIcon"
+                      src={assets.Add}
+                      onClick={handleAddMember}
+                      className={`${classes.addIcon}`}
+                    />
+                  )}
                 </div>
               </span>
             )}
           </span>
+          {/*  ) : (
+             <></>
+           )} */}
           {sidebarOpen && <assets.KeyboardArrowDown />}
         </button>
         {openIndex === 1 && <ChatMembers enable={enable} />}
-
         <button className="accordion" onClick={() => handleClick(2)}>
           <span>
             <Badge
-            overlap='circular'
+              overlap="circular"
               badgeContent={pinnedMessages?.message?.length}
               color="secondary"
               classes={{
@@ -160,7 +172,10 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
         <button className="accordion" onClick={() => handleClick(3)}>
           <span className={"chat-room-media"}>
             <Badge
-             overlap='circular' badgeContent={chatMedia?.length} color="secondary">
+              overlap="circular"
+              badgeContent={chatMedia?.length}
+              color="secondary"
+            >
               <img src={assets.mediaIcon} alt="mediaIcon" />
             </Badge>
             {sidebarOpen && (
@@ -174,8 +189,11 @@ const MediaSidebar:React.FC<Props> = ({enable}) => {
         <button className="accordion" onClick={() => handleClick(4)}>
           <span>
             <Badge
-            overlap='circular' badgeContent={roomQuestioniars?.length} color="secondary">
-              <img src={assets.documentIcon} alt="documentIcon"/>
+              overlap="circular"
+              badgeContent={roomQuestioniars?.length}
+              color="secondary"
+            >
+              <img src={assets.documentIcon} alt="documentIcon" />
             </Badge>
             {sidebarOpen && (
               <span className="accordion-title">Questioniar</span>
@@ -204,22 +222,22 @@ const useStyles = makeStyles({
   font1: {
     fontSize: "0.5rem",
   },
-  addIconContainer:{
+  addIconContainer: {
     width: 18,
-    marginLeft: '0px'
+    marginLeft: "0px",
   },
-  addIconContainerSide:{
+  addIconContainerSide: {
     width: 18,
-    marginLeft: '5px'
+    marginLeft: "5px",
   },
   addIcon: {
     border: `2px solid ${colors.primary}`,
     padding: 2,
-    width: '100%'
+    width: "100%",
   },
   IconSize: {
     padding: 2,
-    width: '100%'
+    width: "100%",
   },
   chatMembersWrapper: {
     display: "flex",

@@ -124,6 +124,9 @@ const ChatSidebar = () => {
                   sx={{
                     paddingLeft: "20px",
                     paddingRight: "20px",
+                    fontSize: 12,
+                    fontWeight: 500,
+                    fontFamily: "inter",
                   }}
                 >
                   {chatType.name === "Favorites" ? (
@@ -245,7 +248,7 @@ const useStyles = makeStyles({
   },
   chatList: {
     height: "calc(100vh - 170px)",
-    overflowY: "scroll",
+    overflowY: "auto",
     overflowX: "hidden",
   },
 });

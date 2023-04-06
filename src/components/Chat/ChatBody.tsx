@@ -108,7 +108,7 @@ const useStyles = makeStyles({
   },
   wrapper: {
     maxHeight: "calc(100vh - 305px)",
-    overflowY: "scroll",
+    overflowY: "auto",
     height: "100%",
     display: "block",
     position: "relative",

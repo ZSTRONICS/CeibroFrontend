@@ -10,21 +10,21 @@ import ProjectDocumentList from "./ProjectDocumentList";
 const ProjectDocuments = () => {
   const classes = useStyles();
   const [folder, setFolder] = useState<FolderInterface | any>(null);
-  // const [showDocumentList, setShowDocumentList] = useState<boolean>(false);
-  // const headerRef: any = useRef();
-  // useEffect(() => {
-  //   if (headerRef.current && headerRef.current.clientHeight) {
-  //     setTimeout(() => {
-  //       setShowDocumentList(true);
-  //     }, 100);
-  //   }
-  //   window.addEventListener("resize", getHeaderHeight);
-  // });
-  // const getHeaderHeight = () => {
-  //   let contentHeight =
-  //     window.innerHeight - (headerRef.current.clientHeight + 135);
-  //   return `${contentHeight}px`;
-  // };
+  const [showDocumentList, setShowDocumentList] = useState<boolean>(false);
+  const headerRef: any = useRef();
+  useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      setTimeout(() => {
+        setShowDocumentList(true);
+      }, 100);
+    }
+    window.addEventListener("resize", getHeaderHeight);
+  });
+  const getHeaderHeight = () => {
+    let contentHeight =
+      window.innerHeight - (headerRef.current.clientHeight + 215);
+    return `${contentHeight}px`;
+  };
   const handleFolderClick = (folder: FolderInterface) => {
     setFolder(folder);
   };
@@ -48,6 +48,7 @@ const ProjectDocuments = () => {
           item
           xs={12}
           className={classes.groupsWrapper}
+
           // maxHeight={getHeaderHeight}
         >
           {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}
@@ -62,7 +63,7 @@ export default ProjectDocuments;
 
 const useStyles = makeStyles({
   groupsWrapper: {
-    height: "692px",
+    height: "630px",
     overflow: "auto",
   },
   titleWrapper: {

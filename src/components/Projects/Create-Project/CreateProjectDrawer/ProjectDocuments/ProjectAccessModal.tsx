@@ -170,6 +170,7 @@ if (hasKey(selectedFolderFile, "name")) {
                 secondaryAction={
                   <Checkbox
                     sx={{
+                      // padding:"0",
                       "&.MuiCheckbox-root": {
                         color: "#ADB5BD",
                       },
@@ -189,7 +190,9 @@ if (hasKey(selectedFolderFile, "name")) {
                 }
               >
                 <ListItemButton
-                  sx={{ p: 0, pb: "10px" }}
+                  sx={{ p: 0, 
+                    // pb: "10px"
+                   }}
                   disableRipple
                   onClick={() => handleGroupMember(group)}
                 >

@@ -138,21 +138,28 @@ const Chat = () => {
     <>
       {/* right sidebar for chat actions */}
       {selectedChat && <MediaSidebar enable={enable} />}
-      <Grid container className={classes.wrapper}>
+      <Grid
+        container
+        className={classes.wrapper}
+        // sx={{
+        //   border: "2px solid",
+        // }}
+      >
         <Grid
           item
           sx={{
             "@media(max-width:1024px)": {},
           }}
-          xs={12}
-          md={sidebarOpen && !isTabletOrMobile ? 4 : 3}
+          xs={4}
+
+          md={sidebarOpen && !isTabletOrMobile ? 4 : 3.6}
         >
           <ChatSidebar />
         </Grid>
         <Grid
           item
-          xs={12}
-          md={sidebarOpen && !isTabletOrMobile ? 8 : 9}
+          xs={8}
+          md={sidebarOpen && !isTabletOrMobile ? 8 : 8.4}
           style={{
             background: "white",
             display: "flex",
@@ -161,7 +168,9 @@ const Chat = () => {
           }}
         >
           <ChatBoxHeader enable={enable} chat={CHAT_LIST[0]} />
+
           <ChatBody enable={enable} />
+
           <ChatForm enable={enable} />
         </Grid>
       </Grid>
@@ -173,6 +182,9 @@ export default Chat;
 
 const useStyles = makeStyles({
   wrapper: {
+    "@media(max-width:1024px)":{
+      padding:"10px 10px",
+    },
     background: colors.white,
     position: "relative",
     height: "calc(100vh - 85px)",

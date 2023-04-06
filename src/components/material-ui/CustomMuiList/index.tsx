@@ -27,7 +27,7 @@ export const CustomMuiList = (props: any) => {
             fontSize: "12px",
             fontWeight: 500,
             color: "#605C5C",
-            paddingRight: "27px",
+            // paddingRight: "20px",
           }}
         >
           {props.subheaderTitle}
@@ -40,19 +40,27 @@ export const CustomMuiList = (props: any) => {
           <ListItem
             // sx={{ paddingLeft: "15px" }}
             // sx={{ right: "12px" }}
+            sx={
+              {
+                // "& .css-1vegh7w-MuiButtonBase-root-MuiCheckbox-root": {
+                //   padding: "0px",
+                // },
+              }
+            }
             disablePadding
             aria-disabled
             key={member._id}
             secondaryAction={
               <Checkbox
                 sx={{
-                  // border: "2px solid red",
-                  // paddingRight: "18px",
+                  padding: "0",
+                  marginRight: "0px",
                   "&.MuiCheckbox-root": {
                     color: "#ADB5BD",
                   },
+
                   "&.Mui-checked": {
-                    color: "#F1B740",
+                    color: "#1976d2",
                   },
                 }}
                 disableRipple
