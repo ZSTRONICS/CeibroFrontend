@@ -78,11 +78,11 @@ const Topbar = (props: any) => {
         >
           {/* {!isTabletOrMobile && */}
 
-          <div className={classes.searchInputWraper}>
+          {/* <div className={classes.searchInputWraper}>
             {!window?.location?.pathname?.includes(`chat`) && (
               <TopBarSearch onChange={(e: any) => {}} />
             )}
-          </div>
+          </div> */}
 
           {/*  )} */}
           {/* {isTabletOrMobile && ( */}

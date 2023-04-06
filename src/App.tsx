@@ -285,6 +285,7 @@ const App: React.FC<MyApp> = () => {
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
+        console.log('event received',eventType, payload);
         switch (eventType) {
           case RECEIVE_MESSAGE:
             {
