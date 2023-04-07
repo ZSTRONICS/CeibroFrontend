@@ -39,20 +39,20 @@ const ChatList = () => {
       })
     );
 
-    // dispatch(
-    //   getRoomMedia({
-    //     other: roomId,
-    //   })
-    // );
-    // dispatch(
-    //   getPinnedMessages({
-    //     other: roomId,
-    //   })
-    // );
-    // const payload = {
-    //   other: roomId,
-    // };
-    // dispatch(getRoomQuestioniars(payload));
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
 
     dispatch(setSelectedChat({ other: roomId }));
   };

@@ -17,7 +17,7 @@ import {
 
 // socket
 import { socket } from "services/socket.services";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 // material
 import { CssBaseline } from "@mui/material";
@@ -76,13 +76,15 @@ import {
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 import { USER_CONFIG } from "config/user.config";
 import { getMyAllInvites, getMyConnections, getMyConnectionsCount, getMyInvitesCount } from "redux/action/user.action";
+import { error } from "console";
 
 interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-
+  let sock: Socket;
+  let intervalId: NodeJS.Timer;
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
     (store: RootState) => store.project.drawerOpen
@@ -190,16 +192,19 @@ const App: React.FC<MyApp> = () => {
       // dispatch(taskActions.openTaskDrawer())
       if (socket.getSocket() !== null) {
         return;
+      } else {
+        try {
+          if (!socket.isSocketConnected()) {
+            socket.getSocket().connect()
+          }
+        } catch (e) {
+        }
       }
 
       const tokens = localStorage.getItem("tokens") || "{}";
       const myToken = JSON.parse(tokens)?.access?.token;
 
-      let sock = io(SERVER_URL, {
-        reconnectionDelayMax: 3000,
-        //timeout: 4000,
-        // multiplex: false,
-        // forceNew: true,
+      sock = io(SERVER_URL, {
         auth: {
           token: myToken,
         },
@@ -209,28 +214,32 @@ const App: React.FC<MyApp> = () => {
       sock.on("connect", () => {
         console.log("Connected to server");
         socket.setSocket(sock);
+        clearInterval(intervalId);
       });
 
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
-        sock.connect();
+        intervalId = setInterval(() => {
+          if (socket.getSocket() != null) {
+            sock.connect();
+          }
+        }, 1000)
+
       });
       // Listen for reconnect event
       sock.on("reconnect", (attemptNumber: number) => {
         console.log(`Reconnected to server after ${attemptNumber} attempts`);
+        sock.connect();
       });
 
       sock.on("connect_error", (err) => {
-        console.log(`Socket Connection Error`);
-        const tokens = localStorage.getItem("tokens") || "{}";
-        const newToken = JSON.parse(tokens)?.access?.token;
-        console.error("Socket failed to connect ", err);
-
-        sock.auth = {
-          token: newToken,
-        };
-        sock.connect();
+        clearInterval(intervalId);
+        intervalId = setInterval(() => {
+          if (socket.getSocket() != null) {
+            sock.connect();
+          }
+        }, 1000)
       });
 
       sock.on("token_invalid", () => {
