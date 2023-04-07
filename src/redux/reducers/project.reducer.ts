@@ -576,7 +576,7 @@ const NavigationReducer = (
     case requestSuccess(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID): {
       return {
         ...state,
-        getAllProjectRoles: action.payload.result,
+        getAllProjectRoles: [...action.payload.result]
       };
     }
 

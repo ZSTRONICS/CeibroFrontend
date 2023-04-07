@@ -33,7 +33,7 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
       canEdit = false;
     }
   }
-  
+
   if (canDelete === true && userRole.admin === false) {
     if (role.admin === true) {
       canDelete = false;
@@ -98,40 +98,40 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
       props.onDelete();
     });
   };
-  const showDropdown = canEdit===false && canDelete===false
+  const showDropdown = canEdit === false && canDelete === false
 
-  return (<>{ showDropdown===false &&  <div className="dropdown">
-      <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
-        <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
-      </IconButton>
-      {show && (
-        <OutsideClickHandler onOutsideClick={handleToggle}>
-          <div className={`dropdown-content ${classes.dropdownContent}`}>
-            {canEdit === true && (
-              <div onClick={handleEdit} className={classes.btnContainer}>
-                Edit
+  return (<>{showDropdown === false && <div className="dropdown">
+    <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
+      <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
+    </IconButton>
+    {show && (
+      <OutsideClickHandler onOutsideClick={handleToggle}>
+        <div className={`dropdown-content ${classes.dropdownContent}`}>
+          {canEdit === true && (
+            <div onClick={handleEdit} className={classes.btnContainer}>
+              Edit
+            </div>
+          )}
+
+          {canDelete === true && (
+            <>
+              {" "}
+              {canEdit === true && <hr className={classes.break} />}
+              <div
+                onClick={handleDelete}
+                className={classes.btnContainer}
+                style={{ color: "#FA0808" }}
+              >
+                Delete
               </div>
-            )}
-
-            {canDelete === true && (
-              <>
-                {" "}
-                {canEdit === true && <hr className={classes.break} />}
-                <div
-                  onClick={handleDelete}
-                  className={classes.btnContainer}
-                  style={{ color: "#FA0808" }}
-                >
-                  Delete
-                </div>
-              </>
-            )}
-          </div>
-        </OutsideClickHandler>
-      )}
-    </div>}
+            </>
+          )}
+        </div>
+      </OutsideClickHandler>
+    )}
+  </div>}
   </>
-    
+
   );
 };
 

@@ -37,7 +37,7 @@ import projectActions, {
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import Clear from "@mui/icons-material/Clear";
-interface AddRoleProps {}
+interface AddRoleProps { }
 
 const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
@@ -225,6 +225,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   }, [roleDrawer, selectedRole._id]);
 
   useEffect(() => {
+    console.log("RoleDrawer value changed", roleDrawer);
+
     dispatch(
       getAvailableProjectMembers({
         other: selectedProject,
@@ -299,14 +301,14 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
               tagValue.map((option, index) => {
                 return (
                   <Chip
-                  sx={{
-                    height: "25px",
-                    fontSize:12,fontWeight:500,
-                    backgroundColor: "#F1B740",
-                    color: colors.white,
-                    borderRadius: "4px",
-                  }}
-                  deleteIcon={<Clear style={{ color: '#f1b740', fontSize:'15px', borderRadius:'50%', background:'white' }}/>}
+                    sx={{
+                      height: "25px",
+                      fontSize: 12, fontWeight: 500,
+                      backgroundColor: "#F1B740",
+                      color: colors.white,
+                      borderRadius: "4px",
+                    }}
+                    deleteIcon={<Clear style={{ color: '#f1b740', fontSize: '15px', borderRadius: '50%', background: 'white' }} />}
                     label={option?.label}
                     {...getTagProps({ index })}
                   />
@@ -324,13 +326,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       border: "none",
                     },
                     "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                      {
-                        border: "none",
-                      },
+                    {
+                      border: "none",
+                    },
                     "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                      {
-                        border: "none",
-                      },
+                    {
+                      border: "none",
+                    },
                     // "@media(hover) .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                     //   {
                     //     border: "none",
