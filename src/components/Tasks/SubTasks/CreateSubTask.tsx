@@ -198,10 +198,12 @@ export default function CreateSubTask({
       <>
         {Array.from(selectedAttachments.files).map((file: any, index: any) => {
           return (
-            <div
+            <span
               style={{ textTransform: "capitalize" }}
               key={file.name}
-            >{`${file.name}\n `}</div>
+            >{`${file.name}`}
+              <br />
+            </span>
           );
         })}
       </>

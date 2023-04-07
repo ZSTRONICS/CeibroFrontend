@@ -58,11 +58,11 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       success: () => {
         setName("")
         toast.success("Group created successfully");
-        dispatch(projectActions.closeProjectDocuments());
         // dispatch(getAllDocuments({ other: { selectedProject } }));
       },
       finallyAction: () => {
         setLoading(false);
+        dispatch(projectActions.closeProjectDocuments());
       },
       other: selectedProject,
     };
