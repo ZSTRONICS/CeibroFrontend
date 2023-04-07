@@ -100,7 +100,7 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
                 }
 
                 return (
-                  <GroupMemberNameTag sx={{textTransform: 'capitalize'}} key={member._id}>
+                  <GroupMemberNameTag sx={{ textTransform: 'capitalize' }} key={member._id}>
                     {index === group.members.length - 1
                       ? memberName
                       : `${memberName}, `}

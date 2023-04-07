@@ -4,12 +4,14 @@ import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
 import { ProjectSubHeadingTag } from "components/CustomTags";
 import { RootState } from "redux/reducers";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Member,
   ProjectRolesInterface,
   roleTemplate,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { useEffect } from "react";
+import { PROJECT_APIS } from "redux/action/project.action";
 
 const ProjectMembers = () => {
   const classes = useStyles();
@@ -17,6 +19,15 @@ const ProjectMembers = () => {
     (state: RootState) => state.project
   );
   const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
+  const {
+    selectedProject,
+  } = useSelector((state: RootState) => state.project);
+
+  useEffect(() => {
+    dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+  }, []);
 
   const getMyRole = () => {
     let rolePermissionLocal =
@@ -45,7 +56,7 @@ const ProjectMembers = () => {
           >
             Bulk edit
           </Button> */}
-            <ProjectSubHeadingTag>Add New Members</ProjectSubHeadingTag>
+            <ProjectSubHeadingTag>Add Member</ProjectSubHeadingTag>
             <CreateMember />
           </Grid>
         )}

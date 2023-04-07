@@ -23,10 +23,6 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   const [canEdit, setCanEdit] = useState(props.userRole.rolePermission.edit);
   const [canDelete, setCanDelete] = useState(props.userRole.rolePermission.delete);
 
-  
-  console.log(canEdit, canDelete);
-
-
   const userRole = props.userRole;
   const role = props.role;
 
@@ -48,10 +44,6 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
     }
   }
 
-
-  
-  console.log(canEdit, canDelete);
-  
   const handleToggle = (e: any) => {
     e.stopPropagation();
     setShow((prev) => !prev);

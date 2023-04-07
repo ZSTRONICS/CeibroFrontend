@@ -26,7 +26,11 @@ export const  InitOneSignal = async (userId: string) => {
   await OneSignal.setExternalUserId(userId)
 
   OneSignal.on('notificationDisplay', (event) => {
-    console.log('OneSignal notification displayed:', event);
+    console.log('OneSignal notificationDisplay :', event);
+  });
+
+  OneSignal.on('popoverShown', (event) => {
+    console.log('OneSignal popoverShown :', event);
   });
 }
 

@@ -39,7 +39,7 @@ import { RootState } from "redux/reducers";
 import Clear from "@mui/icons-material/Clear";
 interface AddRoleProps { }
 
-const AddRole: React.FC<AddRoleProps> = (props: any) => {
+const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
   // const roles = ["create", "edit", "delete"];
 
@@ -47,7 +47,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const [isMember, setIsMember] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { roleDrawer, selectedProject, selectedRole, userPermissions } =
+  const { roleDrawer, selectedProject, selectedRole } =
     useSelector((state: RootState) => state.project);
 
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
@@ -66,6 +66,10 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
     Object.values(memberPermissionLocal).some((p) => p);
 
   const handleClose = () => {
+    setIsRole(false);
+    setIsMember(false);
+    setAvailableUsers([]);
+    setSelectedRoleMember([]);
     dispatch(projectActions.closeProjectRole());
   };
 
@@ -103,6 +107,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const checkKey = (arr: any[], key: any) => {
     return arr.some((el: any) => el.hasOwnProperty(key));
   };
+
   let memberIds: string[] = [];
   const checkKeyInMember = checkKey(selectedRole.members, "_id");
   if (checkKeyInMember === true) {
@@ -122,8 +127,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
       success: () => {
         toast.success("Role Updated successfully");
-        dispatch(projectActions.closeProjectRole());
         dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+        handleClose();
       },
       finallyAction: () => {
         setLoading(false);
@@ -144,10 +149,36 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const handleChangeRole = (e: any) => {
     setIsRole(e.target?.checked);
+    if (e.target?.checked === false) {
+      setRolePermissionLocal({
+        create: false,
+        edit: false,
+        delete: false
+      });
+      dispatch(
+        projectActions.setSelectedRole({
+          ...selectedRole,
+          rolePermission: rolePermissionLocal,
+        })
+      );
+    }
   };
 
   const handleChangeMember = (e: any) => {
     setIsMember(e.target?.checked);
+    if (e.target?.checked === false) {
+      setmemberPermissionLocal({
+        create: false,
+        edit: false,
+        delete: false
+      });
+      dispatch(
+        projectActions.setSelectedRole({
+          ...selectedRole,
+          rolePermission: rolePermissionLocal,
+        })
+      );
+    }
   };
 
   const handleAdminChange = (e: any) => {
@@ -156,14 +187,30 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
       setmemberPermissionLocal({ create: true, edit: true, delete: true });
     } else {
       if (e.target?.checked === false) {
-        setRolePermissionLocal(selectedRole.rolePermission);
-        setmemberPermissionLocal(selectedRole.memberPermission);
+
+        setmemberPermissionLocal({
+          create: false,
+          edit: false,
+          delete: false
+        });
+
+        setRolePermissionLocal({
+          create: false,
+          edit: false,
+          delete: false
+        });
+
+        setIsMember(false);
+        setIsRole(false);
       }
     }
+
     dispatch(
       projectActions.setSelectedRole({
         ...selectedRole,
         admin: e.target?.checked,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       })
     );
   };
@@ -225,8 +272,6 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   }, [roleDrawer, selectedRole._id]);
 
   useEffect(() => {
-    console.log("RoleDrawer value changed", roleDrawer);
-
     dispatch(
       getAvailableProjectMembers({
         other: selectedProject,
@@ -245,9 +290,22 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   useEffect(() => {
     if (selectedRole._id !== "") {
-      setIsRole(true);
-      setIsMember(true);
+      if (selectedRole.rolePermission.create === true ||
+        selectedRole.rolePermission.edit === true ||
+        selectedRole.rolePermission.delete === true
+      ) {
+        setIsRole(true);
 
+      }
+
+      if (selectedRole.memberPermission.create === true ||
+        selectedRole.memberPermission.edit === true ||
+        selectedRole.memberPermission.delete === true
+      ) {
+        setIsMember(true);
+      }
+      setmemberPermissionLocal(selectedRole.memberPermission);
+      setRolePermissionLocal(selectedRole.rolePermission);
       const availableMembers =
         selectedRole.members.map((user: any) => ({
           label: `${user.firstName} ${user.surName}`,
@@ -258,7 +316,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
         selectedRole._id !== "" ? availableMembers : availableUsers
       );
     }
-  }, [selectedRole._id]);
+  }, [roleDrawer]);
 
   const uniqueMember = getUniqueObjectsFromArr([
     ...selectedRolMember,
@@ -608,7 +666,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   );
 };
 
-export default AddRole;
+export default RoleDrawer;
 const MuiCheckbox = styled(Checkbox)`
   color: #adb5bd;
 `;

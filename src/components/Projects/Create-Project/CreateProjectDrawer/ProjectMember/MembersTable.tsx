@@ -59,14 +59,11 @@ const MembersTable = () => {
   }, []);
 
   const handleEditMember = (member: ProjectMemberInterface) => {
-    console.log("Handle Edit Member Clicked");
-    
     dispatch(projectActions.setSelectedMember(member));
     dispatch(projectActions.openProjectMemberDrawer());
   };
 
   const handleDelete = (id: any) => {
-    console.log("Handle Delete Member Clicked");
     confirm({
       title: (
         <CustomStack gap={1}>

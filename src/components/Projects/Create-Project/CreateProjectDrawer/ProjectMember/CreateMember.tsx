@@ -44,15 +44,16 @@ const MemberDialog = () => {
     memberDrawer,
     selectedMember,
   } = useSelector((state: RootState) => state.project);
-  
+
   const dispatch = useDispatch();
   const [groups, setGroups] = useState();
   const [roles, setRoles] = useState();
   const [selectGroups, setSelectGroups] = useState<any>();
   const [selectRoles, setSelectRoles] = useState<any>();
+  const [selectedUser, setSelectedUser] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedUser, setSelectedUser] = useState<any[]>([]);
+
 
   const classes = useStyle();
   const isDiabled = !loading ? false : true;
@@ -63,6 +64,8 @@ const MemberDialog = () => {
   const handleClose = () => {
     dispatch(projectActions.closeProjectMemberDrawer());
     dispatch(projectActions.setSelectedMember(memberTemplate));
+    setSelectGroups("");
+    setSelectRoles("");
   };
 
   useEffect(() => {
@@ -77,8 +80,7 @@ const MemberDialog = () => {
           }));
           setAvailableUsers(availableMembers);
         },
-      })
-    );
+      }));
     dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     dispatch(getGroup({ other: selectedProject }));
   }, [memberDrawer]);
@@ -133,8 +135,8 @@ const MemberDialog = () => {
   //   checkGroupId = selectedMember?.group?.hasOwnProperty('_id')
   //   setDoOnce(false)
   // }
-  
-  const handleSubmit = (e:any) => {
+
+  const handleSubmit = (e: any) => {
     if (selectedMember._id) {
       handleUpdate(e);
     } else {
@@ -212,11 +214,11 @@ const MemberDialog = () => {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-           <div className={classes.body}>
-            {selectedMember._id!==""?
-            <Grid container gap={0.8}>
-              <Grid item >
-              {selectedMember.user.profilePic ? (
+          <div className={classes.body}>
+            {selectedMember._id !== "" ?
+              <Grid container gap={0.8}>
+                <Grid item >
+                  {selectedMember.user.profilePic ? (
                     <Avatar
                       alt="avater"
                       src={selectedMember.user?.profilePic}
@@ -231,86 +233,86 @@ const MemberDialog = () => {
                       {letters}
                     </Avatar>
                   )}
-              </Grid>
-                <Grid item>
-                    <CustomStack gap={0.6}>
-                      <EditMemberNameTag>
-                      {`${selectedMember.user.firstName} ${selectedMember.user.surName}`}
-                      </EditMemberNameTag>
-                      <EditMemberLabelTag>
-                        {selectedMember.user.companyName}
-                      </EditMemberLabelTag>
-                    </CustomStack>
-                    <CustomStack gap={0.6}>
-                      <assets.EmailIcon sx={{color:'#7D7E80', fontSize:'16px'}}/>
-                  {  selectedMember.user.workEmail? 
-                  <EditMemberNameTag sx={{fontSize:12, fontWeight:500}}>
-                      {`${selectedMember.user.workEmail}`}
-                      </EditMemberNameTag>:
-                      <EditMemberLabelTag>N/A</EditMemberLabelTag>
-                      }
-                    </CustomStack>
-
-                    <CustomStack gap={0.6}>
-                    <assets.CallIcon sx={{color:'#7D7E80',fontSize:'16px'}}/>
-                    {selectedMember.user.companyPhone? <EditMemberNameTag sx={{fontSize:12, fontWeight:500}}>
-                      {`${selectedMember.user.companyPhone}`}
-                      </EditMemberNameTag>:
-                      <EditMemberLabelTag>N/A</EditMemberLabelTag>}
-                    </CustomStack>
                 </Grid>
-            <Divider sx={{width:"100%", py:'5px'}}/>
-            </Grid>
-            :  
-            <InputHOC title="Member">
-                  <Autocomplete
-                  sx={{width:'100%',marginTop:'5px'}}
+                <Grid item>
+                  <CustomStack gap={0.6}>
+                    <EditMemberNameTag>
+                      {`${selectedMember.user.firstName} ${selectedMember.user.surName}`}
+                    </EditMemberNameTag>
+                    <EditMemberLabelTag>
+                      {selectedMember.user.companyName}
+                    </EditMemberLabelTag>
+                  </CustomStack>
+                  <CustomStack gap={0.6}>
+                    <assets.EmailIcon sx={{ color: '#7D7E80', fontSize: '16px' }} />
+                    {selectedMember.user.workEmail ?
+                      <EditMemberNameTag sx={{ fontSize: 12, fontWeight: 500 }}>
+                        {`${selectedMember.user.workEmail}`}
+                      </EditMemberNameTag> :
+                      <EditMemberLabelTag>N/A</EditMemberLabelTag>
+                    }
+                  </CustomStack>
+
+                  <CustomStack gap={0.6}>
+                    <assets.CallIcon sx={{ color: '#7D7E80', fontSize: '16px' }} />
+                    {selectedMember.user.companyPhone ? <EditMemberNameTag sx={{ fontSize: 12, fontWeight: 500 }}>
+                      {`${selectedMember.user.companyPhone}`}
+                    </EditMemberNameTag> :
+                      <EditMemberLabelTag>N/A</EditMemberLabelTag>}
+                  </CustomStack>
+                </Grid>
+                <Divider sx={{ width: "100%", py: '5px' }} />
+              </Grid>
+              :
+              <InputHOC title="Member">
+                <Autocomplete
+                  sx={{ width: '100%', marginTop: '5px' }}
                   multiple={true}
                   id="project_members1"
                   filterSelectedOptions
-                disableCloseOnSelect
-                limitTags={1}
-                options={availableUsers}
-                size="small"
-                onChange={(event, value) => {setSelectedUser([...value])}}
-                renderTags={(tagValue, getTagProps) =>
-                  tagValue.map((option, index) => {
-                    return (
-                      <Chip
+                  disableCloseOnSelect
+                  limitTags={1}
+                  options={availableUsers}
+                  size="small"
+                  onChange={(event, value) => { setSelectedUser([...value]) }}
+                  renderTags={(tagValue, getTagProps) =>
+                    tagValue.map((option, index) => {
+                      return (
+                        <Chip
+                          sx={{
+                            height: "25px",
+                            fontSize: 12, fontWeight: 500,
+                            backgroundColor: "#F1B740",
+                            color: colors.white,
+                            borderRadius: "4px",
+                          }}
+                          deleteIcon={<Clear style={{ color: '#f1b740', fontSize: '15px', borderRadius: '50%', background: 'white' }} />}
+                          label={option?.label}
+                          {...getTagProps({ index })}
+                        />
+                      );
+                    })
+                  }
+                  renderInput={(params) => (
+                    <TextField
                       sx={{
-                        height: "25px",
-                        fontSize:12,fontWeight:500,
-                        backgroundColor: "#F1B740",
-                        color: colors.white,
-                        borderRadius: "4px",
+                        "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                          border: "none",
+                          padding: "0px",
+                        },
                       }}
-                      deleteIcon={<Clear style={{ color: '#f1b740', fontSize:'15px', borderRadius:'50%', background:'white' }}/>}
-                        label={option?.label}
-                        {...getTagProps({ index })}
-                      />
-                    );
-                  })
-                }
-                renderInput={(params) => (
-                  <TextField
-                    sx={{
-                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                        padding: "0px",
-                      },
-                    }}
-                    {...params}
-                    name="members"
-                    placeholder="Select member(s)"
-                  />)}
-                  />
-                </InputHOC>
-          }
-          
+                      {...params}
+                      name="members"
+                      placeholder="Select member(s)"
+                    />)}
+                />
+              </InputHOC>
+            }
+
 
             <div
               className={classes.meta}
-              style={{ zIndex: 10, position: "relative", paddingTop:'10px' }}
+              style={{ zIndex: 10, position: "relative", paddingTop: '10px' }}
             >
               <SelectDropdown
                 title="Role"
@@ -336,7 +338,7 @@ const MemberDialog = () => {
         <DialogActions
           style={{
             paddingRight: "25px",
-            paddingBottom:15
+            paddingBottom: 15
           }}
         >
           <Button onClick={handleClose} color="primary">
@@ -346,7 +348,7 @@ const MemberDialog = () => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={(selectedUser.length>0||selectedMember._id !== "")?false:true}>
+            disabled={(selectedUser.length > 0 || selectedMember._id !== "") ? false : true}>
             {selectedMember._id !== "" ? "Update" : "Add"}
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />

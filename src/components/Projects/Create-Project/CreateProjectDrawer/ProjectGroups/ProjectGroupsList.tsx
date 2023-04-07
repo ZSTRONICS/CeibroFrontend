@@ -61,6 +61,7 @@ const ProjectGroupsList = () => {
           }
           return (
             <GroupChip
+              key={group._id}
               group={group}
               handleClick={() => handleGroupClick(group)}
               handleDelete={() => handleGroupDelete(group?._id)}

@@ -276,7 +276,7 @@ const NavigationReducer = (
       }
 
       if (String(state.projectOverview._id) === String(project._id)) {
-        
+
         state.projectOverview = project
       }
 
@@ -434,6 +434,19 @@ const NavigationReducer = (
     }
 
     case CLOSE_ROLE_DRAWER: {
+      state.selectedRole = {
+        _id: '',
+        admin: false,
+        createdAt: "",
+        updatedAt: '',
+        creator: "",
+        isDefaultRole: false,
+        memberPermission: { create: false, delete: false, edit: false },
+        rolePermission: { create: false, delete: false, edit: false },
+        members: [],
+        name: "",
+        project: "",
+      };
       return {
         ...state,
         roleDrawer: false,
@@ -614,8 +627,7 @@ const NavigationReducer = (
     }
 
     case PROJECT_CONFIG.ROLE_UPDATED: {
-      let updatedRole = action.payload;
-
+      let updatedRole = action.payload;  
       if (String(state.projectOverview._id) !== String(updatedRole.project)) {
         return {
           ...state,
@@ -638,7 +650,7 @@ const NavigationReducer = (
       }
     }
     case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-    case PROJECT_CONFIG.PROJECT_GROUP_CREATED: 
+    case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
       let newGroup = action.payload;
       if (String(state.projectOverview._id) !== String(newGroup.project)) {
         return {
@@ -665,7 +677,7 @@ const NavigationReducer = (
           groupList: [...state.groupList],
         }
       }
-    
+
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
       let members = action.payload;
@@ -684,12 +696,12 @@ const NavigationReducer = (
       }
 
       if (newMembers.length > 0) {
-        state.memberList = [ ...state.memberList, ...newMembers];
+        state.memberList = [...state.memberList, ...newMembers];
       }
-        return {
-          ...state,
-          memberList: [...state.memberList],
-        }
+      return {
+        ...state,
+        memberList: [...state.memberList],
+      }
     }
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED: {
