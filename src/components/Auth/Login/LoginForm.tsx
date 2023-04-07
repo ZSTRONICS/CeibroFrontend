@@ -105,7 +105,6 @@ const LoginForm: React.FC<Props> = (props) => {
           setVerifyError(false);
           setIncorrectAuth(false);
           setIncorrectEmail(false)
-
         }, 5000);
       },
       showErrorToast: false,
@@ -156,6 +155,7 @@ const LoginForm: React.FC<Props> = (props) => {
           }}
           validationSchema={signinSchema}
           onSubmit={handleSubmit}
+
         >
           {({
             errors,
@@ -165,7 +165,13 @@ const LoginForm: React.FC<Props> = (props) => {
             handleSubmit,
             values,
           }) => (
-            <Form onSubmit={handleSubmit}>
+            <Form
+              onSubmit={handleSubmit}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleSubmit();
+                }
+              }}>
 
               {/* {tokenLoading && (
                 <Alert severity="success">
