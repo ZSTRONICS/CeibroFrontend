@@ -101,7 +101,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
               <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName},`}</span>
+              >{`${item.firstName} ${item.surName}`}
+                <br />
+              </span>
             );
           }
         })}
@@ -201,20 +203,21 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                     <RollOverMenu
                       edit="Access"
                       showDelBtn={false}
-                      handleEdit={(e: any) => openAccessModal(e, row)} handleDelete={undefined}                    />
+                      handleEdit={(e: any) => openAccessModal(e, row)} handleDelete={undefined} />
                   </TableCell>
                 </TableRow>
               );
             })}
+
             {folderList.files.length > 0 ? (
               folderList.files.map((file: FileInterface) => {
                 const DateString: string = momentdeDateFormat(file.createdAt);
                 return (
                   <TableRow key={file._id} className={classes.rowContainer}>
                     <TableCell scope="row">
-                    <a href={file.fileUrl} download style={{ textDecoration: 'none',cursor:'pointer'}}>
-                       <DocumentNameTag >{file.fileName}</DocumentNameTag>
-                       </a>
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor: 'pointer' }}>
+                        <DocumentNameTag >{file.fileName}</DocumentNameTag>
+                      </a>
                     </TableCell>
                     <TableCell
                       scope="row"
@@ -266,8 +269,8 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                       <RollOverMenu
                         edit="Access"
                         showDelBtn={false}
-                        handleEdit={(e: any) => openAccessModal(e, file)} 
-                        handleDelete={undefined}   
+                        handleEdit={(e: any) => openAccessModal(e, file)}
+                        handleDelete={undefined}
                       />
                     </TableCell>
                   </TableRow>

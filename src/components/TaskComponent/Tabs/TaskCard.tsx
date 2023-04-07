@@ -110,13 +110,13 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         </CustomStack>
       ),
       description: (
-        <ConfirmDescriptionTag sx={{pt: 2}}>
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
           Are you sure you want to delete this task?
         </ConfirmDescriptionTag>
       ),
       titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
       confirmationText: "Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
+      confirmationButtonProps: { sx: { textTransform: 'capitalize', padding: '4px 15px', color: '#FA0808', borderColor: '#FA0808', marginRight: '10px' }, variant: "outlined" },
       cancellationText: (
         <CButton
           variant="contained"
@@ -225,11 +225,11 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                   aria-describedby={id}
                   onClick={handleEdit}
                   divider={deleteOnlyCreator}
-                  // sx={{
-                  //   "&.MuiMenuItem-root": {
-                  //     padding: "4px 10px",
-                  //   },
-                  // }}
+                // sx={{
+                //   "&.MuiMenuItem-root": {
+                //     padding: "4px 10px",
+                //   },
+                // }}
                 >
                   <CustomButton
                     variant="outlined"
@@ -240,17 +240,17 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
                   </CustomButton>
                 </MenuItem>
                 {deleteOnlyCreator &&
-                  (task.state === State.Draft ||  task.totalSubTaskCount === 0)&&(
+                  (task.state === State.Draft || task.totalSubTaskCount === 0) && (
                     <MenuItem
                       disableGutters
                       disableRipple
                       onClick={handleDeleteTask}
                       aria-describedby={id}
-                      // sx={{
-                      //   "&.MuiMenuItem-root": {
-                      //     padding: "4px 10px",
-                      //   },
-                      // }}
+                    // sx={{
+                    //   "&.MuiMenuItem-root": {
+                    //     padding: "4px 10px",
+                    //   },
+                    // }}
                     >
                       <CustomButton
                         variant="outlined"
@@ -282,17 +282,19 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
         {task.assignedTo.map((item: UserInfo, index) => {
           if (index === task.assignedTo.length - 1) {
             return (
-              <div
+              <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}`}</div>
+              >{`${item.firstName} ${item.surName}`}</span>
             );
           } else {
             return (
-              <div
+              <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}, `}</div>
+              >{`${item.firstName} ${item.surName}`}
+                <br />
+              </span>
             );
           }
         })}

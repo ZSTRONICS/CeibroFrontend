@@ -49,7 +49,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const classes = useStyles();
   const confirm = useConfirm();
   const { user } = useSelector((store: RootState) => store.auth);
-  const [openCloseAttachmentDrawer,setOpenCloseAttachmentDrawer]= useState(false)
+  const [openCloseAttachmentDrawer, setOpenCloseAttachmentDrawer] = useState(false)
   const {
     _id,
     dueDate,
@@ -103,9 +103,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
     setSubTask((prev: any) => !prev);
   };
   const openAttachmentDrawer = () => {
-    setOpenCloseAttachmentDrawer((prev:boolean)=> !prev)
+    setOpenCloseAttachmentDrawer((prev: boolean) => !prev)
   }
-  
+
   const showRejectedBy = (rejectedBy: Member[], getColor: string) => {
     return (
       <>
@@ -140,7 +140,9 @@ function SubTaskCard({ subTaskDetail }: Props) {
               <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}, `}</span>
+              >{`${item.firstName} ${item.surName}`}
+                <br />
+              </span>
             );
           }
         })}
@@ -312,42 +314,42 @@ function SubTaskCard({ subTaskDetail }: Props) {
   const handleDeleteSubTask = (e: any) => {
     e.stopPropagation();
     confirm({
-      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<ConfirmDescriptionTag sx={{ pt:2}}>Are you sure you want to delete this subtask?</ConfirmDescriptionTag>,
-      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
+      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon /> Confirmation</CustomStack>,
+      description: <ConfirmDescriptionTag sx={{ pt: 2 }}>Are you sure you want to delete this subtask?</ConfirmDescriptionTag>,
+      titleProps: { color: "red", borderBottom: '1px solid #D3D4D9' },
+      confirmationText: "Delete",
+      confirmationButtonProps: { sx: { textTransform: 'capitalize', padding: '4px 15px', color: '#FA0808', borderColor: '#FA0808', marginRight: '10px' }, variant: "outlined" },
       cancellationText: <CButton
-      variant="contained"
-      elevation={0}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
-      
+        variant="contained"
+        elevation={0}
+        styles={{
+          color: "#605C5C",
+          backgroundColor: "#ECF0F1",
+          fontSize: 12,
+          fontWeight: "bold",
+        }}
+        label={"Cancel"}
+      />,
+
     }).then(() => {
       dispatch(
-            deleteSubtask({
-              other: subTaskDetail._id,
-              success: (res: any) => {
-                if (res.status === 200) {
-                  dispatch(
-                    getAllSubTaskOfTask({
-                      other: {
-                        taskId: taskId,
-                      },
-                    })
-                  );
-                  dispatch(getAllSubTaskList());
-                }
-                toast.success("Subtask deleted");
-              },
-            })
-          );
+        deleteSubtask({
+          other: subTaskDetail._id,
+          success: (res: any) => {
+            if (res.status === 200) {
+              dispatch(
+                getAllSubTaskOfTask({
+                  other: {
+                    taskId: taskId,
+                  },
+                })
+              );
+              dispatch(getAllSubTaskList());
+            }
+            toast.success("Subtask deleted");
+          },
+        })
+      );
     });
   };
   const handleSubTaskStateChange = (event: any, state: string) => {
@@ -539,10 +541,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           strokeLinecap="round"
                         />
                       </svg> */}
-                      <IconButton onClick={openAttachmentDrawer} sx={{padding:'0'}}>
-                  <AttachmentIcon />
-                </IconButton>
-                      <Typography sx={{fontSize:'12px', fontWeight:'500'}}>{attachmentsCount>100?"99+":attachmentsCount}</Typography>
+                      <IconButton onClick={openAttachmentDrawer} sx={{ padding: '0' }}>
+                        <AttachmentIcon />
+                      </IconButton>
+                      <Typography sx={{ fontSize: '12px', fontWeight: '500' }}>{attachmentsCount > 100 ? "99+" : attachmentsCount}</Typography>
                     </CustomStack>
 
                     <CustomStack columnGap={1} sx={{ width: "49px" }}>
@@ -558,7 +560,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                           fill="#FA0808"
                         />
                       </svg>
-                       <Typography sx={{fontSize:'12px', fontWeight:'500', color:'#FA0808'}}>{unSeenCommentsCount>100?'99+':unSeenCommentsCount}</Typography>
+                      <Typography sx={{ fontSize: '12px', fontWeight: '500', color: '#FA0808' }}>{unSeenCommentsCount > 100 ? '99+' : unSeenCommentsCount}</Typography>
                     </CustomStack>
                     {taskRights && (
                       <CBox display="flex">
@@ -590,10 +592,10 @@ function SubTaskCard({ subTaskDetail }: Props) {
                   }}
                   display="flex"
 
-                  // margin="auto"
-                  // padding="50px"
-                  // justifyContent="flex-end"
-                  //  width="60%"
+                // margin="auto"
+                // padding="50px"
+                // justifyContent="flex-end"
+                //  width="60%"
                 >
                   {assignToMemberIds.includes(user._id) &&
                     myState?.userState === SubtaskState.Assigned && (
@@ -766,7 +768,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
       </CBox>
 
       <OpenViewDocsDrawer
-      opencdrawer={openCloseAttachmentDrawer}
+        opencdrawer={openCloseAttachmentDrawer}
         moduleId={_id}
         moduleName="SubTask"
         handleAttachmentDrawer={openAttachmentDrawer}

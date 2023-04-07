@@ -107,7 +107,9 @@ const RolesTable = () => {
               <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}, `}</span>
+              >{`${item.firstName} ${item.surName}`}
+              <br />
+              </span>
             );
           }
         })}

@@ -103,7 +103,9 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
               <span
                 style={{ textTransform: "capitalize" }}
                 key={item._id}
-              >{`${item.firstName} ${item.surName}\n`}</span>
+              >{`${item.firstName} ${item.surName}`}
+                <br />
+              </span>
             );
           }
         })}
@@ -127,7 +129,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                 Date modified
               </TableCell>
               <TableCell className={`${classes.tableTitle}`} align="center">
-              Who can access
+                Who can access
               </TableCell>
               {/* <TableCell className={`${classes.tableTitle}`} align="right">
                 Who can access
@@ -137,24 +139,24 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           {!isDragActive && !loading && folderFiles.files?.length > 0 && (
             <TableBody>
               {folderFiles.files?.map((file: FileInterface) => {
-                 const DateString: string = momentdeDateFormat(file.updatedAt)
+                const DateString: string = momentdeDateFormat(file.updatedAt)
                 return (
                   <TableRow key={file._id}>
                     <TableCell
-                      onClick={() => {}}
+                      onClick={() => { }}
                       style={{ display: "flex" }}
                       component="th"
                       scope="row"
                     >
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor:'pointer',color:'black' }}>
+                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor: 'pointer', color: 'black' }}>
                         <Typography
-                        className={`${classes.fileName}`}
+                          className={`${classes.fileName}`}
                         // onClick={() =>handleFileClick(file.fileUrl, file.fileType)}
-                      >
-                        {file.fileName}
-                      </Typography>
+                        >
+                          {file.fileName}
+                        </Typography>
                       </a>
-                      
+
                     </TableCell>
                     <TableCell
                       component="th"
@@ -171,22 +173,22 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       align="left"
                       className={classes.modifyDate}
                     >
-                       {file.access.length > 0 ? (
-                    <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
-                      <AssignedTag>Member</AssignedTag>
-                      <CustomBadge
-                        overlap="circular"
-                        color="primary"
-                        badgeContent={
-                          <Tooltip title={AccessMemberList(file.access)}>
-                            <span>{file.access.length}</span>
-                          </Tooltip>
-                        }
-                      ></CustomBadge>
-                    </CustomStack>
-                  ) : (
-                    "Only you"
-                  )}
+                      {file.access.length > 0 ? (
+                        <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                          <AssignedTag>Member</AssignedTag>
+                          <CustomBadge
+                            overlap="circular"
+                            color="primary"
+                            badgeContent={
+                              <Tooltip title={AccessMemberList(file.access)}>
+                                <span>{file.access.length}</span>
+                              </Tooltip>
+                            }
+                          ></CustomBadge>
+                        </CustomStack>
+                      ) : (
+                        "Only you"
+                      )}
                     </TableCell>
                     {/* <TableCell
                       component="th"
@@ -261,7 +263,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
-    color:'black',
+    color: 'black',
     display: "flex",
     alignItems: "center",
     cursor: "pointer",

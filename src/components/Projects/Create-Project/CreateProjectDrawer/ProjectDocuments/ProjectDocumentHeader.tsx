@@ -45,9 +45,9 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   };
 
   useEffect(() => {
-    if(findDoc===""){
+    if (findDoc === "") {
       return
-    }else if(findDoc!=="") {
+    } else if (findDoc !== "") {
       dispatch(getAllDocuments({ other: { selectedProject, findDoc } }));
     }
   }, [findDoc]);
@@ -63,18 +63,18 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
     }
   }, [selectedFolder, findDoc]);
 
-  useEffect(()=>{
-    if( findDoc!==""){
+  useEffect(() => {
+    if (findDoc !== "") {
       return
     }
-    if(findDoc===""){
+    if (findDoc === "") {
       dispatch(
         getAllDocuments({
           other: { selectedProject },
         })
       );
     }
-  },[findDoc])
+  }, [findDoc])
 
   return (
     <>
@@ -98,8 +98,14 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
               orientation="vertical"
             />
             <InputBase
-            value={findDoc||""}
-            onChange={(e: any) => setFindDoc(e.target.value)}
+              onKeyPress={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  return false;
+                }
+              }}
+              value={findDoc || ""}
+              onChange={(e: any) => setFindDoc(e.target.value)}
               sx={{ ml: 1, flex: 1 }}
               placeholder="Find document"
               inputProps={{ "aria-label": "Find document" }}
@@ -184,7 +190,11 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
             moduleType={isFolder === true ? "Project" : "ProjectFolder"}
             moduleId={isFolder === true ? selectedProject : selectedFolder?._id}
             handleClose={(e: any, value: any): void => {
-              setSelectedAttachments(value);
+              setSelectedAttachments({
+                moduleId: "",
+                moduleName: "Project",
+                files: [],
+              });
               setIsAttachmentViewOpen((prev: boolean) => !prev);
             }}
           />

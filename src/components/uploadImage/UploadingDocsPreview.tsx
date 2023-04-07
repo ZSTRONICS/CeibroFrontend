@@ -139,6 +139,7 @@ function UploadingDocsPreview() {
                     <>
                       {
                         <ListItem
+                          key={item._id + 1}
                           divider
                           secondaryAction={
                             <>
@@ -158,7 +159,7 @@ function UploadingDocsPreview() {
                           }
                         >
                           <ListItemAvatar sx={{ minWidth: "40px" }}>
-                              <FileUploadIcon />
+                            <FileUploadIcon />
                           </ListItemAvatar>
                           <ListItemText
                             primaryTypographyProps={{

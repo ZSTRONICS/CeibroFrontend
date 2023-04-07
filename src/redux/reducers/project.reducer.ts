@@ -339,7 +339,7 @@ const NavigationReducer = (
     case SET_SELECTED_ROLE: {
       return {
         ...state,
-        selectedRole: action.payload,
+        selectedRole: { ...action.payload },
       };
     }
 
@@ -627,7 +627,7 @@ const NavigationReducer = (
     }
 
     case PROJECT_CONFIG.ROLE_UPDATED: {
-      let updatedRole = action.payload;  
+      let updatedRole = action.payload;
       if (String(state.projectOverview._id) !== String(updatedRole.project)) {
         return {
           ...state,

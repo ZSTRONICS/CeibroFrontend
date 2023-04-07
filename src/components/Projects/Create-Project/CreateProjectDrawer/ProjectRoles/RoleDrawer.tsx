@@ -66,10 +66,37 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
     Object.values(memberPermissionLocal).some((p) => p);
 
   const handleClose = () => {
-    setIsRole(false);
+    setmemberPermissionLocal({
+      create: false,
+      edit: false,
+      delete: false
+    });
+
+    setRolePermissionLocal({
+      create: false,
+      edit: false,
+      delete: false
+    });
+
     setIsMember(false);
+    setIsRole(false);
+
+    dispatch(projectActions.setSelectedRole({
+      ...selectedRole,
+      _id: '',
+      admin: false,
+      creator: "",
+      isDefaultRole: false,
+      memberPermission: { create: false, delete: false, edit: false },
+      rolePermission: { create: false, delete: false, edit: false },
+      members: [],
+      name: "",
+      project: "",
+    }));
+
     setAvailableUsers([]);
     setSelectedRoleMember([]);
+
     dispatch(projectActions.closeProjectRole());
   };
 
@@ -92,11 +119,11 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
       },
       success: () => {
         toast.success("Role created successfully");
-        dispatch(projectActions.closeProjectRole());
         dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);
+        handleClose();
       },
       other: selectedProject,
     };
