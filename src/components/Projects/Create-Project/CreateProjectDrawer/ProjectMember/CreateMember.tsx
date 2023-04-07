@@ -62,10 +62,11 @@ const MemberDialog = () => {
   };
 
   const handleClose = () => {
-    dispatch(projectActions.closeProjectMemberDrawer());
+    setSelectedUser([])
     dispatch(projectActions.setSelectedMember(memberTemplate));
     setSelectGroups("");
     setSelectRoles("");
+    dispatch(projectActions.closeProjectMemberDrawer());
   };
 
   useEffect(() => {
@@ -113,14 +114,14 @@ const MemberDialog = () => {
         group: selectGroups?.value,
       },
       success: () => {
-        toast.success("Member created successfully");
+        toast.success("Member added successfully");
         dispatch(getMember({ other: selectedProject }));
-        handleClose();
       },
       finallyAction: () => {
         setLoading(false);
         setSelectGroups("");
         setSelectRoles("");
+        handleClose();
       },
       other: selectedProject,
     };
@@ -188,10 +189,10 @@ const MemberDialog = () => {
       success: () => {
         toast.success("Member updated successfully");
         dispatch(getMember({ other: selectedProject }));
-        handleClose();
       },
       finallyAction: () => {
         setLoading(false);
+        handleClose();
       },
       other: selectedMember._id,
     };
