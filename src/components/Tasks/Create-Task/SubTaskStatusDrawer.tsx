@@ -265,8 +265,9 @@ const useStyles = makeStyles({
     padding: "11px 18px",
   },
   statusWrapper: {
-    "@media(max-width:1024px)": {
-      overflowX: "scroll",
+    "@media(max-width:1340px)": {
+      overflowX: "auto",
+      border:'1px solid red'
     },
   },
   editSubTaskinputTypes: {

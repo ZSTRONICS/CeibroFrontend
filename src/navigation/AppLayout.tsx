@@ -7,6 +7,7 @@ import { RootState } from "../redux/reducers/index";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
+import { Grid } from "@mui/material";
 
 interface AppLayoutInterface {}
 
@@ -27,8 +28,28 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
         : 20,
     };
   };
+
   const profileView = history.location.pathname.includes("profile");
   return (
+    // <>
+    //   <Grid container className={classes.mainContainer} justifyContent='space-between'>
+    //     <Grid item className={classes.sidebarContainer}>
+    //       {/* sidebar */}
+    //       <Sidebar />
+    //     </Grid>
+
+    //       <Grid item container  className={classes.bodyContainer}>
+    //         <Grid item className={classes.headerContainer}>
+    //           {/* topbar header */}
+    //           <Topbar />
+    //         </Grid>
+    //         <Grid item className={classes.content}>
+    //           {/* body content */}
+    //           {children}
+    //         </Grid>
+    //       </Grid>
+    //   </Grid>
+    // </>
     <div
       className={`${classes.wrapper} ${
         profileView ? classes.profileWrapper : ""
@@ -51,10 +72,41 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
 export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
+  mainContainer:{
+    maxWidth:'1920px',
+    width:'100%',
+    maxHeight:'100%',
+    overflow: "hidden",
+    margin:'0 auto',
+  },
+  sidebarContainer:{
+    maxWidth:'20%',
+    "@media (max-width:1024px)": {
+      
+    },
+  },
+
+  bodyContainer:{
+    maxWidth:'calc(100vw - 200px)',
+    overflow: "hidden",
+  },
+  headerContainer:{
+    height:'70px',
+    width:'100%',
+
+  },
+  contentContainer:{
+    width:'100%',
+    height: 'calc(100vh - 70px)',
+    overflow:'auto',
+  },
+  
   wrapper: {
-    // overflowY: "hidden",
-    // height: "100vh",
-    // height: "calc(100vh-213px)",
+    maxWidth:'1920px',
+    width:'100%',
+    maxHeight:'100%',
+    overflow: "hidden",
+    margin:'0 auto',
     "@media (max-width:600px)": {
       overflowX: "hidden",
     },
