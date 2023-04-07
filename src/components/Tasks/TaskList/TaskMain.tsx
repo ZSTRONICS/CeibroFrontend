@@ -226,19 +226,22 @@ const TaskMain = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }} className={classes.taskMain}>
+      <Box sx={{ flexGrow: 2 }} className={classes.taskMain}>
         <Grid
           container
           spacing={1}
-          rowGap={1}
+          rowGap={1.25}
           className={classes.TaskWraper}
+          alignItems='baseline'
           ref={headerRef}
         >
           <Grid
+            // md={2.6} xs={12} sm={6}
             item
             sx={{
               height: "38px",
-              width: "260px",
+              width: "100%",
+              maxWidth: "280px",
             }}
           >
             <CDatePicker
@@ -272,10 +275,12 @@ const TaskMain = () => {
           </Grid>
 
           <Grid
+            // md={3} xs={12} sm={6}
             item
             sx={{
               height: "38px",
-              width: "350px",
+              width: "100%",
+              maxWidth: "350px",
             }}
           >
             <InputHOC title="Project">
@@ -301,16 +306,19 @@ const TaskMain = () => {
               />
             </InputHOC>
           </Grid>
-          <Grid
+          <Grid 
+          // md={3} xs={12} sm={6}
             item
             sx={{
               height: "38px",
-              width: "400px",
+              width: "100%",
+              maxWidth: "350px",
             }}
           >
             <InputHOC title="Assigned to">
               <Autocomplete
                 filterSelectedOptions
+                disablePortal ={false}
                 sx={{ width: "100%" }}
                 id="assignedTo"
                 disabled={filterParams.project !== "" ? false : true}
@@ -330,6 +338,7 @@ const TaskMain = () => {
                     }}
                     {...params}
                     name="assignedTo"
+                    // variant="standard"
                     placeholder="Assigned to member"
                   />
                 )}
@@ -337,9 +346,9 @@ const TaskMain = () => {
             </InputHOC>
           </Grid>
 
-          <Box
-            mt={1}
-            gap={2.4}
+           <Box
+            // mt={1}
+            // gap={2.4}
             sx={{
               display: "flex",
               flexWrap: "wrap",
@@ -351,8 +360,8 @@ const TaskMain = () => {
             <Grid
               item
               sx={{
-                gap: "10px",
-                marginLeft: "20px",
+                // gap: "10px",
+                // marginLeft: "20px",
                 "& .MuiTypography-root": {
                   fontSize: "14px !important",
                   fontWeight: "500 !important",
@@ -367,11 +376,6 @@ const TaskMain = () => {
             <Grid
               item
               sx={{
-                // display: "flex",
-                // textAlign: "center",
-                // justifyContent: "center",
-                // gap: "10px",
-                // marginLeft: "20px",
                 "& .MuiTypography-root": {
                   fontSize: "14px !important",
                   fontWeight: "500 !important",
@@ -383,12 +387,7 @@ const TaskMain = () => {
                 label="Assigned to me"
               />
             </Grid>
-            {/* <Grid
-              item
-            >
-            <CButton label="Clear filters" variant="text" onClick={handleClearFilters}/>
-            </Grid> */}
-          </Box>
+          </Box> 
           {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
           // onChange={(e:any)=>handleChange(e)}
@@ -418,9 +417,6 @@ const TaskMain = () => {
 
       {showTaskList ? (
         <Box
-        // sx={{
-        //   height: "100vh",
-        // }}
         >
           <Grid
             sx={{
