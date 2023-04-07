@@ -8,9 +8,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  
+  Typography,
 } from "@material-ui/core";
-import {Typography} from '@mui/material'
 import { useConfirm } from "material-ui-confirm";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,12 +59,14 @@ const MembersTable = () => {
   }, []);
 
   const handleEditMember = (member: ProjectMemberInterface) => {
+    console.log("Handle Edit Member Clicked");
+    
     dispatch(projectActions.setSelectedMember(member));
     dispatch(projectActions.openProjectMemberDrawer());
   };
 
   const handleDelete = (id: any) => {
-    // setLoading(true);
+    console.log("Handle Delete Member Clicked");
     confirm({
       title: (
         <CustomStack gap={1}>
@@ -152,8 +153,8 @@ const MembersTable = () => {
                 return (
                   <TableRow key={member._id}>
                     <TableCell component="th" scope="row">
-                      <Typography  sx={{textTransform: 'capitalize'}} className={classes.nameWrapper}>
-                        { String(member?.user?._id) === String(user._id) ? "Me" :  `${member?.user?.firstName} ${member?.user?.surName}`}
+                      <Typography className={classes.nameWrapper}>
+                        {String(member?.user?._id) === String(user._id) ? "Me" : `${member?.user?.firstName} ${member?.user?.surName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
                         Company:{member?.user?.companyName ?? "N/A"}
@@ -172,7 +173,7 @@ const MembersTable = () => {
                     </TableCell>
                     <TableCell align="right" style={{ width: "10%" }}>
                       <RollOverMenu
-                        userRole= {myRole}
+                        userRole={myRole}
                         member={member}
                         edit="Edit"
                         showDelBtn={true}

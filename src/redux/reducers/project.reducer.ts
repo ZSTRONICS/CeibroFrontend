@@ -577,7 +577,7 @@ const NavigationReducer = (
       state.getAllProjectRoles = []
       return {
         ...state,
-        getAllProjectRoles: [...action.payload.result],
+        getAllProjectRoles: [...action.payload.result]
       };
     }
 
