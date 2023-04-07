@@ -214,9 +214,7 @@ const App: React.FC<MyApp> = () => {
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
-        // Attempt to reconnect to the server
-        sock.io.opts.reconnectionAttempts = 1000;
-        sock.io.opts.reconnectionDelay = 1000;
+        sock.connect();
       });
       // Listen for reconnect event
       sock.on("reconnect", (attemptNumber: number) => {
@@ -236,7 +234,6 @@ const App: React.FC<MyApp> = () => {
       });
 
       sock.on("token_invalid", () => {
-        console.log("Invalid Token");
         const tokens = localStorage.getItem("tokens") || "{}";
         const jsonToken = JSON.parse(tokens);
         if ("refresh" in jsonToken) {
@@ -256,19 +253,19 @@ const App: React.FC<MyApp> = () => {
                 };
                 sock.connect();
               } else {
-                console.log("failed");
+                alert("Session Expired");
                 history.push("/login");
+                window.location.reload();
               }
             })
             .catch((err) => {
-              console.error("Failed to connect to socket ", err);
               history.push("/login");
-              alert("Token failed");
+              alert("Session Expired");
               window.location.reload();
             });
         } else {
-          console.log("failed");
           history.push("/login");
+          window.location.reload();
         }
       });
 
