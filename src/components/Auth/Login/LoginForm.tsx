@@ -9,13 +9,15 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // material
-import { Box,   Button,
+import {
+  Box, Button,
   Checkbox,
   FormControlLabel,
   IconButton,
   InputAdornment,
   Typography,
-  Grid, } from '@mui/material';
+  Grid,
+} from '@mui/material';
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
@@ -68,49 +70,48 @@ const LoginForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
-      setShowLoading(true)
-      setIncorrectAuth(false);
-      const { email, password } = values;
-      const payload = {
-        body: {
-          email,
-          password,
-        },
-        onFailAction: (err: any) => {
-          setShowLoading(false)
-          if (err.response.data.code === 401) {
-            if ((err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g)) {
-              const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
-              setTimer(remainingTime)
-              setIncorrectAuth(true);
-            } else {
-              setIncorrectEmail(true)
-            }
-  
-          } else if (err.response.data.code === 423) {
-            const timer = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
-            setTimer(timer)
-            setLockError(true);
-          } else if (err) {
-            setVerifyError(true);
-          }  else{
-            // removed stored state 
-            purgeStoreStates()
-          }
-          
+    setShowLoading(true)
+    setIncorrectAuth(false);
+    const { email, password } = values;
+    const payload = {
+      body: {
+        email,
+        password,
+      },
+      onFailAction: (err: any) => {
+        setShowLoading(false)
+        if (err.response.data.code === 400) {
+          setIncorrectEmail(true)
+        }
+        else if (err.response.data.code === 404) {
+          const remainingTime = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+          setTimer(remainingTime)
+          setIncorrectAuth(true);
+        }
+        else if (err.response.data.code === 406) {
+          setVerifyError(true);
+        }
+        else if (err.response.data.code === 423) {
+          const timer = (err.response.data?.message).match(/^\d+|\d+\b|\d+(?=\w)/g).join(' ').slice(0, 2)
+          setTimer(timer)
+          setLockError(true);
+        } else {
+          // removed stored state 
+          purgeStoreStates()
+        }
 
-          setTimeout(() => {
-            setLockError(false);
-            setVerifyError(false);
-            setIncorrectAuth(false);
-            setIncorrectEmail(false)
-  
-          }, 5000);
-        },
-        showErrorToast: true,
-      };
+        setTimeout(() => {
+          setLockError(false);
+          setVerifyError(false);
+          setIncorrectAuth(false);
+          setIncorrectEmail(false)
 
-      dispatch(loginRequest(payload));
+        }, 5000);
+      },
+      showErrorToast: false,
+    };
+
+    dispatch(loginRequest(payload));
   };
 
   const checkValidInputs = (values: any) => {
@@ -363,7 +364,7 @@ const LoginForm: React.FC<Props> = (props) => {
         </Formik>
       </Box>
     </div>
-    </>
+  </>
   );
 };
 
@@ -450,10 +451,10 @@ const useStyles = makeStyles({
   },
   titleWrapper: {
     margin: '45px 0px 15px 0px',
-'& .MuiTypography-root':{
-  fontSize: 30,
-  fontWeight: "bold",
-},
+    '& .MuiTypography-root': {
+      fontSize: 30,
+      fontWeight: "bold",
+    },
   },
   inputs: {
     // marginBottom: 25,
