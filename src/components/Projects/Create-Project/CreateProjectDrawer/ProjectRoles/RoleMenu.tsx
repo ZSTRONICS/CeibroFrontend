@@ -20,37 +20,46 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   const classes = useStyles();
   const [show, setShow] = useState(false);
   const confirm = useConfirm();
-  let canEdit = props.userRole.rolePermission.edit;
-  let canDelete = props.userRole.rolePermission.delete;
+  const [canEdit, setCanEdit] = useState(props.userRole.rolePermission.edit);
+  const [canDelete, setCanDelete] = useState(props.userRole.rolePermission.delete);
+
+  
+  console.log(canEdit, canDelete);
+
+
   const userRole = props.userRole;
   const role = props.role;
 
   if (canEdit === true && userRole.admin === false) {
     if (role.admin === true) {
-      canEdit = false;
+      setCanEdit(false);// = false;
     }
     if (String(role._id) === String(userRole._id)) {
-      canEdit = false;
+      setCanEdit(false);
     }
   }
   
   if (canDelete === true && userRole.admin === false) {
     if (role.admin === true) {
-      canDelete = false;
+      setCanDelete(false);
     }
     if (String(role._id) === String(userRole._id)) {
-      canDelete = false;
+      setCanDelete(false);
     }
   }
 
+
+  
+  console.log(canEdit, canDelete);
+  
   const handleToggle = (e: any) => {
     e.stopPropagation();
     setShow((prev) => !prev);
   };
 
   const handleEdit = (e: any) => {
-    handleToggle(e);
     props.onEdit();
+    handleToggle(e);
 
   };
 
@@ -66,7 +75,7 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
       ),
       description: (
         <ConfirmDescriptionTag sx={{ pt: 2 }}>
-          Are you confirm want to delete this role?
+          Are you sure you want to delete this role?
         </ConfirmDescriptionTag>
       ),
       titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
@@ -100,6 +109,7 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   };
   const showDropdown = canEdit===false && canDelete===false
 
+  
   return (<>{ showDropdown===false &&  <div className="dropdown">
       <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
         <img src={assets.moreIcon} className={classes.moreIcon} alt="" />

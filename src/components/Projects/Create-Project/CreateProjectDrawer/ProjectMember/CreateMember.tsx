@@ -117,6 +117,8 @@ const MemberDialog = () => {
       },
       finallyAction: () => {
         setLoading(false);
+        setSelectGroups("");
+        setSelectRoles("");
       },
       other: selectedProject,
     };

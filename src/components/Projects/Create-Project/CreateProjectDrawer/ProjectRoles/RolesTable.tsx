@@ -130,7 +130,7 @@ const RolesTable = () => {
         .find((item: any) => item?.rolePermission);
     return rolePermissionLocal || roleTemplate;
   };
-  const myRole: ProjectRolesInterface = getMyRole();
+  const myRole = getMyRole();
   const myRolePermissions = myRole.rolePermission;
   return (
     <Grid container>
