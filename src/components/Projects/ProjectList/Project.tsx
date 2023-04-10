@@ -215,6 +215,7 @@ const Project = () => {
           >
             <InputHOC title="Owner">
               <Autocomplete
+              className="autocompleteContainer"
                 disablePortal
                 sx={{ width: "100%" }}
                 id="project_members1"

@@ -250,6 +250,7 @@ const ProjectOverview = () => {
         >
           <InputHOC title="Owners">
             <MemoizedAutocomplete
+            className="autocompleteContainer"
               sx={{
                 backgroundColor: "white",
                 maxWidth: "100%",
