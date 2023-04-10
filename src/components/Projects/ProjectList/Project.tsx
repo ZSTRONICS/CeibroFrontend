@@ -21,7 +21,7 @@ import { getAvailableUsers } from "redux/action/user.action";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-
+import '../../../components/MuiStyles.css'
 const Project = () => {
   const classes = useStyles();
   const dispatch = useDispatch();

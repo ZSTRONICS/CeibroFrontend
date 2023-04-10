@@ -18,6 +18,8 @@ import {
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
 import CButton from "components/Button/Button";
+import '../../../components/MuiStyles.css'
+
 
 const TaskMain = () => {
   const allTask: TaskInterface[] = useSelector(
