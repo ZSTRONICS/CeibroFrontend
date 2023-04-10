@@ -55,6 +55,11 @@ function CDatePicker(props: any) {
                       ".MuiInputBase-input": {
                         padding: "9px 14px",
                       },
+                      "& .MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+  
                     }}
                   />
                 )}

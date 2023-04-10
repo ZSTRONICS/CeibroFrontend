@@ -300,6 +300,7 @@ const ProjectOverview = () => {
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "none",
                       padding: "0px",
+                      borderWidth: '0px !important'
                     },
                     // border: "1px solid #DBDBE5",
                     // borderRadius: "4px",
