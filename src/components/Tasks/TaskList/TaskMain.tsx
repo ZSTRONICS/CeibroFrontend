@@ -29,8 +29,8 @@ const TaskMain = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const fixedOwner = [
     {
-      label: `${user.firstName} ${user.surName}`,
-      id: user._id,
+      label: `${user?.firstName} ${user?.surName}`,
+      id: user?._id,
     },
   ];
 

@@ -3,9 +3,9 @@ import { ALL_MESSAGE_SEEN, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_SEEN, UNREAD_MESS
 
 class WebSocketService {
 
-  public static socket: any 
-  public static selectedChat: any 
-
+  public static socket: any
+  public static selectedChat: any
+  pendingMessages: { type: string; data: string; }[] = [];
   public constructor() {
     WebSocketService.socket = null;
     WebSocketService.selectedChat = null;
@@ -32,13 +32,20 @@ class WebSocketService {
     return WebSocketService.socket
   }
 
-  public setSocket(socket:any){
+  public setSocket(socket: any) {
     WebSocketService.socket = socket
+    if (this.pendingMessages.length > 0) {
+      this.pendingMessages.forEach((item: { type: string; data: string; }) => {
+        WebSocketService.socket.emit(item.type, item.data);
+      })
+      this.pendingMessages = []
+    }
   }
 
-  public logoutSocketsIO() {    
+  public logoutSocketsIO() {
     WebSocketService.socket.close();
     WebSocketService.socket = null
+    this.pendingMessages = []
   }
 
   public async getUnreadMsgCount(userId: any) {
@@ -48,10 +55,15 @@ class WebSocketService {
         userId
       }
     }
-    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    if (this.getSocket() === null) {
+      this.pendingMessages.push({ type: CHAT_EVENT_REQ_OVER_SOCKET, data: JSON.stringify(data) })
+    } else {
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    }
   }
 
-  public async sendMessageSeen(userId: any, roomId: any, messageId: any){
+  public async sendMessageSeen(userId: any, roomId: any, messageId: any) {
     const data = {
       eventType: MESSAGE_SEEN,
       data: {
@@ -60,10 +72,15 @@ class WebSocketService {
         messageId,
       }
     }
-    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    if (this.getSocket() === null) {
+      this.pendingMessages.push({ type: CHAT_EVENT_REQ_OVER_SOCKET, data: JSON.stringify(data) })
+    } else {
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    }
   }
 
-  public async setAllMessageRead(userId: any, roomId: any){
+  public async setAllMessageRead(userId: any, roomId: any) {
     const data = {
       eventType: ALL_MESSAGE_SEEN,
       data: {
@@ -71,10 +88,15 @@ class WebSocketService {
         roomId
       }
     }
-    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    if (this.getSocket() === null) {
+      this.pendingMessages.push({ type: CHAT_EVENT_REQ_OVER_SOCKET, data: JSON.stringify(data) })
+    } else {
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    }
   }
 
-  public async joinChatRoom(userId: any, roomId: any){
+  public async joinChatRoom(userId: any, roomId: any) {
     const data = {
       eventType: USER_JOINED_ROOM,
       data: {
@@ -82,11 +104,16 @@ class WebSocketService {
         roomId
       }
     }
-    socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    if (this.getSocket() === null) {
+      this.pendingMessages.push({ type: CHAT_EVENT_REQ_OVER_SOCKET, data: JSON.stringify(data) })
+    } else {
+
+      socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+    }
   }
 
 }
 
 const socket = new WebSocketService()
 
-export {socket}
+export { socket }
