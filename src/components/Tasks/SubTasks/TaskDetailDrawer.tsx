@@ -129,18 +129,10 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontStyle: "normal",
   },
-  drawerStatusContainer: {
-    padding: "11px 18px",
-  },
-  statusWrapper: {
-    "@media(max-width:1024px)": {
-      overflowX: "scroll",
-    },
-  },
+
   inputCommentWraper:{
     backgroundColor: colors.lightGrey,
     padding:'10px 20px 13px 11px',
-
   },
   outerWrapper: {
     "& .MuiGrid-root":{

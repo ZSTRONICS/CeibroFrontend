@@ -96,19 +96,7 @@ const useStyles = makeStyles({
   //     height: "100%",
   //   },
   // },
-  actionButton: {
-    fontSize: 12,
-    fontWeight: "bold",
-    fontStyle: "normal",
-  },
-  drawerStatusContainer: {
-    padding: "11px 18px",
-  },
-  statusWrapper: {
-    "@media(max-width:1340px)": {
-      overflowX: "scroll",
-    },
-  },
+
   outerWrapper: {
     width: "calc(100vw - 200px)",
     backgroundColor: colors.lightGrey,

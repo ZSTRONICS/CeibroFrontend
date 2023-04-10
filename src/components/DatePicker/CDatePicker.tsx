@@ -91,6 +91,7 @@ function CDatePicker(props: any) {
 }
 const useStyles = makeStyles((theme) => ({
   root: {
+    width:'100%',
     "& > *": {
       ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
         borderBottom: "none",

@@ -397,7 +397,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   
   return (
     <>
-      <Grid container className={classes.outerWrapper} rowGap={2.5}>
+      <Grid container className={classes.outerWrapper} rowGap={{ xs: 1, sm: 1.25, md: 1.25, lg:2.5 }}>
         <Grid item container xs={12} md={12} justifyContent="space-between">
           <CBox display="flex" alignItems="center">
             <CBox
@@ -492,6 +492,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 filterSelectedOptions
                 disableCloseOnSelect
                 multiple
+              limitTags={1}
                 disablePortal
                 id="combo-box-demo"
                 disabled={!taskCreatorAndAdmin}
@@ -540,6 +541,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 filterSelectedOptions
                 disableCloseOnSelect
                 multiple
+              limitTags={1}
                 disablePortal
                 id="combo-box-demo"
                 value={adminData}
@@ -568,6 +570,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               filterSelectedOptions
               multiple
               disablePortal
+              limitTags={1}
               id="combo-box-demo"
               disabled={!taskCreatorAndAdmin}
               disableCloseOnSelect
@@ -650,14 +653,16 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
             width="100%"
             p="12px 0px 7px 0px"
           >
-            <CBox fontSize={14} color="#000" fontWeight={600}>
+            <CBox sx={{fontSize:{xs:11,sm:10,md:12 ,lg:14},fontWeight:600}} color="#000" fontWeight={600}>
               Attachments
             </CBox>
             <CBox display="flex">
               <CButton
                 label="View All"
                 onClick={viewAllDocs}
-                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+                sx={{fontSize:{xs:10,sm:10,md:10 ,lg:12}}} 
+
+                styles={{ color: "#0076C8", fontWeight: "bold" }}
               />
 
               <Divider
@@ -671,9 +676,10 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               />
 
               <CButton
+                sx={{fontSize:{xs:10,sm:10,md:10 ,lg:12}}} 
                 onClick={(e: any) => handleOpenCloseAttachmentModal(e)}
                 label="Add New"
-                styles={{ fontSize: 12, color: "#0076C8", fontWeight: "bold" }}
+                styles={{ color: "#0076C8", fontWeight: "bold" }}
               />
             </CBox>
           </CBox>
@@ -684,9 +690,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         <Grid
           container
           justifyContent="flex-end"
-          mt={10}
-          sx={{ padding: "10px 23px" }}
-        >
+          // mt={10}
+          
+          sx={{ padding: "10px 16px" }}>
           <Grid item>
             <CButton
               label="Create Task"
@@ -724,8 +730,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         <Grid
           container
           justifyContent="flex-end"
-          mt={10}
-          sx={{ padding: "10px 23px" }}
+          // mt={10}
+          sx={{ padding: "10px 16px" }}
         >
           <Grid item>
             <CButton
@@ -766,9 +772,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
         <Grid
           container
           justifyContent="flex-end"
-          mt={10}
+          // mt={10}
           ml={1.7}
-          sx={{ padding: "10px 23px" }}
+          sx={{ padding: "10px 16px" }}
         >
           <Grid item>
             <CButton

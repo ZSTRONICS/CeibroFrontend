@@ -30,6 +30,7 @@ export default function RecentCommentsList({ comment }: Props) {
               style={{ textTransform: "capitalize" }}
               key={file.name}
             >{`${file.fileName}`}
+            <br/>
             </span>
           );
         })}

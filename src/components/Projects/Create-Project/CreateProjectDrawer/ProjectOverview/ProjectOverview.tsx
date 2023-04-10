@@ -297,7 +297,7 @@ const ProjectOverview = () => {
               renderInput={(params) => (
                 <TextField
                   sx={{
-                    "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                    "& .MuiOutlinedInput-notchedOutline": {
                       border: "none",
                       padding: "0px",
                     },
