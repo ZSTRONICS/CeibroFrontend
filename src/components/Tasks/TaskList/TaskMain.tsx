@@ -320,6 +320,7 @@ const TaskMain = () => {
           >
             <InputHOC title="Assigned to">
               <Autocomplete
+              className="autocompleteContainer"
                 filterSelectedOptions
                 disablePortal ={false}
                 sx={{ width: "100%" }}
