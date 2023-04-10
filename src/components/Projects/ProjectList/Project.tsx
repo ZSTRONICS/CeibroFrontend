@@ -175,7 +175,7 @@ const Project = () => {
           <Grid
             item
             sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
-            // xs={12} md={3}
+          // xs={12} md={3}
           >
             <CDatePicker
               IsdisablePast={false}
@@ -274,6 +274,7 @@ const Project = () => {
                 }}
                 renderInput={(params) => (
                   <TextField
+                    className={classes.underline}
                     sx={{
                       "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
                         border: "none",
@@ -316,6 +317,14 @@ const Project = () => {
 export default Project;
 
 const useStyles = makeStyles({
+  underline: {
+    "&&&:before": {
+      borderBottom: "none"
+    },
+    "&&:after": {
+      borderBottom: "none"
+    }
+  },
   outerWrapper: {
     display: "flex",
     alignItems: "baseline",
