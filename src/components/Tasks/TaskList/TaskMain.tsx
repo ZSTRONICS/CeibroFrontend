@@ -287,6 +287,7 @@ const TaskMain = () => {
           >
             <InputHOC title="Project">
               <Autocomplete
+                className="autocompleteContainer"
                 sx={{ width: "100%" }}
                 id="assignedTo"
                 options={projectTitleLocal}
