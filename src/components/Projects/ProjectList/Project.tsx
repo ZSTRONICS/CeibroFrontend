@@ -253,6 +253,7 @@ const Project = () => {
           /> */}
             <InputHOC title="Status">
               <Autocomplete
+              className="autocompleteContainer"
                 disablePortal
                 sx={{ width: "100%" }}
                 // multiple={false}
