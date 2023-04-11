@@ -64,7 +64,7 @@ const TaskMain = () => {
   const headerRef: any = useRef();
 
   const [showTaskList, setShowTaskList] = useState<boolean>(false);
-
+  let isTimeOut: NodeJS.Timeout;
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
       getHeaderHeight();
@@ -89,10 +89,15 @@ const TaskMain = () => {
       if (showTaskList === false) {
         setShowTaskList(true);
       }
+      if(isTimeOut && isTimeOut.hasRef()){
+        isTimeOut.unref();
+      }
     } else {
-      setTimeout(() => {
-        getHeaderHeight();
-      }, 100);
+      if (!isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 100);
+      }
     }
   };
 

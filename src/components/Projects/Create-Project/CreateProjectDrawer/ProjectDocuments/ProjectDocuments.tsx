@@ -12,19 +12,45 @@ const ProjectDocuments = () => {
   const [folder, setFolder] = useState<FolderInterface | any>(null);
   const [showDocumentList, setShowDocumentList] = useState<boolean>(false);
   const headerRef: any = useRef();
+  const [headerHeight, setHeaderHeight] = useState<string>("");
+  let isTimeOut: NodeJS.Timeout;
+
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
-      setTimeout(() => {
-        setShowDocumentList(true);
-      }, 100);
+      getHeaderHeight();
+    } else {
+      windowResized();
     }
-    window.addEventListener("resize", getHeaderHeight);
+    window.addEventListener("resize", windowResized);
   });
-  const getHeaderHeight = () => {
-    let contentHeight =
-      window.innerHeight - (headerRef.current.clientHeight + 215);
-    return `${contentHeight}px`;
+
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 10);
   };
+
+  const getHeaderHeight = () => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 50);
+      const height = `${contentHeight}px`;
+      if (showDocumentList === false) {
+        setShowDocumentList(true);
+      }
+      setHeaderHeight(height);
+      if (isTimeOut && isTimeOut.hasRef()) {
+        isTimeOut.unref();
+      }
+    } else {
+      if (!isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 10);
+      }
+    }
+  };
+
   const handleFolderClick = (folder: FolderInterface) => {
     setFolder(folder);
   };
@@ -37,24 +63,31 @@ const ProjectDocuments = () => {
 
   return (
     <>
-      <Grid container item xs={12} alignItems="flex-start">
+      <Grid container ref={headerRef} item xs={12} alignItems="flex-start">
         <ProjectDocumentHeader
           handleGoBack={handleGoBack}
           selectedFolder={folder}
           isFolder={!folder}
         />
-
+      </Grid>
+      {showDocumentList === true && (
         <Grid
           item
           xs={12}
           className={classes.groupsWrapper}
-
-          // maxHeight={getHeaderHeight}
+          maxHeight={headerHeight}
         >
-          {!folder && <ProjectDocumentList onFolderClick={handleFolderClick} />}
-          {folder && <FolderFiles selectedFolderId={folder?._id} />}
+          {!folder && (
+            <ProjectDocumentList
+              height={headerHeight}
+              onFolderClick={handleFolderClick}
+            />
+          )}
+          {folder && (
+            <FolderFiles height={headerHeight} selectedFolderId={folder?._id} />
+          )}
         </Grid>
-      </Grid>
+      )}
     </>
   );
 };
@@ -63,7 +96,6 @@ export default ProjectDocuments;
 
 const useStyles = makeStyles({
   groupsWrapper: {
-    height: "630px",
     overflow: "auto",
   },
   titleWrapper: {

@@ -74,7 +74,7 @@ const SubTaskMain = () => {
   };
 
   const [headerHeight, setHeaderHeight] = useState<string>("");
-
+  let isTimeOut: NodeJS.Timeout;
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
       getHeaderHeight();
@@ -99,10 +99,15 @@ const SubTaskMain = () => {
       if (showSubTaskList === false) {
         setShowSubTaskList(true);
       }
+      if(isTimeOut && isTimeOut.hasRef()){
+        isTimeOut.unref();
+      }
     } else {
-      setTimeout(() => {
-        getHeaderHeight();
-      }, 100);
+      if (!isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 100);
+      }
     }
   };
 

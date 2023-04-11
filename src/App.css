@@ -488,3 +488,10 @@ button[disabled]{
   opacity: 0;
   cursor: pointer;
 }
+
+/* *{
+  -ms-overflow-style: none;
+}
+::-webkit-scrollbar {
+  display: none;
+} */

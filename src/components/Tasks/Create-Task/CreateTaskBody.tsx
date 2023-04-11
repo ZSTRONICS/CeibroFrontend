@@ -1,28 +1,90 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import SubTaskList from "../SubTasks/SubTaskList";
 import SubTaskStatusDrawer from "./SubTaskStatusDrawer";
- import { Grid,CircularProgress } from "@mui/material";
+import { Grid, CircularProgress, Box } from "@mui/material";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
-const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
+const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
+  const headerRef: any = useRef();
   const classes = useStyles();
-  const {loadingSubTaskofTask} = useSelector((state: RootState) => state.task);
-  
+  const [doOnce, setDoOnce] = useState(true);
+  const { loadingSubTaskofTask } = useSelector(
+    (state: RootState) => state.task
+  );
+
+  let isTimeOut: NodeJS.Timeout;
+  const [headerHeight, setHeaderHeight] = useState<string>("");
+
+  const handleScroll = () => {
+    if (doOnce) {
+      const subTaskContainer = document.getElementById("subTaskContainer");
+      if (subTaskContainer) {
+        console.log("subTaskContainer", subTaskContainer, subTaskContainer.scrollHeight, subTaskContainer.scrollTop);
+        
+        subTaskContainer.scrollTop = subTaskContainer.scrollHeight;
+      }
+      setDoOnce(false);
+    }
+  };
+
+  useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      getHeaderHeight();
+    } else {
+      windowResized();
+    }
+    window.addEventListener("resize", windowResized);
+  });
+
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 10);
+  };
+
+  const getHeaderHeight = () => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 70);
+      const height = `${contentHeight}px`;
+      setHeaderHeight(height);
+      handleScroll();
+      if (isTimeOut && isTimeOut.hasRef()) {
+        isTimeOut.unref();
+      }
+    } else {
+      if (!isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 50);
+      }else{
+        isTimeOut.refresh();
+      }
+    }
+  };
+
   return (
     <>
-      <div className={classes.subtaskWrapper}>
+      <div className={classes.subtaskWrapper} ref={headerRef}>
         <SubTaskStatusDrawer task={task} subtasks={subtasks} />
       </div>
-      <Grid container className={classes.body}>
+
+      <Grid
+        id="subTaskContainer"
+        container
+        className={classes.body}
+        maxHeight={headerHeight}
+        sx={{ overflowY: "auto" }}
+      >
         {loadingSubTaskofTask ? (
           <Grid item sx={{ flex: 1, textAlign: "center", mt: 6 }}>
             <CircularProgress />
           </Grid>
         ) : (
-          <>
+          <Grid item sx={{ flex: 1 }}>
             {subtasks?.length > 0 ? (
               <SubTaskList results={subtasks} />
             ) : (
@@ -36,7 +98,7 @@ const CreateTaskBody = ({subtasks,task}:AllSubtasksOfTaskResult) => {
                 No subtask found
               </p>
             )}
-          </>
+          </Grid>
         )}
       </Grid>
     </>
@@ -54,10 +116,10 @@ const useStyles = makeStyles({
     padding: "11px 8px",
   },
   subtaskWrapper: {
-    marginBottom:'16px',
-    "@media (max-width:854)": {
-      maxWidth: "319px",
-      width: "100%",
-    },
+    marginBottom: "16px",
+    // "@media (max-width:854)": {
+    //   maxWidth: "319px",
+    width: "100%",
+    // },
   },
 });
