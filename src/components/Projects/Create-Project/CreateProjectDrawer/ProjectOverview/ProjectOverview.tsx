@@ -20,7 +20,7 @@ import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { ProjectOwners } from "constants/interfaces/project.interface";
 import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-
+import '../../../../../components/MuiStyles.css'
 const ProjectOverview = () => {
   const classes = useStyles();
   const isRenderEffect = useRef<any>(false);
@@ -250,6 +250,7 @@ const ProjectOverview = () => {
         >
           <InputHOC title="Owners">
             <MemoizedAutocomplete
+            className="autocompleteContainer"
               sx={{
                 backgroundColor: "white",
                 maxWidth: "100%",

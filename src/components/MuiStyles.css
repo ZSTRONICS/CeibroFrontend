@@ -1,0 +1,4 @@
+.autocompleteContainer fieldset.MuiOutlinedInput-notchedOutline {
+  border-width: 0px !important;
+  /* border: 1px solid red !important; */
+}

@@ -18,6 +18,8 @@ import {
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
 import CButton from "components/Button/Button";
+import '../../../components/MuiStyles.css'
+
 
 const TaskMain = () => {
   const allTask: TaskInterface[] = useSelector(
@@ -302,6 +304,7 @@ const TaskMain = () => {
           >
             <InputHOC title="Project">
               <Autocomplete
+                className="autocompleteContainer"
                 sx={{ width: "100%" }}
                 id="assignedTo"
                 options={projectTitleLocal}
@@ -334,6 +337,7 @@ const TaskMain = () => {
           >
             <InputHOC title="Assigned to">
               <Autocomplete
+              className="autocompleteContainer"
                 filterSelectedOptions
                 disablePortal={false}
                 sx={{ width: "100%" }}

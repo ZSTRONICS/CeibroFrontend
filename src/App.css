@@ -371,9 +371,6 @@ button[disabled]{
   font-weight: 500; 
   /* padding-left: 10px; */
 }
-.MuiOutlinedInput-notchedOutline{
-  border-width: 0px !important;
-}
 /* .MuiDialog-paper{
   min-height: 55vh;
 } */

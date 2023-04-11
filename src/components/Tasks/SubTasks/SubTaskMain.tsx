@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import SubTaskList from "./SubTaskList";
+import '../../../components/MuiStyles.css'
 
 const SubTaskMain = () => {
   const headerRef: any = useRef();
@@ -327,6 +328,7 @@ const SubTaskMain = () => {
           >
             <InputHOC title="Project">
               <Autocomplete
+              className="autocompleteContainer"
                 sx={{ width: "100%" }}
                 id="assignedTo"
                 options={projectTitleLocal}
