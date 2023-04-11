@@ -72,47 +72,44 @@ const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
 export default AppLayout;
 
 const useStyles = makeStyles((theme) => ({
-  mainContainer:{
-    maxWidth:'1920px',
-    width:'100%',
-    maxHeight:'100%',
+  mainContainer: {
+    maxWidth: "1920px",
+    width: "100%",
+    maxHeight: "100%",
     overflow: "hidden",
-    margin:'0 auto',
+    margin: "0 auto",
   },
-  sidebarContainer:{
-    maxWidth:'20%',
-    "@media (max-width:1024px)": {
-      
-    },
+  sidebarContainer: {
+    maxWidth: "20%",
+    "@media (max-width:1024px)": {},
   },
 
-  bodyContainer:{
-    maxWidth:'calc(100vw - 200px)',
+  bodyContainer: {
+    maxWidth: "calc(100vw - 200px)",
     overflow: "hidden",
   },
-  headerContainer:{
-    height:'70px',
-    width:'100%',
+  headerContainer: {
+    height: "70px",
+    width: "100%",
+  },
+  contentContainer: {
+    width: "100%",
+    height: "calc(100vh - 70px)",
+    overflow: "auto",
+  },
 
-  },
-  contentContainer:{
-    width:'100%',
-    height: 'calc(100vh - 70px)',
-    overflow:'auto',
-  },
-  
   wrapper: {
-    maxWidth:'1920px',
-    width:'100%',
-    maxHeight:'100%',
+    //maxWidth: "1920px",
+    width: "100%",
+    maxHeight: "100%",
     overflow: "hidden",
-    margin:'0 auto',
+    margin: "0 auto",
     "@media (max-width:600px)": {
       overflowX: "hidden",
     },
   },
   profileWrapper: {
-  //   overflowY: "auto",
+    //   overflowY: "auto",
   },
   content: {
     marginLeft: 200,

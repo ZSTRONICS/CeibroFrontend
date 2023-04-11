@@ -80,26 +80,25 @@ export default SubTaskList;
 const useStyles = makeStyles((theme) => ({
   cardListContainer: {
     width: "100%",
-    overflowX: "hidden",
     height: "100%",
-    [theme.breakpoints.down("lg")]: {
-      // height: "100%",
-      // maxHeight: "calc(100vh-100px)",
-      // [theme.breakpoint.down('lg')]:{
-      // }
-    },
-    [theme.breakpoints.down("md")]: {
-      maxHeight: "calc(100vh - 40vh)",
-    },
-    [theme.breakpoints.between(900, 1024)]: {
-      maxHeight: "calc(100vh-50vh)",
-    },
-    [theme.breakpoints.down("xl")]: {
-      maxHeight: "calc(100vh - 30vh)",
-    },
-    "@media (max-width:1440)": {
-      maxHeight: "calc(100vh-30vh)",
-      height: "100%",
-    },
+    // [theme.breakpoints.down("lg")]: {
+    //   // height: "100%",
+    //   // maxHeight: "calc(100vh-100px)",
+    //   // [theme.breakpoint.down('lg')]:{
+    //   // }
+    // },
+    // [theme.breakpoints.down("md")]: {
+    //   maxHeight: "calc(100vh - 40vh)",
+    // },
+    // [theme.breakpoints.between(900, 1024)]: {
+    //   maxHeight: "calc(100vh-50vh)",
+    // },
+    // [theme.breakpoints.down("xl")]: {
+    //   maxHeight: "calc(100vh - 30vh)",
+    // },
+    // "@media (max-width:1440)": {
+    //   maxHeight: "calc(100vh-30vh)",
+    //   height: "100%",
+    // },
   },
 }));

@@ -51,21 +51,9 @@ const SubTaskMain = () => {
   ];
 
   useEffect(() => {
-    if (headerRef.current && headerRef.current.clientHeight) {
-      setTimeout(() => {
-        setShowSubTaskList(true);
-      }, 100);
-    }
-    window.addEventListener("resize", getHeaderHeight);
-  });
-
-  useEffect(() => {
     setFilteredData(allSubTaskList);
   }, [allSubTaskList]);
 
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
   const getSubtaskStateCount = (checkState: any) => {
     let count = 0;
     filteredData.length > 0 &&
@@ -83,14 +71,38 @@ const SubTaskMain = () => {
       });
     return count;
   };
-  const getHeaderHeight = () => {
-    let contentHeight: any;
-    if (headerRef.current) {
-      contentHeight =
-        window.innerHeight - (headerRef.current.clientHeight + 135);
-      // contentHeight = window.innerHeight - headerRef.current.clientHeight + 500;
+
+  const [headerHeight, setHeaderHeight] = useState<string>("");
+
+  useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      getHeaderHeight();
+    } else {
+      windowResized();
     }
-    return `${contentHeight}px`;
+    window.addEventListener("resize", windowResized);
+  });
+
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 50);
+  };
+
+  const getHeaderHeight = () => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 140);
+      const height = `${contentHeight}px`;
+      setHeaderHeight(height);
+      if (showSubTaskList === false) {
+        setShowSubTaskList(true);
+      }
+    } else {
+      setTimeout(() => {
+        getHeaderHeight();
+      }, 100);
+    }
   };
 
   const filterDataOnParams = (params: any) => {
@@ -259,23 +271,14 @@ const SubTaskMain = () => {
 
   return (
     <>
-      <Box
-        sx={{
-          flexGrow: 2,
-          // maxHeight: "100%"
-        }}
-      >
+      <Box>
         <Grid
           container
           spacing={1}
           className={classes.TaskWraper}
           rowGap={1}
-          // sx={{
-          //   "@media(max-width:1220px)": {
-          //     rowGap: "10px",
-          //   },
-          // }}
-        >
+          ref={headerRef}>
+
           <Grid
             item
             sx={{
@@ -446,11 +449,18 @@ const SubTaskMain = () => {
           </Grid>
         </Grid>
       </Box>
-      <Box>
-        <Grid item maxHeight={getHeaderHeight}>
-          <SubTaskList results={filteredData} />
-        </Grid>
-      </Box>
+
+      {showSubTaskList && (
+        <Box>
+          <Grid
+            item
+            maxHeight={headerHeight}
+            overflow={"auto"}
+          >
+            <SubTaskList results={filteredData} />
+          </Grid>
+        </Box>
+      )}
     </>
   );
 };
@@ -461,7 +471,7 @@ const useStyles = makeStyles({
   statusWrapper: {
     marginTop: "12px",
     "@media(max-width:1024px)": {
-      overflowX: "scroll",
+      overflowX: "auto",
     },
   },
   // subTaskMainContainer: {
