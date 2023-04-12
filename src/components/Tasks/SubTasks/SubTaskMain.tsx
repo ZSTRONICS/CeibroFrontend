@@ -103,10 +103,12 @@ const SubTaskMain = () => {
         isTimeOut.unref();
       }
     } else {
-      if (!isTimeOut.hasRef()) {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
-        }, 100);
+        }, 50);
+      }else{
+        isTimeOut.refresh()
       }
     }
   };

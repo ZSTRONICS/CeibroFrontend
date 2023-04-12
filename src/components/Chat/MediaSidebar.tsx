@@ -26,7 +26,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
   const classes = useStyles();
   const {
     sidebarOpen,
-    selectedChat,
+    selectedChatId,
     chat,
     chatMedia,
     pinnedMessages,
@@ -35,36 +35,36 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
   const [openIndex, setOpenIndex] = useState<number>(0);
   const dispatch = useDispatch();
   const selectedChatRoom = chat.find(
-    (room: any) => String(room._id) == String(selectedChat)
+    (room: any) => String(room._id) == String(selectedChatId)
   );
 
   const [media, setMedia] = useState<any>(null);
-  const isGroupChat = selectedChat
-    ? chat.find((room: any) => String(room._id) === String(selectedChat))?.isGroupChat
+  const isGroupChat = selectedChatId
+    ? chat.find((room: any) => String(room._id) === String(selectedChatId))?.isGroupChat
     : [];
 
   // useEffect(() => {
-  // if (selectedChat) {
+  // if (selectedChatId) {
   //   dispatch(
   //     getRoomMedia({
-  //       other: selectedChat,
+  //       other: selectedChatId,
   //     })
   //   );
   //   dispatch(
   //     getPinnedMessages({
-  //       other: selectedChat,
+  //       other: selectedChatId,
   //     })
   //   );
   //   const payload = {
-  //     other: selectedChat,
+  //     other: selectedChatId,
   //   };
   //   dispatch(getRoomQuestioniars(payload));
   // }
   // return () =>{
-  //   selectedChat,
+  //   selectedChatId,
   //   openIndex
   // }
-  // }, [selectedChat, openIndex]);
+  // }, [selectedChatId, openIndex]);
 
   const getStyles = () => {
     return {
@@ -105,7 +105,7 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
         <button className="accordion" onClick={() => handleClick(1)}>
           {/* {console.log(" GroupChat", chat.isGroupChat)} */}
 
-          {/* {selectedChat.isGroupChat === "true" ? ( */}
+          {/* {selectedChatId.isGroupChat === "true" ? ( */}
           <span className={classes.chatMembersWrapper}>
             <Badge
               overlap="circular"

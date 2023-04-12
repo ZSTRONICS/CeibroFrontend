@@ -29,7 +29,7 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
   const classes = useStyles();
   const { enable } = props;
   const [show, setShow] = useState(false);
-  const { selectedChat } = useSelector((state: RootState) => state.chat);
+  const { selectedChatId } = useSelector((state: RootState) => state.chat);
   const dispatch = useDispatch();
   const confirm = useConfirm();
 
@@ -46,7 +46,7 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
     confirm({ description: "Are you confirm want to delete" }).then(() => {
       dispatch(
         deleteConversation({
-          other: selectedChat,
+          other: selectedChatId,
           success: () => {
             dispatch(
               getAllChats({
@@ -72,7 +72,7 @@ const ChatUserMenu: React.FC<ChatUserMenuInt> = (props) => {
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
           <div className={`dropdown-content ${classes.dropdownContent}`}>
-            {/* {selectedChat.isGroupChat === "true" && ( */}
+            {/* {selectedChatId.isGroupChat === "true" && ( */}
             <div
               onClick={openMembersDialog}
               className={`${classes.menuWrapper} dropdown-menu`}

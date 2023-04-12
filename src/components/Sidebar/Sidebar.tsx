@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,12 +12,14 @@ import OutsideClickHandler from "react-outside-click-handler";
 import appActions from "../../redux/action/app.action";
 import "./sidebar.css";
 import { socket } from "../../services/socket.services";
+import { getAllChats } from "redux/action/chat.action";
 
 function Sidebar() {
   const classes = useStyles();
   const configs = useSelector(
     (store: RootState) => store.navigation.sidebarRoutes
   );
+  const [interval, setLocalInterval] = useState<NodeJS.Timer>();
   const navbarOpen = useSelector((store: RootState) => store.navigation.navbar);
   const { user } = useSelector((store: RootState) => store.auth);
   const dispatch = useDispatch();
@@ -27,6 +29,19 @@ function Sidebar() {
   const handleRouteClick = (config: SingleConfig) => {
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
+      clearInterval(interval);
+      setLocalInterval(undefined);
+    } else {
+      if (interval) {
+        //intervalId.refresh();
+      } else {
+        //start interval here
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        let localInterval = setInterval(() => {
+          dispatch(getAllChats());
+        }, 1000 * 55);
+        setLocalInterval(localInterval);
+      }
     }
 
     history.push(`/${config.path}`);
@@ -49,6 +64,22 @@ function Sidebar() {
     dispatch(appActions.toggleNavbar());
   };
 
+  useEffect(() => {
+    if (window.location.pathname !== "/chat") {
+      return;
+    }
+    if (interval) {
+      // intervalId.refresh();
+    } else {
+      //start interval here
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      let local = setInterval(() => {
+        dispatch(getAllChats());
+      }, 1000 * 55);
+      setLocalInterval(local);
+    }
+  }, []);
+
   return (
     <OutsideClickHandler
       onOutsideClick={toggleSidebar}
@@ -66,16 +97,17 @@ function Sidebar() {
           {configs &&
             Object.values(configs).map((config: any) => {
               if (user && config.title === "Admin" && user.role !== "admin") {
-                return <React.Fragment key= {config.title}/> 
+                return <React.Fragment key={config.title} />;
               }
 
               return (
                 <div
                   key={config.title}
-                  className={`${classes.menue} ${window.location.pathname.includes(config.path)
-                    ? classes.active
-                    : ""
-                    }`}
+                  className={`${classes.menue} ${
+                    window.location.pathname.includes(config.path)
+                      ? classes.active
+                      : ""
+                  }`}
                   onClick={() => handleRouteClick(config)}
                 >
                   <div className={classes.iconWrapper}>
@@ -90,6 +122,7 @@ function Sidebar() {
                   <div className={classes.badge}>
                     {config.notification > 0 && (
                       <Badge
+                        overlap="circular"
                         badgeContent={config.notification}
                         color="error"
                       ></Badge>
@@ -98,7 +131,6 @@ function Sidebar() {
                 </div>
               );
             })}
-
         </div>
 
         {/* <div className={classes.help}>

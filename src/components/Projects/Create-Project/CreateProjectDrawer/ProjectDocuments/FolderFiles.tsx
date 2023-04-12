@@ -120,7 +120,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
       // {...getRootProps({
       //   onClick: (event: any) => event.stopPropagation(),
       // })}
-      style={{ minHeight: props.height }}
+      style={{ minHeight: props.height, height:'100%' }}
     >
       {/* <input {...getInputProps()} /> */}
       <TableContainer>

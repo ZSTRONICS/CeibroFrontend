@@ -2,22 +2,21 @@
 import { ALL_MESSAGE_SEEN, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_SEEN, UNREAD_MESSAGE_COUNT, USER_JOINED_ROOM } from 'config/chat.config';
 
 class WebSocketService {
-
   public static socket: any
-  public static selectedChat: any
+  public static selectedChatId: any
+  userId: string = ""
   pendingMessages: { type: string; data: string; }[] = [];
   public constructor() {
     WebSocketService.socket = null;
-    WebSocketService.selectedChat = null;
-
+    WebSocketService.selectedChatId = null;
   }
 
   public setAppSelectedChat(chat: any) {
-    WebSocketService.selectedChat = chat
+    WebSocketService.selectedChatId = chat
   }
 
   public getAppSelectedChat() {
-    return WebSocketService.selectedChat
+    return WebSocketService.selectedChatId
   }
 
   public isSocketConnected() {
@@ -40,6 +39,11 @@ class WebSocketService {
       })
       this.pendingMessages = []
     }
+    this.getUnreadMsgCount(this.userId)
+  }
+
+  public setUserId(userId: string) {
+    this.userId = userId;
   }
 
   public logoutSocketsIO() {

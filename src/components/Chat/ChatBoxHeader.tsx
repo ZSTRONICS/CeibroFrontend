@@ -36,12 +36,12 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const {
     upScrollLoading,
     chat: allChats,
-    selectedChat,
+    selectedChatId,
   } = useSelector((store: RootState) => store.chat);
 
-  const myChat =
-    allChats?.length > 0 &&
-    allChats?.find?.((room: any) => String(room._id) === String(selectedChat));
+  const myChat = allChats?.find?.(
+    (room: any) => String(room._id) === String(selectedChatId)
+  );
   const individualChatName = myChat?.members?.find(
     (member: any) => member._id !== user._id
   );
@@ -58,9 +58,9 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
         success: () => {
           setEdit(false);
           // let allRooms = JSON.parse(JSON.stringify(allChats));
-           const index = allChats?.length > 0 &&
-             allChats.findIndex(
-               (room: any) => String(room._id) === String(selectedChat));
+          const index = allChats?.findIndex(
+            (room: any) => String(room._id) === String(selectedChatId)
+          );
           if (index > -1) {
             allChats[index].name = name;
             dispatch(getAllChats());
@@ -82,7 +82,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
       handleUpdate();
     }
   };
- 
+
   return (
     <>
       <Grid container className={classes.wrapper}>
@@ -96,7 +96,16 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
         )}
         {myChat && (
           <>
-            <Grid item xs={6} md={2} className={`${myChat?.isGroupChat !== false?classes.editWrapper:classes.eidtContainer}`}>
+            <Grid
+              item
+              xs={6}
+              md={2}
+              className={`${
+                myChat?.isGroupChat !== false
+                  ? classes.editWrapper
+                  : classes.eidtContainer
+              }`}
+            >
               {!edit && (
                 <>
                   {myChat?.project && (
@@ -133,7 +142,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
               {edit ? (
                 <div className={`${classes.editInputWrapper} editInputWrapper`}>
                   <TextField
-                    style={{ textTransform:'capitalize'}}
+                    style={{ textTransform: "capitalize" }}
                     inputProps={{ maxLength: 20 }}
                     value={name}
                     onChange={handleNameChange}
@@ -173,7 +182,9 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             </Grid>
             <Grid item xs={8} className={classes.moreWrapper}>
               <MessageSearch />
-             {myChat?.isGroupChat !== false&& <ChatUserMenu enable={props?.enable} />}
+              {myChat?.isGroupChat !== false && (
+                <ChatUserMenu enable={props?.enable} />
+              )}
             </Grid>
           </>
         )}
@@ -223,7 +234,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   username: {
-   textTransform:'capitalize',
+    textTransform: "capitalize",
     fontSize: 14,
     fontWeight: "bold",
     whiteSpace: "nowrap",
@@ -232,7 +243,7 @@ const useStyles = makeStyles({
     textOverflow: "ellipsis",
     // width: "120px",
   },
-  eidtContainer:{
+  eidtContainer: {
     display: "flex",
     alignItems: "center",
   },

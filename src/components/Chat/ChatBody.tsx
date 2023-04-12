@@ -20,14 +20,15 @@ interface ChatBodyInt {
 }
 
 const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
-  const messages: ChatMessageInterface[] = useSelector((store: RootState) => store.chat.messages);
-  const selectedChat: any = useSelector((store: RootState) => store.chat.selectedChat);
+  const {messages, chat,selectedChatId }= useSelector((store: RootState) => store.chat);
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  if (!selectedChat) {
+  if (!selectedChatId) {
     return <NoData title="There is no conversation" icon={<Chat className={classes.chatIcon} />}/>;
   }
+
+  const isGroupChat = selectedChatId? chat.find((room: any) => String(room._id) === String(selectedChatId))?.isGroupChat:[]
 
   const goToBottom: any = document.getElementById("goToBottom");
   const handleGoToBottom=()=>{
@@ -39,7 +40,7 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
     goToBottom.onclick = function() {handleGoToBottom()};
   }
 
-  const messageBot = messages?.map((message: any) => {
+  const messageBot = messages?.map((message: ChatMessageInterface) => {
     if (message.type === "start-bot") {
       return moment.utc(moment(message.createdAt)).fromNow();
     }
@@ -74,19 +75,19 @@ const ChatBody: React.FC<ChatBodyInt> = React.memo((props) => {
           <Typography>{messageBot}</Typography>
         </Box>}
         {messages &&
-          messages?.filter((message: any) => message.type !== "start-bot")
+          messages?.filter((message: ChatMessageInterface) => message.type !== "start-bot")
             .map((message: ChatMessageInterface) => {
-              if (message.chat === selectedChat) {
+              if (message.chat === selectedChatId) {
                 return (<>
-                  <MessageChat message={message} enable={props.enable} />
+                  <MessageChat message={message} enable={props.enable} isGroupChat={isGroupChat}/>
                 </>
                 );
               } else {
                 return null;
               }
             })} 
-        <AddTempChatMember />
-      </Grid>
+      </Grid> 
+      <AddTempChatMember />
     </>
   );
 });

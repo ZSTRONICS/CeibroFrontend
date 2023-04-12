@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
@@ -33,7 +34,6 @@ import { RootState } from "./redux/reducers";
 import myStore from "redux/store";
 import {
   getAllChats,
-  updateMessageById,
   unreadMessagesCount,
   replaceMessagesById,
 } from "redux/action/chat.action";
@@ -46,6 +46,8 @@ import {
   RECEIVE_MESSAGE,
   REFRESH_CHAT,
   UNREAD_MESSAGE_COUNT,
+  UPDATE_CHAT_LAST_MESSAGE,
+  UPDATE_MESSAGE_BY_ID,
 } from "config/chat.config";
 
 // axios
@@ -75,10 +77,14 @@ import {
 } from "redux/action/project.action";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 import { USER_CONFIG } from "config/user.config";
-import { getMyAllInvites, getMyConnections, getMyConnectionsCount, getMyInvitesCount } from "redux/action/user.action";
+import {
+  getMyConnections,
+  getMyConnectionsCount,
+  getMyInvitesCount,
+} from "redux/action/user.action";
 import { error } from "console";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
@@ -100,7 +106,7 @@ const App: React.FC<MyApp> = () => {
   );
 
   useEffect(() => {
-    runOneSignal()
+    runOneSignal();
   }, []);
 
   // const [authToken, setAuthToken] = useState<string>("");
@@ -185,20 +191,16 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      InitOneSignal(String(user._id));
 
-      InitOneSignal(String(user._id))
-
-      // dispatch(taskActions.openSubtaskDetailDrawer())
-      // dispatch(taskActions.openTaskDrawer())
       if (socket.getSocket() !== null) {
         return;
       } else {
         try {
           if (!socket.isSocketConnected()) {
-            socket.getSocket().connect()
+            socket.getSocket().connect();
           }
-        } catch (e) {
-        }
+        } catch (e) {}
       }
 
       const tokens = localStorage.getItem("tokens") || "{}";
@@ -213,6 +215,7 @@ const App: React.FC<MyApp> = () => {
       // Listen for connect event
       sock.on("connect", () => {
         console.log("Connected to server");
+        socket.setUserId(String(user._id));
         socket.setSocket(sock);
         clearInterval(intervalId);
       });
@@ -224,8 +227,7 @@ const App: React.FC<MyApp> = () => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
-        }, 1000)
-
+        }, 1000);
       });
       // Listen for reconnect event
       sock.on("reconnect", (attemptNumber: number) => {
@@ -239,7 +241,7 @@ const App: React.FC<MyApp> = () => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
-        }, 1000)
+        }, 1000);
       });
 
       sock.on("token_invalid", () => {
@@ -294,55 +296,49 @@ const App: React.FC<MyApp> = () => {
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
-        console.log('event received', eventType, payload);
+        console.log("event received", eventType, payload);
         switch (eventType) {
           case RECEIVE_MESSAGE:
             {
-              dispatch(getAllChats());
-              socket.getUnreadMsgCount(user._id);
-
-              const selectedChat = socket.getAppSelectedChat();
+              const selectedChatId = socket.getAppSelectedChat();
               const data = payload.data;
-
-              if (String(data.from) !== String(user?._id)) {
-                if (String(data.chat) === String(selectedChat)) {
+              if (String(data.from) !== String(user._id)) {
+                if (String(data.chat) === String(selectedChatId)) {
                   dispatch({
                     type: PUSH_MESSAGE_BY_OTHER,
                     payload: data.message,
                   });
+
                   socket.sendMessageSeen(
                     user._id,
-                    selectedChat,
+                    selectedChatId,
                     data.message._id
                   );
                 } else {
-                  socket.getUnreadMsgCount(user._id);
-                  //dispatch(getAllChats());
                 }
-              } else if (String(data.chat) === String(selectedChat)) {
+              } else if (String(data.chat) === String(selectedChatId)) {
                 if (isMessageInStore(payload.myId)) {
-                  dispatch(
-                    updateMessageById({
+                  dispatch({
+                    type: UPDATE_MESSAGE_BY_ID,
+                    payload: {
                       other: {
                         oldMessageId: payload.myId,
                         newMessage: data.message,
                       },
-                    })
-                  );
+                    },
+                  });
                 } else {
-                  if (String(data.from) === String(user?._id)) {
-                    dispatch({
-                      type: PUSH_MESSAGE_BY_OTHER,
-                      payload: data.message,
-                    });
-                  } else {
-                    dispatch({
-                      type: PUSH_MESSAGE,
-                      payload: data.message,
-                    });
-                  }
+                  dispatch({
+                    type: PUSH_MESSAGE_BY_OTHER,
+                    payload: data.message,
+                  });
                 }
               }
+              dispatch({
+                type: UPDATE_CHAT_LAST_MESSAGE,
+                payload: payload.data,
+              });
+              socket.getUnreadMsgCount(user._id);
             }
             break;
 
@@ -371,8 +367,9 @@ const App: React.FC<MyApp> = () => {
               if (payload.updatedMessage.length === 0) {
                 return;
               }
-              const selectedChat = socket.getAppSelectedChat();
-              if (payload.roomId === selectedChat) {
+              const selectedChatId = socket.getAppSelectedChat();
+             
+              if (String(payload.roomId) === String(selectedChatId)) {
                 if (
                   payload.updatedMessage &&
                   payload.updatedMessage.length > 0
@@ -593,12 +590,15 @@ const App: React.FC<MyApp> = () => {
             break;
           // project documents and files socket events
           case PROJECT_CONFIG.REFRESH_ROOT_DOCUMENTS:
-            dispatch(getAllDocuments({ other: { selectedProject: data.projectId } }));
+            dispatch(
+              getAllDocuments({ other: { selectedProject: data.projectId } })
+            );
             break;
 
           case PROJECT_CONFIG.REFRESH_FOLDER:
             dispatch(
-              getFolderFiles({ other: { selectedFolder: data.folderId }, }));
+              getFolderFiles({ other: { selectedFolder: data.folderId } })
+            );
             break;
 
           case PROJECT_CONFIG.REFRESH_PROJECT_MEMBERS:
@@ -607,7 +607,7 @@ const App: React.FC<MyApp> = () => {
 
           case USER_CONFIG.REFRESH_INVITATIONS:
             dispatch(getMyInvitesCount());
-            break
+            break;
 
           case USER_CONFIG.REFRESH_PROJECT_MEMBERS:
             dispatch(
@@ -617,12 +617,12 @@ const App: React.FC<MyApp> = () => {
                 },
               })
             );
-            break
+            break;
 
           case USER_CONFIG.REFRESH_CONNECTIONS:
             dispatch(getMyConnections());
             dispatch(getMyConnectionsCount());
-            break
+            break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
             try {
@@ -642,7 +642,6 @@ const App: React.FC<MyApp> = () => {
       });
     }
   }, [isLoggedIn]);
-
 
   return (
     <div className="App">
