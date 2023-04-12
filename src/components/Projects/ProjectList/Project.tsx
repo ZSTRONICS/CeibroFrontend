@@ -152,20 +152,46 @@ const Project = () => {
 
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
 
-  const getHeaderHeight = () => {
-    let contentHeight =
-      window.innerHeight - (headerRef.current.clientHeight + 100);
-    return `${contentHeight}px`;
+  const [headerHeight, setHeaderHeight] = useState<string>("");
+  let isTimeOut: NodeJS.Timeout;
+  
+ useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      getHeaderHeight();
+    } else {
+      windowResized();
+    }
+    window.addEventListener("resize", windowResized);
+  });
+
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 50);
   };
 
-  useEffect(() => {
-    if (headerRef.current.clientHeight) {
-      setTimeout(() => {
+  const getHeaderHeight = () => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 105);
+      const height = `${contentHeight}px`;
+      setHeaderHeight(height);
+      if (showProjectList === false) {
         setShowProjectList(true);
-      }, 100);
+      }
+      if(isTimeOut && isTimeOut.hasRef()){
+        isTimeOut.unref();
+      }
+    } else {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 50);
+      }else{
+        isTimeOut.refresh()
+      }
     }
-    window.addEventListener("resize", getHeaderHeight);
-  }, []);
+  };
 
   return (
     <>
@@ -303,9 +329,9 @@ const Project = () => {
           item
           // className={classes.TaskListMain}
           sx={{
-            overflow: "auto",
+            overflowY: "auto",
           }}
-          maxHeight={getHeaderHeight}
+          maxHeight={headerHeight}
         >
           <ProjectList allProjects={filteredData} />
         </Grid>

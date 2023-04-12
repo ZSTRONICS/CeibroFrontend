@@ -43,7 +43,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <PrivateRoute path="/admin" component={AdminMain} />
           </AppLayout>
         </Switch>
-      </Router> 
+      </Router>
     </>
   );
 };

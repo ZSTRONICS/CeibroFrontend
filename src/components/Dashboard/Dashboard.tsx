@@ -3,15 +3,20 @@ import { Grid } from "@material-ui/core";
 import ProjectSection from "./ProjectSection";
 import TaskSection from "./TaskSection";
 import SmartMenuBar from "./SmartMenuBar";
-import { getAllProjects, getAllProjectsWithMembers } from "redux/action/project.action";
+import {
+  getAllProjects,
+  getAllProjectsWithMembers,
+} from "redux/action/project.action";
 import { useDispatch } from "react-redux";
 import { getAllTask } from "redux/action/task.action";
-import { getMyConnectionsCount, getMyInvitesCount } from "redux/action/user.action";
+import {
+  getMyConnectionsCount,
+  getMyInvitesCount,
+} from "redux/action/user.action";
 
 const Dashboard = () => {
   const headerRef: any = useRef();
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
-  const [projectHeight, setProjectHeight] = useState<string>(" ");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -29,16 +34,43 @@ const Dashboard = () => {
       }, 50);
     }
   });
-  
-  const getHeaderHeight = () => {
-    if (headerRef.current === undefined) {
-      return;
+
+  const [headerHeight, setHeaderHeight] = useState<string>("");
+  let isTimeOut: NodeJS.Timeout;
+  useEffect(() => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      getHeaderHeight();
+    } else {
+      windowResized();
     }
-    let contentHeight =
-      window.innerHeight - (headerRef.current.clientHeight + 140);
-    return `${contentHeight}px`;
+    window.addEventListener("resize", windowResized);
+  });
+
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 50);
   };
-  window.addEventListener("resize", getHeaderHeight);
+
+  const getHeaderHeight = () => {
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 138);
+      const height = `${contentHeight}px`;
+      setHeaderHeight(height);
+      if (isTimeOut && isTimeOut.hasRef()) {
+        isTimeOut.unref();
+      }
+    } else {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 50);
+      }else{
+        isTimeOut.refresh()
+      }
+    }
+  };
 
   return (
     <>
@@ -47,7 +79,7 @@ const Dashboard = () => {
         <TaskSection />
       </Grid>
       <Grid item>
-        {showProjectList === true && <ProjectSection height={getHeaderHeight()} />}
+        {showProjectList === true && <ProjectSection height={headerHeight} />}
       </Grid>
     </>
   );

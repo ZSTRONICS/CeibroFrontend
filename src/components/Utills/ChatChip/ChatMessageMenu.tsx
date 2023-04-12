@@ -15,17 +15,18 @@ import ForwardMessage from './ForwardMessage'
 
 interface ChatMessageMenueInt {
     message: ChatMessageInterface
+    isGroupChat:boolean
 }
 
 const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
     const { user } = useSelector((state: RootState) => state.auth);
-    const { message } = props;
+    const { message, isGroupChat } = props;
     const classes = useStyles()
     const [show, setShow] = useState(false);
     const dispatch = useDispatch();
     const [open, setOpen] = useState<boolean>(false);
 
-    const handleToggle = (e: any) => {
+    const handleToggle = (e:any) => {
         e.stopPropagation();
         setShow(!show)
     }
@@ -36,20 +37,24 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
             type: SET_REPLY_TO_ID,
             payload: message?._id
         });
-        setShow(false);
+        handleToggle(e)
     }
 
     const addTempMember = (e: any) => {
         e?.stopPropagation();
         dispatch(setTempMembersDialog(true));
+        handleToggle(e)
     }
 
-    const openDialog = () => {
+    const openDialog = (e:any) => {
+        e.stopPropagation();
         setOpen(true);
+        handleToggle(e)
     }
 
     const closeDialog = () => {
         setOpen(false);
+        setShow(false);
     }
 
     return (
@@ -75,8 +80,8 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
                                 </Typography>
                             </div>
                         }
+                       {isGroupChat===true&& <>
                         <hr className={classes.break} />
-
                         <div className={`${classes.menuWrapper} dropdown-menu`}>
                             <BiTask className={classes.menuIcon} />
                             <Typography className={classes.menuText}>
@@ -85,13 +90,13 @@ const ChatMessageMenu: React.FC<ChatMessageMenueInt> = props => {
                         </div>
 
                         <hr className={classes.break} />
-
                         <div onClick={addTempMember} className={`${classes.menuWrapper} dropdown-menu`}>
                             <PersonAddOutlined className={classes.menuIcon} />
                             <Typography className={`${classes.menuText}`}>
                                 Add temporary member
                             </Typography>
                         </div>
+                        </>}
                     </div>
                 </OutsideClickHandler>
             )

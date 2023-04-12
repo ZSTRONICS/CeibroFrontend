@@ -15,11 +15,12 @@ import {
   SET_REPLY_TO_ID,
   SEND_MESSAGE,
   CHAT_EVENT_REQ_OVER_SOCKET,
+  UPDATE_MESSAGE_BY_ID,
+  SORT_CHAT_LIST_ORDER,
 } from "../../config/chat.config";
 import {
   openQuestioniarDrawer,
   sendReplyMessage,
-  updateMessageById,
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
@@ -43,7 +44,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const classes = useStyles();
   const {
     chat: chats,
-    selectedChat,
+    selectedChatId,
     replyToId,
     messages,
   } = useSelector((state: RootState) => state.chat);
@@ -52,14 +53,18 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
-  const myChat = chats?.find((room: any) => String(room._id) === String(selectedChat));
-  const canEditMessg =myChat?.members?.some((member:UserInterface)=>String(member._id)===String(user._id))
+  const myChat = chats?.find(
+    (room: any) => String(room._id) === String(selectedChatId)
+  );
+  const canEditMessg = myChat?.members?.some(
+    (member: UserInterface) => String(member._id) === String(user._id)
+  );
 
   useEffect(() => {
     setFiles(null);
     setFilesPreview(null);
     setText("");
-  }, [selectedChat]);
+  }, [selectedChatId]);
 
   const onEmojiClick = (e: any, emojiObj: any) => {
     if (!canEditMessg) {
@@ -119,7 +124,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     if (text) {
       let payload: any = {};
       payload.message = text.trim();
-      payload.chat = selectedChat;
+      payload.chat = selectedChatId;
       payload.type = "message";
       messageRef.current.focus();
 
@@ -157,6 +162,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       };
 
       socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
+
       const chatBox = document.getElementById("chatBox");
       const newMessage = {
         sender: user,
@@ -167,7 +173,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         myMessage: user._id,
         _id: myId,
         pinnedBy: [],
-        chat: selectedChat,
+        chat: selectedChatId,
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
@@ -179,6 +185,12 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         type: PUSH_MESSAGE,
         payload: newMessage,
       });
+
+      dispatch({
+        type: SORT_CHAT_LIST_ORDER,
+        payload: selectedChatId,
+      });
+
       handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
@@ -241,7 +253,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setShowRecorder(false);
       const formdata = new FormData();
       formdata.append("type", "voice");
-      formdata.append("chat", selectedChat);
+      formdata.append("chat", selectedChatId);
       formdata.append("products", blob.blob, `${new Date().valueOf()}.mp3`);
 
       let replyMessage = null;
@@ -264,14 +276,15 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       const payload: any = {
         body: formdata,
         success: (res: any) => {
-          dispatch(
-            updateMessageById({
+          dispatch({
+            type: UPDATE_MESSAGE_BY_ID,
+            payload: {
               other: {
                 oldMessageId: myId,
                 newMessage: res.data,
               },
-            })
-          );
+            },
+          });
         },
       };
       dispatch(sendReplyMessage(payload));
@@ -283,7 +296,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     }
   };
 
-  if (!selectedChat) {
+  if (!selectedChatId) {
     return null;
   }
 
@@ -350,9 +363,9 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
                   onChange={handleTextChange}
                   onKeyPress={handleKeyDown}
                   type="text"
-                  disabled={!selectedChat || !canEditMessg}
+                  disabled={!selectedChatId || !canEditMessg}
                   placeholder={
-                    selectedChat
+                    selectedChatId
                       ? canEditMessg
                         ? "Type a message"
                         : "You were removed from this chat"
@@ -412,7 +425,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               })}
           </Grid>
         )} */}
-        {/* {selectedChat && (
+        {/* {selectedChatId && (
           // <Grid item xs={12} className={classes.btnWrapper}>
           //   <img
           //     alt=""

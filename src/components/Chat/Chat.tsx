@@ -40,7 +40,7 @@ const Chat = () => {
   const { blockDown } = useSelector((state: RootState) => state.chat);
 
   const {
-    selectedChat,
+    selectedChatId,
     sidebarOpen,
     chat: allChats,
   } = useSelector((state: RootState) => state.chat);
@@ -59,10 +59,10 @@ const Chat = () => {
   }, []);
 
   useEffect(() => {
-    if (selectedChat) {
-      socket.joinChatRoom(user._id, selectedChat);
+    if (selectedChatId) {
+      socket.joinChatRoom(user._id, selectedChatId);
       const myChat = allChats?.find?.(
-        (room: any) => String(room._id) === String(selectedChat)
+        (room: any) => String(room._id) === String(selectedChatId)
       );
 
       if (myChat) {
@@ -79,9 +79,9 @@ const Chat = () => {
       socket.setAppSelectedChat(null);
     }
     return (): void => {
-      selectedChat;
+      selectedChatId;
     };
-  }, [selectedChat]);
+  }, [selectedChatId]);
 
   function gotoMsg(messageId: any): Boolean {
     const elem = document.getElementById(messageId);
@@ -138,7 +138,7 @@ const Chat = () => {
   return (
     <>
       {/* right sidebar for chat actions */}
-      {selectedChat && <MediaSidebar enable={enable} />}
+      {selectedChatId && <MediaSidebar enable={enable} />}
       <Grid
         container
         className={classes.wrapper}
@@ -152,7 +152,6 @@ const Chat = () => {
             "@media(max-width:1024px)": {},
           }}
           xs={4}
-
           md={sidebarOpen && !isTabletOrMobile ? 4 : 3.6}
         >
           <ChatSidebar />
@@ -183,8 +182,8 @@ export default Chat;
 
 const useStyles = makeStyles({
   wrapper: {
-    "@media(max-width:1024px)":{
-      padding:"10px 10px",
+    "@media(max-width:1024px)": {
+      padding: "10px 10px",
     },
     background: colors.white,
     position: "relative",

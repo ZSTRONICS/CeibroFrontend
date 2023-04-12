@@ -38,7 +38,7 @@ DrawerHeader.propTypes = {
 const useStyles = makeStyles({
   drawerHeader: {
     backgroundColor: colors.white,
-    height: 70,
+    height: 60,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",

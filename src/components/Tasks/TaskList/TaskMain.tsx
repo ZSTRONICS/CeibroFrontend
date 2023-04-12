@@ -47,7 +47,7 @@ const TaskMain = () => {
   const [date, setDate] = useState<string>("");
   const [assignToOpt, setAssignToOpt] = useState<any>([]);
   const [assignToList, setAssignToList] = React.useState<any>([]);
-
+  const [headerHeight, setHeaderHeight] = useState<string>("");
   const [filterParams, setFilterParams] = useState({
     dueDate: "",
     assignedTo: [],
@@ -64,19 +64,43 @@ const TaskMain = () => {
   const headerRef: any = useRef();
 
   const [showTaskList, setShowTaskList] = useState<boolean>(false);
+  let isTimeOut: NodeJS.Timeout;
   useEffect(() => {
-    if (headerRef.current.clientHeight) {
-      setTimeout(() => {
-        setShowTaskList(true);
-      }, 100);
+    if (headerRef.current && headerRef.current.clientHeight) {
+      getHeaderHeight();
+    } else {
+      windowResized();
     }
-    window.addEventListener("resize", getHeaderHeight);
+    window.addEventListener("resize", windowResized);
   });
 
+  const windowResized = () => {
+    setTimeout(() => {
+      getHeaderHeight();
+    }, 50);
+  };
+
   const getHeaderHeight = () => {
-    let contentHeight =
-      window.innerHeight - (headerRef.current.clientHeight + 135);
-    return `${contentHeight}px`;
+    if (headerRef.current && headerRef.current.clientHeight) {
+      let contentHeight =
+        window.innerHeight - (headerRef.current.clientHeight + 136);
+      const height = `${contentHeight}px`;
+      setHeaderHeight(height);
+      if (showTaskList === false) {
+        setShowTaskList(true);
+      }
+      if(isTimeOut && isTimeOut.hasRef()){
+        isTimeOut.unref();
+      }
+    } else {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
+        isTimeOut = setTimeout(() => {
+          getHeaderHeight();
+        }, 50);
+      }else{
+        isTimeOut.refresh()
+      }
+    }
   };
 
   const options = [
@@ -234,7 +258,7 @@ const TaskMain = () => {
           spacing={1}
           rowGap={1.25}
           className={classes.TaskWraper}
-          alignItems='baseline'
+          alignItems="baseline"
           ref={headerRef}
         >
           <Grid
@@ -309,8 +333,8 @@ const TaskMain = () => {
               />
             </InputHOC>
           </Grid>
-          <Grid 
-          // md={3} xs={12} sm={6}
+          <Grid
+            // md={3} xs={12} sm={6}
             item
             sx={{
               height: "38px",
@@ -322,7 +346,7 @@ const TaskMain = () => {
               <Autocomplete
               className="autocompleteContainer"
                 filterSelectedOptions
-                disablePortal ={false}
+                disablePortal={false}
                 sx={{ width: "100%" }}
                 id="assignedTo"
                 disabled={filterParams.project !== "" ? false : true}
@@ -350,7 +374,7 @@ const TaskMain = () => {
             </InputHOC>
           </Grid>
 
-           <Box
+          <Box
             // mt={1}
             // gap={2.4}
             sx={{
@@ -391,7 +415,7 @@ const TaskMain = () => {
                 label="Assigned to me"
               />
             </Grid>
-          </Box> 
+          </Box>
           {/* <Grid  container item xs={xsPoint} md={3} sm= {12} lg={2} gap={2} alignItems='baseline'  className={classes.activeConainer}>
         <CustomizedSwitch
           // onChange={(e:any)=>handleChange(e)}
@@ -420,17 +444,13 @@ const TaskMain = () => {
       </Box>
 
       {showTaskList ? (
-        <Box
-        >
+        <Box>
           <Grid
             sx={{
               overflowY: "auto",
-              height: "100vh",
-              paddingBottom: "50px",
             }}
-            paddingTop={"20px"}
-            paddingBottom={"20px"}
-            maxHeight={getHeaderHeight}
+            paddingTop="20px"
+            maxHeight={headerHeight}
             item
             xs={12}
           >
@@ -438,7 +458,7 @@ const TaskMain = () => {
           </Grid>
         </Box>
       ) : (
-        <div> Loading tasks</div>
+        <div> Loading Tasks...</div>
       )}
     </>
   );

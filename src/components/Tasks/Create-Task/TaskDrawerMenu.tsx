@@ -684,9 +684,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
             </CBox>
           </CBox>
         </Grid>
-      </Grid>
-
-      {state === State.Draft && !showUpdateBtn && (
+        {state === State.Draft && !showUpdateBtn && (
         <Grid
           container
           justifyContent="flex-end"
@@ -814,6 +812,9 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           </Grid>
         </Grid>
       )}
+      </Grid>
+
+     
       <CustomModal
         showCloseBtn={false}
         isOpen={imageAttach}
@@ -867,6 +868,10 @@ const useStyles = makeStyles({
     color: "white",
   },
   outerWrapper: {
+    maxHeight:'calc(100vh - 60px)',
+    overflowY:'auto',
+    overflowX:'hidden',
+
     padding: "10px 23px",
     // background: colors.white,
   },

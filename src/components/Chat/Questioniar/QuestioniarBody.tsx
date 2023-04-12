@@ -5,7 +5,10 @@ import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import colors from "../../../assets/colors";
-import { PUSH_MESSAGE } from "../../../config/chat.config";
+import {
+  PUSH_MESSAGE,
+  UPDATE_MESSAGE_BY_ID,
+} from "../../../config/chat.config";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
 import {
@@ -18,7 +21,6 @@ import {
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById,
 } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
 import { dbUsers } from "../../Topbar/CreateIndividualChat";
@@ -32,13 +34,13 @@ import CustomizedSwitch from "./IOSSwitch";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, createQuestioniarLoading, selectedChat, chat } =
+  const { questioniars, createQuestioniarLoading, selectedChatId, chat } =
     useSelector((store: RootState) => store.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   /////
-  // const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
-  const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) === String(selectedChat))
+  // const { selectedChatId, chat } = useSelector((state: RootState) => state.chat);
+  const membersList = selectedChatId
+    ? chat.find((room: any) => String(room._id) === String(selectedChatId))
         ?.members
     : [];
   ////
@@ -60,7 +62,7 @@ const QuestioniarBody = () => {
 
   useEffect(() => {
     setValue(removeCurrentUser(dbUsers, user?._id));
-    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChatId))
   }, []);
 
   const handleChangePreview = (e: any) => {
@@ -112,20 +114,21 @@ const QuestioniarBody = () => {
         members: members.map((obj: any) => obj.value),
         dueDate: dueDate,
         questions: questioniars,
-        chat: selectedChat,
+        chat: selectedChatId,
         title,
       },
       success: (res: any) => {
         toast.success("Questioniar sent");
-        dispatch(
-          updateMessageById({
+        dispatch({
+          type: UPDATE_MESSAGE_BY_ID,
+          payload: {
             other: {
               oldMessageId: myId,
               newMessage: res.data,
             },
-          })
-        );
-        dispatch(getRoomQuestioniars({ other: selectedChat }));
+          },
+        });
+        dispatch(getRoomQuestioniars({ other: selectedChatId }));
       },
     };
     !createQuestioniarLoading && dispatch(saveQuestioniar(payload));

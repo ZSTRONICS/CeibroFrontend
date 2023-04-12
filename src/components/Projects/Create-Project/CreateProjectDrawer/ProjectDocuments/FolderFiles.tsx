@@ -8,11 +8,15 @@ import {
   TableContainer,
   TableHead,
   TableRow,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import { Tooltip } from "@mui/material";
-import { AssignedTag, CustomBadge, CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import {
+  AssignedTag,
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
 import { Creator } from "constants/interfaces/project.interface";
@@ -21,7 +25,7 @@ import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   getFolderFiles,
-  uploadFileToFolder
+  uploadFileToFolder,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import colors from "../../../../../assets/colors";
@@ -29,6 +33,7 @@ import FileViewDrawer from "./FileViewDrawer";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
+  height: string;
 }
 
 const FolderFiles: React.FC<FolderFilesInt> = (props) => {
@@ -100,10 +105,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
             );
           } else {
             return (
-              <span
-                style={{ textTransform: "capitalize" }}
-                key={item._id}
-              >{`${item.firstName} ${item.surName}`}
+              <span style={{ textTransform: "capitalize" }} key={item._id}>
+                {`${item.firstName} ${item.surName}`}
                 <br />
               </span>
             );
@@ -117,11 +120,15 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
       // {...getRootProps({
       //   onClick: (event: any) => event.stopPropagation(),
       // })}
-      style={{ minHeight: 300 }}
+      style={{ minHeight: props.height, height:'100%' }}
     >
       {/* <input {...getInputProps()} /> */}
       <TableContainer>
-        <Table className={classes.table} aria-label="simple table">
+        <Table
+          stickyHeader={true}
+          className={classes.table}
+          aria-label="simple table"
+        >
           <TableHead>
             <TableRow>
               <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
@@ -139,24 +146,31 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           {!isDragActive && !loading && folderFiles.files?.length > 0 && (
             <TableBody>
               {folderFiles.files?.map((file: FileInterface) => {
-                const DateString: string = momentdeDateFormat(file.updatedAt)
+                const DateString: string = momentdeDateFormat(file.updatedAt);
                 return (
                   <TableRow key={file._id}>
                     <TableCell
-                      onClick={() => { }}
+                      onClick={() => {}}
                       style={{ display: "flex" }}
                       component="th"
                       scope="row"
                     >
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor: 'pointer', color: 'black' }}>
+                      <a
+                        href={file.fileUrl}
+                        download
+                        style={{
+                          textDecoration: "none",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
+                      >
                         <Typography
                           className={`${classes.fileName}`}
-                        // onClick={() =>handleFileClick(file.fileUrl, file.fileType)}
+                          // onClick={() =>handleFileClick(file.fileUrl, file.fileType)}
                         >
                           {file.fileName}
                         </Typography>
                       </a>
-
                     </TableCell>
                     <TableCell
                       component="th"
@@ -174,7 +188,11 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       className={classes.modifyDate}
                     >
                       {file.access.length > 0 ? (
-                        <CustomStack columnGap={0.5} rowGap={1} justifyContent="center">
+                        <CustomStack
+                          columnGap={0.5}
+                          rowGap={1}
+                          justifyContent="center"
+                        >
                           <AssignedTag>Member</AssignedTag>
                           <CustomBadge
                             overlap="circular"
@@ -235,7 +253,7 @@ export default FolderFiles;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
-    // height: "100%",
+    //  height: "100%",
     // overflow: "auto",
   },
   uploadMessage: {
@@ -263,7 +281,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
-    color: 'black',
+    color: "black",
     display: "flex",
     alignItems: "center",
     cursor: "pointer",

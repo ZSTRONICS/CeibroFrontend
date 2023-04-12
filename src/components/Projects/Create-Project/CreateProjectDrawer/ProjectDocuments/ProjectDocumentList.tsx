@@ -32,6 +32,7 @@ import ProjectAccessModal from "./ProjectAccessModal";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
+  height:string
 }
 
 const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
@@ -98,10 +99,8 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
             );
           } else {
             return (
-              <span
-                style={{ textTransform: "capitalize" }}
-                key={item._id}
-              >{`${item.firstName} ${item.surName}`}
+              <span style={{ textTransform: "capitalize" }} key={item._id}>
+                {`${item.firstName} ${item.surName}`}
                 <br />
               </span>
             );
@@ -112,10 +111,12 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   };
 
   return (
-    <>
-      <TableContainer style={{ height: "100%", paddingBottom: "100px" }}>
-        <Table className={classes.table} aria-label="simple table">
-          <TableHead>
+    <div 
+      style={{ minHeight: props.height,height: "100%",}}
+    >
+      <TableContainer >
+        <Table stickyHeader={true} className={classes.table} aria-label="simple table">
+          <TableHead >
             <TableRow>
               <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
               <TableCell className={`${classes.tableTitle}`} align="center">
@@ -203,7 +204,9 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                     <RollOverMenu
                       edit="Access"
                       showDelBtn={false}
-                      handleEdit={(e: any) => openAccessModal(e, row)} handleDelete={undefined} />
+                      handleEdit={(e: any) => openAccessModal(e, row)}
+                      handleDelete={undefined}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -215,8 +218,12 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                 return (
                   <TableRow key={file._id} className={classes.rowContainer}>
                     <TableCell scope="row">
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none', cursor: 'pointer' }}>
-                        <DocumentNameTag >{file.fileName}</DocumentNameTag>
+                      <a
+                        href={file.fileUrl}
+                        download
+                        style={{ textDecoration: "none", cursor: "pointer" }}
+                      >
+                        <DocumentNameTag>{file.fileName}</DocumentNameTag>
                       </a>
                     </TableCell>
                     <TableCell
@@ -305,7 +312,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
           />
         }
       />
-    </>
+    </div>
   );
 };
 

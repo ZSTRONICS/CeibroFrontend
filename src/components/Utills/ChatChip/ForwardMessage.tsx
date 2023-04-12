@@ -24,11 +24,11 @@ interface ForwardMessageInt {
 const ForwardMessage: React.FC<ForwardMessageInt> = (props) => {
   const classes = useStyles();
   const [selected, setSelected] = useState<string[]>([]);
-  const { chat, selectedChat } = useSelector((store: RootState) => store.chat);
+  const { chat, selectedChatId } = useSelector((store: RootState) => store.chat);
   const { open, messageId } = props;
   const dispatch = useDispatch();
 
-  const myChats = chat.filter((room: any) =>(room._id !== selectedChat));
+  const myChats = chat.filter((room: any) =>(room._id !== selectedChatId));
 
   const { user } = useSelector((state: RootState) => state.auth);
 

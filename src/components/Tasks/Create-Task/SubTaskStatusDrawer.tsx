@@ -185,6 +185,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
           <StatusMenu options={options} />
         </Paper>
       </div>
+
       <Grid
         container
         className={classes.editSubTaskinputTypes}
@@ -237,6 +238,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
           </Grid>
         )}
       </Grid>
+
       <CustomModal
         showCloseBtn={false}
         title="New Subtask"
@@ -267,14 +269,11 @@ const useStyles = makeStyles({
   statusWrapper: {
     "@media(max-width:1340px)": {
       overflowX: "auto",
-      border:'1px solid red'
     },
   },
   editSubTaskinputTypes: {
     "& .MuiGrid-grid-sm-10": {
       flexBasis: "max-content",
-      // width:'100%',
-      // maxWidth:"60%",
     },
   },
 });
