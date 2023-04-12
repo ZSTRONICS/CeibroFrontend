@@ -17,17 +17,15 @@ import { socket } from "services/socket.services";
 
 const ChatList = () => {
   const dispatch = useDispatch();
-  const { chat, type, selectedChat } = useSelector(
+  const { chat, type, selectedChatId } = useSelector(
     (state: RootState) => state.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
   const { roomMessageData } = useSelector((state: RootState) => state.chat);
-  //   const members = selectedChat
-  //   ? chat.find((room: any) => String(room._id) == String(selectedChat))
+  //   const members = selectedChatId
+  //   ? chat.find((room: any) => String(room._id) == String(selectedChatId))
   //       ?.members
   //   : [];
-
-
   const startChatRoom = (roomId: string) => {
     dispatch(
       getRoomMessages({
@@ -35,7 +33,9 @@ const ChatList = () => {
           roomId: roomId,
           limit: 20,
         },
-        success: () => { },
+        // success: (res:any) => {
+        //   console.log('res', res)
+        //  },
       })
     );
 
@@ -73,7 +73,7 @@ const ChatList = () => {
   }, [type]);
 
   const handleClick = (chat: any) => {
-    if (String(chat?._id) !== String(selectedChat)) {
+    if (String(chat?._id) !== String(selectedChatId)) {
       startChatRoom(chat._id);
     }
   };
@@ -92,7 +92,6 @@ const ChatList = () => {
                 localChat.unreadCount = roomMessageData.get(
                   localChat._id
                 ).unreadMessageCount;
-
                 localChat.lastMessage = roomMessageData.get(
                   localChat._id
                 ).lastMessage;

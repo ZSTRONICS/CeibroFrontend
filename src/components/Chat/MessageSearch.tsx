@@ -18,7 +18,7 @@ interface IAppProps {}
 
 const MessageSearch: React.FC<IAppProps> = (props) => {
   const classes = useStyles();
-  const { selectedChat } = useSelector((state: RootState) => state.chat);
+  const { selectedChatId } = useSelector((state: RootState) => state.chat);
   const [search, setSearch] = React.useState("");
   const [show, setShow] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
@@ -34,7 +34,7 @@ const MessageSearch: React.FC<IAppProps> = (props) => {
     dispatch(
       getRoomMessages({
         other: {
-          roomId: selectedChat,
+          roomId: selectedChatId,
           search: value,
         },
         success: () => {

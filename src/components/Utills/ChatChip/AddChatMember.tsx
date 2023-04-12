@@ -25,21 +25,21 @@ interface AddChatMemberProps {}
 
 const AddChatMember: React.FC<AddChatMemberProps> = () => {
   const classes = useStyles();
-  const { membersDialog, selectedChat, chat } = useSelector(
+  const { membersDialog, selectedChatId, chat } = useSelector(
     (state: RootState) => state.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
   const chatMembers =
-    chat?.find((room: any) => room._id === selectedChat)?.members || [];
+    chat?.find((room: any) => room._id === selectedChatId)?.members || [];
   const memberIds = chatMembers?.map((member: any) => member._id);
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<any>();
 
   useEffect(() => {
-    if (selectedChat && membersDialog) {
+    if (selectedChatId && membersDialog) {
       const payload = {
-        other: selectedChat,
+        other: selectedChatId,
         success: (res: any) => {
           const myUsers = mapUsers(res.data.message);
           setAvailableUsers(myUsers);
@@ -53,7 +53,7 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
     dispatch(
       addMemberToChat({
         other: {
-          roomId: selectedChat,
+          roomId: selectedChatId,
           userId: selectedUser?.value,
         },
         success: () => {

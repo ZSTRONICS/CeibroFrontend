@@ -33,7 +33,7 @@ const ProjectDocuments = () => {
   const getHeaderHeight = () => {
     if (headerRef.current && headerRef.current.clientHeight) {
       let contentHeight =
-        window.innerHeight - (headerRef.current.clientHeight + 50);
+        window.innerHeight - (headerRef.current.clientHeight + 130);
       const height = `${contentHeight}px`;
       if (showDocumentList === false) {
         setShowDocumentList(true);
@@ -43,10 +43,12 @@ const ProjectDocuments = () => {
         isTimeOut.unref();
       }
     } else {
-      if (!isTimeOut.hasRef()) {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
-        }, 10);
+        }, 50);
+      }else{
+        isTimeOut.refresh()
       }
     }
   };

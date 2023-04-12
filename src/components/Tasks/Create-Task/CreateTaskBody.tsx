@@ -22,7 +22,7 @@ const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
     if (doOnce) {
       const subTaskContainer = document.getElementById("subTaskContainer");
       if (subTaskContainer) {
-        console.log("subTaskContainer", subTaskContainer, subTaskContainer.scrollHeight, subTaskContainer.scrollTop);
+        // console.log("subTaskContainer", subTaskContainer, subTaskContainer.scrollHeight, subTaskContainer.scrollTop);
         
         subTaskContainer.scrollTop = subTaskContainer.scrollHeight;
       }
@@ -56,12 +56,12 @@ const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
         isTimeOut.unref();
       }
     } else {
-      if (!isTimeOut.hasRef()) {
+      if (!isTimeOut || !isTimeOut.hasRef()) {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
         }, 50);
       }else{
-        isTimeOut.refresh();
+        isTimeOut.refresh()
       }
     }
   };

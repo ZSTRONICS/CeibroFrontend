@@ -29,11 +29,11 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const [getUser, setGetUser] = useState<any>({});
-  const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
+  const { selectedChatId, chat } = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const members = selectedChat? chat.find((room: any) => String(room._id) === String(selectedChat))?.members: [];
-  const isGroupChat = selectedChat? chat.find((room: any) => String(room._id) === String(selectedChat))?.isGroupChat:[]
+  const members = selectedChatId? chat.find((room: any) => String(room._id) === String(selectedChatId))?.members: [];
+  const isGroupChat = selectedChatId? chat.find((room: any) => String(room._id) === String(selectedChatId))?.isGroupChat:[]
 
   const [searchText, setSearchText] = useState("");
   const confirm = useConfirm();
@@ -98,7 +98,7 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
       dispatch(
         addMemberToChat({
           other: {
-            roomId: selectedChat,
+            roomId: selectedChatId,
             userId: userId,
           },
           success: () => {

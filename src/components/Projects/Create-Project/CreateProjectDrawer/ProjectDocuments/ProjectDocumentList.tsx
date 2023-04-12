@@ -112,11 +112,11 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
 
   return (
     <div 
-      style={{ minHeight: props.height }}
+      style={{ minHeight: props.height,height: "100%",}}
     >
-      <TableContainer style={{ height: "100%", paddingBottom: "100px" }}>
+      <TableContainer >
         <Table stickyHeader={true} className={classes.table} aria-label="simple table">
-          <TableHead>
+          <TableHead >
             <TableRow>
               <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
               <TableCell className={`${classes.tableTitle}`} align="center">

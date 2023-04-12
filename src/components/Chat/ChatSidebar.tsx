@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // material
 import { makeStyles } from "@material-ui/core";
 import { Box, Grid, Typography } from "@mui/material";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   SET_CHAT_TYPE,
   SET_CHAT_SEARCH,
@@ -20,6 +20,7 @@ import ChatRoomSearch from "./ChatRoomSearch";
 import { Stack } from "@mui/system";
 import { Divider, MenuItem } from "@mui/material";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { RootState } from "redux/reducers";
 
 const ChatSidebar = () => {
   const classes = useStyles();
@@ -39,8 +40,18 @@ const ChatSidebar = () => {
       icon: assets.favouriteFilledIcon,
     },
   ];
+  const { chat } = useSelector((state: RootState) => state.chat);
+  const [filterChatLocal, setFilterChatLocal] = useState<any[]>([]);
 
   const [filter, setFilter] = useState(messageListType[0].name);
+  const [filterParams, setFilterParams] = useState({
+    searchWithNameAndGroup: "",
+  });
+
+
+  useEffect(()=>{
+    setFilterChatLocal(chat)
+  },[])
 
   const dispatch = useDispatch();
 
@@ -63,8 +74,51 @@ const ChatSidebar = () => {
       payload: value,
     });
   };
+  // const filterDataOnParams = (params: any) => {
+  //   let filtereLocal: any = [...users];
+  //   if (String(params.searchWithNameEmail).length > 0) {
+  //     filtereLocal = filtereLocal.filter((user: any) => {
+  //       const fullName = `${user?.firstName} ${user?.surName}`
+  //         .toLocaleLowerCase()
+  //         .includes(params.searchWithNameEmail.toLowerCase());
+  //       const searchEmail = String(user?.email)
+  //         .toLocaleLowerCase()
+  //         .includes(params.searchWithNameEmail.toLowerCase());
+  //       const finalResult = fullName || searchEmail;
+  //       return finalResult;
+  //     });
+  //   }
+  //   if (params.startDate !== "" || params.endDate !== "") {
+  //     filtereLocal = filtereLocal.filter((item: any) => {
+  //       const itemDate = new Date(item.createdAt);
+  //       const start = params.startDate ? new Date(params.startDate) : null;
+  //       const end = params.endDate ? new Date(params.endDate) : null;
+  //       return (!start || itemDate >= start) && (!end || itemDate <= end);
+  //     });
+  //   }
+
+  //   setFilterParams({ ...params });
+  //   if (
+  //     params.searchWithNameEmail === "" &&
+  //     params.startDate === "" &&
+  //     params.endDate === ""
+  //   ) {
+  //     //setFilterUsersLocal(users);
+  //   } 
+  //   // else {
+  //   //   setFilterUsersLocal(filtereLocal);
+  //   // }
+  // };
+  const handleChatSearch = (e: any) => {
+    if (e.target.value === "") {
+  
+    } else {
+     
+    }
+  }
 
   const handleChatRoomSearch = (e: any) => {
+
     dispatch(clearSelectedChat());
     dispatch({
       type: SET_CHAT_SEARCH,

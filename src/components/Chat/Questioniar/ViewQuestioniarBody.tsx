@@ -37,7 +37,7 @@ const QuestioniarBody = () => {
   const [loading, setLoading] = useState(false);
   const {
     questioniars,
-    selectedChat,
+    selectedChatId,
     questioniarsLoading,
     selectedQuestioniar,
     answeredByMe,
@@ -47,8 +47,8 @@ const QuestioniarBody = () => {
   const { user } = useSelector((store: RootState) => store.auth);
   const myQuestion = String(questioniarInfo?.sender) === String(user?._id);
 
-  const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+  const membersList = selectedChatId
+    ? chat.find((room: any) => String(room._id) == String(selectedChatId))
         ?.members
     : [];
 
@@ -56,7 +56,7 @@ const QuestioniarBody = () => {
 
   useEffect(() => {
     setValue(removeCurrentUser(dbUsers, user?._id));
-    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChatId))
   }, []);
 
   const everyFilled = questioniars?.every((question: any) => {

@@ -24,11 +24,11 @@ interface AddChatMemberProps {}
 
 const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
   const classes = useStyles();
-  const { tempMembersDialog, selectedChat, chat } = useSelector(
+  const { tempMembersDialog, selectedChatId, chat } = useSelector(
     (state: RootState) => state.chat
   );
   const chatMembers =
-    chat?.find((room: any) => room._id === selectedChat)?.members || [];
+    chat?.find((room: any) => room._id === selectedChatId)?.members || [];
   const memberIds = chatMembers?.map((member: any) => member._id);
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
     dispatch(
       addTempMemberToChat({
         other: {
-          roomId: selectedChat,
+          roomId: selectedChatId,
           userId: selectedUser?.value,
         },
         success: () => {
@@ -52,9 +52,9 @@ const AddTempChatMember: React.FC<AddChatMemberProps> = () => {
   };
 
   useEffect(() => {
-    if (selectedChat && tempMembersDialog) {
+    if (selectedChatId && tempMembersDialog) {
       const payload = {
-        other: selectedChat,
+        other: selectedChatId,
         success: (res: any) => {
           const myUsers = mapUsers(res.data.message);
           setAvailableUsers(myUsers);

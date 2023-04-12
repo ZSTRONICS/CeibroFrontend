@@ -29,10 +29,11 @@ import SeenBy from "./SeenBy";
 interface MessageChatProps {
   message: ChatMessageInterface;
   enable: boolean;
+  isGroupChat: boolean;
 }
 
 const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
-  const { message } = props;
+  const { message,isGroupChat } = props;
   const {
     replyOf,
     type,
@@ -48,7 +49,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
   const classes = useStyles();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { messages, selectedChat } = useSelector(
+  const { messages, selectedChatId } = useSelector(
     (state: RootState) => state.chat
   );
 
@@ -120,7 +121,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
           type: SAVE_MESSAGES,
           payload: JSON.parse(JSON.stringify(myMsgs)),
         });
-        dispatch(getPinnedMessages({ other: selectedChat }));
+        dispatch(getPinnedMessages({ other: selectedChatId }));
       },
     };
     dispatch(pinMessage(payload));
@@ -159,7 +160,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   //     const formdata = new FormData();
 
   //     formdata.append("message", text);
-  //     formdata.append("chat", selectedChat);
+  //     formdata.append("chat", selectedChatId);
 
   //     const myId = String(new Date().valueOf());
   //     const newMessage = {
@@ -185,7 +186,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
   //         );
   //         dispatch(
   //           getRoomMedia({
-  //             other: selectedChat,
+  //             other: selectedChatId,
   //           })
   //         );
   //       },
@@ -369,7 +370,7 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
                   </CBox>
                 </CBox>
               </CBox>
-              <CBox pt={1.5}>{<ChatMessageMenu message={message} />}</CBox>
+              <CBox pt={1.5}>{<ChatMessageMenu message={message} isGroupChat={isGroupChat} />}</CBox>
             </CBox>
             <CBox
               display="flex"

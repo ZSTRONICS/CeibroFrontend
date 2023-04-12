@@ -25,14 +25,14 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   let { lastMessageTime } = chat;
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const selectedChat = useSelector(
-    (state: RootState) => state.chat.selectedChat
+  const selectedChatId = useSelector(
+    (state: RootState) => state.chat.selectedChatId
   );
   
-  lastMessageTime = String(lastMessageTime).replace('a few seconds ago', '1s ago')
+  lastMessageTime = String(lastMessageTime).replace('a few seconds ago', 'now')
   lastMessageTime = String(lastMessageTime).replace('a minute ago', '1m ago')
   lastMessageTime = String(lastMessageTime).replace('an hour ago', '1h ago')
-  lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
+  //lastMessageTime = String(lastMessageTime).replace(' seconds', ' sec')
 
   lastMessageTime = String(lastMessageTime).replace(' hours', 'h')
   lastMessageTime = String(lastMessageTime).replace(' days', 'd')
@@ -69,13 +69,13 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
   };
 
   const getStyles = () => {
-    if (selectedChat === chat._id && socket.getAppSelectedChat() !== chat._id) {
+    if (selectedChatId === chat._id && socket.getAppSelectedChat() !== chat._id) {
       socket.setAppSelectedChat(chat._id);
     }
 
     return {
       backgroundColor:
-        String(selectedChat) === String(chat._id)
+        String(selectedChatId) === String(chat._id)
           ? colors.lightGrey
           : colors.white,
     };

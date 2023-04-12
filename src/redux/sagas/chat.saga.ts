@@ -73,16 +73,16 @@ const getRoomMessages = apiCall({
     // if (payload?.other?.startDate) {
     //   url = url + `startDate=${payload?.other?.startDate}&`;
     // }
-    if (payload?.other?.messageId) {
+    if (payload.other.messageId) {
       url = url + `messageId=${payload?.other?.messageId}&`;
     }
-    if (payload?.other?.skip) {
+    if (payload.other.skip) {
       url = url + `skip=${payload?.other?.skip}&`;
-     }
-    if (payload?.other?.limit) {
-      url = url + `limit=${payload?.other?.limit}`;
-     }
-     //else{
+    }
+    if (payload.other.limit) {
+      url = url + `limit=${payload.other.limit}`;
+    }
+    //else{
     //   url = url + `limit=21`
     // }
 
@@ -102,12 +102,12 @@ const getUpRoomMessages = apiCall({
     if (payload?.other?.lastMessageId) {
       apiUrl = apiUrl + `lastMessageId=${payload?.other?.lastMessageId}&`;
     }
-    if (payload?.other.skip){
+    if (payload?.other.skip) {
       apiUrl = apiUrl + `skip=${payload?.other.skip}&`
     }
     if (payload?.other?.limit) {
       apiUrl = apiUrl + `limit=${payload?.other?.limit}`;
-    }else{
+    } else {
       apiUrl = apiUrl + `limit=10`;
     }
     return apiUrl
@@ -283,7 +283,7 @@ function* goToMessage(action: ActionInterface): Generator<any> {
     const messageFound = gotoMsg(msgId)
     if (messageFound === false) {
       // if message is not in dom
-      const roomId = yield select((state: any) => state.chat.selectedChat);
+      const roomId = yield select((state: any) => state.chat.selectedChatId);
       yield put({
         type: GET_UP_MESSAGES,
         payload: {
@@ -300,11 +300,11 @@ function* goToMessage(action: ActionInterface): Generator<any> {
 
 function gotoMsg(messageId: any): Boolean {
   const elem = document.getElementById(messageId);
-  if (elem === null){
-    return false 
+  if (elem === null) {
+    return false
   }
-  const attrs:any = elem?.getAttributeNames().reduce((acc, name) => {
-    return {...acc, [name]: elem?.getAttribute(name)};
+  const attrs: any = elem?.getAttributeNames().reduce((acc, name) => {
+    return { ...acc, [name]: elem?.getAttribute(name) };
   }, {});
 
   let newStyle = String(attrs?.class) + " chatReplyBox"
@@ -314,7 +314,7 @@ function gotoMsg(messageId: any): Boolean {
       behavior: 'auto',
       block: 'center',
       inline: 'center'
-  });
+    });
     setTimeout((elem, oldclass) => {
       elem?.setAttribute("class", oldclass)
     }, 1000, elem, attrs?.class);
@@ -323,36 +323,35 @@ function gotoMsg(messageId: any): Boolean {
 }
 
 
-function* updateMessageById(action: ActionInterface): Generator<any> {
-  const { payload: { other }, } = action;
+// function* updateMessageById(action: ActionInterface): Generator<any> {
+//   const { payload: { other } } = action;
 
+//   const loadingMessages: any = yield select(
+//     (state: RootState) => state.chat.loadingMessages
+//   );
 
-  const loadingMessages: any = yield select(
-    (state: RootState) => state.chat.loadingMessages
-  );
+//   const newLoadingMessages = loadingMessages?.filter(
+//     (_id: any) => String(_id) !== String(other.oldMessageId)
+//   );
+//   yield put({
+//     type: SET_LOADING_MESSAGES,
+//     payload: [...newLoadingMessages],
+//   });
 
-  const newLoadingMessages = loadingMessages?.filter(
-    (_id: any) => String(_id) !== String(other.oldMessageId)
-  );
-  yield put({
-    type: SET_LOADING_MESSAGES,
-    payload: [...newLoadingMessages],
-  });
+//   const messages: any = yield select((state: RootState) => state.chat.messages);
+//   const index = messages?.findIndex((message: any) => {
+//     return String(message?._id) === String(other.oldMessageId);
+//   });
 
-  const messages: any = yield select((state: RootState) => state.chat.messages);
-  const index = messages?.findIndex((message: any) => {
-    return String(message?._id) === String(other.oldMessageId);
-  });
+//   if (index > -1) {
+//     messages[index] = other.newMessage;
+//   }
 
-  if (index > -1) {
-    messages[index] = other.newMessage;
-  }
-
-  yield put({
-    type: SAVE_MESSAGES,
-    payload: [...messages],
-  });
-}
+//   yield put({
+//     type: SAVE_MESSAGES,
+//     payload: [...messages],
+//   });
+// }
 
 
 
@@ -363,12 +362,12 @@ function* replaceMessagesById(action: ActionInterface): Generator<any> {
   const storeMsgs: any = yield select((state: RootState) => state.chat.messages);
 
   other.messages.forEach((element: any) => {
-    for(var i = initialIndex; i < storeMsgs.length ; i++) {
-        if(String(storeMsgs[i]?._id)  === String(element._id)) {
-            storeMsgs[i].readBy = element.readBy;
-            initialIndex = i
-            break;
-        }
+    for (var i = initialIndex; i < storeMsgs.length; i++) {
+      if (String(storeMsgs[i]?._id) === String(element._id)) {
+        storeMsgs[i].readBy = element.readBy;
+        initialIndex = i
+        break;
+      }
     }
   });
 
@@ -381,8 +380,8 @@ function* replaceMessagesById(action: ActionInterface): Generator<any> {
 
 function* getUpChatMessages(action: ActionInterface): Generator<any> {
 
-  const selectedChat = yield select(
-    (state: RootState) => state.chat.selectedChat
+  const selectedChatId = yield select(
+    (state: RootState) => state.chat.selectedChatId
   );
 
   const messages: any = yield select(
@@ -391,7 +390,7 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
 
   const payload = {
     other: {
-      roomId: selectedChat,
+      roomId: selectedChatId,
       lastMessageId: messages?.[0]?._id || null,
       skip: messages.length
     },
@@ -405,15 +404,15 @@ function* getUpChatMessages(action: ActionInterface): Generator<any> {
 }
 
 function* getDownChatMessages(action: ActionInterface): Generator<any> {
-  const selectedChat = yield select(
-    (state: RootState) => state.chat.selectedChat
+  const selectedChatId = yield select(
+    (state: RootState) => state.chat.selectedChatId
   );
   const messages: any = yield select(
     (state: RootState) => state.chat.messages
   );
   const payload = {
     other: {
-      roomId: selectedChat,
+      roomId: selectedChatId,
       lastMessageId: messages?.[messages?.length - 1]?._id || null,
     },
   };
@@ -453,7 +452,6 @@ function* chatSaga() {
   yield takeLatest(SAVE_QUESTIONIAR_ANSWERS, saveQuestioniarAnswers);
   yield takeLatest(DELETE_CONVERSATION, deleteConversation);
   yield takeLatest(FORWARD_CHAT, forwardChat);
-  yield takeLatest(UPDATE_MESSAGE_BY_ID, updateMessageById);
   yield takeLatest(REPLACE_MESSAGE_BY_ID, replaceMessagesById);
   yield takeLatest(GET_USER_QUESTIONIAR_ANSWER, getUserQuestioniarAnswer);
   yield takeLatest(GET_UP_CHAT_MESSAGE, getUpChatMessages);
