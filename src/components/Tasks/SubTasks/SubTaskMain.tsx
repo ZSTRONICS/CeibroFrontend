@@ -31,7 +31,7 @@ const SubTaskMain = () => {
   const [assignToList, setAssignToList] = useState<any>([]);
   const [filterParams, setFilterParams] = useState({
     dueDate: "",
-    assignedTo: [],
+    assignedTo: [], 
     project: "",
     createdByMe: false,
     assignedToMe: false,
