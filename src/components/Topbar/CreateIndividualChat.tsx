@@ -133,7 +133,7 @@ const CreateIndividualChat = (props: any) => {
         
         startChatRoom(res.data.newChat._id)
         // toast.success('single chat room started')
-        //dispatch(getAllChats());
+        dispatch(getAllChats());
       }
     }
     dispatch(createSingleRoom(payload))
