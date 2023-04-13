@@ -47,7 +47,7 @@ class WebSocketService {
   }
 
   public logoutSocketsIO() {
-    WebSocketService.socket.close();
+    WebSocketService.socket.disconnect();
     WebSocketService.socket = null
     this.pendingMessages = []
   }
