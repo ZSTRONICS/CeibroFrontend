@@ -35,8 +35,8 @@ const CreateProjectBody = () => {
     title: projectOverview.title,
     dueDate: projectOverview.dueDate,
     publishStatus: projectOverview.publishStatus,
-    description: projectOverview.description,
-    location: projectOverview.location,
+    // location: projectOverview.location,
+    // description: projectOverview.description,
   };
   const confirm = useConfirm();
   useEffect(() => {

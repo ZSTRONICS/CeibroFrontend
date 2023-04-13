@@ -93,9 +93,7 @@ const ProjectOverViewForm = () => {
           name="location"
           placeholder="Enter address"
           disabled={
-            projectOverview.isDefault
-              ? true
-              : updateRights === true
+           updateRights === true
               ? false
               : true
           }
@@ -130,9 +128,7 @@ const ProjectOverViewForm = () => {
           value={formData.description || ""}
           onChange={handleInputChange}
           disabled={
-            projectOverview.isDefault
-              ? true
-              : updateRights === true
+            updateRights === true
               ? false
               : true
           }
