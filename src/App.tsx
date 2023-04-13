@@ -207,7 +207,6 @@ const App: React.FC<MyApp> = () => {
       const myToken = JSON.parse(tokens)?.access?.token;
 
       sock = io(SERVER_URL, {
-        autoConnect: false,
         auth: {
           token: myToken,
         },
@@ -641,7 +640,6 @@ const App: React.FC<MyApp> = () => {
             break;
         }
       });
-      sock.connect();
     }
   }, [isLoggedIn]);
 
