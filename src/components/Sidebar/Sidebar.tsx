@@ -21,27 +21,15 @@ function Sidebar() {
   );
   const [interval, setLocalInterval] = useState<NodeJS.Timer>();
   const navbarOpen = useSelector((store: RootState) => store.navigation.navbar);
-  const { user } = useSelector((store: RootState) => store.auth);
+  const { user, isLoggedIn } = useSelector((store: RootState) => store.auth);
   const dispatch = useDispatch();
   const history = useHistory();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleRouteClick = (config: SingleConfig) => {
+
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
-      clearInterval(interval);
-      setLocalInterval(undefined);
-    } else {
-      if (interval) {
-        //intervalId.refresh();
-      } else {
-        //start interval here
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        let localInterval = setInterval(() => {
-          dispatch(getAllChats());
-        }, 1000 * 55);
-        setLocalInterval(localInterval);
-      }
     }
 
     history.push(`/${config.path}`);
@@ -63,22 +51,6 @@ function Sidebar() {
   const toggleSidebar = () => {
     dispatch(appActions.toggleNavbar());
   };
-
-  useEffect(() => {
-    if (window.location.pathname !== "/chat") {
-      return;
-    }
-    if (interval) {
-      // intervalId.refresh();
-    } else {
-      //start interval here
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      let local = setInterval(() => {
-        dispatch(getAllChats());
-      }, 1000 * 55);
-      setLocalInterval(local);
-    }
-  }, []);
 
   return (
     <OutsideClickHandler
@@ -103,11 +75,10 @@ function Sidebar() {
               return (
                 <div
                   key={config.title}
-                  className={`${classes.menue} ${
-                    window.location.pathname.includes(config.path)
-                      ? classes.active
-                      : ""
-                  }`}
+                  className={`${classes.menue} ${window.location.pathname.includes(config.path)
+                    ? classes.active
+                    : ""
+                    }`}
                   onClick={() => handleRouteClick(config)}
                 >
                   <div className={classes.iconWrapper}>

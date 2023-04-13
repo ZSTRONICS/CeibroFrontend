@@ -209,7 +209,7 @@ function CreateGroupChat(props: any) {
               >
                 <Grid container>
                   <Typography p={0.4}>Project Groups</Typography>
-                  {groupWithMember?.projectMembers?.map((member: any) => {
+                  {/* {groupWithMember?.projectMembers?.map((member: any) => {
                     if (!users?.includes(String(member._id))) return null;
 
                     return (
@@ -225,7 +225,7 @@ function CreateGroupChat(props: any) {
                         />
                       </Grid>
                     );
-                  })}
+                  })} */}
                 </Grid>
 
                 {

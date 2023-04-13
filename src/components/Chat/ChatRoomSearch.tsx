@@ -6,6 +6,7 @@ import colors from "../../assets/colors";
 
 interface IAppProps {
   onChange: (e: any) => void;
+  placeholder?:string
 }
 
 const ChatRoomSearch: React.FC<IAppProps> = (props) => {
@@ -19,9 +20,9 @@ const ChatRoomSearch: React.FC<IAppProps> = (props) => {
       </div>
       <div className={classes.inputWrapper}>
         <input
-          type="text"
+          type="search"
           className={`emptyBorder black-input ${classes.input}`}
-          placeholder="Search"
+          placeholder={props.placeholder||"Search" }
           onChange={props.onChange}
         />
       </div>
