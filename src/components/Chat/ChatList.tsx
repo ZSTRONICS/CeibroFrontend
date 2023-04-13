@@ -15,11 +15,10 @@ import { Grid } from "@material-ui/core";
 import { socket } from "services/socket.services";
 
 
-const ChatList = () => {
+const ChatList = (props:any) => {
   const dispatch = useDispatch();
-  const { chat, type, selectedChatId } = useSelector(
-    (state: RootState) => state.chat
-  );
+  const {chatList}= props
+  const {type, selectedChatId } = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   const { roomMessageData } = useSelector((state: RootState) => state.chat);
   //   const members = selectedChatId
@@ -80,8 +79,8 @@ const ChatList = () => {
 
   return (
     <Grid container>
-      {chat &&
-        chat?.map((localChat: ChatListInterface, index: number) => {
+      {chatList &&
+        chatList?.map((localChat: ChatListInterface, index: number) => {
           try {
             const chatMembers = [
               ...localChat.members,

@@ -175,7 +175,7 @@ if (hasKey(selectedFolderFile, "name")) {
                         color: "#ADB5BD",
                       },
                       "&.Mui-checked": {
-                        color: "#1976d2",
+                        color: "#f1b740",
                       },
                     }}
                     disableRipple

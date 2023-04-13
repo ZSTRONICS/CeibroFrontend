@@ -60,7 +60,7 @@ export const CustomMuiList = (props: any) => {
                   },
 
                   "&.Mui-checked": {
-                    color: "#1976d2",
+                    color: "#f1b740",
                   },
                 }}
                 disableRipple

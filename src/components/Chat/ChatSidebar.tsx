@@ -24,6 +24,7 @@ import { RootState } from "redux/reducers";
 
 const ChatSidebar = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
   const messageListType = [
     {
@@ -41,19 +42,16 @@ const ChatSidebar = () => {
     },
   ];
   const { chat } = useSelector((state: RootState) => state.chat);
-  const [filterChatLocal, setFilterChatLocal] = useState<any[]>([]);
+  const [filterChatLocal, setFilterChatLocal] = useState<any[]>(chat);
 
   const [filter, setFilter] = useState(messageListType[0].name);
   const [filterParams, setFilterParams] = useState({
     searchWithNameAndGroup: "",
   });
 
-
-  useEffect(()=>{
-    setFilterChatLocal(chat)
-  },[])
-
-  const dispatch = useDispatch();
+  useEffect(() => {
+    setFilterChatLocal(chat);
+  }, [chat]);
 
   const handleMessageTypeClick = (chatType: any, index: number) => {
     setFilter(chatType.name);
@@ -74,58 +72,57 @@ const ChatSidebar = () => {
       payload: value,
     });
   };
-  // const filterDataOnParams = (params: any) => {
-  //   let filtereLocal: any = [...users];
-  //   if (String(params.searchWithNameEmail).length > 0) {
-  //     filtereLocal = filtereLocal.filter((user: any) => {
-  //       const fullName = `${user?.firstName} ${user?.surName}`
-  //         .toLocaleLowerCase()
-  //         .includes(params.searchWithNameEmail.toLowerCase());
-  //       const searchEmail = String(user?.email)
-  //         .toLocaleLowerCase()
-  //         .includes(params.searchWithNameEmail.toLowerCase());
-  //       const finalResult = fullName || searchEmail;
-  //       return finalResult;
-  //     });
-  //   }
-  //   if (params.startDate !== "" || params.endDate !== "") {
-  //     filtereLocal = filtereLocal.filter((item: any) => {
-  //       const itemDate = new Date(item.createdAt);
-  //       const start = params.startDate ? new Date(params.startDate) : null;
-  //       const end = params.endDate ? new Date(params.endDate) : null;
-  //       return (!start || itemDate >= start) && (!end || itemDate <= end);
-  //     });
-  //   }
 
-  //   setFilterParams({ ...params });
-  //   if (
-  //     params.searchWithNameEmail === "" &&
-  //     params.startDate === "" &&
-  //     params.endDate === ""
-  //   ) {
-  //     //setFilterUsersLocal(users);
-  //   } 
-  //   // else {
-  //   //   setFilterUsersLocal(filtereLocal);
-  //   // }
-  // };
+  const filterDataOnParams = (params: any) => {
+    let filtereLocal: any = [...chat];
+    if (String(params.searchWithNameAndGroup).length > 0) {
+      filtereLocal = filtereLocal.filter((chat: any) => {
+        const searchGroup = String(chat?.name)
+          .toLocaleLowerCase()
+          .includes(params.searchWithNameAndGroup.toLowerCase());
+
+        let chatMembers = chat.isGroupChat===false&& chat.members.some((member: any) => {
+          const fullName = `${member.firstName} ${member.surName}`
+            .toLocaleLowerCase()
+            .includes(params.searchWithNameAndGroup.toLowerCase());
+          return fullName;
+        });
+        const finalResult = searchGroup || chatMembers;
+        return finalResult;
+      });
+    }
+
+    setFilterParams({ ...params });
+    if (params.searchWithNameAndGroup === "") {
+      setFilterChatLocal(chat);
+    } else {
+      setFilterChatLocal(filtereLocal);
+    }
+  };
+
   const handleChatSearch = (e: any) => {
     if (e.target.value === "") {
-  
+      filterDataOnParams({
+        ...filterParams,
+        searchWithNameAndGroup: "",
+      });
     } else {
-     
+      filterDataOnParams({
+        ...filterParams,
+        searchWithNameAndGroup: e.target.value,
+      });
     }
-  }
-
-  const handleChatRoomSearch = (e: any) => {
-
-    dispatch(clearSelectedChat());
-    dispatch({
-      type: SET_CHAT_SEARCH,
-      payload: e?.target?.value,
-    });
-    dispatch(getAllChats());
   };
+
+  // const handleChatRoomSearch = (e: any) => {
+
+  //   dispatch(clearSelectedChat());
+  //   dispatch({
+  //     type: SET_CHAT_SEARCH,
+  //     payload: e?.target?.value,
+  //   });
+  //   dispatch(getAllChats());
+  // };
 
   return (
     <Grid container className={classes.outerWrapper}>
@@ -152,7 +149,10 @@ const ChatSidebar = () => {
         </Grid>
       </Grid> */}
       <Grid item xs={12}>
-        <ChatRoomSearch onChange={handleChatRoomSearch} />
+        <ChatRoomSearch
+          onChange={handleChatSearch}
+          placeholder="Search chat by username or group"
+        />
       </Grid>
       <Grid
         item
@@ -216,7 +216,7 @@ const ChatSidebar = () => {
         </CustomStack>
       </Grid>
       <Grid item xs={12} className={`${classes.chatList} hide-scrollbar`}>
-        <ChatList />
+        <ChatList chatList = {filterChatLocal} />
       </Grid>
     </Grid>
   );

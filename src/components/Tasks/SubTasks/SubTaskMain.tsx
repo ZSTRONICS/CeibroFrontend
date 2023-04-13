@@ -367,6 +367,7 @@ const SubTaskMain = () => {
           >
             <InputHOC title="Assigned to">
               <Autocomplete
+              className="autocompleteContainer"
                 filterSelectedOptions
                 sx={{ width: "100%" }}
                 id="assignedTo"
