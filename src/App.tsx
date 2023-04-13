@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
@@ -84,13 +84,13 @@ import {
 } from "redux/action/user.action";
 import { error } from "console";
 
-interface MyApp {}
+interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   let sock: Socket;
-  let intervalId: NodeJS.Timer;
+  const [intervalId, setLocalIntervalId] = useState<NodeJS.Timer>();
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
     (store: RootState) => store.project.drawerOpen
@@ -194,13 +194,11 @@ const App: React.FC<MyApp> = () => {
       InitOneSignal(String(user._id));
 
       if (socket.getSocket() !== null) {
-        return;
-      } else {
         try {
           if (!socket.isSocketConnected()) {
-            socket.getSocket().connect();
+            socket.logoutSocketsIO();
           }
-        } catch (e) {}
+        } catch (e) { }
       }
 
       const tokens = localStorage.getItem("tokens") || "{}";
@@ -223,25 +221,23 @@ const App: React.FC<MyApp> = () => {
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
-        intervalId = setInterval(() => {
+        clearInterval(intervalId);
+        let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
         }, 1000);
-      });
-      // Listen for reconnect event
-      sock.on("reconnect", (attemptNumber: number) => {
-        console.log(`Reconnected to server after ${attemptNumber} attempts`);
-        sock.connect();
+        setLocalIntervalId(localInterval)
       });
 
       sock.on("connect_error", (err) => {
         clearInterval(intervalId);
-        intervalId = setInterval(() => {
+        let localInterval  = setInterval(() => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
         }, 1000);
+        setLocalIntervalId(localInterval)
       });
 
       sock.on("token_invalid", () => {
@@ -368,7 +364,7 @@ const App: React.FC<MyApp> = () => {
                 return;
               }
               const selectedChatId = socket.getAppSelectedChat();
-             
+
               if (String(payload.roomId) === String(selectedChatId)) {
                 if (
                   payload.updatedMessage &&
