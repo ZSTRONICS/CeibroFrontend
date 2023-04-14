@@ -20,6 +20,7 @@ const ChatList = (props:any) => {
   const {chatList}= props
   const {type, selectedChatId } = useSelector((state: RootState) => state.chat);
   const { user } = useSelector((state: RootState) => state.auth);
+  const { roomMessageData } = useSelector((state: RootState) => state.chat);
   //   const members = selectedChatId
   //   ? chat.find((room: any) => String(room._id) == String(selectedChatId))
   //       ?.members
@@ -85,7 +86,16 @@ const ChatList = (props:any) => {
               ...localChat.members,
               ...localChat.removedMembers,
             ];
-            
+            if ("unreadCount" in localChat && roomMessageData != null) {
+              if (roomMessageData.has(localChat._id)) {
+                localChat.unreadCount = roomMessageData.get(
+                  localChat._id
+                ).unreadMessageCount;
+                localChat.lastMessage = roomMessageData.get(
+                  localChat._id
+                ).lastMessage;
+              }
+            }
 
             if (
               chatMembers?.findIndex((item: any) => item?._id === user?._id) > -1
