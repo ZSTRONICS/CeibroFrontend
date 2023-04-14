@@ -2,3 +2,9 @@
   border-width: 0px !important;
   /* border: 1px solid red !important; */
 }
+
+.datePickerContainerOutline fieldset{
+  border-width: 0px !important;
+  border-color: unset !important;
+  border:none !important;
+}
