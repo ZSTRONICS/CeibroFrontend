@@ -78,7 +78,7 @@ const CustomModal: React.FC<Props> = ({
             )}
           </Grid>
         </DialogTitle>
-       {showDivider===true&& <Divider sx={{pt:1, pb:2}}/>}
+       {showDivider===true&& <Divider sx={{my:1}}/>}
         <div style={{ width: "100%" }}>
           <DialogContent sx={{ padding: "10px 20px" }}>
             {children}
