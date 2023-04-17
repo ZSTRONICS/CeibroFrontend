@@ -2,9 +2,8 @@ import TabsUnstyled from "@mui/base/TabsUnstyled";
 import { Box, Divider, Grid, InputBase, Paper } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { UserInterface } from "constants/interfaces/user.interface";
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { userAction } from "redux/action/user.action";
 // import AdminHeader from "./AdminHeader";
@@ -12,12 +11,11 @@ import AdminUserTables from "./AdminUserTables";
 
 function AdminMain() {
   const dispatch = useDispatch();
-  const [searchQuery, setSearchField] = useState("");
   const [fromDate, setFromDate] = useState<any>("");
   const [toDate, setToDate] = useState<any>("");
   const [isHide, setIsHide] = useState(true);
-
   const [users, setUsers] = useState<UserInterface[]>([]);
+  
   const [filterUsersLocal, setFilterUsersLocal] = useState<UserInterface[]>([]);
   const [filterParams, setFilterParams] = useState({
     searchWithNameEmail: "",
@@ -26,6 +24,8 @@ function AdminMain() {
   });
 
   const getUsers = (role: string) => {
+    setToDate(null)
+    setFromDate(null)
     const payload = {
       success: (res: any) => {
         setUsers(res.data.result);
@@ -69,7 +69,9 @@ function AdminMain() {
     if (
       params.searchWithNameEmail === "" &&
       params.startDate === "" &&
-      params.endDate === ""
+      params.endDate === "" &&
+      toDate === null &&
+      fromDate === null
     ) {
       setFilterUsersLocal(users);
     } else {
@@ -129,11 +131,6 @@ function AdminMain() {
     <>
       <Box pt={2} pl={2}>
         <TabsUnstyled defaultValue={0}>
-          <Grid container gap={1}>
-            <Grid
-              item
-              // md={2}
-            >
               <TabsList
                 sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}
               >
@@ -144,21 +141,9 @@ function AdminMain() {
                   Users{" "}
                 </Tab>
               </TabsList>
-            </Grid>
-            <Grid item sm={12}>
-              <Grid
-                container
-                alignItems="center"
-                gap={2}
-                flexWrap="nowrap"
-                sx={{
-                  "@media(max-width:900px)": {
-                    width: "100%",
-                    overflowX: "auto",
-                  },
-                }}
-              >
-                <Grid item md={3} sm={4}>
+            
+              <Grid container alignItems="center" gap={2} pt={1.4} >
+                <Grid item md={3} sm={4} xs={11}>
                   <Paper
                     elevation={0}
                     component="form"
@@ -166,8 +151,6 @@ function AdminMain() {
                       p: "1px 10px",
                       display: "flex",
                       alignItems: "center",
-                      // width: 450,
-                      // width: "100%",
                       border: "1px solid #DBDBE5",
                       fontSize: 12,
                       fontWeight: 500,
@@ -183,25 +166,15 @@ function AdminMain() {
                       onChange={(e: any) => handleUsersSearch(e)}
                       sx={{
                         ml: 1,
-                        // flex: 1
+                        width:'100%',
                       }}
                       placeholder="Search by name and email"
                       inputProps={{ "aria-label": "Search by name and email" }}
                     />
                   </Paper>
                 </Grid>
-                <Grid
-                  item
-                  md={6}
-                  sm={8}
-                  sx={
-                    {
-                      // // width: "100%",
-                      // width: "500px",
-                    }
-                  }
-                >
-                  <CustomStack gap={2}>
+
+                <Grid item md={3} sm={3.5} xs={11}>
                     <CDatePicker
                       IsdisablePast={false}
                       showLabel={true}
@@ -216,7 +189,10 @@ function AdminMain() {
                       name="dueDate"
                       onChange={handleFromDateChange}
                     />
-                    <CDatePicker
+                </Grid>
+
+                <Grid  item md={3} sm={3.5} xs={11} >
+                <CDatePicker
                       IsdisablePast={false}
                       showLabel={true}
                       disabled={isHide}
@@ -232,11 +208,8 @@ function AdminMain() {
                       minDate={fromDate}
                       onChange={handleToDateChange}
                     />
-                  </CustomStack>
                 </Grid>
               </Grid>
-            </Grid>
-          </Grid>
           <TabPanel value={0}>
             <AdminUserTables users={filterUsersLocal} />
           </TabPanel>

@@ -1,151 +1,90 @@
-import React, { useState } from "react";
-import { TextField, Typography } from "@mui/material";
+import React from "react";
+import { TextField } from "@mui/material";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-
+// import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
 import de from "date-fns/locale/de";
 import { makeStyles } from "@material-ui/core";
+import InputHOC from "components/Utills/Inputs/InputHOC";
+import "../../components/MuiStyles.css";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
-      <div
-      // className={classes.datePicker}
-      >
-        {props.showLabel === true ? (
-          <div className={classes.outerWrapper}>
-            <div className={classes.titleWrapper}>
-              <Typography
-                sx={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  fontFamily: "Inter",
-                  width: "50px",
-                  minWidth: "55px",
-                  padding: "0",
-                }}
-              >
-                {props.dueDateLabel || "Due date"}
-              </Typography>
-            </div>
-            <div className={classes.datePickerContainer}>
-              <DatePicker
-                className={classes.root}
-                {...props}
-                label={props.showLabel === true ? "" : "Due date"}
-                // mask="__-__-____"
-                // value={showDate}
-                inputFormat={"dd.MM.yyyy"}
-                disablePast={props.IsdisablePast === false ? false : true}
-                // minDate={new Date().toISOString().slice(0, 10)}
-                // minDate
-                // onChange={(newValue: any) => setShowDate(newValue)}
-                renderInput={(params: any) => (
-                  <TextField
-                    InputProps={{
-                      disableUnderline: true,
-                    }}
-                    variant="standard"
-                    {...params}
-                    error={false}
-                    sx={{
-                      borderLeft: "1px solid #dbdbe5",
-                      ".MuiInputBase-input": {
-                        padding: "9px 14px",
-                      },
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                        padding: "0px",
-                      },
-  
-                    }}
-                  />
-                )}
-              />
-            </div>
-          </div>
-        ) : (
+      {props.showLabel === true ? (
+        <InputHOC title={props.dueDateLabel || "Due date"}>
           <DatePicker
-            inputFormat={"dd.MM.yyyy"}
+            inputFormat="dd.MM.yyyy"
+            className={`${classes.datePickerContainer} datePickerContainerOutline`}
             {...props}
-            label={"Due date"}
-            // disablePast={true}
-            minDate={new Date().toISOString().slice(0, 10)}
-            // onChange={(newValue: any) => setShowDate(newValue)}
             renderInput={(params: any) => (
               <TextField
-                InputProps={{
-                  // disableUnderline: false,
-                }}
-                {...params}
                 error={false}
                 sx={{
-                  ".MuiInputBase-input": {
+                  "& .MuiInputBase-input": {
                     padding: "9px 14px",
                   },
                 }}
+                {...params}
               />
             )}
           />
-        )}
-      </div>
+        </InputHOC>
+      ) : (
+        <DatePicker
+          inputFormat={"dd.MM.yyyy"}
+          {...props}
+          label={"Due date"}
+          // disablePast={true}
+          minDate={new Date().toISOString().slice(0, 10)}
+          // onChange={(newValue: any) => setShowDate(newValue)}
+          renderInput={(params: any) => (
+            <TextField
+              {...params}
+              error={false}
+              sx={{
+                ".MuiInputBase-input": {
+                  padding: "9px 14px",
+                },
+              }}
+            />
+          )}
+        />
+      )}
     </LocalizationProvider>
   );
 }
 const useStyles = makeStyles((theme) => ({
   root: {
-    width:'100%',
+    width: "100%",
     "& > *": {
       ".MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
         borderBottom: "none",
       },
     },
-    // '& .MuiPickersDay-day:hover, & .Mui-selected:hover, & .Mui-selected.Mui-focusVisible': {
-    //   backgroundColor: 'red',
-    //   color: 'red',
-    // },
-    // '& .Mui-selected, & .Mui-selected.Mui-focusVisible': {
-    //   backgroundColor: 'red',
-    //   color: 'red',
-    // },
   },
   datePickerContainer: {
-    // for local
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:after": {
+    width: "100%",
+    background: "white",
+    "& .MuiInputBase-root-MuiOutlinedInput-root .Mui-error .MuiOutlinedInput-notchedOutline":
+      {
+        borderColor: "unset",
+        border: "white",
+      },
+    "& .MuiInputBase-root-MuiInput-root:after": {
+      border: "none",
+    },
+    "& .MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
     },
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:before": {
-      borderBottom: "none",
-    },
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
+    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
       {
         borderBottom: "none",
       },
-    "& .css-1ptx2yq-MuiInputBase-root-MuiInput-root.Mui-disabled:before": {
+    "& .MuiInputBase-root-MuiInput-root.Mui-disabled:before": {
       borderBottomStyle: "none",
     },
-  },
-  titleWrapper: {
-    color: "#605C5C",
-    fontFamily: "inter",
-    paddingRight: "2px",
-    // padding: 0,
-    // minWidth: 65,
-    // textAlign: "center",
-    // borderRight: `1px solid ${colors.grey}`,
-  },
-  outerWrapper: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    border: " 1.5px solid #dbdbe5",
-    borderRadius: "4px",
-    width: "100%",
-    maxWidth: "330px",
-    padding: "0 10px",
-    backgroundColor: "white",
   },
 }));
 export default CDatePicker;

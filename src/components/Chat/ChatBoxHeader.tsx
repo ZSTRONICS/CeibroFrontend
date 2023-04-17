@@ -99,7 +99,7 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
             <Grid
               item
               xs={6}
-              md={2}
+              md={3}
               className={`${
                 myChat?.isGroupChat !== false
                   ? classes.editWrapper
@@ -241,7 +241,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     fontStyle: "normal",
     textOverflow: "ellipsis",
-    // width: "120px",
+    maxWidth:'100%',
   },
   eidtContainer: {
     display: "flex",
@@ -251,7 +251,7 @@ const useStyles = makeStyles({
     paddingLeft: "20px",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-start",
     // border: '1px solid #ecf0f1'
   },
   editInputWrapper: {
