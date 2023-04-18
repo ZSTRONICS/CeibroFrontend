@@ -1,6 +1,5 @@
 import { Button, CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import colors from "../../../../assets/colors";
-import { FaTrash } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { projectOverviewSchema } from "constants/schemas/project.schema";

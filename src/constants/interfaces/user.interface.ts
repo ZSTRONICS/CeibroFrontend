@@ -17,3 +17,22 @@ export interface UserInterface {
   name?:string
   regDate?:string
 }
+export const userTemplate= {
+  firstName: "",
+  surName: "",
+  email: "",
+  companyVat: "",
+  companyLocation: "",
+  workEmail: "",
+  companyName: "",
+  profilePic: "",
+  phone: "",
+  companyPhone: "",
+  role: "",
+  currentlyRepresenting: "",
+  id: "",
+  _id: "",
+  createdAt:"",
+  name:"",
+  regDate:"",
+}

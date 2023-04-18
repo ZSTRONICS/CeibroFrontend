@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { Login,
   Connections,

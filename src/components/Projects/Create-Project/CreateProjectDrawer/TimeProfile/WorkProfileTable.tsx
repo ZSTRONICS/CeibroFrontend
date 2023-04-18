@@ -12,7 +12,6 @@ import CropOriginalIcon from "@material-ui/icons/CropOriginal";
 import ChatIcon from "@material-ui/icons/Chat";
 import Paper from "@material-ui/core/Paper";
 import { CircularProgress, Typography, Grid } from "@material-ui/core";
-import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
@@ -138,6 +137,7 @@ export default function BasicTable() {
                           src={assets.pencilIcon}
                         onClick={() => handleWorkClick(row?._id)}
                         className="pointer"
+                        alt="edit"
                       />
 
                       {loading && (
@@ -150,7 +150,7 @@ export default function BasicTable() {
                           src={assets.DeleteIcon}
                         className="w-16 pointer"
                         onClick={() => deleteTimeProfileWork(row?._id)}
-                      />
+                      alt="delete" />
                     </div>
                   </TableCell>
                 </TableRow>
