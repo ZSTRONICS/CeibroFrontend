@@ -13,4 +13,5 @@ export interface QuestioniarInterface {
   _id: string | number;
   options?: QuestioniarOptionInterface[] | any;
   answer?: string | string[] | number;
+  id?:string
 }

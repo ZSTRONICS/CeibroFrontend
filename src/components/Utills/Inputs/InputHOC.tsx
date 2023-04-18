@@ -7,6 +7,7 @@ import colors from "../../../assets/colors";
 interface InputHOCInterface {
   title: string;
   showIcon?: boolean;
+  children:any
 }
 
 const InputHOC: FC<InputHOCInterface> = (props) => {

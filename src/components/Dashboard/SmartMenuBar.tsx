@@ -1,12 +1,9 @@
-import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import { ContactPhone } from "@material-ui/icons";
+import React from "react";
+import { Badge, Button, Grid, makeStyles } from "@material-ui/core";
 import colors from "../../assets/colors";
 import InputInvite from "../Profile/InputInvite";
-import { MdInsertInvitation } from "react-icons/md";
-import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/reducers";
 import {
@@ -18,8 +15,6 @@ import Box from "@mui/material/Box";
 const SmartMenuBar = () => {
   const classes = useStyles();
   const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
   const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
   const { invites } = useSelector((state: RootState) => state?.user);
@@ -124,7 +119,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: "0px 15px",
     height: 60,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
       padding: "10px 10px",
     },
@@ -153,7 +148,7 @@ const useStyles = makeStyles({
   },
   invitationOuterWrapper: {
     paddingLeft: 10,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: 0,
     },
   },

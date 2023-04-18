@@ -1,25 +1,18 @@
+import { UPDATE_PROFILE_PIC } from "config/user.config";
+import { UserInterface, userTemplate } from "constants/interfaces/user.interface";
 import { REGISTER } from "redux-persist";
+import { unSubOneSignal } from "utills/runOneSignal";
 import { ActionInterface } from ".";
+import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
 import {
   requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
-import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
-import { UserInterface } from "constants/interfaces/user.interface";
-import { purgeStoreStates } from "redux/store";
-import NavigationReducer from "./navigation.reducer";
-import ChatReducer from "./chat.reducer";
-import TaskReducer from "./task.reducer";
-import DocsReducer from "./docs.reducer";
-import UserReducer from "./user.reducer";
-import storage from "redux-persist/lib/storage";
-import { UPDATE_PROFILE_PIC } from "config/user.config";
-import { unSubOneSignal } from "utills/runOneSignal";
 
 interface authInterface {
   isLoggedIn: boolean;
-  user: UserInterface | any;
+  user: UserInterface;
   loginLoading: boolean;
   registerLoading: boolean;
   authSuccessMessage: string | null | undefined;
@@ -28,7 +21,7 @@ interface authInterface {
 
 const intialStatue: authInterface = {
   isLoggedIn: false,
-  user: null,
+  user: userTemplate,
   loginLoading: false,
   registerLoading: false,
   authSuccessMessage: "",

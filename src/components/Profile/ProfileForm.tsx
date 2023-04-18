@@ -1,58 +1,60 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useRef, useState } from "react";
 
 // material & react-icon
+import { makeStyles } from "@material-ui/core/styles";
+import { Visibility, VisibilityOff } from "@material-ui/icons";
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
-  FormGroup,
+  CircularProgress,
   Grid,
+  IconButton,
+  InputAdornment,
   TextField,
   Typography,
-  CircularProgress,
-  InputAdornment,
-  IconButton,
-} from "@material-ui/core";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
+} from "@mui/material";
 import { BiTrash } from "react-icons/bi";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { getMyProfile, updateMyProfile } from "redux/action/auth.action";
+import { updateMyProfile } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
 import colors from "../../assets/colors";
 
 // formik and yup
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-toastify";
 import Divider from "@mui/material/Divider";
+import { setValidationSchema } from "components/Auth/userSchema/ProfileSchema";
+import { useFormik } from "formik";
+import { toast } from "react-toastify";
+// i18next
+import { UserInterface } from "constants/interfaces/user.interface";
+import { useTranslation } from "react-i18next";
 
 const ProfileForm = () => {
   const classes = useStyles();
+  const { t } = useTranslation();
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const { user: userData } = useSelector((state: RootState) => state.auth);
+  let user: UserInterface = useSelector((state: RootState) => state.auth.user);
   const isDiabled = !loading ? false : true;
+  const profileSchema = setValidationSchema(t);
 
   // useEffect(() => {
   //   dispatch(getMyProfile());
   // }, []);
 
-  const handleSubmit = (values: any, action: any) => {
+  const handleSubmit = (values: any) => {
     setLoading(true);
     const {
       firstName,
       surName,
       workEmail,
       phone,
-      // password,
       companyName,
       companyPhone,
+      // password,
       companyVat,
       companyLocation,
       // currentlyRepresenting,
@@ -89,408 +91,367 @@ const ProfileForm = () => {
     };
     dispatch(updateMyProfile(payload));
   };
-
-  const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/
-
-  const profileSchema = Yup.object().shape({
-    firstName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!"),
-      // .required("Required"),
-    surName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!"),
-      // .required("Required"),
-     workEmail: Yup.string().email("Invalid email"),
-    // password: Yup.string().matches(
-    //   /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-    //   "Password must contain at least 8 characters, one uppercase, one number and one special case character"
-    // ),
-    // confirmPassword: Yup.string().oneOf(
-    //   [Yup.ref("password"), null],
-    //   "Passwords don't match."
-    // ),
-    email: Yup.string().email("Invalid email"),
-    companyName: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!"),
-      // .required("Required"),
-    companyVat: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!"),
-      // .required("Required"),
-    companyLocation: Yup.string()
-      .min(2, "Too Short!")
-      .max(50, "Too Long!"),
-      // .required("Required"),
-    phone: Yup.string().matches(phoneRegExp, 'Invalid phone number'),
-      // .required("Required")
-      // .matches(
-      //   /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
-      //   "Invalid phone"
-      // ),
-      // .required("Phone is required"),
-    companyPhone: Yup.string().matches(phoneRegExp, 'Invalid phone number'),
-      // .required("Required")
-      // .matches(
-      //   /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{5})$/,
-      //   "Invalid phone"
-      // ),
-      // .required("Phone is required"),
-    // currentlyRepresenting: Yup.boolean()
-    //   .required("Required")
-    //   .oneOf([true, false]),
+  const formik = useFormik({
+    initialValues: {
+      firstName: user.firstName,
+      surName: user.surName,
+      email: user.email,
+      workEmail: user.workEmail,
+      password: "",
+      confirmPassword: "",
+      companyName: user.companyName,
+      companyVat: user.companyVat,
+      companyLocation: user.companyLocation,
+      phone: user.phone,
+      companyPhone: user.companyPhone,
+      currentlyRepresenting: user.currentlyRepresenting,
+    },
+    validationSchema: profileSchema,
+    onSubmit: (values) => {
+      handleSubmit(values);
+    },
   });
 
   return (
     <Grid container xs={12} md={6}>
       <Grid item className={classes.mainContainer}>
-        <Formik
-          enableReinitialize={true}
-          initialValues={{
-            firstName: userData?.firstName,
-            surName: userData?.surName,
-            email: userData?.email,
-            workEmail: userData?.workEmail,
-            password: "",
-            confirmPassword: "",
-            companyName: userData?.companyName,
-            companyVat: userData?.companyVat,
-            companyLocation: userData?.companyLocation,
-            phone: userData?.phone,
-            companyPhone: userData?.companyPhone,
-            currentlyRepresenting: userData?.currentlyRepresenting,
-          }}
-          validationSchema={profileSchema}
-          onSubmit={handleSubmit}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isValid,
-          }) => (
-            <form onSubmit={handleSubmit}>
-              <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
-                <Grid container>
-                  <Grid item xs={12} md={6} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Name"
-                      variant="outlined"
-                      name="firstName"
-                      value={values.firstName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.firstName && (
+        <form onSubmit={formik.handleSubmit}>
+          <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
+            <Grid container>
+              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Name"
+                  variant="outlined"
+                  name="firstName"
+                  value={formik.values.firstName}
+                  onChange={formik.handleChange}
+                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                  helperText={formik.errors.firstName}
+                  // onBlur={handleBlur}
+                />
+                {/* {formik.touched.firstName  && Boolean(formik.errors.firstName) ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.firstName &&
-                          touched.firstName &&
-                          errors.firstName}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {formik.errors.firstName}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} md={6} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Surname"
-                      variant="outlined"
-                      name="surName"
-                      value={values.surName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.surName && (
+              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Surname"
+                  variant="outlined"
+                  name="surName"
+                  value={formik.values.surName}
+                  onChange={formik.handleChange}
+                  error={formik.touched.surName && Boolean(formik.errors.surName)}
+                  helperText={formik.errors.surName}
+                />
+                {/* {errors.surName && touched.surName ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.surName && touched.surName && errors.surName}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.surName}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="email"
-                      variant="outlined"
-                      name="email"
-                      value={values.email}
-                      onChange={(e: any) => {
-                        e.preventDefault();
-                        e.target.blur();
-                      }}
-                      onFocus={(e: any) => {
-                        e.preventDefault();
-                        e.target.blur();
-                      }}
-                      onBlur={handleBlur}
-                    />
-                    {errors.email && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="email"
+                  variant="outlined"
+                  name="email"
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onFocus={(e: any) => {
+                    e.preventDefault();
+                    e.target.blur();
+                  }}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.errors.email}
+                />
+                {/* {errors.email && touched.email ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.email && touched.email && errors.email}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.email}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Contact number"
-                      variant="outlined"
-                      name="phone"
-                      value={values.phone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.phone && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Contact number"
+                  variant="outlined"
+                  name="phone"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  error={formik.touched.phone && Boolean(formik.errors.phone)}
+                  helperText={formik.errors.phone}
+                />
+                {/* {errors.phone && touched.phone ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.phone && touched.phone && errors.phone}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.phone}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid
-                    item
-                    xs={12}
-                    className={`${classes.rowWrapper} ${classes.passwordRow}`}
-                  >
-                    <TextField
-                      autoComplete="new-password"
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={() => setShowPassword(!showPassword)}
-                              edge="end"
-                            >
-                              {showPassword ? (
-                                <Visibility />
-                              ) : (
-                                <VisibilityOff />
-                              )}
-                            </IconButton>
-                          </InputAdornment>
-                        ),
-                      }}
-                      // disabled={true}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Password"
-                      variant="outlined"
-                      name="password"
-                      value={values.password}
-                      onChange={handleChange}
-                      type={showPassword ? "text" : "password"}
-                      onBlur={handleBlur}
-                    />
-
-                    {errors.password && (
+              <Grid
+                item
+                xs={12}
+                className={`${classes.rowWrapper} ${classes.passwordRow}`}
+              >
+                <TextField
+                  autoComplete="new-password"
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword(!showPassword)}
+                          edge="end"
+                        >
+                          {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  // disabled={true}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Password"
+                  variant="outlined"
+                  name="password"
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  type={showPassword ? "text" : "password"}
+                  error={
+                    formik.touched.password && Boolean(formik.errors.password)
+                  }
+                  helperText={formik.errors.password}
+                />
+                {/* {errors.password && touched.password ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.password && touched.password && errors.password}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.password}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      autoComplete="new-password"
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      type="password"
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Confirm password"
-                      variant="outlined"
-                      name="confirmPassword"
-                      value={values.confirmPassword || ""}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      inputRef={confirmPassRef}
-                    />
-
-                    {errors.confirmPassword && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  autoComplete="new-password"
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  type="password"
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Confirm password"
+                  variant="outlined"
+                  name="confirmPassword"
+                  value={formik.values.confirmPassword || ""}
+                  onChange={formik.handleChange}
+                  inputRef={confirmPassRef}
+                  error={
+                    formik.touched.confirmPassword &&
+                    Boolean(formik.errors.confirmPassword)
+                  }
+                  helperText={formik.errors.confirmPassword}
+                />
+                {/* {errors.confirmPassword && touched.confirmPassword ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.confirmPassword &&
-                          touched.confirmPassword &&
-                          errors.confirmPassword}
-                      </Typography>
-                    )}
-                  </Grid>
-                  <Grid
-                    item
-                    xs={12}
-                    className={classes.rowWrapper}
-                    // sx ={{ padding: "20px 0px" }}
-                  >
-                    <Divider
-                      sx={{
-                        width: "100%",
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={12} md={6} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Company"
-                      variant="outlined"
-                      name="companyName"
-                      value={values.companyName}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.companyName && (
+                      {errors.confirmPassword}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={classes.rowWrapper}
+                // sx ={{ padding: "20px 0px" }}
+              >
+                <Divider
+                  sx={{
+                    width: "100%",
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Company"
+                  variant="outlined"
+                  name="companyName"
+                  value={formik.values.companyName}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.companyName &&
+                    Boolean(formik.errors.companyName)
+                  }
+                  helperText={formik.errors.companyName}
+                />
+                {/* {errors.companyName && touched.companyName ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.companyName &&
-                          touched.companyName &&
-                          errors.companyName}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.companyName}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} md={6} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="VAT"
-                      variant="outlined"
-                      name="companyVat"
-                      value={values.companyVat}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.companyVat && (
+              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="VAT"
+                  variant="outlined"
+                  name="companyVat"
+                  value={formik.values.companyVat}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.companyVat &&
+                    Boolean(formik.errors.companyVat)
+                  }
+                  helperText={formik.errors.companyVat}
+                />
+                {/* {errors.companyVat && touched.companyVat ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.companyVat &&
-                          touched.companyVat &&
-                          errors.companyVat}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.companyVat}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Location"
-                      variant="outlined"
-                      name="companyLocation"
-                      value={values.companyLocation}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.companyLocation && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Location"
+                  variant="outlined"
+                  name="companyLocation"
+                  value={formik.values.companyLocation}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.companyLocation &&
+                    Boolean(formik.errors.companyLocation)
+                  }
+                  helperText={formik.errors.companyLocation}
+                />
+                {/* {errors.companyLocation && touched.companyLocation ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.companyLocation &&
-                          touched.companyLocation &&
-                          errors.companyLocation}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.companyLocation}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Contact number"
-                      variant="outlined"
-                      name="companyPhone"
-                      value={values.companyPhone}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.companyPhone && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Contact number"
+                  variant="outlined"
+                  name="companyPhone"
+                  value={formik.values.companyPhone}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.companyPhone &&
+                    Boolean(formik.errors.companyPhone)
+                  }
+                  helperText={formik.errors.companyPhone}
+                />
+                {/* {errors.companyPhone && touched.companyPhone ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.companyPhone &&
-                          touched.companyPhone &&
-                          errors.companyPhone}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.companyPhone}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  <Grid item xs={12} className={classes.rowWrapper}>
-                    <TextField
-                      className={classes.inputBg}
-                      InputLabelProps={{
-                        shrink: true,
-                      }}
-                      fullWidth
-                      size="small"
-                      id="outlined-basic"
-                      label="Work email"
-                      variant="outlined"
-                      name="workEmail"
-                      value={values.workEmail}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                    />
-                    {errors.workEmail && (
+              <Grid item xs={12} className={classes.rowWrapper}>
+                <TextField
+                  className={classes.inputBg}
+                  sx={{background: "white"}}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  fullWidth
+                  size="small"
+                  id="outlined-basic"
+                  label="Work email"
+                  variant="outlined"
+                  name="workEmail"
+                  value={formik.values.workEmail}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.workEmail && Boolean(formik.errors.workEmail)
+                  }
+                  helperText={formik.errors.workEmail}
+                />
+                {/* {errors.workEmail && touched.workEmail ? (
                       <Typography className={`error-text ${classes.errorText}`}>
-                        {errors.workEmail &&
-                          touched.workEmail &&
-                          errors.workEmail}
-                      </Typography>
-                    )}
-                  </Grid>
+                      {errors.workEmail}
+                    </Typography>
+                    ) : null} */}
+              </Grid>
 
-                  {/* <Grid item xs={12} className={classes.rowWrapper}>
+              {/* <Grid item xs={12} className={classes.rowWrapper}>
                     <FormGroup>
                       <FormControlLabel
                         control={
@@ -520,47 +481,42 @@ const ProfileForm = () => {
                     </FormGroup>
                   </Grid> */}
 
-                  <Grid
-                    item
-                    xs={12}
-                    className={`${classes.rowWrapper} ${classes.btnWrapper}`}
-                    // sx={{
-                    //   marginTop: "25px",
-                    //   gap: "30px",
-                    // }}
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="medium"
-                      type="submit"
-                      disabled={isDiabled}
-                      // disabled={!isValid}
-                    >
-                      <Typography className={classes.btnText}>
-                        Update
-                      </Typography>
-                      {isDiabled && loading && (
-                        <CircularProgress
-                          size={20}
-                          className={classes.progress}
-                        />
-                      )}
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      // type="submit"
-                      className={classes.delete}
-                      size="medium"
-                    >
-                      <BiTrash className={classes.deleteIcon} /> Delete Account
-                    </Button>
-                  </Grid>
-                </Grid>
+              <Grid
+                item
+                xs={12}
+                className={`${classes.rowWrapper} ${classes.btnWrapper}`}
+                // sx={{
+                //   marginTop: "25px",
+                //   gap: "30px",
+                // }}
+              >
+                <Button
+                  variant="contained"
+                  color="primary"
+                  size="medium"
+                  type="submit"
+                  disabled={isDiabled}
+                  // disabled={!isValid}
+                >
+                  <Typography sx={{ fontSize: 12, fontWeight: "600" }}>
+                    Update
+                  </Typography>
+                  {isDiabled && loading && (
+                    <CircularProgress size={20} className={classes.progress} />
+                  )}
+                </Button>
+                <Button
+                  variant="text"
+                  // type="submit"
+                 sx={{color:'red', border:'1px solid'}}
+                  size="medium"
+                >
+                  <BiTrash className={classes.deleteIcon} /> Delete Account
+                </Button>
               </Grid>
-            </form>
-          )}
-        </Formik>
+            </Grid>
+          </Grid>
+        </form>
       </Grid>
     </Grid>
   );
@@ -569,7 +525,17 @@ export default ProfileForm;
 
 const useStyles = makeStyles({
   inputBg: {
-    background: "white",
+    '& .MuiInputBase-input-MuiOutlinedInput-input':{
+       
+    },
+    '& .MuiFormHelperText-root':{
+      background:'#f5f7f8',
+      color:'red',
+      margin:0,
+      pl:1.4,
+      pt:0.4
+    },
+   
   },
   mainContainer: {
     paddingTop: "10px",
@@ -582,7 +548,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "flex-end",
     padding: "10px 20px",
-     },
+  },
   delete: {
     color: colors.btnRed,
     border: `1px solid ${colors.btnRed}`,

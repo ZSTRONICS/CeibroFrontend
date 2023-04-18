@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Checkbox,
   CheckboxProps,
@@ -10,7 +9,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { UserInterface } from "constants/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
@@ -20,7 +18,6 @@ import {
 } from "../../../constants/interfaces/questioniar.interface";
 import { setQuestions } from "../../../redux/action/chat.action";
 import { RootState } from "../../../redux/reducers";
-import AnswerBy from "./AnswerBy";
 import AnswerByWrapper from "./AnswerByWrapper";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
@@ -34,7 +31,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
   // const { user } = useSelector((state: RootState) => state.auth);
   const [selected, setSelected] = useState<any>([]);
   const {
-    question: { type, question, options, answer, id },
+    question: { question, options, answer, id },
   } = props;
   const dispatch = useDispatch();
 
@@ -90,7 +87,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
                         disabled={answeredByMe}
                         checked={
                           selected?.findIndex(
-                            (selected: any) => selected == index
+                            (selected: any) => selected === index
                           ) > -1
                         }
                       />
