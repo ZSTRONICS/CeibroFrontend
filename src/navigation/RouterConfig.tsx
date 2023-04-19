@@ -1,5 +1,6 @@
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import { Login,
+import {
+  Login,
   Connections,
   ForgetPassword,
   ResetPassword,
@@ -9,13 +10,14 @@ import { Login,
   Profile,
   Tasks,
   Chat,
-  AdminMain
-} from 'components'
+  AdminMain,
+} from "components";
 
 import AppLayout from "./AppLayout";
 import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
+import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}
@@ -33,6 +35,7 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/register" component={Register} />
 
           <AppLayout>
+          {/* <DashboardLayout> */}
             <Route path="/profile" component={Profile} />
             <Route path="/projects" component={Projects} />
             <Route path="/tasks" component={Tasks} />
@@ -40,6 +43,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/connections" component={Connections} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/admin" component={AdminMain} />
+          {/* </DashboardLayout> */}
           </AppLayout>
         </Switch>
       </Router>
