@@ -7,9 +7,10 @@ import { RootState } from "../redux/reducers/index";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
-import { Grid } from "@mui/material";
 
-interface AppLayoutInterface {}
+interface AppLayoutInterface {
+  children:any
+}
 
 const AppLayout: React.FC<AppLayoutInterface> = ({ children }) => {
   const classes = useStyles();

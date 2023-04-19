@@ -32,7 +32,7 @@ export const setValidationSchema = (t: TFunction) => {
     confirmPassword: yup
       .string()
       .required(`${t("auth.plz_confirm_pass")}`)
-      .oneOf([yup.ref("password"), null], `${t("auth.pass_not_match")}`),
+      .oneOf([yup.ref("password")], `${t("auth.pass_not_match")}`),
   });
   return registerSchema;
 };

@@ -30,7 +30,7 @@ export const resetPasswordSchemaValidation = (t:TFunction) =>{
         ),
       confirmPassword: yup.string()
         .required(`${t('auth.plz_confirm_pass')}`)
-        .oneOf([yup.ref('password'), null], "Passwords don't match."),
+        .oneOf([yup.ref('password')], "Passwords don't match."),
     })
 return resetPasswordSchema
 }

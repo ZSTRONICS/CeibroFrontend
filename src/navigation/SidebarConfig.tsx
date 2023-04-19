@@ -1,6 +1,3 @@
-import assets from "assets/assets";
-import {HomeWorkOutlined,ChatOutlined, AssignmentIndOutlined,
-  FolderOutlined} from '@material-ui/icons'
 export interface SingleConfig {
   title: string;
   icon: any;

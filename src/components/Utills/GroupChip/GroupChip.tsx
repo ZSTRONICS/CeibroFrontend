@@ -12,7 +12,6 @@ import {
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { UserInterface } from "constants/interfaces/user.interface";
 import React, { useEffect, useState } from "react";
-// import { BiPencil } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
 // import { getGroupMembers } from "redux/action/project.action";
 import colors from "../../../assets/colors";

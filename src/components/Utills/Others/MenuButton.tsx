@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { FC } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -44,13 +43,12 @@ export interface MenuOptions
   icon: any
 }
 
-interface MenuButton {
+interface Props {
     buttonInner: any
     menu: MenuOptions[]
 }
 
-
-const MenuButton: FC<MenuButton> = (props) => {
+const MenuButton: FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { buttonInner, menu } = props
 

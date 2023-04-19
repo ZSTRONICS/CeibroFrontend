@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ChatListInterface, ChatMessageInterface } from "./interfaces/chat.interface";
 
 export const CHAT_LIST: ChatListInterface[] = [
@@ -16,7 +15,7 @@ export const CHAT_LIST: ChatListInterface[] = [
         removedMembers: [],
         access:[],
         removedAccess:[],
-        createdAt:'',
+        createdAt:''
     }
 ]
 

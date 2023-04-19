@@ -96,7 +96,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           />
         </div>
       </DialogContent>
-      <Divider sx={{ margin: "0px  20px 10px" }} />
+      {/* <Divider sx={{ margin: "0px  20px 10px" }} /> */}
       <DialogActions style={{ marginRight: "16px", marginBottom: "10px" }}>
         <Button
           onClick={handleClose}

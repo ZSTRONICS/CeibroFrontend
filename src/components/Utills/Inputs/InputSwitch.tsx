@@ -1,4 +1,3 @@
-// @ts-nocheck
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";

@@ -285,6 +285,7 @@ const SubTaskMain = () => {
           spacing={1}
           className={classes.TaskWraper}
           rowGap={1}
+          alignItems='baseline'
           ref={headerRef}>
 
           <Grid

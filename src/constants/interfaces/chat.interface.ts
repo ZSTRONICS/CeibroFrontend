@@ -32,6 +32,7 @@ export interface ChatListInterface {
   removedMembers:ChatMembers[]
   removedAccess:ChatMembers[]
   access:[]
+  createdAt:string
 }
 
 export interface ChatMessageInterface {
@@ -53,5 +54,5 @@ export interface ChatMessageInterface {
   dueDate?: any;
   chat?: any;
   type: "message" | "questioniar" | "voice" | "bot" | "start-bot";
-  createdAt:Date
+  createdAt:string|any
 }
