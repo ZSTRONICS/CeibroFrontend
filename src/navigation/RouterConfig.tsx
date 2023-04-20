@@ -13,7 +13,7 @@ import {
   AdminMain,
 } from "components";
 
-import AppLayout from "./AppLayout";
+// import AppLayout from "./AppLayout";
 import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
@@ -34,8 +34,8 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/reset-password" component={ResetPassword} />
           <Route path="/register" component={Register} />
 
-          <AppLayout>
-          {/* <DashboardLayout> */}
+          {/* <AppLayout> */}
+          <DashboardLayout>
             <Route path="/profile" component={Profile} />
             <Route path="/projects" component={Projects} />
             <Route path="/tasks" component={Tasks} />
@@ -43,8 +43,8 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/connections" component={Connections} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/admin" component={AdminMain} />
-          {/* </DashboardLayout> */}
-          </AppLayout>
+          </DashboardLayout>
+          {/* </AppLayout> */}
         </Switch>
       </Router>
     </>

@@ -2,23 +2,13 @@ import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 // @mui
-import { styled, alpha } from '@mui/material/styles';
-import { Box, Link, Button, Drawer, Typography, Avatar, Stack } from '@mui/material';
+import { Box, Drawer } from '@mui/material';
 // hooks
+import assets from 'assets/assets';
+import Sidebar from 'components/Sidebar/Sidebar';
 import useResponsive from '../../../hooks/useResponsive';
-// components
 
 const NAV_WIDTH = 200;
-
-const StyledAccount = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(2, 2.5),
-  borderRadius: Number(theme.shape.borderRadius) * 1.5,
-  backgroundColor: alpha(theme.palette.grey[500], 0.12),
-}));
-
-// ----------------------------------------------------------------------
 
 Nav.propTypes = {
   openNav: PropTypes.bool,
@@ -45,44 +35,27 @@ export default function Nav({ openNav, onCloseNav }:Props) {
   const renderContent = (
     <Box
       sx={{
-        height: 1,
-        '& .simplebar-content': { height: 1, display: 'flex', flexDirection: 'column' },
+        height: '100%',
+        display: 'flex', flexDirection: 'column',
       }}
     >
-      <Box sx={{ px: 2.5, py: 3, display: 'inline-flex' }}>
-        Logo
+      <Box sx={{display: 'inline-flex' }}>
+      <img src={assets.logo} alt="ceibro-logo" />
       </Box>
 
-      <Box sx={{ mb: 5, mx: 2.5 }}>
-        <Link underline="none">
-          <StyledAccount>
-            <Avatar>
-              User
-            </Avatar>
-
-            <Box sx={{ ml: 2 }}>
-              <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-           
-              </Typography>
-
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            
-              </Typography>
-            </Box>
-          </StyledAccount>
-        </Link>
-      </Box>
+      {/* <Box> */}
+      <Sidebar />
+      {/* </Box> */}
 
       {/* <NavSection data={navConfig} /> */}
 
-      <Box sx={{ flexGrow: 1 }} />
-
+      {/* <Box sx={{ flexGrow: 1 }} />
       <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
         <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
       
           
         </Stack>
-      </Box>
+      </Box> */}
     </Box>
   );
 

@@ -33,9 +33,9 @@ function Sidebar() {
     }
 
     history.push(`/${config.path}`);
-    if (isTabletOrMobile && navbarOpen) {
-      dispatch(appActions.setNavbarOpen(false));
-    }
+    // if (isTabletOrMobile && navbarOpen) {
+    //   dispatch(appActions.setNavbarOpen(false));
+    // }
   };
 
   const getNavbarStyles = () => {
@@ -58,12 +58,9 @@ function Sidebar() {
       disabled={!isTabletOrMobile || !navbarOpen}
     >
       <div
-        className={`${classes.sidebarWrapper} sidebarWrapper`}
-        style={getNavbarStyles()}
+        // className={`${classes.sidebarWrapper} sidebarWrapper`}
+        // style={getNavbarStyles()}
       >
-        <div className={classes.logoWrapper}>
-          <img src={assets.logo} alt="ceibro-logo" />
-        </div>
 
         <div className={classes.menueWrapper}>
           {configs &&
@@ -120,8 +117,8 @@ const useStyles = makeStyles((theme) => ({
   sidebarWrapper: {
     background: colors.white,
     boxShadow: "1px 0 4px -3px #888",
-    width: 200,
-    height: "100vh",
+    // width: 200,
+    // height: "100vh",
     position: "absolute",
     [theme.breakpoints.down("md")]: {
       position: "absolute",
@@ -132,9 +129,9 @@ const useStyles = makeStyles((theme) => ({
     maxHeight: 150,
   },
   menueWrapper: {
-    height: "calc(100vh - 200px)",
+    // height: "calc(100vh - 200px)",
     overflowY: "auto",
-    marginTop: "28px",
+    // marginTop: "28px",
   },
   menue: {
     display: "flex",
