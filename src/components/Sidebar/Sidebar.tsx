@@ -13,6 +13,7 @@ import appActions from "../../redux/action/app.action";
 import "./sidebar.css";
 import { socket } from "../../services/socket.services";
 import { getAllChats } from "redux/action/chat.action";
+import { Box } from "@mui/material";
 
 function Sidebar() {
   const classes = useStyles();
@@ -27,7 +28,6 @@ function Sidebar() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleRouteClick = (config: SingleConfig) => {
-
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
     }
@@ -53,61 +53,47 @@ function Sidebar() {
   };
 
   return (
-    <OutsideClickHandler
-      onOutsideClick={toggleSidebar}
-      disabled={!isTabletOrMobile || !navbarOpen}
-    >
-      <div
-        // className={`${classes.sidebarWrapper} sidebarWrapper`}
-        // style={getNavbarStyles()}
-      >
+    <>
+      <div className={classes.menueWrapper}>
+        {configs &&
+          Object.values(configs).map((config: any) => {
+            if (user && config.title === "Admin" && user.role !== "admin") {
+              return <React.Fragment key={config.title} />;
+            }
 
-        <div className={classes.menueWrapper}>
-          {configs &&
-            Object.values(configs).map((config: any) => {
-              if (user && config.title === "Admin" && user.role !== "admin") {
-                return <React.Fragment key={config.title} />;
-              }
-
-              return (
-                <div
-                  key={config.title}
-                  className={`${classes.menue} ${window.location.pathname.includes(config.path)
+            return (
+              <div
+                key={config.title}
+                className={`${classes.menue} ${
+                  window.location.pathname.includes(config.path)
                     ? classes.active
                     : ""
-                    }`}
-                  onClick={() => handleRouteClick(config)}
-                >
-                  <div className={classes.iconWrapper}>
-                    <Typography className={classes.icon}>
-                      {config.icon}
-                      {/* <img src={} className={classes.iconInner} alt={''} /> */}
-                    </Typography>
-                  </div>
-                  <Typography className={classes.title}>
-                    {config.title}
-                  </Typography>
-                  <div className={classes.badge}>
-                    {config.notification > 0 && (
-                      <Badge
-                        overlap="circular"
-                        badgeContent={config.notification}
-                        color="error"
-                      ></Badge>
-                    )}
-                  </div>
+                }`}
+                onClick={() => handleRouteClick(config)}
+              >
+                <div className={classes.iconWrapper}>
+                  <Box className={classes.icon}>
+                    {config.icon}
+                    {/* <img src={} className={classes.iconInner} alt={''} /> */}
+                  </Box>
                 </div>
-              );
-            })}
-        </div>
-
-        {/* <div className={classes.help}>
-          <div className={classes.helpInnerWrapper}></div>
-          <img src={assets.questionMarkIcon} className={classes.helpIcon} alt={''} />
-          <Typography className={classes.helpText}>Help</Typography>
-        </div> */}
+                <Typography className={classes.title}>
+                  {config.title}
+                </Typography>
+                <div className={classes.badge}>
+                  {config.notification > 0 && (
+                    <Badge
+                      overlap="circular"
+                      badgeContent={config.notification}
+                      color="error"
+                    ></Badge>
+                  )}
+                </div>
+              </div>
+            );
+          })}
       </div>
-    </OutsideClickHandler>
+    </>
   );
 }
 
