@@ -273,7 +273,7 @@ input, textarea {
   background-color: white;
 }
 input::-webkit-input-placeholder,
-texarea::-webkit-input-placeholder{
+textarea::-webkit-input-placeholder{
   font-size: 14px !important;
   color: black !important;
   font-weight: 500 !important;
