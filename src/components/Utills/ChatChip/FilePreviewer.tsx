@@ -17,7 +17,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
   const { file, showControls, hideName = false } = props;
   const classes = useStyles();
 
-  const handleClick = () => {};
+  // const handleClick = () => {};
   const handleCancelClick = () => {
     props?.handleClick?.(props._id);
   };
@@ -25,7 +25,7 @@ const FilePreviewer: React.FC<FilePreviewerInterface> = (props) => {
   return (
     <div
       id="ceibro"
-      onClick={handleClick}
+      // onClick={handleClick}
       className={`file-preview ${classes.wrapper} `}
     >
       {!showControls && (

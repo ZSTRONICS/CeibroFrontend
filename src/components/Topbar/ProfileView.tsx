@@ -82,7 +82,7 @@ const ProfileView = () => {
             onClick={handleOpenUserMenu}
             disableRipple
             disableFocusRipple
-            sx={{ p: 1 }}
+            sx={{ p: 0.2 }}
           >
             <NameAvatar
               firstName={user?.firstName}
