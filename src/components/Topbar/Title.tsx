@@ -36,7 +36,7 @@ const Title = () => {
   };
 
   const BackIcon = () => (
-    <ArrowBack className={classes.backIcon} onClick={goBack} />
+    <ArrowBack  className={classes.backIcon} onClick={goBack} />
   );
 
   const getTitle = () => {
@@ -79,7 +79,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
-            <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
             Task
             </TopBarTitle>
             {/* <Typography
@@ -112,7 +112,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
           Dashboard
           </TopBarTitle>
           </div>
@@ -122,7 +122,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
           Admin
           </TopBarTitle>
           </div>
@@ -133,7 +133,7 @@ const Title = () => {
       return (
         <>
           <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
-          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
           Chat
           </TopBarTitle>
             {/* <Typography
@@ -159,7 +159,7 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:24, lg:30},fontWeight:500,paddingLeft:'10px'}}>
+            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:24, lg:30},fontWeight:500,paddingLeft:'10px'}}>
             My Connections
           </TopBarTitle>
             {/* <Typography
@@ -178,7 +178,7 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:20,sm:20,md:30},fontWeight:500, paddingLeft:'10px'}}>
+            <TopBarTitle sx={{fontSize:{xs:15,sm:20,md:30},fontWeight:500, paddingLeft:'10px'}}>
             Profile
           </TopBarTitle>
             {/* <Typography
@@ -198,9 +198,6 @@ const Title = () => {
 
 export default Title;
 
-
-
-
 const useStyles =  makeStyles((theme) => ({
   login: {
     color: colors.white,
@@ -215,13 +212,13 @@ const useStyles =  makeStyles((theme) => ({
     paddingRight: 20
   },
   chatTitle: {
-    paddingLeft: 20,
+    paddingLeft: 10,
     display: "flex",
     alignItems: "center",
     // justifyContent: "center",
     "@media (max-width:960px)": {
       paddingLeft: 0,
-      minWidth: 300,
+      // minWidth: 300,
     },
   },
   backIcon: {
@@ -233,10 +230,10 @@ const useStyles =  makeStyles((theme) => ({
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",
-    paddingLeft: 33,
-    gap: 20,
+    paddingLeft: 8,
+    gap: 10,
     "@media (max-width:960px)": {
-      justifyContent: "space-between",
+      // justifyContent: "space-between",
     },
   },
 

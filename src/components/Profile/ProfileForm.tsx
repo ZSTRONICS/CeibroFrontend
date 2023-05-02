@@ -135,13 +135,8 @@ const ProfileForm = () => {
                   onChange={formik.handleChange}
                   error={formik.touched.firstName && Boolean(formik.errors.firstName)}
                   helperText={formik.errors.firstName}
-                  // onBlur={handleBlur}
                 />
-                {/* {formik.touched.firstName  && Boolean(formik.errors.firstName) ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {formik.errors.firstName}
-                    </Typography>
-                    ) : null} */}
+
               </Grid>
 
               <Grid item xs={12} md={6} className={classes.rowWrapper}>
@@ -162,11 +157,6 @@ const ProfileForm = () => {
                   error={formik.touched.surName && Boolean(formik.errors.surName)}
                   helperText={formik.errors.surName}
                 />
-                {/* {errors.surName && touched.surName ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.surName}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -191,11 +181,6 @@ const ProfileForm = () => {
                   error={formik.touched.email && Boolean(formik.errors.email)}
                   helperText={formik.errors.email}
                 />
-                {/* {errors.email && touched.email ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.email}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -216,11 +201,6 @@ const ProfileForm = () => {
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
                   helperText={formik.errors.phone}
                 />
-                {/* {errors.phone && touched.phone ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.phone}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid
@@ -263,11 +243,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.password}
                 />
-                {/* {errors.password && touched.password ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.password}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -294,11 +269,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.confirmPassword}
                 />
-                {/* {errors.confirmPassword && touched.confirmPassword ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.confirmPassword}
-                    </Typography>
-                    ) : null} */}
               </Grid>
               <Grid
                 item
@@ -333,11 +303,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.companyName}
                 />
-                {/* {errors.companyName && touched.companyName ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.companyName}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} md={6} className={classes.rowWrapper}>
@@ -361,11 +326,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.companyVat}
                 />
-                {/* {errors.companyVat && touched.companyVat ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.companyVat}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -389,11 +349,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.companyLocation}
                 />
-                {/* {errors.companyLocation && touched.companyLocation ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.companyLocation}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -417,11 +372,6 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.companyPhone}
                 />
-                {/* {errors.companyPhone && touched.companyPhone ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.companyPhone}
-                    </Typography>
-                    ) : null} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
@@ -444,42 +394,7 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.workEmail}
                 />
-                {/* {errors.workEmail && touched.workEmail ? (
-                      <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.workEmail}
-                    </Typography>
-                    ) : null} */}
               </Grid>
-
-              {/* <Grid item xs={12} className={classes.rowWrapper}>
-                    <FormGroup>
-                      <FormControlLabel
-                        control={
-                          <Checkbox
-                            name="currentlyRepresenting"
-                            // defaultChecked
-                            classes={{
-                              root: classes.root,
-                              checked: classes.checked,
-                            }}
-                            value={values.currentlyRepresenting}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                          />
-                        }
-                        label="Currently representing company"
-                      />
-                      {errors.currentlyRepresenting && (
-                        <Typography
-                          className={`error-text ${classes.errorText}`}
-                        >
-                          {errors.currentlyRepresenting &&
-                            touched.currentlyRepresenting &&
-                            errors.currentlyRepresenting}
-                        </Typography>
-                      )}
-                    </FormGroup>
-                  </Grid> */}
 
               <Grid
                 item
