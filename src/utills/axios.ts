@@ -7,7 +7,7 @@ export const SERVER_URL = 'https://dev.ceibro.ee'
 // export const SERVER_URL = "http://localhost:3000";
 // export const SERVER_URL = "http://10.10.10.2:3000";
 
-export const baseURL = process.env.NODE_ENV==='production'? '/v1' :`${SERVER_URL}/v1`
+export const baseURL = process.env.NODE_ENV==='production'? '/v1' :`${SERVER_URL}/v2`
 
 const API = axios.create({
   baseURL,
