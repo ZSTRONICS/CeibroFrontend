@@ -4,6 +4,7 @@ import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 
 const getDocsByModuleNameAndId = apiCall({
+  useV2Route: false,
   type: DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID,
   method: "get",
   path: (payload) => {

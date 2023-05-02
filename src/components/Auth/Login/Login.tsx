@@ -12,7 +12,7 @@ import { Link } from "react-router-dom";
 
 // axios
 import axios from "axios";
-import { baseURL } from "utills/axios";
+import { urlV1 } from "utills/axios";
 
 // redux
 import { useSelector } from "react-redux";
@@ -45,7 +45,7 @@ const Login: React.FC<LoginInterface> = () => {
       // verifying email verification token
       setTokenLoading(true);
       await axios
-        .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
+        .post(`${urlV1}/auth/verify-email?token=${queryParams?.token}`)
         .then((response) => {
           setSuccess(true);
           setTokenLoading(false);

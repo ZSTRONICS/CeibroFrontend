@@ -17,12 +17,14 @@ import { ActionInterface } from "../reducers";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const loginRequest = apiCall({
+  useV2Route: false,
   type: LOGIN,
   method: "post",
   path: "/auth/login",
 });
 
 const verifyEmail = apiCall({
+  useV2Route: false,
   type: VERIFY_EMAIL,
   method: "post",
   path: "/auth/veify-email",
@@ -32,6 +34,7 @@ const verifyEmail = apiCall({
 });
 
 const registerRequest = apiCall({
+  useV2Route: false,
   type: REGISTER,
   method: "post",
   path: "/auth/register",
@@ -41,6 +44,7 @@ const registerRequest = apiCall({
 });
 
 const createChatRoom = apiCall({
+  useV2Route: false,
   type: CREATE_ROOM,
   method: "post",
   path: "/chat/rooms",
@@ -50,18 +54,21 @@ const createChatRoom = apiCall({
 });
 
 const getMyProfile = apiCall({
+  useV2Route: false,
   type: GET_PROFILE,
   method: "get",
   path: "/users/profile",
 });
 
 const otpVerify = apiCall({
+  useV2Route: false,
   type: OTP_VERIFY,
   method: "post",
   path: (payload) => `/auth/verify-email?otp=${payload?.other}`,
 });
 
 const updateMyProfile = apiCall({
+  useV2Route: false,
   type: UPDATE_MY_PROFILE,
   method: "patch",
   path: "/users/profile"
@@ -69,12 +76,14 @@ const updateMyProfile = apiCall({
 });
 
 const forgetPassword = apiCall({
+  useV2Route: false,
   type: FORGET_PASSWORD,
   method: "post",
   path: `/auth/forgot-password`,
 });
 
 const resetPassword = apiCall({
+  useV2Route: false,
   type: RESET_PASSWORD,
   method: "post",
   path: (payload) => `/auth/reset-password?token=${payload?.other}`,
@@ -82,6 +91,7 @@ const resetPassword = apiCall({
 });
 
 const sendVerifyEmail = apiCall({
+  useV2Route: false,
   type: SEND_VERIFY_EMAIL,
   method: "post",
   path: `/auth/send-verification-email`,
