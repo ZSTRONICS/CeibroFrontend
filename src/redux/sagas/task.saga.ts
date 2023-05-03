@@ -3,12 +3,14 @@ import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 
 const createTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.CREATE_TASK,
   method: "post",
   path: "/task/",
 })
 
 const uploadDocs = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.UPLOAD_TASK_DOCS,
   isFormData: true,
   method: "post",
@@ -16,29 +18,34 @@ const uploadDocs = apiCall({
 })
 
 const createSubTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.CREATE_SUB_TASK,
   method: "post",
   path: "/task/subtask",
 })
 const taskSubtaskStateChange = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE,
   method: "post",
   path: "/task/st/statechange",
 })
 
 const getTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.GET_TASK,
   method: "get",
   path: "/task?state=all&isMultiTask=false&noPaginate=true",
 });
 
 const getAllSubTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.GET_ALL_SUBTASK_LIST,
   method: "get",
   path: '/task/subtask?state=all&noPaginate=true',
 });
 
 const getAllSubTaskOfTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK,
   method: "get",
   path: (payload) => {
@@ -48,6 +55,7 @@ const getAllSubTaskOfTask = apiCall({
 });
 
 const getAllSubTaskRejection = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.GET_ALL_SUBTASK_REJECTION,
   method: "get",
   path: (payload) => {
@@ -57,6 +65,7 @@ const getAllSubTaskRejection = apiCall({
 });
 
 const updateTaskById = apiCall({
+  useV2Route: false,
 
   type: TASK_CONFIG.UPDATE_TASK_BY_ID,
   method: "patch",
@@ -68,6 +77,7 @@ const updateTaskById = apiCall({
 
 
 const patchSubTaskById = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.PATCH_SUB_TASK_BY_ID,
   method: "patch",
   path: (payload) => {
@@ -77,6 +87,7 @@ const patchSubTaskById = apiCall({
 });
 
 const deleteTask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.DELETE_TASK,
   method: "delete",
   path: (payload) => {
@@ -85,6 +96,7 @@ const deleteTask = apiCall({
   }
 });
 const deleteSubtask = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.DELETE_SUBTASK,
   method: "delete",
   path: (payload) => {
@@ -94,24 +106,28 @@ const deleteSubtask = apiCall({
 });
 
 const deleteSubtaskMember = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.DELETE_SUBTASK_MEMBER,
   method: "post",
   path: '/task/st/removeMember'
 });
 
 const subtaskMemberMarkAsDone = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.SUBTASK_MEMBER_MARK_AS_DONE,
   method: 'post',
   path: '/task/st/markAsDone'
 });
 
 const postSubtaskComment = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.POST_SUBTASK_COMMENT,
   method: 'post',
   path: '/task/st/comment'
 });
 
 const getAllCommentsOfSubtaskById = apiCall({
+  useV2Route: false,
   type: TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID,
   method: 'get',
   path: (payload) => {
