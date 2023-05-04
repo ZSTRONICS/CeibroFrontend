@@ -17,6 +17,11 @@ import {
   InputAdornment,
   Typography,
   Grid,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
+  OutlinedInput,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -38,6 +43,7 @@ import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
 import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 
 
 interface Props {
@@ -72,10 +78,10 @@ const LoginForm: React.FC<Props> = (props) => {
   const handleSubmit = (values: any) => {
     setShowLoading(true)
     setIncorrectAuth(false);
-    const { email, password } = values;
+    const { phoneNumber, password } = values;
     const payload = {
       body: {
-        email,
+        phoneNumber,
         password,
       },
       onFailAction: (err: any) => {
@@ -150,7 +156,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
         <Formik
           initialValues={{
-            email: "",
+            phoneNumber: "",
             password: "",
           }}
           validationSchema={signinSchema}
@@ -172,13 +178,6 @@ const LoginForm: React.FC<Props> = (props) => {
                   handleSubmit();
                 }
               }}>
-
-              {/* {tokenLoading && (
-                <Alert severity="success">
-                  {`${t("auth.successAlerts.verifying_email")}`}
-                </Alert>
-              )} */}
-
               {showError && (
                 <Alert severity="error">{t("auth.link_expired")}</Alert>
               )}
@@ -225,128 +224,57 @@ const LoginForm: React.FC<Props> = (props) => {
                 </Alert>
               )}
               <CBox mb={3.1}>
-                <TextField
-                  placeholder={t("auth.Email")}
-                  className={classes.inputs}
-                  name="email"
-                  inputProps={{
-                    style: { height: 12, width: "100%" },
-                  }}
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                />
-                {errors.email && touched.email && (
+                <CustomMuiTextField textType="phone-number" inputValue={values.phoneNumber} onChange={handleChange } onBlur={handleBlur} />
+                {errors.phoneNumber && touched.phoneNumber && (
                   <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.email}
+                    {errors.phoneNumber}
                   </Typography>
                 )}
               </CBox>
               <CBox mb={3.1}>
-                <TextField
-                  placeholder={t("auth.Password")}
-                  type={showPassword ? "text" : "password"}
-                  className={`${classes.inputs} ${classes.inputPass}`}
-                  name="password"
-
-                  inputProps={{
-                    style: { height: 12, width: "100%" },
-                  }}
-                  value={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                      >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                />
+              <CustomMuiTextField textType="password" inputValue={values.password} onChange={handleChange }  onBlur={handleBlur} />
                 {errors.password && touched.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.password}
                   </Typography>
                 )}
               </CBox>
-
-
-              {/* <FormControl variant="outlined" className={classes.loginInput}>
-                  <OutlinedInput
-                    name="email"
-                    required
-                    value={values.email}
-                    className={classes.inputOutline}
-                    placeholder={t("auth.Email")}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                </FormControl> */}
-
-              {/* validation error */}
-
-
-
-
-
-
-              {/* <FormControl variant="outlined" className={classes.loginInput}>
-                  <OutlinedInput
-                    required
-                    name="password"
-                    onKeyDown={(e) => handleKeyDown(e, values)}
-                    className={classes.inputOutline}
-                    value={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    id="filled-adornment-password"
-                    type={showPassword ? "text" : "password"}
-                    placeholder={t("auth.Password")}
-                    endAdornment={
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    }
-                  ></OutlinedInput>
-                </FormControl> */}
-
-
-
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={checked}
-                    onChange={() => setChecked(!checked)}
-                    name="checkedB"
-                    color="primary"
-                    style={{ padding: 0 }}
-                  />
-                }
-                className={classes.remember}
-                style={{ padding: 0 }}
-                label={
-                  <Typography className={classes.rememberText}>
-                    {t("auth.RememberMe")}
-                  </Typography>
-                }
-              />
-
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={() => setChecked(!checked)}
+                      name="checkedB"
+                      color="primary"
+                      style={{ padding: 0 }}
+                    />
+                  }
+                  className={classes.remember}
+                  style={{ padding: 0 }}
+                  label={
+                    <Typography className={classes.rememberText}>
+                      {t("auth.RememberMe")}
+                    </Typography>
+                  }
+                />
+                <Typography
+                  className={`${classes.titles}`}
+                  sx={{marginBottom:0}}
+                  variant="body1"
+                  gutterBottom
+                  onClick={handlePasswordForget}
+                >
+                  {t("auth.ForgetPassword")}
+                </Typography>
+              </div>
               <div className={classes.actionWrapper}>
                 <Button
                   type="submit"
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
+                  sx={{width:'100%'}}
                 // disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
@@ -355,14 +283,7 @@ const LoginForm: React.FC<Props> = (props) => {
                     t("auth.login")
                   )}
                 </Button>
-                <Typography
-                  className={`${classes.titles} ${classes.forget}`}
-                  variant="body1"
-                  gutterBottom
-                  onClick={handlePasswordForget}
-                >
-                  {t("auth.ForgetPassword")}
-                </Typography>
+                
               </div>
 
             </Form>
@@ -408,7 +329,7 @@ const useStyles = makeStyles({
   titles: {
     color: colors.textPrimary,
     fontFamily: "Inter",
-    marginTop: -10,
+    // marginTop: -10,
   },
   loginForm: {
     display: "flex",
