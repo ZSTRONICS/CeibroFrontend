@@ -13,17 +13,8 @@ import {
   Box, Button,
   Checkbox,
   FormControlLabel,
-  IconButton,
-  InputAdornment,
   Typography,
-  Grid,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-  OutlinedInput,
 } from '@mui/material';
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
 
@@ -39,7 +30,6 @@ import { toast } from "react-toastify";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 import colors from "assets/colors";
 import assets from "assets/assets";
-import TextField from "components/Utills/Inputs/TextField";
 import { CBox } from "components/material-ui";
 import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
@@ -52,6 +42,12 @@ interface Props {
   showError: boolean;
 }
 
+interface IInputValues {
+  dialCode:string,
+  phoneNumber:string,
+  password:string
+}
+
 const LoginForm: React.FC<Props> = (props) => {
 
   const { tokenLoading, showSuccess, showError } = props;
@@ -59,7 +55,6 @@ const LoginForm: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
@@ -67,20 +62,16 @@ const LoginForm: React.FC<Props> = (props) => {
   let [timer, setTimer] = useState('')
   const dispatch = useDispatch();
   const history = useHistory();
-
   const [showLoading, setShowLoading] = useState(false)
-  const handleKeyDown = (e: any, values: any) => {
-    if (e.keyCode === 13) {
-      handleSubmit(values);
-    }
-  };
+  
 
-  const handleSubmit = (values: any) => {
+  const handleSubmit = (values: IInputValues) => {
     setShowLoading(true)
     setIncorrectAuth(false);
-    const { phoneNumber, password } = values;
+    const { phoneNumber, password,dialCode } = values;
     const payload = {
       body: {
+        dialCode,
         phoneNumber,
         password,
       },
@@ -153,9 +144,9 @@ const LoginForm: React.FC<Props> = (props) => {
           <Typography >{t("auth.login")}</Typography>
         </Box>
 
-
         <Formik
           initialValues={{
+            dialCode:"+372",
             phoneNumber: "",
             password: "",
           }}
@@ -224,7 +215,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 </Alert>
               )}
               <CBox mb={3.1}>
-                <CustomMuiTextField textType="phone-number" inputValue={values.phoneNumber} onChange={handleChange } onBlur={handleBlur} />
+                <CustomMuiTextField textType="phone-number" inputValue={{phoneNumber:values.phoneNumber,dialCode:values.dialCode}} onChange={handleChange } onBlur={handleBlur} />
                 {errors.phoneNumber && touched.phoneNumber && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.phoneNumber}
@@ -259,7 +250,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                 />
                 <Typography
-                  className={`${classes.titles}`}
+                  className={`${classes.titles} ${classes.forget}`}
                   sx={{marginBottom:0}}
                   variant="body1"
                   gutterBottom
@@ -355,7 +346,6 @@ const useStyles = makeStyles({
     background: "#0076C8",
   },
   forget: {
-    marginTop: 5,
     fontWeight: 500,
     fontSize: 14,
     paddingLeft: 30,
@@ -402,29 +392,5 @@ const useStyles = makeStyles({
     '& .MuiInputAdornment-positionEnd': {
       marginLeft: '0px !important'
     }
-    // padding: '16px 10px',
-    // borderRadius: 5,
-    // border: '1px solid #DBDBE5',
-    // '&:focus': {
-    //   border: '2px solid !important'
-    // },
-    // '& input': {
-    //   border: 'none !important',
-    //   padding: 'px !important',
-    //   '& :focus': {
-    //     borderColor: 'red !important'
-    //   }
-    // },
-    // '& .MuiInputBase-root': {
-    //   height: 12,
-    //   width: '100%',
-    //   border: '1px solid #DBDBE5'
-    // },
-    // '& .MuiInputBase-input': {
-    //   border: 'none !important',
-    //   '&:focus': {
-    //     border: '2px solid !important'
-    //   }
-    // }
   }
 });
