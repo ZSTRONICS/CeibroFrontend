@@ -35,7 +35,6 @@ export const PhoneNumberTextField = (props: IProps) => {
             sx={{
                 paddingLeft: 0,
                 width: "100%",
-                maxWidth: 376
             }}
             value={inputValue.phoneNumber}
             onChange={handleChange}

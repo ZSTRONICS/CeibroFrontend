@@ -22,7 +22,6 @@ export const PasswordTextField = (props: IProps) => {
             type={showPassword ? "text" : "password"}
             sx={{
                 width: "100%",
-                maxWidth: 376,
                 position: 'relative',
                 '& .MuiIconButton-edgeEnd': {
 
