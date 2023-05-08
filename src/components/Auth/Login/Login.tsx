@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
@@ -85,7 +85,7 @@ const Login: React.FC<LoginInterface> = () => {
               showSuccess={success}
               showError={error}
             />
-            <Grid container item className={classes.langContainer}>
+            <Grid container item className={classes.langContainer} pt={1.5}>
               <Grid item>
                 <Typography className={classes.dontHave}>
                   {t("auth.dont_have_account")}{" "}

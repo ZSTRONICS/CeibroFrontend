@@ -23,6 +23,7 @@ interface IProps {
 
 export const PhoneNumberTextField = (props: IProps) => {
   const { name, placeholder, inputValue, onChange, onBlur } = props;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b]{0,11}$/;
     if (e.target.value === "" || regex.test(e.target.value)) {

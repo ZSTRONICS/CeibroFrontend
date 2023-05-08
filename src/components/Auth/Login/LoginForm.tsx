@@ -222,8 +222,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 <CBox mb={3.1}>
                   <CustomMuiTextField
                     name="phoneNumber"
-                    label="Phone number"
-                    textType="phone-number"
+                    typeName="phone-number"
                     inputValue={{
                       phoneNumber: values.phoneNumber,
                       dialCode: values.dialCode,
@@ -239,9 +238,11 @@ const LoginForm: React.FC<Props> = (props) => {
                 </CBox>
                 <CBox mb={3.1}>
                   <CustomMuiTextField
+                  password={values.password}
+                  placeholder="Password"
                     name="password"
                     label="Password"
-                    textType="password"
+                    typeName="password"
                     inputValue={values.password}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -374,7 +375,7 @@ const useStyles = makeStyles({
   forget: {
     fontWeight: 500,
     fontSize: 14,
-    paddingLeft: 30,
+    paddingLeft: 15,
     cursor: "pointer",
   },
   color: {

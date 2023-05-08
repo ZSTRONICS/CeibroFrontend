@@ -1,15 +1,12 @@
-import React from "react";
-import { Alert, Button, Grid, Typography } from "@mui/material";
-import { Formik } from "formik";
-import colors from "assets/colors";
+import { Button, Grid, Typography } from "@mui/material";
 import assets from "assets/assets";
-import { makeStyles } from "@mui/styles";
+import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import useStyles from "./RegisterStyles";
-import Setting from "components/Setting";
-import { Link } from "react-router-dom";
+import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import useStyles from "./RegisterStyles";
 
 export default function RegisterNumberForm() {
   const { t } = useTranslation();
@@ -44,9 +41,8 @@ export default function RegisterNumberForm() {
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  typeName="phone-number"
                   name="phoneNumber"
-                  label="Phone number"
-                  textType="phone-number"
                   inputValue={{
                     phoneNumber: values.phoneNumber,
                     dialCode: values.dialCode,
@@ -76,11 +72,12 @@ export default function RegisterNumberForm() {
       </div>
       <Grid
         container
-        item
+        item 
+        pt={1.5}
         className={classes.langContainer}
         justifyContent="space-between"
       >
-        <Grid item>
+        <Grid item >
           <Typography className={classes.dontHave}>
             {t("auth.back_to")}{" "}
             <Link to="/login" className={classes.signup}>

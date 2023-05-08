@@ -1,15 +1,12 @@
-import React from "react";
-import { Alert, Button, Grid, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
-import { Formik } from "formik";
-import colors from "assets/colors";
+import { Button, Grid, Typography } from "@mui/material";
 import assets from "assets/assets";
-import { makeStyles } from "@mui/styles";
+import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import useStyles from "./RegisterStyles";
-import Setting from "components/Setting";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
@@ -26,7 +23,7 @@ export default function RegisterConfirmationForm() {
         <p className={classes.description}>by entering your phone number</p>
       </div>
       <div className={classes.registerNumberForm}>
-        <Formik
+         <Formik
           initialValues={{
             verificationCode: "",
           }}
@@ -44,8 +41,9 @@ export default function RegisterConfirmationForm() {
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <CBox mb={3.1}>
-                <CustomMuiTextField
+                 <CustomMuiTextField
                   name="verificationCode"
+                  typeName="text-field"
                   label="Enter your code"
                   placeholder="Enter your code"
                   inputValue={values.verificationCode}

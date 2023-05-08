@@ -104,6 +104,7 @@ const RegisterForm = () => {
               )}
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  typeName="text-field"
                   name="firstName"
                   label="First name"
                   placeholder={t("auth.register.first_name")}
@@ -119,6 +120,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  typeName="text-field"
                   name="surName"
                   label="Surname"
                   placeholder={t("auth.register.sur_name")}
@@ -134,12 +136,15 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  typeName="text-field"
+                  subType="email"
                   name="email"
                   label="Email"
                   placeholder={t("auth.register.email")}
                   inputValue={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  required={false}
                 />
                 {errors.email && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -149,16 +154,24 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                typeName="text-field"
                   name="companyName"
                   label="Company name"
                   placeholder={t("auth.register.company_name")}
                   inputValue={values.companyName}
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  required={false}
                 />
+                 {errors.companyName && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.companyName && touched.companyName && errors.companyName}
+                  </Typography>
+                )}
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                typeName="text-field"
                   name="jobTitle"
                   label="Job title"
                   placeholder={t("auth.register.job_title")}
@@ -166,12 +179,16 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
+                 {errors.jobTitle && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.jobTitle && touched.jobTitle && errors.jobTitle}
+                  </Typography>
+                )}
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                typeName="phone-number"
                   name="phoneNumber"
-                  label="Phone number"
-                  textType="phone-number"
                   inputValue={{
                     phoneNumber: values.phoneNumber,
                     dialCode: values.dialCode,
@@ -182,12 +199,14 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                  name="password"
-                  label="Password"
-                  textType="password"
-                  inputValue={values.password}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                    inputValue={values.password}
+                    password={values.password}
+                    typeName="password"
+                    name="password"
+                    label="Password"
+                    placeholder="Password"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                 />
                 {errors.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -197,10 +216,11 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  password={values.confirmPassword}
                   name="confirmPassword"
                   label="Confirm password"
                   placeholder="Confirm password"
-                  textType="password"
+                  typeName="password"
                   inputValue={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -346,6 +366,7 @@ const RegisterForm = () => {
                       color: "red",
                       textTransform: "capitalize !important",
                     }}
+                    onClick={()=>history.push('/login')}
                   >
                     Cancel
                   </Button>

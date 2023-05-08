@@ -11,6 +11,9 @@ import {
   Tasks,
   Chat,
   AdminMain,
+  RegisterNumberForm,
+  RegisterConfirmationForm,
+  TermsAndConditions
 } from "components";
 
 // import AppLayout from "./AppLayout";
@@ -32,6 +35,9 @@ const RouterConfig: React.FC<Configs> = () => {
           {/* <Route path="/verify-email" component={VerifyEmail} /> */}
           <Route path="/forgot-password" component={ForgetPassword} />
           <Route path="/reset-password" component={ResetPassword} />
+          <Route path="/registerFormNumber" component={RegisterNumberForm} />
+          <Route path="/confirmation" component={RegisterConfirmationForm} />
+          <Route path="/t&c" component={TermsAndConditions} />
           <Route path="/register" component={Register} />
 
           {/* <AppLayout> */}

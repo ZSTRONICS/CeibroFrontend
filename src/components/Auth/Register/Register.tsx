@@ -1,7 +1,7 @@
 import { Grid, Typography } from "@material-ui/core";
 import { CBox } from "components/material-ui";
 import Setting from "components/Setting";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -15,6 +15,7 @@ import useStyles from "./RegisterStyles";
 import RegisterNumberForm from "./RegisterNumberForm";
 import RegisterConfirmationForm from "./RegisterConfirmationForm";
 import TermsAndConditions from "./TermsAndConditions";
+import AuthLayout from "../AuthLayout/AuthLayout";
 const Register = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
@@ -30,46 +31,9 @@ const Register = () => {
   }, [isLoggedIn]);
 
   return (
-    <Grid container className={classes.register}>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        lg={4}
-        className={`${classes.form} hide-scrollbar`}
-      >
-        <CBox className={"logoTitleWrapper"}>
-          <RegisterForm />
-          {/* <RegisterNumberForm /> */}
-          {/* <RegisterConfirmationForm /> */}
-          {/* <TermsAndConditions /> */}
-          {/* <Grid
-            container
-            item
-            className={classes.langContainer}
-            justifyContent="space-between"
-          >
-            <Grid item>
-              <Typography className={classes.dontHave}>
-                {t("auth.back_to")}{" "}
-                <Link to="/login" className={classes.signup}>
-                  {t("auth.register.signIn")}
-                </Link>
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Setting />
-            </Grid>
-          </Grid> */}
-        </CBox>
-      </Grid>
-
-      {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
-          <ImageTile />
-        </Grid>
-      )}
-    </Grid>
+ <AuthLayout>
+ <RegisterForm />
+ </AuthLayout>
   );
 };
 

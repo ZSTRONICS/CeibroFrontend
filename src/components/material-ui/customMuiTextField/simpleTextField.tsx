@@ -11,6 +11,7 @@ interface IProps {
   name: string;
   label: string;
   type?: string;
+  required?:boolean;
   placeholder?: string;
   inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -21,7 +22,7 @@ interface IProps {
 }
 
 export const SimpleTextField = (props: IProps) => {
-  const { name, type, label, placeholder, inputValue, onChange, onBlur } =
+  const { name, type, label, placeholder,required, inputValue, onChange, onBlur } =
     props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e);
@@ -31,6 +32,7 @@ export const SimpleTextField = (props: IProps) => {
     <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
+        required={required}
         id={id}
         name={name}
         type={type ? type : "text"}

@@ -12,11 +12,39 @@ import { PasswordTextField } from "./paaswordTextField";
 import { SimpleTextField } from "./simpleTextField";
 import { IPhoneNumber, inputType } from "./types";
 
-interface IProps {
+interface IPhoneNumberProps {
+  typeName: 'phone-number';
+  name: string;
+  inputValue: IPhoneNumber;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
+}
+
+interface IPasswordProps {
+  typeName: 'password';
   name: string;
   label: string;
-  placeholder?: string;
-  inputValue: string | IPhoneNumber;
+  placeholder: string;
+  password: string;
+  inputValue: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
+}
+
+interface ITextFieldProps {
+  typeName: 'text-field';
+  subType?: string;
+  name: string;
+  required?:boolean;
+  label: string;
+  placeholder: string;
+  inputValue: string;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>
   ) => void;
@@ -24,64 +52,79 @@ interface IProps {
     (e: React.FocusEvent<any, Element>): void;
     <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
   };
-  textType?: inputType;
 }
 
-export const CustomMuiTextField = (props: IProps) => {
-  const {
-    name,
-    label,
-    placeholder,
-    textType = "",
-    onChange,
-    inputValue = "",
-    onBlur,
-  } = props;
-  {
-    switch (textType) {
-      case "phone-number":
-        return (
-          <PhoneNumberTextField
-            name={name}
-            onChange={onChange}
-            inputValue={inputValue as IPhoneNumber}
-            onBlur={onBlur}
-          />
-        );
-      case "password":
-        return (
-          <PasswordTextField
-            name={name}
-            label={label}
-            password={inputValue as string}
-            placeholder={placeholder ?? placeholder}
-            onChange={onChange}
-            onBlur={onBlur}
-          />
-        );
-      case "email":
-        return (
-          <SimpleTextField
-            name={name}
-            label={label}
-            type={textType}
-            placeholder={placeholder ?? placeholder}
-            onChange={onChange}
-            inputValue={inputValue as string}
-            onBlur={onBlur}
-          />
-        );
-      default:
-        return (
-          <SimpleTextField
-            name={name}
-            label={label}
-            placeholder={placeholder ?? placeholder}
-            onChange={onChange}
-            inputValue={inputValue as string}
-            onBlur={onBlur}
-          />
-        );
-    }
+interface IAutoCompleteProps {
+  typeName: 'auto-complete';
+  name: string;
+  label: string;
+  inputValue: string;
+  onChange: (
+    e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>
+  ) => void;
+  onBlur?: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
+}
+
+type Props =
+  | IPhoneNumberProps
+  | IPasswordProps
+  | ITextFieldProps
+  | IAutoCompleteProps;
+
+export const CustomMuiTextField: React.FC<Props> = (props) => {
+  switch (props.typeName) {
+    case "phone-number":
+      return (
+        <PhoneNumberTextField
+          name={props.name}
+          onChange={(e: any) => props.onChange(e)}
+          inputValue={props.inputValue as IPhoneNumber}
+          onBlur={props.onBlur}
+        />
+      );
+    case "password":
+      return (
+        <PasswordTextField
+          name={props.name}
+          
+          label={props.label}
+          password={props.password as string}
+          placeholder={props.placeholder}
+          onChange={props.onChange}
+          onBlur={props.onBlur}
+        />
+      );
+
+    case "text-field":
+      return (
+        <SimpleTextField
+        required={props.required}
+          name={props.name}
+          label={props.label}
+          type={props.subType}
+          placeholder={props.placeholder}
+          onChange={props.onChange}
+          inputValue={props.inputValue as string}
+          onBlur={props.onBlur}
+        />
+      );
+      default: {
+        return <> </>
+      }
+    // case "auto-complete":
+    //   return (
+    //     <SimpleTextField
+    //       name={props.name}
+    //       label={props.label}
+    //       type={props.textType}
+    //       placeholder={props.placeholder}
+    //       onChange={props.onChange}
+    //       inputValue={props.inputValue as string}
+    //       onBlur={props.onBlur}
+    //     />
+    //   );
   }
 };

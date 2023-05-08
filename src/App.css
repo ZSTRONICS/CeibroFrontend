@@ -396,8 +396,9 @@ button[disabled]{
   background-color: var(--purple-grey) !important;
 }
 .logoTitleWrapper{
-  height: 100vh;
-  margin: 0px 80px;
+  /* height: 100vh; */
+  margin: 0px auto;
+  padding: 0 2rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -488,7 +489,11 @@ button[disabled]{
   opacity: 0;
   cursor: pointer;
 }
-
+@media (max-width:900px){
+  .logoTitleWrapper{
+    padding: 0 1.4rem;
+  }
+}
 /* *{
   -ms-overflow-style: none;
 }

@@ -32,9 +32,14 @@ import AdminMain from './Admin/AdminMain'
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
-
+import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
+import RegisterConfirmationForm from "./Auth/Register/RegisterConfirmationForm";
+import TermsAndConditions from "./Auth/Register/TermsAndConditions";
 export {
   RouterConfig,
+  RegisterConfirmationForm,
+  RegisterNumberForm,
+  TermsAndConditions,
   AdminMain,
   TaskModal,
   CDrawer,

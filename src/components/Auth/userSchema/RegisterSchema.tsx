@@ -17,6 +17,14 @@ export const setValidationSchema = (t: TFunction) => {
       .min(2, `${t("auth.tooShort")}`)
       .max(50, `${t("auth.tooLong")}`)
       .required(`${t("auth.required")}`),
+      jobTitle: yup
+      .string()
+      .min(1, `${t("auth.tooShort")}`)
+      .max(50, `${t("auth.tooLong")}`),
+      companyName: yup
+      .string()
+      .min(1, `${t("auth.tooShort")}`)
+      .max(50, `${t("auth.tooLong")}`),
       // .matches(/^(?![0-9_])[a-zA-Z0-9]*$/, `${t("auth.name_should_have")}`)
     email: yup
       .string()

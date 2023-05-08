@@ -28,7 +28,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       overflowY: "scroll",
       paddingBottom: 10,
       "@media (max-width:960px)": {
-        background: `url(${assets.visual})`,
+        // background: `url(${assets.visual})`,
         backgroundSize: "100vw 100vh",
         backgroundRepeat: "no-repeat",
       },
