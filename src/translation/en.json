@@ -35,6 +35,9 @@
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
     "account_not_found":"Account associated with this email address not found !",
     "name_should_have":"Name must start with  a letter",
+    "back_to":"Back to",
+    "didnot_receive_code":"Didn't receive code?",
+    "send_again":"Send again",
 
     "forgot_pass": {
       "verifying": "Verifying",
@@ -42,8 +45,8 @@
     },
 
     "register": {
-      "register": "Register",
-      "signIn": "Sign in!",
+      "setup_profile": "Setup a profile",
+      "signIn": "Sign in",
       "first_name": "First name",
       "sur_name": "Surname",
       "invalid_email": "Invalid email",
@@ -54,7 +57,8 @@
       "company_phone": "Company Phone",
       "work_email": "Work Email",
       "Not_valid_email": "Not a valid email",
-      "currently_representing": "Currently Representing Company"
+      "currently_representing": "Currently Representing Company",
+      "email":"Email"
     },
 
     "profile_form": {

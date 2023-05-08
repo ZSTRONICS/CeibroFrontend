@@ -1,60 +1,56 @@
-import React, { useState } from 'react'
-import { IconButton, InputAdornment, MenuItem, OutlinedInput, Select } from '@mui/material'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
-
+import React, { useState } from "react";
+import {
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 interface IProps {
-    password: string,
-    onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-    onBlur?: {
-        (e: React.FocusEvent<any, Element>): void;
-        <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-    }
+  name: string;
+  label: string;
+  placeholder?: string;
+  password: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
 }
 
 export const PasswordTextField = (props: IProps) => {
-    const [showPassword, setShowPassword] = useState(false)
-    const { password, onChange,onBlur } = props
-
-    return (
-        <OutlinedInput
-            placeholder={"Password"}
-            type={showPassword ? "text" : "password"}
-            sx={{
-                width: "100%",
-                position: 'relative',
-                '& .MuiIconButton-edgeEnd': {
-
-                    position: 'absolute',
-                    right: 10,
-                    zIndex: 999,
-                    marginleft: 31,
-
-                },
-                '& .MuiInputAdornment-positionEnd': {
-                    marginLeft: '0px !important'
-                }
-            }}
-            name="password"
-            inputProps={{
-                style: { height: 12, width: "100%" },
-            }}
-            value={password}
-            onChange={onChange}
-            onBlur={onBlur}
-            endAdornment={
-                <InputAdornment position="end">
-                    <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={() => setShowPassword(!showPassword)}
-                        edge="end"
-                    >
-                        {showPassword ? <Visibility /> : <VisibilityOff />}
-                    </IconButton>
-                </InputAdornment>
-            }
-        />
-    )
-}
-
-
+  const [showPassword, setShowPassword] = useState(false);
+  const { name, label, placeholder, password, onChange, onBlur } = props;
+  const id = label.replace(/\s+/g, "-");
+  console.log(id, "id");
+  return (
+    <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
+      <InputLabel htmlFor={id}>{label}</InputLabel>
+      <OutlinedInput
+        id={id}
+        name={name}
+        type={showPassword ? "text" : "password"}
+        label={label}
+        placeholder={placeholder ?? placeholder}
+        onChange={onChange}
+        onBlur={onBlur}
+        value={password}
+        endAdornment={
+          <InputAdornment position="end">
+            <IconButton
+              aria-label="toggle password visibility"
+              onClick={() => setShowPassword(!showPassword)}
+              edge="end"
+            >
+              {showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+          </InputAdornment>
+        }
+      />
+    </FormControl>
+  );
+};

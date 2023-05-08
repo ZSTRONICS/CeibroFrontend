@@ -12,10 +12,13 @@ import ImageTile from "./ImageTile";
 import "./register.css";
 import RegisterForm from "./RegisterForm";
 import useStyles from "./RegisterStyles";
+import RegisterNumberForm from "./RegisterNumberForm";
+import RegisterConfirmationForm from "./RegisterConfirmationForm";
+import TermsAndConditions from "./TermsAndConditions";
 const Register = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const history = useHistory();
 
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
@@ -28,25 +31,37 @@ const Register = () => {
 
   return (
     <Grid container className={classes.register}>
-      <Grid item xs={12} md={6} lg={4} className={`${classes.form} hide-scrollbar`}>
+      <Grid
+        item
+        xs={12}
+        md={6}
+        lg={4}
+        className={`${classes.form} hide-scrollbar`}
+      >
         <CBox className={"logoTitleWrapper"}>
           <RegisterForm />
-          <Grid container item className={classes.langContainer} justifyContent="space-between">
+          {/* <RegisterNumberForm /> */}
+          {/* <RegisterConfirmationForm /> */}
+          {/* <TermsAndConditions /> */}
+          {/* <Grid
+            container
+            item
+            className={classes.langContainer}
+            justifyContent="space-between"
+          >
             <Grid item>
               <Typography className={classes.dontHave}>
-                {t('auth.Already_have_an_account')}{" "}
+                {t("auth.back_to")}{" "}
                 <Link to="/login" className={classes.signup}>
-                  {t('auth.register.signIn')}
+                  {t("auth.register.signIn")}
                 </Link>
               </Typography>
             </Grid>
             <Grid item>
               <Setting />
             </Grid>
-          </Grid>
+          </Grid> */}
         </CBox>
-
-
       </Grid>
 
       {!isTabletOrMobile && (
@@ -59,4 +74,3 @@ const Register = () => {
 };
 
 export default Register;
-
