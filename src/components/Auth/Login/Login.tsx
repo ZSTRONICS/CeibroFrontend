@@ -1,7 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import "./login.css";
 
 // translation
@@ -21,17 +20,14 @@ import { RootState } from "../../../redux/reducers";
 // components
 import Setting from "components/Setting";
 import { LoginInterface } from "../../../constants/interfaces/Login.interface";
-import ImageTile from "./ImageTile";
 import LoginForm from "./LoginForm";
 import LoginSkeleton from "./LoginSkeleton";
 
-
-import useStyles from './LoginStyles';
+import useStyles from "./LoginStyles";
 import { CBox } from "components/material-ui";
+import AuthLayout from "../AuthLayout/AuthLayout";
 const Login: React.FC<LoginInterface> = () => {
-
   const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
@@ -71,21 +67,13 @@ const Login: React.FC<LoginInterface> = () => {
   }, [isLoggedIn]);
 
   return (
-    <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={4} className={classes.form}>
-        {/* if the data is loading it shows skeleton */}
-
-        {tokenLoading ?
-
-          <LoginSkeleton />
-          :
-          <CBox className={"logoTitleWrapper"}>
-            <LoginForm
-              tokenLoading={tokenLoading}
-              showSuccess={success}
-              showError={error}
-            />
-            <Grid container item className={classes.langContainer} pt={1.5}>
+    <AuthLayout title={t("auth.login")}>
+      <LoginForm
+        tokenLoading={tokenLoading}
+        showSuccess={success}
+        showError={error}
+      />
+           <Grid container item className={classes.langContainer} pt={1.5}>
               <Grid item>
                 <Typography className={classes.dontHave}>
                   {t("auth.dont_have_account")}{" "}
@@ -98,23 +86,8 @@ const Login: React.FC<LoginInterface> = () => {
                 <Setting />
               </Grid>
             </Grid>
-
-          </CBox>
-
-        }
-
-
-      </Grid>
-
-      {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
-          <ImageTile />
-        </Grid>
-      )
-      }
-    </Grid>
+    </AuthLayout>
   );
 };
 
 export default Login;
-

@@ -1,34 +1,26 @@
 import { Button, Grid, Typography } from "@mui/material";
-import assets from "assets/assets";
 import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
+import AuthLayout from "../AuthLayout/AuthLayout";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
   const classes = useStyles();
+  const history = useHistory();
   return (
-    <div>
-      <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
-      </div>
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>
-          Phone number confirmation
-        </Typography>
-        <p className={classes.description}>by entering your phone number</p>
-      </div>
+      <AuthLayout title = {t("auth.phone_number_confirmation")} subTitle={t("auth.enter_your_phone_no")}>
       <div className={classes.registerNumberForm}>
          <Formik
           initialValues={{
             verificationCode: "",
           }}
           // validationSchema={registerSch}
-          onSubmit={() => {}}
+          onSubmit={() => {}} 
         >
           {({
             values,
@@ -70,6 +62,8 @@ export default function RegisterConfirmationForm() {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  onClick={()=>history.push("/t&c")}
+
                 >
                   Continue
                 </Button>
@@ -83,6 +77,7 @@ export default function RegisterConfirmationForm() {
         item
         className={classes.langContainer}
         justifyContent="space-between"
+        pt={2}
       >
         <Grid item>
           <Typography className={classes.dontHave}>
@@ -96,6 +91,6 @@ export default function RegisterConfirmationForm() {
           <Setting />
         </Grid>
       </Grid>
-    </div>
+      </AuthLayout>
   );
 }

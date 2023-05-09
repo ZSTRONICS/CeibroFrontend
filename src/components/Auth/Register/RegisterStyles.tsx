@@ -94,10 +94,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     titleWrapper: {
       margin: "45px 0px 15px 0px",
-      "& .MuiTypography-root": {
-        fontSize: 30,
-        fontWeight: "bold",
-      },
+      // "& .MuiTypography-root": {
+      //   fontWeight: "500",
+      // },
     },
     inputs: {
       // marginBottom: 25,

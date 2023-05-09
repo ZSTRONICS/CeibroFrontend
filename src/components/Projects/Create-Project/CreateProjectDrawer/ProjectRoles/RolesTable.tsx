@@ -2,7 +2,7 @@ import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import { Divider, Grid, Tooltip } from "@mui/material";
 import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
-import { ProjectSubHeadingTag, RoleSubLabelTag } from "components/CustomTags";
+import { ProjectSubHeadingTag, SubLabelTag } from "components/CustomTags";
 import {
   CustomBadge,
   CustomStack,
@@ -198,13 +198,13 @@ const RolesTable = () => {
                                   Role &nbsp;
                                 </ProjectSubHeadingTag>
                                 {rolePermission.create === true && (
-                                  <RoleSubLabelTag>Create</RoleSubLabelTag>
+                                  <SubLabelTag>Create</SubLabelTag>
                                 )}
                                 {rolePermission.edit === true && (
-                                  <RoleSubLabelTag>Edit</RoleSubLabelTag>
+                                  <SubLabelTag>Edit</SubLabelTag>
                                 )}
                                 {rolePermission.delete === true && (
-                                  <RoleSubLabelTag>Delete</RoleSubLabelTag>
+                                  <SubLabelTag>Delete</SubLabelTag>
                                 )}
                               </CustomStack>
                             </Grid>
@@ -228,13 +228,13 @@ const RolesTable = () => {
                                 Member &nbsp;
                               </ProjectSubHeadingTag>
                               {memberPermission.create === true && (
-                                <RoleSubLabelTag>Create</RoleSubLabelTag>
+                                <SubLabelTag>Create</SubLabelTag>
                               )}
                               {memberPermission.edit === true && (
-                                <RoleSubLabelTag>Edit</RoleSubLabelTag>
+                                <SubLabelTag>Edit</SubLabelTag>
                               )}
                               {memberPermission.delete === true && (
-                                <RoleSubLabelTag>Delete</RoleSubLabelTag>
+                                <SubLabelTag>Delete</SubLabelTag>
                               )}
                             </CustomStack>
                           )}

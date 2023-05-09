@@ -1,19 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import useStyles from "./RegisterStyles";
-import { Typography, Button, Grid } from "@mui/material";
-import assets from "assets/assets";
-import { CBox } from "components/material-ui";
+import { Typography, Button, Grid, FormControlLabel, Checkbox } from "@mui/material";
+import AuthLayout from "../AuthLayout/AuthLayout";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 export default function TermsAndConditions() {
   const classes = useStyles();
+  const [checked, setChecked] = useState(false);
+  const { t } = useTranslation();
+  const history = useHistory()
   return (
-    <div>
-      <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
-      </div>
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Terms & Conditions</Typography>
-      </div>
+    <AuthLayout title={t("auth.terms_conditions")}>
+  <div>
       <Typography variant="body1" className={classes.termsConditions}>
         Sed ut perspiciatis unde omnis iste natus error sit voluptatem
         accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab
@@ -43,11 +42,30 @@ export default function TermsAndConditions() {
         annoying consequences, or one who avoids a pain that produces no
         resultant pleasure?
       </Typography>
+      <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={checked}
+                        onChange={() => setChecked(!checked)}
+                        name="checkedB"
+                        color="primary"
+                        style={{ padding: 0 }}
+                      />
+                    }
+                    // className={classes.remember}
+                    style={{ padding: 0 }}
+                    label={
+                      <Typography >
+                        {t("auth.agree")}
+                      </Typography>
+                    }
+                  />
       <Grid container spacing={1} sx={{ padding: "16px" }}>
         <Grid item xs={3}>
           <Button
             variant="outlined"
             sx={{ width: "100%", borderColor: "#000", color: "#000" }}
+            onClick={()=>history.push('/login')}
           >
             Cancel
           </Button>
@@ -64,12 +82,16 @@ export default function TermsAndConditions() {
                 borderColor: "#fff",
               },
             }}
-            disabled
+            disabled={!checked}
+            onClick={()=>history.push('/profile-setup')}
           >
             Confirm
           </Button>
         </Grid>
+
       </Grid>
     </div>
+    </AuthLayout>
+  
   );
 }

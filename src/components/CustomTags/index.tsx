@@ -93,7 +93,7 @@ font-size: 14px;
 font-weight: 700;
 color:#656565;
 `
-export const RoleSubLabelTag=styled(Typography)`
+export const SubLabelTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;
 font-size: 12px;

@@ -137,179 +137,163 @@ const LoginForm: React.FC<Props> = (props) => {
 
   return (
     <>
-      <div>
-        <Box>
-          <Box className={classes.logoWrapper}>
-            <img src={assets.logo} alt="ceibro-logo" />
-          </Box>
-          <Box className={classes.titleWrapper}>
-            <Typography>{t("auth.login")}</Typography>
-          </Box>
-
-          <Formik
-            initialValues={{
-              dialCode: "+372",
-              phoneNumber: "",
-              password: "",
-            }}
-            validationSchema={signinSchema}
-            onSubmit={handleSubmit}
-          >
-            {({
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-            }) => (
-              <Form
-                onSubmit={handleSubmit}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleSubmit();
-                  }
-                }}
-              >
-                {showError && (
-                  <Alert severity="error">{t("auth.link_expired")}</Alert>
-                )}
-                {verifyError && (
-                  <Alert
-                    severity="error"
-                    style={{ display: "flex", margin: "2px 0" }}
-                  >
-                    <Typography
-                      className={`${classes.titles} ${classes.forget} ${classes.color}`}
-                      variant="body1"
-                      gutterBottom
-                      onClick={() => handleVerifyEmail(values)}
-                    >
-                      {t("auth.emailNotVerify")}
-                      <span className={classes.emailVerify}>
-                        {t("auth.verifyEmail")}
-                      </span>
-                    </Typography>
-                  </Alert>
-                )}
-
-                {incorrectAuth && (
-                  <Alert style={{ margin: "2px 0" }} severity="error">
-                    {t("auth.account_locked").replace("#", `${timer}`)}
-                  </Alert>
-                )}
-                {incorrectEmail && (
-                  <Alert style={{ margin: "2px 0" }} severity="error">
-                    {t("auth.account_not_found").replace("#", `${timer}`)}
-                  </Alert>
-                )}
-                {lockError && (
-                  <Alert severity="error">
-                    {t("auth.errorAlerts.account_locked_message").replace(
-                      "#",
-                      `${timer}`
-                    )}
-                  </Alert>
-                )}
-
-                {(showSuccess || tokenLoading) && (
-                  <Alert severity="success">
-                    {tokenLoading
-                      ? `${t("auth.successAlerts.verifying_email")}`
-                      : `${t("auth.successAlerts.email_verified")}`}
-                  </Alert>
-                )}
-                <CBox mb={3.1}>
-                  <CustomMuiTextField
-                    name="phoneNumber"
-                    typeName="phone-number"
-                    inputValue={{
-                      phoneNumber: values.phoneNumber,
-                      dialCode: values.dialCode,
-                    }}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {errors.phoneNumber && touched.phoneNumber && (
-                    <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.phoneNumber}
-                    </Typography>
-                  )}
-                </CBox>
-                <CBox mb={3.1}>
-                  <CustomMuiTextField
-                  password={values.password}
-                  placeholder="Password"
-                    name="password"
-                    label="Password"
-                    typeName="password"
-                    inputValue={values.password}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                  />
-                  {errors.password && touched.password && (
-                    <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.password}
-                    </Typography>
-                  )}
-                </CBox>
-                <div
-                  style={{ display: "flex", justifyContent: "space-between" }}
+      <Box>
+        <Formik
+          initialValues={{
+            dialCode: "+372",
+            phoneNumber: "",
+            password: "",
+          }}
+          validationSchema={signinSchema}
+          onSubmit={handleSubmit}
+        >
+          {({
+            errors,
+            touched,
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+          }) => (
+            <Form
+              onSubmit={handleSubmit}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmit();
+                }
+              }}
+            >
+              {showError && (
+                <Alert severity="error">{t("auth.link_expired")}</Alert>
+              )}
+              {verifyError && (
+                <Alert
+                  severity="error"
+                  style={{ display: "flex", margin: "2px 0" }}
                 >
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={() => setChecked(!checked)}
-                        name="checkedB"
-                        color="primary"
-                        style={{ padding: 0 }}
-                      />
-                    }
-                    className={classes.remember}
-                    style={{ padding: 0 }}
-                    label={
-                      <Typography className={classes.rememberText}>
-                        {t("auth.RememberMe")}
-                      </Typography>
-                    }
-                  />
                   <Typography
-                    className={`${classes.titles} ${classes.forget}`}
-                    sx={{ marginBottom: 0 }}
+                    className={`${classes.titles} ${classes.forget} ${classes.color}`}
                     variant="body1"
                     gutterBottom
-                    onClick={handlePasswordForget}
+                    onClick={() => handleVerifyEmail(values)}
                   >
-                    {t("auth.ForgetPassword")}
+                    {t("auth.emailNotVerify")}
+                    <span className={classes.emailVerify}>
+                      {t("auth.verifyEmail")}
+                    </span>
                   </Typography>
-                </div>
-                <div className={classes.actionWrapper}>
-                  <Button
-                    type="submit"
-                    className={classes.loginButton}
-                    variant="contained"
-                    color="primary"
-                    sx={{ width: "100%" }}
-                    // disabled={checkValidInputs(values) || showLoading}
-                  >
-                    {showLoading ? (
-                      <Loading
-                        type="spin"
-                        color="white"
-                        height={14}
-                        width={14}
-                      />
-                    ) : (
-                      t("auth.login")
-                    )}
-                  </Button>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </Box>
-      </div>
+                </Alert>
+              )}
+
+              {incorrectAuth && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_locked").replace("#", `${timer}`)}
+                </Alert>
+              )}
+              {incorrectEmail && (
+                <Alert style={{ margin: "2px 0" }} severity="error">
+                  {t("auth.account_not_found").replace("#", `${timer}`)}
+                </Alert>
+              )}
+              {lockError && (
+                <Alert severity="error">
+                  {t("auth.errorAlerts.account_locked_message").replace(
+                    "#",
+                    `${timer}`
+                  )}
+                </Alert>
+              )}
+
+              {(showSuccess || tokenLoading) && (
+                <Alert severity="success">
+                  {tokenLoading
+                    ? `${t("auth.successAlerts.verifying_email")}`
+                    : `${t("auth.successAlerts.email_verified")}`}
+                </Alert>
+              )}
+              <CBox mb={3.1} pt={2}>
+                <CustomMuiTextField
+                  name="phoneNumber"
+                  typeName="phone-number"
+                  inputValue={{
+                    phoneNumber: values.phoneNumber,
+                    dialCode: values.dialCode,
+                  }}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.phoneNumber && touched.phoneNumber && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.phoneNumber}
+                  </Typography>
+                )}
+              </CBox>
+              <CBox mb={3.1}>
+                <CustomMuiTextField
+                  password={values.password}
+                  placeholder="Password"
+                  name="password"
+                  label="Password"
+                  typeName="password"
+                  inputValue={values.password}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                />
+                {errors.password && touched.password && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.password}
+                  </Typography>
+                )}
+              </CBox>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={checked}
+                      onChange={() => setChecked(!checked)}
+                      name="checkedB"
+                      color="primary"
+                      style={{ padding: 0 }}
+                    />
+                  }
+                  className={classes.remember}
+                  style={{ padding: 0 }}
+                  label={
+                    <Typography className={classes.rememberText}>
+                      {t("auth.RememberMe")}
+                    </Typography>
+                  }
+                />
+                <Typography
+                  className={`${classes.titles} ${classes.forget}`}
+                  sx={{ marginBottom: 0 }}
+                  variant="body1"
+                  gutterBottom
+                  onClick={handlePasswordForget}
+                >
+                  {t("auth.ForgetPassword")}
+                </Typography>
+              </div>
+              <div className={classes.actionWrapper}>
+                <Button
+                  type="submit"
+                  className={classes.loginButton}
+                  variant="contained"
+                  color="primary"
+                  sx={{ width: "100%" }}
+                  // disabled={checkValidInputs(values) || showLoading}
+                >
+                  {showLoading ? (
+                    <Loading type="spin" color="white" height={14} width={14} />
+                  ) : (
+                    t("auth.login")
+                  )}
+                </Button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </Box>
     </>
   );
 };

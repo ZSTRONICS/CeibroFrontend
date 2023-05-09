@@ -1,26 +1,21 @@
 import { Button, Grid, Typography } from "@mui/material";
-import assets from "assets/assets";
 import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
+import AuthLayout from "../AuthLayout/AuthLayout";
 
 export default function RegisterNumberForm() {
   const { t } = useTranslation();
   const classes = useStyles();
+  const history = useHistory();
   return (
     <div>
-      <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
-      </div>
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>Get started</Typography>
-        <p className={classes.description}>by entering your phone number</p>
-      </div>
-      <div className={classes.registerNumberForm}>
+ <AuthLayout  title = {t("auth.get_started")} subTitle={t("auth.enter_your_phone_no")}>
+ <div className={classes.registerNumberForm}>
         <Formik
           initialValues={{
             dialCode: "+372",
@@ -62,6 +57,7 @@ export default function RegisterNumberForm() {
                   variant="contained"
                   color="primary"
                   type="submit"
+                  onClick={()=>history.push("/confirmation")}
                 >
                   Continue
                 </Button>
@@ -69,7 +65,7 @@ export default function RegisterNumberForm() {
             </form>
           )}
         </Formik>
-      </div>
+      </div> 
       <Grid
         container
         item 
@@ -89,6 +85,7 @@ export default function RegisterNumberForm() {
           <Setting />
         </Grid>
       </Grid>
+      </AuthLayout>
     </div>
   );
 }
