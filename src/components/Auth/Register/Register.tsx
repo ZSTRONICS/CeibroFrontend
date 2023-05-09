@@ -16,6 +16,7 @@ import RegisterNumberForm from "./RegisterNumberForm";
 import RegisterConfirmationForm from "./RegisterConfirmationForm";
 import TermsAndConditions from "./TermsAndConditions";
 import AuthLayout from "../AuthLayout/AuthLayout";
+import RegisterSetupProfile from "./RegisterSetupProfile";
 const Register = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
@@ -31,9 +32,10 @@ const Register = () => {
   }, [isLoggedIn]);
 
   return (
- <AuthLayout>
- <RegisterForm />
- </AuthLayout>
+    // <AuthLayout>
+    //   <RegisterForm />
+    // </AuthLayout>
+    <RegisterSetupProfile />
   );
 };
 
