@@ -377,7 +377,11 @@ button[disabled]{
 .css-qc6sy-singleValue {
   margin-left: 10px !important;
 }
-
+label.dragArea{
+  border: 1px solid #E2E4E5 !important;
+  max-width: 440px !important;
+  height: 80px !important;
+}
 .react-datepicker-wrapper input {
   width: 95%;
 }
@@ -398,7 +402,7 @@ button[disabled]{
 .logoTitleWrapper{
   /* height: 100vh; */
   margin: 0px auto;
-  padding: 0 2rem;
+  padding: 0 3rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

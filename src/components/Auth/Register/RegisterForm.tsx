@@ -244,6 +244,7 @@ const RegisterForm = () => {
                       color: "#fff",
                       textTransform: "capitalize !important",
                     }}
+                    onClick={()=>history.push('/profile-pic')}
                   >
                     Continue
                   </Button>

@@ -13,7 +13,8 @@ import {
   AdminMain,
   RegisterNumberForm,
   RegisterConfirmationForm,
-  TermsAndConditions
+  TermsAndConditions,
+  RegisterSetupProfile
 } from "components";
 
 // import AppLayout from "./AppLayout";
@@ -39,6 +40,7 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/confirmation" component={RegisterConfirmationForm} />
           <Route path="/t&c" component={TermsAndConditions} />
           <Route path="/profile-setup" component={Register} />
+          <Route path="/profile-pic" component={RegisterSetupProfile} />
 
           {/* <AppLayout> */}
           <DashboardLayout>

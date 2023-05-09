@@ -8957,10 +8957,10 @@ react-dom@^18.2.0:
     loose-envify "^1.1.0"
     scheduler "^0.23.0"
 
-react-drag-drop-files@^2.3.9:
-  version "2.3.9"
-  resolved "https://registry.npmjs.org/react-drag-drop-files/-/react-drag-drop-files-2.3.9.tgz"
-  integrity sha512-4O61sC2sDJC+kAL8tQqHlOlinYBhovyZEzCPUVq9C0JTz98I4KgCSGnIpqDZsV2B5kznGByMK6u2AWjWrZH6iw==
+react-drag-drop-files@^2.3.10:
+  version "2.3.10"
+  resolved "https://registry.yarnpkg.com/react-drag-drop-files/-/react-drag-drop-files-2.3.10.tgz#3f6ea316f8ad66a6f76b312cc4108c7c14065b06"
+  integrity sha512-Fv614W9+OtXFB5O+gjompTxQZLYGO7wJeT4paETGiXtiADB9yPOMGYD4A3PMCTY9Be874/wcpl+2dm3MvCIRzg==
   dependencies:
     prop-types "^15.7.2"
     styled-components "^5.3.0"

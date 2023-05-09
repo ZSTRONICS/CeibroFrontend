@@ -90,12 +90,15 @@ import AddIcon from '@mui/icons-material/Add';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuIcon from '@mui/icons-material/Menu';
+import CancelIcon from '@mui/icons-material/Cancel';
+
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
 const assets= {
+  CancelIcon,
   MenuIcon,
   EmailIcon,
   NotificationsOutlinedIcon,
