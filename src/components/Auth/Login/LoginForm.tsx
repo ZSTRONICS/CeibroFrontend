@@ -239,11 +239,11 @@ const LoginForm: React.FC<Props> = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.password && touched.password && (
+                {/* {errors.password && touched.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.password}
                   </Typography>
-                )}
+                )} */}
               </CBox>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <FormControlLabel

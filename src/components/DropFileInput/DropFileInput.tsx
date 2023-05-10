@@ -2,34 +2,18 @@ import { Box, Button } from "@mui/material";
 import ProfileView from "components/Auth/Register/ProfilePicView";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import {
-  CloudUploadIcon,
   CloudUploadIconForPic,
 } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomBox } from "components/uploadImage/UploadDocs";
 import React, { useState } from "react";
 
-interface File {
-  id: number;
-  name: string;
-  size: number;
-}
-
 const DragAndDrop: React.FC = () => {
-  const [files, setFiles] = useState<File[]>([]);
-  const [imgUrl, setImageUrl] = useState<string>("");
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [url, setUrl] = useState<string>("");
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const newFiles: File[] = [];
-    console.log("e.dataTransfer.files", e.dataTransfer.files);
-    for (let i = 0; i < e.dataTransfer.files.length; i++) {
-      const file = e.dataTransfer.files[i];
-      //   newFiles.push([...file]);
-    }
-
-    setFiles((prevFiles) => [...prevFiles, ...newFiles]);
+    setUrl(URL.createObjectURL(e.dataTransfer.files[0]));
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -38,12 +22,11 @@ const DragAndDrop: React.FC = () => {
 
   const onUploadFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files && e.target.files.length > 0) {
-      // setFile(e.target.files[0]);
       setUrl(URL.createObjectURL(e.target.files[0]));
     }
   };
   const HandleremoveImg = () => {
-    setImageUrl("");
+    setUrl("");
   };
   console.log("url", url);
   return (
@@ -106,15 +89,11 @@ const DragAndDrop: React.FC = () => {
               >
                 Drag your file here with mouse or <span style={{color:'#0076C8'}}> &nbsp;browse</span> 
               </Button>
-              {/*  <Button LinkComponent='a' disableRipple>Click to upload </Button>
-            <span style={{fontSize:'16px', fontWeight:'400', color:'#1976D2'}}> Click to upload &nbsp;
-              <span style={{color:'#000000'}}>or drag and drop</span> 
-            </span>*/}
             </CustomStack>
           </Box>
         </CustomBox>
       </label>
-      {imgUrl && (
+      {url && (
         <ProfileView imgSrc={url} title={""} removeImg={HandleremoveImg} />
       )}
     </div>

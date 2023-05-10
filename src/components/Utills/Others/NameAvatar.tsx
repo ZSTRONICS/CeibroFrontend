@@ -14,8 +14,9 @@ interface NameAvatarProps {
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
   const classes = useStyles();
   const { firstName, surName, url } = props;
+  // todo later
   const letters =
-    firstName?.[0].toUpperCase() + (surName?.[0].toUpperCase() || "");
+   firstName?(firstName?.[0].toUpperCase() + (surName?.[0].toUpperCase())):"";
 
   return (
     <>

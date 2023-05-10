@@ -72,11 +72,9 @@ export default function TermsAndConditions() {
         </Grid>
         <Grid item xs={9}>
           <Button
-            variant="outlined"
+            variant="contained"
             sx={{
               width: "100%",
-              borderColor: "#000",
-              color: "#000",
               "&:disabled": {
                 backgroundColor: "#f4f4f4",
                 borderColor: "#fff",

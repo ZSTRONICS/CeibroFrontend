@@ -10,11 +10,11 @@ interface PrivateRouteInt {
 const PrivateRoute: React.FC<PrivateRouteInt> = (props) => {
   const { component, path } = props;
 
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  // const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
-  if (!isLoggedIn) {
-    return <Redirect to="/login" />;
-  }
+  // if (!isLoggedIn) {
+  //   return <Redirect to="/login" />;
+  // }
 
   return <Route path={path} exact component={component} />;
 };
