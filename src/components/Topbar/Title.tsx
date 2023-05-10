@@ -1,8 +1,7 @@
 
-import React from "react";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import { Typography, Button } from "@mui/material";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
@@ -13,6 +12,7 @@ import { projectOverviewTemplate } from "constants/interfaces/project.interface"
 import CreateChat from "./CreateChat";
 import CButton from "components/Button/Button";
 import { TopBarTitle } from "components/CustomTags";
+import AddIcon from '@mui/icons-material/Add';
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -31,46 +31,34 @@ const Title = () => {
 		dispatch(taskActions.openNewTaskModal());
 	  };
 	  
-  const goBack = () => {
-    history.goBack();
-  };
+    const goBack = useCallback(() => {
+      history.goBack();
+    }, [history]);  
 
   const BackIcon = () => (
     <ArrowBack  className={classes.backIcon} onClick={goBack} />
   );
+
+  const titleFontSize = {
+    xs: 18,
+    sm: 24,
+    md: 32,
+  };
 
   const getTitle = () => {
     if (location.pathname.includes("project"))
       return (
         <>
           <div className={classes.projectTitle}>
-          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
           Project
           </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
-            >
-              Project
-            </Typography> */}
-            <CButton
-             onClick={openProjectDrawer}
-                  label='Create new'
+          <CButton
+             startIcon={<AddIcon/>}
+                onClick={openTaskModal}
+                  label='New'
                   variant="contained"
-                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
-                  // styles={{
-                  //   borderColor: "#FA0808",
-                  //   // borderColor: "#55BCB3",
-                  //   fontSize: 12,
-                  //   fontWeight: "bold",
-                  //   borderWidth: 2,
-                  //   color: "#FA0808",
-                  //   // color: "#55BCB3",
-                  // }}
-                />
-            
-              
+                  sx={{padding:'6px 5px', fontWeight:'700', minWidth:{xs:"70px", sm:'80px'}, fontSize:{xs:12,sm:13}}} />
           </div>
         </>
       );
@@ -79,31 +67,15 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
-            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
             Task
             </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
-            >
-              Task
-            </Typography> */}
-            {/* <Button
-              onClick={openTaskModal}
-              size="small"
-              color="primary"
-              variant="contained"
-              style={{minWidth: '92px'}}
-            >
-              Create new
-            </Button> */}
             <CButton
-            onClick={openTaskModal}
-                  label='Create new'
+             startIcon={<AddIcon/>}
+                onClick={openTaskModal}
+                  label='New'
                   variant="contained"
-                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
-                />
+                  sx={{padding:'6px 5px', fontWeight:'700', minWidth:{xs:"70px", sm:'80px'}, fontSize:{xs:12,sm:13}}} />
           </div>
         </>
       );
@@ -112,7 +84,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
           Dashboard
           </TopBarTitle>
           </div>
@@ -122,7 +94,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
           Admin
           </TopBarTitle>
           </div>
@@ -133,16 +105,9 @@ const Title = () => {
       return (
         <>
           <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
           Chat
           </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
-            >
-              Chat
-            </Typography> */}
           </div>
           {!isTabletOrMobile && (
             <div
@@ -159,16 +124,9 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:24, lg:30},fontWeight:500,paddingLeft:'10px'}}>
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500,paddingLeft:'10px'}}>
             My Connections
           </TopBarTitle>
-            {/* <Typography
-              className={classes.profileTitle}
-              variant="h6"
-              component="h6"
-            >
-              My Connections
-            </Typography> */}
           </div>
         </>
       );
@@ -178,16 +136,9 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:15,sm:20,md:30},fontWeight:500, paddingLeft:'10px'}}>
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500, paddingLeft:'10px'}}>
             Profile
           </TopBarTitle>
-            {/* <Typography
-              className={classes.profileTitle}
-              variant="h6"
-              component="h6"
-            >
-              Profile
-            </Typography> */}
           </div>
         </>
       );
@@ -231,9 +182,9 @@ const useStyles =  makeStyles((theme) => ({
     alignItems: "center",
     width: "100%",
     paddingLeft: 8,
-    gap: 10,
+    gap: 15,
     "@media (max-width:960px)": {
-      // justifyContent: "space-between",
+      gap: 10,
     },
   },
 
@@ -246,13 +197,15 @@ const useStyles =  makeStyles((theme) => ({
     alignItems: "center",
     [theme.breakpoints.down(769)]: {
     paddingLeft: 6,
+    gap: 10,
+
     },
   },
   dashboardTitle: {
     display: "flex",
     paddingLeft: 24,
     width: "100%",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
       paddingLeft: 0,
     },
@@ -262,7 +215,6 @@ const useStyles =  makeStyles((theme) => ({
     fontWeight: 500,
     "@media (max-width:960px)":{
       fontSize: 22,
-
     }
   },
 }));

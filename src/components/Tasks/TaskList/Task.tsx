@@ -21,7 +21,7 @@ const Task = () => {
   }, []);
 
   if (window.location.pathname.includes("task")) {
-    document.body.style.background = "#f5f7f8";
+    document.body.style.background = "white";
   }
 
   //get all project with members and store in Redux

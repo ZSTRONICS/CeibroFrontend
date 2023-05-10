@@ -29,6 +29,7 @@ import { toast } from "react-toastify";
 // i18next
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -93,18 +94,21 @@ const ProfileForm = () => {
   };
   const formik = useFormik({
     initialValues: {
-      firstName: user.firstName,
-      surName: user.surName,
-      email: user.email,
-      workEmail: user.workEmail,
+      firstName: user?.firstName,
+      jobTitle:"",
+      phoneNumber:"",
+      dialCode: "+372",
+      surName: user?.surName,
+      email: user?.email,
+      workEmail: user?.workEmail,
       password: "",
       confirmPassword: "",
-      companyName: user.companyName,
-      companyVat: user.companyVat,
-      companyLocation: user.companyLocation,
-      phone: user.phone,
-      companyPhone: user.companyPhone,
-      currentlyRepresenting: user.currentlyRepresenting,
+      companyName: user?.companyName,
+      companyVat: user?.companyVat,
+      companyLocation: user?.companyLocation,
+      phone: user?.phone,
+      companyPhone: user?.companyPhone,
+      currentlyRepresenting: user?.currentlyRepresenting,
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
@@ -118,7 +122,7 @@ const ProfileForm = () => {
         <form onSubmit={formik.handleSubmit}>
           <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
             <Grid container>
-              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+              <Grid item xs={12} md={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -139,7 +143,7 @@ const ProfileForm = () => {
 
               </Grid>
 
-              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+              <Grid item xs={12} md={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -183,7 +187,7 @@ const ProfileForm = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} className={classes.rowWrapper}>
+              {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -201,11 +205,9 @@ const ProfileForm = () => {
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
                   helperText={formik.errors.phone}
                 />
-              </Grid>
+              </Grid> */}
 
-              <Grid
-                item
-                xs={12}
+              {/* <Grid item xs={12}
                 className={`${classes.rowWrapper} ${classes.passwordRow}`}
               >
                 <TextField
@@ -243,9 +245,9 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.password}
                 />
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} className={classes.rowWrapper}>
+              {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   autoComplete="new-password"
                   className={classes.inputBg}
@@ -269,20 +271,20 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.confirmPassword}
                 />
-              </Grid>
-              <Grid
+              </Grid> */}
+
+              {/* <Grid
                 item
                 xs={12}
                 className={classes.rowWrapper}
-                // sx ={{ padding: "20px 0px" }}
               >
                 <Divider
                   sx={{
                     width: "100%",
                   }}
                 />
-              </Grid>
-              <Grid item xs={12} md={6} className={classes.rowWrapper}>
+              </Grid> */}
+              <Grid item xs={12} md={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -305,53 +307,37 @@ const ProfileForm = () => {
                 />
               </Grid>
 
-              <Grid item xs={12} md={6} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="VAT"
-                  variant="outlined"
-                  name="companyVat"
-                  value={formik.values.companyVat}
+              <Grid item xs={12} md={12} className={classes.rowWrapper}>
+              <CustomMuiTextField
+                typeName="text-field"
+                  name="jobTitle"
+                  label="Job title"
+                  placeholder={t("auth.register.job_title")}
+                  inputValue={formik.values.jobTitle}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.companyVat &&
-                    Boolean(formik.errors.companyVat)
-                  }
-                  helperText={formik.errors.companyVat}
+                  onBlur={formik.handleBlur}
                 />
+                 {/* {errors.jobTitle && (
+                  <Typography className={`error-text ${classes.errorText}`}>
+                    {errors.jobTitle && touched.jobTitle && errors.jobTitle}
+                  </Typography>
+                )} */}
               </Grid>
 
               <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
+              <CustomMuiTextField
+                typeName="phone-number"
+                  name="phoneNumber"
+                  inputValue={{
+                    phoneNumber: formik.values.phoneNumber,
+                    dialCode: formik.values.dialCode,
                   }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Location"
-                  variant="outlined"
-                  name="companyLocation"
-                  value={formik.values.companyLocation}
                   onChange={formik.handleChange}
-                  error={
-                    formik.touched.companyLocation &&
-                    Boolean(formik.errors.companyLocation)
-                  }
-                  helperText={formik.errors.companyLocation}
+                  onBlur={formik.handleBlur}
                 />
               </Grid>
 
-              <Grid item xs={12} className={classes.rowWrapper}>
+              {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -372,9 +358,9 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.companyPhone}
                 />
-              </Grid>
+              </Grid> */}
 
-              <Grid item xs={12} className={classes.rowWrapper}>
+              {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -394,7 +380,7 @@ const ProfileForm = () => {
                   }
                   helperText={formik.errors.workEmail}
                 />
-              </Grid>
+              </Grid> */}
 
               <Grid
                 item
@@ -453,7 +439,7 @@ const useStyles = makeStyles({
    
   },
   mainContainer: {
-    paddingTop: "10px",
+    // paddingTop: "10px",
   },
   btnWrapper: {
     gap: "30px",

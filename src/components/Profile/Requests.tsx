@@ -14,7 +14,7 @@ const Requests: React.FunctionComponent<IRequestsProps> = (props) => {
 
   return (
     <Grid item xs={12} md={4} className={classes.wrapper}>
-        <Invitations/>
+        {/* <Invitations/> */}
         <Connections/>
     </Grid>
   )
@@ -25,7 +25,7 @@ export default Requests;
 const useStyles = makeStyles({
   wrapper: {
     '@media (max-width:960px)': {
-      paddingTop: 10
+      padding: '10px 20px'
     }
   }
 })

@@ -15,6 +15,8 @@ import Title from "components/Topbar/Title";
 import assets from "assets/assets";
 import { RootState } from "redux/reducers";
 import { useSelector } from "react-redux";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import { AddStatusTag } from "components/CustomTags";
 
 const NAV_WIDTH = 200;
 
@@ -24,9 +26,9 @@ const HEADER_DESKTOP = 70;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
+  borderBottom:'1px solid #E2E4E5',
   color: "unset",
   background: "white",
-  mb:1,
   [theme.breakpoints.up("lg")]: {
     width: `calc(100% - ${NAV_WIDTH + 1}px)`,
   },
@@ -70,10 +72,12 @@ export default function Header({ onOpenNav }: Props) {
           direction="row"
           alignItems="center"
           spacing={{
-            xs: 0.5,
+            xs: 0.4,
             sm: 1,
           }}
         >
+          <ConnectionIcon/>
+          <ProfileView />
           <Stack
             direction="column"
             justifyContent="flex-end"
@@ -83,11 +87,13 @@ export default function Header({ onOpenNav }: Props) {
               },
             }}
           >
-            <Typography>{user?.firstName}</Typography>
-            <Typography>{user?.surName} </Typography>
+            <AddStatusTag sx={{color:'#131516'}}>Ali</AddStatusTag>
+            <AddStatusTag sx={{color:'#131516'}}>Asad </AddStatusTag>
+            {/* <Typography>{user?.firstName}</Typography>
+            <Typography>{user?.surName} </Typography> */}
           </Stack>
-          <ProfileView />
-          <Notification value={""} />
+          <assets.KeyboardArrowDownIcon/>
+          {/* <Notification value={""} /> */}
         </Stack>
       </StyledToolbar>
     </StyledRoot>

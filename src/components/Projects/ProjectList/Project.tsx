@@ -31,9 +31,9 @@ const Project = () => {
   const { allProjects } = useSelector((state: RootState) => state.project);
   const [filteredData, setFilteredData] = useState(allProjects);
 
-  if (window.location.pathname.includes("projects")) {
-    document.body.style.background = "#f5f7f8";
-  }
+  // if (window.location.pathname.includes("projects")) {
+  //   document.body.style.background = "#f5f7f8";
+  // }
 
   const [date, setDate] = useState<string>("");
   const projectPublishStatusLocal = allProjects.map((item: any, index: any) => {

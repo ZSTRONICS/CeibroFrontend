@@ -17,7 +17,6 @@ import {
   RegisterSetupProfile
 } from "components";
 
-// import AppLayout from "./AppLayout";
 import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
@@ -42,7 +41,6 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/profile-setup" component={Register} />
           <Route path="/profile-pic" component={RegisterSetupProfile} />
 
-          {/* <AppLayout> */}
           <DashboardLayout>
             <Route path="/profile" component={Profile} />
             <Route path="/projects" component={Projects} />
@@ -52,7 +50,6 @@ const RouterConfig: React.FC<Configs> = () => {
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/admin" component={AdminMain} />
           </DashboardLayout>
-          {/* </AppLayout> */}
         </Switch>
       </Router>
     </>
