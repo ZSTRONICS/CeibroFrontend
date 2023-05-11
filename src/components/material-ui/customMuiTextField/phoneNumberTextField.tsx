@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import {
+  Autocomplete,
   MenuItem,
   OutlinedInput,
   Select,
   SelectChangeEvent,
+  TextField,
 } from "@mui/material";
 import dialCode from "./dialCode.json";
 import { IPhoneNumber } from "./types";
@@ -23,14 +25,20 @@ interface IProps {
 
 export const PhoneNumberTextField = (props: IProps) => {
   const { name, placeholder, inputValue, onChange, onBlur } = props;
-
+  const [countryCode, setCountryCode] = useState<any>({
+    name: 'Estonia',
+    dial_code: `+372`,
+  });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b]{0,11}$/;
     if (e.target.value === "" || regex.test(e.target.value)) {
       onChange(e);
     }
   };
-  const handleCountryCodeChange = (event: SelectChangeEvent<unknown>) => {
+  const handleCountryCodeChange = (event: SelectChangeEvent<unknown>, value:any) => {
+    console.log('value', value)
+    // value.name=""
+    setCountryCode(value)
     onChange(event);
   };
 
@@ -40,6 +48,9 @@ export const PhoneNumberTextField = (props: IProps) => {
       size="small"
       placeholder="Phone number"
       sx={{
+        '& #outlined-adornment-phone-no':{
+          paddingLeft: 1,
+        },
         paddingLeft: 0,
         width: "100%",
       }}
@@ -49,19 +60,29 @@ export const PhoneNumberTextField = (props: IProps) => {
       inputMode="text"
       id="outlined-adornment-phone-no"
       startAdornment={
-        <Select
-          size="small"
-          value={inputValue.dialCode}
-          name="dialCode"
-          sx={{ marginRight: "10px", borderRadius: "4px 0px 0px 4px" }}
-          displayEmpty
-          inputProps={{ "aria-label": "Without label" }}
-          onChange={handleCountryCodeChange}
-        >
-          {dialCode.map((code) => {
-            return <MenuItem value={code.dial_code}>{code.dial_code}</MenuItem>;
-          })}
-        </Select>
+        <Autocomplete
+         disableClearable
+        options={dialCode}
+        value={countryCode}
+        sx={{'& .MuiOutlinedInput-root':{
+          paddingRight:'10px !important',
+          paddingTop:'7px',
+          paddingBottom:'7px'
+        }}}
+        onChange={(e:any, value:any)=>handleCountryCodeChange(e, value)}
+        getOptionLabel={(option) => `${option.dial_code}`}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              autoComplete: "off",
+              autoCorrect: "off",
+            }}
+          />
+        )}
+        style={{ width: 200 }}
+      />
       }
     />
   );

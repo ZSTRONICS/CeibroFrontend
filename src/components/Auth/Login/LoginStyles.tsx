@@ -74,6 +74,10 @@ export const useStyles = makeStyles((theme: Theme) =>
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",
+            "@media (max-width:760px)": {
+                bottom:'4%',
+                left:'20%'
+            }
         },
         signup: {
             color: colors.textPrimary,

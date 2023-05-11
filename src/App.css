@@ -493,9 +493,9 @@ label.dragArea{
   opacity: 0;
   cursor: pointer;
 }
-@media (max-width:900px){
+@media (max-width:899px){
   .logoTitleWrapper{
-    padding: 0 1.4rem;
+    padding: 0;
   }
 }
 /* *{

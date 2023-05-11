@@ -87,9 +87,9 @@ export default function RegisterConfirmationForm() {
             </Link>
           </Typography>
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Setting />
-        </Grid>
+        </Grid> */}
       </Grid>
       </AuthLayout>
   );

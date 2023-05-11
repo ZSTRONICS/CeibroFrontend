@@ -35,6 +35,7 @@ import { CBox } from "components/material-ui";
 import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { DocumentNameTag } from "components/CustomTags";
 
 interface Props {
   tokenLoading: boolean;
@@ -211,7 +212,7 @@ const LoginForm: React.FC<Props> = (props) => {
                     : `${t("auth.successAlerts.email_verified")}`}
                 </Alert>
               )}
-              <CBox mb={3.1} pt={2}>
+              <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   name="phoneNumber"
                   typeName="phone-number"
@@ -228,7 +229,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={2.7}>
                 <CustomMuiTextField
                   password={values.password}
                   placeholder="Password"
@@ -247,6 +248,7 @@ const LoginForm: React.FC<Props> = (props) => {
               </CBox>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <FormControlLabel
+                sx={{gap:1}}
                   control={
                     <Checkbox
                       checked={checked}
@@ -256,12 +258,11 @@ const LoginForm: React.FC<Props> = (props) => {
                       style={{ padding: 0 }}
                     />
                   }
-                  className={classes.remember}
                   style={{ padding: 0 }}
                   label={
-                    <Typography className={classes.rememberText}>
+                    <DocumentNameTag >
                       {t("auth.RememberMe")}
-                    </Typography>
+                    </DocumentNameTag>
                   }
                 />
                 <Typography
@@ -279,8 +280,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   type="submit"
                   className={classes.loginButton}
                   variant="contained"
-                  color="primary"
-                  sx={{ width: "100%" }}
+                  sx={{ width: "100%", backgroundColor:"#0076C8" }}
                   // disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
@@ -327,7 +327,10 @@ const useStyles = makeStyles({
   actionWrapper: {
     display: "flex",
     alignItems: "center",
-    paddingTop: 20,
+    paddingTop: 30,
+    "@media (max-width:960px)": {
+      padding: "20% 0",
+    },
   },
   titles: {
     color: colors.textPrimary,
@@ -343,14 +346,7 @@ const useStyles = makeStyles({
       padding: "10 13%",
     },
   },
-  remember: {
-    fontSize: 14,
-    padding: 0,
-  },
-  rememberText: {
-    fontSize: 14,
-    fontWeight: 500,
-  },
+
   loginButton: {
     height: "41px",
     fontSize: 14,

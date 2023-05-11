@@ -27,12 +27,8 @@ export const useStyles = makeStyles((theme: Theme) =>
       height: "100vh",
       overflowY: "scroll",
       paddingBottom: 10,
-      "@media (max-width:960px)": {
-        // background: `url(${assets.visual})`,
-        backgroundSize: "100vw 100vh",
-        backgroundRepeat: "no-repeat",
-      },
     },
+
     tileWrapper: {
       position: "relative",
     },
@@ -59,6 +55,9 @@ export const useStyles = makeStyles((theme: Theme) =>
     actionWrapper: {
       display: "flex",
       alignItems: "center",
+      "@media (max-width:960px)": {
+        paddingTop: "15%",
+      },
     },
     title: {
       fontSize: 30,
@@ -89,14 +88,36 @@ export const useStyles = makeStyles((theme: Theme) =>
       textTransform: "capitalize",
     },
     logoWrapper: {
-      paddingTop: "2%",
-      // paddingLeft: "7%",
+      paddingTop: "4%",
+      maxWidth: "160px",
+      width: "100%",
     },
     titleWrapper: {
       margin: "45px 0px 15px 0px",
+      "@media (max-width:899px)": {
+        margin: "0",
+        background: `url(${assets.mobileVisual})`,
+        height: "calc( 100vh - 291px)",
+        backgroundSize: "100% 100%",
+        backgroundRepeat: "no-repeat",
+      },
       // "& .MuiTypography-root": {
       //   fontWeight: "500",
       // },
+    },
+    titleText: {
+      "@media (max-width:899px)": {
+        visibility: "hidden",
+      },
+    },
+    contentContainer: {
+      "@media (max-width:899px)": {
+        margin: "0 10px",
+        position: "absolute",
+        bottom: "2%",
+        left: "2%",
+        right: "2%",
+      },
     },
     inputs: {
       // marginBottom: 25,

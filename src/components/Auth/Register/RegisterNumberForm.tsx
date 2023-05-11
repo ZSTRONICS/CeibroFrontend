@@ -18,7 +18,7 @@ export default function RegisterNumberForm() {
  <div className={classes.registerNumberForm}>
         <Formik
           initialValues={{
-            dialCode: "+372",
+            dialCode: "",
             phoneNumber: "",
           }}
           // validationSchema={registerSch}
@@ -45,11 +45,14 @@ export default function RegisterNumberForm() {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {errors.phoneNumber && touched.phoneNumber && (
+                  {/* <div className="">
+                 <PhoneNumberInput onSelect={handlePhoneNumberSelect}/>
+    </div> */}
+                {/* {errors.phoneNumber && touched.phoneNumber && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.phoneNumber}
                   </Typography>
-                )}
+                )} */}
               </CBox>
               <div className={classes.actionWrapper}>
                 <Button
@@ -81,9 +84,9 @@ export default function RegisterNumberForm() {
             </Link>
           </Typography>
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Setting />
-        </Grid>
+        </Grid> */}
       </Grid>
       </AuthLayout>
     </div>

@@ -1,5 +1,6 @@
 //@ts-nocheck
 import visual from "./images/Visual.png";
+import mobileVisual from './images/mobileVisual.png'
 import logo from "./images/logo.png";
 import contactIcon from "./images/contactIcon.svg";
 import clipboardIcon from "./images/clipboardIcon.png";
@@ -47,7 +48,6 @@ import pencilFilled from "./images/pencilFilled.png";
 import blackPencil from "./images/edit.svg";
 import calender from "./images/calender.png";
 
-import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
 import testProject3 from "./images/TestProject3.png";
 import testProject4 from "./images/TestProject4.png";
@@ -105,7 +105,6 @@ const assets= {
   CallIcon,
   ErrorOutlineOutlinedIcon,
   logoutNew,
-  // logout,
   HighlightOffIcon,
   CloudUploadIcon,
   BorderColorIcon,
@@ -140,6 +139,7 @@ const assets= {
   sidebarChatIcon,
   sidebarPaseIcon,
   visual,
+  mobileVisual,
   logo,
   contactIcon,
   clipboardIcon,
@@ -184,7 +184,6 @@ const assets= {
   blueSearch,
   calender,
   Defaulttask,
-  testProject1,
   testProject2,
   testProject3,
   testProject4,

@@ -1,4 +1,4 @@
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
 import "./login.css";
@@ -73,19 +73,19 @@ const Login: React.FC<LoginInterface> = () => {
         showSuccess={success}
         showError={error}
       />
-           <Grid container item className={classes.langContainer} pt={1.5}>
-              <Grid item>
-                <Typography className={classes.dontHave}>
+           {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
+              {/* <Grid item> */}
+                <Box className={classes.dontHave} sx={{position:"absolute", bottom:'7%',     color:'#131516'}}>
                   {t("auth.dont_have_account")}{" "}
                   <Link to="/register" className={classes.signup}>
                     {t("auth.signUp")}
                   </Link>
-                </Typography>
-              </Grid>
-              <Grid item>
+                </Box>
+              {/* </Grid> */}
+              {/* <Grid item>
                 <Setting />
-              </Grid>
-            </Grid>
+              </Grid> */}
+            {/* </Grid> */}
     </AuthLayout>
   );
 };
