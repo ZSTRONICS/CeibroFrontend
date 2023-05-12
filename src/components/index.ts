@@ -6,7 +6,7 @@ import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
 import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
 import RegisterConfirmationForm from "./Auth/Register/RegisterConfirmationForm";
 import TermsAndConditions from "./Auth/Register/TermsAndConditions";
-import RegisterSetupProfile from "./Auth/Register/RegisterSetupProfile";
+import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
 // import ForgetPassword from "components/Auth/Login/ForgetPassword";
 // import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
 
@@ -31,7 +31,7 @@ import Projects from "./Projects/ProjectList/Project";
 import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 
 //admin
-import AdminMain from './Admin/AdminMain'
+import AdminMain from "./Admin/AdminMain";
 
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
@@ -39,7 +39,7 @@ import CDrawer from "Drawer/CDrawer";
 
 export {
   RouterConfig,
-  RegisterSetupProfile,
+  RegisterAddProfilePic,
   RegisterConfirmationForm,
   RegisterNumberForm,
   TermsAndConditions,

@@ -14,7 +14,7 @@ import {
   RegisterNumberForm,
   RegisterConfirmationForm,
   TermsAndConditions,
-  RegisterSetupProfile
+  RegisterAddProfilePic,
 } from "components";
 
 import PrivateRoute from "./PrivateRoute";
@@ -39,7 +39,7 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/confirmation" component={RegisterConfirmationForm} />
           <Route path="/t&c" component={TermsAndConditions} />
           <Route path="/profile-setup" component={Register} />
-          <Route path="/profile-pic" component={RegisterSetupProfile} />
+          <Route path="/profile-pic" component={RegisterAddProfilePic} />
 
           <DashboardLayout>
             <Route path="/profile" component={Profile} />
