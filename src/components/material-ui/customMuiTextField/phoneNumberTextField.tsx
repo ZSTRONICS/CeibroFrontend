@@ -66,8 +66,8 @@ export const PhoneNumberTextField = (props: IProps) => {
         value={countryCode}
         sx={{'& .MuiOutlinedInput-root':{
           paddingRight:'10px !important',
-          paddingTop:'7px',
-          paddingBottom:'7px'
+          paddingTop:'2px',
+          paddingBottom:'2px'
         }}}
         onChange={(e:any, value:any)=>handleCountryCodeChange(e, value)}
         getOptionLabel={(option) => `${option.dial_code}`}

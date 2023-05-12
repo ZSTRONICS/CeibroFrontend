@@ -140,7 +140,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     contentContainer: {
-      padding:'0 6px',
+      padding:'0 0 6px 0',
       "@media (max-width:899px)": {
         margin: "0 10px",
         position: "absolute",

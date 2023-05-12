@@ -31,7 +31,7 @@ export const PasswordTextField = (props: IProps) => {
     <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
-        sx={{py:1}}
+        sx={{py:.25}}
         id={id}
         name={name}
         type={showPassword ? "text" : "password"}
