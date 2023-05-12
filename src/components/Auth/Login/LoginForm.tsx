@@ -70,8 +70,7 @@ const LoginForm: React.FC<Props> = (props) => {
     const { phoneNumber, password, dialCode } = values;
     const payload = {
       body: {
-        dialCode,
-        phoneNumber,
+        phoneNumber: `${dialCode}${phoneNumber}`,
         password,
       },
       onFailAction: (err: any) => {
@@ -108,7 +107,7 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-
+    console.log("login");
     dispatch(loginRequest(payload));
   };
 
@@ -145,7 +144,7 @@ const LoginForm: React.FC<Props> = (props) => {
             phoneNumber: "",
             password: "",
           }}
-          validationSchema={signinSchema}
+          // validationSchema={signinSchema}
           onSubmit={handleSubmit}
         >
           {({
@@ -156,18 +155,18 @@ const LoginForm: React.FC<Props> = (props) => {
             handleSubmit,
             values,
           }) => (
-            <Form
+            <form
               onSubmit={handleSubmit}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  handleSubmit();
-                }
-              }}
+              // onKeyDown={(e) => {
+              //   if (e.key === "Enter") {
+              //     handleSubmit();
+              //   }
+              // }}
             >
               {showError && (
                 <Alert severity="error">{t("auth.link_expired")}</Alert>
               )}
-              {verifyError && (
+              {/* {verifyError && (
                 <Alert
                   severity="error"
                   style={{ display: "flex", margin: "2px 0" }}
@@ -184,7 +183,7 @@ const LoginForm: React.FC<Props> = (props) => {
                     </span>
                   </Typography>
                 </Alert>
-              )}
+              )} */}
 
               {incorrectAuth && (
                 <Alert style={{ margin: "2px 0" }} severity="error">
@@ -240,11 +239,11 @@ const LoginForm: React.FC<Props> = (props) => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                {/* {errors.password && touched.password && (
+                {errors.password && touched.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.password}
                   </Typography>
-                )} */}
+                )}
               </CBox>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <FormControlLabel
@@ -290,7 +289,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   )}
                 </Button>
               </div>
-            </Form>
+            </form>
           )}
         </Formik>
       </Box>

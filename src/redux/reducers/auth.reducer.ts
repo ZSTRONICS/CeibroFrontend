@@ -1,9 +1,19 @@
 import { UPDATE_PROFILE_PIC } from "config/user.config";
-import { UserInterface, userTemplate } from "constants/interfaces/user.interface";
+import {
+  UserInterface,
+  userTemplate,
+} from "constants/interfaces/user.interface";
 import { REGISTER } from "redux-persist";
 import { unSubOneSignal } from "utills/runOneSignal";
 import { ActionInterface } from ".";
-import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
+import {
+  GET_PROFILE,
+  LOGIN,
+  LOGOUT,
+  REGISTER_CONFIRMATION,
+  REGISTER_PROFILE_SETUP,
+  UPDATE_MY_PROFILE,
+} from "../../config/auth.config";
 import {
   requestFail,
   requestPending,
@@ -64,7 +74,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestPending(REGISTER): {
       setTimeout(() => {
-        state.registerLoading = false
+        state.registerLoading = false;
       }, 10000 / 2);
       return {
         ...state,
@@ -75,6 +85,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(REGISTER): {
       return {
         ...state,
+        phoneNumber: action.payload.phoneNUmber,
         registerLoading: false,
       };
     }
@@ -83,27 +94,89 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.clear();
       sessionStorage.clear();
       setTimeout(() => {
-        state.registerLoading = false
+        state.registerLoading = false;
       }, 10000 / 2);
       return {
         ...state,
         registerLoading: false,
       };
     }
-    case requestSuccess(UPDATE_PROFILE_PIC):{
-      if(action.payload.profilePic){
-        state.user.profilePic=action.payload.profilePic
-      }
-      return{
+
+    case requestPending(REGISTER_CONFIRMATION): {
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
         ...state,
-        user: {...state.user}
+        registerLoading: true,
+      };
+    }
+
+    case requestSuccess(REGISTER_CONFIRMATION): {
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestFail(REGISTER_CONFIRMATION): {
+      localStorage.clear();
+      sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestPending(REGISTER_PROFILE_SETUP): {
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: true,
+      };
+    }
+
+    case requestSuccess(REGISTER_PROFILE_SETUP): {
+      localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.payload.user,
+        loginLoading: false,
+      };
+    }
+
+    case requestFail(REGISTER_PROFILE_SETUP): {
+      localStorage.clear();
+      sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestSuccess(UPDATE_PROFILE_PIC): {
+      if (action.payload.profilePic) {
+        state.user.profilePic = action.payload.profilePic;
       }
+      return {
+        ...state,
+        user: { ...state.user },
+      };
     }
     case LOGOUT: {
       localStorage.removeItem("tokens");
       localStorage.clear();
-      sessionStorage.clear()
-      unSubOneSignal()
+      sessionStorage.clear();
+      unSubOneSignal();
       return {
         ...state,
         isLoggedIn: false,
@@ -113,24 +186,23 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case GET_PROFILE: {
       if (action?.payload?.body) {
-
         return {
           ...state,
           user: action.payload,
         };
-      }else{
+      } else {
         return {
-          ...state
-        }
+          ...state,
+        };
       }
     }
 
     case UPDATE_MY_PROFILE: {
-      const res = action.payload.body
-      let currUser: any = state.user
+      const res = action.payload.body;
+      let currUser: any = state.user;
       for (var atrNmae in res) {
         if (atrNmae in currUser) {
-          currUser[atrNmae] = res[atrNmae]
+          currUser[atrNmae] = res[atrNmae];
         }
       }
       return {

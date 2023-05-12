@@ -11,12 +11,17 @@ import {
   RESET_PASSWORD,
   VERIFY_EMAIL,
   SEND_VERIFY_EMAIL,
+  REGISTER_CONFIRMATION,
+  REGISTER_PROFILE_SETUP,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
 
-export const loginRequest = createAction(LOGIN);
 export const registerRequest = createAction(REGISTER);
+export const registerConfirmationRequest = createAction(REGISTER_CONFIRMATION);
+export const registerSetupProfile = createAction(REGISTER_PROFILE_SETUP);
+
+export const loginRequest = createAction(LOGIN);
 export const logoutUser = createAction(LOGOUT);
 
 export const getAllusers = createAction(GET_USERS);
