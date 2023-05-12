@@ -15,9 +15,9 @@ const Register = () => {
   // }, [isLoggedIn]);
 
   return (
- <AuthLayout title= {t("auth.register.setup_profile")}>
- <RegisterForm />
- </AuthLayout>
+    <AuthLayout title={t("auth.register.setup_profile")}>
+      <RegisterForm />
+    </AuthLayout>
   );
 };
 

@@ -8,7 +8,10 @@ import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { registerRequest } from "redux/action/auth.action";
+import {
+  registerRequest,
+  registerSetupProfile,
+} from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
 // components
@@ -35,16 +38,27 @@ const RegisterForm = () => {
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
 
   const handleSubmit = (values: any, action: any) => {
-    const { firstName, surName, email, password } = values;
+    const {
+      firstName,
+      surName,
+      email,
+      password,
+      jobTitle,
+      companyName,
+      phoneNumber,
+      dialCode,
+    } = values;
     const payload = {
       body: {
-        firstName,
-        surName,
         email,
         password,
+        firstName,
+        surName,
+        jobTitle,
+        companyName,
       },
       success: (res: any) => {
-        history.push("/login");
+        history.push("/profile-pic");
         action?.resetForm?.();
       },
       onFailAction: (err: any) => {
@@ -52,8 +66,9 @@ const RegisterForm = () => {
           setIncorrectAuth(true);
         }
       },
+      other: `${dialCode}${phoneNumber}`,
     };
-    dispatch(registerRequest(payload));
+    dispatch(registerSetupProfile(payload));
     setTimeout(() => {
       setIncorrectAuth(false);
     }, 5000);
@@ -70,8 +85,8 @@ const RegisterForm = () => {
             confirmPassword: "",
             jobTitle: "",
             companyName: "",
-            phoneNumber: "",
-            dialCode: "+372",
+            phoneNumber: localStorage.getItem("phoneNumber") ?? "",
+            dialCode: localStorage.getItem("dialCode") ?? "",
           }}
           validationSchema={registerSch}
           onSubmit={handleSubmit}
@@ -141,7 +156,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                typeName="text-field"
+                  typeName="text-field"
                   name="companyName"
                   label="Company name"
                   placeholder={t("auth.register.company_name")}
@@ -150,15 +165,17 @@ const RegisterForm = () => {
                   onBlur={handleBlur}
                   required={false}
                 />
-                 {errors.companyName && (
+                {errors.companyName && (
                   <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.companyName && touched.companyName && errors.companyName}
+                    {errors.companyName &&
+                      touched.companyName &&
+                      errors.companyName}
                   </Typography>
                 )}
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                typeName="text-field"
+                  typeName="text-field"
                   name="jobTitle"
                   label="Job title"
                   placeholder={t("auth.register.job_title")}
@@ -166,7 +183,7 @@ const RegisterForm = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
-                 {errors.jobTitle && (
+                {errors.jobTitle && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.jobTitle && touched.jobTitle && errors.jobTitle}
                   </Typography>
@@ -174,7 +191,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                typeName="phone-number"
+                  typeName="phone-number"
                   name="phoneNumber"
                   inputValue={{
                     phoneNumber: values.phoneNumber,
@@ -186,14 +203,14 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                    inputValue={values.password}
-                    password={values.password}
-                    typeName="password"
-                    name="password"
-                    label="Password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                    onBlur={handleBlur}
+                  inputValue={values.password}
+                  password={values.password}
+                  typeName="password"
+                  name="password"
+                  label="Password"
+                  placeholder="Password"
+                  onChange={handleChange}
+                  onBlur={handleBlur}
                 />
                 {errors.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -230,7 +247,7 @@ const RegisterForm = () => {
                       color: "red",
                       textTransform: "capitalize !important",
                     }}
-                    onClick={()=>history.push('/login')}
+                    onClick={() => history.push("/login")}
                   >
                     Cancel
                   </Button>
@@ -244,7 +261,7 @@ const RegisterForm = () => {
                       color: "#fff",
                       textTransform: "capitalize !important",
                     }}
-                    onClick={()=>history.push('/profile-pic')}
+                    type="submit"
                   >
                     Continue
                   </Button>

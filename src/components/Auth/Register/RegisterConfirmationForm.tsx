@@ -7,20 +7,54 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
+import { registerConfirmationRequest } from "redux/action/auth.action";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
+
+  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  const handleSubmit = (values: any, action: any) => {
+    let phoneNumber = localStorage.getItem("phoneNumber");
+    let dialCode = localStorage.getItem("dialCode");
+    const { verificationCode } = values;
+    const payload = {
+      body: {
+        phoneNumber: `${dialCode}${phoneNumber}`,
+        otp: verificationCode,
+      },
+      success: (res: any) => {
+        history.push("/t&c");
+        action?.resetForm?.();
+      },
+      onFailAction: (err: any) => {
+        if (err.response.data.code === 400) {
+          setIncorrectAuth(true);
+        }
+      },
+    };
+    dispatch(registerConfirmationRequest(payload));
+    setTimeout(() => {
+      setIncorrectAuth(false);
+    }, 5000);
+  };
   return (
-      <AuthLayout title = {t("auth.phone_number_confirmation")} subTitle={t("auth.enter_your_phone_no")}>
+    <AuthLayout
+      title={t("auth.phone_number_confirmation")}
+      subTitle={t("auth.enter_your_phone_no")}
+    >
       <div className={classes.registerNumberForm}>
-         <Formik
+        <Formik
           initialValues={{
             verificationCode: "",
           }}
           // validationSchema={registerSch}
-          onSubmit={() => {}} 
+          onSubmit={handleSubmit}
         >
           {({
             values,
@@ -33,7 +67,7 @@ export default function RegisterConfirmationForm() {
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <CBox mb={3.1}>
-                 <CustomMuiTextField
+                <CustomMuiTextField
                   name="verificationCode"
                   typeName="text-field"
                   label="Enter your code"
@@ -62,8 +96,6 @@ export default function RegisterConfirmationForm() {
                   variant="contained"
                   color="primary"
                   type="submit"
-                  onClick={()=>history.push("/t&c")}
-
                 >
                   Continue
                 </Button>
@@ -91,6 +123,6 @@ export default function RegisterConfirmationForm() {
           <Setting />
         </Grid> */}
       </Grid>
-      </AuthLayout>
+    </AuthLayout>
   );
 }

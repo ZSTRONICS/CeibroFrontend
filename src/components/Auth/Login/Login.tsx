@@ -40,22 +40,22 @@ const Login: React.FC<LoginInterface> = () => {
     if (queryParams?.token) {
       // verifying email verification token
       setTokenLoading(true);
-      await axios
-        .post(`${urlV1}/auth/verify-email?token=${queryParams?.token}`)
-        .then((response) => {
-          setSuccess(true);
-          setTokenLoading(false);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 10000);
-        })
-        .catch((err) => {
-          setError(true);
-          setTokenLoading(false);
-          setTimeout(() => {
-            setError(false);
-          }, 10000);
-        });
+      // await axios
+      //   .post(`${urlV1}/auth/verify-email?token=${queryParams?.token}`)
+      //   .then((response) => {
+      //     setSuccess(true);
+      //     setTokenLoading(false);
+      //     setTimeout(() => {
+      //       setSuccess(false);
+      //     }, 10000);
+      //   })
+      //   .catch((err) => {
+      //     setError(true);
+      //     setTokenLoading(false);
+      //     setTimeout(() => {
+      //       setError(false);
+      //     }, 10000);
+      //   });
     }
   };
 
@@ -73,19 +73,22 @@ const Login: React.FC<LoginInterface> = () => {
         showSuccess={success}
         showError={error}
       />
-           {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
-              {/* <Grid item> */}
-                <Box className={classes.dontHave} sx={{position:"absolute", bottom:'7%',     color:'#131516'}}>
-                  {t("auth.dont_have_account")}{" "}
-                  <Link to="/register" className={classes.signup}>
-                    {t("auth.signUp")}
-                  </Link>
-                </Box>
-              {/* </Grid> */}
-              {/* <Grid item>
+      {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
+      {/* <Grid item> */}
+      <Box
+        className={classes.dontHave}
+        sx={{ position: "absolute", bottom: "7%", color: "#131516" }}
+      >
+        {t("auth.dont_have_account")}{" "}
+        <Link to="/register" className={classes.signup}>
+          {t("auth.signUp")}
+        </Link>
+      </Box>
+      {/* </Grid> */}
+      {/* <Grid item>
                 <Setting />
               </Grid> */}
-            {/* </Grid> */}
+      {/* </Grid> */}
     </AuthLayout>
   );
 };
