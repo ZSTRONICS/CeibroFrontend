@@ -8,11 +8,13 @@ import assets from "assets/assets";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import CeibroLogo from "components/material-ui/icons/CeibroLogo/CeibroLogo";
 import CeibroMobileLogo from "components/material-ui/icons/CeibroLogo/CeibroMobileLogo";
+import { useHistory } from "react-router-dom";
 
 const AuthLayout = (props: any) => {
   const classes = useStyles();
   const isTabletOrMobile = useResponsive("down", "md", "");
-
+  const { location } = useHistory();
+const authRoute =   location.pathname.includes("register")
   return (
     <Grid container className={classes.register}>
       <Grid
@@ -27,26 +29,31 @@ const AuthLayout = (props: any) => {
           <div className={classes.logoWrapper}>
             {!isTabletOrMobile ? <CeibroLogo /> : <CeibroMobileLogo />}
           </div>
-          <div className={classes.titleWrapper}>
-          <div>
-            <TopBarTitle className={classes.titleText} sx={{ fontSize: 28, }}>{props.title}</TopBarTitle>
-            {props.subTitle && (
-              <SubLabelTag sx={{ fontSize: 16 }}>{props.subTitle}</SubLabelTag>
-            )}
+          <div className={`${classes.titleWrapper} ${authRoute&&classes.titleWrapperWithRoute}`}>
+            <div>
+              <TopBarTitle className={classes.titleText} sx={{ fontSize: 28 }}>
+                {props.title}
+              </TopBarTitle>
+              {props.subTitle && (
+                <SubLabelTag sx={{ fontSize: 16 }}>
+                  {!isTabletOrMobile && props.subTitle}
+                </SubLabelTag>
+              )}
+            </div>
+            <Box
+              className={`${classes.contentContainer} ${
+                authRoute &&
+                classes.contentContainerWithRoute
+              }`}
+              sx={{
+                background: "white",
+                padding: "0 6px",
+                borderRadius: "10px",
+              }}
+            >
+              {props.children}
+            </Box>
           </div>
-          <Box
-          className={classes.contentContainer}
-            sx={{
-              background: "white",
-              padding: "0 6px",
-              borderRadius: "10px",
-            }}
-          >
-            {props.children}
-          </Box>
-          </div>
-          
-          
         </CBox>
       </Grid>
 

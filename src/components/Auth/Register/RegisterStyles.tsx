@@ -35,6 +35,12 @@ export const useStyles = makeStyles((theme: Theme) =>
     dontHave: {
       fontSize: 14,
       fontWeight: 500,
+      position:'absolute',
+      bottom:'5%',
+      "@media (max-width:960px)": {
+        textAlign:'center',
+        position:'relative',
+      }
     },
     signup: {
       color: colors.textPrimary,
@@ -56,7 +62,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       "@media (max-width:960px)": {
-        paddingTop: "15%",
+        padding: "15% 0",
       },
     },
     title: {
@@ -74,7 +80,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       flexDirection: "column",
       marginTop: 20,
       "@media (max-width:960px)": {
-        padding: "10 13%",
+        padding: "0 3%",
       },
       "& .inputs": {
         marginTop: "0px !important",
@@ -105,6 +111,15 @@ export const useStyles = makeStyles((theme: Theme) =>
       //   fontWeight: "500",
       // },
     },
+    titleWrapperWithRoute:{
+   "@media (max-width:899px)": {
+        height: "calc( 100vh - 400px)",
+      }
+    },
+    registerNumberFormContainer:{
+   
+    },
+ 
     titleText: {
       "@media (max-width:899px)": {
         visibility: "hidden",
@@ -117,6 +132,15 @@ export const useStyles = makeStyles((theme: Theme) =>
         bottom: "2%",
         left: "2%",
         right: "2%",
+      },
+    },
+    contentContainerWithRoute: {
+      "@media (max-width:899px)": {
+        margin: "0",
+        position: "absolute",
+        bottom: "6%",
+        left: "0%",
+        right: "0%",
       },
     },
     inputs: {

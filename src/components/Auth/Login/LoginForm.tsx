@@ -267,7 +267,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 />
                 <Typography
                   className={`${classes.titles} ${classes.forget}`}
-                  sx={{ marginBottom: 0 }}
+                  sx={{ marginBottom: 0, fontSize:14, fontWeight:500 }}
                   variant="body1"
                   gutterBottom
                   onClick={handlePasswordForget}
@@ -329,7 +329,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     paddingTop: 30,
     "@media (max-width:960px)": {
-      padding: "20% 0",
+      padding: "15% 0",
     },
   },
   titles: {

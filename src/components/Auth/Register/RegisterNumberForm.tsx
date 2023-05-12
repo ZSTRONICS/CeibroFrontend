@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
@@ -7,15 +7,24 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
+import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import useResponsive from "hooks/useResponsive";
 
 export default function RegisterNumberForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
+  const isTabletOrMobile = useResponsive("down", "md", "");
+
   return (
-    <div>
+    <Box className={classes.registerNumberFormContainer}>
  <AuthLayout  title = {t("auth.get_started")} subTitle={t("auth.enter_your_phone_no")}>
  <div className={classes.registerNumberForm}>
+ {isTabletOrMobile&&
+   <div>
+   <TopBarTitle  sx={{ fontSize: 28, }}>Get started</TopBarTitle>
+     <SubLabelTag sx={{ fontSize: 16, pb:2 }}>by entering your phone number</SubLabelTag>
+ </div>}
         <Formik
           initialValues={{
             dialCode: "",
@@ -69,26 +78,14 @@ export default function RegisterNumberForm() {
           )}
         </Formik>
       </div> 
-      <Grid
-        container
-        item 
-        pt={1.5}
-        className={classes.langContainer}
-        justifyContent="space-between"
-      >
-        <Grid item >
-          <Typography className={classes.dontHave}>
-            {t("auth.back_to")}{" "}
+     
+      <Box className={classes.dontHave} sx={{ color:'#131516'}}>
+      {t("auth.back_to")}{" "}
             <Link to="/login" className={classes.signup}>
-              {t("auth.register.signIn")}
+             Login
             </Link>
-          </Typography>
-        </Grid>
-        {/* <Grid item>
-          <Setting />
-        </Grid> */}
-      </Grid>
+                </Box>
       </AuthLayout>
-    </div>
+    </Box>
   );
 }

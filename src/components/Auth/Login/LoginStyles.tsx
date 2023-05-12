@@ -74,9 +74,11 @@ export const useStyles = makeStyles((theme: Theme) =>
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",
+            position:"absolute", 
+            bottom:'7%',
             "@media (max-width:760px)": {
-                bottom:'4%',
-                left:'20%'
+                position:"relative",
+                textAlign:'center', 
             }
         },
         signup: {
