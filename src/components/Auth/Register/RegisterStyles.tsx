@@ -40,6 +40,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       "@media (max-width:960px)": {
         textAlign:'center',
         position:'relative',
+        paddingTop:'1rem'
       }
     },
     signup: {
@@ -62,7 +63,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       display: "flex",
       alignItems: "center",
       "@media (max-width:960px)": {
-        padding: "15% 0",
+        padding: "0",
       },
     },
     title: {
@@ -86,6 +87,10 @@ export const useStyles = makeStyles((theme: Theme) =>
         marginTop: "0px !important",
       },
     },
+    registerNumberFormProfile:{
+      paddingLeft:'0'
+    },
+
     loginButton: {
       height: "41px",
       fontSize: 14,
@@ -97,6 +102,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       paddingTop: "4%",
       maxWidth: "160px",
       width: "100%",
+      "@media (max-width:899px)": {
+        paddingLeft:'2%'
+      }
     },
     titleWrapper: {
       margin: "45px 0px 15px 0px",
@@ -116,6 +124,12 @@ export const useStyles = makeStyles((theme: Theme) =>
         height: "calc( 100vh - 400px)",
       }
     },
+    titleWrapperbg:{
+   "@media (max-width:899px)": {
+        height: "100%",
+        background:'none'
+      }
+    },
     registerNumberFormContainer:{
    
     },
@@ -126,6 +140,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     contentContainer: {
+      padding:'0 6px',
       "@media (max-width:899px)": {
         margin: "0 10px",
         position: "absolute",
@@ -141,6 +156,14 @@ export const useStyles = makeStyles((theme: Theme) =>
         bottom: "6%",
         left: "0%",
         right: "0%",
+      },
+    },
+    contentContainerPosition: {
+      padding:'0',
+      "@media (max-width:899px)": {
+        margin: "0",
+        padding:'0',
+        position: "relative",
       },
     },
     inputs: {

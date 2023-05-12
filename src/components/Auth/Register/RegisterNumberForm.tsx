@@ -28,7 +28,7 @@ export default function RegisterNumberForm() {
       success: (res: any) => {
         localStorage.setItem("phoneNumber", phoneNumber);
         localStorage.setItem("dialCode", dialCode);
-        // history.push("/confirmation");
+        history.push("/confirmation");
         action?.resetForm?.();
       },
       onFailAction: (err: any) => {
@@ -104,7 +104,6 @@ export default function RegisterNumberForm() {
                       variant="contained"
                       color="primary"
                       type="submit"
-                      onClick={()=>history.push("/confirmation")}
                     >
                       Continue
                     </Button>

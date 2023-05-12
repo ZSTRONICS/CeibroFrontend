@@ -75,7 +75,7 @@ const RegisterForm = () => {
   };
   return (
     <div className={`form-container  hide-scrollbar`}>
-      <div className={classes.registerNumberForm}>
+      <div className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}>
         <Formik
           initialValues={{
             email: "",

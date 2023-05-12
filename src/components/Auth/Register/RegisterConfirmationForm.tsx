@@ -1,4 +1,4 @@
-import { Button, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import Setting from "components/Setting";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
@@ -10,11 +10,14 @@ import AuthLayout from "../AuthLayout/AuthLayout";
 import { registerConfirmationRequest } from "redux/action/auth.action";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import useResponsive from "hooks/useResponsive";
+import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
+  const isTabletOrMobile = useResponsive("down", "md", "");
 
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -49,6 +52,14 @@ export default function RegisterConfirmationForm() {
       subTitle={t("auth.enter_your_phone_no")}
     >
       <div className={classes.registerNumberForm}>
+        {isTabletOrMobile && (
+          <div>
+            <TopBarTitle sx={{ fontSize: 28 }}>Get started</TopBarTitle>
+            <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
+              by entering your phone number
+            </SubLabelTag>
+          </div>
+        )}
         <Formik
           initialValues={{
             verificationCode: "",
@@ -83,7 +94,7 @@ export default function RegisterConfirmationForm() {
                 )}
               </CBox>
               <div style={{ marginBottom: "24px" }}>
-                <Typography className={classes.dontHave}>
+                <Typography>
                   {t("auth.didnot_receive_code")}{" "}
                   <Link to="/login" className={classes.signup}>
                     {t("auth.send_again")}
@@ -104,25 +115,12 @@ export default function RegisterConfirmationForm() {
           )}
         </Formik>
       </div>
-      <Grid
-        container
-        item
-        className={classes.langContainer}
-        justifyContent="space-between"
-        pt={2}
-      >
-        <Grid item>
-          <Typography className={classes.dontHave}>
-            {t("auth.back_to")}{" "}
-            <Link to="/login" className={classes.signup}>
-              {t("auth.register.signIn")}
-            </Link>
-          </Typography>
-        </Grid>
-        {/* <Grid item>
-          <Setting />
-        </Grid> */}
-      </Grid>
+      <Box className={classes.dontHave} sx={{ color: "#131516" }}>
+        {t("auth.back_to")}{" "}
+        <Link to="/login" className={classes.signup}>
+          Login
+        </Link>
+      </Box>
     </AuthLayout>
   );
 }

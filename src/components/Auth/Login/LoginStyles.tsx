@@ -78,7 +78,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             bottom:'7%',
             "@media (max-width:760px)": {
                 position:"relative",
-                textAlign:'center', 
+                textAlign:'center',
             }
         },
         signup: {

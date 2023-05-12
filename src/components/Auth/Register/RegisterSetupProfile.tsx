@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { t } from "i18next";
 import ProfileView from "./ProfilePicView";
 import DragAndDrop from "components/DropFileInput/DropFileInput";
+import { TopBarTitle } from "components/CustomTags";
 
 interface FileLikeObject {
   file: File;
@@ -20,7 +21,6 @@ export default function RegisterSetupProfile(): JSX.Element {
   const [file, setFile] = useState<FileLikeObject[] | null>(null);
   const [imageUrl, setImageUrl] = useState<string>("");
   const history = useHistory();
-
   const handleChange = (file: any) => {
     setFile(file);
     setImageUrl(URL.createObjectURL(file[0]));

@@ -14,7 +14,13 @@ const AuthLayout = (props: any) => {
   const classes = useStyles();
   const isTabletOrMobile = useResponsive("down", "md", "");
   const { location } = useHistory();
-const authRoute =   location.pathname.includes("register")
+  const authRoute =
+    location.pathname.includes("register") ||
+    location.pathname.includes("confirmation");
+  const showBg =
+    location.pathname.includes("t&c") ||
+    location.pathname.includes("profile-setup") ||
+    location.pathname.includes("profile-pic");
   return (
     <Grid container className={classes.register}>
       <Grid
@@ -29,7 +35,11 @@ const authRoute =   location.pathname.includes("register")
           <div className={classes.logoWrapper}>
             {!isTabletOrMobile ? <CeibroLogo /> : <CeibroMobileLogo />}
           </div>
-          <div className={`${classes.titleWrapper} ${authRoute&&classes.titleWrapperWithRoute}`}>
+          <div
+            className={`${classes.titleWrapper} ${
+              authRoute && classes.titleWrapperWithRoute
+            } ${showBg &&classes.titleWrapperbg}`}
+          >
             <div>
               <TopBarTitle className={classes.titleText} sx={{ fontSize: 28 }}>
                 {props.title}
@@ -42,12 +52,13 @@ const authRoute =   location.pathname.includes("register")
             </div>
             <Box
               className={`${classes.contentContainer} ${
-                authRoute &&
-                classes.contentContainerWithRoute
+                authRoute && classes.contentContainerWithRoute
+              } ${
+                showBg &&
+                classes.contentContainerPosition
               }`}
               sx={{
                 background: "white",
-                padding: "0 6px",
                 borderRadius: "10px",
               }}
             >
