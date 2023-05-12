@@ -26,7 +26,7 @@ export const PasswordTextField = (props: IProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { name, label, placeholder, password, onChange, onBlur } = props;
   const id = label.replace(/\s+/g, "-");
-  console.log(id, "id");
+
   return (
     <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
       <InputLabel htmlFor={id}>{label}</InputLabel>

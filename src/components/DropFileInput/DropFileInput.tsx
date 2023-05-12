@@ -34,7 +34,7 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
     deleteFile();
   };
   return (
-    <div>
+    <div style={{margin:'0'}}>
       {url === "" ? (
         <label htmlFor="btn-upload">
           <CustomBox
@@ -80,9 +80,9 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
                   id="btn-upload"
                   name="btn-upload"
                   hidden
-                  multiple={true}
+                  multiple={false}
                   type="file"
-                  accept="*"
+                  accept="image/*"
                   onChange={(e: any) => onUploadFiles(e)}
                 />
                 <Button
@@ -90,9 +90,9 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
                   variant="text"
                   className="btn-choose"
                   component="span"
-                  sx={{ textTransform: "unset", color: "#605C5C" }}
+                  sx={{ textTransform: "unset", color: "#605C5C", display:'flex', flexDirection:'column' }}
                 >
-                  Drag your file here with mouse or{" "}
+                  Drag your file here with mouse or
                   <span style={{ color: "#0076C8" }}> &nbsp;browse</span>
                 </Button>
               </CustomStack>

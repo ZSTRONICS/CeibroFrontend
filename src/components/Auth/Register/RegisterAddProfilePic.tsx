@@ -5,13 +5,15 @@ import { Button } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import { t } from "i18next";
 import DragAndDrop from "components/DropFileInput/DropFileInput";
+import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import useResponsive from "hooks/useResponsive";
 
 const fileTypes: string[] = ["JPEG", "PNG", "GIF", "JPG"];
 
 export default function RegisterAddProfilePic(): JSX.Element {
   const [file, setFile] = useState<File | null>();
   const history = useHistory();
-
+  const isTabletOrMobile = useResponsive("down", 'md', "")
   // const uploadProfilePicture = () => {
   //   const payload = {
   //     body: {
@@ -45,7 +47,15 @@ export default function RegisterAddProfilePic(): JSX.Element {
       title={t("auth.add_photo")}
       subTitle={t("auth.photo_description")}
     >
-      <CBox>
+          {isTabletOrMobile && (
+        <div>
+          <TopBarTitle sx={{ fontSize: 28, pb:1,}}>{t("auth.add_photo")}</TopBarTitle>
+          <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
+          {t("auth.photo_description")}
+              </SubLabelTag>
+        </div>
+      )}
+      <CBox  sx={{ maxWidth: "390px", width: "100%", mt:3 }}>
         <DragAndDrop
           setFile={setFile}
           deleteFile={() => {
@@ -54,8 +64,8 @@ export default function RegisterAddProfilePic(): JSX.Element {
         />
       </CBox>
       <Button
-        sx={{ maxWidth: "360px", width: "100%", margin: "0 auto" }}
-        variant="outlined"
+        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt:2 }}
+        variant={file?"contained":"outlined"}
         color="primary"
         type="submit"
         // onClick={uploadProfilePicture}

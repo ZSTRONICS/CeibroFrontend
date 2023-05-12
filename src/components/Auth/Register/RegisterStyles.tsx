@@ -162,8 +162,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       padding:'0',
       "@media (max-width:899px)": {
         margin: "0",
-        padding:'0',
+        padding:'0 7px',
         position: "relative",
+        left: "0%",
+        right: "0%",
       },
     },
     inputs: {
