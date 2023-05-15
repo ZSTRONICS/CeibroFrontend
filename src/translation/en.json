@@ -46,6 +46,7 @@
     "didnot_receive_code":"Didn't receive code?",
     "send_again":"Send again",
     "phoneNumber":"Phone number",
+    "seconds_left":"seconds left",
 
     "forgot_pass": {
       "verifying": "Verifying",

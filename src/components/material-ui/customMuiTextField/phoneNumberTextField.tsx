@@ -65,6 +65,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
             );
           }}
           onChange={(e, value) => handleCountryCodeChange(e, value)}
+          onKeyDown={(e) => handleCountryCodeChange(e, country)}
           renderInput={(params) => (
             <TextField
               {...params}

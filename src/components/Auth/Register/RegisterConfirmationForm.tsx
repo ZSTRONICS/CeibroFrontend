@@ -7,9 +7,12 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
-import { authApiAction, registerConfirmationRequest } from "redux/action/auth.action";
+import {
+  authApiAction,
+  registerConfirmationRequest,
+} from "redux/action/auth.action";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useResponsive from "hooks/useResponsive";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 
@@ -21,20 +24,23 @@ export default function RegisterConfirmationForm() {
 
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
-  
-  // function countdown() {
-  //   var seconds = 59;
-  //   function tick() {
-  //     seconds--;
-  //     if (seconds > 0) {
-  //       setTimeout(tick, 1000);
-  //     } else {
-  //       console.log('resend', seconds)
-  //     }
-  //   }
-  //   tick();
-  // }
-  // countdown()
+  const [counter, setCounter] = useState(60);
+
+  useEffect(() => {
+    const timer = startCountdown();
+    return () => clearInterval(timer);
+  }, [counter]);
+
+  function startCountdown() {
+    const timer =
+      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+
+    setTimeout(() => {
+      timer && clearInterval(timer); // stop the countdown after 60 seconds
+    }, 60000); // 60 seconds (60000 milliseconds)
+
+    return timer;
+  }
 
   const handleSubmit = (values: any, action: any) => {
     let phoneNumber = localStorage.getItem("phoneNumber");
@@ -130,12 +136,24 @@ export default function RegisterConfirmationForm() {
                 )}
               </CBox>
               <div style={{ marginBottom: "24px" }}>
-                <Typography>
-                  {t("auth.didnot_receive_code")}{" "}
-                  <span  className={classes.signup} onClick={(values:any)=>handleResend(values)}>
-                    {t("auth.send_again")}
-                  </span>
-                </Typography>
+                {counter > 0 ? (
+                  <Typography>
+                    {t("auth.didnot_receive_code")}{" "}
+                    <span className={classes.signup} style={{ color: "grey" }}>
+                      {`${counter} ${t("auth.seconds_left")}`}
+                    </span>
+                  </Typography>
+                ) : (
+                  <Typography>
+                    {t("auth.didnot_receive_code")}{" "}
+                    <span
+                      className={classes.signup}
+                      onClick={(values: any) => handleResend(values)}
+                    >
+                      {t("auth.send_again")}
+                    </span>
+                  </Typography>
+                )}
               </div>
               <div className={classes.actionWrapper}>
                 <Button
