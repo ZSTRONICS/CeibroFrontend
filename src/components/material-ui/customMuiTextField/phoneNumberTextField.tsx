@@ -11,7 +11,7 @@ import dialCode from "./dialCode.json";
 import { IPhoneNumber, ICountryData, IPhoneNumberProps } from "./types";
 
 export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
-  const { name, inputValue, onChange, onBlur } = props;
+  const { name, inputValue, onChange, onBlur, readOnly } = props;
   const [country, setCountry] = useState<ICountryData>(
     dialCode.find((item) => item.dial_code === inputValue.dialCode)!
   );
@@ -32,6 +32,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
 
   return (
     <OutlinedInput
+      readOnly={readOnly}
       name={name}
       size="small"
       placeholder="Phone number"

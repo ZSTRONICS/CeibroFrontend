@@ -13,6 +13,7 @@ import {
   UPDATE_PROFILE_PICTURE,
   VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
+  AUTH_CONFIG,
 } from "../../config/auth.config";
 import apiCall from "../../utills/apiCall";
 import { ActionInterface } from "../reducers";
@@ -55,6 +56,13 @@ const registerConfirmationRequest = apiCall({
   },
 });
 
+const resendOtp = apiCall({
+  useV2Route: true,
+  type: AUTH_CONFIG.RESEND_OTP,
+  method: "post",
+  path: "auth/otp/resend",
+});
+
 const registerSetupProfile = apiCall({
   useV2Route: true,
   type: REGISTER_PROFILE_SETUP,
@@ -91,6 +99,7 @@ const otpVerify = apiCall({
 
 const updateProfilePicture = apiCall({
   useV2Route: true,
+  isFormData: true,
   type: UPDATE_PROFILE_PICTURE,
   method: "patch",
   path: "/users/profile/pic",
@@ -111,17 +120,11 @@ const resetPassword = apiCall({
   // reset-password?otp=grgdfvdf
 });
 
-const sendVerifyEmail = apiCall({
-  useV2Route: false,
-  type: SEND_VERIFY_EMAIL,
-  method: "post",
-  path: `/auth/send-verification-email`,
-});
-
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
   yield takeLatest(REGISTER_CONFIRMATION, registerConfirmationRequest);
+  yield takeLatest(AUTH_CONFIG.RESEND_OTP, resendOtp);
   yield takeLatest(REGISTER_PROFILE_SETUP, registerSetupProfile);
   yield takeLatest(CREATE_ROOM, createChatRoom);
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
@@ -130,7 +133,6 @@ function* projectSaga() {
   yield takeLatest(OTP_VERIFY, otpVerify);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
   yield takeLatest(RESET_PASSWORD, resetPassword);
-  yield takeLatest(SEND_VERIFY_EMAIL, sendVerifyEmail);
 }
 
 export default projectSaga;

@@ -31,6 +31,7 @@ interface Common {
 export interface IPhoneNumberProps extends Common {
   typeName: "phone-number";
   inputValue: IPhoneNumber;
+  readOnly?:boolean;
 }
 
 export interface IPasswordProps extends Common {

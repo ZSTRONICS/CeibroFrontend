@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 import useStyles from "./RegisterStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
-import { registerConfirmationRequest } from "redux/action/auth.action";
+import { authApiAction, registerConfirmationRequest } from "redux/action/auth.action";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import useResponsive from "hooks/useResponsive";
@@ -21,6 +21,20 @@ export default function RegisterConfirmationForm() {
 
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
+  
+  // function countdown() {
+  //   var seconds = 59;
+  //   function tick() {
+  //     seconds--;
+  //     if (seconds > 0) {
+  //       setTimeout(tick, 1000);
+  //     } else {
+  //       console.log('resend', seconds)
+  //     }
+  //   }
+  //   tick();
+  // }
+  // countdown()
 
   const handleSubmit = (values: any, action: any) => {
     let phoneNumber = localStorage.getItem("phoneNumber");
@@ -46,6 +60,28 @@ export default function RegisterConfirmationForm() {
       setIncorrectAuth(false);
     }, 5000);
   };
+  const handleResend = (values: any) => {
+    let phoneNumber = localStorage.getItem("phoneNumber");
+    let dialCode = localStorage.getItem("dialCode");
+    const payload = {
+      body: {
+        phoneNumber: `${dialCode}${phoneNumber}`,
+      },
+      success: (res: any) => {
+        // action?.resetForm?.();
+      },
+      onFailAction: (err: any) => {
+        if (err.response.data.code === 400) {
+          setIncorrectAuth(true);
+        }
+      },
+    };
+    dispatch(authApiAction.resendOtpRequest(payload));
+    setTimeout(() => {
+      setIncorrectAuth(false);
+    }, 5000);
+  };
+
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
@@ -96,9 +132,9 @@ export default function RegisterConfirmationForm() {
               <div style={{ marginBottom: "24px" }}>
                 <Typography>
                   {t("auth.didnot_receive_code")}{" "}
-                  <Link to="/login" className={classes.signup}>
+                  <span  className={classes.signup} onClick={(values:any)=>handleResend(values)}>
                     {t("auth.send_again")}
-                  </Link>
+                  </span>
                 </Typography>
               </div>
               <div className={classes.actionWrapper}>

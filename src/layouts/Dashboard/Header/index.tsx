@@ -87,8 +87,8 @@ export default function Header({ onOpenNav }: Props) {
               },
             }}
           >
-            <AddStatusTag sx={{color:'#131516'}}>Ali</AddStatusTag>
-            <AddStatusTag sx={{color:'#131516'}}>Asad </AddStatusTag>
+            <AddStatusTag sx={{color:'#131516'}}>{user?.firstName}</AddStatusTag>
+            <AddStatusTag sx={{color:'#131516'}}>{user?.surName} </AddStatusTag>
             {/* <Typography>{user?.firstName}</Typography>
             <Typography>{user?.surName} </Typography> */}
           </Stack>

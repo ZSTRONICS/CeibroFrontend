@@ -14,10 +14,14 @@ import {
   REGISTER_CONFIRMATION,
   REGISTER_PROFILE_SETUP,
   UPDATE_PROFILE_PICTURE,
+  AUTH_CONFIG,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
 
+export const authApiAction = {
+  resendOtpRequest: createAction(AUTH_CONFIG.RESEND_OTP),
+}
 export const registerRequest = createAction(REGISTER);
 export const registerConfirmationRequest = createAction(REGISTER_CONFIRMATION);
 export const registerSetupProfile = createAction(REGISTER_PROFILE_SETUP);

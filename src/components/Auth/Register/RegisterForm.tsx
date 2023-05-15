@@ -191,6 +191,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
+                  readOnly={true}
                   typeName="phone-number"
                   name="phoneNumber"
                   inputValue={{

@@ -13,32 +13,36 @@ import { UpdateProfilePicture } from "redux/action/auth.action";
 const fileTypes: string[] = ["JPEG", "PNG", "GIF", "JPG"];
 
 export default function RegisterAddProfilePic(): JSX.Element {
-  const [file, setFile] = useState<File | null>();
+  const [file, setFile] = useState<string | Blob>("");
   const dispatch = useDispatch();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
 
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
 
-  const uploadProfilePicture = () => {
-    let formData1 = new FormData();
-    if (file) {
-      console.log(file, "file");
-      formData1.append("profilePic", file);
-      console.log(formData1.get("profilePic"));
-      const payload = {
-        body: formData1,
-        success: (res: any) => {
-          history.push("/dashboard");
-        },
-        onFailAction: (err: any) => {
-          if (err.response.data.code === 400) {
-          }
-        },
-      };
-      dispatch(UpdateProfilePicture(payload));
-    } else {
-      history.push("/dashboard");
+  const uploadImage = async () => {
+    try {
+      const formData = new FormData();
+      if(file){
+        formData.append('profilePic', file);
+        console.log(formData.get("profilePic"));
+        const payload = {
+          body: formData,
+          success: (res: any) => {
+            history.push("/dashboard");
+            console.log('Image uploaded successfully!');
+          },
+          onFailAction: (err: any) => {
+            if (err) {
+              console.error('Failed to upload image');
+            }
+          },
+        };
+        dispatch(UpdateProfilePicture(payload));
+      }
+  
+    } catch (error) {
+      console.error('Error occurred while uploading image:', error);
     }
   };
 
@@ -61,7 +65,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
         <DragAndDrop
           setFile={setFile}
           deleteFile={() => {
-            setFile(null);
+            setFile("");
           }}
         />
       </CBox>
@@ -70,7 +74,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
         variant={file ? "contained" : "outlined"}
         color="primary"
         type="submit"
-        onClick={uploadProfilePicture}
+        onClick={uploadImage}
       >
         {file ? "Continue" : "Skip"}
       </Button>

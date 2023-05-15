@@ -39,14 +39,14 @@ const RouterConfig: React.FC<Configs> = () => {
           <Route path="/confirmation" component={RegisterConfirmationForm} />
           <Route path="/t&c" component={TermsAndConditions} />
           <Route path="/profile-setup" component={Register} />
-          <Route path="/profile-pic" component={RegisterAddProfilePic} />
+          <PrivateRoute path="/profile-pic" component={RegisterAddProfilePic} />
 
           <DashboardLayout>
-            <Route path="/profile" component={Profile} />
-            <Route path="/projects" component={Projects} />
-            <Route path="/tasks" component={Tasks} />
-            <Route path="/chat" component={Chat} />
-            <Route path="/connections" component={Connections} />
+            <PrivateRoute path="/profile" component={Profile} />
+            <PrivateRoute path="/projects" component={Projects} />
+            <PrivateRoute path="/tasks" component={Tasks} />
+            {/* <Route path="/chat" component={Chat} /> */}
+            <PrivateRoute path="/connections" component={Connections} />
             <PrivateRoute path="/dashboard" component={Dashboard} />
             <PrivateRoute path="/admin" component={AdminMain} />
           </DashboardLayout>

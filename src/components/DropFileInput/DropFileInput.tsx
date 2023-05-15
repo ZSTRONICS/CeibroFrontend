@@ -24,7 +24,7 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
   };
 
   const onUploadFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target && e.target.files && e.target.files.length > 0) {
+    if (e.target && e.target.files) {
       setUrl(URL.createObjectURL(e.target.files[0]));
       setFile(e.target.files[0]);
     }

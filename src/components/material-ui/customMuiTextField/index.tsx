@@ -21,6 +21,7 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
     case "phone-number":
       return (
         <PhoneNumberTextField
+          {...props}
           name={props.name}
           onChange={(e, value) => props.onChange(e, value)}
           inputValue={props.inputValue as IPhoneNumber}
