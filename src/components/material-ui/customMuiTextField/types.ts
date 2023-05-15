@@ -5,13 +5,22 @@ export interface IPhoneNumber {
   phoneNumber: string;
 }
 
+export type ICountryData = {
+  name: string;
+  flag: string;
+  code: string;
+  dial_code: string;
+};
+
 export type inputType = "phone-number" | "email" | "password" | "regular";
 
 interface Common {
   name: string;
   onChange: (
-    e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>,
-    value?: string | undefined
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.SyntheticEvent<Element, Event>,
+    value?: ICountryData | undefined
   ) => void;
   onBlur?: {
     (e: React.FocusEvent<any, Element>): void;
