@@ -13,6 +13,7 @@ import {
   REGISTER_CONFIRMATION,
   REGISTER_PROFILE_SETUP,
   UPDATE_MY_PROFILE,
+  UPDATE_PROFILE_PICTURE,
 } from "../../config/auth.config";
 import {
   requestFail,
@@ -163,7 +164,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case requestSuccess(UPDATE_PROFILE_PIC): {
+    case requestSuccess(UPDATE_PROFILE_PICTURE): {
       if (action.payload.profilePic) {
         state.user.profilePic = action.payload.profilePic;
       }

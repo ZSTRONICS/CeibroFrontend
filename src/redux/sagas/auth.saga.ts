@@ -10,7 +10,7 @@ import {
   REGISTER_CONFIRMATION,
   RESET_PASSWORD,
   SEND_VERIFY_EMAIL,
-  UPDATE_MY_PROFILE,
+  UPDATE_PROFILE_PICTURE,
   VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
 } from "../../config/auth.config";
@@ -89,11 +89,11 @@ const otpVerify = apiCall({
   path: (payload) => `/auth/verify-email?otp=${payload?.other}`,
 });
 
-const updateMyProfile = apiCall({
-  useV2Route: false,
-  type: UPDATE_MY_PROFILE,
+const updateProfilePicture = apiCall({
+  useV2Route: true,
+  type: UPDATE_PROFILE_PICTURE,
   method: "patch",
-  path: "/users/profile",
+  path: "/users/profile/pic",
 });
 
 const forgetPassword = apiCall({
@@ -126,7 +126,7 @@ function* projectSaga() {
   yield takeLatest(CREATE_ROOM, createChatRoom);
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
-  yield takeLatest(UPDATE_MY_PROFILE, updateMyProfile);
+  yield takeLatest(UPDATE_PROFILE_PICTURE, updateProfilePicture);
   yield takeLatest(OTP_VERIFY, otpVerify);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
   yield takeLatest(RESET_PASSWORD, resetPassword);

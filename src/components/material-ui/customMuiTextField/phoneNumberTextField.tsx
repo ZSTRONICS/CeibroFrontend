@@ -15,7 +15,11 @@ interface IProps {
   placeholder?: string;
   inputValue: IPhoneNumber;
   onChange: (
-    e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | SelectChangeEvent<unknown>
+      | React.SyntheticEvent<Element, Event>,
+    value?: string
   ) => void;
   onBlur?: {
     (e: React.FocusEvent<any, Element>): void;
@@ -25,21 +29,20 @@ interface IProps {
 
 export const PhoneNumberTextField = (props: IProps) => {
   const { name, placeholder, inputValue, onChange, onBlur } = props;
-  const [countryCode, setCountryCode] = useState<any>({
-    name: 'Estonia',
-    dial_code: `+372`,
-  });
+  const [countryCode, setCountryCode] = useState<string>(inputValue.dialCode);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b]{0,11}$/;
     if (e.target.value === "" || regex.test(e.target.value)) {
       onChange(e);
     }
   };
-  const handleCountryCodeChange = (event: SelectChangeEvent<unknown>, value:any) => {
-    console.log('value', value)
-    // value.name=""
-    setCountryCode(value)
-    onChange(event);
+  const handleCountryCodeChange = (
+    event: React.SyntheticEvent<Element, Event>,
+    value: string
+  ) => {
+    setCountryCode(value);
+    onChange(event, value);
   };
 
   return (
@@ -48,7 +51,7 @@ export const PhoneNumberTextField = (props: IProps) => {
       size="small"
       placeholder="Phone number"
       sx={{
-        '& #outlined-adornment-phone-no':{
+        "& #outlined-adornment-phone-no": {
           paddingLeft: 1,
         },
         paddingLeft: 0,
@@ -61,28 +64,37 @@ export const PhoneNumberTextField = (props: IProps) => {
       id="outlined-adornment-phone-no"
       startAdornment={
         <Autocomplete
-         disableClearable
-        options={dialCode}
-        value={countryCode}
-        sx={{'& .MuiOutlinedInput-root':{
-          paddingRight:'10px !important',
-          paddingTop:'2px',
-          paddingBottom:'2px'
-        }}}
-        onChange={(e:any, value:any)=>handleCountryCodeChange(e, value)}
-        getOptionLabel={(option) => `${option.dial_code}`}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            InputProps={{
-              ...params.InputProps,
-              autoComplete: "off",
-              autoCorrect: "off",
-            }}
-          />
-        )}
-        style={{ width: 200 }}
-      />
+          id="dialCode"
+          disableClearable
+          options={dialCode.map((code) => code.dial_code)}
+          size="small"
+          value={countryCode}
+          getOptionLabel={(option) => option}
+          onChange={(e, value) => handleCountryCodeChange(e, value)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              InputProps={{
+                ...params.InputProps,
+                autoComplete: "off",
+                autoCorrect: "off",
+              }}
+              sx={{
+                "& .MuiAutocomplete-input": {
+                  paddingLeft: "4px !important",
+                },
+              }}
+            />
+          )}
+          sx={{
+            width: "115px",
+            borderTopRightRadius: "0 !important",
+            "& .MuiInputBase-sizeSmall": {
+              borderBottomRightRadius: 0,
+              borderTopRightRadius: "0 !important",
+            },
+          }}
+        />
       }
     />
   );

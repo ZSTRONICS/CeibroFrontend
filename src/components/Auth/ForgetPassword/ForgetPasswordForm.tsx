@@ -7,12 +7,13 @@ import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
-import Alert from '@mui/material/Alert';
+import Alert from "@mui/material/Alert";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 
 interface Props {
   tokenLoading: boolean;
@@ -28,20 +29,12 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
   const forgotPasswordSchema = forgotPasswordSchemaValidation(t);
   const [loading, setLoading] = useState<boolean>(false);
   const [emailFoundErr, setEmailFound] = useState<boolean>(false);
-  const isDiabled = !loading ? false : true;
+  const isDisabled = !loading ? false : true;
 
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
       handleSubmit(values);
     }
-  };
-
-  const checkValidInputs = (values: any) => {
-    const { email } = values;
-    if (email && email.length > 0) {
-      return false;
-    }
-    return true;
   };
 
   const handleSubmit = (values: any) => {
@@ -58,7 +51,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
       },
       finallyAction: () => {
         setLoading(false);
-      }
+      },
     };
 
     setTimeout(() => {
@@ -76,7 +69,9 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
       </div>
 
       <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>{t("auth.Email")}</Typography>
+        <Typography className={classes.title}>
+          {t("auth.phoneNumber")}
+        </Typography>
       </div>
 
       <div className={classes.loginForm}>
@@ -87,15 +82,15 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
               : `${t("auth.forgot_pass.email_verify_successfully")}`}
           </Alert>
         )}
-         {emailFoundErr && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.noUserFound_with_email")}
-                </Alert>
-              )}
+        {emailFoundErr && (
+          <Alert style={{ margin: "2px 0" }} severity="error">
+            {t("auth.noUserFound_with_email")}
+          </Alert>
+        )}
 
         {showError && <Alert severity="error">{t("auth.link_expired")}</Alert>}
         <Formik
-          initialValues={{ email: "" }}
+          initialValues={{ phoneNumber: "", dialCode: "+372" }}
           validationSchema={forgotPasswordSchema}
           onSubmit={handleSubmit}
         >
@@ -107,33 +102,30 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
             handleBlur,
             handleSubmit,
           }) => (
-            <Form  onSubmit={handleSubmit}>
-              <TextField
-                name="email"
-                onKeyDown={(e: any) => handleKeyDown(e, values)}
-                value={values.email}
-                placeholder={t("auth.Email")}
-                className={classes.inputs}
-                inputProps={{
-                  style: { height: 12 },
+            <Form onSubmit={handleSubmit}>
+              <CustomMuiTextField
+                name="phoneNumber"
+                typeName="phone-number"
+                inputValue={{
+                  phoneNumber: values.phoneNumber,
+                  dialCode: values.dialCode,
                 }}
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.email && touched.email && (
+              {errors.phoneNumber && touched.phoneNumber && (
                 <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.email}
+                  {errors.phoneNumber}
                 </Typography>
               )}
               <div className={classes.actionWrapper}>
                 <Button
-                 type="submit"
+                  type="submit"
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
-                  disabled={checkValidInputs(values) || isDiabled}
-                 >
-                  {isDiabled && loading && (
+                >
+                  {isDisabled && loading && (
                     <CircularProgress size={20} className={classes.progress} />
                   )}
                   {t("auth.send")}

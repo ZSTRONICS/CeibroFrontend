@@ -1,12 +1,14 @@
 import * as yup from "yup";
 import { TFunction } from "i18next";
 
+const phRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+
 export const SigninSchemaValidation = (t: TFunction) => {
   const signinSchema = yup.object().shape({
     phoneNumber: yup
       .string()
-      .email(`${t("auth.phoneNumber")}`)
-      .required(`${t("auth.required")}`),
+      .matches(phRegex, "Invalid phone number")
+      .required("Phone number is required"),
     password: yup
       .string()
       .required(`${t("auth.plz_Enter_pass")}`)
@@ -20,10 +22,10 @@ export const SigninSchemaValidation = (t: TFunction) => {
 
 export const forgotPasswordSchemaValidation = (t: TFunction) => {
   const forgotPasswordSchema = yup.object().shape({
-    email: yup
+    phoneNumber: yup
       .string()
-      .email(`${t("auth.register.invalid_email")}`)
-      .required(`${t("auth.required")}`),
+      .matches(phRegex, "Invalid phone number")
+      .required("Phone number is required"),
   });
   return forgotPasswordSchema;
 };

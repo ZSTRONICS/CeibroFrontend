@@ -28,30 +28,31 @@ export const PasswordTextField = (props: IProps) => {
   const id = label.replace(/\s+/g, "-");
 
   return (
-    <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
-      <InputLabel htmlFor={id}>{label}</InputLabel>
-      <OutlinedInput
-        sx={{py:.25}}
-        id={id}
-        name={name}
-        type={showPassword ? "text" : "password"}
-        label={label}
-        placeholder={placeholder ?? placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        value={password}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={() => setShowPassword(!showPassword)}
-              edge="end"
-            >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        }
-      />
-    </FormControl>
+    <>
+      <FormControl sx={{ width: "100%" }} size="small" variant="outlined">
+        <InputLabel htmlFor={"pwd"}>{label}</InputLabel>
+        <OutlinedInput
+          id={"pwd"}
+          name={name}
+          type={showPassword ? "text" : "password"}
+          label={label}
+          placeholder={placeholder ?? placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          value={password ? password : undefined}
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={() => setShowPassword(!showPassword)}
+                edge="end"
+              >
+                {showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+      </FormControl>
+    </>
   );
 };

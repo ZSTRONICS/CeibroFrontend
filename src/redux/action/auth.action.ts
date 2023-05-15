@@ -13,6 +13,7 @@ import {
   SEND_VERIFY_EMAIL,
   REGISTER_CONFIRMATION,
   REGISTER_PROFILE_SETUP,
+  UPDATE_PROFILE_PICTURE,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
@@ -20,6 +21,7 @@ import { createAction } from "./action";
 export const registerRequest = createAction(REGISTER);
 export const registerConfirmationRequest = createAction(REGISTER_CONFIRMATION);
 export const registerSetupProfile = createAction(REGISTER_PROFILE_SETUP);
+export const UpdateProfilePicture = createAction(UPDATE_PROFILE_PICTURE);
 
 export const loginRequest = createAction(LOGIN);
 export const logoutUser = createAction(LOGOUT);
