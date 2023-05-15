@@ -13,6 +13,7 @@ import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 import { ICountryData } from "components/material-ui/customMuiTextField/types";
+import { handlePhoneChange } from "../../../utills/formFunctions";
 
 type FormValues = {
   dialCode: string;
@@ -50,21 +51,6 @@ export default function RegisterNumberForm() {
     setTimeout(() => {
       setIncorrectAuth(false);
     }, 5000);
-  };
-
-  const handlePhoneChange = (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.SyntheticEvent<Element, Event>,
-    formRef: RefObject<FormikProps<FormValues>>,
-    changeValue?: ICountryData
-  ) => {
-    if (e.target.outerText) {
-      formRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
-    } else {
-      const { name, value } = e.target;
-      formRef.current?.setFieldValue(name, value);
-    }
   };
 
   const isTabletOrMobile = useResponsive("down", "md", "");
@@ -127,11 +113,10 @@ export default function RegisterNumberForm() {
                 <div className={classes.actionWrapper}>
                   <Button
                     className={classes.loginButton}
-                    disabled={values.phoneNumber.length>0?false:true}
+                    disabled={values.phoneNumber.length > 0 ? false : true}
                     variant="contained"
                     color="primary"
                     type="submit"
-
                   >
                     Continue
                   </Button>

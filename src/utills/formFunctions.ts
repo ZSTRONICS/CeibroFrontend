@@ -1,15 +1,15 @@
 import { ICountryData } from "components/material-ui/customMuiTextField/types";
-import { FormikProps } from "formik";
+import { FormikProps, FormValues } from "formik";
 
-// export const handlePhoneChange = (
-//   e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>,
-//   formRef:FormikProps<FormValues>|null,
-//   changeValue?: ICountryData
-// ) => {
-//   if (e.target.outerText) {
-//     formRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
-//   } else {
-//     const { name, value } = e.target;
-//     formRef.current?.setFieldValue(name, value);
-//   }
-// };
+export const handlePhoneChange = (
+  e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>,
+  formRef: FormikProps<FormValues> | null,
+  changeValue?: ICountryData
+) => {
+  if (e.target.outerText) {
+    formRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
+  } else {
+    const { name, value } = e.target;
+    formRef.current?.setFieldValue(name, value);
+  }
+};

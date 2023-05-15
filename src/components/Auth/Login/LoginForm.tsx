@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 //formik
-import { Formik, Form } from "formik";
+import { Formik, Form, FormikProps } from "formik";
 
 // i18next
 import { useTranslation } from "react-i18next";
@@ -36,6 +36,7 @@ import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { DocumentNameTag } from "components/CustomTags";
+import { handlePhoneChange } from "utills/formFunctions";
 
 interface Props {
   tokenLoading: boolean;
@@ -63,6 +64,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
+  const formikRef = useRef<FormikProps<FormValues>>(null);
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
@@ -113,7 +115,12 @@ const LoginForm: React.FC<Props> = (props) => {
   const checkValidInputs = (values: any) => {
     const { phoneNumber, password } = values;
     // console.log('phoneNumber', phoneNumber)
-    if (phoneNumber && phoneNumber.length > 3 && password && password.length > 2) {
+    if (
+      phoneNumber &&
+      phoneNumber.length > 3 &&
+      password &&
+      password.length > 2
+    ) {
       return false;
     }
     return true;
@@ -146,6 +153,7 @@ const LoginForm: React.FC<Props> = (props) => {
           }}
           validationSchema={signinSchema}
           onSubmit={handleSubmit}
+          innerRef={formikRef}
         >
           {({
             errors,
@@ -213,13 +221,15 @@ const LoginForm: React.FC<Props> = (props) => {
               )}
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
-                  name="phoneNumber"
                   typeName="phone-number"
+                  name="phoneNumber"
                   inputValue={{
                     phoneNumber: values.phoneNumber,
                     dialCode: values.dialCode,
                   }}
-                  onChange={handleChange}
+                  onChange={(e, value) =>
+                    handlePhoneChange(e, formikRef, value)
+                  }
                   onBlur={handleBlur}
                 />
                 {errors.phoneNumber && touched.phoneNumber && (
@@ -247,7 +257,7 @@ const LoginForm: React.FC<Props> = (props) => {
               </CBox>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <FormControlLabel
-                sx={{gap:1}}
+                  sx={{ gap: 1 }}
                   control={
                     <Checkbox
                       checked={checked}
@@ -259,14 +269,12 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                   style={{ padding: 0 }}
                   label={
-                    <DocumentNameTag >
-                      {t("auth.RememberMe")}
-                    </DocumentNameTag>
+                    <DocumentNameTag>{t("auth.RememberMe")}</DocumentNameTag>
                   }
                 />
                 <Typography
                   className={`${classes.titles} ${classes.forget}`}
-                  sx={{ marginBottom: 0, fontSize:14, fontWeight:500 }}
+                  sx={{ marginBottom: 0, fontSize: 14, fontWeight: 500 }}
                   variant="body1"
                   gutterBottom
                   onClick={handlePasswordForget}
@@ -277,11 +285,10 @@ const LoginForm: React.FC<Props> = (props) => {
               <div className={classes.actionWrapper}>
                 <Button
                   type="submit"
-
                   className={classes.loginButton}
                   variant="contained"
-                  sx={{ width: "100%", backgroundColor:"#0076C8" }}
-                   disabled={checkValidInputs(values) || showLoading}
+                  sx={{ width: "100%", backgroundColor: "#0076C8" }}
+                  disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />
