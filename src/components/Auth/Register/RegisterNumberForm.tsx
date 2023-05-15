@@ -11,6 +11,7 @@ import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
+import { ICountryData } from "components/material-ui/customMuiTextField/types";
 
 type FormValues = {
   dialCode: string;
@@ -50,19 +51,17 @@ export default function RegisterNumberForm() {
   };
 
   const handlePhoneChange = (
-    e: React.ChangeEvent<HTMLInputElement> | SelectChangeEvent<unknown>,
-    changeValue?: string
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.SyntheticEvent<Element, Event>,
+    formRef: RefObject<FormikProps<FormValues>>,
+    changeValue?: ICountryData
   ) => {
-    console.log(changeValue, "changeValue");
-    console.log(
-      typeof e === "object" && e.hasOwnProperty("target"),
-      "changeValue"
-    );
-    if (typeof e === "object" && e.hasOwnProperty("target")) {
-      const { name, value } = e.target;
-      formikRef.current?.setFieldValue(name, value);
+    if (e.target.outerText) {
+      formRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
     } else {
-      formikRef.current?.setFieldValue("dialCode", changeValue);
+      const { name, value } = e.target;
+      formRef.current?.setFieldValue(name, value);
     }
   };
 
@@ -99,7 +98,6 @@ export default function RegisterNumberForm() {
               values,
               errors,
               touched,
-              handleChange = handlePhoneChange,
               handleBlur,
               handleSubmit,
               isValid,
@@ -113,7 +111,9 @@ export default function RegisterNumberForm() {
                       phoneNumber: values.phoneNumber,
                       dialCode: values.dialCode,
                     }}
-                    onChange={handleChange}
+                    onChange={(e, value) =>
+                      handlePhoneChange(e, formikRef, value)
+                    }
                     onBlur={handleBlur}
                   />
                   {errors.phoneNumber && touched.phoneNumber && (
@@ -146,8 +146,4 @@ export default function RegisterNumberForm() {
       </AuthLayout>
     </Box>
   );
-}
-
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
 }

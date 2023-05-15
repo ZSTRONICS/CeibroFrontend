@@ -2,13 +2,19 @@ import React from "react";
 import { PhoneNumberTextField } from "./phoneNumberTextField";
 import { PasswordTextField } from "./paaswordTextField";
 import { SimpleTextField } from "./simpleTextField";
-import { IAutoCompleteProps, IPasswordProps, IPhoneNumber, IPhoneNumberProps, ITextFieldProps } from "./types";
+import {
+  IAutoCompleteProps,
+  IPasswordProps,
+  IPhoneNumber,
+  IPhoneNumberProps,
+  ITextFieldProps,
+} from "./types";
 
 type Props =
   | IPhoneNumberProps
   | IPasswordProps
   | ITextFieldProps
-  | IAutoCompleteProps
+  | IAutoCompleteProps;
 
 export const CustomMuiTextField: React.FC<Props> = (props) => {
   switch (props.typeName) {
@@ -16,16 +22,16 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
       return (
         <PhoneNumberTextField
           name={props.name}
-          onChange={(e: any) => props.onChange(e)}
+          onChange={(e, value) => props.onChange(e, value)}
           inputValue={props.inputValue as IPhoneNumber}
           onBlur={props.onBlur}
+          typeName={"phone-number"}
         />
       );
     case "password":
       return (
         <PasswordTextField
           name={props.name}
-          
           label={props.label}
           password={props.password as string}
           placeholder={props.placeholder}
@@ -47,9 +53,9 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
           onBlur={props.onBlur}
         />
       );
-      default: {
-        return <> </>
-      }
+    default: {
+      return <> </>;
+    }
     // case "auto-complete":
     //   return (
     //     <SimpleTextField

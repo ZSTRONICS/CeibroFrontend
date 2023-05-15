@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Autocomplete,
   MenuItem,
@@ -8,28 +8,13 @@ import {
   TextField,
 } from "@mui/material";
 import dialCode from "./dialCode.json";
-import { IPhoneNumber } from "./types";
+import { IPhoneNumber, ICountryData, IPhoneNumberProps } from "./types";
 
-interface IProps {
-  name: string;
-  placeholder?: string;
-  inputValue: IPhoneNumber;
-  onChange: (
-    e:
-      | React.ChangeEvent<HTMLInputElement>
-      | SelectChangeEvent<unknown>
-      | React.SyntheticEvent<Element, Event>,
-    value?: string
-  ) => void;
-  onBlur?: {
-    (e: React.FocusEvent<any, Element>): void;
-    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
-  };
-}
-
-export const PhoneNumberTextField = (props: IProps) => {
-  const { name, placeholder, inputValue, onChange, onBlur } = props;
-  const [countryCode, setCountryCode] = useState<string>(inputValue.dialCode);
+export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
+  const { name, inputValue, onChange, onBlur } = props;
+  const [country, setCountry] = useState<ICountryData>(
+    dialCode.find((item) => item.dial_code === inputValue.dialCode)!
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const regex = /^[0-9\b]{0,11}$/;
@@ -39,9 +24,9 @@ export const PhoneNumberTextField = (props: IProps) => {
   };
   const handleCountryCodeChange = (
     event: React.SyntheticEvent<Element, Event>,
-    value: string
+    value: ICountryData
   ) => {
-    setCountryCode(value);
+    setCountry(value);
     onChange(event, value);
   };
 
@@ -66,10 +51,18 @@ export const PhoneNumberTextField = (props: IProps) => {
         <Autocomplete
           id="dialCode"
           disableClearable
-          options={dialCode.map((code) => code.dial_code)}
+          options={dialCode}
           size="small"
-          value={countryCode}
-          getOptionLabel={(option) => option}
+          value={country}
+          getOptionLabel={(option) => option.dial_code}
+          renderOption={(props, option, index) => {
+            const key = `listItem-${index}-${option.code}`;
+            return (
+              <li {...props} key={key}>
+                {option.dial_code}
+              </li>
+            );
+          }}
           onChange={(e, value) => handleCountryCodeChange(e, value)}
           renderInput={(params) => (
             <TextField
@@ -87,7 +80,7 @@ export const PhoneNumberTextField = (props: IProps) => {
             />
           )}
           sx={{
-            width: "115px",
+            width: "130px",
             borderTopRightRadius: "0 !important",
             "& .MuiInputBase-sizeSmall": {
               borderBottomRightRadius: 0,
