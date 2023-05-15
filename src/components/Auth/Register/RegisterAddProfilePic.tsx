@@ -21,13 +21,13 @@ export default function RegisterAddProfilePic(): JSX.Element {
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
 
   const uploadProfilePicture = () => {
-    let formData = new FormData();
+    let formData1 = new FormData();
     if (file) {
       console.log(file, "file");
-      formData.append("profilePic", file, file.name);
-      console.log(formData.get("profilePic"));
+      formData1.append("profilePic", file);
+      console.log(formData1.get("profilePic"));
       const payload = {
-        body: formData,
+        body: formData1,
         success: (res: any) => {
           history.push("/dashboard");
         },

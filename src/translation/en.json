@@ -40,7 +40,7 @@
     "password_reset_failed":"Password reset failed",
     "email_already_taken":"Email already taken",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
-    "account_not_found":"Account associated with this email address not found !",
+    "account_not_found":"Account associated with this phone number not found!",
     "name_should_have":"Name must start with  a letter",
     "back_to":"Back to",
     "didnot_receive_code":"Didn't receive code?",

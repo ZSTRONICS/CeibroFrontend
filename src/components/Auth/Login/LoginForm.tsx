@@ -54,7 +54,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
@@ -107,13 +107,13 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-    console.log("login");
     dispatch(loginRequest(payload));
   };
 
   const checkValidInputs = (values: any) => {
-    const { email, password } = values;
-    if (email && email.length > 0 && password && password.length > 0) {
+    const { phoneNumber, password } = values;
+    // console.log('phoneNumber', phoneNumber)
+    if (phoneNumber && phoneNumber.length > 3 && password && password.length > 2) {
       return false;
     }
     return true;
@@ -144,7 +144,7 @@ const LoginForm: React.FC<Props> = (props) => {
             phoneNumber: "",
             password: "",
           }}
-          // validationSchema={signinSchema}
+          validationSchema={signinSchema}
           onSubmit={handleSubmit}
         >
           {({
@@ -157,11 +157,11 @@ const LoginForm: React.FC<Props> = (props) => {
           }) => (
             <form
               onSubmit={handleSubmit}
-              // onKeyDown={(e) => {
-              //   if (e.key === "Enter") {
-              //     handleSubmit();
-              //   }
-              // }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSubmit();
+                }
+              }}
             >
               {showError && (
                 <Alert severity="error">{t("auth.link_expired")}</Alert>
@@ -277,10 +277,11 @@ const LoginForm: React.FC<Props> = (props) => {
               <div className={classes.actionWrapper}>
                 <Button
                   type="submit"
+
                   className={classes.loginButton}
                   variant="contained"
                   sx={{ width: "100%", backgroundColor:"#0076C8" }}
-                  // disabled={checkValidInputs(values) || showLoading}
+                   disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />

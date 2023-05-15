@@ -12,12 +12,22 @@ export const SigninSchemaValidation = (t: TFunction) => {
     password: yup
       .string()
       .required(`${t("auth.plz_Enter_pass")}`)
-      .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
-        `${t("auth.pass_must_Contain")}`
-      ),
+      // .matches(
+      //   /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
+      //   `${t("auth.pass_must_Contain")}`
+      // ),
   });
   return signinSchema;
+};
+
+export const RegisterNumberSchema = (t: TFunction) => {
+  const phoneNumberSchema = yup.object().shape({
+    phoneNumber: yup
+      .string()
+      .matches(phRegex, "Invalid phone number")
+      .required("Phone number is required"),
+  });
+  return phoneNumberSchema;
 };
 
 export const forgotPasswordSchemaValidation = (t: TFunction) => {
@@ -29,6 +39,8 @@ export const forgotPasswordSchemaValidation = (t: TFunction) => {
   });
   return forgotPasswordSchema;
 };
+
+
 export const resetPasswordSchemaValidation = (t: TFunction) => {
   const resetPasswordSchema = yup.object().shape({
     password: yup

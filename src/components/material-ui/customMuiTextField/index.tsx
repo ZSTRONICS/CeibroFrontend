@@ -25,7 +25,6 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
       return (
         <PasswordTextField
           name={props.name}
-          
           label={props.label}
           password={props.password as string}
           placeholder={props.placeholder}

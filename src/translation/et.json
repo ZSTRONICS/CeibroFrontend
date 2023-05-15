@@ -41,7 +41,7 @@
     "email_already_taken":"Meil on juba võetud",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
     "name_should_have":"Nimi peab algama tähega ja see sisaldab ainult tähti ja numbreid",
-    "account_not_found":"Selle e-posti aadressiga seotud kontot ei leitud!",
+    "account_not_found":"Selle telefoninumbriga seotud kontot ei leitud!",
 
     "forgot_pass": {
       "verifying": "Kontrollimine",

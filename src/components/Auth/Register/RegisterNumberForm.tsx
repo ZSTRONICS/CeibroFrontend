@@ -11,6 +11,7 @@ import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
+import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 
 type FormValues = {
   dialCode: string;
@@ -23,6 +24,7 @@ export default function RegisterNumberForm() {
   const history = useHistory();
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const registerPhoneNumberSchema = RegisterNumberSchema(t);
   const formikRef = useRef<FormikProps<FormValues>>(null);
 
   const handleSubmit = (values: any, action: any) => {
@@ -91,7 +93,7 @@ export default function RegisterNumberForm() {
               dialCode: "+372",
               phoneNumber: "",
             }}
-            // validationSchema={registerSch}
+            validationSchema={registerPhoneNumberSchema}
             onSubmit={handleSubmit}
             innerRef={formikRef}
           >
@@ -125,9 +127,11 @@ export default function RegisterNumberForm() {
                 <div className={classes.actionWrapper}>
                   <Button
                     className={classes.loginButton}
+                    disabled={values.phoneNumber.length>0?false:true}
                     variant="contained"
                     color="primary"
                     type="submit"
+
                   >
                     Continue
                   </Button>
@@ -148,6 +152,3 @@ export default function RegisterNumberForm() {
   );
 }
 
-function dispatch(arg0: any) {
-  throw new Error("Function not implemented.");
-}
