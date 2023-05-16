@@ -29,7 +29,7 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        height: '80%'
+        marginTop:'8%'
     },
     message: {
         color: colors.lightBlack

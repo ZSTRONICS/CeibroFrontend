@@ -7,7 +7,7 @@ interface IProps{
     imgSrc:string
     removeImg:()=>void
 }
-function ProfileView(props: IProps) {
+function ProfilePicView(props: IProps) {
  
   return (
     <Card sx={{ maxWidth: 345,  margin:'10px auto' }}>
@@ -32,4 +32,4 @@ function ProfileView(props: IProps) {
 );
 }
 
-export default ProfileView
+export default ProfilePicView

@@ -103,6 +103,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         sx={{
           padding: "4px 10px",
           textTransform: "capitalize",
+          border:'1px solid #0076C8'
           // "@media(max-width:960px)": {
           //   marginTop: "10px",
           // },
@@ -132,8 +133,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
               label="Close"
               variant="outlined"
               sx={{ padding: "1px 10px" }}
-              onClick={handleToggle}
-            />
+              onClick={handleToggle}            />
           </div>
         </DialogTitle>
 

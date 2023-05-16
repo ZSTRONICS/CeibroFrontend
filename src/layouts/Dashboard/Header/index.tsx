@@ -9,7 +9,7 @@ import {
   Typography,
   IconButton,
 } from "@mui/material";
-import ProfileView from "components/Topbar/ProfileView";
+import UserMenu from "components/Topbar/UserMenu";
 import Notification from "components/Notification/Notification";
 import Title from "components/Topbar/Title";
 import assets from "assets/assets";
@@ -17,6 +17,7 @@ import { RootState } from "redux/reducers";
 import { useSelector } from "react-redux";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { AddStatusTag } from "components/CustomTags";
+import NameAvatar from "components/Utills/Others/NameAvatar";
 
 const NAV_WIDTH = 200;
 
@@ -48,6 +49,7 @@ Header.propTypes = {
 interface Props {
   onOpenNav: () => void;
 }
+
 export default function Header({ onOpenNav }: Props) {
   const { user } = useSelector((store: RootState) => store.auth);
 
@@ -77,7 +79,12 @@ export default function Header({ onOpenNav }: Props) {
           }}
         >
           <ConnectionIcon/>
-          <ProfileView />
+          <NameAvatar
+              firstName={user?.firstName}
+              surName={user?.surName}
+              url={user?.profilePic}
+              variant="rounded"
+            />
           <Stack
             direction="column"
             justifyContent="flex-end"
@@ -89,10 +96,8 @@ export default function Header({ onOpenNav }: Props) {
           >
             <AddStatusTag sx={{color:'#131516'}}>{user?.firstName}</AddStatusTag>
             <AddStatusTag sx={{color:'#131516'}}>{user?.surName} </AddStatusTag>
-            {/* <Typography>{user?.firstName}</Typography>
-            <Typography>{user?.surName} </Typography> */}
           </Stack>
-          <assets.KeyboardArrowDownIcon/>
+          <UserMenu/>
           {/* <Notification value={""} /> */}
         </Stack>
       </StyledToolbar>

@@ -2,7 +2,7 @@ import { CircularProgress, makeStyles, Typography } from "@material-ui/core";
 import { Divider, Grid, Tooltip } from "@mui/material";
 import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
-import { ProjectSubHeadingTag, SubLabelTag } from "components/CustomTags";
+import { SubHeadingTag, SubLabelTag } from "components/CustomTags";
 import {
   CustomBadge,
   CustomStack,
@@ -152,7 +152,7 @@ const RolesTable = () => {
               <div className={classes.roleChip} key={role._id}>
                 <div className={classes.roleInner}>
                   <CustomStack>
-                    <ProjectSubHeadingTag sx={{textTransform: 'capitalize'}}>{role.name}</ProjectSubHeadingTag>
+                    <SubHeadingTag sx={{textTransform: 'capitalize'}}>{role.name}</SubHeadingTag>
                     {role.members.length > 0 ? (
                       <CustomBadge
                         showZero={true}
@@ -169,14 +169,14 @@ const RolesTable = () => {
                     )}
                   </CustomStack>
                   {role.admin === true && (
-                    <ProjectSubHeadingTag
+                    <SubHeadingTag
                       sx={{
                         fontWeight: "500",
                         fontSize: 14,
                       }}
                     >
                       Project admin
-                    </ProjectSubHeadingTag>
+                    </SubHeadingTag>
                   )}
                   {role.admin !== true && (
                     <Grid container gap={3}>
@@ -194,9 +194,9 @@ const RolesTable = () => {
                                   />
                                 }
                               >
-                                <ProjectSubHeadingTag>
+                                <SubHeadingTag>
                                   Role &nbsp;
-                                </ProjectSubHeadingTag>
+                                </SubHeadingTag>
                                 {rolePermission.create === true && (
                                   <SubLabelTag>Create</SubLabelTag>
                                 )}
@@ -224,9 +224,9 @@ const RolesTable = () => {
                                 />
                               }
                             >
-                              <ProjectSubHeadingTag>
+                              <SubHeadingTag>
                                 Member &nbsp;
-                              </ProjectSubHeadingTag>
+                              </SubHeadingTag>
                               {memberPermission.create === true && (
                                 <SubLabelTag>Create</SubLabelTag>
                               )}

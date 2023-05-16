@@ -29,7 +29,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
         const payload = {
           body: formData,
           success: (res: any) => {
-            history.push("/dashboard");
+            history.push("/tasks");
             console.log('Image uploaded successfully!');
           },
           onFailAction: (err: any) => {

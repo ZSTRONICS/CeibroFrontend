@@ -56,7 +56,7 @@ const Login: React.FC<LoginInterface> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/dashboard");
+      history.push("/tasks");
     }
     LoginData();
   }, [isLoggedIn]);

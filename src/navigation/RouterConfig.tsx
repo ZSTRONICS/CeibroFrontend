@@ -45,9 +45,9 @@ const RouterConfig: React.FC<Configs> = () => {
             <PrivateRoute path="/profile" component={Profile} />
             <PrivateRoute path="/projects" component={Projects} />
             <PrivateRoute path="/tasks" component={Tasks} />
-            {/* <Route path="/chat" component={Chat} /> */}
             <PrivateRoute path="/connections" component={Connections} />
-            <PrivateRoute path="/dashboard" component={Dashboard} />
+            {/* <Route path="/chat" component={Chat} /> */}
+            {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
             <PrivateRoute path="/admin" component={AdminMain} />
           </DashboardLayout>
         </Switch>

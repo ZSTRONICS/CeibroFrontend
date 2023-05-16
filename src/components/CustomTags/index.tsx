@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 export const Heading = styled(Typography)(
@@ -72,7 +72,7 @@ font-size: 14px;
 font-weight: 500;
 color:#ADB5BD;
 `
-export const ProjectSubHeadingTag=styled(Typography)`
+export const SubHeadingTag=styled(Typography)`
 font-family: 'Inter';
 font-style: normal;
 font-size: 14px;
@@ -136,3 +136,7 @@ font-size: 12px;
 font-weight: 500;
 color:#7D7E80;
 `
+export const CustomStack = styled(Stack)`
+  flex-direction: row;
+  align-items: center;
+`;

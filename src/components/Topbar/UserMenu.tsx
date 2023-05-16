@@ -38,7 +38,7 @@ import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIco
 import { MyConnectionsIcon } from "components/material-ui/icons/myConnections/MyConnectionsIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
-const ProfileView = () => {
+const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -78,19 +78,14 @@ const ProfileView = () => {
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="user info">
+        <Tooltip title="user menu">
           <IconButton
             onClick={handleOpenUserMenu}
             disableRipple
             disableFocusRipple
             sx={{ p: 0.2 }}
           >
-            <NameAvatar
-              firstName={user?.firstName}
-              surName={user?.surName}
-              url={user?.profilePic}
-              variant="rounded"
-            />
+            <assets.KeyboardArrowDownIcon/>
           </IconButton>
         </Tooltip>
         <Menu
@@ -224,4 +219,4 @@ const ProfileView = () => {
   );
 };
 
-export default ProfileView;
+export default UserMenu;

@@ -29,7 +29,7 @@ const SidebarConfig: SidebarConfigInterface = {
   //   notification: 0,
   // },
   Tasks: {
-    title: "Tasks",
+    title: "My Tasks",
     // icon: <AssignmentIndOutlined className="sideBar_icon"/>,
     icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
     <path d="M11.8888 2.48758H14.6666V15.8209C14.6666 16.4346 14.1691 16.932 13.5555 16.932H2.44436C1.83071 16.932 1.33325 16.4346 1.33325 15.8209V2.48758H4.11103M4.66659 1.37646H11.3333V3.59869C11.3333 4.21234 10.8358 4.7098 10.2221 4.7098H5.7777C5.16405 4.7098 4.66659 4.21234 4.66659 3.59869V1.37646Z" stroke="#131516"/>

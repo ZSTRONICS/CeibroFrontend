@@ -110,10 +110,11 @@ export const useStyles = makeStyles((theme: Theme) =>
       margin: "45px 0px 15px 0px",
       "@media (max-width:899px)": {
         margin: "0",
-        background: `url(${assets.mobileVisual})`,
+        background: `url(${assets.visual})`,
         height: "calc( 100vh - 291px)",
         backgroundSize: "100% 100%",
         backgroundRepeat: "no-repeat",
+        borderRadius:'10px',
       },
       // "& .MuiTypography-root": {
       //   fontWeight: "500",
@@ -140,7 +141,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     contentContainer: {
-      padding:'0 0 6px 0',
+      padding:'0px 10px 6px 8px',
       "@media (max-width:899px)": {
         margin: "0 10px",
         position: "absolute",

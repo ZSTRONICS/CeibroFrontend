@@ -29,7 +29,7 @@ const Task = () => {
   return (
     <>
       <Grid item xs={12}>
-        <TabsUnstyled defaultValue={0}>
+        {/* <TabsUnstyled defaultValue={0}>
           <TabsList>
             <Tab>Task</Tab>
             <Tab>Subtasks</Tab>
@@ -40,7 +40,7 @@ const Task = () => {
           <TabPanel value={1}>
             <SubTaskMain />
           </TabPanel>
-        </TabsUnstyled>
+        </TabsUnstyled> */}
       </Grid>
     </>
   );
