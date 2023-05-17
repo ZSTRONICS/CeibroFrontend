@@ -49,6 +49,7 @@
     "seconds_left":"seconds left",
     "confirm":"Confirm",
     "chnage_password":"change password",
+    "change_number":"Change number",
 
     "forgot_pass": {
       "verifying": "Verifying",

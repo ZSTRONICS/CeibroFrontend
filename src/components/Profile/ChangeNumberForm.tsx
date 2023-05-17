@@ -22,7 +22,7 @@ import Alert from "@mui/material/Alert";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  chnageNumber,
+  changeNumber,
   loginRequest,
   verifyEmail,
 } from "redux/action/auth.action";
@@ -41,11 +41,13 @@ import Loading from "components/Utills/Loader/Loading";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { DocumentNameTag } from "components/CustomTags";
 import { handlePhoneChange } from "utills/formFunctions";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface Props {
-  tokenLoading: boolean;
-  showSuccess: boolean;
-  showError: boolean;
+  //   tokenLoading: boolean;
+  //   showSuccess: boolean;
+  //   showError: boolean;
+  closeDialog: (text?: string) => void;
 }
 
 interface IInputValues {
@@ -55,11 +57,12 @@ interface IInputValues {
 }
 
 const ChangeNumberForm: React.FC<Props> = (props) => {
-  const { tokenLoading, showSuccess, showError } = props;
+  //   const { tokenLoading, showSuccess, showError } = props;
+  let user: UserInterface = useSelector((state: RootState) => state.auth.user);
   const classes = useStyles();
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
-  const [checked, setChecked] = useState(false);
+  const [numnberConfirmation, setNumnberConfirmation] = useState(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
@@ -79,9 +82,13 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
     const { phoneNumber, password, dialCode } = values;
     const payload = {
       body: {
-        phoneNumber: `${dialCode}${phoneNumber}`,
+        newNumber: `${dialCode}${phoneNumber}`,
         countryCode: dialCode,
         password,
+      },
+      success: (res: any) => {
+        props.closeDialog(`${dialCode}${phoneNumber}`);
+        // action?.resetForm?.();
       },
       onFailAction: (err: any) => {
         setShowLoading(false);
@@ -109,7 +116,8 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
           setLockError(true);
         } else {
           // removed stored state
-          purgeStoreStates();
+          props.closeDialog(`${dialCode}${phoneNumber}`);
+          //   purgeStoreStates();
         }
 
         setTimeout(() => {
@@ -122,7 +130,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-    dispatch(chnageNumber(payload));
+    dispatch(changeNumber(payload));
   };
 
   const checkValidInputs = (values: any) => {
@@ -144,8 +152,8 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       <Box>
         <Formik
           initialValues={{
-            dialCode: "+372",
-            phoneNumber: "",
+            dialCode: user?.countryCode,
+            phoneNumber: user?.phoneNumber.slice(user?.countryCode.length),
             password: "",
           }}
           validationSchema={signinSchema}
@@ -168,9 +176,9 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {showError && (
+              {/* {showError && (
                 <Alert severity="error">{t("auth.link_expired")}</Alert>
-              )}
+              )} */}
 
               {incorrectPhoneOrPass && (
                 <Alert style={{ margin: "2px 0" }} severity="error">
@@ -196,13 +204,13 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                 </Alert>
               )}
 
-              {(showSuccess || tokenLoading) && (
+              {/* {(showSuccess || tokenLoading) && (
                 <Alert severity="success">
                   {tokenLoading
                     ? `${t("auth.successAlerts.verifying_email")}`
                     : `${t("auth.successAlerts.email_verified")}`}
                 </Alert>
-              )}
+              )} */}
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   typeName="phone-number"
@@ -250,7 +258,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                   {showLoading ? (
                     <Loading type="spin" color="white" height={14} width={14} />
                   ) : (
-                    t("auth.login")
+                    t("auth.change_number")
                   )}
                 </Button>
               </div>

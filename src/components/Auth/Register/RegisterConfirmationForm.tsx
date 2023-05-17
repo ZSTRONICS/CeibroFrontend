@@ -25,15 +25,15 @@ export default function RegisterConfirmationForm() {
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [counter, setCounter] = useState(60);
+  let timer: false | NodeJS.Timer;
 
   useEffect(() => {
-    const timer = startCountdown();
+    timer = startCountdown();
     return () => clearInterval(timer);
-  }, [counter]);
+  }, []);
 
   function startCountdown() {
-    const timer =
-      counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+    timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
 
     setTimeout(() => {
       timer && clearInterval(timer); // stop the countdown after 60 seconds

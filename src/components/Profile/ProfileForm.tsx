@@ -32,6 +32,8 @@ import { useTranslation } from "react-i18next";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import CustomModal from "components/Modal";
 import ChangePasswordForm from "./ChangePasswordForm";
+import ChangeNumberForm from "./ChangeNumberForm";
+import NumberConfirmationForm from "./NumberConfirmationForm";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -46,11 +48,11 @@ const ProfileForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalChildren, setModalChildren] = useState<JSX.Element | null>(null);
   const [modalTitle, setModalTitle] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
   const handleSubmit = (values: any) => {
     setLoading(true);
     const { firstName, surName, email, companyName, jobTitle } = values;
-
     const payload = {
       body: {
         firstName,
@@ -85,12 +87,20 @@ const ProfileForm = () => {
     },
   });
 
-  const closeDialog = () => {
-    setIsOpen(false);
-    toast.success("Changed password successfully");
+  const closeDialog = (number?: string) => {
+    if (number && number != "") {
+      setNewNumber(number);
+      setModalTitle("Confirmation number");
+      setModalChildren(
+        <NumberConfirmationForm closeDialog={closeDialog} newNumber={number} />
+      );
+    } else {
+      setIsOpen(false);
+      toast.success(`${modalTitle} successfully`);
+    }
   };
 
-  const handleModal = (type: string) => {
+  const handleModal = (type: "change-password" | "change-number") => {
     setIsOpen(true);
     switch (type) {
       case "change-password":
@@ -99,6 +109,7 @@ const ProfileForm = () => {
         break;
       case "change-number":
         setModalTitle("Change number");
+        setModalChildren(<ChangeNumberForm closeDialog={closeDialog} />);
         break;
     }
   };

@@ -1,32 +1,31 @@
-
 export interface UserAllContacts {
-  contacts: Contact[]
+  contacts: Contact[];
 }
 
 export interface Contact {
-  _id: string
-  userCeibroData?: UserCeibroData
-  isCeiborUser: boolean
-  contactFirstName: string
-  contactSurName: string
-  contactFullName: string
-  phoneNumber: string
-  countryCode: string
-  isBlocked: boolean
-  isSilent: boolean
-  createdAt: string
-  updatedAt: string
+  _id: string;
+  userCeibroData?: UserCeibroData;
+  isCeiborUser: boolean;
+  contactFirstName: string;
+  contactSurName: string;
+  contactFullName: string;
+  phoneNumber: string;
+  countryCode: string;
+  isBlocked: boolean;
+  isSilent: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserCeibroData {
-  _id: string
-  profilePic: string
-  phoneNumber: string
-  companyName: string
-  jobTitle: string
-  email: string
-  firstName: string
-  surName: string
+  _id: string;
+  profilePic: string;
+  phoneNumber: string;
+  companyName: string;
+  jobTitle: string;
+  email: string;
+  firstName: string;
+  surName: string;
 }
 
 export interface UserInterface {

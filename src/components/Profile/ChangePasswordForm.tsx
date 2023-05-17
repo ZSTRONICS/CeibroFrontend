@@ -28,7 +28,7 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 
 interface IProps {
-  closeDialog: () => void;
+  closeDialog: (text?: string) => void;
 }
 
 const ChangePasswordForm = (props: IProps) => {
