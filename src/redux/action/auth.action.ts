@@ -15,13 +15,15 @@ import {
   REGISTER_PROFILE_SETUP,
   UPDATE_PROFILE_PICTURE,
   AUTH_CONFIG,
+  USER_CHANGE_PASSWORD,
+  USER_CHANGE_NUMBER,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
 
 export const authApiAction = {
   resendOtpRequest: createAction(AUTH_CONFIG.RESEND_OTP),
-}
+};
 export const registerRequest = createAction(REGISTER);
 export const registerConfirmationRequest = createAction(REGISTER_CONFIRMATION);
 export const registerSetupProfile = createAction(REGISTER_PROFILE_SETUP);
@@ -39,3 +41,5 @@ export const otpVerify = createAction(OTP_VERIFY);
 export const forgetPassword = createAction(FORGET_PASSWORD);
 export const resetPassword = createAction(RESET_PASSWORD);
 export const verifyEmail = createAction(SEND_VERIFY_EMAIL);
+export const changePassword = createAction(USER_CHANGE_PASSWORD);
+export const chnageNumber = createAction(USER_CHANGE_NUMBER);

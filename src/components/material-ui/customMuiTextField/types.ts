@@ -26,12 +26,13 @@ interface Common {
     (e: React.FocusEvent<any, Element>): void;
     <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
   };
+  disabled?: boolean;
 }
 
 export interface IPhoneNumberProps extends Common {
   typeName: "phone-number";
   inputValue: IPhoneNumber;
-  readOnly?:boolean;
+  readOnly?: boolean;
 }
 
 export interface IPasswordProps extends Common {

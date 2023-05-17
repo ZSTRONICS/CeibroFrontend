@@ -47,6 +47,8 @@
     "send_again":"Send again",
     "phoneNumber":"Phone number",
     "seconds_left":"seconds left",
+    "confirm":"Confirm",
+    "chnage_password":"change password",
 
     "forgot_pass": {
       "verifying": "Verifying",
@@ -67,7 +69,8 @@
       "work_email": "Work Email",
       "Not_valid_email": "Not a valid email",
       "currently_representing": "Currently Representing Company",
-      "email":"Email"
+      "email":"Email",
+      "job_title":"Job title"
     },
 
     "profile_form": {

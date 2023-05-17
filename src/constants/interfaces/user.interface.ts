@@ -30,25 +30,28 @@ export interface UserCeibroData {
 }
 
 export interface UserInterface {
-  firstName: string
-  surName: string
-  email: string
-  companyVat: string
-  companyLocation: string
-  workEmail: string
-  companyName: string
-  profilePic: string
-  phone: string
-  companyPhone: string
-  role: string
-  currentlyRepresenting: string
-  id: string
-  _id: string
-  createdAt:string
-  name?:string
-  regDate?:string
+  firstName: string;
+  surName: string;
+  email: string;
+  phoneNumber: string;
+  jobTitle: string;
+  countryCode: string;
+  companyVat: string;
+  companyLocation: string;
+  workEmail: string;
+  companyName: string;
+  profilePic: string;
+  phone: string;
+  companyPhone: string;
+  role: string;
+  currentlyRepresenting: string;
+  id: string;
+  _id: string;
+  createdAt: string;
+  name?: string;
+  regDate?: string;
 }
-export const userTemplate= {
+export const userTemplate = {
   firstName: "",
   surName: "",
   email: "",
@@ -56,6 +59,7 @@ export const userTemplate= {
   companyLocation: "",
   workEmail: "",
   companyName: "",
+  countryCode: "",
   profilePic: "",
   phone: "",
   companyPhone: "",
@@ -63,7 +67,7 @@ export const userTemplate= {
   currentlyRepresenting: "",
   id: "",
   _id: "",
-  createdAt:"",
-  name:"",
-  regDate:"",
-}
+  createdAt: "",
+  name: "",
+  regDate: "",
+};

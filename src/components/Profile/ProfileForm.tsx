@@ -30,6 +30,8 @@ import { toast } from "react-toastify";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import CustomModal from "components/Modal";
+import ChangePasswordForm from "./ChangePasswordForm";
 
 const ProfileForm = () => {
   const classes = useStyles();
@@ -39,52 +41,27 @@ const ProfileForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   let user: UserInterface = useSelector((state: RootState) => state.auth.user);
-  const isDiabled = !loading ? false : true;
+  const isDisabled = !loading ? false : true;
   const profileSchema = setValidationSchema(t);
-
-  // useEffect(() => {
-  //   dispatch(getMyProfile());
-  // }, []);
+  const [isOpen, setIsOpen] = useState(false);
+  const [modalChildren, setModalChildren] = useState<JSX.Element | null>(null);
+  const [modalTitle, setModalTitle] = useState("");
 
   const handleSubmit = (values: any) => {
     setLoading(true);
-    const {
-      firstName,
-      surName,
-      workEmail,
-      phone,
-      companyName,
-      companyPhone,
-      // password,
-      companyVat,
-      companyLocation,
-      // currentlyRepresenting,
-    } = values;
+    const { firstName, surName, email, companyName, jobTitle } = values;
 
     const payload = {
       body: {
         firstName,
         surName,
-        workEmail,
-        phone,
-        companyPhone,
-        // ...(password ? { password } : {}),
-        // password,
+        email,
         companyName,
-        companyVat,
-        companyLocation,
-        currentlyRepresenting: false,
+        jobTitle,
       },
       success: () => {
         toast.success("Profile updated successfully");
-        // action?.setFieldValue("password", "");
-        // action?.setFieldValue("confirmPassword", "");
-        // if (passRef.current) {
-        //   passRef.current.value = "";
-        // }
-        // if (confirmPassRef.current) {
-        //   confirmPassRef.current.value = "";
-        // }
+        setLoading(false);
       },
       finallyAction: () => {
         setLoading(false);
@@ -95,20 +72,12 @@ const ProfileForm = () => {
   const formik = useFormik({
     initialValues: {
       firstName: user?.firstName,
-      jobTitle:"",
-      phoneNumber:"",
-      dialCode: "+372",
       surName: user?.surName,
       email: user?.email,
-      workEmail: user?.workEmail,
-      password: "",
-      confirmPassword: "",
-      companyName: user?.companyName,
-      companyVat: user?.companyVat,
-      companyLocation: user?.companyLocation,
-      phone: user?.phone,
-      companyPhone: user?.companyPhone,
-      currentlyRepresenting: user?.currentlyRepresenting,
+      jobTitle: user.jobTitle,
+      phoneNumber: user?.phoneNumber.slice(user?.countryCode.length),
+      dialCode: user?.countryCode,
+      companyName: user.companyName,
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
@@ -116,78 +85,101 @@ const ProfileForm = () => {
     },
   });
 
+  const closeDialog = () => {
+    setIsOpen(false);
+    toast.success("Changed password successfully");
+  };
+
+  const handleModal = (type: string) => {
+    setIsOpen(true);
+    switch (type) {
+      case "change-password":
+        setModalTitle("Change password");
+        setModalChildren(<ChangePasswordForm closeDialog={closeDialog} />);
+        break;
+      case "change-number":
+        setModalTitle("Change number");
+        break;
+    }
+  };
+
   return (
-    <Grid container xs={12} md={6}>
-      <Grid item className={classes.mainContainer}>
-        <form onSubmit={formik.handleSubmit}>
-          <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
-            <Grid container>
-              <Grid item xs={12} md={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Name"
-                  variant="outlined"
-                  name="firstName"
-                  value={formik.values.firstName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                  helperText={formik.errors.firstName}
-                />
+    <>
+      <Grid container xs={12} md={6}>
+        <Grid item className={classes.mainContainer}>
+          <form onSubmit={formik.handleSubmit}>
+            <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
+              <Grid container>
+                <Grid item xs={12} md={12} className={classes.rowWrapper}>
+                  <TextField
+                    className={classes.inputBg}
+                    sx={{ background: "white" }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    size="small"
+                    id="outlined-basic"
+                    label="Name"
+                    variant="outlined"
+                    name="firstName"
+                    value={formik.values.firstName}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.firstName &&
+                      Boolean(formik.errors.firstName)
+                    }
+                    helperText={formik.errors.firstName}
+                  />
+                </Grid>
 
-              </Grid>
+                <Grid item xs={12} md={12} className={classes.rowWrapper}>
+                  <TextField
+                    className={classes.inputBg}
+                    sx={{ background: "white" }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    size="small"
+                    id="outlined-basic"
+                    label="Surname"
+                    variant="outlined"
+                    name="surName"
+                    value={formik.values.surName}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.surName && Boolean(formik.errors.surName)
+                    }
+                    helperText={formik.errors.surName}
+                  />
+                </Grid>
 
-              <Grid item xs={12} md={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Surname"
-                  variant="outlined"
-                  name="surName"
-                  value={formik.values.surName}
-                  onChange={formik.handleChange}
-                  error={formik.touched.surName && Boolean(formik.errors.surName)}
-                  helperText={formik.errors.surName}
-                />
-              </Grid>
+                <Grid item xs={12} className={classes.rowWrapper}>
+                  <TextField
+                    className={classes.inputBg}
+                    sx={{ background: "white" }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    size="small"
+                    id="outlined-basic"
+                    label="email"
+                    variant="outlined"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onFocus={(e: any) => {
+                      e.preventDefault();
+                      e.target.blur();
+                    }}
+                    error={formik.touched.email && Boolean(formik.errors.email)}
+                    helperText={formik.errors.email}
+                  />
+                </Grid>
 
-              <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="email"
-                  variant="outlined"
-                  name="email"
-                  value={formik.values.email}
-                  onChange={formik.handleChange}
-                  onFocus={(e: any) => {
-                    e.preventDefault();
-                    e.target.blur();
-                  }}
-                  error={formik.touched.email && Boolean(formik.errors.email)}
-                  helperText={formik.errors.email}
-                />
-              </Grid>
-
-              {/* <Grid item xs={12} className={classes.rowWrapper}>
+                {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -207,7 +199,7 @@ const ProfileForm = () => {
                 />
               </Grid> */}
 
-              {/* <Grid item xs={12}
+                {/* <Grid item xs={12}
                 className={`${classes.rowWrapper} ${classes.passwordRow}`}
               >
                 <TextField
@@ -247,7 +239,7 @@ const ProfileForm = () => {
                 />
               </Grid> */}
 
-              {/* <Grid item xs={12} className={classes.rowWrapper}>
+                {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   autoComplete="new-password"
                   className={classes.inputBg}
@@ -273,7 +265,7 @@ const ProfileForm = () => {
                 />
               </Grid> */}
 
-              {/* <Grid
+                {/* <Grid
                 item
                 xs={12}
                 className={classes.rowWrapper}
@@ -284,60 +276,94 @@ const ProfileForm = () => {
                   }}
                 />
               </Grid> */}
-              <Grid item xs={12} md={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Company"
-                  variant="outlined"
-                  name="companyName"
-                  value={formik.values.companyName}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.companyName &&
-                    Boolean(formik.errors.companyName)
-                  }
-                  helperText={formik.errors.companyName}
-                />
-              </Grid>
+                <Grid item xs={12} md={12} className={classes.rowWrapper}>
+                  <TextField
+                    className={classes.inputBg}
+                    sx={{ background: "white" }}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    fullWidth
+                    size="small"
+                    id="outlined-basic"
+                    label="Company"
+                    variant="outlined"
+                    name="companyName"
+                    value={formik.values.companyName}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.companyName &&
+                      Boolean(formik.errors.companyName)
+                    }
+                    helperText={formik.errors.companyName}
+                  />
+                </Grid>
 
-              <Grid item xs={12} md={12} className={classes.rowWrapper}>
-              <CustomMuiTextField
-                typeName="text-field"
-                  name="jobTitle"
-                  label="Job title"
-                  placeholder={t("auth.register.job_title")}
-                  inputValue={formik.values.jobTitle}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-                 {/* {errors.jobTitle && (
+                <Grid item xs={12} md={12} className={classes.rowWrapper}>
+                  <CustomMuiTextField
+                    typeName="text-field"
+                    name="jobTitle"
+                    label="Job title"
+                    placeholder={t("auth.register.job_title")}
+                    inputValue={formik.values.jobTitle}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  {/* {errors.jobTitle && (
                   <Typography className={`error-text ${classes.errorText}`}>
                     {errors.jobTitle && touched.jobTitle && errors.jobTitle}
                   </Typography>
                 )} */}
-              </Grid>
+                </Grid>
 
-              <Grid item xs={12} className={classes.rowWrapper}>
-              <CustomMuiTextField
-                typeName="phone-number"
-                  name="phoneNumber"
-                  inputValue={{
-                    phoneNumber: formik.values.phoneNumber,
-                    dialCode: formik.values.dialCode,
-                  }}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                />
-              </Grid>
+                <Grid container spacing={2} className={classes.rowWrapper}>
+                  <Grid item xs={12}>
+                    <CustomMuiTextField
+                      typeName="phone-number"
+                      name="phoneNumber"
+                      inputValue={{
+                        phoneNumber: formik.values.phoneNumber,
+                        dialCode: formik.values.dialCode,
+                      }}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
+                      disabled={true}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography
+                      style={{
+                        backgroundColor: "transparent",
+                        border: "none",
+                        cursor: "pointer",
+                        fontFamily: "Inter",
+                        fontSize: "14px",
+                        fontWeight: 500,
+                        color: "#0076C8",
+                        marginTop: "-20px",
+                      }}
+                      onClick={() => handleModal("change-number")}
+                    >
+                      Change phone number
+                    </Typography>
+                  </Grid>
+                </Grid>
 
-              {/* <Grid item xs={12} className={classes.rowWrapper}>
+                <div
+                  className={classes.rowWrapper}
+                  style={{ color: "#0076C8", textTransform: "capitalize" }}
+                >
+                  <Button
+                    variant="text"
+                    sx={{ border: "1px solid" }}
+                    size="medium"
+                    onClick={() => handleModal("change-password")}
+                  >
+                    Change Password
+                  </Button>
+                </div>
+
+                {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -360,7 +386,7 @@ const ProfileForm = () => {
                 />
               </Grid> */}
 
-              {/* <Grid item xs={12} className={classes.rowWrapper}>
+                {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
                   className={classes.inputBg}
                   sx={{background: "white"}}
@@ -382,61 +408,69 @@ const ProfileForm = () => {
                 />
               </Grid> */}
 
-              <Grid
-                item
-                xs={12}
-                className={`${classes.rowWrapper} ${classes.btnWrapper}`}
-                // sx={{
-                //   marginTop: "25px",
-                //   gap: "30px",
-                // }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="medium"
-                  type="submit"
-                  disabled={isDiabled}
-                  // disabled={!isValid}
+                <Grid
+                  item
+                  xs={12}
+                  className={`${classes.rowWrapper} ${classes.btnWrapper}`}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    gap: "30px",
+                    marginTop: "25px",
+                  }}
                 >
-                  <Typography sx={{ fontSize: 12, fontWeight: "600" }}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    disabled={isDisabled}
+                  >
                     Update
-                  </Typography>
-                  {isDiabled && loading && (
-                    <CircularProgress size={20} className={classes.progress} />
-                  )}
-                </Button>
-                <Button
-                  variant="text"
-                  // type="submit"
-                 sx={{color:'red', border:'1px solid'}}
-                  size="medium"
-                >
-                  <BiTrash className={classes.deleteIcon} /> Delete Account
-                </Button>
+                    {isDisabled && loading && (
+                      <CircularProgress
+                        size={20}
+                        className={classes.progress}
+                      />
+                    )}
+                  </Button>
+                  <Button
+                    variant="text"
+                    sx={{ color: "red", border: "1px solid" }}
+                    size="medium"
+                  >
+                    <BiTrash className={classes.deleteIcon} /> Delete Account
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </form>
+          </form>
+        </Grid>
       </Grid>
-    </Grid>
+      <CustomModal
+        isOpen={isOpen}
+        handleClose={function (e: any): void {
+          setIsOpen(false);
+        }}
+        title={modalTitle}
+        children={modalChildren}
+        showCloseBtn={true}
+      />
+    </>
   );
 };
 export default ProfileForm;
 
 const useStyles = makeStyles({
   inputBg: {
-    '& .MuiInputBase-input-MuiOutlinedInput-input':{
-       
+    "& .MuiInputBase-input-MuiOutlinedInput-input": {},
+    "& .MuiFormHelperText-root": {
+      background: "#f5f7f8",
+      color: "red",
+      margin: 0,
+      pl: 1.4,
+      pt: 0.4,
     },
-    '& .MuiFormHelperText-root':{
-      background:'#f5f7f8',
-      color:'red',
-      margin:0,
-      pl:1.4,
-      pt:0.4
-    },
-   
   },
   mainContainer: {
     // paddingTop: "10px",

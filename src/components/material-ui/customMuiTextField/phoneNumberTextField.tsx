@@ -11,7 +11,7 @@ import dialCode from "./dialCode.json";
 import { IPhoneNumber, ICountryData, IPhoneNumberProps } from "./types";
 
 export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
-  const { name, inputValue, onChange, onBlur, readOnly } = props;
+  const { name, inputValue, onChange, onBlur, readOnly, disabled } = props;
   const [country, setCountry] = useState<ICountryData>(
     dialCode.find((item) => item.dial_code === inputValue.dialCode)!
   );
@@ -32,7 +32,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
 
   return (
     <OutlinedInput
-      readOnly={readOnly}
+      disabled={disabled}
       name={name}
       size="small"
       placeholder="Phone number"
@@ -51,6 +51,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
       startAdornment={
         <Autocomplete
           id="dialCode"
+          disabled={disabled}
           disableClearable
           options={dialCode}
           size="small"

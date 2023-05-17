@@ -14,6 +14,8 @@ import {
   REGISTER_PROFILE_SETUP,
   UPDATE_MY_PROFILE,
   UPDATE_PROFILE_PICTURE,
+  USER_CHANGE_NUMBER,
+  USER_CHANGE_PASSWORD,
 } from "../../config/auth.config";
 import {
   requestFail,

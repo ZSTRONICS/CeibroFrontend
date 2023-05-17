@@ -14,6 +14,9 @@ import {
   VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
   AUTH_CONFIG,
+  UPDATE_MY_PROFILE,
+  USER_CHANGE_PASSWORD,
+  USER_CHANGE_NUMBER,
 } from "../../config/auth.config";
 import apiCall from "../../utills/apiCall";
 import { ActionInterface } from "../reducers";
@@ -105,11 +108,32 @@ const updateProfilePicture = apiCall({
   path: "/users/profile/pic",
 });
 
+const updateMyProfile = apiCall({
+  useV2Route: true,
+  type: UPDATE_MY_PROFILE,
+  method: "patch",
+  path: "/users/profile",
+});
+
 const forgetPassword = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: FORGET_PASSWORD,
   method: "post",
   path: `/auth/forgot-password`,
+});
+
+const changePassword = apiCall({
+  useV2Route: true,
+  type: USER_CHANGE_PASSWORD,
+  method: "post",
+  path: `/users/change-password`,
+});
+
+const changeNumber = apiCall({
+  useV2Route: true,
+  type: USER_CHANGE_NUMBER,
+  method: "post",
+  path: `/users/change-number`,
 });
 
 const resetPassword = apiCall({
@@ -130,7 +154,10 @@ function* projectSaga() {
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
   yield takeLatest(UPDATE_PROFILE_PICTURE, updateProfilePicture);
+  yield takeLatest(UPDATE_MY_PROFILE, updateMyProfile);
   yield takeLatest(OTP_VERIFY, otpVerify);
+  yield takeLatest(USER_CHANGE_PASSWORD, changePassword);
+  yield takeLatest(USER_CHANGE_NUMBER, changeNumber);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
   yield takeLatest(RESET_PASSWORD, resetPassword);
 }

@@ -27,6 +27,7 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
           inputValue={props.inputValue as IPhoneNumber}
           onBlur={props.onBlur}
           typeName={"phone-number"}
+          disabled={props.disabled}
         />
       );
     case "password":
