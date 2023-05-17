@@ -21,22 +21,19 @@ import { useTranslation } from "react-i18next";
 //formik
 import { Formik } from "formik";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
-import { Grid, SelectChangeEvent, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import useStyles from "./RegisterStyles";
 
 const RegisterForm = () => {
   const classes = useStyles();
-  const { registerLoading } = useSelector((state: RootState) => state.auth);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
-  const [showPassword, setShowPassword] = useState(false);
-  const [confirmPass, setConfirmPass] = useState(false);
   const registerSch = setValidationSchema(t);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-
+  const [errorMessage, setErrorMessage]=useState<string>("")
   const handleSubmit = (values: any, action: any) => {
     const {
       firstName,
@@ -56,6 +53,7 @@ const RegisterForm = () => {
         surName,
         jobTitle,
         companyName,
+        dialCode,
       },
       success: (res: any) => {
         history.push("/profile-pic");
@@ -64,6 +62,7 @@ const RegisterForm = () => {
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
           setIncorrectAuth(true);
+          setErrorMessage(err.response.data.message)
         }
       },
       other: `${dialCode}${phoneNumber}`,
@@ -73,6 +72,16 @@ const RegisterForm = () => {
       setIncorrectAuth(false);
     }, 5000);
   };
+  const checkValidInputs = (values: {
+    email: string;
+    firstName: string;
+    surName: string;
+    password: string;
+  }): boolean => {
+    const { email, firstName, surName, password } = values;
+    return !(password && password.length > 0 && email && firstName && surName);
+  };
+
   return (
     <div className={`form-container  hide-scrollbar`}>
       <div className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}>
@@ -102,7 +111,7 @@ const RegisterForm = () => {
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               {incorrectAuth && (
-                <Alert severity="error">{t("auth.email_already_taken")}</Alert>
+                <Alert severity="error">{errorMessage}</Alert>
               )}
               <CBox mb={3.1}>
                 <CustomMuiTextField
@@ -191,7 +200,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={3.1}>
                 <CustomMuiTextField
-                  readOnly={true}
+                  disabled={true}
                   typeName="phone-number"
                   name="phoneNumber"
                   inputValue={{
@@ -261,8 +270,10 @@ const RegisterForm = () => {
                       borderColor: "#000",
                       color: "#fff",
                       textTransform: "capitalize !important",
+                      backgroundColor: "#0076C8"
                     }}
                     type="submit"
+                    disabled={checkValidInputs(values)}
                   >
                     Continue
                   </Button>

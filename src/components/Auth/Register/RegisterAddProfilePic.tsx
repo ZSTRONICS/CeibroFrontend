@@ -10,27 +10,21 @@ import useResponsive from "hooks/useResponsive";
 import { useDispatch } from "react-redux";
 import { UpdateProfilePicture } from "redux/action/auth.action";
 
-const fileTypes: string[] = ["JPEG", "PNG", "GIF", "JPG"];
-
 export default function RegisterAddProfilePic(): JSX.Element {
   const [file, setFile] = useState<string | Blob>("");
   const dispatch = useDispatch();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
 
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-
   const uploadImage = async () => {
     try {
       const formData = new FormData();
       if(file){
         formData.append('profilePic', file);
-        console.log(formData.get("profilePic"));
         const payload = {
           body: formData,
           success: (res: any) => {
             history.push("/tasks");
-            console.log('Image uploaded successfully!');
           },
           onFailAction: (err: any) => {
             if (err) {

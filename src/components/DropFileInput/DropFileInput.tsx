@@ -12,17 +12,23 @@ interface IProps {
 const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
   const wrapperRef = React.useRef<HTMLDivElement>(null);
   const [url, setUrl] = useState<string>("");
+  const [isDragging, setIsDragging] = useState(false);
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsDragging(false);
     setUrl(URL.createObjectURL(e.dataTransfer.files[0]));
     setFile(e.dataTransfer.files[0]);
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
+    setIsDragging(true);
   };
 
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
   const onUploadFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
       setUrl(URL.createObjectURL(e.target.files[0]));
@@ -33,20 +39,22 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
     setUrl("");
     deleteFile();
   };
+
   return (
-    <div style={{margin:'0'}}>
+    <div style={{margin:'0', }} >
       {url === "" ? (
         <label htmlFor="btn-upload">
           <CustomBox
             sx={{
               "&.MuiBox-root": {
-                backgroundColor: "white",
+                backgroundColor: `${isDragging?"#efefef":"white"}`,
               },
             }}
           >
             <Box
               onDrop={handleDrop}
               onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
               className="file-upload-box"
               display="flex"
               justifyContent="center"

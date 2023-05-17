@@ -401,8 +401,7 @@ label.dragArea{
 }
 .logoTitleWrapper{
   /* height: 100vh; */
-  margin: 0px auto;
-  padding: 0 3rem;
+  margin: 0 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -496,6 +495,7 @@ label.dragArea{
 @media (max-width:899px){
   .logoTitleWrapper{
     padding: 0;
+    margin: 0;
   }
 }
 /* *{

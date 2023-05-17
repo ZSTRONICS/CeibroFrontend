@@ -24,7 +24,7 @@
     "reset_password": "Reset Password",
     "password_reset_successfully": "Password Reset Successfully",
     "plz_Enter_pass": "Please enter your password",
-    "pass_must_Contain": "Password must contain at least 8 characters, one special character and one number",
+    "pass_must_Contain": "Password must be a minimum of 8 characters long and include a combination of uppercase and lowercase letters, numbers and special characters for increased security.",
     "plz_confirm_pass": "Please confirm your password",
     "confirm_password": "Confirm Password",
     "pass_not_match": "Passwords don't match",
@@ -33,10 +33,10 @@
     "tooLong": "Too Long!",
     "emailNotVerify": "Email not verified please check your inbox.",
     "email_verified": "email Verified",
-    "incorrect_email_password": "Incorrect email or password",
+    "incorrect_email_password": "Incorrect phone number or password",
     "check_your_email": "Please check your email",
     "loggedin_Successfully":"Logged in successfully",
-    "noUserFound_with_email":"No users found with this email",
+    "noUserFound_with_email":"No users found with this phone number",
     "password_reset_failed":"Password reset failed",
     "email_already_taken":"Email already taken",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
@@ -70,16 +70,17 @@
       "Not_valid_email": "Not a valid email",
       "currently_representing": "Currently Representing Company",
       "email":"Email",
-      "job_title":"Job title"
+      "job_title":"Job title",
+      "company_name": "Company Name (optional)"
     },
 
     "profile_form": {
       "phone": "Phone",
-      "company_name": "Company Name"
+      "company_name": "Company Name (optional)"
     },
 
     "errorAlerts": {
-      "incorrect_email_pass": "Incorrect email or password",
+      "incorrect_email_pass": "Incorrect phone number or password",
       "account_locked_message": "Account locked. Retry after # minutes"
     },
 

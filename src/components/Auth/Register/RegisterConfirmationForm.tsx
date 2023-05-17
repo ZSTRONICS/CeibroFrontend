@@ -66,7 +66,7 @@ export default function RegisterConfirmationForm() {
       setIncorrectAuth(false);
     }, 5000);
   };
-  const handleResend = (values: any) => {
+  const handleResend = () => {
     let phoneNumber = localStorage.getItem("phoneNumber");
     let dialCode = localStorage.getItem("dialCode");
     const payload = {
@@ -74,7 +74,8 @@ export default function RegisterConfirmationForm() {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
-        // action?.resetForm?.();
+        setCounter(60)
+        startCountdown()
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
@@ -87,7 +88,6 @@ export default function RegisterConfirmationForm() {
       setIncorrectAuth(false);
     }, 5000);
   };
-
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
@@ -135,11 +135,11 @@ export default function RegisterConfirmationForm() {
                   </Typography>
                 )}
               </CBox>
-              <div style={{ marginBottom: "24px" }}>
+              <div style={{ marginBottom: "26px" }}>
                 {counter > 0 ? (
                   <Typography>
                     {t("auth.didnot_receive_code")}{" "}
-                    <span className={classes.signup} style={{ color: "grey" }}>
+                    <span style={{ color: "grey" }}>
                       {`${counter} ${t("auth.seconds_left")}`}
                     </span>
                   </Typography>

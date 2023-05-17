@@ -69,15 +69,28 @@ const ProfileForm = () => {
     };
     dispatch(updateMyProfile(payload));
   };
+  // todo countryCode is missing in user object
+  const {
+    phoneNumber,
+    countryCode,
+    firstName,
+    surName,
+    email,
+    jobTitle,
+    companyName,
+  } = user ?? {};
+  
+  const userPhoneNumber = String(phoneNumber)?.slice(countryCode?.length);
+  // console.log('phoneNumber',  phoneNumber, countryCode?.length)
   const formik = useFormik({
     initialValues: {
-      firstName: user?.firstName,
-      surName: user?.surName,
-      email: user?.email,
-      jobTitle: user.jobTitle,
-      phoneNumber: user?.phoneNumber.slice(user?.countryCode.length),
-      dialCode: user?.countryCode,
-      companyName: user.companyName,
+      firstName: firstName ?? "",
+      surName: surName ?? "",
+      email: email ?? "",
+      jobTitle: jobTitle ?? "",
+      dialCode: countryCode ?? "",
+      phoneNumber: userPhoneNumber ?? "",
+      companyName: companyName ?? "",
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
@@ -109,7 +122,7 @@ const ProfileForm = () => {
         <Grid item className={classes.mainContainer}>
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
-              <Grid container>
+              <Grid item container>
                 <Grid item xs={12} md={12} className={classes.rowWrapper}>
                   <TextField
                     className={classes.inputBg}

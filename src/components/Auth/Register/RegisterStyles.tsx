@@ -36,7 +36,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       fontSize: 14,
       fontWeight: 500,
       position:'absolute',
-      bottom:'5%',
+      bottom:'6%',
       "@media (max-width:960px)": {
         textAlign:'center',
         position:'relative',
@@ -79,9 +79,10 @@ export const useStyles = makeStyles((theme: Theme) =>
     registerNumberForm: {
       display: "flex",
       flexDirection: "column",
-      marginTop: 20,
+      marginTop: 40,
       "@media (max-width:960px)": {
         padding: "0 3%",
+        marginTop: '2%',
       },
       "& .inputs": {
         marginTop: "0px !important",
@@ -141,9 +142,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     contentContainer: {
-      padding:'0px 10px 6px 8px',
+      padding:'0px 10px 6px 0px',
       "@media (max-width:899px)": {
         margin: "0 10px",
+        paddingLeft:'7px',
         position: "absolute",
         bottom: "2%",
         left: "2%",

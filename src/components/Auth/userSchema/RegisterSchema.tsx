@@ -5,7 +5,7 @@ export const setValidationSchema = (t: TFunction) => {
   const registerSchema = yup.object().shape({
     firstName: yup
       .string()
-      .min(2, `${t("auth.tooShort")}`)
+      .min(1, `${t("auth.tooShort")}`)
       .max(50, `${t("auth.tooLong")}`)
       .required(`${t("auth.required")}`),
       // .matches(
@@ -14,7 +14,7 @@ export const setValidationSchema = (t: TFunction) => {
       // ),
     surName: yup
       .string()
-      .min(2, `${t("auth.tooShort")}`)
+      .min(1, `${t("auth.tooShort")}`)
       .max(50, `${t("auth.tooLong")}`)
       .required(`${t("auth.required")}`),
       jobTitle: yup
@@ -29,12 +29,13 @@ export const setValidationSchema = (t: TFunction) => {
     email: yup
       .string()
       .email(`${t("auth.register.invalid_email")}`)
-      .required(`${t("auth.required")}`),
+      .required(`${t("auth.required")}`)
+      .matches(/^([a-zA-Z0-9._%+-]+)@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})$/,  `${t("auth.register.invalid_email")}`),
     password: yup
       .string()
       .required(`${t("auth.plz_Enter_pass")}`)
       .matches(
-        /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,25}$/,
+        /^(?=.*?[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/,
         `${t("auth.pass_must_Contain")}`
       ),
     confirmPassword: yup

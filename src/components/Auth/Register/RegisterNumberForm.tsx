@@ -61,16 +61,16 @@ export default function RegisterNumberForm() {
         title={t("auth.get_started")}
         subTitle={t("auth.enter_your_phone_no")}
       >
-        <div className={classes.registerNumberForm}>
-          {isTabletOrMobile && (
+        {isTabletOrMobile && (
+          <div className={classes.registerNumberForm}>
             <div>
               <TopBarTitle sx={{ fontSize: 28 }}>Get started</TopBarTitle>
               <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
                 by entering your phone number
               </SubLabelTag>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         <div className={classes.registerNumberForm}>
           <Formik

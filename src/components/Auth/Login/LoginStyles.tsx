@@ -75,7 +75,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 500,
             cursor: "pointer",
             position:"absolute", 
-            bottom:'7%',
+            bottom:'6%',
             "@media (max-width:760px)": {
                 position:"relative",
                 textAlign:'center',

@@ -33,7 +33,6 @@ const ChatList = (props:any) => {
           limit: 20,
         },
         // success: (res:any) => {
-        //   console.log('res', res)
         //  },
       })
     );

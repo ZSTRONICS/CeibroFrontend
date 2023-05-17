@@ -32,6 +32,10 @@ export const PasswordTextField = (props: IProps) => {
       <FormControl sx={{ width: "100%" }} size="small" variant="outlined">
         <InputLabel htmlFor={"pwd"}>{label}</InputLabel>
         <OutlinedInput
+          autoComplete="off"
+          inputProps={{
+            autoComplete:"off"
+          }}
           id={"pwd"}
           name={name}
           type={showPassword ? "text" : "password"}

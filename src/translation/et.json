@@ -24,7 +24,7 @@
     "reset_password": "Lähtestage parool",
     "password_reset_successfully": "Parooli lähtestamine õnnestus",
     "plz_Enter_pass": "Palun sisesta oma salasõna",
-    "pass_must_Contain": "Parool peab sisaldama vähemalt 8 tähemärki, ühte erimärki ja ühte numbrit",
+    "pass_must_Contain": "Parool peab olema vähemalt 8 tähemärgi pikkune ning turvalisuse suurendamiseks sisaldama suur- ja väiketähtede, numbrite ja erimärkide kombinatsiooni.",
     "plz_confirm_pass":"Palun kinnitage oma parool",
     "confirm_password": "Kinnita salasõna",
     "pass_not_match":"Paroolid ei ühti",
@@ -61,7 +61,7 @@
       "company_phone": "Ettevõte Tel",
       "work_email": "Töö e-post",
       "Not_valid_email":"Pole kehtiv e-post",
-
+      "company_name": "Firma nimi (valikuline)",
       "currently_representing": "Hetkel esindan ettevõtet"
     },
     "profile_form": {
