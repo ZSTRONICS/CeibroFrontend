@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
-import assets from "../../assets/assets";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers";
-import { useMediaQuery } from "react-responsive";
-import OutsideClickHandler from "react-outside-click-handler";
-import appActions from "../../redux/action/app.action";
-import "./sidebar.css";
 import { socket } from "../../services/socket.services";
-import { getAllChats } from "redux/action/chat.action";
+import "./sidebar.css";
 
 function Sidebar() {
   const classes = useStyles();
@@ -27,7 +24,6 @@ function Sidebar() {
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleRouteClick = (config: SingleConfig) => {
-
     if (config.path !== "chat") {
       socket.setAppSelectedChat(null);
     }
@@ -48,11 +44,12 @@ function Sidebar() {
   //   return styles;
   // };
 
-  const toggleSidebar = () => {
-    dispatch(appActions.toggleNavbar());
-  };
+  // const toggleSidebar = () => {
+  //   dispatch(appActions.toggleNavbar());
+  // };
 
   return (
+<<<<<<< HEAD
     // <OutsideClickHandler
     //   onOutsideClick={toggleSidebar}
     //   disabled={!isTabletOrMobile || !navbarOpen}
@@ -61,42 +58,33 @@ function Sidebar() {
       //   // className={`${classes.sidebarWrapper} sidebarWrapper`}
       //   // style={getNavbarStyles()}
       // >
+=======
+    <>
+      <div className={classes.menueWrapper}>
+        {configs &&
+          Object.values(configs).map((config: any) => {
+            if (user && config.title === "Admin" && user.role !== "admin") {
+              return <React.Fragment key={config.title} />;
+            }
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
 
-        <div className={classes.menueWrapper}>
-          {configs &&
-            Object.values(configs).map((config: any) => {
-              if (user && config.title === "Admin" && user.role !== "admin") {
-                return <React.Fragment key={config.title} />;
-              }
-
-              return (
-                <div
-                  key={config.title}
-                  className={`${classes.menue} ${window.location.pathname.includes(config.path)
+            return (
+              <div
+                key={config.title}
+                className={`${classes.menue} ${
+                  window.location.pathname.includes(config.path)
                     ? classes.active
                     : ""
-                    }`}
-                  onClick={() => handleRouteClick(config)}
-                >
-                  <div className={classes.iconWrapper}>
-                    <Typography className={classes.icon}>
-                      {config.icon}
-                      {/* <img src={} className={classes.iconInner} alt={''} /> */}
-                    </Typography>
-                  </div>
-                  <Typography className={classes.title}>
-                    {config.title}
-                  </Typography>
-                  <div className={classes.badge}>
-                    {config.notification > 0 && (
-                      <Badge
-                        overlap="circular"
-                        badgeContent={config.notification}
-                        color="error"
-                      ></Badge>
-                    )}
-                  </div>
+                }`}
+                onClick={() => handleRouteClick(config)}
+              >
+                <div className={classes.iconWrapper}>
+                  <Box className={classes.icon}>
+                    {config.icon}
+                    {/* <img src={} className={classes.iconInner} alt={''} /> */}
+                  </Box>
                 </div>
+<<<<<<< HEAD
               );
             })}
         </div>
@@ -108,6 +96,25 @@ function Sidebar() {
         // </div> 
       // </div>
     // </OutsideClickHandler>
+=======
+                <Typography className={classes.title}>
+                  {config.title}
+                </Typography>
+                <div className={classes.badge}>
+                  {config.notification > 0 && (
+                    <Badge
+                      overlap="circular"
+                      badgeContent={config.notification}
+                      color="error"
+                    ></Badge>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+      </div>
+    </>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
   );
 }
 
@@ -115,7 +122,7 @@ export default Sidebar;
 
 const useStyles = makeStyles((theme) => ({
   sidebarWrapper: {
-    background: colors.white,
+    background: colors.defaultGrey,
     boxShadow: "1px 0 4px -3px #888",
     // width: 200,
     // height: "100vh",
@@ -125,9 +132,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: 4,
     },
   },
-  logoWrapper: {
-    maxHeight: 150,
-  },
+
   menueWrapper: {
     // height: "calc(100vh - 200px)",
     overflowY: "auto",
@@ -138,7 +143,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "15px 10px",
     paddingRight: 0,
-    borderBottom: `1px solid #dedede`,
+    borderBottom: `1px solid white`,
     fontSize: 16,
     fontWeight: 500,
     color: colors.primary,
@@ -146,7 +151,7 @@ const useStyles = makeStyles((theme) => ({
     gap: 13,
     "&:hover": {
       background:
-        "linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)",
+        "white",
     },
   },
   iconWrapper: {
@@ -159,7 +164,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
-    background: "#0076C8",
+    background: "white",
     color: colors.black,
   },
   title: {
@@ -171,8 +176,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   active: {
-    background:
-      "linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)",
+    background:"white",
     color: `${colors.black} !important`,
   },
   help: {

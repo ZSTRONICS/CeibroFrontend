@@ -47,17 +47,20 @@ function* fetchUser() {
 }
 
 const getProjects = apiCall({
+  useV2Route: false,
   type: GET_PROJECTS,
   method: "get",
   path: "/project",
 });
 const getProjectsWithMembers = apiCall({
+  useV2Route: false,
   type: GET_PROJECTS_WITH_MEMBERS,
   method: "post",
   path: "/project/getProjectsWithMembers",
 });
 
 const getProjectsWithPagination = apiCall({
+  useV2Route: false,
   type: GET_PROJECTS_WITH_PAGINATION,
   method: "get",
   path: (payload, store: any) => {
@@ -90,6 +93,7 @@ const getProjectsWithPagination = apiCall({
 });
 
 const getProjectMembers = apiCall({
+  useV2Route: false,
   type: GET_PROJECTS_MEMBERS,
   method: "get",
   path: (payload) => {
@@ -101,42 +105,49 @@ const getProjectMembers = apiCall({
   },
 });
 // const getFilterProjects = apiCall({
+//  useV2Route: false,
 //   type: GET_FILTER_PROJECTS,
 //   method: "get",
 //   path: (payload) => `/project/${payload?.filter}`,
 // });
 
 const createProject = apiCall({
+  useV2Route: false,
   type: CREATE_PROJECT,
   method: "post",
   path: `/project`,
 });
 
 const getProjectDetail = apiCall({
+  useV2Route: false,
   type: GET_PROJECT_DETAIL,
   method: "get",
   path: (payload) => `/project/${payload?.other}`,
 });
 
 const createRoles = apiCall({
+  useV2Route: false,
   type: CREATE_ROLES,
   method: "post",
   path: (paylaod) => `/project/role/${paylaod.other}`,
 });
 
 const createGroup = apiCall({
+  useV2Route: false,
   type: CREATE_GROUP,
   method: "post",
   path: (payload) => `/project/group/${payload?.other}`,
 });
 
 const getGroup = apiCall({
+  useV2Route: false,
   type: GET_GROUP,
   method: "get",
   path: (payload) => `/project/group/${payload?.other}`,
 });
 
 const getAllDocuments = apiCall({
+  useV2Route: false,
   type: PROJECT_CONFIG.GET_ALL_DOCUMENTS,
   method: "get",
   // path: (payload) =>
@@ -154,18 +165,21 @@ const getAllDocuments = apiCall({
 });
 
 const createFolder = apiCall({
+  useV2Route: false,
   type: CREATE_FOLDER,
   method: "post",
   path: (payload) => `/project/folder/${payload?.other}`,
 });
 
 const createMember = apiCall({
+  useV2Route: false,
   type: CREATE_MEMBER,
   method: "post",
   path: (payload) => `/project/member/${payload?.other}`,
 });
 
 const getMember = apiCall({
+  useV2Route: false,
   type: GET_MEMBER,
   method: "get",
   path: (payload) => {
@@ -178,12 +192,14 @@ const getMember = apiCall({
 });
 
 const updateMember = apiCall({
+  useV2Route: false,
   type: UPDATE_MEMBER,
   method: "patch",
   path: (payload) => `/project/member/update/${payload?.other}`,
 });
 
 const getFolderFiles = apiCall({
+  useV2Route: false,
   type: GET_FOLDER_FILES,
   method: "get",
   // path: (payload) => `/project/file/${payload.other}`,
@@ -202,35 +218,41 @@ const getFolderFiles = apiCall({
   },
 });
 const updateProjectDocumentsAccess=apiCall({
+  useV2Route: false,
   type: PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,
   method: "patch",
   path: (payload) => `project/documents/updateAccess/${payload.other}`, //projectId
 });
 
 const uploadFileToFolder = apiCall({
+  useV2Route: false,
   type: UPLOAD_FILE_TO_FOLDER,
   method: "post",
   path: (payload) => `/project/file/${payload.other}`,
 });
 const updateProject = apiCall({
+  useV2Route: false,
   type: UPLOAD_FILE_TO_FOLDER,
   method: "patch",
   path: (payload) => `/project/${payload.other}`,
 });
 
 const getProjectRolesById  = apiCall({
+  useV2Route: false,
   type: PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID,
   method: "get",
   path: (payload) => `/project/role/${payload.other}`,
 });
 
 const updateRole = apiCall({
+  useV2Route: false,
   type: UPDATE_ROLE,
   method: "patch",
   path: (payload) => `/project/role/${payload.other}`,
 });
 
 const getGroupById = apiCall({
+  useV2Route: false,
   type: GET_GROUP_BY_ID,
   method: "get",
   path: (payload) => `/project/group/${payload.other}`,
@@ -238,82 +260,96 @@ const getGroupById = apiCall({
 
 // patch group by groupId 
 const updateGroup = apiCall({
+  useV2Route: false,
   type: UPDATE_GROUP,
   method: "patch",
   path: (payload) => `/project/group/${payload.other}`,
 });
 
 const createNewProfile = apiCall({
+  useV2Route: false,
   type: CREATE_NEW_PROFILE,
   method: "post",
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const getProjectProfile = apiCall({
+  useV2Route: false,
   type: GET_PROJECT_PROFILE,
   method: "get",
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const getTimeProfileById = apiCall({
+  useV2Route: false,
   type: GET_TIME_PROFILE_BY_ID,
   method: "get",
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const updateTimeProfile = apiCall({
+  useV2Route: false,
   type: UPDATE_TIME_PROFILE,
   method: "put",
   path: (payload) => `/project/timeProfile/${payload.other}`,
 });
 
 const getStatus = apiCall({
+  useV2Route: false,
   type: GET_STATUS,
   method: "get",
   path: "/project/count/status",
 });
 
 const createProfileWork = apiCall({
+  useV2Route: false,
   type: CREATE_PROFILE_WORK,
   method: "post",
   path: (payload) => `/project/work/${payload.other}`,
 });
 
 const getNewWork = apiCall({
+  useV2Route: false,
   type: GET_NEW_WORK,
   method: "get",
   path: (payload) => `/project/work/${payload.other}`,
 });
 const deleteProject = apiCall({
+  useV2Route: false,
   type: DELETE_PROJECT,
   method: "delete",
   path: (payload) => `/project/${payload.other}`,
 });
 
 const getWorkById = apiCall({
+  useV2Route: false,
   type: GET_WORK_BY_ID,
   method: "get",
   path: (payload) => `/project/work/${payload.other}`,
 });
 
 const updateWork = apiCall({
+  useV2Route: false,
   type: UPDATE_WORK,
   method: "put",
   path: (payload) => `/project/work/${payload.other}`,
 });
 
 const deleteWork = apiCall({
+  useV2Route: false,
   type: DELETE_WORK,
   method: "delete",
   path: (payload) => `/project/work/${payload.other}`,
 });
 
 // const getPermissions = apiCall({
+//  useV2Route: false,
 //   type: GET_PERMISSIONS,
 //   method: "get",
 //   path: (payload) => `/project/permissions/${payload.other}`,
 // });
 const deleteMember = apiCall({
+  useV2Route: false,
   type: DELETE_MEMBER,
   method: "delete",
   // path: (payload) => `/project/member/${payload.other}`,
@@ -321,6 +357,7 @@ const deleteMember = apiCall({
 });
 
 const updateProjectPic = apiCall({
+  useV2Route: false,
   type: UPDATE_PROJECT_PICTURE,
   method: "patch",
   isFormData: true,
@@ -328,36 +365,42 @@ const updateProjectPic = apiCall({
 });
 
 const deleteGroup = apiCall({
+  useV2Route: false,
   type: DELETE_GROUP,
   method: "delete",
   path: (payload) => `/project/group/${payload?.other}`,
 });
 
 const deleteRole = apiCall({
+  useV2Route: false,
   type: DELETE_ROLE,
   method: "delete",
   path: (payload) => `/project/role/${payload?.other}`,
 });
 
 const getAvailableProjectMembers = apiCall({
+  useV2Route: false,
   type: GET_AVAILABLE_PROJECT_MEMBERS,
   method: "get",
   path: (payload) => `/project/members/available/${payload?.other}`,
 });
 
 // const getGroupMembers = apiCall({
+//  useV2Route: false,
 //   type: GET_GROUP_MEMBERS,
 //   method: "get",
 //   path: (payload) => `/project/group/members/${payload?.other}`,
 // });
 
 const getGroupUsers = apiCall({
+  useV2Route: false,
   type: GET_GROUP_USERS,
   method: "get",
   path: (payload) => `/project/group/users/${payload?.other}`,
 });
 
 const addRemoveFolderUser = apiCall({
+  useV2Route: false,
   type: ADD_REMOVE_FOLDER_USER,
   method: "post",
   path: ({ other: { folderId, userId } }) =>

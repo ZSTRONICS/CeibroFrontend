@@ -6,7 +6,7 @@ import colors from "../../../../../assets/colors";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
-import { ProjectSubHeadingTag } from "components/CustomTags";
+import { SubHeadingTag } from "components/CustomTags";
 import CButton from "components/Button/Button";
 import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
@@ -26,7 +26,7 @@ const ProjectGroups = () => {
           >
             Bulk edit
           </Button> */}
-          <ProjectSubHeadingTag>New Group</ProjectSubHeadingTag>
+          <SubHeadingTag>New Group</SubHeadingTag>
           <CButton
             variant="outlined"
             color="primary"

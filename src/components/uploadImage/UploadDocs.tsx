@@ -377,7 +377,7 @@ const UploadDocs = (props: Props) => {
 
 export default UploadDocs;
 
-const CustomBox = styled(Box)({
+export const CustomBox = styled(Box)({
   "&.MuiBox-root": {
     cursor: "pointer",
     backgroundColor: " #F5F7F8",

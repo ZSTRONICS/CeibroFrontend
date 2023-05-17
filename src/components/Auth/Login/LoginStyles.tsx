@@ -63,7 +63,7 @@ export const useStyles = makeStyles((theme: Theme) =>
             height: "100vh",
             "@media (max-width:960px)": {
                 // background: `url(${assets.visual})`,
-                background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${assets.visual}) no-repeat`,
+                // background: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url(${assets.visual}) no-repeat`,
                 backgroundSize: "100vw 100vh",
             },
         },
@@ -74,6 +74,12 @@ export const useStyles = makeStyles((theme: Theme) =>
             fontSize: 14,
             fontWeight: 500,
             cursor: "pointer",
+            position:"absolute", 
+            bottom:'7%',
+            "@media (max-width:760px)": {
+                position:"relative",
+                textAlign:'center',
+            }
         },
         signup: {
             color: colors.textPrimary,

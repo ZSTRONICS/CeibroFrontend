@@ -5,11 +5,18 @@
     "Email": "Email",
     "Password": "Password",
     "RememberMe": "Remeber me",
+    "agree":"Agree",
+    "terms_conditions":"Terms & Conditions",
+    "add_photo":"Add a photo",
+    "photo_description":"Add a profile photo for more credibility and recognition",
     "ForgetPassword": "Forgot password?",
     "verify": "Verify",
     "send": "Send",
     "verifyEmail": "Resend email verification?",
     "dont_have_account": "Don't have an account?",
+    "phone_number_confirmation": "Phone number confirmation",
+    "enter_your_phone_no": "by entering your phone number",
+    "get_started":"Get started",
     "Already_have_an_account": "Already have an account?",
     "link_expired": "Link expired",
     "email_not_verified": "Email not verified please check your inbox",
@@ -33,8 +40,15 @@
     "password_reset_failed":"Password reset failed",
     "email_already_taken":"Email already taken",
     "account_locked":"Wrong password. Retries left # before account gets locked for 15 minutes",
-    "account_not_found":"Account associated with this email address not found !",
+    "account_not_found":"Account associated with this phone number not found!",
     "name_should_have":"Name must start with  a letter",
+    "back_to":"Back to",
+    "didnot_receive_code":"Didn't receive code?",
+    "send_again":"Send again",
+    "phoneNumber":"Phone number",
+    "seconds_left":"seconds left",
+    "confirm":"Confirm",
+    "chnage_password":"change password",
 
     "forgot_pass": {
       "verifying": "Verifying",
@@ -42,8 +56,8 @@
     },
 
     "register": {
-      "register": "Register",
-      "signIn": "Sign in!",
+      "setup_profile": "Setup a profile",
+      "signIn": "Sign in",
       "first_name": "First name",
       "sur_name": "Surname",
       "invalid_email": "Invalid email",
@@ -54,7 +68,9 @@
       "company_phone": "Company Phone",
       "work_email": "Work Email",
       "Not_valid_email": "Not a valid email",
-      "currently_representing": "Currently Representing Company"
+      "currently_representing": "Currently Representing Company",
+      "email":"Email",
+      "job_title":"Job title"
     },
 
     "profile_form": {

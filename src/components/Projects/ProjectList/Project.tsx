@@ -31,9 +31,9 @@ const Project = () => {
   const { allProjects } = useSelector((state: RootState) => state.project);
   const [filteredData, setFilteredData] = useState(allProjects);
 
-  if (window.location.pathname.includes("projects")) {
-    document.body.style.background = "#f5f7f8";
-  }
+  // if (window.location.pathname.includes("projects")) {
+  //   document.body.style.background = "#f5f7f8";
+  // }
 
   const [date, setDate] = useState<string>("");
   const projectPublishStatusLocal = allProjects.map((item: any, index: any) => {
@@ -194,151 +194,144 @@ const Project = () => {
   };
 
   return (
-    <>
-      <Grid item xs={12}>
-        {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
-        <Grid container ref={headerRef} className={classes.outerWrapper}>
-          <Grid
-            item
-            sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
-          // xs={12} md={3}
-          >
-            <CDatePicker
-              IsdisablePast={false}
-              showLabel={true}
-              componentsProps={{
-                actionBar: {
-                  actions: ["clear"],
-                },
-              }}
-              value={date}
-              id="date1"
-              name="dueDate"
-              onChange={(e: any) => {
-                const selectedDate = moment(e).format("DD-MM-YYYY");
-                if (selectedDate === "Invalid date") {
-                  setDate(e);
-                  filterDataOnParams({
-                    ...filterParams,
-                    dueDate: "",
-                  });
-                } else {
-                  setDate(e);
-                  filterDataOnParams({
-                    ...filterParams,
-                    dueDate: selectedDate,
-                  });
-                }
-              }}
-            />
-          </Grid>
+    <></>
+    // <>
+    //   <Grid item xs={12}>
+    //     {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
+    //     <Grid container ref={headerRef} className={classes.outerWrapper}>
+    //       <Grid
+    //         item
+    //         sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
+    //       >
+    //         <CDatePicker
+    //           IsdisablePast={false}
+    //           showLabel={true}
+    //           componentsProps={{
+    //             actionBar: {
+    //               actions: ["clear"],
+    //             },
+    //           }}
+    //           value={date}
+    //           id="date1"
+    //           name="dueDate"
+    //           onChange={(e: any) => {
+    //             const selectedDate = moment(e).format("DD-MM-YYYY");
+    //             if (selectedDate === "Invalid date") {
+    //               setDate(e);
+    //               filterDataOnParams({
+    //                 ...filterParams,
+    //                 dueDate: "",
+    //               });
+    //             } else {
+    //               setDate(e);
+    //               filterDataOnParams({
+    //                 ...filterParams,
+    //                 dueDate: selectedDate,
+    //               });
+    //             }
+    //           }}
+    //         />
+    //       </Grid>
 
-          <Grid
-            item
-            sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
-            // xs={12} md={4}
-            className={classes.datePicker}
-          >
-            <InputHOC title="Owner">
-              <Autocomplete
-              className="autocompleteContainer"
-                disablePortal
-                sx={{ width: "100%" }}
-                id="project_members1"
-                options={data}
-                size="small"
-                onChange={(event, value) => handleUserChange(value)}
-                renderInput={(params) => (
-                  <TextField
-                    sx={{
-                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                        padding: "0px",
-                      },
-                    }}
-                    {...params}
-                    name="owner"
-                    placeholder="Select owner"
-                  />
-                )}
-              />
-            </InputHOC>
-          </Grid>
+    //       <Grid
+    //         item
+    //         sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
+    //         className={classes.datePicker}
+    //       >
+    //         <InputHOC title="Owner">
+    //           <Autocomplete
+    //           className="autocompleteContainer"
+    //             disablePortal
+    //             sx={{ width: "100%" }}
+    //             id="project_members1"
+    //             options={data}
+    //             size="small"
+    //             onChange={(event, value) => handleUserChange(value)}
+    //             renderInput={(params) => (
+    //               <TextField
+    //                 sx={{
+    //                   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+    //                     border: "none",
+    //                     padding: "0px",
+    //                   },
+    //                 }}
+    //                 {...params}
+    //                 name="owner"
+    //                 placeholder="Select owner"
+    //               />
+    //             )}
+    //           />
+    //         </InputHOC>
+    //       </Grid>
 
-          <Grid
-            item
-            // xs={12} md={4}
-            sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
-            className={classes.datePicker}
-          >
-            {/* <SelectDropdown title="Projects" /> */}
-            {/* <SelectDropdown
-            placeholder="All"
-            title="Status"
-            // onChange={(e: any) => setFindProject(e.target.value)}
-          /> */}
-            <InputHOC title="Status">
-              <Autocomplete
-              className="autocompleteContainer"
-                disablePortal
-                sx={{ width: "100%" }}
-                // multiple={false}
-                id="project_members1"
-                // filterSelectedOptions
-                options={getUniqueLabels(allProjectPublishStatus)}
-                size="small"
-                onChange={(event, value: any) => {
-                  if (value === null) {
-                    filterDataOnParams({
-                      ...filterParams,
-                      publishStatus: "",
-                    });
-                  } else {
-                    filterDataOnParams({
-                      ...filterParams,
-                      publishStatus: value.label,
-                    });
-                  }
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    className={classes.underline}
-                    sx={{
-                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-                        border: "none",
-                        padding: "0px",
-                      },
-                    }}
-                    {...params}
-                    name="status"
-                    placeholder="Select status"
-                  />
-                )}
-              />
-            </InputHOC>
-          </Grid>
-        </Grid>
+    //       <Grid
+    //         item
+    //         sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
+    //         className={classes.datePicker}
+    //       >
+       
+    //         <InputHOC title="Status">
+    //           <Autocomplete
+    //           className="autocompleteContainer"
+    //             disablePortal
+    //             sx={{ width: "100%" }}
+    //             // multiple={false}
+    //             id="project_members1"
+    //             // filterSelectedOptions
+    //             options={getUniqueLabels(allProjectPublishStatus)}
+    //             size="small"
+    //             onChange={(event, value: any) => {
+    //               if (value === null) {
+    //                 filterDataOnParams({
+    //                   ...filterParams,
+    //                   publishStatus: "",
+    //                 });
+    //               } else {
+    //                 filterDataOnParams({
+    //                   ...filterParams,
+    //                   publishStatus: value.label,
+    //                 });
+    //               }
+    //             }}
+    //             renderInput={(params) => (
+    //               <TextField
+    //                 className={classes.underline}
+    //                 sx={{
+    //                   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+    //                     border: "none",
+    //                     padding: "0px",
+    //                   },
+    //                 }}
+    //                 {...params}
+    //                 name="status"
+    //                 placeholder="Select status"
+    //               />
+    //             )}
+    //           />
+    //         </InputHOC>
+    //       </Grid>
+    //     </Grid>
 
-        <Grid container className={classes.allStatus}>
-          {/* <StatusMenu options={allStatus} /> */}
-          {/* <StatusMenu /> */}
-        </Grid>
-      </Grid>
-      {showProjectList === true ? (
-        <Grid
-          item
-          // className={classes.TaskListMain}
-          sx={{
-            overflowY: "auto",
-          }}
-          maxHeight={headerHeight}
-        >
-          <ProjectList allProjects={filteredData} />
-        </Grid>
-      ) : (
-        <div> Loading projects....</div>
-      )}
-    </>
+    //     <Grid container className={classes.allStatus}>
+    //       {/* <StatusMenu options={allStatus} /> */}
+    //       {/* <StatusMenu /> */}
+    //     </Grid>
+    //   </Grid>
+    //   {showProjectList === true ? (
+    //     <Grid
+    //       item
+    //       // className={classes.TaskListMain}
+    //       sx={{
+    //         overflowY: "auto",
+    //       }}
+    //       maxHeight={headerHeight}
+    //     >
+    //       <ProjectList allProjects={filteredData} />
+    //     </Grid>
+    //   ) : (
+    //     <div> Loading projects....</div>
+    //   )}
+    // </>
   );
 };
 

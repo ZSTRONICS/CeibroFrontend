@@ -2,7 +2,7 @@ import { Button, Grid, makeStyles } from "@material-ui/core";
 import ListIcon from "@material-ui/icons/List";
 import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
-import { ProjectSubHeadingTag } from "components/CustomTags";
+import { SubHeadingTag } from "components/CustomTags";
 import { RootState } from "redux/reducers";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -56,7 +56,7 @@ const ProjectMembers = () => {
           >
             Bulk edit
           </Button> */}
-            <ProjectSubHeadingTag>Add Member</ProjectSubHeadingTag>
+            <SubHeadingTag>Add Member</SubHeadingTag>
             <CreateMember />
           </Grid>
         )}

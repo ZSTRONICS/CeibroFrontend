@@ -11,7 +11,6 @@ const PrivateRoute: React.FC<PrivateRouteInt> = (props) => {
   const { component, path } = props;
 
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
-
   if (!isLoggedIn) {
     return <Redirect to="/login" />;
   }

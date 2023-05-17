@@ -1,5 +1,6 @@
+import { Contact, UserAllContacts } from 'constants/interfaces/user.interface';
 import { ActionInterface } from '.'
-import { requestSuccess } from '../../utills/status'
+import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 
 import {
   CLOSE_VIEW_INVITATIONS,
@@ -9,28 +10,53 @@ import {
   DELETE_MY_CONNECTION,
   GET_MY_CONNECTIONS,
   DISABLE_REFRESH_CONNECTIONS,
+  USER_CONFIG,
 } from 'config/user.config'
 
 interface UserReducerInt {
+  userAllContacts: Contact[]
+  loadingContacts: boolean
   refreshMyconnections: boolean;
-  invites: {count:number}
-  connections: {count:number}
+  invites: { count: number }
+  connections: { count: number }
   openInvites: boolean
   id: string
-  myConnections:any,
+  myConnections: any,
 }
 
 const intialStatue: UserReducerInt = {
+  userAllContacts:[],
+  loadingContacts: false,
   refreshMyconnections: false,
-  invites: {count:0},
-  connections:  {count:0},
+  invites: { count: 0 },
+  connections: { count: 0 },
   openInvites: false,
-  myConnections:[],
+  myConnections: [],
   id: ""
 }
 
 const UserReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
+    case requestPending(USER_CONFIG.GET_USER_CONTACTS): {
+      return {
+        ...state,
+        loadingContacts: true
+      }
+    }
+    case requestSuccess(USER_CONFIG.GET_USER_CONTACTS): {
+      return {
+        ...state,
+        loadingContacts: false,
+        userAllContacts: action.payload.contacts
+      }
+    }
+    case requestFail(USER_CONFIG.GET_USER_CONTACTS): {
+      return {
+        ...state,
+        loadingContacts: false,
+      }
+    }
+
     case requestSuccess(GET_MY_INVITES_COUNT): {
       return {
         ...state,

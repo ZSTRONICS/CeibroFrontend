@@ -4,7 +4,7 @@ import { Divider } from "@mui/material";
 import { CollapseComponent } from "components/Collapse/CollapseComponent";
 import {
   GroupMemberNameTag,
-  ProjectSubHeadingTag,
+  SubHeadingTag,
 } from "components/CustomTags";
 import {
   Member,
@@ -81,9 +81,9 @@ const GroupChip: React.FC<GroupChipInterface> = (props) => {
             aria-controls={group.name}
             id={group.name + 1}
           >
-            <ProjectSubHeadingTag sx={{ textTransform: 'capitalize', fontSize: 14 }}>
+            <SubHeadingTag sx={{ textTransform: 'capitalize', fontSize: 14 }}>
               {group.name}
-            </ProjectSubHeadingTag>
+            </SubHeadingTag>
           </CollapseComponent.AccordionSummary>
           <CollapseComponent.AccordionDetails
             sx={{ display: "flex", gap: 0.5, flexWrap: "wrap" }}

@@ -51,7 +51,7 @@ import {
 } from "config/chat.config";
 
 // axios
-import axios, { baseURL, SERVER_URL } from "utills/axios";
+import {AxiosV1, AxiosV2, urlV1, SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
@@ -244,8 +244,8 @@ const App: React.FC<MyApp> = () => {
         const tokens = localStorage.getItem("tokens") || "{}";
         const jsonToken = JSON.parse(tokens);
         if ("refresh" in jsonToken) {
-          axios
-            .post(`${baseURL}/auth/refresh-tokens`, {
+          AxiosV1
+            .post(`${urlV1}/auth/refresh-tokens`, {
               refreshToken: String(jsonToken.refresh.token),
             })
             .then((response: any) => {

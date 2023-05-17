@@ -1,78 +1,74 @@
-import {
-  makeStyles,
-  Typography,
-  CircularProgress,
-  Chip,
-} from "@material-ui/core";
-import { Grid, Button } from "@mui/material";
-import colors from "../../assets/colors";
-import { INVITATIONS_LIST } from "../../constants/invitations.constants";
-import NameAvatar from "../Utills/Others/NameAvatar";
-import ViewProfile from "./ViewProfile";
-import React, { useEffect, useState } from "react";
+import { Box, CircularProgress } from "@mui/material";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import {
   getMyConnections,
   resendInvites,
-  resetRefresConnections,
   revokeInvites,
+  userApiAction,
 } from "redux/action/user.action";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
-import { UserInterface } from "constants/interfaces/user.interface";
 import {
   createSingleRoom,
   setSelectedChat,
 } from "../../redux/action/chat.action";
 
+import NoData from "components/Chat/NoData";
+import { Contact } from "constants/interfaces/user.interface";
+import { useHistory } from "react-router-dom";
+import { toast } from "react-toastify";
+import { RootState } from "redux/reducers";
 import {
   getPinnedMessages,
   getRoomMedia,
   getRoomMessages,
   getRoomQuestioniars,
 } from "../../redux/action/chat.action";
-import { useHistory } from "react-router-dom";
-import taskActions from "redux/action/task.action";
-import { toast } from "react-toastify";
-import { RootState } from "redux/reducers";
-interface IConnectionsProps { }
+import ConnectionCard from "./ConnectionCard";
+interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const [connections, setConnection] = useState<any>({});
-  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const classes = useStyles();
+  const containerRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
+  const [apiCalled, setApiCalled] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { userAllContacts, loadingContacts } = useSelector(
+    (state: RootState) => state.user
+  );
 
-  const { refreshMyconnections, myConnections } = useSelector((store: RootState) => store.user);
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
-  const openTaskModal = () => {
-    dispatch(taskActions.openNewTaskModal());
-  };
-
-
-  useEffect(() => {
-    if(refreshMyconnections === false){
-      return 
+  const sortedData: Contact[] = userAllContacts.sort((a: any, b: any) => {
+    const aName = a.contactFirstName.toLowerCase();
+    const bName = b.contactFirstName.toLowerCase();
+    if (aName < bName) {
+      return -1;
+    } else if (aName > bName) {
+      return 1;
     }
-    setConnection(myConnections);
-    dispatch(resetRefresConnections())
-  }, [refreshMyconnections]);
+    return 0;
+  });
 
   useEffect(() => {
-    const payload = {
-      success: (res: any) => {
-        setConnection(res?.data?.myConnections);
-      },
-      finallyAction: () => {
-        setLoading(false);
-      },
-    };
-    setLoading(true);
-    dispatch(getMyConnections(payload));
+    if (containerRef.current) {
+      if (!apiCalled) {
+        const payload = {
+          other: { userId: user._id },
+        };
+        dispatch(userApiAction.getUserContacts(payload));
+        setApiCalled(true);
+      }
+    }
   }, []);
+
+  useLayoutEffect(() => {
+    const conectionContainer: any =
+      document.getElementById("conectionContainer");
+    if (conectionContainer) {
+      conectionContainer.scrollTop = 0;
+    }
+  });
 
   const startChatRoom = (roomId: string) => {
     dispatch(
@@ -147,274 +143,52 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   };
 
   return (
-    <Grid container className={classes.wrapper}>
-      {loading && <CircularProgress size={20} className={classes.progress} />}
-      {connections.length < 1 && (
-        <Typography className={classes.notRecord}>
-          No connection found
-        </Typography>
+    <>
+      {loadingContacts && (
+        <Box sx={{ textAlign: "center", mt: "10%" }}>
+          <CircularProgress size={35} />
+        </Box>
       )}
-
-      <Grid
-        item
-        xs={12}
-        sx={
-          {
-            // height: "85vh",
-            // overflow: "auto",
-            // paddingBottom: "50px",
-          }
-        }
+      {loadingContacts === false && userAllContacts.length < 1 && (
+        <NoData title="No Data Found" />
+      )}
+      <Box
+        ref={containerRef}
+        id="conectionContainer"
+        sx={{
+          maxHeight: { md: "calc(100vh - 120px)", xs: "calc(100vh - 90px)" },
+          overflowY: "auto",
+        }}
+        px={1.25}
       >
-        {connections?.map?.((connection: any) => {
-          const inviteId = connection?._id;
-          const email = connection?.email;
-          if (!connection?.sentByMe && connection?.status === "pending") {
-            return;
-          }
-          const user: UserInterface = connection?.sentByMe
-            ? connection.to
-            : connection.from;
-          if (user === null) {
-            return;
-          }
-          return (
-            <Grid
-              item
-              xs={12}
-              key={user._id}
-              id={user._id}
-              className={classes.chipWrapper}
-            >
-              <Grid container justifyContent="space-between">
-                <Grid
-                  item
-                  // xs={12} md={5} lg={7}
-                  className={classes.userWrapper}
-                >
-                  {!connection.email && (
-                    <>
-                      <NameAvatar
-                        firstName={user?.firstName}
-                        surName={user?.surName}
-                        url={user?.profilePic}
-                      />
-                      <div className={classes.nameWrapper}>
-                        <Typography className={classes.name}>
-                          {`${user?.firstName} ${user?.surName}`}
-                        </Typography>
-                        <Typography className={classes.subTitleText}>
-                          {user?.companyName
-                            ? user?.companyName
-                            : "No company added"}
-                        </Typography>
-                      </div>
-                    </>
-                  )}
-                  {connection.email && (
-                    <>
-                      <div className={classes.nameWrapper}>
-                        <Typography className={classes.name}>
-                          {connection.email}
-                        </Typography>
-                      </div>
-                    </>
-                  )}
+        {sortedData &&
+          sortedData.map((userContact: Contact) => {
+            const {
+              contactFirstName,
+              contactSurName,
+              userCeibroData,
+              contactFullName,
+              isBlocked,
+              isCeiborUser,
+            } = userContact;
 
-                  {(connection.status === "pending" || connection.email) && (
-                    <Chip
-                      className={classes.chip}
-                      variant="outlined"
-                      label="Invited"
-                      size="small"
-                    ></Chip>
-                  )}
-                </Grid>
-                <Grid
-                  item
-                  // xs={12} sm={12} md={8} lg={5}
-
-                  className={classes.btnWrapper}
-                >
-                  {!connection.email && connection.status !== "pending" && (
-                    <>
-                      {" "}
-                      <Button
-                        className={classes.btn}
-                        variant="contained"
-                        // size="small"
-                        size={isTabletOrMobile ? "small" : "medium"}
-                        color="primary"
-                        disabled={connection.email}
-                        onClick={() =>
-                          startRoom(
-                            connection.sentByMe
-                              ? connection.to._id
-                              : connection.from._id
-                          )
-                        }
-                      >
-                        Message
-                      </Button>
-                      <Button
-                        // sx={{
-                        //   "@media(max-width:413px)": {
-                        //     padding: "5px",
-                        //   },
-                        // }}
-                        className={`${classes.btn} ${classes.centerBtn}`}
-                        variant="contained"
-                        onClick={openTaskModal}
-                        size={isTabletOrMobile ? "small" : "medium"}
-                        // size="small"
-                        color="primary"
-                        disabled={connection.email}
-                      >
-                        Create task
-                      </Button>
-                    </>
-                  )}
-                  {connection.status !== "accepted" && (
-                    <>
-                      <Button
-                        className={`${classes.btn} ${classes.centerBtn}`}
-                        variant="contained"
-                        size={isTabletOrMobile ? "small" : "medium"}
-                        // size="small"
-                        style={{ background: colors.btnGreen, color: "white" }}
-                        onClick={() =>
-                          handleResendInvite(
-                            inviteId,
-                            connection.isEmailInvite,
-                            email
-                          )
-                        }
-                      >
-                        Resend
-                      </Button>
-                      <Button
-                        onClick={() =>
-                          handleReInvokeInvite(
-                            inviteId,
-                            connection.isEmailInvite
-                          )
-                        }
-                        className={`${classes.btn} ${classes.centerBtn}`}
-                        variant="contained"
-                        size={isTabletOrMobile ? "small" : "medium"}
-                        // size="small"
-                        style={{ background: colors.btnRed, color: "white" }}
-                      >
-                        Revoke
-                      </Button>
-                    </>
-                  )}
-                  {!connection.email && (
-                    <ViewProfile
-                      connectionId={connection._id}
-                      disabled={connection.email ? true : false}
-                      userId={user._id}
-                    />
-                  )}
-                </Grid>
-              </Grid>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Grid>
+            return (
+              <Box key={userContact._id}>
+                <ConnectionCard
+                  firstName={contactFirstName}
+                  surName={contactSurName}
+                  companyName={userCeibroData?.companyName}
+                  contactFullName={contactFullName}
+                  isBlocked={isBlocked}
+                  isCeiborUser={isCeiborUser}
+                  profilePic={userCeibroData?.profilePic}
+                />
+              </Box>
+            );
+          })}
+      </Box>
+    </>
   );
 };
 
 export default Connections;
-
-const useStyles = makeStyles({
-  wrapper: {
-    overflowY: "auto",
-    height: "calc(100vh - 80px)",
-    background: colors.white,
-    padding: 20,
-  },
-  chipWrapper: {
-    paddingTop: 10,
-    paddingBottom: "10px",
-    borderBottom: "1px solid #ECF0F1",
-    "@media (max-width:600px)": {
-      paddingTop: 10,
-    },
-  },
-  userWrapper: {
-    display: "flex",
-    alignItems: "center",
-  },
-  name: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: colors.primary,
-  },
-  subTitleText: {
-    fontSize: 12,
-    fontWeight: 500,
-    color: colors.textGrey,
-  },
-  nameWrapper: {
-    paddingLeft: 10,
-  },
-  btnWrapper: {
-    display: "flex",
-    alignItems: "center",
-    paddingRight: "20px",
-    // justifyContent: "flex-end",
-    gap: "15px",
-    "@media (max-width:960px)": {
-      // alignItems: "center",
-    },
-    "@media (max-width:600px)": {
-      paddingTop: "10px",
-    },
-  },
-  btn: {
-    fontSize: 12,
-    // padding:"4px 5px"
-    // fontWeight: "bold",
-    "@media (max-width:960px)": {
-      marginTop: "10px",
-    },
-    "@media (max-width:363px)": {
-      minWidth: "90px",
-    },
-  },
-  progress: {
-    color: colors.primary,
-    position: "absolute",
-    zIndex: 1,
-    margin: "auto",
-    marginTop: "100px",
-    left: 0,
-    right: 0,
-    top: 10,
-    textAlign: "center",
-  },
-  notRecord: {
-    color: "#909090",
-    textAlign: "center",
-    position: "absolute",
-    zIndex: 999,
-    left: 0,
-    right: 0,
-    top: 200,
-  },
-  chip: {
-    color: colors.white,
-    borderColor: colors.darkYellow,
-    background: colors.darkYellow,
-    fontSize: 12,
-    fontWeight: 500,
-    marginLeft: 10,
-  },
-  centerBtn: {
-    "@media (max-width:600px)": {
-      // marginTop: "10px",
-    },
-  },
-});

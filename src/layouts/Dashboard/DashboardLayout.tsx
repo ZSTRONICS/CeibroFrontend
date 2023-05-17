@@ -17,30 +17,36 @@ const Main = styled("div")(({ theme }) => ({
   flexGrow: 1,
   overflow: "auto",
   minHeight: "100%",
+<<<<<<< HEAD
 background:'#f5f7f8',
   paddingTop: APP_BAR_MOBILE +10,
+=======
+  background: "white",
+  paddingTop: APP_BAR_MOBILE,
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
   paddingBottom: theme.spacing(1.4),
   paddingLeft: theme.spacing(1),
   [theme.breakpoints.up("lg")]: {
+<<<<<<< HEAD
     paddingTop: APP_BAR_DESKTOP+10,
+=======
+    paddingTop: APP_BAR_DESKTOP+20,
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },
 }));
 
-function DashboardLayout(props:any) {
-    const [open, setOpen]= useState(false)
-    console.log('open', open)
-  const handleOpenCloseNav=()=>{
-    setOpen((prev:boolean)=>!prev)
-  }
+function DashboardLayout(props: any) {
+  const [open, setOpen] = useState(false);
+  const handleOpenCloseNav = () => {
+    setOpen((prev: boolean) => !prev);
+  };
   return (
     <StyledRoot>
-      <Header onOpenNav={handleOpenCloseNav}/>
+      <Header onOpenNav={handleOpenCloseNav} />
       <Nav openNav={open} onCloseNav={handleOpenCloseNav} />
-      <Main>
-       {props.children}
-      </Main>
+      <Main>{props.children}</Main>
     </StyledRoot>
   );
 }

@@ -1,7 +1,6 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Box } from "@mui/material";
 import queryString from "query-string";
 import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
 import "./login.css";
 
 // translation
@@ -11,27 +10,19 @@ import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
 
 // axios
-import axios from "axios";
-import { baseURL } from "utills/axios";
 
 // redux
 import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 
 // components
-import Setting from "components/Setting";
 import { LoginInterface } from "../../../constants/interfaces/Login.interface";
-import ImageTile from "./ImageTile";
 import LoginForm from "./LoginForm";
-import LoginSkeleton from "./LoginSkeleton";
 
-
-import useStyles from './LoginStyles';
-import { CBox } from "components/material-ui";
+import AuthLayout from "../AuthLayout/AuthLayout";
+import useStyles from "./LoginStyles";
 const Login: React.FC<LoginInterface> = () => {
-
   const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
@@ -44,77 +35,54 @@ const Login: React.FC<LoginInterface> = () => {
     if (queryParams?.token) {
       // verifying email verification token
       setTokenLoading(true);
-      await axios
-        .post(`${baseURL}/auth/verify-email?token=${queryParams?.token}`)
-        .then((response) => {
-          setSuccess(true);
-          setTokenLoading(false);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 10000);
-        })
-        .catch((err) => {
-          setError(true);
-          setTokenLoading(false);
-          setTimeout(() => {
-            setError(false);
-          }, 10000);
-        });
+      // await axios
+      //   .post(`${urlV1}/auth/verify-email?token=${queryParams?.token}`)
+      //   .then((response) => {
+      //     setSuccess(true);
+      //     setTokenLoading(false);
+      //     setTimeout(() => {
+      //       setSuccess(false);
+      //     }, 10000);
+      //   })
+      //   .catch((err) => {
+      //     setError(true);
+      //     setTokenLoading(false);
+      //     setTimeout(() => {
+      //       setError(false);
+      //     }, 10000);
+      //   });
     }
   };
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/dashboard");
+      history.push("/tasks");
     }
     LoginData();
   }, [isLoggedIn]);
 
   return (
-    <Grid container className={classes.login}>
-      <Grid item xs={12} md={6} lg={4} className={classes.form}>
-        {/* if the data is loading it shows skeleton */}
-
-        {tokenLoading ?
-
-          <LoginSkeleton />
-          :
-          <CBox className={"logoTitleWrapper"}>
-            <LoginForm
-              tokenLoading={tokenLoading}
-              showSuccess={success}
-              showError={error}
-            />
-            <Grid container item className={classes.langContainer}>
-              <Grid item>
-                <Typography className={classes.dontHave}>
+    <AuthLayout title={t("auth.login")}>
+      <LoginForm
+        tokenLoading={tokenLoading}
+        showSuccess={success}
+        showError={error}
+      />
+           {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
+              {/* <Grid item> */}
+                <Box className={classes.dontHave} sx={{color:'#131516'}}>
                   {t("auth.dont_have_account")}{" "}
                   <Link to="/register" className={classes.signup}>
                     {t("auth.signUp")}
                   </Link>
-                </Typography>
-              </Grid>
-              <Grid item>
+                </Box>
+              {/* </Grid> */}
+              {/* <Grid item>
                 <Setting />
-              </Grid>
-            </Grid>
-
-          </CBox>
-
-        }
-
-
-      </Grid>
-
-      {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
-          <ImageTile />
-        </Grid>
-      )
-      }
-    </Grid>
+              </Grid> */}
+      {/* </Grid> */}
+    </AuthLayout>
   );
 };
 
 export default Login;
-

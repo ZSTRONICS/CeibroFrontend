@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers";
 import { getMyConnectionsCount } from "redux/action/user.action";
 import assets from "assets/assets";
-import { Stack } from "@mui/material";
+import { Badge, Grid, Stack } from "@mui/material";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
 interface IConnectionsProps {}
 
@@ -28,21 +29,21 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     <>
       <Grid
         container
-        // xs={6}
-        // md={6}
         justifyContent="space-between"
         className={classes.connectionsContainer}
       >
         <Grid item>
           <Stack direction={"row"}>
             <div className={classes.iconContainer}>
-              <img src={assets.contactIcon} alt="" className={classes.icon} />
+            <ConnectionIcon/>
             </div>
             <Typography variant="body1" className={classes.connectionText}>
               My Connections
               <Badge
                 showZero={true}
-                color="primary"
+                sx={{'& .MuiBadge-badge':{
+                  background:"#F1B740 !important"
+                }}}
                 badgeContent={connections.count}
                 className={classes.badge}
               ></Badge>
@@ -63,10 +64,10 @@ export default Connections;
 
 const useStyles = makeStyles({
   connectionsContainer: {
-    borderTop: `1px solid ${colors.lightGrey}`,
+    border: `1px solid #E2E4E5`,
     background: colors.white,
     padding: "10px 15px",
-    marginTop: 20,
+    marginTop: 10,
   },
   iconContainer: {
     width: "34px",

@@ -36,8 +36,9 @@ import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import { InvitationIcon } from "components/material-ui/icons/invitaiton/invitation";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import { MyConnectionsIcon } from "components/material-ui/icons/myConnections/MyConnectionsIcon";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
-const ProfileView = () => {
+const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -77,19 +78,14 @@ const ProfileView = () => {
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="user info">
+        <Tooltip title="user menu">
           <IconButton
             onClick={handleOpenUserMenu}
             disableRipple
             disableFocusRipple
             sx={{ p: 0.2 }}
           >
-            <NameAvatar
-              firstName={user?.firstName}
-              surName={user?.surName}
-              url={user?.profilePic}
-              variant="rounded"
-            />
+            <assets.KeyboardArrowDownIcon/>
           </IconButton>
         </Tooltip>
         <Menu
@@ -148,7 +144,7 @@ const ProfileView = () => {
               }}
             >
               <Box display="flex" alignItems="center">
-                <MyConnectionsIcon />
+                <ConnectionIcon />
                 {/* <img src={assets.contactsBlack} className="w-16" alt="" /> */}
               </Box>
               <Typography textAlign="center"> My Connections</Typography>
@@ -182,7 +178,6 @@ const ProfileView = () => {
             }}
           >
             <Stack direction="row" spacing={2} alignItems='center'>
-              {/* <img src={assets.addUser} className={`w-16`} alt="" /> */}
               <InvitationIcon />
               <Typography textAlign="center">Invitations</Typography>
 
@@ -224,4 +219,4 @@ const ProfileView = () => {
   );
 };
 
-export default ProfileView;
+export default UserMenu;

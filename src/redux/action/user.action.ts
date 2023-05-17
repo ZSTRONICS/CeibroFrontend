@@ -22,8 +22,9 @@ import {
 } from '../../config/user.config'
 import { createAction } from './action'
 
-export const userAction={
-  getUsersByRole:createAction(USER_CONFIG.GET_USERS_BY_ROLE)
+export const userApiAction={
+  getUsersByRole:createAction(USER_CONFIG.GET_USERS_BY_ROLE),
+  getUserContacts:createAction(USER_CONFIG.GET_USER_CONTACTS)
 }
 
 export const sendInvitation = createAction(SEND_INVITATION)

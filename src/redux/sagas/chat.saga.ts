@@ -13,6 +13,7 @@ import { ActionInterface, RootState } from "../reducers";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const getAllChat = apiCall({
+  useV2Route: false,
   type: GET_CHAT,
   method: "get",
   path: (payload) => {
@@ -54,6 +55,7 @@ function* getUserChatsByFilter(action: ActionInterface): Generator<any> {
 }
 
 const getRoomMessages = apiCall({
+  useV2Route: false,
   type: GET_MESSAGES,
   method: "get",
   path: (payload: any) => {
@@ -91,6 +93,7 @@ const getRoomMessages = apiCall({
 });
 
 const getUpRoomMessages = apiCall({
+  useV2Route: false,
   type: GET_UP_MESSAGES,
   method: "get",
   path: (payload: any) => {
@@ -115,6 +118,7 @@ const getUpRoomMessages = apiCall({
 });
 
 // const getDownRoomMessages = apiCall({
+//  useV2Route: false,
 //   type: GET_DOWN_MESSAGES,
 //   method: "get",
 //   path: (payload: any) =>
@@ -124,78 +128,91 @@ const getUpRoomMessages = apiCall({
 // });
 
 // const setAllMessagesRead = apiCall({
+//  useV2Route: false,
 //   type: SET_SELECTED_CHAT,
 //   method: "put",
 //   path: (payload: any) => "/chat/room/read/" + payload.other,
 // });
 
 // const setCurrentMessageRead = apiCall({
+//  useV2Route: false,
 //   type: SET_MESSAGE_SEEN,
 //   method: "put",
 //   path: (payload: any) => "/chat/room/read/" + payload.other,
 // });
 
 const muteChat = apiCall({
+  useV2Route: false,
   type: MUTE_CHAT,
   method: "post",
   path: (payload: any) => "/chat/room/mute/" + payload.other,
 });
 
 const getQuestioniarById = apiCall({
+  useV2Route: false,
   type: GET_QUESTIONIAR,
   method: "get",
   path: (payload: any) => "/chat/questioniar/view/" + payload.other,
 });
 
 const saveQuestioniarAnswers = apiCall({
+  useV2Route: false,
   type: SAVE_QUESTIONIAR_ANSWERS,
   method: "post",
   path: (payload: any) => "/chat/questioniar/view/" + payload.other,
 });
 
 const deleteConversation = apiCall({
+  useV2Route: false,
   type: DELETE_CONVERSATION,
   method: "delete",
   path: (payload: any) => "/chat/room/removeChatRoom/" + payload.other,
 });
 
 const editRoomName = apiCall({
+  useV2Route: false,
   type: EDIT_ROOM_NAME,
   method: "put",
   path: (payload: any) => "/chat/room/" + payload.other,
 });
 
 const addToFavourite = apiCall({
+  useV2Route: false,
   type: ADD_TO_FAVOURITE,
   method: "post",
   path: (payload: any) => "/chat/room/favourite/" + payload.other,
 });
 
 // const sendReplyMessage = apiCall({
+//  useV2Route: false,
 //   type: SEND_REPLY_MESSAGE,
 //   method: "post",
 //   path: "/chat/message/reply",
 // });
 
 const pinMessage = apiCall({
+  useV2Route: false,
   type: PIN_MESSAGE,
   method: "post",
   path: (payload: any) => "/chat/message/favourite/" + payload.other,
 });
 
 // const getUnreadCount = apiCall({
+//  useV2Route: false,
 //   type: GET_UNREAD_CHAT_COUNT,
 //   method: "get",
 //   path: "/chat/unread/count",
 // });
 
 const getRoomMedia = apiCall({
+  useV2Route: false,
   type: GET_ROOM_MEDIA,
   method: "get",
   path: (payload: any) => `/chat/media/${payload.other}`,
 });
 
 const addMemberToChat = apiCall({
+  useV2Route: false,
   type: ADD_MEMBERS_TO_CHAT,
   method: "post",
   path: (payload: any) =>
@@ -203,6 +220,7 @@ const addMemberToChat = apiCall({
 });
 
 const addTempMemberToChat = apiCall({
+  useV2Route: false,
   type: ADD_TEMP_MEMBERS_TO_CHAT,
   method: "post",
   path: (payload: any) =>
@@ -210,18 +228,21 @@ const addTempMemberToChat = apiCall({
 });
 
 const saveQuestioniar = apiCall({
+  useV2Route: false,
   type: SAVE_QUESTIONIAR,
   method: "post",
   path: () => `chat/message/questioniar`,
 });
 
 const forwardChat = apiCall({
+  useV2Route: false,
   type: FORWARD_CHAT,
   method: "post",
   path: () => `chat/message/forward`,
 });
 
 const getUserQuestioniarAnswer = apiCall({
+  useV2Route: false,
   type: GET_USER_QUESTIONIAR_ANSWER,
   method: "get",
   path: (payload) =>
@@ -229,18 +250,21 @@ const getUserQuestioniarAnswer = apiCall({
 });
 
 const getPinnedMessages = apiCall({
+  useV2Route: false,
   type: GET_PINNED_MESSAGES,
   method: "get",
   path: (payload: any) => `/chat/message/favourite/${payload.other}`,
 });
 
 const getRoomQuestioniar = apiCall({
+  useV2Route: false,
   type: GET_ROOM_QUESTIONIAR,
   method: "get",
   path: (payload: any) => `/chat/message/questionair/${payload.other}`,
 });
 
 const createSingleRoom = apiCall({
+  useV2Route: false,
   type: CREATE_SINGLE_ROOM,
   method: "post",
   path: (payload) => `/chat/room/single/${payload.other._id}`,

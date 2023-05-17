@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import React from "react";
+=======
+
+import React, { useCallback } from "react";
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import projectActions from "../../redux/action/project.action";
@@ -10,6 +15,7 @@ import { projectOverviewTemplate } from "constants/interfaces/project.interface"
 import CreateChat from "./CreateChat";
 import CButton from "components/Button/Button";
 import { TopBarTitle } from "components/CustomTags";
+import AddIcon from '@mui/icons-material/Add';
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -24,22 +30,38 @@ const Title = () => {
   };
 
   const openTaskModal = () => {
+<<<<<<< HEAD
     dispatch(taskActions.openNewTaskModal());
   };
 
   const goBack = () => {
     history.goBack();
   };
+=======
+		dispatch(taskActions.openNewTaskModal());
+	  };
+	  
+    const goBack = useCallback(() => {
+      history.goBack();
+    }, [history]);  
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
 
   const BackIcon = () => (
     <ArrowBack className={classes.backIcon} onClick={goBack} />
   );
+
+  const titleFontSize = {
+    xs: 18,
+    sm: 24,
+    md: 32,
+  };
 
   const getTitle = () => {
     if (location.pathname.includes("project"))
       return (
         <>
           <div className={classes.projectTitle}>
+<<<<<<< HEAD
             <TopBarTitle
               sx={{ fontSize: { xs: 20, sm: 22, md: 30 }, fontWeight: 500 }}
             >
@@ -56,6 +78,17 @@ const Title = () => {
                 fontSize: { xs: 12, sm: 13 },
               }}
             />
+=======
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
+          Project
+          </TopBarTitle>
+          <CButton
+             startIcon={<AddIcon/>}
+                onClick={openTaskModal}
+                  label='New'
+                  variant="contained"
+                  sx={{padding:'6px 5px', fontWeight:'700', minWidth:{xs:"70px", sm:'80px'}, fontSize:{xs:12,sm:13}}} />
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -64,6 +97,7 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
+<<<<<<< HEAD
             <TopBarTitle
               sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
@@ -80,6 +114,17 @@ const Title = () => {
                 fontSize: { xs: 12, sm: 13 },
               }}
             />
+=======
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
+            Task
+            </TopBarTitle>
+            <CButton
+             startIcon={<AddIcon/>}
+                onClick={openTaskModal}
+                  label='New'
+                  variant="contained"
+                  sx={{padding:'6px 5px', fontWeight:'700', minWidth:{xs:"70px", sm:'80px'}, fontSize:{xs:12,sm:13}}} />
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -88,11 +133,17 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
+<<<<<<< HEAD
             <TopBarTitle
               sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
               Dashboard
             </TopBarTitle>
+=======
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
+          Dashboard
+          </TopBarTitle>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -100,11 +151,17 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
+<<<<<<< HEAD
             <TopBarTitle
               sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
               Admin
             </TopBarTitle>
+=======
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
+          Admin
+          </TopBarTitle>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -113,6 +170,7 @@ const Title = () => {
       return (
         <>
           <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
+<<<<<<< HEAD
             <TopBarTitle
               sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
@@ -121,6 +179,11 @@ const Title = () => {
           </div>
           <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
             <CreateChat />
+=======
+          <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500}}>
+          Chat
+          </TopBarTitle>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -130,6 +193,7 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
+<<<<<<< HEAD
             <TopBarTitle
               sx={{
                 fontSize: { xs: 15, sm: 22, md: 24, lg: 30 },
@@ -139,6 +203,11 @@ const Title = () => {
             >
               My Connections
             </TopBarTitle>
+=======
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500,paddingLeft:'10px'}}>
+            My Connections
+          </TopBarTitle>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -148,6 +217,7 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
+<<<<<<< HEAD
             <TopBarTitle
               sx={{
                 fontSize: { xs: 15, sm: 20, md: 30 },
@@ -157,6 +227,11 @@ const Title = () => {
             >
               Profile
             </TopBarTitle>
+=======
+            <TopBarTitle sx={{fontSize:titleFontSize,fontWeight:500, paddingLeft:'10px'}}>
+            Profile
+          </TopBarTitle>
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
           </div>
         </>
       );
@@ -200,9 +275,9 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     width: "100%",
     paddingLeft: 8,
-    gap: 10,
+    gap: 15,
     "@media (max-width:960px)": {
-      // justifyContent: "space-between",
+      gap: 10,
     },
   },
 
@@ -214,7 +289,13 @@ const useStyles = makeStyles((theme) => ({
     gap: 20,
     alignItems: "center",
     [theme.breakpoints.down(769)]: {
+<<<<<<< HEAD
       paddingLeft: 6,
+=======
+    paddingLeft: 6,
+    gap: 10,
+
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
     },
   },
   dashboardTitle: {
@@ -231,6 +312,10 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     "@media (max-width:960px)": {
       fontSize: 22,
+<<<<<<< HEAD
     },
+=======
+    }
+>>>>>>> 635dba97a16c691c7b5b2e77dfb80946dc8e6dbc
   },
 }));
