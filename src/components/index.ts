@@ -1,3 +1,4 @@
+import { lazy } from "react";
 // Auth
 import Register from "./Auth/Register/Register";
 import Login from "./Auth/Login/Login";
@@ -12,8 +13,8 @@ import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
 
 // dashboard
 import Dashboard from "./Dashboard/Dashboard";
-import Profile from "./Profile/Profile";
-import Connections from "./Connection/Connection";
+// import Profile from "./Profile/Profile";
+// import Connections from "./Connection/Connection";
 import ViewInvitations from "./Profile/ViewInvitations";
 
 // chat
@@ -22,12 +23,12 @@ import CreateQuestioniarDrawer from "./Chat/Questioniar/CreateQuestioniar";
 import ViewQuestioniarDrawer from "./Chat/Questioniar/ViewQuestioniar";
 
 // task
-import Tasks from "./Tasks/TaskList/Task";
+// import Tasks from "./Tasks/TaskList/Task";
 import CreateTaskDrawer from "./Tasks/Create-Task/CreateTaskDrawer";
 import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
 
 // project
-import Projects from "./Projects/ProjectList/Project";
+// import Projects from "./Projects/ProjectList/Project";
 import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 
 //admin
@@ -36,6 +37,18 @@ import AdminMain from "./Admin/AdminMain";
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
+
+// connection
+const Connections = lazy(() => import('./Connection/Connection'));
+
+// profile 
+const Profile = lazy(() => import('./Profile/Profile'));
+
+// task
+const Tasks = lazy(() => import('./Tasks/TaskList/Task'));
+
+// project
+const Projects = lazy(() => import('./Projects/ProjectList/Project'));
 
 export {
   RouterConfig,
