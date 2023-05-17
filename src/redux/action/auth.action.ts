@@ -17,6 +17,7 @@ import {
   AUTH_CONFIG,
   USER_CHANGE_PASSWORD,
   USER_CHANGE_NUMBER,
+  USER_VERIFY_CHANGE_NUMBER,
 } from "../../config/auth.config";
 
 import { createAction } from "./action";
@@ -42,4 +43,5 @@ export const forgetPassword = createAction(FORGET_PASSWORD);
 export const resetPassword = createAction(RESET_PASSWORD);
 export const verifyEmail = createAction(SEND_VERIFY_EMAIL);
 export const changePassword = createAction(USER_CHANGE_PASSWORD);
-export const chnageNumber = createAction(USER_CHANGE_NUMBER);
+export const changeNumber = createAction(USER_CHANGE_NUMBER);
+export const verifyChangeNumber = createAction(USER_VERIFY_CHANGE_NUMBER);

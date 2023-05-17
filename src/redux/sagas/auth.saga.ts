@@ -17,6 +17,7 @@ import {
   UPDATE_MY_PROFILE,
   USER_CHANGE_PASSWORD,
   USER_CHANGE_NUMBER,
+  USER_VERIFY_CHANGE_NUMBER,
 } from "../../config/auth.config";
 import apiCall from "../../utills/apiCall";
 import { ActionInterface } from "../reducers";
@@ -136,13 +137,20 @@ const changeNumber = apiCall({
   path: `/users/change-number`,
 });
 
-const resetPassword = apiCall({
-  useV2Route: false,
-  type: RESET_PASSWORD,
+const verifyChangeNumber = apiCall({
+  useV2Route: true,
+  type: USER_VERIFY_CHANGE_NUMBER,
   method: "post",
-  path: (payload) => `/auth/reset-password?token=${payload?.other}`,
-  // reset-password?otp=grgdfvdf
+  path: `/users/verify/change-number`,
 });
+
+// const resetPassword = apiCall({
+//   useV2Route: false,
+//   type: RESET_PASSWORD,
+//   method: "post",
+//   path: (payload) => `/auth/reset-password?token=${payload?.other}`,
+//   // reset-password?otp=grgdfvdf
+// });
 
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
@@ -159,7 +167,8 @@ function* projectSaga() {
   yield takeLatest(USER_CHANGE_PASSWORD, changePassword);
   yield takeLatest(USER_CHANGE_NUMBER, changeNumber);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
-  yield takeLatest(RESET_PASSWORD, resetPassword);
+  yield takeLatest(USER_VERIFY_CHANGE_NUMBER, verifyChangeNumber);
+  // yield takeLatest(RESET_PASSWORD, resetPassword);
 }
 
 export default projectSaga;
