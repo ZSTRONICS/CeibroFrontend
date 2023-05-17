@@ -71,7 +71,7 @@
       "Not_valid_email": "Not a valid email",
       "currently_representing": "Currently Representing Company",
       "email":"Email",
-      "job_title":"Job title",
+      "job_title":"Job title (optional)",
       "company_name": "Company Name (optional)"
     },
 

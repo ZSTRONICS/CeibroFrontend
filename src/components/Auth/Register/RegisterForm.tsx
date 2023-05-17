@@ -21,7 +21,7 @@ import { useTranslation } from "react-i18next";
 //formik
 import { Formik } from "formik";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
-import { Grid, Button, Typography } from "@mui/material";
+import { Grid, Button, Typography, Divider } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import useStyles from "./RegisterStyles";
@@ -43,7 +43,7 @@ const RegisterForm = () => {
       jobTitle,
       companyName,
       phoneNumber,
-      dialCode,
+      countryCode,
     } = values;
     const payload = {
       body: {
@@ -53,7 +53,7 @@ const RegisterForm = () => {
         surName,
         jobTitle,
         companyName,
-        dialCode,
+        countryCode,
       },
       success: (res: any) => {
         history.push("/profile-pic");
@@ -65,7 +65,7 @@ const RegisterForm = () => {
           setErrorMessage(err.response.data.message)
         }
       },
-      other: `${dialCode}${phoneNumber}`,
+      other: `${countryCode}${phoneNumber}`,
     };
     dispatch(registerSetupProfile(payload));
     setTimeout(() => {
@@ -81,7 +81,7 @@ const RegisterForm = () => {
     const { email, firstName, surName, password } = values;
     return !(password && password.length > 0 && email && firstName && surName);
   };
-
+const marginBottom = 2.4
   return (
     <div className={`form-container  hide-scrollbar`}>
       <div className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}>
@@ -95,7 +95,7 @@ const RegisterForm = () => {
             jobTitle: "",
             companyName: "",
             phoneNumber: localStorage.getItem("phoneNumber") ?? "",
-            dialCode: localStorage.getItem("dialCode") ?? "",
+            countryCode: localStorage.getItem("dialCode") ?? "",
           }}
           validationSchema={registerSch}
           onSubmit={handleSubmit}
@@ -113,7 +113,7 @@ const RegisterForm = () => {
               {incorrectAuth && (
                 <Alert severity="error">{errorMessage}</Alert>
               )}
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   typeName="text-field"
                   name="firstName"
@@ -129,7 +129,7 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   typeName="text-field"
                   name="surName"
@@ -145,7 +145,7 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   typeName="text-field"
                   subType="email"
@@ -163,7 +163,7 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   typeName="text-field"
                   name="companyName"
@@ -182,7 +182,7 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   typeName="text-field"
                   name="jobTitle"
@@ -198,20 +198,21 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   disabled={true}
                   typeName="phone-number"
                   name="phoneNumber"
                   inputValue={{
                     phoneNumber: values.phoneNumber,
-                    dialCode: values.dialCode,
+                    dialCode: values.countryCode,
                   }}
                   onChange={handleChange}
                   onBlur={handleBlur}
                 />
               </CBox>
-              <CBox mb={3.1}>
+              <Divider sx={{mb:1.8}}/>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   inputValue={values.password}
                   password={values.password}
@@ -228,7 +229,7 @@ const RegisterForm = () => {
                   </Typography>
                 )}
               </CBox>
-              <CBox mb={3.1}>
+              <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   password={values.confirmPassword}
                   name="confirmPassword"

@@ -35,13 +35,13 @@ export default function NumberConfirmationForm(props: IProps) {
   useEffect(() => {
     timer = startCountdown();
     return () => clearInterval(timer!);
-  }, []);
-
-  useEffect(() => {
-    if (counter === 0) {
-      clearInterval(timer);
-    }
   }, [counter]);
+
+  // useEffect(() => {
+  //   if (counter === 0) {
+  //     clearInterval(timer);
+  //   }
+  // }, [counter]);
 
   function startCountdown() {
     timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
@@ -79,7 +79,8 @@ export default function NumberConfirmationForm(props: IProps) {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
-        // action?.resetForm?.();
+        setCounter(60)
+        startCountdown()
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {

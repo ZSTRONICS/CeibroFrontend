@@ -26,7 +26,7 @@ const AuthLayout = (props: any) => {
       <Grid
         item
         xs={12}
-        md={6}
+        md={5}
         lg={4}
         px={1.2}
         className={`${classes.form} hide-scrollbar`}
@@ -69,7 +69,7 @@ const AuthLayout = (props: any) => {
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item md={6} lg={8} className={classes.tileWrapper}>
+        <Grid item md={7} lg={8} className={classes.tileWrapper}>
           <ImageTile />
         </Grid>
       )}

@@ -83,7 +83,6 @@ const ProfileForm = () => {
   } = user ?? {};
   
   const userPhoneNumber = String(phoneNumber)?.slice(countryCode?.length);
-  // console.log('phoneNumber',  phoneNumber, countryCode?.length)
   const formik = useFormik({
     initialValues: {
       firstName: firstName ?? "",
@@ -458,13 +457,13 @@ const ProfileForm = () => {
                       />
                     )}
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="text"
                     sx={{ color: "red", border: "1px solid" }}
                     size="medium"
                   >
                     <BiTrash className={classes.deleteIcon} /> Delete Account
-                  </Button>
+                  </Button> */}
                 </Grid>
               </Grid>
             </Grid>

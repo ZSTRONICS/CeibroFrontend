@@ -9,39 +9,31 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // material
+import { makeStyles } from "@material-ui/core/styles";
 import {
   Box,
   Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
+  Typography
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeNumber,
-  loginRequest,
-  verifyEmail,
+  changeNumber
 } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
 //toastify
-import { toast } from "react-toastify";
 
 // component
-import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 import colors from "assets/colors";
-import assets from "assets/assets";
-import { CBox } from "components/material-ui";
-import { purgeStoreStates } from "redux/store";
 import Loading from "components/Utills/Loader/Loading";
+import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { DocumentNameTag } from "components/CustomTags";
-import { handlePhoneChange } from "utills/formFunctions";
 import { UserInterface } from "constants/interfaces/user.interface";
+import { handlePhoneChange } from "utills/formFunctions";
+import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 
 interface Props {
   //   tokenLoading: boolean;
@@ -135,7 +127,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
 
   const checkValidInputs = (values: any) => {
     const { phoneNumber, password } = values;
-    // console.log('phoneNumber', phoneNumber)
     if (
       phoneNumber &&
       phoneNumber.length > 3 &&

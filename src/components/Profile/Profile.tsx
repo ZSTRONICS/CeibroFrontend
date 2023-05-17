@@ -18,7 +18,7 @@ const Dashboard = () => {
   const { user } = useSelector((localState: RootState) => localState.auth);
 
   return (
-    <Grid container>
+    <Grid container justifyContent="center">
       <ProfileImagePicker profilePic={user?.profilePic} />
       {isTabletOrMobile && 
         <Requests />}

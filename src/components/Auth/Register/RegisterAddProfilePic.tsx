@@ -33,6 +33,8 @@ export default function RegisterAddProfilePic(): JSX.Element {
           },
         };
         dispatch(UpdateProfilePicture(payload));
+      }else{
+        history.push("/tasks");
       }
   
     } catch (error) {

@@ -30,7 +30,7 @@ export default function RegisterConfirmationForm() {
   useEffect(() => {
     timer = startCountdown();
     return () => clearInterval(timer);
-  }, []);
+  }, [counter]);
 
   function startCountdown() {
     timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
