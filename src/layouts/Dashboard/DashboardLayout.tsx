@@ -18,10 +18,11 @@ const Main = styled("div")(({ theme }) => ({
   overflow: "auto",
   minHeight: "100%",
 background:'#f5f7f8',
-  paddingTop: APP_BAR_MOBILE,
+  paddingTop: APP_BAR_MOBILE +10,
   paddingBottom: theme.spacing(1.4),
+  paddingLeft: theme.spacing(1),
   [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP,
+    paddingTop: APP_BAR_DESKTOP+10,
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
   },

@@ -1,13 +1,10 @@
-
 import React from "react";
 import { useDispatch } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import { Typography, Button } from "@mui/material";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
-import { useMediaQuery } from "react-responsive";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 import CreateChat from "./CreateChat";
@@ -19,7 +16,6 @@ const Title = () => {
   const history = useHistory();
   const { location } = useHistory();
   const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
@@ -28,15 +24,15 @@ const Title = () => {
   };
 
   const openTaskModal = () => {
-		dispatch(taskActions.openNewTaskModal());
-	  };
-	  
+    dispatch(taskActions.openNewTaskModal());
+  };
+
   const goBack = () => {
     history.goBack();
   };
 
   const BackIcon = () => (
-    <ArrowBack  className={classes.backIcon} onClick={goBack} />
+    <ArrowBack className={classes.backIcon} onClick={goBack} />
   );
 
   const getTitle = () => {
@@ -44,33 +40,22 @@ const Title = () => {
       return (
         <>
           <div className={classes.projectTitle}>
-          <TopBarTitle sx={{fontSize:{xs:20,sm:22,md:30},fontWeight:500}}>
-          Project
-          </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
+            <TopBarTitle
+              sx={{ fontSize: { xs: 20, sm: 22, md: 30 }, fontWeight: 500 }}
             >
               Project
-            </Typography> */}
+            </TopBarTitle>
             <CButton
-             onClick={openProjectDrawer}
-                  label='Create new'
-                  variant="contained"
-                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
-                  // styles={{
-                  //   borderColor: "#FA0808",
-                  //   // borderColor: "#55BCB3",
-                  //   fontSize: 12,
-                  //   fontWeight: "bold",
-                  //   borderWidth: 2,
-                  //   color: "#FA0808",
-                  //   // color: "#55BCB3",
-                  // }}
-                />
-            
-              
+              onClick={openProjectDrawer}
+              label="Create new"
+              variant="contained"
+              sx={{
+                padding: "6px 9px",
+                fontWeight: "700",
+                minWidth: "96px",
+                fontSize: { xs: 12, sm: 13 },
+              }}
+            />
           </div>
         </>
       );
@@ -79,31 +64,22 @@ const Title = () => {
       return (
         <>
           <div className={classes.taskTitle}>
-            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
-            Task
-            </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
+            <TopBarTitle
+              sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
               Task
-            </Typography> */}
-            {/* <Button
-              onClick={openTaskModal}
-              size="small"
-              color="primary"
-              variant="contained"
-              style={{minWidth: '92px'}}
-            >
-              Create new
-            </Button> */}
+            </TopBarTitle>
             <CButton
-            onClick={openTaskModal}
-                  label='Create new'
-                  variant="contained"
-                  sx={{padding:'6px 9px', fontWeight:'700', minWidth:"96px", fontSize:{xs:12,sm:13}}}
-                />
+              onClick={openTaskModal}
+              label="Create new"
+              variant="contained"
+              sx={{
+                padding: "6px 9px",
+                fontWeight: "700",
+                minWidth: "96px",
+                fontSize: { xs: 12, sm: 13 },
+              }}
+            />
           </div>
         </>
       );
@@ -112,9 +88,11 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
-          Dashboard
-          </TopBarTitle>
+            <TopBarTitle
+              sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
+            >
+              Dashboard
+            </TopBarTitle>
           </div>
         </>
       );
@@ -122,9 +100,11 @@ const Title = () => {
       return (
         <>
           <div className={classes.dashboardTitle}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
-          Admin
-          </TopBarTitle>
+            <TopBarTitle
+              sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
+            >
+              Admin
+            </TopBarTitle>
           </div>
         </>
       );
@@ -133,24 +113,15 @@ const Title = () => {
       return (
         <>
           <div className={`${classes.chatTitle} ${classes.chatBtn}`}>
-          <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:30},fontWeight:500}}>
-          Chat
-          </TopBarTitle>
-            {/* <Typography
-              variant="h6"
-              component="h6"
-              className={classes.dashboardTitleText}
+            <TopBarTitle
+              sx={{ fontSize: { xs: 15, sm: 22, md: 30 }, fontWeight: 500 }}
             >
               Chat
-            </Typography> */}
+            </TopBarTitle>
           </div>
-          {!isTabletOrMobile && (
-            <div
-              style={{ width: "100%", display: "flex", alignItems: "center" }}
-            >
-              <CreateChat />
-            </div>
-          )}
+          <div style={{ width: "100%", display: "flex", alignItems: "center" }}>
+            <CreateChat />
+          </div>
         </>
       );
 
@@ -159,16 +130,15 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:15,sm:22,md:24, lg:30},fontWeight:500,paddingLeft:'10px'}}>
-            My Connections
-          </TopBarTitle>
-            {/* <Typography
-              className={classes.profileTitle}
-              variant="h6"
-              component="h6"
+            <TopBarTitle
+              sx={{
+                fontSize: { xs: 15, sm: 22, md: 24, lg: 30 },
+                fontWeight: 500,
+                paddingLeft: "10px",
+              }}
             >
               My Connections
-            </Typography> */}
+            </TopBarTitle>
           </div>
         </>
       );
@@ -178,16 +148,15 @@ const Title = () => {
         <>
           <div className={classes.chatTitle}>
             <BackIcon />
-            <TopBarTitle sx={{fontSize:{xs:15,sm:20,md:30},fontWeight:500, paddingLeft:'10px'}}>
-            Profile
-          </TopBarTitle>
-            {/* <Typography
-              className={classes.profileTitle}
-              variant="h6"
-              component="h6"
+            <TopBarTitle
+              sx={{
+                fontSize: { xs: 15, sm: 20, md: 30 },
+                fontWeight: 500,
+                paddingLeft: "10px",
+              }}
             >
               Profile
-            </Typography> */}
+            </TopBarTitle>
           </div>
         </>
       );
@@ -198,7 +167,7 @@ const Title = () => {
 
 export default Title;
 
-const useStyles =  makeStyles((theme) => ({
+const useStyles = makeStyles((theme) => ({
   login: {
     color: colors.white,
     textDecoration: "none",
@@ -208,8 +177,8 @@ const useStyles =  makeStyles((theme) => ({
     fontWeight: 500,
     marginLeft: 10,
   },
-  chatBtn:{
-    paddingRight: 20
+  chatBtn: {
+    paddingRight: 20,
   },
   chatTitle: {
     paddingLeft: 10,
@@ -245,14 +214,14 @@ const useStyles =  makeStyles((theme) => ({
     gap: 20,
     alignItems: "center",
     [theme.breakpoints.down(769)]: {
-    paddingLeft: 6,
+      paddingLeft: 6,
     },
   },
   dashboardTitle: {
     display: "flex",
     paddingLeft: 24,
     width: "100%",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
       paddingLeft: 0,
     },
@@ -260,9 +229,8 @@ const useStyles =  makeStyles((theme) => ({
   dashboardTitleText: {
     fontSize: 30,
     fontWeight: 500,
-    "@media (max-width:960px)":{
+    "@media (max-width:960px)": {
       fontSize: 22,
-
-    }
+    },
   },
 }));

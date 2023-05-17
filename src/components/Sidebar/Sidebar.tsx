@@ -38,29 +38,29 @@ function Sidebar() {
     // }
   };
 
-  const getNavbarStyles = () => {
-    let styles = {};
-    if (isTabletOrMobile) {
-      styles = {
-        left: navbarOpen ? "0px" : "-300px",
-      };
-    }
-    return styles;
-  };
+  // const getNavbarStyles = () => {
+  //   let styles = {};
+  //   if (isTabletOrMobile) {
+  //     styles = {
+  //       left: navbarOpen ? "0px" : "-300px",
+  //     };
+  //   }
+  //   return styles;
+  // };
 
   const toggleSidebar = () => {
     dispatch(appActions.toggleNavbar());
   };
 
   return (
-    <OutsideClickHandler
-      onOutsideClick={toggleSidebar}
-      disabled={!isTabletOrMobile || !navbarOpen}
-    >
-      <div
-        // className={`${classes.sidebarWrapper} sidebarWrapper`}
-        // style={getNavbarStyles()}
-      >
+    // <OutsideClickHandler
+    //   onOutsideClick={toggleSidebar}
+    //   disabled={!isTabletOrMobile || !navbarOpen}
+    // >
+      // <div
+      //   // className={`${classes.sidebarWrapper} sidebarWrapper`}
+      //   // style={getNavbarStyles()}
+      // >
 
         <div className={classes.menueWrapper}>
           {configs &&
@@ -101,13 +101,13 @@ function Sidebar() {
             })}
         </div>
 
-        {/* <div className={classes.help}>
-          <div className={classes.helpInnerWrapper}></div>
-          <img src={assets.questionMarkIcon} className={classes.helpIcon} alt={''} />
-          <Typography className={classes.helpText}>Help</Typography>
-        </div> */}
-      </div>
-    </OutsideClickHandler>
+        //  <div className={classes.help}>
+        //   <div className={classes.helpInnerWrapper}></div>
+        //   <img src={assets.questionMarkIcon} className={classes.helpIcon} alt={''} />
+        //   <Typography className={classes.helpText}>Help</Typography>
+        // </div> 
+      // </div>
+    // </OutsideClickHandler>
   );
 }
 
