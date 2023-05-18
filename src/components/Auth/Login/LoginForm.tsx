@@ -121,7 +121,6 @@ const LoginForm: React.FC<Props> = (props) => {
 
   const checkValidInputs = (values: any) => {
     const { phoneNumber, password } = values;
-    // console.log('phoneNumber', phoneNumber)
     if (
       phoneNumber &&
       phoneNumber.length > 3 &&

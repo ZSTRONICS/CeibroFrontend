@@ -100,7 +100,7 @@ const ProfileForm = () => {
   });
 
   const closeDialog = (number?: string) => {
-    if (number && number != "") {
+    if (number && number !== "") {
       setNewNumber(number);
       setModalTitle("Confirmation number");
       setModalChildren(

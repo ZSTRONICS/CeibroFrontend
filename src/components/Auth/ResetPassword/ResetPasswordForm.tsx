@@ -180,7 +180,7 @@ const ResetPasswordForm = () => {
                 }
               />
               {errors.confirmPassword && (
-                <Typography className={`error-text ${classes.errorText}`}>
+                <Typography className={`error-text `}>
                   {errors.confirmPassword &&
                     touched.confirmPassword &&
                     errors.confirmPassword}

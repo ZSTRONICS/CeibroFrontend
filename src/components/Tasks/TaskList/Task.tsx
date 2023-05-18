@@ -15,7 +15,7 @@ const Task = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjectsWithMembers());
+    // dispatch(getAllProjectsWithMembers());
     dispatch(getAllTask());
     dispatch(getAllSubTaskList());
   }, []);

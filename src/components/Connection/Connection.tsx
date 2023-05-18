@@ -2,29 +2,15 @@ import { Box, CircularProgress } from "@mui/material";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import {
-  getMyConnections,
-  resendInvites,
-  revokeInvites,
-  userApiAction,
+  userApiAction
 } from "redux/action/user.action";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  createSingleRoom,
-  setSelectedChat,
-} from "../../redux/action/chat.action";
 
 import NoData from "components/Chat/NoData";
 import { Contact } from "constants/interfaces/user.interface";
 import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
 import { RootState } from "redux/reducers";
-import {
-  getPinnedMessages,
-  getRoomMedia,
-  getRoomMessages,
-  getRoomQuestioniars,
-} from "../../redux/action/chat.action";
 import ConnectionCard from "./ConnectionCard";
 interface IConnectionsProps {}
 
@@ -56,7 +42,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         const payload = {
           other: { userId: user._id },
         };
-        dispatch(userApiAction.getUserContacts(payload));
+
+        userAllContacts.length < 1 &&
+          dispatch(userApiAction.getUserContacts(payload));
         setApiCalled(true);
       }
     }

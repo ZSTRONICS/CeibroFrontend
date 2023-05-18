@@ -9,7 +9,6 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // material
-import { makeStyles } from "@material-ui/core/styles";
 import { Box, Button, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
@@ -21,7 +20,6 @@ import { RootState } from "redux/reducers";
 //toastify
 
 // component
-import colors from "assets/colors";
 import Loading from "components/Utills/Loader/Loading";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
@@ -46,10 +44,8 @@ interface IInputValues {
 const ChangeNumberForm: React.FC<Props> = (props) => {
   //   const { tokenLoading, showSuccess, showError } = props;
   let user: UserInterface = useSelector((state: RootState) => state.auth.user);
-  const classes = useStyles();
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
-  const [numnberConfirmation, setNumnberConfirmation] = useState(false);
   const [lockError, setLockError] = useState<boolean>(false);
   const [verifyError, setVerifyError] = useState<boolean>(false);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
@@ -59,7 +55,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
   const [incorrectEmail, setIncorrectEmail] = useState<boolean>(false);
   let [timer, setTimer] = useState("");
   const dispatch = useDispatch();
-  const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues>>(null);
 
@@ -212,7 +207,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                   onBlur={handleBlur}
                 />
                 {errors.phoneNumber && touched.phoneNumber && (
-                  <Typography className={`error-text ${classes.errorText}`}>
+                  <Typography className={`error-text `}>
                     {errors.phoneNumber}
                   </Typography>
                 )}
@@ -229,17 +224,15 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                   onBlur={handleBlur}
                 />
                 {errors.password && touched.password && (
-                  <Typography className={`error-text ${classes.errorText}`}>
+                  <Typography className={`error-text`}>
                     {errors.password}
                   </Typography>
                 )}
               </CBox>
-              <div className={classes.actionWrapper}>
                 <Button
                   type="submit"
-                  className={classes.loginButton}
                   variant="contained"
-                  sx={{ width: "100%", backgroundColor: "#0076C8" }}
+                  sx={{ width: "100%", backgroundColor: "#0076C8", padding:1 }}
                   disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
@@ -248,7 +241,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                     t("auth.change_number")
                   )}
                 </Button>
-              </div>
             </form>
           )}
         </Formik>
@@ -258,102 +250,3 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
 };
 
 export default ChangeNumberForm;
-const useStyles = makeStyles({
-  container: {
-    height: "92%",
-  },
-
-  formWraper: {
-    margin: "0 auto",
-  },
-  errorText: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  loginInput: {
-    width: "100%",
-    marginTop: "20px",
-  },
-
-  inputOutline: {
-    height: "40px",
-    background: "white",
-  },
-  wrapper: {
-    height: "94%",
-  },
-  actionWrapper: {
-    display: "flex",
-    alignItems: "center",
-    paddingTop: 30,
-    "@media (max-width:960px)": {
-      padding: "15% 0",
-    },
-  },
-  titles: {
-    color: colors.textPrimary,
-    fontFamily: "Inter",
-    // marginTop: -10,
-  },
-  loginForm: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: 20,
-    padding: "10px 13%",
-    "@media (max-width:960px)": {
-      padding: "10 13%",
-    },
-  },
-
-  loginButton: {
-    height: "41px",
-    fontSize: 14,
-    background: "#0076C8",
-  },
-  forget: {
-    fontWeight: 500,
-    fontSize: 14,
-    paddingLeft: 15,
-    cursor: "pointer",
-  },
-  color: {
-    color: "#611A15",
-    padding: 0,
-  },
-  emailVerify: {
-    textDecoration: "underline",
-
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  logoWrapper: {
-    paddingTop: "2%",
-    // paddingLeft: "7%",
-  },
-  titleWrapper: {
-    margin: "45px 0px 15px 0px",
-    "& .MuiTypography-root": {
-      fontSize: 30,
-      fontWeight: "bold",
-    },
-  },
-  inputs: {
-    // marginBottom: 25,
-    width: "100%",
-    maxWidth: 376,
-  },
-  inputPass: {
-    position: "relative",
-    "& .MuiIconButton-edgeEnd": {
-      position: "absolute",
-      right: 10,
-      zIndex: 999,
-      marginleft: 31,
-    },
-    "& .MuiInputAdornment-positionEnd": {
-      marginLeft: "0px !important",
-    },
-  },
-});
