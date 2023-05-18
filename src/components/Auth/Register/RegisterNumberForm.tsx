@@ -31,13 +31,13 @@ export default function RegisterNumberForm() {
 
   const handleSubmit = (values: any, action: any) => {
     const { dialCode, phoneNumber } = values;
+    localStorage.setItem("phoneNumber", phoneNumber);
+    localStorage.setItem("dialCode", dialCode);
     const payload = {
       body: {
         phoneNumber: dialCode + phoneNumber,
       },
       success: (res: any) => {
-        localStorage.setItem("phoneNumber", phoneNumber);
-        localStorage.setItem("dialCode", dialCode);
         history.push("/confirmation");
         action?.resetForm?.();
       },

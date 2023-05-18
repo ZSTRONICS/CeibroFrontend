@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import useResponsive from "hooks/useResponsive";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import { toast } from "react-toastify";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -34,17 +35,16 @@ export default function NumberConfirmationForm(props: IProps) {
 
   useEffect(() => {
     timer = startCountdown();
-    return () => clearInterval(timer!);
+    return () => clearInterval(timer);
   }, [counter]);
-
-  // useEffect(() => {
-  //   if (counter === 0) {
-  //     clearInterval(timer);
-  //   }
-  // }, [counter]);
 
   function startCountdown() {
     timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+
+    setTimeout(() => {
+      timer && clearInterval(timer); // stop the countdown after 60 seconds
+    }, 60000); // 60 seconds (60000 milliseconds)
+
     return timer;
   }
 
@@ -79,8 +79,9 @@ export default function NumberConfirmationForm(props: IProps) {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
-        setCounter(60)
-        startCountdown()
+        toast.success(res.data.message);
+        setCounter(60);
+        startCountdown();
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
