@@ -40,7 +40,7 @@ const Title = () => {
   );
 
   const titleFontSize = {
-    xs: 18,
+    xs: 16,
     sm: 24,
     md: 32,
   };

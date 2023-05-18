@@ -87,7 +87,8 @@ const useStyles = makeStyles({
     maxWidth: "100%",
     position: "relative",
     cursor: "pointer",
-    backgroundSize: "cover !important",
+    backgroundSize: "100% 100%",
+    backgroundRepeat:'no-repeat'
   },
   icon: {
     position: "absolute",

@@ -33,7 +33,7 @@ const RegisterForm = () => {
   const history = useHistory();
   const registerSch = setValidationSchema(t);
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-  const [errorMessage, setErrorMessage]=useState<string>("")
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const handleSubmit = (values: any, action: any) => {
     const {
       firstName,
@@ -62,7 +62,7 @@ const RegisterForm = () => {
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
           setIncorrectAuth(true);
-          setErrorMessage(err.response.data.message)
+          setErrorMessage(err.response.data.message);
         }
       },
       other: `${countryCode}${phoneNumber}`,
@@ -81,10 +81,12 @@ const RegisterForm = () => {
     const { email, firstName, surName, password } = values;
     return !(password && password.length > 0 && email && firstName && surName);
   };
-const marginBottom = 2.4
+  const marginBottom = 2.4;
   return (
     <div className={`form-container  hide-scrollbar`}>
-      <div className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}>
+      <div
+        className={`${classes.registerNumberForm} ${classes.registerNumberFormProfile}`}
+      >
         <Formik
           initialValues={{
             email: "",
@@ -110,14 +112,13 @@ const marginBottom = 2.4
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              {incorrectAuth && (
-                <Alert severity="error">{errorMessage}</Alert>
-              )}
+              {incorrectAuth && <Alert severity="error">{errorMessage}</Alert>}
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  required={true}
                   typeName="text-field"
                   name="firstName"
-                  label="First name"
+                  label="First name *"
                   placeholder={t("auth.register.first_name")}
                   inputValue={values.firstName}
                   onChange={handleChange}
@@ -131,9 +132,10 @@ const marginBottom = 2.4
               </CBox>
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  required={true}
                   typeName="text-field"
                   name="surName"
-                  label="Surname"
+                  label="Surname *"
                   placeholder={t("auth.register.sur_name")}
                   inputValue={values.surName}
                   onChange={handleChange}
@@ -147,19 +149,19 @@ const marginBottom = 2.4
               </CBox>
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  // required={true}
                   typeName="text-field"
                   subType="email"
                   name="email"
-                  label="Email"
+                  label="Email *"
                   placeholder={t("auth.register.email")}
                   inputValue={values.email}
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  required={false}
                 />
                 {errors.email && (
                   <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.email && touched.email && errors.email}
+                    { errors.email}
                   </Typography>
                 )}
               </CBox>
@@ -211,17 +213,18 @@ const marginBottom = 2.4
                   onBlur={handleBlur}
                 />
               </CBox>
-              <Divider sx={{mb:1.8}}/>
+              <Divider sx={{ mb: 1.8 }} />
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   inputValue={values.password}
                   password={values.password}
                   typeName="password"
                   name="password"
-                  label="Password"
+                  label="Password *"
                   placeholder="Password"
                   onChange={handleChange}
                   onBlur={handleBlur}
+                  // required={true}
                 />
                 {errors.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -233,7 +236,7 @@ const marginBottom = 2.4
                 <CustomMuiTextField
                   password={values.confirmPassword}
                   name="confirmPassword"
-                  label="Confirm password"
+                  label="Confirm password *"
                   placeholder="Confirm password"
                   typeName="password"
                   inputValue={values.confirmPassword}
@@ -271,7 +274,7 @@ const marginBottom = 2.4
                       borderColor: "#000",
                       color: "#fff",
                       textTransform: "capitalize !important",
-                      backgroundColor: "#0076C8"
+                      backgroundColor: "#0076C8",
                     }}
                     type="submit"
                     disabled={checkValidInputs(values)}

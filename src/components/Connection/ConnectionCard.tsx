@@ -43,8 +43,10 @@ const ConnectionCard = ({
           justifyContent="space-between"
           sx={{ borderBottom: "1px solid #E2E4E5", py: 1, px: 1, rowGap: 2.4 }}
         >
-          <CustomStack gap={1}>
-            <NameAvatar
+          <Grid item xs={12} md={7} >
+            <CustomStack gap={1} justifyContent="space-between">
+              <Box sx={{display:'flex', gap:1.4}}>
+                <NameAvatar
               url={profilePic && profilePic}
               firstName={firstName?firstName:""}
               surName={surName?surName:""}
@@ -55,8 +57,9 @@ const ConnectionCard = ({
               </SubHeadingTag>
               <SubLabelTag>{`Company: ${companyName ? companyName : "N/A"}`}</SubLabelTag>
             </div>
+              </Box>
             {isTabOrMobile && (
-              <Box sx={{ position: "absolute", right: "3%" }}>
+              <Box >
                 <SvgIcon  color={iconColor}>
                   <path
                     fillRule="evenodd"
@@ -67,7 +70,9 @@ const ConnectionCard = ({
               </Box>
             )}
           </CustomStack>
-          <CustomStack gap={2.4}>
+          </Grid>
+          <Grid item md={5}>
+          <CustomStack gap={2.4} justifyContent="flex-end">
             {!isTabOrMobile && (
               <SvgIcon color={iconColor}>
                 <path
@@ -80,6 +85,7 @@ const ConnectionCard = ({
             <CButton label="Create task" variant="contained" />
             <ViewProfile disabled={!isCeiborUser} connectionId={"12"} userId={"123"} userData={ceibroUserData}/>
           </CustomStack>
+          </Grid>
         </Grid>
       </Box>
     </>

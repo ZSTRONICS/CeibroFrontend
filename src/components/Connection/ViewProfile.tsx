@@ -163,9 +163,9 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
           item
           container
           gap={2}
-          justifyContent="flex-start"
+          justifyContent="space-between"
           alignItems="center"
-          px={2}
+          px={2.5}
           sx={{ mb: "20%" }}
         >
           <Button
@@ -174,7 +174,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             size="medium"
             color="primary"
             onClick={openTaskModal}
-            sx={{ textTransform: "capitalize", width: "80%" }}
+            sx={{ textTransform: "capitalize", width: "85%" }}
           >
             Create task
           </Button>

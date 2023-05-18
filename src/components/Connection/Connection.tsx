@@ -147,7 +147,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
           maxHeight: { md: "calc(100vh - 120px)", xs: "calc(100vh - 90px)" },
           overflowY: "auto",
         }}
-        px={1.25}
+        px={1}
       >
         {sortedData &&
           sortedData.map((userContact: Contact) => {

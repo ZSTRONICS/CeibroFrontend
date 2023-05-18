@@ -1,9 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
-import { Avatar, Divider, Grid, TextField } from "@mui/material";
-import colors from "assets/colors";
-import { UserInterface } from "constants/interfaces/user.interface";
+import { Avatar, Divider, Grid } from "@mui/material";
 import { DocumentNameTag, SubLabelTag } from "components/CustomTags";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface Props{
     userData:UserInterface
@@ -57,7 +54,7 @@ function UserProfileView({userData}:Props) {
               <SubLabelTag>
                 Name
               </SubLabelTag>
-              <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}} >
+              <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}}>
                 {userData.firstName || "N/A"}
               </DocumentNameTag>
             </Grid>
@@ -66,7 +63,7 @@ function UserProfileView({userData}:Props) {
             <SubLabelTag>
                 Surname
               </SubLabelTag>
-              <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}} >
+              <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}}>
                 {userData?.surName|| "N/A"}
               </DocumentNameTag>
             </Grid>
@@ -88,8 +85,9 @@ function UserProfileView({userData}:Props) {
             </Grid>
           </Grid>
         </Grid>
+        <Divider sx={{ mt:2.5, width:'100%'}}/>
       </Grid>
- <Divider sx={{ my:2}}/>
+ 
     </>
   );
 }
