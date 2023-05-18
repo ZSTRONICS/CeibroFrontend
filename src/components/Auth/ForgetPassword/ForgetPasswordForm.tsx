@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import { Typography, Button, CircularProgress } from "@mui/material";
 import colors from "../../../assets/colors";
@@ -8,18 +8,22 @@ import Alert from "@mui/material/Alert";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { Form, Formik } from "formik";
+import { Form, Formik, FormikProps } from "formik";
 import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { CBox } from "components/material-ui";
 import { CustomStack } from "components/CustomTags";
+import { handlePhoneChange } from "utills/formFunctions";
 
 interface Props {
   tokenLoading: boolean;
   showSuccess: boolean;
   showError: boolean;
 }
-
+type FormValues = {
+  dialCode: string;
+  phoneNumber: string;
+};
 const ForgetPasswordForm: React.FC<Props> = (props) => {
   const { tokenLoading, showSuccess, showError } = props;
   const { t } = useTranslation();
@@ -28,6 +32,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [emailFoundErr, setEmailFound] = useState<boolean>(false);
   const isDisabled = !loading ? false : true;
+  const formikRef = useRef<FormikProps<FormValues>>(null);
 
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
@@ -36,17 +41,13 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
   };
 
   const handleSubmit = (values: any) => {
-    const { email } = values;
+    const { phoneNumber, dialCode } = values;
     const payload = {
-      body: { email },
+      body: { phoneNumber: `${dialCode}${phoneNumber}` },
       success: (res: any) => {
-        toast.success(`${t("auth.check_your_email")}`);
+        toast.success(res.data.message);
       },
-      onFailAction: (err: any) => {
-        if (err.response.data.code === 404) {
-          setEmailFound(true);
-        }
-      },
+      onFailAction: (err: any) => {},
       finallyAction: () => {
         setLoading(false);
       },
@@ -60,7 +61,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
     dispatch(forgetPassword(payload));
   };
   const checkValidInputs = (values: any) => {
-    const { phoneNumber } = values;
+    const { phoneNumber, dialCode } = values;
     if (phoneNumber && phoneNumber.length > 4) {
       return false;
     }
@@ -75,17 +76,18 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
             : `${t("auth.forgot_pass.email_verify_successfully")}`}
         </Alert>
       )}
-      {emailFoundErr && (
+      {/* {emailFoundErr && (
         <Alert style={{ margin: "2px 0" }} severity="error">
           {t("auth.noUserFound_with_email")}
         </Alert>
-      )}
+      )} */}
 
       {showError && <Alert severity="error">{t("auth.link_expired")}</Alert>}
       <Formik
         initialValues={{ phoneNumber: "", dialCode: "+372" }}
         validationSchema={forgotPasswordSchema}
         onSubmit={handleSubmit}
+        innerRef={formikRef}
       >
         {({
           values,
@@ -104,7 +106,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
                   phoneNumber: values.phoneNumber,
                   dialCode: values.dialCode,
                 }}
-                onChange={handleChange}
+                onChange={(e, value) => handlePhoneChange(e, formikRef, value)}
                 onBlur={handleBlur}
               />
             </CBox>

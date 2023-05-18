@@ -64,7 +64,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
   const history = useHistory();
   const classes = useStyles();
   const openTaskModal = () => {
-    dispatch(taskActions.openNewTaskModal());
+    // dispatch(taskActions.openNewTaskModal());
   };
 
   const handleClick = () => {
@@ -86,7 +86,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
             My Tasks
           </Typography>
           <Button
-            onClick={openTaskModal}
+            // onClick={openTaskModal}
             variant="contained"
             color="primary"
             size="small"

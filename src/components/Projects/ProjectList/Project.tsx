@@ -21,7 +21,7 @@ import { getAvailableUsers } from "redux/action/user.action";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-import '../../../components/MuiStyles.css'
+import "../../../components/MuiStyles.css";
 const Project = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -65,14 +65,18 @@ const Project = () => {
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
+<<<<<<< Updated upstream
       dispatch(getAllProjects());
+=======
+      // dispatch(getAllProjects());
+>>>>>>> Stashed changes
       // dispatch(getAllProjectsWithMembers());
       const payload = {
         success: (res: any) => {
           setData(res.data);
         },
       };
-      dispatch(getAvailableUsers(payload));
+      // dispatch(getAvailableUsers(payload));
     }
     return () => {
       isRenderEffect.current = true;
@@ -154,8 +158,8 @@ const Project = () => {
 
   const [headerHeight, setHeaderHeight] = useState<string>("");
   let isTimeOut: NodeJS.Timeout;
-  
- useEffect(() => {
+
+  useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
       getHeaderHeight();
     } else {
@@ -179,7 +183,7 @@ const Project = () => {
       if (showProjectList === false) {
         setShowProjectList(true);
       }
-      if(isTimeOut && isTimeOut.hasRef()){
+      if (isTimeOut && isTimeOut.hasRef()) {
         isTimeOut.unref();
       }
     } else {
@@ -187,8 +191,8 @@ const Project = () => {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
         }, 50);
-      }else{
-        isTimeOut.refresh()
+      } else {
+        isTimeOut.refresh();
       }
     }
   };
@@ -269,7 +273,7 @@ const Project = () => {
     //         sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
     //         className={classes.datePicker}
     //       >
-       
+
     //         <InputHOC title="Status">
     //           <Autocomplete
     //           className="autocompleteContainer"
@@ -340,11 +344,11 @@ export default Project;
 const useStyles = makeStyles({
   underline: {
     "&&&:before": {
-      borderBottom: "none"
+      borderBottom: "none",
     },
     "&&:after": {
-      borderBottom: "none"
-    }
+      borderBottom: "none",
+    },
   },
   outerWrapper: {
     display: "flex",

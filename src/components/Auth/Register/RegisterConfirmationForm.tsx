@@ -30,7 +30,9 @@ export default function RegisterConfirmationForm() {
 
   useEffect(() => {
     timer = startCountdown();
-    return () => clearInterval(timer);
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [counter]);
 
   function startCountdown() {
@@ -148,10 +150,7 @@ export default function RegisterConfirmationForm() {
                 ) : (
                   <Typography>
                     {t("auth.didnot_receive_code")}{" "}
-                    <span
-                      className={classes.signup}
-                      onClick={(values: any) => handleResend(values)}
-                    >
+                    <span className={classes.signup} onClick={handleResend}>
                       {t("auth.send_again")}
                     </span>
                   </Typography>

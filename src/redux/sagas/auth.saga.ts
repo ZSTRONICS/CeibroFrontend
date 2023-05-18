@@ -120,7 +120,7 @@ const forgetPassword = apiCall({
   useV2Route: true,
   type: FORGET_PASSWORD,
   method: "post",
-  path: `/auth/forgot-password`,
+  path: `/auth/forget-password`,
 });
 
 const changePassword = apiCall({

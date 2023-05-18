@@ -35,7 +35,9 @@ export default function NumberConfirmationForm(props: IProps) {
 
   useEffect(() => {
     timer = startCountdown();
-    return () => clearInterval(timer);
+    return () => {
+      timer && clearInterval(timer);
+    };
   }, [counter]);
 
   function startCountdown() {
