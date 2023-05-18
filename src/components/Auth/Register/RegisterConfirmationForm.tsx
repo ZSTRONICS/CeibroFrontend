@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import useResponsive from "hooks/useResponsive";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import { toast } from "react-toastify";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
@@ -74,8 +75,9 @@ export default function RegisterConfirmationForm() {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
-        setCounter(60)
-        startCountdown()
+        toast.success(res.data.message);
+        setCounter(60);
+        startCountdown();
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {

@@ -10,18 +10,12 @@ import { useHistory } from "react-router-dom";
 
 // material
 import { makeStyles } from "@material-ui/core/styles";
-import {
-  Box,
-  Button,
-  Typography
-} from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeNumber
-} from "redux/action/auth.action";
+import { changeNumber } from "redux/action/auth.action";
 import { RootState } from "redux/reducers";
 
 //toastify
@@ -34,6 +28,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
+import { toast } from "react-toastify";
 
 interface Props {
   //   tokenLoading: boolean;
@@ -79,6 +74,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
         password,
       },
       success: (res: any) => {
+        toast.success(res.data.message);
         props.closeDialog(`${dialCode}${phoneNumber}`);
         // action?.resetForm?.();
       },
