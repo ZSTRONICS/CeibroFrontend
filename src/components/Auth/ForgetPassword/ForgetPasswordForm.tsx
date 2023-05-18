@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 
-import { Typography, Button, CircularProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import assets from "../../../assets/assets";
+import { Typography, Button, CircularProgress } from "@mui/material";
 import colors from "../../../assets/colors";
-import TextField from "../../Utills/Inputs/TextField";
 import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
 import Alert from "@mui/material/Alert";
@@ -14,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import { Form, Formik } from "formik";
 import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { CBox } from "components/material-ui";
+import { CustomStack } from "components/CustomTags";
 
 interface Props {
   tokenLoading: boolean;
@@ -22,7 +21,6 @@ interface Props {
 }
 
 const ForgetPasswordForm: React.FC<Props> = (props) => {
-  const classes = useStyles();
   const { tokenLoading, showSuccess, showError } = props;
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -61,48 +59,44 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
     setLoading(true);
     dispatch(forgetPassword(payload));
   };
-
+  const checkValidInputs = (values: any) => {
+    const { phoneNumber } = values;
+    if (phoneNumber && phoneNumber.length > 4) {
+      return false;
+    }
+    return true;
+  };
   return (
-    <div className={`form-container ${classes.wrapper}`}>
-      <div className={classes.logoWrapper}>
-        <img src={assets.logo} alt="ceibro-logo" />
-      </div>
+    <div>
+      {(showSuccess || tokenLoading) && (
+        <Alert severity="success">
+          {tokenLoading
+            ? `${t("auth.forgot_pass.verifying")}`
+            : `${t("auth.forgot_pass.email_verify_successfully")}`}
+        </Alert>
+      )}
+      {emailFoundErr && (
+        <Alert style={{ margin: "2px 0" }} severity="error">
+          {t("auth.noUserFound_with_email")}
+        </Alert>
+      )}
 
-      <div className={classes.titleWrapper}>
-        <Typography className={classes.title}>
-          {t("auth.phoneNumber")}
-        </Typography>
-      </div>
-
-      <div className={classes.loginForm}>
-        {(showSuccess || tokenLoading) && (
-          <Alert severity="success">
-            {tokenLoading
-              ? `${t("auth.forgot_pass.verifying")}`
-              : `${t("auth.forgot_pass.email_verify_successfully")}`}
-          </Alert>
-        )}
-        {emailFoundErr && (
-          <Alert style={{ margin: "2px 0" }} severity="error">
-            {t("auth.noUserFound_with_email")}
-          </Alert>
-        )}
-
-        {showError && <Alert severity="error">{t("auth.link_expired")}</Alert>}
-        <Formik
-          initialValues={{ phoneNumber: "", dialCode: "+372" }}
-          validationSchema={forgotPasswordSchema}
-          onSubmit={handleSubmit}
-        >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-          }) => (
-            <Form onSubmit={handleSubmit}>
+      {showError && <Alert severity="error">{t("auth.link_expired")}</Alert>}
+      <Formik
+        initialValues={{ phoneNumber: "", dialCode: "+372" }}
+        validationSchema={forgotPasswordSchema}
+        onSubmit={handleSubmit}
+      >
+        {({
+          values,
+          errors,
+          touched,
+          handleChange,
+          handleBlur,
+          handleSubmit,
+        }) => (
+          <Form onSubmit={handleSubmit}>
+            <CBox mb={1.5} mt={3}>
               <CustomMuiTextField
                 name="phoneNumber"
                 typeName="phone-number"
@@ -113,116 +107,47 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-              {errors.phoneNumber && touched.phoneNumber && (
-                <Typography className={`error-text ${classes.errorText}`}>
-                  {errors.phoneNumber}
-                </Typography>
-              )}
-              <div className={classes.actionWrapper}>
-                <Button
-                  type="submit"
-                  className={classes.loginButton}
-                  variant="contained"
-                  color="primary"
-                >
-                  {isDisabled && loading && (
-                    <CircularProgress size={20} className={classes.progress} />
-                  )}
-                  {t("auth.send")}
-                </Button>
-                <span className={classes.rememberText}>
-                  {t("auth.Remember")}
-                  <Link to={"/login"} className={classes.rememberLogin}>
-                    {t("auth.login")}
-                  </Link>
-                </span>
-              </div>
-            </Form>
-          )}
-        </Formik>
-      </div>
+            </CBox>
+            {errors.phoneNumber && touched.phoneNumber && (
+              <Typography className={`error-text`}>
+                {errors.phoneNumber}
+              </Typography>
+            )}
+            <CustomStack pt={2.4}>
+              <Button
+                type="submit"
+                // className={classes.loginButton}
+                variant="contained"
+                color="primary"
+                disabled={checkValidInputs(values)}
+              >
+                {isDisabled && loading && (
+                  <CircularProgress
+                    size={20}
+                    sx={{
+                      color: colors.primary,
+                      position: "absolute",
+                      zIndex: 1,
+                      margin: "auto",
+                      left: 0,
+                      right: 0,
+                      top: 10,
+                      textAlign: "center",
+                    }}
+                  />
+                )}
+                {t("auth.send")}
+              </Button>
+              <span style={{ paddingLeft: 15, fontSize: 14, fontWeight: 600 }}>
+                {t("auth.Remember")}
+                <Link to={"/login"}>{t("auth.login")}</Link>
+              </span>
+            </CustomStack>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };
 
 export default ForgetPasswordForm;
-
-const useStyles = makeStyles({
-  errorText: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  wrapper: {
-    height: "94%",
-  },
-  actionWrapper: {
-    display: "flex",
-    alignItems: "center",
-    paddingTop: 20,
-  },
-  titles: {
-    color: colors.textPrimary,
-    fontFamily: "Inter",
-  },
-  loginForm: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: 20,
-    padding: "10px 13%",
-    "@media (max-width:960px)": {
-      padding: "10 13%",
-    },
-  },
-  remember: {
-    marginTop: "35px !important",
-    fontSize: 14,
-    padding: 0,
-  },
-  rememberLogin: {
-    paddingLeft: 5,
-    textDecoration: "none",
-  },
-  rememberText: {
-    paddingLeft: 15,
-    fontSize: 14,
-    fontWeight: 600,
-  },
-  inputs: {
-    // marginTop: 40,
-    height: 5,
-  },
-  loginButton: {
-    height: 32,
-    width: 21,
-    fontSize: 14,
-  },
-  forget: {
-    marginTop: 5,
-    fontWeight: 500,
-    fontSize: 14,
-    paddingLeft: 30,
-  },
-  logoWrapper: {
-    paddingTop: "2%",
-    paddingLeft: "7%",
-  },
-  titleWrapper: {
-    paddingTop: "10%",
-    paddingLeft: "12.5%",
-  },
-  title: {
-    fontSize: 30,
-    fontWeight: "bold",
-  },
-  progress: {
-    color: colors.primary,
-    position: "absolute",
-    zIndex: 1,
-    margin: "auto",
-    left: 0,
-    right: 0,
-    top: 10,
-    textAlign: "center",
-  },
-});
