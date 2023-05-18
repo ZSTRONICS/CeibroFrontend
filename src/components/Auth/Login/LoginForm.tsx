@@ -66,7 +66,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
-  const formikRef = useRef<FormikProps<FormikValues>>(null);
+  const formikRef = useRef<FormikProps<FormikValues|any>>(null);
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);

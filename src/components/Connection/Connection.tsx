@@ -163,6 +163,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
             return (
               <Box key={userContact._id}>
                 <ConnectionCard
+                ceibroUserData={userCeibroData}
                   firstName={contactFirstName}
                   surName={contactSurName}
                   companyName={userCeibroData?.companyName}
@@ -170,6 +171,7 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
                   isBlocked={isBlocked}
                   isCeiborUser={isCeiborUser}
                   profilePic={userCeibroData?.profilePic}
+                 
                 />
               </Box>
             );

@@ -16,13 +16,8 @@ const Task = () => {
 
   useEffect(() => {
     // dispatch(getAllProjectsWithMembers());
-<<<<<<< Updated upstream
-    dispatch(getAllTask());
-    dispatch(getAllSubTaskList());
-=======
     // dispatch(getAllTask());
     // dispatch(getAllSubTaskList());
->>>>>>> Stashed changes
   }, []);
 
   if (window.location.pathname.includes("task")) {

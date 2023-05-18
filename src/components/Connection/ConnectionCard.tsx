@@ -9,6 +9,7 @@ import ViewProfile from "./ViewProfile";
 import CButton from "components/Button/Button";
 import SvgIcon from "components/material-ui/icons/CustomSvgIcon/SvgIcon";
 import useResponsive from "hooks/useResponsive";
+import { UserCeibroData } from "constants/interfaces/user.interface";
 
 interface IConnectionsProps {
   isCeiborUser: boolean;
@@ -18,6 +19,7 @@ interface IConnectionsProps {
   isBlocked: boolean;
   companyName: string | undefined;
   profilePic: string | undefined;
+  ceibroUserData:UserCeibroData | undefined
 }
 
 const ConnectionCard = ({
@@ -27,10 +29,12 @@ const ConnectionCard = ({
   isBlocked,
   profilePic,
   firstName,
-  surName
+  surName,
+  ceibroUserData
 }: IConnectionsProps) => {
   const isTabOrMobile = useResponsive("down", "sm", "");
   const iconColor = isBlocked ? "red" : isCeiborUser ? "#F1B740" : "#818181";
+
   return (
     <>
       <Box>
@@ -74,7 +78,7 @@ const ConnectionCard = ({
               </SvgIcon>
             )}
             <CButton label="Create task" variant="contained" />
-            <ViewProfile disabled={false} connectionId={"12"} userId={"123"} />
+            <ViewProfile disabled={!isCeiborUser} connectionId={"12"} userId={"123"} userData={ceibroUserData}/>
           </CustomStack>
         </Grid>
       </Box>

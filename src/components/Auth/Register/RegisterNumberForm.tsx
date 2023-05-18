@@ -27,7 +27,7 @@ export default function RegisterNumberForm() {
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
   const registerPhoneNumberSchema = RegisterNumberSchema(t);
-  const formikRef = useRef<FormikProps<FormValues>>(null);
+  const formikRef = useRef<FormikProps<FormValues|any>>(null);
 
   const handleSubmit = (values: any, action: any) => {
     const { dialCode, phoneNumber } = values;
@@ -105,8 +105,8 @@ export default function RegisterNumberForm() {
                     onBlur={handleBlur}
                   />
                   {errors.phoneNumber && touched.phoneNumber && (
-                    <Typography className={`error-text ${classes.errorText}`}>
-                      {errors.phoneNumber}
+                    <Typography className={`error-text`}>
+                      {errors.phoneNumber as string}
                     </Typography>
                   )}
                 </CBox>

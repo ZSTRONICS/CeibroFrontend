@@ -16,12 +16,11 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../redux/reducers";
 
 // components
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import LoginForm from "./LoginForm";
 
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./LoginStyles";
-const Login: React.FC<LoginInterface> = () => {
+const Login = () => {
   const classes = useStyles();
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);

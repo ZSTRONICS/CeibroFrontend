@@ -1,7 +1,7 @@
 import * as yup from "yup";
 import { TFunction } from "i18next";
 
-const phRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$/;
+const phRegex = /^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s./0-9]*$/
 
 export const SigninSchemaValidation = (t: TFunction) => {
   const signinSchema = yup.object().shape({

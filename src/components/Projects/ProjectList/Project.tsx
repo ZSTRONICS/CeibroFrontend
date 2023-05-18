@@ -65,11 +65,7 @@ const Project = () => {
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
-<<<<<<< Updated upstream
-      dispatch(getAllProjects());
-=======
       // dispatch(getAllProjects());
->>>>>>> Stashed changes
       // dispatch(getAllProjectsWithMembers());
       const payload = {
         success: (res: any) => {

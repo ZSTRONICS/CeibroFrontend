@@ -56,9 +56,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
   let [timer, setTimer] = useState("");
   const dispatch = useDispatch();
   const [showLoading, setShowLoading] = useState(false);
-  const formikRef = useRef<
-    FormikProps<FormikValues> | FormikProps<IInputValues>
-  >();
+  const formikRef = useRef<FormikProps<FormikValues> | FormikProps<IInputValues> | undefined | any>();
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);

@@ -1,14 +1,12 @@
 import { Box, Grid } from "@mui/material";
-import { CBox } from "components/material-ui";
-import useResponsive from "hooks/useResponsive";
-import ImageTile from "../Login/ImageTile";
-import useStyles from "../Register/RegisterStyles";
-import { Typography } from "@mui/material";
-import assets from "assets/assets";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import { CBox } from "components/material-ui";
 import CeibroLogo from "components/material-ui/icons/CeibroLogo/CeibroLogo";
 import CeibroMobileLogo from "components/material-ui/icons/CeibroLogo/CeibroMobileLogo";
+import useResponsive from "hooks/useResponsive";
 import { useHistory } from "react-router-dom";
+import ImageTile from "../Login/ImageTile";
+import useStyles from "../Register/RegisterStyles";
 
 const AuthLayout = (props: any) => {
   const classes = useStyles();

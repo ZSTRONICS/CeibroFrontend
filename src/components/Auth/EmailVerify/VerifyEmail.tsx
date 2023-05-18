@@ -8,9 +8,8 @@ import VerifyEmailForm from "./VerifyEmailForm";
 import { useMediaQuery } from "react-responsive";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 
-const VerifyEmail: React.FC<LoginInterface> = () => {
+const VerifyEmail = () => {
   const classes = useStyles();
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" })
 

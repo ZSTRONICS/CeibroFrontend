@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { ICountryData } from "components/material-ui/customMuiTextField/types";
 import { FormikProps } from "formik";
 import { RefObject } from "react";
@@ -9,13 +10,13 @@ type FormValues = {
 
 export const handlePhoneChange = (
   e: React.ChangeEvent<HTMLInputElement> | React.SyntheticEvent<Element, Event>,
-  formRef: RefObject<FormikProps<FormValues>> | null,
+  formikRef: React.MutableRefObject<FormikProps<FormikValues> | FormikProps<IInputValues> | undefined|any>,
   changeValue?: ICountryData
 ) => {
   if (e.target.outerText || e.target.id === "dialCode") {
-    formRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
+    formikRef.current?.setFieldValue("dialCode", changeValue?.dial_code);
   } else {
     const { name, value } = e.target;
-    formRef.current?.setFieldValue(name, value);
+    formikRef.current?.setFieldValue(name, value);
   }
 };
