@@ -153,9 +153,6 @@ const ProfileForm = () => {
                   <TextField
                     className={classes.inputBg}
                     sx={{ background: "white" }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
                     fullWidth
                     size="small"
                     id="outlined-basic"
@@ -177,9 +174,6 @@ const ProfileForm = () => {
                   <TextField
                     className={classes.inputBg}
                     sx={{ background: "white" }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
                     fullWidth
                     size="small"
                     id="outlined-basic"
@@ -200,9 +194,6 @@ const ProfileForm = () => {
                   <TextField
                     className={classes.inputBg}
                     sx={{ background: "white" }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
                     fullWidth
                     size="small"
                     id="outlined-basic"
@@ -225,9 +216,6 @@ const ProfileForm = () => {
                   <TextField
                     className={classes.inputBg}
                     sx={{ background: "white" }}
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
                     fullWidth
                     size="small"
                     id="outlined-basic"
