@@ -34,7 +34,7 @@ export const PasswordTextField = (props: IProps) => {
         <OutlinedInput
           autoComplete="off"
           inputProps={{
-            autoComplete:"off"
+            autoComplete: "off",
           }}
           id={"pwd"}
           name={name}

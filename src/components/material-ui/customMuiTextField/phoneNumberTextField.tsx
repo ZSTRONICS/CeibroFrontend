@@ -34,7 +34,10 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
     <OutlinedInput
       autoComplete="off"
       inputProps={{
-        autoComplete:"off"
+        autoComplete: "off",
+        form: {
+          autoComplete: "off",
+        },
       }}
       disabled={disabled}
       name={name}
@@ -46,9 +49,10 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
         },
         paddingLeft: 0,
         width: "100%",
-        '& .MuiAutocomplete-root .MuiOutlinedInput-root.MuiInputBase-sizeSmall':{
-          paddingRight:'0px'
-        }
+        "& .MuiAutocomplete-root .MuiOutlinedInput-root.MuiInputBase-sizeSmall":
+          {
+            paddingRight: "0px",
+          },
       }}
       value={inputValue.phoneNumber}
       onChange={handleChange}
@@ -80,7 +84,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
               {...params}
               InputProps={{
                 ...params.InputProps,
-                autoComplete: "off",
+                autoComplete: "new-password",
                 autoCorrect: "off",
               }}
               sx={{
@@ -97,7 +101,6 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
               borderBottomRightRadius: 0,
               borderTopRightRadius: "0 !important",
             },
-          
           }}
         />
       }

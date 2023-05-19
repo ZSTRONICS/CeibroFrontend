@@ -56,7 +56,9 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
   let [timer, setTimer] = useState("");
   const dispatch = useDispatch();
   const [showLoading, setShowLoading] = useState(false);
-  const formikRef = useRef<FormikProps<FormikValues> | FormikProps<IInputValues> | undefined | any>();
+  const formikRef = useRef<
+    FormikProps<FormikValues> | FormikProps<IInputValues> | undefined | any
+  >();
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
@@ -134,8 +136,8 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       <Box>
         <Formik
           initialValues={{
-            dialCode: user?.countryCode,
-            phoneNumber: user?.phoneNumber.slice(user?.countryCode.length),
+            dialCode: "+372", //user?.countryCode,
+            phoneNumber: "", // user?.phoneNumber.slice(user?.countryCode.length),
             password: "",
           }}
           validationSchema={signinSchema}
@@ -229,18 +231,18 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                   </Typography>
                 )}
               </CBox>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  sx={{ width: "100%", backgroundColor: "#0076C8", padding:1 }}
-                  disabled={checkValidInputs(values) || showLoading}
-                >
-                  {showLoading ? (
-                    <Loading type="spin" color="white" height={14} width={14} />
-                  ) : (
-                    t("auth.change_number")
-                  )}
-                </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ width: "100%", backgroundColor: "#0076C8", padding: 1 }}
+                disabled={checkValidInputs(values) || showLoading}
+              >
+                {showLoading ? (
+                  <Loading type="spin" color="white" height={14} width={14} />
+                ) : (
+                  t("auth.change_number")
+                )}
+              </Button>
             </form>
           )}
         </Formik>
