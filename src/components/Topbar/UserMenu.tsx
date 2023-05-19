@@ -72,10 +72,11 @@ const UserMenu = () => {
     dispatch(openViewInvitations());
     handleCloseUserMenu();
   };
-  useEffect(() => {
-    dispatch(getMyInvitesCount());
-    dispatch(getMyConnectionsCount());
-  }, []);
+  
+  // useEffect(() => {
+  //   dispatch(getMyInvitesCount());
+  //   dispatch(getMyConnectionsCount());
+  // }, []);
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>

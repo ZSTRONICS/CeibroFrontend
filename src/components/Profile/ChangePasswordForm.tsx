@@ -7,7 +7,8 @@ import { Formik } from "formik";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { changePassword } from "redux/action/auth.action";
+import { useHistory } from "react-router-dom";
+import { changePassword, logoutUser } from "redux/action/auth.action";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -15,6 +16,7 @@ interface IProps {
 
 const ChangePasswordForm = (props: IProps) => {
   const { t } = useTranslation();
+  const history= useHistory()
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);
@@ -30,6 +32,8 @@ const ChangePasswordForm = (props: IProps) => {
         setSuccess(true);
         setLoading(false);
         props.closeDialog();
+        dispatch(logoutUser());
+        history.push("/login");
       },
       onFailAction: (err: any) => {
         if (err.response.data.code >= 400) {
