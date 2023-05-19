@@ -101,7 +101,7 @@ const ProfileForm = () => {
     },
   });
 
-  function checkOnUpdateData(e) {
+  function checkOnUpdateData(e:any) {
     const hasChanges = Object.keys(formik.values).some((key: string) => {
       const formikValue = formik.values[key];
       const userValue = user[key];
@@ -172,7 +172,7 @@ const ProfileForm = () => {
                       Boolean(formik.errors.firstName)
                     }
                     onBlur={checkOnUpdateData}
-                    helperText={formik.errors.firstName}
+                    helperText={formik.errors.firstName as string}
                   />
                 </Grid>
 
@@ -195,7 +195,7 @@ const ProfileForm = () => {
                       formik.touched.surName && Boolean(formik.errors.surName)
                     }
                     onBlur={checkOnUpdateData}
-                    helperText={formik.errors.surName}
+                    helperText={formik.errors.surName as string}
                   />
                 </Grid>
 
@@ -220,107 +220,10 @@ const ProfileForm = () => {
                     }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     onBlur={checkOnUpdateData}
-                    helperText={formik.errors.email}
+                    helperText={formik.errors.email as string}
                   />
                 </Grid>
 
-                {/* <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Contact number"
-                  variant="outlined"
-                  name="phone"
-                  value={formik.values.phone}
-                  onChange={handleChange}
-                  error={formik.touched.phone && Boolean(formik.errors.phone)}
-                  helperText={formik.errors.phone}
-                />
-              </Grid> */}
-
-                {/* <Grid item xs={12}
-                className={`${classes.rowWrapper} ${classes.passwordRow}`}
-              >
-                <TextField
-                  autoComplete="new-password"
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          aria-label="toggle password visibility"
-                          onClick={() => setShowPassword(!showPassword)}
-                          edge="end"
-                        >
-                          {showPassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  // disabled={true}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Password"
-                  variant="outlined"
-                  name="password"
-                  value={formik.values.password}
-                  onChange={handleChange}
-                  type={showPassword ? "text" : "password"}
-                  error={
-                    formik.touched.password && Boolean(formik.errors.password)
-                  }
-                  helperText={formik.errors.password}
-                />
-              </Grid> */}
-
-                {/* <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  autoComplete="new-password"
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  type="password"
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Confirm password"
-                  variant="outlined"
-                  name="confirmPassword"
-                  value={formik.values.confirmPassword || ""}
-                  onChange={handleChange}
-                  inputRef={confirmPassRef}
-                  error={
-                    formik.touched.confirmPassword &&
-                    Boolean(formik.errors.confirmPassword)
-                  }
-                  helperText={formik.errors.confirmPassword}
-                />
-              </Grid> */}
-
-                {/* <Grid
-                item
-                xs={12}
-                className={classes.rowWrapper}
-              >
-                <Divider
-                  sx={{
-                    width: "100%",
-                  }}
-                />
-              </Grid> */}
                 <Grid item xs={12} md={12} className={classes.rowWrapper}>
                   <TextField
                     className={classes.inputBg}
@@ -340,7 +243,7 @@ const ProfileForm = () => {
                       formik.touched.companyName &&
                       Boolean(formik.errors.companyName)
                     }
-                    helperText={formik.errors.companyName}
+                    helperText={formik.errors.companyName as string}
                     onBlur={checkOnUpdateData}
                   />
                 </Grid>
@@ -387,6 +290,7 @@ const ProfileForm = () => {
                       fontWeight: 500,
                       color: "#0076C8",
                       paddingLeft: "20px",
+                      width:"max-content"
                     }}
                     onClick={() => handleModal("change-number")}
                   >
@@ -394,7 +298,7 @@ const ProfileForm = () => {
                   </Typography>
                 </Grid>
                 {/* </Grid> */}
-                <Grid container spacing={2} className={classes.rowWrapper}>
+                <Grid container my={2}>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
@@ -412,57 +316,11 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
-                <Grid container spacing={2} className={classes.rowWrapper}>
+                <Grid container mt={1}>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
                 </Grid>
-
-                {/* <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Contact number"
-                  variant="outlined"
-                  name="companyPhone"
-                  value={formik.values.companyPhone}
-                  onChange={handleChange}
-                  error={
-                    formik.touched.companyPhone &&
-                    Boolean(formik.errors.companyPhone)
-                  }
-                  helperText={formik.errors.companyPhone}
-                />
-              </Grid> */}
-
-                {/* <Grid item xs={12} className={classes.rowWrapper}>
-                <TextField
-                  className={classes.inputBg}
-                  sx={{background: "white"}}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  fullWidth
-                  size="small"
-                  id="outlined-basic"
-                  label="Work email"
-                  variant="outlined"
-                  name="workEmail"
-                  value={formik.values.workEmail}
-                  onChange={handleChange}
-                  error={
-                    formik.touched.workEmail && Boolean(formik.errors.workEmail)
-                  }
-                  helperText={formik.errors.workEmail}
-                />
-              </Grid> */}
-
                 <Grid
                   item
                   xs={12}

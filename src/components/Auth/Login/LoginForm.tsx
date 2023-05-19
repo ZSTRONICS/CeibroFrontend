@@ -136,7 +136,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {showError && (
+              {!showSuccess&&showError && (
                 <MessageAlert message={errorMesg} severity="error" />
               )}
               {showSuccess && (
