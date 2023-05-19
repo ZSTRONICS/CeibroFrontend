@@ -1,9 +1,9 @@
-import {  Button,  Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import {  useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useStyles from "../Auth/Register/RegisterStyles";
 import {
   authApiAction,
@@ -62,7 +62,7 @@ export default function NumberConfirmationForm(props: IProps) {
       },
       onFailAction: (err: any) => {
         setIncorrectAuth(false);
-        setErrorMesg(err.response.data.message)
+        setErrorMesg(err.response.data.message);
       },
     };
     dispatch(verifyChangeNumber(payload));
@@ -83,9 +83,8 @@ export default function NumberConfirmationForm(props: IProps) {
         startCountdown();
       },
       onFailAction: (err: any) => {
-          setIncorrectAuth(true);
-          setErrorMesg(err.response.data.message)
-        
+        setIncorrectAuth(true);
+        setErrorMesg(err.response.data.message);
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
@@ -95,7 +94,10 @@ export default function NumberConfirmationForm(props: IProps) {
   };
 
   return (
-    <div className={classes.registerNumberForm}>
+    <div>
+      <SubLabelTag sx={{ fontSize: { xs: 12, md: 14 }, mb:2}}>
+        Confirmation code sent to your phone
+      </SubLabelTag>
       <Formik
         initialValues={{
           verificationCode: "",
@@ -113,12 +115,9 @@ export default function NumberConfirmationForm(props: IProps) {
           isValid,
         }) => (
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-
-            {incorrectAuth && <MessageAlert message={errorMesg} severity="error" />}
-
-            <SubLabelTag sx={{ fontSize: {xs:12,md:14} }}>
-              Confirmation code sent to your phone
-            </SubLabelTag>
+            {incorrectAuth && (
+              <MessageAlert message={errorMesg} severity="error" />
+            )}
 
             <CBox mb={3.1}>
               <CustomMuiTextField
