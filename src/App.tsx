@@ -616,8 +616,8 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case USER_CONFIG.REFRESH_CONNECTIONS:
-            dispatch(getMyConnections());
-            dispatch(getMyConnectionsCount());
+            // dispatch(getMyConnections());
+            // dispatch(getMyConnectionsCount());
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:

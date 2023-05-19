@@ -17,9 +17,9 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
 
-  useEffect(() => {
-    dispatch(getMyConnectionsCount());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMyConnectionsCount());
+  // }, []);
 
   const handleClick = () => {
     history.push("/connections");
