@@ -20,7 +20,7 @@ import colors from "../../assets/colors";
 import "./topbar.css";
 import Title from "./Title";
 import TopBarSearch from "./TopBarSearch";
-import ProfileView from "./ProfileView";
+import UserMenu from "./UserMenu";
 import Notification from "components/Notification/Notification";
 
 const Topbar = (props: any) => {
@@ -96,7 +96,7 @@ const Topbar = (props: any) => {
           </div>
           {/* )} */}
 
-          <ProfileView />
+          <UserMenu />
 
           {/* {!isTabletOrMobile && ( */}
           {/* <Typography className={classes.notification}> */}

@@ -11,6 +11,7 @@ import {
 } from "redux/action/user.action";
 import ViewInvitations from "components/Profile/ViewInvitations";
 import Box from "@mui/material/Box";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
@@ -30,11 +31,7 @@ const SmartMenuBar = () => {
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Box className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
-              <img
-                src={assets.contactIcon}
-                className={classes.connectionIcon}
-                alt="connectionIcon"
-              />
+            <ConnectionIcon />
             </div>
             <span className="align-center">
               <span

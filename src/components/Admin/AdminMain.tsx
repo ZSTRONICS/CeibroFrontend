@@ -5,7 +5,7 @@ import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
 import { UserInterface } from "constants/interfaces/user.interface";
 import {  useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { userAction } from "redux/action/user.action";
+import { userApiAction } from "redux/action/user.action";
 // import AdminHeader from "./AdminHeader";
 import AdminUserTables from "./AdminUserTables";
 
@@ -33,7 +33,7 @@ function AdminMain() {
       },
       other: { role: role },
     };
-    dispatch(userAction.getUsersByRole(payload));
+    dispatch(userApiAction.getUsersByRole(payload));
   };
 
   useEffect(() => {

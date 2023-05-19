@@ -37,25 +37,13 @@ export default function Nav({ openNav, onCloseNav }:Props) {
       sx={{
         height: '100%',
         display: 'flex', flexDirection: 'column',
+        background:"#F4F4F4"
       }}
     >
-      <Box sx={{display: 'inline-flex' }}>
+      <Box sx={{display: 'inline-flex', pb:1.4 }}>
       <img src={assets.logo} alt="ceibro-logo" />
       </Box>
-
-      {/* <Box> */}
       <Sidebar />
-      {/* </Box> */}
-
-      {/* <NavSection data={navConfig} /> */}
-
-      {/* <Box sx={{ flexGrow: 1 }} />
-      <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-        <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-      
-          
-        </Stack>
-      </Box> */}
     </Box>
   );
 

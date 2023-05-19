@@ -1,11 +1,11 @@
-import { Grid, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import colors from "../../assets/colors";
 import { useDispatch } from "react-redux";
-import { updateProfilePic } from "redux/action/user.action";
 import { toast } from "react-toastify";
-import { getMyProfile } from "redux/action/auth.action";
+import { UpdateProfilePicture } from "redux/action/auth.action";
 import assets from "assets/assets";
+import { Grid } from "@mui/material";
 
 interface Props {
   profilePic: string | undefined | null;
@@ -14,7 +14,6 @@ interface Props {
 const ProfileImagePicker: React.FC<Props> = (props) => {
   const { profilePic } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
   const [url, setUrl] = useState<string | null | undefined>();
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -31,27 +30,30 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
     }
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target && e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-      setUrl(URL.createObjectURL(e.target.files[0]));
-
-      const formdata = new FormData();
-      formdata.append("profilePic", e?.target?.files?.[0]);
-      dispatch(
-        updateProfilePic({
-          body: formdata,
-          success: () => {
-            dispatch(getMyProfile());
-            toast.success("profile pic updated");
+  const handleFileChange =(e: React.ChangeEvent<HTMLInputElement>) => {
+    try {
+      const formData = new FormData();
+      if(e.target.files ){
+        const localFile = e.target.files[0];
+        setUrl(URL.createObjectURL(localFile));
+        formData.append('profilePic', localFile);
+        const payload = {
+          body: formData,
+          onFailAction: (err: any) => {
+            if (err) {
+              console.error('Failed to upload image');
+            }
           },
-        })
-      );
+        };
+       dispatch(UpdateProfilePicture(payload));
+      }
+    } catch (error) {
+      console.error('Error occurred while uploading image:', error);
     }
   };
 
   return (
-    <Grid item xs={12} md={2}>
+    <Grid item xs={6} sm={4} md={2}>
       <input
         ref={ref}
         id="files"
@@ -79,12 +81,14 @@ export default ProfileImagePicker;
 
 const useStyles = makeStyles({
   outerWrapper: {
+    marginTop:'8px',
     border: `1px solid ${colors.purpleGrey}`,
     height: 200,
     maxWidth: "100%",
     position: "relative",
     cursor: "pointer",
-    backgroundSize: "cover !important",
+    backgroundSize: "100% 100%",
+    backgroundRepeat:'no-repeat'
   },
   icon: {
     position: "absolute",

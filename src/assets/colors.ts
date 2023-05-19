@@ -20,6 +20,7 @@ const colors = {
   black: "black",
   lightBlack: "rgb(125, 126, 128)",
   lightGrey: "#F5F7F8",
+  defaultGrey:"#F4F4F4",
   lightGreySecondary: "rgb(213, 213, 213)",
   ternaryGrey: "#D3D4D9",
   grey: "rgb(236, 240, 241)",

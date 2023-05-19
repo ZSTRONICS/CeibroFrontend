@@ -103,7 +103,6 @@ const MediaSidebar: React.FC<Props> = ({ enable }) => {
     <OutsideClickHandler onOutsideClick={handleOutsideClick}>
       <div style={getStyles()} className={classes.mediaSidebarWrapper}>
         <button className="accordion" onClick={() => handleClick(1)}>
-          {/* {console.log(" GroupChat", chat.isGroupChat)} */}
 
           {/* {selectedChatId.isGroupChat === "true" ? ( */}
           <span className={classes.chatMembersWrapper}>

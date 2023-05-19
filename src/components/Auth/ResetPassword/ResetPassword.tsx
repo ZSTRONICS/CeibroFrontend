@@ -21,7 +21,7 @@ const ResetPassword = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/dashboard");
+      history.push("/tasks");
     }
   }, [isLoggedIn]);
 

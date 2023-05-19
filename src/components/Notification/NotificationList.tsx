@@ -61,7 +61,6 @@ const NotificationList = () => {
 
     items.forEach((item) => {
       const date = timeSince(item.timestamp);
-      console.log("groups[date]", date);
       if (!groups[date]) {
         groups[date] = [];
       }

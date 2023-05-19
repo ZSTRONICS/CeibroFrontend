@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { Box } from "@mui/material";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
-import assets from "../../assets/assets";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers";
-import { useMediaQuery } from "react-responsive";
-import OutsideClickHandler from "react-outside-click-handler";
-import appActions from "../../redux/action/app.action";
-import "./sidebar.css";
 import { socket } from "../../services/socket.services";
-import { getAllChats } from "redux/action/chat.action";
-import { Box } from "@mui/material";
+import "./sidebar.css";
 
 function Sidebar() {
   const classes = useStyles();
@@ -38,19 +34,19 @@ function Sidebar() {
     // }
   };
 
-  const getNavbarStyles = () => {
-    let styles = {};
-    if (isTabletOrMobile) {
-      styles = {
-        left: navbarOpen ? "0px" : "-300px",
-      };
-    }
-    return styles;
-  };
+  // const getNavbarStyles = () => {
+  //   let styles = {};
+  //   if (isTabletOrMobile) {
+  //     styles = {
+  //       left: navbarOpen ? "0px" : "-300px",
+  //     };
+  //   }
+  //   return styles;
+  // };
 
-  const toggleSidebar = () => {
-    dispatch(appActions.toggleNavbar());
-  };
+  // const toggleSidebar = () => {
+  //   dispatch(appActions.toggleNavbar());
+  // };
 
   return (
     <>
@@ -101,7 +97,7 @@ export default Sidebar;
 
 const useStyles = makeStyles((theme) => ({
   sidebarWrapper: {
-    background: colors.white,
+    background: colors.defaultGrey,
     boxShadow: "1px 0 4px -3px #888",
     // width: 200,
     // height: "100vh",
@@ -111,9 +107,7 @@ const useStyles = makeStyles((theme) => ({
       zIndex: 4,
     },
   },
-  logoWrapper: {
-    maxHeight: 150,
-  },
+
   menueWrapper: {
     // height: "calc(100vh - 200px)",
     overflowY: "auto",
@@ -124,7 +118,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "15px 10px",
     paddingRight: 0,
-    borderBottom: `1px solid #dedede`,
+    borderBottom: `1px solid white`,
     fontSize: 16,
     fontWeight: 500,
     color: colors.primary,
@@ -132,7 +126,7 @@ const useStyles = makeStyles((theme) => ({
     gap: 13,
     "&:hover": {
       background:
-        "linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)",
+        "white",
     },
   },
   iconWrapper: {
@@ -145,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
-    background: "#0076C8",
+    background: "white",
     color: colors.black,
   },
   title: {
@@ -157,8 +151,7 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
   },
   active: {
-    background:
-      "linear-gradient(264.75deg, rgba(0, 118, 200, 0.22) -4.37%, rgba(255, 255, 255, 0.22) 88.04%)",
+    background:"white",
     color: `${colors.black} !important`,
   },
   help: {

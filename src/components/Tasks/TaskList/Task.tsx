@@ -15,13 +15,13 @@ const Task = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllProjectsWithMembers());
-    dispatch(getAllTask());
-    dispatch(getAllSubTaskList());
+    // dispatch(getAllProjectsWithMembers());
+    // dispatch(getAllTask());
+    // dispatch(getAllSubTaskList());
   }, []);
 
   if (window.location.pathname.includes("task")) {
-    document.body.style.background = "#f5f7f8";
+    document.body.style.background = "white";
   }
 
   //get all project with members and store in Redux
@@ -29,7 +29,7 @@ const Task = () => {
   return (
     <>
       <Grid item xs={12}>
-        <TabsUnstyled defaultValue={0}>
+        {/* <TabsUnstyled defaultValue={0}>
           <TabsList>
             <Tab>Task</Tab>
             <Tab>Subtasks</Tab>
@@ -40,7 +40,7 @@ const Task = () => {
           <TabPanel value={1}>
             <SubTaskMain />
           </TabPanel>
-        </TabsUnstyled>
+        </TabsUnstyled> */}
       </Grid>
     </>
   );

@@ -20,11 +20,11 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getAllTask());
-    dispatch(getAllProjects());
-    dispatch(getMyConnectionsCount());
-    dispatch(getMyInvitesCount());
-    dispatch(getAllProjectsWithMembers());
+    // dispatch(getAllTask());
+    // dispatch(getAllProjects());
+    // dispatch(getMyConnectionsCount());
+    // dispatch(getMyInvitesCount());
+    // dispatch(getAllProjectsWithMembers());
   }, []);
 
   useEffect(() => {
@@ -66,8 +66,8 @@ const Dashboard = () => {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
         }, 50);
-      }else{
-        isTimeOut.refresh()
+      } else {
+        isTimeOut.refresh();
       }
     }
   };

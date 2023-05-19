@@ -10,20 +10,18 @@ import { RootState } from "redux/reducers";
 import ProfileForm from "./ProfileForm";
 import ProfileImagePicker from "./ProfileImagePicker";
 import Requests from "./Requests";
+import { Box } from "@mui/material";
 
 const Dashboard = () => {
 
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
   const { user } = useSelector((localState: RootState) => localState.auth);
 
-  if(window.location.pathname.includes('profile')){
-    document.body.style.background='#f5f7f8'
-  }
-
   return (
-    <Grid container>
+    <Grid container justifyContent="center">
       <ProfileImagePicker profilePic={user?.profilePic} />
-      {isTabletOrMobile && <Requests />}
+      {isTabletOrMobile && 
+        <Requests />}
       <ProfileForm />
       {!isTabletOrMobile && <Requests />}
     </Grid>

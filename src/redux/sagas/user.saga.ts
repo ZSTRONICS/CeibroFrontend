@@ -18,6 +18,13 @@ import {
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
 
+const getUserContacts = apiCall({
+  useV2Route: true,
+  type: USER_CONFIG.GET_USER_CONTACTS,
+  method: 'get',
+  path: payload => `users/contacts/${payload.other.userId}`,
+})
+
 const inviteUser = apiCall({
   useV2Route: false,
   type: SEND_INVITATION,
@@ -139,6 +146,7 @@ const getAvailableUsers = apiCall({
 })
 
 function* userSaga() {
+  yield takeLatest(USER_CONFIG.GET_USER_CONTACTS, getUserContacts)
   yield takeLatest(RESEND_INVITATION, resendInvites)
   yield takeLatest(REVOKE_INVITAION, revokeInvites)
   yield takeLatest(SEND_INVITATION, inviteUser)

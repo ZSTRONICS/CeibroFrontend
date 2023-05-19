@@ -1,5 +1,6 @@
 //@ts-nocheck
 import visual from "./images/Visual.png";
+import mobileVisual from './images/mobileVisual.png'
 import logo from "./images/logo.png";
 import contactIcon from "./images/contactIcon.svg";
 import clipboardIcon from "./images/clipboardIcon.png";
@@ -47,7 +48,6 @@ import pencilFilled from "./images/pencilFilled.png";
 import blackPencil from "./images/edit.svg";
 import calender from "./images/calender.png";
 
-import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
 import testProject3 from "./images/TestProject3.png";
 import testProject4 from "./images/TestProject4.png";
@@ -90,19 +90,24 @@ import AddIcon from '@mui/icons-material/Add';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuIcon from '@mui/icons-material/Menu';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
+
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
+
 const assets= {
+  CancelIcon,
+  CloseIcon,
   MenuIcon,
   EmailIcon,
   NotificationsOutlinedIcon,
   CallIcon,
   ErrorOutlineOutlinedIcon,
   logoutNew,
-  // logout,
   HighlightOffIcon,
   CloudUploadIcon,
   BorderColorIcon,
@@ -137,6 +142,7 @@ const assets= {
   sidebarChatIcon,
   sidebarPaseIcon,
   visual,
+  mobileVisual,
   logo,
   contactIcon,
   clipboardIcon,
@@ -181,7 +187,6 @@ const assets= {
   blueSearch,
   calender,
   Defaulttask,
-  testProject1,
   testProject2,
   testProject3,
   testProject4,
