@@ -42,13 +42,25 @@ const ProfileForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  let user: UserInterface = useSelector((state: RootState) => state.auth.user);
+  let user: Partial<UserInterface> | any = useSelector(
+    (state: RootState) => state.auth.user
+  );
   const isDisabled = !loading ? false : true;
   const profileSchema = setValidationSchema(t);
   const [isOpen, setIsOpen] = useState(false);
   const [modalChildren, setModalChildren] = useState<JSX.Element | null>(null);
   const [modalTitle, setModalTitle] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [onUpdate, setOnUpdate] = useState(false);
+  const {
+    phoneNumber,
+    countryCode,
+    firstName,
+    surName,
+    email,
+    jobTitle,
+    companyName,
+  } = user ?? {};
 
   const handleSubmit = (values: any) => {
     setLoading(true);
@@ -71,17 +83,7 @@ const ProfileForm = () => {
     };
     dispatch(updateMyProfile(payload));
   };
-  // todo countryCode is missing in user object
-  const {
-    phoneNumber,
-    countryCode,
-    firstName,
-    surName,
-    email,
-    jobTitle,
-    companyName,
-  } = user ?? {};
-  
+
   const userPhoneNumber = String(phoneNumber)?.slice(countryCode?.length);
   const formik = useFormik({
     initialValues: {
@@ -98,6 +100,23 @@ const ProfileForm = () => {
       handleSubmit(values);
     },
   });
+
+  function checkOnUpdateData(e) {
+    const hasChanges = Object.keys(formik.values).some((key: string) => {
+      const formikValue = formik.values[key];
+      const userValue = user[key];
+      if (key === "phoneNumber" || key === "dialCode") {
+        return false;
+      }
+      return formikValue !== userValue;
+    });
+
+    if (hasChanges) {
+      setOnUpdate(hasChanges);
+    } else {
+      setOnUpdate(false);
+    }
+  }
 
   const closeDialog = (number?: string) => {
     if (number && number !== "") {
@@ -152,6 +171,7 @@ const ProfileForm = () => {
                       formik.touched.firstName &&
                       Boolean(formik.errors.firstName)
                     }
+                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.firstName}
                   />
                 </Grid>
@@ -174,6 +194,7 @@ const ProfileForm = () => {
                     error={
                       formik.touched.surName && Boolean(formik.errors.surName)
                     }
+                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.surName}
                   />
                 </Grid>
@@ -198,6 +219,7 @@ const ProfileForm = () => {
                       e.target.blur();
                     }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
+                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.email}
                   />
                 </Grid>
@@ -216,7 +238,7 @@ const ProfileForm = () => {
                   variant="outlined"
                   name="phone"
                   value={formik.values.phone}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   error={formik.touched.phone && Boolean(formik.errors.phone)}
                   helperText={formik.errors.phone}
                 />
@@ -253,7 +275,7 @@ const ProfileForm = () => {
                   variant="outlined"
                   name="password"
                   value={formik.values.password}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   type={showPassword ? "text" : "password"}
                   error={
                     formik.touched.password && Boolean(formik.errors.password)
@@ -278,7 +300,7 @@ const ProfileForm = () => {
                   variant="outlined"
                   name="confirmPassword"
                   value={formik.values.confirmPassword || ""}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   inputRef={confirmPassRef}
                   error={
                     formik.touched.confirmPassword &&
@@ -319,6 +341,7 @@ const ProfileForm = () => {
                       Boolean(formik.errors.companyName)
                     }
                     helperText={formik.errors.companyName}
+                    onBlur={checkOnUpdateData}
                   />
                 </Grid>
 
@@ -330,7 +353,7 @@ const ProfileForm = () => {
                     placeholder={t("auth.register.job_title")}
                     inputValue={formik.values.jobTitle}
                     onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
+                    onBlur={checkOnUpdateData}
                   />
                   {/* {errors.jobTitle && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -339,39 +362,43 @@ const ProfileForm = () => {
                 )} */}
                 </Grid>
 
+                {/* <Grid container spacing={2} className={classes.rowWrapper}> */}
+                <Grid item xs={6} md={6} className={classes.rowWrapper}>
+                  <CustomMuiTextField
+                    typeName="phone-number"
+                    name="phoneNumber"
+                    inputValue={{
+                      phoneNumber: formik.values.phoneNumber,
+                      dialCode: formik.values.dialCode,
+                    }}
+                    onChange={formik.handleChange}
+                    onBlur={checkOnUpdateData}
+                    disabled={true}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    style={{
+                      backgroundColor: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                      fontFamily: "Inter",
+                      fontSize: "14px",
+                      fontWeight: 500,
+                      color: "#0076C8",
+                      paddingLeft: "20px",
+                    }}
+                    onClick={() => handleModal("change-number")}
+                  >
+                    Change phone number
+                  </Typography>
+                </Grid>
+                {/* </Grid> */}
                 <Grid container spacing={2} className={classes.rowWrapper}>
                   <Grid item xs={12}>
-                    <CustomMuiTextField
-                      typeName="phone-number"
-                      name="phoneNumber"
-                      inputValue={{
-                        phoneNumber: formik.values.phoneNumber,
-                        dialCode: formik.values.dialCode,
-                      }}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      disabled={true}
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Typography
-                      style={{
-                        backgroundColor: "transparent",
-                        border: "none",
-                        cursor: "pointer",
-                        fontFamily: "Inter",
-                        fontSize: "14px",
-                        fontWeight: 500,
-                        color: "#0076C8",
-                        marginTop: "-20px",
-                      }}
-                      onClick={() => handleModal("change-number")}
-                    >
-                      Change phone number
-                    </Typography>
+                    <Divider />
                   </Grid>
                 </Grid>
-
                 <div
                   className={classes.rowWrapper}
                   style={{ color: "#0076C8", textTransform: "capitalize" }}
@@ -385,6 +412,11 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
+                <Grid container spacing={2} className={classes.rowWrapper}>
+                  <Grid item xs={12}>
+                    <Divider />
+                  </Grid>
+                </Grid>
 
                 {/* <Grid item xs={12} className={classes.rowWrapper}>
                 <TextField
@@ -400,7 +432,7 @@ const ProfileForm = () => {
                   variant="outlined"
                   name="companyPhone"
                   value={formik.values.companyPhone}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   error={
                     formik.touched.companyPhone &&
                     Boolean(formik.errors.companyPhone)
@@ -423,7 +455,7 @@ const ProfileForm = () => {
                   variant="outlined"
                   name="workEmail"
                   value={formik.values.workEmail}
-                  onChange={formik.handleChange}
+                  onChange={handleChange}
                   error={
                     formik.touched.workEmail && Boolean(formik.errors.workEmail)
                   }
@@ -447,7 +479,7 @@ const ProfileForm = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    disabled={isDisabled}
+                    disabled={isDisabled || !onUpdate}
                   >
                     Update
                     {isDisabled && loading && (
