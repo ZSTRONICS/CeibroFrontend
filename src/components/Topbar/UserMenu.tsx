@@ -37,6 +37,7 @@ import { InvitationIcon } from "components/material-ui/icons/invitaiton/invitati
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import { MyConnectionsIcon } from "components/material-ui/icons/myConnections/MyConnectionsIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import { AddStatusTag, CustomStack } from "components/CustomTags";
 
 const UserMenu = () => {
   const history = useHistory();
@@ -79,14 +80,27 @@ const UserMenu = () => {
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="user menu">
-          <IconButton
-            onClick={handleOpenUserMenu}
-            disableRipple
-            disableFocusRipple
-            sx={{ p: 0.2 }}
+          <CustomStack gap={1.8} sx={{cursor:'pointer'}}  onClick={handleOpenUserMenu}>
+          <NameAvatar
+              firstName={user?.firstName}
+              surName={user?.surName}
+              url={user?.profilePic}
+              variant="rounded"
+            />
+          <Stack
+            direction="column"
+            justifyContent="flex-end"
+            sx={{
+              "@media (max-width:460px)": {
+                display: "none",
+              },
+            }}
           >
-            <assets.KeyboardArrowDownIcon/>
-          </IconButton>
+            <AddStatusTag sx={{color:'#131516'}}>{user?.firstName}</AddStatusTag>
+            <AddStatusTag sx={{color:'#131516'}}>{user?.surName} </AddStatusTag>
+          </Stack>
+          <assets.KeyboardArrowDownIcon/>
+          </CustomStack>
         </Tooltip>
         <Menu
           sx={{ mt: "45px" }}

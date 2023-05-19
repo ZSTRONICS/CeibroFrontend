@@ -1,18 +1,15 @@
+// @ts-nocheck
 import { useRef, useState } from "react";
 
 // material & react-icon
 import { makeStyles } from "@material-ui/core/styles";
-import { Visibility, VisibilityOff } from "@material-ui/icons";
 import {
   Button,
   CircularProgress,
   Grid,
-  IconButton,
-  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
-import { BiTrash } from "react-icons/bi";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +37,6 @@ const ProfileForm = () => {
   const { t } = useTranslation();
   const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   let user: Partial<UserInterface> | any = useSelector(
     (state: RootState) => state.auth.user

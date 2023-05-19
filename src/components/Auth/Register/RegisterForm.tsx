@@ -259,7 +259,7 @@ const RegisterForm = () => {
                       width: "100%",
                       borderColor: "red",
                       color: "red",
-                      py:{xs:0, md:1.3},
+                      py:{xs:0.3, md:1.3},
                       textTransform: "capitalize !important",
                     }}
                     onClick={() => history.push("/login")}
