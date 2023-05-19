@@ -1,23 +1,12 @@
 import PropTypes from "prop-types";
 // @mui
+import { AppBar, Box, IconButton, Stack, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import {
-  Box,
-  Stack,
-  AppBar,
-  Toolbar,
-  Typography,
-  IconButton,
-} from "@mui/material";
-import UserMenu from "components/Topbar/UserMenu";
-import Notification from "components/Notification/Notification";
-import Title from "components/Topbar/Title";
 import assets from "assets/assets";
-import { RootState } from "redux/reducers";
-import { useSelector } from "react-redux";
+import Title from "components/Topbar/Title";
+import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
-import { AddStatusTag } from "components/CustomTags";
-import NameAvatar from "components/Utills/Others/NameAvatar";
+import { useHistory } from "react-router-dom";
 
 const NAV_WIDTH = 200;
 
@@ -27,7 +16,7 @@ const HEADER_DESKTOP = 70;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
   boxShadow: "none",
-  borderBottom:'1px solid #E2E4E5',
+  borderBottom: "1px solid #E2E4E5",
   color: "unset",
   background: "white",
   [theme.breakpoints.up("lg")]: {
@@ -51,8 +40,7 @@ interface Props {
 }
 
 export default function Header({ onOpenNav }: Props) {
-  const { user } = useSelector((store: RootState) => store.auth);
-
+  const history = useHistory();
   return (
     <StyledRoot>
       <StyledToolbar>
@@ -73,31 +61,22 @@ export default function Header({ onOpenNav }: Props) {
         <Stack
           direction="row"
           alignItems="center"
+          gap={1.4}
           spacing={{
             xs: 0.4,
             sm: 1,
           }}
         >
-          <ConnectionIcon/>
-          <NameAvatar
-              firstName={user?.firstName}
-              surName={user?.surName}
-              url={user?.profilePic}
-              variant="rounded"
-            />
-          <Stack
-            direction="column"
-            justifyContent="flex-end"
-            sx={{
-              "@media (max-width:460px)": {
-                display: "none",
-              },
+          <div
+            onClick={() => {
+              history.push("/connections");
             }}
+            style={{ cursor: "pointer" }}
           >
-            <AddStatusTag sx={{color:'#131516'}}>{user?.firstName}</AddStatusTag>
-            <AddStatusTag sx={{color:'#131516'}}>{user?.surName} </AddStatusTag>
-          </Stack>
-          <UserMenu/>
+            <ConnectionIcon />
+          </div>
+
+          <UserMenu />
           {/* <Notification value={""} /> */}
         </Stack>
       </StyledToolbar>
