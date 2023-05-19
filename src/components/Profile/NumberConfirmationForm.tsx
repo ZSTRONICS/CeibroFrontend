@@ -1,22 +1,20 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import Setting from "components/Setting";
+import {  Button,  Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
 import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import {  useHistory } from "react-router-dom";
 import useStyles from "../Auth/Register/RegisterStyles";
 import {
   authApiAction,
   logoutUser,
-  registerConfirmationRequest,
   verifyChangeNumber,
 } from "redux/action/auth.action";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import useResponsive from "hooks/useResponsive";
-import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import { SubLabelTag } from "components/CustomTags";
 import { toast } from "react-toastify";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -27,8 +25,8 @@ export default function NumberConfirmationForm(props: IProps) {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
-  const isTabletOrMobile = useResponsive("down", "md", "");
   const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+  const [errorMesg, setErrorMesg] = useState<string>("");
   const dispatch = useDispatch();
   const [counter, setCounter] = useState(60);
   let timer: false | NodeJS.Timer;
@@ -63,9 +61,8 @@ export default function NumberConfirmationForm(props: IProps) {
         history.push("/login");
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setIncorrectAuth(false);
+        setErrorMesg(err.response.data.message)
       },
     };
     dispatch(verifyChangeNumber(payload));
@@ -86,9 +83,9 @@ export default function NumberConfirmationForm(props: IProps) {
         startCountdown();
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
           setIncorrectAuth(true);
-        }
+          setErrorMesg(err.response.data.message)
+        
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
@@ -99,14 +96,6 @@ export default function NumberConfirmationForm(props: IProps) {
 
   return (
     <div className={classes.registerNumberForm}>
-      {isTabletOrMobile && (
-        <div>
-          <TopBarTitle sx={{ fontSize: 28 }}>Get started</TopBarTitle>
-          <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
-            by entering your phone number
-          </SubLabelTag>
-        </div>
-      )}
       <Formik
         initialValues={{
           verificationCode: "",
@@ -124,6 +113,13 @@ export default function NumberConfirmationForm(props: IProps) {
           isValid,
         }) => (
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+
+            {incorrectAuth && <MessageAlert message={errorMesg} severity="error" />}
+
+            <SubLabelTag sx={{ fontSize: {xs:12,md:14} }}>
+              Confirmation code sent to your phone
+            </SubLabelTag>
+
             <CBox mb={3.1}>
               <CustomMuiTextField
                 name="verificationCode"

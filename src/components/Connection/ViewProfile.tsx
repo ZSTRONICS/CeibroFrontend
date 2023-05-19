@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import {
   Button,
   Dialog,
-  DialogTitle,
   Divider,
   Grid,
-  Typography,
 } from "@mui/material";
 
 import { makeStyles } from "@material-ui/core";
@@ -25,12 +23,12 @@ import {
 } from "../../redux/action/chat.action";
 
 import taskActions from "../../redux/action/task.action";
-import { useMediaQuery } from "react-responsive";
 import { UserCeibroData } from "constants/interfaces/user.interface";
 import UserProfileView from "components/Profile/UserProfileView";
 import { CustomStack } from "components/CustomTags";
 import { TopBarTitle } from "components/CustomTags";
 import assets from "assets/assets";
+import useResponsive from "hooks/useResponsive";
 
 interface IViewProfileProps {
   userId: string;
@@ -43,10 +41,9 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
   const { userId, disabled, connectionId, userData } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
-  const [getUser, setGetUser] = useState<any>({});
   const dispatch = useDispatch();
   const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const isTabletOrMobile = useResponsive("down", 'md', "");
 
   // const getUserData = () => {
   //   const payload = {
@@ -99,16 +96,16 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     dispatch(setSelectedChat({ other: roomId }));
   };
 
-  const startRoom = () => {
-    const payload = {
-      other: { _id: userId },
-      success: (res: any) => {
-        history.push("chat");
-        startChatRoom(res.data.newChat._id);
-      },
-    };
-    dispatch(createSingleRoom(payload));
-  };
+  // const startRoom = () => {
+  //   const payload = {
+  //     other: { _id: userId },
+  //     success: (res: any) => {
+  //       history.push("chat");
+  //       startChatRoom(res.data.newChat._id);
+  //     },
+  //   };
+  //   dispatch(createSingleRoom(payload));
+  // };
 
   return (
     <>
@@ -117,15 +114,8 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
           padding: "4px 10px",
           textTransform: "capitalize",
           border: "1px solid #0076C8",
-          // "@media(max-width:960px)": {
-          //   marginTop: "10px",
-          // },
-          // "@media(max-width:413px)": {
-          //   padding: "5px",
-          // },
         }}
         onClick={handleToggle}
-        className={`${classes.btn} ${classes.centerBtn}`}
         variant="outlined"
         size={isTabletOrMobile ? "small" : "medium"}
         color="primary"
@@ -135,11 +125,15 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
       </Button>
 
       <Dialog
+        fullWidth={true}
+        maxWidth="xs"
         onClose={handleToggle}
         open={open}
-        sx={{
-          "& .MuiPaper-root": { margin: { xs: 0.3, md: 2.5 } },
-        }}
+        sx={
+          {
+            "& .MuiPaper-root": { margin: { xs: 0.3, md: 2.5 } },
+          }
+        }
       >
         <CustomStack
           sx={{ margin: "14.2px 4px 2px 20px" }}
@@ -158,7 +152,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         </CustomStack>
 
         <Divider sx={{ margin: "5px 0 15px 0" }} />
-        <UserProfileView userData={getUser} />
+        <UserProfileView userData={userData} />
         <Grid
           item
           container
@@ -174,7 +168,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             size="medium"
             color="primary"
             onClick={openTaskModal}
-            sx={{ textTransform: "capitalize", width: "85%" }}
+            sx={{ textTransform: "capitalize", width: "80%" }}
           >
             Create task
           </Button>

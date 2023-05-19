@@ -16,32 +16,26 @@ import {
   FormControlLabel,
   Typography,
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@mui/material/Alert";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { loginRequest, verifyEmail } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
+import { useDispatch } from "react-redux";
+import { loginRequest } from "redux/action/auth.action";
 
 //toastify
-import { toast } from "react-toastify";
 
 // component
-import { SigninSchemaValidation } from "../userSchema/AuthSchema";
-import colors from "assets/colors";
-import assets from "assets/assets";
-import { CBox } from "components/material-ui";
-import { purgeStoreStates } from "redux/store";
+import { AddStatusTag, DocumentNameTag } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 import Loading from "components/Utills/Loader/Loading";
+import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { DocumentNameTag } from "components/CustomTags";
+import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
+import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 
 interface Props {
   tokenLoading: boolean;
   showSuccess: boolean;
-  showError: boolean;
 }
 
 interface IInputValues {
@@ -51,26 +45,21 @@ interface IInputValues {
 }
 
 const LoginForm: React.FC<Props> = (props) => {
-  const { tokenLoading, showSuccess, showError } = props;
-  const classes = useStyles();
+  const { tokenLoading, showSuccess } = props;
+  console.log('showSuccess', showSuccess)
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);
-  const [lockError, setLockError] = useState<boolean>(false);
-  const [verifyError, setVerifyError] = useState<boolean>(false);
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-  const [incorrectPhoneOrPass, setIncorrectPhoneOrPass] = useState<boolean>(false);
+  const [errorMesg, setErrorMesg] = useState<string>("");
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const [incorrectEmail, setIncorrectEmail] = useState<boolean>(false);
-  let [timer, setTimer] = useState("");
   const dispatch = useDispatch();
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
-  const formikRef = useRef<FormikProps<FormikValues|any>>(null);
+  const formikRef = useRef<FormikProps<FormikValues | any>>(null);
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
-    setIncorrectAuth(false);
     const { phoneNumber, password, dialCode } = values;
     const payload = {
       body: {
@@ -79,41 +68,23 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       onFailAction: (err: any) => {
         setShowLoading(false);
-        if (err.response.data.code === 400) {
-          setIncorrectEmail(true);
-          if(err.response.data.message==="Invalid password"){
-            setIncorrectEmail(false);
-            setIncorrectPhoneOrPass(true)
-          }
-        } else if (err.response.data.code === 404) {
-          const remainingTime = (err.response.data?.message)
-            .match(/^\d+|\d+\b|\d+(?=\w)/g)
-            .join(" ")
-            .slice(0, 2);
-          setTimer(remainingTime);
-          setIncorrectAuth(true);
-        } else if (err.response.data.code === 406) {
-          setVerifyError(true);
-        } else if (err.response.data.code === 423) {
-          const timer = (err.response.data?.message)
-            .match(/^\d+|\d+\b|\d+(?=\w)/g)
-            .join(" ")
-            .slice(0, 2);
-          setTimer(timer);
-          setLockError(true);
+        if (err.response.data.code >= 400) {
+          setShowError(true);
+          setErrorMesg(
+            err.response.data.message === "Invalid password"
+              ? "Incorrect password or invalid phone number"
+              : err.response.data.message
+          );
         } else {
           // removed stored state
           purgeStoreStates();
         }
 
         setTimeout(() => {
-          setLockError(false);
-          setVerifyError(false);
-          setIncorrectAuth(false);
-          setIncorrectEmail(false);
-          setIncorrectPhoneOrPass(false);
+          setShowError(false);
         }, 5000);
       },
+
       showErrorToast: false,
     };
     dispatch(loginRequest(payload));
@@ -130,18 +101,6 @@ const LoginForm: React.FC<Props> = (props) => {
       return false;
     }
     return true;
-  };
-
-  const handleVerifyEmail = (values: any) => {
-    const { email } = values;
-    const payload = {
-      body: { email },
-      success: () => {
-        toast.success(`${t("auth.check_your_email")}`);
-        history.push("/login");
-      },
-    };
-    dispatch(verifyEmail(payload));
   };
 
   const handlePasswordForget = () => {
@@ -178,58 +137,15 @@ const LoginForm: React.FC<Props> = (props) => {
               }}
             >
               {showError && (
-                <Alert severity="error">{t("auth.link_expired")}</Alert>
+                <MessageAlert message={errorMesg} severity="error" />
               )}
-              {/* {verifyError && (
-                <Alert
-                  severity="error"
-                  style={{ display: "flex", margin: "2px 0" }}
-                >
-                  <Typography
-                    className={`${classes.titles} ${classes.forget} ${classes.color}`}
-                    variant="body1"
-                    gutterBottom
-                    onClick={() => handleVerifyEmail(values)}
-                  >
-                    {t("auth.emailNotVerify")}
-                    <span className={classes.emailVerify}>
-                      {t("auth.verifyEmail")}
-                    </span>
-                  </Typography>
-                </Alert>
-              )} */}
-
-              {incorrectPhoneOrPass && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                 Incorrect phone number or password
-                </Alert>
-              )}
-              {incorrectAuth && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.account_locked").replace("#", `${timer}`)}
-                </Alert>
-              )}
-              {incorrectEmail && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.account_not_found").replace("#", `${timer}`)}
-                </Alert>
-              )}
-              {lockError && (
-                <Alert severity="error">
-                  {t("auth.errorAlerts.account_locked_message").replace(
-                    "#",
-                    `${timer}`
-                  )}
-                </Alert>
+              {showSuccess && (
+                <MessageAlert
+                  message="Logged in successfully"
+                  severity="success"
+                />
               )}
 
-              {(showSuccess || tokenLoading) && (
-                <Alert severity="success">
-                  {tokenLoading
-                    ? `${t("auth.successAlerts.verifying_email")}`
-                    : `${t("auth.successAlerts.email_verified")}`}
-                </Alert>
-              )}
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   typeName="phone-number"
@@ -244,7 +160,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   onBlur={handleBlur}
                 />
                 {errors.phoneNumber && touched.phoneNumber && (
-                  <Typography className={`error-text ${classes.errorText}`}>
+                  <Typography className={`error-text`}>
                     {errors.phoneNumber}
                   </Typography>
                 )}
@@ -261,7 +177,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   onBlur={handleBlur}
                 />
                 {errors.password && touched.password && (
-                  <Typography className={`error-text ${classes.errorText}`}>
+                  <Typography className={`error-text`}>
                     {errors.password}
                   </Typography>
                 )}
@@ -283,22 +199,27 @@ const LoginForm: React.FC<Props> = (props) => {
                     <DocumentNameTag>{t("auth.RememberMe")}</DocumentNameTag>
                   }
                 />
-                <Typography
-                  className={`${classes.titles} ${classes.forget}`}
-                  sx={{ marginBottom: 0, fontSize: 14, fontWeight: 500 }}
-                  variant="body1"
-                  gutterBottom
+                <AddStatusTag
+                  sx={{ marginBottom: 0, color: "#0076C8", cursor: "pointer" }}
                   onClick={handlePasswordForget}
                 >
                   {t("auth.ForgetPassword")}
-                </Typography>
+                </AddStatusTag>
               </div>
-              <div className={classes.actionWrapper}>
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  paddingTop: '30px',
+                  "@media (max-width:960px)": {
+                    padding: "15% 0",
+                  },
+                }}
+              >
                 <Button
                   type="submit"
-                  className={classes.loginButton}
                   variant="contained"
-                  sx={{ width: "100%", backgroundColor: "#0076C8" }}
+                  sx={{ width: "100%", backgroundColor: "#0076C8",   py:{xs:0.5, md:1.5} }}
                   disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
@@ -307,7 +228,7 @@ const LoginForm: React.FC<Props> = (props) => {
                     t("auth.login")
                   )}
                 </Button>
-              </div>
+              </Box>
             </form>
           )}
         </Formik>
@@ -317,102 +238,3 @@ const LoginForm: React.FC<Props> = (props) => {
 };
 
 export default LoginForm;
-const useStyles = makeStyles({
-  container: {
-    height: "92%",
-  },
-
-  formWraper: {
-    margin: "0 auto",
-  },
-  errorText: {
-    marginTop: 10,
-    fontSize: 14,
-    fontWeight: 400,
-  },
-  loginInput: {
-    width: "100%",
-    marginTop: "20px",
-  },
-
-  inputOutline: {
-    height: "40px",
-    background: "white",
-  },
-  wrapper: {
-    height: "94%",
-  },
-  actionWrapper: {
-    display: "flex",
-    alignItems: "center",
-    paddingTop: 30,
-    "@media (max-width:960px)": {
-      padding: "15% 0",
-    },
-  },
-  titles: {
-    color: colors.textPrimary,
-    fontFamily: "Inter",
-    // marginTop: -10,
-  },
-  loginForm: {
-    display: "flex",
-    flexDirection: "column",
-    marginTop: 20,
-    padding: "10px 13%",
-    "@media (max-width:960px)": {
-      padding: "10 13%",
-    },
-  },
-
-  loginButton: {
-    height: "41px",
-    fontSize: 14,
-    background: "#0076C8",
-  },
-  forget: {
-    fontWeight: 500,
-    fontSize: 14,
-    paddingLeft: 15,
-    cursor: "pointer",
-  },
-  color: {
-    color: "#611A15",
-    padding: 0,
-  },
-  emailVerify: {
-    textDecoration: "underline",
-
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  logoWrapper: {
-    paddingTop: "2%",
-    // paddingLeft: "7%",
-  },
-  titleWrapper: {
-    margin: "45px 0px 15px 0px",
-    "& .MuiTypography-root": {
-      fontSize: 30,
-      fontWeight: "bold",
-    },
-  },
-  inputs: {
-    // marginBottom: 25,
-    width: "100%",
-    maxWidth: 376,
-  },
-  inputPass: {
-    position: "relative",
-    "& .MuiIconButton-edgeEnd": {
-      position: "absolute",
-      right: 10,
-      zIndex: 999,
-      marginleft: 31,
-    },
-    "& .MuiInputAdornment-positionEnd": {
-      marginLeft: "0px !important",
-    },
-  },
-});

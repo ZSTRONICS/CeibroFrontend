@@ -93,7 +93,6 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
 
     loginButton: {
-      height: "41px",
       fontSize: 14,
       background: "#0076C8",
       width: "100%",

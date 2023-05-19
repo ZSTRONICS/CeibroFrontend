@@ -112,11 +112,13 @@ export default function RegisterNumberForm() {
                 </CBox>
                 <div className={classes.actionWrapper}>
                   <Button
+                  sx={{  py:{xs:0.5, md:1.5}}}
                     className={classes.loginButton}
                     disabled={values.phoneNumber.length > 0 ? false : true}
                     variant="contained"
                     color="primary"
                     type="submit"
+                    
                   >
                     Continue
                   </Button>

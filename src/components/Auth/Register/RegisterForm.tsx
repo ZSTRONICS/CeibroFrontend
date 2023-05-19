@@ -259,6 +259,7 @@ const RegisterForm = () => {
                       width: "100%",
                       borderColor: "red",
                       color: "red",
+                      py:{xs:0, md:1.3},
                       textTransform: "capitalize !important",
                     }}
                     onClick={() => history.push("/login")}
@@ -275,6 +276,7 @@ const RegisterForm = () => {
                       color: "#fff",
                       textTransform: "capitalize !important",
                       backgroundColor: "#0076C8",
+                      py:{xs:0.5, md:1.5}
                     }}
                     type="submit"
                     disabled={checkValidInputs(values)}

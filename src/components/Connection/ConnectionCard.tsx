@@ -34,7 +34,6 @@ const ConnectionCard = ({
 }: IConnectionsProps) => {
   const isTabOrMobile = useResponsive("down", "sm", "");
   const iconColor = isBlocked ? "red" : isCeiborUser ? "#F1B740" : "#818181";
-
   return (
     <>
       <Box>
@@ -71,7 +70,7 @@ const ConnectionCard = ({
             )}
           </CustomStack>
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={5} xs={12}>
           <CustomStack gap={2.4} justifyContent="flex-end">
             {!isTabOrMobile && (
               <SvgIcon color={iconColor}>
@@ -82,7 +81,7 @@ const ConnectionCard = ({
                 />
               </SvgIcon>
             )}
-            <CButton label="Create task" variant="contained" />
+            <CButton  size={isTabOrMobile ? "small" : "medium"} label="Create task" variant="contained" />
             <ViewProfile disabled={!isCeiborUser} connectionId={"12"} userId={"123"} userData={ceibroUserData}/>
           </CustomStack>
           </Grid>

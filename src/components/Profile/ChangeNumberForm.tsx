@@ -5,12 +5,8 @@ import { Formik, FormikProps, FormikValues } from "formik";
 // i18next
 import { useTranslation } from "react-i18next";
 
-// react router dom
-import { useHistory } from "react-router-dom";
-
 // material
 import { Box, Button, Typography } from "@mui/material";
-import Alert from "@mui/material/Alert";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +23,8 @@ import { UserInterface } from "constants/interfaces/user.interface";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 import { toast } from "react-toastify";
+import { SubLabelTag } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 
 interface Props {
   //   tokenLoading: boolean;
@@ -43,17 +41,12 @@ interface IInputValues {
 
 const ChangeNumberForm: React.FC<Props> = (props) => {
   //   const { tokenLoading, showSuccess, showError } = props;
-  let user: UserInterface = useSelector((state: RootState) => state.auth.user);
+  // let user: UserInterface = useSelector((state: RootState) => state.auth.user);
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
-  const [lockError, setLockError] = useState<boolean>(false);
-  const [verifyError, setVerifyError] = useState<boolean>(false);
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-  const [incorrectPhoneOrPass, setIncorrectPhoneOrPass] =
-    useState<boolean>(false);
+  const [errorMesg, setErrorMesg] = useState<string>("");
+  const [showError, setShowError] = useState<boolean>(false);
 
-  const [incorrectEmail, setIncorrectEmail] = useState<boolean>(false);
-  let [timer, setTimer] = useState("");
   const dispatch = useDispatch();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<
@@ -62,7 +55,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
-    setIncorrectAuth(false);
     const { phoneNumber, password, dialCode } = values;
     const payload = {
       body: {
@@ -77,40 +69,10 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       onFailAction: (err: any) => {
         setShowLoading(false);
-        if (err.response.data.code === 400) {
-          setIncorrectEmail(true);
-          if (err.response.data.message === "Invalid password") {
-            setIncorrectEmail(false);
-            setIncorrectPhoneOrPass(true);
-          }
-        } else if (err.response.data.code === 404) {
-          const remainingTime = (err.response.data?.message)
-            .match(/^\d+|\d+\b|\d+(?=\w)/g)
-            .join(" ")
-            .slice(0, 2);
-          setTimer(remainingTime);
-          setIncorrectAuth(true);
-        } else if (err.response.data.code === 406) {
-          setVerifyError(true);
-        } else if (err.response.data.code === 423) {
-          const timer = (err.response.data?.message)
-            .match(/^\d+|\d+\b|\d+(?=\w)/g)
-            .join(" ")
-            .slice(0, 2);
-          setTimer(timer);
-          setLockError(true);
-        } else {
-          // removed stored state
-          props.closeDialog(`${dialCode}${phoneNumber}`);
-          //   purgeStoreStates();
-        }
-
+          setShowError(true);
+          setErrorMesg(err.response.data.message);
         setTimeout(() => {
-          setLockError(false);
-          setVerifyError(false);
-          setIncorrectAuth(false);
-          setIncorrectEmail(false);
-          setIncorrectPhoneOrPass(false);
+          setShowError(false)
         }, 5000);
       },
       showErrorToast: false,
@@ -160,41 +122,14 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {/* {showError && (
-                <Alert severity="error">{t("auth.link_expired")}</Alert>
-              )} */}
-
-              {incorrectPhoneOrPass && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  Incorrect phone number or password
-                </Alert>
-              )}
-              {incorrectAuth && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.account_locked").replace("#", `${timer}`)}
-                </Alert>
-              )}
-              {incorrectEmail && (
-                <Alert style={{ margin: "2px 0" }} severity="error">
-                  {t("auth.account_not_found").replace("#", `${timer}`)}
-                </Alert>
-              )}
-              {lockError && (
-                <Alert severity="error">
-                  {t("auth.errorAlerts.account_locked_message").replace(
-                    "#",
-                    `${timer}`
-                  )}
-                </Alert>
+              {showError && (
+                <MessageAlert message={errorMesg} severity="error" />
               )}
 
-              {/* {(showSuccess || tokenLoading) && (
-                <Alert severity="success">
-                  {tokenLoading
-                    ? `${t("auth.successAlerts.verifying_email")}`
-                    : `${t("auth.successAlerts.email_verified")}`}
-                </Alert>
-              )} */}
+              <SubLabelTag sx={{ fontSize: 14 }}>
+                Entering your new phone number
+              </SubLabelTag>
+
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   typeName="phone-number"

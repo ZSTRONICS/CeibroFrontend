@@ -66,7 +66,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
         />
       </CBox>
       <Button
-        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2 }}
+        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2,   py:{xs:0.5, md:1.5} }}
         variant={file ? "contained" : "outlined"}
         color="primary"
         type="submit"

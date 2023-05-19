@@ -158,10 +158,12 @@ export default function RegisterConfirmationForm() {
               </div>
               <div className={classes.actionWrapper}>
                 <Button
+                  sx={{ py: { xs: 0.5, md: 1.5 } }}
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
                   type="submit"
+                  disabled={values.verificationCode.length < 1}
                 >
                   Continue
                 </Button>

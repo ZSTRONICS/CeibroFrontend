@@ -102,7 +102,7 @@ const ProfileForm = () => {
   const closeDialog = (number?: string) => {
     if (number && number !== "") {
       setNewNumber(number);
-      setModalTitle("Confirmation number");
+      setModalTitle("Phone confirmation");
       setModalChildren(
         <NumberConfirmationForm closeDialog={closeDialog} newNumber={number} />
       );
@@ -120,7 +120,7 @@ const ProfileForm = () => {
         setModalChildren(<ChangePasswordForm closeDialog={closeDialog} />);
         break;
       case "change-number":
-        setModalTitle("Change number");
+        setModalTitle("Change phone number");
         setModalChildren(<ChangeNumberForm closeDialog={closeDialog} />);
         break;
     }

@@ -64,8 +64,7 @@ const Login = () => {
     <AuthLayout title={t("auth.login")}>
       <LoginForm
         tokenLoading={tokenLoading}
-        showSuccess={success}
-        showError={error}
+        showSuccess={isLoggedIn}
       />
            {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
               {/* <Grid item> */}

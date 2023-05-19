@@ -1,12 +1,13 @@
 import { Avatar, Divider, Grid } from "@mui/material";
 import { DocumentNameTag, SubLabelTag } from "components/CustomTags";
-import { UserInterface } from "constants/interfaces/user.interface";
+import { UserCeibroData, UserInterface } from "constants/interfaces/user.interface";
 
 interface Props{
-    userData:UserInterface
+    userData: UserCeibroData | null | undefined
 }
 
 function UserProfileView({userData}:Props) {
+  console.log('userData', userData)
   let smPoint = 11;
   const avatarLetter = userData?.firstName
     && userData.firstName?.[0]?.toUpperCase?.() +
@@ -26,10 +27,10 @@ function UserProfileView({userData}:Props) {
           justifyContent="center"
         >
           <Grid item  md={3}>
-            {userData.profilePic ? (
+            {userData?.profilePic ? (
               <Avatar
                 alt="avater"
-                  src={userData.profilePic}
+                  src={userData?.profilePic}
                 variant="rounded"
                 sx={{ width: "100px", height: "100px" }}
               />
@@ -55,7 +56,7 @@ function UserProfileView({userData}:Props) {
                 Name
               </SubLabelTag>
               <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}}>
-                {userData.firstName || "N/A"}
+                {userData?.firstName || "N/A"}
               </DocumentNameTag>
             </Grid>
 
@@ -72,7 +73,7 @@ function UserProfileView({userData}:Props) {
                  Email
               </SubLabelTag>
               <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"280px", color:'#0076C8'}}>
-              {userData?.email||"kristo.vunukainen@mycompanyltd.com"}
+              {userData?.email||"N/A"}
               </DocumentNameTag>
             </Grid>
             <Grid item>
@@ -80,7 +81,7 @@ function UserProfileView({userData}:Props) {
             Contact number
               </SubLabelTag>
               <DocumentNameTag  sx={{wordWrap:"break-word", maxWidth:"250px"}}>
-              {userData?.phone || "+37256797470"}
+              {userData?.phoneNumber || "N/A"}
               </DocumentNameTag>
             </Grid>
           </Grid>
