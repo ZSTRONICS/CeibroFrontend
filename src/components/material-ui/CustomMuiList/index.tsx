@@ -80,8 +80,8 @@ export const CustomMuiList = (props: any) => {
             >
               <ListItemAvatar sx={{ width: "30px", height: "30px" }}>
                 <NameAvatar
-                  firstName={member.firstName}
-                  surName={member.surName}
+                  firstname={member.firstName}
+                  surname={member.surName}
                   url={member.profilePic}
                 />
               </ListItemAvatar>

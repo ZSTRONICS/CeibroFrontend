@@ -127,8 +127,8 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
                     <Grid container className={classes.wrapper}>
                       <Grid item xs={2}>
                         <NameAvatar
-                          firstName={member?.firstName}
-                          surName={member?.surName}
+                          firstname={member?.firstName}
+                          surname={member?.surName}
                           url={member?.profilePic}
                         />
                       </Grid>

@@ -85,15 +85,15 @@ const UserMenu = () => {
           <Button
           disableRipple
             onClick={handleOpenUserMenu}
-            aria-controls={Boolean(anchorElUser) ? "menu-appbar" : undefined}
-            aria-expanded={Boolean(anchorElUser) ? "true" : undefined}
+            aria-controls={anchorElUser ? "menu-appbar" : undefined}
+            aria-expanded={anchorElUser? "true" : undefined}
             variant="text"
             sx={{ textTransform: "unset", color:'#131516' }}
           >
             <CustomStack gap={1.8}>
               <NameAvatar
-                firstName={user?.firstName}
-                surName={user?.surName}
+                firstname={user?.firstName}
+                surname={user?.surName}
                 url={user?.profilePic}
                 variant="rounded"
               />
@@ -131,6 +131,7 @@ const UserMenu = () => {
             horizontal: "right",
           }}
           open={Boolean(anchorElUser)}
+          // onClick={handleCloseUserMenu}
           onClose={handleCloseUserMenu}
         >
           <MenuItem

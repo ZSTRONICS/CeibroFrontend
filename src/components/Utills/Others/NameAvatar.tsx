@@ -2,9 +2,10 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import { Box, Avatar } from "@mui/material";
+import { styled } from "@mui/system";
 interface NameAvatarProps {
-  firstName: string;
-  surName?: string;
+  firstname: string;
+  surname?: string;
   background?: string;
   url?: string;
   variant?: "circular" | "rounded" | "square";
@@ -12,12 +13,12 @@ interface NameAvatarProps {
 }
 
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
-  const classes = useStyles();
-  const { firstName, surName, url } = props;
-console.log('user menu props', props)
+  // const classes = useStyles();
+  const { firstname, surname, url } = props;
+  console.log("user menu props", props);
   function stringAvatar(name: string) {
-    const [firstName, lastName] = name.split(" ");
-    const firstInitial = firstName ? firstName[0] : "";
+    const [firstname, lastName] = name.split(" ");
+    const firstInitial = firstname ? firstname[0] : "";
     const lastInitial = lastName ? lastName[0] : "";
     return {
       children: `${firstInitial}${lastInitial}` || "NA",
@@ -27,19 +28,20 @@ console.log('user menu props', props)
   return (
     <>
       <Box>
-        {url&&url!=='undefined' ? (
+        {url ? (
           <Avatar
-            alt={`${firstName} ${surName}`}
+            id="pic-avatar"
+            alt={`${firstname} ${surname}`}
             src={url}
             variant={props.variant || "rounded"}
             {...props}
           />
         ) : (
-          <Avatar
+          <AvatarStyle
+            id="name-avatar"
             variant={props.variant || "rounded"}
-            className={classes.MuiAvatarSquare}
             {...props}
-            {...stringAvatar(`${firstName} ${surName}`)}
+            {...stringAvatar(`${firstname} ${surname}`)}
           />
         )}
       </Box>
@@ -49,14 +51,24 @@ console.log('user menu props', props)
 
 export default NameAvatar;
 
-const useStyles = makeStyles({
-  MuiAvatarSquare: {
-    border: `1px solid ${colors.secondaryGrey}`,
-    background: colors.secondaryGrey,
-    borderRadius: "4px",
-    color: colors.black,
-    fontSize: "14px",
-    fontWeight: 500,
-    textTransform: "uppercase",
-  },
-});
+// const useStyles = makeStyles({
+//   MuiAvatarSquare: {
+//     border: `1px solid ${colors.secondaryGrey}`,
+//     background: colors.secondaryGrey,
+//     borderRadius: "4px",
+//     color: colors.black,
+//     fontSize: "14px",
+//     fontWeight: 500,
+//     textTransform: "uppercase",
+//   },
+// });
+
+const AvatarStyle = styled(Avatar)`
+border: 1px solid rgb(222, 226, 230);
+background: rgb(222, 226, 230);
+border-radius: 4px;
+color: black;
+font-size: "14px";
+font-weight: 500;
+text-transform: uppercase;
+`

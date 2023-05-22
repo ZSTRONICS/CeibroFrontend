@@ -156,8 +156,8 @@ const ChatMembers: React.FC<Props> = ({ enable }) => {
                 <Grid item xs={2} style={{ paddingTop: 5 }}>
                   <NameAvatar
                     // styleAvater={}
-                    firstName={member?.firstName}
-                    surName={member?.surName}
+                    firstname={member?.firstName}
+                    surname={member?.surName}
                     url={member?.profilePic}
                     size="small"
                   />

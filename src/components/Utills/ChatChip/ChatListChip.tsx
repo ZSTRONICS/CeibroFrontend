@@ -111,12 +111,12 @@ const ChatListChip: React.FC<ChatListInterfaceProps> = (props) => {
           height="40px"
         >
           {chat.isGroupChat ? (
-            <NameAvatar background="white" firstName={name} />
+            <NameAvatar background="white" firstname={name} />
           ) : (
             <NameAvatar
               background="white"
-              firstName={individualFirstName}
-              surName={individualSurName}
+              firstname={individualFirstName}
+              surname={individualSurName}
               url={individualPicUrl}
             />
           )}

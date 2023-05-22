@@ -47,8 +47,8 @@ const ConnectionCard = ({
               <Box sx={{display:'flex', gap:1.4}}>
                 <NameAvatar
               url={profilePic && profilePic}
-              firstName={firstName?firstName:""}
-              surName={surName?surName:""}
+              firstname={firstName?firstName:""}
+              surname={surName?surName:""}
             />
             <div>
               <SubHeadingTag sx={{ color: "#0076C8" }}>

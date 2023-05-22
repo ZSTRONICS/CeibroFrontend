@@ -109,8 +109,8 @@ export default function CreateGroup() {
                                             className={classes.selectedUser}
                                         >
                                             <NameAvatar
-                                                firstName={member?.user?.firstName}
-                                                surName={member?.user?.surName}
+                                                firstname={member?.user?.firstName}
+                                                surname={member?.user?.surName}
                                                 url={member?.user?.profilePic}
                                             />
                                             <Cancel
@@ -132,8 +132,8 @@ export default function CreateGroup() {
                                         <Grid container className={classes.wrapper}>
                                             <Grid item xs={2}>
                                                 <NameAvatar
-                                                    firstName={member?.user?.firstName}
-                                                    surName={member?.user?.surName}
+                                                    firstname={member?.user?.firstName}
+                                                    surname={member?.user?.surName}
                                                     url={member?.user?.profilePic}
                                                 />
                                             </Grid>
