@@ -46,7 +46,6 @@ interface IInputValues {
 
 const LoginForm: React.FC<Props> = (props) => {
   const { tokenLoading, showSuccess } = props;
-  console.log('showSuccess', showSuccess)
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);

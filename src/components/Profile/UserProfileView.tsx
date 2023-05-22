@@ -7,7 +7,6 @@ interface Props{
 }
 
 function UserProfileView({userData}:Props) {
-  console.log('userData', userData)
   let smPoint = 11;
   const avatarLetter = userData?.firstName
     && userData.firstName?.[0]?.toUpperCase?.() +
