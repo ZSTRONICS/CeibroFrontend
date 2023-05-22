@@ -3,13 +3,13 @@ import React, { useEffect } from "react";
 // material
 import {
   Menu,
-  IconButton,
   MenuItem,
   Typography,
   Box,
   Stack,
   Badge,
   Tooltip,
+  Button,
 } from "@mui/material";
 
 // router-dom
@@ -38,6 +38,7 @@ import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIco
 import { MyConnectionsIcon } from "components/material-ui/icons/myConnections/MyConnectionsIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { AddStatusTag, CustomStack } from "components/CustomTags";
+import { MenuItemProps } from "@material-ui/core";
 
 const UserMenu = () => {
   const history = useHistory();
@@ -72,7 +73,7 @@ const UserMenu = () => {
     dispatch(openViewInvitations());
     handleCloseUserMenu();
   };
-  
+
   // useEffect(() => {
   //   dispatch(getMyInvitesCount());
   //   dispatch(getMyConnectionsCount());
@@ -81,27 +82,40 @@ const UserMenu = () => {
     <>
       <Box sx={{ flexGrow: 0 }}>
         <Tooltip title="user menu">
-          <CustomStack gap={1.8} sx={{cursor:'pointer'}}  onClick={handleOpenUserMenu}>
-          <NameAvatar
-              firstName={user?.firstName}
-              surName={user?.surName}
-              url={user?.profilePic}
-              variant="rounded"
-            />
-          <Stack
-            direction="column"
-            justifyContent="flex-end"
-            sx={{
-              "@media (max-width:460px)": {
-                display: "none",
-              },
-            }}
+          <Button
+          disableRipple
+            onClick={handleOpenUserMenu}
+            aria-controls={Boolean(anchorElUser) ? "menu-appbar" : undefined}
+            aria-expanded={Boolean(anchorElUser) ? "true" : undefined}
+            variant="text"
+            sx={{ textTransform: "unset", color:'#131516' }}
           >
-            <AddStatusTag sx={{color:'#131516'}}>{user?.firstName}</AddStatusTag>
-            <AddStatusTag sx={{color:'#131516'}}>{user?.surName} </AddStatusTag>
-          </Stack>
-          <assets.KeyboardArrowDownIcon/>
-          </CustomStack>
+            <CustomStack gap={1.8}>
+              <NameAvatar
+                firstName={user?.firstName}
+                surName={user?.surName}
+                url={user?.profilePic}
+                variant="rounded"
+              />
+              <Stack
+                direction="column"
+                justifyContent="flex-end"
+                sx={{
+                  "@media (max-width:460px)": {
+                    display: "none",
+                  },
+                }}
+              >
+                <AddStatusTag sx={{ color: "#131516" }}>
+                  {user?.firstName}
+                </AddStatusTag>
+                <AddStatusTag sx={{ color: "#131516" }}>
+                  {user?.surName}{" "}
+                </AddStatusTag>
+              </Stack>
+              <assets.KeyboardArrowDownIcon />
+            </CustomStack>
+          </Button>
         </Tooltip>
         <Menu
           sx={{ mt: "45px" }}
@@ -128,16 +142,12 @@ const UserMenu = () => {
             sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
+                gap:'16px'
               },
             }}
           >
-            <Stack direction="row" spacing={2}>
-              <Box display="flex" alignItems="center">
-                <ProfileIcon />
-                {/* <img src={assets.ProfileIcon} className={`w-16`} alt="" /> */}
-              </Box>
-              <Typography textAlign="center">Profile</Typography>
-            </Stack>
+            <ProfileIcon />
+            Profile
           </MenuItem>
 
           <MenuItem
@@ -148,6 +158,7 @@ const UserMenu = () => {
             sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
+                gap:'15px'
               },
             }}
           >
@@ -160,7 +171,6 @@ const UserMenu = () => {
             >
               <Box display="flex" alignItems="center">
                 <ConnectionIcon />
-                {/* <img src={assets.contactsBlack} className="w-16" alt="" /> */}
               </Box>
               <Typography textAlign="center"> My Connections</Typography>
               <Box
@@ -181,7 +191,7 @@ const UserMenu = () => {
             </Stack>
           </MenuItem>
 
-          <MenuItem
+          {/* <MenuItem
             disableRipple
             onClick={openViewInvitation}
             divider
@@ -192,14 +202,14 @@ const UserMenu = () => {
               },
             }}
           >
-            <Stack direction="row" spacing={2} alignItems='center'>
+            <Stack direction="row" spacing={1.5} alignItems="center">
               <InvitationIcon />
               <Typography textAlign="center">Invitations</Typography>
 
               <Box
                 display="flex"
                 alignItems="center"
-                sx={{ padding: " 0 10px 0" }}
+                sx={{ padding: " 0 9px 0" }}
               >
                 <Badge
                   showZero={true}
@@ -209,7 +219,7 @@ const UserMenu = () => {
                 />
               </Box>
             </Stack>
-          </MenuItem>
+          </MenuItem> */}
 
           <MenuItem
             disableRipple

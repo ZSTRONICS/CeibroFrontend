@@ -14,7 +14,7 @@ interface NameAvatarProps {
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
   const classes = useStyles();
   const { firstName, surName, url } = props;
-
+console.log('user menu props', props)
   function stringAvatar(name: string) {
     const [firstName, lastName] = name.split(" ");
     const firstInitial = firstName ? firstName[0] : "";
@@ -29,7 +29,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
       <Box>
         {url&&url!=='undefined' ? (
           <Avatar
-            alt="avater"
+            alt={`${firstName} ${surName}`}
             src={url}
             variant={props.variant || "rounded"}
             {...props}
