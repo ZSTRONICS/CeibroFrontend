@@ -222,8 +222,8 @@ const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
               className={classes.userInfo}
             >
               <NameAvatar
-                firstName={sender?.firstName || ""}
-                surName={sender?.surName}
+                firstname={sender?.firstName || ""}
+                surname={sender?.surName}
                 url={sender?.profilePic}
               />
               <CBox width="100%" ml={1.5} style={getClass()}>

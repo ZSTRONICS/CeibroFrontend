@@ -144,7 +144,7 @@ const ProfileForm = () => {
 
   return (
     <>
-      <Grid container xs={12} md={6}>
+      <Grid container item xs={12} md={6}>
         <Grid item className={classes.mainContainer}>
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
@@ -301,7 +301,7 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
-                <Grid container mt={1}>
+                <Grid item container  mt={1}>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>

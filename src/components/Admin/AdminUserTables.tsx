@@ -35,8 +35,8 @@ function AdminUserTables(props: any) {
         // return  <Avatar alt={params.row.id} src={`${params.value}`} />
         return (
           <NameAvatar
-            firstName={String(params.row.name).split(" ")[0]}
-            surName={String(params.row.name).split(" ")[1]}
+            firstname={String(params.row.name).split(" ")[0]}
+            surname={String(params.row.name).split(" ")[1]}
             url={params.value}
             variant="circular"
           />

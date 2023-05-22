@@ -72,8 +72,8 @@ const InvitationsList: React.FunctionComponent<IInvitationsListProps> =
               <Grid container className={classes.wrapper}>
                 <Grid item xs={2}>
                   <NameAvatar
-                    firstName={invitation?.from?.firstName}
-                    surName={invitation?.from?.surName}
+                    firstname={invitation?.from?.firstName}
+                    surname={invitation?.from?.surName}
                     url={invitation?.from?.profilePic}
                   />
                 </Grid>
