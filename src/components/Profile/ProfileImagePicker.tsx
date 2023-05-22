@@ -14,7 +14,7 @@ interface Props {
 const ProfileImagePicker: React.FC<Props> = (props) => {
   const { profilePic } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string | null | undefined>();
+  const [imageUrl, setImageUrl] = useState<string>();
 
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
@@ -76,13 +76,23 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ backgroundImage: `url(${imageUrl})` }}
+        // style={{ backgroundImage: `url(${imageUrl})` }}
       >
         {showLoader === true && (
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress size={40} />
           </Box>
         )}
+
+        <img
+          id="img"
+          style={{ border: "2px solid black", maxWidth: "500px" }}
+          src={imageUrl}
+          loading="lazy"
+          decoding="sync"
+          alt=""
+        />
+
         <img
           src={assets.whitePencil}
           className={`width-16 ${classes.icon} imgPicker`}
