@@ -15,7 +15,6 @@ interface NameAvatarProps {
 const NameAvatar: React.FC<NameAvatarProps> = (props) => {
   // const classes = useStyles();
   const { firstname, surname, url } = props;
-  console.log("user menu props", props);
   function stringAvatar(name: string) {
     const [firstname, lastName] = name.split(" ");
     const firstInitial = firstname ? firstname[0] : "";
