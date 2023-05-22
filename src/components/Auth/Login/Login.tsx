@@ -18,16 +18,14 @@ import { RootState } from "../../../redux/reducers";
 // components
 import LoginForm from "./LoginForm";
 
-import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./LoginStyles";
+import AuthLayout from "../AuthLayout/AuthLayout";
 const Login = () => {
   const classes = useStyles();
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
   const { t } = useTranslation();
-  const [error, setError] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
 
   const LoginData = async () => {
     const queryParams = queryString.parse(history?.location?.search);

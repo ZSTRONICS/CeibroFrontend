@@ -76,7 +76,7 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        // style={{ backgroundImage: `url(${imageUrl})` }}
+        style={{ backgroundImage: `url(${imageUrl})`}}
       >
         {showLoader === true && (
           <Box sx={{ textAlign: "center" }}>
@@ -84,14 +84,14 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
           </Box>
         )}
 
-        <img
+        {/* <img
           id="img"
           style={{ border: "2px solid black", maxWidth: "500px" }}
           src={imageUrl}
           loading="lazy"
           decoding="sync"
           alt=""
-        />
+        /> */}
 
         <img
           src={assets.whitePencil}

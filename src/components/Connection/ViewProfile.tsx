@@ -60,7 +60,6 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
 
   const handleToggle = () => {
     setOpen((prev: boolean) => !prev);
-    // console.log("userData", userData);
   };
 
   const openTaskModal = () => {
