@@ -8,7 +8,7 @@ import assets from "assets/assets";
 import { Grid } from "@mui/material";
 
 interface Props {
-  profilePic: string | undefined | null;
+  profilePic: string | undefined | null|any;
 }
 
 const ProfileImagePicker: React.FC<Props> = (props) => {
@@ -29,7 +29,7 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       ref.current.click();
     }
   };
-
+console.log('profilePic', profilePic)
   const handleFileChange =(e: React.ChangeEvent<HTMLInputElement>) => {
     try {
       const formData = new FormData();
