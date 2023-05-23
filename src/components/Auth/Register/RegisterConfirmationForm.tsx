@@ -56,7 +56,7 @@ export default function RegisterConfirmationForm() {
       },
       success: (res: any) => {
         history.push("/t&c");
-        action?.resetForm?.();
+        action.resetForm();
       },
       onFailAction: (err: any) => {
         if (err.response.data.code === 400) {
