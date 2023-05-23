@@ -53,7 +53,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     //   };
     // }
     // case requestFail(LOGIN): {
-    //   localStorage.clear();
     //   sessionStorage.clear();
     //   purgeStoreStates()
     //   setTimeout(() => {
@@ -123,8 +122,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(REGISTER_CONFIRMATION): {
-      localStorage.clear();
-      sessionStorage.clear();
+      // localStorage.clear();
+      // sessionStorage.clear();
       setTimeout(() => {
         state.registerLoading = false;
       }, 10000 / 2);
@@ -155,8 +154,8 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case requestFail(REGISTER_PROFILE_SETUP): {
-      localStorage.clear();
-      sessionStorage.clear();
+      // localStorage.clear();
+      // sessionStorage.clear();
       setTimeout(() => {
         state.registerLoading = false;
       }, 10000 / 2);

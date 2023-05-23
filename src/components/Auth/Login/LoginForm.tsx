@@ -57,19 +57,37 @@ const LoginForm: React.FC<Props> = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
 
-  const handleSubmit = (values: IInputValues) => {
+  // todo make a generic hook for api errors handling and show alert
+  const setShowErrorMesg = (msg: string) => {
+    setShowError(true);
+    setErrorMesg(msg);
+    setTimeout(() => {
+      setShowError(false);
+    }, 5000);
+  };
+
+  const handleSubmit = (values: IInputValues, { resetForm }: { resetForm: () => void }) => {
     setShowLoading(true);
     const { phoneNumber, password, dialCode } = values;
+    if (phoneNumber.length === 0) {
+      setShowErrorMesg("Phone number is not allowed to be empty");
+      return;
+    }
+    if (password.length === 0) {
+      setShowErrorMesg("Password is not allowed to be empty");
+      return;
+    }
+
     const payload = {
       body: {
         phoneNumber: `${dialCode}${phoneNumber}`,
         password,
       },
+
       onFailAction: (err: any) => {
         setShowLoading(false);
         if (err.response.data.code >= 400) {
-          setShowError(true);
-          setErrorMesg(
+          setShowErrorMesg(
             err.response.data.message === "Invalid password"
               ? "Incorrect password or invalid phone number"
               : err.response.data.message
@@ -78,10 +96,6 @@ const LoginForm: React.FC<Props> = (props) => {
           // removed stored state
           purgeStoreStates();
         }
-
-        setTimeout(() => {
-          setShowError(false);
-        }, 5000);
       },
 
       showErrorToast: false,
@@ -135,7 +149,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {!showSuccess&&showError && (
+              {!showSuccess && showError && (
                 <MessageAlert message={errorMesg} severity="error" />
               )}
               {showSuccess && (
@@ -199,9 +213,11 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                 />
                 <AddStatusTag
-                  sx={{ marginBottom: 0, 
+                  sx={{
+                    marginBottom: 0,
                     // color: "#0076C8",
-                     cursor: "pointer" }}
+                    cursor: "pointer",
+                  }}
                   // onClick={handlePasswordForget}
                 >
                   {t("auth.ForgetPassword")}
@@ -211,7 +227,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  paddingTop: '30px',
+                  paddingTop: "30px",
                   "@media (max-width:960px)": {
                     padding: "15% 0",
                   },
@@ -220,7 +236,11 @@ const LoginForm: React.FC<Props> = (props) => {
                 <Button
                   type="submit"
                   variant="contained"
-                  sx={{ width: "100%", backgroundColor: "#0076C8",   py:{xs:0.5, md:1.5} }}
+                  sx={{
+                    width: "100%",
+                    backgroundColor: "#0076C8",
+                    py: { xs: 0.5, md: 1.5 },
+                  }}
                   disabled={checkValidInputs(values) || showLoading}
                 >
                   {showLoading ? (
