@@ -15,15 +15,17 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import useResponsive from "hooks/useResponsive";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
-import { toast } from "react-toastify";
+import MessageAlert from "components/MessageAlert/MessageAlert";
+import useErrorMesg from "hooks/useErrorMesg";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
+  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
 
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
   const [counter, setCounter] = useState(60);
   let timer: false | NodeJS.Timer;
@@ -59,16 +61,12 @@ export default function RegisterConfirmationForm() {
         action.resetForm();
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setShowErrorMesg(err.response.data.message);
       },
     };
     dispatch(registerConfirmationRequest(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
+
   const handleResend = () => {
     let phoneNumber = localStorage.getItem("phoneNumber");
     let dialCode = localStorage.getItem("dialCode");
@@ -77,21 +75,18 @@ export default function RegisterConfirmationForm() {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
-        toast.success(res.data.message);
+        setShowSuccessAlert(true);
+        setShowErrorMesg(res.data.message);
         setCounter(60);
         startCountdown();
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setShowErrorMesg(err.response.data.message);
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
+
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
@@ -105,6 +100,12 @@ export default function RegisterConfirmationForm() {
               by entering your phone number
             </SubLabelTag>
           </div>
+        )}
+        {!showSuccessAlert && showError && (
+          <MessageAlert message={errorMesg} severity="error" />
+        )}
+        {showSuccessAlert && (
+          <MessageAlert message={errorMesg} severity="success" />
         )}
         <Formik
           initialValues={{
@@ -123,7 +124,7 @@ export default function RegisterConfirmationForm() {
             isValid,
           }) => (
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <CBox mb={3.1}>
+              <CBox mb={3.1} pt={2}>
                 <CustomMuiTextField
                   name="verificationCode"
                   typeName="text-field"

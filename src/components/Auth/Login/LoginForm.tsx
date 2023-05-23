@@ -32,7 +32,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
-import useErrorMesg from "hooks/useError";
+import useErrorMesg from "hooks/useErrorMesg";
 
 interface Props {
   tokenLoading: boolean;

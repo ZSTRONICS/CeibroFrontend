@@ -1,8 +1,8 @@
-import { Box, Button, SelectChangeEvent, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { Formik, FormikHelpers, FormikProps } from "formik";
+import { Formik,  FormikProps } from "formik";
 import useResponsive from "hooks/useResponsive";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,8 +12,9 @@ import { registerRequest } from "redux/action/auth.action";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
-import { ICountryData } from "components/material-ui/customMuiTextField/types";
 import { handlePhoneChange } from "../../../utills/formFunctions";
+import useErrorMesg from "hooks/useErrorMesg";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 
 type FormValues = {
   dialCode: string;
@@ -24,10 +25,12 @@ export default function RegisterNumberForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
   const dispatch = useDispatch();
   const registerPhoneNumberSchema = RegisterNumberSchema(t);
-  const formikRef = useRef<FormikProps<FormValues|any>>(null);
+  const formikRef = useRef<FormikProps<FormValues | any>>(null);
+
+  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
+  const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
 
   const handleSubmit = (values: any, action: any) => {
     const { dialCode, phoneNumber } = values;
@@ -40,17 +43,14 @@ export default function RegisterNumberForm() {
       success: (res: any) => {
         history.push("/confirmation");
         action?.resetForm?.();
+        setShowSuccessAlert(true);
+        setShowErrorMesg(res.data.message);
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setShowErrorMesg(err.response.data.message);
       },
     };
     dispatch(registerRequest(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
 
   const isTabletOrMobile = useResponsive("down", "md", "");
@@ -71,7 +71,12 @@ export default function RegisterNumberForm() {
             </div>
           </div>
         )}
-
+        {!showSuccessAlert && showError && (
+          <MessageAlert message={errorMesg} severity="error" />
+        )}
+        {showSuccessAlert && (
+          <MessageAlert message={errorMesg} severity="success" />
+        )}
         <div className={classes.registerNumberForm}>
           <Formik
             initialValues={{
@@ -112,13 +117,12 @@ export default function RegisterNumberForm() {
                 </CBox>
                 <div className={classes.actionWrapper}>
                   <Button
-                  sx={{  py:{xs:0.5, md:1.5}}}
+                    sx={{ py: { xs: 0.5, md: 1.5 } }}
                     className={classes.loginButton}
                     disabled={values.phoneNumber.length > 0 ? false : true}
                     variant="contained"
                     color="primary"
                     type="submit"
-                    
                   >
                     Continue
                   </Button>
