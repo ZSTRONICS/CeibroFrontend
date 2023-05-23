@@ -94,13 +94,6 @@ const getMyProfile = apiCall({
   path: "/users/profile",
 });
 
-const otpVerify = apiCall({
-  useV2Route: false,
-  type: OTP_VERIFY,
-  method: "post",
-  path: (payload) => `/auth/verify-email?otp=${payload?.other}`,
-});
-
 const updateProfilePicture = apiCall({
   useV2Route: true,
   isFormData: true,
@@ -121,6 +114,14 @@ const forgetPassword = apiCall({
   type: FORGET_PASSWORD,
   method: "post",
   path: `/auth/forget-password`,
+});
+
+// otp verify for forget password
+const otpVerify = apiCall({
+  useV2Route: true,
+  type: OTP_VERIFY,
+  method: "post",
+  path: "/auth/otp/verify-nodel",
 });
 
 const changePassword = apiCall({
@@ -144,13 +145,13 @@ const verifyChangeNumber = apiCall({
   path: `/users/verify/change-number`,
 });
 
-// const resetPassword = apiCall({
-//   useV2Route: false,
-//   type: RESET_PASSWORD,
-//   method: "post",
-//   path: (payload) => `/auth/reset-password?token=${payload?.other}`,
-//   // reset-password?otp=grgdfvdf
-// });
+const resetPassword = apiCall({
+  useV2Route: true,
+  type: RESET_PASSWORD,
+  method: "post",
+  path: "/auth/reset-password",
+  // reset-password?otp=grgdfvdf
+});
 
 function* projectSaga() {
   yield takeLatest(LOGIN, loginRequest);
@@ -168,7 +169,7 @@ function* projectSaga() {
   yield takeLatest(USER_CHANGE_NUMBER, changeNumber);
   yield takeLatest(FORGET_PASSWORD, forgetPassword);
   yield takeLatest(USER_VERIFY_CHANGE_NUMBER, verifyChangeNumber);
-  // yield takeLatest(RESET_PASSWORD, resetPassword);
+  yield takeLatest(RESET_PASSWORD, resetPassword);
 }
 
 export default projectSaga;
