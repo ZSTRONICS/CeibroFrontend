@@ -58,7 +58,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const {errorMesg,setShowErrorMesg,showError}= useErrorMesg()
 
   const handleSubmit = (values: IInputValues, { resetForm }: { resetForm: () => void }) => {
-    setShowLoading(true);
+    
     const { phoneNumber, password, dialCode } = values;
     if (phoneNumber.length === 0) {
       setShowErrorMesg("Phone number is not allowed to be empty");
@@ -91,6 +91,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
       showErrorToast: false,
     };
+     setShowLoading(true);
     dispatch(loginRequest(payload));
   };
 

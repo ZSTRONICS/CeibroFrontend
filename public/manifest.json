@@ -5,12 +5,7 @@
     {
       "src": "ceibro03.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "ceibro03.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "20x24"
     }
   ],
   "start_url": ".",
