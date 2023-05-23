@@ -32,6 +32,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
+import useErrorMesg from "hooks/useError";
 
 interface Props {
   tokenLoading: boolean;
@@ -49,22 +50,12 @@ const LoginForm: React.FC<Props> = (props) => {
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);
-  const [errorMesg, setErrorMesg] = useState<string>("");
-  const [showError, setShowError] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
-
-  // todo make a generic hook for api errors handling and show alert
-  const setShowErrorMesg = (msg: string) => {
-    setShowError(true);
-    setErrorMesg(msg);
-    setTimeout(() => {
-      setShowError(false);
-    }, 5000);
-  };
+  const {errorMesg,setShowErrorMesg,showError}= useErrorMesg()
 
   const handleSubmit = (values: IInputValues, { resetForm }: { resetForm: () => void }) => {
     setShowLoading(true);
