@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { forgetPassword } from "../../../redux/action/auth.action";
 import Alert from "@mui/material/Alert";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Form, Formik, FormikProps } from "formik";
 import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
@@ -33,6 +33,7 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
   const [emailFoundErr, setEmailFound] = useState<boolean>(false);
   const isDisabled = !loading ? false : true;
   const formikRef = useRef<FormikProps<FormValues>>(null);
+  const history = useHistory();
 
   const handleKeyDown = (e: any, values: any) => {
     if (e.keyCode === 13) {
@@ -42,10 +43,13 @@ const ForgetPasswordForm: React.FC<Props> = (props) => {
 
   const handleSubmit = (values: any) => {
     const { phoneNumber, dialCode } = values;
+    localStorage.setItem("phoneNumber", phoneNumber);
+    localStorage.setItem("dialCode", dialCode);
     const payload = {
       body: { phoneNumber: `${dialCode}${phoneNumber}` },
       success: (res: any) => {
         toast.success(res.data.message);
+        history.push("/forget-confirmation");
       },
       onFailAction: (err: any) => {},
       finallyAction: () => {

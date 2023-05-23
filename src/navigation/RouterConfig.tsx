@@ -17,6 +17,7 @@ import {
   RegisterConfirmationForm,
   TermsAndConditions,
   RegisterAddProfilePic,
+  ForgetConfirmation,
 } from "components";
 
 import PrivateRoute from "./PrivateRoute";
@@ -43,6 +44,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/login" component={Login} />
             {/* <Route path="/verify-email" component={VerifyEmail} /> */}
             <Route path="/forgot-password" component={ForgetPassword} />
+            <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
             <Route path="/register" component={RegisterNumberForm} />
             <Route path="/confirmation" component={RegisterConfirmationForm} />

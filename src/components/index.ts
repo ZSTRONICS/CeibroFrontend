@@ -37,21 +37,23 @@ import AdminMain from "./Admin/AdminMain";
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
+import ForgetConfirmation from "./Auth/ForgetPassword/ForgetConfirmation";
 
 // connection
-const Connections = lazy(() => import('./Connection/Connection'));
+const Connections = lazy(() => import("./Connection/Connection"));
 
-// profile 
-const Profile = lazy(() => import('./Profile/Profile'));
+// profile
+const Profile = lazy(() => import("./Profile/Profile"));
 
 // task
-const Tasks = lazy(() => import('./Tasks/TaskList/Task'));
+const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
 
 // project
-const Projects = lazy(() => import('./Projects/ProjectList/Project'));
+const Projects = lazy(() => import("./Projects/ProjectList/Project"));
 
 export {
   RouterConfig,
+  ForgetConfirmation,
   RegisterAddProfilePic,
   RegisterConfirmationForm,
   RegisterNumberForm,

@@ -55,10 +55,12 @@ const LoginForm: React.FC<Props> = (props) => {
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
-  const {errorMesg,setShowErrorMesg,showError}= useErrorMesg()
+  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
 
-  const handleSubmit = (values: IInputValues, { resetForm }: { resetForm: () => void }) => {
-    
+  const handleSubmit = (
+    values: IInputValues,
+    { resetForm }: { resetForm: () => void }
+  ) => {
     const { phoneNumber, password, dialCode } = values;
     if (phoneNumber.length === 0) {
       setShowErrorMesg("Phone number is not allowed to be empty");
@@ -91,7 +93,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
       showErrorToast: false,
     };
-     setShowLoading(true);
+    setShowLoading(true);
     dispatch(loginRequest(payload));
   };
 
@@ -205,12 +207,8 @@ const LoginForm: React.FC<Props> = (props) => {
                   }
                 />
                 <AddStatusTag
-                  sx={{
-                    marginBottom: 0,
-                    // color: "#0076C8",
-                    cursor: "pointer",
-                  }}
-                  // onClick={handlePasswordForget}
+                  sx={{ marginBottom: 0, color: "#0076C8", cursor: "pointer" }}
+                  onClick={handlePasswordForget}
                 >
                   {t("auth.ForgetPassword")}
                 </AddStatusTag>

@@ -42,12 +42,15 @@ const ResetPasswordForm = () => {
   const handleSubmit = (values: any, action: any) => {
     const { password } = values;
     const queryParams = queryString.parse(history?.location?.search);
-
+    let phoneNumber = localStorage.getItem("phoneNumber");
+    let dialCode = localStorage.getItem("dialCode");
+    let otp = localStorage.getItem("otp");
     const payload = {
-      body: { password, token: queryParams.token },
+      body: { password, phoneNumber: `${dialCode}${phoneNumber}`, otp },
       success: (res: any) => {
         setSuccess(res);
         if (res) {
+          localStorage.clear();
           history.push("/login");
         }
         toast.success(`${t("auth.password_reset_successfully")}`);
