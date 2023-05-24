@@ -74,6 +74,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
         const customErrorMesg:CustomErrorMessages={
           "Invalid password": "Incorrect password or invalid phone number",
           "Password must contain one uppercase letter and one number": "Incorrect password or invalid phone number",
+          "password must be at least 8 characters": "Incorrect password or invalid phone number",
         }
         setAlertMessage(customErrorMesg[errorMessage]|| errorMessage);
       },
