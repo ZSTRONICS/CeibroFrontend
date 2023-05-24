@@ -1,7 +1,5 @@
 import { lazy } from "react";
 // Auth
-import Register from "./Auth/Register/Register";
-import Login from "./Auth/Login/Login";
 import ResetPassword from "./Auth/ResetPassword/ResetPassword";
 import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
 import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
@@ -12,7 +10,7 @@ import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
 // import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
 
 // dashboard
-import Dashboard from "./Dashboard/Dashboard";
+// import Dashboard from "./Dashboard/Dashboard";
 // import Profile from "./Profile/Profile";
 // import Connections from "./Connection/Connection";
 import ViewInvitations from "./Profile/ViewInvitations";
@@ -37,7 +35,11 @@ import AdminMain from "./Admin/AdminMain";
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
-import ForgetConfirmation from "./Auth/ForgetPassword/ForgetConfirmation";
+
+// Auth
+const Register = lazy(() => import("./Auth/Register/Register"));
+const Login = lazy(() => import("./Auth/Login/Login"));
+const ForgetConfirmation = lazy(() => import("./Auth/ForgetPassword/ForgetConfirmation"))
 
 // connection
 const Connections = lazy(() => import("./Connection/Connection"));
@@ -72,7 +74,6 @@ export {
   ResetPassword,
   Register,
   Projects,
-  Dashboard,
   Profile,
   Tasks,
   Chat,

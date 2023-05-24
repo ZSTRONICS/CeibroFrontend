@@ -8,17 +8,24 @@ import { useHistory } from "react-router-dom";
 import ImageTile from "../Login/ImageTile";
 import useStyles from "../Register/RegisterStyles";
 
-const AuthLayout = (props: any) => {
+interface Iprops{
+  title:string
+  subTitle?:string|any
+  children:any
+}
+const AuthLayout = (props: Iprops) => {
   const classes = useStyles();
   const isTabletOrMobile = useResponsive("down", "md", "");
   const { location } = useHistory();
   const authRoute =
     location.pathname.includes("register") ||
+    location.pathname.includes("forgot-password")||
+    location.pathname.includes("reset-password")||
     location.pathname.includes("confirmation");
   const showBg =
     location.pathname.includes("t&c") ||
     location.pathname.includes("profile-setup") ||
-    location.pathname.includes("profile-pic");
+    location.pathname.includes("profile-pic")
   return (
     <Grid container className={classes.register}>
       <Grid

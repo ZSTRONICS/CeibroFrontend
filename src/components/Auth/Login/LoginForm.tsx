@@ -212,10 +212,10 @@ const LoginForm: React.FC<Props> = (props) => {
                 <AddStatusTag
                   sx={{
                     marginBottom: 0,
-                    // color: "#0076C8",
+                    color: "#0076C8",
                     cursor: "pointer",
                   }}
-                  // onClick={handlePasswordForget}
+                  onClick={handlePasswordForget}
                 >
                   {t("auth.ForgetPassword")}
                 </AddStatusTag>

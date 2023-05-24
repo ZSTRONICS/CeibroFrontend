@@ -1,21 +1,21 @@
 import { useSelector } from "react-redux";
-import { Redirect, Route } from "react-router";
+import { Redirect, Route, RouteProps } from "react-router";
 import { RootState } from "../redux/reducers";
 
-interface PrivateRouteInt {
-  path: string;
-  component: React.FC;
+interface PrivateRouteProps extends RouteProps {
+  fallbackComponent?: React.ReactNode;
+  component: React.ComponentType<any>;
 }
 
-const PrivateRoute: React.FC<PrivateRouteInt> = (props) => {
-  const { component, path } = props;
-
+const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
+  const { fallbackComponent, component: Component, ...rest } = props;
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+
   if (!isLoggedIn) {
     return <Redirect to="/login" />;
   }
 
-  return <Route path={path} exact component={component} />;
+  return <Route {...rest} render={(props) => <Component {...props} />}  />;
 };
 
 export default PrivateRoute;

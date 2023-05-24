@@ -32,8 +32,8 @@ export const forgotPasswordSchemaValidation = (t: TFunction) => {
   const forgotPasswordSchema = yup.object().shape({
     phoneNumber: yup
       .string()
+      .required('')
       .matches(phRegex, "Invalid phone number"),
-      //.required("Phone number is required"),
   });
   return forgotPasswordSchema;
 };

@@ -1,78 +1,28 @@
-import { Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import ImageTile from "./ImageTile";
-import "./resetPassword.css";
+import { BackToLoginTag, TopBarTitle } from "components/CustomTags";
+import useResponsive from "hooks/useResponsive";
+import { Link } from "react-router-dom";
+import AuthLayout from "../AuthLayout/AuthLayout";
 import ResetPasswordForm from "./ResetPasswordForm";
-import { useMediaQuery } from "react-responsive";
-import assets from "assets/assets";
-import { useHistory } from "react-router";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { useEffect } from "react";
-import colors from "assets/colors";
 
 const ResetPassword = () => {
-  const classes = useStyles();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
-  const history = useHistory();
-
-  const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      history.push("/tasks");
-    }
-  }, [isLoggedIn]);
-
-  // const handleClick = () => {
-  //   history.push("/login");
-  // };
+  const isTabletOrMobile = useResponsive("down", "md", "");
 
   return (
-    <Grid container className={classes.register}>
-      <Grid
-        item
-        xs={12}
-        md={6}
-        lg={4}
-        className={`${classes.form} hide-scrollbar`}
-      >
-        <ResetPasswordForm />
-      </Grid>
-
-      {!isTabletOrMobile && (
-        <Grid item xs={12} md={6} lg={8} className={classes.tileWrapper}>
-          <ImageTile />
-        </Grid>
+    <AuthLayout title="Add new password">
+      {isTabletOrMobile && (
+        <TopBarTitle sx={{ fontSize: { md: 28, xs: 20 }, my: 2, ml: 1.2 }}>
+          Add new password
+        </TopBarTitle>
       )}
-    </Grid>
+      <ResetPasswordForm />
+      <BackToLoginTag>
+        Remember! &nbsp; &nbsp;
+        <Link to="/login" style={{ color: "#0076c8", textDecoration: "none" }}>
+          Login
+        </Link>
+      </BackToLoginTag>
+    </AuthLayout>
   );
 };
 
 export default ResetPassword;
-
-const useStyles = makeStyles((theme) => {
-  return {
-    register: {
-      display: "flex",
-      ["@media (max-width:960px)"]: {
-        flexDirection: "column",
-        height: "100vh",
-      },
-    },
-    form: {
-      height: "100vh",
-      overflowY: "scroll",
-      paddingBottom: 10,
-      ["@media (max-width:960px)"]: {
-        background: `url(${assets.visual})`,
-        backgroundSize: "100vw 100vh",
-        backgroundRepeat: "no-repeat",
-      },
-    },
-    tileWrapper: {
-      position: "relative",
-    },
-  };
-});

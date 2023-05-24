@@ -5,14 +5,15 @@ import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
 import useStyles from "../Register/RegisterStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
-import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import {  TopBarTitle } from "components/CustomTags";
 import {
   otpVerify,
-  registerConfirmationRequest,
 } from "redux/action/auth.action";
 import { authApiAction } from "redux/action/auth.action";
 import VerificationForm from "../CommonForm/VerificationForm";
 import { Box } from "@mui/material";
+import useResponsive from "hooks/useResponsive";
+import userAlertMessage from "hooks/userAlertMessage";
 
 const ForgetConfirmation: React.FC = () => {
   const { t } = useTranslation();
@@ -20,7 +21,9 @@ const ForgetConfirmation: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const [counter, setCounter] = useState<number>(60);
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
+  const isTabletOrMobile = useResponsive("down", "md", "");
+  const {alertMessage, showAlert, setAlertMessage}= userAlertMessage()
+  const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
   useEffect(() => {
     const timer = startCountdown();
@@ -57,21 +60,22 @@ const ForgetConfirmation: React.FC = () => {
         otp: verificationCode,
       },
       success: (res: any) => {
-        history.push("/reset-password");
+        setShowSuccess(true);
+        setAlertMessage(res.data.message);
+        setTimeout(() => {
+          history.push("/reset-password");
+          setShowSuccess(false);
+        }, 2000);
         resetForm();
       },
       onFailAction: (err: any) => {
         //remove otp if enter wrong otp or failed
         localStorage.removeItem("otp");
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(otpVerify(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
+
   };
 
   const handleResend = () => {
@@ -87,32 +91,29 @@ const ForgetConfirmation: React.FC = () => {
         startCountdown();
       },
       onFailAction: (err: any) => {
-        if (err.response.data.code === 400) {
-          setIncorrectAuth(true);
-        }
+        setAlertMessage(err.response.data.message);
+
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
 
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
-      subTitle={t("auth.enter_your_phone_no")}
+      // subTitle={t("auth.enter_your_phone_no")}
     >
       <div className={classes.registerNumberForm}>
-        {/* <TopBarTitle sx={{ fontSize: 28 }}>Get started</TopBarTitle>
-        <SubLabelTag sx={{ fontSize: 16, pb: 2 }}>
-          by entering your phone number
-        </SubLabelTag> */}
+
+       {isTabletOrMobile&& <TopBarTitle sx={{ fontSize: {md:28, xs:20 }, pb:2}}>{t("auth.phone_number_confirmation")}</TopBarTitle>
+        }
         <VerificationForm
           onSubmit={handleSubmit}
           counter={counter}
           handleResend={handleResend}
-          incorrectAuth={incorrectAuth}
+          alertMessage={alertMessage}
+          showAlert={showAlert}
+          showSuccess={showSuccess}
         />
       </div>
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>

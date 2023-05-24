@@ -123,7 +123,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     titleWrapperWithRoute:{
    "@media (max-width:899px)": {
-        height: "calc( 100vh - 400px)",
+        height: "calc( 100vh - 360px)",
       }
     },
     titleWrapperbg:{

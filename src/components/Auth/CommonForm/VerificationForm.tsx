@@ -1,23 +1,29 @@
 import React from "react";
-import { Button, Typography } from "@mui/material";
+import { Box, Button, Typography } from "@mui/material";
 import { Formik, Form, Field } from "formik";
 import { useTranslation } from "react-i18next";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import useStyles from "../Register/RegisterStyles";
 import { CBox } from "components/material-ui";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 
 interface VerificationFormProps {
   onSubmit: (values: { verificationCode: string }, actions: any) => void;
   counter: number;
   handleResend: () => void;
-  incorrectAuth: boolean;
+  showSuccess: boolean
+  showAlert: boolean
+  alertMessage:string
+
 }
 
 const VerificationForm: React.FC<VerificationFormProps> = ({
   onSubmit,
   counter,
   handleResend,
-  incorrectAuth,
+  showSuccess,
+  showAlert,
+  alertMessage
 }) => {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -29,7 +35,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   const validate = (values: { verificationCode: string }) => {
     const errors: { verificationCode?: string } = {};
     if (!values.verificationCode) {
-      errors.verificationCode = t("auth.code_required");
+      errors.verificationCode = t("");
     }
     return errors;
   };
@@ -58,7 +64,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
               </Typography>
             )}
           </CBox>
-          <div style={{ marginBottom: "26px" }}>
+          <Box sx={{ marginBottom:{md: "26px",xs:0} }}>
             {counter > 0 ? (
               <Typography>
                 {t("auth.didnot_receive_code")}{" "}
@@ -74,12 +80,17 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
                 </span>
               </Typography>
             )}
-            {incorrectAuth && (
+            {/* {incorrectAuth && (
               <Typography className={`error-text ${classes.errorText}`}>
                 {t("auth.incorrect_verification_code")}
               </Typography>
-            )}
-          </div>
+            )} */}
+          </Box>
+          <MessageAlert
+              message={alertMessage}
+              severity={showSuccess === true ? "success" : "error"}
+              showMessage={showAlert}
+            />
           <div className={classes.actionWrapper}>
             <Button
               sx={{ py: { xs: 0.5, md: 1.5 } }}
@@ -87,9 +98,9 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
               variant="contained"
               color="primary"
               type="submit"
-              disabled={values.verificationCode.length < 1}
+              disabled={values.verificationCode.length !==6}
             >
-              {t("auth.continue")}
+             continue
             </Button>
           </div>
         </Form>
