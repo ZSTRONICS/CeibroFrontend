@@ -8,7 +8,6 @@ import {
   Menu,
   MenuItem,
   Stack,
-  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -68,7 +67,6 @@ const UserMenu = () => {
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-        <Tooltip title="user menu">
           <Button
           disableRipple
             onClick={handleOpenUserMenu}
@@ -103,7 +101,6 @@ const UserMenu = () => {
               <assets.KeyboardArrowDownIcon />
             </CustomStack>
           </Button>
-        </Tooltip>
       {anchorElUser&&  <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"
@@ -137,6 +134,7 @@ const UserMenu = () => {
 
           <MenuItem
             disableRipple
+            divider
             onClick={()=>handleUserMenu("/connections")}
             sx={{
               "&.MuiMenuItem-root": {

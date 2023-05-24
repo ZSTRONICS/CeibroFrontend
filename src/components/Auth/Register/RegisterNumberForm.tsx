@@ -2,7 +2,7 @@ import { Box, Button, Typography } from "@mui/material";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { Formik,  FormikProps } from "formik";
+import { Formik, FormikProps } from "formik";
 import useResponsive from "hooks/useResponsive";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 import { handlePhoneChange } from "../../../utills/formFunctions";
-import useErrorMesg from "hooks/useErrorMesg";
+import userAlertMessage from "hooks/userAlertMessage";
 import MessageAlert from "components/MessageAlert/MessageAlert";
 
 type FormValues = {
@@ -29,7 +29,7 @@ export default function RegisterNumberForm() {
   const registerPhoneNumberSchema = RegisterNumberSchema(t);
   const formikRef = useRef<FormikProps<FormValues | any>>(null);
 
-  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
+  const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
 
   const handleSubmit = (values: any, action: any) => {
@@ -44,10 +44,10 @@ export default function RegisterNumberForm() {
         history.push("/confirmation");
         action?.resetForm?.();
         setShowSuccessAlert(true);
-        setShowErrorMesg(res.data.message);
+        setAlertMessage(res.data.message);
       },
       onFailAction: (err: any) => {
-        setShowErrorMesg(err.response.data.message);
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(registerRequest(payload));
@@ -71,12 +71,7 @@ export default function RegisterNumberForm() {
             </div>
           </div>
         )}
-        {!showSuccessAlert && showError && (
-          <MessageAlert message={errorMesg} severity="error" />
-        )}
-        {showSuccessAlert && (
-          <MessageAlert message={errorMesg} severity="success" />
-        )}
+
         <div className={classes.registerNumberForm}>
           <Formik
             initialValues={{
@@ -115,9 +110,14 @@ export default function RegisterNumberForm() {
                     </Typography>
                   )}
                 </CBox>
+                <MessageAlert
+                  message={alertMessage}
+                  severity={showSuccessAlert === true ? "success" : "error"}
+                  showMessage={showAlert}
+                />
                 <div className={classes.actionWrapper}>
                   <Button
-                    sx={{ py: { xs: 0.5, md: 1.5 } }}
+                    sx={{ py: { xs: 1, md: 1.5 } }}
                     className={classes.loginButton}
                     disabled={values.phoneNumber.length > 0 ? false : true}
                     variant="contained"

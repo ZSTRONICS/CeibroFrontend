@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { SubLabelTag } from "components/CustomTags";
 import { toast } from "react-toastify";
 import MessageAlert from "components/MessageAlert/MessageAlert";
+import userAlertMessage from "hooks/userAlertMessage";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -25,9 +26,8 @@ export default function NumberConfirmationForm(props: IProps) {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
-  const [incorrectAuth, setIncorrectAuth] = useState<boolean>(false);
-  const [errorMesg, setErrorMesg] = useState<string>("");
   const dispatch = useDispatch();
+  const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [counter, setCounter] = useState(60);
   let timer: false | NodeJS.Timer;
 
@@ -61,15 +61,12 @@ export default function NumberConfirmationForm(props: IProps) {
         history.push("/login");
       },
       onFailAction: (err: any) => {
-        setIncorrectAuth(false);
-        setErrorMesg(err.response.data.message);
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(verifyChangeNumber(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
+
   const handleResend = (values: any) => {
     let phoneNumber = localStorage.getItem("phoneNumber");
     let dialCode = localStorage.getItem("dialCode");
@@ -83,19 +80,15 @@ export default function NumberConfirmationForm(props: IProps) {
         startCountdown();
       },
       onFailAction: (err: any) => {
-        setIncorrectAuth(true);
-        setErrorMesg(err.response.data.message);
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
-    setTimeout(() => {
-      setIncorrectAuth(false);
-    }, 5000);
   };
 
   return (
     <div>
-      <SubLabelTag sx={{ fontSize: { xs: 12, md: 14 }, mb:2}}>
+      <SubLabelTag sx={{ fontSize: { xs: 12, md: 14 }, mb: 2 }}>
         Confirmation code sent to your phone
       </SubLabelTag>
       <Formik
@@ -115,10 +108,6 @@ export default function NumberConfirmationForm(props: IProps) {
           isValid,
         }) => (
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-            {incorrectAuth && (
-              <MessageAlert message={errorMesg} severity="error" />
-            )}
-
             <CBox mb={3.1}>
               <CustomMuiTextField
                 name="verificationCode"
@@ -155,12 +144,18 @@ export default function NumberConfirmationForm(props: IProps) {
                 </Typography>
               )}
             </div>
+            <MessageAlert
+              message={alertMessage}
+              severity={"error"}
+              showMessage={showAlert}
+            />
             <div className={classes.actionWrapper}>
               <Button
                 className={classes.loginButton}
                 variant="contained"
                 color="primary"
                 type="submit"
+                disabled={values.verificationCode.length === 6 ? false : true}
               >
                 Continue
               </Button>

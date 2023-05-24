@@ -32,7 +32,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
-import useErrorMesg from "hooks/useErrorMesg";
+import userAlertMessage from "hooks/userAlertMessage";
 
 interface Props {
   tokenLoading: boolean;
@@ -55,7 +55,7 @@ const LoginForm: React.FC<Props> = (props) => {
   const history = useHistory();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
-  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
+  const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
 
   const handleSubmit = (
     values: IInputValues,
@@ -63,11 +63,11 @@ const LoginForm: React.FC<Props> = (props) => {
   ) => {
     const { phoneNumber, password, dialCode } = values;
     if (phoneNumber.length === 0) {
-      setShowErrorMesg("Phone number is not allowed to be empty");
+      setAlertMessage("Phone number is not allowed to be empty");
       return;
     }
     if (password.length === 0) {
-      setShowErrorMesg("Password is not allowed to be empty");
+      setAlertMessage("Password is not allowed to be empty");
       return;
     }
 
@@ -80,7 +80,7 @@ const LoginForm: React.FC<Props> = (props) => {
       onFailAction: (err: any) => {
         setShowLoading(false);
         if (err.response.data.code >= 400) {
-          setShowErrorMesg(
+          setAlertMessage(
             err.response.data.message === "Invalid password"
               ? "Incorrect password or invalid phone number"
               : err.response.data.message
@@ -143,15 +143,18 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {!showSuccess && showError && (
-                <MessageAlert message={errorMesg} severity="error" />
+
+
+              {/* {showError && (
+                <MessageAlert message={alertMessage} severity="error" showMessage={true} />
               )}
               {showSuccess && (
                 <MessageAlert
                   message="Logged in successfully"
                   severity="success"
+                  showMessage={true}
                 />
-              )}
+              )} */}
 
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
@@ -217,23 +220,27 @@ const LoginForm: React.FC<Props> = (props) => {
                   {t("auth.ForgetPassword")}
                 </AddStatusTag>
               </div>
+              <MessageAlert message={alertMessage} severity= {showSuccess === true ? "success" : "error"} showMessage={showAlert} />
+
               <Box
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  paddingTop: "30px",
+                  // paddingTop: "30px",
                   "@media (max-width:960px)": {
-                    padding: "15% 0",
+                    // margin: "1% 0",
+
                   },
                 }}
               >
+
                 <Button
                   type="submit"
                   variant="contained"
                   sx={{
                     width: "100%",
                     backgroundColor: "#0076C8",
-                    py: { xs: 0.5, md: 1.5 },
+                    py: { xs: 1, md: 1.5 },
                   }}
                   disabled={checkValidInputs(values) || showLoading}
                 >
@@ -247,6 +254,7 @@ const LoginForm: React.FC<Props> = (props) => {
             </form>
           )}
         </Formik>
+     
       </Box>
     </>
   );

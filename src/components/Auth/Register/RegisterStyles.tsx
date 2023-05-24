@@ -62,6 +62,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     actionWrapper: {
       display: "flex",
       alignItems: "center",
+      marginTop:'10px',
       "@media (max-width:960px)": {
         padding: "0",
       },
@@ -111,7 +112,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       "@media (max-width:899px)": {
         margin: "0",
         background: `url(${assets.visual})`,
-        height: "calc( 100vh - 291px)",
+        height: "calc( 100vh - 310px)",
         backgroundSize: "100% 100%",
         backgroundRepeat: "no-repeat",
         borderRadius:'10px',

@@ -15,7 +15,6 @@ import ConnectionCard from "./ConnectionCard";
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
-  const [connections, setConnection] = useState<any>({});
   const dispatch = useDispatch();
   const containerRef = useRef<HTMLDivElement>(null);
   const history = useHistory();
@@ -58,77 +57,6 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
     }
   });
 
-  // const startChatRoom = (roomId: string) => {
-  //   dispatch(
-  //     getRoomMessages({
-  //       other: {
-  //         roomId: roomId,
-  //         limit: 20,
-  //       },
-  //       success: () => {},
-  //     })
-  //   );
-
-  //   dispatch(
-  //     getRoomMedia({
-  //       other: roomId,
-  //     })
-  //   );
-  //   dispatch(
-  //     getPinnedMessages({
-  //       other: roomId,
-  //     })
-  //   );
-  //   const payload = {
-  //     other: roomId,
-  //   };
-  //   dispatch(getRoomQuestioniars(payload));
-
-  //   dispatch(setSelectedChat({ other: roomId }));
-  // };
-
-  // const startRoom = (id: string) => {
-  //   const payload = {
-  //     other: { _id: id },
-  //     success: (res: any) => {
-  //       history.push("chat");
-  //       startChatRoom(res.data.newChat._id);
-  //     },
-  //   };
-  //   dispatch(createSingleRoom(payload));
-  // };
-
-  // const handleResendInvite = (
-  //   inviteId: string,
-  //   isEmailInvite: boolean,
-  //   email: string
-  // ) => {
-  //   const payload = {
-  //     body: { inviteId, isEmailInvite, email },
-  //     success: (res: any) => {
-  //       toast.success("Invite resent successfully");
-  //     },
-  //   };
-  //   dispatch(resendInvites(payload));
-  //   const payload2 = {
-  //     success: (res: any) => {
-  //       setConnection(res?.data?.myConnections);
-  //     },
-  //   };
-  //   dispatch(getMyConnections(payload2));
-  // };
-
-  // const handleReInvokeInvite = (inviteId: string, isEmailInvite: boolean) => {
-  //   const payload = { body: { inviteId, isEmailInvite } };
-  //   dispatch(revokeInvites(payload));
-  //   const payload2 = {
-  //     success: (res: any) => {
-  //       toast.success("Invite revoked successfully");
-  //       setConnection(res?.data?.myConnections);
-  //     },
-  //   };
-  //   dispatch(getMyConnections(payload2));
-  // };
 
   return (
     <>

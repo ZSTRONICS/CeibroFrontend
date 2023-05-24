@@ -128,18 +128,27 @@ const ProfileForm = () => {
     }
   };
 
-  const handleModal = (type: "change-password" | "change-number") => {
+  type ModalType = "change-password" | "change-number";
+
+  const handleModal = (type: ModalType) => {
     setIsOpen(true);
-    switch (type) {
-      case "change-password":
-        setModalTitle("Change password");
-        setModalChildren(<ChangePasswordForm closeDialog={closeDialog} />);
-        break;
-      case "change-number":
-        setModalTitle("Change phone number");
-        setModalChildren(<ChangeNumberForm closeDialog={closeDialog} />);
-        break;
-    }
+  
+    const modalOptions: Record<ModalType, { title: string, children: JSX.Element }> = {
+      "change-password": {
+        title: "Change password",
+        children: <ChangePasswordForm closeDialog={closeDialog} />
+      },
+      "change-number": {
+        title: "Change phone number",
+        children: <ChangeNumberForm closeDialog={closeDialog} />
+      },
+
+    };
+
+    const { title, children } = modalOptions[type];
+  
+    setModalTitle(title);
+    setModalChildren(children);
   };
 
   return (
@@ -251,7 +260,7 @@ const ProfileForm = () => {
                 </Grid>
 
                 {/* <Grid container spacing={2} className={classes.rowWrapper}> */}
-                <Grid item xs={6} md={6} className={classes.rowWrapper}>
+                <Grid item xs={12} md={7} className={classes.rowWrapper}>
                   <CustomMuiTextField
                     typeName="phone-number"
                     name="phoneNumber"

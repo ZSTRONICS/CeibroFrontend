@@ -25,6 +25,7 @@ import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 import { toast } from "react-toastify";
 import { SubLabelTag } from "components/CustomTags";
 import MessageAlert from "components/MessageAlert/MessageAlert";
+import userAlertMessage from "hooks/userAlertMessage";
 
 interface Props {
   //   tokenLoading: boolean;
@@ -38,14 +39,14 @@ interface IInputValues {
   phoneNumber: string;
   password: string;
 }
+interface CustomErrorMessages {
+  [key: string]: string;
+}
 
 const ChangeNumberForm: React.FC<Props> = (props) => {
-  //   const { tokenLoading, showSuccess, showError } = props;
-  // let user: UserInterface = useSelector((state: RootState) => state.auth.user);
+  const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
-  const [errorMesg, setErrorMesg] = useState<string>("");
-  const [showError, setShowError] = useState<boolean>(false);
 
   const dispatch = useDispatch();
   const [showLoading, setShowLoading] = useState(false);
@@ -69,11 +70,12 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       onFailAction: (err: any) => {
         setShowLoading(false);
-          setShowError(true);
-          setErrorMesg(err.response.data.message);
-        setTimeout(() => {
-          setShowError(false)
-        }, 5000);
+        const errorMessage: string = err.response.data.message;
+        const customErrorMesg:CustomErrorMessages={
+          "Invalid password": "Incorrect password or invalid phone number",
+          "Password must contain one uppercase letter and one number": "Incorrect password or invalid phone number",
+        }
+        setAlertMessage(customErrorMesg[errorMessage]|| errorMessage);
       },
       showErrorToast: false,
     };
@@ -122,9 +124,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {showError && (
-                <MessageAlert message={errorMesg} severity="error" />
-              )}
 
               <SubLabelTag sx={{ fontSize: 14 }}>
                 Entering your new phone number
@@ -166,6 +165,11 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                   </Typography>
                 )}
               </CBox>
+              <MessageAlert
+                message={alertMessage}
+                severity={"error"}
+                showMessage={showAlert}
+              />
               <Button
                 type="submit"
                 variant="contained"

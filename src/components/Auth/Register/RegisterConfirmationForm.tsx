@@ -1,5 +1,4 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import Setting from "components/Setting";
+import { Box, Button, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
@@ -16,14 +15,14 @@ import { useEffect, useState } from "react";
 import useResponsive from "hooks/useResponsive";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import MessageAlert from "components/MessageAlert/MessageAlert";
-import useErrorMesg from "hooks/useErrorMesg";
+import userAlertMessage from "hooks/userAlertMessage";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();
   const classes = useStyles();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
-  const { errorMesg, setShowErrorMesg, showError } = useErrorMesg();
+  const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
 
   const dispatch = useDispatch();
@@ -61,7 +60,7 @@ export default function RegisterConfirmationForm() {
         action.resetForm();
       },
       onFailAction: (err: any) => {
-        setShowErrorMesg(err.response.data.message);
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(registerConfirmationRequest(payload));
@@ -70,23 +69,27 @@ export default function RegisterConfirmationForm() {
   const handleResend = () => {
     let phoneNumber = localStorage.getItem("phoneNumber");
     let dialCode = localStorage.getItem("dialCode");
+
     const payload = {
       body: {
         phoneNumber: `${dialCode}${phoneNumber}`,
       },
       success: (res: any) => {
         setShowSuccessAlert(true);
-        setShowErrorMesg(res.data.message);
+        setAlertMessage(res.data.message);
         setCounter(60);
         startCountdown();
+        setTimeout(() => {
+          setShowSuccessAlert(false);
+        }, 5000);
       },
       onFailAction: (err: any) => {
-        setShowErrorMesg(err.response.data.message);
+        setAlertMessage(err.response.data.message);
       },
     };
     dispatch(authApiAction.resendOtpRequest(payload));
   };
-
+  console.log("showSuccessAlert", showSuccessAlert);
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
@@ -101,12 +104,7 @@ export default function RegisterConfirmationForm() {
             </SubLabelTag>
           </div>
         )}
-        {!showSuccessAlert && showError && (
-          <MessageAlert message={errorMesg} severity="error" />
-        )}
-        {showSuccessAlert && (
-          <MessageAlert message={errorMesg} severity="success" />
-        )}
+
         <Formik
           initialValues={{
             verificationCode: "",
@@ -140,7 +138,7 @@ export default function RegisterConfirmationForm() {
                   </Typography>
                 )}
               </CBox>
-              <div style={{ marginBottom: "26px" }}>
+              <div style={{ marginBottom: "15px" }}>
                 {counter > 0 ? (
                   <Typography>
                     {t("auth.didnot_receive_code")}{" "}
@@ -157,14 +155,19 @@ export default function RegisterConfirmationForm() {
                   </Typography>
                 )}
               </div>
+              <MessageAlert
+                message={alertMessage}
+                severity={showSuccessAlert === true ? "success" : "error"}
+                showMessage={showAlert}
+              />
               <div className={classes.actionWrapper}>
                 <Button
-                  sx={{ py: { xs: 0.5, md: 1.5 } }}
+                  sx={{ py: { xs: 1, md: 1.5 } }}
                   className={classes.loginButton}
                   variant="contained"
                   color="primary"
                   type="submit"
-                  disabled={values.verificationCode.length < 1}
+                  disabled={values.verificationCode.length === 6 ? false : true}
                 >
                   Continue
                 </Button>
