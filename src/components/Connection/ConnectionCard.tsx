@@ -1,17 +1,17 @@
 import React from "react";
 // mui
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 
 // components
 import { CustomStack, SubHeadingTag, SubLabelTag } from "components/CustomTags";
 import NameAvatar from "components/Utills/Others/NameAvatar";
 import ViewProfile from "./ViewProfile";
-import CButton from "components/Button/Button";
 import SvgIcon from "components/material-ui/icons/CustomSvgIcon/SvgIcon";
 import useResponsive from "hooks/useResponsive";
 import { UserCeibroData } from "constants/interfaces/user.interface";
 
 interface IConnectionsProps {
+  style: any;
   isCeiborUser: boolean;
   firstName: string;
   surName: string;
@@ -19,10 +19,12 @@ interface IConnectionsProps {
   isBlocked: boolean;
   companyName: string | undefined;
   profilePic: string | undefined;
-  ceibroUserData:UserCeibroData | undefined
+  ceibroUserData: UserCeibroData | undefined;
+  listIndex:any
 }
 
 const ConnectionCard = ({
+  style,
   companyName,
   contactFullName,
   isCeiborUser,
@@ -30,36 +32,48 @@ const ConnectionCard = ({
   profilePic,
   firstName,
   surName,
-  ceibroUserData
+  listIndex,
+  ceibroUserData,
 }: IConnectionsProps) => {
   const isTabOrMobile = useResponsive("down", "sm", "");
   const iconColor = isBlocked ? "red" : isCeiborUser ? "#F1B740" : "#818181";
+
+  const listCards = Array.from(document.querySelectorAll('.listCard')) as HTMLElement[];
+
+  if (isTabOrMobile && listCards) {
+    listCards.forEach((element: HTMLElement) => {
+      element.style.position = 'relative';
+      // const offsetHeight = element.offsetHeight;
+    });
+  }
+
   return (
-    <>
-      <Box>
-        <Grid
-          container
-          justifyContent="space-between"
-          sx={{ borderBottom: "1px solid #E2E4E5", py: 1, px: 1, rowGap: 2.4 }}
-        >
-          <Grid item xs={12} md={7} >
-            <CustomStack gap={1} justifyContent="space-between">
-              <Box sx={{display:'flex', gap:1.4}}>
-                <NameAvatar
-              url={profilePic && profilePic}
-              firstname={firstName?firstName:""}
-              surname={surName?surName:""}
-            />
-            <div>
-              <SubHeadingTag sx={{ color: "#0076C8" }}>
-                {contactFullName}
-              </SubHeadingTag>
-              <SubLabelTag>{`Company: ${companyName ? companyName : "N/A"}`}</SubLabelTag>
-            </div>
-              </Box>
+    <div style={style} className="listCard" id={listIndex}>
+      <Grid
+        container
+        justifyContent="space-between"
+        sx={{ borderBottom: "1px solid #E2E4E5", py: 1, px: 1, rowGap: 2.4 }}
+      >
+        <Grid item xs={12} md={7}>
+          <CustomStack gap={1} justifyContent="space-between">
+            <Box sx={{ display: "flex", gap: 1.4 }}>
+              <NameAvatar
+                url={profilePic && profilePic}
+                firstname={firstName ? firstName : ""}
+                surname={surName ? surName : ""}
+              />
+              <div>
+                <SubHeadingTag sx={{ color: "#0076C8" }}>
+                  {contactFullName}
+                </SubHeadingTag>
+                <SubLabelTag>{`Company: ${
+                  companyName ? companyName : "N/A"
+                }`}</SubLabelTag>
+              </div>
+            </Box>
             {isTabOrMobile && (
-              <Box >
-                <SvgIcon  color={iconColor}>
+              <Box>
+                <SvgIcon color={iconColor}>
                   <path
                     fillRule="evenodd"
                     clipRule="evenodd"
@@ -69,8 +83,8 @@ const ConnectionCard = ({
               </Box>
             )}
           </CustomStack>
-          </Grid>
-          <Grid item md={5} xs={12}>
+        </Grid>
+        <Grid item md={5} xs={12}>
           <CustomStack gap={2.4} justifyContent="flex-end">
             {!isTabOrMobile && (
               <SvgIcon color={iconColor}>
@@ -81,13 +95,21 @@ const ConnectionCard = ({
                 />
               </SvgIcon>
             )}
-            <CButton  size={isTabOrMobile ? "small" : "medium"} label="Create task" variant="contained" />
-            <ViewProfile disabled={!isCeiborUser} connectionId={"12"} userId={"123"} userData={ceibroUserData}/>
+           <Button  
+             size={isTabOrMobile ? "small" : "medium"}
+              variant="contained">
+                Create task
+            </Button>
+
+            <ViewProfile
+              disabled={!isCeiborUser}
+              userId={ceibroUserData?._id}
+              userData={ceibroUserData}
+            />
           </CustomStack>
-          </Grid>
         </Grid>
-      </Box>
-    </>
+      </Grid>
+    </div>
   );
 };
 

@@ -207,3 +207,16 @@ export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) =>
   });
   return combinedArray
 }
+
+
+// dynamically calculate height of container
+
+// const containerRef = useRef<HTMLDivElement>(null);
+
+// useEffect(() => {
+//   if (containerRef.current) {
+//     const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+//     const visibleHeight = window.innerHeight - headerHeight;
+//     containerRef.current.style.height = `${visibleHeight}px`;
+//   }
+// }, []);

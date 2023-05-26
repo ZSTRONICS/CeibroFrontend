@@ -31,14 +31,13 @@ import assets from "assets/assets";
 import useResponsive from "hooks/useResponsive";
 
 interface IViewProfileProps {
-  userId: string;
+  userId?: string;
   disabled: boolean;
-  connectionId: string;
   userData?: UserCeibroData | undefined | null;
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
-  const { userId, disabled, connectionId, userData } = props;
+  const { userId, disabled, userData } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
   const dispatch = useDispatch();
@@ -66,34 +65,34 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
     dispatch(taskActions.openNewTaskModal());
   };
 
-  const startChatRoom = (roomId: string) => {
-    dispatch(
-      getRoomMessages({
-        other: {
-          roomId: roomId,
-          limit: 20,
-        },
-        success: () => {},
-      })
-    );
+  // const startChatRoom = (roomId: string) => {
+  //   dispatch(
+  //     getRoomMessages({
+  //       other: {
+  //         roomId: roomId,
+  //         limit: 20,
+  //       },
+  //       success: () => {},
+  //     })
+  //   );
 
-    dispatch(
-      getRoomMedia({
-        other: roomId,
-      })
-    );
-    dispatch(
-      getPinnedMessages({
-        other: roomId,
-      })
-    );
-    const payload = {
-      other: roomId,
-    };
-    dispatch(getRoomQuestioniars(payload));
+  //   dispatch(
+  //     getRoomMedia({
+  //       other: roomId,
+  //     })
+  //   );
+  //   dispatch(
+  //     getPinnedMessages({
+  //       other: roomId,
+  //     })
+  //   );
+  //   const payload = {
+  //     other: roomId,
+  //   };
+  //   dispatch(getRoomQuestioniars(payload));
 
-    dispatch(setSelectedChat({ other: roomId }));
-  };
+  //   dispatch(setSelectedChat({ other: roomId }));
+  // };
 
   // const startRoom = () => {
   //   const payload = {

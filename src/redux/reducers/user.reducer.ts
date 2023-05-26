@@ -44,10 +44,20 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
     case requestSuccess(USER_CONFIG.GET_USER_CONTACTS): {
+      const sortedData: Contact[] = action.payload.contacts.sort((a: any, b: any) => {
+        const aName = a.contactFirstName.toLowerCase();
+        const bName = b.contactFirstName.toLowerCase();
+        if (aName < bName) {
+          return -1;
+        } else if (aName > bName) {
+          return 1;
+        }
+        return 0;
+      });
       return {
         ...state,
         loadingContacts: false,
-        userAllContacts: action.payload.contacts
+        userAllContacts: sortedData
       }
     }
     case requestFail(USER_CONFIG.GET_USER_CONTACTS): {
