@@ -1,9 +1,8 @@
-import React from 'react'
+import React from "react";
+import PDFViewer from "./PDFViewer";
 
 function DrawingDetails() {
-  return (
-    <div>DrawingDetails</div>
-  )
+  return <PDFViewer />;
 }
 
-export default DrawingDetails
+export default DrawingDetails;

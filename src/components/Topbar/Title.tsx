@@ -255,6 +255,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomAutocomplete = styled(Autocomplete)`
   padding: 0px;
+  margin-top:5px;
   .MuiAutocomplete-input {
     background-color: white;
     border: none;

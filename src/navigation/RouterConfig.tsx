@@ -52,7 +52,10 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/confirmation" component={RegisterConfirmationForm} />
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
-            <PrivateRoute path="/profile-pic" component={RegisterAddProfilePic}/>
+            <PrivateRoute
+              path="/profile-pic"
+              component={RegisterAddProfilePic}
+            />
 
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
