@@ -47,9 +47,11 @@ class WebSocketService {
   }
 
   public logoutSocketsIO() {
-    WebSocketService.socket.disconnect();
-    WebSocketService.socket = null
-    this.pendingMessages = []
+    if (WebSocketService.socket) {
+      WebSocketService.socket.disconnect();
+      WebSocketService.socket = null
+      this.pendingMessages = []
+    }
   }
 
   public async getUnreadMsgCount(userId: any) {

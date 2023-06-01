@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
-import CustomImg from "components/CustomImg";
+import ImageLazyLoad from "components/ImgLazyLoad";
 
 interface SeenByInt {
   url: string | any;
@@ -19,7 +19,7 @@ const AnswerBy: React.FC<SeenByInt> = (props) => {
   return (
     <div className={classes.seenAvatar}>
       {!url && letters}
-      {url && <CustomImg src={url} className={classes.seenChip} alt="" />}
+      {url && <ImageLazyLoad src={url}  alt="" />}
     </div>
   );
 };

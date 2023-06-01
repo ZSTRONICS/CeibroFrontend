@@ -10,17 +10,8 @@ import { makeStyles } from "@material-ui/core";
 
 import CButton from "components/Button/Button";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 
 import colors from "../../assets/colors";
-import { createSingleRoom } from "../../redux/action/chat.action";
-import {
-  getPinnedMessages,
-  getRoomMedia,
-  getRoomMessages,
-  getRoomQuestioniars,
-  setSelectedChat,
-} from "../../redux/action/chat.action";
 
 import taskActions from "../../redux/action/task.action";
 import { UserCeibroData } from "constants/interfaces/user.interface";
@@ -37,25 +28,11 @@ interface IViewProfileProps {
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
-  const { userId, disabled, userData } = props;
+  const {disabled, userData } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
   const dispatch = useDispatch();
-  const history = useHistory();
   const isTabletOrMobile = useResponsive("down", 'md', "");
-
-  // const getUserData = () => {
-  //   const payload = {
-  //     success: (val: any) => {
-  //       setGetUser(val.data);
-  //       handleToggle();
-  //     },
-  //     other: {
-  //       userId,
-  //     },
-  //   };
-  //   dispatch(getUserById(payload));
-  // };
 
   const handleToggle = () => {
     setOpen((prev: boolean) => !prev);

@@ -1,8 +1,7 @@
 import React from "react";
-import { useMediaQuery } from "react-responsive";
 
 // material
-import { Badge, makeStyles, Typography } from "@material-ui/core";
+import {  makeStyles } from "@material-ui/core";
 import { Grid } from "@mui/material";
 import MenuIcon from "@material-ui/icons/Menu";
 
@@ -15,20 +14,20 @@ import { RootState } from "../../redux/reducers";
 import { useHistory } from "react-router";
 
 // components
-import assets from "assets/assets";
 import colors from "../../assets/colors";
 import "./topbar.css";
 import Title from "./Title";
-import TopBarSearch from "./TopBarSearch";
 import UserMenu from "./UserMenu";
 import Notification from "components/Notification/Notification";
+import useResponsive from "hooks/useResponsive";
+import { AddStatusTag } from "components/CustomTags";
 
 const Topbar = (props: any) => {
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const isTabletOrMobile = useResponsive('down', "md", "");
   const { user } = useSelector((state: RootState) => state.auth);
   const xsPoint = 1.5;
   const toggleNavbar = () => {
@@ -76,40 +75,19 @@ const Topbar = (props: any) => {
             alignItems: "center",
           }}
         >
-          {/* {!isTabletOrMobile && */}
 
-          {/* <div className={classes.searchInputWraper}>
-            {!window?.location?.pathname?.includes(`chat`) && (
-              <TopBarSearch onChange={(e: any) => {}} />
-            )}
-          </div> */}
-
-          {/*  )} */}
-          {/* {isTabletOrMobile && ( */}
           <div className={classes.nameWrapper}>
-            <Typography className={classes.username}>
-              {user?.firstName}
-            </Typography>
-            <Typography className={classes.username}>
-              {user?.surName}
-            </Typography>
+            <AddStatusTag>
+              {user.firstName||""}
+            </AddStatusTag>
+            <AddStatusTag>
+            {user.surName||""}
+            </AddStatusTag>
           </div>
-          {/* )} */}
 
           <UserMenu />
 
-          {/* {!isTabletOrMobile && ( */}
-          {/* <Typography className={classes.notification}> */}
           <Notification value={""} />
-          {/* <Badge badgeContent={4} overlap="rectangular">
-              <img
-                alt="notification"
-                src={assets.notification}
-                className={`${classes.bell} width-16`}
-              />
-            </Badge> */}
-          {/* </Typography> */}
-          {/* )} */}
         </Grid>
       </Grid>
     </div>
@@ -167,13 +145,5 @@ const useStyles = makeStyles((theme) => ({
       display: "none",
     },
   },
-  searchInputWraper: {
-    "@media (max-width:600px)": {
-      display: "none",
-    },
-  },
-  username: {
-    fontSize: 14,
-    fontWeight: 500,
-  },
+
 }));

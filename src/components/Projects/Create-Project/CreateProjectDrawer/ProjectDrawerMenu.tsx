@@ -2,11 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Grid, Typography } from "@mui/material";
 import colors from "../../../../assets/colors";
-import HorizontalBreak from "../../../Utills/Others/HorizontalBreak";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { PROJECT_APIS } from "../../../../redux/action/project.action";
 import { RootState } from "../../../../redux/reducers";
-import { useMediaQuery } from "react-responsive";
 
 const menus = [
   {
@@ -17,17 +15,21 @@ const menus = [
     id: 2,
     title: "Role(s)",
   },
-  {
-    id: 3,
-    title: "Group(s)",
-  },
-  {
-    id: 4,
-    title: "Members",
-  },
+  // {
+  //   id: 3,
+  //   title: "Role(s)",
+  // },
+  // {
+  //   id: 4,
+  //   title: "Group(s)",
+  // },
+  // {
+  //   id: 5,
+  //   title: "Members",
+  // },
 
   {
-    id: 5,
+    id: 6,
     title: "Documents",
   },
   // {
@@ -43,8 +45,6 @@ function ProjectDrawerMenu() {
   const { menue: selectedMenue, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleClick = (id: number, isDisabled: boolean) => {
     if (isDisabled) return;

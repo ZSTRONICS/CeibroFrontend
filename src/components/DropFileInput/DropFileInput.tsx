@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import ProfilePicView from "components/Auth/Register/ProfilePicView";
+import ImgCard from "components/Auth/Register/ImgCard";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { CloudUploadIconForPic } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomBox } from "components/uploadImage/UploadDocs";
@@ -108,7 +108,7 @@ const DragAndDrop: React.FC<IProps> = ({ setFile, deleteFile }) => {
           </CustomBox>
         </label>
       ) : (
-        <ProfilePicView imgSrc={url} title={""} removeImg={HandleremoveImg} />
+        <ImgCard imgSrc={url} title={""} removeImg={HandleremoveImg} showCancelBtn={true} showSkeleton={false}/>
       )}
     </div>
   );

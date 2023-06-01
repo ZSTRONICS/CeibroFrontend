@@ -7,7 +7,6 @@ import RegisterConfirmationForm from "./Auth/Register/RegisterConfirmationForm";
 import TermsAndConditions from "./Auth/Register/TermsAndConditions";
 import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
 // import ForgetPassword from "components/Auth/Login/ForgetPassword";
-// import VerifyEmail from "components/Auth/EmailVerify/VerifyEmail";
 
 // dashboard
 // import Dashboard from "./Dashboard/Dashboard";
@@ -52,9 +51,13 @@ const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
 
 // project
 const Projects = lazy(() => import("./Projects/ProjectList/Project"));
+const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/ProjectLocations"));
+const DrawingDetails = lazy(()=>import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails"))
 
 export {
   RouterConfig,
+  ProjectLocations,
+  DrawingDetails,
   ForgetConfirmation,
   RegisterAddProfilePic,
   RegisterConfirmationForm,

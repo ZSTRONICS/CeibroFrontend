@@ -3,19 +3,27 @@ import CustomModal from "components/Modal";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import Input from "components/Utills/Inputs/Input";
 import InputHOC from "components/Utills/Inputs/InputHOC";
-import React from "react";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 
-function StatusModal(props: any) {
+interface StatusModalProps {
+  title: string;
+  editStatusValue?: string;
+  openCloseStatusModal: boolean;
+  handleOpenCloseStatusModal: () => void;
+  btnLabel: string;
+}
+
+function StatusModal(props: StatusModalProps) {
   const dispatch = useDispatch();
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
   const [status, setStatus] = React.useState<string>(props.editStatusValue?props.editStatusValue:"");
-
   const projectStatus = projectOverview.extraStatus.filter(
     (item: string) => item !== "" && item !== undefined
   );
@@ -26,16 +34,16 @@ function StatusModal(props: any) {
     );
   };
 
-  const handleChangeStatusValue = (e: any) => {
+  const handleChangeStatusValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.stopPropagation();
     setStatus(e.target.value);
   };
 
-  const handleStatus = (e: any, isEditMode: boolean) => {
+  const handleStatus = (e: React.MouseEvent, isEditMode: boolean) => {
     e.stopPropagation();
 
     if (isEditMode === true) {
-      const prevStatusValue = String(props.editStatusValue);
+      const prevStatusValue = String(props.editStatusValue) || "";
       let statusIndex = projectStatus.indexOf(prevStatusValue);
       if (statusIndex > -1) {
         projectOverview.extraStatus[statusIndex] = status;
@@ -71,8 +79,8 @@ function StatusModal(props: any) {
     props.handleOpenCloseStatusModal();
   };
 
-  return (
-    <CustomModal
+  return (<>
+  <CustomModal
       title={props.title}
       showCloseBtn={false}
       isOpen={props.openCloseStatusModal}
@@ -114,6 +122,8 @@ function StatusModal(props: any) {
         </>
       }
     />
+   
+    </>
   );
 }
 

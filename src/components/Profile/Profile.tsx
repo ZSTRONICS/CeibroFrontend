@@ -1,6 +1,5 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import { useMediaQuery } from "react-responsive";
 
 // redux
 import { useSelector } from "react-redux";
@@ -10,11 +9,11 @@ import { RootState } from "redux/reducers";
 import ProfileForm from "./ProfileForm";
 import ProfileImagePicker from "./ProfileImagePicker";
 import Requests from "./Requests";
-import { Box } from "@mui/material";
+import useResponsive from "hooks/useResponsive";
 
 const Dashboard = () => {
 
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
+  const isTabletOrMobile = useResponsive("down", 'md', "")
   const { user } = useSelector((localState: RootState) => localState.auth);
 
   return (

@@ -24,9 +24,8 @@ import {
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers";
 import { getFileType } from "../../utills/file";
-import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
-import VoiceRecorder from "./VoiceRecorder";
-import CustomImg from "components/CustomImg";
+// import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
+// import VoiceRecorder from "./VoiceRecorder";
 import { socket } from "services/socket.services";
 import { CBox } from "components/material-ui";
 import React from "react";

@@ -208,6 +208,12 @@ export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) =>
   return combinedArray
 }
 
+export const tabsIndexProps = (index: number) => {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 
 // dynamically calculate height of container
 

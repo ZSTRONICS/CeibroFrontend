@@ -65,13 +65,13 @@ const Project = () => {
 
   useEffect(() => {
     if (isRenderEffect.current === false) {
-      // dispatch(getAllProjects());
-      // dispatch(getAllProjectsWithMembers());
-      const payload = {
-        success: (res: any) => {
-          setData(res.data);
-        },
-      };
+      dispatch(getAllProjects());
+      dispatch(getAllProjectsWithMembers());
+      // const payload = {
+      //   success: (res: any) => {
+      //     setData(res.data);
+      //   },
+      // };
       // dispatch(getAvailableUsers(payload));
     }
     return () => {
@@ -194,144 +194,143 @@ const Project = () => {
   };
 
   return (
-    <></>
-    // <>
-    //   <Grid item xs={12}>
-    //     {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
-    //     <Grid container ref={headerRef} className={classes.outerWrapper}>
-    //       <Grid
-    //         item
-    //         sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
-    //       >
-    //         <CDatePicker
-    //           IsdisablePast={false}
-    //           showLabel={true}
-    //           componentsProps={{
-    //             actionBar: {
-    //               actions: ["clear"],
-    //             },
-    //           }}
-    //           value={date}
-    //           id="date1"
-    //           name="dueDate"
-    //           onChange={(e: any) => {
-    //             const selectedDate = moment(e).format("DD-MM-YYYY");
-    //             if (selectedDate === "Invalid date") {
-    //               setDate(e);
-    //               filterDataOnParams({
-    //                 ...filterParams,
-    //                 dueDate: "",
-    //               });
-    //             } else {
-    //               setDate(e);
-    //               filterDataOnParams({
-    //                 ...filterParams,
-    //                 dueDate: selectedDate,
-    //               });
-    //             }
-    //           }}
-    //         />
-    //       </Grid>
+    <>
+      <Grid item xs={12}>
+        {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
+        <Grid container ref={headerRef} className={classes.outerWrapper}>
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
+          >
+            <CDatePicker
+              IsdisablePast={false}
+              showLabel={true}
+              componentsProps={{
+                actionBar: {
+                  actions: ["clear"],
+                },
+              }}
+              value={date}
+              id="date1"
+              name="dueDate"
+              onChange={(e: any) => {
+                const selectedDate = moment(e).format("DD-MM-YYYY");
+                if (selectedDate === "Invalid date") {
+                  setDate(e);
+                  filterDataOnParams({
+                    ...filterParams,
+                    dueDate: "",
+                  });
+                } else {
+                  setDate(e);
+                  filterDataOnParams({
+                    ...filterParams,
+                    dueDate: selectedDate,
+                  });
+                }
+              }}
+            />
+          </Grid>
 
-    //       <Grid
-    //         item
-    //         sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
-    //         className={classes.datePicker}
-    //       >
-    //         <InputHOC title="Owner">
-    //           <Autocomplete
-    //           className="autocompleteContainer"
-    //             disablePortal
-    //             sx={{ width: "100%" }}
-    //             id="project_members1"
-    //             options={data}
-    //             size="small"
-    //             onChange={(event, value) => handleUserChange(value)}
-    //             renderInput={(params) => (
-    //               <TextField
-    //                 sx={{
-    //                   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-    //                     border: "none",
-    //                     padding: "0px",
-    //                   },
-    //                 }}
-    //                 {...params}
-    //                 name="owner"
-    //                 placeholder="Select owner"
-    //               />
-    //             )}
-    //           />
-    //         </InputHOC>
-    //       </Grid>
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "450px", height: "40px" }}
+            className={classes.datePicker}
+          >
+            <InputHOC title="Owner">
+              <Autocomplete
+              className="autocompleteContainer"
+                disablePortal
+                sx={{ width: "100%" }}
+                id="project_members1"
+                options={data}
+                size="small"
+                onChange={(event, value) => handleUserChange(value)}
+                renderInput={(params) => (
+                  <TextField
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="owner"
+                    placeholder="Select owner"
+                  />
+                )}
+              />
+            </InputHOC>
+          </Grid>
 
-    //       <Grid
-    //         item
-    //         sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
-    //         className={classes.datePicker}
-    //       >
+          <Grid
+            item
+            sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
+            className={classes.datePicker}
+          >
 
-    //         <InputHOC title="Status">
-    //           <Autocomplete
-    //           className="autocompleteContainer"
-    //             disablePortal
-    //             sx={{ width: "100%" }}
-    //             // multiple={false}
-    //             id="project_members1"
-    //             // filterSelectedOptions
-    //             options={getUniqueLabels(allProjectPublishStatus)}
-    //             size="small"
-    //             onChange={(event, value: any) => {
-    //               if (value === null) {
-    //                 filterDataOnParams({
-    //                   ...filterParams,
-    //                   publishStatus: "",
-    //                 });
-    //               } else {
-    //                 filterDataOnParams({
-    //                   ...filterParams,
-    //                   publishStatus: value.label,
-    //                 });
-    //               }
-    //             }}
-    //             renderInput={(params) => (
-    //               <TextField
-    //                 className={classes.underline}
-    //                 sx={{
-    //                   "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
-    //                     border: "none",
-    //                     padding: "0px",
-    //                   },
-    //                 }}
-    //                 {...params}
-    //                 name="status"
-    //                 placeholder="Select status"
-    //               />
-    //             )}
-    //           />
-    //         </InputHOC>
-    //       </Grid>
-    //     </Grid>
+            <InputHOC title="Status">
+              <Autocomplete
+              className="autocompleteContainer"
+                disablePortal
+                sx={{ width: "100%" }}
+                // multiple={false}
+                id="project_members1"
+                // filterSelectedOptions
+                options={getUniqueLabels(allProjectPublishStatus)}
+                size="small"
+                onChange={(event, value: any) => {
+                  if (value === null) {
+                    filterDataOnParams({
+                      ...filterParams,
+                      publishStatus: "",
+                    });
+                  } else {
+                    filterDataOnParams({
+                      ...filterParams,
+                      publishStatus: value.label,
+                    });
+                  }
+                }}
+                renderInput={(params) => (
+                  <TextField
+                    className={classes.underline}
+                    sx={{
+                      "& .css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                        border: "none",
+                        padding: "0px",
+                      },
+                    }}
+                    {...params}
+                    name="status"
+                    placeholder="Select status"
+                  />
+                )}
+              />
+            </InputHOC>
+          </Grid>
+        </Grid>
 
-    //     <Grid container className={classes.allStatus}>
-    //       {/* <StatusMenu options={allStatus} /> */}
-    //       {/* <StatusMenu /> */}
-    //     </Grid>
-    //   </Grid>
-    //   {showProjectList === true ? (
-    //     <Grid
-    //       item
-    //       // className={classes.TaskListMain}
-    //       sx={{
-    //         overflowY: "auto",
-    //       }}
-    //       maxHeight={headerHeight}
-    //     >
-    //       <ProjectList allProjects={filteredData} />
-    //     </Grid>
-    //   ) : (
-    //     <div> Loading projects....</div>
-    //   )}
-    // </>
+        <Grid container className={classes.allStatus}>
+          {/* <StatusMenu options={allStatus} /> */}
+          {/* <StatusMenu /> */}
+        </Grid>
+      </Grid>
+      {showProjectList === true ? (
+        <Grid
+          item
+          // className={classes.TaskListMain}
+          sx={{
+            overflowY: "auto",
+          }}
+          maxHeight={headerHeight}
+        >
+          <ProjectList allProjects={filteredData} />
+        </Grid>
+      ) : (
+        <div> Loading projects....</div>
+      )}
+    </>
   );
 };
 
@@ -388,22 +387,4 @@ const useStyles = makeStyles({
     top: 10,
     textAlign: "center",
   },
-  // TaskListMain: {
-  //   "@media(max-width:754px)": {
-  //     height: "560px",
-  //     overflow: "auto",
-  //   },
-  //   "@media(max-width:1321px)": {
-  //     height: "615px",
-  //     overflow: "auto",
-  //   },
-  //   "@media(max-width:1870px)": {
-  //     height: "680px",
-  //     overflow: "auto",
-  //   },
-  //   // "@media(max-width:2560px)": {
-  //   //   height: "780px",
-  //   //   overflow: "auto",
-  //   // },
-  // },
 });

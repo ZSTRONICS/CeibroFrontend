@@ -11,12 +11,14 @@ import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
 import { momentdeDateFormat } from "../Globals/Common";
+import { useHistory } from "react-router-dom";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
 
 const ProjectCard: FC<ProjectCardInterface> = (props) => {
   const { project } = props;
+
   const {
     projectPhoto,
     dueDate,
@@ -41,7 +43,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     dispatch(projectActions.openDrawer());
     // dispatch(getProjectDetail({ other: _id }));
   };
-
+  const history = useHistory();
   const classes = useStyles();
   const imgSrc = projectPhoto === "" ? assets.Defaulttask : projectPhoto;
   const dueDateString: string = String(dueDate)
@@ -49,6 +51,11 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     .replace(",", "");
   // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
   const creationDate = momentdeDateFormat(createdAt);
+  const handleLocation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const newRoutePath = `/drawing/${_id}`;
+    history.push(newRoutePath);
+  };
 
   return (
     <>
@@ -59,11 +66,15 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
         <ImageCard>
           <Image src={imgSrc} />
           <Status>
-            <div className={classes.status}>
-              <Typography className={classes.statusText}>
-                {publishStatus}
-              </Typography>
-            </div>
+            <Typography className={classes.statusText}>
+              {publishStatus}
+            </Typography>
+          </Status>
+          <Status
+            style={{ fontSize:'14px',right: "16px", left: "unset", background:"#1976d2", padding:'1px 6px', borderRadius:'8%' }}
+            onClick={handleLocation}
+          >
+            <Typography className={classes.statusText}>Location</Typography>
           </Status>
         </ImageCard>
         <Grid

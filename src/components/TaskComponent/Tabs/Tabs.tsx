@@ -2,7 +2,60 @@ import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
 import TabPanelUnstyled from "@mui/base/TabPanelUnstyled";
 import TabsListUnstyled from "@mui/base/TabsListUnstyled";
 import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
+import { Box } from "@mui/material";
 import { styled } from "@mui/system";
+import useResponsive from "hooks/useResponsive";
+import React, { useRef, useState, useEffect } from "react";
+
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+export const TabPanelContainer: React.FC<TabPanelProps> = ({
+  children,
+  index,
+  value,
+  ...other
+}) => {
+  const tabPanelRef = useRef<HTMLDivElement>(null);
+  const isTabOrMobile = useResponsive("down", "md", "");
+  const headerHeight = isTabOrMobile ? 116 : 110;
+  const [windowHeight, setWindowHeight] = useState<number>(
+    window.innerHeight - headerHeight
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight - headerHeight);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [headerHeight,value, index]);
+
+  useEffect(() => {
+    const tabPanelElement = tabPanelRef.current;
+    if (tabPanelElement && (value === index || value === -1)) {
+      tabPanelElement.scrollTop = 0;
+    }
+  }, [value, index]);
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      {...other}
+      ref={tabPanelRef}
+      style={{ maxHeight: `${windowHeight-20}px`, overflow: "auto" }}
+    >
+      {value === index && <Box>{children}</Box>}
+    </div>
+  );
+};
 
 export const Tab = styled(TabUnstyled)`
   font-family: Inter;

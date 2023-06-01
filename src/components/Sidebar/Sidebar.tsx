@@ -1,9 +1,8 @@
+import React from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
@@ -16,12 +15,8 @@ function Sidebar() {
   const configs = useSelector(
     (store: RootState) => store.navigation.sidebarRoutes
   );
-  const [interval, setLocalInterval] = useState<NodeJS.Timer>();
-  const navbarOpen = useSelector((store: RootState) => store.navigation.navbar);
-  const { user, isLoggedIn } = useSelector((store: RootState) => store.auth);
-  const dispatch = useDispatch();
+  const { user } = useSelector((store: RootState) => store.auth);
   const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.path !== "chat") {

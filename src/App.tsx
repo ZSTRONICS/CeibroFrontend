@@ -69,7 +69,7 @@ import {
   getAllDocuments,
   getAllProjectMembers,
   // getAllProjectMembers,
-  // getAllProjects,
+  getAllProjects,
   getFolderFiles,
   getGroup,
   getMember,
@@ -79,7 +79,6 @@ import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 import { USER_CONFIG } from "config/user.config";
 import {
   getMyConnections,
-  getMyConnectionsCount,
   getMyInvitesCount,
 } from "redux/action/user.action";
 import { error } from "console";
@@ -530,9 +529,9 @@ const App: React.FC<MyApp> = () => {
             });
 
             break;
-          // case PROJECT_CONFIG.REFRESH_PROJECTS:
-          //   dispatch(getAllProjects());
-          //   break;
+          case PROJECT_CONFIG.REFRESH_PROJECTS:
+            dispatch(getAllProjects());
+            break;
 
           case PROJECT_CONFIG.PROJECT_UPDATED:
           case PROJECT_CONFIG.PROJECT_CREATED:
@@ -617,8 +616,6 @@ const App: React.FC<MyApp> = () => {
 
           case USER_CONFIG.REFRESH_CONNECTIONS:
             // dispatch(getMyConnections());
-            
-            // dispatch(getMyConnectionsCount());
             break;
 
           case TASK_CONFIG.TASK_SUBTASK_UPDATED:
