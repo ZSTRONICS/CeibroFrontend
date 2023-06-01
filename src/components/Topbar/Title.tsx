@@ -4,7 +4,6 @@ import { makeStyles } from "@material-ui/core";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
-import colors from "../../assets/colors";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 // import CreateChat from "./CreateChat";
@@ -13,8 +12,8 @@ import { CustomStack, TopBarTitle } from "components/CustomTags";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
-import assets from "assets/assets";
 import { styled } from "@mui/system";
+import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -43,7 +42,7 @@ const Title = () => {
   }, [history]);
 
   const BackIcon = () => (
-    <ArrowBack className={classes.backIcon} onClick={goBack} />
+    <ArrowBack color="primary" style={{ cursor: "pointer" }} onClick={goBack} />
   );
 
   const titleFontSize = {
@@ -133,7 +132,7 @@ const Title = () => {
             disableClearable
             filterSelectedOptions
             id="project-names"
-            popupIcon={<assets.ExpandMoreIcon />}
+            popupIcon={DropDownSvg()}
             options={ProjectName}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} />}
@@ -172,7 +171,7 @@ const Title = () => {
         return location.pathname.includes(data.path);
       }
     });
-  
+
     if (currentPath) {
       const {
         title,
@@ -218,10 +217,6 @@ const useStyles = makeStyles((theme) => ({
       paddingLeft: 0,
       // minWidth: 300,
     },
-  },
-  backIcon: {
-    color: colors.primary,
-    cursor: "pointer",
   },
   projectTitle: {
     display: "flex",
@@ -273,6 +268,14 @@ const CustomAutocomplete = styled(Autocomplete)`
   }
   .MuiOutlinedInput-root {
     padding: 4px;
-    border-width: 0px;
+  }
+
+  fieldset.MuiOutlinedInput-notchedOutline {
+    border-width: 0px !important;
+  }
+
+  input#project-names {
+    padding: 3.5px 4px 3.5px 5px !important;
+    font-size: 18px !important;
   }
 `;

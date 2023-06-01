@@ -124,8 +124,4 @@ const useStyles = makeStyles({
     color: "red",
     cursor: "pointer",
   },
-  breakContainer: {
-    padding: "5px 25px 2px 25px",
-    width: "100%",
-  },
 });
