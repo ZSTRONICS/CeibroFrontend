@@ -1,7 +1,7 @@
-import { buttonUnstyledClasses } from "@mui/base/ButtonUnstyled";
-import TabPanelUnstyled from "@mui/base/TabPanelUnstyled";
-import TabsListUnstyled from "@mui/base/TabsListUnstyled";
-import TabUnstyled, { tabUnstyledClasses } from "@mui/base/TabUnstyled";
+import { buttonClasses } from "@mui/base/Button";
+import TabPanelUnstyled from "@mui/base/TabPanel";
+import TabsListUnstyled from "@mui/base/TabsList";
+import TabUnstyled, { tabClasses } from "@mui/base/Tab";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import useResponsive from "hooks/useResponsive";
@@ -67,11 +67,11 @@ export const Tab = styled(TabUnstyled)`
   margin: 1px 2px;
   border: none;
 
-  &.${tabUnstyledClasses.selected} {
+  &.${tabClasses.selected} {
     color: #000000;
   }
 
-  &.${buttonUnstyledClasses.disabled} {
+  &.${buttonClasses.disabled} {
     opacity: 0.5;
     cursor: not-allowed;
   }

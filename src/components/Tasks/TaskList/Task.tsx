@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 // mui
 import { Grid } from "@material-ui/core";
-import TabsUnstyled from "@mui/base/TabsUnstyled";
 
 // components
 import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";

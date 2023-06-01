@@ -58,8 +58,16 @@ const RouterConfig: React.FC<Configs> = () => {
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute path="/tasks" component={Tasks} />
               <PrivateRoute path="/projects" component={Projects} />
-              <PrivateRoute exact path="/drawing/:id" component={ProjectLocations} />
-              <PrivateRoute exact path="/drawingDetail/:id" component={DrawingDetails} />
+              <PrivateRoute
+                exact
+                path="/drawing/:id"
+                component={ProjectLocations}
+              />
+              <PrivateRoute
+                exact
+                path="/drawingDetail/:id"
+                component={DrawingDetails}
+              />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
               {/* <Route path="/chat" component={Chat} /> */}
