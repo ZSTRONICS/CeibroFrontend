@@ -34,6 +34,7 @@ import AdminMain from "./Admin/AdminMain";
 // navigatoin
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
+import DrawingDetails from "./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails";
 
 // Auth
 const Register = lazy(() => import("./Auth/Register/Register"));
@@ -52,7 +53,8 @@ const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
 // project
 const Projects = lazy(() => import("./Projects/ProjectList/Project"));
 const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/ProjectLocations"));
-const DrawingDetails = lazy(()=>import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails"))
+// const DrawingDetails = lazy(()=>import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails"))
+
 
 export {
   RouterConfig,

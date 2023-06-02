@@ -1,8 +1,10 @@
 import React from "react";
-import PDFViewer from "./PDFViewer";
+import DocumentReader from "components/pdfviewer/index.js";
 
 function DrawingDetails() {
-  return <PDFViewer />;
+  
+  return <DocumentReader/>
+
 }
 
 export default DrawingDetails;
