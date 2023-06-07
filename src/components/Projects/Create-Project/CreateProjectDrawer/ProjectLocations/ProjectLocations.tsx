@@ -19,8 +19,8 @@ function ProjectLocations() {
 
   const handleLocation = (e: React.MouseEvent) => {
     e.stopPropagation();
-    let _id: string = "asld43345498sdlkj";
-    const newRoutePath = `/drawingDetail/${_id}`;
+    let _id: string = "id123123";
+    const newRoutePath = `/drawingDetail`;
     history.push(newRoutePath);
   };
   const viewBtn = () => {

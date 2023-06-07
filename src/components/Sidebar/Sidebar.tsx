@@ -19,11 +19,11 @@ function Sidebar() {
   const history = useHistory();
 
   const handleRouteClick = (config: SingleConfig) => {
-    if (config.path !== "chat") {
+    if (config.getPath("") !== "chat") {
       socket.setAppSelectedChat(null);
     }
 
-    history.push(`/${config.path}`);
+    history.push(`/${config.getPath("")}`);
     // if (isTabletOrMobile && navbarOpen) {
     //   dispatch(appActions.setNavbarOpen(false));
     // }
@@ -56,7 +56,7 @@ function Sidebar() {
               <div
                 key={config.title}
                 className={`${classes.menue} ${
-                  window.location.pathname.includes(config.path)
+                  window.location.pathname.includes(config.getPath(""))
                     ? classes.active
                     : ""
                 }`}
@@ -72,7 +72,7 @@ function Sidebar() {
                   {config.title}
                 </Typography>
                 <div className={classes.badge}>
-                  {config.notification > 0 && (
+                  {config?.notification > 0 && (
                     <Badge
                       overlap="circular"
                       badgeContent={config.notification}

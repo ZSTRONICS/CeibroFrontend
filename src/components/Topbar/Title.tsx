@@ -157,7 +157,7 @@ const Title = () => {
       {
         path: "drawingDetail",
         title: "Drawing detail",
-        isDynamic: true,
+        // isDynamic: true,
         additionalComponent: <BackIcon />,
         additionalComponentPosition: "start",
       },

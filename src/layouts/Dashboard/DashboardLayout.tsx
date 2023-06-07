@@ -7,7 +7,7 @@ import Nav from "./Sidenav";
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 70;
 
-const StyledRoot = styled("div")({
+export const StyledRoot = styled("div")({
   display: "flex",
   minHeight: "100%",
   overflow: "hidden",

@@ -146,8 +146,7 @@ const Chat = () => {
         //   border: "2px solid",
         // }}
       >
-        <Grid
-          item
+        <Grid item
           sx={{
             "@media(max-width:1024px)": {},
           }}

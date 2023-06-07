@@ -68,7 +68,7 @@ const RouterConfig: React.FC<Configs> = () => {
               />
               <PrivateRoute
                 exact
-                path="/drawingDetail/:id"
+                path="/drawingDetail"
                 component={DrawingDetails}
               />
               <PrivateRoute path="/connections" component={Connections} />
