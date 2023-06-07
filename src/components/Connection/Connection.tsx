@@ -1,11 +1,9 @@
 import { Box, CircularProgress } from "@mui/material";
-import {
-  useEffect,
-  useState
-} from "react";
-import { VariableSizeList, } from "react-window";
+import { useEffect, useState } from "react";
+import { VariableSizeList } from "react-window";
 
 // redux
+//@ts-ignore
 import { useDispatch, useSelector } from "react-redux";
 import { userApiAction } from "redux/action/user.action";
 import { RootState } from "redux/reducers";
@@ -80,7 +78,6 @@ const Connections = () => {
     );
   };
 
-
   return (
     <>
       {loadingContacts && (
@@ -95,7 +92,7 @@ const Connections = () => {
           <VariableSizeList
             height={windowHeight}
             itemCount={userAllContacts.length}
-            itemSize={()=>57}
+            itemSize={() => 57}
             width={"100%"}
           >
             {ContactRow}

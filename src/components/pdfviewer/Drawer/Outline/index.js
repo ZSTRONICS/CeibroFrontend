@@ -221,14 +221,14 @@ class OutlineControl extends Component {
 				ref={r => this.itemScrollerRef = r}
 				className={this.props.classes.listContainer}
 			>
-				<InfiniteScroll
+				{/* <InfiniteScroll
 					useWindow={false}
 			        loadMore={this.renderOutlineItem}
 			        hasMore={this.state.hasPaging}
 			        getScrollParent={() => this.itemScrollerRef}
 				>
 					{ this.state.items }
-				</InfiniteScroll>
+				</InfiniteScroll> */}
 			</div>	
 		);
 	}
