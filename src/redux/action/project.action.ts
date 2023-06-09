@@ -231,10 +231,10 @@ const projectActions = {
       type: PROJECT_CONFIG.CLOSE_PROJECT_DOCUMENT_MODAL,
     };
   },
-  
+
   closeProjectMemberDrawer: () => {
     return {
-      type:CLOSE_MEMBER_DRAWER,
+      type: CLOSE_MEMBER_DRAWER,
     };
   },
 
@@ -281,12 +281,14 @@ const projectActions = {
 export const PROJECT_APIS = {
   getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
   updateProjectDocumentsAccess: createAction(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS),
+  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR)
 };
 
 export const getProjectsWithPagination = createAction(
   GET_PROJECTS_WITH_PAGINATION
 );
 export const getAllProjects = createAction(GET_PROJECTS);
+
 export const getAllProjectsWithMembers = createAction(GET_PROJECTS_WITH_MEMBERS);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);

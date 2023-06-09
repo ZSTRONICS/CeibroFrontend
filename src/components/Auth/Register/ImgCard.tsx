@@ -11,11 +11,12 @@ import assets from "assets/assets";
 
 interface IProps {
   title: string;
-  imgSrc: string;
+  imgSrc: string | ArrayBuffer | null | any;
   cardContent?: React.ReactNode;
   showCancelBtn?: boolean;
   removeImg?: () => void;
-  showSkeleton?:boolean
+  showSkeleton?: boolean;
+  showPdf?: boolean;
 }
 
 function ImgCard(props: IProps) {
@@ -25,10 +26,43 @@ function ImgCard(props: IProps) {
     setImageLoaded(true);
   };
 
-
   const cardMargin = props.cardContent ? "unset" : "10px auto";
+  let mediaContent: JSX.Element | null = null;
+
+  if (props.showSkeleton && !imageLoaded) {
+    mediaContent = (
+      <Skeleton
+        variant="rectangular"
+        width={345}
+        height={345}
+        animation="wave"
+      />
+    );
+  } else if (props.imgSrc && props.showPdf) {
+    mediaContent = (
+      <object
+        data={props.imgSrc}
+        type="application/pdf"
+        width="100%"
+        height="100%"
+      >
+        <p>Unable to preview</p>
+      </object>
+    );
+  } else if (props.imgSrc) {
+    mediaContent = (
+      <CardMedia
+        onLoad={handleImageLoad}
+        component="img"
+        height="100%"
+        image={props.imgSrc}
+        alt={props.imgSrc}
+      />
+    );
+  }
+
   return (
-    <Card sx={{ maxWidth: 345, margin: cardMargin }}>
+    <Card sx={{ maxWidth: "90%", margin: cardMargin }}>
       <CardHeader
         avatar={<> </>}
         action={
@@ -42,22 +76,7 @@ function ImgCard(props: IProps) {
         }
         title={props.title}
       />
-      {props.showSkeleton===true && imageLoaded === false && (
-        <Skeleton
-          variant="rectangular"
-          width={345}
-          height={345}
-          animation="wave"
-        />
-      )}
-
-        <CardMedia
-          onLoad={handleImageLoad}
-          component="img"
-          height="100%"
-          image={props.imgSrc}
-          alt={props.imgSrc}
-        />
+      {mediaContent}
       {props.cardContent && <CardContent>{props.cardContent}</CardContent>}
     </Card>
   );

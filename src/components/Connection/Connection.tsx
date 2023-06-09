@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import { VariableSizeList } from "react-window";

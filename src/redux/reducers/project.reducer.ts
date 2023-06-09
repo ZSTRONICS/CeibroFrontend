@@ -47,6 +47,7 @@ import config, {
   DELETE_PROJECT,
 } from "../../config/project.config";
 import {
+  requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
@@ -55,9 +56,7 @@ import {
   RoleInterface,
   projectOverviewTemplate,
   rolesTemplate,
-  FolderInterface,
   GroupInterface,
-  FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
   FolderInterfaceRoot,
@@ -110,10 +109,12 @@ interface ProjectReducerInt {
   userPermissions: any;
   allProjectsTitles: any[],
   isOpenProjectDocumentModal: boolean
+  isfloorCreating: boolean,
 }
 
 const projectReducer: ProjectReducerInt = {
   isOpenProjectDocumentModal: false,
+  isfloorCreating: false,
   getAllProjectRoles: [],
   drawerOpen: false,
   menue: 1,
@@ -184,6 +185,7 @@ const NavigationReducer = (
   state = projectReducer,
   action: ActionInterface
 ): ProjectReducerInt => {
+
   switch (action.type) {
     case requestSuccess(DELETE_PROJECT): {
       return {
@@ -221,6 +223,8 @@ const NavigationReducer = (
         ...state,
       };
     }
+
+
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;
       let newProjects: any = []
@@ -247,6 +251,29 @@ const NavigationReducer = (
         allProjects: [...state.allProjects]
       };
     }
+
+    case requestPending(PROJECT_CONFIG.CREATE_FLOOR): {
+
+      return {
+        ...state,
+        isfloorCreating: true,
+      };
+    }
+    case requestSuccess(PROJECT_CONFIG.CREATE_FLOOR): {
+
+      return {
+        ...state,
+        isfloorCreating: false,
+      };
+    }
+    case requestFail(PROJECT_CONFIG.CREATE_FLOOR): {
+
+      return {
+        ...state,
+        isfloorCreating: false,
+      };
+    }
+
 
     case PROJECT_CONFIG.PROJECT_CREATED: {
       let project = action.payload;

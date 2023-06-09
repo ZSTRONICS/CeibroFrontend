@@ -13,8 +13,18 @@ const getDocsByModuleNameAndId = apiCall({
   }
 })
 
+const uploadDocsByModuleNameAndId = apiCall({
+  useV2Route: false,
+  type: DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID,
+  method: "post",
+  isFormData: true,
+  path: `/docs/upload`
+
+})
+
 function* docsSaga() {
   yield takeLatest(DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID, getDocsByModuleNameAndId)
+  yield takeLatest(DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID, uploadDocsByModuleNameAndId)
 }
 
 export default docsSaga

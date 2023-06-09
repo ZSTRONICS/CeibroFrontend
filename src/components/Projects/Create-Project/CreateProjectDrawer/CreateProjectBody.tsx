@@ -27,7 +27,7 @@ const CreateProjectBody = () => {
   );
 
   return (
-    <Grid container sx={{ padding: 20,  height: "calc(100vh - 175px)", }} >
+    <Grid container sx={{ padding: 2.5,  height: "calc(100vh - 175px)", }} >
       {projectMenus[selectedMenue]}
     </Grid>
   )};

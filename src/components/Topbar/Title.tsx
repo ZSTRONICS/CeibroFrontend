@@ -1,5 +1,5 @@
 import React, { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
@@ -16,7 +16,8 @@ import { styled } from "@mui/system";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
-import { useOpenCloseModal } from "hooks";
+import { useLoading, useOpenCloseModal } from "hooks";
+import { RootState } from "redux/reducers";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -24,12 +25,13 @@ const Title = () => {
   const { location } = useHistory();
   const classes = useStyles();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-
-  const ProjectName = [
-    { label: "The Redemption", value: 1 },
-    { label: "The Constructin", value: 2 },
-    { label: "Park", value: 3 },
-  ];
+  const {  isfloorCreating } = useSelector((state: RootState) => state.project);
+  
+  if(isfloorCreating){
+      setTimeout(() => {
+        closeModal()
+      }, 500);
+    }
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
@@ -206,13 +208,15 @@ const Title = () => {
   return (
     <>
       {getTitle()}
-      {isOpen && (
+      {isOpen&& (
         <CustomModal
           maxWidth="xs"
           isOpen={isOpen}
           handleClose={closeModal}
           title="Add New Floor"
-          children={<AddDrawingFloor showTextField={true} showImgDragDrop={false} />}
+          children={
+            <AddDrawingFloor isDrawing={false} showTextField={true} showImgDragDrop={false} />
+          }
           showCloseBtn={true}
         />
       )}
@@ -220,6 +224,11 @@ const Title = () => {
   );
 };
 
+const ProjectName = [
+  { label: "The Redemption", value: 1 },
+  { label: "The Constructin", value: 2 },
+  { label: "Park", value: 3 },
+];
 export default Title;
 
 const useStyles = makeStyles((theme) => ({

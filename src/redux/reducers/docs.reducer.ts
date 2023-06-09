@@ -21,10 +21,12 @@ interface FileReducerInt {
     allFilesUploadedDone: boolean
     getAllDocsByModule: FileInterface[]
     loadinggetAllDocs: boolean
+    isDocUploaded: boolean
 }
 
 const intialStatue: FileReducerInt = {
     uploadPendingFiles: false,
+    isDocUploaded: false,
     selectedFilesToBeUploaded: { files: [], moduleName: "", moduleId: "" },
     fileUploadProgres: [],
     loadinggetAllDocs: false,
@@ -60,6 +62,28 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
 
             };
         }
+        case requestPending(DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                isDocUploaded: true,
+
+            };
+        }
+        case requestSuccess(DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                isDocUploaded: false,
+
+            };
+        }
+        case requestFail(DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID): {
+            return {
+                ...state,
+                isDocUploaded: false,
+
+            };
+        }
+
 
         case DOCS_CONFIG.FILE_UPLOAD_PROGRESS:
             return {
@@ -137,14 +161,14 @@ const DocsReducer = (state = intialStatue, action: ActionInterface): FileReducer
                 showFileUploadPreview: previewerVal
             }
 
-        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED: 
-        
+        case DOCS_CONFIG.SET_SELECTED_FILES_TO_BE_UPLOADED:
+
             return {
                 ...state,
                 selectedFilesToBeUploaded: action.payload,
             }
 
-        case DOCS_CONFIG.UPLAOD_FILES_NOW: 
+        case DOCS_CONFIG.UPLAOD_FILES_NOW:
             return {
                 ...state,
                 selectedFilesToBeUploaded: action.payload,

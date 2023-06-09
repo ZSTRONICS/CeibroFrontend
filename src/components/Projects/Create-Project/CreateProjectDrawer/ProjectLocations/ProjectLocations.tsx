@@ -9,11 +9,13 @@ import AddDrawingFloor from "./AddDrawingFloor";
 import LocationCard from "./LocationCard";
 import LocationTabs, { TabItem } from "./LocationTabs";
 import { useOpenCloseModal } from "hooks";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
 function ProjectLocations() {
   const history = useHistory();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-
+  const { isDocUploaded } = useSelector((files: RootState) => files.docs);
   const handleLocation = (e: React.MouseEvent) => {
     e.stopPropagation();
     const newRoutePath = `/drawingDetail`;
@@ -105,14 +107,20 @@ function ProjectLocations() {
   return (
     <>
       <LocationTabs tabs={tabsData} handleModal={openModal} />
-
       {isOpen && (
         <CustomModal
-          maxWidth="xs"
+          maxWidth="sm"
           isOpen={isOpen}
           handleClose={closeModal}
           title="Add New Drawing"
-          children={<AddDrawingFloor showTextField={true} showImgDragDrop={true} />}
+          children={
+            <AddDrawingFloor
+              isDocUploaded={isDocUploaded}
+              isDrawing={true}
+              showTextField={false}
+              showImgDragDrop={true}
+            />
+          }
           showCloseBtn={true}
         />
       )}

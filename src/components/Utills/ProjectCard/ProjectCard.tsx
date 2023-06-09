@@ -51,9 +51,11 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
     .replace(",", "");
   // const dueDateString: any = moment(dueDate).format('DD.MM.YYYY')
   const creationDate = momentdeDateFormat(createdAt);
+
   const handleLocation = (e: React.MouseEvent) => {
     e.stopPropagation();
     const newRoutePath = `/drawing/${_id}`;
+    dispatch(projectActions.setSelectedProject(_id));
     history.push(newRoutePath);
   };
 
