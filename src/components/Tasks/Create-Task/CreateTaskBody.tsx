@@ -22,8 +22,6 @@ const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
     if (doOnce) {
       const subTaskContainer = document.getElementById("subTaskContainer");
       if (subTaskContainer) {
-        // console.log("subTaskContainer", subTaskContainer, subTaskContainer.scrollHeight, subTaskContainer.scrollTop);
-        
         subTaskContainer.scrollTop = subTaskContainer.scrollHeight;
       }
       setDoOnce(false);

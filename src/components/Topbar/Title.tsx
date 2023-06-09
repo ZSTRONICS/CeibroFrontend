@@ -14,12 +14,16 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import { styled } from "@mui/system";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
+import CustomModal from "components/Modal";
+import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
+import { useOpenCloseModal } from "hooks";
 
 const Title = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { location } = useHistory();
   const classes = useStyles();
+  const { isOpen, closeModal, openModal } = useOpenCloseModal();
 
   const ProjectName = [
     { label: "The Redemption", value: 1 },
@@ -141,7 +145,7 @@ const Title = () => {
         additionalComponent: (
           <CButton
             startIcon={<AddIcon />}
-            // onClick={openLocationModal}
+            onClick={openModal}
             label="Floor"
             variant="contained"
             sx={{
@@ -199,7 +203,21 @@ const Title = () => {
     return <></>;
   };
 
-  return <>{getTitle()}</>;
+  return (
+    <>
+      {getTitle()}
+      {isOpen && (
+        <CustomModal
+          maxWidth="xs"
+          isOpen={isOpen}
+          handleClose={closeModal}
+          title="Add New Floor"
+          children={<AddDrawingFloor showTextField={true} showImgDragDrop={false} />}
+          showCloseBtn={true}
+        />
+      )}
+    </>
+  );
 };
 
 export default Title;
@@ -255,7 +273,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CustomAutocomplete = styled(Autocomplete)`
   padding: 0px;
-  margin-top:5px;
+  margin-top: 5px;
   .MuiAutocomplete-input {
     background-color: white;
     border: none;
@@ -265,7 +283,6 @@ const CustomAutocomplete = styled(Autocomplete)`
   }
   .MuiAutocomplete-option {
     background-color: lightblue;
-    color: red;
   }
   .MuiOutlinedInput-root {
     padding: 4px;

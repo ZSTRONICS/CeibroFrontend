@@ -28,8 +28,10 @@ const DocumentViewerStyles = () => ({
   viewContainer: {
     padding: 0,
     borderRadius: 0,
-    position: "relative",
-    margin: "50px auto 100px auto",
+    position: "absolute",
+    top: "20%",
+    left: "30%",
+    // margin: "50px auto 100px auto",
     display: "table",
     width: "auto",
     textAlign: "center",

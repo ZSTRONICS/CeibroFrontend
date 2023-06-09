@@ -41,7 +41,6 @@ class DocumentReader extends Component {
     }
 
     onDocumentUploaded(pdf, pdfBuffer) {
-		console.log('pdf--->', pdf, pdfBuffer)
 	    this.setState({
 	    	pdfBuffer,
 	    	pdf,

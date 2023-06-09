@@ -1,15 +1,24 @@
 import React from "react";
 import { AppBar, Typography, styled } from "@mui/material";
+import { Box } from "@mui/system";
 
 interface HeaderProps {
   title: string;
+  children: any;
 }
+
 function StickyHeader(props: HeaderProps) {
   return (
     <StyledAppBar position="static">
-      <Typography variant="h6" component="div" textAlign="center">
+      {/* <Typography
+        variant="h6"
+        component="div"
+        textAlign="center"
+        sx={{ borderBottom: "1px solid #eeeeee", py: 1 }}
+      >
         {props.title}
-      </Typography>
+      </Typography> */}
+      <Box sx={{ width: "100%", p: 1, pb:0.5 }}>{props.children} </Box>
     </StyledAppBar>
   );
 }
@@ -22,3 +31,4 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   color: "unset",
   background: "white",
 }));
+

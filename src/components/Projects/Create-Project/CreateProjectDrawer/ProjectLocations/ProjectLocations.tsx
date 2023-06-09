@@ -1,25 +1,21 @@
+import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import CButton from "components/Button/Button";
 import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
-import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import AddFloor from "./AddFloor";
+import AddDrawingFloor from "./AddDrawingFloor";
 import LocationCard from "./LocationCard";
 import LocationTabs, { TabItem } from "./LocationTabs";
+import { useOpenCloseModal } from "hooks";
 
 function ProjectLocations() {
   const history = useHistory();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleModal = () => {
-    setIsOpen(true);
-  };
+  const { isOpen, closeModal, openModal } = useOpenCloseModal();
 
   const handleLocation = (e: React.MouseEvent) => {
     e.stopPropagation();
-    let _id: string = "id123123";
     const newRoutePath = `/drawingDetail`;
     history.push(newRoutePath);
   };
@@ -101,16 +97,6 @@ function ProjectLocations() {
             cardContent={viewBtn()}
             url=""
           />
-          <LocationCard
-            locationTitle="Floor 1"
-            cardContent={viewBtn()}
-            url=""
-          />
-          <LocationCard
-            locationTitle="Floor 1"
-            cardContent={viewBtn()}
-            url=""
-          />
         </CustomStack>
       ),
     },
@@ -118,18 +104,18 @@ function ProjectLocations() {
 
   return (
     <>
-      <LocationTabs tabs={tabsData} handleModal={handleModal}/>
+      <LocationTabs tabs={tabsData} handleModal={openModal} />
 
-      <CustomModal
-        maxWidth="xs"
-        isOpen={isOpen}
-        handleClose={function (e: any): void {
-          setIsOpen(false);
-        }}
-        title="Add New Drawing"
-        children={<AddFloor />}
-        showCloseBtn={true}
-      />
+      {isOpen && (
+        <CustomModal
+          maxWidth="xs"
+          isOpen={isOpen}
+          handleClose={closeModal}
+          title="Add New Drawing"
+          children={<AddDrawingFloor showTextField={true} showImgDragDrop={true} />}
+          showCloseBtn={true}
+        />
+      )}
     </>
   );
 }
