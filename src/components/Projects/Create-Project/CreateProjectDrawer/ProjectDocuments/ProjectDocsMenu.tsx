@@ -1,4 +1,3 @@
-
 import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
 import CustomCheckbox from "components/Utills/Inputs/Checkbox";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
@@ -15,24 +14,24 @@ import {
 import assets from "../../../../../assets/assets";
 import colors from "../../../../../assets/colors";
 import Loading from "components/Utills/Loader/Loading";
+import { ProjectCreator } from "constants/interfaces";
 import { RootState } from "redux/reducers";
-import { Creator } from "constants/interfaces/project.interface";
 
 interface ProjectDocsMenuInt {
   groupId: string;
   folderId: string;
-  access: Creator[];
+  access: ProjectCreator[];
 }
 
 const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { groupId, access, folderId } = props;
   const { selectedProject } = useSelector((state: RootState) => state.project);
-  const [selectedUsers, setSelectedUsers] = useState<Creator[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<ProjectCreator[]>([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState<UserInterface[]>([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (show) {

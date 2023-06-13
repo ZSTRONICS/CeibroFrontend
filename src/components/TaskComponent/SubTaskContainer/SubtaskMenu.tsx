@@ -21,7 +21,7 @@ import { Form, Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { deleteSubtask, getAllSubTaskList, getAllSubTaskOfTask, patchSubTaskById } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import EditSubTaskDetails from "./EditSubTaskDetails";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "../Tabs/TaskCard";

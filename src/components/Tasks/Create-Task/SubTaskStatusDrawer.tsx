@@ -8,7 +8,7 @@ import { Grid, Paper } from "@mui/material";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { createSubTask } from "redux/action/task.action";
 
 // components

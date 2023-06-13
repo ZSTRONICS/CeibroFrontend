@@ -280,8 +280,24 @@ const projectActions = {
 
 export const PROJECT_APIS = {
   getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
+  getAllProjects: createAction(GET_PROJECTS),
+  getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
+  getDrawingById:createAction(PROJECT_CONFIG.GET_DRAWING_BY_ID),
+  getFloorsByProjectId:createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
+  getAvailableProjectUsers: createAction(GET_AVAILABLE_PROJECT_USERS),
+  getProjectDetail: createAction(GET_PROJECT_DETAIL),
+  getFolderFiles: createAction(GET_FOLDER_FILES),
+
+  createProject: createAction(CREATE_PROJECT),
+  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
+  createFolder: createAction(CREATE_FOLDER),
+
   updateProjectDocumentsAccess: createAction(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS),
-  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR)
+  uploadFileToFolder: createAction(UPLOAD_FILE_TO_FOLDER),
+  updateProject: createAction(UPDATE_PROJECT),
+  updateProjectPicture: createAction(UPDATE_PROJECT_PICTURE),
+
+  deleteProject: createAction(DELETE_PROJECT),
 };
 
 export const getProjectsWithPagination = createAction(

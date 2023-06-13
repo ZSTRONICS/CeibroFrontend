@@ -9,7 +9,7 @@ import {
 // import colors from '../../../../assets/colors'
 // import projectActions from '../../../../redux/action/project.action'
 import { useEffect } from "react";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import QuestioniarHeader from "./QuestioniarHeader";
 import ViewQuestioniarBody from "./ViewQuestioniarBody";
 // import CreateProjectBody from './CreateProjectBody'

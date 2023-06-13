@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ProjectCard from "../../Utills/ProjectCard/ProjectCard";
 import CreateProject from "../../Utills/ProjectCard/CreateProjectCard";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import {
   ProjectInterface,
   projectOverviewTemplate,

@@ -14,7 +14,7 @@ import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { setQuestions } from "../../../redux/action/chat.action";
 import assets from "../../../assets/assets";
 

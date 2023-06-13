@@ -22,7 +22,7 @@ import {
   openQuestioniarDrawer,
   sendReplyMessage,
 } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getFileType } from "../../utills/file";
 // import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 // import VoiceRecorder from "./VoiceRecorder";

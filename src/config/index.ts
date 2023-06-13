@@ -1,9 +1,6 @@
-import { DOCS_CONFIG } from './docs.config'
-import { TASK_CONFIG } from './task.config'
-import { USER_CONFIG } from './user.config'
-
-export {
-    DOCS_CONFIG,
-    USER_CONFIG,
-    TASK_CONFIG
-}
+export * from './docs.config'
+export * from './task.config'
+export * from './user.config'
+export * from './auth.config'
+export * from './chat.config'
+export * from './project.config'

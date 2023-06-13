@@ -26,7 +26,7 @@ import { FileInterface } from "constants/interfaces/docs.interface";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import docsAction from "redux/action/docs.actions";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { theme } from "theme";
 
 interface Props {

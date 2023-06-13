@@ -34,7 +34,7 @@ import taskActions, {
   patchSubTaskById,
   taskSubtaskStateChange
 } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import StateChangeComment from "./StateChangeComment";
 import SubTaskMenu from "./SubtaskMenu";
 import OpenViewDocsDrawer from "./OpenViewDocsDrawer";

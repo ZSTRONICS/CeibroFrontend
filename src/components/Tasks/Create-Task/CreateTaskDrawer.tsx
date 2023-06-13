@@ -5,7 +5,7 @@ import { Grid } from "@mui/material";
 import DrawerHeader from "components/Projects/Create-Project/CreateProjectDrawer/DrawerHeader";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../assets/colors";
 import taskActions from "../../../redux/action/task.action";
 import CreateTaskBody from "./CreateTaskBody";

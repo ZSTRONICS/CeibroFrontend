@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import colors from "../../assets/colors";
 import { goToMessage, setDownBlock } from "redux/action/chat.action";

@@ -30,7 +30,7 @@ import projectActions, {
   getWorkById,
   updateWork,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { mapRoles } from "helpers/project.helper";
 import { toast } from "react-toastify";
 import { Toast } from "react-toastify/dist/components";

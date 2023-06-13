@@ -26,7 +26,7 @@ import taskActions, {
   createTask,
   getAllTask,
 } from "../../../redux/action/task.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
 import CButton from "components/Button/Button";

@@ -99,14 +99,14 @@ export interface FolderInterface {
   name: string
   group: GroupInterface
   parentFolder: any
-  access: Creator[]
+  access: ProjectCreator[]
   _id: string
   project: string
-  creator: Creator
+  creator: ProjectCreator
   createdAt: string
   updatedAt: string
 }
-export interface Creator {
+export interface ProjectCreator {
   _id: string
   firstName: string
   surName: string

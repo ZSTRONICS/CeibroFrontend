@@ -16,7 +16,7 @@ import { useHistory } from "react-router";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { logoutUser } from "../../redux/action/auth.action";
 
 // componnents

@@ -12,7 +12,7 @@ import {
   registerRequest,
   registerSetupProfile,
 } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 // components
 

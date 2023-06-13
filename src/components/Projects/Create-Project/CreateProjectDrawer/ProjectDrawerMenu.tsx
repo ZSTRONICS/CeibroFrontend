@@ -4,7 +4,7 @@ import { Grid, Typography } from "@mui/material";
 import colors from "../../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { PROJECT_APIS } from "../../../../redux/action/project.action";
-import { RootState } from "../../../../redux/reducers";
+import { RootState } from "../../../../redux/reducers/appReducer";
 
 const menus = [
   {

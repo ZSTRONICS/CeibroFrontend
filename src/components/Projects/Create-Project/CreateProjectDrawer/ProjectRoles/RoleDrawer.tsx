@@ -35,7 +35,7 @@ import projectActions, {
   PROJECT_APIS,
   updateRole,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import Clear from "@mui/icons-material/Clear";
 interface AddRoleProps { }
 

@@ -9,7 +9,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { useSelector } from "react-redux";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 interface GroupMenueInt {
   onEdit: () => void;

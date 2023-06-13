@@ -5,7 +5,7 @@ import TextField from "../Inputs/TextField";
 // @ts-ignore
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { setQuestions } from "../../../redux/action/chat.action";
 interface ShowAnswerInt {
   question: QuestioniarInterface;

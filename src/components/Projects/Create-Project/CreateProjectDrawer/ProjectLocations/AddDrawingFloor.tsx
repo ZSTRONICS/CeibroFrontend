@@ -4,27 +4,25 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { LoadingButton } from "components/Button/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
-import { docsAction } from "redux/action";
+import { PROJECT_APIS, docsAction } from "redux/action";
+import { socket } from "services/socket.services";
 
 interface IProps {
   showTextField: boolean;
   showImgDragDrop: boolean;
   isDrawing: boolean;
-  isDocUploaded?: boolean;
+  floorId?: string;
 }
 
 function AddDrawingFloor(props: IProps) {
-  const { showImgDragDrop, isDocUploaded, showTextField, isDrawing } = props;
-
-  const { selectedProject, isfloorCreating } = useSelector(
-    (state: RootState) => state.project
-  );
-
   const dispatch = useDispatch();
+  const { showImgDragDrop, showTextField, isDrawing, floorId } = props;
   const [drwingFloorName, setDrawingFloorName] = useState<string>("");
   const [file, setFile] = useState<string | File | any>("");
+
+  const { isfloorCreating } = useSelector((state: RootState) => state.project);
+  const selectedProjectId = socket.getSelectedProjId();
 
   const handleSaveFloorData = () => {
     const payload = {
@@ -32,7 +30,7 @@ function AddDrawingFloor(props: IProps) {
         floorName: drwingFloorName,
       },
 
-      other: selectedProject,
+      other: String(selectedProjectId),
     };
     dispatch(PROJECT_APIS.createFloor(payload));
   };
@@ -40,14 +38,19 @@ function AddDrawingFloor(props: IProps) {
   const handleSaveDrawingData = () => {
     try {
       const formData = new FormData();
-      const metadataObject = [{ fileName: file.name, orignalFileName: file.name, tag: "drawing" }];
-      const metadataString = JSON.stringify(metadataObject).replace(/"/g, '\\"');
+      const metadataObject = [
+        { fileName: file.name, orignalFileName: file.name, tag: "drawing" },
+      ];
+      const metadataString = JSON.stringify(metadataObject).replace(
+        /"/g,
+        '\\"'
+      );
       const finalMetadata = `"[${metadataString}]"`;
-      if (file) {
+      if (file&&floorId) {
         formData.append("files", file);
         formData.append("moduleName", "Floor");
-        // implement selcted floor id
-        formData.append("moduleId", "6481f0fd4f6bf0b7299af8f7");
+        //later implement selcted floor id
+        formData.append("moduleId", floorId);
         formData.append("metadata", finalMetadata);
         const payload = {
           body: formData,

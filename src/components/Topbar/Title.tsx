@@ -17,7 +17,7 @@ import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown
 import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { useLoading, useOpenCloseModal } from "hooks";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const Title = () => {
   const getTitle = () => {
     const titleData = [
       {
-        path: "project",
+        path: "projects",
         title: "Project",
         className: classes.projectTitle,
         additionalComponent: (
@@ -131,7 +131,7 @@ const Title = () => {
         additionalComponentPosition: "start",
       },
       {
-        path: "drawing",
+        path: "project",
         title: (
           <CustomAutocomplete
             disablePortal

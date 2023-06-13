@@ -60,12 +60,12 @@ const RouterConfig: React.FC<Configs> = () => {
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute path="/tasks" component={Tasks} />
-              <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact
-                path="/drawing/:id"
+                path="/project/:projectId"
                 component={ProjectLocations}
               />
+              <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact
                 path="/drawingDetail"

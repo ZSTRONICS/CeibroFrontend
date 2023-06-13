@@ -10,7 +10,7 @@ import CDrawer from "Drawer/CDrawer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions, { getAllSubTaskRejection } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import RecentComments from "./RecentComments";
 import TaskDetailHeader from "./TaskDetailHeader";
 import ViewAllDocs from "./ViewAllDocs";

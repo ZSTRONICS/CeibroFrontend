@@ -10,7 +10,7 @@ import { Check, Clear } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
 // import ChatSearch from "./../Utills/ChatChip/ChatSearch";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";

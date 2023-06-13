@@ -17,7 +17,7 @@ import projectActions, {
   deleteMember,
   getMember,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 import colors from "../../../../../assets/colors";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";

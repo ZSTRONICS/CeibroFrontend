@@ -6,7 +6,7 @@ import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { ChatMessageInterface } from "../../constants/interfaces/chat.interface";
 import {getUpMessages} from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import AddTempChatMember from "../Utills/ChatChip/AddTempChatMember";
 import MessageChat from "../Utills/ChatChip/MessageChat";
 import { Box } from "@mui/material";

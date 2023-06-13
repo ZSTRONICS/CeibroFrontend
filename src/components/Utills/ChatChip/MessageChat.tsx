@@ -13,7 +13,7 @@ import {
   setDownBlock,
   setSelectedQuestioniar,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 // components
 import { CBox } from "components/material-ui";

@@ -1,4 +1,4 @@
-import { ActionInterface } from '.'
+import { ActionInterface } from './appReducer'
 import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 import {
   CLEAR_SELECTED_CHAT,

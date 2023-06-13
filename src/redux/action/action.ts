@@ -1,4 +1,4 @@
-import { ActionInterface } from "../reducers";
+import { ActionInterface } from "../reducers/appReducer";
 
 interface CreateAction {
   body?: any;

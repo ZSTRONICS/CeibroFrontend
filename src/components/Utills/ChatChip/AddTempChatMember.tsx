@@ -17,7 +17,7 @@ import {
   getAllChats,
   setTempMembersDialog,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import SelectDropdown from "../Inputs/SelectDropdown";
 
 interface AddChatMemberProps {}

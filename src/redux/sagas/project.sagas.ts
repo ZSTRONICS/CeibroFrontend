@@ -34,8 +34,8 @@ import {
   UPDATE_TIME_PROFILE,
   UPDATE_WORK,
   UPLOAD_FILE_TO_FOLDER
-} from "../../config/project.config";
-import apiCall from "../../utills/apiCall";
+} from "config";
+import apiCall from "utills/apiCall";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser() {
@@ -59,6 +59,22 @@ const createFloor = apiCall({
   type: PROJECT_CONFIG.CREATE_FLOOR,
   method: 'post',
   path: (payload) => `/project/${payload.other}/floor`, //projectId
+})
+
+// GET FLOORS BY PROJECT_ID
+const getFloorsByProjectId = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID,
+  method: 'get',
+  path: (payload) => `/project/${payload.other.projectId}/floor`, //projectId
+})
+
+// GET GET_DRAWING_BY_ID 
+const getDrawingById = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_DRAWING_BY_ID,
+  method: 'get',
+  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}}`, //projectId/floorId/drawingId
 })
 
 const getProjectsWithMembers = apiCall({
@@ -420,6 +436,8 @@ function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
   yield takeLatest(PROJECT_CONFIG.CREATE_FLOOR, createFloor);
+  yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);
+  yield takeLatest(PROJECT_CONFIG.GET_DRAWING_BY_ID, getDrawingById);
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);

@@ -1,4 +1,4 @@
-import { ActionInterface } from ".";
+import { ActionInterface } from "./appReducer";
 import config, {
   CLOSE_DOCUMENT_DRAWER,
   CLOSE_GROUP_DRAWER,
@@ -61,13 +61,15 @@ import {
   projectProfileInterface,
   FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
-import { UserInterface } from "constants/interfaces/user.interface";
 import { ProjectGroupInterface, ProjectMemberInterface, memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { Floor, FloorInterface, UserInterface, } from "constants/interfaces";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
   allProjects: any;
+  allFloors: Floor[];
+  isFloorLoading: boolean,
   projects: ProjectInterface[];
   projectMembers: [];
   projectWithMembers: any[];
@@ -114,6 +116,8 @@ interface ProjectReducerInt {
 
 const projectReducer: ProjectReducerInt = {
   isOpenProjectDocumentModal: false,
+  allFloors: [],
+  isFloorLoading: false,
   isfloorCreating: false,
   getAllProjectRoles: [],
   drawerOpen: false,
@@ -224,6 +228,28 @@ const NavigationReducer = (
       };
     }
 
+    // get all floors by projectId
+    case requestPending(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
+      return {
+        ...state,
+        isFloorLoading: true,
+      };
+    }
+    case requestSuccess(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
+      return {
+        ...state,
+        isFloorLoading: false,
+        allFloors:action.payload.floors
+      };
+    }
+    
+    case requestFail(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
+      return {
+        ...state,
+        isFloorLoading: false,
+
+      };
+    }
 
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;

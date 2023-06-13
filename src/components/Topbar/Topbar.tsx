@@ -8,7 +8,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import appActions from "../../redux/action/app.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 
 // router-dom
 import { useHistory } from "react-router";

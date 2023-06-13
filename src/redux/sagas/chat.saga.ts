@@ -6,10 +6,10 @@ import {
   GET_CHAT_API, GET_DOWN_MESSAGES, GET_MESSAGES, GET_PINNED_MESSAGES, GET_QUESTIONIAR, GET_ROOM_MEDIA, GET_ROOM_QUESTIONIAR, GET_UNREAD_CHAT_COUNT, GET_UP_CHAT_MESSAGE,
   GET_UP_MESSAGES, GET_USER_QUESTIONIAR_ANSWER, GO_TO_MESSAGES, MUTE_CHAT, PIN_MESSAGE, REPLACE_MESSAGE_BY_ID,
   ROOM_MESSAGE_DATA, SAVE_MESSAGES, SAVE_QUESTIONIAR, SAVE_QUESTIONIAR_ANSWERS, SET_LOADING_MESSAGES, UPDATE_MESSAGE_BY_ID
-} from "../../config/chat.config";
+} from "config";
 import apiCall from "../../utills/apiCall";
 import { requestSuccess } from "../../utills/status";
-import { ActionInterface, RootState } from "../reducers";
+import { ActionInterface, RootState } from "../reducers/appReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const getAllChat = apiCall({

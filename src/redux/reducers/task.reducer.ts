@@ -1,10 +1,9 @@
-import { ActionInterface } from ".";
+import { ActionInterface } from "./appReducer";
 import { TASK_CONFIG } from "config/task.config";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { RecentCommentsInterface, SubtaskInterface, TaskData } from "constants/interfaces/subtask.interface";
+import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
-import { RejectedComment, RejectionComment } from "constants/interfaces/rejectionComments.interface";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]

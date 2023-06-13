@@ -11,7 +11,7 @@ import {
   closeViewIvitations,
   openViewInvitations
 } from 'redux/action/user.action'
-import { RootState } from 'redux/reducers'
+import { RootState } from 'redux/reducers/appReducer'
 import colors from '../../assets/colors'
 import InvitationsList from './InvitationsList'
 

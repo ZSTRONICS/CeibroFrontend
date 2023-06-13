@@ -1,5 +1,6 @@
 
-import { DOCS_CONFIG } from "config/docs.config";
+
+import { DOCS_CONFIG } from "config";
 import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 

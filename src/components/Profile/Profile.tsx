@@ -3,7 +3,7 @@ import { Grid } from "@material-ui/core";
 
 // redux
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 // components
 import ProfileForm from "./ProfileForm";

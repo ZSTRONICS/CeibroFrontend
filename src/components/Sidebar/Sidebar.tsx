@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { socket } from "../../services/socket.services";
 import "./sidebar.css";
 

@@ -17,52 +17,24 @@ interface IProps {
   removeImg?: () => void;
   showSkeleton?: boolean;
   showPdf?: boolean;
+  isBase64String?: boolean;
 }
 
 function ImgCard(props: IProps) {
   const [imageLoaded, setImageLoaded] = useState<boolean>(false);
+  let imgUrl: string = props.imgSrc;
+  if (props.isBase64String) {
+    imgUrl = "data:image/png;base64," + props.imgSrc;
+  }
 
   const handleImageLoad = () => {
     setImageLoaded(true);
   };
 
   const cardMargin = props.cardContent ? "unset" : "10px auto";
-  let mediaContent: JSX.Element | null = null;
-
-  if (props.showSkeleton && !imageLoaded) {
-    mediaContent = (
-      <Skeleton
-        variant="rectangular"
-        width={345}
-        height={345}
-        animation="wave"
-      />
-    );
-  } else if (props.imgSrc && props.showPdf) {
-    mediaContent = (
-      <object
-        data={props.imgSrc}
-        type="application/pdf"
-        width="100%"
-        height="100%"
-      >
-        <p>Unable to preview</p>
-      </object>
-    );
-  } else if (props.imgSrc) {
-    mediaContent = (
-      <CardMedia
-        onLoad={handleImageLoad}
-        component="img"
-        height="100%"
-        image={props.imgSrc}
-        alt={props.imgSrc}
-      />
-    );
-  }
 
   return (
-    <Card sx={{ maxWidth: "90%", margin: cardMargin }}>
+    <Card sx={{ maxWidth: 345, margin: cardMargin }}>
       <CardHeader
         avatar={<> </>}
         action={
@@ -76,7 +48,32 @@ function ImgCard(props: IProps) {
         }
         title={props.title}
       />
-      {mediaContent}
+      {props.showSkeleton === true && imageLoaded === false && (
+        <Skeleton
+          variant="rectangular"
+          width={345}
+          height={345}
+          animation="wave"
+        />
+      )}
+      {props.showPdf && (
+        <object
+          data={props.imgSrc}
+          type="application/pdf"
+          width="100%"
+          height="100%"
+        >
+          <p>Unable to preview</p>
+        </object>
+      )}
+
+      <CardMedia
+        onLoad={handleImageLoad}
+        component="img"
+        height="100%"
+        image={imgUrl}
+        alt={props.imgSrc}
+      />
       {props.cardContent && <CardContent>{props.cardContent}</CardContent>}
     </Card>
   );

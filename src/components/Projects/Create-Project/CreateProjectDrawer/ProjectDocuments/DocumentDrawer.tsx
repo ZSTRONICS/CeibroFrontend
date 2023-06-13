@@ -20,7 +20,7 @@ import projectActions, {
   // getAllDocuments,
   getGroup,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 interface AddGroupProps {}
 

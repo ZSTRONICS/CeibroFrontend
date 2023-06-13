@@ -9,7 +9,6 @@ import {
   OTP_VERIFY,
   REGISTER_CONFIRMATION,
   RESET_PASSWORD,
-  SEND_VERIFY_EMAIL,
   UPDATE_PROFILE_PICTURE,
   VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
@@ -18,9 +17,9 @@ import {
   USER_CHANGE_PASSWORD,
   USER_CHANGE_NUMBER,
   USER_VERIFY_CHANGE_NUMBER,
-} from "../../config/auth.config";
+} from "config";
 import apiCall from "../../utills/apiCall";
-import { ActionInterface } from "../reducers";
+import { ActionInterface } from "../reducers/appReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const loginRequest = apiCall({

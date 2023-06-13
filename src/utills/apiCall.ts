@@ -3,7 +3,7 @@ import { appHistory } from 'navigation/RouterConfig'
 import { toast } from 'react-toastify'
 import { call, put, select } from 'redux-saga/effects'
 import { logoutUser } from 'redux/action/auth.action'
-import { RootState } from 'redux/reducers'
+import { RootState } from 'redux/reducers/appReducer'
 import { AxiosV1, AxiosV2 } from './axios'
 import { requestFail, requestPending, requestSuccess } from './status'
 

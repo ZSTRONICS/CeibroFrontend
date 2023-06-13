@@ -28,13 +28,12 @@ import { ListUserName } from "components/CustomTags";
 import { getColorByStatus } from "config/project.config";
 import { styled } from "@mui/system";
 import useStyles from "../CreateSubtask/CreateSubTaskStyles";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   combinedMemberArrayWithState,
   getUniqueObjectsFromArr,
 } from "components/Utills/Globals/Common";
-import { UserInfo } from "constants/interfaces/subtask.interface";
 // import colors from "assets/colors";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import {

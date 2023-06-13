@@ -3,7 +3,7 @@ import { CustomButton } from "components/TaskComponent/Tabs/TaskCard";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import StatusModal from "./StatusModal";
 
 function PopoverMenu(props: any) {

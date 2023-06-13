@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { toast } from "react-toastify";
 import { forwardChat } from "../../../redux/action/chat.action";
 

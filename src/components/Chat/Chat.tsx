@@ -11,7 +11,7 @@ import {
   setDownBlock,
   setGoToMessageId,
 } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import "./chat.css";
 import ChatBody from "./ChatBody";
 import ChatBoxHeader from "./ChatBoxHeader";

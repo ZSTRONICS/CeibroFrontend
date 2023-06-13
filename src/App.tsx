@@ -30,7 +30,7 @@ import "./App.css";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./redux/reducers";
+import { RootState } from "./redux/reducers/appReducer";
 import myStore from "redux/store";
 import {
   getAllChats,

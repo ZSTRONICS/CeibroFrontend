@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../../redux/reducers";
+import { RootState } from "../../../../redux/reducers/appReducer";
 import ProjectDocuments from "./ProjectDocuments/ProjectDocuments";
 // import ProjectGroups from "./ProjectGroups/ProjectGroups";
 // import ProjectMembers from "./ProjectMember/ProjectMembers";

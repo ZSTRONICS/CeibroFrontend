@@ -6,7 +6,7 @@ import NameAvatar from "../Others/NameAvatar";
 import ChatListMenue from "./ChatListMenu";
 import { ChatListInterface } from "../../../constants/interfaces/chat.interface";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { addToFavourite, getAllChats } from "../../../redux/action/chat.action";
 import useStyles from "./ChatListStyles";
 import { socket } from "services/socket.services";

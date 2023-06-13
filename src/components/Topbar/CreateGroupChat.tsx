@@ -13,7 +13,7 @@ import {
   getAllProjects,
   getAllProjectsWithMembers,
 } from "../../redux/action/project.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 
 // components
 import TextField from "components/Utills/Inputs/TextField";

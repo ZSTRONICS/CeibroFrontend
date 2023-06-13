@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../../assets/colors";
 import projectActions from "../../../../redux/action/project.action";
-import { RootState } from "../../../../redux/reducers";
+import { RootState } from "../../../../redux/reducers/appReducer";
 import DrawerHeader from "./DrawerHeader";
 import ProjectDrawerMenu from "./ProjectDrawerMenu";
 import CreateProjectBody from "./CreateProjectBody";

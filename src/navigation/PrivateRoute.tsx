@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { Redirect, Route, RouteProps } from "react-router";
-import { RootState } from "../redux/reducers";
+import { RootState } from "redux/reducers";
 
 interface PrivateRouteProps extends RouteProps {
   fallbackComponent?: React.ReactNode;

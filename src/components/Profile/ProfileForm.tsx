@@ -14,7 +14,7 @@ import {
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { updateMyProfile } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 import colors from "../../assets/colors";
 

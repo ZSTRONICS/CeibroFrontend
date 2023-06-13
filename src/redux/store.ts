@@ -5,7 +5,7 @@ import "regenerator-runtime/runtime";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import rootSaga from "./sagas/rootSagas";
-import rootReducer from "./reducers/root.reducer";
+import { rootReducer } from "./reducers";
 
 const persistConfig = {
   key: "root",

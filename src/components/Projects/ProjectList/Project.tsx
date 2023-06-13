@@ -16,7 +16,7 @@ import {
   getAllProjects,
   getAllProjectsWithMembers,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { getAvailableUsers } from "redux/action/user.action";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import moment from "moment-timezone";

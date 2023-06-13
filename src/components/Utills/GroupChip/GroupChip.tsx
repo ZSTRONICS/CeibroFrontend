@@ -18,7 +18,7 @@ import colors from "../../../assets/colors";
 // import { MenuOptions } from "../Others/MenuButton";
 // import NameAvatar from "../Others/NameAvatar";
 import GroupMenu from "./GroupMenu";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 // const menue: MenuOptions[] = [
 //   {
 //     title: "Edit Group",

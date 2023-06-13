@@ -11,7 +11,7 @@ import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
 import { momentdeDateFormat } from "../Globals/Common";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -37,6 +37,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   } = project;
 
   const dispatch = useDispatch();
+  const { projectId, floorId } = useParams<{ projectId: string; floorId: string }>();
+
   const handleProjectClick = () => {
     dispatch(projectActions.setSelectedProject(_id));
     dispatch(projectActions.setProjectOverview(project));
@@ -54,9 +56,10 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
   const handleLocation = (e: React.MouseEvent) => {
     e.stopPropagation();
-    const newRoutePath = `/drawing/${_id}`;
+    const newRoutePath = `/project/${_id}`;
     dispatch(projectActions.setSelectedProject(_id));
     history.push(newRoutePath);
+    // history.push(`/project-floor/${projectId}/floor/${floorId}`);
   };
 
   return (

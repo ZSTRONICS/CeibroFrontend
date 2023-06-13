@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Grid, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import InputText from "../../../../Utills/Inputs/InputText";
 import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 

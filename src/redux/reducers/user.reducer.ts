@@ -1,5 +1,5 @@
 import { Contact, UserAllContacts } from 'constants/interfaces/user.interface';
-import { ActionInterface } from '.'
+import { ActionInterface } from './appReducer'
 import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 
 import {

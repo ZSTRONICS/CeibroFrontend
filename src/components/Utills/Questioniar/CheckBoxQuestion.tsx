@@ -17,7 +17,7 @@ import {
   QuestioniarOptionInterface,
 } from "../../../constants/interfaces/questioniar.interface";
 import { setQuestions } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import AnswerByWrapper from "./AnswerByWrapper";
 interface multipleQuestionInt {
   question: QuestioniarInterface;

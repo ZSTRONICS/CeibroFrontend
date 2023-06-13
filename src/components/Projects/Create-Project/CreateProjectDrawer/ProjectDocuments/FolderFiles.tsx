@@ -27,7 +27,7 @@ import projectActions, {
   getFolderFiles,
   uploadFileToFolder,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 import FileViewDrawer from "./FileViewDrawer";
 

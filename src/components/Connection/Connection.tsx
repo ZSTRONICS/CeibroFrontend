@@ -7,7 +7,7 @@ import { VariableSizeList } from "react-window";
 //@ts-ignore
 import { useDispatch, useSelector } from "react-redux";
 import { userApiAction } from "redux/action/user.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 // types
 // component

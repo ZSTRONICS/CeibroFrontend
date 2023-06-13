@@ -21,7 +21,7 @@ import projectActions, {
   deleteWork,
   getNewWork,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { toast } from "react-toastify";
 import {
   ProfileWork,

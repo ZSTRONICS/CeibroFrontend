@@ -13,7 +13,7 @@ import projectActions, {
   getAllDocuments,
   getFolderFiles,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 import DocumentDrawer from "./DocumentDrawer";
 

@@ -32,7 +32,7 @@ import taskActions, {
   patchSubTaskById,
   updateTaskById,
 } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
 import { DOCS_CONFIG } from "config/docs.config";
