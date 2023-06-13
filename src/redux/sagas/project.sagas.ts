@@ -137,7 +137,7 @@ const getProjectMembers = apiCall({
 // });
 
 const createProject = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: CREATE_PROJECT,
   method: "post",
   path: `/project`,

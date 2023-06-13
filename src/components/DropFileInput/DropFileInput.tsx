@@ -130,8 +130,8 @@ const DragAndDrop: React.FC<IProps> = ({
                   hidden
                   multiple={false}
                   type="file"
-                  accept={isAcceptAllFileTypes ? "*/*" : "image/*"}
-                  onChange={(e: any) => onUploadFiles(e)}
+                  accept={isAcceptAllFileTypes ? "application/pdf" : "image/*"}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUploadFiles(e)}
                 />
                 <Button
                   LinkComponent="a"

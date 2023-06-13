@@ -81,7 +81,7 @@ function ProjectLocations(props: IProps) {
   );
 }
 
-export default withRouter(ProjectLocations);
+export default ProjectLocations;
 
 export const TabsListMain = styled(Box)(
   ({ theme }) => `
