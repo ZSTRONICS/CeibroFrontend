@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CBox } from "components/material-ui";
 import { AttachmentIcon } from "components/material-ui/icons/index";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";

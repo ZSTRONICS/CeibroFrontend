@@ -17,7 +17,7 @@ import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import '../../../components/MuiStyles.css'
 
 

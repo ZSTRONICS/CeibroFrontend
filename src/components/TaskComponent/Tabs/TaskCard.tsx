@@ -36,7 +36,7 @@ import {
 } from "components/Utills/Globals/Common";
 import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 interface Props {

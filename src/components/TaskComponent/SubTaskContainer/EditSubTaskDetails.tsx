@@ -22,7 +22,7 @@ import colors from "assets/colors";
 import AddIcon from "@material-ui/icons/Add";
 import assets from "assets/assets";
 import MemberList from "./MemberList";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CustomStack } from "../Tabs/TaskCard";
 import { ListUserName } from "components/CustomTags";
 import { getColorByStatus } from "config/project.config";

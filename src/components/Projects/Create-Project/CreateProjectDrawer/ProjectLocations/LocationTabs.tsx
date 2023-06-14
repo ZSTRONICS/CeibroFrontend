@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 // types
 import { Drawing, Floor } from "constants/interfaces";
 // components
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import assets from "assets/assets";
 import LocationCard from "./LocationCard";
 import { CustomStack } from "components/CustomTags";

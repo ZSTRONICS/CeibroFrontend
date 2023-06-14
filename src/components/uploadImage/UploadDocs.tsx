@@ -6,7 +6,7 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";

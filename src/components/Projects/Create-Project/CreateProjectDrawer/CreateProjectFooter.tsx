@@ -17,7 +17,7 @@ import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 

@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core";
 import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import CustomModal from "components/Modal";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";

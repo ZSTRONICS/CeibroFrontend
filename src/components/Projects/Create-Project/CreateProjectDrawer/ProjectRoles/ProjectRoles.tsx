@@ -10,7 +10,7 @@ import {
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { RootState } from "redux/reducers/appReducer";
 import { ProjectAdminRoleTag } from "components/CustomTags";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { useEffect } from "react";
 
 const ProjectRoles = () => {

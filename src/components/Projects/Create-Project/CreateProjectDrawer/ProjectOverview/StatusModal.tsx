@@ -1,4 +1,4 @@
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import CustomModal from "components/Modal";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import Input from "components/Utills/Inputs/Input";

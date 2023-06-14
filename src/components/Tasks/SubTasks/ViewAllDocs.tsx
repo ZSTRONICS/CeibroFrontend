@@ -7,7 +7,7 @@ import {
   ListItemAvatar, ListItemText, useMediaQuery
 } from "@mui/material";
 import { styled } from "@mui/system";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import {
   CDateTime, CommentName, FileName, Heading, Span
 } from "components/CustomTags";

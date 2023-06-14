@@ -13,7 +13,7 @@ import { createSubTask } from "redux/action/task.action";
 
 // components
 import CustomModal from "components/Modal";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import CreateSubTask from "../SubTasks/CreateSubTask";
 import DatePicker from "components/Utills/Inputs/DatePicker";
 import StatusMenu from "components/Utills/Others/StatusMenu";

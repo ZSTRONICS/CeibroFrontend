@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { Box, Divider, Grid, Tooltip, Typography, IconButton } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CBox } from "components/material-ui";
 import { getColorByStatus } from "config/project.config";
 import { useState } from "react";

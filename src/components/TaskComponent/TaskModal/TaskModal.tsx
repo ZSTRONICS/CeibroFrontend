@@ -29,7 +29,7 @@ import taskActions, {
 import { RootState } from "../../../redux/reducers/appReducer";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { toast } from "react-toastify";
 import { TASK_CONFIG } from "config/task.config";
 

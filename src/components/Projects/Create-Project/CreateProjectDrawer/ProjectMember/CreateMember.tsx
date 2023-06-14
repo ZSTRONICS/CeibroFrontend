@@ -12,7 +12,7 @@ import {
   Divider,
 } from "@mui/material";
 import colors from "assets/colors";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";

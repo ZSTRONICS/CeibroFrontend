@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { AddStatusTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";

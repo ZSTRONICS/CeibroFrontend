@@ -25,7 +25,7 @@ import { RootState } from "redux/reducers/appReducer";
 import EditSubTaskDetails from "./EditSubTaskDetails";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "../Tabs/TaskCard";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 interface Props {
   subTaskDetail: SubtaskInterface;

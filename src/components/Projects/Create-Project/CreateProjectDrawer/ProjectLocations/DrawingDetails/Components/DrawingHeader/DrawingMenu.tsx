@@ -1,18 +1,17 @@
 import { Grid } from "@mui/material";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
-import { useHistory } from "react-router-dom";
 import projectActions, { PROJECT_APIS } from "redux/action/project.action";
 import { useDispatch, useSelector } from "react-redux";
 import { useApiCallOnce } from "hooks";
-import { useEffect } from "react";
+import { RootState } from "redux/reducers";
+import { LoadingButton } from "components/Button";
 
 function DrawingMenu() {
   const dispatch = useDispatch();
-  const history = useHistory();
   const { allProjects, selectedProject, allFloors } = useSelector(
     (state: RootState) => state.project
   );
-  console.log(allFloors, "@222@");
+
   let mdPoint: number = 2.8;
 
   const action = PROJECT_APIS.getFloorsByProjectId({
@@ -23,19 +22,8 @@ function DrawingMenu() {
 
   useApiCallOnce(action, [selectedProject]);
 
-  // useEffect(() => {
-  //   if (selectedProject) {
-  //     const action = PROJECT_APIS.getFloorsByProjectId({
-  //       other: {
-  //         projectId: String(selectedProject),
-  //       },
-  //     });
-  //     dispatch(action);
-  //   }
-  // }, [selectedProject]);
-
   // handle projects dropdown
-  const handleProjectChange = (event, option) => {
+  const handleProjectChange = (event: any, option: any) => {
     dispatch(projectActions.setSelectedProject(option.value));
   };
 
@@ -84,6 +72,11 @@ function DrawingMenu() {
             sx={style}
             showSideLabel={true}
           />
+        </Grid>
+        <Grid item md={mdPoint}>
+          <LoadingButton loading={false} variant="contained">
+            Search
+          </LoadingButton>
         </Grid>
       </Grid>
     </>

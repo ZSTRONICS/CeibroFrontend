@@ -6,7 +6,7 @@ import { AttachmentIcon } from "components/material-ui/icons";
 import { useState } from "react";
 import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers/appReducer";
 import {

@@ -22,7 +22,7 @@ import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { Member, ProjectMemberInterface, ProjectRolesInterface, roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";

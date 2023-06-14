@@ -8,7 +8,7 @@ import {
 
 import { makeStyles } from "@material-ui/core";
 
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { useDispatch } from "react-redux";
 
 import colors from "../../assets/colors";

@@ -6,7 +6,6 @@ import { useHistory } from "react-router";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
 // import CreateChat from "./CreateChat";
-import CButton from "components/Button/Button";
 import { CustomStack, TopBarTitle } from "components/CustomTags";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
@@ -18,6 +17,8 @@ import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDra
 import { useLoading, useOpenCloseModal } from "hooks";
 import { RootState } from "redux/reducers/appReducer";
 import projectActions from "redux/action/project.action";
+import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
+import { CButton } from "components/Button";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const Title = () => {
   );
 
   // handle projects dropdown
-  const handleProjectChange = (event, value) => {
+  const handleProjectChange = (event: any, value: any) => {
     const id = value._id;
     dispatch(projectActions.setSelectedProject(id));
     const newRoutePath = `/project/${id}`;
@@ -151,9 +152,11 @@ const Title = () => {
             popupIcon={DropDownSvg()}
             options={allProjects}
             getOptionLabel={(option: any) => option.title}
-            getOptionSelected={(option, value) => option._id === value._id}
+            getOptionSelected={(option: any, value: any) =>
+              option._id === value._id
+            }
             value={allProjects.find(
-              (project) => project._id === selectedProject
+              (project:any) => project._id === selectedProject
             )}
             onChange={handleProjectChange}
             // options={ProjectName}

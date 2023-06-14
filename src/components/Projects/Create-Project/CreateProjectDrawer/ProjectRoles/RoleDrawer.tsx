@@ -16,7 +16,7 @@ import {
   Chip,
 } from "@mui/material";
 import colors from "assets/colors";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";

@@ -1,15 +1,18 @@
+import React from "react";
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import CustomModal from "components/Modal";
 import { useApiCallOnce, useOpenCloseModal } from "hooks";
-import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
 import AddDrawingFloor from "./AddDrawingFloor";
 import { FloorContent, FloorTabs } from "./LocationTabs";
-import { withRouter, RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps } from "react-router-dom";
 import { socket } from "services/socket.services";
+import NoData from "components/Chat/NoData";
+import CardSkeleton from "components/material-ui/skeleton/CardSkeleton";
+import { CustomStack } from "components/CustomTags";
 
 interface RouteParams {
   projectId: string;
@@ -26,13 +29,16 @@ function ProjectLocations(props: IProps) {
   const handleChange = (newValue: number) => {
     setSelectedTab(newValue);
   };
-  const { allFloors, selectedProject } = useSelector(
+
+  const { allFloors, selectedProject, isFloorLoading } = useSelector(
     (state: RootState) => state.project
   );
+
   const floorId = allFloors.length > 0 && allFloors[selectedTab]._id;
   if (projectId) {
     socket.setSelectedProjId(projectId);
   }
+
   const action = PROJECT_APIS.getFloorsByProjectId({
     other: {
       projectId: String(projectId),
@@ -46,9 +52,18 @@ function ProjectLocations(props: IProps) {
       closeModal();
     }, 500);
   }
+
   return (
     <>
-      {allFloors.length > 0 && (
+      {isFloorLoading && (
+        <CustomStack gap={3} flexWrap='wrap' justifyContent='center'>
+          {[1, 2, 3, 4, 5,6,7,8].map((item: any) => (
+            <CardSkeleton key={item} />
+          ))}
+        </CustomStack>
+      )}
+
+      {!isFloorLoading && allFloors.length > 0 ? (
         <>
           <TabsListMain>
             <FloorTabs
@@ -60,6 +75,8 @@ function ProjectLocations(props: IProps) {
           </TabsListMain>
           <FloorContent floors={allFloors} selectedTab={selectedTab} />
         </>
+      ) : (
+        <>{!isFloorLoading && <NoData title="No results found!" />}</>
       )}
       {isOpen && (
         <CustomModal
