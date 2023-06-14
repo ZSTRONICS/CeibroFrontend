@@ -20,21 +20,21 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const DocumentViewerStyles = () => ({
   scrollContainer: {
-    overflow: "auto",
+    // overflow: "auto",
     height: "100%",
-    width: "100%",
-    padding: "0 90px",
+    // width: "100%",
+    padding: "5%",
   },
   viewContainer: {
-    padding: 0,
-    borderRadius: 0,
-    position: "absolute",
-    top: "20%",
-    left: "30%",
-    // margin: "50px auto 100px auto",
-    display: "table",
-    width: "auto",
-    textAlign: "center",
+    // padding: 0,
+    // borderRadius: 0,
+    // position: "absolute",
+    // top: "20%",
+    // left: "30%",
+    // // margin: "50px auto 100px auto",
+    // display: "table",
+    // width: "auto",
+    // textAlign: "center",
   },
   editorContainer: {
     position: "absolute",
@@ -43,8 +43,7 @@ const DocumentViewerStyles = () => ({
     left: 0,
   },
   viewEmptyContainer: {
-    width: "900px",
-    height: "600px",
+    height: "100%",
   },
   progressContainer: {
     position: "absolute",
@@ -198,9 +197,7 @@ class DocumentViewer extends Component {
       <div>
         <div
           style={{
-            marginTop: "30px",
-            marginBottom: "20px",
-            marginLeft: "20px",
+            padding: "7px",
             display: "flex",
           }}
         >
@@ -221,7 +218,7 @@ class DocumentViewer extends Component {
             </Button>
           </ButtonGroup>
         </div>
-        <div style={{ width: "900px", height: "600px", overflow: "auto" }}>
+        <div style={{ height: "600px", overflow: "auto" }}>
           <Document
             file={this.props.file}
             noData={<div />}

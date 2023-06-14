@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { styled } from "@mui/system";
 import CustomModal from "components/Modal";
 import { useApiCallOnce, useOpenCloseModal } from "hooks";
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -26,12 +26,13 @@ function ProjectLocations(props: IProps) {
   const handleChange = (newValue: number) => {
     setSelectedTab(newValue);
   };
-  const { allFloors } = useSelector((state: RootState) => state.project);
+  const { allFloors, selectedProject } = useSelector(
+    (state: RootState) => state.project
+  );
   const floorId = allFloors.length > 0 && allFloors[selectedTab]._id;
   if (projectId) {
     socket.setSelectedProjId(projectId);
   }
-
   const action = PROJECT_APIS.getFloorsByProjectId({
     other: {
       projectId: String(projectId),

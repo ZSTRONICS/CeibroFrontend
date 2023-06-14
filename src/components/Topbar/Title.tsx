@@ -1,7 +1,6 @@
 import React, { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import projectActions from "../../redux/action/project.action";
 import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
 import { ArrowBack } from "@material-ui/icons";
@@ -18,6 +17,7 @@ import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { useLoading, useOpenCloseModal } from "hooks";
 import { RootState } from "redux/reducers/appReducer";
+import projectActions from "redux/action/project.action";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -25,13 +25,15 @@ const Title = () => {
   const { location } = useHistory();
   const classes = useStyles();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-  const {  isfloorCreating } = useSelector((state: RootState) => state.project);
-  
-  if(isfloorCreating){
-      setTimeout(() => {
-        closeModal()
-      }, 500);
-    }
+  const { isfloorCreating, allProjects, selectedProject } = useSelector(
+    (state: RootState) => state.project
+  );
+
+  if (isfloorCreating) {
+    setTimeout(() => {
+      closeModal();
+    }, 500);
+  }
 
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
@@ -50,6 +52,14 @@ const Title = () => {
   const BackIcon = () => (
     <ArrowBack color="primary" style={{ cursor: "pointer" }} onClick={goBack} />
   );
+
+  // handle projects dropdown
+  const handleProjectChange = (event, value) => {
+    const id = value._id;
+    dispatch(projectActions.setSelectedProject(id));
+    const newRoutePath = `/project/${id}`;
+    history.push(newRoutePath);
+  };
 
   const titleFontSize = {
     xs: 16,
@@ -139,7 +149,14 @@ const Title = () => {
             filterSelectedOptions
             id="project-names"
             popupIcon={DropDownSvg()}
-            options={ProjectName}
+            options={allProjects}
+            getOptionLabel={(option: any) => option.title}
+            getOptionSelected={(option, value) => option._id === value._id}
+            value={allProjects.find(
+              (project) => project._id === selectedProject
+            )}
+            onChange={handleProjectChange}
+            // options={ProjectName}
             sx={{ width: 300 }}
             renderInput={(params) => <TextField {...params} />}
           />
@@ -208,14 +225,18 @@ const Title = () => {
   return (
     <>
       {getTitle()}
-      {isOpen&& (
+      {isOpen && (
         <CustomModal
           maxWidth="xs"
           isOpen={isOpen}
           handleClose={closeModal}
           title="Add New Floor"
           children={
-            <AddDrawingFloor isDrawing={false} showTextField={true} showImgDragDrop={false} />
+            <AddDrawingFloor
+              isDrawing={false}
+              showTextField={true}
+              showImgDragDrop={false}
+            />
           }
           showCloseBtn={true}
         />
