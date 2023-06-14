@@ -30,7 +30,7 @@ function ProjectLocations(props: IProps) {
     setSelectedTab(newValue);
   };
 
-  const { allFloors, selectedProject, isFloorLoading } = useSelector(
+  const { allFloors, isFloorLoading } = useSelector(
     (state: RootState) => state.project
   );
 
@@ -55,15 +55,13 @@ function ProjectLocations(props: IProps) {
 
   return (
     <>
-      {isFloorLoading && (
-        <CustomStack gap={3} flexWrap='wrap' justifyContent='center'>
-          {[1, 2, 3, 4, 5,6,7,8].map((item: any) => (
+      {isFloorLoading ? (
+        <CustomStack gap={3} flexWrap="wrap" justifyContent="center">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item: any) => (
             <CardSkeleton key={item} />
           ))}
         </CustomStack>
-      )}
-
-      {!isFloorLoading && allFloors.length > 0 ? (
+      ) : allFloors.length > 0 ? (
         <>
           <TabsListMain>
             <FloorTabs
@@ -76,8 +74,9 @@ function ProjectLocations(props: IProps) {
           <FloorContent floors={allFloors} selectedTab={selectedTab} />
         </>
       ) : (
-        <>{!isFloorLoading && <NoData title="No results found!" />}</>
+        <NoData title="No results found!" />
       )}
+
       {isOpen && (
         <CustomModal
           maxWidth="sm"
