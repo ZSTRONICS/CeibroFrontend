@@ -1,16 +1,28 @@
 import { Grid } from "@mui/material";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
-import projectActions, { PROJECT_APIS } from "redux/action/project.action";
+import { useHistory } from "react-router-dom";
+import projectActions, {
+  PROJECT_APIS,
+  getAllProjects,
+} from "redux/action/project.action";
 import { useDispatch, useSelector } from "react-redux";
 import { useApiCallOnce } from "hooks";
-import { RootState } from "redux/reducers";
+import { useEffect, useState } from "react";
 import { LoadingButton } from "components/Button";
 
 function DrawingMenu() {
   const dispatch = useDispatch();
-  const { allProjects, selectedProject, allFloors } = useSelector(
-    (state: RootState) => state.project
-  );
+  const history = useHistory();
+  const {
+    allProjects,
+    selectedProject,
+    allFloors,
+    selectedFloor,
+    selectedDrawing,
+  } = useSelector((state: RootState) => state.project);
+  const [drawings, setDrawings] = useState();
+  const [selectedFloorId, setSelectedFloorId] = useState();
+  const [selectedDrawingId, setSelectedDrawingId] = useState();
 
   let mdPoint: number = 2.8;
 
@@ -22,20 +34,50 @@ function DrawingMenu() {
 
   useApiCallOnce(action, [selectedProject]);
 
-  // handle projects dropdown
-  const handleProjectChange = (event: any, option: any) => {
-    dispatch(projectActions.setSelectedProject(option.value));
+  useEffect(() => {
+    if (allProjects.length <= 0) {
+      dispatch(getAllProjects());
+    }
+  }, []);
+
+  const handleProjectChange = (event, option) => {
+    dispatch(projectActions.setSelectedProject(option ? option.value : null));
   };
 
+  const handleFloorChange = (event, option) => {
+    setSelectedFloorId(option ? option.value : null);
+    dispatch(projectActions.setSelectedFloor(option ? option.value : null));
+    const floor =
+      option && allFloors.find((floor: any) => floor._id === option.value);
+    setDrawings(floor ? floor.drawings : null);
+  };
+
+  const handleDrawingChange = (event, option) => {
+    setSelectedDrawingId(option ? option.value : null);
+    dispatch(projectActions.setSelectedDrawing(option ? option.value : null));
+  };
+
+  const handleLoadDrawing = (event: any) => {};
+
   //labelKey for get the value from object and store in label
+  //valueKey for get the value from object and store in value
   const formatDropdownData = (
     data: any,
     labelKey: string,
     valueKey: string
   ) => {
-    return data.map((item: any) => {
-      return { label: item[labelKey], value: item[valueKey] };
-    });
+    if (data) {
+      return (
+        data &&
+        data.map((item: any) => {
+          const label = item[labelKey] || "";
+          const value = item[valueKey] || "";
+          return { label: label.toString(), value: value.toString() };
+        })
+      );
+    } else {
+      return null;
+    }
   };
 
   return (
@@ -58,7 +100,8 @@ function DrawingMenu() {
             placeholder="Select Floor"
             label="Floor"
             options={formatDropdownData(allFloors, "floorName", "_id")}
-            onChange={handleProjectChange}
+            onChange={handleFloorChange}
+            value={selectedFloorId}
             // options={top100Films}
             sx={style}
             showSideLabel={true}
@@ -68,16 +111,25 @@ function DrawingMenu() {
           <AutocompleteField
             placeholder="Select Drawing"
             label="Drawing"
-            options={top100Films}
+            options={formatDropdownData(drawings, "drawingName", "_id")}
+            onChange={handleDrawingChange}
+            value={selectedDrawingId}
+            // options={top100Films}
             sx={style}
             showSideLabel={true}
           />
         </Grid>
-        <Grid item md={mdPoint}>
-          <LoadingButton loading={false} variant="contained">
-            Search
-          </LoadingButton>
-        </Grid>
+        {selectedDrawing && (
+          <Grid item md={mdPoint}>
+            <LoadingButton
+              loading={false}
+              variant="contained"
+              onClick={handleLoadDrawing}
+            >
+              Load Drawing
+            </LoadingButton>
+          </Grid>
+        )}
       </Grid>
     </>
   );

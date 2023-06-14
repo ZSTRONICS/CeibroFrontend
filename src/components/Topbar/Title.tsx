@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import taskActions from "../../redux/action/task.action";
@@ -16,7 +16,7 @@ import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { useLoading, useOpenCloseModal } from "hooks";
 import { RootState } from "redux/reducers/appReducer";
-import projectActions from "redux/action/project.action";
+import projectActions, { getAllProjects } from "redux/action/project.action";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { CButton } from "components/Button";
 
@@ -29,6 +29,12 @@ const Title = () => {
   const { isfloorCreating, allProjects, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
+
+  useEffect(() => {
+    if (allProjects.length <= 0) {
+      dispatch(getAllProjects());
+    }
+  }, []);
 
   if (isfloorCreating) {
     setTimeout(() => {
@@ -156,7 +162,7 @@ const Title = () => {
               option._id === value._id
             }
             value={allProjects.find(
-              (project:any) => project._id === selectedProject
+              (project: any) => project._id === selectedProject
             )}
             onChange={handleProjectChange}
             // options={ProjectName}

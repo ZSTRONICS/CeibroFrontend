@@ -72,7 +72,7 @@ function AutocompleteField<T extends AutocompleteOption>({
       <StyledAutocomplete
         {...props}
         options={options}
-        id="autocomplete-input"
+        id={`autocomplete-input-${label}`}
         popupIcon={DropDownSvg()}
         getOptionLabel={(option: any) => option.label}
         renderInput={(params: any) => (

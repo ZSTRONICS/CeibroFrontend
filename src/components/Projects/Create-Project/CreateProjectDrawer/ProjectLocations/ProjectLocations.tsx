@@ -56,8 +56,8 @@ function ProjectLocations(props: IProps) {
   return (
     <>
       {isFloorLoading && (
-        <CustomStack gap={3} flexWrap='wrap' justifyContent='center'>
-          {[1, 2, 3, 4, 5,6,7,8].map((item: any) => (
+        <CustomStack gap={3} flexWrap="wrap" justifyContent="center">
+          {[1, 2, 3, 4, 5, 6, 7, 8].map((item: any) => (
             <CardSkeleton key={item} />
           ))}
         </CustomStack>

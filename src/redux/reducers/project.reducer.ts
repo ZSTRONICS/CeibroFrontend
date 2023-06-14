@@ -45,6 +45,8 @@ import config, {
   SELECTED_FILE_URL,
   SELECTED_FILE_TYPE,
   DELETE_PROJECT,
+  SET_SELECTED_FLOOR,
+  SET_SELECTED_DRAWING,
 } from "../../config/project.config";
 import {
   requestFail,
@@ -61,19 +63,26 @@ import {
   projectProfileInterface,
   FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
-import { ProjectGroupInterface, ProjectMemberInterface, memberTemplate, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import { Floor, FloorInterface, UserInterface, } from "constants/interfaces";
+import {
+  ProjectGroupInterface,
+  ProjectMemberInterface,
+  memberTemplate,
+  ProjectRolesInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { Floor, FloorInterface, UserInterface } from "constants/interfaces";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
   allProjects: any;
   allFloors: Floor[];
-  isFloorLoading: boolean,
+  isFloorLoading: boolean;
   projects: ProjectInterface[];
   projectMembers: [];
   projectWithMembers: any[];
   selectedProject: any;
+  selectedFloor: any;
+  selectedDrawing: any;
   selectedRole: ProjectRolesInterface;
   selectedMember: ProjectMemberInterface;
   filePath: any;
@@ -109,9 +118,9 @@ interface ProjectReducerInt {
   getStatuses: any;
   getNewWorkList: any;
   userPermissions: any;
-  allProjectsTitles: any[],
-  isOpenProjectDocumentModal: boolean
-  isfloorCreating: boolean,
+  allProjectsTitles: any[];
+  isOpenProjectDocumentModal: boolean;
+  isfloorCreating: boolean;
 }
 
 const projectReducer: ProjectReducerInt = {
@@ -127,11 +136,13 @@ const projectReducer: ProjectReducerInt = {
   projects: [],
   projectMembers: [],
   selectedProject: null,
+  selectedFloor: null,
+  selectedDrawing: null,
   selectedRole: {
-    _id: '',
+    _id: "",
     admin: false,
     createdAt: "",
-    updatedAt: '',
+    updatedAt: "",
     creator: "",
     isDefaultRole: false,
     memberPermission: { create: false, delete: false, edit: false },
@@ -189,7 +200,6 @@ const NavigationReducer = (
   state = projectReducer,
   action: ActionInterface
 ): ProjectReducerInt => {
-
   switch (action.type) {
     case requestSuccess(DELETE_PROJECT): {
       return {
@@ -239,31 +249,33 @@ const NavigationReducer = (
       return {
         ...state,
         isFloorLoading: false,
-        allFloors:action.payload.floors
+        allFloors: action.payload.floors,
       };
     }
-    
+
     case requestFail(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
       return {
         ...state,
         isFloorLoading: false,
-
       };
     }
 
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;
-      let newProjects: any = []
+      let newProjects: any = [];
 
       if (state.allProjects.length === 0) {
         state.allProjects = projects;
       } else {
         projects.forEach((project: any) => {
-          const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+          const isExistingProject = state.allProjects.findIndex(
+            (prevProject: any) =>
+              String(prevProject._id) === String(project._id)
+          );
           if (isExistingProject > -1) {
-            state.allProjects[isExistingProject] = project
+            state.allProjects[isExistingProject] = project;
           } else {
-            newProjects.push(project)
+            newProjects.push(project);
           }
         });
       }
@@ -274,41 +286,39 @@ const NavigationReducer = (
 
       return {
         ...state,
-        allProjects: [...state.allProjects]
+        allProjects: [...state.allProjects],
       };
     }
 
     case requestPending(PROJECT_CONFIG.CREATE_FLOOR): {
-
       return {
         ...state,
         isfloorCreating: true,
       };
     }
     case requestSuccess(PROJECT_CONFIG.CREATE_FLOOR): {
-
       return {
         ...state,
         isfloorCreating: false,
       };
     }
     case requestFail(PROJECT_CONFIG.CREATE_FLOOR): {
-
       return {
         ...state,
         isfloorCreating: false,
       };
     }
 
-
     case PROJECT_CONFIG.PROJECT_CREATED: {
       let project = action.payload;
       if (state.allProjects.length === 0) {
         state.allProjects.push(project);
       } else {
-        const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+        const isExistingProject = state.allProjects.findIndex(
+          (prevProject: any) => String(prevProject._id) === String(project._id)
+        );
         if (isExistingProject > -1) {
-          state.allProjects[isExistingProject] = project
+          state.allProjects[isExistingProject] = project;
         } else {
           state.allProjects = [project, ...state.allProjects];
         }
@@ -316,28 +326,29 @@ const NavigationReducer = (
 
       return {
         ...state,
-        allProjects: [...state.allProjects]
-      }
+        allProjects: [...state.allProjects],
+      };
     }
 
     case PROJECT_CONFIG.PROJECT_UPDATED: {
       let project = action.payload;
 
-      const isExistingProject = state.allProjects.findIndex((prevProject: any) => String(prevProject._id) === String(project._id))
+      const isExistingProject = state.allProjects.findIndex(
+        (prevProject: any) => String(prevProject._id) === String(project._id)
+      );
       if (isExistingProject > -1) {
-        state.allProjects[isExistingProject] = project
+        state.allProjects[isExistingProject] = project;
       }
 
       if (String(state.projectOverview._id) === String(project._id)) {
-
-        state.projectOverview = project
+        state.projectOverview = project;
       }
 
       return {
         ...state,
         allProjects: [...state.allProjects],
-        projectOverview: { ...state.projectOverview }
-      }
+        projectOverview: { ...state.projectOverview },
+      };
     }
 
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
@@ -374,6 +385,18 @@ const NavigationReducer = (
         ...state,
         selectedProject: action.payload,
         menue: 1,
+      };
+    }
+    case SET_SELECTED_FLOOR: {
+      return {
+        ...state,
+        selectedFloor: action.payload,
+      };
+    }
+    case SET_SELECTED_DRAWING: {
+      return {
+        ...state,
+        selectedDrawing: action.payload,
       };
     }
     case SELECTED_FILE_URL: {
@@ -488,10 +511,10 @@ const NavigationReducer = (
 
     case CLOSE_ROLE_DRAWER: {
       state.selectedRole = {
-        _id: '',
+        _id: "",
         admin: false,
         createdAt: "",
-        updatedAt: '',
+        updatedAt: "",
         creator: "",
         isDefaultRole: false,
         memberPermission: { create: false, delete: false, edit: false },
@@ -640,10 +663,10 @@ const NavigationReducer = (
     }
 
     case requestSuccess(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID): {
-      state.getAllProjectRoles = []
+      state.getAllProjectRoles = [];
       return {
         ...state,
-        getAllProjectRoles: [...action.payload.result]
+        getAllProjectRoles: [...action.payload.result],
       };
     }
 
@@ -653,19 +676,20 @@ const NavigationReducer = (
       if (String(state.projectOverview._id) !== String(newRole.project)) {
         return {
           ...state,
-        }
+        };
       } else {
         if (state.getAllProjectRoles.length === 0) {
           state.getAllProjectRoles.push(newRole);
         } else {
-          const isExistingProject = state.getAllProjectRoles.findIndex((prevRole: any) => String(prevRole._id) === String(newRole._id))
+          const isExistingProject = state.getAllProjectRoles.findIndex(
+            (prevRole: any) => String(prevRole._id) === String(newRole._id)
+          );
           if (isExistingProject > -1) {
-            state.getAllProjectRoles[isExistingProject] = newRole
+            state.getAllProjectRoles[isExistingProject] = newRole;
 
             if (String(state.role._id) === String(newRole._id)) {
-              state.role = newRole
+              state.role = newRole;
             }
-
           } else {
             state.getAllProjectRoles = [...state.getAllProjectRoles, newRole];
           }
@@ -674,8 +698,8 @@ const NavigationReducer = (
         return {
           ...state,
           getAllProjectRoles: [...state.getAllProjectRoles],
-          role: { ...state.role }
-        }
+          role: { ...state.role },
+        };
       }
     }
 
@@ -684,22 +708,24 @@ const NavigationReducer = (
       if (String(state.projectOverview._id) !== String(updatedRole.project)) {
         return {
           ...state,
-        }
+        };
       } else {
-        const isExistingRole = state.getAllProjectRoles.findIndex((prevRole: any) => String(prevRole._id) === String(updatedRole._id))
+        const isExistingRole = state.getAllProjectRoles.findIndex(
+          (prevRole: any) => String(prevRole._id) === String(updatedRole._id)
+        );
         if (isExistingRole > -1) {
-          state.getAllProjectRoles[isExistingRole] = updatedRole
+          state.getAllProjectRoles[isExistingRole] = updatedRole;
         }
 
         if (String(state.role._id) === String(updatedRole._id)) {
-          state.role = updatedRole
+          state.role = updatedRole;
         }
 
         return {
           ...state,
           getAllProjectRoles: [...state.getAllProjectRoles],
-          role: { ...state.role }
-        }
+          role: { ...state.role },
+        };
       }
     }
     case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
@@ -708,17 +734,19 @@ const NavigationReducer = (
       if (String(state.projectOverview._id) !== String(newGroup.project)) {
         return {
           ...state,
-        }
+        };
       } else {
         if (state.groupList.length === 0) {
           state.groupList.push(newGroup);
         } else {
-          const isExistingGroup = state.groupList.findIndex((prevRole: any) => String(prevRole._id) === String(newGroup._id))
+          const isExistingGroup = state.groupList.findIndex(
+            (prevRole: any) => String(prevRole._id) === String(newGroup._id)
+          );
           if (isExistingGroup > -1) {
-            state.groupList[isExistingGroup] = newGroup
+            state.groupList[isExistingGroup] = newGroup;
 
             if (String(state.role._id) === String(newGroup._id)) {
-              state.role = newGroup
+              state.role = newGroup;
             }
           } else {
             state.groupList = [...state.groupList, newGroup];
@@ -728,22 +756,23 @@ const NavigationReducer = (
         return {
           ...state,
           groupList: [...state.groupList],
-        }
+        };
       }
-
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
       let members = action.payload;
-      let newMembers: any = []
+      let newMembers: any = [];
       if (state.memberList.length === 0) {
         state.memberList = members;
       } else {
         members.forEach((member: any) => {
-          const isExistingMember = state.memberList.findIndex((prevMember: any) => String(prevMember._id) === String(member._id))
+          const isExistingMember = state.memberList.findIndex(
+            (prevMember: any) => String(prevMember._id) === String(member._id)
+          );
           if (isExistingMember > -1) {
-            state.memberList[isExistingMember] = member
+            state.memberList[isExistingMember] = member;
           } else {
-            newMembers.push(member)
+            newMembers.push(member);
           }
         });
       }
@@ -754,24 +783,26 @@ const NavigationReducer = (
       return {
         ...state,
         memberList: [...state.memberList],
-      }
+      };
     }
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED: {
       let member = action.payload;
-      const isExistingMember = state.memberList.findIndex((prevMember: any) => String(prevMember._id) === String(member._id))
+      const isExistingMember = state.memberList.findIndex(
+        (prevMember: any) => String(prevMember._id) === String(member._id)
+      );
       if (isExistingMember > -1) {
-        state.memberList[isExistingMember] = member
+        state.memberList[isExistingMember] = member;
       }
 
       if (String(state.projectOverview._id) === String(member._id)) {
-        state.projectOverview = member
+        state.projectOverview = member;
       }
 
       return {
         ...state,
         memberList: [...state.memberList],
-      }
+      };
     }
     case requestSuccess(GET_GROUP_BY_ID): {
       return {
