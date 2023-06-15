@@ -27,7 +27,7 @@ const Title = () => {
   const { location } = useHistory();
   const classes = useStyles();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-  const { isfloorCreating, allProjects, } = useSelector(
+  const { isfloorCreating, allProjects } = useSelector(
     (state: RootState) => state.project
   );
   const selectedProjectId = socket.getSelectedProjId();
@@ -43,9 +43,9 @@ const Title = () => {
       closeModal();
     }, 500);
   }
-  let selectProj ={title:''}
-  if (allProjects.length) {
-     selectProj = allProjects.find(
+  let selectProj = { title: "" };
+  if (allProjects.length && selectedProjectId) {
+    selectProj = allProjects.find(
       (project: any) => project._id === selectedProjectId
     );
   }
