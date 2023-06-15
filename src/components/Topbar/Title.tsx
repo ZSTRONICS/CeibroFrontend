@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
 import taskActions from "../../redux/action/task.action";
@@ -19,6 +19,7 @@ import { RootState } from "redux/reducers/appReducer";
 import projectActions, { getAllProjects } from "redux/action/project.action";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { CButton } from "components/Button";
+import { socket } from "services/socket.services";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -26,9 +27,10 @@ const Title = () => {
   const { location } = useHistory();
   const classes = useStyles();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-  const { isfloorCreating, allProjects, selectedProject } = useSelector(
+  const { isfloorCreating, allProjects, } = useSelector(
     (state: RootState) => state.project
   );
+  const selectedProjectId = socket.getSelectedProjId();
 
   useEffect(() => {
     if (allProjects.length <= 0) {
@@ -41,7 +43,12 @@ const Title = () => {
       closeModal();
     }, 500);
   }
-
+  let selectProj ={title:''}
+  if (allProjects.length) {
+     selectProj = allProjects.find(
+      (project: any) => project._id === selectedProjectId
+    );
+  }
   const openProjectDrawer = () => {
     dispatch(projectActions.setSelectedProject(null));
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
@@ -161,9 +168,7 @@ const Title = () => {
             getOptionSelected={(option: any, value: any) =>
               option._id === value._id
             }
-            value={allProjects.find(
-              (project: any) => project._id === selectedProject
-            )}
+            value={selectProj}
             onChange={handleProjectChange}
             // options={ProjectName}
             sx={{ width: 300 }}

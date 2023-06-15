@@ -9,6 +9,8 @@ import { CButton } from "components/Button";
 import assets from "assets/assets";
 import LocationCard from "./LocationCard";
 import { CustomStack } from "components/CustomTags";
+import { useDispatch } from "react-redux";
+import projectActions from "redux/action/project.action";
 
 interface FloorTabsProps {
   floors: Floor[];
@@ -56,16 +58,22 @@ const FloorTabs: React.FC<FloorTabsProps> = ({
 const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
   const selectedFloor = floors[selectedTab];
   const history = useHistory();
-  const handleLocation = (e: React.MouseEvent) => {
+  const dispatch = useDispatch();
+
+  const handleLocation = (e: React.MouseEvent, drawing: Drawing) => {
     e.stopPropagation();
+    if (drawing) {
+      dispatch(projectActions.setSelectedDrawing(drawing));
+    }
+
     const newRoutePath = `/drawingDetail`;
     history.push(newRoutePath);
   };
 
-  const viewBtn = () => {
+  const viewBtn = (drawing: Drawing) => {
     return (
       <CButton
-        onClick={(e: React.MouseEvent) => handleLocation(e)}
+        onClick={(e: React.MouseEvent) => handleLocation(e, drawing)}
         label="View"
         variant="contained"
         sx={{
@@ -78,24 +86,24 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
     );
   };
   return (
-      <CustomStack
-        sx={{ flexWrap: "wrap", gap: "20px", mt: 8, position: "sticky" }}
-      >
-        {selectedFloor.drawings.length > 0 ? (
-          selectedFloor.drawings.map((drawing: Drawing, index: any) => {
-            return (
-              <LocationCard
-                key={drawing._id}
-                locationTitle={drawing.drawingName}
-                cardContent={viewBtn()}
-                url={drawing.thumbnail}
-              />
-            );
-          })
-        ) : (
-          <p>No drawings available.</p>
-        )}
-      </CustomStack>
+    <CustomStack
+      sx={{ flexWrap: "wrap", gap: "20px", mt: 8, position: "sticky" }}
+    >
+      {selectedFloor.drawings.length > 0 ? (
+        selectedFloor.drawings.map((drawing: Drawing, index: any) => {
+          return (
+            <LocationCard
+              key={drawing._id}
+              locationTitle={drawing.drawingName}
+              cardContent={viewBtn(drawing)}
+              url={drawing.thumbnail}
+            />
+          );
+        })
+      ) : (
+        <p>No drawings available.</p>
+      )}
+    </CustomStack>
   );
 };
 

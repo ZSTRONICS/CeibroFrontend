@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import React from "react";
 import { Grid } from "@mui/material";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 
@@ -8,10 +8,11 @@ import { LoadingButton } from "components/Button";
 import { RootState } from "redux/reducers";
 import { PROJECT_APIS } from "redux/action";
 import projectActions, { getAllProjects } from "redux/action/project.action";
+import { Drawing } from "constants/interfaces";
+import { formatDropdownData } from "components/Utills/Globals";
 
 function DrawingMenu() {
   const dispatch = useDispatch();
-  const isRenderEffect = useRef<boolean>(false);
   const {
     allProjects,
     selectedProject,
@@ -19,17 +20,15 @@ function DrawingMenu() {
     selectedFloor,
     selectedDrawing,
   } = useSelector((state: RootState) => state.project);
-  const [drawings, setDrawings] = useState();
+  const [drawings, setDrawings] = useState([]);
   const [selectedFloorId, setSelectedFloorId] = useState();
   const [selectedDrawingId, setSelectedDrawingId] = useState();
 
   let mdPoint: number = 2.8;
-
   useEffect(() => {
     if (allProjects.length === 0 && !selectedProject) {
       dispatch(getAllProjects());
     }
-    console.log('hit api calls for project')
   }, []);
 
   useEffect(() => {
@@ -58,31 +57,16 @@ function DrawingMenu() {
 
   const handleDrawingChange = (event: any, option: any) => {
     setSelectedDrawingId(option ? option.value : null);
-    dispatch(projectActions.setSelectedDrawing(option ? option.value : null));
+    if (drawings.length > 0) {
+      const selectedDrawingLocal: any = drawings.find(
+        (drawing: Drawing) => drawing._id === option.value
+      );
+      dispatch(projectActions.setSelectedDrawing(selectedDrawingLocal));
+    }
   };
 
   const handleLoadDrawing = (event: any) => {};
 
-  //labelKey for get the value from object and store in label
-  //valueKey for get the value from object and store in value
-  const formatDropdownData = (
-    data: any,
-    labelKey: string,
-    valueKey: string
-  ) => {
-    if (data) {
-      return (
-        data &&
-        data.map((item: any) => {
-          const label = item[labelKey] || "";
-          const value = item[valueKey] || "";
-          return { label: label.toString(), value: value.toString() };
-        })
-      );
-    } else {
-      return null;
-    }
-  };
   console.log("rendering drawing menue");
   return (
     <>

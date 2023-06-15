@@ -131,7 +131,6 @@ const projectActions = {
   },
 
   setSelectedProject: (projectId: string | null) => {
-    console.log('projectId--->', projectId)
     return {
       type: SET_SELECTED_PROJECT,
       payload: projectId,
