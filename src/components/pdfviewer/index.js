@@ -1,12 +1,14 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
 import doEach from "lodash/forEach";
 // components
 import Drawer from "./Drawer";
 import DocumentViewer from "./Components/DocumentViewer";
-// material-ui
-import { withStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers/appReducer";
+import projectActions from "redux/action/project.action";
 
-const DocumentReaderStyles = () => ({
+const useStyles = makeStyles({
   documentViewport: {
     overflow: "auto",
     width: "100%",
@@ -15,56 +17,47 @@ const DocumentReaderStyles = () => ({
   },
 });
 
-class DocumentReader extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initialState(props);
-    // self members binding
-    const funcs = ["onDocumentUploaded", "onDrawer"];
-    doEach(funcs, (func) => (this[func] = this[func].bind(this)));
-  }
+const DocumentReader = (props) => {
+  const dispatch = useDispatch();
+  const { loadDrawing, selectedDrawing } = useSelector(
+    (state: RootState) => state.project
+  );
 
-  initialState(props) {
-    return {
-      pdf: null, // pdf file object
-      pdfBuffer: null, // pdf file uint8Array buffer
-      showDrawer: false, // show the side menu
-    };
-  }
+  const classes = useStyles();
+  const [pdf, setPdf] = useState(null);
+  const [pdfBuffer, setPdfBuffer] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
 
-  onDocumentUploaded(pdf, pdfBuffer) {
-    this.setState({
-      pdfBuffer,
-      pdf,
-      showDrawer: false,
-    });
-  }
+  useEffect(() => {
+    if (loadDrawing) {
+      console.log(selectedDrawing, "@@@@@@@@@");
+      setPdf(selectedDrawing.drawingUrl);
+      dispatch(projectActions.setLoadDrawing(false));
+    }
+  }, [loadDrawing]);
 
-  onDrawer() {
-    this.setState((prev) => ({
-      showDrawer: !prev.showDrawer,
-    }));
-  }
+  const onDocumentUploaded = (pdf, pdfBuffer) => {
+    setPdf(pdf);
+    setPdfBuffer(pdfBuffer);
+    setShowDrawer(false);
+  };
 
-  render() {
-    const { classes } = this.props;
-    return (
-      <div className={classes.documentViewport}>
-        <Drawer
-          maxSize={this.props.maxSize || 80000000}
-          visable={this.state.showDrawer}
-          onClose={this.onDrawer}
-          pdf={this.state.pdfBuffer}
-          onUploaded={this.onDocumentUploaded}
-        />
-        <DocumentViewer pdf={this.state.pdfBuffer} file={this.state.pdf} />
-      </div>
-    );
-  }
-}
+  const onDrawer = () => {
+    setShowDrawer((prevShowDrawer) => !prevShowDrawer);
+  };
 
-// DocumentReader.propTypes = {
-// 	classes: PropTypes.object.isRequired,
-// };
+  return (
+    <div className={classes.documentViewport}>
+      {/* <Drawer
+        maxSize={props.maxSize || 80000000}
+        visible={showDrawer}
+        onClose={onDrawer}
+        pdf={pdfBuffer}
+        onUploaded={onDocumentUploaded}
+      /> */}
+      <DocumentViewer pdf={pdfBuffer} file={pdf} />
+    </div>
+  );
+};
 
-export default withStyles(DocumentReaderStyles)(DocumentReader);
+export default DocumentReader;

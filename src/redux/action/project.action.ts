@@ -148,6 +148,12 @@ const projectActions = {
       payload: drawing,
     };
   },
+  setLoadDrawing: (loadFlag: boolean) => {
+    return {
+      type: PROJECT_CONFIG.SET_LOAD_DRAWING,
+      payload: loadFlag,
+    };
+  },
   setSelectedRole: (role: ProjectRolesInterface) => {
     return {
       type: SET_SELECTED_ROLE,

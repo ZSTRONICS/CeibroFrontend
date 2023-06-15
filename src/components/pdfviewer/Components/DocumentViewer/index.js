@@ -76,6 +76,10 @@ class DocumentViewer extends Component {
     doEach(funcs, (func) => (this[func] = this[func].bind(this)));
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    console.log(this.props.file, "@@@@@@@@@@@@@@@@@");
+  }
+
   initialState(props) {
     return {
       totalPage: 0, // total number of page
@@ -221,6 +225,7 @@ class DocumentViewer extends Component {
         <div style={{ height: "600px", overflow: "auto" }}>
           <Document
             file={this.props.file}
+            // url={this.props.pdf}
             noData={<div />}
             loading={<div />}
             onSourceSuccess={this.onDocumentSourceSuccess}

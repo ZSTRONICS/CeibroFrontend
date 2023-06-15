@@ -49,10 +49,13 @@ function DrawingMenu() {
 
   const handleFloorChange = (event: any, option: any) => {
     setSelectedFloorId(option ? option.value : null);
-    dispatch(projectActions.setSelectedFloor(option ? option.value : null));
+    const foundFloor = allFloors.find(
+      (floor: any) => floor._id === option.value
+    );
+    dispatch(projectActions.setSelectedFloor(foundFloor ? foundFloor : null));
     const floor =
       option && allFloors.find((floor: any) => floor._id === option.value);
-    setDrawings(floor ? floor.drawings : null);
+    setDrawings(floor ? floor.drawings : []);
   };
 
   const handleDrawingChange = (event: any, option: any) => {
@@ -65,7 +68,9 @@ function DrawingMenu() {
     }
   };
 
-  const handleLoadDrawing = (event: any) => {};
+  const handleLoadDrawing = (event: any) => {
+    dispatch(projectActions.setLoadDrawing(true));
+  };
 
   console.log("rendering drawing menue");
   return (
@@ -86,6 +91,7 @@ function DrawingMenu() {
           <AutocompleteField
             placeholder="Select Floor"
             label="Floor"
+            disabled={allFloors.length > 0 ? false : true}
             options={formatDropdownData(allFloors, "floorName", "_id")}
             onChange={handleFloorChange}
             value={selectedFloorId}
@@ -97,6 +103,7 @@ function DrawingMenu() {
           <AutocompleteField
             placeholder="Select Drawing"
             label="Drawing"
+            disabled={drawings.length > 0 ? false : true}
             options={formatDropdownData(drawings, "drawingName", "_id")}
             onChange={handleDrawingChange}
             value={selectedDrawingId}

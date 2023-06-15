@@ -44,7 +44,8 @@ import {
   CLOSE_FILE_VIEW_DRAWER,
   SELECTED_FILE_URL,
   SELECTED_FILE_TYPE,
-  DELETE_PROJECT,} from "config";
+  DELETE_PROJECT,
+} from "config";
 
 import {
   requestFail,
@@ -82,6 +83,7 @@ interface ProjectReducerInt {
   selectedProject: any;
   selectedFloor: any;
   selectedDrawing: any;
+  loadDrawing: boolean;
   selectedRole: ProjectRolesInterface;
   selectedMember: ProjectMemberInterface;
   filePath: any;
@@ -137,6 +139,7 @@ const projectReducer: ProjectReducerInt = {
   selectedProject: null,
   selectedFloor: null,
   selectedDrawing: null,
+  loadDrawing: false,
   selectedRole: {
     _id: "",
     admin: false,
@@ -396,6 +399,12 @@ const NavigationReducer = (
       return {
         ...state,
         selectedDrawing: action.payload,
+      };
+    }
+    case PROJECT_CONFIG.SET_LOAD_DRAWING: {
+      return {
+        ...state,
+        loadDrawing: action.payload,
       };
     }
     case SELECTED_FILE_URL: {
