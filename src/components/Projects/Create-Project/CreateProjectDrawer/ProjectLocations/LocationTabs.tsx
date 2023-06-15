@@ -87,7 +87,7 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
   };
   return (
     <CustomStack
-      sx={{ flexWrap: "wrap", gap: "20px", mt: 8, position: "sticky" }}
+      sx={{ flexWrap: "wrap", gap: "20px", mt: 8,mb:2, position: "sticky" }}
     >
       {selectedFloor.drawings.length > 0 ? (
         selectedFloor.drawings.map((drawing: Drawing, index: any) => {

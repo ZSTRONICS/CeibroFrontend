@@ -52,7 +52,10 @@ function ProjectLocations(props: IProps) {
       closeModal();
     }, 500);
   }
-
+  const container = document.getElementById("container");
+  if (container) {
+    container.scrollTop = 0;
+  }
   return (
     <>
       {isFloorLoading ? (
@@ -71,7 +74,9 @@ function ProjectLocations(props: IProps) {
               handleModal={openModal}
             />
           </TabsListMain>
+          <Box id="container" sx={{ height: 'calc(100vh - 84px)', overflow:'auto' }}>
           <FloorContent floors={allFloors} selectedTab={selectedTab} />
+          </Box>
         </>
       ) : (
         <NoData title="No results found!" />

@@ -24,6 +24,10 @@ function DrawingMenu() {
   const [selectedFloorId, setSelectedFloorId] = useState();
   const [selectedDrawingId, setSelectedDrawingId] = useState();
 
+  const [open, setOpen] = React.useState(false);
+
+  const loading = open && allFloors.length === 0;
+
   let mdPoint: number = 2.8;
   useEffect(() => {
     if (allProjects.length === 0 && !selectedProject) {
@@ -42,6 +46,13 @@ function DrawingMenu() {
       );
     }
   }, [selectedProject]);
+
+  React.useEffect(() => {
+    if (!loading) {
+      return undefined;
+    }
+  }, [loading]);
+
 
   const handleProjectChange = (event: any, option: any) => {
     dispatch(projectActions.setSelectedProject(option ? option.value : null));
@@ -91,7 +102,14 @@ function DrawingMenu() {
           <AutocompleteField
             placeholder="Select Floor"
             label="Floor"
-            disabled={allFloors.length > 0 ? false : true}
+            open={open}
+            onOpen={() => {
+              setOpen(true);
+            }}
+            onClose={() => {
+              setOpen(false);
+            }}
+            loading={loading}
             options={formatDropdownData(allFloors, "floorName", "_id")}
             onChange={handleFloorChange}
             value={selectedFloorId}

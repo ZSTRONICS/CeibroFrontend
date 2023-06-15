@@ -5,6 +5,7 @@ import {
   OutlinedInput,
   TextField,
   Autocomplete,
+  CircularProgress,
 } from "@mui/material";
 import { AutocompleteOption, GenericAutocompleteProps } from "./types";
 import { styled } from "@mui/system";
@@ -62,6 +63,7 @@ function AutocompleteField<T extends AutocompleteOption>({
   label,
   showSideLabel,
   placeholder,
+  loading,
   ...props
 }: GenericAutocompleteProps<T>) {
   return (
@@ -81,6 +83,15 @@ function AutocompleteField<T extends AutocompleteOption>({
             variant="outlined"
             placeholder={placeholder}
             label={showSideLabel ? "" : label}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
             fullWidth
           />
         )}
