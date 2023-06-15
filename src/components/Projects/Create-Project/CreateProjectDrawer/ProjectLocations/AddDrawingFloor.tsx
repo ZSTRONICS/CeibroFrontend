@@ -45,11 +45,10 @@ function AddDrawingFloor(props: IProps) {
         /"/g,
         '\\"'
       );
-      const finalMetadata = `"[${metadataString}]"`;
+      const finalMetadata = `"${metadataString}"`;
       if (file&&floorId) {
         formData.append("files", file);
         formData.append("moduleName", "Floor");
-        //later implement selcted floor id
         formData.append("moduleId", floorId);
         formData.append("metadata", finalMetadata);
         const payload = {

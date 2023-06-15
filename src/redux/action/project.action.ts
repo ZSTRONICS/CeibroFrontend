@@ -2,7 +2,11 @@ import {
   GroupInterface,
   ProjectInterface,
 } from "constants/interfaces/project.interface";
-import { ProjectGroupInterface, ProjectMemberInterface, ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  ProjectGroupInterface,
+  ProjectMemberInterface,
+  ProjectRolesInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 import configs, {
   CLOSE_ROLE_DRAWER,
@@ -127,9 +131,22 @@ const projectActions = {
   },
 
   setSelectedProject: (projectId: string | null) => {
+    console.log('projectId--->', projectId)
     return {
       type: SET_SELECTED_PROJECT,
       payload: projectId,
+    };
+  },
+  setSelectedFloor: (floor: object | null) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_FLOOR,
+      payload: floor,
+    };
+  },
+  setSelectedDrawing: (drawing: object | null) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_DRAWING,
+      payload: drawing,
     };
   },
   setSelectedRole: (role: ProjectRolesInterface) => {
@@ -282,8 +299,8 @@ export const PROJECT_APIS = {
   getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
   getAllProjects: createAction(GET_PROJECTS),
   getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
-  getDrawingById:createAction(PROJECT_CONFIG.GET_DRAWING_BY_ID),
-  getFloorsByProjectId:createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
+  getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWING_BY_ID),
+  getFloorsByProjectId: createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
   getAvailableProjectUsers: createAction(GET_AVAILABLE_PROJECT_USERS),
   getProjectDetail: createAction(GET_PROJECT_DETAIL),
   getFolderFiles: createAction(GET_FOLDER_FILES),
@@ -292,7 +309,9 @@ export const PROJECT_APIS = {
   createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
   createFolder: createAction(CREATE_FOLDER),
 
-  updateProjectDocumentsAccess: createAction(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS),
+  updateProjectDocumentsAccess: createAction(
+    PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS
+  ),
   uploadFileToFolder: createAction(UPLOAD_FILE_TO_FOLDER),
   updateProject: createAction(UPDATE_PROJECT),
   updateProjectPicture: createAction(UPDATE_PROJECT_PICTURE),
@@ -305,10 +324,14 @@ export const getProjectsWithPagination = createAction(
 );
 export const getAllProjects = createAction(GET_PROJECTS);
 
-export const getAllProjectsWithMembers = createAction(GET_PROJECTS_WITH_MEMBERS);
+export const getAllProjectsWithMembers = createAction(
+  GET_PROJECTS_WITH_MEMBERS
+);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
-export const getAvailableProjectUsers = createAction(GET_AVAILABLE_PROJECT_USERS);
+export const getAvailableProjectUsers = createAction(
+  GET_AVAILABLE_PROJECT_USERS
+);
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
@@ -347,6 +370,8 @@ export const deleteRole = createAction(DELETE_ROLE);
 // export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getGroupUsers = createAction(GET_GROUP_USERS);
 export const addRemoveFolderUser = createAction(ADD_REMOVE_FOLDER_USER);
-export const getAvailableProjectMembers = createAction(GET_AVAILABLE_PROJECT_MEMBERS);
+export const getAvailableProjectMembers = createAction(
+  GET_AVAILABLE_PROJECT_MEMBERS
+);
 
 export default projectActions;

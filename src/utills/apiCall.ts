@@ -47,6 +47,11 @@ const apiCall = ({
       header = {
         'Content-Type': 'application/json',
       }
+
+    } else {
+      header = {
+        'Content-Type': 'multipart/form-data',
+      }
     }
     header['Access-Control-Allow-Origin'] = '*'
 

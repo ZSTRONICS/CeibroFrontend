@@ -77,13 +77,10 @@ import {
 } from "redux/action/project.action";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 import { USER_CONFIG } from "config/user.config";
-import {
-  getMyConnections,
-  getMyInvitesCount,
-} from "redux/action/user.action";
+import { getMyConnections, getMyInvitesCount } from "redux/action/user.action";
 import { error } from "console";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();

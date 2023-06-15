@@ -1,4 +1,3 @@
-
 import { DrawingMenu, StickyHeader } from "./Components";
 import { Box, Grid } from "@mui/material";
 import DocumentReader from "components/pdfviewer/index.js";
