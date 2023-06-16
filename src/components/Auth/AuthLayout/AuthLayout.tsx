@@ -4,28 +4,29 @@ import { CBox } from "components/material-ui";
 import CeibroLogo from "components/material-ui/icons/CeibroLogo/CeibroLogo";
 import CeibroMobileLogo from "components/material-ui/icons/CeibroLogo/CeibroMobileLogo";
 import useResponsive from "hooks/useResponsive";
-import { useHistory } from "react-router-dom";
 import ImageTile from "../Login/ImageTile";
 import useStyles from "../Register/RegisterStyles";
+import { useRouteMatch } from "react-router-dom";
 
-interface Iprops{
-  title:string
-  subTitle?:string|any
-  children:any
+interface Iprops {
+  title: string;
+  subTitle?: string | any;
+  children: any;
 }
 const AuthLayout = (props: Iprops) => {
   const classes = useStyles();
   const isTabletOrMobile = useResponsive("down", "md", "");
-  const { location } = useHistory();
-  const authRoute =
-    location.pathname.includes("register") ||
-    location.pathname.includes("forgot-password")||
-    location.pathname.includes("reset-password")||
-    location.pathname.includes("confirmation");
-  const showBg =
-    location.pathname.includes("t&c") ||
-    location.pathname.includes("profile-setup") ||
-    location.pathname.includes("profile-pic")
+
+  const authRoute = useRouteMatch([
+    "/register",
+    "/forgot-password",
+    "/reset-password",
+    "/confirmation",
+  ]);
+  const showBg = useRouteMatch(["/profile-pic", "/profile-setup", "/t&c"]);
+  // location.pathname.includes("/t&c") ||
+  // location.pathname.includes("/profile-setup") ||
+  // location.pathname.includes("/profile-pic")
   return (
     <Grid container className={classes.register}>
       <Grid
@@ -43,7 +44,7 @@ const AuthLayout = (props: Iprops) => {
           <div
             className={`${classes.titleWrapper} ${
               authRoute && classes.titleWrapperWithRoute
-            } ${showBg &&classes.titleWrapperbg}`}
+            } ${showBg && classes.titleWrapperbg}`}
           >
             <div>
               <TopBarTitle className={classes.titleText} sx={{ fontSize: 28 }}>
@@ -58,10 +59,7 @@ const AuthLayout = (props: Iprops) => {
             <Box
               className={`${classes.contentContainer} ${
                 authRoute && classes.contentContainerWithRoute
-              } ${
-                showBg &&
-                classes.contentContainerPosition
-              }`}
+              } ${showBg && classes.contentContainerPosition}`}
               sx={{
                 background: "white",
                 borderRadius: "10px",

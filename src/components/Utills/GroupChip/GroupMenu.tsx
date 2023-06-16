@@ -1,6 +1,6 @@
 import { IconButton, makeStyles } from "@material-ui/core";
 import { Typography } from "@mui/material";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { useConfirm } from "material-ui-confirm";
@@ -9,7 +9,7 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { useSelector } from "react-redux";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 interface GroupMenueInt {
   onEdit: () => void;

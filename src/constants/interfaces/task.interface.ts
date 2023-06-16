@@ -1,4 +1,3 @@
-import { UserInfo } from "./subtask.interface"
 
 export enum State {
   New = "new",

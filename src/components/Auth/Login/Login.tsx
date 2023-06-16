@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 // redux
 import { useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 // components
 import LoginForm from "./LoginForm";

@@ -8,7 +8,7 @@ import { useHistory } from "react-router";
 import TaskList from "components/Tasks/TaskList/TaskList";
 import { getAllProjectsWithMembers } from "redux/action/project.action";
 import { TaskInterface } from "constants/interfaces/task.interface";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 const myStatus = [
   {

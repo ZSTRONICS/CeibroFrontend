@@ -1,4 +1,4 @@
-import { SelectChangeEvent } from "@mui/material";
+import { AutocompleteProps } from "@mui/material";
 
 export interface IPhoneNumber {
   dialCode: string;
@@ -52,6 +52,18 @@ export interface ITextFieldProps extends Common {
   inputValue: string;
 }
 
+export interface AutocompleteOption {
+  label: string;
+  value: string;
+}
+
+export interface GenericAutocompleteProps<T extends AutocompleteOption>
+  extends Omit<AutocompleteProps<T, false, false, false>, "renderInput"> {
+  options: T[];
+  label: string;
+  showSideLabel?:boolean
+  placeholder: string;
+}
 export interface IAutoCompleteProps extends Common {
   typeName: "auto-complete";
   label: string;

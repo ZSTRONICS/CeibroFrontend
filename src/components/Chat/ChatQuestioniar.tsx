@@ -2,7 +2,7 @@
 import { Grid, Typography, makeStyles } from "@material-ui/core";
 import { ChatMessageInterface } from "constants/interfaces/chat.interface";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 // import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 import assets from "assets/assets";
 import colors from "assets/colors";

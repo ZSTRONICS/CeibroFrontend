@@ -18,7 +18,7 @@ import {
   saveQuestioniarAnswers,
   setQuestions,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
 import CreateQuestion from "../../Utills/Questioniar/Question.create";

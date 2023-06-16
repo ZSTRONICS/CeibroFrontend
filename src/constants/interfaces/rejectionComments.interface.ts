@@ -1,5 +1,3 @@
-import { UserInfo } from "./subtask.interface"
-
 export interface RejectionCommentRoot {
     [x: string]: any
     rejectionComments: RejectionComment[]

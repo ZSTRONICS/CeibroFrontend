@@ -1,7 +1,7 @@
 import { Button, CircularProgress, Grid, makeStyles } from "@material-ui/core";
 import colors from "../../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { projectOverviewSchema } from "constants/schemas/project.schema";
 import { useEffect, useState } from "react";
 import projectActions, {
@@ -17,7 +17,7 @@ import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
@@ -29,7 +29,9 @@ const CreateProjectBody = () => {
   const isDiabled = !loading ? false : true;
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { projectOverview, projects, selectedProject } = useSelector((state: RootState) => state.project);
+  const { projectOverview, projects, selectedProject } = useSelector(
+    (state: RootState) => state.project
+  );
   const isValidData = {
     title: projectOverview.title,
     dueDate: projectOverview.dueDate,
@@ -145,38 +147,9 @@ const CreateProjectBody = () => {
   };
 
   const getFormValues = (saveAsDraft = false) => {
-    const {
-      title,
-      owner,
-      dueDate,
-      location,
-      description,
-      projectPhoto,
-      publishStatus,
-      extraStatus,
-      photoFile,
-    } = projectOverview;
-
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("location", location);
-    formData.append("description", description);
-    if (extraStatus) {
-      formData.append("extraStatus", JSON.stringify(extraStatus));
-    }
-    if (owner) {
-      let ownerIds = owner.map((item: any) => item._id);
-      formData.append("owner", JSON.stringify(ownerIds));
-    }
-    formData.append("dueDate", dueDate);
-    if(photoFile!==undefined){
-      formData.append("projectPhoto", photoFile);
-    }
-    formData.append("publishStatus", publishStatus);
-    if (saveAsDraft === true) {
-      formData.append("inDraftState", "true");
-    }
-    return formData;
+    const { title } = projectOverview;
+    const bodyData = { title };
+    return bodyData;
   };
   // const disableBtn = [projectOverview.isDefault ? true : false];
   const updateRights = projectOverview.owner.some(

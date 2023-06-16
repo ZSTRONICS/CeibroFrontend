@@ -89,7 +89,6 @@ export default function RegisterConfirmationForm() {
     };
     dispatch(authApiAction.resendOtpRequest(payload));
   };
-  console.log("showSuccessAlert", showSuccessAlert);
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}

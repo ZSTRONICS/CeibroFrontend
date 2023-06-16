@@ -1,4 +1,4 @@
-import appReducer, { ActionInterface } from "."
+import appReducer, { ActionInterface } from "./appReducer"
 
 const rootReducer = (state: any, action: ActionInterface) => {
     if (action.type === 'LOGOUT') {

@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Grid } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
 import colors from "../../assets/colors";
 import { CHAT_LIST } from "../../constants/chat.constants";
 import {
@@ -12,7 +11,7 @@ import {
   setDownBlock,
   setGoToMessageId,
 } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import "./chat.css";
 import ChatBody from "./ChatBody";
 import ChatBoxHeader from "./ChatBoxHeader";
@@ -23,6 +22,7 @@ import { SET_CHAT_SEARCH } from "config/chat.config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { socket } from "services/socket.services";
 import { ChatMessageInterface } from "constants/interfaces/chat.interface";
+import useResponsive from "hooks/useResponsive";
 
 const Chat = () => {
   const classes = useStyles();
@@ -30,7 +30,7 @@ const Chat = () => {
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const isTabletOrMobile = useResponsive("down","lg","");
   const goToMessageId: string = useSelector(
     (store: RootState) => store.chat.goToMessageId
   );
@@ -146,8 +146,7 @@ const Chat = () => {
         //   border: "2px solid",
         // }}
       >
-        <Grid
-          item
+        <Grid item
           sx={{
             "@media(max-width:1024px)": {},
           }}

@@ -4,6 +4,7 @@ import { ALL_MESSAGE_SEEN, CHAT_EVENT_REQ_OVER_SOCKET, MESSAGE_SEEN, UNREAD_MESS
 class WebSocketService {
   public static socket: any
   public static selectedChatId: any
+  public static selectedProjId:string
   userId: string = ""
   pendingMessages: { type: string; data: string; }[] = [];
   public constructor() {
@@ -17,6 +18,13 @@ class WebSocketService {
 
   public getAppSelectedChat() {
     return WebSocketService.selectedChatId
+  }
+  public setSelectedProjId(projectId: string) {
+    WebSocketService.selectedProjId = projectId
+  }
+
+  public getSelectedProjId() {
+    return WebSocketService.selectedProjId
   }
 
   public isSocketConnected() {
@@ -47,9 +55,11 @@ class WebSocketService {
   }
 
   public logoutSocketsIO() {
-    WebSocketService.socket.disconnect();
-    WebSocketService.socket = null
-    this.pendingMessages = []
+    if (WebSocketService.socket) {
+      WebSocketService.socket.disconnect();
+      WebSocketService.socket = null
+      this.pendingMessages = []
+    }
   }
 
   public async getUnreadMsgCount(userId: any) {

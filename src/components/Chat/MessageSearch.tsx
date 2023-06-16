@@ -6,7 +6,7 @@ import colors from "../../assets/colors";
 // @ts-ignore
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getRoomMessages } from "../../redux/action/chat.action";
 import { SET_PAGINATION_BLOCK } from "../../config/chat.config";
 import assets from "assets/assets";

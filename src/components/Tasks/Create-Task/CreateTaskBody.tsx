@@ -5,7 +5,7 @@ import SubTaskStatusDrawer from "./SubTaskStatusDrawer";
 import { Grid, CircularProgress, Box } from "@mui/material";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
   const headerRef: any = useRef();
@@ -22,8 +22,6 @@ const CreateTaskBody = ({ subtasks, task }: AllSubtasksOfTaskResult) => {
     if (doOnce) {
       const subTaskContainer = document.getElementById("subTaskContainer");
       if (subTaskContainer) {
-        // console.log("subTaskContainer", subTaskContainer, subTaskContainer.scrollHeight, subTaskContainer.scrollTop);
-        
         subTaskContainer.scrollTop = subTaskContainer.scrollHeight;
       }
       setDoOnce(false);

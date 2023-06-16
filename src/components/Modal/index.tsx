@@ -5,9 +5,11 @@ import {
   DialogContent,
   Divider,
   Typography,
-  Dialog,
+  // Dialog,
   Box,
 } from "@mui/material";
+//todo migrate to mui latest later becz it give error in add project status comp
+import {  Dialog,} from '@material-ui/core'
 import PropTypes from "prop-types";
 import { Button } from "@mui/material";
 import styled from "@emotion/styled";
@@ -77,7 +79,7 @@ const CustomModal: React.FC<Props> = ({
 
           {showDivider === true && <Divider sx={{ my: 1 }} />}
           <div style={{ width: "100%" }}>
-            <DialogContent sx={{ padding: "10px 20px" }}>
+            <DialogContent sx={{ padding: "10px 15px" }}>
               {children}
             </DialogContent>
           </div>

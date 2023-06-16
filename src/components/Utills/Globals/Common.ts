@@ -29,6 +29,7 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
   * **/
+
 export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
   let distinctArray: any = []
   arr.forEach((member: any) => {
@@ -47,6 +48,8 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
 
   return distinctArray
 }
+
+
 
 /**
   * @param array pass the string array  
@@ -105,6 +108,32 @@ export const getDistinctFromTwoArr = (arr: any[], arr2: any[]) => {
 }
 
 
+/**
+ * @param dataArray the array must have _id
+ * @param labelKey must have  string
+ * @param valueKey must have  string
+ * @return Functino will return { label: "", value: "" }
+ * **/
+//labelKey for get the value from object and store in label
+//valueKey for get the value from object and store in value
+const formatDropdownData = (
+  data: any[] | any,
+  labelKey: string,
+  valueKey: string
+) => {
+  if (data) {
+    return (
+      data &&
+      data.map((item: any) => {
+        const label = item[labelKey] || "";
+        const value = item[valueKey] || "";
+        return { label: label.toString(), value: value.toString() };
+      })
+    );
+  } else {
+    return null;
+  }
+};
 
 
 /**
@@ -207,3 +236,24 @@ export const combinedMemberArrayWithState = (membersArr: any[], state: any[]) =>
   });
   return combinedArray
 }
+
+export const tabsIndexProps = (index: number) => {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
+
+// dynamically calculate height of container
+
+// const containerRef = useRef<HTMLDivElement>(null);
+
+// useEffect(() => {
+//   if (containerRef.current) {
+//     const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+//     const visibleHeight = window.innerHeight - headerHeight;
+//     containerRef.current.style.height = `${visibleHeight}px`;
+//   }
+// }, []);
+
+export { formatDropdownData }

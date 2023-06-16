@@ -5,7 +5,7 @@ import InputInvite from "../Profile/InputInvite";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import {
   openViewInvitations,
 } from "redux/action/user.action";

@@ -6,7 +6,7 @@ import {
   ListItemText,
   styled,
 } from "@mui/material";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
@@ -15,7 +15,7 @@ import { useRef, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { uploadDocs } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import "./upload.css";
 
 interface Props {

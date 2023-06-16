@@ -8,7 +8,7 @@ import DrawerHeader from "components/Projects/Create-Project/CreateProjectDrawer
 import { Grid } from "@mui/material";
 import TaskDetail from "./TaskDetail";
 import { TASK_CONFIG } from "config/task.config";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 import RecentCommentInput from "./RecentCommentInput";
 

@@ -8,7 +8,7 @@ import { CBox } from "components/material-ui";
 import { makeStyles } from "@material-ui/core";
 import TaskDetailDrawer from "./TaskDetailDrawer";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { otpVerify } from "redux/action/auth.action";
 
 const SubTaskList = ({ results }: AllSubtasksForUserRoot) => {

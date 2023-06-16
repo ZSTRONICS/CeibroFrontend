@@ -5,7 +5,7 @@ import {
 } from "constants/interfaces/user.interface";
 import { REGISTER } from "redux-persist";
 import { unSubOneSignal } from "utills/runOneSignal";
-import { ActionInterface } from ".";
+import { ActionInterface } from "./appReducer";
 import {
   GET_PROFILE,
   LOGIN,

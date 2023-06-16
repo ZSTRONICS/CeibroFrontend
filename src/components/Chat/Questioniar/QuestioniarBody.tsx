@@ -22,7 +22,7 @@ import {
   saveQuestioniar,
   setQuestions,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";

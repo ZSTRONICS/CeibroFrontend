@@ -8,12 +8,12 @@ import { Grid, Paper } from "@mui/material";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { createSubTask } from "redux/action/task.action";
 
 // components
 import CustomModal from "components/Modal";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import CreateSubTask from "../SubTasks/CreateSubTask";
 import DatePicker from "components/Utills/Inputs/DatePicker";
 import StatusMenu from "components/Utills/Others/StatusMenu";

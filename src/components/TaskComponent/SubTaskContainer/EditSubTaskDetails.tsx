@@ -22,19 +22,18 @@ import colors from "assets/colors";
 import AddIcon from "@material-ui/icons/Add";
 import assets from "assets/assets";
 import MemberList from "./MemberList";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CustomStack } from "../Tabs/TaskCard";
 import { ListUserName } from "components/CustomTags";
 import { getColorByStatus } from "config/project.config";
 import { styled } from "@mui/system";
 import useStyles from "../CreateSubtask/CreateSubTaskStyles";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   combinedMemberArrayWithState,
   getUniqueObjectsFromArr,
 } from "components/Utills/Globals/Common";
-import { UserInfo } from "constants/interfaces/subtask.interface";
 // import colors from "assets/colors";
 import { SubtaskState } from "constants/interfaces/task.interface";
 import {

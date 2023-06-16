@@ -6,7 +6,7 @@ import { CustomBadge, CustomStack } from 'components/TaskComponent/Tabs/TaskCard
 import { AttachmentIcon, EyeIcon, SendIcon } from "components/material-ui/icons";
 import { makeStyles } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from 'redux/reducers';
+import { RootState } from 'redux/reducers/appReducer';
 import { RecentCommentsInterface, SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import { DOCS_CONFIG } from 'config/docs.config';
 import taskActions from 'redux/action/task.action';

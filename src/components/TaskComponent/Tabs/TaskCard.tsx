@@ -28,16 +28,15 @@ import taskActions, {
 } from "redux/action/task.action";
 import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
-import { UserInfo } from "constants/interfaces/subtask.interface";
 import { TASK_CONFIG } from "config/task.config";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import {
   momentdeDateFormat,
   onlyUnique,
 } from "components/Utills/Globals/Common";
 import { toast } from "react-toastify";
 import { useConfirm } from "material-ui-confirm";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { ConfirmDescriptionTag } from "components/CustomTags";
 interface Props {

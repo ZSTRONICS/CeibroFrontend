@@ -5,7 +5,7 @@ import { useConfirm } from "material-ui-confirm";
 import { Grid, IconButton, Typography, Button } from "@material-ui/core";
 // redux-imports
 import { addMemberToChat, getAllChats, getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 // components
 import { UserInterface } from "constants/interfaces/user.interface";
 import assets from "assets/assets";

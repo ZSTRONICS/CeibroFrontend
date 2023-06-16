@@ -12,7 +12,7 @@ import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { getMyConnections, resetRefresConnections } from "redux/action/user.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 export let dbUsers = [
   {

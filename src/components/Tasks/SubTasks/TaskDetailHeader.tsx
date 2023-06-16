@@ -14,7 +14,7 @@ import {
 } from "components/TaskComponent/Tabs/TaskCard";
 import { AssignedTo, Member } from "constants/interfaces/subtask.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { getColorByStatus } from "config/project.config";
 import { Grid } from "@mui/material";
 import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";

@@ -19,7 +19,7 @@ import {
   setMembersDialog,
   setSelectedChat,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 interface ChatUserMenuInt {
   enable: boolean;

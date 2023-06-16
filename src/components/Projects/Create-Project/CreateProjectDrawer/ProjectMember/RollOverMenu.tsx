@@ -7,7 +7,7 @@ import {
   ProjectRolesInterface,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 interface RoleMenuProps {
   userRole?: ProjectRolesInterface;
   member?: ProjectMemberInterface;

@@ -4,7 +4,7 @@ import NoData from "components/Chat/NoData";
 import { ProjectInterface } from "constants/interfaces/project.interface";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import ProjectCard from "../Utills/ProjectCard/ProjectCard";
 
 const ProjectList = () => {

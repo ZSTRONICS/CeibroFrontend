@@ -5,7 +5,7 @@ import colors from "../../../assets/colors";
 import { closeQuestioniarDrawer } from "../../../redux/action/chat.action";
 // import colors from '../../../../assets/colors'
 // import projectActions from '../../../../redux/action/project.action'
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import QuestioniarBody from "./QuestioniarBody";
 import QuestioniarHeader from "./QuestioniarHeader";
 // import CreateProjectBody from './CreateProjectBody'

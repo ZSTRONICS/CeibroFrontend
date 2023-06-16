@@ -12,7 +12,7 @@ import { AttachmentIcon } from "components/material-ui/icons";
 
 // import CreateSubTaskAdvanceOption from './CreateSubTaskAdvanceOption';
 
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 
 export default function CreateSubTask({ setSubTask }: any) {
   const classes = useStyles();

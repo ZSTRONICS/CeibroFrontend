@@ -9,7 +9,7 @@ import {
   getRoomQuestioniars,
   setSelectedChat,
 } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
 import { Grid } from "@material-ui/core";
 import { socket } from "services/socket.services";

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button, Grid, makeStyles } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/reducers'
+import { RootState } from '../../../redux/reducers/appReducer'
 import colors from '../../../assets/colors'
 import { FaTrash } from 'react-icons/fa'
 

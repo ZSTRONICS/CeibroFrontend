@@ -1,13 +1,12 @@
+import React from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useMediaQuery } from "react-responsive";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { socket } from "../../services/socket.services";
 import "./sidebar.css";
 
@@ -16,19 +15,15 @@ function Sidebar() {
   const configs = useSelector(
     (store: RootState) => store.navigation.sidebarRoutes
   );
-  const [interval, setLocalInterval] = useState<NodeJS.Timer>();
-  const navbarOpen = useSelector((store: RootState) => store.navigation.navbar);
-  const { user, isLoggedIn } = useSelector((store: RootState) => store.auth);
-  const dispatch = useDispatch();
+  const { user } = useSelector((store: RootState) => store.auth);
   const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleRouteClick = (config: SingleConfig) => {
-    if (config.path !== "chat") {
+    if (config.getPath("") !== "chat") {
       socket.setAppSelectedChat(null);
     }
 
-    history.push(`/${config.path}`);
+    history.push(`/${config.getPath("")}`);
     // if (isTabletOrMobile && navbarOpen) {
     //   dispatch(appActions.setNavbarOpen(false));
     // }
@@ -61,7 +56,7 @@ function Sidebar() {
               <div
                 key={config.title}
                 className={`${classes.menue} ${
-                  window.location.pathname.includes(config.path)
+                  window.location.pathname.includes(config.getPath(""))
                     ? classes.active
                     : ""
                 }`}
@@ -77,7 +72,7 @@ function Sidebar() {
                   {config.title}
                 </Typography>
                 <div className={classes.badge}>
-                  {config.notification > 0 && (
+                  {config?.notification > 0 && (
                     <Badge
                       overlap="circular"
                       badgeContent={config.notification}

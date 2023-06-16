@@ -37,7 +37,7 @@ import favouriteIcon from "./images/favourite.png";
 import favouriteFilledIcon from "./images/favouriteFilled.png";
 import bluePencil from "./images/bluePencil.png";
 // import logout from "./images/logout.png"
-import logoutNew  from "./images/logoutNew.png";
+import logoutNew from "./images/logoutNew.png";
 import contactsBlack from "./images/contactsBlack.png";
 import whitePencil from "./images/whitePencil.png";
 import camera from "./images/camera.svg";
@@ -71,7 +71,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import PeopleAltOutlinedIcon  from '@mui/icons-material/PeopleAltOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
 import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
@@ -92,6 +92,7 @@ import BorderColorIcon from '@mui/icons-material/BorderColor';
 import MenuIcon from '@mui/icons-material/Menu';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -99,8 +100,9 @@ import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
 
-const assets= {
+const assets = {
   CancelIcon,
+  ExpandMoreIcon,
   CloseIcon,
   MenuIcon,
   EmailIcon,
@@ -176,7 +178,6 @@ const assets= {
   favouriteFilledIcon,
   bluePencil,
   whitePencil,
-  
   contactsBlack,
   camera,
   mic,

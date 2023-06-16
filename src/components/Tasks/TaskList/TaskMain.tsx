@@ -7,7 +7,7 @@ import { Autocomplete, Box, Grid, Paper, TextField } from "@mui/material";
 import StatusMenu from "components/Utills/Others/StatusMenu";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import TaskList from "./TaskList";
 import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
 import CDatePicker from "components/DatePicker/CDatePicker";
@@ -17,7 +17,7 @@ import {
   getSelectedProjectMembers,
   getUserFormatedDataForAutoComplete,
 } from "components/Utills/Globals/Common";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import '../../../components/MuiStyles.css'
 
 

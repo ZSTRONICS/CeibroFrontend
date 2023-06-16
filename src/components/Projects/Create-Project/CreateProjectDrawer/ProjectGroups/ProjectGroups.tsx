@@ -7,7 +7,7 @@ import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
 import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
 import { SubHeadingTag } from "components/CustomTags";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const ProjectGroups = () => {

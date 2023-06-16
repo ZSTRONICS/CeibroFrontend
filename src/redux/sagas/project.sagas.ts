@@ -34,8 +34,8 @@ import {
   UPDATE_TIME_PROFILE,
   UPDATE_WORK,
   UPLOAD_FILE_TO_FOLDER
-} from "../../config/project.config";
-import apiCall from "../../utills/apiCall";
+} from "config";
+import apiCall from "utills/apiCall";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 function* fetchUser() {
@@ -47,11 +47,36 @@ function* fetchUser() {
 }
 
 const getProjects = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: GET_PROJECTS,
   method: "get",
   path: "/project",
 });
+
+// CREATE FLOOR API
+const createFloor = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.CREATE_FLOOR,
+  method: 'post',
+  path: (payload) => `/project/${payload.other}/floor`, //projectId
+})
+
+// GET FLOORS BY PROJECT_ID
+const getFloorsByProjectId = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID,
+  method: 'get',
+  path: (payload) => `/project/${payload.other.projectId}/floor`, //projectId
+})
+
+// GET GET_DRAWING_BY_ID 
+const getDrawingById = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GET_DRAWING_BY_ID,
+  method: 'get',
+  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}}`, //projectId/floorId/drawingId
+})
+
 const getProjectsWithMembers = apiCall({
   useV2Route: false,
   type: GET_PROJECTS_WITH_MEMBERS,
@@ -112,7 +137,7 @@ const getProjectMembers = apiCall({
 // });
 
 const createProject = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: CREATE_PROJECT,
   method: "post",
   path: `/project`,
@@ -217,7 +242,7 @@ const getFolderFiles = apiCall({
     return url;
   },
 });
-const updateProjectDocumentsAccess=apiCall({
+const updateProjectDocumentsAccess = apiCall({
   useV2Route: false,
   type: PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,
   method: "patch",
@@ -237,7 +262,7 @@ const updateProject = apiCall({
   path: (payload) => `/project/${payload.other}`,
 });
 
-const getProjectRolesById  = apiCall({
+const getProjectRolesById = apiCall({
   useV2Route: false,
   type: PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID,
   method: "get",
@@ -410,6 +435,9 @@ const addRemoveFolderUser = apiCall({
 function* projectSaga() {
   yield takeLatest("USER_FETCH_REQUESTED", fetchUser);
   yield takeLatest(GET_PROJECTS, getProjects);
+  yield takeLatest(PROJECT_CONFIG.CREATE_FLOOR, createFloor);
+  yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);
+  yield takeLatest(PROJECT_CONFIG.GET_DRAWING_BY_ID, getDrawingById);
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
   yield takeLatest(CREATE_PROJECT, createProject);
@@ -426,10 +454,10 @@ function* projectSaga() {
   yield takeLatest(GET_FOLDER_FILES, getFolderFiles);
   yield takeLatest(UPLOAD_FILE_TO_FOLDER, uploadFileToFolder);
 
-  yield takeLatest(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS,updateProjectDocumentsAccess);
+  yield takeLatest(PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS, updateProjectDocumentsAccess);
   yield takeLatest(UPDATE_PROJECT, updateProject);
 
-  yield takeLatest(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID, getProjectRolesById );
+  yield takeLatest(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID, getProjectRolesById);
   yield takeLatest(GET_GROUP_BY_ID, getGroupById);
   yield takeLatest(UPDATE_GROUP, updateGroup);
   yield takeLatest(DELETE_MEMBER, deleteMember);

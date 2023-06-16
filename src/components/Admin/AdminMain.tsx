@@ -1,4 +1,4 @@
-import TabsUnstyled from "@mui/base/TabsUnstyled";
+import {Tabs} from "@mui/base";
 import { Box, Divider, Grid, InputBase, Paper } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
@@ -130,7 +130,7 @@ function AdminMain() {
   return (
     <>
       <Box pt={2} pl={2}>
-        <TabsUnstyled defaultValue={0}>
+        <Tabs defaultValue={0}>
               <TabsList
                 sx={{ maxWidth: "180px", width: "100%", minWidth: "120px" }}
               >
@@ -216,7 +216,7 @@ function AdminMain() {
           <TabPanel value={1}>
             <AdminUserTables users={filterUsersLocal} />
           </TabPanel>
-        </TabsUnstyled>
+        </Tabs>
       </Box>
     </>
   );

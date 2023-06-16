@@ -1,9 +1,9 @@
 export interface SingleConfig {
   title: string;
-  icon: any;
-  path: string;
-  notification: number;
+  icon: JSX.Element;
+  notification?: number;
   active?: boolean | undefined;
+  getPath: (id: string) => string;
 }
 
 export interface SidebarConfigInterface {
@@ -30,21 +30,59 @@ const SidebarConfig: SidebarConfigInterface = {
   // },
   Tasks: {
     title: "My Tasks",
-    // icon: <AssignmentIndOutlined className="sideBar_icon"/>,
-    icon: <svg xmlns="http://www.w3.org/2000/svg" width="16" height="18" viewBox="0 0 16 18" fill="none">
-    <path d="M11.8888 2.48758H14.6666V15.8209C14.6666 16.4346 14.1691 16.932 13.5555 16.932H2.44436C1.83071 16.932 1.33325 16.4346 1.33325 15.8209V2.48758H4.11103M4.66659 1.37646H11.3333V3.59869C11.3333 4.21234 10.8358 4.7098 10.2221 4.7098H5.7777C5.16405 4.7098 4.66659 4.21234 4.66659 3.59869V1.37646Z" stroke="#131516"/>
-    </svg>,
-    path: "tasks",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="18"
+        viewBox="0 0 16 18"
+        fill="none"
+      >
+        <path
+          d="M11.8888 2.48758H14.6666V15.8209C14.6666 16.4346 14.1691 16.932 13.5555 16.932H2.44436C1.83071 16.932 1.33325 16.4346 1.33325 15.8209V2.48758H4.11103M4.66659 1.37646H11.3333V3.59869C11.3333 4.21234 10.8358 4.7098 10.2221 4.7098H5.7777C5.16405 4.7098 4.66659 4.21234 4.66659 3.59869V1.37646Z"
+          stroke="#131516"
+        />
+      </svg>
+    ),
+    getPath: () => "tasks",
     notification: 0,
   },
   Projects: {
     title: "Projects",
-    // icon: <FolderOutlined className="sideBar_icon"/>,
-    icon: <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">
-    <path d="M1 12.1543V2.1543C1 1.60201 1.44772 1.1543 2 1.1543H4L6 3.1543H12C12.5523 3.1543 13 3.60201 13 4.1543V12.1543C13 12.7066 12.5523 13.1543 12 13.1543H2C1.44772 13.1543 1 12.7066 1 12.1543Z" stroke="#131516"/>
-    </svg>,
-    path: "projects",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+      >
+        <path
+          d="M1 12.1543V2.1543C1 1.60201 1.44772 1.1543 2 1.1543H4L6 3.1543H12C12.5523 3.1543 13 3.60201 13 4.1543V12.1543C13 12.7066 12.5523 13.1543 12 13.1543H2C1.44772 13.1543 1 12.7066 1 12.1543Z"
+          stroke="#131516"
+        />
+      </svg>
+    ),
+    getPath: () => "projects",
     notification: 0,
+  },
+  Locations: {
+    title: "Locations",
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+      >
+        <path
+          d="M1 12.1543V2.1543C1 1.60201 1.44772 1.1543 2 1.1543H4L6 3.1543H12C12.5523 3.1543 13 3.60201 13 4.1543V12.1543C13 12.7066 12.5523 13.1543 12 13.1543H2C1.44772 13.1543 1 12.7066 1 12.1543Z"
+          stroke="#131516"
+        />
+      </svg>
+    ),
+    getPath: () => `drawingDetail`,
   },
   // Admin: {
   //   title: "Admin",
@@ -55,6 +93,6 @@ const SidebarConfig: SidebarConfigInterface = {
   //   path: "admin",
   //   notification: 0,
   // },
-};
+}; 
 
 export default SidebarConfig;

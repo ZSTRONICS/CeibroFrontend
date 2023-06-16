@@ -16,7 +16,7 @@ import {
   Chip,
 } from "@mui/material";
 import colors from "assets/colors";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
@@ -35,7 +35,7 @@ import projectActions, {
   PROJECT_APIS,
   updateRole,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import Clear from "@mui/icons-material/Clear";
 interface AddRoleProps { }
 

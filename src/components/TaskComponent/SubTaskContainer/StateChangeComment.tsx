@@ -9,7 +9,7 @@ import { Form, Formik } from "formik";
 import { useDispatch } from "react-redux";
 import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
 // components
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CBox } from "components/material-ui";
 import "../../../components/material-ui/theming/CustomMuiStyles.css"
 

@@ -1,4 +1,4 @@
-import { ActionInterface } from ".";
+import { ActionInterface } from "./appReducer";
 import {
   TOGGLE_NAVBAR,
   SET_NAVBAR_OPEN,

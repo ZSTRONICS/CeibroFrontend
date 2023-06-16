@@ -5,7 +5,7 @@ import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 const ProjectCard = () => {
   const classes = useStyles();

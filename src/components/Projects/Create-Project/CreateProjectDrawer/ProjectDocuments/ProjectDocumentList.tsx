@@ -25,7 +25,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getAllDocuments } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 import RollOverMenu from "../ProjectMember/RollOverMenu";
 import ProjectAccessModal from "./ProjectAccessModal";

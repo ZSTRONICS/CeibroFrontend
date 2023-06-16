@@ -6,7 +6,7 @@ import projectActions, {
   getProjectDetail,
   updateProjectPicture,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import assets from "assets/assets";
 import { toast } from "react-toastify";
 import { ProjectInterface } from "constants/interfaces/project.interface";

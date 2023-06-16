@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { AttachmentIcon } from "components/material-ui/icons";
 import assets from "assets/assets";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import CustomModal from "components/Modal";
 import UploadDocs from "components/uploadImage/UploadDocs";
@@ -32,7 +32,7 @@ import taskActions, {
   patchSubTaskById,
   updateTaskById,
 } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
 import { DOCS_CONFIG } from "config/docs.config";

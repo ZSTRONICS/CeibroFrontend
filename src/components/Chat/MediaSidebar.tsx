@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_CHAT_SIDE_BAR } from "../../config/chat.config";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import ChatMembers from "./ChatMembers";
 import ChatMedia from "./ChatMedia";
 import ChatQuestioniar from "./ChatQuestioniar";

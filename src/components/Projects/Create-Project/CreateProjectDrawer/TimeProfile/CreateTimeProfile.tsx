@@ -25,10 +25,9 @@ import projectActions, {
   updateTimeProfile,
 } from "redux/action/project.action";
 import { toast } from "react-toastify";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { avaialablePermissions } from "config/project.config";
 import { checkTimeProfilePermission } from "helpers/project.helper";
-// import Draggable from "react-draggable";
 // import Paper, { PaperProps } from '@mui/material/Paper';
 
 const MemberDialog = () => {

@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
 import FileViewer from "react-file-viewer";
 import projectActions from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 interface AddGroupProps {}
 

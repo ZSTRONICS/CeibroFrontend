@@ -3,7 +3,7 @@ import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import colors from "../../assets/colors";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getMyConnectionsCount } from "redux/action/user.action";
 import assets from "assets/assets";
 import { Badge, Grid, Stack } from "@mui/material";

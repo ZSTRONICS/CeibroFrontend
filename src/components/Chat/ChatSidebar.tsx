@@ -20,7 +20,7 @@ import ChatRoomSearch from "./ChatRoomSearch";
 import { Stack } from "@mui/system";
 import { Divider, MenuItem } from "@mui/material";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 const ChatSidebar = () => {
   const classes = useStyles();

@@ -6,7 +6,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 // components
 import useStyles from "./TaskDrawerStyles";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { Chip } from "@material-ui/core";
 import {
   getSelectedProjectMembers,

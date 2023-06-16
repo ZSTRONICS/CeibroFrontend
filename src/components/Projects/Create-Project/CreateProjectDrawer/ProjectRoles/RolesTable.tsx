@@ -21,7 +21,7 @@ import projectActions, {
   deleteRole,
   PROJECT_APIS,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import RoleMenu from "./RoleMenu";
 import "./roles-table.css";
 

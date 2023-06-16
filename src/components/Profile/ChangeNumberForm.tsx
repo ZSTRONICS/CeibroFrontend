@@ -11,7 +11,7 @@ import { Box, Button, Typography } from "@mui/material";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { changeNumber } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 //toastify
 

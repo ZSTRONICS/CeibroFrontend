@@ -1,9 +1,9 @@
 import { Menu, MenuItem } from "@mui/material";
 import { CustomButton } from "components/TaskComponent/Tabs/TaskCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import StatusModal from "./StatusModal";
 
 function PopoverMenu(props: any) {
@@ -14,33 +14,58 @@ function PopoverMenu(props: any) {
   );
   const dispatch = useDispatch();
 
-  const handleOpenCloseStatusModal = (e: any) => {
+  useEffect(() => {
+    if (props.openStatusPopup) {
+      setOpenCloseStatusModal(false);
+    }
+  }, [props.openStatusPopup]);
+
+  const handleOpenCloseStatusModal = (e: React.MouseEvent) => {
     e.stopPropagation();
     setOpenCloseStatusModal((prev) => !prev);
   };
-  const handleDeleteStatus = (e: any) => {
+
+  const handleDeleteStatus = (e: React.MouseEvent) => {
     e.stopPropagation();
 
-    const projectStatus = [
-      ...projectOverview.extraStatus,
-      projectOverview.extraStatus,
-    ];
-    let index = projectStatus.indexOf(props.editStatusValue);
-    if (index > -1) {
-      projectOverview.extraStatus = projectOverview.extraStatus.filter(
-        (item: string) => item !== props.editStatusValue
-      );
-      dispatch(
-        projectActions.setProjectOverview({
-          ...projectOverview,
-          extraStatus: [...projectOverview.extraStatus],
-        })
-      );
-    }
+    const updatedExtraStatus = projectOverview.extraStatus.filter(
+      (item: string) => item !== props.editStatusValue
+    );
+
+    dispatch(
+      projectActions.setProjectOverview({
+        ...projectOverview,
+        extraStatus: updatedExtraStatus,
+      })
+    );
+
     props.closePopup();
   };
 
+  // const handleDeleteStatus = (e: any) => {
+  //   e.stopPropagation();
+
+  //   const projectStatus = [
+  //     ...projectOverview.extraStatus,
+  //     projectOverview.extraStatus,
+  //   ];
+  //   let index = projectStatus.indexOf(props.editStatusValue);
+  //   if (index > -1) {
+  //     projectOverview.extraStatus = projectOverview.extraStatus.filter(
+  //       (item: string) => item !== props.editStatusValue
+  //     );
+  //     dispatch(
+  //       projectActions.setProjectOverview({
+  //         ...projectOverview,
+  //         extraStatus: [...projectOverview.extraStatus],
+  //       })
+  //     );
+  //   }
+  //   props.closePopup();
+  // };
+
   const id = props.openStatusPopup ? "status-popover" : undefined;
+  
   return (
     <>
       <Menu
@@ -99,7 +124,7 @@ function PopoverMenu(props: any) {
           btnLabel="Update"
           editStatusValue={editStatusValue}
           openCloseStatusModal={openCloseStatusModal}
-          handleOpenCloseStatusModal={handleOpenCloseStatusModal}
+          handleOpenCloseStatusModal={()=>handleOpenCloseStatusModal}
         />
       )}
     </>

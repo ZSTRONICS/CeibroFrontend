@@ -12,7 +12,7 @@ import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import moment from "moment-timezone";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import SubTaskList from "./SubTaskList";
 import '../../../components/MuiStyles.css'
 

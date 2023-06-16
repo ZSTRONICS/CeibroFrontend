@@ -12,7 +12,7 @@ import {
   CustomStack, TaskStatus,
 } from "components/TaskComponent/Tabs/TaskCard";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { theme } from "theme";
 import { getColorByStatus } from "config/project.config";
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";

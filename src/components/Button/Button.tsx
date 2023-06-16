@@ -1,30 +1,45 @@
-import React, { Fragment } from "react";
-import Button from "@mui/material/Button";
+import React from "react";
+import { Button, CircularProgress, ButtonProps } from "@mui/material";
 import { styled } from "@mui/system";
 
-export default function CButton(props: any) {
-  return (
-    <Fragment>
-      <MButton
-        startIcon={props.startIcon}
-        endIcon={props.endIcon}
-        disableRipple={true}
-        {...props}
-        type={props.type}
-        autoFocus
-        variant={props.variant}
-        style={props.styles}
-        className={props.className}
-      >
-        {props.label}
-      </MButton>
-    </Fragment>
-  );
+interface LoadingButtonProps extends ButtonProps {
+  loading: boolean | undefined;
+}
+interface CButtonProps extends ButtonProps {
+  label: string;
 }
 
-const MButton = styled(Button)(
+const CButton = (props: CButtonProps) => {
+  return (
+    <MButton
+      disableRipple={true}
+      {...props}
+      autoFocus
+      className={props.className}
+    >
+      {props.label}
+    </MButton>
+  );
+};
+
+// loadingBtn
+const LoadingButton: React.FC<LoadingButtonProps> = ({
+  loading,
+  children,
+  ...props
+}) => {
+  return (
+    <MButton {...props} disabled={loading} disableRipple={true}>
+      {loading ? <CircularProgress size={20} /> : children}
+    </MButton>
+  );
+};
+
+const MButton = styled<any>(Button)(
   ({ theme }) => `
       font-family: Inter;
       text-transform:capitalize;
       `
 );
+
+export { CButton, LoadingButton };

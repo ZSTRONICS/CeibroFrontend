@@ -1,5 +1,5 @@
 
-import TabsUnstyled from "@mui/base/TabsUnstyled";
+import Tabs from '@mui/base/Tabs';
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import {
   Box, CircularProgress, Grid, List,
@@ -7,7 +7,7 @@ import {
   ListItemAvatar, ListItemText, useMediaQuery
 } from "@mui/material";
 import { styled } from "@mui/system";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import {
   CDateTime, CommentName, FileName, Heading, Span
 } from "components/CustomTags";
@@ -26,7 +26,7 @@ import { FileInterface } from "constants/interfaces/docs.interface";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import docsAction from "redux/action/docs.actions";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { theme } from "theme";
 
 interface Props {
@@ -71,7 +71,7 @@ function ViewAllDocs(props: Props) {
           )}
         </CustomStack>
         <ContentMain>
-          <TabsUnstyled defaultValue={0}>
+          <Tabs defaultValue={0}>
             <TabsList>
               <Tab sx={{ fontSize: '1rem' }}>All</Tab>
               <Tab sx={{ fontSize: '1rem' }}>Docs</Tab>
@@ -86,7 +86,7 @@ function ViewAllDocs(props: Props) {
             <TabPanel value={2}>
               {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(MEDIA_EXT, getAllDocsByModule))}
             </TabPanel>
-          </TabsUnstyled>
+          </Tabs>
 
         </ContentMain>
       </Container>

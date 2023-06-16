@@ -3,7 +3,7 @@ import ListIcon from "@material-ui/icons/List";
 import MembersTable from "./MembersTable";
 import CreateMember from "./CreateMember";
 import { SubHeadingTag } from "components/CustomTags";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Member,

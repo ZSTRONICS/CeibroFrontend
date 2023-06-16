@@ -6,9 +6,9 @@ import { AttachmentIcon } from "components/material-ui/icons";
 import { useState } from "react";
 import useStyles from "../../Tasks/SubTasks/CreateSubTaskStyles";
 
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import {
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
@@ -465,7 +465,7 @@ export default function CreateSubTask({
                         membersList.push(String(member));
                       }
                     );
-                    selectedTaskAdmins.forEach((admin) => {
+                    selectedTaskAdmins.forEach((admin:any) => {
                       if (!membersList.includes(String(admin.id))) {
                         stateToPush.push({
                           userId: admin.id,

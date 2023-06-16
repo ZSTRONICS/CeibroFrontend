@@ -8,6 +8,7 @@ import {
   ResetPassword,
   Register,
   Projects,
+  ProjectLocations,
   // Dashboard,
   Profile,
   Tasks,
@@ -18,6 +19,7 @@ import {
   TermsAndConditions,
   RegisterAddProfilePic,
   ForgetConfirmation,
+  DrawingDetails,
 } from "components";
 
 import PrivateRoute from "./PrivateRoute";
@@ -50,12 +52,25 @@ const RouterConfig: React.FC<Configs> = () => {
             <Route path="/confirmation" component={RegisterConfirmationForm} />
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
-            <PrivateRoute path="/profile-pic" component={RegisterAddProfilePic}/>
+            <PrivateRoute
+              path="/profile-pic"
+              component={RegisterAddProfilePic}
+            />
 
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute path="/tasks" component={Tasks} />
+              <PrivateRoute
+                exact
+                path="/project/:projectId"
+                component={ProjectLocations}
+              />
+              <PrivateRoute path="/projects" component={Projects} />
+              <PrivateRoute
+                exact
+                path="/drawingDetail"
+                component={DrawingDetails}
+              />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
               {/* <Route path="/chat" component={Chat} /> */}

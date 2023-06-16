@@ -6,7 +6,7 @@ import colors from "../../../../../assets/colors";
 import assets from "../../../../../assets/assets";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { ConfirmDescriptionTag } from "components/CustomTags";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { IconButton } from "@mui/material";
 import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 

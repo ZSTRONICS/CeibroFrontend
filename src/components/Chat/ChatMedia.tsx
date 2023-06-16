@@ -1,6 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
 
 interface chatMInt {

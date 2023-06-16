@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMyInvitesCount } from "redux/action/user.action";
 import colors from "../../assets/colors";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import InputInvite from "./InputInvite";
 import ViewInvitations from "./ViewInvitations";
 interface InvitationsProps {}

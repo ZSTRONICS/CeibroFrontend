@@ -1,6 +1,6 @@
 import { makeStyles } from "@material-ui/core";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { CBox } from "components/material-ui";
 import { AttachmentIcon } from "components/material-ui/icons/index";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
@@ -10,7 +10,7 @@ import CDrawer from "Drawer/CDrawer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import taskActions, { getAllSubTaskRejection } from "redux/action/task.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import RecentComments from "./RecentComments";
 import TaskDetailHeader from "./TaskDetailHeader";
 import ViewAllDocs from "./ViewAllDocs";

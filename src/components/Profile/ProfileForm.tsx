@@ -14,7 +14,7 @@ import {
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { updateMyProfile } from "redux/action/auth.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 import colors from "../../assets/colors";
 
@@ -41,7 +41,6 @@ const ProfileForm = () => {
   let user: Partial<UserInterface> | any = useSelector(
     (state: RootState) => state.auth.user
   );
-  // console.log('user', user)
   const isDisabled = !loading ? false : true;
   const profileSchema = setValidationSchema(t);
   const [isOpen, setIsOpen] = useState(false);

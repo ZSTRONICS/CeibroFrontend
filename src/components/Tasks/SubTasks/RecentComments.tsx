@@ -5,7 +5,7 @@ import {
   RecentCommentsInterface
 } from "constants/interfaces/subtask.interface";
 import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import RecentCommentsList from "./RecentCommentsList";
 
 export default function RecentComments() {

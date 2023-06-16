@@ -2,7 +2,7 @@ import { Badge, makeStyles, Typography } from "@material-ui/core";
 import { TASK_CONFIG } from "config/task.config";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../assets/colors";
 import { getColorByStatus } from "../../../config/project.config";
 import { getStyleClass } from "../../../config/styles.config";

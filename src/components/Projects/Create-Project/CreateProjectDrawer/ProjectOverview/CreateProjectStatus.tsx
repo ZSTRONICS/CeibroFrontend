@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
-import CButton from "components/Button/Button";
+import { CButton } from "components/Button";
 import { AddStatusTag } from "components/CustomTags";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import PopoverMenu from "./PopoverMenu";
 import StatusModal from "./StatusModal";
 
