@@ -1,11 +1,11 @@
-import React, { FC, useState } from "react";
-import { withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { createStyles, Theme, withStyles } from "@material-ui/core/styles";
 import Switch, { SwitchClassKey, SwitchProps } from "@material-ui/core/Switch";
+import { FC } from "react";
 
-import "./inputText.css";
-import { Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import colors from "assets/colors";
+import "./inputText.css";
 
 interface InputSwitchtInterface {
   label: string;
@@ -60,7 +60,7 @@ const styles = {
 const IOSSwitch = withStyles((theme: Theme) =>
   createStyles({
     root: {
-      width: 30,
+      width: 32,
       height: 20,
       padding: 0,
       margin: theme.spacing(1),
@@ -88,7 +88,7 @@ const IOSSwitch = withStyles((theme: Theme) =>
       width: 10,
       height: 10,
       marginTop: 4,
-      marginLeft: 2,
+      marginLeft: 1.8,
     },
     track: {
       borderRadius: 26 / 2,

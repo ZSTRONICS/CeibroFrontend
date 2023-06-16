@@ -1,4 +1,3 @@
-
 import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
 import CustomCheckbox from "components/Utills/Inputs/Checkbox";
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
@@ -9,29 +8,30 @@ import OutsideClickHandler from "react-outside-click-handler";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addRemoveFolderUser,
-  getFolder,
+  getAllDocuments,
   getGroupUsers,
 } from "redux/action/project.action";
 import assets from "../../../../../assets/assets";
 import colors from "../../../../../assets/colors";
 import Loading from "components/Utills/Loader/Loading";
+import { ProjectCreator } from "constants/interfaces";
 import { RootState } from "redux/reducers";
 
 interface ProjectDocsMenuInt {
   groupId: string;
   folderId: string;
-  access: string[];
+  access: ProjectCreator[];
 }
 
 const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const { groupId, access, folderId } = props;
   const { selectedProject } = useSelector((state: RootState) => state.project);
-  const [selectedUsers, setSelectedUsers] = useState<String[]>([]);
+  const [selectedUsers, setSelectedUsers] = useState<ProjectCreator[]>([]);
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState<UserInterface[]>([]);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (show) {
@@ -72,7 +72,7 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
           },
           success: () => {
             dispatch(
-              getFolder({
+              getAllDocuments({
                 other: { selectedProject },
               })
             );
@@ -100,7 +100,7 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
           <div className={`dropdown-content ${classes.dropdownContent}`}>
             <Grid container>
               {loading && (
-                <Grid container>
+                <Grid container item>
                   <Grid
                     item
                     xs={12}
@@ -126,8 +126,8 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
                     <Grid container className={classes.wrapper}>
                       <Grid item xs={2}>
                         <NameAvatar
-                          firstName={member?.firstName}
-                          surName={member?.surName}
+                          firstname={member?.firstName}
+                          surname={member?.surName}
                           url={member?.profilePic}
                         />
                       </Grid>
@@ -142,9 +142,9 @@ const ProjectDocsMenu: React.FC<ProjectDocsMenuInt> = (props) => {
                       <Grid item xs={2} className={classes.checkbox}>
                         <CustomCheckbox
                           onClick={handleUserChange}
-                          value={member?.id}
+                          value={member?._id}
                           name={"s"}
-                          checked={selectedUsers?.includes?.(member?.id)}
+                          // checked={selectedUsers?.includes.(member?._id)}
                         />
                       </Grid>
                     </Grid>

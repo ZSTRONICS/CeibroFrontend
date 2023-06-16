@@ -1,8 +1,4 @@
-import {
-  Typography,
-  Button,
-  CircularProgress,
-} from "@material-ui/core";
+import { Typography, Button, CircularProgress } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import { useHistory } from "react-router";
@@ -10,21 +6,14 @@ import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import TextField from "../../Utills/Inputs/TextField";
 import { useDispatch } from "react-redux";
-import {  otpVerify } from "../../../redux/action/auth.action";
-import { Alert } from "@material-ui/lab";
+import { otpVerify } from "../../../redux/action/auth.action";
+import Alert from "@mui/material/Alert";
 import { toast } from "react-toastify";
 import { useTranslation } from "react-i18next";
 
-interface VerifyEmailForm {
-  tokenLoading: boolean;
-  showSuccess: boolean;
-  showError: boolean;
-}
-
-const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
+const VerifyEmailForm = () => {
   const classes = useStyles();
-  const { showError } = props;
-  const {t} = useTranslation()
+  const { t } = useTranslation();
 
   const history = useHistory();
   const dispatch = useDispatch();
@@ -44,7 +33,7 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
       success: (res: any) => {
         setSuccess(res);
         setOtp("");
-        toast.success(`${t('auth.email_verified')}`);
+        toast.success(`${t("auth.email_verified")}`);
         history.push("/login");
       },
       onFailAction: (err: any) => {
@@ -83,7 +72,6 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
 
         {/* {error && <Alert severity="error">Invalid OTP</Alert>} */}
 
-        {showError && <Alert severity="error">Link expired</Alert>}
 
         <TextField
           placeholder={"otp"}
@@ -102,7 +90,6 @@ const VerifyEmailForm: React.FC<VerifyEmailForm> = (props) => {
             disabled={isDiabled}
             onClick={handleSubmit}
           >
-
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />
             )}
@@ -134,7 +121,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     marginTop: 20,
     padding: "10px 13%",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: "10 13%",
     },
   },

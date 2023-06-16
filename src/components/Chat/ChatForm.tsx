@@ -2,6 +2,7 @@
 import { Grid, makeStyles, Typography } from "@material-ui/core";
 import { Close } from "@material-ui/icons";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Picker from "emoji-picker-react";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -14,20 +15,21 @@ import {
   SET_REPLY_TO_ID,
   SEND_MESSAGE,
   CHAT_EVENT_REQ_OVER_SOCKET,
+  UPDATE_MESSAGE_BY_ID,
+  SORT_CHAT_LIST_ORDER,
 } from "../../config/chat.config";
 import {
   openQuestioniarDrawer,
   sendReplyMessage,
-  updateMessageById,
 } from "../../redux/action/chat.action";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getFileType } from "../../utills/file";
-import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
-import VoiceRecorder from "./VoiceRecorder";
-import CustomImg from "components/CustomImg";
+// import FilePreviewer from "../Utills/ChatChip/FilePreviewer";
+// import VoiceRecorder from "./VoiceRecorder";
 import { socket } from "services/socket.services";
 import { CBox } from "components/material-ui";
 import React from "react";
+import { UserInterface } from "constants/interfaces/user.interface";
 
 interface ChatFormInterface {
   enable: boolean;
@@ -41,7 +43,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const classes = useStyles();
   const {
     chat: chats,
-    selectedChat,
+    selectedChatId,
     replyToId,
     messages,
   } = useSelector((state: RootState) => state.chat);
@@ -50,15 +52,21 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   const [files, setFiles] = useState<any>();
   const [showRecorder, setShowRecorder] = useState<boolean>(false);
   const [filesPreview, setFilesPreview] = useState<any>([]);
+  const myChat = chats?.find(
+    (room: any) => String(room._id) === String(selectedChatId)
+  );
+  const canEditMessg = myChat?.members?.some(
+    (member: UserInterface) => String(member._id) === String(user._id)
+  );
 
   useEffect(() => {
     setFiles(null);
     setFilesPreview(null);
     setText("");
-  }, [selectedChat]);
+  }, [selectedChatId]);
 
   const onEmojiClick = (e: any, emojiObj: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setText(`${text}${emojiObj.emoji}`);
@@ -67,21 +75,21 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const toggleEmoji = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setOpen(!open);
   };
 
   const handleTextChange = (e: FormEvent<HTMLInputElement>) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setText(e.currentTarget.value);
   };
 
   const handleKeyDown = (e: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     if (e.key === "Enter") {
@@ -91,7 +99,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleCloseReply = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     dispatch({
@@ -102,21 +110,22 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
   let replyToMessage = null;
   if (replyToId) {
+    messageRef.current.focus();
     replyToMessage = messages?.find(
       (msg: any) => String(msg._id) === String(replyToId)
     );
   }
-  
+
   const handleSend = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     if (text) {
       let payload: any = {};
       payload.message = text.trim();
-      payload.chat = selectedChat;
+      payload.chat = selectedChatId;
       payload.type = "message";
-      messageRef.current.focus;
+      messageRef.current.focus();
 
       if (files && Object.values(files)?.length > 0) {
         for (const key of Object.keys(files)) {
@@ -124,17 +133,15 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
         }
       }
 
-      if (replyToId) {
-        payload.messageId = replyToId;
-      }
-
       let replyMessage = null;
       if (replyToId) {
+        payload.messageId = replyToId;
+
         replyMessage = messages?.find(
           (msg: any) => String(msg._id) === String(replyToId)
         );
         if (replyMessage) {
-          replyMessage.id = replyMessage._id;
+          replyMessage._id = replyMessage._id;
         }
       }
 
@@ -143,36 +150,46 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
 
       const myId = String(new Date().valueOf());
       payload.myId = myId;
-      // payload.userId = user.id
-      
+      // payload.userId = user._id
+
       const data = {
         eventType: SEND_MESSAGE,
         data: {
-          userId: user.id,
+          userId: user._id,
           message: JSON.stringify(payload),
-        }
-      }
+        },
+      };
 
       socket.getSocket().emit(CHAT_EVENT_REQ_OVER_SOCKET, JSON.stringify(data));
-    
+
+      const chatBox = document.getElementById("chatBox");
       const newMessage = {
         sender: user,
         time: "a few seconds ago",
         message: text,
         seen: true,
         type: "message",
-        myMessage: String(user.id),
+        myMessage: user._id,
         _id: myId,
-        pinnedBy:[],
-        chat: selectedChat,
+        pinnedBy: [],
+        chat: selectedChatId,
         replyOf: replyMessage || replyToId,
         files: files && Object.keys(files)?.length > 0 ? filesPreview : [],
       };
 
+      if (chatBox) {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
       dispatch({
         type: PUSH_MESSAGE,
         payload: newMessage,
       });
+
+      dispatch({
+        type: SORT_CHAT_LIST_ORDER,
+        payload: selectedChatId,
+      });
+
       handleCloseReply();
       setFiles(null);
       setFilesPreview(null);
@@ -186,7 +203,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileChange = (e: any) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     const newFiles = e.target.files;
@@ -207,7 +224,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleFileClick = (id: number) => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     setFiles((file: any) => {
@@ -220,7 +237,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
   };
 
   const handleOpenQuestioniar = () => {
-    if (!enable) {
+    if (!canEditMessg) {
       return;
     }
     dispatch(openQuestioniarDrawer());
@@ -235,7 +252,7 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
       setShowRecorder(false);
       const formdata = new FormData();
       formdata.append("type", "voice");
-      formdata.append("chat", selectedChat);
+      formdata.append("chat", selectedChatId);
       formdata.append("products", blob.blob, `${new Date().valueOf()}.mp3`);
 
       let replyMessage = null;
@@ -248,25 +265,25 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
           sender: user,
           time: "a few seconds ago",
           seen: true,
-          myMessage: String(user.id),
+          myMessage: String(user._id),
           replyOf: replyMessage,
           voiceUrl: blob.url,
-          pinnedBy:[],
+          pinnedBy: [],
           _id: myId,
         },
       });
-
       const payload: any = {
         body: formdata,
         success: (res: any) => {
-          dispatch(
-            updateMessageById({
+          dispatch({
+            type: UPDATE_MESSAGE_BY_ID,
+            payload: {
               other: {
                 oldMessageId: myId,
                 newMessage: res.data,
               },
-            })
-          );
+            },
+          });
         },
       };
       dispatch(sendReplyMessage(payload));
@@ -278,153 +295,169 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
     }
   };
 
-  if (!selectedChat) {
+  if (!selectedChatId) {
     return null;
   }
 
   return (
-    <Grid
-      className={classes.wrapper}
-      container
-      style={{ opacity: enable ? 1 : 0.5 }}
-    >
-      {!showRecorder &&
-        <>
-          <Grid item xs={12} className={classes.inputWrapper}>
-            {replyToId && (
-              <>
-                <div className={classes.replyto}>
-                  <Grid container item xs={12} className={classes.chatHeader}>
-                    <CBox
-                      display="flex"
-                      flexDirection="column"
-                      width='100%'
-                      className={classes.chatBox}
-                    >
-                      <CBox display="flex" justifyContent="space-between">
-                        <CBox>
-                          <Typography
-                            className={classes.replyToTitle}
-                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+    <>
+      <Box
+        className={`${classes.botContainer} ${classes.goToBottom}`}
+        id="goToBottom"
+      >
+        <Typography>Jump to Latest</Typography>
+      </Box>
+
+      <Grid
+        className={classes.wrapper}
+        container
+        style={{ opacity: canEditMessg ? 1 : 0.5 }}
+      >
+        {!showRecorder && (
+          <>
+            <Grid item xs={12} className={classes.inputWrapper}>
+              {replyToId && (
+                <>
+                  <div className={classes.replyto}>
+                    <Grid container item xs={12} className={classes.chatHeader}>
+                      <CBox
+                        display="flex"
+                        flexDirection="column"
+                        width="100%"
+                        className={classes.chatBox}
+                      >
+                        <CBox display="flex" justifyContent="space-between">
+                          <CBox>
+                            <Typography
+                              className={classes.replyToTitle}
+                            >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
+                          </CBox>
+                          <CBox>
+                            <Typography
+                              className={classes.closeReply}
+                              onClick={handleCloseReply}
+                            >
+                              <Close />
+                            </Typography>
+                          </CBox>
                         </CBox>
                         <CBox>
                           <Typography
-                            className={classes.closeReply}
-                            onClick={handleCloseReply}
+                            className={`${
+                              classes.replyToMesg
+                            } ${"textOverflowY"}`}
                           >
-                            <Close />
+                            {replyToMessage.message}
                           </Typography>
                         </CBox>
                       </CBox>
-                      <CBox>
-                        <Typography className={`${classes.replyToMesg} ${'textOverflowY'}`}>{replyToMessage.message}</Typography>
-                      </CBox>
-                    </CBox>
-                  </Grid>
-                </div>
-              </>
-            )}
-            <CBox display='flex' justifyContent='space-between' width='100%'>
-              <input
-                ref={messageRef}
-                value={text}
-                onChange={handleTextChange}
-                onKeyPress={handleKeyDown}
-                type="text"
-                disabled={!selectedChat || !enable}
-                placeholder={
-                  selectedChat
-                    ? enable
-                      ? "Type a message"
-                      : "You were removed from this chat"
-                    : "Select a chat room"
-                }
-                style={
-                  replyToId || showRecorder
-                    ? {
-                      width: "100%",
-                    }
-                    : {
-                      width: "90%",
-                    }
-                }
-                className={`messageInput black-input ${classes.messageInput}`}
-              />
-              <div className={classes.sendWrapper}>
-
-                <Button
-                  onClick={handleSend}
-                  disableRipple={true}
-                  style={{ backgroundColor: "transparent" }}
-                >
-                  <img
-                    alt=""
-                    src={assets.sendIcon}
-                    // onClick={handleSend}
-                    className={classes.sendIcon}
-                  />
-                  {/* <assets.SendIcon
+                    </Grid>
+                  </div>
+                </>
+              )}
+              <CBox display="flex" justifyContent="space-between" width="100%">
+                <input
+                  ref={messageRef}
+                  value={text}
+                  onChange={handleTextChange}
+                  onKeyPress={handleKeyDown}
+                  type="text"
+                  disabled={!selectedChatId || !canEditMessg}
+                  placeholder={
+                    selectedChatId
+                      ? canEditMessg
+                        ? "Type a message"
+                        : "You were removed from this chat"
+                      : "Select a chat room"
+                  }
+                  style={
+                    replyToId || showRecorder
+                      ? {
+                          width: "100%",
+                        }
+                      : {
+                          width: "90%",
+                        }
+                  }
+                  className={`messageInput black-input ${classes.messageInput}`}
+                />
+                <div className={classes.sendWrapper}>
+                  <Button
+                    onClick={handleSend}
+                    disableRipple={true}
+                    style={{ backgroundColor: "transparent" }}
+                  >
+                    <img
+                      alt=""
+                      src={assets.sendIcon}
+                      // onClick={handleSend}
+                      className={classes.sendIcon}
+                    />
+                    {/* <assets.SendIcon
                 className={classes.sendIcon}
               /> */}
-                </Button>
-              </div>
-            </CBox>
+                  </Button>
+                </div>
+              </CBox>
+            </Grid>
+          </>
+        )}
+        {/* {showRecorder && (
+          <VoiceRecorder
+            handleSubmit={handleSendVoice}
+            onCancel={handleCancelVoice}
+          />
+        )} */}
+
+        {/* {filesPreview && filesPreview.length > 0 && (
+          <Grid item xs={12} className={classes.filePreviewer}>
+            {filesPreview &&
+              filesPreview.map((preview: any, index: number) => {
+                return (
+                  <FilePreviewer
+                    file={preview}
+                    _id={index}
+                    handleClick={handleFileClick}
+                    showControls={true}
+                  />
+                );
+              })}
           </Grid>
+        )} */}
+        {/* {selectedChatId && (
+          // <Grid item xs={12} className={classes.btnWrapper}>
+          //   <img
+          //     alt=""
+          //     src={assets.emoji}
+          //     onClick={toggleEmoji}
+          //     className={"width-16 pointer"}
+          //   />
 
-        </>
-      }
-      {showRecorder && (
-        <VoiceRecorder
-          handleSubmit={handleSendVoice}
-          onCancel={handleCancelVoice}
-        />
-      )}
+          //   <label className={classes.customFileUpload}>
+          //     <CustomImg
+          //       alt=""
+          //       src={assets.clip}
+          //       className="width-16 pointer"
+          //     />
+          //     <input
+          //       disabled={!canEditMessg}
+          //       type="file"
+          //       onChange={handleFileChange}
+          //       multiple={true}
+          //     />
+          //   </label>
 
-      {filesPreview && filesPreview.length > 0 && (
-        <Grid item xs={12} className={classes.filePreviewer}>
-          {filesPreview &&
-            filesPreview.map((preview: any, index: number) => {
-              return (
-                <FilePreviewer
-                  file={preview}
-                  id={index}
-                  handleClick={handleFileClick}
-                  showControls={true}
-                />
-              );
-            })}
-        </Grid>
-      )}
-      {selectedChat && (
-        <Grid item xs={12} className={classes.btnWrapper}>
-          <img
-            alt=""
-            src={assets.emoji}
-            onClick={toggleEmoji}
-            className={"width-16 pointer"}
-          />
+          //   <img
+          //     alt=""
+          //     src={assets.mic}
+          //     onClick={() => {
+          //       if (!canEditMessg) return;
+          //       setShowRecorder(!showRecorder);
+          //     }}
+          //     className={`width-16 pointer`}
+          //   />
 
-          <label className={classes.customFileUpload}>
-            <CustomImg alt="" src={assets.clip} className="width-16 pointer" />
-            <input
-              disabled={!enable}
-              type="file"
-              onChange={handleFileChange}
-              multiple={true}
-            />
-          </label>
-
-          <img
-            alt=""
-            src={assets.mic}
-            onClick={() => {
-              if (!enable) return;
-              setShowRecorder(!showRecorder);
-            }}
-            className={`width-16 pointer`}
-          />
-
-          {/* <label className="custom-file-upload">
+            {/* <label className="custom-file-upload">
             <img src={assets.camera} className={`width-16 pointer`} />
             <input
               type="file"
@@ -433,42 +466,59 @@ const ChatForm: React.FC<ChatFormInterface> = (props) => {
               multiple={true}
               disabled={!enable}
             />
-          </label> */}
-          <Typography className={classes.gapLine}>|</Typography>
-          <img
-            alt=""
-            src={assets.primaryNudgeIcon}
-            className="pointer"
-            style={{ height: 18 }}
-          />
-          <Typography className={classes.gapLine}>|</Typography>
-          <img
-            alt=""
-            src={assets.blueDocument}
-            onClick={handleOpenQuestioniar}
-            className={`width-16 pointer`}
-          />
+          </label> 
+            {/* <Typography className={classes.gapLine}>|</Typography>
+            <img
+              alt=""
+              src={assets.primaryNudgeIcon}
+              className="pointer"
+              style={{ height: 18 }}
+            />
+            <Typography className={classes.gapLine}>|</Typography>
+            <img
+              alt=""
+              src={assets.blueDocument}
+              onClick={handleOpenQuestioniar}
+              className={`width-16 pointer`}
+            />
 
-          {open && (
-            <OutsideClickHandler onOutsideClick={toggleEmoji}>
-              <div className={classes.emojisWrapper}>
-                <Picker onEmojiClick={onEmojiClick} />
-              </div>
-            </OutsideClickHandler>
-          )}
-        </Grid>
-      )}
-    </Grid>
+            {open && (
+              <OutsideClickHandler onOutsideClick={toggleEmoji}>
+                <div className={classes.emojisWrapper}>
+                  <Picker onEmojiClick={onEmojiClick} />
+                </div>
+              </OutsideClickHandler>
+            )}
+          </Grid> 
+        )} */}
+      </Grid>
+    </>
   );
 };
 
-export default React.memo(ChatForm, (prevProps, nextProps) => prevProps.enable  === nextProps.enable );
+export default React.memo(ChatForm);
 
 const useStyles = makeStyles({
+  goToBottom: {
+    "& .MuiTypography-root:hover": {
+      cursor: "pointer",
+    },
+  },
+  botContainer: {
+    background: "#ECF0F1",
+    borderRadius: 20,
+    maxWidth: 125,
+    margin: "0 auto",
+    width: "100%",
+    textAlign: "center",
+    padding: "2px 0",
+    "& .MuiTypography-root": {
+      fontSize: "12px",
+    },
+  },
   replyToMesg: {
-    color: '#959595',
-    wordBreak: 'break-all',
-
+    color: "#959595",
+    wordBreak: "break-all",
   },
   replyToTitle: {
     color: "#0076C8",
@@ -482,9 +532,8 @@ const useStyles = makeStyles({
     borderRadius: "4px",
     borderWidth: "2px 2px 0 4px",
     borderStyle: "solid",
-    width: "98%"
+    width: "98%",
     // position: "absolute",
-
   },
   chatHeader: {
     width: "100%",
@@ -538,19 +587,18 @@ const useStyles = makeStyles({
     alignItems: "center",
     borderBottom: `2px solid ${colors.lightGrey}`,
     justifyContent: "space-between",
-    flexDirection: 'column',
+    flexDirection: "column",
     // '& input': {
     //   // padding: 35,
     //   height: 45,
 
     // }
-
   },
   sendWrapper: {
     fontSize: 18,
     textAlign: "center",
     cursor: "pointer",
-    backgroundColor: '#fff'
+    backgroundColor: "#fff",
   },
   sendIcon: {
     borderRadius: 5,

@@ -8,7 +8,7 @@ import {
   ADD_TO_FAVOURITE,
   PUSH_MESSAGE,
   PUSH_MESSAGE_BY_OTHER,
-  SET_MESSAGE_READ,
+  SET_MESSAGE_SEEN,
   SET_SELECTED_CHAT,
   OPEN_QUESTIONIAR_DRAWER,
   CLOSE_QUESTIONIAR_DRAWER,
@@ -40,17 +40,19 @@ import {
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
   REPLACE_MESSAGE_BY_ID,
+  SET_GOTO_MESSAGE_ID,
 } from '../../config/chat.config'
 import { createAction } from './action'
 
 export const getAllChats = createAction(GET_CHAT)
 export const createSingleRoom = createAction(CREATE_SINGLE_ROOM)
 export const setSelectedChat = createAction(SET_SELECTED_CHAT)
+export const setGoToMessageId = createAction(SET_GOTO_MESSAGE_ID)
 export const clearSelectedChat = createAction(CLEAR_SELECTED_CHAT)
 export const pushMessage = createAction(PUSH_MESSAGE)
 export const pushMessageByOthers = createAction(PUSH_MESSAGE_BY_OTHER)
 export const getRoomMessages = createAction(GET_MESSAGES)
-export const setMessagesRead = createAction(SET_MESSAGE_READ)
+export const setMessagesRead = createAction(SET_MESSAGE_SEEN)
 export const muteChat = createAction(MUTE_CHAT)
 export const addToFavourite = createAction(ADD_TO_FAVOURITE)
 export const sendReplyMessage = createAction(SEND_REPLY_MESSAGE)
@@ -63,7 +65,7 @@ export const getQuestioniarById = createAction(GET_QUESTIONIAR)
 export const saveQuestioniarAnswers = createAction(SAVE_QUESTIONIAR_ANSWERS)
 export const deleteConversation = createAction(DELETE_CONVERSATION)
 export const forwardChat = createAction(FORWARD_CHAT)
-export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
+// export const updateMessageById = createAction(UPDATE_MESSAGE_BY_ID)
 export const replaceMessagesById = createAction(REPLACE_MESSAGE_BY_ID)
 export const unreadMessagesCount = createAction(GET_UNREAD_CHAT_COUNT)
 export const unreadRoomMessagesCount = createAction(GET_UNREAD_ROOM_MESSAGE_COUNT)
@@ -119,9 +121,9 @@ export const setTempMembersDialog = (open: boolean) => ({
   payload: open,
 })
 
-export const goToMessage = (messageId: string) => ({
+export const goToMessage = (messageId: string, skip: number) => ({
   type: GO_TO_MESSAGES,
-  payload: messageId,
+  payload: {messageId, skip},
 })
 
 export const setDownBlock = (block: boolean) => ({

@@ -1,81 +1,49 @@
-import React from 'react'
-import TaskList from './TaskList'
-import DatePicker from '../../Utills/Inputs/DatePicker'
-import SelectDropdown from '../../Utills/Inputs/SelectDropdown'
-import { Badge, Grid, makeStyles, Typography } from '@material-ui/core'
-import { getAllStatus, getColorByStatus } from '../../../config/project.config'
-import CreateTaskDrawer from '../Create-Task/CreateTaskDrawer'
-import { getStyleClass } from '../../../config/styles.config'
-import StatusMenu from '../../Utills/Others/StatusMenu'
-import './task.css'
+import React, { useEffect } from "react";
+// mui
+import { Grid } from "@material-ui/core";
 
-const Project = () => {
+// components
+import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import TaskMain from "./TaskMain";
+import SubTaskMain from "../SubTasks/SubTaskMain";
+import { useDispatch } from "react-redux";
+import { getAllSubTaskList, getAllTask } from "redux/action/task.action";
+import { getAllProjectsWithMembers } from "redux/action/project.action";
 
-    const classes = useStyles()
+const Task = () => {
+  const dispatch = useDispatch();
 
-    const allStatus = getAllStatus()
+  useEffect(() => {
+    // dispatch(getAllProjectsWithMembers());
+    // dispatch(getAllTask());
+    // dispatch(getAllSubTaskList());
+  }, []);
 
-    return (
-        <Grid item xs={12}>
-            <Grid container>
-                <Grid item xs={12} md={3} className={classes.datePicker}>
-                    <DatePicker/>
-                </Grid>
+  if (window.location.pathname.includes("task")) {
+    document.body.style.background = "white";
+  }
 
-                <Grid item xs={12} md={4} className={classes.datePicker}>
-                    <SelectDropdown title="Assigned to" />
-                </Grid>
+  //get all project with members and store in Redux
 
-                <Grid item xs={12} md={4} className={classes.datePicker}>
-                    <SelectDropdown title="Projects" />
-                </Grid>
-            </Grid>
+  return (
+    <>
+      <Grid item xs={12}>
+        <h1>Tasks</h1>
+        {/* <TabsUnstyled defaultValue={0}>
+          <TabsList>
+            <Tab>Task</Tab>
+            <Tab>Subtasks</Tab>
+          </TabsList>
+          <TabPanel value={0}>
+            <TaskMain />
+          </TabPanel>
+          <TabPanel value={1}>
+            <SubTaskMain />
+          </TabPanel>
+        </TabsUnstyled> */}
+      </Grid>
+    </>
+  );
+};
 
-            <Grid container className={classes.allStatus}>
-                <StatusMenu
-                    options={allStatus}
-                />
-            </Grid>
-
-            <TaskList/>
-        </Grid>
-    )
-}
-
-export default Project
-
-const useStyles = makeStyles({
-    datePicker: {
-        padding: 5
-    },
-    allStatus: {
-        paddingLeft: 5,
-        
-    },
-    statusChip: {
-        padding: "10px 10px",
-        width: 100,
-        display: 'flex', 
-        alignItems: 'center',
-        justifyContent: 'space-around'
-    },
-    ongoing: {
-        background: getColorByStatus('ongoing')
-    }
-
-    ,
-    completed: {
-        background: getColorByStatus('completed')
-    }
-
-    ,
-    draft: {
-        background: getColorByStatus('draft')
-    },
-
-    approved: {
-        background: getColorByStatus('approved')
-    },
-
-
-})
+export default Task;

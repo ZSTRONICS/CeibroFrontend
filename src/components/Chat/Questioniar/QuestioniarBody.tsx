@@ -1,29 +1,28 @@
-import {
-  Button, Grid,
-  makeStyles,
-  Typography
-} from "@material-ui/core";
-import IosSwitchMaterialUi from "ios-switch-material-ui";
 import { useEffect, useState } from "react";
+import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Stack } from "@mui/system";
+import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import colors from "../../../assets/colors";
-import { PUSH_MESSAGE } from "../../../config/chat.config";
+import {
+  PUSH_MESSAGE,
+  UPDATE_MESSAGE_BY_ID,
+} from "../../../config/chat.config";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
 import { getNewQuestionTemplate } from "../../../constants/questioniar.constants";
 import {
   getDate,
   removeCurrentUser,
-  validateQuestions
+  validateQuestions,
 } from "../../../helpers/chat.helpers";
 import {
   closeQuestioniarDrawer,
   getRoomQuestioniars,
   saveQuestioniar,
   setQuestions,
-  updateMessageById
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { dbUsers } from "../../Topbar/CreateIndividualChat";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
@@ -31,23 +30,24 @@ import TextField from "../../Utills/Inputs/TextField";
 import Loading from "../../Utills/Loader/Loading";
 import PreviewQuestion from "../../Utills/Questioniar/PreviewQuestion";
 import CreateQuestion from "../../Utills/Questioniar/Question.create";
+import CustomizedSwitch from "./IOSSwitch";
 
 const QuestioniarBody = () => {
   const classes = useStyles();
-  const { questioniars, createQuestioniarLoading, selectedChat, chat } =
+  const { questioniars, createQuestioniarLoading, selectedChatId, chat } =
     useSelector((store: RootState) => store.chat);
   const { user } = useSelector((state: RootState) => state.auth);
   /////
-  // const { selectedChat, chat } = useSelector((state: RootState) => state.chat);
-  const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) === String(selectedChat))
+  // const { selectedChatId, chat } = useSelector((state: RootState) => state.chat);
+  const membersList = selectedChatId
+    ? chat.find((room: any) => String(room._id) === String(selectedChatId))
         ?.members
     : [];
   ////
 
   // const listOfMember = membersList?.map((member: any) => ({
   //   label: ` ${member?.firstName} ${member?.surName}`,
-  //   value: member?.id,
+  //   value: member?._id,
   // }));
 
   const [preview, setPreview] = useState<boolean>(false);
@@ -61,17 +61,17 @@ const QuestioniarBody = () => {
   // const [listOfMembers, setListOfMembers] = useState<any>();
 
   useEffect(() => {
-    setValue(removeCurrentUser(dbUsers, user?.id));
-    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    setValue(removeCurrentUser(dbUsers, user?._id));
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChatId))
   }, []);
 
-  const handleChangePreview = (notShowPreview: boolean) => {
-    setPreview(!notShowPreview);
+  const handleChangePreview = (e: any) => {
+    setPreview(e.target.checked);
   };
 
   const listOfMember = membersList?.map((member: any) => ({
     label: ` ${member?.firstName} ${member?.surName}`,
-    value: member?.id,
+    value: member?._id,
   }));
 
   const handleDateChange = (e: any) => {
@@ -91,6 +91,7 @@ const QuestioniarBody = () => {
     myQuestions.push(newQuestion);
     dispatch(setQuestions(myQuestions));
   };
+
   const handleSave = () => {
     const myId = new Date().valueOf();
 
@@ -103,7 +104,7 @@ const QuestioniarBody = () => {
         title,
         time: "a few seconds ago",
         seen: true,
-        myMessage: user.id,
+        myMessage: user._id,
         replyOf: null,
         id: myId,
       },
@@ -113,20 +114,21 @@ const QuestioniarBody = () => {
         members: members.map((obj: any) => obj.value),
         dueDate: dueDate,
         questions: questioniars,
-        chat: selectedChat,
+        chat: selectedChatId,
         title,
       },
       success: (res: any) => {
         toast.success("Questioniar sent");
-        dispatch(
-          updateMessageById({
+        dispatch({
+          type: UPDATE_MESSAGE_BY_ID,
+          payload: {
             other: {
               oldMessageId: myId,
               newMessage: res.data,
             },
-          })
-        );
-        dispatch(getRoomQuestioniars({ other: selectedChat }));
+          },
+        });
+        dispatch(getRoomQuestioniars({ other: selectedChatId }));
       },
     };
     !createQuestioniarLoading && dispatch(saveQuestioniar(payload));
@@ -139,8 +141,8 @@ const QuestioniarBody = () => {
     setTitle(e?.target?.value);
   };
 
-  const handleNudgeChange = (notActive: boolean) => {
-    setNudge(!notActive);
+  const handleNudgeChange = (e: any) => {
+    setNudge(e.target.checked);
   };
 
   const validated = validateQuestions(questioniars);
@@ -182,29 +184,23 @@ const QuestioniarBody = () => {
             </div>
           )}
         </Grid>
-        <Grid container item style={{ paddingTop: preview ? 20 : 0 }} xs={12}>
-          <Grid item xs={12} md={4} className={classes.nudge}>
-            <IosSwitchMaterialUi
-              colorKnobOnLeft="#FFFFFF"
-              colorKnobOnRight="#FFFFFF"
-              colorSwitch={nudge ? colors.primary : colors.inputGrey}
-              onChange={handleNudgeChange}
-              defaultKnobOnLeft={true}
+        <CBox
+          sx={{
+            paddingTop: "10px",
+          }}
+        >
+          <Stack direction="row">
+            <CustomizedSwitch
+              onChange={(e: any) => handleNudgeChange(e)}
+              label="Nudge"
             />
-            <Typography className={classes.nudgeText}>Nudge</Typography>
-          </Grid>
-          <Grid item xs={12} md={6} className={classes.nudge}>
-            <IosSwitchMaterialUi
-              colorKnobOnLeft="#FFFFFF"
-              colorKnobOnRight="#FFFFFF"
-              colorSwitch={preview ? colors.primary : colors.inputGrey}
-              onChange={handleChangePreview}
-              defaultKnobOnLeft={true}
+            <CustomizedSwitch
+              onChange={(e: any) => handleChangePreview(e)}
+              label="Preview"
               disabled={!validated}
             />
-            <Typography className={classes.nudgeText}>Preview</Typography>
-          </Grid>
-        </Grid>
+          </Stack>
+        </CBox>
       </Grid>
       <Grid container direction="column" className={classes.wrapper3}>
         {/* <Divider  /> */}
@@ -220,7 +216,7 @@ const QuestioniarBody = () => {
                 if (preview) {
                   return <PreviewQuestion key={index} question={question} />;
                 }
-                return <CreateQuestion key={index} id={question.id} />;
+                return <CreateQuestion key={index} id={question._id} />;
               }
             )}
         </Grid>
@@ -238,7 +234,11 @@ const QuestioniarBody = () => {
           </Grid>
         )}
 
-        <Grid item xs={12} className={classes.questionsWrapper}>
+        <Grid item xs={12} className={classes.actionWrapper}>
+          <Button onClick={handleClose} variant="text">
+            cancel
+          </Button>
+
           <Button
             onClick={handleSave}
             variant="contained"
@@ -256,10 +256,6 @@ const QuestioniarBody = () => {
             ) : (
               "Create"
             )}
-          </Button>
-
-          <Button onClick={handleClose} variant="text">
-            cancel
           </Button>
         </Grid>
       </Grid>
@@ -286,9 +282,10 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     color: colors.textPrimary,
+    paddingLeft: "28px",
   },
   wrapper: {
-    padding: 15,
+    padding: "20px",
     paddingTop: 0,
     paddingBottom: 20,
     borderBottom: `1px solid ${colors.grey}`,
@@ -297,33 +294,44 @@ const useStyles = makeStyles({
     width: "100%",
     minWidth: 500,
     maxWidth: 500,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       minWidth: 300,
     },
   },
   wrapper3: {
-    padding: 10,
-    paddingTop: 10,
+    padding: "0px 20px",
+    // paddingTop: 10,
     height: "auto",
     background: colors.white,
     width: "100%",
     minWidth: 500,
     maxWidth: 500,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       minWidth: 300,
     },
   },
+  actionWrapper: {
+    display: "flex",
+    justifyContent: "flex-end",
+    gap: "20px",
+    paddingTop: "15px",
+    paddingBottom: "20px",
+    marginTop: "40px",
+  },
   datePickerWrapper: {
-    maxWidth: 250,
+    maxWidth: 230,
     marginTop: 10,
+    // padding: "4px 5px",
   },
   assignedToWrapper: {
-    maxWidth: 450,
-    marginTop: 10,
+    maxWidth: 460,
+    marginTop: 15,
   },
   questionsWrapper: {
+    // display:"flex",
+    // justifyContent:"flex-end",
     paddingTop: 30,
-    maxWidth: 450,
+    maxWidth: 460,
   },
   preview: {
     display: "flex",
@@ -331,18 +339,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: 5,
   },
-  nudge: {
-    display: "flex",
-    // justifyContent: "flex-end",
-    alignItems: "center",
-    padding: 5,
-  },
-  nudgeText: {
-    fontWeight: 500,
-    fontSize: 14,
-    color: colors.black,
-    paddingLeft: 10,
-  },
+
   wrapper2: {
     zIndex: 5,
   },

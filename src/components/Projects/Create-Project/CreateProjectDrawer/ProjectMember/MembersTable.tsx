@@ -1,10 +1,7 @@
-
 import {
-  Checkbox,
-  Chip,
-  CircularProgress,
+  Button,
+  Grid,
   makeStyles,
-  Paper,
   Table,
   TableBody,
   TableCell,
@@ -12,188 +9,103 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Button,
-  Grid,
 } from "@material-ui/core";
-import { avaialablePermissions } from "config/project.config";
-import {
-  GroupInterface,
-  MemberInterface,
-  RoleInterface,
-} from "constants/interfaces/project.interface";
-import { checkMemberPermission } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
+import { useConfirm } from "material-ui-confirm";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   deleteMember,
-  getGroup,
   getMember,
-  getRoles,
-  getRolesById,
-  updateMember,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
-import { useConfirm } from "material-ui-confirm";
+import { RootState } from "redux/reducers/appReducer";
 
 import colors from "../../../../../assets/colors";
-import InputCheckbox from "../../../../Utills/Inputs/InputCheckbox";
-import Select from "../../../../Utills/Inputs/Select";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
+import { CButton } from "components/Button";
+import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { Member, ProjectMemberInterface, ProjectRolesInterface, roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { toast } from "react-toastify";
+import RollOverMenu from "./RollOverMenu";
 
-function createData(name: string, approve: boolean, role: number) {
-  return { name, approve, role };
-}
+const MembersTable = () => {
+  const { selectedProject, memberList, getAllProjectRoles } = useSelector(
+    (state: RootState) => state.project
+  );
+  const { user } = useSelector((state: RootState) => state.auth);
 
-const rows = [
-  createData("Owner", true, 1),
-  createData("Project Manager", true, 2),
-  createData("Project Lead", false, 3),
-  createData("Worker", false, 1),
-  createData("Owner", true, 1),
-  createData("Project Manager", true, 2),
-  createData("Project Lead", false, 3),
-  createData("Worker", false, 1),
-];
+  const getMyRole = () => {
+    let rolePermissionLocal =
+      getAllProjectRoles &&
+      getAllProjectRoles
+        .filter((permission: any) =>
+          permission.members.some(
+            (member: Member) => String(member._id) === String(user._id)
+          )
+        ).find((item: any) => item?.rolePermission);
+    return rolePermissionLocal || roleTemplate;
+  };
+  const myRole: ProjectRolesInterface = getMyRole();
 
-const roleOptions = [
-  {
-    title: "Project Manager",
-    value: "1",
-  },
-  {
-    title: "Project Lead",
-    value: "2",
-  },
-  {
-    title: "Worker",
-    value: "3",
-  },
-];
 
-const groupOptions = [
-  {
-    title: "Electrikudwr",
-    value: "1",
-  },
-];
-
-const RolesTable = () => {
-  const { groupList, rolesList, selectedProject, memberList, userPermissions } =
-    useSelector((state: RootState) => state?.project);
-
-  const [group, setGroups] = useState<any>();
-  const [role, setRoles] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const confirm = useConfirm();
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
-    dispatch(getGroup({ other: selectedProject }));
-    dispatch(
-      getRoles({
-        other: selectedProject,
-      })
-    );
+    dispatch(getMember({ other: selectedProject }));
   }, []);
 
-  useEffect(() => {
-    if (groupList) {
-      const newGroups = groupList.map((group: GroupInterface) => {
-        return {
-          title: group.name,
-          value: group.id,
-        };
-      });
-      setGroups(newGroups);
-    }
-  }, [groupList]);
-
-  useEffect(() => {
-    if (rolesList) {
-      const newRoles = rolesList?.map((role: RoleInterface) => {
-        return {
-          title: role.name,
-          value: role.id,
-        };
-      });
-      setRoles(newRoles);
-    }
-  }, [rolesList]);
-
-  const getMemebers = () => {
-    if (selectedProject) {
-      const payload = {
-        finallyAction: () => {
-          setLoading(false);
-        },
-        other: { projectId: selectedProject, excludeMe: true },
-      };
-      setLoading(true);
-      dispatch(getMember(payload));
-    }
+  const handleEditMember = (member: ProjectMemberInterface) => {
+    dispatch(projectActions.setSelectedMember(member));
+    dispatch(projectActions.openProjectMemberDrawer());
   };
-
-  useEffect(() => {
-    getMemebers();
-  }, [selectedProject]);
-
-  const selectGroupHandle = (e: string, row: MemberInterface) => {
-    const payload = {
-      body: {
-        groupId: e ? e : null,
-        memberId: row?.id,
-        roleId: row?.role?.id,
-      },
-      success: () => {
-        getMemebers();
-      },
-      other: selectedProject,
-    };
-
-    dispatch(updateMember(payload));
-  };
-
-  const selectRoleHandle = (e: string, row: MemberInterface) => {
-    const payload = {
-      body: {
-        groupId: row?.group?.id,
-        memberId: row?.id,
-        roleId: e,
-      },
-      success: () => {
-        getMemebers();
-      },
-      other: selectedProject,
-    };
-
-    dispatch(updateMember(payload));
-  };
-
-  const havePermission = checkMemberPermission(
-    userPermissions,
-    avaialablePermissions.edit_permission
-  );
-
-  const haveDeletePermission = checkMemberPermission(
-    userPermissions,
-    avaialablePermissions.delete_permission
-  );
 
   const handleDelete = (id: any) => {
-    setLoading(true);
-
     confirm({
-      title: "Please confirm",
-      description: "Are you confirm want to delete",
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you sure you want to remove this person from project members?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       dispatch(
         deleteMember({
           success: () => {
             toast.success("Deleted Successfully");
-            dispatch(getMember({ other: { projectId: selectedProject } }));
+            dispatch(getMember({ other: selectedProject }));
           },
           finallyAction: () => {
             setLoading(false);
@@ -206,92 +118,71 @@ const RolesTable = () => {
   const openCreateMember = () => {
     dispatch(projectActions.openProjectMemberDrawer());
   };
-  
+
   return (
-    <TableContainer>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
+    <TableContainer style={{ height: "100%", paddingBottom: "100px" }}>
+      <Table className={classes.table} stickyHeader aria-label="sticky table">
+        <TableHead
+        // style={{ overflow: "visible" }}
+        >
           <TableRow>
             <TableCell className={classes.rowTop}>Name</TableCell>
-            {/* <TableCell className={classes.rowTop} align="left">
+            <TableCell className={classes.rowTop} align="left">
               Role
             </TableCell>
             <TableCell className={classes.rowTop} align="left">
               Group
-            </TableCell> */}
+            </TableCell>
             <TableCell className={classes.rowTop} align="left"></TableCell>
           </TableRow>
         </TableHead>
         <TableBody className="lower-padding">
-          {loading && (
+          {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
-          )}
+          )} */}
 
           {memberList && memberList.length > 0 ? (
             <>
-              {memberList?.map((row: MemberInterface) => (
-                <TableRow key={row.id}>
-                  <TableCell
-                    component="th"
-                    scope="row"
-                    style={{ width: "60%" }}
-                  >
-                    <div className={classes.nameWrapper}>
-                      <Typography className={classes.name}>
-                        {row.isInvited && (
-                          <span>
-                            {row.invitedEmail}{" "}
-                            <Chip
-                              className={classes.chip}
-                              variant="outlined"
-                              label="Invited"
-                              size="small"
-                            ></Chip>
-                          </span>
-                        )}
-                        {row?.user &&
-                          `${row?.user?.firstName} ${row?.user?.surName}`}
+              {memberList?.map((member: ProjectMemberInterface) => {
+                if (member === undefined) {
+                  return <></>;
+                }
+                return (
+                  <TableRow key={member._id}>
+                    <TableCell component="th" scope="row">
+                      <Typography className={classes.nameWrapper}>
+                        {String(member?.user?._id) === String(user._id) ? "Me" : `${member?.user?.firstName} ${member?.user?.surName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
-                        {row?.user?.companyName}
+                        Company:{member?.user?.companyName ?? "N/A"}
                       </Typography>
-                    </div>
-                  </TableCell>
-                  {/* <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={role}
-                      selectedValue={row?.role?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectRoleHandle(e, row)
-                      }
-                    />
-                  </TableCell>
-                  <TableCell align="right" style={{ width: "20%" }}>
-                    <Select
-                      showDisabled={true}
-                      options={group}
-                      selected="selected"
-                      selectedValue={row?.group?.id}
-                      handleDisabled={havePermission ? false : true}
-                      handleValueChange={(e: string) =>
-                        selectGroupHandle(e, row)
-                      }
-                    />
-                  </TableCell> */}
-                  <TableCell align="right" style={{ width: "10%" }}>
-                    {haveDeletePermission && (
-                      <img
-                        style={{ width: 32, height: 32 }}
-                        src={assets.membersDelete}
-                        className={"pointer"}
-                        onClick={() => handleDelete(row?.id)}
+                      {/* </div> */}
+                    </TableCell>
+                    <TableCell>
+                      <AddStatusTag sx={{ textTransform: 'capitalize', color: "#000000" }}>
+                        {member.role ? member.role.name : "N/A"}
+                      </AddStatusTag>
+                    </TableCell>
+                    <TableCell>
+                      <AddStatusTag sx={{ textTransform: 'capitalize', color: "#000000" }}>
+                        {member.group ? member.group.name : "N/A"}
+                      </AddStatusTag>
+                    </TableCell>
+                    <TableCell align="right" style={{ width: "10%" }}>
+                      <RollOverMenu
+                        userRole={myRole}
+                        member={member}
+                        edit="Edit"
+                        showDelBtn={true}
+                        handleDelete={() => handleDelete(member._id)}
+                        handleEdit={() => {
+                          handleEditMember(member);
+                        }}
                       />
-                    )}
-                  </TableCell>
-                </TableRow>
-              ))}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
             </>
           ) : (
             <>
@@ -323,19 +214,14 @@ const RolesTable = () => {
   );
 };
 
-export default RolesTable;
+export default MembersTable;
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
-    // position: "relative",
+    // height: "700px",
+    // overflowY: "auto",
   },
-  nameWrapper: {},
-  name: {
-    fontSize: 14,
-    fontWeight: "bold",
-    color: colors.primary,
-  },
+  nameWrapper: { fontSize: 14, fontWeight: "bold", color: colors.primary },
   organizationName: {
     fontWeight: 500,
     fontSize: 12,

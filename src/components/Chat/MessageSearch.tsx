@@ -6,7 +6,7 @@ import colors from "../../assets/colors";
 // @ts-ignore
 import _ from "lodash";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getRoomMessages } from "../../redux/action/chat.action";
 import { SET_PAGINATION_BLOCK } from "../../config/chat.config";
 import assets from "assets/assets";
@@ -18,7 +18,7 @@ interface IAppProps {}
 
 const MessageSearch: React.FC<IAppProps> = (props) => {
   const classes = useStyles();
-  const { selectedChat } = useSelector((state: RootState) => state.chat);
+  const { selectedChatId } = useSelector((state: RootState) => state.chat);
   const [search, setSearch] = React.useState("");
   const [show, setShow] = React.useState(false);
   const [showFilter, setShowFilter] = React.useState(false);
@@ -34,7 +34,7 @@ const MessageSearch: React.FC<IAppProps> = (props) => {
     dispatch(
       getRoomMessages({
         other: {
-          roomId: selectedChat,
+          roomId: selectedChatId,
           search: value,
         },
         success: () => {

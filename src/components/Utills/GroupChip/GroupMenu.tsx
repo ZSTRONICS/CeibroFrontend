@@ -1,12 +1,15 @@
-
-import { IconButton, makeStyles, Typography } from "@material-ui/core";
+import { IconButton, makeStyles } from "@material-ui/core";
+import { Typography } from "@mui/material";
+import { CButton } from "components/Button";
+import { ConfirmDescriptionTag } from "components/CustomTags";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
 import { useSelector } from "react-redux";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 interface GroupMenueInt {
   onEdit: () => void;
@@ -32,8 +35,41 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
     e?.preventDefault?.();
     e?.stopPropagation?.();
     confirm({
-      title: "Please confirm",
-      description: `Are you confirm want to delete ${props.name} group?`,
+      title: (
+        <CustomStack gap={1}>
+          <assets.ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you confirm want to delete this group?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Remove",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          elevation={1}
+          styles={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
       props.onDelete();
     });
@@ -42,7 +78,7 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
   return (
     <div className="dropdown">
       <IconButton onClick={handleToggle}>
-        <img src={assets.moreIcon} className={classes.moreIcon} />
+        <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
       </IconButton>
       {show && (
         <OutsideClickHandler onOutsideClick={handleToggle}>
@@ -51,30 +87,30 @@ const GroupMenu: React.FC<GroupMenueInt> = (props) => {
               onClick={handleEdit}
               className={`${classes.menuWrapper} dropdown-menu pointer`}
             >
-              <img src={assets.blackPencil} className="width-16" />
+              {/* <img src={assets.blackPencil} className="width-16" alt=""/> */}
               <Typography className={`${classes.menuText} align-center`}>
-                Edit group
+                Edit
               </Typography>
             </div>
 
-            <hr className={classes.break} />
-
-            <div className={`${classes.menuWrapper} dropdown-menu pointer`}>
-              <img src={assets.addUser} className="width-16" />
+            {/*<hr className={classes.break} />
+             <div className={`${classes.menuWrapper} dropdown-menu pointer`}>
+             <img src={assets.addUser} className="width-16" alt=""/> 
               <Typography className={`${classes.menuText} align-center`}>
-                Add people
+                Add member
               </Typography>
-            </div>
-
+            </div>*/}
             <hr className={classes.break} />
-
             <div
               onClick={handleDelete}
               className={`${classes.menuWrapper} dropdown-menu pointer`}
             >
-              <img src={assets.DeleteIcon} className="width-16" />
-              <Typography className={`${classes.menuText} align-center`}>
-                Delete group
+              {/* <img src={assets.DeleteIcon} className="width-16" alt=""/> */}
+              <Typography
+                sx={{ color: "#FA0808" }}
+                className={`${classes.menuText} align-center`}
+              >
+                Delete
               </Typography>
             </div>
           </div>
@@ -91,13 +127,16 @@ const useStyles = makeStyles({
     cursor: "pointer",
   },
   dropdownContent: {
-    minWidth: 180,
+    "&.dropdown-content .dropdown-menu:hover": {
+      backgroundColor: "unset",
+    },
+    minWidth: 80,
     display: "block",
   },
   menuWrapper: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   menuIcon: {
     fontSize: 14,
@@ -114,10 +153,15 @@ const useStyles = makeStyles({
     alignItems: "",
   },
   menuText: {
-    fontSize: 14,
-    fontWeight: 500,
+    '&.MuiTypography-root':{
+      fontWeight: '500 !important',
+    fontSize: 15,
+
+    },
+    fontSize: 15,
+    fontWeight: 500 ,
     marginLeft: 10,
-    height: 30,
+   
     color: colors.textPrimary,
   },
   break: {
@@ -129,5 +173,6 @@ const useStyles = makeStyles({
   },
   deleteText: {
     color: colors.btnRed,
+    
   },
 });

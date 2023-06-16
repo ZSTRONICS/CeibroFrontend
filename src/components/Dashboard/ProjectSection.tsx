@@ -1,13 +1,15 @@
-import React from "react";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
 import { getAllStatus } from "../../config/project.config";
 import ProjectList from "./ProjectList";
-import projectActions from "../../redux/action/project.action";
+import projectActions, {
+  getAllProjects,
+  getAllProjectsWithMembers,
+} from "../../redux/action/project.action";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
-
-interface ProjectSectionInt {}
 
 const myStatus = [
   {
@@ -28,7 +30,7 @@ const myStatus = [
   },
 ];
 
-const ProjectSection: React.FC<ProjectSectionInt> = () => {
+const ProjectSection = (props: any) => {
   const allStatus = myStatus;
   const dispatch = useDispatch();
   const history = useHistory();
@@ -73,7 +75,7 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
           md={5}
           lg={6}
         >
-          <StatusMenu options={allStatus} />
+          {/* <StatusMenu options={allStatus} /> */}
         </Grid>
         <Grid item xs={12} md={2} lg={1}>
           <Button
@@ -88,7 +90,18 @@ const ProjectSection: React.FC<ProjectSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <ProjectList />
+      <Grid
+        sx={{
+          overflowY: "scroll",
+          height: "100vh",
+        }}
+        paddingTop={"0px"}
+        paddingBottom={"10px"}
+        maxHeight={props.height}
+        item
+      >
+        <ProjectList />
+      </Grid>
     </div>
   );
 };
@@ -97,7 +110,7 @@ export default ProjectSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: '30px 0 12px 10px',
+    padding: "20px 0 0px 10px",
   },
   title: {
     fontSize: 24,
@@ -140,3 +153,6 @@ const styles = {
     padding: 7,
   },
 };
+function setShowProjectList(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}

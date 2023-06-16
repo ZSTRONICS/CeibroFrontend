@@ -1,95 +1,115 @@
-import { useRef, useState } from "react";
+import React, { useState } from "react";
 // material & react-icon
 import { Grid, makeStyles, Typography } from "@material-ui/core";
-import { AiFillPushpin, AiOutlinePushpin } from "react-icons/ai";
-import { BsDownload } from "react-icons/bs";
-import { IoReturnUpForward } from "react-icons/io5";
 import { ClipLoader } from "react-spinners";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getPinnedMessages, goToMessage, openViewQuestioniarDrawer,
-  pinMessage, setSelectedQuestioniar
+  getPinnedMessages,
+  goToMessage,
+  openViewQuestioniarDrawer,
+  pinMessage,
+  setDownBlock,
+  setSelectedQuestioniar,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 
 // components
 import { CBox } from "components/material-ui";
 import { UserInterface } from "constants/interfaces/user.interface";
-import assets from "../../../assets/assets";
+import moment from "moment-timezone";
 import colors from "../../../assets/colors";
 import { SAVE_MESSAGES } from "../../../config/chat.config";
 import { ChatMessageInterface } from "../../../constants/interfaces/chat.interface";
 import NameAvatar from "../Others/NameAvatar";
 import ChatMessageMenu from "./ChatMessageMenu";
-import FilePreviewer from "./FilePreviewer";
 import SeenBy from "./SeenBy";
 
 interface MessageChatProps {
   message: ChatMessageInterface;
   enable: boolean;
+  isGroupChat: boolean;
 }
 
-const MessageChat: React.FC<MessageChatProps> = (props) => {
-  const { message } = props;
+const MessageChat: React.FC<MessageChatProps> = React.memo((props) => {
+  const { message,isGroupChat } = props;
   const {
     replyOf,
     type,
     voiceUrl,
-    time,
     message: messageText,
-    myMessage,
     files,
     sender,
-    title,
     readBy,
     pinnedBy,
+    createdAt,
   } = message;
 
   const { loadingMessages } = useSelector((root: RootState) => root.chat);
   const classes = useStyles();
   const { user } = useSelector((state: RootState) => state.auth);
-  const { messages, selectedChat } = useSelector(
+  const { messages, selectedChatId } = useSelector(
     (state: RootState) => state.chat
   );
-  let myMessag = String(myMessage) === user.id
+
+  let time = moment.utc(moment(createdAt)).fromNow();
+
+  time = String(time).replace("a minute ago", "1m ago");
+  time = String(time).replace("an hour ago", "1h ago");
+
+  time = String(time).replace(" hours", "h");
+  time = String(time).replace(" days", "d");
+  time = String(time).replace(" minutes", "m");
+  time = String(time).replace(" months", "M");
+  time = String(time).replace(" years", "Y");
+
+  let myMessag = sender?._id === user._id;
   const dispatch = useDispatch();
-  const [view, setView] = useState(false);
-  const bodyRef = useRef(null);
-  const toggleView = () => {
-    setView(!view);
-  };
-const borderStyle = `1px solid ${colors.senderBoxBorder}`
-const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
+
+  const borderStyle = `1px solid ${colors.senderBoxBorder}`;
+  const bgColor = myMessag ? colors.senderBox : colors.receiverBoxBg;
 
   const getStyles = () => {
     return {
-      background: message.type === "questioniar" ? colors.questioniarPrimary: bgColor,
+      background:
+        message.type === "questioniar" ? colors.questioniarPrimary : bgColor,
       boxShadow: "none",
-      border: myMessag? borderStyle:`1px solid ${colors.receiverBoxBorder}`
+      border: myMessag ? borderStyle : `1px solid ${colors.receiverBoxBorder}`,
+      borderRadius: myMessag ? "12px 0px 12px 12px" : "0px 12px 12px 12px",
     };
   };
 
-  function getNameStyle(){
-    return{
-      color: myMessag? colors.senderBoxTitle: colors.receiverBoxTitle
-    }
+  function getNameStyle() {
+    return {
+      color: myMessag ? colors.senderBoxTitle : colors.receiverBoxTitle,
+    };
+  }
+  function getClass() {
+    return {
+      display: myMessag ? "flex" : "flex",
+      flexDirection: myMessag ? "column" : "column",
+      alignItems: myMessag && "flex-end",
+      marginRight: myMessag && 21,
+    };
   }
 
   const handlePinClick = () => {
+    dispatch(setDownBlock(false));
     let myMsgs = JSON.parse(JSON.stringify(messages));
     const index = messages?.findIndex(
-      (msg: ChatMessageInterface) => String(msg._id) === String(message._id));
+      (msg: ChatMessageInterface) => String(msg._id) === String(message._id)
+    );
 
     const myMsg = messages[index];
-    if (myMsg?.pinnedBy?.includes(user.id)) {
+    if (myMsg?.pinnedBy?.includes(user._id)) {
       // un-pin message
       myMsg.pinnedBy = myMsg?.pinnedBy?.filter(
-        (elem: any) => String(elem) !== String(user.id));
+        (elem: any) => String(elem) !== String(user._id)
+      );
     } else {
       // pin message
-      myMsg?.pinnedBy?.push(user.id);
+      myMsg?.pinnedBy?.push(user._id);
     }
 
     myMsgs[index] = myMsg;
@@ -101,7 +121,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
           type: SAVE_MESSAGES,
           payload: JSON.parse(JSON.stringify(myMsgs)),
         });
-        dispatch(getPinnedMessages({ other: selectedChat }));
+        dispatch(getPinnedMessages({ other: selectedChatId }));
       },
     };
     dispatch(pinMessage(payload));
@@ -118,7 +138,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   };
 
   const handleReplyClick = () => {
-    dispatch(goToMessage(replyOf.id));
+    dispatch(goToMessage(replyOf._id, messages.length));
   };
 
   const handleClick = () => {
@@ -140,7 +160,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   //     const formdata = new FormData();
 
   //     formdata.append("message", text);
-  //     formdata.append("chat", selectedChat);
+  //     formdata.append("chat", selectedChatId);
 
   //     const myId = String(new Date().valueOf());
   //     const newMessage = {
@@ -149,7 +169,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   //       message: text,
   //       seen: true,
   //       type: "message",
-  //       myMessage: String(user.id),
+  //       myMessage: String(user._id),
   //       // id: myId,
   //       _id: myId,
   //     };
@@ -166,7 +186,7 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   //         );
   //         dispatch(
   //           getRoomMedia({
-  //             other: selectedChat,
+  //             other: selectedChatId,
   //           })
   //         );
   //       },
@@ -182,114 +202,153 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
   //   // bodyRef && bodyRef?.current?.scrollToEnd()
   // }
 
-  // const senderUserId = (sender?.id === user.id)
-
-  let replyToMessage = null;
-  if (replyOf?.id) {
-    replyToMessage = messages?.find(
-      (msg: any) => String(msg._id) === String(replyOf?.id)
-    );
-  }
+  // const senderUserId = (sender?._id === user._id)
 
   return (
-     <>
+    <>
       <Grid
         container
         justifyContent={myMessag ? "flex-end" : "flex-start"}
         className={classes.outerWrapper}
-        id={message._id}
+        key={message._id}
+        id={message._id} //id is must fot go-to reply message
       >
-        {message._id && loadingMessages?.includes?.(message._id) && (
-          <ClipLoader color={colors.textGrey} size={6} />
-        )}
-        <Grid item xs={6} onClick={handleClick}>
-          <div className={`${classes.innerWrapper}`} style={getStyles()}>
-            {type === "questioniar" && (
-              <div className={classes.questioniarWrapper}>
-                <Typography className={classes.questionText}>
-                  {title}
+        <Grid item xs={8} onClick={handleClick}>
+          <CBox>
+            <CBox
+              display="flex"
+              flexDirection={myMessag ? "row-reverse" : "row"}
+              alignItems="center"
+              className={classes.userInfo}
+            >
+              <NameAvatar
+                firstname={sender?.firstName || ""}
+                surname={sender?.surName}
+                url={sender?.profilePic}
+              />
+              <CBox width="100%" ml={1.5} style={getClass()}>
+                <Typography className={classes.username} style={getNameStyle()}>
+                  {sender?.firstName} {sender?.surName}
                 </Typography>
-                <img className="w-16" src={assets.blueDocument} alt="" />
-              </div>
-            )}
-            {replyOf && (
-              <Grid
-                onClick={handleReplyClick}
-                container
-                className={`${classes.replyWrapper} ${!myMessag&& classes.receiverReply}`}
+                <CBox display="flex" alignItems="center">
+                  <Typography className={classes.company}>
+                    {sender?.companyName}
+                  </Typography>
+                  {/* <span className={classes.separator}>.</span> */}
+                  {/* <Typography className={classes.company}>
+                    Project manager
+                  </Typography> */}
+                </CBox>
+              </CBox>
+            </CBox>
+            <CBox
+              display="flex"
+              justifyContent="space-between"
+              mr={myMessag ? 4 : 0}
+            >
+              {message._id && loadingMessages?.includes?.(message._id) && (
+                <ClipLoader color={colors.textGrey} size={6} />
+              )}
+              <CBox
+                className={`${classes.messageBox} ${"replyMessageBg"}`}
+                style={getStyles()}
               >
-                {message.type === "message" && <><CBox>
-                          <Typography
-                            className={classes.replyToTitle}
-                          >{`${replyToMessage?.sender?.firstName} ${replyToMessage?.sender?.surName}`}</Typography>
-                        </CBox>
-                <span>{replyOf?.message}</span>
-                  </>}
-                {replyOf.type === "questioniar" && <span>Questioniar</span>}
-                {replyOf.type === "voice" && <span>Voice</span>}
-              </Grid>
-            )}
-            <Grid container ref={bodyRef}>
-              <Grid item xs={3} md={1}>
-                <NameAvatar
-                  firstName={sender?.firstName || ""}
-                  surName={sender?.surName}
-                  url={sender?.profilePic}
-                />
-              </Grid>
-              <Grid item xs={9} md={11} className={classes.sideName}>
-                <div className={classes.titleWrapper}>
-                  <div className={classes.usernameWrapper}>
-                    <div className={classes.nameWrapper}>
-                      <Typography className={classes.username} style={getNameStyle()}>
-                        {sender?.firstName} {sender?.surName}
-                      </Typography>
-                      <Typography className={classes.time}>{time}</Typography>
-                    </div>
-                    {/* {!isTabletOrMobile && type !== "questioniar" && (
-                      <div className={classes.quickReplyWrapper}>
-                        {sender?.id === user.id ? (
-                          <></>
-                        ) : (
+                {message.type !== "questioniar" && (
+                  <>
+                    {pinnedBy?.includes(user?._id) ? (
+                      <CBox
+                        onClick={handlePinClick}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M8.07143 15.9286L2.57143 10.4286L15.1429 2.57143L21.4286 8.85714L13.5714 21.4286L8.07143 15.9286Z"
+                            fill="#0076C8"
+                          />
+                          <path
+                            d="M1 23L8.07143 15.9286M1 8.85714L15.1429 23M13.5714 1L23 10.4286M2.57143 10.4286L15.1429 2.57143M13.5714 21.4286L21.4286 8.85714"
+                            stroke="#0076C8"
+                          />
+                        </svg>
+                      </CBox>
+                    ) : (
+                      // <AiFillPushpin
+                      //   className={classes.pinIcon}
+                      //   onClick={handlePinClick}
+                      // />
+                      <CBox
+                        onClick={handlePinClick}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 23L8.07143 15.9286M1 8.85714L15.1429 23M13.5714 1L23 10.4286M2.57143 10.4286L15.1429 2.57143M13.5714 21.4286L21.4286 8.85714"
+                            stroke="#0076C8"
+                          />
+                        </svg>
+                      </CBox>
+                      // <AiOutlinePushpin
+                      //   className={classes.pinIcon}
+                      //   onClick={handlePinClick}
+                      // />
+                    )}
+                  </>
+                )}
+                <CBox
+                  flex="1 1 0"
+                  display="flex"
+                  alignItems={replyOf ? "flex-start" : "flex-start"}
+                  flexDirection="column"
+                  style={{
+                    wordBreak: "break-word",
+                    textAlign: "justify",
+                    width: "100%",
+                  }}
+                >
+                  {replyOf && (
+                    <Grid
+                      onClick={handleReplyClick}
+                      container
+                      className={classes.reply}
+                      // className={`${classes.replyWrapper} ${!myMessag && classes.receiverReply}`}
+                    >
+                      <CBox>
+                        {message.type === "message" && (
                           <>
-                            { (
-                              <>
-                                <button
-                                  className={classes.quickBtn}
-                                  style={getQuickBtnStyles()}
-                                  onClick={() => handleSend("OK")}
-                                >
-                                  OK
-                                </button>
-                                <button
-                                  className={classes.quickBtn}
-                                  style={getQuickBtnStyles()}
-                                  onClick={() => handleSend("?")}
-                                >
-                                  ?
-                                </button>
-                                <button
-                                  className={classes.quickBtn}
-                                  style={getQuickBtnStyles()}
-                                  onClick={() => handleSend("Done")}
-                                >
-                                  Done
-                                </button>
-                              </>
-                            )}
+                            <CBox>
+                              <Typography
+                                className={classes.replyToTitle}
+                              >{`${replyOf?.sender?.firstName} ${replyOf?.sender?.surName}`}</Typography>
+                            </CBox>
+                            <Typography
+                              className={`${
+                                classes.replyToMsg
+                              } ${"textOverflowY"}`}
+                            >
+                              {replyOf?.message}
+                            </Typography>
                           </>
                         )}
-                      </div>
-                    )} */}
-                  </div>
-                  <div className={classes.projectWrapper}>
-                    <Typography className={classes.company}>
-                      {sender?.companyName}
-                    </Typography>
-                  </div>
-                </div>
+                        {replyOf.type === "questioniar" && (
+                          <span>Questioniar</span>
+                        )}
+                        {replyOf.type === "voice" && <span>Voice</span>}
+                      </CBox>
+                    </Grid>
+                  )}
 
-                <div className={classes.messageBody}>
                   {type === "message" && (
                     <Typography className={classes.messageText}>
                       {messageText}
@@ -300,97 +359,49 @@ const bgColor = myMessag? colors.senderBox: colors.receiverBoxBg
                       <source src={voiceUrl} />
                     </audio>
                   )}
-                </div>
-              </Grid>
-              <Grid item xs={1}></Grid>
-
-              {files && files.length > 0 && (
-                <Grid item xs={10} className={classes.filesWrapper}>
-                  <Grid container>
-                    {files?.map?.((file: any, i: any) => {
-                      return (
-                        <Grid
-                          key={i}
-                          item
-                          xs={2}
-                          className={` ${classes.imageWrapper}`}
-                        >
-                          <FilePreviewer file={file} showControls={false} />
-                        </Grid>
-                      );
-                    })}
-
-                    <Grid
-                      item
-                      xs={4}
-                      style={{
-                        paddingTop: 17,
-                        gap: 4,
-                        display: "flex",
-                        alignItems: "flex-end",
-                      }}
-                      className={classes.imageWrapper}
-                    >
-                      <div
-                        className={classes.fileIconWrapper}
-                        onClick={handleAllFilesDownload}
-                      >
-                        <BsDownload className={classes.fileIcon} />
-                      </div>
-                      <div
-                        className={classes.fileIconWrapper}
-                        onClick={toggleView}
-                      >
-                        <IoReturnUpForward className={classes.fileIcon} />
-                      </div>
-                    </Grid>
-
-                    {/* {view && <FileView handleClose={toggleView}/>} */}
-                  </Grid>
-                </Grid>
-              )}
-            </Grid>
-          </div>
-          <div className={classes.seenWrapper}>
-            <div className={classes.seenByWrapper}>
+                  <CBox
+                    flex="1 1 0"
+                    textAlign="center"
+                    className={classes.pinTime}
+                  >
+                    <CBox display="flex" alignItems="flex-end" height="100%">
+                      <Typography className={classes.time}>{time}</Typography>
+                    </CBox>
+                  </CBox>
+                </CBox>
+              </CBox>
+              <CBox pt={1.5}>{<ChatMessageMenu message={message} isGroupChat={isGroupChat} />}</CBox>
+            </CBox>
+            <CBox
+              display="flex"
+              justifyContent="flex-end"
+              width="100%"
+              pr={8.6}
+            >
               {readBy?.map((readyByUser: UserInterface, i: any) => {
-                if (readyByUser.id === user.id  || sender.id !== user.id){
-                  return <></>
+                if (
+                  readyByUser?._id === user?._id ||
+                  sender?._id !== user?._id
+                ) {
+                  return <></>;
                 }
                 return (
-                  <SeenBy key={i} url={readyByUser?.profilePic} firstName={readyByUser.firstName} surName={readyByUser.surName} />
-                )
+                  <SeenBy
+                    key={readyByUser._id}
+                    url={readyByUser?.profilePic}
+                    firstName={readyByUser.firstName}
+                    surName={readyByUser.surName}
+                  />
+                );
               })}
-            </div>
-            {readBy && readBy?.length > 1 && sender.id === user.id &&(
-              <Typography className={classes.visibility}>{'seen' }</Typography>
-            )}
-          </div>
-        </Grid>
-        <Grid item xs={1} className={classes.iconsWrapper}>
-          {message.type !== "questioniar" && (
-            <>
-              {pinnedBy?.includes(user?.id) ? (
-                <AiFillPushpin
-                  className={classes.pinIcon}
-                  onClick={handlePinClick}
-                />
-              ) : (
-                <AiOutlinePushpin
-                  className={classes.pinIcon}
-                  onClick={handlePinClick}
-                />
-              )}
-            </>
-          )}
-          { <ChatMessageMenu message={message} /> }
+            </CBox>
+          </CBox>
         </Grid>
       </Grid>
     </>
-);
+  );
+});
 
-}
- 
 export default MessageChat;
 
 const useStyles = makeStyles({
@@ -398,6 +409,12 @@ const useStyles = makeStyles({
     color: `${colors.receiverBoxTitle}`,
     fontWeight: 600,
     textTransform: "capitalize",
+  },
+  replyToMsg: {
+    fontFamily: "Inter",
+    fontWeight: 500,
+    fontSize: 14,
+    color: "#787878",
   },
   sideName: {
     paddingLeft: 15,
@@ -419,16 +436,17 @@ const useStyles = makeStyles({
     fontWeight: 500,
     fontSize: 14,
   },
-  receiverReply:{
+  receiverReply: {
     // background: `${colors.senderBox} !important` ,
     borderLeft: `6px solid ${colors.senderBoxTitle} !important`,
-    '& .MuiTypography-root':{
+    "& .MuiTypography-root": {
       color: `${colors.senderBoxTitle}`,
       fontSize: 14,
-    }
+    },
   },
   replyWrapper: {
-    '& .MuiTypography-root':{
+    "& .MuiTypography-root": {
+      fontFamily: "Inter",
       fontSize: 14,
     },
     color: colors.textGrey,
@@ -437,15 +455,14 @@ const useStyles = makeStyles({
 
     padding: 12,
     // background: `${colors.receiverBoxBg}` ,
-    background: "#f0f0f0" ,
+    background: "#f0f0f0",
     marginBottom: 10,
     "& span": {
       width: "100%",
       wordBreak: "break-all",
-    overflow: 'hidden',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-      
+      overflow: "hidden",
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
     },
   },
   innerWrapper: {
@@ -469,15 +486,16 @@ const useStyles = makeStyles({
   },
   username: {
     textTransform: "capitalize",
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 800,
-    color: '#F1B740',
+    color: "#F1B740",
+    lineHeight: "1",
   },
   time: {
     fontSize: 12,
     fontWeight: 500,
     color: colors.textGrey,
-    paddingLeft: 10,
+    // textAlign: 'right'
   },
   company: {
     fontSize: 12,
@@ -488,7 +506,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     color: colors.black,
-    padding: "10px 0px 0px 3px",
+    // padding: "10px 0px 0px 3px",
   },
   iconsWrapper: {
     display: "flex",
@@ -497,7 +515,7 @@ const useStyles = makeStyles({
   },
   pinIcon: {
     color: colors.textPrimary,
-    fontSize: 20,
+    fontSize: 30,
     cursor: "pointer",
   },
   moreIcon: {
@@ -567,5 +585,46 @@ const useStyles = makeStyles({
     display: "flex",
     gap: 10,
     marginTop: 4,
+  },
+  separator: {
+    color: "#000000",
+    margin: "0px 6px",
+  },
+  userInfo: {
+    "& .MuiAvatar-rounded": {
+      borderRadius: "1000px !important",
+      height: 35,
+      width: 35,
+    },
+  },
+  messageBox: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    width: "100%",
+    border: "1px solid rgba(0, 118, 200, 0.48)",
+
+    padding: "10px 10px 6px 10px",
+    marginBottom: 7,
+    marginLeft: 42,
+    gap: 3,
+  },
+  pinTime: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-end",
+    width: "100%",
+  },
+  reply: {
+    backgroundColor: "#f5f7f8",
+    borderLeft: "6px solid #0076C8",
+    borderRadius: 5,
+    padding: 11,
+    display: "flex",
+    flexDirection: "column",
+    marginBottom: 8,
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
 });

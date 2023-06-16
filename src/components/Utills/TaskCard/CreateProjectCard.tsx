@@ -7,7 +7,7 @@ const ProjectCard = () => {
   const classes = useStyles();
 
   return (
-    <Grid className={classes.cardOuterWrapper} item xs={12} sm={6} md={3}>
+    <Grid item xs={12} sm={6} md={3}className={classes.cardOuterWrapper}>
       <Add className={classes.icon} />
       <Typography className={classes.text}>Create new project</Typography>
     </Grid>

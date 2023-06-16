@@ -1,19 +1,17 @@
-import { ActionInterface } from ".";
-import config, {
+import { ActionInterface } from "./appReducer";
+import {
   CLOSE_DOCUMENT_DRAWER,
   CLOSE_GROUP_DRAWER,
   CLOSE_ROLE_DRAWER,
   GET_FILTER_PROJECTS,
-  GET_FOLDER,
   GET_FOLDER_FILES,
   GET_GROUP,
   GET_MEMBER,
   GET_PROJECTS,
+  GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_MEMBERS,
-  GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
-  GET_ROLES,
-  GET_ROLES_BY_ID,
+  PROJECT_CONFIG,
   OPEN_DOCUMENT_DRAWER,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
@@ -47,7 +45,8 @@ import config, {
   SELECTED_FILE_URL,
   SELECTED_FILE_TYPE,
   DELETE_PROJECT,
-} from "../../config/project.config";
+} from "config";
+
 import {
   requestFail,
   requestPending,
@@ -56,37 +55,45 @@ import {
 import {
   ProjectInterface,
   RoleInterface,
-  ProjectOverviewInterface,
   projectOverviewTemplate,
   rolesTemplate,
-  FolderInterface,
-  MemberInterface,
   GroupInterface,
-  FolderFileInterface,
   groupTemplate,
   projectProfileInterface,
-  userRolesPermissions,
+  FolderInterfaceRoot,
 } from "constants/interfaces/project.interface";
-import { GET_PROFILE } from "config/auth.config";
-import { PlaylistAddOutlined } from "@material-ui/icons";
-import { UserInterface } from "constants/interfaces/user.interface";
+import {
+  ProjectGroupInterface,
+  ProjectMemberInterface,
+  memberTemplate,
+  ProjectRolesInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { Floor, FloorInterface, UserInterface } from "constants/interfaces";
+import projectReduxConfigs from "config/project.config";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
-  projectsLoading: boolean;
   allProjects: any;
+  allFloors: Floor[];
+  isFloorLoading: boolean;
   projects: ProjectInterface[];
   projectMembers: [];
+  projectWithMembers: any[];
   selectedProject: any;
-  selectedRole: any;
+  selectedFloor: any;
+  selectedDrawing: any;
+  loadDrawing: boolean;
+  selectedRole: ProjectRolesInterface;
+  selectedMember: ProjectMemberInterface;
   filePath: any;
   fileType: any;
   selectedFolder: any;
-  selectedGroup: any;
+  selectedGroup: ProjectGroupInterface;
   selectedTimeProfile: any;
-  projectOverview: ProjectOverviewInterface;
-  role: RoleInterface;
+  projectOverview: ProjectInterface;
+  getAllProjectRoles: ProjectRolesInterface[];
+  role: ProjectRolesInterface;
   filter: any;
   selectedStatus: string | null;
   selectedWork: string | null;
@@ -101,32 +108,65 @@ interface ProjectReducerInt {
   workDrawer: boolean;
   FileViewerDrawer: boolean;
   rolesList: RoleInterface[];
-  groupList: GroupInterface[];
+  groupList: ProjectGroupInterface[];
   group: GroupInterface;
-  folderList: FolderInterface[];
-  folderFiles: FolderFileInterface[];
+  folderList: FolderInterfaceRoot;
+  folderFiles: FolderInterfaceRoot;
   projectProfile: projectProfileInterface[];
-  memberList: MemberInterface[];
+  memberList: ProjectMemberInterface[];
   load: boolean;
   getTimeProfileById: any;
   getStatuses: any;
   getNewWorkList: any;
-  userPermissions: userRolesPermissions | null;
+  userPermissions: any;
+  allProjectsTitles: any[];
+  isOpenProjectDocumentModal: boolean;
+  isfloorCreating: boolean;
 }
 
 const projectReducer: ProjectReducerInt = {
+  isOpenProjectDocumentModal: false,
+  allFloors: [],
+  isFloorLoading: false,
+  isfloorCreating: false,
+  getAllProjectRoles: [],
   drawerOpen: false,
   menue: 1,
-  projectsLoading: false,
   allProjects: [],
+  allProjectsTitles: [],
   projects: [],
   projectMembers: [],
   selectedProject: null,
-  selectedRole: null,
+  selectedFloor: null,
+  selectedDrawing: null,
+  loadDrawing: false,
+  selectedRole: {
+    _id: "",
+    admin: false,
+    createdAt: "",
+    updatedAt: "",
+    creator: "",
+    isDefaultRole: false,
+    memberPermission: { create: false, delete: false, edit: false },
+    rolePermission: { create: false, delete: false, edit: false },
+    members: [],
+    name: "",
+    project: "",
+  },
+  selectedMember: memberTemplate,
   filePath: null,
   fileType: null,
   selectedFolder: null,
-  selectedGroup: null,
+  selectedGroup: {
+    members: [],
+    _id: "",
+    name: "",
+    project: "",
+    createdAt: "",
+    creator: "",
+    isDefaultGroup: false,
+    updatedAt: "",
+  },
   selectedTimeProfile: null,
   projectOverview: projectOverviewTemplate,
   role: rolesTemplate,
@@ -146,18 +186,19 @@ const projectReducer: ProjectReducerInt = {
   rolesList: [],
   groupList: [],
   group: groupTemplate,
-  folderList: [],
+  folderList: { folders: [], files: [] },
   memberList: [],
   getStatuses: [],
   getNewWorkList: [],
   userPermissions: null,
-  folderFiles: [],
+  folderFiles: { folders: [], files: [] },
   projectProfile: [],
   load: false,
   getTimeProfileById: [],
+  projectWithMembers: [],
 };
 
-const AppReducer = (
+const NavigationReducer = (
   state = projectReducer,
   action: ActionInterface
 ): ProjectReducerInt => {
@@ -169,52 +210,162 @@ const AppReducer = (
       };
     }
 
-    case config.OPEN_DRAWER:
+    case projectReduxConfigs.OPEN_DRAWER:
       return {
         ...state,
         drawerOpen: true,
       };
 
-    case requestPending(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projectsLoading: true,
-      };
-    }
-    case requestFail(GET_PROJECTS_WITH_PAGINATION): {
-      return {
-        ...state,
-        projectsLoading: false,
-      };
-    }
-
-    case config.CLOSE_DRAWER:
+    case projectReduxConfigs.CLOSE_DRAWER:
       return {
         ...state,
         drawerOpen: false,
+        getAllProjectRoles: [],
+        role: rolesTemplate,
+        memberList: [],
+        groupList: [],
+        folderList: { folders: [], files: [] },
+        projectOverview: projectOverviewTemplate,
       };
 
-    case config.SET_MENUE:
+    case projectReduxConfigs.SET_MENUE:
       return {
         ...state,
         menue: action.payload,
       };
 
-    case requestSuccess(GET_PROJECTS): {
+    case requestPending(GET_PROJECTS): {
       return {
         ...state,
-        allProjects: action.payload?.result?.map?.((project: any) => ({
-          label: project?.title,
-          value: project.id,
-        })),
       };
     }
 
-    case requestSuccess(GET_PROJECTS_WITH_PAGINATION): {
+    // get all floors by projectId
+    case requestPending(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
       return {
         ...state,
-        projects: action.payload?.result?.results,
-        projectsLoading: false,
+        isFloorLoading: true,
+      };
+    }
+    case requestSuccess(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
+      return {
+        ...state,
+        isFloorLoading: false,
+        allFloors: action.payload.floors,
+      };
+    }
+
+    case requestFail(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
+      return {
+        ...state,
+        isFloorLoading: false,
+      };
+    }
+
+    case requestSuccess(GET_PROJECTS): {
+      let projects = action.payload.results;
+      let newProjects: any = [];
+
+      if (state.allProjects.length === 0) {
+        state.allProjects = projects;
+      } else {
+        projects.forEach((project: any) => {
+          const isExistingProject = state.allProjects.findIndex(
+            (prevProject: any) =>
+              String(prevProject._id) === String(project._id)
+          );
+          if (isExistingProject > -1) {
+            state.allProjects[isExistingProject] = project;
+          } else {
+            newProjects.push(project);
+          }
+        });
+      }
+
+      if (newProjects.length > 0) {
+        state.allProjects = [...newProjects, ...state.allProjects];
+      }
+
+      return {
+        ...state,
+        allProjects: [...state.allProjects],
+      };
+    }
+
+    case requestPending(PROJECT_CONFIG.CREATE_FLOOR): {
+      return {
+        ...state,
+        isfloorCreating: true,
+      };
+    }
+    case requestSuccess(PROJECT_CONFIG.CREATE_FLOOR): {
+      return {
+        ...state,
+        isfloorCreating: false,
+      };
+    }
+    case requestFail(PROJECT_CONFIG.CREATE_FLOOR): {
+      return {
+        ...state,
+        isfloorCreating: false,
+      };
+    }
+
+    case PROJECT_CONFIG.PROJECT_CREATED: {
+      let project = action.payload;
+      if (state.allProjects.length === 0) {
+        state.allProjects.push(project);
+      } else {
+        const isExistingProject = state.allProjects.findIndex(
+          (prevProject: any) => String(prevProject._id) === String(project._id)
+        );
+        if (isExistingProject > -1) {
+          state.allProjects[isExistingProject] = project;
+        } else {
+          state.allProjects = [project, ...state.allProjects];
+        }
+      }
+
+      return {
+        ...state,
+        allProjects: [...state.allProjects],
+      };
+    }
+
+    case PROJECT_CONFIG.PROJECT_UPDATED: {
+      let project = action.payload;
+
+      const isExistingProject = state.allProjects.findIndex(
+        (prevProject: any) => String(prevProject._id) === String(project._id)
+      );
+      if (isExistingProject > -1) {
+        state.allProjects[isExistingProject] = project;
+      }
+
+      if (String(state.projectOverview._id) === String(project._id)) {
+        state.projectOverview = project;
+      }
+
+      return {
+        ...state,
+        allProjects: [...state.allProjects],
+        projectOverview: { ...state.projectOverview },
+      };
+    }
+
+    case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
+      const projectLabels = action.payload.projectDetails.map(
+        (project: any) => {
+          return {
+            label: project.title,
+            value: project._id,
+          };
+        }
+      );
+      state.projectWithMembers = action.payload.projectDetails;
+      return {
+        ...state,
+        allProjectsTitles: [...projectLabels],
       };
     }
 
@@ -224,20 +375,10 @@ const AppReducer = (
         projectMembers: action.payload,
       };
     }
-
-    case requestPending(GET_PROJECTS): {
-      return {
-        ...state,
-        projectMembers: [],
-      };
-    }
-
     case SET_PROJECT_OVERVIEW: {
       return {
         ...state,
-        projectOverview: {
-          ...action.payload,
-        },
+        projectOverview: action.payload,
       };
     }
 
@@ -246,6 +387,24 @@ const AppReducer = (
         ...state,
         selectedProject: action.payload,
         menue: 1,
+      };
+    }
+    case PROJECT_CONFIG.SET_SELECTED_FLOOR: {
+      return {
+        ...state,
+        selectedFloor: action.payload,
+      };
+    }
+    case PROJECT_CONFIG.SET_SELECTED_DRAWING: {
+      return {
+        ...state,
+        selectedDrawing: action.payload,
+      };
+    }
+    case PROJECT_CONFIG.SET_LOAD_DRAWING: {
+      return {
+        ...state,
+        loadDrawing: action.payload,
       };
     }
     case SELECTED_FILE_URL: {
@@ -264,7 +423,14 @@ const AppReducer = (
     case SET_SELECTED_ROLE: {
       return {
         ...state,
-        selectedRole: action.payload,
+        selectedRole: { ...action.payload },
+      };
+    }
+
+    case PROJECT_CONFIG.SET_SELECTED_MEMBER: {
+      return {
+        ...state,
+        selectedMember: action.payload,
       };
     }
 
@@ -283,7 +449,7 @@ const AppReducer = (
     case requestSuccess(CREATE_NEW_PROFILE): {
       return {
         ...state,
-        selectedTimeProfile: action.payload?.data?.id,
+        selectedTimeProfile: action.payload?.data?._id,
       };
     }
     case GET_FILTER_PROJECTS: {
@@ -328,18 +494,19 @@ const AppReducer = (
     }
 
     case requestSuccess(GET_PROJECT_DETAIL): {
-      const projectDetail = {
-        ...action.payload,
-        owner: action.payload?.owner?.map((user: UserInterface) => {
+      let project = action.payload.result;
+
+      project.owner = action.payload.result.owner?.map(
+        (user: UserInterface) => {
           return {
             label: user?.firstName + " " + user?.surName,
-            value: user?.id,
+            value: user?._id,
           };
-        }),
-      };
+        }
+      );
       return {
         ...state,
-        projectOverview: projectDetail,
+        projectOverview: project,
       };
     }
 
@@ -351,6 +518,19 @@ const AppReducer = (
     }
 
     case CLOSE_ROLE_DRAWER: {
+      state.selectedRole = {
+        _id: "",
+        admin: false,
+        createdAt: "",
+        updatedAt: "",
+        creator: "",
+        isDefaultRole: false,
+        memberPermission: { create: false, delete: false, edit: false },
+        rolePermission: { create: false, delete: false, edit: false },
+        members: [],
+        name: "",
+        project: "",
+      };
       return {
         ...state,
         roleDrawer: false,
@@ -397,16 +577,6 @@ const AppReducer = (
       };
     }
 
-    case requestSuccess(GET_ROLES): {
-      return {
-        ...state,
-        rolesList: action.payload,
-        //  finallyAction: () => {
-        //     setLoading(false);
-        //   },
-      };
-    }
-
     case SET_ROLE: {
       return {
         ...state,
@@ -424,7 +594,7 @@ const AppReducer = (
     case requestSuccess(GET_GROUP): {
       return {
         ...state,
-        groupList: action.payload,
+        groupList: action.payload.result,
       };
     }
 
@@ -448,6 +618,18 @@ const AppReducer = (
         memberDrawer: true,
       };
     }
+    case PROJECT_CONFIG.OPEN_PROJECT_DOCUMENT_MODAL: {
+      return {
+        ...state,
+        isOpenProjectDocumentModal: true,
+      };
+    }
+    case PROJECT_CONFIG.CLOSE_PROJECT_DOCUMENT_MODAL: {
+      return {
+        ...state,
+        isOpenProjectDocumentModal: false,
+      };
+    }
 
     case CLOSE_MEMBER_DRAWER: {
       return {
@@ -467,34 +649,169 @@ const AppReducer = (
         FileViewerDrawer: false,
       };
     }
-    case requestSuccess(GET_FOLDER): {
+    case requestSuccess(PROJECT_CONFIG.GET_ALL_DOCUMENTS): {
       return {
         ...state,
-        folderList: action.payload,
+        folderList: action.payload.result,
       };
     }
 
     case requestSuccess(GET_MEMBER): {
       return {
         ...state,
-        memberList: action.payload,
+        memberList: action.payload.results,
       };
     }
 
     case requestSuccess(GET_FOLDER_FILES): {
       return {
         ...state,
-        folderFiles: action.payload,
+        folderFiles: action.payload.result,
       };
     }
 
-    case requestSuccess(GET_ROLES_BY_ID): {
+    case requestSuccess(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID): {
+      state.getAllProjectRoles = [];
       return {
         ...state,
-        role: action.payload,
+        getAllProjectRoles: [...action.payload.result],
       };
     }
 
+    case PROJECT_CONFIG.ROLE_CREATED: {
+      let newRole = action.payload;
+
+      if (String(state.projectOverview._id) !== String(newRole.project)) {
+        return {
+          ...state,
+        };
+      } else {
+        if (state.getAllProjectRoles.length === 0) {
+          state.getAllProjectRoles.push(newRole);
+        } else {
+          const isExistingProject = state.getAllProjectRoles.findIndex(
+            (prevRole: any) => String(prevRole._id) === String(newRole._id)
+          );
+          if (isExistingProject > -1) {
+            state.getAllProjectRoles[isExistingProject] = newRole;
+
+            if (String(state.role._id) === String(newRole._id)) {
+              state.role = newRole;
+            }
+          } else {
+            state.getAllProjectRoles = [...state.getAllProjectRoles, newRole];
+          }
+        }
+
+        return {
+          ...state,
+          getAllProjectRoles: [...state.getAllProjectRoles],
+          role: { ...state.role },
+        };
+      }
+    }
+
+    case PROJECT_CONFIG.ROLE_UPDATED: {
+      let updatedRole = action.payload;
+      if (String(state.projectOverview._id) !== String(updatedRole.project)) {
+        return {
+          ...state,
+        };
+      } else {
+        const isExistingRole = state.getAllProjectRoles.findIndex(
+          (prevRole: any) => String(prevRole._id) === String(updatedRole._id)
+        );
+        if (isExistingRole > -1) {
+          state.getAllProjectRoles[isExistingRole] = updatedRole;
+        }
+
+        if (String(state.role._id) === String(updatedRole._id)) {
+          state.role = updatedRole;
+        }
+
+        return {
+          ...state,
+          getAllProjectRoles: [...state.getAllProjectRoles],
+          role: { ...state.role },
+        };
+      }
+    }
+    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+    case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+      let newGroup = action.payload;
+      if (String(state.projectOverview._id) !== String(newGroup.project)) {
+        return {
+          ...state,
+        };
+      } else {
+        if (state.groupList.length === 0) {
+          state.groupList.push(newGroup);
+        } else {
+          const isExistingGroup = state.groupList.findIndex(
+            (prevRole: any) => String(prevRole._id) === String(newGroup._id)
+          );
+          if (isExistingGroup > -1) {
+            state.groupList[isExistingGroup] = newGroup;
+
+            if (String(state.role._id) === String(newGroup._id)) {
+              state.role = newGroup;
+            }
+          } else {
+            state.groupList = [...state.groupList, newGroup];
+          }
+        }
+
+        return {
+          ...state,
+          groupList: [...state.groupList],
+        };
+      }
+
+    case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
+      let members = action.payload;
+      let newMembers: any = [];
+      if (state.memberList.length === 0) {
+        state.memberList = members;
+      } else {
+        members.forEach((member: any) => {
+          const isExistingMember = state.memberList.findIndex(
+            (prevMember: any) => String(prevMember._id) === String(member._id)
+          );
+          if (isExistingMember > -1) {
+            state.memberList[isExistingMember] = member;
+          } else {
+            newMembers.push(member);
+          }
+        });
+      }
+
+      if (newMembers.length > 0) {
+        state.memberList = [...state.memberList, ...newMembers];
+      }
+      return {
+        ...state,
+        memberList: [...state.memberList],
+      };
+    }
+
+    case PROJECT_CONFIG.PROJECT_MEMBERS_UPDATED: {
+      let member = action.payload;
+      const isExistingMember = state.memberList.findIndex(
+        (prevMember: any) => String(prevMember._id) === String(member._id)
+      );
+      if (isExistingMember > -1) {
+        state.memberList[isExistingMember] = member;
+      }
+
+      if (String(state.projectOverview._id) === String(member._id)) {
+        state.projectOverview = member;
+      }
+
+      return {
+        ...state,
+        memberList: [...state.memberList],
+      };
+    }
     case requestSuccess(GET_GROUP_BY_ID): {
       return {
         ...state,
@@ -538,4 +855,4 @@ const AppReducer = (
   }
 };
 
-export default AppReducer;
+export default NavigationReducer;

@@ -14,7 +14,8 @@ export const CHAT_LIST: ChatListInterface[] = [
         members:[],
         removedMembers: [],
         access:[],
-        removedAccess:[]
+        removedAccess:[],
+        createdAt:''
     }
 ]
 
@@ -27,7 +28,8 @@ export const CHAT_MESSAGE:ChatMessageInterface[] = [
         seen: true,
         myMessage: 'asdasd12312',
         _id: "",
-        type: 'questioniar'
+        type: 'questioniar',
+        createdAt: '2017-02-02 08:00:13.567',
     },
 
 ]

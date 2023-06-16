@@ -1,4 +1,4 @@
-import { ActionInterface } from '.'
+import { ActionInterface } from './appReducer'
 import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 import {
   CLEAR_SELECTED_CHAT,
@@ -39,18 +39,24 @@ import {
   CREATE_SINGLE_ROOM,
   MY_SOCKET,
   ROOM_MESSAGE_DATA,
+  SET_GOTO_MESSAGE_ID,
+  SORT_CHAT_LIST_ORDER,
+  UPDATE_MESSAGE_BY_ID,
+  UPDATE_CHAT_LAST_MESSAGE,
 } from '../../config/chat.config'
 
 import { QuestioniarInterface } from '../../constants/interfaces/questioniar.interface'
 import { getNewQuestionTemplate } from '../../constants/questioniar.constants'
 import { CREATE_ROOM } from '../../config/auth.config'
-import { ChatMessageInterface } from 'constants/interfaces/chat.interface'
+import { ChatListInterface, ChatMessageInterface } from 'constants/interfaces/chat.interface'
+import { goToMessage } from 'redux/action/chat.action'
+import { useDispatch } from 'react-redux'
 
 interface ChatReducerInt {
-  chat: any
-  messages: any
+  chat: ChatListInterface[]
+  messages: [] | any
   updateChatRoom: boolean
-  selectedChat: null
+  selectedChatId: string
   type: 'all' | 'read' | 'unread'
   favouriteFilter: boolean
   createChatLoading: boolean
@@ -73,6 +79,7 @@ interface ChatReducerInt {
   viewport: any
   lastMessageIdInChat: any
   upScrollLoading: boolean
+  goToMessageId: string,
   blockPagination: boolean
   mysocket: any
   allowChangeBlock: boolean
@@ -81,7 +88,7 @@ interface ChatReducerInt {
   createQuestioniarLoading: boolean
   blockDown: boolean
   isGroupChat: boolean
-  roomMessageData : any
+  roomMessageData: any
 }
 
 const intialStatue: ChatReducerInt = {
@@ -89,7 +96,7 @@ const intialStatue: ChatReducerInt = {
   messages: [],
   updateChatRoom: false,
   isGroupChat: false,
-  selectedChat: null,
+  selectedChatId: "",
   createChatLoading: false,
   type: 'all',
   favouriteFilter: false,
@@ -112,11 +119,12 @@ const intialStatue: ChatReducerInt = {
   viewport: null,
   lastMessageIdInChat: null,
   upScrollLoading: false,
+  goToMessageId: '',
   blockPagination: false,
   mysocket: null,
   allowChangeBlock: true,
   pinnedMessages: [],
-  blockDown: false,
+  blockDown: true,
   roomQuestioniars: [],
   createQuestioniarLoading: false,
   roomMessageData: null
@@ -125,9 +133,10 @@ const intialStatue: ChatReducerInt = {
 const ChatReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
     case requestSuccess(GET_CHAT): {
+      state.chat = []
       return {
         ...state,
-        chat: action.payload?.userallchat,
+        chat: [...action.payload?.userallchat],
       }
     }
 
@@ -191,17 +200,33 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case PUSH_MESSAGE: {
-      return {
-        ...state,
-        messages: [...state.messages, action.payload],
-        loadingMessages: [...state.loadingMessages, action.payload._id],
+      const index = state.messages.findIndex((message: any) => String(message._id) === String(action.payload._id))
+      if (index === -1) {
+        state.messages = [...state.messages, action.payload]
+        return {
+          ...state,
+          messages: [...state.messages],
+          loadingMessages: [...state.loadingMessages, action.payload._id],
+        }
+      } else {
+        state.messages[index] = action.payload
+        return {
+          ...state,
+          messages: [...state.messages],
+        }
       }
     }
 
     case PUSH_MESSAGE_BY_OTHER: {
+      const index = state.messages.findIndex((message: any) => String(message._id) === String(action.payload._id))
+      if (index === -1) {
+        state.messages = [...state.messages, action.payload]
+      } else {
+        state.messages = [...state.messages]
+      }
       return {
         ...state,
-        messages: [...state.messages, action.payload],
+        messages: [...state.messages],
       }
     }
 
@@ -222,33 +247,96 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case SET_SELECTED_CHAT: {
       return {
         ...state,
-        selectedChat: action.payload?.other,
-        messages: state.selectedChat === action.payload ? state.messages : [],
+        selectedChatId: action.payload?.other,
+        messages: state.selectedChatId === action.payload ? state.messages : [],
+      }
+    }
+    case SET_GOTO_MESSAGE_ID: {
+      return {
+        ...state,
+        goToMessageId: action.payload?.other
       }
     }
 
     case CLEAR_SELECTED_CHAT: {
       return {
         ...state,
-        selectedChat: null,
+        selectedChatId: null,
         messages: [],
       }
     }
 
-    case requestSuccess(GET_MESSAGES): {
-      return {
-        ...state,
-        messages: action.payload.message,
-        upScrollLoading: false,
+    // case SORT_CHAT_LIST_ORDER: {
+    //   const chatIdToTop = action.payload;
+    //   const index = state.chat.findIndex((chat: ChatListInterface) => {
+    //     return String(chat?._id) === String(chatIdToTop);
+    //   });
+    //   if (index > -1) {
+    //     const filteredChat = state.chat[index]
+
+    //     const newChatList = state.chat.filter((chat: ChatListInterface) => {
+    //       return String(chat?._id) !== String(chatIdToTop);
+    //     });
+
+    //     return {
+    //       ...state,
+    //       chat: [filteredChat, ...newChatList],
+    //     }
+    //   } else {
+    //     return {
+    //       ...state
+    //     }
+    //   }
+    // }
+
+    case UPDATE_CHAT_LAST_MESSAGE: {
+      const roomId = action.payload.chat;
+      const index = state.chat.findIndex((chat: ChatListInterface) => {
+        return String(chat._id) === String(roomId);
+      });
+
+      if (index > -1) {
+        // .lastMessage = action.payload.message;
+        const rcvdMsginRoom = state.chat[index];
+        const newChatList = state.chat.filter((chat: ChatListInterface) => {
+          return String(chat?._id) !== String(roomId);
+        });
+        rcvdMsginRoom.lastMessage = action.payload.message;
+        rcvdMsginRoom.lastMessageTime = 'now';
+        return {
+          ...state,
+          chat: [rcvdMsginRoom, ...newChatList],
+        }
+      } else {
+        return {
+          ...state
+        }
       }
+
     }
 
-    case GET_MESSAGES: {
-      return {
-        ...state,
+    case UPDATE_MESSAGE_BY_ID: {
+      const data = action.payload.other;
+      const newLoadingMsgs = state.loadingMessages.filter((_id: any) => String(_id) !== String(data.oldMessageId));
+      const index = state.messages.findIndex((message: any) => {
+        return String(message?._id) === String(data.oldMessageId);
+      });
+
+      if (index > -1) {
+        state.messages[index] = data.newMessage;
+        return {
+          ...state,
+          messages: [...state.messages],
+          loadingMessages: [...newLoadingMsgs]
+        }
+      } else {
+        state.messages = [...state.messages]
+        return {
+          ...state,
+          loadingMessages: [...newLoadingMsgs]
+        }
       }
     }
-
     case requestPending(GET_MESSAGES): {
       return {
         ...state,
@@ -256,6 +344,24 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
 
+    case requestSuccess(GET_MESSAGES): {
+      const newMsgs = [...action.payload.message, ...state.messages]
+      let goto = false
+      if ('messageId' in action.payload) {
+        goto = true
+      }
+      return {
+        ...state,
+        messages: newMsgs,
+        upScrollLoading: false,
+      }
+    }
+
+    // case GET_MESSAGES: {
+    //   return {
+    //     ...state,
+    //   }
+    // }
     case requestFail(GET_MESSAGES): {
       return {
         ...state,
@@ -270,20 +376,25 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
       }
     }
 
+    case requestSuccess(GET_UP_MESSAGES): {
+      const newMsgs = [...action.payload.message, ...state.messages]
+      let gotoId = ''
+      if ('messageId' in action.payload) {
+        gotoId = action.payload.messageId
+      }
+      return {
+        ...state,
+        lastMessageIdInChat: state?.messages[0]?._id,
+        messages: newMsgs,
+        upScrollLoading: false,
+        goToMessageId: gotoId
+      }
+    }
+
     case requestFail(GET_UP_MESSAGES): {
       return {
         ...state,
         upScrollLoading: false,
-      }
-    }
-
-    case requestSuccess(GET_UP_MESSAGES): {
-      return {
-        ...state,
-        lastMessageIdInChat: state?.messages[0]?._id,
-        messages: [...action.payload.message, ...state.messages],
-        upScrollLoading: false,
-      
       }
     }
 
@@ -417,7 +528,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(DELETE_CONVERSATION): {
       return {
         ...state,
-        selectedChat: null,
+        selectedChatId: null,
         messages: [],
       }
     }
@@ -438,7 +549,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniarInfo: {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
-          id: action.payload?.id,
+          id: action.payload?._id,
         },
       }
     }
@@ -458,7 +569,7 @@ const ChatReducer = (state = intialStatue, action: ActionInterface) => {
         questioniarInfo: {
           dueDate: action.payload?.dueDate,
           sender: action.payload?.sender,
-          id: action.payload?.id,
+          id: action.payload?._id,
           isAnswered: action.payload.answeredByMe,
         },
       }

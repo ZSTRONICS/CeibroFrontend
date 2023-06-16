@@ -1,4 +1,3 @@
-
 import {
   Grid,
   Typography,
@@ -7,9 +6,7 @@ import {
   IconButton,
 } from "@material-ui/core";
 import TextField from "../Inputs/TextField";
-import { Cancel } from "@material-ui/icons";
 import { QuestioniarInterface } from "../../../constants/interfaces/questioniar.interface";
-import InputText from "../Inputs/InputText";
 import SelectDropdown from "../Inputs/SelectDropdown";
 import { availableQuestionTypes } from "../../../constants/questioniar.constants";
 // @ts-ignore
@@ -17,7 +14,7 @@ import _ from "lodash";
 import { useEffect, useRef, useState } from "react";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { setQuestions } from "../../../redux/action/chat.action";
 import assets from "../../../assets/assets";
 
@@ -57,7 +54,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     if (questioniars) {
       const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
       const myQuestion: QuestioniarInterface = myQuestioniars?.find(
-        (question: QuestioniarInterface) => question?.id === id
+        (question: QuestioniarInterface) => question?._id === id
       );
       if (myQuestion) {
         setQuestionText(myQuestion.question);
@@ -86,7 +83,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
         //   updating question in global state
         const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
         const myQuestionIndex: number = myQuestioniars?.findIndex(
-          (question: QuestioniarInterface) => question?.id === id
+          (question: QuestioniarInterface) => question?._id === id
         );
         if (myQuestionIndex > -1) {
           const myQuestion: QuestioniarInterface =
@@ -122,7 +119,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
     });
   }
 
-  const availableQuestionsTypesList = availableQuestionTypes
+  const availableQuestionsTypesList = availableQuestionTypes;
 
   // const availableQuestionsTypesList = availableQuestionTypes?.map(
   //   (element: any) =>
@@ -197,7 +194,7 @@ const CreateQuestion: React.FC<createQuestionInt> = (props) => {
                     </div>
                     <div className={classes.optionDelete}>
                       <IconButton onClick={() => handleRemove(index)}>
-                        <img src={assets.clearIcon} />
+                        <img src={assets.clearIcon} alt="" />
                       </IconButton>
                     </div>
                   </div>
@@ -228,15 +225,15 @@ const useStyles = makeStyles({
     padding: "15px 0px",
   },
   questionWrapper: {
-    maxWidth: 450,
+    maxWidth: 460,
     paddingBottom: 10,
   },
   questionType: {
-    maxWidth: 450,
-    paddingBottom: 10,
+    maxWidth: 460,
+    paddingBottom: 20,
   },
   optionsOuterWrapper: {
-    maxWidth: 450,
+    maxWidth: 460,
     background: colors.secondaryGrey,
     padding: 20,
   },

@@ -1,28 +1,28 @@
-
-import { Grid, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import React, { useEffect, useRef, useState } from "react";
 import colors from "../../assets/colors";
 import { useDispatch } from "react-redux";
-import { updateProfilePic } from "redux/action/user.action";
 import { toast } from "react-toastify";
-import { getMyProfile } from "redux/action/auth.action";
+import { UpdateProfilePicture } from "redux/action/auth.action";
 import assets from "assets/assets";
+import { Box, CircularProgress, Grid } from "@mui/material";
 
 interface Props {
-  profilePic: string | undefined | null;
+  profilePic: string | undefined | null | any;
 }
 
 const ProfileImagePicker: React.FC<Props> = (props) => {
   const { profilePic } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
-  const [url, setUrl] = useState<string | null | undefined>();
+  const [imageUrl, setImageUrl] = useState<string>();
+
+  const [showLoader, setShowLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
   const classes = useStyles();
 
   useEffect(() => {
     if (profilePic) {
-      setUrl(profilePic);
+      setImageUrl(profilePic);
     }
   }, [profilePic]);
 
@@ -33,26 +33,38 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target && e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]);
-      setUrl(URL.createObjectURL(e.target.files[0]));
+    try {
+      setShowLoader(true);
 
-      const formdata = new FormData();
-      formdata.append("profilePic", e?.target?.files?.[0]);
-      dispatch(
-        updateProfilePic({
-          body: formdata,
-          success: () => {
-            dispatch(getMyProfile());
-            toast.success("profile pic updated");
+      const formData = new FormData();
+      if (e.target.files) {
+        const localFile = e.target.files[0];
+        // setImageUrl(URL.createObjectURL(localFile));
+        formData.append("profilePic", localFile);
+        const payload = {
+          body: formData,
+          onFailAction: (err: any) => {
+            setShowLoader(false);
+            if (err) {
+              console.error("Failed to upload image");
+            }
           },
-        })
-      );
+          success: (res: any) => {
+            setShowLoader(false);
+            if (res.status === 200) {
+              setImageUrl(res.data.profilePic);
+            }
+          },
+        };
+        dispatch(UpdateProfilePicture(payload));
+      }
+    } catch (error) {
+      console.error("Error occurred while uploading image:", error);
     }
   };
 
   return (
-    <Grid item xs={12} md={2}>
+    <Grid item xs={6} sm={4} md={2}>
       <input
         ref={ref}
         id="files"
@@ -64,9 +76,28 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ background: `url(${url})` }}
+        style={{ backgroundImage: `url(${imageUrl})`}}
       >
-        <img src={assets.whitePencil} className={`width-16 ${classes.icon}`} alt="edit"/>
+        {showLoader === true && (
+          <Box sx={{ textAlign: "center" }}>
+            <CircularProgress size={40} />
+          </Box>
+        )}
+
+        {/* <img
+          id="img"
+          style={{ border: "2px solid black", maxWidth: "500px" }}
+          src={imageUrl}
+          loading="lazy"
+          decoding="sync"
+          alt=""
+        /> */}
+
+        <img
+          src={assets.whitePencil}
+          className={`width-16 ${classes.icon} imgPicker`}
+          alt="edit"
+        />
       </div>
     </Grid>
   );
@@ -76,16 +107,21 @@ export default ProfileImagePicker;
 
 const useStyles = makeStyles({
   outerWrapper: {
+    marginTop: "8px",
     border: `1px solid ${colors.purpleGrey}`,
     height: 200,
     maxWidth: "100%",
     position: "relative",
     cursor: "pointer",
-    backgroundSize: "cover !important",
+    backgroundSize: "100% 100%",
+    backgroundRepeat: "no-repeat",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   icon: {
     position: "absolute",
-    left: 0,
+    right: 0,
     bottom: 0,
     color: colors.white,
     background: colors.primary,

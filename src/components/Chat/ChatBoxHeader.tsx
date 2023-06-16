@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import {
   CircularProgress,
@@ -11,22 +10,19 @@ import { Check, Clear } from "@material-ui/icons";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { ChatListInterface } from "../../constants/interfaces/chat.interface";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import ChatUserMenu from "../Utills/ChatChip/ChatUserMenu";
 // import ChatSearch from "./../Utills/ChatChip/ChatSearch";
 import AddChatMember from "../Utills/ChatChip/AddChatMember";
 import { ClipLoader } from "react-spinners";
 import TextField from "components/Utills/Inputs/TextField";
-import { editRoomName } from "redux/action/chat.action";
-import { requestSuccess } from "utills/status";
-import { GET_CHAT } from "config/chat.config";
+import { editRoomName, getAllChats } from "redux/action/chat.action";
 import MessageSearch from "./MessageSearch";
 import assets from "assets/assets";
-import CustomImg from "components/CustomImg";
 
 interface ChatBoxHeaderProps {
   enable: boolean;
-  chat: ChatListInterface
+  chat: ChatListInterface;
 }
 
 const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
@@ -35,14 +31,19 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState("");
   const [loading, setLoading] = useState(false);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const {
     upScrollLoading,
     chat: allChats,
-    selectedChat,
+    selectedChatId,
   } = useSelector((store: RootState) => store.chat);
+
   const myChat = allChats?.find?.(
-    (room: any) => String(room._id) === String(selectedChat)
+    (room: any) => String(room._id) === String(selectedChatId)
+  );
+  const individualChatName = myChat?.members?.find(
+    (member: any) => member._id !== user._id
   );
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,16 +57,13 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
         body: { name },
         success: () => {
           setEdit(false);
-          let allRooms = JSON.parse(JSON.stringify(allChats));
-          const index = allRooms?.findIndex?.(
-            (room: any) => String(room._id) === String(selectedChat)
+          // let allRooms = JSON.parse(JSON.stringify(allChats));
+          const index = allChats?.findIndex(
+            (room: any) => String(room._id) === String(selectedChatId)
           );
           if (index > -1) {
-            allRooms[index].name = name;
-            dispatch({
-              type: requestSuccess(GET_CHAT),
-              payload: allRooms,
-            });
+            allChats[index].name = name;
+            dispatch(getAllChats());
           }
         },
         finallyAction: () => {
@@ -87,98 +85,110 @@ const ChatBoxHeader: React.FC<ChatBoxHeaderProps> = (props) => {
 
   return (
     <>
-
-      < Grid container className={classes.wrapper} >
+      <Grid container className={classes.wrapper}>
         <AddChatMember />
-        {
-          upScrollLoading && (
-            <div className={classes.loadingWrapper}>
-              <div className={classes.innerLoading}>
-                <ClipLoader size={20} color={colors.primary} />
-              </div>
+        {upScrollLoading && (
+          <div className={classes.loadingWrapper}>
+            <div className={classes.innerLoading}>
+              <ClipLoader size={20} color={colors.primary} />
             </div>
-          )
-        }
-        {
-          myChat && (
-            <>
-              <Grid item xs={6} md={2} className={classes.editWrapper}>
-                {!edit && (
-                  <>
-                    {myChat?.project && (
-                      <div className={classes.iconContainer}>
-                        <img
-                          src={assets.EditIcon}
-                          onClick={() => {
-                            setEdit(true);
-                            setName(myChat.name);
-                          }}
-                          className={classes.editIcon}
-                          alt=""
-                        />
-                        {/* <img
-                      src={assets.EditIcon}
-                      onClick={() => {
-                        setEdit(true);
-                        setName(myChat.name);
-                      }}
-                      className={classes.editIcon}
-                    /> */}
-                      </div>
-                    )}
-                  </>
-                )}
-                {edit ? (
-                  <div className={`${classes.editInputWrapper} editInputWrapper`}>
-                    <TextField
-                      inputProps={{ maxLength: 20 }}
-                      value={name}
-                      onChange={handleNameChange}
-                      onkeyDown={handleKeyDown}
-                    />
-                    <IconButton size="small" onClick={handleCancel}>
-                      <Clear className={classes.cancelIcon} />
+          </div>
+        )}
+        {myChat && (
+          <>
+            <Grid
+              item
+              xs={6}
+              md={3}
+              className={`${
+                myChat?.isGroupChat !== false
+                  ? classes.editWrapper
+                  : classes.eidtContainer
+              }`}
+            >
+              {!edit && (
+                <>
+                  {myChat?.project && (
+                    <div className={classes.iconContainer}>
+                      <img
+                        src={assets.EditIcon}
+                        onClick={() => {
+                          setEdit(true);
+                          setName(myChat.name);
+                        }}
+                        className={classes.editIcon}
+                        alt=""
+                      />
+                    </div>
+                  )}
+                </>
+              )}
+              {myChat?.isGroupChat === false && (
+                <div className={classes.editProject}>
+                  <Typography className={classes.username}>
+                    {`${individualChatName?.firstName} ${individualChatName?.surName}`}
+                  </Typography>
+                  {individualChatName?.companyName && (
+                    <Typography className={classes.projectName}>
+                      Company:{" "}
+                      <span className={classes.projectTitle}>
+                        {" "}
+                        {individualChatName?.companyName}{" "}
+                      </span>
+                    </Typography>
+                  )}
+                </div>
+              )}
+              {edit ? (
+                <div className={`${classes.editInputWrapper} editInputWrapper`}>
+                  <TextField
+                    style={{ textTransform: "capitalize" }}
+                    inputProps={{ maxLength: 20 }}
+                    value={name}
+                    onChange={handleNameChange}
+                    onkeyDown={handleKeyDown}
+                  />
+                  <IconButton size="small" onClick={handleCancel}>
+                    <Clear className={classes.cancelIcon} />
+                  </IconButton>
+                  {loading ? (
+                    <div className={classes.loading}>
+                      <CircularProgress disableShrink={false} size={15} />
+                    </div>
+                  ) : (
+                    <IconButton size="small" onClick={handleUpdate}>
+                      <Check className={classes.checkIcon} />
                     </IconButton>
-                    {loading ? (
-                      <div className={classes.loading}>
-                        <CircularProgress disableShrink={false} size={15} />
-                      </div>
-                    ) : (
-                      <IconButton size="small" onClick={handleUpdate}>
-                        <Check className={classes.checkIcon} />
-                      </IconButton>
+                  )}
+                </div>
+              ) : (
+                <>
+                  <div className={classes.editProject}>
+                    <Typography className={classes.username}>
+                      {myChat?.name}
+                    </Typography>
+                    {myChat?.project && (
+                      <Typography className={classes.projectName}>
+                        Project:{" "}
+                        <span className={classes.projectTitle}>
+                          {" "}
+                          {myChat?.project?.title}{" "}
+                        </span>
+                      </Typography>
                     )}
                   </div>
-                ) : (
-                  <>
-                    <div className={classes.editProject}>
-                      <Typography className={classes.username}>
-                        {myChat?.name}
-                      </Typography>
-                      {myChat?.project && (
-                        <Typography className={classes.projectName}>
-                          Project:{" "}
-                          <span className={classes.projectTitle}>
-                            {" "}
-                            {myChat?.project?.title}{" "}
-                          </span>
-                        </Typography>
-                      )}
-                    </div>
-                  </>
-                )}
-              </Grid>
-              <Grid item xs={8} className={classes.moreWrapper}>
-                <MessageSearch />
+                </>
+              )}
+            </Grid>
+            <Grid item xs={8} className={classes.moreWrapper}>
+              <MessageSearch />
+              {myChat?.isGroupChat !== false && (
                 <ChatUserMenu enable={props?.enable} />
-              </Grid>
-              {/* <Grid item xs={1} className={classes.moreWrapper}>
-            <ChatUserMenu enable={props?.enable} />
-          </Grid> */}
-            </>
-          )
-        }
-      </Grid >
+              )}
+            </Grid>
+          </>
+        )}
+      </Grid>
     </>
   );
 };
@@ -187,7 +197,8 @@ export default ChatBoxHeader;
 
 const useStyles = makeStyles({
   iconContainer: {
-    width: '30px'
+    width: "35px",
+    height: "35px",
   },
   editProject: {
     display: "flex",
@@ -200,7 +211,7 @@ const useStyles = makeStyles({
     overflow: "hidden",
     paddingLeft: 16,
     textOverflow: "ellipsis",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "center",
     },
   },
@@ -208,8 +219,8 @@ const useStyles = makeStyles({
     justifyContent: " space-between",
     padding: "0 50px 0 0",
     borderBottom: `1px solid ${colors.grey}`,
-    height: 40,
-    ["@media (max-width:960px)"]: {
+    height: 55,
+    "@media (max-width:960px)": {
       height: 60,
     },
   },
@@ -220,21 +231,27 @@ const useStyles = makeStyles({
     borderRadius: 5,
     border: `0.5px solid ${colors.lightGrey}`,
     padding: 6,
-    width: '100%'
+    width: "100%",
   },
   username: {
+    textTransform: "capitalize",
     fontSize: 14,
     fontWeight: "bold",
     whiteSpace: "nowrap",
     overflow: "hidden",
     fontStyle: "normal",
     textOverflow: "ellipsis",
-    width: "120px",
+    maxWidth:'100%',
   },
-  editWrapper: {
+  eidtContainer: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
+  },
+  editWrapper: {
+    paddingLeft: "20px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-start",
     // border: '1px solid #ecf0f1'
   },
   editInputWrapper: {
@@ -262,7 +279,7 @@ const useStyles = makeStyles({
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "center",
     },
   },
@@ -277,7 +294,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       display: "none",
     },
   },

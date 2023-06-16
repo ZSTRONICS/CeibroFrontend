@@ -6,29 +6,34 @@ interface ColorCodes {
 }
 
 export const colorsByStatus: ColorCodes = {
-  all: colors.white,
-  ongoing: colors.darkYellow,
+  all: colors.black,
+  new: colors.new,
+  ongoing: colors.ongoing,
+  active: colors.darkYellow,
   approved: colors.primary,
-  completed: colors.mediumGrey,
-  draft: colors.lightBlack,
+  accepted: colors.accepted,
+  draft: colors.draft,
   submitted: colors.aquaGreen,
-  rejected: colors.btnRed,
-  done: colors.mediumGrey,
+  rejected: colors.rejected,
+  done: colors.done,
+  assigned: colors.assigned,
 };
 
 const textColorsByStatus: ColorCodes = {
   all: colors.black,
-  ongoing: colors.white,
-  approved: colors.white,
-  completed: colors.white,
-  draft: colors.white,
+  ongoing: colors.ongoing,
+  approved: colors.primary,
+  draft: colors.draft,
   submitted: colors.white,
-  rejected: colors.white,
-  done: colors.white,
+  rejected: colors.rejected,
+  done: colors.done,
+  new: colors.new,
+  active: colors.darkYellow,
 };
 
 export function getColorByStatus(status: string): string {
-  return colorsByStatus[status.toLowerCase()];
+  if (status) return colorsByStatus[status.toLowerCase()];
+  else return colorsByStatus.draft;
 }
 
 export function getTextColorByStatus(status: string): string {
@@ -45,12 +50,12 @@ export function getStatusDropdown(): dataInterface[] {
   return data;
 }
 
-interface ProjectMenues {
+interface StatusMenues {
   title: string;
   count: number;
 }
 
-export function getAllStatus(): ProjectMenues[] {
+export function getAllStatus(): StatusMenues[] {
   return [
     {
       title: "All",
@@ -82,10 +87,11 @@ export function getAllStatus(): ProjectMenues[] {
     },
   ];
 }
-export function getProjectStatus(): ProjectMenues[] {
+
+export function getProjectStatus(): StatusMenues[] {
   return [
     {
-      title: "Alldf",
+      title: "All",
       count: 3,
     },
     {
@@ -113,12 +119,51 @@ export const avaialablePermissions = {
   delete_permission: "delete",
   self_made_permission: "self-made",
 };
+
 const projectReduxConfigs = {
   OPEN_DRAWER: "OPEN_DRAWER",
   CLOSE_DRAWER: "CLOSE_DRAWER",
   SET_MENUE: "SET_MENUE",
 };
+
+export const PROJECT_CONFIG = {
+  GET_PROJECT_ROLES_BY_ID: "GET_PROJECT_ROLES_BY_ID",
+  GET_FLOORS_BY_PROJECT_ID: "GET_FLOORS_BY_PROJECT_ID",
+  GET_DRAWING_BY_ID: "GET_DRAWING_BY_ID",
+  SET_SELECTED_MEMBER: "SET_SELECTED_MEMBER",
+  OPEN_PROJECT_DOCUMENT_MODAL: "OPEN_PROJECT_DOCUMENT_MODAL",
+  CLOSE_PROJECT_DOCUMENT_MODAL: "CLOSE_PROJECT_DOCUMENT_MODAL",
+  UPDATE_PROJECT_DOCUMENT_ACCESS: "UPDATE_PROJECT_DOCUMENT_ACCESS",
+  GET_ALL_DOCUMENTS: "GET_ALL_DOCUMENTS",
+  CREATE_FLOOR: "CREATE_FLOOR",
+  CREATE_DRAWING: "CREATE_DRAWING",
+
+  SET_SELECTED_FLOOR: "SET_SELECTED_FLOOR",
+  SET_SELECTED_DRAWING: "SET_SELECTED_DRAWING",
+  SET_LOAD_DRAWING: "SET_LOAD_DRAWING",
+  // socket events
+  PROJECT_CREATED: "PROJECT_CREATED",
+  PROJECT_UPDATED: "PROJECT_UPDATED",
+  REFRESH_PROJECTS: "REFRESH_PROJECTS",
+
+  ROLE_CREATED: "ROLE_CREATED",
+  ROLE_UPDATED: "ROLE_UPDATED",
+  REFRESH_ROLES: "REFRESH_ROLES",
+
+  PROJECT_GROUP_CREATED: "PROJECT_GROUP_CREATED",
+  PROJECT_GROUP_UPDATED: "PROJECT_GROUP_UPDATED",
+  REFRESH_PROJECT_GROUP: "REFRESH_PROJECT_GROUP",
+
+  PROJECT_MEMBERS_ADDED: "PROJECT_MEMBERS_ADDED",
+  PROJECT_MEMBERS_UPDATED: "PROJECT_MEMBERS_UPDATED",
+  REFRESH_PROJECT_MEMBERS: "REFRESH_PROJECT_MEMBERS",
+
+  REFRESH_ROOT_DOCUMENTS: "REFRESH_ROOT_DOCUMENTS",
+  REFRESH_FOLDER: "REFRESH_FOLDER",
+};
+
 export const GET_PROJECTS = "GET_PROJECTS";
+export const GET_PROJECTS_WITH_MEMBERS = "GET_PROJECTS_WITH_MEMBERS";
 export const GET_PROJECTS_WITH_PAGINATION = "GET_PROJECTS_WITH_PAGINATION";
 export const GET_PROJECTS_MEMBERS = "GET_PROJECT_MEMBERS";
 export const CREATE_PROJECT = "CREATE_PROJECT";
@@ -139,17 +184,12 @@ export const CLOSE_ROLE_DRAWER = "CLOSE_ROLE_DRAWER";
 
 export const OPEN_DOCUMENT_DRAWER = "OPEN_DOCUMENT_DRAWER";
 export const CLOSE_DOCUMENT_DRAWER = "CLOSE_DOCUMENT_DRAWER";
-
-export const GET_ROLES = "GET_ROLES";
-export const GET_ROLES_BY_ID = "GET_ROLES_BY_ID";
-
 export const CREATE_ROLES = "CREATE_ROLES";
 export const CREATE_GROUP = "CREATE_GROUP";
 export const GET_GROUP = "GET_GROUP";
 export const GET_GROUP_BY_ID = "GET_GROUP_BY_ID";
 export const UPDATE_GROUP = "UPDATE_GROUP";
 
-export const GET_FOLDER = "GET_FOLDER";
 export const GET_FOLDER_FILES = "GET_FOLDER_FILES";
 export const UPLOAD_FILE_TO_FOLDER = "UPLOAD_FILE_TO_FOLDER";
 export const CREATE_FOLDER = "CREATE_FOLDER";

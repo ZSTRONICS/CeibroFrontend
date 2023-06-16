@@ -1,79 +1,65 @@
-import React, { useState, useEffect } from "react";
 import { Badge, makeStyles, Typography } from "@material-ui/core";
-import {
-  getAllStatus,
-  getColorByStatus,
-  SET_SELECTED_STATUS,
-} from "../../../config/project.config";
-import { getStyleClass } from "../../../config/styles.config";
-import colors from "../../../assets/colors";
-import projectActions, {
-  getProjectsWithPagination,
-  getStatus,
-} from "redux/action/project.action";
+import { TASK_CONFIG } from "config/task.config";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
+import colors from "../../../assets/colors";
+import { getColorByStatus } from "../../../config/project.config";
+import { getStyleClass } from "../../../config/styles.config";
 
-interface StatusMenuInt {
-  title: string;
-  count: number;
-}
-
-interface StatusMenuProps {
-  options: StatusMenuInt[];
-}
-
-export const StatusMenu: React.FC<StatusMenuProps> = (props) => {
+export const StatusMenu = (props: any) => {
   const { options } = props;
-  const { getStatuses, drawerOpen } = useSelector(
-    (state: RootState) => state.project
-  );
+
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [filter, setFilter] = useState<string>("all");
+  const [filter, setFilter] = useState<string>("All");
+  const { taskDrawerOpen } = useSelector((state: RootState) => state.task);
+  
   useEffect(() => {
-    if (filter) {
-      dispatch(projectActions.setSelectedStatus(filter));
-      dispatch(getProjectsWithPagination());
+    if (filter.toLowerCase()) {
+      dispatch({
+        type:TASK_CONFIG.GET_TASK_SUBTASK_FILTER_BY_STATE,
+        payload:filter.toLowerCase().toString()
+      });
     }
-  }, [filter]);
+  }, [filter,taskDrawerOpen]);
 
-  useEffect(() => {
-    if (!drawerOpen) {
-      dispatch(getStatus());
-    }
-  }, [drawerOpen]);
 
   return (
     <>
-      {getStatuses &&
-        getStatuses.map((option: any, index: any) => {
+    
+      {options &&
+        options.map((option: any, index: any) => {
           return (
             <div
-              onClick={() => setFilter(option.name)}
+              onClick={() => setFilter(option.title)}
               key={index}
-              className={`${classes.statusChip} ${getStyleClass(option.name)}`}
+              className={`${classes.statusChip} ${getStyleClass(option.title)}`}
               style={{
                 border:
-                  filter === option.name
+                  filter === option.title
                     ? `1px solid ${colors.inputGrey}`
                     : "none",
                 borderRadius: 5,
               }}
             >
               <Typography className={classes.chipTitle}>
-                {option.name}
+                {option.title}
               </Typography>
-              {option.count > 0 && (
+              {
                 <Badge
+                showZero={true}
+                  // showZero=  {
+                  //   option.title === 'All' ? true :false
+                  // }
                   overlap="circular"
                   className={classes.statusBage}
                   color="primary"
                   badgeContent={option.count}
                   style={{ marginRight: 20 }}
                 ></Badge>
-              )}
+              }
             </div>
           );
         })}
@@ -85,17 +71,14 @@ export default StatusMenu;
 
 const useStyles = makeStyles({
   statusChip: {
-    padding: "5px 15px",
+    padding: "5px 10px",
     display: "flex",
     alignItems: "center",
     cursor: "pointer",
-    marginRight:'5px',
-    ["@media (max-width:960px)"]: {
-      justifyContent: "space-between",
-    },
+    marginRight: "5px",
   },
   statusBage: {
-    marginLeft: 15,
+    marginLeft: 20,
   },
   chipTitle: {
     color: colors.primary,
@@ -103,22 +86,21 @@ const useStyles = makeStyles({
     fontWeight: 500,
     textTransform: "capitalize",
   },
-  ongoing: {
-    background: getColorByStatus("ongoing"),
+
+  all: {
+    background: getColorByStatus("all"),
   },
-  completed: {
-    background: getColorByStatus("completed"),
+  active: {
+    background: getColorByStatus("active"),
+  },
+
+  done: {
+    background: getColorByStatus("done"),
   },
   draft: {
     background: getColorByStatus("draft"),
   },
-  approved: {
-    background: getColorByStatus("approved"),
-  },
-  submitted: {
-    background: getColorByStatus("submitted"),
-  },
-  rejeced: {
-    background: getColorByStatus("rejected"),
+  new: {
+    background: getColorByStatus("new"),
   },
 });

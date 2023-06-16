@@ -1,12 +1,10 @@
 import React from "react";
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Grid, Typography } from "@mui/material";
 import colors from "../../../../assets/colors";
-import HorizontalBreak from "../../../Utills/Others/HorizontalBreak";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions from "../../../../redux/action/project.action";
-import { RootState } from "../../../../redux/reducers";
-import { useMediaQuery } from "react-responsive";
-import PermissionState from "components/context/PermissionState";
+import projectActions, { PROJECT_APIS } from "../../../../redux/action/project.action";
+import { RootState } from "../../../../redux/reducers/appReducer";
 
 const menus = [
   {
@@ -17,22 +15,27 @@ const menus = [
     id: 2,
     title: "Role(s)",
   },
+  // {
+  //   id: 3,
+  //   title: "Role(s)",
+  // },
+  // {
+  //   id: 4,
+  //   title: "Group(s)",
+  // },
+  // {
+  //   id: 5,
+  //   title: "Members",
+  // },
+
   {
     id: 6,
-    title: "Work Profile",
-  },
-  {
-    id: 3,
-    title: "Group(s)",
-  },
-  {
-    id: 5,
-    title: "Members",
-  },
-  {
-    id: 4,
     title: "Documents",
   },
+  // {
+  //   id: 6,
+  //   title: "Work Profile",
+  // },
 ];
 
 function ProjectDrawerMenu() {
@@ -42,7 +45,6 @@ function ProjectDrawerMenu() {
   const { menue: selectedMenue, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
 
   const handleClick = (id: number, isDisabled: boolean) => {
     if (isDisabled) return;
@@ -52,7 +54,17 @@ function ProjectDrawerMenu() {
   return (
     <>
       {/* <PermissionState> */}
-      <Grid container>
+      <Grid
+        container
+        sx={{
+          paddingLeft: "4px",
+          "@media(max-width:960px)": {
+            paddingLeft: "10px",
+            flexWrap: "nowrap",
+            overflowX: "scroll",
+          },
+        }}
+      >
         {menus &&
           menus.map((menu, index) => {
             const isDisabled = index > 0 && !selectedProject;
@@ -65,6 +77,9 @@ function ProjectDrawerMenu() {
                 <Typography
                   className={classes.menu}
                   style={{
+                    fontSize: "15px",
+                    fontFamily: "inter",
+                    fontWeight: 500,
                     color: isDisabled
                       ? colors.lightGreySecondary
                       : selectedMenue === menu.id
@@ -78,11 +93,11 @@ function ProjectDrawerMenu() {
             );
           })}
       </Grid>
-      {!isTabletOrMobile && (
+      {/* {!isTabletOrMobile && (
         <Grid container className={classes.breakContainer}>
           <HorizontalBreak />
         </Grid>
-      )}
+      )} */}
       {/* </PermissionState> */}
     </>
   );
@@ -97,17 +112,16 @@ const useStyles = makeStyles({
     display: "flex",
     alignItems: "center",
     justifyContent: "space-around",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
   menu: {
-    fontSize: 14,
-    fontWeight: 500,
-    color: colors.primary,
+    fontSize: "14px",
+    // padding:""
+    fontWeight: 600,
+    // color: colors.primary,
+    color: "red",
     cursor: "pointer",
-  },
-  breakContainer: {
-    padding: "5px 25px 2px 25px",
   },
 });

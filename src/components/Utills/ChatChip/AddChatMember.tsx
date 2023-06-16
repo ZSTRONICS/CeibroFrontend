@@ -1,10 +1,12 @@
 import {
   Button,
   Dialog,
-  DialogActions,
-  DialogContent, DialogTitle,
-  makeStyles
+  DialogContent,
+  DialogTitle,
+  makeStyles,
 } from "@material-ui/core";
+
+import { DialogActions } from "@mui/material";
 import { mapUsers } from "helpers/user.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,30 +14,32 @@ import { toast } from "react-toastify";
 import { getAvailableChatUsers } from "redux/action/user.action";
 import colors from "../../../assets/colors";
 import {
-  addMemberToChat, getAllChats, setMembersDialog
+  addMemberToChat,
+  getAllChats,
+  setMembersDialog,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import SelectDropdown from "../Inputs/SelectDropdown";
 
 interface AddChatMemberProps {}
 
 const AddChatMember: React.FC<AddChatMemberProps> = () => {
   const classes = useStyles();
-  const { membersDialog, selectedChat, chat } = useSelector(
+  const { membersDialog, selectedChatId, chat } = useSelector(
     (state: RootState) => state.chat
   );
   const { user } = useSelector((state: RootState) => state.auth);
   const chatMembers =
-    chat?.find((room: any) => room._id === selectedChat)?.members || [];
-  const memberIds = chatMembers?.map((member: any) => member.id);
+    chat?.find((room: any) => room._id === selectedChatId)?.members || [];
+  const memberIds = chatMembers?.map((member: any) => member._id);
   const [availableUsers, setAvailableUsers] = useState<any>([]);
   const dispatch = useDispatch();
   const [selectedUser, setSelectedUser] = useState<any>();
-  
+
   useEffect(() => {
-    if (selectedChat && membersDialog) {
+    if (selectedChatId && membersDialog) {
       const payload = {
-        other: selectedChat,
+        other: selectedChatId,
         success: (res: any) => {
           const myUsers = mapUsers(res.data.message);
           setAvailableUsers(myUsers);
@@ -49,7 +53,7 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
     dispatch(
       addMemberToChat({
         other: {
-          roomId: selectedChat,
+          roomId: selectedChatId,
           userId: selectedUser?.value,
         },
         success: () => {
@@ -81,12 +85,16 @@ const AddChatMember: React.FC<AddChatMemberProps> = () => {
           />
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button disabled={!selectedUser} onClick={handleOk} color="primary">
-          Ok
-        </Button>
+      <DialogActions
+        sx={{
+          paddingRight: "24px",
+        }}
+      >
         <Button onClick={handleClose} color="secondary" autoFocus>
           Cancel
+        </Button>
+        <Button disabled={!selectedUser} onClick={handleOk} color="primary">
+          Ok
         </Button>
       </DialogActions>
     </Dialog>
@@ -111,6 +119,6 @@ const useStyles = makeStyles({
   dropdownWrapper: {
     maxWidth: 300,
     width: 300,
-    height: 300,
+    height: 70,
   },
 });

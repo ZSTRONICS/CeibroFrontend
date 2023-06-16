@@ -1,19 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useCallback, useState } from "react";
 
 // material
-import { Avatar, Button, makeStyles } from "@material-ui/core";
+import { Avatar, Button, makeStyles, Popover } from "@material-ui/core";
 
 // redux
-import { useDispatch } from "react-redux";
-import { clearSelectedChat, getAllChats } from "../../redux/action/chat.action";
-
+import { useDispatch, useSelector } from "react-redux";
+import { createSingleRoom } from "../../redux/action/chat.action";
+import { addMemberToChat, getAllChats, getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "../../redux/action/chat.action";
 // components
-import ChatRoomSearch from 'components/Chat/ChatRoomSearch';
+import ChatRoomSearch from "components/Chat/ChatRoomSearch";
 import { CBox } from "components/material-ui";
-import { SET_CHAT_SEARCH } from 'config/chat.config';
-import { UserInterface } from 'constants/interfaces/user.interface';
-import { getMyConnections } from 'redux/action/user.action';
-import colors from "../../assets/colors";
+import { UserInterface } from "constants/interfaces/user.interface";
+import { getMyConnections, resetRefresConnections } from "redux/action/user.action";
+import { RootState } from "redux/reducers/appReducer";
+
 export let dbUsers = [
   {
     label: "Test 1",
@@ -36,190 +36,225 @@ export let dbUsers = [
     color: "green",
   },
 ];
-const CreateIndividualChat =(props:any) => {
-    const {individualChat}= props
-    const classes = useStyles();
-    const dispatch = useDispatch();
-const [connections, setConnection] = useState<any>({})
-const [loading, setLoading] = useState<boolean>(false)
-const [chatOptions, setChatOptions] = useState<boolean>(true)
 
-useEffect(() => {
+const CreateIndividualChat = (props: any) => {
+
+  const { ButtonId, open, individualEl, handleClose } = props;
+  const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const [connections, setConnection] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchQuery, setSearchField] = useState("");
+
+  const { refreshMyconnections, myConnections } = useSelector((store: RootState) => store.user);
+
+  const startChatRoom = (roomId: string) => {
+    dispatch(
+      getRoomMessages({
+        other: {
+          roomId: roomId,
+          limit: 20,
+        },
+        success: () => { },
+      })
+    );
+
+    dispatch(
+      getRoomMedia({
+        other: roomId,
+      })
+    );
+    dispatch(
+      getPinnedMessages({
+        other: roomId,
+      })
+    );
+    const payload = {
+      other: roomId,
+    };
+    dispatch(getRoomQuestioniars(payload));
+
+    dispatch(setSelectedChat({ other: roomId }));
+  };
+
+  useEffect(() => {
     const payload = {
       success: (res: any) => {
-        setConnection(res?.data?.myConnections)
+        setConnection(res?.data?.myConnections);
       },
       finallyAction: () => {
-        setLoading(false)
+        setLoading(false);
       },
+    };
+    setLoading(true);
+    dispatch(getMyConnections(payload));
+    return () => {
+      setConnection([])
     }
-    setLoading(true)
-    dispatch(getMyConnections(payload))
-  }, [])
-  
-  const handleChatRoomSearch = (e: any) => {
-    dispatch(clearSelectedChat())
-    dispatch({
-      type: SET_CHAT_SEARCH,
-      payload: e?.target?.value,
-    })
-    dispatch(getAllChats())
+  }, []);
+
+
+  useEffect(() => {
+    if(refreshMyconnections === false){
+      return 
+    }
+    setConnection(myConnections);
+    dispatch(resetRefresConnections())
+  }, [refreshMyconnections]);
+  // const sortCon = connections.sort(function(a:any, b:any){
+  //     const user = a?.sentByMe? a.to: b.from;
+  //     var nameA = user.firstName.toLowerCase(), nameB = user.firstName.toLowerCase();
+  //     if (nameA < nameB) //sort string ascending
+  //      return -1;
+  //     if (nameA < nameB)
+  //      return 1;
+  //     return 0; 
+  //    });
+
+  const filterdList = connections && connections?.filter((person: any) => {
+    const user = person?.sentByMe ? person?.to : person?.from;
+    const fullName = `${user?.firstName} ${user?.surName}`
+    return (
+      fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+       user?.email?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+       user?.companyName?.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+  })
+
+  const handleChatRoomSearch = useCallback((e: any) => {
+    const searchVal = e.target.value
+    setSearchField(searchVal)
+  }, []);
+
+  const startSingleRoomChat = (_id: string) => {
+    const payload = {
+      other: { _id:_id }, success: (res: any) => {
+        
+        startChatRoom(res.data.newChat._id)
+        // toast.success('single chat room started')
+        dispatch(getAllChats());
+      }
+    }
+    dispatch(createSingleRoom(payload))
+    handleClose()
   }
 
-  return (<>
-{ individualChat ===true&&
-              <CBox padding={3.1}>
+  return (
+    <>
+      <Popover
+        id={ButtonId}
+        open={open}
+        anchorEl={individualEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 45,
+          horizontal: "left",
+        }}
+      >
+        <CBox padding={2.5} className={classes.outerMenu}>
+          <CBox className={classes.chatbox}>
+            <ChatRoomSearch onChange={handleChatRoomSearch} />
+          </CBox>
+          <CBox
+            fontFamily="Inter"
+            fontWeight={600}
+            color="#0076C8"
+            fontSize={14}
+            mt={2.5}
+            mb={1.3}
+          >
+            Frequently Contacted
+          </CBox>
+          {filterdList?.map((connection: any) => {
 
-                <CBox className={classes.chatbox}>
-                  <ChatRoomSearch onChange={handleChatRoomSearch} />
+            if(connection.status !== 'accepted' ) return
+            const startRoomId = connection.sentByMe ? connection?.to?._id : connection?.from?._id
+            const user: UserInterface = connection?.sentByMe
+              ? connection.to
+              : connection.from;
+            if(user===null) return
+            return (
+              <CBox
+                display="flex"
+                mb={2}
+                className={classes.ChatList}
+                onClick={() => startSingleRoomChat(startRoomId)}
+                key={startRoomId}
+              >
+                <CBox>
+                  <Avatar
+                    src={user?.profilePic}
+                    alt="contact profile"
+                    variant="square"
+                  />
                 </CBox>
-                <CBox fontFamily='Inter' fontWeight={600} color='#0076C8' fontSize={14} mt={2.5} mb={1.3}>
-                  Frequently Contacted
-                </CBox>
-                {connections?.map?.((connection: any) => {
-                  const user: UserInterface = connection?.sentByMe ? connection.to : connection.from;
-
-                  return (
-                    <CBox display='flex' mb={2} className={classes.ChatList} onClick={() => console.log('clicked')}>
-                      <CBox>
-                        <Avatar src={user?.profilePic} alt="contact profile" variant="square" />
-                      </CBox>
-                      <CBox ml={1.6}>
-                        <CBox fontSize={14} color='#000' fontWeight={600}>
-                          {`${user?.firstName} ${user?.surName}`}
-                        </CBox>
-                        <CBox display='flex'>
-
-                          <CBox fontSize={12} color='#605C5C' fontFamily='Inter' fontWeight={500}>
-                            {user.companyName} &nbsp;
-                          </CBox>
-                        </CBox>
-                      </CBox>
+                <CBox ml={1.6}>
+                  <CBox fontSize={14} color="#000" fontWeight={600}>
+                    {`${user?.firstName} ${user?.surName}`}
+                  </CBox>
+                  <CBox display="flex">
+                    <CBox
+                      fontSize={12}
+                      color="#605C5C"
+                      fontFamily="Inter"
+                      fontWeight={500}
+                    >
+                      {user?.companyName} &nbsp;
                     </CBox>
-                  )
-
-                })}
-                <CBox display='flex' justifyContent='flex-end'>
-                  <Button variant="contained" color='primary' disabled>
-                    Start conversation
-                  </Button>
-                  <Button onClick={() => setChatOptions(true)}>
-                    Cancel
-                  </Button>
+                  </CBox>
                 </CBox>
               </CBox>
-            }
-</>  )
-}
+            );
+          })}
 
-export default CreateIndividualChat
+          <CBox display="flex" justifyContent="flex-end" >
+            {/* <Button variant="contained" color="primary" disabled>
+              Message
+            </Button> */}
+            <Button onClick={handleClose}>Cancel</Button>
+          </CBox>
+        </CBox>
+      </Popover>
+    </>
+  );
+};
+
+export default CreateIndividualChat;
 
 const useStyles = makeStyles((theme) => ({
-    small: {
-      width: theme.spacing(5),
-      height: theme.spacing(5),
+  outerMenu: {
+    width: "100%",
+    maxWidth: 370,
+  },
+  smallRadioButton: {
+    fontSize: "14px !important",
+    "& svg": {
+      width: "0.8em",
+      height: "0.8em",
     },
-    outerMenu: {
-      width: 350,
-      left: 0,
+    "&$checked": {
+      color: "green",
     },
-    searchInput: {
-      width: 340,
-      height: 30,
-      border: `1px solid ${colors.borderGrey}`,
+  },
+  chatbox: {
+    border: "1px solid #DBDBE5",
+    borderRadius: 4,
+    "& .MuiAvatar-root": {
+      borderRadius: "5px !important",
+      height: "40 !important",
+      weight: "40 !important",
     },
-    smallRadioButton: {
-      fontSize: "14px !important",
-      "& svg": {
-        width: "0.8em",
-        height: "0.8em",
-      },
-      "&$checked": {
-        color: "green",
-      },
-    },
-    suggestedUsersTitle: {
-      fontSize: 12,
-      fontWeight: 500,
-      color: colors.textGrey,
-      marginBottom: 10,
-    },
-    wrapper: {
-      // borderBottom: `1px solid ${colors.grey}`,
-      marginBottom: 5,
-    },
-    titleText: {
-      fontSize: 14,
-      fontWeight: "bold",
-    },
-    subTitleText: {
-      fontSize: 12,
-      fontWeight: 500,
-      color: colors.textGrey,
-    },
-    actionWrapper: {
-      display: "flex",
-      justifyContent: "flex-start",
-      gap: 25,
-      paddingTop: 10,
-      paddingBottom: 15,
-    },
-    actionBtn: {
-      fontSize: 12,
-      fontWeight: "bold",
-    },
-    time: {
-      fontSize: 12,
-      fontWeight: "bold",
-      color: colors.textGrey,
-    },
-    suggestUser: {
-      maxHeight: 300,
-      overflow: "auto",
-    },
-    selectedUser: {
-      height: 50,
-      width: 50,
-      position: "relative",
-    },
-    cancelIcon: {
-      fontSize: 14,
-      position: "absolute",
-      color: colors.textGrey,
-      top: -5,
-      right: 5,
-    },
-    selectChat: {
-      '& .css-1poimk-MuiPaper-root-MuiMenu-paper-MuiPaper-root-MuiPopover-paper': {
-        width: '100%',
-        maxWidth: '400px !important',
-        top: '60px !important'
-      },
-      '& .MuiMenuItem-root': {
-        color: '#0076C8',
-        fontSize: 14,
-        fontWeight: 600,
-        fontFamily: 'Inter'
-      }
-    },
-    chatbox: {
-      border: '1px solid #DBDBE5',
-      borderRadius: 4,
-      '& .MuiAvatar-root': {
-        borderRadius: '5px !important',
-        height: '40 !important',
-        weight: '40 !important'
-      }
-    },
-    chatDialog: {
-      '& .css-1t1j96h-MuiPaper-root-MuiDialog-paper': {
-        width: '100%',
-        maxWidth: '400px !important'
-      }
-    },
-    ChatList: {
-  
-      transitionTimingFunction: ' ease-in',
-      transition: ' 0.2s',
+  },
+  ChatList: {
+    transitionTimingFunction: " ease-in",
+    transition: " 0.2s",
+    padding: '1px 3px',
+    '&:hover': {
+      // boxShadow: '1px 0px 2px 4px #19181833',
+      boxShadow: '1px 0px 2px 4px #eeecec',
+      background: '#f1f1f1',
+      cursor: 'pointer'
     }
-  }));
+  },
+}));

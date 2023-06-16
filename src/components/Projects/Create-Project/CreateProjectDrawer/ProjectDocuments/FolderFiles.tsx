@@ -10,32 +10,37 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import { FolderFileInterface } from "constants/interfaces/project.interface";
-import React, { createRef, useCallback, useEffect, useState } from "react";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import { Tooltip } from "@mui/material";
+import {
+  AssignedTag,
+  CustomBadge,
+  CustomStack,
+} from "components/TaskComponent/Tabs/TaskCard";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
+import { FileInterface } from "constants/interfaces/docs.interface";
+import { Creator } from "constants/interfaces/project.interface";
+import React, { useCallback, useEffect, useState } from "react";
+import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   getFolderFiles,
   uploadFileToFolder,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
-import { useDropzone } from "react-dropzone";
-import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import FileViewDrawer from "./FileViewDrawer";
-import LinearProgress from "@material-ui/core/LinearProgress";
-import Moment from "react-moment";
 
 interface FolderFilesInt {
   selectedFolderId: string | null;
+  height: string;
 }
 
 const FolderFiles: React.FC<FolderFilesInt> = (props) => {
   const { selectedProject, folderList, folderFiles, FileViewerDrawer } =
     useSelector((state: RootState) => state?.project);
   const { selectedFolderId } = props;
-
   const dispatch = useDispatch();
-
   const getFiles = () => {
     if (selectedFolderId) {
       dispatch(
@@ -51,7 +56,6 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
   }, []);
 
   const classes = useStyles();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [loading, setLoading] = useState(false);
 
   const onDrop = useCallback((acceptedFiles: any) => {
@@ -79,56 +83,94 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
     disabled: loading,
   });
 
-  const handleFileClick = (url: any, type: any) => {
-    dispatch(projectActions.setSelectedFileUrl(url));
-    dispatch(projectActions.setSelectedFileType(type));
+  // const handleFileClick = (url: any, type: any) => {
+  //   dispatch(projectActions.setSelectedFileUrl(url));
+  //   dispatch(projectActions.setSelectedFileType(type));
 
-    dispatch(projectActions.openFileViewDrawer());
+  //   dispatch(projectActions.openFileViewDrawer());
+  // };
+  const AccessMemberList = (membersList: Creator[]) => {
+    return (
+      <>
+        {membersList.map((item: Creator, index) => {
+          if (item === undefined) {
+            return <></>;
+          }
+          if (index === membersList.length - 1) {
+            return (
+              <span
+                style={{ textTransform: "capitalize" }}
+                key={item._id}
+              >{`${item.firstName} ${item.surName}`}</span>
+            );
+          } else {
+            return (
+              <span style={{ textTransform: "capitalize" }} key={item._id}>
+                {`${item.firstName} ${item.surName}`}
+                <br />
+              </span>
+            );
+          }
+        })}
+      </>
+    );
   };
-
   return (
     <div
-      {...getRootProps({
-        onClick: (event: any) => event.stopPropagation(),
-      })}
-      style={{ minHeight: 300 }}
+      // {...getRootProps({
+      //   onClick: (event: any) => event.stopPropagation(),
+      // })}
+      style={{ minHeight: props.height, height:'100%' }}
     >
-      <input {...getInputProps()} />
+      {/* <input {...getInputProps()} /> */}
       <TableContainer>
-        <Table className={classes.table} aria-label="simple table">
+        <Table
+          stickyHeader={true}
+          className={classes.table}
+          aria-label="simple table"
+        >
           <TableHead>
             <TableRow>
               <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
               <TableCell className={`${classes.tableTitle}`} align="right">
                 Date modified
               </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="right">
-                Members
-              </TableCell>
-              <TableCell className={`${classes.tableTitle}`} align="right">
+              <TableCell className={`${classes.tableTitle}`} align="center">
                 Who can access
               </TableCell>
+              {/* <TableCell className={`${classes.tableTitle}`} align="right">
+                Who can access
+              </TableCell> */}
             </TableRow>
           </TableHead>
-          {!isDragActive && !loading && folderFiles?.length > 0 && (
+          {!isDragActive && !loading && folderFiles.files?.length > 0 && (
             <TableBody>
-              {folderFiles?.map((file: FolderFileInterface) => {
+              {folderFiles.files?.map((file: FileInterface) => {
+                const DateString: string = momentdeDateFormat(file.updatedAt);
                 return (
-                  <TableRow key={file?.name}>
+                  <TableRow key={file._id}>
                     <TableCell
                       onClick={() => {}}
                       style={{ display: "flex" }}
                       component="th"
                       scope="row"
                     >
-                      <Typography
-                        className={`${classes.fileName}`}
-                        onClick={() =>
-                          handleFileClick(file?.url, file?.fileType)
-                        }
+                      <a
+                        href={file.fileUrl}
+                        download
+                        style={{
+                          textDecoration: "none",
+                          cursor: "pointer",
+                          color: "black",
+                        }}
                       >
-                        {file?.name}
-                      </Typography>
+                        <Typography
+                          className={`${classes.fileName}`}
+                          // onClick={() =>handleFileClick(file.fileUrl, file.fileType)}
+                        >
+                          {file.fileName}
+                        </Typography>
+                      </a>
                     </TableCell>
                     <TableCell
                       component="th"
@@ -136,20 +178,37 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       align="right"
                       className={classes.modifyDate}
                     >
-                      <Moment format="YYYY-MM-DD HH:MM">
-                        {file?.createdAt}
-                      </Moment>
+                      {DateString}
                     </TableCell>
 
                     <TableCell
                       component="th"
                       scope="row"
-                      align="right"
+                      align="left"
                       className={classes.modifyDate}
                     >
-                      {file?.folder?.group?.members?.length || 0} member(s)
+                      {file.access.length > 0 ? (
+                        <CustomStack
+                          columnGap={0.5}
+                          rowGap={1}
+                          justifyContent="center"
+                        >
+                          <AssignedTag>Member</AssignedTag>
+                          <CustomBadge
+                            overlap="circular"
+                            color="primary"
+                            badgeContent={
+                              <Tooltip title={AccessMemberList(file.access)}>
+                                <span>{file.access.length}</span>
+                              </Tooltip>
+                            }
+                          ></CustomBadge>
+                        </CustomStack>
+                      ) : (
+                        "Only you"
+                      )}
                     </TableCell>
-                    <TableCell
+                    {/* <TableCell
                       component="th"
                       scope="row"
                       align="right"
@@ -158,7 +217,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                       <Typography className={classes.access}>
                         Only you
                       </Typography>
-                    </TableCell>
+                    </TableCell> */}
                   </TableRow>
                 );
               })}
@@ -167,7 +226,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           )}
         </Table>
       </TableContainer>
-      {(isDragActive || loading || folderFiles?.length < 1) && (
+
+      {/* {(isDragActive || loading || folderFiles?.length < 1) && (
         <DragMessage
           classes={classes}
           onBtnClick={open}
@@ -183,7 +243,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
           }
           loading={loading}
         />
-      )}
+      )} */}
     </div>
   );
 };
@@ -193,6 +253,8 @@ export default FolderFiles;
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
+    //  height: "100%",
+    // overflow: "auto",
   },
   uploadMessage: {
     display: "flex",
@@ -219,6 +281,7 @@ const useStyles = makeStyles({
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 5,
+    color: "black",
     display: "flex",
     alignItems: "center",
     cursor: "pointer",

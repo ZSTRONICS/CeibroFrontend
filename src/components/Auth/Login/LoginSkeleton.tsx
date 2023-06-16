@@ -2,13 +2,11 @@ import "./login.css";
 
 import { CBox, CSkeleton } from "components/material-ui";
 import assets from "../../../assets/assets";
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 //style file
 import useStyles from './LoginStyles';
 
-const LoginSkeleton: React.FC<LoginInterface> = () => {
+const LoginSkeleton= () => {
     const classes = useStyles();
-
 
     return (
         <>

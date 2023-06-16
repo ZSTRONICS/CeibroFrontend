@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ProjectCard from "../../Utills/ProjectCard/ProjectCard";
 import CreateProject from "../../Utills/ProjectCard/CreateProjectCard";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import {
   ProjectInterface,
   projectOverviewTemplate,
@@ -11,34 +11,34 @@ import {
 import { makeStyles } from "@material-ui/core";
 import projectActions from "redux/action/project.action";
 
-const ProjectList = () => {
-  const { projects, projectsLoading } = useSelector(
-    (state: RootState) => state.project
-  );
+const ProjectList = (props:any) => {
+  // const { allProjects } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
+  // const { user } = useSelector((state: RootState) => state.auth);
+
   const openCreateProject = () => {
     dispatch(projectActions.setSelectedProject(null));
     dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
     dispatch(projectActions.openDrawer());
   };
+  
   return (
     <Grid container>
-      {projects && projects.length > 0 ? (
+      {props.allProjects && props.allProjects.length > 0 ? (
         <>
-          {projects?.map((project: ProjectInterface, index: number) => {
+          {props.allProjects?.map((project: ProjectInterface, index: number) => {
             return <ProjectCard key={index} project={project} />;
           })}
           <CreateProject />
         </>
       ) : (
         <>
-          {!projectsLoading && (
+          {
             <Grid container style={{ height: 400 }}>
               <Grid item xs={12} className={classes.noProject}>
                 <Typography className={classes.noProjectText}>
-                  Not any project was created by you or you’re not participating
-                  yet
+                  No data found
                 </Typography>
                 <Button
                   style={{ marginTop: 20 }}
@@ -50,7 +50,7 @@ const ProjectList = () => {
                 </Button>
               </Grid>
             </Grid>
-          )}
+          }
         </>
       )}
     </Grid>

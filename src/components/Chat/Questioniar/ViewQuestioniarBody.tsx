@@ -18,7 +18,7 @@ import {
   saveQuestioniarAnswers,
   setQuestions,
 } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import DatePicker from "../../Utills/Inputs/DatePicker";
 import SelectDropdown from "../../Utills/Inputs/SelectDropdown";
 import CreateQuestion from "../../Utills/Questioniar/Question.create";
@@ -37,7 +37,7 @@ const QuestioniarBody = () => {
   const [loading, setLoading] = useState(false);
   const {
     questioniars,
-    selectedChat,
+    selectedChatId,
     questioniarsLoading,
     selectedQuestioniar,
     answeredByMe,
@@ -45,18 +45,18 @@ const QuestioniarBody = () => {
     questioniarInfo,
   } = useSelector((store: RootState) => store.chat);
   const { user } = useSelector((store: RootState) => store.auth);
-  const myQuestion = String(questioniarInfo?.sender) === String(user?.id);
+  const myQuestion = String(questioniarInfo?.sender) === String(user?._id);
 
-  const membersList = selectedChat
-    ? chat.find((room: any) => String(room._id) == String(selectedChat))
+  const membersList = selectedChatId
+    ? chat.find((room: any) => String(room._id) == String(selectedChatId))
         ?.members
     : [];
 
   const [values, setValue] = useState();
 
   useEffect(() => {
-    setValue(removeCurrentUser(dbUsers, user?.id));
-    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChat))
+    setValue(removeCurrentUser(dbUsers, user?._id));
+    // const chatIndex = chat?.findIndex?.((room: any) => String(room._id) === String(selectedChatId))
   }, []);
 
   const everyFilled = questioniars?.every((question: any) => {
@@ -79,13 +79,13 @@ const QuestioniarBody = () => {
 
   const listOfMember = membersList?.map((member: any) => ({
     label: ` ${member?.firstName} ${member?.surName}`,
-    value: member?.id,
+    value: member?._id,
   }));
 
   const handleSave = () => {
     const myQuestions = questioniars?.map((question: QuestioniarInterface) => {
       return {
-        id: question.id,
+        id: question._id,
         answer: question.answer,
       };
     });
@@ -112,7 +112,7 @@ const QuestioniarBody = () => {
       getUserQuestioniarAnswer({
         other: {
           userId: e?.value,
-          questioniarId: questioniarInfo?.id,
+          questioniarId: questioniarInfo?._id,
         },
         success: () => {
           setLoading(false);
@@ -173,7 +173,7 @@ const QuestioniarBody = () => {
         {questioniars &&
           !questioniarsLoading &&
           questioniars.map((question: QuestioniarInterface, index: number) => {
-            return <PreviewQuestion key={question.id} question={question} />;
+            return <PreviewQuestion key={question._id} question={question} />;
           })}
         {questioniarsLoading && (
           <Typography>Loading please wait ....</Typography>

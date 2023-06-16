@@ -1,18 +1,17 @@
-import { Dialog, Drawer } from "@material-ui/core";
+import { Dialog } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { RootStateOrAny, useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import {
-  closeQuestioniarDrawer,
   closeViewQuestioniarDrawer,
-  getQuestioniarById,
+  getQuestioniarById
 } from "../../../redux/action/chat.action";
 // import colors from '../../../../assets/colors'
 // import projectActions from '../../../../redux/action/project.action'
-import { RootState } from "../../../redux/reducers";
+import { useEffect } from "react";
+import { RootState } from "../../../redux/reducers/appReducer";
 import QuestioniarHeader from "./QuestioniarHeader";
 import ViewQuestioniarBody from "./ViewQuestioniarBody";
-import { useEffect } from "react";
 // import CreateProjectBody from './CreateProjectBody'
 // import CreateProjectFooter from './CreateProjectFooter'
 
@@ -31,6 +30,7 @@ const ViewQuestioniarDrawer = () => {
   
   useEffect(() => {
     dispatch(getQuestioniarById({ other: selectedQuestioniar }));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedQuestioniar]);
 
   return (
@@ -55,7 +55,7 @@ const useStyles = makeStyles({
     backgroundColor: colors.white,
     height: "100%",
     minHeight: 300,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       // width: '100vw'
     },
   },

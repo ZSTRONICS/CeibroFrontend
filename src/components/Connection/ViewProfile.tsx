@@ -1,254 +1,216 @@
-
+import React, { useState } from "react";
 import {
-  Avatar,
   Button,
   Dialog,
-  DialogContent,
-  DialogTitle,
+  Divider,
   Grid,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
-  makeStyles,
-  Typography,
-  IconButton,
-} from '@material-ui/core'
-import { Clear, Delete } from '@material-ui/icons'
-import React, { useState } from 'react'
-import colors from '../../assets/colors'
-import NameAvatar from '../Utills/Others/NameAvatar'
-import { useDispatch } from 'react-redux'
-import taskActions from '../../redux/action/task.action'
-import { getUserById } from 'redux/action/user.action'
-import { deleteMyConnection, getMyConnections } from '../../redux/action/user.action'
-import { createSingleRoom } from '../../redux/action/chat.action'
-import { useHistory } from 'react-router-dom'
+} from "@mui/material";
+
+import { makeStyles } from "@material-ui/core";
+
+import { CButton } from "components/Button";
+import { useDispatch } from "react-redux";
+
+import colors from "../../assets/colors";
+
+import taskActions from "../../redux/action/task.action";
+import { UserCeibroData } from "constants/interfaces/user.interface";
+import UserProfileView from "components/Profile/UserProfileView";
+import { CustomStack } from "components/CustomTags";
+import { TopBarTitle } from "components/CustomTags";
+import assets from "assets/assets";
+import useResponsive from "hooks/useResponsive";
+
 interface IViewProfileProps {
-  userId: string
-  disabled: boolean
-  connectionId: string;
+  userId?: string;
+  disabled: boolean;
+  userData?: UserCeibroData | undefined | null;
 }
 
-const ViewProfile: React.FunctionComponent<IViewProfileProps> = props => {
-  const { userId, disabled, connectionId } = props
-  const classes = useStyles()
-  const [open, setOpen] = React.useState(false)
-  const [getUser, setGetUser] = useState<any>({})
-  const dispatch = useDispatch()
-  const history = useHistory()
+const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
+  const {disabled, userData } = props;
+  const classes = useStyles();
+  const [open, setOpen] = React.useState<boolean>(false);
+  const dispatch = useDispatch();
+  const isTabletOrMobile = useResponsive("down", 'md', "");
 
   const handleToggle = () => {
-    const payload = {
-      success: (val: any) => {
-        setGetUser(val.data)
-      },
-      other: {
-        userId,
-      },
-    }
-    dispatch(getUserById(payload))
+    setOpen((prev: boolean) => !prev);
+  };
 
-    setOpen(!open)
-  }
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer())
-  }
+  const openTaskModal = () => {
+    dispatch(taskActions.openNewTaskModal());
+  };
 
-  const handleDelete = () => {
-    const id: string = connectionId
-    const payload: any = {
-      other: {
-        id,
-      },
-      params: {
-        isEmailInvited: false,
-      },
-      success: () => dispatch(getMyConnections()),
-    }
-    dispatch(deleteMyConnection(payload))
-    handleToggle()
-  }
+  // const startChatRoom = (roomId: string) => {
+  //   dispatch(
+  //     getRoomMessages({
+  //       other: {
+  //         roomId: roomId,
+  //         limit: 20,
+  //       },
+  //       success: () => {},
+  //     })
+  //   );
 
-  const startRoom = () => {
-    const payload = { other: { id: getUser?.id }, success: () => history.push('chat') }
-    dispatch(createSingleRoom(payload))
-  }
+  //   dispatch(
+  //     getRoomMedia({
+  //       other: roomId,
+  //     })
+  //   );
+  //   dispatch(
+  //     getPinnedMessages({
+  //       other: roomId,
+  //     })
+  //   );
+  //   const payload = {
+  //     other: roomId,
+  //   };
+  //   dispatch(getRoomQuestioniars(payload));
 
-    // const user = {
-    //   image:
-    //     "https://pbs.twimg.com/profile_images/974736784906248192/gPZwCbdS.jpg",
-    //   name: "Kristo",
-    //   surname: "Vaughn",
-    //   email: "abc123@gmail.com",
-    //   contact: "+372 5679 8908",
-    //   company: "My company Ltd.",
-    //   vat: "1324343554",
-    //   location: "Vesse 12, Tallinn, Harjumaa 12345",
-    // };
+  //   dispatch(setSelectedChat({ other: roomId }));
+  // };
+
+  // const startRoom = () => {
+  //   const payload = {
+  //     other: { _id: userId },
+  //     success: (res: any) => {
+  //       history.push("chat");
+  //       startChatRoom(res.data.newChat._id);
+  //     },
+  //   };
+  //   dispatch(createSingleRoom(payload));
+  // };
 
   return (
     <>
       <Button
+        sx={{
+          padding: "4px 10px",
+          textTransform: "capitalize",
+          border: "1px solid #0076C8",
+        }}
         onClick={handleToggle}
-        className={classes.btn}
         variant="outlined"
-        size="medium"
+        size={isTabletOrMobile ? "small" : "medium"}
         color="primary"
         disabled={disabled}
       >
         View profile
       </Button>
 
-      <Dialog onClose={handleToggle} open={open}>
-        <DialogTitle>
-          <div className={classes.titleWrapper}>
-            <div className={classes.imgWrapper}>
-              {getUser?.profilePic && (
-                <NameAvatar
-                  firstName={getUser?.firstName}
-                  surName={getUser?.surName}
-                  url={getUser?.profilePic || ''}
-                  variant="large"
-                />
-              )}
-            </div>
-            <Clear onClick={handleToggle} className={classes.close} />
-          </div>
-        </DialogTitle>
-        <DialogContent className={classes.wrapper}>
-          <Grid container>
-            <Grid item xs={12} className={classes.detailRow}>
-              <div>
-                <Typography className={classes.title}>Name</Typography>
-                <Typography className={classes.value}>{getUser?.firstName}</Typography>
-              </div>
-              <div>
-                <Typography className={classes.title}>Surname</Typography>
-                <Typography className={classes.value}>{getUser?.surName}</Typography>
-              </div>
-            </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
-              <div>
-                <Typography className={classes.title}>Email</Typography>
-                <Typography className={classes.value}>
-                  <a className={classes.email} href="#">
-                    {getUser?.email}
-                  </a>
-                </Typography>
-              </div>
-            </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
-              <div>
-                <Typography className={classes.title}>Contact</Typography>
-                <Typography className={classes.value}>{getUser?.phone}</Typography>
-              </div>
-            </Grid>
-            <br />
-            <br />
+      <Dialog
+        fullWidth={true}
+        maxWidth="xs"
+        onClose={handleToggle}
+        open={open}
+        sx={
+          {
+            "& .MuiPaper-root": { margin: { xs: 0.3, md: 2.5 } },
+          }
+        }
+      >
+        <CustomStack
+          sx={{ margin: "14.2px 4px 2px 20px" }}
+          justifyContent="space-between"
+        >
+          <TopBarTitle sx={{ fontSize: { xs: 16, md: 24 } }}>
+            User profile
+          </TopBarTitle>
+          <CButton
+            label={<assets.CloseIcon />}
+            ado
+            variant="text"
+            sx={{ padding: "1px 10px" }}
+            onClick={handleToggle}
+          />
+        </CustomStack>
 
-            <Grid item xs={12} className={`${classes.companyRow} ${classes.detailRow}`}>
-              <div>
-                <Typography className={classes.title}>Company</Typography>
-                <Typography className={classes.value}>{getUser?.companyName}</Typography>
-              </div>
-              <div>
-                <Typography className={classes.title}>VAT</Typography>
-                <Typography className={classes.value}>{getUser?.companyVat}</Typography>
-              </div>
-            </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
-              <div>
-                <Typography className={classes.title}>Location</Typography>
-                <Typography className={classes.value}>{getUser?.companyLocation}</Typography>
-              </div>
-            </Grid>
-            <Grid item xs={12} className={classes.detailRow}>
-              <div>
-                <Typography className={classes.title}>Company contact number</Typography>
-                <Typography className={classes.value}>{getUser?.companyPhone}</Typography>
-              </div>
-            </Grid>
-
-            <Grid item xs={12} className={classes.btnWrapper}>
-              {/* <IconButton
-                onClick={handleDelete}
-                aria-label="delete"
-                disableRipple={true}
-                size={'small'}
-                color="primary"
-              >
-                <Delete />
-              </IconButton> */}
-              <Button
-                className={classes.btn}
-                onClick={startRoom}
-                variant="contained"
-                size="medium"
-                color="primary"
-              >
-                Start conversation
-              </Button>
-              <Button
-                className={classes.btn}
-                variant="contained"
-                size="medium"
-                color="primary"
-                onClick={openTaskDrawer}
-              >
-                Create task
-              </Button>
-            </Grid>
-          </Grid>
-        </DialogContent>
+        <Divider sx={{ margin: "5px 0 15px 0" }} />
+        <UserProfileView userData={userData} />
+        <Grid
+          item
+          container
+          gap={2}
+          justifyContent="space-between"
+          alignItems="center"
+          px={2.5}
+          sx={{ mb: "20%" }}
+        >
+          <Button
+            className={classes.btn}
+            variant="contained"
+            size="medium"
+            color="primary"
+            onClick={openTaskModal}
+            sx={{ textTransform: "capitalize", width: "80%" }}
+          >
+            Create task
+          </Button>
+          <assets.MoreVertOutlinedIcon />
+        </Grid>
       </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default ViewProfile
+export default ViewProfile;
 
 const useStyles = makeStyles({
   titleWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     paddingBottom: 0,
     paddingTop: 2,
-    alignItems: 'center',
+    alignItems: "center",
+  },
+  ProfileAvatar: {
+    width: "200px",
+    height: "200px",
   },
   wrapper: {
-    width: 390,
+    // border: "1px solid black",
+    overflowX: "hidden",
+    marginLeft: "20px",
+    width: "100%",
+    maxWidth: "450px",
   },
   imgWrapper: {
-    maxWidth: 80,
-    maxHeight: 80,
+    display: "flex",
+    flexDirection: "row",
+    // maxWidth: 80,
+    // maxHeight: 80,
   },
   img: {
-    width: '100%',
+    width: "100%",
   },
   close: {
     color: colors.primary,
-    cursor: 'pointer',
+    cursor: "pointer",
   },
   btn: {
     fontSize: 12,
-    fontWeight: 'bold',
-    '@media (max-width:960px)': {
-      width: '100%',
-      marginTop: 10,
-    },
+    fontWeight: "bold",
+    textTransform: "capitalize",
   },
+
   btnWrapper: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
+    // textTransform: "capitalize",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
     padding: `25px 0px`,
-    '@media (max-width:960px)': {
-      flexDirection: 'column',
+
+    "@media (max-width:960px)": {
+      flexDirection: "column",
+      flexWrap: "wrap",
+    },
+    "@media (max-width:450px)": {
+      overflow: "hidden",
     },
   },
   detailRow: {
-    display: 'flex',
+    display: "flex",
     paddingTop: 5,
     gap: 30,
   },
@@ -267,4 +229,9 @@ const useStyles = makeStyles({
   email: {
     color: colors.textPrimary,
   },
-})
+  centerBtn: {
+    "@media (max-width:960px)": {
+      marginTop: "20px",
+    },
+  },
+});

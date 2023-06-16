@@ -1,8 +1,13 @@
 import {
   GroupInterface,
-  ProjectOverviewInterface,
-  RoleInterface,
+  ProjectInterface,
 } from "constants/interfaces/project.interface";
+import {
+  ProjectGroupInterface,
+  ProjectMemberInterface,
+  ProjectRolesInterface,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
+
 import configs, {
   CLOSE_ROLE_DRAWER,
   CREATE_PROJECT,
@@ -12,7 +17,6 @@ import configs, {
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
-  GET_ROLES,
   OPEN_GROUP_DRAWER,
   OPEN_ROLE_DRAWER,
   SET_PROJECT_OVERVIEW,
@@ -25,7 +29,6 @@ import configs, {
   GET_GROUP,
   CLOSE_DOCUMENT_DRAWER,
   OPEN_DOCUMENT_DRAWER,
-  GET_FOLDER,
   CREATE_FOLDER,
   CREATE_MEMBER,
   GET_MEMBER,
@@ -34,7 +37,6 @@ import configs, {
   UPLOAD_FILE_TO_FOLDER,
   UPDATE_PROJECT,
   SET_SELECTED_ROLE,
-  GET_ROLES_BY_ID,
   UPDATE_ROLE,
   SET_SELECTED_GROUP,
   GET_GROUP_BY_ID,
@@ -75,6 +77,8 @@ import configs, {
   SELECTED_FILE_TYPE,
   GET_GROUP_USERS,
   ADD_REMOVE_FOLDER_USER,
+  GET_PROJECTS_WITH_MEMBERS,
+  PROJECT_CONFIG,
 } from "../../config/project.config";
 import { createAction } from "./action";
 
@@ -95,13 +99,13 @@ const projectActions = {
       payload: id,
     };
   },
-  setProjectOverview: (projectOverview: ProjectOverviewInterface) => {
+  setProjectOverview: (projectOverview: ProjectInterface) => {
     return {
       type: SET_PROJECT_OVERVIEW,
       payload: projectOverview,
     };
   },
-  setRole: (role: RoleInterface) => {
+  setRole: (role: ProjectRolesInterface) => {
     return {
       type: SET_ROLE,
       payload: role,
@@ -132,17 +136,41 @@ const projectActions = {
       payload: projectId,
     };
   },
-  setSelectedRole: (roleId: string | null) => {
+  setSelectedFloor: (floor: object | null) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_FLOOR,
+      payload: floor,
+    };
+  },
+  setSelectedDrawing: (drawing: object | null) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_DRAWING,
+      payload: drawing,
+    };
+  },
+  setLoadDrawing: (loadFlag: boolean) => {
+    return {
+      type: PROJECT_CONFIG.SET_LOAD_DRAWING,
+      payload: loadFlag,
+    };
+  },
+  setSelectedRole: (role: ProjectRolesInterface) => {
     return {
       type: SET_SELECTED_ROLE,
-      payload: roleId,
+      payload: role,
     };
   },
 
-  setSelectedGroup: (groupId: string | null) => {
+  setSelectedGroup: (group: ProjectGroupInterface) => {
     return {
       type: SET_SELECTED_GROUP,
-      payload: groupId,
+      payload: group,
+    };
+  },
+  setSelectedMember: (member: ProjectMemberInterface) => {
+    return {
+      type: PROJECT_CONFIG.SET_SELECTED_MEMBER,
+      payload: member,
     };
   },
 
@@ -213,6 +241,19 @@ const projectActions = {
       type: OPEN_MEMBER_DRAWER,
     };
   },
+
+  openProjectDocumentModal: () => {
+    return {
+      type: PROJECT_CONFIG.OPEN_PROJECT_DOCUMENT_MODAL,
+    };
+  },
+
+  closeProjectDocumentModal: () => {
+    return {
+      type: PROJECT_CONFIG.CLOSE_PROJECT_DOCUMENT_MODAL,
+    };
+  },
+
   closeProjectMemberDrawer: () => {
     return {
       type: CLOSE_MEMBER_DRAWER,
@@ -259,25 +300,50 @@ const projectActions = {
   },
 };
 
+export const PROJECT_APIS = {
+  getProjectRolesById: createAction(PROJECT_CONFIG.GET_PROJECT_ROLES_BY_ID),
+  getAllProjects: createAction(GET_PROJECTS),
+  getAllDocuments: createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS),
+  getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWING_BY_ID),
+  getFloorsByProjectId: createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
+  getAvailableProjectUsers: createAction(GET_AVAILABLE_PROJECT_USERS),
+  getProjectDetail: createAction(GET_PROJECT_DETAIL),
+  getFolderFiles: createAction(GET_FOLDER_FILES),
+
+  createProject: createAction(CREATE_PROJECT),
+  createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
+  createFolder: createAction(CREATE_FOLDER),
+
+  updateProjectDocumentsAccess: createAction(
+    PROJECT_CONFIG.UPDATE_PROJECT_DOCUMENT_ACCESS
+  ),
+  uploadFileToFolder: createAction(UPLOAD_FILE_TO_FOLDER),
+  updateProject: createAction(UPDATE_PROJECT),
+  updateProjectPicture: createAction(UPDATE_PROJECT_PICTURE),
+
+  deleteProject: createAction(DELETE_PROJECT),
+};
+
 export const getProjectsWithPagination = createAction(
   GET_PROJECTS_WITH_PAGINATION
 );
 export const getAllProjects = createAction(GET_PROJECTS);
+
+export const getAllProjectsWithMembers = createAction(
+  GET_PROJECTS_WITH_MEMBERS
+);
 export const getAllProjectMembers = createAction(GET_PROJECTS_MEMBERS);
 export const createProject = createAction(CREATE_PROJECT);
 export const getAvailableProjectUsers = createAction(
   GET_AVAILABLE_PROJECT_USERS
 );
 export const getProjectDetail = createAction(GET_PROJECT_DETAIL);
-export const getRoles = createAction(GET_ROLES);
-export const getRolesById = createAction(GET_ROLES_BY_ID);
-
 export const createRole = createAction(CREATE_ROLES);
 export const createGroup = createAction(CREATE_GROUP);
 export const getGroup = createAction(GET_GROUP);
 export const getGroupById = createAction(GET_GROUP_BY_ID);
 
-export const getFolder = createAction(GET_FOLDER);
+export const getAllDocuments = createAction(PROJECT_CONFIG.GET_ALL_DOCUMENTS);
 export const createFolder = createAction(CREATE_FOLDER);
 export const createMember = createAction(CREATE_MEMBER);
 export const getMember = createAction(GET_MEMBER);
@@ -302,11 +368,11 @@ export const deleteProject = createAction(DELETE_PROJECT);
 export const getWorkById = createAction(GET_WORK_BY_ID);
 export const updateWork = createAction(UPDATE_WORK);
 export const deleteWork = createAction(DELETE_WORK);
-export const getPermissions = createAction(GET_PERMISSIONS);
+// export const getPermissions = createAction(GET_PERMISSIONS);
 export const updateProjectPicture = createAction(UPDATE_PROJECT_PICTURE);
 export const deleteGroup = createAction(DELETE_GROUP);
 export const deleteRole = createAction(DELETE_ROLE);
-export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
+// export const getGroupMembers = createAction(GET_GROUP_MEMBERS);
 export const getGroupUsers = createAction(GET_GROUP_USERS);
 export const addRemoveFolderUser = createAction(ADD_REMOVE_FOLDER_USER);
 export const getAvailableProjectMembers = createAction(

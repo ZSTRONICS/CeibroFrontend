@@ -1,59 +1,102 @@
+import styled from "@emotion/styled";
 import {
   Button,
-  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import {
+  Autocomplete,
+  Checkbox,
+  Divider,
+  FormControlLabel,
+  TextField,
+  Chip,
+} from "@mui/material";
 import colors from "assets/colors";
+import { CButton } from "components/Button";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
-import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import InputHOC from "components/Utills/Inputs/InputHOC";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
 import SelectDropdown, {
   dataInterface,
 } from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
   createRole,
   getAvailableProjectMembers,
-  getMember,
-  getPermissions,
-  getRoles,
-  getRolesById,
+  PROJECT_APIS,
   updateRole,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
-import { toast } from "react-toastify";
-interface AddRoleProps {}
+import { RootState } from "redux/reducers/appReducer";
+import Clear from "@mui/icons-material/Clear";
+interface AddRoleProps { }
 
-const AddRole: React.FC<AddRoleProps> = (props: any) => {
+const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
-  const roles = ["create", "edit", "delete", "self-made"];
+  // const roles = ["create", "edit", "delete"];
 
-  const roleTempale = {
-    memberList: [],
-  };
-
-  const [isAdmin, setIsAdmin] = useState(false);
   const [isRole, setIsRole] = useState(false);
   const [isMember, setIsMember] = useState(false);
-  const [isTimeProfile, setIsTimeProfile] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedMember, setSelectedMember] = useState<any>(null);
-  const [data, setData] = useState<any>(roleTempale);
 
-  const isDiabled = !loading ? false : true;
-
-  const { roleDrawer, role, selectedProject, selectedRole, userPermissions } =
+  const { roleDrawer, selectedProject, selectedRole } =
     useSelector((state: RootState) => state.project);
+
+  const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
+  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>([]);
+
+  const [rolePermissionLocal, setRolePermissionLocal] = useState(
+    selectedRole.rolePermission
+  );
+  const [memberPermissionLocal, setmemberPermissionLocal] = useState(
+    selectedRole.memberPermission
+  );
   const dispatch = useDispatch();
 
+  const isAnyPermissionTrue =
+    Object.values(rolePermissionLocal).some((p) => p) ||
+    Object.values(memberPermissionLocal).some((p) => p);
+
   const handleClose = () => {
+    setmemberPermissionLocal({
+      create: false,
+      edit: false,
+      delete: false
+    });
+
+    setRolePermissionLocal({
+      create: false,
+      edit: false,
+      delete: false
+    });
+
+    setIsMember(false);
+    setIsRole(false);
+
+    dispatch(projectActions.setSelectedRole({
+      ...selectedRole,
+      _id: '',
+      admin: false,
+      creator: "",
+      isDefaultRole: false,
+      memberPermission: { create: false, delete: false, edit: false },
+      rolePermission: { create: false, delete: false, edit: false },
+      members: [],
+      name: "",
+      project: "",
+    }));
+
+    setAvailableUsers([]);
+    setSelectedRoleMember([]);
+
     dispatch(projectActions.closeProjectRole());
   };
 
@@ -67,61 +110,64 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
   const handleOk = () => {
     const payload = {
       body: {
-        name: role.name,
-        admin: role.admin,
-        roles: role.roles,
-        member: role.member,
-        memberIds: role?.memberIds?.map?.((row: dataInterface) => {
-          return row.id;
-        }),
-        timeProfile: role.timeProfile,
+        name: selectedRole.name,
+        admin: selectedRole.admin,
+        members: selectedRole.members,
+        project: selectedProject,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       },
       success: () => {
         toast.success("Role created successfully");
-        dispatch(projectActions.closeProjectRole());
-        dispatch(getRoles({ other: selectedProject }));
+        dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
       },
       finallyAction: () => {
         setLoading(false);
+        handleClose();
       },
       other: selectedProject,
     };
     setLoading(true);
     dispatch(createRole(payload));
   };
-  // const memberlistt = data?.roles.map((role: dataInterface) => {
-  //   return role.value;
-  // });
+
+  const checkKey = (arr: any[], key: any) => {
+    return arr.some((el: any) => el.hasOwnProperty(key));
+  };
+
+  let memberIds: string[] = [];
+  const checkKeyInMember = checkKey(selectedRole.members, "_id");
+  if (checkKeyInMember === true) {
+    memberIds = selectedRole.members.map((item: any) => item._id);
+  }
+
   const handleUpdate = () => {
     const payload = {
       body: {
-        // const {name,admin,roles, member,timeProfile} =role
-        name: role.name,
-        admin: role.admin,
-        roles: role.roles,
-        member: role?.member,
-        timeProfile: role.timeProfile,
+        name: selectedRole.name,
+        admin: selectedRole.admin,
+        members: checkKeyInMember ? memberIds : selectedRole.members,
+        project: selectedRole.project,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       },
+
       success: () => {
         toast.success("Role Updated successfully");
-        dispatch(projectActions.closeProjectRole());
-        dispatch(getRoles({ other: selectedProject }));
-        dispatch(getMember({ other: { projectId: selectedProject } }));
-
-        dispatch(getPermissions({ other: selectedProject }));
+        dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
+        handleClose();
       },
       finallyAction: () => {
         setLoading(false);
       },
-      other: selectedRole,
+      other: selectedRole._id,
     };
     setLoading(true);
-
     dispatch(updateRole(payload));
   };
 
   const handleSubmit = () => {
-    if (selectedRole) {
+    if (selectedRole._id !== "") {
       handleUpdate();
     } else {
       handleOk();
@@ -130,124 +176,258 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
 
   const handleChangeRole = (e: any) => {
     setIsRole(e.target?.checked);
+    if (e.target?.checked === false) {
+      setRolePermissionLocal({
+        create: false,
+        edit: false,
+        delete: false
+      });
+      dispatch(
+        projectActions.setSelectedRole({
+          ...selectedRole,
+          rolePermission: rolePermissionLocal,
+        })
+      );
+    }
   };
 
   const handleChangeMember = (e: any) => {
     setIsMember(e.target?.checked);
-  };
-
-  const handleChangeTimeProfile = (e: any) => {
-    setIsTimeProfile(e.target?.checked);
+    if (e.target?.checked === false) {
+      setmemberPermissionLocal({
+        create: false,
+        edit: false,
+        delete: false
+      });
+      dispatch(
+        projectActions.setSelectedRole({
+          ...selectedRole,
+          rolePermission: rolePermissionLocal,
+        })
+      );
+    }
   };
 
   const handleAdminChange = (e: any) => {
+    if (e.target?.checked === true) {
+      setRolePermissionLocal({ create: true, edit: true, delete: true });
+      setmemberPermissionLocal({ create: true, edit: true, delete: true });
+    } else {
+      if (e.target?.checked === false) {
+
+        setmemberPermissionLocal({
+          create: false,
+          edit: false,
+          delete: false
+        });
+
+        setRolePermissionLocal({
+          create: false,
+          edit: false,
+          delete: false
+        });
+
+        setIsMember(false);
+        setIsRole(false);
+      }
+    }
+
     dispatch(
-      projectActions.setRole({
-        ...role,
+      projectActions.setSelectedRole({
+        ...selectedRole,
         admin: e.target?.checked,
+        rolePermission: rolePermissionLocal,
+        memberPermission: memberPermissionLocal,
       })
     );
   };
 
-  const handleAccessChange = (
-    checked: boolean,
-    access: string,
-    fieldName: "roles" | "member" | "timeProfile"
-  ) => {
-    let existingField = role[fieldName];
-    if (existingField) {
-      if (checked) {
-        existingField?.push?.(access);
-      } else {
-        existingField = existingField?.filter?.(
-          (old: string) => old !== access
-        );
-      }
-
-      dispatch(
-        projectActions.setRole({
-          ...role,
-          [fieldName]: existingField,
-        })
-      );
-    } else {
-      if (checked) {
-        dispatch(
-          projectActions.setRole({
-            ...role,
-            [fieldName]: [access],
-          })
-        );
-      }
-    }
+  const handleRolesChange = (e: any) => {
+    setRolePermissionLocal({
+      ...rolePermissionLocal,
+      [e.target.name]: e.target.checked,
+    });
+    dispatch(
+      projectActions.setSelectedRole({
+        ...selectedRole,
+        rolePermission: rolePermissionLocal,
+      })
+    );
   };
+
+  const handleMemberChange = (e: any) => {
+    setmemberPermissionLocal({
+      ...memberPermissionLocal,
+      [e.target.name]: e.target.checked,
+    });
+    dispatch(
+      projectActions.setSelectedRole({
+        ...selectedRole,
+        rolePermission: rolePermissionLocal,
+      })
+    );
+  };
+
   const handleNameChange = (e: any) => {
     dispatch(
-      projectActions.setRole({
-        ...role,
-        name: e?.target?.value,
+      projectActions.setSelectedRole({
+        ...selectedRole,
+        name: e.target.value,
       })
     );
   };
+
   useEffect(() => {
-    if (selectedRole && roleDrawer) {
-      dispatch(
-        getRolesById({
-          other: selectedRole,
-          success: (res) => {
-            if (res.data.roles.length > 0) {
-              setIsRole(true);
-            }
-            if (res.data.member.length > 0) {
-              setIsMember(true);
-            }
-            if (res.data.timeProfile.length > 0) {
-              setIsTimeProfile(true);
-            }
-          },
-        })
-      );
+    if (selectedRole._id && roleDrawer) {
+      // dispatch(
+      //   PROJECT_APIS.getProjectRolesById ({
+      //     other: selectedProject,
+      //     success: (res) => {
+      //       if (res.data.result.length > 0) {
+      //         setIsRole(true);
+      //       }
+      //       if (res.data.result.member.length > 0) {
+      //         setIsMember(true);
+      //       }
+      //       // if (res.data.timeProfile.length > 0) {
+      //       //   setIsTimeProfile(true);
+      //       // }
+      //     },
+      //   })
+      // );
     }
-  }, [roleDrawer, selectedRole]);
+  }, [roleDrawer, selectedRole._id]);
 
   useEffect(() => {
     dispatch(
       getAvailableProjectMembers({
         other: selectedProject,
         success: (res) => {
-          setAvailableUsers(res.data);
+          const availableMembers =
+            res.data.result.map((user: any) => ({
+              label: `${user.firstName} ${user.surName}`,
+              value: user.email,
+              id: user._id,
+            })) || [];
+          setAvailableUsers(availableMembers);
         },
       })
     );
-  }, []);
-  
+  }, [roleDrawer]);
+
+  useEffect(() => {
+    if (selectedRole._id !== "") {
+      if (selectedRole.rolePermission.create === true ||
+        selectedRole.rolePermission.edit === true ||
+        selectedRole.rolePermission.delete === true
+      ) {
+        setIsRole(true);
+
+      }
+
+      if (selectedRole.memberPermission.create === true ||
+        selectedRole.memberPermission.edit === true ||
+        selectedRole.memberPermission.delete === true
+      ) {
+        setIsMember(true);
+      }
+      setmemberPermissionLocal(selectedRole.memberPermission);
+      setRolePermissionLocal(selectedRole.rolePermission);
+      const availableMembers =
+        selectedRole.members.map((user: any) => ({
+          label: `${user.firstName} ${user.surName}`,
+          value: user._id,
+          id: user._id,
+        })) || [];
+      setSelectedRoleMember(
+        selectedRole._id !== "" ? availableMembers : availableUsers
+      );
+    }
+  }, [roleDrawer]);
+
+  const uniqueMember = getUniqueObjectsFromArr([
+    ...selectedRolMember,
+    ...availableUsers,
+  ]);
+
   return (
     <Dialog open={roleDrawer} onClose={handleClose}>
       <DialogContent>
         <div className={classes.dropdownWrapper}>
           <Input
-            value={role.name}
+            value={selectedRole.name}
             title="Role"
             placeholder="Enter role name"
             onChange={handleNameChange}
           />
           <br />
-          <SelectDropdown
-            title="Member"
-            placeholder="Please select"
-            data={availableUsers}
-            isMulti={true}
-            noOptionMessage="No user available"
-            // value={role?.member}
-            handleChange={(values: any) => {
+          <Autocomplete
+            sx={{ border: "none" }}
+            multiple
+            id="project_owners1"
+            disablePortal
+            filterSelectedOptions
+            disableCloseOnSelect
+            limitTags={1}
+            value={selectedRolMember}
+            options={uniqueMember}
+            size="small"
+            onChange={(event, value) => {
+              setSelectedRoleMember([...value]);
+              const memberIds = value.map((item: any) => item.id);
               dispatch(
-                projectActions.setRole({
-                  ...role,
-                  memberIds: values,
+                projectActions.setSelectedRole({
+                  ...selectedRole,
+                  members: [...memberIds],
                 })
               );
             }}
+            renderTags={(tagValue, getTagProps) =>
+              tagValue.map((option, index) => {
+                return (
+                  <Chip
+                    sx={{
+                      height: "25px",
+                      fontSize: 12, fontWeight: 500,
+                      backgroundColor: "#F1B740",
+                      color: colors.white,
+                      borderRadius: "4px",
+                    }}
+                    deleteIcon={<Clear style={{ color: '#f1b740', fontSize: '15px', borderRadius: '50%', background: 'white' }} />}
+                    label={option?.label}
+                    {...getTagProps({ index })}
+                  />
+                );
+              })
+            }
+            renderInput={(params) => (
+              <InputHOC title="Members">
+                <TextField
+                  {...params}
+                  placeholder="Select member(s)"
+                  sx={{
+                    border: "none",
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      border: "none",
+                    },
+                    "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: "none",
+                    },
+                    "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                    {
+                      border: "none",
+                    },
+                    // "@media(hover) .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                    //   {
+                    //     border: "none",
+                    //   },
+                  }}
+                />
+              </InputHOC>
+            )}
           />
+
           <br />
           <HorizontalBreak color={colors.grey} />
           <div className={classes.optionsWrapper}>
@@ -256,13 +436,13 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 Project admin
               </Typography>
               <InputSwitch
-                value={role.admin}
+                value={selectedRole.admin}
                 onChange={handleAdminChange}
                 label=""
               />
             </div>
 
-            {!role.admin && (
+            {!selectedRole.admin && (
               <>
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>Role</Typography>
@@ -272,26 +452,84 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                     onChange={handleChangeRole}
                   />
                 </div>
+
                 {isRole && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
-                    {roles
-                      ?.filter((item) => item !== "self-made")
+                    {/* {roles
                       .map((myRole: string, i) => {
                         return (
                           <InputCheckbox
                             key={i}
                             label={myRole}
-                            checked={role?.roles?.includes(myRole) || false}
+                            checked={true}
                             onChange={(checked) =>
                               handleAccessChange(checked, myRole, "roles")
                             }
                           />
                         );
-                      })}
+                      })} */}
+                    <CustomStack
+                      gap={1}
+                      divider={
+                        <Divider
+                          textAlign="center"
+                          variant="middle"
+                          orientation="vertical"
+                          flexItem
+                          sx={{ borderWidth: "2px", height: "25px" }}
+                        />
+                      }
+                    >
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={rolePermissionLocal.create}
+                            onChange={handleRolesChange}
+                            name="create"
+                          />
+                        }
+                        label="Create"
+                      />
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={rolePermissionLocal.edit}
+                            onChange={handleRolesChange}
+                            name="edit"
+                          />
+                        }
+                        label="Edit"
+                      />
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={rolePermissionLocal.delete}
+                            onChange={handleRolesChange}
+                            name="delete"
+                          />
+                        }
+                        label="Delete"
+                      />
+                    </CustomStack>
                   </div>
                 )}
-                <HorizontalBreak />
-                <div className={classes.option}>
+                {/* <HorizontalBreak /> */}
+                {/* <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Work profile
                   </Typography>
@@ -300,8 +538,8 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                     label=""
                     onChange={handleChangeTimeProfile}
                   />
-                </div>
-                {isTimeProfile && (
+                </div> */}
+                {/* {isTimeProfile && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
                     {roles
                       ?.filter((item) => item !== "self-made")
@@ -321,7 +559,7 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                       })}
                   </div>
                 )}
-                <HorizontalBreak />
+                <HorizontalBreak /> */}
                 <div className={classes.option}>
                   <Typography className={classes.optionTitle}>
                     Member
@@ -334,18 +572,69 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
                 </div>
                 {isMember && (
                   <div className={classes.option} style={{ paddingBottom: 5 }}>
-                    {roles?.map((myRole: string, i) => {
-                      return (
-                        <InputCheckbox
-                          key={i}
-                          label={myRole}
-                          checked={role?.member?.includes?.(myRole) || false}
-                          onChange={(checked) =>
-                            handleAccessChange(checked, myRole, "member")
-                          }
+                    <CustomStack
+                      gap={1}
+                      divider={
+                        <Divider
+                          orientation="vertical"
+                          textAlign="center"
+                          variant="middle"
+                          flexItem
+                          sx={{
+                            borderWidth: "2px",
+                            height: "25px",
+                            display: "flex",
+                            justifyContent: "center",
+                          }}
                         />
-                      );
-                    })}
+                      }
+                    >
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={memberPermissionLocal.create}
+                            onChange={handleMemberChange}
+                            name="create"
+                          />
+                        }
+                        label="Create"
+                      />
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={memberPermissionLocal.edit}
+                            onChange={handleMemberChange}
+                            name="edit"
+                          />
+                        }
+                        label="Edit"
+                      />
+                      <FormControlLabel
+                        control={
+                          <MuiCheckbox
+                            sx={{
+                              "&.Mui-checked": {
+                                color: "#F1B740",
+                              },
+                            }}
+                            checked={memberPermissionLocal.delete}
+                            onChange={handleMemberChange}
+                            name="delete"
+                          />
+                        }
+                        label="Delete"
+                      />
+                    </CustomStack>
                   </div>
                 )}
               </>
@@ -354,34 +643,60 @@ const AddRole: React.FC<AddRoleProps> = (props: any) => {
           </div>
         </div>
       </DialogContent>
-      <DialogActions style={{ paddingRight: 22, paddingTop: 0 }}>
-        <Button
+      <DialogActions
+        style={{
+          paddingRight: 22,
+          paddingTop: 0,
+          gap: "10px",
+          paddingBottom: "16px",
+        }}
+      >
+        {/* <Button
+          variant="outlined"
           className={classes.cancel}
           onClick={handleClose}
           color="secondary"
           autoFocus
         >
           Cancel
-        </Button>
+        </Button> */}
+        <CButton
+          onClick={handleClose}
+          variant="outlined"
+          styles={{
+            color: "#605C5C",
+            fontSize: 12,
+            fontWeight: "700",
+            borderColor: "#9D9D9D",
+          }}
+          label={"Cancel"}
+        />
+
         <Button
           className={classes.ok}
           color="primary"
           variant="contained"
-          disabled={isDiabled}
+          disabled={
+            isAnyPermissionTrue === true || selectedRole.admin === true
+              ? false
+              : true
+          }
           onClick={handleSubmit}
         >
-          {selectedRole ? "Update" : "Ok"}
-          {loading && (
+          {selectedRole._id !== "" ? "Update" : "Add"}
+          {/* {loading && (
             <CircularProgress size={20} className={classes.progress} />
-          )}
+          )} */}
         </Button>
       </DialogActions>
     </Dialog>
   );
 };
 
-export default AddRole;
-
+export default RoleDrawer;
+const MuiCheckbox = styled(Checkbox)`
+  color: #adb5bd;
+`;
 const useStyles = makeStyles({
   menuWrapper: {
     display: "flex",
@@ -396,9 +711,10 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 400,
-    width: 400,
-    height: 300,
+    maxWidth: 370,
+    width: 370,
+    maxHeight: 450,
+    height: "100%",
   },
   optionsWrapper: {
     width: "100%",

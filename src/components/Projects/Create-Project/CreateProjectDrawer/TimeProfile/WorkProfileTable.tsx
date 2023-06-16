@@ -12,7 +12,6 @@ import CropOriginalIcon from "@material-ui/icons/CropOriginal";
 import ChatIcon from "@material-ui/icons/Chat";
 import Paper from "@material-ui/core/Paper";
 import { CircularProgress, Typography, Grid } from "@material-ui/core";
-import { BiPencil, BiTrash } from "react-icons/bi";
 import colors from "../../../../../assets/colors";
 import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
@@ -22,7 +21,7 @@ import projectActions, {
   deleteWork,
   getNewWork,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { toast } from "react-toastify";
 import {
   ProfileWork,
@@ -105,18 +104,18 @@ export default function BasicTable() {
           {getNewWorkList && getNewWorkList.length > 0 ? (
             <>
               {getNewWorkList.map((row: ProfileWork) => (
-                <TableRow key={row.name}>
+                <TableRow key={row._id}>
                   <TableCell component="th" scope="row">
                     <Typography className={classes.name}>{row.name}</Typography>
                   </TableCell>
                   <TableCell>
                     <div className={classes.extrasWrapper}>
-                      {row?.time &&  <img src={assets.clockIcon} />}
+                      {row?.time &&  <img src={assets.clockIcon} alt=""/>}
                       {row?.photo && (
-                         <img src={assets.wrongImage} className="w-16" />
+                         <img src={assets.wrongImage} className="w-16" alt=""/>
                       )}
                       {row?.comment && (
-                         <img src={assets.sidebarChatIcon} className="w-16" />
+                         <img src={assets.sidebarChatIcon} className="w-16" alt=""/>
                       )}
                     </div>
                   </TableCell>
@@ -136,8 +135,9 @@ export default function BasicTable() {
                     <div>
                       <img
                           src={assets.pencilIcon}
-                        onClick={() => handleWorkClick(row?.id)}
+                        onClick={() => handleWorkClick(row?._id)}
                         className="pointer"
+                        alt="edit"
                       />
 
                       {loading && (
@@ -149,8 +149,8 @@ export default function BasicTable() {
                       <img
                           src={assets.DeleteIcon}
                         className="w-16 pointer"
-                        onClick={() => deleteTimeProfileWork(row?.id)}
-                      />
+                        onClick={() => deleteTimeProfileWork(row?._id)}
+                      alt="delete" />
                     </div>
                   </TableCell>
                 </TableRow>

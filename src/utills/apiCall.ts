@@ -3,8 +3,8 @@ import { appHistory } from 'navigation/RouterConfig'
 import { toast } from 'react-toastify'
 import { call, put, select } from 'redux-saga/effects'
 import { logoutUser } from 'redux/action/auth.action'
-import { RootState } from 'redux/reducers'
-import axios from './axios'
+import { RootState } from 'redux/reducers/appReducer'
+import { AxiosV1, AxiosV2 } from './axios'
 import { requestFail, requestPending, requestSuccess } from './status'
 
 interface ApiCall {
@@ -16,6 +16,7 @@ interface ApiCall {
   finallySaga?: () => void
   isFormData?: boolean
   isBlob?: boolean
+  useV2Route: boolean
 }
 
 const apiCall = ({
@@ -27,6 +28,7 @@ const apiCall = ({
   finallySaga,
   isFormData,
   isBlob,
+  useV2Route,
 }: ApiCall): any =>
   function* (action: any): Generator<any> {
     const {
@@ -44,6 +46,11 @@ const apiCall = ({
     if (!isFormData) {
       header = {
         'Content-Type': 'application/json',
+      }
+
+    } else {
+      header = {
+        'Content-Type': 'multipart/form-data',
       }
     }
     header['Access-Control-Allow-Origin'] = '*'
@@ -71,8 +78,12 @@ const apiCall = ({
       if (isBlob) {
         options.responseType = 'blob'
       }
-
-      const res: any = yield call(axios.request, options)
+      let res: any;
+      if (useV2Route) {
+        res = yield call(AxiosV2.request, options)
+      } else {
+        res = yield call(AxiosV1.request, options)
+      }
       const oldState = yield select(state => state)
       yield put({
         type: requestSuccess(type),

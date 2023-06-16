@@ -6,20 +6,21 @@ import {
   DialogContent,
   makeStyles,
 } from "@material-ui/core";
+import { Divider } from "@mui/material";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
+// import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
+// import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import { mapGroups } from "helpers/project.helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createFolder,
-  getFolder,
+  // getAllDocuments,
   getGroup,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 interface AddGroupProps {}
 
@@ -32,7 +33,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const [isMember, setIsMember] = useState(false);
   const [isTimeProfile, setIsTimeProfile] = useState(false);
 
-  const [name, setName] = useState();
+  const [name, setName] = useState<string>("");
   const [groups, setGroups] = useState();
   const [selectGroups, setSelectGroups] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,22 +46,23 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   const dispatch = useDispatch();
 
   const handleClose = () => {
+    setName("")
     dispatch(projectActions.closeProjectDocuments());
   };
 
   const handleOk = () => {
     const payload = {
       body: {
-        groupId: selectGroups?.value,
         name,
       },
       success: () => {
+        setName("")
         toast.success("Group created successfully");
-        dispatch(projectActions.closeProjectDocuments());
-        dispatch(getFolder({ other: { selectedProject } }));
+        // dispatch(getAllDocuments({ other: { selectedProject } }));
       },
       finallyAction: () => {
         setLoading(false);
+        dispatch(projectActions.closeProjectDocuments());
       },
       other: selectedProject,
     };
@@ -84,33 +86,36 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 
   return (
     <Dialog open={documentDrawer} onClose={handleClose}>
-      <DialogContent>
-        <div className={classes.dropdownWrapper}>
+      <DialogContent className={classes.dropdownWrapper}>
+        <div>
           <Input
-            value={name}
+            value={name||""}
             title="Folder"
             placeholder="Enter name"
             onChange={handleNameChange}
           />
-          <br />
-          <SelectDropdown
-            title="Group"
-            placeholder="Please select"
-            data={groups}
-            handleChange={(e: any) => setSelectGroups(e)}
-          />
-          <HorizontalBreak color={colors.grey} />
         </div>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleOk} color="primary" disabled={isDiabled}>
-          Ok
+      {/* <Divider sx={{ margin: "0px  20px 10px" }} /> */}
+      <DialogActions style={{ marginRight: "16px", marginBottom: "10px" }}>
+        <Button
+          onClick={handleClose}
+          color="secondary"
+          variant="outlined"
+          autoFocus
+        >
+          Cancel
+        </Button>
+        <Button
+          onClick={handleOk}
+          color="primary"
+          variant="contained"
+          disabled={String(name).length>0?false:true}
+        >
+          Create
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />
           )}
-        </Button>
-        <Button onClick={handleClose} color="secondary" autoFocus>
-          Cancel
         </Button>
       </DialogActions>
     </Dialog>
@@ -133,9 +138,9 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
-    maxWidth: 370,
+    maxWidth: 360,
     width: 370,
-    height: 300,
+    height: 90,
   },
   optionsWrapper: {
     width: "100%",

@@ -1,42 +1,43 @@
+import React from "react";
 import { Badge } from "@material-ui/core";
 import { getStyleClass } from "config/styles.config";
-import React from "react";
 
 const TaskBadges = () => {
+  
   const badges = [
     {
-      count: 8,
+      count: 0,
       status: "Ongoing",
     },
     {
-      count: 3,
-      status: "Approvedw",
+      count: 0,
+      status: "Approved",
     },
     {
-      count: 5,
+      count: 0,
       status: "Done",
     },
     {
-      count: 1,
+      count: 0,
       status: "Draft",
     },
     {
-      count: 2,
+      count: 0,
       status: "Rejected",
     },
 
     {
-      count: 12,
+      count: 0,
       status: "Submitted",
     },
   ];
 
   return (
     <>
-      {badges?.map((badge) => {
+      {badges?.map((badge, i:any) => {
         return (
-          <div className={getStyleClass(badge.status)}>
-            <Badge color="primary" badgeContent={badge.count}></Badge>
+          <div className={getStyleClass(badge.status)} key={i} id={i}>
+            <Badge showZero={false} overlap="circular" key={i}  color="primary" badgeContent={badge.count}></Badge>
           </div>
         );
       })}

@@ -1,5 +1,5 @@
-
 import React, { FC } from "react";
+import { Divider, Box } from "@mui/material";
 import { makeStyles, Typography } from "@material-ui/core";
 import InputHOC from "./InputHOC";
 import Select from "react-select";
@@ -9,6 +9,7 @@ import { handleInputChange } from "react-select/src/utils";
 import CreatableSelect from "react-select";
 import assets from "assets/assets";
 import { dataInterface } from "./SelectDropdown";
+import HorizontalBreak from "../Others/HorizontalBreak";
 
 const options = [
   { value: "All", label: "All", color: "green" },
@@ -32,7 +33,8 @@ const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =  props;
+  const { value, title,isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
+    props;
 
   const colourStyles = {
     placeholder: (defaultStyles: any) => {
@@ -97,6 +99,7 @@ const SelectDropdown: FC<My> = (props) => {
     },
     multiValueLabel: (styles: any, { data }: any) => ({
       ...styles,
+
       color: colors.black,
     }),
     multiValueRemove: (styles: any, { data }: any) => ({
@@ -131,27 +134,28 @@ const SelectDropdown: FC<My> = (props) => {
   const formatCreateLabel = (inputValue: string) => `Invite ${inputValue}`;
 
   return (
-    <div className={classes.outerWrapper}>
-      <div className={classes.titleWrapper}>
-        <img src={assets.searchIcon} className="w-16" />|
+    <InputHOC title={title}>
+      {/* <div className={classes.outerWrapper}> */}
+      <div className={classes.select} style={{ ...(zIndex ? { zIndex } : {}) }}>
+        <Box className={classes.titleWrapper}></Box>
+
+        <div className={`${classes.select} black-input`}>
+          <CreatableSelect
+            menuPosition="fixed"
+            placeholder={placeholder || "Select"}
+            isMulti={isMulti || false}
+            onChange={handleChange}
+            options={myOptions}
+            styles={colourStyles}
+            value={value}
+            isClearable={isClearAble}
+            noOptionsMessage={() => noOptionMessage || ""}
+            menuPlacement="bottom"
+            // formatCreateLabel={formatCreateLabel}
+          />
+        </div>
       </div>
-      <div
-        className={`${classes.select} black-input`}
-        style={{ ...(zIndex ? { zIndex } : {}) }}
-      >
-        <CreatableSelect
-          placeholder={placeholder || "Select"}
-          isMulti={isMulti || false}
-          onChange={handleChange}
-          options={myOptions}
-          styles={colourStyles}
-          value={value}
-          isClearable={isClearAble}
-          noOptionsMessage={() => noOptionMessage || ""}
-          // formatCreateLabel={formatCreateLabel}
-        />
-      </div>
-    </div>
+    </InputHOC>
   );
 };
 
@@ -162,21 +166,21 @@ const useStyles = makeStyles({
     background: colors.white,
     display: "flex",
     alignItems: "center",
-    border: `1.5px solid ${colors.borderGrey}`,
+    // border: `1.5px solid ${colors.borderGrey}`,
     paddingRight: 8,
     borderRadius: 4,
   },
   titleWrapper: {
-    paddingLeft: 11,
+    // color: "#605C5C",
+    fontSize: "10px",
+    fontWeight: 500,
+    // borderRight: `1px solid hsl(0, 0%, 80%)`,
+    padding: "0 10px",
     minWidth: 35,
     display: "flex",
     justifyContent: "flex-end",
     alignItems: "center",
     gap: 15,
-    color: colors.borderGrey,
-    fontSize: 24,
-    fontWeight: "bolder",
-    // flex: 1,
   },
   title: {
     fontSize: 10,

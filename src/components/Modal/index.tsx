@@ -1,56 +1,89 @@
 import React from "react";
-// mui-import
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  DialogContentText,
-  Grid,
-  Typography,
 
-} from "@material-ui/core";
+import {
+  Grid,
+  DialogContent,
+  Divider,
+  Typography,
+  // Dialog,
+  Box,
+} from "@mui/material";
+//todo migrate to mui latest later becz it give error in add project status comp
+import {  Dialog,} from '@material-ui/core'
 import PropTypes from "prop-types";
-import { Clear } from "@material-ui/icons";
-import useStyles from "./styles";
+import { Button } from "@mui/material";
+import styled from "@emotion/styled";
 
 interface Props {
   isOpen: boolean;
-  handleClose: () => void;
-  title: string;
+  handleClose: (e: any) => void;
+  title: any;
   children: any;
+  showCloseBtn: boolean;
+  maxWidth?: any;
+  showDivider?: boolean;
+  showFullWidth?: boolean;
 }
 
-const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) => {
-  const classes = useStyles()
-
+const CustomModal: React.FC<Props> = ({
+  isOpen,
+  handleClose,
+  title,
+  children,
+  showCloseBtn,
+  maxWidth,
+  showDivider,
+  showFullWidth,
+}) => {
+  const closeModal = (e: any) => {
+    if (!e.target.closest(".MuiDrawer-root")) {
+      e.stopPropagation();
+    }
+    handleClose(e);
+  };
+  const localWidth = maxWidth || "sm";
   return (
     <>
       <Dialog
-        fullWidth
-        maxWidth="sm"
+        fullWidth={showFullWidth === false ? false : true}
+        maxWidth={localWidth.toString()}
         open={isOpen}
-        onClose={handleClose}
+        onClose={closeModal}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          <Grid container className={classes.titleWraper}>
+        <Box sx={{ m: { xs: 0.75, md: 1.5 } }}>
+          <Grid
+            container
+            justifyContent="space-between"
+            sx={{ padding: "9px 5px 0px 12px" }}
+          >
             <Grid item>
-              <Typography variant="h6">{title}</Typography>
+              <CustomTitle>{title}</CustomTitle>
             </Grid>
-            <Grid item>
-              <Clear color="primary" />
-            </Grid>
+            {showCloseBtn && (
+              <Grid item>
+                <Button
+                  sx={{
+                    padding: "3px 4px",
+                    textTransform: "capitalize",
+                  }}
+                  onClick={closeModal}
+                  variant="outlined"
+                >
+                  Close
+                </Button>
+              </Grid>
+            )}
           </Grid>
-        </DialogTitle>
-        <DialogContent dividers>
-          <DialogContentText>{children}</DialogContentText>
-        </DialogContent>
-        <DialogActions>
 
-
-        </DialogActions>
+          {showDivider === true && <Divider sx={{ my: 1 }} />}
+          <div style={{ width: "100%" }}>
+            <DialogContent sx={{ padding: "10px 15px" }}>
+              {children}
+            </DialogContent>
+          </div>
+        </Box>
       </Dialog>
     </>
   );
@@ -59,8 +92,24 @@ const CustomModal: React.FC<Props> = ({ isOpen, handleClose, title, children }) 
 CustomModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
-  title: PropTypes.string.isRequired,
+  title: PropTypes.any,
   children: PropTypes.element,
+  showCloseBtn: PropTypes.any,
 };
 
 export default CustomModal;
+
+const CustomTitle = styled(Typography)`
+  font-family: "Inter";
+  font-weight: 600;
+  font-size: 24px;
+  padding-bottom: 0px;
+
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+`;

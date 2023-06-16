@@ -12,38 +12,68 @@ import {
   GET_USER_BY_ID,
   SEND_INVITATION,
   UPDATE_PROFILE_PIC,
+  RESEND_INVITATION,
+  REVOKE_INVITAION,
+  USER_CONFIG,
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
 
+const getUserContacts = apiCall({
+  useV2Route: true,
+  type: USER_CONFIG.GET_USER_CONTACTS,
+  method: 'get',
+  path: payload => `users/contacts/${payload.other.userId}`,
+})
+
 const inviteUser = apiCall({
+  useV2Route: false,
   type: SEND_INVITATION,
   method: 'post',
   path: '/users/invite',
 })
 
 const getMyAllInvites = apiCall({
+  useV2Route: false,
   type: GET_MY_ALL_INVITES,
   method: 'get',
   path: '/users/invite',
 })
+
+const resendInvites = apiCall({
+  useV2Route: false,
+  type: RESEND_INVITATION,
+  method: 'post',
+  path: 'users/reInvite',
+})
+
+const revokeInvites = apiCall({
+  useV2Route: false,
+  type: REVOKE_INVITAION,
+  method: 'post',
+  path: 'users/revokeInvite',
+})
+
 const acceptInvite = apiCall({
+  useV2Route: false,
   type: ACCEPT_INVITE,
   method: 'post',
   path: payload => `users/invite/accept/${payload?.other?.accepted}/${payload?.other?.inviteId}`,
 })
 
 const getMyConnections = apiCall({
+  useV2Route: false,
   type: GET_MY_CONNECTIONS,
   method: 'get',
   path: '/users/connections',
-  
+
 })
 
 const deleteMyConnection = apiCall({
+  useV2Route: false,
   type: DELETE_MY_CONNECTION,
   method: 'delete',
   path: (payload: any) => {
-    let url = `/users/connection/${payload?.other?.id}`
+    let url = `/users/connection/${payload?.other?._id}`
 
     const params: string = Object.keys(payload.params).map(
       key => `${key}=${payload.params[key]}&`
@@ -54,29 +84,42 @@ const deleteMyConnection = apiCall({
 })
 
 const acceptAllInvite = apiCall({
+  useV2Route: false,
   type: ACCEPT_ALL_INVITES,
   method: 'post',
   path: payload => `users/invite/accept-all/${payload?.other?.accepted}`,
 })
 
 const getMyAllInviteCount = apiCall({
+  useV2Route: false,
   type: GET_MY_INVITES_COUNT,
   method: 'get',
   path: '/users/invite/count',
 })
+
+const getUsersByRole = apiCall({
+  useV2Route: false,
+  type: USER_CONFIG.GET_USERS_BY_ROLE,
+  method: 'get',
+  path: payload => `/users?role=${payload.other.role}`,
+})
+
 const getMyConnectionsCount = apiCall({
+  useV2Route: false,
   type: GET_MY_CONNECTIONS_COUNT,
   method: 'get',
   path: '/users/connections/count',
 })
 
 const getUserById = apiCall({
+  useV2Route: false,
   type: GET_USER_BY_ID,
   method: 'get',
   path: payload => `/users/${payload.other.userId}`,
 })
 
 const updateProfilePic = apiCall({
+  useV2Route: false,
   type: UPDATE_PROFILE_PIC,
   method: 'patch',
   isFormData: true,
@@ -84,29 +127,33 @@ const updateProfilePic = apiCall({
 })
 
 const getAvailableChatUsers = apiCall({
+  useV2Route: false,
   type: GET_AVAILABLE_CHAT_USER,
   method: 'get',
   path: (payload: any) => `/chat/member/available/${payload?.other}`,
 })
 
 const getAvailableUsers = apiCall({
+  useV2Route: false,
   type: GET_AVAILABLE_USERS,
   method: 'get',
- 
+
   path: payload => {
     let url = `/users/available`
-   //if (payload.other) {
-      url = `${url}?includeMe=true`
-  //  }
+    url = `${url}?includeMe=true`
     return url
   },
 })
 
 function* userSaga() {
+  yield takeLatest(USER_CONFIG.GET_USER_CONTACTS, getUserContacts)
+  yield takeLatest(RESEND_INVITATION, resendInvites)
+  yield takeLatest(REVOKE_INVITAION, revokeInvites)
   yield takeLatest(SEND_INVITATION, inviteUser)
   yield takeLatest(GET_MY_ALL_INVITES, getMyAllInvites)
   yield takeLatest(ACCEPT_INVITE, acceptInvite)
   yield takeLatest(GET_MY_CONNECTIONS, getMyConnections)
+  yield takeLatest(USER_CONFIG.GET_USERS_BY_ROLE, getUsersByRole)
   yield takeLatest(DELETE_MY_CONNECTION, deleteMyConnection)
   yield takeLatest(ACCEPT_ALL_INVITES, acceptAllInvite)
   yield takeLatest(GET_MY_INVITES_COUNT, getMyAllInviteCount)
@@ -115,7 +162,7 @@ function* userSaga() {
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount)
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers)
   yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers)
-  
+
 }
 
 export default userSaga

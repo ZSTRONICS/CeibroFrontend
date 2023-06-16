@@ -1,5 +1,6 @@
 //@ts-nocheck
 import visual from "./images/Visual.png";
+import mobileVisual from './images/mobileVisual.png'
 import logo from "./images/logo.png";
 import contactIcon from "./images/contactIcon.svg";
 import clipboardIcon from "./images/clipboardIcon.png";
@@ -35,7 +36,8 @@ import unreadMessage from "./images/unreadMessage.png";
 import favouriteIcon from "./images/favourite.png";
 import favouriteFilledIcon from "./images/favouriteFilled.png";
 import bluePencil from "./images/bluePencil.png";
-import logout from "./images/logout.png";
+// import logout from "./images/logout.png"
+import logoutNew from "./images/logoutNew.png";
 import contactsBlack from "./images/contactsBlack.png";
 import whitePencil from "./images/whitePencil.png";
 import camera from "./images/camera.svg";
@@ -46,7 +48,6 @@ import pencilFilled from "./images/pencilFilled.png";
 import blackPencil from "./images/edit.svg";
 import calender from "./images/calender.png";
 
-import testProject1 from "./images/TestProject1.png";
 import testProject2 from "./images/TestProject2.png";
 import testProject3 from "./images/TestProject3.png";
 import testProject4 from "./images/TestProject4.png";
@@ -59,18 +60,72 @@ import InvitaionIcon from './images/Invitation.svg';
 import filterIcon from './images/filterIcon.svg'
 import DeleteIcon from './images/DeleteIcon.svg'
 import EditIcon from './images/edit.svg';
+import GroupIcon from './images/GroupIcon.svg';
+import GAvatar from './images/GAvatar.png';
+
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
+import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import SendIcon from '@mui/icons-material/Send';
 import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import PeopleAltOutlinedIcon  from '@mui/icons-material/PeopleAltOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
 import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
+import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
+import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined';
+import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
+import StarIcon from '@mui/icons-material/Star';
+import StarOutlineIcon from '@mui/icons-material/StarOutline';
+import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import AddIcon from '@mui/icons-material/Add';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
+import MenuIcon from '@mui/icons-material/Menu';
+import CancelIcon from '@mui/icons-material/Cancel';
+import CloseIcon from '@mui/icons-material/Close';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-const assets= {
+// cross icon
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import EmailIcon from '@mui/icons-material/Email';
+import CallIcon from '@mui/icons-material/Call';
+
+const assets = {
+  CancelIcon,
+  ExpandMoreIcon,
+  CloseIcon,
+  MenuIcon,
+  EmailIcon,
+  NotificationsOutlinedIcon,
+  CallIcon,
+  ErrorOutlineOutlinedIcon,
+  logoutNew,
+  HighlightOffIcon,
+  CloudUploadIcon,
+  BorderColorIcon,
+  LocationOnOutlinedIcon,
+  KeyboardArrowUpIcon,
+  KeyboardArrowDownIcon,
+  ErrorOutlinedIcon,
+  CheckCircleIcon,
+  GroupIcon,
+  GAvatar,
+  MoreVertOutlinedIcon,
+  StarOutlineIcon,
+  StarIcon,
+  VolumeOffOutlinedIcon,
+  VolumeUpOutlinedIcon,
+  MarkUnreadChatAltOutlinedIcon,
   LanguageOutlinedIcon,
   ClearOutlinedIcon,
   PeopleAltOutlinedIcon,
@@ -89,6 +144,7 @@ const assets= {
   sidebarChatIcon,
   sidebarPaseIcon,
   visual,
+  mobileVisual,
   logo,
   contactIcon,
   clipboardIcon,
@@ -122,7 +178,6 @@ const assets= {
   favouriteFilledIcon,
   bluePencil,
   whitePencil,
-  logout,
   contactsBlack,
   camera,
   mic,
@@ -133,11 +188,12 @@ const assets= {
   blueSearch,
   calender,
   Defaulttask,
-  testProject1,
   testProject2,
   testProject3,
   testProject4,
   membersDelete,
+  KeyboardArrowRightIcon,
+  AddIcon
 };
 
 export const sounds = {

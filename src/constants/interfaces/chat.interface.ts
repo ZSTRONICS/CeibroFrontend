@@ -12,7 +12,7 @@ export interface ChatMembers{
    email:string
    socketId:string
    lockedUntil:Date
-   id:string
+   _id:string
 }
 
 export interface ChatListInterface {
@@ -32,6 +32,7 @@ export interface ChatListInterface {
   removedMembers:ChatMembers[]
   removedAccess:ChatMembers[]
   access:[]
+  createdAt:string
 }
 
 export interface ChatMessageInterface {
@@ -52,5 +53,6 @@ export interface ChatMessageInterface {
   voiceUrl?: string;
   dueDate?: any;
   chat?: any;
-  type: "message" | "questioniar" | "voice";
+  type: "message" | "questioniar" | "voice" | "bot" | "start-bot";
+  createdAt:string|any
 }

@@ -1,14 +1,14 @@
 import React from 'react'
 import { Button, Grid, makeStyles } from '@material-ui/core'
 import { useSelector } from 'react-redux'
-import { RootState } from '../../../redux/reducers'
+import { RootState } from '../../../redux/reducers/appReducer'
 import colors from '../../../assets/colors'
 import { FaTrash } from 'react-icons/fa'
 
 const CreateProjectBody = () => {
     const classes = useStyles()
 
-    const selectedMenue = useSelector((state: RootState) => state.project.menue)
+    // const selectedMenue = useSelector((state: RootState) => state.project.menue)
 
     return (
         <Grid container justifyContent="flex-end" className={classes.body}>

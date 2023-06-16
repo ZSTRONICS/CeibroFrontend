@@ -1,7 +1,6 @@
 import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import {
   RoleInterface,
-  userRolesPermissions,
 } from "constants/interfaces/project.interface";
 
 export function formatDate(date: any) {
@@ -19,19 +18,19 @@ export function formatDate(date: any) {
 export function mapGroups(groups: any) {
   return groups?.map((list: any) => ({
     label: list.name,
-    value: list.id,
+    value: list._id,
   }));
 }
 
 export function mapRoles(roles: RoleInterface[]): dataInterface[] {
   return roles?.map((role: RoleInterface) => ({
     label: role.name || "",
-    value: role.id || "",
+    value: role._id || "",
   }));
 }
 
 export function checkRolePermission(
-  permissions: userRolesPermissions | null,
+  permissions: any,
   permissionToCheck: string
 ) {
   if (permissions?.admin) {
@@ -41,7 +40,7 @@ export function checkRolePermission(
 }
 
 export function checkMemberPermission(
-  permissions: userRolesPermissions | null,
+  permissions: any,
   permissionToCheck: string
 ) {
   if (permissions?.admin) {
@@ -50,7 +49,7 @@ export function checkMemberPermission(
   return permissions?.member?.includes?.(permissionToCheck);
 }
 export function checkTimeProfilePermission(
-  permissions: userRolesPermissions | null,
+  permissions: any,
   permissionToCheck: string
 ) {
   if (permissions?.admin) {

@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import {
   Button,
   CircularProgress,
@@ -8,36 +9,31 @@ import {
 } from "@material-ui/core";
 import colors from "assets/colors";
 import Input from "components/Utills/Inputs/Input";
-import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
-import { groupTemplate } from "constants/interfaces/project.interface";
-import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
   createGroup,
   getGroup,
-  getGroupById,
   updateGroup,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 
 interface AddGroupProps {}
 
 const AddGroup: React.FC<AddGroupProps> = () => {
   const classes = useStyles();
   // const roles = ["create", "edit", "delete", "self-made"];
+  // const [isAdmin, setIsAdmin] = useState(false);
+  // const [isRole, setIsRole] = useState(false);
+  // const [isMember, setIsMember] = useState(false);
+  // const [isTimeProfile, setIsTimeProfile] = useState(false);
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [isRole, setIsRole] = useState(false);
-  const [isMember, setIsMember] = useState(false);
-  const [isTimeProfile, setIsTimeProfile] = useState(false);
-
-  const [name, setName] = useState("");
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { groupDrawer, group, selectedGroup, selectedProject } = useSelector(
+  const { groupDrawer, selectedGroup, selectedProject } = useSelector(
     (state: RootState) => state.project
   );
+  const [name, setName] = useState<string>(groupDrawer===true?selectedGroup.name:"");
 
   const isDiabled = !loading ? false : true;
   const dispatch = useDispatch();
@@ -53,6 +49,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
         toast.success("Group created successfully");
         dispatch(projectActions.closeProjectGroup());
         dispatch(getGroup({ other: selectedProject }));
+        setName("");
       },
       finallyAction: () => {
         setLoading(false);
@@ -65,8 +62,6 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 
   const handleNameChange = (e: any) => {
     setName(e.target.value);
-    // dispatch(projectActions.setGroup(groupTemplate));
-
     // if (selectedGroup) {
     //   dispatch(
     //     projectActions.setGroup({
@@ -76,18 +71,18 @@ const AddGroup: React.FC<AddGroupProps> = () => {
     //   );
     // }
   };
-  useEffect(() => {
-    if (selectedGroup && groupDrawer) {
-      dispatch(
-        getGroupById({
-          other: selectedGroup,
-          success: (res) => {
-            setName(res.data.name);
-          },
-        })
-      );
-    }
-  }, [groupDrawer, selectedGroup]);
+  // useEffect(() => {
+  //   if (selectedGroup && groupDrawer) {
+  //     dispatch(
+  //       getGroupById({
+  //         other: selectedGroup,
+  //         success: (res) => {
+  //           setName(res.data.name);
+  //         },
+  //       })
+  //     );
+  //   }
+  // }, [groupDrawer, selectedGroup]);
 
   const handleUpdate = () => {
     const payload = {
@@ -100,7 +95,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
       finallyAction: () => {
         setLoading(false);
       },
-      other: selectedGroup,
+      other: selectedGroup._id,
     };
     setLoading(true);
 
@@ -108,7 +103,7 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   };
 
   const handleSubmit = () => {
-    if (selectedGroup) {
+    if (selectedGroup._id) {
       handleUpdate();
     } else {
       handleOk();
@@ -116,8 +111,8 @@ const AddGroup: React.FC<AddGroupProps> = () => {
   };
 
   useEffect(() => {
-    setName("");
-  }, [groupDrawer]);
+    setName(selectedGroup.name);
+  }, [selectedGroup.name]);
 
   return (
     <Dialog open={groupDrawer} onClose={handleClose}>
@@ -129,12 +124,12 @@ const AddGroup: React.FC<AddGroupProps> = () => {
             placeholder="Enter group name"
             onChange={handleNameChange}
           />
-          <br />
-          <HorizontalBreak color={colors.grey} />
+          {/* <br /> */}
         </div>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className={classes.btnWraper}>
         <Button
+          variant="outlined"
           className={classes.cancel}
           onClick={handleClose}
           color="secondary"
@@ -147,9 +142,9 @@ const AddGroup: React.FC<AddGroupProps> = () => {
           color="primary"
           variant="contained"
           onClick={handleSubmit}
-          disabled={isDiabled}
+          disabled={String(name).length > 0 ? false : true}
         >
-          {selectedGroup ? "Update" : "Ok"}
+          {selectedGroup._id ? "Update" : "Add"}
 
           {isDiabled && loading && (
             <CircularProgress size={20} className={classes.progress} />
@@ -163,6 +158,15 @@ const AddGroup: React.FC<AddGroupProps> = () => {
 export default AddGroup;
 
 const useStyles = makeStyles({
+  btnWraper: {
+    marginTop: "5px",
+    "& .MuiButton-outlinedSecondary:hover": {
+      backgroundColor: "transparent",
+      border: "1px solid #9D9D9D",
+    },
+    padding: "12px 24px",
+    gap: "10px",
+  },
   menuWrapper: {
     display: "flex",
     alignItems: "baseline",
@@ -176,9 +180,11 @@ const useStyles = makeStyles({
     color: colors.textPrimary,
   },
   dropdownWrapper: {
+    "& .input-text": { fontWeight: "600 !important" },
+
     maxWidth: 370,
     width: 370,
-    height: 300,
+    // height: 300,
   },
   optionsWrapper: {
     width: "100%",
@@ -194,7 +200,8 @@ const useStyles = makeStyles({
   cancel: {
     fontSize: 12,
     fontWeight: 700,
-    color: colors.textGrey,
+    color: "#9D9D9D",
+    borderColor: "#9D9D9D",
   },
   ok: {
     fontSize: 12,

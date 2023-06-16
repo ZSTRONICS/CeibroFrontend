@@ -1,11 +1,14 @@
 import React from "react";
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import StatusMenu from "../Utills/Others/StatusMenu";
-import { getAllStatus } from "../../config/project.config";
-import TaskList from "./TaskList";
-import taskActions from "../../redux/action/task.action";
-import { useDispatch } from "react-redux";
+import taskActions, { getAllTask } from "../../redux/action/task.action";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
+import TaskList from "components/Tasks/TaskList/TaskList";
+import { getAllProjectsWithMembers } from "redux/action/project.action";
+import { TaskInterface } from "constants/interfaces/task.interface";
+import { RootState } from "redux/reducers/appReducer";
 
 const myStatus = [
   {
@@ -27,15 +30,41 @@ const myStatus = [
 ];
 
 interface TaskSectionInt {}
-
 const TaskSection: React.FC<TaskSectionInt> = () => {
-  const allStatus = myStatus;
+  const allTask: TaskInterface[] = useSelector(
+    (state: RootState) => state.task.allTask
+  );
+
+  const options = [
+    {
+      title: "All",
+      count: allTask.length,
+    },
+    {
+      title: "New",
+      count: allTask.filter((task) => task.state === "new").length,
+    },
+    {
+      title: "Active",
+      count: allTask.filter((task) => task.state === "active").length,
+    },
+
+    {
+      title: "Done",
+      count: allTask.filter((task) => task.state === "done").length,
+    },
+    {
+      title: "Draft",
+      count: allTask.filter((task) => task.state === "draft").length,
+    },
+  ];
+
+  const allStatus = options;
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
-
-  const openTaskDrawer = () => {
-    dispatch(taskActions.openDrawer());
+  const openTaskModal = () => {
+    // dispatch(taskActions.openNewTaskModal());
   };
 
   const handleClick = () => {
@@ -57,7 +86,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
             My Tasks
           </Typography>
           <Button
-            onClick={openTaskDrawer}
+            // onClick={openTaskModal}
             variant="contained"
             color="primary"
             size="small"
@@ -76,6 +105,7 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
         >
           <StatusMenu options={allStatus} />
         </Grid>
+
         <Grid item xs={12} md={2} lg={1}>
           <Button
             onClick={handleClick}
@@ -89,7 +119,16 @@ const TaskSection: React.FC<TaskSectionInt> = () => {
           </Button>
         </Grid>
       </Grid>
-      <TaskList />
+      <Box
+        className={classes.tasklistWrapper}
+        sx={{
+          overflowY: "auto",
+          // height: "calc(100%)",
+          height: "250px",
+        }}
+      >
+        <TaskList filteredData={allTask} />
+      </Box>
     </div>
   );
 };
@@ -98,18 +137,24 @@ export default TaskSection;
 
 const useStyles = makeStyles({
   outerWrapper: {
-    padding: '30px 0 12px 10px'
+    padding: "20px 0 12px 10px",
+  },
+  tasklistWrapper: {
+    // // display:"grid",
+    // overflowY: "auto",
+    // maxHeight: "150px",
+    // height: "100vh",
   },
   menuWrapper: {
     display: "flex",
     justifyContent: "flex-end",
     flexWrap: "wrap",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
   titleContainer: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingTop: 14,
       paddingBottom: 14,
     },
@@ -119,7 +164,7 @@ const useStyles = makeStyles({
     fontWeight: 500,
   },
   viewAll: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       marginLeft: 10,
       marginTop: 10,
     },
@@ -135,8 +180,8 @@ const styles = {
   },
   btn: {
     marginLeft: 10,
-    fontWeight: 500,
-    fontSize: 12,
+    // fontWeight: 500,
+    // fontSize: 12,
   },
   viewAll: {
     fontSize: 10,

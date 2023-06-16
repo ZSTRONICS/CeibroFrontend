@@ -1,60 +1,47 @@
-
-import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import { ContactPhone } from "@material-ui/icons";
+import React from "react";
+import { Badge, Button, Grid, makeStyles } from "@material-ui/core";
 import colors from "../../assets/colors";
 import InputInvite from "../Profile/InputInvite";
-import { MdInsertInvitation } from "react-icons/md";
-import { useMediaQuery } from "react-responsive";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import {
-  getMyConnectionsCount,
-  getMyInvitesCount,
   openViewInvitations,
 } from "redux/action/user.action";
 import ViewInvitations from "components/Profile/ViewInvitations";
+import Box from "@mui/material/Box";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
   const history = useHistory();
-  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 960px)" });
-
   const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
   const { invites } = useSelector((state: RootState) => state?.user);
 
-  useEffect(() => {
-    dispatch(getMyConnectionsCount());
-  }, []);
-
-  useEffect(() => {
-    dispatch(getMyInvitesCount());
-  }, []);
 
   const goToConnections = () => {
     history.push("/connections");
   };
 
   return (
-    <Grid container>
+    <Grid container >
       <Grid item xs={12} md={5} lg={4}>
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
-          <Typography className={classes.connectionTitle}>
+          <Box className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
-            <img src={assets.contactIcon} className={classes.connectionIcon} alt="connectionIcon"/>
-              </div>
+            <ConnectionIcon />
+            </div>
             <span className="align-center">
               <span
                 className={`${classes.marginLeft} ${classes.myConnections}`}
               >
                 My Connections
               </span>
-              <Badge overlap='circular' badgeContent={connections} color="primary"></Badge>
+              <Badge overlap='circular' showZero={true} badgeContent={connections.count} color="primary"></Badge>
             </span>
-          </Typography>
+          </Box>
 
           <Button
             size="small"
@@ -76,19 +63,23 @@ const SmartMenuBar = () => {
         className={classes.invitationOuterWrapper}
       >
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
-          <Typography className={classes.connectionTitle}>
-          <div className={classes.smartMenuIcon}>
-            <img alt="InvitaionIcon" src={assets.InvitaionIcon} className={classes.connectionIcon} />
-              </div>
+          <Box className={classes.connectionTitle}>
+            <div className={classes.smartMenuIcon}>
+              <img
+                alt="InvitaionIcon"
+                src={assets.InvitaionIcon}
+                className={classes.connectionIcon}
+              />
+            </div>
             <span className="align-center">
               <span
                 className={`${classes.marginLeft} ${classes.myConnections}`}
               >
                 Invitations
               </span>
-            { invites.length>0 && <Badge badgeContent={invites} color="error"></Badge>}
+            <Badge showZero={true} badgeContent={invites.count} color="error"></Badge>
             </span>
-          </Typography>
+          </Box>
           <Button
             size="small"
             color="primary"
@@ -114,9 +105,9 @@ const SmartMenuBar = () => {
 export default SmartMenuBar;
 
 const useStyles = makeStyles({
-  smartMenuIcon:{
-    width:'34px',
-    padding: '3px 5px 0px 4px'
+  smartMenuIcon: {
+    width: "34px",
+    padding: "3px 5px 0px 4px",
   },
   connectionWrapper: {
     background: colors.white,
@@ -125,7 +116,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     padding: "0px 15px",
     height: 60,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "space-between",
       padding: "10px 10px",
     },
@@ -136,7 +127,7 @@ const useStyles = makeStyles({
   myConnections: {
     fontSize: 16,
     fontWeight: 600,
-    paddingLeft:'8px'
+    paddingLeft: "8px",
   },
   connectionTitle: {
     fontSize: 14,
@@ -154,7 +145,7 @@ const useStyles = makeStyles({
   },
   invitationOuterWrapper: {
     paddingLeft: 10,
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       padding: 0,
     },
   },

@@ -1,25 +1,24 @@
 import {
-  Grid,
-  Typography,
-  makeStyles,
   FormControl,
   FormControlLabel,
-  RadioGroup,
+  Grid,
   Radio,
+  RadioGroup,
+  Typography,
+  makeStyles,
 } from "@material-ui/core";
+import { RadioProps } from "@material-ui/core/Radio";
 import { withStyles } from "@material-ui/styles";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
 import {
   QuestioniarInterface,
   QuestioniarOptionInterface,
 } from "../../../constants/interfaces/questioniar.interface";
-import { RadioProps } from "@material-ui/core/Radio";
 import { setQuestions } from "../../../redux/action/chat.action";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import AnswerByWrapper from "./AnswerByWrapper";
-import { UserInterface } from "constants/interfaces/user.interface";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
   handleChange?: (value: any) => void;
@@ -30,11 +29,10 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
   const { questioniars, answeredByMe } = useSelector(
     (state: RootState) => state.chat
   );
-  const { user } = useSelector((state: RootState) => state.auth);
   const [selected, setSelected] = useState<any>(-1);
   const dispatch = useDispatch();
   const {
-    question: { type, id, question, options, answer },
+    question: { id, question, options, answer },
   } = props;
 
   useEffect(() => {
@@ -47,7 +45,7 @@ const MultipleQuestion: React.FC<multipleQuestionInt> = (props) => {
     //   updating question in global state
     const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
     const myQuestionIndex: number = myQuestioniars?.findIndex(
-      (question: QuestioniarInterface) => question?.id === id
+      (question: QuestioniarInterface) => question?._id === id
     );
     if (myQuestionIndex > -1) {
       const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];

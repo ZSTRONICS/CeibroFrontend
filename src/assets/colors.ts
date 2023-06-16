@@ -5,7 +5,7 @@ const colors = {
   lightPurpuple: "rgb(122, 177, 251)",
   secondaryBlue: "rgb(0, 82, 204)",
   lightSkyBlue: "#81bbe3",
-  
+
   replyYellow: '#F1B740',
   senderBox: '#fffefdba',
   senderBoxBorder: '#F8DCA2',
@@ -20,6 +20,7 @@ const colors = {
   black: "black",
   lightBlack: "rgb(125, 126, 128)",
   lightGrey: "#F5F7F8",
+  defaultGrey:"#F4F4F4",
   lightGreySecondary: "rgb(213, 213, 213)",
   ternaryGrey: "#D3D4D9",
   grey: "rgb(236, 240, 241)",
@@ -37,6 +38,7 @@ const colors = {
   primaryRed: "rgb(234, 96, 104)",
   secondaryRed: "rgb(247, 104, 91)",
   btnRed: "#F94340",
+  btnGreen: "#309616",
 
   darkNavy: "rgb(65, 154, 154)",
 
@@ -45,6 +47,16 @@ const colors = {
 
   darkColor: "rgb(38, 50, 56)",
   green: "#009900",
+
+  assigned: "rgb(0, 118, 200)",
+  new:'#0076C8',
+  draft:'#bdc3c7',
+  all: '#B6B7B8',
+  ongoing: '#f1b740',
+  rejected: '#f94340',
+  accepted: '#5572BC',
+  done: "#55bcb3",
+
 };
 
 export default colors;

@@ -1,15 +1,14 @@
 
-import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Badge, Grid, makeStyles, Typography } from "@material-ui/core";
+import assets from "assets/assets";
 import * as React from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getMyInvitesCount } from "redux/action/user.action";
 import colors from "../../assets/colors";
+import { RootState } from "../../redux/reducers/appReducer";
 import InputInvite from "./InputInvite";
 import ViewInvitations from "./ViewInvitations";
-import { useState, useEffect } from "react";
-import * as yup from "yup";
-import { getMyInvitesCount } from "redux/action/user.action";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/reducers";
-import assets from "assets/assets";
 interface InvitationsProps {}
 
 const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
@@ -35,13 +34,13 @@ const Invitations: React.FunctionComponent<InvitationsProps> = (props) => {
       <Grid item xs={12} className={classes.viewInvitation}>
         <Typography className={classes.inivite}>
         <div className={classes.smartMenuIcon}>
-            <img src={assets.InvitaionIcon} className={classes.connectionIcon} />
+            <img src={assets.InvitaionIcon} className={classes.connectionIcon} alt="Invitaion"/>
               </div>
               <Typography variant='body1' className={classes.invitationText}>
                 Invitations
               </Typography>
            
-         <Badge badgeContent={invites} className={classes.badge}></Badge>
+        <Badge showZero={true} badgeContent={invites.count} className={classes.badge}></Badge>
         </Typography>
         <ViewInvitations />
       </Grid>

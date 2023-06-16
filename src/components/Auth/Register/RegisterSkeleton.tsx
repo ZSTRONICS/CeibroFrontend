@@ -1,11 +1,5 @@
-import { LoginInterface } from "../../../constants/interfaces/Login.interface";
 import useStyles from "./RegisterStyles";
-import assets from 'assets/assets'
-import colors from 'assets/colors'
-import { Typography } from "@mui/material";
-import { CBox, CSkeleton } from "components/material-ui";
-const RegisterSkeleton: React.FC<LoginInterface> = () => {
-    const classes = useStyles();
+const RegisterSkeleton = () => {
 
     return (
         <>
@@ -41,4 +35,5 @@ const RegisterSkeleton: React.FC<LoginInterface> = () => {
         // </div>
     )
 }
+
 export default RegisterSkeleton;

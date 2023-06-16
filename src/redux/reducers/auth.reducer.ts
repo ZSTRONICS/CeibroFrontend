@@ -1,17 +1,32 @@
+import { UPDATE_PROFILE_PIC } from "config/user.config";
+import {
+  UserInterface,
+  userTemplate,
+} from "constants/interfaces/user.interface";
 import { REGISTER } from "redux-persist";
-import { ActionInterface } from ".";
+import { unSubOneSignal } from "utills/runOneSignal";
+import { ActionInterface } from "./appReducer";
+import {
+  GET_PROFILE,
+  LOGIN,
+  LOGOUT,
+  OTP_VERIFY,
+  REGISTER_CONFIRMATION,
+  REGISTER_PROFILE_SETUP,
+  UPDATE_MY_PROFILE,
+  UPDATE_PROFILE_PICTURE,
+  USER_CHANGE_NUMBER,
+  USER_CHANGE_PASSWORD,
+} from "../../config/auth.config";
 import {
   requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
-import { GET_PROFILE, LOGIN, LOGOUT, UPDATE_MY_PROFILE } from "../../config/auth.config";
-import { UserInterface } from "constants/interfaces/user.interface";
-import { perisitStoreState } from "redux/store";
 
 interface authInterface {
   isLoggedIn: boolean;
-  user: UserInterface | null | undefined;
+  user: UserInterface;
   loginLoading: boolean;
   registerLoading: boolean;
   authSuccessMessage: string | null | undefined;
@@ -20,7 +35,7 @@ interface authInterface {
 
 const intialStatue: authInterface = {
   isLoggedIn: false,
-  user: null,
+  user: userTemplate,
   loginLoading: false,
   registerLoading: false,
   authSuccessMessage: "",
@@ -29,27 +44,26 @@ const intialStatue: authInterface = {
 
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
-    case requestPending(LOGIN): {
-      setTimeout(() => {
-        state.loginLoading = false
-      }, 10000 / 2);
-      return {
-        ...state,
-        loginLoading: true,
-      };
-    }
-    case requestFail(LOGIN): {
-      localStorage.clear();
-      sessionStorage.clear();
-      perisitStoreState()
-      setTimeout(() => {
-        state.loginLoading = false
-      }, 10000 / 2);
-      return {
-        ...state,
-        loginLoading: false,
-      };
-    }
+    // case requestPending(LOGIN): {
+    //   setTimeout(() => {
+    //     state.loginLoading = false
+    //   }, 10000 / 2);
+    //   return {
+    //     ...state,
+    //     loginLoading: true,
+    //   };
+    // }
+    // case requestFail(LOGIN): {
+    //   sessionStorage.clear();
+    //   purgeStoreStates()
+    //   setTimeout(() => {
+    //     state.loginLoading = false
+    //   }, 10000 / 2);
+    //   return {
+    //     ...state,
+    //     loginLoading: false,
+    //   };
+    // }
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
@@ -61,11 +75,9 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-
-
     case requestPending(REGISTER): {
       setTimeout(() => {
-        state.registerLoading = false
+        state.registerLoading = false;
       }, 10000 / 2);
       return {
         ...state,
@@ -76,6 +88,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     case requestSuccess(REGISTER): {
       return {
         ...state,
+        phoneNumber: action.payload.phoneNUmber,
         registerLoading: false,
       };
     }
@@ -84,7 +97,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.clear();
       sessionStorage.clear();
       setTimeout(() => {
-        state.registerLoading = false
+        state.registerLoading = false;
       }, 10000 / 2);
       return {
         ...state,
@@ -92,10 +105,81 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
+    case requestPending(REGISTER_CONFIRMATION): {
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: true,
+      };
+    }
+
+    case requestSuccess(REGISTER_CONFIRMATION): {
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestFail(REGISTER_CONFIRMATION): {
+      // localStorage.clear();
+      // sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestPending(REGISTER_PROFILE_SETUP): {
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: true,
+      };
+    }
+
+    case requestSuccess(REGISTER_PROFILE_SETUP): {
+      localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      return {
+        ...state,
+        isLoggedIn: true,
+        user: action.payload.user,
+        loginLoading: false,
+      };
+    }
+
+    case requestFail(REGISTER_PROFILE_SETUP): {
+      // localStorage.clear();
+      // sessionStorage.clear();
+      setTimeout(() => {
+        state.registerLoading = false;
+      }, 10000 / 2);
+      return {
+        ...state,
+        registerLoading: false,
+      };
+    }
+
+    case requestSuccess(UPDATE_PROFILE_PICTURE): {
+      if (action.payload.profilePic) {
+        state.user.profilePic = action.payload.profilePic;
+      }
+      return {
+        ...state,
+        user: { ...state.user },
+      };
+    }
     case LOGOUT: {
       localStorage.removeItem("tokens");
       localStorage.clear();
-      sessionStorage.clear()
+      sessionStorage.clear();
+      unSubOneSignal();
       return {
         ...state,
         isLoggedIn: false,
@@ -104,18 +188,24 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
     case GET_PROFILE: {
-      return {
-        ...state,
-        user: action.payload,
-      };
+      if (action?.payload?.body) {
+        return {
+          ...state,
+          user: action.payload,
+        };
+      } else {
+        return {
+          ...state,
+        };
+      }
     }
 
     case UPDATE_MY_PROFILE: {
-      const res = action.payload.body
-      let currUser: any = state.user
+      const res = action.payload.body;
+      let currUser: any = state.user;
       for (var atrNmae in res) {
         if (atrNmae in currUser) {
-          currUser[atrNmae] = res[atrNmae]
+          currUser[atrNmae] = res[atrNmae];
         }
       }
       return {

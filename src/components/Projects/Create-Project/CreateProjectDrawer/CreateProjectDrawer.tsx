@@ -1,45 +1,71 @@
-
-import { Drawer } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
-import { useDispatch, useSelector } from 'react-redux'
-import colors from '../../../../assets/colors'
-import projectActions from '../../../../redux/action/project.action'
-import { RootState } from '../../../../redux/reducers'
-import ProjectDrawerHeader from './ProjectDrawerHeader'
-import ProjectDrawerMenu from './ProjectDrawerMenu'
-import CreateProjectBody from './CreateProjectBody'
-import CreateProjectFooter from './CreateProjectFooter'
+import { Drawer } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import { useDispatch, useSelector } from "react-redux";
+import colors from "../../../../assets/colors";
+import projectActions from "../../../../redux/action/project.action";
+import { RootState } from "../../../../redux/reducers/appReducer";
+import DrawerHeader from "./DrawerHeader";
+import ProjectDrawerMenu from "./ProjectDrawerMenu";
+import CreateProjectBody from "./CreateProjectBody";
+import CreateProjectFooter from "./CreateProjectFooter";
+import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import { Grid } from "@mui/material";
 
 const CreateProjectDrawer = () => {
-    const drawerOpen = useSelector((store:RootState) => store.project.drawerOpen)
-    const dispatch = useDispatch()
-    const classes = useStyles()
+  const { drawerOpen, menue, projectOverview } = useSelector(
+    (store: RootState) => store.project
+  );
+  const dispatch = useDispatch();
+  const classes = useStyles();
 
-    const handleClose = () => {
-        dispatch(projectActions.closeDrawer())
-    }
+  const handleClose = () => {
+    dispatch(projectActions.closeDrawer());
+    dispatch(projectActions.setProjectOverview(projectOverviewTemplate));
+  };
 
-    return (    
-        <Drawer onClose={handleClose} open={drawerOpen} anchor="right">
-            <div className={classes.outerWrapper}>
-                <ProjectDrawerHeader/>
-                <ProjectDrawerMenu/>
-                <CreateProjectBody/>
-                <CreateProjectFooter/>
-            </div>
-          </Drawer>
-    )
-}
+  return (
+    <Drawer
+      onClose={handleClose}
+      open={drawerOpen}
+      anchor="right"
+      className={classes.DrawerWrapper}
+    >
+      <div className={classes.outerWrapper}>
+        <DrawerHeader
+          title={projectOverview._id ? projectOverview.title : "New Project"}
+          handleClose={handleClose}
+        />
+        <Grid container sx={{ overflowX: "auto", flexWrap: "nowrap" }}>
+          <ProjectDrawerMenu />
+        </Grid>
+        <CreateProjectBody />
+        {menue === 1 ? <CreateProjectFooter /> : <></>}
+      </div>
+    </Drawer>
+  );
+};
 
-export default CreateProjectDrawer
+export default CreateProjectDrawer;
 
 const useStyles = makeStyles({
-    outerWrapper: {
-        width: 'calc(100vw - 200px)',
-        backgroundColor: colors.lightGrey,
-        height: '100vh',
-        ['@media (max-width:960px)']: {
-            width: '100vw'
-        }
-    }
-})
+  DrawerWrapper: {
+    "& .MuiDrawer-paper": {
+      overflowY: "hidden",
+    },
+  },
+  outerWrapper: {
+    width: "calc(100vw - 200px)",
+    backgroundColor: colors.lightGrey,
+    // height: "calc(100vh-213px)",
+    height: "100vh",
+    // overflowY: "hidden",
+    "@media (max-width:960px)": {
+      width: "100vw",
+      // overflowY: "auto",
+    },
+    "& .MuiDrawer-paper": {
+      overflowY: "hidden",
+      flexDirection: "row",
+    },
+  },
+});

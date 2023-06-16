@@ -11,7 +11,7 @@ import {
 } from "@material-ui/core";
 import colors from "../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../redux/reducers";
+import { RootState } from "../../../redux/reducers/appReducer";
 import { toast } from "react-toastify";
 import { forwardChat } from "../../../redux/action/chat.action";
 
@@ -24,11 +24,11 @@ interface ForwardMessageInt {
 const ForwardMessage: React.FC<ForwardMessageInt> = (props) => {
   const classes = useStyles();
   const [selected, setSelected] = useState<string[]>([]);
-  const { chat, selectedChat } = useSelector((store: RootState) => store.chat);
+  const { chat, selectedChatId } = useSelector((store: RootState) => store.chat);
   const { open, messageId } = props;
   const dispatch = useDispatch();
 
-  const myChats = chat.filter((room: any) =>(room._id !== selectedChat));
+  const myChats = chat.filter((room: any) =>(room._id !== selectedChatId));
 
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -70,10 +70,10 @@ const ForwardMessage: React.FC<ForwardMessageInt> = (props) => {
             const chatMembers = [...room.members, ...room.removedAccess];
             if (room.isGroupChat === false) {
               let chatMember = chatMembers.filter(
-                (item) => item.id !== user.id
+                (item) => item._id !== user._id
               );
               chatMember
-                .filter((item) => item.id !== user.id)
+                .filter((item) => item._id !== user._id)
                 .map(
                   (item: any) => (
                     (individualmember.firstName = item.firstName),

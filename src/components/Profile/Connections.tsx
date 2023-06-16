@@ -1,12 +1,13 @@
-
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Button, Grid, makeStyles, Typography } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import colors from "../../assets/colors";
-import { RootState } from "../../redux/reducers";
+import { RootState } from "../../redux/reducers/appReducer";
 import { getMyConnectionsCount } from "redux/action/user.action";
 import assets from "assets/assets";
+import { Badge, Grid, Stack } from "@mui/material";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 
 interface IConnectionsProps {}
 
@@ -16,64 +17,70 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
 
-  useEffect(() => {
-    dispatch(getMyConnectionsCount());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getMyConnectionsCount());
+  // }, []);
 
   const handleClick = () => {
     history.push("/connections");
   };
 
-  return (<>
-    <Grid container xs={12} className={classes.connectionsContainer}>
-        <Grid item  className={classes.connectionMain}>
-          <div className={classes.iconContainer}>
-            <img src={assets.contactIcon} className={classes.icon}/>
-          </div>
-          <Typography variant="body1" className={classes.connectionText}>
-            My connections
-             <Badge
-            color="primary"
-            badgeContent={connections}
-            className={classes.badge}
-          ></Badge>
-          </Typography>
-       </Grid>
+  return (
+    <>
+      <Grid
+        container
+        justifyContent="space-between"
+        className={classes.connectionsContainer}
+      >
+        <Grid item>
+          <Stack direction={"row"}>
+            <div className={classes.iconContainer}>
+            <ConnectionIcon/>
+            </div>
+            <Typography variant="body1" className={classes.connectionText}>
+              My Connections
+              <Badge
+                showZero={true}
+                sx={{'& .MuiBadge-badge':{
+                  background:"#F1B740 !important"
+                }}}
+                badgeContent={connections.count}
+                className={classes.badge}
+              ></Badge>
+            </Typography>
+          </Stack>
+        </Grid>
         <Grid item>
           <Button onClick={handleClick} color="primary" variant="outlined">
             View
           </Button>
-       </Grid>
-    </Grid>
-  </>
+        </Grid>
+      </Grid>
+    </>
   );
 };
 
 export default Connections;
 
 const useStyles = makeStyles({
-  connectionsContainer:{
-    justifyContent: "space-between",
-    borderTop: `1px solid ${colors.lightGrey}`,
+  connectionsContainer: {
+    border: `1px solid #E2E4E5`,
     background: colors.white,
     padding: "10px 15px",
-    marginTop: 20,
+    marginTop: 10,
   },
-  connectionMain:{
-    display: 'flex'
+  iconContainer: {
+    width: "34px",
+    padding: "3px 5px 0px 4px",
   },
-  iconContainer:{
-    width:'34px',
-    padding: '3px 5px 0px 4px'
-  },
-  icon:{
-    width: '100%'
+  icon: {
+    width: "100%",
   },
   connectionText: {
     fontSize: 14,
     fontWeight: 500,
     paddingLeft: 7,
-    paddingTop: 4
+    paddingTop: 4,
   },
   badge: {
     marginLeft: 20,

@@ -1,7 +1,6 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { GrClose } from "react-icons/gr";
 import { useDispatch } from "react-redux";
 import colors from "../../../assets/colors";
 import {
@@ -32,7 +31,7 @@ const ProjectDrawerHeader: React.FC<ProjectDrawerHeaderInt> = (props) => {
       </div>
       <div className={classes.headerIcons} onClick={handleClose}>
         <Typography className={classes.close}>Close</Typography>
-        <Close className={classes.icon} />
+        {/* <Close className={classes.icon} /> */}
       </div>
     </div>
   );
@@ -43,12 +42,11 @@ export default ProjectDrawerHeader;
 const useStyles = makeStyles({
   drawerHeader: {
     backgroundColor: colors.white,
-    height: 80,
+    // height: 80,
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingLeft: 20,
-    paddingRight: 20,
+    padding: "20px",
   },
   headerTitleWrapper: {},
   headerTitle: {
@@ -71,5 +69,8 @@ const useStyles = makeStyles({
   close: {
     fontSize: 14,
     fontWeight: 500,
+    border: "1px solid",
+    padding: "5px 4px",
+    borderRadius: "4px",
   },
 });

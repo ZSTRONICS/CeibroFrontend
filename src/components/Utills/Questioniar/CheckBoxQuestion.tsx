@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
-import { UserInterface } from "constants/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../../assets/colors";
@@ -18,8 +17,7 @@ import {
   QuestioniarOptionInterface,
 } from "../../../constants/interfaces/questioniar.interface";
 import { setQuestions } from "../../../redux/action/chat.action";
-import { RootState } from "../../../redux/reducers";
-import AnswerBy from "./AnswerBy";
+import { RootState } from "../../../redux/reducers/appReducer";
 import AnswerByWrapper from "./AnswerByWrapper";
 interface multipleQuestionInt {
   question: QuestioniarInterface;
@@ -33,7 +31,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
   // const { user } = useSelector((state: RootState) => state.auth);
   const [selected, setSelected] = useState<any>([]);
   const {
-    question: { type, question, options, answer, id },
+    question: { question, options, answer, id },
   } = props;
   const dispatch = useDispatch();
 
@@ -47,7 +45,7 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
     //   updating question in global state
     const myQuestioniars = JSON.parse(JSON.stringify(questioniars));
     const myQuestionIndex: number = myQuestioniars?.findIndex(
-      (question: QuestioniarInterface) => question?.id === id
+      (question: QuestioniarInterface) => question?._id === id
     );
     if (myQuestionIndex > -1) {
       const myQuestion: QuestioniarInterface = myQuestioniars[myQuestionIndex];
@@ -83,13 +81,13 @@ const CheckBoxQuestion: React.FC<multipleQuestionInt> = (props) => {
                       <FormControlLabel
                         key={index}
                         className={`options-text ${classes.smallRadioButton}`}
-                        control={<CustomCheckbox name={option.id} />}
+                        control={<CustomCheckbox name={option._id} />}
                         label={option.option}
                         value={index}
                         disabled={answeredByMe}
                         checked={
                           selected?.findIndex(
-                            (selected: any) => selected == index
+                            (selected: any) => selected === index
                           ) > -1
                         }
                       />

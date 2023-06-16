@@ -5,8 +5,6 @@ import Menu, { MenuProps } from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import DraftsIcon from '@material-ui/icons/Drafts';
 
 const StyledMenu = withStyles({
   paper: {
@@ -45,13 +43,12 @@ export interface MenuOptions
   icon: any
 }
 
-interface MenuButton {
+interface Props {
     buttonInner: any
     menu: MenuOptions[]
 }
 
-
-const MenuButton: FC<MenuButton> = (props) => {
+const MenuButton: FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const { buttonInner, menu } = props
 

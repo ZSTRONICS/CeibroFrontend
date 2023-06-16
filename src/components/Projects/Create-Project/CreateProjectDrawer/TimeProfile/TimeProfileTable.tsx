@@ -19,7 +19,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlineCheckCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getProjectProfile } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 
 function createData(name: string, approve: boolean, role: number) {
@@ -93,8 +93,8 @@ const RolesTable = () => {
             <>
               {projectProfile.map((row: any) => (
                 <TableRow
-                  key={row.name}
-                  onClick={() => handleTimeProfileClick(row.id)}
+                  key={row._id}
+                  onClick={() => handleTimeProfileClick(row._id)}
                 >
                   <TableCell
                     component="th"

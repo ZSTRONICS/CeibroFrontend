@@ -26,11 +26,11 @@ import { useDispatch, useSelector } from "react-redux";
 import projectActions, {
   createProfileWork,
   getNewWork,
-  getRoles,
+  PROJECT_APIS,
   getWorkById,
   updateWork,
 } from "redux/action/project.action";
-import { RootState } from "redux/reducers";
+import { RootState } from "redux/reducers/appReducer";
 import { mapRoles } from "helpers/project.helper";
 import { toast } from "react-toastify";
 import { Toast } from "react-toastify/dist/components";
@@ -73,7 +73,7 @@ const CreateWork = () => {
   };
 
   useEffect(() => {
-    dispatch(getRoles({ other: selectedProject }));
+    dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
   }, []);
 
   const classes = useStyle();
@@ -196,7 +196,7 @@ const CreateWork = () => {
                 onChange={(e: any) =>
                   setData({ ...data, name: e.target.value })
                 }
-                value={data?.name}
+                value={data?.name || ''}
                 placeholder="Select/Add work"
               />
             </Grid>
