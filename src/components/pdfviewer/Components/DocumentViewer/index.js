@@ -12,8 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import pdfWorker from "./pdfjs/pdf.worker.js";
 import { scale } from "chroma-js";
-import { ZoomIn, ZoomOut, Refresh } from "@mui/icons-material";
-import { ButtonGroup, Icon, Button } from "@mui/material";
+import { ZoomIn, ZoomOut, Refresh, Room } from "@mui/icons-material";
+import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
 
 // pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -50,6 +50,10 @@ const DocumentViewerStyles = () => ({
     top: 0,
     left: 0,
   },
+  pageContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
 });
 
 class DocumentViewer extends Component {
@@ -57,6 +61,8 @@ class DocumentViewer extends Component {
     super(props);
     this.state = this.initialState(props);
     this.scrollPanel = React.createRef();
+    this.canvasRef = React.createRef();
+
     // self members binding
     const funcs = [
       "onLoadingPage",
@@ -72,12 +78,10 @@ class DocumentViewer extends Component {
       "renderLoadingDocument",
       "handleZoomIn",
       "handleZoomOut",
+      "handleMarkerClick",
+      "drawMarker",
     ];
     doEach(funcs, (func) => (this[func] = this[func].bind(this)));
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.file, "@@@@@@@@@@@@@@@@@");
   }
 
   initialState(props) {
@@ -87,12 +91,16 @@ class DocumentViewer extends Component {
       loadingPage: false,
       progress: 0,
       last: 0,
-      percentage: 1,
+      percentage: 0.5,
       buffer: 0,
       first: true, // is first page
       pageFactory: null, // PDFDocument Page factory object
       factory: null, // PDFDocument factory object
       isZooming: false,
+      isActive: false,
+      clickX: null,
+      clickY: null,
+      drawingIcons: [],
     };
   }
 
@@ -193,7 +201,33 @@ class DocumentViewer extends Component {
     setTimeout(() => this.setState({ isZooming: false }), 500);
   }
 
+  handleMarkerClick = () => {
+    this.setState((prevState) => ({
+      isActive: !prevState.isActive,
+    }));
+  };
+
+  drawMarker(event) {
+    const canvas = this.canvasRef.current;
+    if (!canvas || !this.state.isActive) return;
+    const canvasRect = canvas.getBoundingClientRect();
+    console.log(canvasRect, "canvas");
+    const clickX = event.clientX - canvasRect.left;
+    const clickY = event.clientY - canvasRect.top;
+    const icon = { x: clickX, y: clickY, tooltip: "" };
+    const icons = [...this.state.drawingIcons, icon];
+    console.log(clickX, clickY, "clickX y");
+    this.setState({ drawingIcons: icons });
+  }
+
   renderMainDocument() {
+    const { classes } = this.props;
+    const { isActive, clickX, clickY, drawingIcons } = this.state;
+    const buttonStyle = {
+      padding: 0,
+      color: isActive ? "black" : "",
+    };
+
     if (!this.props.pdf) {
       return <div />;
     }
@@ -220,14 +254,24 @@ class DocumentViewer extends Component {
             >
               <Icon component={Refresh} />
             </Button>
+            <Button onClick={this.handleMarkerClick} sx={buttonStyle}>
+              <Icon component={Room} />
+            </Button>
           </ButtonGroup>
         </div>
-        <div style={{ height: "600px", overflow: "auto" }}>
+        <div
+          style={{
+            height: "600px",
+            overflow: "auto",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Document
             file={this.props.file}
-            // url={this.props.pdf}
             noData={<div />}
             loading={<div />}
+            onClick={this.drawMarker}
             onSourceSuccess={this.onDocumentSourceSuccess}
             onSourceError={(error) => {
               console.log(error.message);
@@ -236,12 +280,37 @@ class DocumentViewer extends Component {
             style={{
               transition: "transform 0.3s ease",
               transform: `scale(${this.state.percentage})`,
+              height: "100%",
             }}
           >
+            <div style={{ position: "relative" }}>
+              {drawingIcons.length > 0 &&
+                drawingIcons.map((icon, index) => {
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        position: "absolute",
+                        top: `${icon.y}px`,
+                        left: `${icon.x}px`,
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 9999,
+                      }}
+                    >
+                      <Tooltip title={"Marker tooltip"}>
+                        <Icon component={Room} style={{ color: "red" }} />
+                      </Tooltip>
+                    </div>
+                  );
+                })}
+            </div>
             <Page
               inputRef={(r) => {
                 this.pageRef = r;
+                // this.canvasRef.current = r?.canvas;
               }}
+              canvasRef={this.canvasRef}
+              // className={classes.pageContainer}
               onLoadProgress={this.onLoadingPage}
               onLoadSuccess={this.onLoadedPage}
               pageNumber={this.state.page}
@@ -254,500 +323,6 @@ class DocumentViewer extends Component {
       </div>
     );
   }
-
-  // dummyConfig() {
-  //     return {
-  //         "1": {
-  //             "workarea": {
-  //                 "width": 595,
-  //                 "height": 842
-  //             },
-  //             "objects": [
-  //                 {
-  //                     "type": "image",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 297.5,
-  //                     "top": 421,
-  //                     "width": 0,
-  //                     "height": 0,
-  //                     "fill": "rgb(0,0,0)",
-  //                     "stroke": null,
-  //                     "strokeWidth": 0,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "rgba(255, 255, 255, 0)",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "crossOrigin": "",
-  //                     "cropX": 0,
-  //                     "cropY": 0,
-  //                     "id": "workarea",
-  //                     "name": "",
-  //                     "src": "",
-  //                     "link": {},
-  //                     "tooltip": {
-  //                         "enabled": false
-  //                     },
-  //                     "layout": "fixed",
-  //                     "workareaWidth": 595,
-  //                     "workareaHeight": 842,
-  //                     "filters": []
-  //                 },
-  //                 {
-  //                     "type": "circle",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 267,
-  //                     "top": 390.5,
-  //                     "width": 60,
-  //                     "height": 60,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "radius": 30,
-  //                     "startAngle": 0,
-  //                     "endAngle": 6.283185307179586,
-  //                     "id": "a4a12703-197b-4725-8148-54eedfd6ffaa",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 }
-  //             ],
-  //             "animations": [],
-  //             "styles": [],
-  //             "dataSources": []
-  //         },
-  //         "2": {
-  //             "workarea": {
-  //                 "width": 595,
-  //                 "height": 842
-  //             },
-  //             "objects": [
-  //                 {
-  //                     "type": "image",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 297.5,
-  //                     "top": 421,
-  //                     "width": 0,
-  //                     "height": 0,
-  //                     "fill": "rgb(0,0,0)",
-  //                     "stroke": null,
-  //                     "strokeWidth": 0,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "rgba(255, 255, 255, 0)",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "crossOrigin": "",
-  //                     "cropX": 0,
-  //                     "cropY": 0,
-  //                     "id": "workarea",
-  //                     "name": "",
-  //                     "link": {},
-  //                     "tooltip": {
-  //                         "enabled": false
-  //                     },
-  //                     "layout": "fixed",
-  //                     "workareaWidth": 595,
-  //                     "workareaHeight": 842,
-  //                     "src": "",
-  //                     "filters": []
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 101,
-  //                     "top": 148.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "267ec4ab-81a5-4423-895c-b574e897dd3a",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 277,
-  //                     "top": 400.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "5048a58a-0bf0-45d7-8d2a-45dcf2bc155a",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 277,
-  //                     "top": 400.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "73f546ff-5873-45b6-a57c-83f7d530e8b6",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 379,
-  //                     "top": 177.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "085eacb0-2f5c-40e3-a9e1-13872fe8fd2b",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 225,
-  //                     "top": 230.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "886caf5f-3b8b-474c-9330-264b23f2efaa",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 }
-  //             ],
-  //             "animations": [],
-  //             "styles": [],
-  //             "dataSources": []
-  //         }
-  //     };
-  // }
 
   render() {
     const { classes } = this.props;
