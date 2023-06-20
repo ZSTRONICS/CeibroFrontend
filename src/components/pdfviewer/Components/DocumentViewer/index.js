@@ -14,6 +14,7 @@ import pdfWorker from "./pdfjs/pdf.worker.js";
 import { ZoomIn, ZoomOut, Refresh, Room } from "@mui/icons-material";
 import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
 
+
 //pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
  pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
