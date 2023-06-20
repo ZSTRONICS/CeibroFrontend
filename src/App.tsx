@@ -51,7 +51,7 @@ import {
 } from "config/chat.config";
 
 // axios
-import {AxiosV1, AxiosV2, urlV1, SERVER_URL } from "utills/axios";
+import { AxiosV1, AxiosV2, urlV1, SERVER_URL } from "utills/axios";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { TASK_CONFIG } from "config/task.config";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
@@ -80,12 +80,14 @@ import { USER_CONFIG } from "config/user.config";
 import { getMyConnections, getMyInvitesCount } from "redux/action/user.action";
 import { error } from "console";
 
-interface MyApp {}
+interface MyApp { }
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  let sock: Socket;
+  let sock: any = null;
+  let hbCounter = 0;
+  let hbAckRcvd = false;
   const [intervalId, setLocalIntervalId] = useState<NodeJS.Timer>();
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
@@ -185,16 +187,29 @@ const App: React.FC<MyApp> = () => {
     });
   }, [uploadPendingFiles]);
 
+  // Send a heartbeat event to the server periodically
+  function sendHeartbeat() {
+    if (sock !== null) {
+      sock.emit('heartbeat');
+      hbCounter += 1
+      if(hbCounter === 6 && hbAckRcvd === false) {
+        // reconnect logic here
+        console.log('No HB RCVD :>> ');
+        sock.disconnect();
+      } 
+      if (hbCounter > 5) {
+        hbAckRcvd = false;
+        hbCounter = 0;
+      }
+    }
+  }
+
   useEffect(() => {
     if (isLoggedIn) {
       InitOneSignal(String(user._id));
 
-      if (socket.getSocket() !== null) {
-        try {
-          if (!socket.isSocketConnected()) {
-            socket.logoutSocketsIO();
-          }
-        } catch (e) { }
+      if (sock !== null) {
+        return;
       }
 
       const tokens = localStorage.getItem("tokens") || "{}";
@@ -211,7 +226,12 @@ const App: React.FC<MyApp> = () => {
         console.log("Connected to server");
         socket.setUserId(String(user._id));
         socket.setSocket(sock);
+        setInterval(sendHeartbeat, 2000);
         clearInterval(intervalId);
+      });
+
+      sock.on("heartbeatAck", () => {
+        hbAckRcvd = true;
       });
 
       // Listen for disconnect event
@@ -226,9 +246,9 @@ const App: React.FC<MyApp> = () => {
         setLocalIntervalId(localInterval)
       });
 
-      sock.on("connect_error", (err) => {
+      sock.on("connect_error", (err:any) => {
         clearInterval(intervalId);
-        let localInterval  = setInterval(() => {
+        let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
@@ -385,9 +405,9 @@ const App: React.FC<MyApp> = () => {
       });
 
       sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
+        console.log("eventType--->", dataRcvd);
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
-        console.log("eventType--->", eventType, dataRcvd);
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(String(user._id))) {
