@@ -1,8 +1,8 @@
 import { buttonClasses } from "@mui/base/Button";
-import TabPanelUnstyled from "@mui/base/TabPanel";
+// import TabPanelUnstyled from "@mui/base/TabPanel";
 import TabsListUnstyled from "@mui/base/TabsList";
 import TabUnstyled, { tabClasses } from "@mui/base/Tab";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 import useResponsive from "hooks/useResponsive";
 import React, { useRef, useState, useEffect } from "react";
@@ -11,6 +11,26 @@ interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 1 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
 }
 
 export const TabPanelContainer: React.FC<TabPanelProps> = ({
@@ -35,7 +55,7 @@ export const TabPanelContainer: React.FC<TabPanelProps> = ({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [headerHeight,value, index]);
+  }, [headerHeight, value, index]);
 
   useEffect(() => {
     const tabPanelElement = tabPanelRef.current;
@@ -50,12 +70,14 @@ export const TabPanelContainer: React.FC<TabPanelProps> = ({
       hidden={value !== index}
       {...other}
       ref={tabPanelRef}
-      style={{ maxHeight: `${windowHeight-20}px`, overflow: "auto" }}
+      style={{ maxHeight: `${windowHeight - 20}px`, overflow: "auto" }}
     >
       {value === index && <Box>{children}</Box>}
     </div>
   );
 };
+
+export { TabPanel };
 
 export const Tab = styled(TabUnstyled)`
   font-family: Inter;
@@ -77,14 +99,14 @@ export const Tab = styled(TabUnstyled)`
   }
 `;
 
-export const TabPanel = styled(TabPanelUnstyled)(
-  ({ theme }) => `
-  width: 100%;
-  font-family: Inter;
-  font-size: 0.875rem;
-  padding: 20px 4px 5px;
-  `
-);
+// export const TabPanel = styled(TabPanelUnstyled)(
+//   ({ theme }) => `
+//   width: 100%;
+//   font-family: Inter;
+//   font-size: 0.875rem;
+//   padding: 20px 4px 5px;
+//   `
+// );
 
 export const TabsList = styled(TabsListUnstyled)(
   ({ theme }) => `

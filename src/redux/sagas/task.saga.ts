@@ -1,12 +1,28 @@
-import { TASK_CONFIG } from "config/task.config";
 import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
+import { TASK_CONFIG } from "config";
 
 const createTask = apiCall({
   useV2Route: false,
   type: TASK_CONFIG.CREATE_TASK,
   method: "post",
   path: "/task/",
+})
+
+// get task assigned to me 
+const getTaskAssignedToMe = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME,
+  method: "get",
+  path: "/task/to-me",
+})
+
+// get task created from me 
+const getTaskCreatedFromMe = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_TASK_CREATED_FROM_ME,
+  method: "get",
+  path: "/task/from-me",
 })
 
 const uploadDocs = apiCall({
@@ -140,6 +156,9 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.GET_TASK, getTask)
+  yield takeLatest(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME, getTaskAssignedToMe)
+  yield takeLatest(TASK_CONFIG.GET_TASK_CREATED_FROM_ME, getTaskCreatedFromMe)
+
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.DELETE_TASK, deleteTask)
   yield takeLatest(TASK_CONFIG.DELETE_SUBTASK_MEMBER, deleteSubtaskMember)

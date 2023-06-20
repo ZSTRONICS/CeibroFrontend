@@ -68,6 +68,10 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
 
     const newRoutePath = `/drawingDetail`;
     history.push(newRoutePath);
+
+    //later api call for get task if alltask.length < 0 
+
+    
   };
 
   const viewBtn = (drawing: Drawing) => {
