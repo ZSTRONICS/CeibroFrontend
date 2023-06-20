@@ -54,6 +54,7 @@ const taskActions = {
     getAllCommentsOfSubtaskById: createAction(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID),
     getTaskAssignedToMe: createAction(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME),
     getTaskCreatedFromMe: createAction(TASK_CONFIG.GET_TASK_CREATED_FROM_ME),
+    createTask: createAction(TASK_CONFIG.CREATE_TASK)
 }
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)

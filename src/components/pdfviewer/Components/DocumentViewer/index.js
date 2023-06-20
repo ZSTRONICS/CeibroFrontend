@@ -60,7 +60,6 @@ const DocumentViewerStyles = () => ({
 
 class DocumentViewer extends Component {
   constructor(props) {
-    console.log("pdfjs.version", pdfjs.version);
     super(props);
     this.state = this.initialState(props);
     this.scrollPanel = React.createRef();
@@ -434,7 +433,7 @@ class DocumentViewer extends Component {
                   <AutocompleteField
                     placeholder="Select Task"
                     label="Task"
-                    options={formatDropdownData([], "title", "_id")}
+                    options={formatDropdownData(this.props.newTask, "", "_id", "topic")}
                     // onChange={handleProjectChange}
                     sx={{
                       width: "100%",

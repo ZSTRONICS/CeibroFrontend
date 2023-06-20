@@ -117,15 +117,17 @@ export const getDistinctFromTwoArr = (arr: any[], arr2: any[]) => {
 const formatDropdownData = (
   data: any[] | any,
   labelKey: string,
-  valueKey: string
+  valueKey: string,
+  topicKey?: string
 ) => {
   if (data) {
     return (
       data &&
       data.map((item: any) => {
+        const topic = topicKey ? item[topicKey][topicKey] || "" : "";
         const label = item[labelKey] || "";
         const value = item[valueKey] || "";
-        return { label: label.toString(), value: value.toString() };
+        return { label: `${label.toString()}  ${topic.toString()}`, value: value.toString() };
       })
     );
   } else {

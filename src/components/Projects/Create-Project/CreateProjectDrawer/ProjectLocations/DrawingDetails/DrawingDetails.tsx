@@ -44,7 +44,7 @@ function DrawingDetails() {
         <Task/>
         </Grid>
         <Grid item md={8.2}>
-          <DocumentReader />
+          <DocumentReader  newTask = {allTaskAssignedToMe.new}/>
         </Grid>
         <Grid item md={1} sx={sideBarStyle}>
           Toolbar

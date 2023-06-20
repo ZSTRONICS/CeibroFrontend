@@ -7,22 +7,18 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  Divider,
 } from "@mui/material";
-import Link from "@mui/material/Link";
 
 // formik
-import { Form, Formik, useFormikContext } from "formik";
+import { Form, Formik } from "formik";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 // import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
-import assets from "assets/assets";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "theme";
-import { createTask, taskActions } from "redux/action";
+import { taskActions } from "redux/action";
 import { RootState } from "../../../redux/reducers/appReducer";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
@@ -64,7 +60,7 @@ export const TaskModal = () => {
       description,
     };
     dispatch(
-      createTask({
+     taskActions.createTask({
         body: payload,
         success: (res) => {
           handleClose();
