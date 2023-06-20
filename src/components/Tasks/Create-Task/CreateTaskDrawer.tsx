@@ -7,9 +7,9 @@ import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interf
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../assets/colors";
-import taskActions from "../../../redux/action/task.action";
 import CreateTaskBody from "./CreateTaskBody";
 import TaskDrawerMenu from "./TaskDrawerMenu";
+import { taskActions } from "redux/action";
 
 const CreateTaskDrawer = () => {
   const dispatch = useDispatch();

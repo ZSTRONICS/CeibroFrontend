@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import taskActions from "../../redux/action/task.action";
 import { useHistory } from "react-router";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
@@ -14,12 +13,12 @@ import { styled } from "@mui/system";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
-import { useLoading, useOpenCloseModal } from "hooks";
+import { useOpenCloseModal } from "hooks";
 import { RootState } from "redux/reducers/appReducer";
 import projectActions, { getAllProjects } from "redux/action/project.action";
-import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { CButton } from "components/Button";
 import { socket } from "services/socket.services";
+import { taskActions } from "redux/action";
 
 const Title = () => {
   const dispatch = useDispatch();

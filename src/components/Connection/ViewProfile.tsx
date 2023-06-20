@@ -13,13 +13,13 @@ import { useDispatch } from "react-redux";
 
 import colors from "../../assets/colors";
 
-import taskActions from "../../redux/action/task.action";
 import { UserCeibroData } from "constants/interfaces/user.interface";
 import UserProfileView from "components/Profile/UserProfileView";
 import { CustomStack } from "components/CustomTags";
 import { TopBarTitle } from "components/CustomTags";
 import assets from "assets/assets";
 import useResponsive from "hooks/useResponsive";
+import { taskActions } from "redux/action";
 
 interface IViewProfileProps {
   userId?: string;
@@ -119,7 +119,6 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
           </TopBarTitle>
           <CButton
             label={<assets.CloseIcon />}
-            ado
             variant="text"
             sx={{ padding: "1px 10px" }}
             onClick={handleToggle}

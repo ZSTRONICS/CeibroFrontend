@@ -6,7 +6,7 @@ interface LoadingButtonProps extends ButtonProps {
   loading?: boolean | undefined;
 }
 interface CButtonProps extends ButtonProps {
-  label: string;
+  label: string | any;
 }
 
 const CButton = (props: CButtonProps) => {

@@ -246,7 +246,7 @@ const App: React.FC<MyApp> = () => {
         setLocalIntervalId(localInterval)
       });
 
-      sock.on("connect_error", (err) => {
+      sock.on("connect_error", (err:any) => {
         clearInterval(intervalId);
         let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {

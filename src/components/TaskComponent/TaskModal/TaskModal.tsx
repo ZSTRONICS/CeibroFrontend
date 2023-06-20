@@ -22,11 +22,7 @@ import assets from "assets/assets";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "theme";
-import  {
-  createTask,
-  getAllTask,
-} from "../../../redux/action/task.action";
-import { taskActions } from "redux/action";
+import { createTask, taskActions } from "redux/action";
 import { RootState } from "../../../redux/reducers/appReducer";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
