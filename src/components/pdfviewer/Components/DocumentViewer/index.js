@@ -14,8 +14,8 @@ import pdfWorker from "./pdfjs/pdf.worker.js";
 import { ZoomIn, ZoomOut, Refresh, Room } from "@mui/icons-material";
 import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
 
-pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
-// pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+//pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
+ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const DocumentViewerStyles = () => ({
   scrollContainer: {
@@ -57,11 +57,11 @@ const DocumentViewerStyles = () => ({
 
 class DocumentViewer extends Component {
   constructor(props) {
+    console.log('pdfjs.version',pdfjs.version)
     super(props);
     this.state = this.initialState(props);
     this.scrollPanel = React.createRef();
     this.canvasRef = React.createRef();
-
     // self members binding
     const funcs = [
       "onLoadingPage",
