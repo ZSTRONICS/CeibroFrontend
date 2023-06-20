@@ -36,7 +36,7 @@ function TaskCard(props: IProps) {
     createdAt,
   } = task;
   const assignedTo: AssignedToState[] | any =
-    assignedToState.length > 0 ? assignedToState : "Not Assigned";
+    assignedToState.length > 0 ? `${assignedToState[0].firstName} ${assignedToState[0].surName}` : "Not Assigned";
   const taskCreated = momentdeDateFormat(createdAt);
   return (
     <Card sx={{ minWidth: 280, marginTop: "10px" }} key={_id}>
@@ -68,7 +68,7 @@ function TaskCard(props: IProps) {
             To:
             <span
               style={{ fontWeight: "500" }}
-            >{`${assignedTo[0].firstName} ${assignedTo[0].surName}`}</span>
+            >{assignedTo}</span>
           </FileName>
           <FileName>
             Project: &nbsp;{" "}
