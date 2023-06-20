@@ -59,11 +59,12 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
   const selectedFloor = floors[selectedTab];
   const history = useHistory();
   const dispatch = useDispatch();
-
   const handleLocation = (e: React.MouseEvent, drawing: Drawing) => {
     e.stopPropagation();
     if (drawing) {
       dispatch(projectActions.setSelectedDrawing(drawing));
+      dispatch(projectActions.setLoadDrawing(true));
+      dispatch(projectActions.setSelectedFloor(selectedFloor ? selectedFloor : null));
     }
 
     const newRoutePath = `/drawingDetail`;

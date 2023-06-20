@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
-
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { LoadingButton } from "components/Button";
 import { RootState } from "redux/reducers";
 import { PROJECT_APIS } from "redux/action";
+import { LoadingButton } from "components/Button";
 import projectActions, { getAllProjects } from "redux/action/project.action";
 import { Drawing } from "constants/interfaces";
 import { formatDropdownData } from "components/Utills/Globals";
+import { socket } from "services/socket.services";
+
+interface OptionFormat {
+  label: string;
+  value: string;
+}
 
 function DrawingMenu() {
   const dispatch = useDispatch();
@@ -20,15 +24,28 @@ function DrawingMenu() {
     selectedFloor,
     selectedDrawing,
   } = useSelector((state: RootState) => state.project);
-  const [drawings, setDrawings] = useState([]);
-  const [selectedFloorId, setSelectedFloorId] = useState();
-  const [selectedDrawingId, setSelectedDrawingId] = useState();
+  const [drawings, setDrawings] = useState<Drawing[]>([]);
+  const [selectedFloorIdLocal, setSelectedFloorLocal] =
+    useState<OptionFormat | null>(null);
+  const [selectedDrawingLocal, setSelectedDrawingLocal] =
+    useState<OptionFormat | null>(null);
+  const [selectedProjectLocal, setSelectedProjectLocal] =
+    useState<OptionFormat | null>(null);
+  const [open, setOpen] = useState(false);
 
-  const [open, setOpen] = React.useState(false);
-
+  const selectedProjectId = socket.getSelectedProjId();
   const loading = open && allFloors.length === 0;
+  const mdPoint: number = 2.8;
 
-  let mdPoint: number = 2.8;
+  useEffect(() => {
+    if (selectedProjectLocal === null) {
+      setSelectedFloorLocal(null);
+      setSelectedDrawingLocal(null);
+      setDrawings([]);
+    }
+    return () => undefined;
+  }, [selectedProjectLocal]);
+
   useEffect(() => {
     if (allProjects.length === 0 && !selectedProject) {
       dispatch(getAllProjects());
@@ -47,43 +64,76 @@ function DrawingMenu() {
     }
   }, [selectedProject]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading) {
-      return undefined;
+      return () => {};
     }
   }, [loading]);
 
+  useEffect(() => {
+    if (selectedProjectId) {
+      const selectProj = allProjects.find(
+        (project: Project) => project._id === selectedProjectId
+      );
+      if (selectProj) {
+        setSelectedProjectLocal({
+          label: selectProj.title,
+          value: selectProj._id,
+        });
+      }
+    }
+  }, [selectedProjectId, allProjects]);
+
+  useEffect(() => {
+    if (selectedFloor) {
+      setSelectedFloorLocal({
+        label: selectedFloor.floorName,
+        value: selectedFloor._id,
+      });
+    }
+  }, [selectedFloor]);
+
+  useEffect(() => {
+    if (selectedDrawing) {
+      setSelectedDrawingLocal({
+        label: selectedDrawing.drawingName,
+        value: selectedDrawing._id,
+      });
+    }
+  }, [selectedDrawing]);
 
   const handleProjectChange = (event: any, option: any) => {
+    setSelectedFloorLocal(null);
+    setSelectedDrawingLocal(null);
+    setDrawings([]);
+    setSelectedProjectLocal(option ? option : null);
     dispatch(projectActions.setSelectedProject(option ? option.value : null));
   };
 
   const handleFloorChange = (event: any, option: any) => {
-    setSelectedFloorId(option ? option.value : null);
-    const foundFloor = allFloors.find(
-      (floor: any) => floor._id === option.value
-    );
-    dispatch(projectActions.setSelectedFloor(foundFloor ? foundFloor : null));
-    const floor =
-      option && allFloors.find((floor: any) => floor._id === option.value);
-    setDrawings(floor ? floor.drawings : []);
-  };
-
-  const handleDrawingChange = (event: any, option: any) => {
-    setSelectedDrawingId(option ? option.value : null);
-    if (drawings.length > 0) {
-      const selectedDrawingLocal: any = drawings.find(
-        (drawing: Drawing) => drawing._id === option.value
-      );
-      dispatch(projectActions.setSelectedDrawing(selectedDrawingLocal));
+    setDrawings([]);
+    setSelectedDrawingLocal(null);
+    if (option.value) {
+      setSelectedFloorLocal(option ? option : null);
+      const foundFloor = allFloors.find((floor: any) => floor._id === option.value);
+      dispatch(projectActions.setSelectedFloor(foundFloor || null));
+      const floor = allFloors.find((floor: any) => floor._id === option.value);
+      setDrawings(floor ? floor.drawings : []);
     }
   };
 
-  const handleLoadDrawing = (event: any) => {
+  const handleDrawingChange = (event: any, option: any) => {
+    if (drawings.length > 0) {
+      const selectedDrawingLocal:any = drawings.find((drawing: Drawing) => drawing._id === option.value);
+      dispatch(projectActions.setSelectedDrawing(selectedDrawingLocal));
+      setSelectedDrawingLocal(option ? option : null);
+    }
+  };
+
+  const handleLoadDrawing = () => {
     dispatch(projectActions.setLoadDrawing(true));
   };
 
-  console.log("rendering drawing menue");
   return (
     <>
       <Grid container gap={2} justifyContent="flex-start">
@@ -95,7 +145,7 @@ function DrawingMenu() {
             onChange={handleProjectChange}
             sx={style}
             showSideLabel={true}
-            // groupBy={(option)=> option.label}
+            value={selectedProjectLocal}
           />
         </Grid>
         <Grid item md={mdPoint}>
@@ -103,16 +153,12 @@ function DrawingMenu() {
             placeholder="Select Floor"
             label="Floor"
             open={open}
-            onOpen={() => {
-              setOpen(true);
-            }}
-            onClose={() => {
-              setOpen(false);
-            }}
+            onOpen={() => setOpen(true)}
+            onClose={() => setOpen(false)}
             loading={loading}
             options={formatDropdownData(allFloors, "floorName", "_id")}
             onChange={handleFloorChange}
-            value={selectedFloorId}
+            value={selectedFloorIdLocal}
             sx={style}
             showSideLabel={true}
           />
@@ -121,21 +167,17 @@ function DrawingMenu() {
           <AutocompleteField
             placeholder="Select Drawing"
             label="Drawing"
-            disabled={drawings.length > 0 ? false : true}
             options={formatDropdownData(drawings, "drawingName", "_id")}
+            getOptionLabel={(option) => option.label}
             onChange={handleDrawingChange}
-            value={selectedDrawingId}
+            value={selectedDrawingLocal}
             sx={style}
             showSideLabel={true}
           />
         </Grid>
-        {selectedDrawing && (
+        {selectedDrawing && selectedProject && (
           <Grid item md={mdPoint}>
-            <LoadingButton
-              loading={false}
-              variant="contained"
-              onClick={handleLoadDrawing}
-            >
+            <LoadingButton variant="contained" onClick={handleLoadDrawing}>
               Load Drawing
             </LoadingButton>
           </Grid>

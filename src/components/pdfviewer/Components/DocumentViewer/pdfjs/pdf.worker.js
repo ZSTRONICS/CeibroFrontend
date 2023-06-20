@@ -336,7 +336,6 @@ function getVerbosityLevel() {
 }
 function info(msg) {
   if (verbosity >= VERBOSITY_LEVELS.infos) {
-    console.log('Info: ' + msg);
   }
 }
 function warn(msg) {

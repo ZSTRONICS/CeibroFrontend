@@ -11,12 +11,14 @@ import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import pdfWorker from "./pdfjs/pdf.worker.js";
-import { ZoomIn, ZoomOut, Refresh, Room } from "@mui/icons-material";
+import { ZoomIn, ZoomOut, Refresh, Room, Close } from "@mui/icons-material";
 import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
-
+import CustomModal from "components/Modal";
+import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
+import { formatDropdownData } from "components/Utills/Globals";
 
 //pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
- pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const DocumentViewerStyles = () => ({
   scrollContainer: {
@@ -58,7 +60,7 @@ const DocumentViewerStyles = () => ({
 
 class DocumentViewer extends Component {
   constructor(props) {
-    console.log('pdfjs.version',pdfjs.version)
+    console.log("pdfjs.version", pdfjs.version);
     super(props);
     this.state = this.initialState(props);
     this.scrollPanel = React.createRef();
@@ -80,6 +82,9 @@ class DocumentViewer extends Component {
       "handleZoomOut",
       "handleMarkerClick",
       "drawMarker",
+      "handleCloseModal",
+      "handleAssignTask",
+      "handleDeleteMarker",
     ];
     doEach(funcs, (func) => (this[func] = this[func].bind(this)));
   }
@@ -101,6 +106,7 @@ class DocumentViewer extends Component {
       clickX: null,
       clickY: null,
       drawingIcons: [],
+      isOpen: false,
     };
   }
 
@@ -217,6 +223,22 @@ class DocumentViewer extends Component {
     const icon = { x: clickX, y: clickY, tooltip: "" };
     const icons = [...this.state.drawingIcons, icon];
     console.log(clickX, clickY, "clickX y");
+    this.setState({ drawingIcons: icons, isOpen: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ isOpen: false });
+  }
+
+  handleAssignTask() {
+    const icons = [...this.state.drawingIcons];
+    this.setState({ drawingIcons: icons });
+    this.handleCloseModal();
+    console.log("Assign Task");
+  }
+  handleDeleteMarker(index) {
+    const icons = [...this.state.drawingIcons];
+    icons.splice(index, 1);
     this.setState({ drawingIcons: icons });
   }
 
@@ -294,10 +316,35 @@ class DocumentViewer extends Component {
                         top: `${icon.y}px`,
                         left: `${icon.x}px`,
                         transform: "translate(-50%, -50%)",
-                        zIndex: 9999,
+                        zIndex: 99,
                       }}
                     >
-                      <Tooltip title={"Marker tooltip"}>
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-10px",
+                          right: "-10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          this.handleDeleteMarker(index);
+                        }} // Replace handleIconClose with the appropriate function to handle icon close
+                      >
+                        <Tooltip title="Close">
+                          <Icon
+                            component={Close}
+                            style={{
+                              height: "12px",
+                              width: "12px",
+                              color: "black",
+                              backgroundColor: "white",
+                            }}
+                          />
+                        </Tooltip>
+                      </div>
+                      <Tooltip title="Marker tooltip">
                         <Icon component={Room} style={{ color: "red" }} />
                       </Tooltip>
                     </div>
@@ -375,6 +422,43 @@ class DocumentViewer extends Component {
                             />
                         </div>
                     } */}
+
+          {
+            <CustomModal
+              showCloseBtn={true}
+              title={"Assign Task"}
+              isOpen={this.state.isOpen}
+              handleClose={this.handleCloseModal}
+              children={
+                <>
+                  <AutocompleteField
+                    placeholder="Select Task"
+                    label="Task"
+                    options={formatDropdownData([], "title", "_id")}
+                    // onChange={handleProjectChange}
+                    sx={{
+                      width: "100%",
+                      border: "1px solid #c4c4c4",
+                      borderRadius: "0 4px 4px 0",
+                    }}
+                    showSideLabel={true}
+                    // groupBy={(option)=> option.label}
+                  />
+                  <Button
+                    sx={{
+                      marginTop: "8px",
+                      padding: "3px 4px",
+                      textTransform: "capitalize",
+                    }}
+                    variant="contained"
+                    onClick={this.handleAssignTask}
+                  >
+                    Save
+                  </Button>
+                </>
+              }
+            />
+          }
         </Paper>
       </div>
     );

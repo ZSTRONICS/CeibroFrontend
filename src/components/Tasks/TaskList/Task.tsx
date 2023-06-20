@@ -38,7 +38,7 @@ const Task = () => {
       isRenderEffect.current = true;
     };
   }, []);
-  console.log("allTaskCreatedFromMe.unread", allTaskCreatedFromMe.unread);
+
   return (
     <>
       <Box sx={{ width: "100%" }}>
