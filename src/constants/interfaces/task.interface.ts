@@ -29,7 +29,7 @@ export interface TaskInterface {
   advanceOptionsEnabled: boolean
   _id: string
   title: string
-  creator: Creator
+  creator: UserInfo
   project: Project
   dueDate: string
   state: State
@@ -40,7 +40,6 @@ export interface TaskInterface {
   isEditable?: boolean
 }
 
-export interface Creator extends UserInfo{}
 export interface ConfirmNeeded extends UserInfo {}
 export interface AdvanceOptions {
   confirmNeeded: ConfirmNeeded[]

@@ -1,12 +1,15 @@
 import { ActionInterface } from "./appReducer";
-import { TASK_CONFIG } from "config/task.config";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
-import { TaskInterface } from "constants/interfaces/task.interface";
+import { TASK_CONFIG } from "config";
+import { AllSubtasksOfTaskResult, AllTasksInterface, TaskInterface } from "constants/interfaces";
 import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { AllSubtasksOfTaskResult } from "constants/interfaces/AllSubTasks.interface";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
+    allTaskAssignedToMe: AllTasksInterface
+    allTaskCreatedFromMe: AllTasksInterface
+    loadingAllTaskToMe: boolean,
+    loadingAllTaskfromMe: boolean,
     allTask: TaskInterface[]
     page: number
     limit: number
@@ -47,6 +50,11 @@ interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
+    allTaskAssignedToMe: {done:[], new:[], ongoing:[], unread:[]},
+    allTaskCreatedFromMe:{done:[], new:[], ongoing:[], unread:[]},
+    loadingAllTaskToMe: false,
+    loadingAllTaskfromMe: false,
+
     getTaskSubTaskFilterByState: 'all',
     getAllRecentCommentsOfSubtask: [],
     getAllCommentsOfSubtaskLoading: false,
@@ -238,6 +246,47 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
                 allSubTaskOfTask: { ...state.allSubTaskOfTask }
             }
 
+        // get task assigned to me
+        case requestPending(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME): {
+            return {
+                ...state,
+                loadingAllTaskToMe: true,
+            };
+        }
+        case requestSuccess(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME):
+            return {
+                ...state,
+                loadingAllTaskToMe: false,
+                allTaskAssignedToMe: action.payload.allTasks,
+            }
+
+        case requestFail(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME): {
+            return {
+                ...state,
+                loadingAllTaskToMe: false,
+            };
+        }
+
+        // get task created from me
+        case requestPending(TASK_CONFIG.GET_TASK_CREATED_FROM_ME): {
+            return {
+                ...state,
+                loadingAllTaskfromMe: true,
+            };
+        }
+        case requestSuccess(TASK_CONFIG.GET_TASK_CREATED_FROM_ME):
+            return {
+                ...state,
+                loadingAllTaskfromMe: false,
+                allTaskCreatedFromMe: action.payload.allTasks,
+            }
+
+        case requestFail(TASK_CONFIG.GET_TASK_CREATED_FROM_ME): {
+            return {
+                ...state,
+                loadingAllTaskfromMe: false,
+            };
+        }
         case requestSuccess(TASK_CONFIG.GET_TASK):
             return {
                 ...state,

@@ -51,8 +51,9 @@ const taskActions = {
     },
 
     postSubtaskComment: createAction(TASK_CONFIG.POST_SUBTASK_COMMENT),
-    getAllCommentsOfSubtaskById: createAction(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID)
-
+    getAllCommentsOfSubtaskById: createAction(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID),
+    getTaskAssignedToMe: createAction(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME),
+    getTaskCreatedFromMe: createAction(TASK_CONFIG.GET_TASK_CREATED_FROM_ME),
 }
 
 export const getAllTask = createAction(TASK_CONFIG.GET_TASK)
@@ -73,4 +74,4 @@ export const getAllSubTaskRejection = createAction(TASK_CONFIG.GET_ALL_SUBTASK_R
 export const getAllSubTaskOfTask = createAction(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK)
 export const taskSubtaskStateChange = createAction(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE)
 
-export default taskActions
+export { taskActions }

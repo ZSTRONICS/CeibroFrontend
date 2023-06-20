@@ -64,7 +64,7 @@ const Project = () => {
   ]);
 
   useEffect(() => {
-    if (isRenderEffect.current === false) {
+    if (isRenderEffect.current === false&& allProjects.length === 0 ) {
       dispatch(getAllProjects());
       // dispatch(getAllProjectsWithMembers());
       // const payload = {

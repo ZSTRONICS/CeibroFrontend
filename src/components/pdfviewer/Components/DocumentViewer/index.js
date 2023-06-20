@@ -77,7 +77,6 @@ class DocumentViewer extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.file, "@@@@@@@@@@@@@@@@@");
   }
 
   initialState(props) {

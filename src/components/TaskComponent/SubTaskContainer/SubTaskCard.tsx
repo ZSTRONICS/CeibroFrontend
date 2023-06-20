@@ -27,13 +27,14 @@ import {
 } from "constants/interfaces/task.interface";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import taskActions, {
+import  {
   deleteSubtask,
   getAllSubTaskList,
   getAllSubTaskOfTask,
   patchSubTaskById,
   taskSubtaskStateChange
 } from "redux/action/task.action";
+import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers/appReducer";
 import StateChangeComment from "./StateChangeComment";
 import SubTaskMenu from "./SubtaskMenu";

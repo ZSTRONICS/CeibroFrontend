@@ -29,7 +29,6 @@ const DocumentReader = (props) => {
     }
   }, [loadDrawing]);
 
-
   return (
     <div className={classes.documentViewport}>
       <DocumentViewer pdf={pdf} file={pdf} />

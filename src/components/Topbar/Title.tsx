@@ -33,7 +33,7 @@ const Title = () => {
   const selectedProjectId = socket.getSelectedProjId();
 
   useEffect(() => {
-    if (allProjects.length <= 0) {
+    if (allProjects.length === 0) {
       dispatch(getAllProjects());
     }
   }, []);

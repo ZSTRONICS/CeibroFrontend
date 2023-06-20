@@ -1,4 +1,4 @@
-import { Reducer, combineReducers } from "redux";
+import { Reducer, combineReducers, AnyAction } from "redux";
 import navigationReducer from "./navigation.reducer";
 import projectReducer from "./project.reducer";
 import TaskReducer from "./task.reducer";
@@ -6,6 +6,7 @@ import authReducer from "./auth.reducer";
 import chatReducer from "./chat.reducer";
 import userReducer from "./user.reducer";
 import DocsReducer from "./docs.reducer";
+import { DocsInterface, AllTasksInterface, UserAllContacts } from "constants/interfaces";
 
 interface Reducers {
   [key: string]: Reducer<any, any>;
@@ -26,7 +27,7 @@ export default appReducer;
 
 export type RootState = ReturnType<typeof appReducer>;
 
-export interface ActionInterface {
+export interface ActionInterface<T = any> {
   type: string;
-  payload: any;
+  payload: T;
 }

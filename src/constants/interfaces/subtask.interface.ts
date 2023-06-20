@@ -48,24 +48,18 @@ export interface SubtaskState {
 }
 
 export interface AssignedTo {
-  members: Member[]
+  members: UserInfo[]
   _id: string
-  addedBy: AddedBy
+  addedBy: UserInfo
 }
 
-export interface UserInfo {
-_id: string
-firstName: string
-surName: string
-profilePic: string
-}
 
 export interface Member extends UserInfo{}
 
 export interface AddedBy extends UserInfo{}
 
 export interface Viewer {
-  members: Member[]
+  members: UserInfo[]
   _id: string
   addedBy: AddedBy
 }

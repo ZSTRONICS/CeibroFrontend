@@ -11,7 +11,7 @@ import { CButton } from "components/Button";
 import {
   CDateTime, CommentName, FileName, Heading, Span
 } from "components/CustomTags";
-import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import { Tab,  TabPanel,  TabsList } from "components/TaskComponent/Tabs/Tabs";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import {

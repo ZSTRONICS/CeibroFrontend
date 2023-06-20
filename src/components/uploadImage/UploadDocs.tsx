@@ -289,7 +289,7 @@ const UploadDocs = (props: Props) => {
                             bgcolor: "transparent",
                           },
                         }}
-                        variant="raised"
+                        variant="contained"
                         aria-label="comment"
                         onClick={() => handleDelteFile(item.fileName)}
                       />

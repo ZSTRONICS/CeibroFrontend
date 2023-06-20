@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Divider, Grid, IconButton, TextField, Tooltip } from '@mui/material';
 import { CBox } from 'components/material-ui';
-import CButton from 'components/Button/Button';
 import { CustomBadge, CustomStack } from 'components/TaskComponent/Tabs/TaskCard';
 import { AttachmentIcon, EyeIcon, SendIcon } from "components/material-ui/icons";
 import { makeStyles } from '@material-ui/core';
@@ -9,12 +8,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from 'redux/reducers/appReducer';
 import { RecentCommentsInterface, SubtaskInterface } from 'constants/interfaces/subtask.interface';
 import { DOCS_CONFIG } from 'config/docs.config';
-import taskActions from 'redux/action/task.action';
 import ViewRejectionComments from './ViewRejectionComments';
 import CDrawer from 'Drawer/CDrawer';
 import CustomModal from 'components/Modal';
 import UploadDocs from 'components/uploadImage/UploadDocs';
 import { momentdeDateFormat, momentTimeFormat } from 'components/Utills/Globals/Common';
+import { taskActions } from 'redux/action';
+import { CButton } from 'components/Button';
 
 interface Props {
   subtaskDetail: SubtaskInterface
@@ -210,10 +210,10 @@ export default function RecentCommentInput({ subtaskDetail }: Props) {
               disabled={userNewComment.trim() === "" ? true : false}
               startIcon={<SendIcon />}
               onClick={(e: any) => handleSendRecentComment(e)}
+              label=''
               //handle click to send newMessage here
-              sx={{ paddign: "10px 0", minWidth: 55 }}
+              sx={{ paddign: "10px 0", minWidth: 55,  maxWidth: 35}}
               type={"submit"}
-              style={{ maxWidth: 35 }}
               variant="contained"
             />
           </CBox>

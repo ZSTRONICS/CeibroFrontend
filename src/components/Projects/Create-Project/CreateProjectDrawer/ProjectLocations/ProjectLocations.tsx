@@ -5,7 +5,6 @@ import CustomModal from "components/Modal";
 import { useApiCallOnce, useOpenCloseModal } from "hooks";
 import { useSelector } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
-import { RootState } from "redux/reducers";
 import AddDrawingFloor from "./AddDrawingFloor";
 import { FloorContent, FloorTabs } from "./LocationTabs";
 import { RouteComponentProps } from "react-router-dom";
@@ -13,6 +12,7 @@ import { socket } from "services/socket.services";
 import NoData from "components/Chat/NoData";
 import CardSkeleton from "components/material-ui/skeleton/CardSkeleton";
 import { CustomStack } from "components/CustomTags";
+import { RootState } from "redux/reducers";
 
 interface RouteParams {
   projectId: string;
@@ -30,7 +30,7 @@ function ProjectLocations(props: IProps) {
     setSelectedTab(newValue);
   };
 
-  const { allFloors, isFloorLoading } = useSelector(
+  const { allFloors, isFloorLoading, } = useSelector(
     (state: RootState) => state.project
   );
 
@@ -52,10 +52,12 @@ function ProjectLocations(props: IProps) {
       closeModal();
     }, 500);
   }
+
   const container = document.getElementById("container");
   if (container) {
     container.scrollTop = 0;
   }
+
   return (
     <>
       {isFloorLoading ? (

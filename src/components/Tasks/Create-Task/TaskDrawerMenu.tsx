@@ -6,7 +6,7 @@ import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { AttachmentIcon } from "components/material-ui/icons";
 import assets from "assets/assets";
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import { CButton } from "components/Button";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import CustomModal from "components/Modal";
@@ -19,19 +19,17 @@ import {
 } from "components/Utills/Globals/Common";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
-import {
-  SubtaskInterface,
-  UserInfo,
-} from "constants/interfaces/subtask.interface";
+import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import CDrawer from "Drawer/CDrawer";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
-import taskActions, {
+import {
   deleteTask,
   patchSubTaskById,
   updateTaskById,
 } from "redux/action/task.action";
+import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers/appReducer";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
 import docsAction from "redux/action/docs.actions";
@@ -65,7 +63,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     creator,
   } = taskMenue;
   let { isEditable } = taskMenue;
-   isEditable = useSelector((state: RootState) => state.task.isEditing);
+  isEditable = useSelector((state: RootState) => state.task.isEditing);
   // const {taskDrawerOpen} = useSelector((state: RootState) => state.task);
 
   // if(taskDrawerOpen===true && admins.length===){
@@ -82,11 +80,14 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
 
   const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
-  const { projectWithMembers, allProjectsTitles } = useSelector((store: RootState) => store.project);
+  const { projectWithMembers, allProjectsTitles } = useSelector(
+    (store: RootState) => store.project
+  );
 
   const { user } = useSelector((state: RootState) => state.auth);
 
-  const adminIds = admins&& admins.length>0?admins.map((item: UserInfo) => item._id):[];
+  const adminIds =
+    admins && admins.length > 0 ? admins.map((item: UserInfo) => item._id) : [];
   const allMembers = [creator._id, ...adminIds];
   const authorizeMembers = allMembers.filter(onlyUnique);
   const taskRights = authorizeMembers.some((item: string) => item === user._id);
@@ -304,39 +305,56 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   const handleDeleteTask = (e: any) => {
     e.stopPropagation();
     confirm({
-      title: <CustomStack gap={1}><ErrorOutlineOutlinedIcon/> Confirmation</CustomStack>,
-      description:<ConfirmDescriptionTag sx={{pt:2}}>Are you sure you want to delete this task?</ConfirmDescriptionTag>,
-      titleProps: { color: "red", borderBottom:'1px solid #D3D4D9' },
-      confirmationText:"Delete",
-      confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
-      cancellationText: <CButton
-      variant="contained"
-      elevation={0}
-      styles={{
-        color: "#605C5C",
-        backgroundColor: "#ECF0F1",
-        fontSize: 12,
-        fontWeight: "bold",
-      }}
-      label={"Cancel"}
-    />,
-
+      title: (
+        <CustomStack gap={1}>
+          <ErrorOutlineOutlinedIcon /> Confirmation
+        </CustomStack>
+      ),
+      description: (
+        <ConfirmDescriptionTag sx={{ pt: 2 }}>
+          Are you sure you want to delete this task?
+        </ConfirmDescriptionTag>
+      ),
+      titleProps: { color: "red", borderBottom: "1px solid #D3D4D9" },
+      confirmationText: "Delete",
+      confirmationButtonProps: {
+        sx: {
+          textTransform: "capitalize",
+          padding: "4px 15px",
+          color: "#FA0808",
+          borderColor: "#FA0808",
+          marginRight: "10px",
+        },
+        variant: "outlined",
+      },
+      cancellationText: (
+        <CButton
+          variant="contained"
+          sx={{
+            color: "#605C5C",
+            backgroundColor: "#ECF0F1",
+            fontSize: 12,
+            fontWeight: "bold",
+          }}
+          label={"Cancel"}
+        />
+      ),
     }).then(() => {
-          dispatch(
-      deleteTask({
-        other: _id,
-        success: (res) => {
-          dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: _id });
-          dispatch(taskActions.closeTaskDrawer());
-          toast.success("Task deleted");
-          //deleted task id = _id
-        },
-        onFailAction: () => {
-          toast.error("Failed to delete task!");
-        },
-      })
-    );
-    setShowUpdateBtn(false);
+      dispatch(
+        deleteTask({
+          other: _id,
+          success: (res) => {
+            dispatch({ type: TASK_CONFIG.PULL_TASK_FROM_STORE, payload: _id });
+            dispatch(taskActions.closeTaskDrawer());
+            toast.success("Task deleted");
+            //deleted task id = _id
+          },
+          onFailAction: () => {
+            toast.error("Failed to delete task!");
+          },
+        })
+      );
+      setShowUpdateBtn(false);
     });
   };
   const handleProjectChange = (project: any) => {
@@ -394,10 +412,14 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
     e.stopPropagation();
     setImageAttach((value: boolean) => !value);
   };
-  
+
   return (
     <>
-      <Grid container className={classes.outerWrapper} rowGap={{ xs: 1, sm: 1.25, md: 1.25, lg:2.5 }}>
+      <Grid
+        container
+        className={classes.outerWrapper}
+        rowGap={{ xs: 1, sm: 1.25, md: 1.25, lg: 2.5 }}
+      >
         <Grid item container xs={12} md={12} justifyContent="space-between">
           <CBox display="flex" alignItems="center">
             <CBox
@@ -492,7 +514,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 filterSelectedOptions
                 disableCloseOnSelect
                 multiple
-              limitTags={1}
+                limitTags={1}
                 disablePortal
                 id="combo-box-demo"
                 disabled={!taskCreatorAndAdmin}
@@ -541,7 +563,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 filterSelectedOptions
                 disableCloseOnSelect
                 multiple
-              limitTags={1}
+                limitTags={1}
                 disablePortal
                 id="combo-box-demo"
                 value={adminData}
@@ -653,16 +675,25 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
             width="100%"
             p="12px 0px 7px 0px"
           >
-            <CBox sx={{fontSize:{xs:11,sm:10,md:12 ,lg:14},fontWeight:600}} color="#000" fontWeight={600}>
+            <CBox
+              sx={{
+                fontSize: { xs: 11, sm: 10, md: 12, lg: 14 },
+                fontWeight: 600,
+              }}
+              color="#000"
+              fontWeight={600}
+            >
               Attachments
             </CBox>
             <CBox display="flex">
               <CButton
                 label="View All"
                 onClick={viewAllDocs}
-                sx={{fontSize:{xs:10,sm:10,md:10 ,lg:12}}} 
-
-                styles={{ color: "#0076C8", fontWeight: "bold" }}
+                sx={{
+                  fontSize: { xs: 10, sm: 10, md: 10, lg: 12 },
+                  color: "#0076C8",
+                  fontWeight: "bold",
+                }}
               />
 
               <Divider
@@ -676,145 +707,148 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
               />
 
               <CButton
-                sx={{fontSize:{xs:10,sm:10,md:10 ,lg:12}}} 
+                sx={{
+                  fontSize: { xs: 10, sm: 10, md: 10, lg: 12 },
+                  color: "#0076C8",
+                  fontWeight: "bold",
+                }}
                 onClick={(e: any) => handleOpenCloseAttachmentModal(e)}
                 label="Add New"
-                styles={{ color: "#0076C8", fontWeight: "bold" }}
               />
             </CBox>
           </CBox>
         </Grid>
         {state === State.Draft && !showUpdateBtn && (
-        <Grid
-          container
-          justifyContent="flex-end"
-          // mt={10}
-          
-          sx={{ padding: "10px 16px" }}>
-          <Grid item>
-            <CButton
-              label="Create Task"
-              onClick={handleCreateTask}
-              variant="contained"
-              styles={{
-                borderColor: "#0076C8",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1,
-                color: "white",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <CButton
-              label={"Delete"}
-              onClick={handleDeleteTask}
-              variant="outlined"
-              styles={{
-                borderColor: "#FA0808",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1,
-                color: "#FA0808",
-              }}
-            />
-          </Grid>
-        </Grid>
-      )}
+          <Grid
+            container
+            justifyContent="flex-end"
+            // mt={10}
 
-      {state === State.Draft && showUpdateBtn && (
-        <Grid
-          container
-          justifyContent="flex-end"
-          // mt={10}
-          sx={{ padding: "10px 16px" }}
-        >
-          <Grid item>
-            <CButton
-              label="Create Task"
-              onClick={handleCreateTask}
-              variant="contained"
-              styles={{
-                borderColor: "#0076C8",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1,
-                color: "white",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-            />
+            sx={{ padding: "10px 16px" }}
+          >
+            <Grid item>
+              <CButton
+                label="Create Task"
+                onClick={handleCreateTask}
+                variant="contained"
+                styles={{
+                  borderColor: "#0076C8",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1,
+                  color: "white",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <CButton
+                label={"Delete"}
+                onClick={handleDeleteTask}
+                variant="outlined"
+                styles={{
+                  borderColor: "#FA0808",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1,
+                  color: "#FA0808",
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <CButton
-              label="Update Draft"
-              onClick={(e: any) => handleTaskUpdateAtDraftState(e, false)}
-              variant="contained"
-              styles={{
-                borderColor: "#0076C8",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1,
-                color: "white",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-            />
-          </Grid>
-        </Grid>
-      )}
+        )}
 
-      {isDraftState===false&& showUpdateBtn && (
-        <Grid
-          container
-          justifyContent="flex-end"
-          // mt={10}
-          ml={1.7}
-          sx={{ padding: "10px 16px" }}
-        >
-          <Grid item>
-            <CButton
-              sx={{ padding: "8px 9px" }}
-              label="Update Task"
-              onClick={handleTaskUpdateAtNewState}
-              variant="contained"
-              styles={{
-                borderColor: "#0076C8",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1,
-                color: "white",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-            />
+        {state === State.Draft && showUpdateBtn && (
+          <Grid
+            container
+            justifyContent="flex-end"
+            // mt={10}
+            sx={{ padding: "10px 16px" }}
+          >
+            <Grid item>
+              <CButton
+                label="Create Task"
+                onClick={handleCreateTask}
+                variant="contained"
+                styles={{
+                  borderColor: "#0076C8",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1,
+                  color: "white",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <CButton
+                label="Update Draft"
+                onClick={(e: any) => handleTaskUpdateAtDraftState(e, false)}
+                variant="contained"
+                styles={{
+                  borderColor: "#0076C8",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1,
+                  color: "white",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Grid>
           </Grid>
-          <Grid item>
-            <CButton
-              sx={{
-                padding: "7px 4px",
-              }}
-              styles={{
-                borderColor: "#9D9D9D",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1.5,
-                color: "#9D9D9D",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-              label="Cancel"
-              onClick={handleCancel}
-              variant="outlined"
-            />
+        )}
+
+        {isDraftState === false && showUpdateBtn && (
+          <Grid
+            container
+            justifyContent="flex-end"
+            // mt={10}
+            ml={1.7}
+            sx={{ padding: "10px 16px" }}
+          >
+            <Grid item>
+              <CButton
+                sx={{ padding: "8px 9px" }}
+                label="Update Task"
+                onClick={handleTaskUpdateAtNewState}
+                variant="contained"
+                styles={{
+                  borderColor: "#0076C8",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1,
+                  color: "white",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <CButton
+                sx={{
+                  padding: "7px 4px",
+                }}
+                styles={{
+                  borderColor: "#9D9D9D",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1.5,
+                  color: "#9D9D9D",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+                label="Cancel"
+                onClick={handleCancel}
+                variant="outlined"
+              />
+            </Grid>
           </Grid>
-        </Grid>
-      )}
+        )}
       </Grid>
 
-     
       <CustomModal
         showCloseBtn={false}
         isOpen={imageAttach}
@@ -868,9 +902,9 @@ const useStyles = makeStyles({
     color: "white",
   },
   outerWrapper: {
-    maxHeight:'calc(100vh - 60px)',
-    overflowY:'auto',
-    overflowX:'hidden',
+    maxHeight: "calc(100vh - 60px)",
+    overflowY: "auto",
+    overflowX: "hidden",
 
     padding: "10px 23px",
     // background: colors.white,

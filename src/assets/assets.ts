@@ -93,6 +93,9 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CloseIcon from '@mui/icons-material/Close';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
+import ImageOutlinedIcon from '@mui/icons-material/ImageOutlined';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 // cross icon
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
@@ -101,6 +104,9 @@ import EmailIcon from '@mui/icons-material/Email';
 import CallIcon from '@mui/icons-material/Call';
 
 const assets = {
+  DoneAllIcon, 
+  AttachFileOutlinedIcon,
+  ImageOutlinedIcon,
   CancelIcon,
   ExpandMoreIcon,
   CloseIcon,

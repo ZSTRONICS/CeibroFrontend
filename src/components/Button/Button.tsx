@@ -3,7 +3,7 @@ import { Button, CircularProgress, ButtonProps } from "@mui/material";
 import { styled } from "@mui/system";
 
 interface LoadingButtonProps extends ButtonProps {
-  loading: boolean | undefined;
+  loading?: boolean | undefined;
 }
 interface CButtonProps extends ButtonProps {
   label: string;
@@ -15,6 +15,7 @@ const CButton = (props: CButtonProps) => {
       disableRipple={true}
       {...props}
       autoFocus
+      elevation={0}
       className={props.className}
     >
       {props.label}

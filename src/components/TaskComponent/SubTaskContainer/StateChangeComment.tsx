@@ -7,7 +7,8 @@ import { Divider } from "@mui/material";
 import { Form, Formik } from "formik";
 // reudx
 import { useDispatch } from "react-redux";
-import taskActions, { taskSubtaskStateChange } from "redux/action/task.action";
+import { taskSubtaskStateChange } from "redux/action/task.action";
+import { taskActions } from "redux/action";
 // components
 import { CButton } from "components/Button";
 import { CBox } from "components/material-ui";
@@ -81,7 +82,7 @@ function StateChangeComment(props: any) {
                   label='Reject'
                   type="submit"
                   variant="outlined"
-                  styles={{
+                  sx={{
                     borderColor: "#FA0808",
                     // borderColor: "#55BCB3",
                     fontSize: 12,
@@ -94,7 +95,7 @@ function StateChangeComment(props: any) {
                 <CButton
                   onClick={handleCloseModal}
                   variant="outlined"
-                  styles={{
+                  sx={{
                     color: "#605C5C",
                     backgroundColor: "#ECF0F1",
                     fontSize: 12,
