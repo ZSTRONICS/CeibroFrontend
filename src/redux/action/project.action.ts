@@ -81,6 +81,7 @@ import configs, {
   PROJECT_CONFIG,
 } from "../../config/project.config";
 import { createAction } from "./action";
+import { Drawing } from "constants/interfaces";
 
 const projectActions = {
   openDrawer: () => {
@@ -142,7 +143,7 @@ const projectActions = {
       payload: floor,
     };
   },
-  setSelectedDrawing: (drawing: object | null) => {
+  setSelectedDrawing: (drawing: Drawing | null) => {
     return {
       type: PROJECT_CONFIG.SET_SELECTED_DRAWING,
       payload: drawing,

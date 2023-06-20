@@ -74,4 +74,4 @@ export const getAllSubTaskRejection = createAction(TASK_CONFIG.GET_ALL_SUBTASK_R
 export const getAllSubTaskOfTask = createAction(TASK_CONFIG.GET_ALL_SUBTASK_OF_TASK)
 export const taskSubtaskStateChange = createAction(TASK_CONFIG.TASK_SUBTASK_STATE_CHANGE)
 
-export { taskActions }
+export default taskActions
