@@ -25,20 +25,31 @@ function DrawingMenu() {
     selectedDrawing,
   } = useSelector((state: RootState) => state.project);
   const [drawings, setDrawings] = useState<Drawing[]>([]);
-  const [selectedFloorIdLocal, setSelectedFloorLocal] = useState<OptionFormat | null>(null);
-  const [selectedDrawingLocal, setSelectedDrawingLocal] = useState<OptionFormat | null>(null);
-  const [selectedProjectLocal, setSelectedProjectLocal] = useState<OptionFormat | null>(null);
+  const [selectedFloorIdLocal, setSelectedFloorLocal] =
+    useState<OptionFormat | null>(null);
+  const [selectedDrawingLocal, setSelectedDrawingLocal] =
+    useState<OptionFormat | null>(null);
+  const [selectedProjectLocal, setSelectedProjectLocal] =
+    useState<OptionFormat | null>(null);
   const [open, setOpen] = useState(false);
 
   const selectedProjectId = socket.getSelectedProjId();
   const loading = open && allFloors.length === 0;
   const mdPoint: number = 2.8;
 
-useEffect(() => {
+  useEffect(() => {
+    if (selectedProjectLocal === null) {
+      setSelectedFloorLocal(null);
+      setSelectedDrawingLocal(null);
+      setDrawings([]);
+    }
+    return () => undefined;
+  }, [selectedProjectLocal]);
+
+  useEffect(() => {
     if (allProjects.length === 0 && !selectedProject) {
       dispatch(getAllProjects());
     }
-    dispatch(projectActions.setLoadDrawing(false));
   }, []);
 
   useEffect(() => {
@@ -61,7 +72,9 @@ useEffect(() => {
 
   useEffect(() => {
     if (selectedProjectId) {
-      const selectProj = allProjects.find((project:Project) => project._id === selectedProjectId);
+      const selectProj = allProjects.find(
+        (project: Project) => project._id === selectedProjectId
+      );
       if (selectProj) {
         setSelectedProjectLocal({
           label: selectProj.title,
@@ -70,7 +83,7 @@ useEffect(() => {
       }
     }
   }, [selectedProjectId, allProjects]);
-  
+
   useEffect(() => {
     if (selectedFloor) {
       setSelectedFloorLocal({
@@ -162,7 +175,7 @@ useEffect(() => {
             showSideLabel={true}
           />
         </Grid>
-        {selectedDrawing && (
+        {selectedDrawing && selectedProject && (
           <Grid item md={mdPoint}>
             <LoadingButton variant="contained" onClick={handleLoadDrawing}>
               Load Drawing
