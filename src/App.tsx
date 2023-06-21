@@ -88,6 +88,8 @@ const App: React.FC<MyApp> = () => {
   let sock: any = null;
   let hbCounter = 0;
   let hbAckRcvd = false;
+  let socketIntervalId: any = null;
+
   const [intervalId, setLocalIntervalId] = useState<NodeJS.Timer>();
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
   let openProjectdrawer = useSelector(
@@ -191,16 +193,15 @@ const App: React.FC<MyApp> = () => {
   function sendHeartbeat() {
     if (sock !== null) {
       sock.emit('heartbeat');
-      hbCounter += 1
-      if(hbCounter === 6 && hbAckRcvd === false) {
-        // reconnect logic here
-        console.log('No HB RCVD :>> ');
-        sock.disconnect();
-      } 
-      if (hbCounter > 5) {
-        hbAckRcvd = false;
-        hbCounter = 0;
-      }
+      // hbCounter += 1
+      // if (hbCounter === 6 && hbAckRcvd === false) {
+      //   // reconnect logic here
+      //   console.log('No HB RCVD :>> ');
+      // }
+      // if (hbCounter > 5) {
+      //   hbAckRcvd = false;
+      //   hbCounter = 0;
+      // }
     }
   }
 
@@ -223,30 +224,32 @@ const App: React.FC<MyApp> = () => {
 
       // Listen for connect event
       sock.on("connect", () => {
+        clearInterval(intervalId);
         console.log("Connected to server");
         socket.setUserId(String(user._id));
         socket.setSocket(sock);
-        setInterval(sendHeartbeat, 2000);
-        clearInterval(intervalId);
-      });
 
-      sock.on("heartbeatAck", () => {
-        hbAckRcvd = true;
+        if (socketIntervalId === null) {
+          socketIntervalId = setInterval(sendHeartbeat, 400);
+        }
+
       });
 
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
+        clearInterval(socketIntervalId);
         clearInterval(intervalId);
         let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {
             sock.connect();
           }
-        }, 1000);
+        }, 2000);
         setLocalIntervalId(localInterval)
       });
 
       sock.on("connect_error", (err: any) => {
+        clearInterval(socketIntervalId);
         clearInterval(intervalId);
         let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {

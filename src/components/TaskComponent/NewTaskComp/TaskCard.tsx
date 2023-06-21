@@ -79,7 +79,7 @@ function TaskCard(props: IProps) {
         </CustomStack>
 
         <SubHeadingTag className="ellipsis" sx={{ maxWidth: "300px" }}>
-          {topic.topic ?? ""}
+          {topic?.topic ?? "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag
