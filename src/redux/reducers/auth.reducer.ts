@@ -179,7 +179,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       localStorage.removeItem("tokens");
       localStorage.clear();
       sessionStorage.clear();
-      unSubOneSignal();
+      // unSubOneSignal();
       return {
         ...state,
         isLoggedIn: false,

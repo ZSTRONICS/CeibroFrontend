@@ -75,7 +75,7 @@ import {
   getMember,
   PROJECT_APIS,
 } from "redux/action/project.action";
-import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
+// import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
 import { USER_CONFIG } from "config/user.config";
 import { getMyConnections, getMyInvitesCount } from "redux/action/user.action";
 import { error } from "console";
@@ -103,9 +103,9 @@ const App: React.FC<MyApp> = () => {
     (state: RootState) => state.docs
   );
 
-  useEffect(() => {
-    runOneSignal();
-  }, []);
+  // useEffect(() => {
+  //   runOneSignal();
+  // }, []);
 
   // const [authToken, setAuthToken] = useState<string>("");
 
@@ -206,7 +206,7 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      InitOneSignal(String(user._id));
+      // InitOneSignal(String(user._id));
 
       if (sock !== null) {
         return;
