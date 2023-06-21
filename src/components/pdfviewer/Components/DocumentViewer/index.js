@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useRef } from "react";
 import doEach from "lodash/forEach";
 // import PropTypes from 'prop-types';
 // components
@@ -56,111 +56,71 @@ const DocumentViewerStyles = () => ({
   },
 });
 
-class DocumentViewer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initialState(props);
-    this.scrollPanel = React.createRef();
-    this.canvasRef = React.createRef();
-    // self members binding
-    const funcs = [
-      "onLoadingPage",
-      "onLoadedPage",
-      "onDocumentSourceSuccess",
-      "onDocumentLoaded",
-      "onPageChanged",
-      "onZoom",
-      "onCreateObject",
-      "onScaleChanged",
-      // render helpers
-      "renderMainDocument",
-      "renderLoadingDocument",
-      "handleZoomIn",
-      "handleZoomOut",
-      "handleMarkerClick",
-      "drawMarker",
-      "handleCloseModal",
-      "handleAssignTask",
-      "handleDeleteMarker",
-    ];
-    doEach(funcs, (func) => (this[func] = this[func].bind(this)));
-  }
+const DocumentViewer = (props) => {
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [last, setLast] = useState(0);
+  const [percentage, setPercentage] = useState(0.5);
+  const [buffer, setBuffer] = useState(0);
+  const [first, setFirst] = useState(true);
+  const [pageFactory, setPageFactory] = useState(null);
+  const [factory, setFactory] = useState(null);
+  const [isZooming, setIsZooming] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [clickX, setClickX] = useState(null);
+  const [clickY, setClickY] = useState(null);
+  const [drawingIcons, setDrawingIcons] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  initialState(props) {
-    return {
-      totalPage: 0, // total number of page
-      page: 1, // default page
-      loadingPage: false,
-      progress: 0,
-      last: 0,
-      percentage: 0.5,
-      buffer: 0,
-      first: true, // is first page
-      pageFactory: null, // PDFDocument Page factory object
-      factory: null, // PDFDocument factory object
-      isZooming: false,
-      isActive: false,
-      clickX: null,
-      clickY: null,
-      drawingIcons: [],
-      isOpen: false,
-    };
-  }
+  let scrollPanel,
+    pageRef,
+    canvasRef = useRef(null);
 
-  onLoadingPage({ loaded, total }) {
-    let { progress } = this.state;
+  const { classes } = props;
+
+  function onLoadingPage({ loaded, total }) {
+    let { progress } = state;
     let buffer = 10;
     progress = Math.floor((loaded / total) * 100);
     if (progress < 100) {
       buffer = progress + Math.random() * 10;
     }
-    this.setState({
-      loadingPage: true,
-      progress,
-      buffer,
-    });
+    setLoadingPage(true);
+    setProgress(progress);
+    setBuffer(buffer);
   }
 
-  onDocumentSourceSuccess() {
-    this.setState({
-      loadingPage: true,
-    });
+  function onDocumentSourceSuccess() {
+    setLoadingPage(true);
   }
 
-  onZoom(percentage) {
-    this.setState({
-      percentage,
-    });
+  function onZoom(percentage) {
+    setPercentage(percentage);
   }
 
-  onPageChanged(page) {
-    // console.log(page);
-    this.setState({
-      page,
-      last: page === this.state.totalPage,
-      first: page === 1,
-    });
+  function onPageChanged(page) {
+    setPage(page);
+    setLast(last);
+    setFirst(first);
   }
 
-  onScaleChanged(percentage) {
-    this.setState({
-      percentage,
-    });
+  function onScaleChanged(percentage) {
+    setPercentage(percentage);
   }
 
-  onLoadedPage(pageFactory) {
-    this.setState({
-      loadingPage: false,
-      progress: 0,
-      pageFactory,
-    });
+  function onLoadedPage(pageFactory) {
+    setLoadingPage(false);
+    setProgress(0);
+    setFactory(pageFactory);
   }
 
-  onCreateObject() {
-    console.log(this.scrollPanel);
+  function onCreateObject() {
+    console.log(scrollPanel);
   }
 
-  onDocumentLoaded(factory) {
+  function onDocumentLoaded(factory) {
     const { numPages } = factory;
     let totalPage = numPages;
     let page = 1;
@@ -168,86 +128,95 @@ class DocumentViewer extends Component {
       page = 0;
     }
     console.log(factory, page, totalPage);
-    this.setState({
-      totalPage,
-      last: totalPage === 1,
-      page,
-      factory,
-    });
+    setTotalPage(totalPage);
+    setLast(totalPage === 1);
+    setPage(page);
+    setFactory(factory);
   }
 
-  renderLoadingDocument() {
+  function renderLoadingDocument() {
     return (
-      <div className={this.props.classes.progressContainer}>
+      <div className={classes.progressContainer}>
         <LinearProgress
           variant="buffer"
-          value={this.state.progress}
-          valueBuffer={this.state.buffer}
+          value={progress}
+          valueBuffer={buffer}
         />
       </div>
     );
   }
-  handleZoomIn() {
-    this.state.percentage < 1.5 &&
-      this.setState({
-        percentage: this.state.percentage + 0.1,
-        isZooming: true,
-      });
-    setTimeout(() => this.setState({ isZooming: false }), 500);
+
+  function handleZoomIn() {
+    if (percentage < 1.5) {
+      setPercentage((prevState) => prevState + 0.1);
+      setIsZooming(true);
+      setTimeout(() => setIsZooming(false), 500);
+    }
   }
-  handleZoomOut() {
-    this.state.percentage > 1 &&
-      this.setState({
-        percentage: this.state.percentage - 0.1,
-        isZooming: true,
-      });
-    setTimeout(() => this.setState({ isZooming: false }), 500);
+  function handleZoomOut() {
+    if (percentage > 0.5) {
+      setPercentage((prevState) => prevState - 0.1);
+      setIsZooming(true);
+      setTimeout(() => setIsZooming(false), 500);
+    }
   }
 
-  handleMarkerClick = () => {
-    this.setState((prevState) => ({
-      isActive: !prevState.isActive,
-    }));
+  const handleMarkerClick = () => {
+    setIsActive((prevState) => !prevState);
   };
 
-  drawMarker(event) {
-    const canvas = this.canvasRef.current;
-    if (!canvas || !this.state.isActive) return;
+  function drawMarker(event) {
+    const canvas = canvasRef.current;
+    if (!canvas || !isActive) return;
     const canvasRect = canvas.getBoundingClientRect();
     console.log(canvasRect, "canvas");
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
     const icon = { x: clickX, y: clickY, tooltip: "" };
-    const icons = [...this.state.drawingIcons, icon];
+    const icons = [...drawingIcons, icon];
     console.log(clickX, clickY, "clickX y");
-    this.setState({ drawingIcons: icons, isOpen: true });
+    setDrawingIcons(icons);
+    setIsOpen(true);
   }
 
-  handleCloseModal() {
-    this.setState({ isOpen: false });
-  }
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
 
-  handleAssignTask() {
-    const icons = [...this.state.drawingIcons];
-    this.setState({ drawingIcons: icons });
-    this.handleCloseModal();
+  const handleAssignTask = () => {
+    // payload for Assign Task
+    const payload = {
+      projectID: "",
+      floorID: "",
+      drawingID: "",
+      iconData: {
+        id: "",
+        x: "",
+        y: "",
+        taskUUID: "",
+        taskLabel: "",
+        pageNo: "",
+      },
+    };
+    const icons = [...drawingIcons];
+    setDrawingIcons(icons);
+    handleCloseModal();
     console.log("Assign Task");
-  }
-  handleDeleteMarker(index) {
-    const icons = [...this.state.drawingIcons];
-    icons.splice(index, 1);
-    this.setState({ drawingIcons: icons });
-  }
+  };
 
-  renderMainDocument() {
-    const { classes } = this.props;
-    const { isActive, clickX, clickY, drawingIcons } = this.state;
+  const handleDeleteMarker = (index) => {
+    const icons = [...drawingIcons];
+    icons.splice(index, 1);
+    setDrawingIcons(icons);
+  };
+
+  const renderMainDocument = () => {
     const buttonStyle = {
       padding: 0,
       color: isActive ? "black" : "",
     };
 
-    if (!this.props.pdf) {
+    if (!props.pdf) {
       return <div />;
     }
     return (
@@ -259,21 +228,21 @@ class DocumentViewer extends Component {
           }}
         >
           <ButtonGroup size="small">
-            <Button onClick={this.handleZoomIn} sx={{ p: 0 }}>
+            <Button onClick={handleZoomIn} sx={{ p: 0 }}>
               <Icon component={ZoomIn} />
             </Button>
-            <Button onClick={this.handleZoomOut} sx={{ p: 0 }}>
+            <Button onClick={handleZoomOut} sx={{ p: 0 }}>
               <Icon component={ZoomOut} />
             </Button>
             <Button
               onClick={() => {
-                this.setState({ percentage: 1 });
+                setPercentage(0.5);
               }}
               sx={{ p: 0 }}
             >
               <Icon component={Refresh} />
             </Button>
-            <Button onClick={this.handleMarkerClick} sx={buttonStyle}>
+            <Button onClick={handleMarkerClick} sx={buttonStyle}>
               <Icon component={Room} />
             </Button>
           </ButtonGroup>
@@ -287,18 +256,18 @@ class DocumentViewer extends Component {
           }}
         >
           <Document
-            file={this.props.file}
+            file={props.file}
             noData={<div />}
             loading={<div />}
-            onClick={this.drawMarker}
-            onSourceSuccess={this.onDocumentSourceSuccess}
+            onClick={drawMarker}
+            onSourceSuccess={onDocumentSourceSuccess}
             onSourceError={(error) => {
               console.log(error.message);
             }}
-            onLoadSuccess={this.onDocumentLoaded}
+            onLoadSuccess={onDocumentLoaded}
             style={{
               transition: "transform 0.3s ease",
-              transform: `scale(${this.state.percentage})`,
+              transform: `scale(${percentage})`,
               height: "100%",
             }}
           >
@@ -326,7 +295,7 @@ class DocumentViewer extends Component {
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
-                          this.handleDeleteMarker(index);
+                          handleDeleteMarker(index);
                         }} // Replace handleIconClose with the appropriate function to handle icon close
                       >
                         <Tooltip title="Close">
@@ -350,122 +319,119 @@ class DocumentViewer extends Component {
             </div>
             <Page
               inputRef={(r) => {
-                this.pageRef = r;
-                // this.canvasRef.current = r?.canvas;
+                pageRef = r;
+                // canvasRef.current = r?.canvas;
               }}
-              canvasRef={this.canvasRef}
+              canvasRef={canvasRef}
               // className={classes.pageContainer}
-              onLoadProgress={this.onLoadingPage}
-              onLoadSuccess={this.onLoadedPage}
-              pageNumber={this.state.page}
+              onLoadProgress={onLoadingPage}
+              onLoadSuccess={onLoadedPage}
+              pageNumber={page}
               renderAnnotationLayer={false}
               renderTextLayer={false}
-              scale={this.state.percentage}
+              scale={percentage}
             />
           </Document>
         </div>
       </div>
     );
+  };
+
+  // const { classes } = props;
+  let viewContainerStyle = [classes.viewContainer];
+  // the user does not pick any file
+  if (!props.pdf) {
+    viewContainerStyle = [...viewContainerStyle, classes.viewEmptyContainer];
   }
 
-  render() {
-    const { classes } = this.props;
-    let viewContainerStyle = [classes.viewContainer];
-    // the user does not pick any file
-    if (!this.props.pdf) {
-      viewContainerStyle = [...viewContainerStyle, classes.viewEmptyContainer];
-    }
-    const { factory, pageFactory, percentage } = this.state;
-    return (
-      <div ref={this.scrollPanel} className={classes.scrollContainer}>
-        <Paper className={viewContainerStyle.join(" ")} elevation={1}>
-          {this.renderMainDocument()}
-          {
-            <DocumentControl
-              currentPage={this.state.page}
-              totalPage={this.state.totalPage}
-              onChangePage={this.onPageChanged}
-              percentage={percentage}
-              onScaleChanged={this.onScaleChanged}
-              pdf={factory}
-              file={this.props.file}
-            />
-          }
-          {factory && (
-            <OutlineControl
-              onChangePage={this.onPageChanged}
-              pdf={factory}
-              totalPage={this.state.totalPage}
-              currentPage={this.state.page}
-            />
-          )}
-          {/* {
+  return (
+    <div ref={scrollPanel} className={classes.scrollContainer}>
+      <Paper className={viewContainerStyle.join(" ")} elevation={1}>
+        {renderMainDocument()}
+        {props.file && (
+          <DocumentControl
+            currentPage={page}
+            totalPage={totalPage}
+            onChangePage={onPageChanged}
+            percentage={percentage}
+            onScaleChanged={onScaleChanged}
+            pdf={factory}
+            file={props.file}
+          />
+        )}
+        {factory && (
+          <OutlineControl
+            onChangePage={onPageChanged}
+            pdf={factory}
+            totalPage={totalPage}
+            currentPage={page}
+          />
+        )}
+        {/* {
                         pageFactory && 
                         <div className={classes.editorContainer}>
                             <ImageMapEditor
-                                totalPage={this.state.totalPage}
-                                currentPage={this.state.page}
-                                onChangePage={this.onPageChanged}
+                                totalPage={totalPage}
+                                currentPage={page}
+                                onChangePage={onPageChanged}
                                 page={pageFactory}
-                                pdf={this.props.pdf}    // pdf arraybuffer object
-                                file={this.props.file}  // pdf file
-                                lastPage={this.state.last}
-                                firstPage={this.state.first}
+                                pdf={props.pdf}    // pdf arraybuffer object
+                                file={props.file}  // pdf file
+                                lastPage={last}
+                                firstPage={first}
                                 percentage={percentage}
-                                onCreateObject={this.onCreateObject}
-                                onZoom={this.onZoom}
+                                onCreateObject={onCreateObject}
+                                onZoom={onZoom}
                                 readOnly={false}
-                                encrypt={this.props.encrypt}
+                                encrypt={props.encrypt}
                             />
                         </div>
                     } */}
 
-          {
-            <CustomModal
-              showCloseBtn={true}
-              title={"Assign Task"}
-              isOpen={this.state.isOpen}
-              handleClose={this.handleCloseModal}
-              children={
-                <>
-                  <AutocompleteField
-                    placeholder="Select Task"
-                    label="Task"
-                    options={formatDropdownData(this.props.newTask, "", "_id", "topic")}
-                    // onChange={handleProjectChange}
-                    sx={{
-                      width: "100%",
-                      border: "1px solid #c4c4c4",
-                      borderRadius: "0 4px 4px 0",
-                    }}
-                    showSideLabel={true}
-                    // groupBy={(option)=> option.label}
-                  />
-                  <Button
-                    sx={{
-                      marginTop: "8px",
-                      padding: "3px 4px",
-                      textTransform: "capitalize",
-                    }}
-                    variant="contained"
-                    onClick={this.handleAssignTask}
-                  >
-                    Save
-                  </Button>
-                </>
-              }
-            />
-          }
-        </Paper>
-      </div>
-    );
-  }
-}
-
-// DocumentViewer.propTypes = {
-// 	pdf: PropTypes.object,
-// 	file: PropTypes.object,
-// 	classes: PropTypes.object.isRequired,
-// };
+        {
+          <CustomModal
+            showCloseBtn={true}
+            title={"Assign Task"}
+            isOpen={isOpen}
+            handleClose={handleCloseModal}
+            children={
+              <>
+                <AutocompleteField
+                  placeholder="Select Task"
+                  label="Task"
+                  options={formatDropdownData(
+                    props.newTask,
+                    "",
+                    "_id",
+                    "topic"
+                  )}
+                  // onChange={handleProjectChange}
+                  sx={{
+                    width: "100%",
+                    border: "1px solid #c4c4c4",
+                    borderRadius: "0 4px 4px 0",
+                  }}
+                  showSideLabel={true}
+                  // groupBy={(option)=> option.label}
+                />
+                <Button
+                  sx={{
+                    marginTop: "8px",
+                    padding: "3px 4px",
+                    textTransform: "capitalize",
+                  }}
+                  variant="contained"
+                  onClick={handleAssignTask}
+                >
+                  Save
+                </Button>
+              </>
+            }
+          />
+        }
+      </Paper>
+    </div>
+  );
+};
 
 export default withStyles(DocumentViewerStyles)(DocumentViewer);
