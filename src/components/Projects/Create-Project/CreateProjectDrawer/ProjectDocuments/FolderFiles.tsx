@@ -19,7 +19,6 @@ import {
 } from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import { Creator } from "constants/interfaces/project.interface";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
@@ -89,10 +88,10 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
 
   //   dispatch(projectActions.openFileViewDrawer());
   // };
-  const AccessMemberList = (membersList: Creator[]) => {
+  const AccessMemberList = (membersList: UserInfo[]) => {
     return (
       <>
-        {membersList.map((item: Creator, index) => {
+        {membersList.map((item: UserInfo, index) => {
           if (item === undefined) {
             return <></>;
           }

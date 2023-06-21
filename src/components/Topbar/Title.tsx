@@ -164,9 +164,9 @@ const Title = () => {
             popupIcon={DropDownSvg()}
             options={allProjects}
             getOptionLabel={(option: any) => option.title}
-            getOptionSelected={(option: any, value: any) =>
-              option._id === value._id
-            }
+            // getOptionSelected={(option: any, value: any) =>
+            //   option._id === value._id
+            // }
             value={selectProj}
             onChange={handleProjectChange}
             // options={ProjectName}
