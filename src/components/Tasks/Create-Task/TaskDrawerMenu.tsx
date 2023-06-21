@@ -1,42 +1,39 @@
 import { makeStyles } from "@material-ui/core";
-import { Divider, Grid, TextField, Typography } from "@mui/material";
+import { Divider, Grid, TextField } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import { CBox } from "components/material-ui";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import { AttachmentIcon } from "components/material-ui/icons";
-import assets from "assets/assets";
 import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import CDrawer from "Drawer/CDrawer";
+import assets from "assets/assets";
 import { CButton } from "components/Button";
+import { ConfirmDescriptionTag } from "components/CustomTags";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import CustomModal from "components/Modal";
-import UploadDocs from "components/uploadImage/UploadDocs";
+import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import {
   getSelectedProjectMembers,
   getUniqueObjectsFromArr,
   getUserFormatedDataForAutoComplete,
   onlyUnique,
 } from "components/Utills/Globals/Common";
+import UploadDocs from "components/uploadImage/UploadDocs";
 import { getColorByStatus } from "config/project.config";
 import { TASK_CONFIG } from "config/task.config";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
-import CDrawer from "Drawer/CDrawer";
+import { useConfirm } from "material-ui-confirm";
 import moment from "moment-timezone";
 import { toast } from "react-toastify";
+import { taskActions } from "redux/action";
 import {
   deleteTask,
-  patchSubTaskById,
-  updateTaskById,
+  updateTaskById
 } from "redux/action/task.action";
-import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers/appReducer";
 import ViewAllDocs from "../SubTasks/ViewAllDocs";
-import docsAction from "redux/action/docs.actions";
-import { DOCS_CONFIG } from "config/docs.config";
-import { useConfirm } from "material-ui-confirm";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { ConfirmDescriptionTag } from "components/CustomTags";
 
 interface Props {
   taskMenue: TaskInterface;
@@ -78,7 +75,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
   //   }))
   // }, [])
 
-  const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean>(isEditable);
+  const [showUpdateBtn, setShowUpdateBtn] = React.useState<boolean|any>(isEditable);
   const [imageAttach, setImageAttach] = useState<boolean>(false);
   const { projectWithMembers, allProjectsTitles } = useSelector(
     (store: RootState) => store.project
@@ -731,7 +728,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 label="Create Task"
                 onClick={handleCreateTask}
                 variant="contained"
-                styles={{
+                sx={{
                   borderColor: "#0076C8",
                   fontSize: 12,
                   fontWeight: "500",
@@ -747,7 +744,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 label={"Delete"}
                 onClick={handleDeleteTask}
                 variant="outlined"
-                styles={{
+                sx={{
                   borderColor: "#FA0808",
                   fontSize: 12,
                   fontWeight: "500",
@@ -771,7 +768,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 label="Create Task"
                 onClick={handleCreateTask}
                 variant="contained"
-                styles={{
+                sx={{
                   borderColor: "#0076C8",
                   fontSize: 12,
                   fontWeight: "500",
@@ -787,7 +784,7 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                 label="Update Draft"
                 onClick={(e: any) => handleTaskUpdateAtDraftState(e, false)}
                 variant="contained"
-                styles={{
+                sx={{
                   borderColor: "#0076C8",
                   fontSize: 12,
                   fontWeight: "500",
@@ -811,11 +808,8 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
           >
             <Grid item>
               <CButton
-                sx={{ padding: "8px 9px" }}
-                label="Update Task"
-                onClick={handleTaskUpdateAtNewState}
-                variant="contained"
-                styles={{
+                sx={{
+                  padding: "8px 9px",
                   borderColor: "#0076C8",
                   fontSize: 12,
                   fontWeight: "500",
@@ -824,14 +818,15 @@ function TaskDrawerMenu({ taskMenue, subtasks }: Props) {
                   marginRight: 15,
                   textTransform: "capitalize",
                 }}
+                label="Update Task"
+                onClick={handleTaskUpdateAtNewState}
+                variant="contained"
               />
             </Grid>
             <Grid item>
               <CButton
                 sx={{
                   padding: "7px 4px",
-                }}
-                styles={{
                   borderColor: "#9D9D9D",
                   fontSize: 12,
                   fontWeight: "500",

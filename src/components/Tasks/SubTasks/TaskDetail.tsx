@@ -89,7 +89,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
               // mt={1}
             >
               <CButton
-                styles={{ fontSize: 14, textTransform: "capitalize" }}
+                sx={{ fontSize: 14, textTransform: "capitalize" }}
                 onClick={handleAttachmentDrawer}
                 startIcon={<AttachmentIcon />}
                 label={"Attachments"}

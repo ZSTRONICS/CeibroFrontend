@@ -85,8 +85,7 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
       cancellationText: (
         <CButton
           variant="contained"
-          elevation={1}
-          styles={{
+          sx={{
             color: "#605C5C",
             backgroundColor: "#ECF0F1",
             fontSize: 12,

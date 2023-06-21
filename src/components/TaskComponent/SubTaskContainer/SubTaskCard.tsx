@@ -322,8 +322,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
       confirmationButtonProps: { sx: { textTransform: 'capitalize', padding: '4px 15px', color: '#FA0808', borderColor: '#FA0808', marginRight: '10px' }, variant: "outlined" },
       cancellationText: <CButton
         variant="contained"
-        elevation={0}
-        styles={{
+        sx={{
           color: "#605C5C",
           backgroundColor: "#ECF0F1",
           fontSize: 12,
@@ -603,14 +602,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "2px 0px",
-                          }}
-                          label={"Accept"}
-                          onClick={(e: any) =>
-                            handleSubTaskStateChange(e, SubtaskState.Accepted)
-                          }
-                          variant="outlined"
-                          styles={{
+                            padding: "2px 0px", 
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "bold",
@@ -618,10 +610,20 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             color: "#0076C8",
                             marginRight: 15,
                           }}
+                          label={"Accept"}
+                          onClick={(e: any) =>
+                            handleSubTaskStateChange(e, SubtaskState.Accepted)
+                          }
+                          variant="outlined"
                         />
                         <CButton
                           sx={{
                             padding: "2px 0px",
+                            borderColor: "#FA0808",
+                            fontSize: 12,
+                            fontWeight: "bold",
+                            borderWidth: 1.5,
+                            color: "#FA0808",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -631,13 +633,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             )
                           }
                           variant="outlined"
-                          styles={{
-                            borderColor: "#FA0808",
-                            fontSize: 12,
-                            fontWeight: "bold",
-                            borderWidth: 1.5,
-                            color: "#FA0808",
-                          }}
+                         
                         />
                       </>
                     )}
@@ -646,20 +642,17 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <CButton
                         sx={{
                           padding: "2px 0px",
+                           borderColor: "#55BCB3",
+                          fontSize: 12,
+                          fontWeight: "500",
+                          borderWidth: 1.5,
+                          color: "#55BCB3",
                         }}
                         label={"Done"}
                         onClick={(e: any) =>
                           handleSubTaskStateChange(e, SubtaskState.Done)
                         }
                         variant="outlined"
-                        styles={{
-                          borderColor: "#55BCB3",
-                          fontSize: 12,
-                          fontWeight: "500",
-                          borderWidth: 1.5,
-                          color: "#55BCB3",
-                          // marginRight: 15,
-                        }}
                       />
                     )}
                   {myState?.userState === SubtaskState.Accepted &&
@@ -667,14 +660,7 @@ function SubTaskCard({ subTaskDetail }: Props) {
                       <>
                         <CButton
                           sx={{
-                            padding: "2px 0px",
-                          }}
-                          label={"Start"}
-                          onClick={(e: any) =>
-                            handleSubTaskStateChange(e, SubtaskState.Start)
-                          }
-                          variant="outlined"
-                          styles={{
+                            padding: "2px 0px", 
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "500",
@@ -682,10 +668,20 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             color: "#0076C8",
                             marginRight: 15,
                           }}
+                          label={"Start"}
+                          onClick={(e: any) =>
+                            handleSubTaskStateChange(e, SubtaskState.Start)
+                          }
+                          variant="outlined"
                         />
                         <CButton
                           sx={{
                             padding: "2px 0px",
+                            borderColor: "#FA0808",
+                            fontSize: 12,
+                            fontWeight: "500",
+                            borderWidth: 1.5,
+                            color: "#FA0808",
                           }}
                           label={"Reject"}
                           onClick={(e: any) =>
@@ -695,13 +691,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             )
                           }
                           variant="outlined"
-                          styles={{
-                            borderColor: "#FA0808",
-                            fontSize: 12,
-                            fontWeight: "500",
-                            borderWidth: 1.5,
-                            color: "#FA0808",
-                          }}
                         />
                       </>
                     )}
@@ -711,12 +700,6 @@ function SubTaskCard({ subTaskDetail }: Props) {
                         <CButton
                           sx={{
                             padding: "2px 0px",
-                          }}
-                          disabled={assignedTo[0].members.length === 0}
-                          label={"Assign"}
-                          onClick={handleAssignTo}
-                          variant="outlined"
-                          styles={{
                             borderColor: "#0076C8",
                             fontSize: 12,
                             fontWeight: "500",
@@ -724,21 +707,23 @@ function SubTaskCard({ subTaskDetail }: Props) {
                             color: "#0076C8",
                             marginRight: 15,
                           }}
+                          disabled={assignedTo[0].members.length === 0}
+                          label={"Assign"}
+                          onClick={handleAssignTo}
+                          variant="outlined"
                         />
                         <CButton
                           sx={{
                             padding: "2px 0px",
-                          }}
-                          label={"Delete"}
-                          onClick={handleDeleteSubTask}
-                          variant="outlined"
-                          styles={{
-                            borderColor: "#FA0808",
+                             borderColor: "#FA0808",
                             fontSize: 12,
                             fontWeight: "500",
                             borderWidth: 1.5,
                             color: "#FA0808",
                           }}
+                          label={"Delete"}
+                          onClick={handleDeleteSubTask}
+                          variant="outlined"
                         />
                       </>
                     )}

@@ -10,14 +10,12 @@ import OutlineControl from "./../../Drawer/Outline";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import pdfWorker from "./pdfjs/pdf.worker.js";
 import { ZoomIn, ZoomOut, Refresh, Room, Close } from "@mui/icons-material";
 import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
 import CustomModal from "components/Modal";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { formatDropdownData } from "components/Utills/Globals";
 
-//pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const DocumentViewerStyles = () => ({
