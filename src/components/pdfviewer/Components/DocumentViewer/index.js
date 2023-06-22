@@ -117,9 +117,9 @@ const DocumentViewer = (props) => {
     setFactory(pageFactory);
   }
 
-  function onCreateObject() {
-    console.log(scrollPanel);
-  }
+  // function onCreateObject() {
+  //   console.log(scrollPanel);
+  // }
 
   function onDocumentLoaded(factory) {
     const { numPages } = factory;
@@ -128,7 +128,7 @@ const DocumentViewer = (props) => {
     if (totalPage <= 0) {
       page = 0;
     }
-    console.log(factory, page, totalPage);
+    // console.log(factory, page, totalPage);
     setTotalPage(totalPage);
     setLast(totalPage === 1);
     setPage(page);
