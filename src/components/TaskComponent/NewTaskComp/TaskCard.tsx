@@ -9,7 +9,7 @@ import {
 } from "components/CustomTags";
 import { momentdeDateFormat } from "components/Utills/Globals";
 import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
-import { Task, AssignedToState } from "constants/interfaces";
+import { AssignedToState, Task } from "constants/interfaces";
 
 interface IProps {
   task: Task;
@@ -117,3 +117,4 @@ function TaskCard(props: IProps) {
 }
 
 export { TaskCard };
+

@@ -1,44 +1,44 @@
-import React, { Fragment, useRef } from "react";
 import { MoreVert } from "@material-ui/icons";
 import {
-  Card,
-  CardContent,
-  CardHeader,
   Box,
   Button,
+  Card,
   CardActions,
+  CardContent,
+  CardHeader,
   Divider,
-  Typography,
-  Stack,
-  Tooltip,
   IconButton,
   Menu,
   MenuItem,
+  Stack,
+  Tooltip,
+  Typography,
 } from "@mui/material";
+import React, { Fragment, useRef } from "react";
 
 import { styled } from "@mui/material/styles";
 // import IconButton, { IconButtonProps } from "@mui/material/IconButton";
-import assets from "assets/assets";
-import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import {
-  deleteTask,
-  getAllSubTaskOfTask,
-} from "redux/action/task.action";
-import { taskActions } from "redux/action";
-import { useDispatch, useSelector } from "react-redux";
-import { State, TaskInterface } from "constants/interfaces/task.interface";
-import { TASK_CONFIG } from "config/task.config";
-import { RootState } from "redux/reducers/appReducer";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import assets from "assets/assets";
+import { CButton } from "components/Button";
+import { ConfirmDescriptionTag } from "components/CustomTags";
 import {
   momentdeDateFormat,
   onlyUnique,
 } from "components/Utills/Globals/Common";
-import { toast } from "react-toastify";
+import TaskBadges from "components/Utills/TaskCard/TaskBadges";
+import { TASK_CONFIG } from "config/task.config";
+import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { useConfirm } from "material-ui-confirm";
-import { CButton } from "components/Button";
-import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
-import { ConfirmDescriptionTag } from "components/CustomTags";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { taskActions } from "redux/action";
+import {
+  deleteTask,
+  getAllSubTaskOfTask,
+} from "redux/action/task.action";
+import { RootState } from "redux/reducers/appReducer";
 interface Props {
   task: TaskInterface;
   ColorByStatus: (state: string) => string;
