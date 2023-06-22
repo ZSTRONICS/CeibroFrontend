@@ -1,4 +1,4 @@
-import { Contact, UserAllContacts } from 'constants/interfaces/user.interface';
+import { Contact } from 'constants/interfaces/user.interface';
 import { ActionInterface } from './appReducer'
 import { requestFail, requestPending, requestSuccess } from '../../utills/status'
 
