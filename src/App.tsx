@@ -18,7 +18,7 @@ import {
 
 // socket
 import { socket } from "services/socket.services";
-import { io, Socket } from "socket.io-client";
+import { io } from "socket.io-client";
 
 // material
 import { CssBaseline } from "@mui/material";

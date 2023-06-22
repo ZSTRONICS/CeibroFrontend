@@ -81,7 +81,8 @@ const DocumentViewer = (props) => {
   const { classes } = props;
 
   function onLoadingPage({ loaded, total }) {
-    let { progress } = state;
+    //  state not defined
+    let { progress } = props.state;
     let buffer = 10;
     progress = Math.floor((loaded / total) * 100);
     if (progress < 100) {
