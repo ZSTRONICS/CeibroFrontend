@@ -224,13 +224,18 @@ const App: React.FC<MyApp> = () => {
 
       // Listen for connect event
       sock.on("connect", () => {
+
+        if (socketIntervalId !== null) {
+          return;
+        }
+
         clearInterval(intervalId);
         console.log("Connected to server");
         socket.setUserId(String(user._id));
         socket.setSocket(sock);
 
         if (socketIntervalId === null) {
-          socketIntervalId = setInterval(sendHeartbeat, 400);
+          socketIntervalId = setInterval(sendHeartbeat, 10000);
         }
 
       });
@@ -238,7 +243,7 @@ const App: React.FC<MyApp> = () => {
       // Listen for disconnect event
       sock.on("disconnect", (reason: string) => {
         console.log(`Disconnected from server: ${reason}`);
-        clearInterval(socketIntervalId);
+        socketIntervalId = null;
         clearInterval(intervalId);
         let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {
@@ -249,7 +254,7 @@ const App: React.FC<MyApp> = () => {
       });
 
       sock.on("connect_error", (err: any) => {
-        clearInterval(socketIntervalId);
+        socketIntervalId = null;
         clearInterval(intervalId);
         let localInterval = setInterval(() => {
           if (socket.getSocket() != null) {
