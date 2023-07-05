@@ -1,69 +1,84 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Modal, Form, Input } from 'antd';
+import React, { useEffect, useRef, useState } from "react";
+import PropTypes from "prop-types";
+import { Modal, Form, Input } from "antd";
 
-import Canvas from '../../canvas/Canvas';
-import DataSourceProperty from '../properties/DataSourceProperty';
+import Canvas from "../../canvas/Canvas";
+import DataSourceProperty from "../properties/DataSourceProperty";
 
-class DataSourceModal extends Component {
-    static propTypes = {
-        form: PropTypes.any,
-        visible: PropTypes.bool,
-        animation: PropTypes.object,
-        onOk: PropTypes.func,
-        onCancel: PropTypes.func,
-    }
+const DataSourceModal = ({
+  visible,
+  animation,
+  onOk,
+  onCancel,
+  validateTitle,
+  onChange,
+}) => {
+  const [width, setWidth] = useState(150);
+  const [height, setHeight] = useState(150);
+  const containerRef = useRef(null);
+  const canvasRef = useRef(null);
+  const [form] = Form.useForm();
 
-    state = {
-        width: 150,
-        height: 150,
-    }
+  useEffect(() => {
+    waitForContainerRender(containerRef.current);
+  }, []);
 
-    componentDidMount() {
-        this.waitForContainerRender(this.containerRef);
-    }
+  const waitForContainerRender = (container) => {
+    setTimeout(() => {
+      if (container) {
+        setWidth(container.clientWidth);
+        setHeight(container.clientHeight);
+      } else {
+        waitForContainerRender(containerRef.current);
+      }
+    }, 5);
+  };
 
-    componentWillReceiveProps(nextProps) {
-        nextProps.form.resetFields();
-    }
+  const handleOk = () => {
+    form
+      .validateFields()
+      .then((values) => {
+        onOk(values);
+      })
+      .catch(() => {});
+  };
 
-    waitForContainerRender = (container) => {
-        setTimeout(() => {
-            if (container) {
-                this.setState({
-                    width: container.clientWidth,
-                    height: container.clientHeight,
-                });
-                return;
-            }
-            this.waitForContainerRender(this.containerRef);
-        }, 5);
-    };
+  return (
+    <Modal onOk={handleOk} onCancel={onCancel} visible={visible}>
+      <Form form={form} initialValues={{ title: animation.title }}>
+        <Form.Item
+          label="Title"
+          required
+          colon={false}
+          hasFeedback
+          help={validateTitle.help}
+          validateStatus={validateTitle.validateStatus}
+          name="title"
+          rules={[{ required: true, message: "Please enter a title" }]}
+        >
+          <Input />
+        </Form.Item>
+      </Form>
+      {DataSourceProperty.render(canvasRef.current, form, { animation })}
+      <div ref={containerRef}>
+        <Canvas
+          ref={canvasRef}
+          editable={false}
+          width={width}
+          height={height}
+        />
+      </div>
+    </Modal>
+  );
+};
 
-    render() {
-        const { form, visible, animation, onOk, onCancel, validateTitle, onChange } = this.props;
-        const { width, height } = this.state;
-        return (
-            <Modal
-                onOk={onOk}
-                onCancel={onCancel}
-                visible={visible}
-            >
-                <Form.Item label="Title" required colon={false} hasFeedback help={validateTitle.help} validateStatus={validateTitle.validateStatus}>
-                    <Input value={animation.title} onChange={(e) => { onChange(null, { animation: { title: e.target.value } }, { animation: { ...animation, title: e.target.value } }); }} />
-                </Form.Item>
-                {DataSourceProperty.render(this.canvasRef, form, { animation })}
-                <div ref={(c) => { this.containerRef = c; }}>
-                    <Canvas ref={this.canvasRef} editable={false} width={width} height={height} />
-                </div>
-            </Modal>
-        );
-    }
-}
+DataSourceModal.propTypes = {
+  visible: PropTypes.bool,
+  animation: PropTypes.object,
+  onOk: PropTypes.func,
+  onCancel: PropTypes.func,
+  validateTitle: PropTypes.object,
+  onChange: PropTypes.func,
+};
 
-export default Form.create({
-    onValuesChange: (props, changedValues, allValues) => {
-        const { onChange } = props;
-        onChange(props, changedValues, allValues);
-    },
-})(DataSourceModal);
+export default DataSourceModal;

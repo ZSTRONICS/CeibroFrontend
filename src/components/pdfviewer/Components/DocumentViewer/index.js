@@ -5,7 +5,7 @@ import doEach from "lodash/forEach";
 import { Document, Page, pdfjs } from "react-pdf";
 import DocumentControl from "./../DocumentControl";
 import OutlineControl from "./../../Drawer/Outline";
-//  import ImageMapEditor from './../../../imagemap/ImageMapEditor';
+import ImageMapEditor from "./../../../imagemap/ImageMapEditor";
 // material-ui
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -20,26 +20,27 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const DocumentViewerStyles = () => ({
   scrollContainer: {
-    // overflow: "auto",
+    overflow: "auto",
     height: "100%",
-    // width: "100%",
-    padding: "5%",
+    width: "100%",
+    padding: "5% 2% 1% 2%",
   },
   viewContainer: {
     // padding: 0,
-    // borderRadius: 0,
-    // position: "absolute",
+    borderRadius: 0,
+    position: "relative",
     // top: "20%",
     // left: "30%",
-    // // margin: "50px auto 100px auto",
+    // margin: "50px auto 100px auto",
     // display: "table",
-    // width: "auto",
-    // textAlign: "center",
+    width: "100%",
+    textAlign: "center",
   },
   editorContainer: {
     position: "absolute",
     top: 0,
     height: "100%",
+    width: "100%",
     left: 0,
   },
   viewEmptyContainer: {
@@ -114,12 +115,12 @@ const DocumentViewer = (props) => {
   function onLoadedPage(pageFactory) {
     setLoadingPage(false);
     setProgress(0);
-    setFactory(pageFactory);
+    setPageFactory(pageFactory);
   }
 
-  // function onCreateObject() {
-  //   console.log(scrollPanel);
-  // }
+  function onCreateObject() {
+    console.log(scrollPanel);
+  }
 
   function onDocumentLoaded(factory) {
     const { numPages } = factory;
@@ -272,7 +273,7 @@ const DocumentViewer = (props) => {
               height: "100%",
             }}
           >
-            <div style={{ position: "relative" }}>
+            {/* <div style={{ position: "relative" }}>
               {drawingIcons.length > 0 &&
                 drawingIcons.map((icon, index) => {
                   return (
@@ -317,7 +318,7 @@ const DocumentViewer = (props) => {
                     </div>
                   );
                 })}
-            </div>
+            </div> */}
             <Page
               inputRef={(r) => {
                 pageRef = r;
@@ -349,7 +350,7 @@ const DocumentViewer = (props) => {
     <div ref={scrollPanel} className={classes.scrollContainer}>
       <Paper className={viewContainerStyle.join(" ")} elevation={1}>
         {renderMainDocument()}
-        {props.file && (
+        {/* {props.file && (
           <DocumentControl
             currentPage={page}
             totalPage={totalPage}
@@ -367,27 +368,26 @@ const DocumentViewer = (props) => {
             totalPage={totalPage}
             currentPage={page}
           />
+        )} */}
+        {pageFactory && (
+          <div className={classes.editorContainer}>
+            <ImageMapEditor
+              totalPage={totalPage}
+              currentPage={page}
+              onChangePage={onPageChanged}
+              page={pageFactory}
+              pdf={props.pdf} // pdf arraybuffer object
+              file={props.file} // pdf file
+              lastPage={last}
+              firstPage={first}
+              percentage={percentage}
+              onCreateObject={onCreateObject}
+              onZoom={onZoom}
+              readOnly={false}
+              encrypt={props.encrypt}
+            />
+          </div>
         )}
-        {/* {
-                        pageFactory && 
-                        <div className={classes.editorContainer}>
-                            <ImageMapEditor
-                                totalPage={totalPage}
-                                currentPage={page}
-                                onChangePage={onPageChanged}
-                                page={pageFactory}
-                                pdf={props.pdf}    // pdf arraybuffer object
-                                file={props.file}  // pdf file
-                                lastPage={last}
-                                firstPage={first}
-                                percentage={percentage}
-                                onCreateObject={onCreateObject}
-                                onZoom={onZoom}
-                                readOnly={false}
-                                encrypt={props.encrypt}
-                            />
-                        </div>
-                    } */}
 
         {
           <CustomModal

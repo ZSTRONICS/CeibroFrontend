@@ -25,7 +25,6 @@ function DrawingDetails() {
         dispatch(taskActions.getTaskAssignedToMe());
       }
       if (allTaskCreatedFromMe.unread.length === 0) {
-        
         dispatch(taskActions.getTaskCreatedFromMe());
       }
     }
@@ -40,15 +39,15 @@ function DrawingDetails() {
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box>
       <Grid container>
-        <Grid item md={2.8} sx={sideBarStyle}>
-        <Task/>
+        <Grid item md={2.5} sx={sideBarStyle}>
+          <Task />
         </Grid>
-        <Grid item md={8.2}>
-          <DocumentReader  newTask = {allTaskAssignedToMe.new}/>
+        <Grid item md={9.5}>
+          <DocumentReader newTask={allTaskAssignedToMe.new} />
         </Grid>
-        <Grid item md={1} sx={sideBarStyle}>
+        {/* <Grid item md={1} sx={sideBarStyle}>
           Toolbar
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );
@@ -57,7 +56,7 @@ const sideBarStyle = {
   position: "relative",
   zIndex: 10,
   height: "calc(100vh - 137px)",
-  overflow:'auto',
+  overflow: "auto",
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",

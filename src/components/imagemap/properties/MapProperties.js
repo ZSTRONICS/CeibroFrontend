@@ -1,46 +1,45 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Form, Collapse } from 'antd';
+import React from "react";
+import PropTypes from "prop-types";
+import { Form, Collapse } from "antd";
 
-import PropertyDefinition from './PropertyDefinition';
-import Scrollbar from '../../common/Scrollbar';
+import PropertyDefinition from "./PropertyDefinition";
+import Scrollbar from "../../common/Scrollbar";
 
 const { Panel } = Collapse;
 
-class MapProperties extends Component {
-    static propTypes = {
-        canvasRef: PropTypes.any,
-    }
+function MapProperties({ canvasRef }) {
+  const [form] = Form.useForm();
+  const showArrow = false;
 
-    render() {
-        const { canvasRef, form } = this.props;
-        const showArrow = false;
-        if (canvasRef) {
-            return (
-                <Scrollbar>
-                    <Form layout="horizontal">
-                        <Collapse bordered={false}>
-                            {
-                                Object.keys(PropertyDefinition.map).map((key) => {
-                                    return (
-                                        <Panel key={key} header={PropertyDefinition.map[key].title} showArrow={showArrow}>
-                                            {PropertyDefinition.map[key].component.render(canvasRef, form, canvasRef.workarea)}
-                                        </Panel>
-                                    );
-                                })
-                            }
-                        </Collapse>
-                    </Form>
-                </Scrollbar>
-            );
-        }
-        return null;
-    }
+  if (canvasRef) {
+    return (
+      <Scrollbar>
+        <Form layout="horizontal" form={form}>
+          <Collapse bordered={false}>
+            {Object.keys(PropertyDefinition.map).map((key) => (
+              <Panel
+                key={key}
+                header={PropertyDefinition.map[key].title}
+                showArrow={showArrow}
+              >
+                {PropertyDefinition.map[key].component.render(
+                  canvasRef,
+                  form,
+                  canvasRef.workarea
+                )}
+              </Panel>
+            ))}
+          </Collapse>
+        </Form>
+      </Scrollbar>
+    );
+  }
+
+  return null;
 }
 
-export default Form.create({
-    onValuesChange: (props, changedValues, allValues) => {
-        const { onChange, selectedItem } = props;
-        onChange(selectedItem, changedValues, { workarea: allValues });
-    },
-})(MapProperties);
+MapProperties.propTypes = {
+  canvasRef: PropTypes.any,
+};
+
+export default React.memo(MapProperties);
