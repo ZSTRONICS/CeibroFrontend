@@ -12,18 +12,20 @@ import "./sidebar.css";
 
 function Sidebar() {
   const classes = useStyles();
+  const selectedTab = useSelector(
+    (store: RootState) => store.navigation.selectedTab
+  );
   const configs = useSelector(
-    (store: RootState) => store.navigation.sidebarRoutes
+    (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
   const history = useHistory();
 
   const handleRouteClick = (config: SingleConfig) => {
-    if (config.getPath("") !== "chat") {
-      socket.setAppSelectedChat(null);
-    }
-
-    history.push(`/${config.getPath("")}`);
+    // if (config.getPath("") !== "chat") {
+    //   socket.setAppSelectedChat(null);
+    // }
+    // history.push(`/${config.getPath("")}`);
     // if (isTabletOrMobile && navbarOpen) {
     //   dispatch(appActions.setNavbarOpen(false));
     // }
@@ -55,16 +57,18 @@ function Sidebar() {
             return (
               <div
                 key={config.title}
-                className={`${classes.menue} ${
-                  window.location.pathname.includes(config.getPath(""))
-                    ? classes.active
-                    : ""
-                }`}
+                className={`${classes.menue}`}
+                //  ${
+                //   window.location.pathname.includes(config.getPath(""))
+                //     ? classes.active
+                //     : ""
+                // }`}
                 onClick={() => handleRouteClick(config)}
               >
                 <div className={classes.iconWrapper}>
                   <Box className={classes.icon}>
-                    {config.icon}
+                    <img src={config.icon} />
+
                     {/* <img src={} className={classes.iconInner} alt={''} /> */}
                   </Box>
                 </div>
@@ -109,8 +113,8 @@ const useStyles = makeStyles((theme) => ({
     // marginTop: "28px",
   },
   menue: {
-    display: "flex",
-    alignItems: "center",
+    // display: "flex",
+    // alignItems: "center",
     padding: "15px 10px",
     paddingRight: 0,
     borderBottom: `1px solid white`,
@@ -120,8 +124,7 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     gap: 13,
     "&:hover": {
-      background:
-        "white",
+      background: "white",
     },
   },
   iconWrapper: {
@@ -139,14 +142,14 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flex: 4,
-    fontSize: 16,
+    fontSize: 10,
     fontWeight: 500,
   },
   badge: {
     flex: 1,
   },
   active: {
-    background:"white",
+    background: "white",
     color: `${colors.black} !important`,
   },
   help: {

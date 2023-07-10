@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 // mui
 
 // components
-import { Box, Tab, Tabs } from "@mui/material";
+import { Box, Grid, Tab, Tabs, InputBase } from "@mui/material";
 import { tabsIndexProps } from "components/Utills/Globals";
 import { TabPanel, TaskCard } from "components/TaskComponent";
 import { CustomStack } from "components/CustomTags";
@@ -40,43 +40,65 @@ const Task = () => {
   }, []);
 
   return (
-    <>
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            sx={{
-              background: "white",
-              zIndex: 1,
-              position: "fixed",
-              width: "100%",
-            }}
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-          >
-            <Tab label="New" {...tabsIndexProps(0)} />
-            <Tab label="Unread" {...tabsIndexProps(1)} />
-          </Tabs>
+    <Grid container>
+      <Grid md={3}>
+        <Box sx={{ width: "100%" }}>
+          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+            <Box>
+              <Tabs
+                sx={{
+                  background: "white",
+                  zIndex: 1,
+                  width: "100%",
+                }}
+                value={value}
+                onChange={handleChange}
+                aria-label="basic tabs example"
+              >
+                <Tab label="Unread" {...tabsIndexProps(0)} />
+                <Tab label="Ongoing" {...tabsIndexProps(1)} />
+                <Tab label="Done" {...tabsIndexProps(2)} />
+              </Tabs>
+            </Box>
+            <Box>
+              <InputBase
+                sx={{
+                  ml: 1,
+                }}
+                placeholder="Start typing to search"
+              />
+            </Box>
+          </Box>
+          <TabPanel value={value} index={0}>
+            <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
+              {allTaskCreatedFromMe.unread &&
+                allTaskCreatedFromMe.unread.map((task: any) => (
+                  <TaskCard key={task._id} task={task} />
+                ))}
+            </CustomStack>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
+              {allTaskAssignedToMe.new &&
+                allTaskAssignedToMe.new.map((task: any) => (
+                  <TaskCard key={task._id} task={task} />
+                ))}
+            </CustomStack>
+          </TabPanel>
         </Box>
-        <TabPanel value={value} index={0}>
-          <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
-            {allTaskAssignedToMe.new &&
-              allTaskAssignedToMe.new.map((task: any) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-          </CustomStack>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
-            {allTaskCreatedFromMe.unread &&
-              allTaskCreatedFromMe.unread.map((task: any) => (
-                <TaskCard key={task._id} task={task} />
-              ))}
-          </CustomStack>
-        </TabPanel>
-      </Box>
-    </>
+      </Grid>
+      <Grid md={9}></Grid>
+    </Grid>
   );
 };
-
+const sideBarStyle = {
+  position: "relative",
+  zIndex: 10,
+  height: "calc(100vh - 137px)",
+  overflow: "auto",
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "flex-start",
+  background: "white",
+};
 export default Task;

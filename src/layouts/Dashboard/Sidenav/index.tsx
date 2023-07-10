@@ -1,29 +1,29 @@
-import PropTypes from 'prop-types';
-import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 // @mui
-import { Box, Drawer } from '@mui/material';
+import { Box, Drawer } from "@mui/material";
 // hooks
-import assets from 'assets/assets';
-import Sidebar from 'components/Sidebar/Sidebar';
-import useResponsive from '../../../hooks/useResponsive';
+import assets from "assets/assets";
+import Sidebar from "components/Sidebar/Sidebar";
+import useResponsive from "../../../hooks/useResponsive";
 
-const NAV_WIDTH = 200;
+const NAV_WIDTH = 72;
 
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
 };
 
-interface Props{
-  openNav:any
- onCloseNav:any
+interface Props {
+  openNav: any;
+  onCloseNav: any;
 }
 
-export default function Nav({ openNav, onCloseNav }:Props) {
+export default function Nav({ openNav, onCloseNav }: Props) {
   const { pathname } = useLocation();
 
-  const isDesktop = useResponsive('up', 'lg', "");
+  const isDesktop = useResponsive("up", "lg", "");
 
   useEffect(() => {
     if (openNav) {
@@ -35,13 +35,14 @@ export default function Nav({ openNav, onCloseNav }:Props) {
   const renderContent = (
     <Box
       sx={{
-        height: '100%',
-        display: 'flex', flexDirection: 'column',
-        background:"#F4F4F4"
+        height: "100%",
+        display: "flex",
+        flexDirection: "column",
+        background: "#F4F4F4",
       }}
     >
-      <Box sx={{display: 'inline-flex', pb:1.4 }}>
-      <img src={assets.logo} alt="ceibro-logo" />
+      <Box sx={{ display: "inline-flex", pb: 1.4 }}>
+        <img src={assets.logo} alt="ceibro-logo" style={{ height: "55px" }} />
       </Box>
       <Sidebar />
     </Box>
@@ -62,8 +63,8 @@ export default function Nav({ openNav, onCloseNav }:Props) {
           PaperProps={{
             sx: {
               width: NAV_WIDTH,
-              bgcolor: 'background.default',
-              borderRightStyle: 'dashed',
+              bgcolor: "background.default",
+              borderRightStyle: "dashed",
             },
           }}
         >

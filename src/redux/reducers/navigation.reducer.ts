@@ -4,6 +4,8 @@ import {
   SET_NAVBAR_OPEN,
   SET_COLLAPSE,
   SET_SIDEBAR_CONFIG,
+  SET_SELECTED_TAB,
+  SET_SELECTED_SUB_TAB,
 } from "../../config/app.config";
 import SidebarConfig from "../../navigation/SidebarConfig";
 
@@ -11,6 +13,8 @@ const intialStatue = {
   navbar: false,
   collapse: false,
   sidebarRoutes: SidebarConfig,
+  selectedTab: "Tasks",
+  selectedSubTab: "",
 };
 
 const NavigationReducer = (state = intialStatue, action: ActionInterface) => {
@@ -35,6 +39,16 @@ const NavigationReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         sidebarRoutes: action.payload,
+      };
+    case SET_SELECTED_TAB:
+      return {
+        ...state,
+        selectedTab: action.payload,
+      };
+    case SET_SELECTED_SUB_TAB:
+      return {
+        ...state,
+        selectedSubTab: action.payload,
       };
     default:
       return state;

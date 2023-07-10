@@ -1,149 +1,128 @@
-import React from "react";
-
-// material
-import {  makeStyles } from "@material-ui/core";
-import { Grid } from "@mui/material";
-import MenuIcon from "@material-ui/icons/Menu";
-
-// redux
-import { useDispatch, useSelector } from "react-redux";
-import appActions from "../../redux/action/app.action";
-import { RootState } from "../../redux/reducers/appReducer";
-
-// router-dom
-import { useHistory } from "react-router";
-
-// components
+import React, { useEffect } from "react";
+import { Badge, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import { Box } from "@mui/system";
+import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import colors from "../../assets/colors";
-import "./topbar.css";
-import Title from "./Title";
-import UserMenu from "./UserMenu";
-import Notification from "components/Notification/Notification";
-import useResponsive from "hooks/useResponsive";
-import { AddStatusTag } from "components/CustomTags";
+import { SingleConfig } from "../../navigation/SidebarConfig";
+import { RootState } from "../../redux/reducers/appReducer";
+import { socket } from "../../services/socket.services";
+import appActions from "../../redux/action/app.action";
 
-const Topbar = (props: any) => {
+const useStyles = makeStyles((theme) => ({
+  topMenuWrapper: {
+    overflowY: "auto",
+    display: "flex",
+    height: "40px",
+    width: "-webkit-fill-available",
+  },
+  topMenu: {
+    display: "flex",
+    width: "135px",
+    alignItems: "center",
+    padding: "0px 5px",
+    paddingRight: 0,
+    borderBottom: `1px solid white`,
+    fontSize: 16,
+    fontWeight: 500,
+    fontFamily: "Inter",
+    color: colors.primary,
+    cursor: "pointer",
+    gap: 10,
+    "&:hover": {
+      background: "white",
+      color: `${colors.black} !important`,
+    },
+  },
+  topIconWrapper: {
+    flex: 1,
+    display: "flex",
+  },
+  topIcon: {
+    padding: 5,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: "50%",
+    background: "white",
+    color: colors.black,
+  },
+  topTitle: {
+    flex: 4,
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  topBadge: {
+    flex: 1,
+  },
+  active: {
+    background: "#F4F4F4",
+    // color: `${colors.black} !important`,
+  },
+}));
+
+function Topbar() {
   const classes = useStyles();
-  const history = useHistory();
   const dispatch = useDispatch();
+  const configs = useSelector(
+    (store: RootState) => store.navigation.sidebarRoutes
+  );
+  const { user } = useSelector((store: RootState) => store.auth);
+  const history = useHistory();
 
-  const isTabletOrMobile = useResponsive('down', "md", "");
-  const { user } = useSelector((state: RootState) => state.auth);
-  const xsPoint = 1.5;
-  const toggleNavbar = () => {
-    dispatch(appActions.toggleNavbar());
+  useEffect(() => {
+    dispatch(appActions.setSelectedTab("Tasks"));
+  }, []);
+
+  const handleRouteClick = (config: SingleConfig) => {
+    if (config.getPath("") !== "chat") {
+      socket.setAppSelectedChat(null);
+    }
+
+    history.push(`/${config.getPath("")}`);
   };
 
   return (
-    <div className={`topbar ${classes.topNavbarWrapper}`}>
-      <Grid
-        container
-        direction="row"
-        alignItems="center"
-        className={classes.container}
-      >
-        {isTabletOrMobile && (
-          <Grid item xs={xsPoint} className={classes.menuIconWrapper}>
-            <MenuIcon onClick={toggleNavbar} />
-          </Grid>
-        )}
+    <div className={classes.topMenuWrapper}>
+      {configs &&
+        Object.values(configs).map((config: any) => {
+          if (user && config.title === "Admin" && user.role !== "admin") {
+            return null;
+          }
 
-        <Grid
-          item
-          xs={4}
-          md={history.location.pathname.includes("chat") ? 5 : 4}
-          className={classes.titleContainer}
-        >
-          <Title />
-        </Grid>
-
-        {!isTabletOrMobile && (
-          <Grid
-            item
-            xs={1}
-            md={history?.location.pathname.includes("chat") ? 2 : 3}
-          ></Grid>
-        )}
-
-        <Grid
-          xs={6}
-          md={5}
-          item
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            alignItems: "center",
-          }}
-        >
-
-          <div className={classes.nameWrapper}>
-            <AddStatusTag>
-              {user.firstName||""}
-            </AddStatusTag>
-            <AddStatusTag>
-            {user.surName||""}
-            </AddStatusTag>
-          </div>
-
-          <UserMenu />
-
-          <Notification value={""} />
-        </Grid>
-      </Grid>
+          return (
+            <div
+              key={config.title}
+              className={`${classes.topMenu} ${
+                window.location.pathname.includes(config.getPath(""))
+                  ? classes.active
+                  : ""
+              }`}
+              onClick={() => handleRouteClick(config)}
+            >
+              <div className={classes.topIconWrapper}>
+                <Box className={classes.topIcon}>
+                  <img src={config.icon} />
+                </Box>
+              </div>
+              <Typography className={classes.topTitle}>
+                {config.title}
+              </Typography>
+              {config?.notification > 0 && (
+                <div className={classes.topBadge}>
+                  <Badge
+                    overlap="circular"
+                    badgeContent={config.notification}
+                    color="error"
+                  ></Badge>
+                </div>
+              )}
+            </div>
+          );
+        })}
     </div>
   );
-};
+}
 
 export default Topbar;
-
-const useStyles = makeStyles((theme) => ({
-  topNavbarWrapper: {
-    height: 60,
-    paddingRight: 20,
-    background: colors.white,
-  },
-  notification: {
-    alignSelf: "center",
-  },
-  menuIconWrapper: {
-    [theme.breakpoints.down("md")]: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      height: "100%",
-    },
-  },
-  container: {
-    height: "100%",
-    [theme.breakpoints.down("sm")]: {
-      rowGap: "0",
-      columnGap: "5px",
-    },
-  },
-  searchInput: {
-    height: 12,
-    marginRight: 30,
-  },
-  bell: {
-    // color: colors.white,
-    fontSize: 20,
-  },
-  titleContainer: {
-    display: "flex",
-    // justifyContent: "space-evenly",
-    // ["@media (max-width:960px)"]: {
-    //   justifyContent: "space-between",
-    // },
-  },
-  nameWrapper: {
-    display: "flex",
-    alignItems: "flex-end",
-    flexDirection: "column",
-    fontSize: 14,
-    fontWeight: 500,
-    "@media (max-width:375px)": {
-      display: "none",
-    },
-  },
-
-}));
