@@ -113,7 +113,12 @@ import FromMEIcon from "./images/from_me_icon.svg";
 import ToMeIcon from "./images/to_me_icon.svg";
 import CanceledIcon from "./images/canceled_icon.svg";
 
+import ForwardIcon from "./images/forward_icon.png";
+import CommentIcon from "./images/comment_icon.png";
+
 const assets = {
+  ForwardIcon,
+  CommentIcon,
   DoneAllIcon,
   AttachFileOutlinedIcon,
   ImageOutlinedIcon,

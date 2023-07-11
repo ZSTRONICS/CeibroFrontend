@@ -1,6 +1,4 @@
 import { useEffect, useState, useRef } from "react";
-// mui
-
 // components
 import { Box, Grid, Tab, Tabs, InputBase } from "@mui/material";
 import { tabsIndexProps } from "components/Utills/Globals";
@@ -9,6 +7,21 @@ import { CustomStack } from "components/CustomTags";
 import { RootState } from "redux/reducers";
 import { taskActions } from "redux/action";
 import { useDispatch, useSelector } from "react-redux";
+// mui
+import { makeStyles } from "@mui/styles";
+import TaskDetail from "../TaskDetails";
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  tab: {
+    borderRadius: "20px",
+    margin: theme.spacing(0, 1),
+    padding: theme.spacing(1, 2),
+    textTransform: "none",
+  },
+}));
 
 const Task = () => {
   const [value, setValue] = useState(0);
@@ -87,7 +100,9 @@ const Task = () => {
           </TabPanel>
         </Box>
       </Grid>
-      <Grid md={9}></Grid>
+      <Grid md={9}>
+        <TaskDetail />
+      </Grid>
     </Grid>
   );
 };

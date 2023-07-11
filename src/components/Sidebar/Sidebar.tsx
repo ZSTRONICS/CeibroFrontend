@@ -108,15 +108,16 @@ const useStyles = makeStyles((theme) => ({
   },
 
   menueWrapper: {
-    // height: "calc(100vh - 200px)",
     overflowY: "auto",
-    // marginTop: "28px",
+    marginTop: "136px",
+    position: "absolute",
+    width: "100%",
+    gap: 20,
   },
   menue: {
     // display: "flex",
-    // alignItems: "center",
-    padding: "15px 10px",
-    paddingRight: 0,
+    textAlign: "center",
+    padding: "16px 6px",
     borderBottom: `1px solid white`,
     fontSize: 16,
     fontWeight: 500,
@@ -128,8 +129,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   iconWrapper: {
-    flex: 1,
-    display: "flex",
+    // flex: 1,
+    // display: "flex",
   },
   icon: {
     padding: 8,
