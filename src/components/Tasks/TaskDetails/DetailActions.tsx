@@ -78,7 +78,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   return (
-    <Grid container alignItems="center" sx={{ margin: "16px 16px" }}>
+    <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>
       <Grid item xs={6}>
         <Box sx={{ display: "flex", gap: "30px" }}>
           <StatusBadge>Ongoing</StatusBadge>
