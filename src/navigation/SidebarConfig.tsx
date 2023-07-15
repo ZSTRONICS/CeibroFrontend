@@ -5,7 +5,7 @@ export interface SingleConfig {
   title: string;
   icon: any;
   notification?: number;
-  childTab: { [key: string]: SingleConfig };
+  childTab: SidebarConfigInterface;
   active?: boolean | undefined;
   getPath: (id: string) => string;
 }
