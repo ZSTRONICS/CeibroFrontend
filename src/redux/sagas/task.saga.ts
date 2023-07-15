@@ -3,26 +3,97 @@ import apiCall from "utills/apiCall";
 import { TASK_CONFIG } from "config";
 
 const createTask = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: TASK_CONFIG.CREATE_TASK,
   method: "post",
-  path: "/task/",
+  path: "/task",
+})
+
+const createTopic = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.CREATE_TOPIC,
+  method: "post",
+  path: "/task/topic",
+})
+
+const getAllTopic = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TOPIC,
+  method: "get",
+  path: "/task/topic",
+})
+
+const deleteTopic = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.DELETE_TOPIC,
+  method: "delete",
+  path: (payload) => `/task/topic/${payload.other.topicId}`
+})
+
+const forwardTask = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.FORWARD_TASK,
+  method: "post",
+  path: (payload) => `/task/forward/${payload.other.taskId}`
+})
+
+const taskSeen = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_SEEN,
+  method: "post",
+  path: (payload) => `/task/seen/${payload.other.taskId}`
+})
+
+const taskHide = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_HIDE,
+  method: "post",
+  path: (payload) => `/task/hide/${payload.other.taskId}`
+})
+
+const taskShow = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_SHOW,
+  method: "post",
+  path: (payload) => `/task/unhide/${payload.other.taskId}`
+})
+
+const taskCaneled = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_CANCELED,
+  method: "post",
+  path: (payload) => `/task/cancel/${payload.other.taskId}`
+})
+
+const taskEventsWithFiles = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_EVENT_WITH_FILES,
+  method: "post",
+  path: (payload) => `/task/upload/${payload.other.eventName}/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`  // eventName = [comment, doneTask]
 })
 
 // get task assigned to me 
-const getTaskAssignedToMe = apiCall({
+const getAllTaskToMe = apiCall({
   useV2Route: true,
-  type: TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME,
+  type: TASK_CONFIG.GET_ALL_TASK_TO_ME,
   method: "get",
   path: "/task/to-me",
 })
 
 // get task created from me 
-const getTaskCreatedFromMe = apiCall({
+const getAllTaskFromMe = apiCall({
   useV2Route: true,
-  type: TASK_CONFIG.GET_TASK_CREATED_FROM_ME,
+  type: TASK_CONFIG.GET_ALL_TASK_FROM_ME,
   method: "get",
   path: "/task/from-me",
+})
+
+// get task created from me 
+const getAllTaskHidden = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TASK_HIDDEN,
+  method: "get",
+  path: "/task/hidden",
 })
 
 const uploadDocs = apiCall({
@@ -46,12 +117,6 @@ const taskSubtaskStateChange = apiCall({
   path: "/task/st/statechange",
 })
 
-const getTask = apiCall({
-  useV2Route: false,
-  type: TASK_CONFIG.GET_TASK,
-  method: "get",
-  path: "/task?state=all&isMultiTask=false&noPaginate=true",
-});
 
 const getAllSubTask = apiCall({
   useV2Route: false,
@@ -153,11 +218,23 @@ const getAllCommentsOfSubtaskById = apiCall({
 });
 
 function* taskSaga() {
+  // topic
+  yield takeLatest(TASK_CONFIG.CREATE_TOPIC, createTopic)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TOPIC, getAllTopic)
+  yield takeLatest(TASK_CONFIG.DELETE_TOPIC, deleteTopic)
+  // task
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
-  yield takeLatest(TASK_CONFIG.GET_TASK, getTask)
-  yield takeLatest(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME, getTaskAssignedToMe)
-  yield takeLatest(TASK_CONFIG.GET_TASK_CREATED_FROM_ME, getTaskCreatedFromMe)
+  yield takeLatest(TASK_CONFIG.FORWARD_TASK, forwardTask)
+  yield takeLatest(TASK_CONFIG.TASK_SEEN, taskSeen)
+  yield takeLatest(TASK_CONFIG.TASK_HIDE, taskHide)
+  yield takeLatest(TASK_CONFIG.TASK_SHOW, taskShow)
+  yield takeLatest(TASK_CONFIG.TASK_CANCELED, taskCaneled)
+  yield takeLatest(TASK_CONFIG.TASK_EVENT_WITH_FILES, taskEventsWithFiles)
+
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_TO_ME, getAllTaskToMe)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FROM_ME, getAllTaskFromMe)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_HIDDEN, getAllTaskHidden)
 
   yield takeLatest(TASK_CONFIG.CREATE_SUB_TASK, createSubTask)
   yield takeLatest(TASK_CONFIG.DELETE_TASK, deleteTask)

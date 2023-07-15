@@ -1,15 +1,18 @@
 import { ActionInterface } from "./appReducer";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TASK_CONFIG } from "config";
-import { AllSubtasksOfTaskResult, AllTasksInterface, TaskInterface } from "constants/interfaces";
+import { AllSubtasksOfTaskResult, AllTaskFromMeInterface, AllTaskHiddenInterface, AllTaskToMeInterface, Task, TaskInterface } from "constants/interfaces";
 import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
+import { findTaskIndex, } from "components/Utills/Globals";
 
 interface TaskReducerInt {
     // showAllTasks:TaskRoot[]
-    allTaskAssignedToMe: AllTasksInterface
-    allTaskCreatedFromMe: AllTasksInterface
+    allTaskToMe: AllTaskToMeInterface
+    allTaskFromMe: AllTaskFromMeInterface
+    allTaskHidden: AllTaskHiddenInterface
     loadingAllTaskToMe: boolean,
     loadingAllTaskfromMe: boolean,
+    loadingHiddenTask: boolean,
     allTask: TaskInterface[]
     page: number
     limit: number
@@ -50,10 +53,12 @@ interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
-    allTaskAssignedToMe: {done:[], new:[], ongoing:[], unread:[]},
-    allTaskCreatedFromMe:{done:[], new:[], ongoing:[], unread:[]},
+    allTaskToMe: { done: [], new: [], ongoing: [] },
+    allTaskFromMe: { done: [], ongoing: [], unread: [] },
+    allTaskHidden: { canceled: [], done: [], ongoing: [] },
     loadingAllTaskToMe: false,
     loadingAllTaskfromMe: false,
+    loadingHiddenTask: false,
 
     getTaskSubTaskFilterByState: 'all',
     getAllRecentCommentsOfSubtask: [],
@@ -247,20 +252,20 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
             }
 
         // get task assigned to me
-        case requestPending(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME): {
+        case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
             return {
                 ...state,
                 loadingAllTaskToMe: true,
             };
         }
-        case requestSuccess(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME):
+        case requestSuccess(TASK_CONFIG.GET_ALL_TASK_TO_ME):
             return {
                 ...state,
                 loadingAllTaskToMe: false,
-                allTaskAssignedToMe: action.payload.allTasks,
+                allTaskToMe: action.payload.allTasks,
             }
 
-        case requestFail(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME): {
+        case requestFail(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
             return {
                 ...state,
                 loadingAllTaskToMe: false,
@@ -268,42 +273,191 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
         }
 
         // get task created from me
-        case requestPending(TASK_CONFIG.GET_TASK_CREATED_FROM_ME): {
+        case requestPending(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
             return {
                 ...state,
                 loadingAllTaskfromMe: true,
             };
         }
-        case requestSuccess(TASK_CONFIG.GET_TASK_CREATED_FROM_ME):
+        case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
             return {
                 ...state,
                 loadingAllTaskfromMe: false,
-                allTaskCreatedFromMe: action.payload.allTasks,
+                allTaskFromMe: action.payload.allTasks,
             }
 
-        case requestFail(TASK_CONFIG.GET_TASK_CREATED_FROM_ME): {
+        case requestFail(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
             return {
                 ...state,
                 loadingAllTaskfromMe: false,
             };
         }
-        case requestSuccess(TASK_CONFIG.GET_TASK):
+
+        case requestPending(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
             return {
                 ...state,
-                allTask: action.payload.results.reverse(),
+                loadingHiddenTask: true,
+            };
+        }
+        case requestSuccess(TASK_CONFIG.GET_ALL_TASK_HIDDEN):
+            return {
+                ...state,
+                loadingHiddenTask: false,
+                allTaskHidden: action.payload.allTasks,
             }
-        case requestPending(TASK_CONFIG.GET_TASK): {
+
+        case requestFail(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
             return {
                 ...state,
-                taskLoading: true,
+                loadingHiddenTask: false,
             };
         }
-        case requestFail(TASK_CONFIG.GET_TASK): {
+
+        // update task when event received 
+        case TASK_CONFIG.UPDATE_TASK_WITH_EVENTS:
+            const eventData = action.payload;
+            console.log('eventData', eventData, eventData.taskId)
+
+            // hidden
+            const checktaskInOngoing = findTaskIndex(state.allTaskHidden.ongoing, eventData.taskId)
+
+            const checktaskInDone = findTaskIndex(state.allTaskHidden.done, eventData.taskId)
+
+            const hiddenCanceled = state.allTaskHidden.canceled;
+            const hiddenOngoing = state.allTaskHidden.ongoing;
+            const hiddenDone = state.allTaskHidden.done;
+
+            // from-me
+            const checktaskFromMeInUnread = findTaskIndex(state.allTaskFromMe.unread, eventData.taskId)
+            const checktaskFromMeInOngoing = findTaskIndex(state.allTaskFromMe.ongoing, eventData.taskId)
+            const checktaskFromMeInDone = findTaskIndex(state.allTaskFromMe.done, eventData.taskId)
+
+            const fromMeDone = state.allTaskFromMe.done;
+            const fromMeOngoing = state.allTaskFromMe.ongoing;
+            const fromMeUnread = state.allTaskFromMe.unread;
+
+            // To-me
+            const checktaskToMeInNew = findTaskIndex(state.allTaskToMe.new, eventData.taskId)
+            const checktaskToMeInOngoing = findTaskIndex(state.allTaskToMe.ongoing, eventData.taskId)
+            const checktaskToMeInDone = findTaskIndex(state.allTaskToMe.done, eventData.taskId)
+
+            const toMeNew = state.allTaskToMe.new;
+            const toMeOngoing = state.allTaskToMe.ongoing;
+            const toMeDone = state.allTaskToMe.done;
+
+
+            console.log('checktaskInOngoing', checktaskInOngoing)
+            console.log('checktaskInDone', checktaskInDone)
+
+            console.log('checktaskFromMeInUnread', checktaskFromMeInUnread)
+            console.log('checktaskFromMeInOngoing', checktaskFromMeInOngoing)
+            console.log('checktaskFromMeInDone', checktaskFromMeInDone)
+
+            console.log('checktaskToMeInNew', checktaskToMeInNew)
+            console.log('checktaskToMeInOngoing', checktaskToMeInOngoing)
+            console.log('checktaskToMeInDone', checktaskToMeInDone)
+
+            // task with comment 
+            if (eventData.eventType === "comment") {
+
+                // hidden canceled 
+                if (eventData.taskData.creatorState === "canceled") {
+                    const checktaskInCanceled = findTaskIndex(state.allTaskHidden.canceled, eventData.taskId)
+                    if (checktaskInCanceled > -1) {
+                        hiddenCanceled[checktaskInCanceled].events.push(eventData);
+                        console.log('state.allTaskHidden.canceled', hiddenCanceled[checktaskInCanceled])
+                    }
+                }
+
+                // hidden ongoing 
+                // hidden done 
+
+                if (checktaskInOngoing > -1) {
+                    hiddenOngoing[checktaskInOngoing].events.push(eventData);
+                    console.log('prevHiddenOngoin', hiddenOngoing[checktaskInOngoing])
+                }
+                if (checktaskInDone > -1) {
+                    hiddenDone[checktaskInDone].events.push(eventData);
+                    console.log('checktaskInDone', hiddenDone[checktaskInDone])
+                }
+
+                if (checktaskFromMeInDone > -1) {
+                    fromMeDone[checktaskFromMeInDone].events.push(eventData);
+                    console.log('checktaskFromMeInDone', fromMeDone[checktaskFromMeInDone])
+                }
+                if (checktaskFromMeInOngoing > -1) {
+                    const prevFromMeOngoind = state.allTaskFromMe.ongoing
+                    prevFromMeOngoind[checktaskFromMeInOngoing].events = [...prevFromMeOngoind[checktaskFromMeInOngoing].events, eventData];
+                    console.log('state.allTaskFromMe.ongoing', state.allTaskFromMe.ongoing)
+                }
+                if (checktaskFromMeInUnread > -1) {
+                    const prevFromMeUnread = state.allTaskFromMe.unread
+                    prevFromMeUnread[checktaskFromMeInUnread].events = [...prevFromMeUnread[checktaskFromMeInUnread].events, eventData];
+                    console.log('state.allTaskFromMe.unread', prevFromMeUnread[checktaskFromMeInUnread])
+                }
+
+                if (checktaskToMeInNew > -1) {
+                    const prevToMeNew = state.allTaskToMe.new
+                    prevToMeNew[checktaskToMeInNew].events = [...prevToMeNew[checktaskToMeInNew].events, eventData];
+                    console.log('checktaskToMeInNew', prevToMeNew[checktaskToMeInNew])
+                }
+                if (checktaskToMeInOngoing > -1) {
+                    const prevToMeOngoing = state.allTaskToMe.ongoing
+                    prevToMeOngoing[checktaskToMeInOngoing].events = [...prevToMeOngoing[checktaskToMeInOngoing].events, eventData];
+                    console.log('checktaskToMeInOngoing', prevToMeOngoing[checktaskToMeInOngoing])
+                }
+                if (checktaskToMeInDone > -1) {
+                    const prevToMeDone = state.allTaskToMe.done
+                    prevToMeDone[checktaskToMeInDone].events = [...prevToMeDone[checktaskToMeInDone].events, eventData];
+                    console.log('checktaskToMeInDone', checktaskToMeInDone)
+                }
+            }
+            // done task
+            if (eventData.eventType === "doneTask") {
+
+
+            }
+
+            // canceled
+            if (eventData.eventType === "cancelTask") {
+                if (checktaskInOngoing > -1) {
+                }
+                if (checktaskInDone > -1) {
+                }
+            }
+
+            // task hidden
+            if (eventData.userSubState === 'ongoing') {
+                if (checktaskToMeInOngoing > -1) {
+                    state.allTaskHidden.ongoing.push(toMeOngoing[checktaskToMeInOngoing])
+                    console.log('state.allTaskHidden.ongoing', state.allTaskHidden.ongoing)
+                }
+            }
+            if (eventData.userSubState === 'done') {
+                if (checktaskToMeInDone > -1) {
+                    state.allTaskHidden.done.push(toMeDone[checktaskToMeInDone])
+                    console.log('state.allTaskHidden.ongoing', state.allTaskHidden.done)
+                }
+            }
+
+            // forward task and update existing task
+            if (checktaskFromMeInUnread > -1) {
+                const prevFromMeUnreadTask = state.allTaskFromMe.unread
+                prevFromMeUnreadTask[checktaskFromMeInUnread].events = [...prevFromMeUnreadTask[checktaskFromMeInUnread].events, eventData]
+            }
+
+
+
+            // forward task to other
+
+            // task unhide
             return {
                 ...state,
-                taskLoading: false,
+                allTaskHidden: { ...state.allTaskHidden },
+                allTaskFromMe: { ...state.allTaskFromMe },
+                allTaskToMe: { ...state.allTaskToMe },
             };
-        }
+
         case TASK_CONFIG.OPEN_NEW_TASK:
             return {
                 ...state,

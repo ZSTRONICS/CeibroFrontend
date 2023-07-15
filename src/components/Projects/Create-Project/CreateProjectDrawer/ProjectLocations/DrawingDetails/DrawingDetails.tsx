@@ -11,22 +11,22 @@ function DrawingDetails() {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const {
-    allTaskAssignedToMe,
-    allTaskCreatedFromMe,
+    allTaskList,
+    allTaskFromMe,
     loadingAllTaskToMe,
     loadingAllTaskfromMe,
   } = useSelector((state: RootState) => state.task);
   // later debug the issue of re-rendering component
-  // useApiCallOnce(taskActions.getTaskAssignedToMe(), [])
-  // useApiCallOnce(taskActions.getTaskCreatedFromMe(), [])
+  // useApiCallOnce(taskActions.getAllTaskToMe(), [])
+  // useApiCallOnce(taskActions.getAllTaskFromMe(), [])
   useEffect(() => {
     if (!isRenderEffect.current) {
-      if (allTaskAssignedToMe.new.length === 0) {
-        dispatch(taskActions.getTaskAssignedToMe());
+      if (allTaskList.new.length === 0) {
+        dispatch(taskActions.getAllTaskToMe());
       }
-      if (allTaskCreatedFromMe.unread.length === 0) {
+      if (allTaskFromMe.unread.length === 0) {
         
-        dispatch(taskActions.getTaskCreatedFromMe());
+        dispatch(taskActions.getAllTaskFromMe());
       }
     }
     return () => {
@@ -44,7 +44,7 @@ function DrawingDetails() {
         <Task/>
         </Grid>
         <Grid item md={8.2}>
-          <DocumentReader  newTask = {allTaskAssignedToMe.new}/>
+          <DocumentReader  newTask = {allTaskList.new}/>
         </Grid>
         <Grid item md={1} sx={sideBarStyle}>
           Toolbar

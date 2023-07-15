@@ -4,15 +4,14 @@ import { Box, CircularProgress } from "@mui/material";
 import {
   Login,
   Connections,
+  MockTaskApis,
   ForgetPassword,
   ResetPassword,
   Register,
   Projects,
   ProjectLocations,
-  // Dashboard,
   Profile,
   Tasks,
-  // Chat,
   AdminMain,
   RegisterNumberForm,
   RegisterConfirmationForm,
@@ -73,8 +72,7 @@ const RouterConfig: React.FC<Configs> = () => {
               />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
-              {/* <Route path="/chat" component={Chat} /> */}
-              {/* <PrivateRoute path="/dashboard" component={Dashboard} /> */}
+              <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
             {/* todo later */}
             {/* <Route component={NotFound} /> */}

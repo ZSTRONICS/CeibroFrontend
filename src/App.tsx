@@ -1,19 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from "react";
-import { ToastContainer } from "react-toastify";
 import "fontsource-roboto";
 import "moment-timezone";
+import React, { useEffect, useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 // components
 import {
-  CreateQuestioniarDrawer,
-  ViewQuestioniarDrawer,
+  CDrawer,
   CreateProjectDrawer,
+  CreateQuestioniarDrawer,
   CreateTaskDrawer,
-  ViewInvitations,
   RouterConfig,
   TaskModal,
-  CDrawer,
+  ViewInvitations,
+  ViewQuestioniarDrawer,
 } from "components";
 
 // socket
@@ -25,47 +25,42 @@ import { CssBaseline } from "@mui/material";
 
 // styling
 import "react-toastify/dist/ReactToastify.css";
-import "./components/Topbar/ProfileBtn.css";
 import "./App.css";
+import "./components/Topbar/ProfileBtn.css";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./redux/reducers/appReducer";
-import myStore from "redux/store";
-import {
-  getAllChats,
-  unreadMessagesCount,
-  replaceMessagesById,
-} from "redux/action/chat.action";
 import {
   ALL_MESSAGE_SEEN,
   CHAT_EVENT_REP_OVER_SOCKET,
   MESSAGE_SEEN,
-  PUSH_MESSAGE,
   PUSH_MESSAGE_BY_OTHER,
   RECEIVE_MESSAGE,
   REFRESH_CHAT,
   UNREAD_MESSAGE_COUNT,
   UPDATE_CHAT_LAST_MESSAGE,
-  UPDATE_MESSAGE_BY_ID,
+  UPDATE_MESSAGE_BY_ID
 } from "config/chat.config";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllChats,
+  replaceMessagesById,
+  unreadMessagesCount,
+} from "redux/action/chat.action";
+import myStore from "redux/store";
+import { RootState } from "./redux/reducers/appReducer";
 
 // axios
-import { AxiosV1, AxiosV2, urlV1, SERVER_URL } from "utills/axios";
-import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import { TASK_CONFIG } from "config/task.config";
-import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
-import { DOCS_CONFIG } from "config/docs.config";
-import docsAction from "redux/action/docs.actions";
-import { Redirect, useHistory, useLocation } from "react-router-dom";
-import {
-  getAllSubTaskList,
-  getAllSubTaskOfTask,
-  uploadDocs,
-} from "redux/action/task.action";
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
+import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
+import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
+import { DOCS_CONFIG } from "config/docs.config";
 import { PROJECT_CONFIG } from "config/project.config";
+import { TASK_CONFIG } from "config/task.config";
+import { USER_CONFIG } from "config/user.config";
+import { useHistory } from "react-router-dom";
+import docsAction from "redux/action/docs.actions";
 import {
+  PROJECT_APIS,
   getAllDocuments,
   getAllProjectMembers,
   // getAllProjectMembers,
@@ -73,25 +68,27 @@ import {
   getFolderFiles,
   getGroup,
   getMember,
-  PROJECT_APIS,
 } from "redux/action/project.action";
+import {
+  getAllSubTaskList,
+  getAllSubTaskOfTask,
+  uploadDocs,
+} from "redux/action/task.action";
+import { getMyInvitesCount } from "redux/action/user.action";
+import { AxiosV1, SERVER_URL, urlV1 } from "utills/axios";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
-import { USER_CONFIG } from "config/user.config";
-import { getMyConnections, getMyInvitesCount } from "redux/action/user.action";
-import { error } from "console";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   let sock: any = null;
-  let hbCounter = 0;
-  let hbAckRcvd = false;
   let socketIntervalId: any = null;
 
   const [intervalId, setLocalIntervalId] = useState<NodeJS.Timer>();
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+  const userId = String(user._id);
   let openProjectdrawer = useSelector(
     (store: RootState) => store.project.drawerOpen
   );
@@ -192,7 +189,7 @@ const App: React.FC<MyApp> = () => {
   // Send a heartbeat event to the server periodically
   function sendHeartbeat() {
     if (sock !== null) {
-      sock.emit('heartbeat');
+      sock.emit("heartbeat");
       // hbCounter += 1
       // if (hbCounter === 6 && hbAckRcvd === false) {
       //   // reconnect logic here
@@ -207,7 +204,7 @@ const App: React.FC<MyApp> = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      InitOneSignal(String(user._id));
+      InitOneSignal(userId);
 
       if (sock !== null) {
         return;
@@ -226,13 +223,12 @@ const App: React.FC<MyApp> = () => {
       sock.on("connect", () => {
         clearInterval(intervalId);
         console.log("Connected to server");
-        socket.setUserId(String(user._id));
+        socket.setUserId(userId);
         socket.setSocket(sock);
 
         if (socketIntervalId === null) {
           socketIntervalId = setInterval(sendHeartbeat, 400);
         }
-
       });
 
       // Listen for disconnect event
@@ -245,7 +241,7 @@ const App: React.FC<MyApp> = () => {
             sock.connect();
           }
         }, 2000);
-        setLocalIntervalId(localInterval)
+        setLocalIntervalId(localInterval);
       });
 
       sock.on("connect_error", (err: any) => {
@@ -256,17 +252,16 @@ const App: React.FC<MyApp> = () => {
             sock.connect();
           }
         }, 1000);
-        setLocalIntervalId(localInterval)
+        setLocalIntervalId(localInterval);
       });
 
       sock.on("token_invalid", () => {
         const tokens = localStorage.getItem("tokens") || "{}";
         const jsonToken = JSON.parse(tokens);
         if ("refresh" in jsonToken) {
-          AxiosV1
-            .post(`${urlV1}/auth/refresh-tokens`, {
-              refreshToken: String(jsonToken.refresh.token),
-            })
+          AxiosV1.post(`${urlV1}/auth/refresh-tokens`, {
+            refreshToken: String(jsonToken.refresh.token),
+          })
             .then((response: any) => {
               if (response.status === 200) {
                 localStorage.setItem("tokens", JSON.stringify(response.data));
@@ -295,19 +290,6 @@ const App: React.FC<MyApp> = () => {
         }
       });
 
-      // sock.on("reconnect", (attempt) => {
-
-      //   socket.setSocket(sock);
-      // });
-
-      // sock.on("disconnect", (reason) => {
-      //   if (reason === "io server disconnect") {
-      //     // the disconnection was initiated by the server, you need to reconnect manually
-      //     socket.getSocket().connect();
-      //   }
-      //   // else the socket will automatically try to reconnect
-      // });
-
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
@@ -317,7 +299,7 @@ const App: React.FC<MyApp> = () => {
             {
               const selectedChatId = socket.getAppSelectedChat();
               const data = payload.data;
-              if (String(data.from) !== String(user._id)) {
+              if (String(data.from) !== userId) {
                 if (String(data.chat) === String(selectedChatId)) {
                   dispatch({
                     type: PUSH_MESSAGE_BY_OTHER,
@@ -413,11 +395,44 @@ const App: React.FC<MyApp> = () => {
         const data = dataRcvd.data;
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
-            if (!data.access.includes(String(user._id))) {
+            if (!data.access.includes(userId)) {
               return;
             }
             dispatch({
               type: TASK_CONFIG.PUSH_TASK_TO_STORE,
+              payload: data,
+            });
+            break;
+          case TASK_CONFIG.TASK_SEEN:
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: data,
+            });
+            break;
+
+          case TASK_CONFIG.TASK_SHOWN:
+          case TASK_CONFIG.TASK_HIDDEN:
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: data,
+            });
+            break;
+
+          case TASK_CONFIG.TASK_FORWARDED:
+            if (!data.access.includes(userId)) {
+              return;
+            }
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: data,
+            });
+            break;
+
+          case TASK_CONFIG.CANCELED_TASK:
+          case TASK_CONFIG.TASK_DONE:
+          case TASK_CONFIG.NEW_TASK_COMMENT:
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: data,
             });
             break;
@@ -446,18 +461,11 @@ const App: React.FC<MyApp> = () => {
 
           case TASK_CONFIG.TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.TASK_UPDATE_PRIVATE:
-            if (!data.access.includes(String(user._id))) {
+            if (!data.access.includes(userId)) {
               return;
             }
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_IN_STORE,
-              payload: data,
-            });
-            break;
-
-          case TASK_CONFIG.REFRESH_TASK:
-            dispatch({
-              type: TASK_CONFIG.GET_TASK,
               payload: data,
             });
             break;
@@ -477,7 +485,7 @@ const App: React.FC<MyApp> = () => {
             break;
           case TASK_CONFIG.SUB_TASK_UPDATE_PUBLIC:
           case TASK_CONFIG.SUB_TASK_UPDATE_PRIVATE:
-            if (!data.access.includes(String(user._id))) {
+            if (!data.access.includes(userId)) {
               return;
             }
             dispatch({
@@ -488,7 +496,7 @@ const App: React.FC<MyApp> = () => {
             break;
 
           case TASK_CONFIG.SUBTASK_NEW_COMMENT:
-            if (!data.access.includes(String(user._id))) {
+            if (!data.access.includes(userId)) {
               return;
             }
             try {
@@ -555,7 +563,7 @@ const App: React.FC<MyApp> = () => {
 
           case PROJECT_CONFIG.PROJECT_UPDATED:
           case PROJECT_CONFIG.PROJECT_CREATED:
-            if (!data.access.includes(String(user._id))) {
+            if (!data.access.includes(userId)) {
               return;
             }
             dispatch({

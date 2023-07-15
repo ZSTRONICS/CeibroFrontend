@@ -50,15 +50,28 @@ const taskActions = {
         };
     },
 
+    createTask: createAction(TASK_CONFIG.CREATE_TASK),
+    createTopic: createAction(TASK_CONFIG.CREATE_TOPIC),
+    getAllTopic: createAction(TASK_CONFIG.GET_ALL_TOPIC),
+    deleteTopic: createAction(TASK_CONFIG.DELETE_TOPIC),
+    forwardTask: createAction(TASK_CONFIG.FORWARD_TASK),
+    taskSeen: createAction(TASK_CONFIG.TASK_SEEN),
+    taskHide: createAction(TASK_CONFIG.TASK_HIDE),
+    taskShow: createAction(TASK_CONFIG.TASK_SHOW),
+    taskCaneled: createAction(TASK_CONFIG.TASK_CANCELED),
+    taskEventsWithFiles: createAction(TASK_CONFIG.TASK_EVENT_WITH_FILES),
+
     postSubtaskComment: createAction(TASK_CONFIG.POST_SUBTASK_COMMENT),
     getAllCommentsOfSubtaskById: createAction(TASK_CONFIG.GET_ALL_COMMENT_OF_SUBTASK_BY_ID),
-    getTaskAssignedToMe: createAction(TASK_CONFIG.GET_TASK_ASSIGNED_TO_ME),
-    getTaskCreatedFromMe: createAction(TASK_CONFIG.GET_TASK_CREATED_FROM_ME),
-    createTask: createAction(TASK_CONFIG.CREATE_TASK)
+    getAllTaskToMe: createAction(TASK_CONFIG.GET_ALL_TASK_TO_ME),
+    getAllTaskFromMe: createAction(TASK_CONFIG.GET_ALL_TASK_FROM_ME),
+    getAllTaskHidden: createAction(TASK_CONFIG.GET_ALL_TASK_HIDDEN),
+
 }
 
-export const getAllTask = createAction(TASK_CONFIG.GET_TASK)
 export const createTask = createAction(TASK_CONFIG.CREATE_TASK)
+
+
 export const uploadDocs = createAction(TASK_CONFIG.UPLOAD_TASK_DOCS)
 export const createSubTask = createAction(TASK_CONFIG.CREATE_SUB_TASK)
 export const setSelectedTask = createAction(TASK_CONFIG.SET_SELECTED_TASK)

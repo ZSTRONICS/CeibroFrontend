@@ -19,19 +19,19 @@ const Task = () => {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const {
-    allTaskAssignedToMe,
-    allTaskCreatedFromMe,
+    allTaskToMe,
+    allTaskFromMe,
     loadingAllTaskToMe,
     loadingAllTaskfromMe,
   } = useSelector((state: RootState) => state.task);
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      if (allTaskAssignedToMe.new.length === 0) {
-        dispatch(taskActions.getTaskAssignedToMe());
+      if (allTaskToMe.new.length === 0) {
+        dispatch(taskActions.getAllTaskToMe());
       }
-      if (allTaskCreatedFromMe.unread.length === 0) {
-        dispatch(taskActions.getTaskCreatedFromMe());
+      if (allTaskFromMe.unread.length === 0) {
+        dispatch(taskActions.getAllTaskFromMe());
       }
     }
     return () => {
@@ -71,16 +71,16 @@ const Task = () => {
           </Box>
           <TabPanel value={value} index={0}>
             <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
-              {allTaskCreatedFromMe.unread &&
-                allTaskCreatedFromMe.unread.map((task: any) => (
+              {allTaskFromMe.unread &&
+                allTaskFromMe.unread.map((task: any) => (
                   <TaskCard key={task._id} task={task} />
                 ))}
             </CustomStack>
           </TabPanel>
           <TabPanel value={value} index={1}>
             <CustomStack gap={1.4} flexWrap="wrap" mt={5}>
-              {allTaskAssignedToMe.new &&
-                allTaskAssignedToMe.new.map((task: any) => (
+              {allTaskToMe.new &&
+                allTaskToMe.new.map((task: any) => (
                   <TaskCard key={task._id} task={task} />
                 ))}
             </CustomStack>

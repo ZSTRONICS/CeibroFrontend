@@ -6,8 +6,6 @@ import authReducer from "./auth.reducer";
 import chatReducer from "./chat.reducer";
 import userReducer from "./user.reducer";
 import DocsReducer from "./docs.reducer";
-import { DocsInterface, AllTasksInterface, UserAllContacts } from "constants/interfaces";
-
 interface Reducers {
   [key: string]: Reducer<any, any>;
 }

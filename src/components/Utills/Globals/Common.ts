@@ -138,6 +138,16 @@ const formatDropdownData = (
 
 
 /**
+ * @param taskArray the array must have _id
+ * @param itemId must have comparison id string
+ * @return Functino will return  -1 if task not exist
+ * **/
+export const findTaskIndex = (taskArray: any[], itemId: string): number => {
+  const taskIndex = taskArray.findIndex((task: any) => task._id === itemId);
+  return taskIndex;
+};
+
+/**
  * @param array the array must have _id
  * @param itemId must have comparison id string
  * @return Functino will return true or false
