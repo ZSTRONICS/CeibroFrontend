@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, ChangeEvent } from "react";
 // components
 import { Box, Grid, Tab, Tabs, InputBase, Badge } from "@mui/material";
 import { tabsIndexProps } from "components/Utills/Globals";
@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 import TaskDetail from "../TaskDetails";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
+import { event } from "jquery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Task = () => {
   const [value, setValue] = useState(0);
+  const [filteredTask, setFilteredTask] = useState<ITask[] | null>(null);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
 
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -46,6 +48,9 @@ const Task = () => {
 
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
+    setFilteredTask(
+      searchInData(task[selectedTaskFilter][selectedTab], "", "taskUID")
+    );
     setSelectedTab(key);
     setSelectedTask(task[selectedTaskFilter][key][0]);
   }, [selectedTaskFilter, allTaskFromMe, allTaskToMe]);
@@ -62,6 +67,7 @@ const Task = () => {
     }
     setSelectedTab(key);
     setSelectedTask(task[selectedTaskFilter][key][0]);
+    setFilteredTask(searchInData(task[selectedTaskFilter][key], "", "taskUID"));
     return () => {
       isRenderEffect.current = true;
     };
@@ -70,11 +76,37 @@ const Task = () => {
   const handleTabClick = (type: string) => {
     setSelectedTab(type);
     setSelectedTask(task[selectedTaskFilter][type][0]);
+    setFilteredTask(
+      searchInData(task[selectedTaskFilter][type], "", "taskUID")
+    );
   };
 
   const handleSelectedTask = (task: ITask) => {
     setSelectedTask(task);
   };
+
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const searchTxt = event.target.value;
+    console.log(searchTxt, "search");
+    const filterData = searchInData(
+      task[selectedTaskFilter][selectedTab],
+      searchTxt,
+      "taskUID"
+    );
+    setFilteredTask(filterData);
+  };
+
+  function searchInData(data: ITask[], searchText: string, property: string) {
+    let filteredData: ITask[] = data;
+    if (searchText != "") {
+      filteredData = data.filter((item) => {
+        const searchValue = item[property].toLowerCase();
+        return searchValue.includes(searchText.toLowerCase());
+      });
+    }
+
+    return filteredData;
+  }
 
   const renderTabs = (type: string, activeTab: string) => {
     switch (type) {
@@ -166,11 +198,12 @@ const Task = () => {
             <InputBase
               placeholder="Start typing to search"
               sx={{ height: "48px" }}
+              onChange={handleSearch}
             />
           </Box>
           {task &&
-            task[selectedTaskFilter][selectedTab] &&
-            task[selectedTaskFilter][selectedTab].map((task: any) => (
+            filteredTask &&
+            filteredTask.map((task: any) => (
               <TaskCard
                 key={task._id}
                 task={task}
