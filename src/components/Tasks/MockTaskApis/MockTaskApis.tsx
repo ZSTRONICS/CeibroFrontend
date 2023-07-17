@@ -75,7 +75,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "forwardTask") {
         dispatch(
           taskActions.forwardTask({
-            other: { taskId: "64afd5d831cf2e0f00141aee" },
+            other: { taskId: "64afacd40338374731d71132" },
             body: {
               assignedToState: [
                 {
@@ -93,7 +93,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskHide") {
         dispatch(
           taskActions.taskHide({
-            other: { taskId: "64b279cb2e7ae3852ea4e6c8" },
+            other: { taskId: "64afacd40338374731d71132" },
           })
         );
       }
@@ -101,14 +101,14 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskShow") {
         dispatch(
           taskActions.taskShow({
-            other: { taskId: "64b279cb2e7ae3852ea4e6c8" },
+            other: { taskId: "64afacd40338374731d71132" },
           })
         );
       }
       if (selectedApi.value === "taskSeen") {
         dispatch(
           taskActions.taskSeen({
-            other: { taskId: "64b279cb2e7ae3852ea4e6c8" },
+            other: { taskId: "64afacd40338374731d71132" },
           })
         );
       }
@@ -116,7 +116,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskCaneled") {
         dispatch(
           taskActions.taskCaneled({
-            other: { taskId: "64b279cb2e7ae3852ea4e6c8" },
+            other: { taskId: "64afacd40338374731d71132" },
           })
         );
       }
@@ -127,7 +127,7 @@ const MockTaskApis = () => {
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "doneTask",
-              taskId: "64b279cb2e7ae3852ea4e6c8",
+              taskId: "64afacd40338374731d71132",
               hasFiles: false,
             },
             body: formdata,
@@ -167,7 +167,7 @@ const MockTaskApis = () => {
         const payload = {
           other: {
             eventName: "doneTask",
-            taskId: "64b279cb2e7ae3852ea4e6c8",
+            taskId: "64afacd40338374731d71132",
             hasFiles: false,
           },
           body: formdata,
@@ -183,7 +183,7 @@ const MockTaskApis = () => {
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "comment",
-              taskId: "64b279cb2e7ae3852ea4e6c8",
+              taskId: "64afacd40338374731d71132",
               hasFiles: false,
             },
             body: formdata,
@@ -203,7 +203,7 @@ const MockTaskApis = () => {
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "comment",
-              taskId: "64b119df42bbd2b53de761ed",
+              taskId: "64afacd40338374731d71132",
               hasFiles: true,
             },
             body: formdata,
