@@ -148,6 +148,37 @@ export const findTaskIndex = (taskArray: any[], itemId: string): number => {
 };
 
 /**
+ * @param taskArray the array must have _id
+ * @param eventData data to be pushed to task events
+ * @param taskIndex check if task exist 
+ * @return Functino will return updated task events
+ * **/
+export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
+  if (taskIndex > -1) {
+    let updatedTask = taskArray[taskIndex].events.push(eventData);
+    console.log('comment', taskArray[taskIndex]);
+    return updatedTask
+  }
+}
+
+export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], eventData: any): void {
+  const taskIndex = findTaskIndex(sourceArray, eventData._id);
+  sourceArray[taskIndex].events.push(eventData);
+  const task = sourceArray.splice(taskIndex, 1)[0];
+  targetArray.push(task);
+  console.log('moveTaskToSpecifiedArr', targetArray)
+}
+
+export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
+  const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
+  if (taskIndex > -1) {
+    const task = sourceArray.splice(taskIndex, 1)[0];
+    task.hiddenBy.push(...eventData.hiddenBy);
+    targetArray.push(task);
+    console.log('targetArray', targetArray)
+  }
+}
+/**
  * @param array the array must have _id
  * @param itemId must have comparison id string
  * @return Functino will return true or false

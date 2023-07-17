@@ -89,7 +89,7 @@ const App: React.FC<MyApp> = () => {
 
   const [intervalId, setLocalIntervalId] = useState<NodeJS.Timer>();
   const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
-  const userId = String(user._id);
+  const userId = user && String(user._id);
   let openProjectdrawer = useSelector(
     (store: RootState) => store.project.drawerOpen
   );
@@ -396,14 +396,19 @@ const App: React.FC<MyApp> = () => {
         const data = dataRcvd.data;
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
+            const isAssignedToMe = data.assignedToState.some(
+              (assignTo: any) => assignTo.userId === userId
+            );
+
             if (!data.access.includes(userId)) {
               return;
             }
             dispatch({
               type: TASK_CONFIG.PUSH_TASK_TO_STORE,
-              payload: data,
+              payload: { data, isAssignedToMe },
             });
             break;
+
           case TASK_CONFIG.TASK_SEEN:
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
@@ -415,7 +420,7 @@ const App: React.FC<MyApp> = () => {
           case TASK_CONFIG.TASK_HIDDEN:
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-              payload: data,
+              payload: { ...data, userId },
             });
             break;
 
@@ -425,7 +430,7 @@ const App: React.FC<MyApp> = () => {
             }
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-              payload: data,
+              payload: { ...data, eventType: "TASK_FORWARDED", userId },
             });
             break;
 
@@ -667,8 +672,9 @@ const App: React.FC<MyApp> = () => {
   }, [isLoggedIn]);
 
   return (
-    <ThemeProvider theme={theme}>
+    // <ThemeProvider theme={theme}>
       <div className="App">
+
         <ErrorBoundary>
           {/* component used here for availability of modal on all routes*/}
           <TaskModal />
@@ -688,7 +694,7 @@ const App: React.FC<MyApp> = () => {
           <RouterConfig />
         </ErrorBoundary>
       </div>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 
