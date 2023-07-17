@@ -1,100 +1,101 @@
 export interface Root {
-    allTasks: AllTasksInterface;
+  allTasks: AllTasksInterface;
 }
 
 export interface AllTasksInterface {
-    ongoing: Task[];
-    done: Task[];
-    unread: Task[];
-    new: Task[];
+  ongoing: Task[];
+  done: Task[];
+  unread: Task[];
+  new: Task[];
 }
 
 export interface AllTaskHiddenInterface {
-    ongoing: Task[];
-    done: Task[];
-    canceled: Task[];
+  ongoing: Task[];
+  done: Task[];
+  canceled: Task[];
 }
 export interface AllTaskToMeInterface {
-    new: Task[];
-    ongoing: Task[];
-    done: Task[];
+  new: Task[];
+  ongoing: Task[];
+  done: Task[];
 }
 export interface AllTaskFromMeInterface {
-    unread: Task[];
-    ongoing: Task[];
-    done: Task[];
+  unread: Task[];
+  ongoing: Task[];
+  done: Task[];
 }
 
 export interface Task {
-    _id: string;
-    dueDate: string;
-    doneImageRequired: boolean;
-    doneCommentsRequired: boolean;
-    description: string;
-    project: Project;
-    topic: Topic;
-    creator: UserInfo;
-    assignedTo: AssignedUserState[];
-    taskUID: string;
-    access: string[];
-    invitedNumbers: InvitedNumber[];
-    seenBy: string[];
-    hiddenBy: string[];
-    isCanceled: boolean;
-    createdAt: string;
-    updatedAt: string;
-    files: File[];
-    events: TaskEvent[];
+  _id: string;
+  dueDate: string;
+  doneImageRequired: boolean;
+  doneCommentsRequired: boolean;
+  description: string;
+  project: Project;
+  topic: Topic;
+  creator: UserInfo;
+  assignedTo: AssignedUserState[];
+  taskUID: string;
+  access: string[];
+  invitedNumbers: InvitedNumber[];
+  seenBy: string[];
+  hiddenBy: string[];
+  isCanceled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  files: File[];
+  events: TaskEvent[];
+  userSubState: string;
 }
 
 export interface AssignedUserState extends UserInfo {
-    userId: string;
-    phoneNumber: string;
-    state: string;
+  userId: string;
+  phoneNumber: string;
+  state: string;
 }
 
 export interface InvitedNumber {
-    phoneNumber: string;
-    firstName: string;
-    surName: string;
+  phoneNumber: string;
+  firstName: string;
+  surName: string;
 }
 
 export interface Topic {
-    _id: string;
-    topic: string;
+  _id: string;
+  topic: string;
 }
 
 export interface File {
-    _id: string;
-    fileName: string;
-    fileTag: string;
-    fileUrl: string;
-    uploadStatus: string;
-    moduleType: string;
-    moduleId: string;
-    hasComment: boolean;
-    comment: string;
+  _id: string;
+  fileName: string;
+  fileTag: string;
+  fileUrl: string;
+  uploadStatus: string;
+  moduleType: string;
+  moduleId: string;
+  hasComment: boolean;
+  comment: string;
 }
 
 export interface TaskEvent {
-    _id: string;
-    taskId: string;
-    eventType: string;
-    initiator: UserInfo;
-    eventData?: EventData[];
-    commentData?: CommentData;
-    createdAt: string;
-    updatedAt: string;
+  _id: string;
+  taskId: string;
+  eventType: string;
+  initiator: UserInfo;
+  eventData?: EventData[];
+  commentData?: CommentData;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface EventData extends UserInfo {
-    phoneNumber: string;
+  phoneNumber: string;
 }
 
 export interface CommentData {
-    _id: string;
-    taskId: string;
-    isFileAttached: boolean;
-    message: string;
-    files: File[];
+  _id: string;
+  taskId: string;
+  isFileAttached: boolean;
+  message: string;
+  files: File[];
 }

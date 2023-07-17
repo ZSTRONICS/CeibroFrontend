@@ -42,7 +42,11 @@ export default function Nav({ openNav, onCloseNav }: Props) {
       }}
     >
       <Box sx={{ display: "inline-flex", pb: 1.4 }}>
-        <img src={assets.logo} alt="ceibro-logo" style={{ height: "55px" }} />
+        <img
+          src={assets.logo}
+          alt="ceibro-logo"
+          style={{ height: "55px", width: "70px" }}
+        />
       </Box>
       <Sidebar />
     </Box>

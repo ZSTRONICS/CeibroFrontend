@@ -7,13 +7,15 @@ interface IProps {
 }
 export default function ImageBox({ src }: IProps) {
   return (
-    <img
-      style={{
-        height: "80px",
-        width: "80px",
-        borderRadius: "8px",
-      }}
-      src={src}
-    />
+    <Box>
+      <img
+        style={{
+          height: "80px",
+          width: "80px",
+          borderRadius: "8px",
+        }}
+        src={src}
+      />
+    </Box>
   );
 }

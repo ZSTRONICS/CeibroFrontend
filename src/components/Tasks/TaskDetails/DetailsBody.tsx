@@ -5,6 +5,8 @@ import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import React from "react";
+import DrawingFiles from "./DrawingFiles";
+import AddedDetails from "./AddedDetails";
 
 //todo  temp url list
 
@@ -46,10 +48,8 @@ export default function DetailsBody() {
           </Box>
         );
       })}
-      <FileBox
-        title="Location"
-        files={[{ fileName: "Drawing name is in here", fileSize: "" }]}
-      />
+      <DrawingFiles />
+      <AddedDetails />
     </Box>
   );
 }

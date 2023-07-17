@@ -21,7 +21,7 @@ import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
 
 // material
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
 
 // styling
 import "react-toastify/dist/ReactToastify.css";
@@ -38,7 +38,7 @@ import {
   REFRESH_CHAT,
   UNREAD_MESSAGE_COUNT,
   UPDATE_CHAT_LAST_MESSAGE,
-  UPDATE_MESSAGE_BY_ID
+  UPDATE_MESSAGE_BY_ID,
 } from "config/chat.config";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -77,6 +77,7 @@ import {
 import { getMyInvitesCount } from "redux/action/user.action";
 import { AxiosV1, SERVER_URL, urlV1 } from "utills/axios";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
+import { theme } from "./theme";
 
 interface MyApp {}
 
@@ -666,24 +667,28 @@ const App: React.FC<MyApp> = () => {
   }, [isLoggedIn]);
 
   return (
-    <div className="App">
-      <ErrorBoundary>
-        {/* component used here for availability of modal on all routes*/}
-        <TaskModal />
-        <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
-          <ViewInvitations />
-        </div>
-        <CssBaseline />
-        {<UploadingDocsPreview />}
-        <CreateQuestioniarDrawer />
-        <CDrawer />
-        {drawerOpen && <ViewQuestioniarDrawer />}
-        {openProjectdrawer && <CreateProjectDrawer />}
-        <ToastContainer position="bottom-left" theme="colored" />
-        {openTaskDrawer && <CreateTaskDrawer />}
-        <RouterConfig />
-      </ErrorBoundary>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <ErrorBoundary>
+          {/* component used here for availability of modal on all routes*/}
+          <TaskModal />
+          <div
+            style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}
+          >
+            <ViewInvitations />
+          </div>
+          <CssBaseline />
+          {<UploadingDocsPreview />}
+          <CreateQuestioniarDrawer />
+          <CDrawer />
+          {drawerOpen && <ViewQuestioniarDrawer />}
+          {openProjectdrawer && <CreateProjectDrawer />}
+          <ToastContainer position="bottom-left" theme="colored" />
+          {openTaskDrawer && <CreateTaskDrawer />}
+          <RouterConfig />
+        </ErrorBoundary>
+      </div>
+    </ThemeProvider>
   );
 };
 

@@ -13,9 +13,10 @@ import { Task, AssignedToState } from "constants/interfaces";
 
 interface IProps {
   task: Task;
+  handleClick: (task: Task) => void;
 }
 function TaskCard(props: IProps) {
-  const { task } = props;
+  const { task, handleClick } = props;
   const {
     taskUID,
     project,
@@ -36,10 +37,21 @@ function TaskCard(props: IProps) {
     createdAt,
   } = task;
   const assignedTo: AssignedToState[] | any =
-    assignedToState.length > 0 ? `${assignedToState[0].firstName} ${assignedToState[0].surName}` : "Not Assigned";
+    assignedToState.length > 0
+      ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
+      : "Not Assigned";
   const taskCreated = momentdeDateFormat(createdAt);
   return (
-    <Card sx={{ minWidth: 280, marginTop: "10px" }} key={_id}>
+    <Card
+      sx={{
+        width: "100%",
+        minWidth: 280,
+        marginTop: "10px",
+        cursor: "pointer",
+      }}
+      key={_id}
+      onClick={() => handleClick(task)}
+    >
       <CardHeader
         sx={{
           pt: 0,
@@ -66,9 +78,7 @@ function TaskCard(props: IProps) {
         <CustomStack justifyContent="space-between">
           <FileName>
             To:
-            <span
-              style={{ fontWeight: "500" }}
-            >{assignedTo}</span>
+            <span style={{ fontWeight: "500" }}>{assignedTo}</span>
           </FileName>
           <FileName>
             Project: &nbsp;{" "}

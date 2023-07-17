@@ -1,9 +1,6 @@
 import { Box } from "@mui/system";
-import React from "react";
 import DetailActions from "./DetailActions";
 import { Grid, Typography } from "@mui/material";
-import assets from "assets/assets";
-import FileBox from "components/Utills/FileBox";
 
 const data = [
   { label: "From", value: "Kristo Vunukainen" },
@@ -15,18 +12,20 @@ const data = [
   { label: "Project", value: "Kloostri eramu" },
 ];
 
-const GridRow = ({ children }) => {
-  return (
-    <Grid container spacing={2}>
-      {children}
-    </Grid>
-  );
+interface IProps {
+  subTask: string;
+  dueDate: string;
+  taskUid: string;
+}
+const GridRow = ({ children }: any) => {
+  return <Grid container>{children}</Grid>;
 };
 
-export default function DetailsHeader() {
+export default function DetailsHeader(props: IProps) {
+  const { subTask, dueDate, taskUid } = props;
   return (
     <Box sx={{ padding: "0px 16px" }}>
-      <DetailActions />
+      <DetailActions subTask={subTask} dueDate={dueDate} taskUid={taskUid} />
       <Box sx={{ height: "30px", width: "100%", padding: "5px 0px" }}>
         <Typography
           sx={{
@@ -39,15 +38,35 @@ export default function DetailsHeader() {
           Magnis dis parturient montes, nascetur ridiculus mus.
         </Typography>
       </Box>
-      <Grid container>
+      <Grid container sx={{ padding: "0px 0px 8px 0px" }}>
         {data.map((item) => {
           return (
             <GridRow>
-              <Grid item xs={1.5}>
-                {item.label}
+              <Grid item xs={1}>
+                <Typography
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "16px",
+                    color: "#605c5c",
+                  }}
+                >
+                  {item.label}
+                </Typography>
               </Grid>
-              <Grid item xs={10.5}>
-                {item.value}
+              <Grid item xs={11}>
+                <Typography
+                  sx={{
+                    fontFamily: "Inter",
+                    fontWeight: 500,
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    color: "#131516",
+                  }}
+                >
+                  {item.value}
+                </Typography>
               </Grid>
             </GridRow>
           );

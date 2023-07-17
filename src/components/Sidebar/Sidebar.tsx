@@ -2,16 +2,18 @@ import React from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
 import { socket } from "../../services/socket.services";
 import "./sidebar.css";
+import { taskActions } from "redux/action";
 
 function Sidebar() {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const selectedTab = useSelector(
     (store: RootState) => store.navigation.selectedTab
   );
@@ -19,16 +21,11 @@ function Sidebar() {
     (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
+  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
   const history = useHistory();
 
   const handleRouteClick = (config: SingleConfig) => {
-    // if (config.getPath("") !== "chat") {
-    //   socket.setAppSelectedChat(null);
-    // }
-    // history.push(`/${config.getPath("")}`);
-    // if (isTabletOrMobile && navbarOpen) {
-    //   dispatch(appActions.setNavbarOpen(false));
-    // }
+    dispatch(taskActions.selectedTaskFilter(config.key));
   };
 
   // const getNavbarStyles = () => {
@@ -57,16 +54,13 @@ function Sidebar() {
             return (
               <div
                 key={config.title}
-                className={`${classes.menue}`}
-                //  ${
-                //   window.location.pathname.includes(config.getPath(""))
-                //     ? classes.active
-                //     : ""
-                // }`}
+                className={`${classes.menue} ${
+                  selectedTaskFilter.includes(config.key) ? classes.active : ""
+                }`}
                 onClick={() => handleRouteClick(config)}
               >
                 <div className={classes.iconWrapper}>
-                  <Box className={classes.icon}>
+                  <Box>
                     <img src={config.icon} />
 
                     {/* <img src={} className={classes.iconInner} alt={''} /> */}

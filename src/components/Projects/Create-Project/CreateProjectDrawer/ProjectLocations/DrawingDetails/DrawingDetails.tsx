@@ -1,6 +1,6 @@
 import { DrawingMenu, StickyHeader } from "./Components";
 import { Box, Grid } from "@mui/material";
-import Task from "components/Tasks/TaskList/Task";
+import Tasks from "components/Tasks/TaskList/Task";
 import DocumentReader from "components/pdfviewer/index.js";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +25,6 @@ function DrawingDetails() {
         dispatch(taskActions.getAllTaskToMe());
       }
       if (allTaskFromMe.unread.length === 0) {
-        
         dispatch(taskActions.getAllTaskFromMe());
       }
     }
@@ -41,10 +40,10 @@ function DrawingDetails() {
       </Box>
       <Grid container>
         <Grid item md={2.8} sx={sideBarStyle}>
-        <Task/>
+          <Tasks />
         </Grid>
         <Grid item md={8.2}>
-          <DocumentReader  newTask = {allTaskList.new}/>
+          <DocumentReader newTask={allTaskList.new} />
         </Grid>
         <Grid item md={1} sx={sideBarStyle}>
           Toolbar
@@ -57,7 +56,7 @@ const sideBarStyle = {
   position: "relative",
   zIndex: 10,
   height: "calc(100vh - 137px)",
-  overflow:'auto',
+  overflow: "auto",
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",

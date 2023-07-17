@@ -1,7 +1,9 @@
 import { AssignmentSharp } from "@mui/icons-material";
 import assets from "assets/assets";
+import { selectedTaskFilterType } from "redux/type";
 
 export interface SingleConfig {
+  key: selectedTaskFilterType;
   title: string;
   icon: any;
   notification?: number;
@@ -23,15 +25,16 @@ const {
   ToMeIcon,
   CanceledIcon,
 } = assets;
-
 const SidebarConfig: SidebarConfigInterface = {
   Tasks: {
-    title: "Tasks",
+    key: "task",
+    title: "Task",
     icon: TaskIcon,
     getPath: () => "tasks",
     active: false,
     childTab: {
       newTask: {
+        key: "newTask",
         title: "New Tasks",
         icon: NewTaskIcon,
         getPath: () => "tasks",
@@ -39,26 +42,29 @@ const SidebarConfig: SidebarConfigInterface = {
         childTab: {},
         notification: 0,
       },
-      fromMe: {
+      allTaskFromMe: {
+        key: "allTaskFromMe",
         title: "From me",
         icon: FromMEIcon,
-        getPath: () => "tasks",
+        getPath: () => "tasks/fromMe",
         active: false,
         childTab: {},
         notification: 0,
       },
-      toMe: {
+      allTaskToMe: {
+        key: "allTaskToMe",
         title: "To me",
         icon: ToMeIcon,
-        getPath: () => "tasks",
+        getPath: () => "tasks/toMe",
         active: false,
         childTab: {},
         notification: 0,
       },
-      Canceled: {
-        title: "Canceled",
+      allTaskHidden: {
+        key: "allTaskHidden",
+        title: "Hidden",
         icon: CanceledIcon,
-        getPath: () => "tasks",
+        getPath: () => "tasks/hiddenTask",
         active: false,
         childTab: {},
         notification: 0,
@@ -67,6 +73,7 @@ const SidebarConfig: SidebarConfigInterface = {
     notification: 0,
   },
   Projects: {
+    key: "project",
     title: "Projects",
     icon: ProjectIcon,
     getPath: () => "projects",
@@ -75,7 +82,8 @@ const SidebarConfig: SidebarConfigInterface = {
     notification: 0,
   },
   Locations: {
-    title: "Locations",
+    key: "location",
+    title: "Location",
     icon: LocationIcon,
     getPath: () => `drawingDetail`,
     active: false,

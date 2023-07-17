@@ -46,6 +46,7 @@ const NavigationReducer = (state = intialStatue, action: ActionInterface) => {
         selectedTab: action.payload,
       };
     case SET_SELECTED_SUB_TAB:
+      // const active = state.sidebarRoutes[state.selectedTab].childTab[state.]
       return {
         ...state,
         selectedSubTab: action.payload,

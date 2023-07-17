@@ -1,70 +1,24 @@
 import React from "react";
-import { Grid, Button, Box, Typography } from "@mui/material";
+import { Grid, Button, Typography, Chip, Box } from "@mui/material";
 import { CommentOutlined, ForwardOutlined } from "@mui/icons-material";
 import assets from "../../../assets/assets";
+import capitalize from "lodash/capitalize";
 
 interface IProps {
-  taskType?: string;
-  taskId?: string;
-  date?: string;
-  dueDate?: string;
+  subTask: string;
+  dueDate: string;
+  taskUid: string;
 }
 
-const StatusBadge: React.FC = ({ children }) => (
-  <Box
-    sx={{
-      background: "#f1b740",
-      borderRadius: "20px",
-      padding: "2px 8px",
-      height: "20px",
-      minWidth: "65px",
-      display: "flex",
-      alignItems: "center",
-    }}
-  >
-    <Typography
-      sx={{
-        fontFamily: "Inter",
-        fontSize: "12px",
-        fontWeight: 500,
-        textAlign: "center",
-        color: "#fff",
-      }}
-    >
-      {children}
-    </Typography>
-  </Box>
-);
-
-const LabelBadge: React.FC = ({ children }) => (
-  <Box
-    sx={{
-      borderColor: "#818181",
-      borderWidth: "1px",
-      borderRadius: "8px",
-      padding: "2px 8px",
-      color: "#818181",
-      borderStyle: "solid",
-      height: "20px",
-      minWidth: "65px",
-      display: "flex",
-      alignItems: "center",
-    }}
-  >
-    <Typography
-      sx={{
-        fontFamily: "Inter",
-        fontSize: "12px",
-        fontWeight: 500,
-        textAlign: "center",
-      }}
-    >
-      {children}
-    </Typography>
-  </Box>
-);
-
+enum statusColors {
+  new = "#CFECFF",
+  unread = "#CFECFF",
+  ongoing = "#F1B740",
+  done = "#55BCB3",
+  canceled = "#FFE7E7",
+}
 const DetailActions: React.FC<IProps> = (props) => {
+  const { subTask, taskUid, dueDate } = props;
   const handleCommentClick = () => {
     // Handle comment button click here
   };
@@ -76,13 +30,39 @@ const DetailActions: React.FC<IProps> = (props) => {
   const handleDoneClick = () => {
     // Handle done button click here
   };
-
+  const chipColor: string = statusColors[subTask as keyof typeof statusColors];
   return (
     <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>
       <Grid item xs={6}>
         <Box sx={{ display: "flex", gap: "30px" }}>
-          <StatusBadge>Ongoing</StatusBadge>
-          <LabelBadge>C1001</LabelBadge>
+          <Chip
+            label={capitalize(subTask)}
+            size="small"
+            sx={{
+              borderColor: chipColor,
+              backgroundColor: chipColor,
+              borderRadius: "20px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 500,
+              padding: "2px 8px",
+            }}
+          />
+          <Chip
+            label={taskUid}
+            size="small"
+            sx={{
+              borderColor: "#818181",
+              backgroundColor: "white",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderRadius: "10px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 500,
+              padding: "2px 8px",
+            }}
+          />
           <Typography
             sx={{
               fontFamily: "Inter",
@@ -110,12 +90,7 @@ const DetailActions: React.FC<IProps> = (props) => {
               alignItems: "center",
             }}
           >
-            Due date:{" "}
-            {new Date().toLocaleDateString("en-GB", {
-              year: "2-digit",
-              month: "2-digit",
-              day: "2-digit",
-            })}
+            Due date: {dueDate}
           </Typography>
         </Box>
       </Grid>
@@ -124,7 +99,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           startIcon={<img src={assets.CommentIcon} />}
           onClick={handleCommentClick}
           variant="text"
-          sx={{ height: "24px", width: "103px", padding: "8px,16px" }}
+          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
         >
           Comment
         </Button>
@@ -132,14 +107,14 @@ const DetailActions: React.FC<IProps> = (props) => {
           startIcon={<img src={assets.ForwardIcon} />}
           onClick={handleForwardClick}
           variant="text"
-          sx={{ height: "24px", width: "103px", padding: "8px,16px" }}
+          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
         >
           Forward
         </Button>
         <Button
           variant="contained"
           onClick={handleDoneClick}
-          sx={{ height: "24px", width: "103px", padding: "8px,16px" }}
+          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
         >
           Done
         </Button>
