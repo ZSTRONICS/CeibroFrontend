@@ -1,9 +1,24 @@
 import { ActionInterface } from "./appReducer";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { TASK_CONFIG } from "config";
-import { AllSubtasksOfTaskResult, AllTaskFromMeInterface, AllTaskHiddenInterface, AllTaskToMeInterface, Task, TaskInterface } from "constants/interfaces";
-import { RecentCommentsInterface, SubtaskInterface } from "constants/interfaces/subtask.interface";
-import { addEventToTask, findTaskIndex, moveTask, moveTaskToSpecifiedArr, } from "components/Utills/Globals";
+import {
+  AllSubtasksOfTaskResult,
+  AllTaskFromMeInterface,
+  AllTaskHiddenInterface,
+  AllTaskToMeInterface,
+  Task,
+  TaskInterface,
+} from "constants/interfaces";
+import {
+  RecentCommentsInterface,
+  SubtaskInterface,
+} from "constants/interfaces/subtask.interface";
+import {
+  addEventToTask,
+  findTaskIndex,
+  moveTask,
+  moveTaskToSpecifiedArr,
+} from "components/Utills/Globals";
 import { selectedTaskFilterType } from "redux/type";
 interface TaskReducerInt {
   // showAllTasks:TaskRoot[]
@@ -104,8 +119,10 @@ const intialStatue: TaskReducerInt = {
   subTaskDetailDrawer: false,
 };
 
-
-const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducerInt => {
+const TaskReducer = (
+  state = intialStatue,
+  action: ActionInterface
+): TaskReducerInt => {
   switch (action.type) {
 
     case TASK_CONFIG.SELECTED_TASK_FILTER:
@@ -377,7 +394,7 @@ const TaskReducer = (state = intialStatue, action: ActionInterface): TaskReducer
     // update task when event received
     case TASK_CONFIG.UPDATE_TASK_WITH_EVENTS:
       const eventData = action.payload;
-      console.log("eventData", eventData,eventData.eventType);
+      console.log("eventData", eventData);
 
       // hidden
       const hiddenCanceled = state.allTaskHidden.canceled;
