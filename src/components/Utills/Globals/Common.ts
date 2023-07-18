@@ -155,9 +155,8 @@ export const findTaskIndex = (taskArray: any[], itemId: string): number => {
  * **/
 export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    let updatedTask = taskArray[taskIndex].events.push(eventData);
-    console.log('comment', taskArray[taskIndex]);
-    return updatedTask
+    taskArray[taskIndex].events.push(eventData);
+    taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
   }
 }
 
@@ -166,7 +165,6 @@ export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], e
   sourceArray[taskIndex].events.push(eventData);
   const task = sourceArray.splice(taskIndex, 1)[0];
   targetArray.push(task);
-  console.log('moveTaskToSpecifiedArr', targetArray)
 }
 
 export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
@@ -175,7 +173,6 @@ export function moveTask(sourceArray: any[], targetArray: any[], eventData: any)
     const task = sourceArray.splice(taskIndex, 1)[0];
     task.hiddenBy.push(...eventData.hiddenBy);
     targetArray.push(task);
-    console.log('targetArray', targetArray)
   }
 }
 /**

@@ -24,7 +24,8 @@ const MockTaskApis = () => {
           taskActions.createTask({
             body: {
               dueDate: "30-07-2023",
-              topic: "64b119a742bbd2b53de76045",
+              // topic: "64b119a742bbd2b53de76045",
+              topic: "64ad0fffb9e0a0a0efbd6b0b",
               project: "",
               assignedToState: [
                 {
@@ -32,8 +33,13 @@ const MockTaskApis = () => {
                   userId: "64748b875104dac077e750fb",
                   state: "new",
                 },
+                // {
+                //   phoneNumber: "+923120619435",
+                //   userId: "644bdaf18fc7508375adb108",
+                //   state: "new",
+                // },
               ],
-              creator: "64748b875104dac077e750fb",
+              creator: "644bdaf18fc7508375adb108",
               description: "",
               doneImageRequired: false,
               doneCommentsRequired: false,
@@ -75,7 +81,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "forwardTask") {
         dispatch(
           taskActions.forwardTask({
-            other: { taskId: "64afacd40338374731d71132" },
+            other: { taskId: "64b5778d5e6a0d806d3e8a04" },
             body: {
               assignedToState: [
                 {
@@ -93,7 +99,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskHide") {
         dispatch(
           taskActions.taskHide({
-            other: { taskId: "64afacd40338374731d71132" },
+            other: { taskId: "64b5778d5e6a0d806d3e8a04" },
           })
         );
       }
@@ -101,14 +107,14 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskShow") {
         dispatch(
           taskActions.taskShow({
-            other: { taskId: "64afacd40338374731d71132" },
+            other: { taskId: "64b5778d5e6a0d806d3e8a04" },
           })
         );
       }
       if (selectedApi.value === "taskSeen") {
         dispatch(
           taskActions.taskSeen({
-            other: { taskId: "64afacd40338374731d71132" },
+            other: { taskId: "64b5778d5e6a0d806d3e8a04" },
           })
         );
       }
@@ -116,7 +122,7 @@ const MockTaskApis = () => {
       if (selectedApi.value === "taskCaneled") {
         dispatch(
           taskActions.taskCaneled({
-            other: { taskId: "64afacd40338374731d71132" },
+            other: { taskId: "64b5778d5e6a0d806d3e8a04" },
           })
         );
       }
@@ -127,7 +133,7 @@ const MockTaskApis = () => {
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "doneTask",
-              taskId: "64afacd40338374731d71132",
+              taskId: "64b5778d5e6a0d806d3e8a04",
               hasFiles: false,
             },
             body: formdata,
@@ -167,7 +173,7 @@ const MockTaskApis = () => {
         const payload = {
           other: {
             eventName: "doneTask",
-            taskId: "64afacd40338374731d71132",
+            taskId: "64b5778d5e6a0d806d3e8a04",
             hasFiles: false,
           },
           body: formdata,
@@ -178,12 +184,12 @@ const MockTaskApis = () => {
 
       if (selectedApi.value === "tasksWithComment") {
         const formdata = new FormData();
-        formdata.append("message", "dont task comment here new");
+        formdata.append("message", "done task comment here 1");
         dispatch(
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "comment",
-              taskId: "64afacd40338374731d71132",
+              taskId: "64b5778d5e6a0d806d3e8a04",
               hasFiles: false,
             },
             body: formdata,
@@ -203,7 +209,7 @@ const MockTaskApis = () => {
           taskActions.taskEventsWithFiles({
             other: {
               eventName: "comment",
-              taskId: "64afacd40338374731d71132",
+              taskId: "64b5778d5e6a0d806d3e8a04",
               hasFiles: true,
             },
             body: formdata,

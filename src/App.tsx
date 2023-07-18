@@ -396,31 +396,21 @@ const App: React.FC<MyApp> = () => {
         const data = dataRcvd.data;
         switch (eventType) {
           case TASK_CONFIG.TASK_CREATED:
-            const isAssignedToMe = data.assignedToState.some(
-              (assignTo: any) => assignTo.userId === userId
-            );
-
             if (!data.access.includes(userId)) {
               return;
             }
             dispatch({
               type: TASK_CONFIG.PUSH_TASK_TO_STORE,
-              payload: { data, isAssignedToMe },
-            });
-            break;
-
-          case TASK_CONFIG.TASK_SEEN:
-            dispatch({
-              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: data,
             });
             break;
 
+          case TASK_CONFIG.TASK_SEEN:
           case TASK_CONFIG.TASK_SHOWN:
           case TASK_CONFIG.TASK_HIDDEN:
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-              payload: { ...data, userId },
+              payload: { ...data, userId, eventType },
             });
             break;
 
@@ -673,27 +663,24 @@ const App: React.FC<MyApp> = () => {
 
   return (
     // <ThemeProvider theme={theme}>
-      <div className="App">
-
-        <ErrorBoundary>
-          {/* component used here for availability of modal on all routes*/}
-          <TaskModal />
-          <div
-            style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}
-          >
-            <ViewInvitations />
-          </div>
-          <CssBaseline />
-          {<UploadingDocsPreview />}
-          <CreateQuestioniarDrawer />
-          <CDrawer />
-          {drawerOpen && <ViewQuestioniarDrawer />}
-          {openProjectdrawer && <CreateProjectDrawer />}
-          <ToastContainer position="bottom-left" theme="colored" />
-          {openTaskDrawer && <CreateTaskDrawer />}
-          <RouterConfig />
-        </ErrorBoundary>
-      </div>
+    <div className="App">
+      <ErrorBoundary>
+        {/* component used here for availability of modal on all routes*/}
+        <TaskModal />
+        <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
+          <ViewInvitations />
+        </div>
+        <CssBaseline />
+        {<UploadingDocsPreview />}
+        <CreateQuestioniarDrawer />
+        <CDrawer />
+        {drawerOpen && <ViewQuestioniarDrawer />}
+        {openProjectdrawer && <CreateProjectDrawer />}
+        <ToastContainer position="bottom-left" theme="colored" />
+        {openTaskDrawer && <CreateTaskDrawer />}
+        <RouterConfig />
+      </ErrorBoundary>
+    </div>
     // </ThemeProvider>
   );
 };
