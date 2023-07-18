@@ -30,8 +30,8 @@ const useStyles = makeStyles((theme) => ({
     color: colors.primary,
     cursor: "pointer",
     gap: 10,
-    borderradius: "8px",
-    height: "50px",
+    borderRadius: "8px",
+    // height: "50px",
     "&:hover": {
       background: "white",
       color: `${colors.black} !important`,

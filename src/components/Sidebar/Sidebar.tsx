@@ -25,7 +25,10 @@ function Sidebar() {
   const history = useHistory();
 
   const handleRouteClick = (config: SingleConfig) => {
-    dispatch(taskActions.selectedTaskFilter(config.key));
+    if (config.key === "newTask") {
+    } else {
+      dispatch(taskActions.selectedTaskFilter(config.key));
+    }
   };
 
   // const getNavbarStyles = () => {

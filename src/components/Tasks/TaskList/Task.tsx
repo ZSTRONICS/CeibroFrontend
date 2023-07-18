@@ -87,7 +87,6 @@ const Task = () => {
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
-    console.log(searchTxt, "search");
     const filterData = searchInData(
       task[selectedTaskFilter][selectedTab],
       searchTxt,
@@ -113,6 +112,7 @@ const Task = () => {
       case "new":
         return (
           <StyledChip
+            key={type}
             label="New"
             notfiyCount="2"
             bgColor="#CFECFF"
@@ -123,6 +123,7 @@ const Task = () => {
       case "unread":
         return (
           <StyledChip
+            key={type}
             label="Unread"
             notfiyCount="2"
             bgColor="#CFECFF"
@@ -133,6 +134,7 @@ const Task = () => {
       case "ongoing":
         return (
           <StyledChip
+            key={type}
             label="Ongoing"
             notfiyCount="2"
             bgColor="#F1B740"
@@ -143,6 +145,7 @@ const Task = () => {
       case "done":
         return (
           <StyledChip
+            key={type}
             label="Done"
             notfiyCount="2"
             bgColor="#55BCB3"
@@ -153,6 +156,7 @@ const Task = () => {
       case "canceled":
         return (
           <StyledChip
+            key={type}
             label="Canceled"
             notfiyCount="2"
             bgColor="#FFE7E7"
