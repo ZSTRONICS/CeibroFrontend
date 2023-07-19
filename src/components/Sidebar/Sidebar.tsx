@@ -7,10 +7,10 @@ import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
-import { socket } from "../../services/socket.services";
 import "./sidebar.css";
 import { taskActions } from "redux/action";
-
+import { renderToString } from 'react-dom/server';
+import { openFormWindow } from "components/Utills/Globals";
 function Sidebar() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -22,15 +22,49 @@ function Sidebar() {
   );
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-  const history = useHistory();
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
+      handleOpenFormWindow();
+      console.log("create new task", config.key);
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }
   };
 
+  const handleOpenFormWindow = (): void => {
+    const content: string = renderFormContent();
+    openFormWindow(content);
+  };
+  const renderFormContent = (): string => {
+    return `
+      <div style="padding: 20px;">
+        <h2>Replace this component with create new task form</h2>
+        <hr />
+        <div>
+          ${renderToString(
+            <form >
+              <label>
+                Name:
+                <input
+                  type="text"
+                  name="name"
+                />
+              </label>
+              <label>
+                Email:
+                <input
+                  type="email"
+                  name="email"
+                />
+              </label>
+              <button type="submit">Submit</button>
+            </form>
+          )}
+        </div>
+      </div>
+    `;
+  };
   // const getNavbarStyles = () => {
   //   let styles = {};
   //   if (isTabletOrMobile) {

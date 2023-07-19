@@ -147,7 +147,7 @@ export const findTaskIndex = (taskArray: any[], itemId: string): number => {
   return taskIndex;
 };
 
-export function pushSeenBy(taskArray:any[], taskIndex:any, eventData:any) {
+export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
   if (taskIndex > -1) {
     const seenBy = taskArray[taskIndex].seenBy;
     if (!seenBy.includes(eventData.userId)) {
@@ -265,6 +265,40 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
   }
   return filesWithExtension
 };
+
+export const openFormWindow = (content: string) => {
+  const windowWidth = 900;
+  const windowHeight = 782;
+  const windowLeft = (window.innerWidth - windowWidth) / 2;
+  const windowTop = (window.innerHeight - windowHeight) / 2;
+console.log('windowLeft', windowLeft, windowTop)
+  const url = 'https://dev.ceibro.ee';
+  const windowFeatures = `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop},resizable=no,scrollbars=no,status=no`;
+  const formWindow: Window | null = window.open(undefined, '_blank', windowFeatures);
+
+  // Check if the window was blocked (only for modern browsers)
+  if (!formWindow || formWindow.closed || typeof formWindow.closed === 'undefined') {
+    alert('The new window was blocked. Please allow pop-ups for this site.');
+  } else {
+    const titleTag = `<title>Ceibro</title>`;
+    const baseTag = `<base href="${url}" target="_blank">`;
+
+    const fullContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          ${titleTag}
+          ${baseTag}
+        </head>
+        <body>
+          ${content}
+        </body>
+      </html>
+    `;
+    formWindow.document.write(fullContent);
+  }
+};
+
 
 /**
  * @param SubtaskMembersArr array of extension
