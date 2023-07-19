@@ -18,6 +18,7 @@ import {
   findTaskIndex,
   moveTask,
   moveTaskToSpecifiedArr,
+  pushSeenBy,
 } from "components/Utills/Globals";
 import { selectedTaskFilterType } from "redux/type";
 interface TaskReducerInt {
@@ -136,7 +137,7 @@ const TaskReducer = (
       const taskToMeNew = state.allTaskToMe.new;
       if (action.payload.isAssignedToMe === true) {
         taskToMeNew.push(action.payload)
-        console.log('push task to me new',taskToMeNew[taskToMeNew.length-1])
+        console.log('push task to me new', taskToMeNew[taskToMeNew.length - 1])
       }
 
       if (action.payload.isCreator === true) {
@@ -410,12 +411,73 @@ const TaskReducer = (
       const toMeNew = state.allTaskToMe.new;
       const toMeOngoing = state.allTaskToMe.ongoing;
       const toMeDone = state.allTaskToMe.done;
+      // canceled task 
+      if (eventData.eventType === "cancelTask") {
 
+        // task isAssignedToMe and canceled  to-me [ongoing] -> hidden [canceled]
+        if (eventData.oldTaskData.isAssignedToMe === true && eventData.oldTaskData.userSubState === "ongoing"
+          && eventData.newTaskData.isHiddenByMe === false) {
+          const taskIndex = findTaskIndex(toMeOngoing, eventData.taskId)
+          toMeOngoing[taskIndex].events.push(eventData);
+          const task = toMeOngoing.splice(taskIndex, 1)[0];
+          hiddenCanceled.push(task);
+          console.log('move toMeOngoing=> hiddenCanceled', hiddenCanceled[hiddenCanceled.length - 1])
+        }
+        // task isAssignedToMe hidden [ongoing]  => hidden [canceled]
+        if (eventData.newTaskData.isHiddenByMe === true && eventData.oldTaskData.userSubState === "ongoing"
+          && eventData.oldTaskData.isAssignedToMe === true) {
+          const taskIndex = findTaskIndex(hiddenOngoing, eventData.taskId)
+          hiddenOngoing[taskIndex].events.push(eventData);
+          const task = hiddenOngoing.splice(taskIndex, 1)[0];
+          hiddenCanceled.push(task);
+          console.log('move hiddenOngoing=> hiddenCanceled', hiddenCanceled[hiddenCanceled.length - 1])
+        }
+
+        // isCreator  from-me [unread]  => hidden [canceled]
+        if (eventData.newTaskData.isCreator === true && eventData.oldTaskData.creatorState === "unread") {
+          const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId)
+          fromMeUnread[taskIndex].events.push(eventData);
+          const task = fromMeUnread.splice(taskIndex, 1)[0];
+          hiddenCanceled.push(task);
+          console.log('move fromMeUnread=> hiddenCanceled', hiddenCanceled[hiddenCanceled.length - 1])
+        }
+
+        // isCreator  to-me [new]  => hidden [canceled]
+        if (eventData.oldTaskData.isAssignedToMe === true && eventData.oldTaskData.userSubState === "new") {
+          const taskIndex = findTaskIndex(toMeNew, eventData.taskId)
+          const checkTaskInhiddenCanel = findTaskIndex(hiddenCanceled, eventData.taskId)
+          if (eventData.newTaskData.isCreator === true && checkTaskInhiddenCanel > -1) {
+            console.log('task already canceled to-me new', hiddenCanceled[checkTaskInhiddenCanel])
+          } else {
+            toMeNew[taskIndex].events.push(eventData);
+            const task = toMeNew.splice(taskIndex, 1)[0];
+            hiddenCanceled.push(task);
+            console.log('move toMeNew=> hiddenCanceled', hiddenCanceled[hiddenCanceled.length - 1])
+          }
+        }
+
+        // isCreator and isAssignedToMe  from-me [ongoing]  => hidden [canceled]
+        if (eventData.newTaskData.isCreator === true && eventData.oldTaskData.userSubState === "ongoing"
+          && eventData.oldTaskData.isAssignedToMe === true) {
+          const taskIndex = findTaskIndex(fromMeOngoing, eventData.taskId)
+          const checkTaskInhiddenCanel = findTaskIndex(hiddenCanceled, eventData.taskId)
+          if (checkTaskInhiddenCanel < -1) {
+            fromMeOngoing[taskIndex].events.push(eventData);
+            const task = fromMeOngoing.splice(taskIndex, 1)[0];
+            hiddenCanceled.push(task);
+            console.log('move fromMeOngoing=> hiddenCanceled', hiddenCanceled[hiddenCanceled.length - 1])
+          } else {
+            console.log('task already canceled from-me ongoing', hiddenCanceled[checkTaskInhiddenCanel])
+          }
+        }
+
+      }
       // task with comment
       if (eventData.eventType === "comment") {
         if (eventData.taskData.creatorState === "canceled") {
           const checktaskInCanceled = findTaskIndex(hiddenCanceled, eventData.taskId)
           addEventToTask(hiddenCanceled, eventData, checktaskInCanceled);
+          console.log('update hiddenCanceled', hiddenCanceled[checktaskInCanceled])
         }
         // task creator add comment in unread and update assignto new if not seen
         if (eventData.oldTaskData.creatorState === 'unread' && eventData.oldTaskData.isCreator === true) {
@@ -423,26 +485,41 @@ const TaskReducer = (
           fromMeUnread[checktaskIndex].events.push(eventData);
           console.log('updated fromMeUnread', fromMeUnread[checktaskIndex])
         }
+
         // task AssignedToMe and task state is new
         if (eventData.oldTaskData.isAssignedToMe === true && eventData.oldTaskData.userSubState === "new") {
           const checktaskIndex = findTaskIndex(toMeNew, eventData.taskId)
           addEventToTask(toMeNew, eventData, checktaskIndex)
-          console.log('updated new')
+          console.log('updated new', toMeNew[toMeNew.length - 1])
         }
-
-        // task AssignedToMe and task state is ongoing
-        if (eventData.oldTaskData.isAssignedToMe === true && eventData.oldTaskData.userSubState === "ongoing") {
+        // task isHiddenByMe and task state is hidden [ongoing]
+        if (eventData.oldTaskData.isHiddenByMe === true &&
+          eventData.oldTaskData.isAssignedToMe === true &&
+          eventData.oldTaskData.userSubState === "ongoing") {
+          const taskIndex = findTaskIndex(hiddenOngoing, eventData.taskId)
+          addEventToTask(hiddenOngoing, eventData, taskIndex)
+          hiddenOngoing[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
+          const task = hiddenOngoing.splice(taskIndex, 1)[0];
+          toMeOngoing.push(task);
+          console.log('updated hiddenOngoing => toMeOngoing',toMeOngoing[toMeOngoing.length-1])
+        }
+        // task AssignedToMe and task state is to-me [ongoing]
+        if (eventData.oldTaskData.isHiddenByMe === false &&
+          eventData.oldTaskData.isAssignedToMe === true &&
+          eventData.oldTaskData.userSubState === "ongoing") {
           const checktaskIndex = findTaskIndex(toMeOngoing, eventData.taskId)
           addEventToTask(toMeOngoing, eventData, checktaskIndex)
           console.log('updated toMeOngoing', toMeOngoing[checktaskIndex])
         }
 
+
         // task creator and updated task from-me in ongoing
         if (eventData.oldTaskData.isCreator === true && eventData.oldTaskData.creatorState === 'ongoing') {
           const checktaskIndex = findTaskIndex(fromMeOngoing, eventData.taskId)
-          fromMeOngoing[checktaskIndex].events.push(eventData);
+          addEventToTask(fromMeOngoing, eventData, checktaskIndex);
           console.log('updated fromMeOngoing', fromMeOngoing[checktaskIndex])
         }
+
         // done task comment hidden [done] and move to to-me [done]
         if (eventData.oldTaskData.isHiddenByMe === true && eventData.oldTaskData.isAssignedToMe === true) {
           const checktaskIndex = findTaskIndex(hiddenDone, eventData.taskId)
@@ -462,27 +539,6 @@ const TaskReducer = (
           const checktaskIndex = findTaskIndex(toMeDone, eventData.taskId)
           toMeDone[checktaskIndex].events.push(eventData);
           console.log('updated toMeDone', toMeDone[checktaskIndex])
-        }
-
-        if (eventData.oldTaskData.userSubState === "ongoing") {
-          //  check if task in hidden ongoin, update and push to to-me ongoin
-          if (eventData.oldTaskData.isHiddenByMe === true && eventData.oldTaskData.isAssignedToMe === true) {
-            const checktaskInOngoing = findTaskIndex(hiddenOngoing, eventData.taskId)
-            hiddenOngoing[checktaskInOngoing].events.push(eventData);
-            const task = hiddenOngoing.splice(checktaskInOngoing, 1)[0];
-            toMeOngoing.push(task);
-          }
-          //  check if task not hidden ,only update  to-me ongoin
-          if (eventData.oldTaskData.isHiddenByMe === false && eventData.oldTaskData.isAssignedToMe === true) {
-            const checktaskToMeInOngoing = findTaskIndex(toMeOngoing, eventData.taskId)
-            addEventToTask(toMeOngoing, eventData, checktaskToMeInOngoing);
-          }
-
-          // update from-me ongoin if task creator 
-          if (eventData.oldTaskData.isCreator === true) {
-            const checktaskFromMeInOngoing = findTaskIndex(fromMeOngoing, eventData.taskId)
-            addEventToTask(fromMeOngoing, eventData, checktaskFromMeInOngoing);
-          }
         }
       }
 
@@ -547,17 +603,16 @@ const TaskReducer = (
           console.log('hidden toMeDone => hiddenDone')
         }
       }
-console.log('toMeNew', toMeNew)
       // task seen
       if (eventData.eventType === "TASK_SEEN") {
         // move task assigne new state to ongoing
         if (eventData.oldTaskData.isAssignedToMe === true && eventData.oldTaskData.userSubState === 'new') {
           // find task in new and move to ongoing and update task
           const taskIndex = findTaskIndex(toMeNew, eventData.taskId);
-          toMeNew[taskIndex].seenBy.push(...eventData.seenBy);
+          pushSeenBy(toMeNew, taskIndex, eventData)
           const task = toMeNew.splice(taskIndex, 1)[0];
           toMeOngoing.push(task);
-          console.log('task seen toMeNew => toMeOngoing', toMeOngoing, toMeNew)
+          console.log('task seen toMeNew => toMeOngoing', toMeOngoing[toMeOngoing.length - 1])
         }
 
         // task creator move unread state to ongoing
@@ -568,36 +623,44 @@ console.log('toMeNew', toMeNew)
           const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
           const task = fromMeUnread.splice(taskIndex, 1)[0];
           fromMeOngoing.push(task);
-          console.log('task seen fromMeUnread => fromMeOngoing', fromMeOngoing)
+          console.log('task seen fromMeUnread => fromMeOngoing', fromMeOngoing[fromMeOngoing.length - 1])
         }
 
         // update  task to-me [ongoing] when seen
         if (eventData.oldTaskData.isAssignedToMe === true &&
           eventData.oldTaskData.userSubState === "ongoing") {
           const taskIndex = findTaskIndex(toMeOngoing, eventData.taskId);
-          toMeOngoing[taskIndex].seenBy.push(eventData.userId);
-            console.log('updated ongoing seenBy ', toMeOngoing[taskIndex] )
+          pushSeenBy(toMeOngoing, taskIndex, eventData)
+          console.log('updated toMeOngoing seenBy ', toMeOngoing[taskIndex])
         }
         // update  task from-me [ongoing] when seen
         if (eventData.oldTaskData.isCreator === true &&
           eventData.oldTaskData.creatorState === "ongoing") {
           const taskIndex = findTaskIndex(fromMeOngoing, eventData.taskId);
-          fromMeOngoing[taskIndex].seenBy.push(eventData.userId);
-            console.log('updated fromMeOngoing seenBy ', fromMeOngoing[taskIndex] )
+          pushSeenBy(fromMeOngoing, taskIndex, eventData)
+          console.log('updated fromMeOngoing seenBy ', fromMeOngoing[taskIndex])
         }
         // update  task to-me [done] when seen
         if (eventData.oldTaskData.isAssignedToMe === true &&
           eventData.oldTaskData.userSubState === "done") {
           const taskIndex = findTaskIndex(toMeDone, eventData.taskId);
-          toMeDone[taskIndex].seenBy.push(eventData.userId);
-            console.log('updated ongoing seenBy ', toMeDone[taskIndex] )
+          pushSeenBy(toMeDone, taskIndex, eventData)
+          console.log('updated ongoing seenBy ', toMeDone[taskIndex])
         }
         // update  task from-me [done] when seen
         if (eventData.oldTaskData.isCreator === true &&
           eventData.oldTaskData.creatorState === "done") {
           const taskIndex = findTaskIndex(fromMeDone, eventData.taskId);
-          fromMeDone[taskIndex].seenBy.push(eventData.userId);
-            console.log('updated fromMeDone seenBy ', fromMeDone[taskIndex] )
+          pushSeenBy(fromMeDone, taskIndex, eventData)
+          console.log('updated fromMeDone seenBy ', fromMeDone[taskIndex])
+        }
+
+        // update  task hidden [canceled]] when seen
+        if ((eventData.oldTaskData.isCreator === true || eventData.oldTaskData.isAssignedToMe === true)
+          && eventData.oldTaskData.creatorState === "canceled") {
+          const taskIndex = findTaskIndex(hiddenCanceled, eventData.taskId);
+          pushSeenBy(hiddenCanceled, taskIndex, eventData)
+          console.log('updated hiddenCanceled seenBy ', hiddenCanceled[taskIndex])
         }
 
       }

@@ -147,6 +147,14 @@ export const findTaskIndex = (taskArray: any[], itemId: string): number => {
   return taskIndex;
 };
 
+export function pushSeenBy(taskArray:any[], taskIndex:any, eventData:any) {
+  if (taskIndex > -1) {
+    const seenBy = taskArray[taskIndex].seenBy;
+    if (!seenBy.includes(eventData.userId)) {
+      seenBy.push(eventData.userId);
+    }
+  }
+}
 /**
  * @param taskArray the array must have _id
  * @param eventData data to be pushed to task events

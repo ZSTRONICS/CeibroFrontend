@@ -1,30 +1,15 @@
-import { useEffect, useState, useRef, ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
-import { Box, Grid, Tab, Tabs, InputBase, Badge } from "@mui/material";
-import { tabsIndexProps } from "components/Utills/Globals";
-import { TabPanel, TaskCard } from "components/TaskComponent";
+import { Box, Grid, InputBase } from "@mui/material";
 import { CustomStack } from "components/CustomTags";
-import { RootState } from "redux/reducers";
-import { taskActions } from "redux/action";
+import { TaskCard } from "components/TaskComponent";
 import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 // mui
-import { makeStyles } from "@mui/styles";
-import TaskDetail from "../TaskDetails";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
-import { event } from "jquery";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  tab: {
-    borderRadius: "20px",
-    margin: theme.spacing(0, 1),
-    padding: theme.spacing(1, 2),
-    textTransform: "none",
-  },
-}));
+import TaskDetail from "../TaskDetails";
 
 const Task = () => {
   const [value, setValue] = useState(0);
@@ -41,6 +26,7 @@ const Task = () => {
     selectedTaskFilter,
     allTaskToMe,
     allTaskFromMe,
+    allTaskHidden,
     loadingAllTaskToMe,
     loadingAllTaskfromMe,
   } = task;
@@ -53,7 +39,7 @@ const Task = () => {
     );
     setSelectedTab(key);
     setSelectedTask(task[selectedTaskFilter][key][0]);
-  }, [selectedTaskFilter, allTaskFromMe, allTaskToMe]);
+  }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
@@ -62,6 +48,13 @@ const Task = () => {
         dispatch(taskActions.getAllTaskToMe());
       }
       if (allTaskFromMe.unread.length === 0) {
+        dispatch(taskActions.getAllTaskFromMe());
+      }
+      if (
+        allTaskHidden.ongoing.length === 0 ||
+        allTaskHidden.done.length === 0 ||
+        allTaskHidden.canceled.length === 0
+      ) {
         dispatch(taskActions.getAllTaskFromMe());
       }
     }
@@ -97,8 +90,8 @@ const Task = () => {
 
   function searchInData(data: ITask[], searchText: string, property: string) {
     let filteredData: ITask[] = data;
-    if (searchText != "") {
-      filteredData = data.filter((item) => {
+    if (searchText !== "") {
+      filteredData = data.filter((item: any) => {
         const searchValue = item[property].toLowerCase();
         return searchValue.includes(searchText.toLowerCase());
       });
@@ -169,19 +162,35 @@ const Task = () => {
   return (
     <Grid container>
       <Grid item md={2.5} sx={{ paddingLeft: "16px", paddingRight: "16px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            gap: "20px",
-            height: "48px",
-          }}
-        >
-          {task &&
-            selectedTaskFilter &&
-            Object.keys(task[selectedTaskFilter]).map((key: string) => {
-              return renderTabs(key, selectedTab);
-            })}
+        <Box pt={1}>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "20px",
+              height: "48px",
+            }}
+          >
+            {task &&
+              selectedTaskFilter &&
+              Object.keys(task[selectedTaskFilter]).map((key: string) => {
+                return renderTabs(key, selectedTab);
+              })}
+          </Box>
+            <Box
+              sx={{
+                width: "100%",
+                borderWidth: "0px 0px 1px 0px",
+                borderColor: "#818181",
+                borderStyle: "solid",
+              }}
+            >
+              <InputBase
+                placeholder="Start typing to search"
+                sx={{ height: "48px" }}
+                onChange={handleSearch}
+              />
+            </Box>
         </Box>
 
         <CustomStack
@@ -191,20 +200,6 @@ const Task = () => {
           overflow={"auto"}
           sx={{ scrollbarWidth: "8px" }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              borderWidth: "0px 0px 1px 0px",
-              borderColor: "#818181",
-              borderStyle: "solid",
-            }}
-          >
-            <InputBase
-              placeholder="Start typing to search"
-              sx={{ height: "48px" }}
-              onChange={handleSearch}
-            />
-          </Box>
           {task &&
             filteredTask &&
             filteredTask.map((task: any) => (
