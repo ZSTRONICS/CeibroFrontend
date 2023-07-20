@@ -14,7 +14,7 @@ const urls = [assets.visual, assets.visual, assets.visual];
 
 export default function DetailsBody() {
   return (
-    <Box>
+    <Box sx={{ paddingLeft:'15px',}}>
       <DespcriptionBox />
       <Box
         sx={{

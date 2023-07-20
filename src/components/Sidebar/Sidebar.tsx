@@ -26,7 +26,6 @@ function Sidebar() {
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
       handleOpenFormWindow();
-      console.log("create new task", config.key);
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }
@@ -36,6 +35,7 @@ function Sidebar() {
     const content: string = renderFormContent();
     openFormWindow(content);
   };
+
   const renderFormContent = (): string => {
     return `
       <div style="padding: 20px;">

@@ -2,14 +2,16 @@ import { Card, CardActions, CardContent, CardHeader } from "@mui/material";
 import assets from "assets";
 import { LoadingButton } from "components/Button";
 import {
+  BoldLableTag,
   CustomStack,
   FileName,
+  Span,
   SubHeadingTag,
   SubLabelTag,
 } from "components/CustomTags";
-import { momentdeDateFormat } from "components/Utills/Globals";
+import { deDateFormat, momentdeDateFormat } from "components/Utills/Globals";
 import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
-import { Task, AssignedToState } from "constants/interfaces";
+import { AssignedUserState, Task } from "constants/interfaces";
 
 interface IProps {
   task: Task;
@@ -25,21 +27,18 @@ function TaskCard(props: IProps) {
     doneImageRequired,
     doneCommentsRequired,
     description,
-    locations,
-    recentComments,
     topic,
-    rejectionComments,
     creator,
-    assignedToState,
-    creatorState,
     access,
-    invitedNumbers,
     createdAt,
+    assignedToState,
   } = task;
-  const assignedTo: AssignedToState[] | any =
-    assignedToState.length > 0
+
+  const assignedTo =
+  assignedToState.length > 0
       ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
       : "Not Assigned";
+
   const taskCreated = momentdeDateFormat(createdAt);
   return (
     <Card
@@ -59,7 +58,7 @@ function TaskCard(props: IProps) {
         }}
         avatar={
           <CustomStack gap={1}>
-            <SubLabelTag
+            <Span
               sx={{
                 border: "1px solid #818181",
                 borderRadius: 1,
@@ -67,8 +66,8 @@ function TaskCard(props: IProps) {
               }}
             >
               {taskUID}
-            </SubLabelTag>
-            <SubLabelTag>{`Due date ${dueDate ?? ""}`}</SubLabelTag>
+            </Span>
+            <Span>{`Due date ${dueDate.replace(/-/g, ".") ?? ""}`}</Span>
           </CustomStack>
         }
         title=""
@@ -76,19 +75,22 @@ function TaskCard(props: IProps) {
       />
       <CardContent sx={{ pt: 0 }}>
         <CustomStack justifyContent="space-between">
-          <FileName>
-            To:
-            <span style={{ fontWeight: "500" }}>{assignedTo}</span>
-          </FileName>
-          <FileName>
+          <BoldLableTag>
+            To:&nbsp;{" "}
+            <span style={{ fontWeight: "500" }}> {assignedTo}</span>
+          </BoldLableTag>
+          <BoldLableTag>
             Project: &nbsp;{" "}
             <span style={{ fontWeight: "500" }}>
-              {project ? project.title : "No Project"}
+              {project ? project.title : "N/A"}
             </span>
-          </FileName>
+          </BoldLableTag>
         </CustomStack>
 
-        <SubHeadingTag className="ellipsis" sx={{ maxWidth: "300px" }}>
+        <SubHeadingTag
+          className="ellipsis"
+          sx={{ maxWidth: "300px", color: "black" }}
+        >
           {topic?.topic ?? "N/A"}
         </SubHeadingTag>
 
@@ -104,17 +106,25 @@ function TaskCard(props: IProps) {
       </CardContent>
       <CardActions sx={{ py: 0.4, background: "#F4F4F4" }}>
         <CustomStack gap={1}>
-          <SubLabelTag>{`Created ${taskCreated}`} </SubLabelTag>
-          <LoadingButton variant="text" startIcon={<ViewCommentsIco />}>
+          <Span>{`Created ${taskCreated}`} </Span>
+          <LoadingButton
+            variant="text"
+            sx={{ color: "black", fontSize: "10px" }}
+            startIcon={<ViewCommentsIco />}
+          >
             Comment
           </LoadingButton>
           <LoadingButton
             variant="text"
-            startIcon={<assets.ImageOutlinedIcon />}
+            sx={{ color: "black", fontSize: "10px" }}
+            startIcon={
+              <assets.ImageOutlinedIcon sx={{ color: "#0076C8 !important" }} />
+            }
           >
             Photo
           </LoadingButton>
           <LoadingButton
+            sx={{ color: "black", fontSize: "10px" }}
             variant="text"
             startIcon={<AttachmentIcon style={{ rotate: "315eg" }} />}
           >

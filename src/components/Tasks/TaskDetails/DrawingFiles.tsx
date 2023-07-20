@@ -15,12 +15,12 @@ export default function DrawingFiles() {
           {/* List of images */}
           <img
             src={assets.visual}
-            alt="Image 1"
+            alt="Image1"
             style={{ width: 250, height: 250 }}
           />
           <img
             src={assets.visual}
-            alt="Image 2"
+            alt="Image2"
             style={{ width: 250, height: 250 }}
           />
           {/* Add more image elements as needed */}

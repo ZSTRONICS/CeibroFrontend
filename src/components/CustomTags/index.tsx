@@ -53,6 +53,14 @@ const Span = styled("span")`
   font-style: normal;
   font-weight: 500;
   font-size: 10px;
+  color: black;
+`;
+
+const BoldLableTag = styled("span")`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 10px;
   color: #605c5c;
 `;
 export const CLink = styled("a")`
@@ -155,4 +163,4 @@ const BackToLoginTag = styled(Box)(({ theme }) => ({
   },
 }));
 
-export { BackToLoginTag, Span, CustomStack };
+export { BackToLoginTag, Span, CustomStack, BoldLableTag };

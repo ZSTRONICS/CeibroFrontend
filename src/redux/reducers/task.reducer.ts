@@ -392,6 +392,12 @@ const TaskReducer = (
       };
     }
 
+    // push topic in store
+    case TASK_CONFIG.PUSH_TOPIC_IN_STORE:
+      return {
+        ...state,
+        // getAllTopic: [...state.getAllTopic, action.payload]
+      };
     // update task when event received
     case TASK_CONFIG.UPDATE_TASK_WITH_EVENTS:
       const eventData = action.payload;
@@ -501,7 +507,7 @@ const TaskReducer = (
           hiddenOngoing[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
           const task = hiddenOngoing.splice(taskIndex, 1)[0];
           toMeOngoing.push(task);
-          console.log('updated hiddenOngoing => toMeOngoing',toMeOngoing[toMeOngoing.length-1])
+          console.log('updated hiddenOngoing => toMeOngoing', toMeOngoing[toMeOngoing.length - 1])
         }
         // task AssignedToMe and task state is to-me [ongoing]
         if (eventData.oldTaskData.isHiddenByMe === false &&

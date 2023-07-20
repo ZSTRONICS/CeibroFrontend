@@ -197,7 +197,7 @@ export const isTrue = (arr: any[], itemId: string) => {
  * @return dd-mm-yyyy
  * @param dateString date string is required
  * **/
-export const deDateFormat = (dateStr: Date) => {
+export const deDateFormat = (dateStr: Date|string) => {
   return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
 }
 // de date format using moment of utc time mongodb

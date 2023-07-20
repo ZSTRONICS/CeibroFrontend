@@ -395,6 +395,12 @@ const App: React.FC<MyApp> = () => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
         switch (eventType) {
+          case TASK_CONFIG.TOPIC_CREATED:
+            dispatch({
+              type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
+              payload: data,
+            });
+            break;
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(userId)) {
               return;

@@ -1,6 +1,5 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
-import assets from "../../../assets/assets";
 
 interface IProps {
   desp?: string;
@@ -38,6 +37,7 @@ const DespcriptionBox = ({ desp }: IProps) => (
             fontWeight: 500,
             fontSize: "12px",
             lineHeight: "16px",
+            color:'#605c5c'
           }}
         >
           Description

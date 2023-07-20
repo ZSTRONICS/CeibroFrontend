@@ -22,9 +22,11 @@ const FileBox: React.FC<IProps> = ({ files, title, showIcon = false }) => (
       height: "30px",
       border: "1px solid #e2e4e5",
       padding: "5px 0",
+      paddingLeft:'15px',
       gap: 1,
       display: "flex",
       alignItems: "center",
+      color:'#605c5c'
     }}
   >
     <Box

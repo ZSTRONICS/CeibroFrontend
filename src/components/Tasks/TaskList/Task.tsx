@@ -159,9 +159,10 @@ const Task = () => {
         );
     }
   };
+  
   return (
-    <Grid container>
-      <Grid item md={2.5} sx={{ paddingLeft: "16px", paddingRight: "16px" }}>
+    <Grid container >
+      <Grid item md={2.5} sx={{ paddingLeft: "16px", paddingRight: "16px", borderRight:'1px solid #ADB5BD'}}>
         <Box pt={1}>
           <Box
             sx={{
@@ -196,9 +197,9 @@ const Task = () => {
         <CustomStack
           gap={1.4}
           flexWrap="wrap"
-          maxHeight={"100vh"}
+          
           overflow={"auto"}
-          sx={{ scrollbarWidth: "8px" }}
+          sx={{ scrollbarWidth: "8px", height:'calc(100vh - 190px)' }}
         >
           {task &&
             filteredTask &&

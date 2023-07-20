@@ -34,7 +34,7 @@ export interface Task {
   project: Project;
   topic: Topic;
   creator: UserInfo;
-  assignedTo: AssignedUserState[];
+  assignedToState: AssignedUserState[];
   taskUID: string;
   access: string[];
   invitedNumbers: InvitedNumber[];

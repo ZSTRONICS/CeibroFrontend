@@ -38,7 +38,7 @@ export default function DetailsHeader(props: IProps) {
           Magnis dis parturient montes, nascetur ridiculus mus.
         </Typography>
       </Box>
-      <Grid container sx={{ padding: "0px 0px 8px 0px" }}>
+      <Grid container sx={{ padding: "0px 0px 8px 0px" }} gap={0.5}>
         {data.map((item) => {
           return (
             <GridRow>
