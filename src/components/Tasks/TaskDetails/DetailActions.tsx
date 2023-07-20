@@ -5,9 +5,10 @@ import assets from "../../../assets/assets";
 import capitalize from "lodash/capitalize";
 
 interface IProps {
-  subTask: string;
+  userSubState: string;
   dueDate: string;
   taskUid: string;
+  createdOn: Date| any
 }
 
 enum statusColors {
@@ -18,7 +19,7 @@ enum statusColors {
   canceled = "#FFE7E7",
 }
 const DetailActions: React.FC<IProps> = (props) => {
-  const { subTask, taskUid, dueDate } = props;
+  const { userSubState, taskUid, dueDate, createdOn } = props;
   const handleCommentClick = () => {
     // Handle comment button click here
   };
@@ -30,13 +31,13 @@ const DetailActions: React.FC<IProps> = (props) => {
   const handleDoneClick = () => {
     // Handle done button click here
   };
-  const chipColor: string = statusColors[subTask as keyof typeof statusColors];
+  const chipColor: string = statusColors[userSubState as keyof typeof statusColors];
   return (
     <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>
       <Grid item xs={6}>
         <Box sx={{ display: "flex", gap: "30px" }}>
           <Chip
-            label={capitalize(subTask)}
+            label={capitalize(userSubState)}
             size="small"
             sx={{
               borderColor: chipColor,
@@ -73,12 +74,13 @@ const DetailActions: React.FC<IProps> = (props) => {
               alignItems: "center",
             }}
           >
-            {new Date().toLocaleDateString("en-GB", {
+           {createdOn}
+            {/* {new Date().toLocaleDateString("en-GB", {
               weekday: "short",
               year: "2-digit",
               month: "2-digit",
               day: "2-digit",
-            })}
+            })} */}
           </Typography>
           <Typography
             sx={{

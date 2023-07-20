@@ -76,6 +76,13 @@ export interface File {
   hasComment: boolean;
   comment: string;
 }
+export enum TaskEventType {
+  ForwardTask = 'forwardTask',
+  Comment = 'comment',
+  DoneTask = 'doneTask',
+  CancelTask = 'cancelTask',
+  InvitedUser = 'invitedUser',
+}
 
 export interface TaskEvent {
   _id: string;

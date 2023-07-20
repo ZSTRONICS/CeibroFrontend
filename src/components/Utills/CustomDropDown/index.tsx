@@ -29,7 +29,6 @@ function CustomDropDown(props: IProps) {
   }, [options]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-    console.log("handle Chnage");
     setSelected(event.target.value);
   };
 

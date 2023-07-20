@@ -211,6 +211,15 @@ export const momentdeDateFormat = (createdAt: Date | any) => {
 }
 // de date format using moment of utc time mongodb
 /**
+ * @return dd.mm.yyyy
+ * @param mongodbUtc date string is required
+ * **/
+ const momentdeDateFormatWithDay = (createdAt: Date | any) => {
+  let localTime = moment.utc(moment(createdAt)).toDate();
+  return moment(localTime).format("ddd, DD.MM.YYYY");
+};
+
+/**
  * @return 12:00AM
  * @param mongodbUtc date string is required
  * **/
@@ -271,7 +280,6 @@ export const openFormWindow = (content: string) => {
   const windowHeight = 782;
   const windowLeft = (window.innerWidth - windowWidth) / 2;
   const windowTop = (window.innerHeight - windowHeight) / 2;
-console.log('windowLeft', windowLeft, windowTop)
   const url = 'https://dev.ceibro.ee';
   const windowFeatures = `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop},resizable=no,scrollbars=no,status=no`;
   const formWindow: Window | null = window.open(undefined, '_blank', windowFeatures);
@@ -337,4 +345,4 @@ export const tabsIndexProps = (index: number) => {
 //   }
 // }, []);
 
-export { formatDropdownData }
+export { formatDropdownData, momentdeDateFormatWithDay }

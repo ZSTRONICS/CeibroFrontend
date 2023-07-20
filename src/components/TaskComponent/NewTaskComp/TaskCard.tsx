@@ -34,10 +34,10 @@ function TaskCard(props: IProps) {
     assignedToState,
   } = task;
 
-  const assignedTo =
-  assignedToState.length > 0
-      ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
-      : "Not Assigned";
+  // const assignedTo =
+  // assignedToState.length > 0
+  //     ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
+  //     : "N/A";
 
   const taskCreated = momentdeDateFormat(createdAt);
   return (
@@ -77,7 +77,7 @@ function TaskCard(props: IProps) {
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
             To:&nbsp;{" "}
-            <span style={{ fontWeight: "500" }}> {assignedTo}</span>
+            <span style={{ fontWeight: "500" }}> {`${creator.firstName} ${creator.surName}`}</span>
           </BoldLableTag>
           <BoldLableTag>
             Project: &nbsp;{" "}

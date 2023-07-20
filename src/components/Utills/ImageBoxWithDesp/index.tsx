@@ -4,16 +4,15 @@ import { Box } from "@mui/material";
 import StyledTypographyBox from "../StyledTypographyBox";
 interface IProps {
   src: string;
+  comment:string;
 }
 
-export default function ImageBoxWithDesp({ src }: IProps) {
+export default function ImageBoxWithDesp({ src, comment }: IProps) {
   return (
     <Box sx={{ display: "flex" }}>
       <ImageBox src={src} />
       <StyledTypographyBox
-        text="Please use Figma for developing and don't mix it with something. We
-          want 100% same thing like we have in Figma.Thank you for information.
-          Please refund the payment."
+        text={comment}
       />
     </Box>
   );

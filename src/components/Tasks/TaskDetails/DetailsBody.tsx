@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import assets from "assets/assets";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
@@ -7,15 +6,19 @@ import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import React from "react";
 import DrawingFiles from "./DrawingFiles";
 import AddedDetails from "./AddedDetails";
+import { File, TaskEvent } from "constants/interfaces";
 
-//todo  temp url list
+interface IProps {
+  description: string;
+  events: TaskEvent[];
+  media: File[];
+}
 
-const urls = [assets.visual, assets.visual, assets.visual];
-
-export default function DetailsBody() {
+export default function DetailsBody(props: IProps) {
+  const { description, events, media } = props;
   return (
-    <Box sx={{ paddingLeft:'15px',}}>
-      <DespcriptionBox />
+    <Box sx={{ paddingLeft: "15px" }}>
+      <DespcriptionBox description={description} />
       <Box
         sx={{
           height: "96px",
@@ -25,31 +28,37 @@ export default function DetailsBody() {
           display: "flex",
         }}
       >
-        {urls.map((url) => {
-          return (
-            <Box
-              sx={{
-                marginRight: "16px",
-              }}
-            >
-              <ImageBox src={url} />
-            </Box>
-          );
-        })}
+        {media.length > 0 &&
+          media
+            .filter((media: File) => media.comment.length === 0)
+            .map((file: File) => {
+              return (
+                <Box
+                  sx={{
+                    marginRight: "16px",
+                  }}
+                >
+                  <ImageBox src={file.fileUrl} />
+                </Box>
+              );
+            })}
       </Box>
-      {urls.map((url) => {
-        return (
-          <Box
-            sx={{
-              marginBottom: "16px",
-            }}
-          >
-            <ImageBoxWithDesp src={url} />
-          </Box>
-        );
-      })}
+      {media.length > 0 &&
+        media
+          .filter((media: File) => media.comment.length>0)
+          .map((file:File) => {
+            return (
+              <Box
+                sx={{
+                  marginBottom: "16px",
+                }}
+              >
+                <ImageBoxWithDesp src={file.fileUrl} comment={file.comment} />
+              </Box>
+            );
+          })}
       <DrawingFiles />
-      <AddedDetails />
+      <AddedDetails events={events} />
     </Box>
   );
 }

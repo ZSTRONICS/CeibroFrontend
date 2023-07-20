@@ -42,6 +42,7 @@ const Task = () => {
     setSelectedTask(task[selectedTaskFilter][key][0]);
   }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
 
+  console.log("selectedTab", selectedTab);
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
     if (!isRenderEffect.current) {
@@ -56,7 +57,7 @@ const Task = () => {
         allTaskHidden.done.length === 0 ||
         allTaskHidden.canceled.length === 0
       ) {
-        dispatch(taskActions.getAllTaskFromMe());
+        dispatch(taskActions.getAllTaskHidden());
       }
     }
     setSelectedTab(key);
@@ -160,10 +161,18 @@ const Task = () => {
         );
     }
   };
-  
+
   return (
-    <Grid container >
-      <Grid item md={2.5} sx={{ paddingLeft: "16px", paddingRight: "16px", borderRight:'1px solid #ADB5BD'}}>
+    <Grid container>
+      <Grid
+        item
+        md={2.5}
+        sx={{
+          paddingLeft: "16px",
+          paddingRight: "16px",
+          borderRight: "1px solid #ADB5BD",
+        }}
+      >
         <Box pt={1}>
           <Box
             sx={{
@@ -198,9 +207,8 @@ const Task = () => {
         <CustomStack
           gap={1.4}
           flexWrap="wrap"
-          
           overflow={"auto"}
-          sx={{ scrollbarWidth: "8px", height:'calc(100vh - 190px)' }}
+          sx={{ scrollbarWidth: "8px", height: "calc(100vh - 190px)" }}
         >
           {task &&
             filteredTask &&

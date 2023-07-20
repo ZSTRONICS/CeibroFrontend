@@ -2,10 +2,10 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 
 interface IProps {
-  desp?: string;
+  description: string;
 }
 
-const DespcriptionBox = ({ desp }: IProps) => (
+const DespcriptionBox = ({ description }: IProps) => (
   <Box
     sx={{
       width: "100%",
@@ -59,9 +59,7 @@ const DespcriptionBox = ({ desp }: IProps) => (
             color: "#000",
           }}
         >
-          Please use Figma for developing and don't mix it with something. We
-          want 100% same thing like we have in Figma.Thank you for information.
-          Please refund the payment.
+          {description===""?"N/A":description}
         </Typography>
       </Box>
     </Box>

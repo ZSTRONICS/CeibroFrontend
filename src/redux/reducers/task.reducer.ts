@@ -649,6 +649,17 @@ const TaskReducer = (
       // doneTask
       if (
         eventData.eventType === "doneTask" &&
+        eventData.oldTaskData.creatorState === "unread" &&
+        eventData.oldTaskData.isCreator === true
+      ) {
+        const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
+        fromMeUnread[taskIndex].events.push(eventData);
+        const task = fromMeUnread.splice(taskIndex, 1)[0];
+        fromMeDone.push(task);
+        console.log("fromMeUnread=> fromMeDone", toMeDone[taskIndex]);
+      }
+      if (
+        eventData.eventType === "doneTask" &&
         eventData.oldTaskData.userSubState === "ongoing"
       ) {
         // if task isHiddenByMe move hidden [ongoing] to to-me [done]

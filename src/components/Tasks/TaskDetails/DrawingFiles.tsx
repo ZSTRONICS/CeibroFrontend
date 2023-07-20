@@ -7,23 +7,17 @@ export default function DrawingFiles() {
     <Box>
       <FileBox
         title="Location"
-        files={[{ fileName: "Drawing name is in here", fileSize: "" }]}
+        files={[{ fileName: "Drawing files is in here", fileSize: "" }]}
         size={"40px"}
       />
       <Box sx={{ margin: "16px" }}>
         <Box sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
           {/* List of images */}
-          <img
+          {/* <img
             src={assets.visual}
             alt="Image1"
             style={{ width: 250, height: 250 }}
-          />
-          <img
-            src={assets.visual}
-            alt="Image2"
-            style={{ width: 250, height: 250 }}
-          />
-          {/* Add more image elements as needed */}
+          /> */}
         </Box>
       </Box>
     </Box>
