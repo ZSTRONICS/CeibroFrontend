@@ -9,8 +9,9 @@ import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
 import { taskActions } from "redux/action";
-import { renderToString } from 'react-dom/server';
+import { renderToString } from "react-dom/server";
 import { openFormWindow } from "components/Utills/Globals";
+import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 function Sidebar() {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ function Sidebar() {
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
   const handleRouteClick = (config: SingleConfig) => {
+    console.log(config.key, "key");
     if (config.key === "newTask") {
       handleOpenFormWindow();
     } else {
@@ -35,32 +37,13 @@ function Sidebar() {
     const content: string = renderFormContent();
     openFormWindow(content);
   };
-
   const renderFormContent = (): string => {
     return `
       <div style="padding: 20px;">
         <h2>Replace this component with create new task form</h2>
         <hr />
         <div>
-          ${renderToString(
-            <form >
-              <label>
-                Name:
-                <input
-                  type="text"
-                  name="name"
-                />
-              </label>
-              <label>
-                Email:
-                <input
-                  type="email"
-                  name="email"
-                />
-              </label>
-              <button type="submit">Submit</button>
-            </form>
-          )}
+          ${renderToString(<CreateNewTask />)}
         </div>
       </div>
     `;

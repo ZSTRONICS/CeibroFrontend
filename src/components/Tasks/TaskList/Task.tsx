@@ -9,7 +9,8 @@ import { RootState } from "redux/reducers";
 // mui
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
-import TaskDetail from "../TaskDetails";
+import CreateNewTask from "../Create-Task/CreateNewTask";
+import TaskDetails from "../TaskDetails";
 
 const Task = () => {
   const [value, setValue] = useState(0);
@@ -178,20 +179,20 @@ const Task = () => {
                 return renderTabs(key, selectedTab);
               })}
           </Box>
-            <Box
-              sx={{
-                width: "100%",
-                borderWidth: "0px 0px 1px 0px",
-                borderColor: "#818181",
-                borderStyle: "solid",
-              }}
-            >
-              <InputBase
-                placeholder="Start typing to search"
-                sx={{ height: "48px" }}
-                onChange={handleSearch}
-              />
-            </Box>
+          <Box
+            sx={{
+              width: "100%",
+              borderWidth: "0px 0px 1px 0px",
+              borderColor: "#818181",
+              borderStyle: "solid",
+            }}
+          >
+            <InputBase
+              placeholder="Start typing to search"
+              sx={{ height: "48px" }}
+              onChange={handleSearch}
+            />
+          </Box>
         </Box>
 
         <CustomStack
@@ -213,7 +214,7 @@ const Task = () => {
         </CustomStack>
       </Grid>
       <Grid item md={9.5}>
-        {selectedTask && <TaskDetail task={selectedTask} />}
+        {selectedTask && <TaskDetails task={selectedTask} />}
       </Grid>
     </Grid>
   );
