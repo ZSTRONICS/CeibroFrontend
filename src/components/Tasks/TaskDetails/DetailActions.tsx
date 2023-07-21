@@ -117,6 +117,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           variant="contained"
           onClick={handleDoneClick}
           sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
+          disabled={userSubState==='done'||userSubState==='canceled'}
         >
           Done
         </Button>

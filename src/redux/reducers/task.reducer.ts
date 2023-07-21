@@ -865,12 +865,16 @@ const TaskReducer = (
         }
         if (eventData.isCreator === true) {
           const taskIndex = findTaskIndex(fromMeOngoing, eventData.taskId);
-          fromMeOngoing[taskIndex] = eventData;
-          console.log("TASK_FORWARDED update fromMeOngoing", fromMeOngoing);
+          if (taskIndex > -1) {
+            fromMeOngoing[taskIndex] = eventData;
+            console.log("TASK_FORWARDED update fromMeOngoing", fromMeOngoing);
+          }
 
           const taskIndex1 = findTaskIndex(fromMeUnread, eventData.taskId);
-          fromMeUnread[taskIndex1] = eventData;
-          console.log("TASK_FORWARDED update fromMeUnread", fromMeUnread);
+          if (taskIndex1 > -1) {
+            fromMeUnread[taskIndex1] = eventData;
+            console.log("TASK_FORWARDED update fromMeUnread", fromMeUnread);
+          }
         }
 
         // forward task to other
@@ -878,7 +882,6 @@ const TaskReducer = (
           (assignTo: any) =>
             assignTo.userId === eventData.userId && assignTo.state === "new"
         );
-        console.log("isAssignedToMeExist", isAssignedToMeExist);
         if (isAssignedToMeExist === true) {
           toMeNew.push(eventData);
           console.log("push to newtask ");

@@ -23,7 +23,7 @@ export default function AddedDetails(props: IProps) {
   const { events } = props;
   return (
     <div>
-      <Accordion>
+      <Accordion defaultExpanded={true} >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"

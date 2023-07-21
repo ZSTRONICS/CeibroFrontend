@@ -163,8 +163,12 @@ export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
  * **/
 export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    taskArray[taskIndex].events.push(eventData);
-    taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
+    const existingEvents = taskArray[taskIndex].events;
+    const isUniqueEvent = existingEvents.every((event:any) => event._id !== eventData._id);
+    if (isUniqueEvent) {
+      taskArray[taskIndex].events.push(eventData);
+      taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
+    }
   }
 }
 

@@ -42,7 +42,7 @@ const Task = () => {
     setSelectedTask(task[selectedTaskFilter][key][0]);
   }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
 
-  console.log("selectedTab", selectedTab);
+  // console.log("selectedTab", selectedTab);
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
     if (!isRenderEffect.current) {
@@ -67,6 +67,12 @@ const Task = () => {
       isRenderEffect.current = true;
     };
   }, []);
+
+  useEffect(() => {
+    if (selectedTab) {
+      handleTabClick(selectedTab);
+    }
+  }, [selectedTab]);
 
   const handleTabClick = (type: string) => {
     setSelectedTab(type);
@@ -102,6 +108,20 @@ const Task = () => {
     return filteredData;
   }
 
+  let taskOngoingCount = 0;
+  let taskDoneCount = 0;
+
+  const { ongoing, done } =
+    // selectedTaskFilter === "allTaskFromMe" ? allTaskFromMe : allTaskToMe;
+    selectedTaskFilter === "allTaskFromMe"
+      ? allTaskFromMe
+      : selectedTaskFilter === "allTaskToMe"
+      ? allTaskToMe
+      : allTaskHidden;
+
+  taskOngoingCount = ongoing.length ;
+  taskDoneCount = done.length ;
+
   const renderTabs = (type: string, activeTab: string) => {
     switch (type) {
       case "new":
@@ -109,7 +129,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="New"
-            notfiyCount="2"
+            notfiyCount={allTaskToMe.new.length}
             bgColor="#CFECFF"
             active={activeTab === "new" ? true : false}
             callback={() => handleTabClick("new")}
@@ -120,7 +140,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Unread"
-            notfiyCount="2"
+            notfiyCount={allTaskFromMe.unread.length}
             bgColor="#CFECFF"
             active={activeTab === "unread" ? true : false}
             callback={() => handleTabClick("unread")}
@@ -131,7 +151,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Ongoing"
-            notfiyCount="2"
+            notfiyCount={taskOngoingCount}
             bgColor="#F1B740"
             active={activeTab === "ongoing" ? true : false}
             callback={() => handleTabClick("ongoing")}
@@ -142,7 +162,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Done"
-            notfiyCount="2"
+            notfiyCount={taskDoneCount}
             bgColor="#55BCB3"
             active={activeTab === "done" ? true : false}
             callback={() => handleTabClick("done")}
@@ -153,7 +173,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Canceled"
-            notfiyCount="2"
+            notfiyCount={allTaskHidden.canceled.length}
             bgColor="#FFE7E7"
             active={activeTab === "canceled" ? true : false}
             callback={() => handleTabClick("canceled")}
@@ -166,10 +186,8 @@ const Task = () => {
     <Grid container>
       <Grid
         item
-        md={2.5}
+        md={3}
         sx={{
-          paddingLeft: "16px",
-          paddingRight: "16px",
           borderRight: "1px solid #ADB5BD",
         }}
       >
@@ -178,8 +196,10 @@ const Task = () => {
             sx={{
               display: "flex",
               alignItems: "center",
+              justifyContent: "center",
               gap: "20px",
-              height: "48px",
+              overflow: "auto",
+              padding: "8px 0 4px 0",
             }}
           >
             {task &&
@@ -203,25 +223,35 @@ const Task = () => {
             />
           </Box>
         </Box>
-
-        <CustomStack
-          gap={1.4}
-          flexWrap="wrap"
-          overflow={"auto"}
-          sx={{ scrollbarWidth: "8px", height: "calc(100vh - 190px)" }}
+        <Box
+          className="custom-scrollbar"
+          sx={{
+            height: "calc(100vh - 192px)",
+            overflow: "auto",
+            padding: " 0 1px",
+            pl:0.7
+          }}
+          
         >
-          {task &&
-            filteredTask &&
-            filteredTask.map((task: any) => (
-              <TaskCard
-                key={task._id}
-                task={task}
-                handleClick={handleSelectedTask}
-              />
-            ))}
-        </CustomStack>
+          <CustomStack
+            gap={1.4}
+            flexWrap="wrap"
+            sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
+          >
+            {task &&
+              filteredTask &&
+              filteredTask.map((task: any) => (
+                <TaskCard
+                  key={task._id}
+                  task={task}
+                  selectedTaskId={selectedTask?._id}
+                  handleClick={handleSelectedTask}
+                />
+              ))}
+          </CustomStack>
+        </Box>
       </Grid>
-      <Grid item md={9.5}>
+      <Grid item md={9}>
         {selectedTask && <TaskDetails task={selectedTask} />}
       </Grid>
     </Grid>

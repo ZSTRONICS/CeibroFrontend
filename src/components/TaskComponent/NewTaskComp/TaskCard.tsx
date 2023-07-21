@@ -9,16 +9,24 @@ import {
   SubHeadingTag,
   SubLabelTag,
 } from "components/CustomTags";
-import { deDateFormat, momentdeDateFormat } from "components/Utills/Globals";
+import {  momentdeDateFormat } from "components/Utills/Globals";
 import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
-import { AssignedUserState, Task } from "constants/interfaces";
+import { Task } from "constants/interfaces";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 
 interface IProps {
   task: Task;
+  selectedTaskId: string | undefined;
   handleClick: (task: Task) => void;
 }
 function TaskCard(props: IProps) {
-  const { task, handleClick } = props;
+  const { user } = useSelector((store: RootState) => store.auth);
+  const { task, handleClick, selectedTaskId } = props;
+  const dispatch = useDispatch();
+  const userId = user && String(user._id);
   const {
     taskUID,
     project,
@@ -32,13 +40,23 @@ function TaskCard(props: IProps) {
     access,
     createdAt,
     assignedToState,
+    seenBy,
   } = task;
+  useEffect(() => {
+    if (!seenBy.includes(userId)) {
+      dispatch(
+        taskActions.taskSeen({
+          other: { taskId: _id },
+        })
+      );
+    }
+  }, [_id, seenBy, userId]);
 
   // const assignedTo =
   // assignedToState.length > 0
   //     ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
   //     : "N/A";
-
+  const isSelectedTask: boolean = selectedTaskId === _id;
   const taskCreated = momentdeDateFormat(createdAt);
   return (
     <Card
@@ -47,6 +65,9 @@ function TaskCard(props: IProps) {
         minWidth: 280,
         marginTop: "10px",
         cursor: "pointer",
+        boxShadow: `${
+          isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
+        }`,
       }}
       key={_id}
       onClick={() => handleClick(task)}
@@ -71,13 +92,22 @@ function TaskCard(props: IProps) {
           </CustomStack>
         }
         title=""
-        action={<assets.DoneAllIcon sx={{ color: "#818181" }} />}
+        action={
+          <assets.DoneAllIcon
+            sx={{
+              color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
+            }}
+          />
+        }
       />
       <CardContent sx={{ pt: 0 }}>
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
             To:&nbsp;{" "}
-            <span style={{ fontWeight: "500" }}> {`${creator.firstName} ${creator.surName}`}</span>
+            <span style={{ fontWeight: "500" }}>
+              {" "}
+              {`${creator.firstName} ${creator.surName}`}
+            </span>
           </BoldLableTag>
           <BoldLableTag>
             Project: &nbsp;{" "}

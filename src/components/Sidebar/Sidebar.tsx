@@ -25,7 +25,6 @@ function Sidebar() {
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
   const handleRouteClick = (config: SingleConfig) => {
-    console.log(config.key, "key");
     if (config.key === "newTask") {
       handleOpenFormWindow();
     } else {

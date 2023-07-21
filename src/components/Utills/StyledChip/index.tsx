@@ -4,7 +4,7 @@ import { MouseEventHandler } from "react"; // Import MouseEventHandler
 
 interface StyledChipProps {
   label: string;
-  notfiyCount: string;
+  notfiyCount: number | string;
   active?: boolean;
   bgColor: string;
   callback: MouseEventHandler<HTMLDivElement>;
@@ -28,9 +28,9 @@ const StyledChip = ({
     <Chip
       sx={{
         height: "24px",
-        width: "100px",
+        width: "80px",
         borderRadius: "8px",
-        padding: "4px 12px",
+        padding: "4px 3px",
         borderWidth: "1px",
         borderColor: bgColor,
         borderStyle: "solid",
@@ -47,12 +47,13 @@ const StyledChip = ({
       label={label}
       avatar={
         <Badge
+          showZero={true}
           sx={{
             position: "absolute",
             "& .MuiBadge-badge": {
               color: "#000 !important",
               backgroundColor: bgColor,
-              right: "-35px",
+              right: "-24px",
               top: "1px",
             },
           }}
