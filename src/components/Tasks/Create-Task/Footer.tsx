@@ -53,6 +53,7 @@ function Footer() {
         textTransform: "capitalize",
         position: "absolute",
         bottom: 0,
+        left: 0,
         width: "100%",
       }}
     >

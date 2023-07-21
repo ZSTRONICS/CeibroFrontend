@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
@@ -7,7 +7,6 @@ import Button from "@mui/material/Button";
 import { Box, ListSubheader, TextField } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useEffect } from "react";
 
 interface IProps {
   label: string;
@@ -46,6 +45,7 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleCreateClick = () => {
+    if (searchQuery.trim() === "") return; // Check for empty searchQuery before proceeding
     const newItem = {
       label: searchQuery,
       value: searchQuery,
@@ -89,12 +89,7 @@ function CustomDropDown(props: IProps) {
         >
           <ListSubheader>
             <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                width: "100%",
-              }}
-              onKeyDown={(e) => e.stopPropagation()}
+              style={{ display: "flex", alignItems: "center", width: "100%" }}
             >
               <TextField
                 placeholder="search"
@@ -116,11 +111,7 @@ function CustomDropDown(props: IProps) {
 
           {filterData &&
             filterData.map((item) => (
-              <MenuItem
-                key={item.value}
-                value={item.value}
-                onKeyDown={(e) => e.stopPropagation()}
-              >
+              <MenuItem key={item.value} value={item.value}>
                 {item.label}
               </MenuItem>
             ))}

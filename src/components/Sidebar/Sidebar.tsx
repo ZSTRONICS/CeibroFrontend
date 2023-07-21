@@ -1,7 +1,7 @@
-import React from "react";
-import { Badge, Typography } from "@material-ui/core";
+import React, { useState } from "react";
+import { Badge } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
@@ -12,7 +12,11 @@ import { taskActions } from "redux/action";
 import { renderToString } from "react-dom/server";
 import { openFormWindow } from "components/Utills/Globals";
 import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
+import CustomModal from "components/Modal";
+import { WindowPortal } from "components/Utills/WindowPortal";
+
 function Sidebar() {
+  const [open, setOpen] = useState<boolean>(false);
   const classes = useStyles();
   const dispatch = useDispatch();
   const selectedTab = useSelector(
@@ -26,27 +30,32 @@ function Sidebar() {
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
-      handleOpenFormWindow();
+      setOpen(true);
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }
   };
 
-  const handleOpenFormWindow = (): void => {
-    const content: string = renderFormContent();
-    openFormWindow(content);
+  const handleWindowPortalClose = (text: string) => {
+    // setPortalClosedText(text);
+    setOpen(false);
   };
-  const renderFormContent = (): string => {
-    return `
-      <div style="padding: 20px;">
-        <h2>Replace this component with create new task form</h2>
-        <hr />
-        <div>
-          ${renderToString(<CreateNewTask />)}
-        </div>
-      </div>
-    `;
-  };
+
+  // const handleOpenFormWindow = (): void => {
+  //   const content: string = renderFormContent();
+  //   openFormWindow(content);
+  // };
+  // const renderFormContent = (): string => {
+  //   return `
+  //     <div style="padding: 20px;">
+  //       <h2>Replace this component with create new task form</h2>
+  //       <hr />
+  //       <div>
+  //         ${renderToString(<CreateNewTask />)}
+  //       </div>
+  //     </div>
+  //   `;
+  // };
   // const getNavbarStyles = () => {
   //   let styles = {};
   //   if (isTabletOrMobile) {
@@ -101,6 +110,24 @@ function Sidebar() {
             );
           })}
       </div>
+      {/* {open && (
+        <WindowPortal onClose={handleWindowPortalClose}>
+          <CreateNewTask />
+          <Typography>asdjkgdsjdjkdfjkasdfjkgdhGGAsfjgasjkGASFJFJKg</Typography>
+        </WindowPortal>
+      )}  */}
+      {open === true && (
+        <CustomModal
+          maxWidth="450px"
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={true}
+          title={"Create new task"}
+          isOpen={open}
+          handleClose={() => setOpen((prev: boolean) => !prev)}
+          children={<CreateNewTask />}
+        />
+      )}
     </>
   );
 }

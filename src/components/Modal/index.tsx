@@ -9,7 +9,7 @@ import {
   Box,
 } from "@mui/material";
 //todo migrate to mui latest later becz it give error in add project status comp
-import {  Dialog,} from '@material-ui/core'
+import { Dialog } from "@material-ui/core";
 import PropTypes from "prop-types";
 import { Button } from "@mui/material";
 import styled from "@emotion/styled";
