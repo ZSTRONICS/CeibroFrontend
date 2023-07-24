@@ -42,7 +42,6 @@ const Task = () => {
     setSelectedTask(task[selectedTaskFilter][key][0]);
   }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
 
-  // console.log("selectedTab", selectedTab);
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
     if (!isRenderEffect.current) {
