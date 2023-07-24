@@ -26,8 +26,8 @@ const {
   CanceledIcon,
 } = assets;
 const SidebarConfig: SidebarConfigInterface = {
-  Tasks: {
-    key: "task",
+  tasks: {
+    key: "tasks",
     title: "Task",
     icon: TaskIcon,
     getPath: () => "tasks",
@@ -72,17 +72,27 @@ const SidebarConfig: SidebarConfigInterface = {
     },
     notification: 0,
   },
-  Projects: {
-    key: "project",
+  projects: {
+    key: "projects",
     title: "Projects",
     icon: ProjectIcon,
     getPath: () => "projects",
     active: false,
-    childTab: {},
+    childTab: {
+      newProject: {
+        key: "newProject",
+        title: "New Project",
+        icon: NewTaskIcon,
+        getPath: () => "newProject",
+        active: false,
+        childTab: {},
+        notification: 0,
+      },
+    },
     notification: 0,
   },
-  Locations: {
-    key: "location",
+  locations: {
+    key: "locations",
     title: "Location",
     icon: LocationIcon,
     getPath: () => `drawingDetail`,

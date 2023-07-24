@@ -43,6 +43,17 @@ const StyledChip = ({
         "&:hover, &:focus": {
           backgroundColor: `${active ? bgColor : "white"}`,
         },
+        // Responsive styles
+        "@media (max-width: 600px)": {
+          width: "80px",
+          fontSize: "8px",
+          padding: "2px 8px",
+        },
+        "@media (max-width: 400px)": {
+          width: "60px",
+          fontSize: "6px",
+          padding: "2px 6px",
+        },
       }}
       label={label}
       avatar={

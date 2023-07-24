@@ -2,7 +2,8 @@ export type selectedTaskFilterType =
   | "allTaskFromMe"
   | "allTaskToMe"
   | "allTaskHidden"
-  | "task"
-  | "project"
-  | "location"
-  | "newTask";
+  | "tasks"
+  | "projects"
+  | "locations"
+  | "newTask"
+  | "newProject";

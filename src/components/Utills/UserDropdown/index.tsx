@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import { Box, ListSubheader, TextField, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import SelectedContactBox from "../SelectedContactBox";
+import ContactBox from "../ContactBox";
 
 interface Option {
   label: string;
@@ -18,7 +20,7 @@ interface IProps {
   createCallback?: (type: string, label: string) => void;
 }
 
-function CustomDropDown(props: IProps) {
+function UserDropDown(props: IProps) {
   const { label, options, createCallback } = props;
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
@@ -134,7 +136,7 @@ function CustomDropDown(props: IProps) {
             style={{ display: "flex", alignItems: "center", width: "100%" }}
           >
             <TextField
-              placeholder="Search..."
+              placeholder="Start typing name"
               value={searchQuery}
               onChange={handleSearchChange}
               style={{ flex: 1 }}
@@ -146,30 +148,40 @@ function CustomDropDown(props: IProps) {
             {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
               <Button onClick={handleCancelClick}>Cancel</Button>
             ) : (
-              <Button onClick={handleCreateClick}>Create</Button>
+              <Button onClick={handleCreateClick}>Done</Button>
             )}
           </ListSubheader>
-          {options.length > 0 && (
-            <MenuItem disabled>
-              <Typography>Recent used {label}</Typography>
-            </MenuItem>
-          )}
-          {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
-            // Wrap the list items in an array
-            <MenuItem key={groupLetter} disabled>
-              <Typography>{groupLetter}</Typography>
-            </MenuItem>,
-            // Use map on the array to render the list items
-            ...groupOptions.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
-                {item.label}
-              </MenuItem>
-            )),
-          ])}
+          <SelectedContactBox />
+          <SelectedContactBox />
+          <SelectedContactBox />
+          <MenuItem disabled>
+            <Typography>Suggested users</Typography>
+          </MenuItem>
+          <ContactBox
+            profilePic={""}
+            firstName={""}
+            surName={""}
+            contactFullName={""}
+            companyName={""}
+          />
+          <ContactBox
+            profilePic={""}
+            firstName={""}
+            surName={""}
+            contactFullName={""}
+            companyName={""}
+          />
+          <ContactBox
+            profilePic={""}
+            firstName={""}
+            surName={""}
+            contactFullName={""}
+            companyName={""}
+          />
         </Select>
       </FormControl>
     </div>
   );
 }
 
-export default CustomDropDown;
+export default UserDropDown;

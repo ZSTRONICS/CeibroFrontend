@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Badge } from "@material-ui/core";
+import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";

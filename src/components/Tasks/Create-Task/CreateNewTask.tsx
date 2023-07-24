@@ -1,4 +1,12 @@
-import { Box, Switch, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  FormGroup,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import assets from "assets/assets";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import React, { useEffect, useState } from "react";
@@ -15,6 +23,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { isEmpty } from "lodash";
+import CustomDatePicker from "components/Utills/CustomDatePicker";
+import UserDropDown from "components/Utills/UserDropdown";
 
 const urls = [assets.visual, assets.visual, assets.visual];
 
@@ -37,13 +47,13 @@ function CreateNewTask() {
   const { Topics } = tasks;
 
   useEffect(() => {
-    // dispatch(taskActions.getAllTopic());
-    // dispatch(getAllProjects());
-    // const payload = {
-    //   other: { userId: user._id },
-    // };
-    // userAllContacts.length < 1 &&
-    //   dispatch(userApiAction.getUserContacts(payload));
+    dispatch(taskActions.getAllTopic());
+    dispatch(getAllProjects());
+    const payload = {
+      other: { userId: user._id },
+    };
+    userAllContacts.length < 1 &&
+      dispatch(userApiAction.getUserContacts(payload));
   }, []);
 
   useEffect(() => {
@@ -53,6 +63,13 @@ function CreateNewTask() {
       setTopicOptions(getTopicOptions);
     }
   }, [Topics.allTopics]);
+
+  useEffect(() => {
+    if (allProjects && !isEmpty(allProjects)) {
+      const getTopicOptions = getDropdownOptions(allProjects, "title", "_id");
+      setProjectOptions(getTopicOptions);
+    }
+  }, [allProjects]);
 
   const getDropdownOptions = (
     data: object[],
@@ -125,32 +142,13 @@ function CreateNewTask() {
         options={topicOptions}
         createCallback={handleCreateCallback}
       />
+      <UserDropDown label={"Assign to"} options={[]} />
       <CustomDropDown
         label={"Project"}
-        options={[]}
+        options={projectOptions}
         createCallback={handleCreateCallback}
       />
-      <CustomDropDown label={"Assign to"} options={[]} />
-      <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
-        <DatePicker
-          value={selectedDate}
-          inputFormat={"dd.MM.yyyy"}
-          label={"Due date"}
-          minDate={new Date().toISOString().slice(0, 10)}
-          onChange={(newValue: any) => setSelectedDate(newValue)}
-          renderInput={(params: any) => (
-            <TextField
-              {...params}
-              error={false}
-              sx={{
-                ".MuiInputBase-input": {
-                  padding: "9px 14px",
-                },
-              }}
-            />
-          )}
-        />
-      </LocalizationProvider>
+      <CustomDatePicker />
       <Box sx={{ padding: "8px", width: "100%" }}>
         <TextField
           id="description-multiline"
@@ -174,6 +172,10 @@ function CreateNewTask() {
           inputProps={{ "aria-label": "controlled" }}
         />
       </Box>
+      <FormGroup>
+        <FormControlLabel control={<Checkbox defaultChecked />} label="Image" />
+        <FormControlLabel control={<Checkbox />} label="Comment" />
+      </FormGroup>
       <Box sx={{ marginTop: "100px" }}>
         <Footer />
       </Box>

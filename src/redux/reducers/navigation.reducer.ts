@@ -13,7 +13,7 @@ const intialStatue = {
   navbar: false,
   collapse: false,
   sidebarRoutes: SidebarConfig,
-  selectedTab: "Tasks",
+  selectedTab: "tasks",
   selectedSubTab: "",
 };
 

@@ -1,5 +1,10 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
+import CustomButton from "components/Utills/CustomButton";
+import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 
 function Footer() {
   const handleGetLocation = () => {
@@ -55,36 +60,25 @@ function Footer() {
         bottom: 0,
         left: 0,
         width: "100%",
+        padding: "8px",
       }}
     >
-      <Button
-        variant="text"
-        sx={{ textTransform: "capitalize" }}
-        onClick={handleSelectDocument}
-      >
-        Location
-      </Button>
-      <Button
-        variant="text"
-        sx={{ textTransform: "capitalize" }}
-        onClick={handleSelectDocument}
-      >
-        Document
-      </Button>
-      <Button
-        variant="text"
-        sx={{ textTransform: "capitalize" }}
-        onClick={handleAttachImage}
-      >
-        Attach
-      </Button>
-      <Button
-        variant="text"
-        sx={{ textTransform: "capitalize" }}
-        onClick={handleRightArrowClick}
-      >
-        Right Arrow
-      </Button>
+      <CustomButton
+        label={"Location"}
+        icon={<FmdGoodOutlinedIcon />}
+        variant="outlined"
+      />
+      <CustomButton
+        label={"Document"}
+        icon={<InsertDriveFileOutlinedIcon />}
+        variant="outlined"
+      />
+      <CustomButton
+        label={"Attach"}
+        icon={<AttachFileOutlinedIcon />}
+        variant="outlined"
+      />
+      <CustomButton icon={<ArrowForwardOutlinedIcon />} variant="contained" />
     </div>
   );
 }

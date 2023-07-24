@@ -74,14 +74,14 @@ function Topbar() {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(appActions.setSelectedTab("Tasks"));
+    dispatch(appActions.setSelectedTab("tasks"));
   }, []);
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.getPath("") !== "chat") {
       socket.setAppSelectedChat(null);
     }
-
+    dispatch(appActions.setSelectedTab(config.key));
     history.push(`/${config.getPath("")}`);
   };
 
