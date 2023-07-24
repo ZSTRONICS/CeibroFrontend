@@ -7,7 +7,7 @@ export default function DrawingFiles() {
     <Box>
       <FileBox
         title="Location"
-        files={[{ fileName: "Drawing files is in here", fileSize: "" }]}
+        files={[{ fileName: "Drawing files is in here",_id:"",comment:"",fileTag:"",fileUrl:"",hasComment:false,moduleId:"",moduleType:"",uploadStatus:"" }]}
         size={"40px"}
       />
       <Box sx={{ margin: "16px" }}>

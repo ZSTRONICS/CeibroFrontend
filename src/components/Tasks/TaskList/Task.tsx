@@ -11,6 +11,7 @@ import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import CreateNewTask from "../Create-Task/CreateNewTask";
 import TaskDetails from "../TaskDetails";
+import { optionMapping } from "components/Utills/Globals";
 
 const Task = () => {
   const [value, setValue] = useState(0);
@@ -73,6 +74,9 @@ const Task = () => {
     }
   }, [selectedTab]);
 
+  // useEffect(() => {
+  // }, [selectedTaskFilter, selectedTab]);
+
   const handleTabClick = (type: string) => {
     setSelectedTab(type);
     setSelectedTask(task[selectedTaskFilter][type][0]);
@@ -118,8 +122,63 @@ const Task = () => {
       ? allTaskToMe
       : allTaskHidden;
 
-  taskOngoingCount = ongoing.length ;
-  taskDoneCount = done.length ;
+  taskOngoingCount = ongoing.length;
+  taskDoneCount = done.length;
+
+  const menuOptions = [
+    {
+      menuName: "Hide",
+      callBackHandler: () => {
+        if (selectedTask) {
+          dispatch(
+            taskActions.taskHide({
+              other: { taskId: selectedTask._id },
+            })
+          );
+        }
+        console.log("task Hide!");
+      },
+    },
+    {
+      menuName: "Un-hide",
+      callBackHandler: () => {
+        if (selectedTask) {
+          dispatch(
+            taskActions.taskShow({
+              other: { taskId: selectedTask._id },
+            })
+          );
+        }
+        console.log("task Un Hide!");
+      },
+    },
+    {
+      menuName: "Cancel",
+      callBackHandler: () => {
+        if (selectedTask) {
+          dispatch(
+            taskActions.taskCaneled({
+              other: { taskId: selectedTask._id },
+            })
+          );
+        }
+        console.log("task Canceled!");
+      },
+    },
+    {
+      menuName: "Un-cancel",
+      callBackHandler: () => {
+        console.log("task Un-cancel!");
+      },
+    },
+  ];
+
+  const filteredMenuOptions = (myState: string, subState: string) => {
+    const optionName = optionMapping[myState]?.[subState];
+    return optionName
+      ? menuOptions.filter((option) => option.menuName === optionName)
+      : [];
+  };
 
   const renderTabs = (type: string, activeTab: string) => {
     switch (type) {
@@ -228,9 +287,8 @@ const Task = () => {
             height: "calc(100vh - 192px)",
             overflow: "auto",
             padding: " 0 1px",
-            pl:0.7
+            pl: 0.7,
           }}
-          
         >
           <CustomStack
             gap={1.4}
@@ -245,6 +303,10 @@ const Task = () => {
                   task={task}
                   selectedTaskId={selectedTask?._id}
                   handleClick={handleSelectedTask}
+                  menuOption={filteredMenuOptions(
+                    selectedTaskFilter,
+                    selectedTab
+                  )}
                 />
               ))}
           </CustomStack>

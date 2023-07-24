@@ -9,7 +9,8 @@ import {
   SubHeadingTag,
   SubLabelTag,
 } from "components/CustomTags";
-import {  momentdeDateFormat } from "components/Utills/Globals";
+import GenericMenu, { Option } from "components/GenericMenu/GenericMenu";
+import { momentdeDateFormat } from "components/Utills/Globals";
 import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
 import { Task } from "constants/interfaces";
 import { useEffect } from "react";
@@ -21,10 +22,13 @@ interface IProps {
   task: Task;
   selectedTaskId: string | undefined;
   handleClick: (task: Task) => void;
+  menuOption:any;
 }
+
 function TaskCard(props: IProps) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { task, handleClick, selectedTaskId } = props;
+  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
+  const { task, handleClick, selectedTaskId,menuOption } = props;
   const dispatch = useDispatch();
   const userId = user && String(user._id);
   const {
@@ -40,6 +44,7 @@ function TaskCard(props: IProps) {
     access,
     createdAt,
     assignedToState,
+    userSubState,
     seenBy,
   } = task;
   useEffect(() => {
@@ -56,8 +61,10 @@ function TaskCard(props: IProps) {
   // assignedToState.length > 0
   //     ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
   //     : "N/A";
+  // console.log("userSubState", userSubState, selectedTaskFilter);
   const isSelectedTask: boolean = selectedTaskId === _id;
   const taskCreated = momentdeDateFormat(createdAt);
+
   return (
     <Card
       sx={{
@@ -93,11 +100,14 @@ function TaskCard(props: IProps) {
         }
         title=""
         action={
-          <assets.DoneAllIcon
-            sx={{
-              color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
-            }}
-          />
+          <CustomStack>
+            <assets.DoneAllIcon
+              sx={{
+                color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
+              }}
+            />
+            <GenericMenu options={menuOption} key={_id} />
+          </CustomStack>
         }
       />
       <CardContent sx={{ pt: 0 }}>

@@ -349,4 +349,20 @@ export const tabsIndexProps = (index: number) => {
 //   }
 // }, []);
 
-export { formatDropdownData, momentdeDateFormatWithDay }
+const optionMapping: { [key: string]: { [key: string]: string } } = {
+  allTaskToMe: {
+    ongoing: "Hide",
+    done: "Hide",
+  },
+  allTaskFromMe: {
+    ongoing: "Cancel",
+    unread: "Cancel",
+  },
+  allTaskHidden: {
+    ongoing: "Un-hide",
+    done: "Un-hide",
+    canceled: "Un-cancel",
+  },
+};
+
+export { formatDropdownData, momentdeDateFormatWithDay, optionMapping }

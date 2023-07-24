@@ -151,9 +151,9 @@ function UserDropDown(props: IProps) {
               <Button onClick={handleCreateClick}>Done</Button>
             )}
           </ListSubheader>
+          {/* <SelectedContactBox />
           <SelectedContactBox />
-          <SelectedContactBox />
-          <SelectedContactBox />
+          <SelectedContactBox /> */}
           <MenuItem disabled>
             <Typography>Suggested users</Typography>
           </MenuItem>
