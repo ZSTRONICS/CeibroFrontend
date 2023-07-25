@@ -7,14 +7,11 @@ import Button from "@mui/material/Button";
 import { Box, ListSubheader, TextField, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
+import { Options, OptionType } from "components/Tasks/type";
 
-interface Option {
-  label: string;
-  value: string;
-}
 interface IProps {
   label: string;
-  options: Option[];
+  options: Options;
   createCallback?: (type: string, label: string) => void;
 }
 
@@ -23,27 +20,39 @@ function CustomDropDown(props: IProps) {
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [filterData, setFilterData] = React.useState<{
-    [key: string]: Option[];
+  const [allFilterData, setAllFilterData] = React.useState<{
+    all: { [key: string]: OptionType[] };
+    recent: OptionType[];
+  }>({ all: {}, recent: [] });
+  const [recentfilterData, setRecentFilterData] = React.useState<{
+    [key: string]: OptionType[];
   }>({});
 
+  // its use for all sorted array
+  const [sortedOptions, setSortedOptions] = React.useState<{
+    [key: string]: any[];
+  }>({});
+
+  const sortOptions = (options: OptionType[]) => {
+    return options.sort((a, b) => a.label.localeCompare(b.label));
+  };
+
   useEffect(() => {
-    const sortedOptions = options.sort((a, b) =>
-      a.label.localeCompare(b.label)
-    );
+    const sortedAllOptions = sortOptions(options.allOptions);
+    const allGroupedData: {
+      [key: string]: { label: string; value: string }[];
+    } = {};
 
-    const groupedData: { [key: string]: { label: string; value: string }[] } =
-      {};
-
-    sortedOptions.forEach((option) => {
+    sortedAllOptions.forEach((option: OptionType) => {
       const firstLetter = option.label[0].toUpperCase();
-      if (!groupedData[firstLetter]) {
-        groupedData[firstLetter] = [];
+      if (!allGroupedData[firstLetter]) {
+        allGroupedData[firstLetter] = [];
       }
-      groupedData[firstLetter].push(option);
+      allGroupedData[firstLetter].push(option);
     });
 
-    setFilterData(groupedData);
+    setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
+    setSortedOptions(allGroupedData);
   }, [options]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
@@ -51,9 +60,9 @@ function CustomDropDown(props: IProps) {
     setSelected(event.target.value);
     handleClose();
   };
-  const handleMenuClick = (value: string) => {
-    console.log(value, "change events");
-    setSelected(value);
+  const handleMenuClick = (item: OptionType) => {
+    console.log("skladklas", item.value);
+    setSelected(item.value);
     handleClose();
   };
 
@@ -67,7 +76,21 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    const searchValue = event.target.value;
+    setSearchQuery(searchValue);
+
+    const filteredData: { [key: string]: OptionType[] } = {};
+
+    Object.entries(sortedOptions).forEach(([groupLetter, groupOptions]) => {
+      const filteredOptions = groupOptions.filter((item) =>
+        item.label.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      if (filteredOptions.length > 0) {
+        filteredData[groupLetter] = filteredOptions;
+      }
+    });
+    console.log(filteredData, "filteredData");
+    setAllFilterData({ all: filteredData, recent: options.recentOptions });
   };
 
   const handleCreateClick = () => {
@@ -113,7 +136,7 @@ function CustomDropDown(props: IProps) {
           onClose={handleClose}
           onOpen={handleOpen}
           value={selected}
-          onChange={handleChange}
+          // onChange={handleChange}
           endAdornment={
             selected && (
               <IconButton
@@ -148,31 +171,46 @@ function CustomDropDown(props: IProps) {
                 disableUnderline: true,
               }}
             />
-            {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
+            {allFilterData.all[searchQuery?.[0]?.toUpperCase() || ""] ? (
               <Button onClick={handleCancelClick}>Cancel</Button>
             ) : (
               <Button onClick={handleCreateClick}>Create</Button>
             )}
           </ListSubheader>
-          {options.length > 0 && (
-            <MenuItem disabled>
+          {options.recentOptions.length > 0 && (
+            <Box sx={{ margin: "8px 16px" }}>
               <Typography>Recent used {label}</Typography>
-            </MenuItem>
+              {allFilterData.recent.map((item: OptionType) => {
+                return (
+                  <Box
+                    key={`recent-${item.value}`}
+                    sx={{ margin: "8px 16px", cursor: "pointer" }}
+                    onClick={() => handleMenuClick(item)}
+                  >
+                    {item.label}
+                  </Box>
+                );
+              })}
+            </Box>
           )}
-          {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
-            // Wrap the list items in an array
-            <Typography>{groupLetter}</Typography>,
-            // Use map on the array to render the list items
-            ...groupOptions.map((item) => (
-              <Box
-                key={item.value}
-                sx={{ margin: "8px 16px" }}
-                onClick={() => handleMenuClick(item.value)}
-              >
-                {item.label}
-              </Box>
-            )),
-          ])}
+          <Box sx={{ margin: "8px 16px" }}>
+            {Object.entries(allFilterData.all).map(
+              ([groupLetter, groupOptions]) => [
+                // Wrap the list items in an array
+                <Typography>{groupLetter}</Typography>,
+                // Use map on the array to render the list items
+                ...groupOptions.map((item) => (
+                  <Box
+                    key={`all-${item.value}`}
+                    sx={{ margin: "8px 16px", cursor: "pointer" }}
+                    onClick={() => handleMenuClick(item)}
+                  >
+                    {item.label}
+                  </Box>
+                )),
+              ]
+            )}
+          </Box>
         </Select>
       </FormControl>
     </div>

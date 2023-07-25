@@ -95,20 +95,20 @@ function UserDropDown(props: IProps) {
       value: searchQuery,
     };
     // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected(searchQuery);
+    setSelected([]);
     createCallback && createCallback(label, searchQuery);
     handleClose();
   };
 
   const handleCancelClick = () => {
     setSearchQuery("");
-    setSelected("");
+    setSelected([]);
     handleClose();
   };
 
   const handleClearClick = () => {
     setSearchQuery("");
-    setSelected("");
+    setSelected([]);
   };
 
   const handleSelectedList = (contact: object, checked: boolean) => {
@@ -120,6 +120,15 @@ function UserDropDown(props: IProps) {
           return contact._id != item._id;
         })
       );
+    }
+  };
+
+  const renderValue = () => {
+    if (selected.length > 0) {
+      const fullNames = selected.map((item) => item.contactFullName).join(", ");
+      return fullNames;
+    } else {
+      return "Select Contacts";
     }
   };
 
@@ -144,6 +153,7 @@ function UserDropDown(props: IProps) {
           onClose={handleClose}
           onOpen={handleOpen}
           value={selected}
+          renderValue={renderValue}
           onChange={handleChange}
           endAdornment={
             selected.length > 0 && (
@@ -182,7 +192,7 @@ function UserDropDown(props: IProps) {
             {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
               <Button onClick={handleCancelClick}>Cancel</Button>
             ) : (
-              <Button onClick={handleCreateClick}>Done</Button>
+              <Button onClick={handleClose}>Done</Button>
             )}
           </ListSubheader>
           <Box sx={{ display: "flex" }}>

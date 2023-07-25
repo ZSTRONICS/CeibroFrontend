@@ -61,12 +61,15 @@ const Task = () => {
   }, []);
 
   useEffect(() => {
-    const key = Object.keys(task[selectedTaskFilter])[0];
     setFilteredTask(
       searchInData(task[selectedTaskFilter][selectedTab], "", "taskUID")
     );
-    setSelectedTask(null);
-  }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
+  }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
+
+  useEffect(() => {
+    const key = Object.keys(task[selectedTaskFilter])[0];
+    handleTabClick(key);
+  }, [selectedTaskFilter]);
 
   useEffect(() => {
     if (selectedTab) {

@@ -25,17 +25,18 @@ import { RootState } from "redux/reducers";
 import { isEmpty } from "lodash";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import UserDropDown from "components/Utills/UserDropdown";
-
-const urls = [assets.visual, assets.visual, assets.visual];
+import { Options } from "../type";
 
 function CreateNewTask() {
   const [selectedDate, setSelectedDate] = useState(null);
-  const [topicOptions, setTopicOptions] = useState<
-    { label: string; value: string }[]
-  >([]);
-  const [projectOptions, setProjectOptions] = useState<
-    { label: string; value: string }[]
-  >([]);
+  const [topicOptions, setTopicOptions] = useState<Options>({
+    allOptions: [],
+    recentOptions: [],
+  });
+  const [projectOptions, setProjectOptions] = useState<Options>({
+    allOptions: [],
+    recentOptions: [],
+  });
   const dispatch = useDispatch();
   const { userAllContacts, loadingContacts } = useSelector(
     (state: RootState) => state.user
@@ -59,15 +60,39 @@ function CreateNewTask() {
   useEffect(() => {
     if (Topics && !isEmpty(Topics)) {
       const topics = [...Topics.allTopics, ...Topics.recentTopics];
-      const getTopicOptions = getDropdownOptions(topics, "topic", "_id");
-      setTopicOptions(getTopicOptions);
+      const getAllTopicOptions = getDropdownOptions(
+        Topics.allTopics,
+        "topic",
+        "_id"
+      );
+      const getRecentTopicOptions = getDropdownOptions(
+        Topics.recentTopics,
+        "topic",
+        "_id"
+      );
+      setTopicOptions({
+        allOptions: getAllTopicOptions,
+        recentOptions: getRecentTopicOptions,
+      });
     }
   }, [Topics.allTopics]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
-      const getTopicOptions = getDropdownOptions(allProjects, "title", "_id");
-      setProjectOptions(getTopicOptions);
+      const getAllProjectOptions = getDropdownOptions(
+        allProjects.allProjects,
+        "title",
+        "_id"
+      );
+      const getRecentProjectOptions = getDropdownOptions(
+        allProjects.recentProjects,
+        "title",
+        "_id"
+      );
+      setProjectOptions({
+        allOptions: getAllProjectOptions,
+        recentOptions: getRecentProjectOptions,
+      });
     }
   }, [allProjects]);
 
@@ -79,6 +104,7 @@ function CreateNewTask() {
     return (
       data &&
       data.map((item: object) => {
+        //@ts-ignore
         return { label: item[labelName], value: item[valueName] };
       })
     );
