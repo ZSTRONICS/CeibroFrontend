@@ -4,22 +4,46 @@ import NameAvatar from "../Others/NameAvatar";
 import { SubHeadingTag, SubLabelTag } from "components/CustomTags";
 
 interface IProps {
-  profilePic: string;
-  firstName: string;
-  surName: string;
-  contactFullName: string;
-  companyName: string;
+  contact: any[];
+  handleSelectedList: (contact: object, checked: boolean) => void;
+  selected: boolean;
 }
 
-export default function ContactBox(props: IProps) {
-  const { profilePic, firstName, surName, contactFullName, companyName } =
-    props;
+export default function ContactBox({
+  contact,
+  handleSelectedList,
+  selected,
+}: IProps) {
+  const {
+    _id,
+    contactFirstName = "",
+    contactFullName = "",
+    contactSurName = "",
+    isCeiborUser = "",
+    userCeibroData = {},
+  } = contact;
+
+  let imgSrc: string = "";
+  let placeholder: string = "";
+  if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
+    imgSrc = userCeibroData.profilePic;
+  } else {
+    placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
+  }
+
+  const handleCheckBox = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    handleSelectedList(contact, checked);
+  };
+
   return (
     <Box sx={{ display: "flex", gap: 1.4 }}>
-      <Checkbox />
-      {profilePic ? (
+      <Checkbox onChange={handleCheckBox} checked={selected} />
+      {imgSrc ? (
         <img
-          src={profilePic}
+          src={imgSrc}
           alt={"profilePic"}
           style={{ width: "50px", height: "50px" }}
         />
@@ -35,7 +59,7 @@ export default function ContactBox(props: IProps) {
           }}
         >
           <Typography variant="body1" color="text.primary">
-            {"KR"}
+            {placeholder}
           </Typography>
         </Box>
       )}
@@ -46,9 +70,11 @@ export default function ContactBox(props: IProps) {
       /> */}
       <div>
         <SubHeadingTag sx={{ color: "#000" }}>
-          {contactFullName || "Kristo"}
+          {contactFullName || ""}
         </SubHeadingTag>
-        <SubLabelTag>{`${companyName || "N/A"}`}</SubLabelTag>
+        <SubLabelTag>{`${
+          (userCeibroData && userCeibroData.companyName) || "N/A"
+        }`}</SubLabelTag>
       </div>
       <Box></Box>
     </Box>

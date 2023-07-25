@@ -9,6 +9,7 @@ import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import SelectedContactBox from "../SelectedContactBox";
 import ContactBox from "../ContactBox";
+import _ from "lodash";
 
 interface Option {
   label: string;
@@ -16,42 +17,48 @@ interface Option {
 }
 interface IProps {
   label: string;
-  options: Option[];
+  contacts: any[];
   createCallback?: (type: string, label: string) => void;
 }
 
 function UserDropDown(props: IProps) {
-  const { label, options, createCallback } = props;
-  const [selected, setSelected] = React.useState<string>("");
+  const { label, contacts, createCallback } = props;
+  const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [sortedContacts, setSortedContacts] = React.useState<{
+    [key: string]: any[];
+  }>({});
   const [filterData, setFilterData] = React.useState<{
-    [key: string]: Option[];
+    [key: string]: any[];
   }>({});
 
   useEffect(() => {
-    const sortedOptions = options.sort((a, b) =>
-      a.label.localeCompare(b.label)
-    );
+    if (contacts && contacts.length > 0) {
+      const sortedContacts = contacts.sort((a, b) =>
+        a.contactFirstName.localeCompare(b.contactFirstName)
+      );
 
-    const groupedData: { [key: string]: { label: string; value: string }[] } =
-      {};
+      const groupedData: { [key: string]: { label: string; value: string }[] } =
+        {};
 
-    sortedOptions.forEach((option) => {
-      const firstLetter = option.label[0].toUpperCase();
-      if (!groupedData[firstLetter]) {
-        groupedData[firstLetter] = [];
-      }
-      groupedData[firstLetter].push(option);
-    });
+      sortedContacts.forEach((contact) => {
+        const firstLetter = contact.contactFirstName[0].toUpperCase();
+        if (!groupedData[firstLetter]) {
+          groupedData[firstLetter] = [];
+        }
+        groupedData[firstLetter].push(contact);
+      });
 
-    setFilterData(groupedData);
-  }, [options]);
+      setFilterData(groupedData);
+      setSortedContacts(groupedData);
+    }
+  }, [contacts]);
 
   const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-    console.log(event.target.value, "change events");
-    setSelected(event.target.value);
-    handleClose();
+    console.log(event, "change events");
+    // setSelected(event.target.value);
+    // handleClose();
   };
 
   const handleClose = () => {
@@ -64,7 +71,21 @@ function UserDropDown(props: IProps) {
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
+    const searchValue = event.target.value;
+    setSearchQuery(searchValue);
+
+    const filteredData: { [key: string]: Option[] } = {};
+
+    Object.entries(sortedContacts).forEach(([groupLetter, groupOptions]) => {
+      const filteredOptions = groupOptions.filter((item) =>
+        item.contactFullName.toLowerCase().includes(searchValue.toLowerCase())
+      );
+      if (filteredOptions.length > 0) {
+        filteredData[groupLetter] = filteredOptions;
+      }
+    });
+
+    setFilterData(filteredData);
   };
 
   const handleCreateClick = () => {
@@ -90,6 +111,18 @@ function UserDropDown(props: IProps) {
     setSelected("");
   };
 
+  const handleSelectedList = (contact: object, checked: boolean) => {
+    if (checked) {
+      setSelected([...selected, contact]);
+    } else {
+      setSelected(
+        _.remove(selected, (item: object) => {
+          return contact._id != item._id;
+        })
+      );
+    }
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
@@ -102,9 +135,10 @@ function UserDropDown(props: IProps) {
           id="controlled-open-select"
           sx={{
             "& .MuiSelect-icon": {
-              right: `${selected ? "45px" : 0}`,
+              right: `${selected.length > 0 ? "45px" : 0}`,
             },
           }}
+          multiple
           variant="standard"
           open={open}
           onClose={handleClose}
@@ -112,7 +146,7 @@ function UserDropDown(props: IProps) {
           value={selected}
           onChange={handleChange}
           endAdornment={
-            selected && (
+            selected.length > 0 && (
               <IconButton
                 size="small"
                 aria-label="clear selection"
@@ -151,33 +185,35 @@ function UserDropDown(props: IProps) {
               <Button onClick={handleCreateClick}>Done</Button>
             )}
           </ListSubheader>
-          {/* <SelectedContactBox />
-          <SelectedContactBox />
-          <SelectedContactBox /> */}
+          <Box sx={{ display: "flex" }}>
+            {selected.length > 0 &&
+              selected.map((selectedContact: object) => {
+                return (
+                  <SelectedContactBox
+                    contact={selectedContact}
+                    handleSelectedList={handleSelectedList}
+                  />
+                );
+              })}
+          </Box>
           <MenuItem disabled>
             <Typography>Suggested users</Typography>
           </MenuItem>
-          <ContactBox
-            profilePic={""}
-            firstName={""}
-            surName={""}
-            contactFullName={""}
-            companyName={""}
-          />
-          <ContactBox
-            profilePic={""}
-            firstName={""}
-            surName={""}
-            contactFullName={""}
-            companyName={""}
-          />
-          <ContactBox
-            profilePic={""}
-            firstName={""}
-            surName={""}
-            contactFullName={""}
-            companyName={""}
-          />
+          <Box sx={{ margin: "8px 16px" }}>
+            {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
+              <Typography>{groupLetter}</Typography>,
+              // Use map on the array to render the list items
+              ...groupOptions.map((item) => (
+                <ContactBox
+                  contact={item}
+                  handleSelectedList={handleSelectedList}
+                  selected={
+                    !!selected.find((contact) => contact._id === item._id)
+                  }
+                />
+              )),
+            ])}
+          </Box>
         </Select>
       </FormControl>
     </div>

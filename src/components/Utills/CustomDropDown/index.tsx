@@ -51,6 +51,11 @@ function CustomDropDown(props: IProps) {
     setSelected(event.target.value);
     handleClose();
   };
+  const handleMenuClick = (value: string) => {
+    console.log(value, "change events");
+    setSelected(value);
+    handleClose();
+  };
 
   const handleClose = () => {
     setSearchQuery("");
@@ -156,14 +161,16 @@ function CustomDropDown(props: IProps) {
           )}
           {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
             // Wrap the list items in an array
-            <MenuItem key={groupLetter} disabled>
-              <Typography>{groupLetter}</Typography>
-            </MenuItem>,
+            <Typography>{groupLetter}</Typography>,
             // Use map on the array to render the list items
             ...groupOptions.map((item) => (
-              <MenuItem key={item.value} value={item.value}>
+              <Box
+                key={item.value}
+                sx={{ margin: "8px 16px" }}
+                onClick={() => handleMenuClick(item.value)}
+              >
                 {item.label}
-              </MenuItem>
+              </Box>
             )),
           ])}
         </Select>

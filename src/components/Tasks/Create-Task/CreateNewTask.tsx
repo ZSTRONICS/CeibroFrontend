@@ -142,7 +142,7 @@ function CreateNewTask() {
         options={topicOptions}
         createCallback={handleCreateCallback}
       />
-      <UserDropDown label={"Assign to"} options={[]} />
+      <UserDropDown label={"Assign to"} contacts={userAllContacts} />
       <CustomDropDown
         label={"Project"}
         options={projectOptions}

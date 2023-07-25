@@ -30,7 +30,8 @@ function Sidebar() {
 
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
-      setOpen(true);
+      window.open("/create-new-task", "", "width=900,height=782");
+      // setOpen(true);
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }

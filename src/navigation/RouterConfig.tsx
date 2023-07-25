@@ -25,6 +25,7 @@ import PrivateRoute from "./PrivateRoute";
 
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}
@@ -59,6 +60,7 @@ const RouterConfig: React.FC<Configs> = () => {
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute path="/tasks" component={Tasks} />
+              <PrivateRoute path="/create-new-task" component={CreateNewTask} />
               <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact
