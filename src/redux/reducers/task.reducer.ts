@@ -159,12 +159,12 @@ const TaskReducer = (
       const taskFromMeUnread = state.allTaskFromMe.unread;
       const taskToMeNew = state.allTaskToMe.new;
       if (action.payload.isAssignedToMe === true) {
-        taskToMeNew.push(action.payload);
+        taskToMeNew.unshift(action.payload);
         console.log("push task to me new", taskToMeNew[taskToMeNew.length - 1]);
       }
 
       if (action.payload.isCreator === true) {
-        taskFromMeUnread.push(action.payload);
+        taskFromMeUnread.unshift(action.payload);
         console.log("pus task from-me [unread]", taskFromMeUnread);
       }
 
@@ -448,9 +448,12 @@ const TaskReducer = (
           eventData.newTaskData.isHiddenByMe === false
         ) {
           const taskIndex = findTaskIndex(toMeOngoing, eventData.taskId);
-          toMeOngoing[taskIndex].events.push(eventData);
+          toMeOngoing[taskIndex].events.unshift(eventData);
+          toMeOngoing[taskIndex].creatorState = 'canceled'
+          toMeOngoing[taskIndex].userSubState = 'canceled'
           const task = toMeOngoing.splice(taskIndex, 1)[0];
-          hiddenCanceled.push(task);
+
+          hiddenCanceled.unshift(task);
           console.log(
             "move toMeOngoing=> hiddenCanceled",
             hiddenCanceled[hiddenCanceled.length - 1]
@@ -463,9 +466,9 @@ const TaskReducer = (
           eventData.oldTaskData.isAssignedToMe === true
         ) {
           const taskIndex = findTaskIndex(hiddenOngoing, eventData.taskId);
-          hiddenOngoing[taskIndex].events.push(eventData);
+          hiddenOngoing[taskIndex].events.unshift(eventData);
           const task = hiddenOngoing.splice(taskIndex, 1)[0];
-          hiddenCanceled.push(task);
+          hiddenCanceled.unshift(task);
           console.log(
             "move hiddenOngoing=> hiddenCanceled",
             hiddenCanceled[hiddenCanceled.length - 1]
@@ -478,9 +481,9 @@ const TaskReducer = (
           eventData.oldTaskData.creatorState === "unread"
         ) {
           const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
-          fromMeUnread[taskIndex].events.push(eventData);
+          fromMeUnread[taskIndex].events.unshift(eventData);
           const task = fromMeUnread.splice(taskIndex, 1)[0];
-          hiddenCanceled.push(task);
+          hiddenCanceled.unshift(task);
           console.log(
             "move fromMeUnread=> hiddenCanceled",
             hiddenCanceled[hiddenCanceled.length - 1]
@@ -506,9 +509,9 @@ const TaskReducer = (
               hiddenCanceled[checkTaskInhiddenCanel]
             );
           } else {
-            toMeNew[taskIndex].events.push(eventData);
+            toMeNew[taskIndex].events.unshift(eventData);
             const task = toMeNew.splice(taskIndex, 1)[0];
-            hiddenCanceled.push(task);
+            hiddenCanceled.unshift(task);
             console.log(
               "move toMeNew=> hiddenCanceled",
               hiddenCanceled[hiddenCanceled.length - 1]
@@ -528,9 +531,9 @@ const TaskReducer = (
             eventData.taskId
           );
           if (checkTaskInhiddenCanel < -1) {
-            fromMeOngoing[taskIndex].events.push(eventData);
+            fromMeOngoing[taskIndex].events.unshift(eventData);
             const task = fromMeOngoing.splice(taskIndex, 1)[0];
-            hiddenCanceled.push(task);
+            hiddenCanceled.unshift(task);
             console.log(
               "move fromMeOngoing=> hiddenCanceled",
               hiddenCanceled[hiddenCanceled.length - 1]
@@ -541,6 +544,35 @@ const TaskReducer = (
               hiddenCanceled[checkTaskInhiddenCanel]
             );
           }
+        }
+      }
+      // unCancelTask
+      if(eventData.eventType === "UN_CANCEL_TASK"){
+        if (
+          eventData.oldTaskData.creatorState === "canceled" &&
+          eventData.oldTaskData.isCreator === true
+        ) {
+          const taskIndex = findTaskIndex(hiddenCanceled, eventData.taskId);
+          hiddenCanceled[taskIndex].events.unshift(eventData);
+          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy
+          hiddenCanceled[taskIndex].creatorState = 'unread'
+          hiddenCanceled[taskIndex].userSubState = 'new'
+          const task = hiddenCanceled.splice(taskIndex, 1)[0];
+          fromMeUnread.unshift(task);
+          console.log("hiddenCanceled => Move to fromMeUnread", fromMeUnread[0]);
+        }
+        if (
+          eventData.oldTaskData.userSubState === "canceled" &&
+          eventData.oldTaskData.isAssignedToMe === true
+        ) {
+          const taskIndex = findTaskIndex(hiddenCanceled, eventData.taskId);
+          hiddenCanceled[taskIndex].events.unshift(eventData);
+          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy
+          hiddenCanceled[taskIndex].creatorState = 'unread'
+          hiddenCanceled[taskIndex].userSubState = 'new'
+          const task = hiddenCanceled.splice(taskIndex, 1)[0];
+          toMeNew.unshift(task);
+          console.log("hiddenCanceled => Move to toMeNew", toMeNew[toMeNew.length-1]);
         }
       }
       // task with comment
@@ -562,7 +594,7 @@ const TaskReducer = (
           eventData.oldTaskData.isCreator === true
         ) {
           const checktaskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
-          fromMeUnread[checktaskIndex].events.push(eventData);
+          fromMeUnread[checktaskIndex].events.unshift(eventData);
           console.log("updated fromMeUnread", fromMeUnread[checktaskIndex]);
         }
 
@@ -585,7 +617,7 @@ const TaskReducer = (
           addEventToTask(hiddenOngoing, eventData, taskIndex);
           hiddenOngoing[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
           const task = hiddenOngoing.splice(taskIndex, 1)[0];
-          toMeOngoing.push(task);
+          toMeOngoing.unshift(task);
           console.log(
             "updated hiddenOngoing => toMeOngoing",
             toMeOngoing[toMeOngoing.length - 1]
@@ -618,9 +650,9 @@ const TaskReducer = (
           eventData.oldTaskData.isAssignedToMe === true
         ) {
           const checktaskIndex = findTaskIndex(hiddenDone, eventData.taskId);
-          hiddenDone[checktaskIndex].events.push(eventData);
+          hiddenDone[checktaskIndex].events.unshift(eventData);
           const task = hiddenDone.splice(checktaskIndex, 1)[0];
-          toMeDone.push(task);
+          toMeDone.unshift(task);
           console.log(
             "updated hiddenDone => toMeDone",
             toMeDone[toMeDone.length - 1]
@@ -632,7 +664,7 @@ const TaskReducer = (
           eventData.oldTaskData.creatorState === "done"
         ) {
           const checktaskIndex = findTaskIndex(fromMeDone, eventData.taskId);
-          fromMeDone[checktaskIndex].events.push(eventData);
+          fromMeDone[checktaskIndex].events.unshift(eventData);
           console.log("updated fromMeDone", fromMeDone[checktaskIndex]);
         }
         // done task comment to-me [done]
@@ -641,7 +673,7 @@ const TaskReducer = (
           eventData.oldTaskData.userSubState === "done"
         ) {
           const checktaskIndex = findTaskIndex(toMeDone, eventData.taskId);
-          toMeDone[checktaskIndex].events.push(eventData);
+          toMeDone[checktaskIndex].events.unshift(eventData);
           console.log("updated toMeDone", toMeDone[checktaskIndex]);
         }
       }
@@ -653,9 +685,9 @@ const TaskReducer = (
         eventData.oldTaskData.isCreator === true
       ) {
         const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
-        fromMeUnread[taskIndex].events.push(eventData);
+        fromMeUnread[taskIndex].events.unshift(eventData);
         const task = fromMeUnread.splice(taskIndex, 1)[0];
-        fromMeDone.push(task);
+        fromMeDone.unshift(task);
         console.log("fromMeUnread=> fromMeDone", toMeDone[taskIndex]);
       }
       if (
@@ -668,9 +700,9 @@ const TaskReducer = (
           eventData.oldTaskData.isAssignedToMe === true
         ) {
           const taskIndex = findTaskIndex(hiddenOngoing, eventData.taskId);
-          hiddenOngoing[taskIndex].events.push(eventData);
+          hiddenOngoing[taskIndex].events.unshift(eventData);
           const task = hiddenOngoing.splice(taskIndex, 1)[0];
-          toMeDone.push(task);
+          toMeDone.unshift(task);
           console.log("hiddenOngoing=> toMeDone", toMeDone[taskIndex]);
         }
         // check task from-me [ongoing] and move to from-me [Done]
@@ -679,9 +711,9 @@ const TaskReducer = (
           eventData.oldTaskData.creatorState === "ongoing"
         ) {
           const taskIndex = findTaskIndex(fromMeOngoing, eventData.taskId);
-          fromMeOngoing[taskIndex].events.push(eventData);
+          fromMeOngoing[taskIndex].events.unshift(eventData);
           const task = fromMeOngoing.splice(taskIndex, 1)[0];
-          fromMeDone.push(task);
+          fromMeDone.unshift(task);
           console.log(
             "move fromMeOngoing=>  fromMeDone",
             fromMeDone[taskIndex]
@@ -694,9 +726,9 @@ const TaskReducer = (
           eventData.oldTaskData.userSubState === "ongoing"
         ) {
           const taskIndex = findTaskIndex(toMeOngoing, eventData.taskId);
-          toMeOngoing[taskIndex].events.push(eventData);
+          toMeOngoing[taskIndex].events.unshift(eventData);
           const task = toMeOngoing.splice(taskIndex, 1)[0];
-          toMeDone.push(task);
+          toMeDone.unshift(task);
           console.log("move toMeOngoing=>  toMeDone", toMeDone[taskIndex]);
         }
       }
@@ -757,7 +789,7 @@ const TaskReducer = (
           const taskIndex = findTaskIndex(toMeNew, eventData.taskId);
           pushSeenBy(toMeNew, taskIndex, eventData);
           const task = toMeNew.splice(taskIndex, 1)[0];
-          toMeOngoing.push(task);
+          toMeOngoing.unshift(task);
           console.log(
             "task seen toMeNew => toMeOngoing",
             toMeOngoing[toMeOngoing.length - 1]
@@ -773,7 +805,7 @@ const TaskReducer = (
           // find task in unread and move to ongoing
           const taskIndex = findTaskIndex(fromMeUnread, eventData.taskId);
           const task = fromMeUnread.splice(taskIndex, 1)[0];
-          fromMeOngoing.push(task);
+          fromMeOngoing.unshift(task);
           console.log(
             "task seen fromMeUnread => fromMeOngoing",
             fromMeOngoing[fromMeOngoing.length - 1]
@@ -883,7 +915,7 @@ const TaskReducer = (
             assignTo.userId === eventData.userId && assignTo.state === "new"
         );
         if (isAssignedToMeExist === true) {
-          toMeNew.push(eventData);
+          toMeNew.unshift(eventData);
           console.log("push to newtask ");
         }
       }

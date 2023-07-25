@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box, IconButton, Typography } from "@mui/material";
 import { Delete as DeleteIcon, AccountCircle } from "@mui/icons-material";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";

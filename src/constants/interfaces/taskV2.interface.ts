@@ -46,6 +46,7 @@ export interface Task {
   files: File[];
   events: TaskEvent[];
   userSubState: string;
+  creatorState:string
 }
 
 export interface AssignedUserState extends UserInfo {

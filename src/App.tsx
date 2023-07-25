@@ -414,6 +414,7 @@ const App: React.FC<MyApp> = () => {
           case TASK_CONFIG.TASK_SEEN:
           case TASK_CONFIG.TASK_SHOWN:
           case TASK_CONFIG.TASK_HIDDEN:
+          case TASK_CONFIG.UN_CANCEL_TASK:
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: { ...data, userId, eventType },

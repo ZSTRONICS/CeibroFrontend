@@ -125,6 +125,13 @@ const MockTaskApis = () => {
           })
         );
       }
+      if (selectedApi.value === "taskUnCanel") {
+        dispatch(
+          taskActions.taskUnCanel({
+            other: { taskId: "64b279cb2e7ae3852ea4e6c8" },
+          })
+        );
+      }
       if (selectedApi.value === "doneTaskWithComment") {
         const formdata = new FormData();
         formdata.append("message", "dont task comment here with files");
@@ -246,6 +253,7 @@ const mockTaskApis = [
   { title: "getAllTaskFromMe: /task/from-me", id: "getAllTaskFromMe" },
   { title: "getAllTaskHidden: /task/hidden", id: "getAllTaskHidden" },
   { title: "taskCaneled: //task/cancel/:taskId", id: "taskCaneled" },
+  { title: "taskUnCanel: //task/uncancel/:taskId", id: "taskUnCanel" },
   { title: "taskSeen: /task/seen/:taskId", id: "taskSeen" },
   { title: "taskHide: /task/hide/:taskId", id: "taskHide" },
   { title: "taskShow: /task/unhide/:taskId", id: "taskShow" },

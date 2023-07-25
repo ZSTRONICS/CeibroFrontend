@@ -11,7 +11,7 @@ import "../../components/MuiStyles.css";
 function CDatePicker(props: any) {
   const classes = useStyles();
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} locale={de}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale ={de}>
       {props.showLabel === true ? (
         <InputHOC title={props.dueDateLabel || "Due date"}>
           <DatePicker

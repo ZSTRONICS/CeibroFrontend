@@ -66,6 +66,7 @@ const taskActions = {
   taskHide: createAction(TASK_CONFIG.TASK_HIDE),
   taskShow: createAction(TASK_CONFIG.TASK_SHOW),
   taskCaneled: createAction(TASK_CONFIG.TASK_CANCELED),
+  taskUnCanel: createAction(TASK_CONFIG.TASK_UN_CANCEL),
   taskEventsWithFiles: createAction(TASK_CONFIG.TASK_EVENT_WITH_FILES),
 
   postSubtaskComment: createAction(TASK_CONFIG.POST_SUBTASK_COMMENT),

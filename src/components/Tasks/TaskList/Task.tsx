@@ -17,7 +17,8 @@ const Task = () => {
   const [value, setValue] = useState(0);
   const [filteredTask, setFilteredTask] = useState<ITask[] | null>(null);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
-
+  const { user } = useSelector((store: RootState) => store.auth);
+  const userId = user && String(user._id);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -33,15 +34,6 @@ const Task = () => {
     loadingAllTaskfromMe,
   } = task;
   const [selectedTab, setSelectedTab] = useState("");
-
-  useEffect(() => {
-    const key = Object.keys(task[selectedTaskFilter])[0];
-    setFilteredTask(
-      searchInData(task[selectedTaskFilter][selectedTab], "", "taskUID")
-    );
-    setSelectedTab(key);
-    setSelectedTask(task[selectedTaskFilter][key][0]);
-  }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
@@ -69,17 +61,25 @@ const Task = () => {
   }, []);
 
   useEffect(() => {
+    const key = Object.keys(task[selectedTaskFilter])[0];
+    setFilteredTask(
+      searchInData(task[selectedTaskFilter][selectedTab], "", "taskUID")
+    );
+    setSelectedTask(null);
+  }, [selectedTaskFilter, allTaskFromMe, allTaskToMe, allTaskHidden]);
+
+  useEffect(() => {
     if (selectedTab) {
       handleTabClick(selectedTab);
     }
   }, [selectedTab]);
 
-  // useEffect(() => {
-  // }, [selectedTaskFilter, selectedTab]);
-
+  console.log("selectedTab", selectedTab);
   const handleTabClick = (type: string) => {
+    console.log("selectedTab type", type);
     setSelectedTab(type);
-    setSelectedTask(task[selectedTaskFilter][type][0]);
+    setSelectedTask(null);
+    // setSelectedTask(task[selectedTaskFilter][type][0]);
     setFilteredTask(
       searchInData(task[selectedTaskFilter][type], "", "taskUID")
     );
@@ -136,7 +136,6 @@ const Task = () => {
             })
           );
         }
-        console.log("task Hide!");
       },
     },
     {
@@ -149,7 +148,6 @@ const Task = () => {
             })
           );
         }
-        console.log("task Un Hide!");
       },
     },
     {
@@ -162,13 +160,18 @@ const Task = () => {
             })
           );
         }
-        console.log("task Canceled!");
       },
     },
     {
       menuName: "Un-cancel",
       callBackHandler: () => {
-        console.log("task Un-cancel!");
+        if (selectedTask) {
+          dispatch(
+            taskActions.taskUnCanel({
+              other: { taskId: selectedTask._id },
+            })
+          );
+        }
       },
     },
   ];
@@ -307,13 +310,30 @@ const Task = () => {
                     selectedTaskFilter,
                     selectedTab
                   )}
+                  disableMenu={
+                    selectedTab === "canceled" ? task.creator !== userId : false
+                  }
                 />
               ))}
           </CustomStack>
         </Box>
       </Grid>
       <Grid item md={9}>
-        {selectedTask && <TaskDetails task={selectedTask} />}
+        {selectedTask ? (
+          <TaskDetails task={selectedTask} />
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+              height: "100%",
+            }}
+          >
+            No Task Selected!
+          </div>
+        )}
       </Grid>
     </Grid>
   );

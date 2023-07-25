@@ -65,6 +65,13 @@ const taskCaneled = apiCall({
   path: (payload) => `/task/cancel/${payload.other.taskId}`
 })
 
+const taskUnCanel = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.TASK_UN_CANCEL,
+  method: "post",
+  path: (payload) => `/task/uncancel/${payload.other.taskId}`
+})
+
 const taskEventsWithFiles = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.TASK_EVENT_WITH_FILES,
@@ -230,6 +237,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.TASK_HIDE, taskHide)
   yield takeLatest(TASK_CONFIG.TASK_SHOW, taskShow)
   yield takeLatest(TASK_CONFIG.TASK_CANCELED, taskCaneled)
+  yield takeLatest(TASK_CONFIG.TASK_UN_CANCEL, taskUnCanel)
   yield takeLatest(TASK_CONFIG.TASK_EVENT_WITH_FILES, taskEventsWithFiles)
 
   yield takeLatest(TASK_CONFIG.GET_ALL_TASK_TO_ME, getAllTaskToMe)

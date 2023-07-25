@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import { Grid, Button, Typography, Chip, Box } from "@mui/material";
 import { CommentOutlined, ForwardOutlined } from "@mui/icons-material";

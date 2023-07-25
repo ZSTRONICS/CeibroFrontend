@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from "react";
 import SelectedContactBox from "../SelectedContactBox";
 import ContactBox from "../ContactBox";

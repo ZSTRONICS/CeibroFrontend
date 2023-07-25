@@ -23,12 +23,13 @@ interface IProps {
   selectedTaskId: string | undefined;
   handleClick: (task: Task) => void;
   menuOption:any;
+  disableMenu:boolean
 }
 
 function TaskCard(props: IProps) {
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-  const { task, handleClick, selectedTaskId,menuOption } = props;
+  const { task, handleClick, selectedTaskId,menuOption, disableMenu } = props;
   const dispatch = useDispatch();
   const userId = user && String(user._id);
   const {
@@ -106,7 +107,7 @@ function TaskCard(props: IProps) {
                 color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
               }}
             />
-            <GenericMenu options={menuOption} key={_id} />
+            <GenericMenu options={menuOption} key={_id} disableMenu= {disableMenu} />
           </CustomStack>
         }
       />

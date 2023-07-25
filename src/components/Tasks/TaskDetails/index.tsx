@@ -31,7 +31,7 @@ export default function TaskDetails(props: IProps) {
     invitedNumbers,
     files,
   } = props.task;
-  console.log("task", props.task);
+  // console.log("task", props.task);
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
 
