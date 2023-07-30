@@ -449,8 +449,8 @@ const TaskReducer = (
         ) {
           const taskIndex = findTaskIndex(toMeOngoing, eventData.taskId);
           toMeOngoing[taskIndex].events.unshift(eventData);
-          toMeOngoing[taskIndex].creatorState = 'canceled'
-          toMeOngoing[taskIndex].userSubState = 'canceled'
+          toMeOngoing[taskIndex].creatorState = "canceled";
+          toMeOngoing[taskIndex].userSubState = "canceled";
           const task = toMeOngoing.splice(taskIndex, 1)[0];
 
           hiddenCanceled.unshift(task);
@@ -547,19 +547,22 @@ const TaskReducer = (
         }
       }
       // unCancelTask
-      if(eventData.eventType === "UN_CANCEL_TASK"){
+      if (eventData.eventType === "UN_CANCEL_TASK") {
         if (
           eventData.oldTaskData.creatorState === "canceled" &&
           eventData.oldTaskData.isCreator === true
         ) {
           const taskIndex = findTaskIndex(hiddenCanceled, eventData.taskId);
           hiddenCanceled[taskIndex].events.unshift(eventData);
-          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy
-          hiddenCanceled[taskIndex].creatorState = 'unread'
-          hiddenCanceled[taskIndex].userSubState = 'new'
+          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
+          hiddenCanceled[taskIndex].creatorState = "unread";
+          hiddenCanceled[taskIndex].userSubState = "new";
           const task = hiddenCanceled.splice(taskIndex, 1)[0];
           fromMeUnread.unshift(task);
-          console.log("hiddenCanceled => Move to fromMeUnread", fromMeUnread[0]);
+          console.log(
+            "hiddenCanceled => Move to fromMeUnread",
+            fromMeUnread[0]
+          );
         }
         if (
           eventData.oldTaskData.userSubState === "canceled" &&
@@ -567,12 +570,15 @@ const TaskReducer = (
         ) {
           const taskIndex = findTaskIndex(hiddenCanceled, eventData.taskId);
           hiddenCanceled[taskIndex].events.unshift(eventData);
-          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy
-          hiddenCanceled[taskIndex].creatorState = 'unread'
-          hiddenCanceled[taskIndex].userSubState = 'new'
+          hiddenCanceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
+          hiddenCanceled[taskIndex].creatorState = "unread";
+          hiddenCanceled[taskIndex].userSubState = "new";
           const task = hiddenCanceled.splice(taskIndex, 1)[0];
           toMeNew.unshift(task);
-          console.log("hiddenCanceled => Move to toMeNew", toMeNew[toMeNew.length-1]);
+          console.log(
+            "hiddenCanceled => Move to toMeNew",
+            toMeNew[toMeNew.length - 1]
+          );
         }
       }
       // task with comment

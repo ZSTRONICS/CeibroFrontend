@@ -7,6 +7,7 @@ import capitalize from "lodash/capitalize";
 import { openFormInNewWindow } from "utills/common";
 
 interface IProps {
+  taskId: string;
   userSubState: string;
   dueDate: string;
   taskUid: string;
@@ -21,13 +22,13 @@ enum statusColors {
   canceled = "#FFE7E7",
 }
 const DetailActions: React.FC<IProps> = (props) => {
-  const { userSubState, taskUid, dueDate, createdOn } = props;
+  const { userSubState, taskUid, dueDate, createdOn, taskId } = props;
   const handleCommentClick = () => {
     // Handle comment button click here
   };
 
   const handleForwardClick = () => {
-    openFormInNewWindow("/forward-task/:121");
+    openFormInNewWindow(`/forward-task/${taskId}`);
   };
 
   const handleDoneClick = () => {
@@ -104,7 +105,12 @@ const DetailActions: React.FC<IProps> = (props) => {
           startIcon={<img src={assets.CommentIcon} />}
           onClick={handleCommentClick}
           variant="text"
-          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
+          sx={{
+            height: "24px",
+            width: "103px",
+            padding: "8px 16px",
+            textTransform: "capitalize",
+          }}
         >
           Comment
         </Button>
@@ -112,14 +118,24 @@ const DetailActions: React.FC<IProps> = (props) => {
           startIcon={<img src={assets.ForwardIcon} />}
           onClick={handleForwardClick}
           variant="text"
-          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
+          sx={{
+            height: "24px",
+            width: "103px",
+            padding: "8px 16px",
+            textTransform: "capitalize",
+          }}
         >
           Forward
         </Button>
         <Button
           variant="contained"
           onClick={handleDoneClick}
-          sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
+          sx={{
+            height: "24px",
+            width: "103px",
+            padding: "8px 16px",
+            textTransform: "capitalize",
+          }}
           disabled={userSubState === "done" || userSubState === "canceled"}
         >
           Done

@@ -6,11 +6,17 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import _ from "lodash";
-import { userApiAction } from "redux/action";
+import { taskActions, userApiAction } from "redux/action";
 import { handleGroupSearch } from "utills/common";
-import { Padding } from "@mui/icons-material";
+import { AssignedToStateType } from "../type";
+import { useParams } from "react-router-dom";
+
+interface RouteParams {
+  taskId: string;
+}
 
 const ForwardTask = () => {
+  const { taskId } = useParams<RouteParams>();
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -75,6 +81,26 @@ const ForwardTask = () => {
     setSearchQuery(searchValue);
   };
 
+  const handleSubmit = () => {
+    let updatedSelected: AssignedToStateType[] = selected.map((item) => {
+      let payloadSelected: AssignedToStateType = {
+        phoneNumber: item.phoneNumber,
+        userId: item.userId,
+        state: "new",
+      };
+      return payloadSelected;
+    });
+    dispatch(
+      taskActions.forwardTask({
+        other: { taskId: taskId },
+        body: {
+          assignedToState: updatedSelected,
+          invitedNumbers: [],
+        },
+      })
+    );
+  };
+
   return (
     <Box>
       <Box
@@ -89,6 +115,7 @@ const ForwardTask = () => {
           searchBtnLabel="Forward"
           placeholder="Start typing name"
           handleSearchChange={handleSearchChange}
+          handleSubmit={handleSubmit}
         />
       </Box>
       <Box

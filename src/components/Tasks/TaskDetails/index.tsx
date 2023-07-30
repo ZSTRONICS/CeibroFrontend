@@ -30,6 +30,7 @@ export default function TaskDetails(props: IProps) {
     events,
     invitedNumbers,
     files,
+    _id,
   } = props.task;
   // console.log("task", props.task);
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
@@ -46,6 +47,7 @@ export default function TaskDetails(props: IProps) {
         creator={creator}
         project={project}
         invitedNumbers={invitedNumbers}
+        taskId={_id}
         createdOn={momentdeDateFormatWithDay(createdAt)}
         // commentCallback={}
         // forwardCallback={}

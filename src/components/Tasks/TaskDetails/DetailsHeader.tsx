@@ -12,6 +12,7 @@ interface IProps {
   userSubState: string;
   assignedToState: AssignedUserState[];
   dueDate: string;
+  taskId: string;
   taskUid: string;
   topic: Topic;
   createdOn: Date | any;
@@ -35,6 +36,7 @@ export default function DetailsHeader(props: IProps) {
     createdOn,
     creator,
     invitedNumbers,
+    taskId,
   } = props;
 
   const data = [
@@ -78,6 +80,7 @@ export default function DetailsHeader(props: IProps) {
   return (
     <Box sx={{ padding: "0px 16px" }}>
       <DetailActions
+        taskId={taskId}
         userSubState={userSubState}
         dueDate={dueDate}
         taskUid={taskUid}

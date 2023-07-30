@@ -5,6 +5,7 @@ interface IProps {
   searchBtnLabel?: string;
   placeholder?: string;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleSubmit: () => void;
 }
 
 export default function SearchBox(props: IProps) {
@@ -12,6 +13,7 @@ export default function SearchBox(props: IProps) {
     searchBtnLabel = "Search",
     placeholder = "Searching....",
     handleSearchChange,
+    handleSubmit,
   } = props;
   return (
     <Box
@@ -41,6 +43,7 @@ export default function SearchBox(props: IProps) {
             color: "#818181",
             borderColor: "#818181",
           }}
+          onClick={handleSubmit}
         >
           {searchBtnLabel}
         </Button>
