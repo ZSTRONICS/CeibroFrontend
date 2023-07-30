@@ -4,12 +4,13 @@ import { Grid, Button, Typography, Chip, Box } from "@mui/material";
 import { CommentOutlined, ForwardOutlined } from "@mui/icons-material";
 import assets from "../../../assets/assets";
 import capitalize from "lodash/capitalize";
+import { openFormInNewWindow } from "utills/common";
 
 interface IProps {
   userSubState: string;
   dueDate: string;
   taskUid: string;
-  createdOn: Date| any
+  createdOn: Date | any;
 }
 
 enum statusColors {
@@ -26,13 +27,14 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleForwardClick = () => {
-    // Handle forward button click here
+    openFormInNewWindow("/forward-task/:121");
   };
 
   const handleDoneClick = () => {
     // Handle done button click here
   };
-  const chipColor: string = statusColors[userSubState as keyof typeof statusColors];
+  const chipColor: string =
+    statusColors[userSubState as keyof typeof statusColors];
   return (
     <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>
       <Grid item xs={6}>
@@ -75,7 +77,7 @@ const DetailActions: React.FC<IProps> = (props) => {
               alignItems: "center",
             }}
           >
-           {createdOn}
+            {createdOn}
             {/* {new Date().toLocaleDateString("en-GB", {
               weekday: "short",
               year: "2-digit",
@@ -118,7 +120,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           variant="contained"
           onClick={handleDoneClick}
           sx={{ height: "24px", width: "103px", padding: "8px 16px" }}
-          disabled={userSubState==='done'||userSubState==='canceled'}
+          disabled={userSubState === "done" || userSubState === "canceled"}
         >
           Done
         </Button>

@@ -31,16 +31,19 @@ export default function ContactBox({
     placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
   }
 
-  const handleCheckBox = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => {
+  const handleCheckBox = (checked: boolean) => {
     handleSelectedList(contact, checked);
   };
 
   return (
-    <Box sx={{ display: "flex", gap: 1.4 }}>
-      <Checkbox onChange={handleCheckBox} checked={selected} />
+    <Box
+      sx={{ display: "flex", gap: 1.4 }}
+      onClick={(e) => handleCheckBox(!selected)}
+    >
+      <Checkbox
+        onChange={(e, checked) => handleCheckBox(checked)}
+        checked={selected}
+      />
       {imgSrc ? (
         <img
           src={imgSrc}
@@ -63,11 +66,6 @@ export default function ContactBox({
           </Typography>
         </Box>
       )}
-      {/* <NameAvatar
-        url={profilePic || ""}
-        firstname={firstName || ""}
-        surname={surName || ""}
-      /> */}
       <div>
         <SubHeadingTag sx={{ color: "#000" }}>
           {contactFullName || ""}

@@ -6,7 +6,11 @@ import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 
-function Footer() {
+interface FooterPropsType {
+  handleSubmitForm: () => void;
+}
+
+const Footer = ({ handleSubmitForm }: FooterPropsType) => {
   const handleGetLocation = () => {
     // Code to get user's location
     navigator.geolocation.getCurrentPosition(
@@ -78,9 +82,13 @@ function Footer() {
         icon={<AttachFileOutlinedIcon />}
         variant="outlined"
       />
-      <CustomButton icon={<ArrowForwardOutlinedIcon />} variant="contained" />
+      <CustomButton
+        onClick={handleSubmitForm}
+        icon={<ArrowForwardOutlinedIcon />}
+        variant="contained"
+      />
     </div>
   );
-}
+};
 
 export default Footer;

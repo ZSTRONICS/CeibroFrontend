@@ -28,24 +28,31 @@ function Sidebar() {
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
+  const openFormInNewWindow = () => {
+    const width = 900;
+    const height = 782;
+    const newWindow = window.open(
+      "/create-new-task",
+      "",
+      `width=${width},height=${height},toolbar=no,location=no,resizable=no`
+    );
+
+    // Set the title of the new window
+    if (newWindow != null) {
+      newWindow.document.title = "Custom Window Title";
+    }
+  };
+
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
-      window.open("/create-new-task", "", "width=900,height=782");
+      openFormInNewWindow();
+      // window.open("/create-new-task", "", "width=900,height=782");
       // setOpen(true);
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }
   };
 
-  const handleWindowPortalClose = (text: string) => {
-    // setPortalClosedText(text);
-    setOpen(false);
-  };
-
-  // const handleOpenFormWindow = (): void => {
-  //   const content: string = renderFormContent();
-  //   openFormWindow(content);
-  // };
   // const renderFormContent = (): string => {
   //   return `
   //     <div style="padding: 20px;">

@@ -10,19 +10,30 @@ import ClearIcon from "@mui/icons-material/Clear";
 import SelectedContactBox from "../SelectedContactBox";
 import ContactBox from "../ContactBox";
 import _ from "lodash";
+import {
+  CreateNewTaskFormType,
+  ChangeValueType,
+  AssignedToStateType,
+} from "components/Tasks/type";
+import { handleGroupSearch } from "utills/common";
 
 interface Option {
   label: string;
   value: string;
 }
 interface IProps {
+  name: keyof CreateNewTaskFormType;
   label: string;
   contacts: any[];
   createCallback?: (type: string, label: string) => void;
+  handleChangeValues: (
+    value: ChangeValueType,
+    name: keyof CreateNewTaskFormType
+  ) => void;
 }
 
 function UserDropDown(props: IProps) {
-  const { label, contacts, createCallback } = props;
+  const { name, label, contacts, createCallback, handleChangeValues } = props;
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -62,6 +73,15 @@ function UserDropDown(props: IProps) {
   };
 
   const handleClose = () => {
+    let updatedSelected: AssignedToStateType[] = selected.map((item) => {
+      let payloadSelected: AssignedToStateType = {
+        phoneNumber: item.phoneNumber,
+        userId: item.userId,
+        state: "new",
+      };
+      return payloadSelected;
+    });
+    handleChangeValues(updatedSelected, name);
     setSearchQuery("");
     setOpen(false);
   };
@@ -72,20 +92,10 @@ function UserDropDown(props: IProps) {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
+    setFilterData(
+      handleGroupSearch(searchValue, sortedContacts, "contactFullName")
+    );
     setSearchQuery(searchValue);
-
-    const filteredData: { [key: string]: Option[] } = {};
-
-    Object.entries(sortedContacts).forEach(([groupLetter, groupOptions]) => {
-      const filteredOptions = groupOptions.filter((item) =>
-        item.contactFullName.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      if (filteredOptions.length > 0) {
-        filteredData[groupLetter] = filteredOptions;
-      }
-    });
-
-    setFilterData(filteredData);
   };
 
   const handleCreateClick = () => {
@@ -113,7 +123,8 @@ function UserDropDown(props: IProps) {
 
   const handleSelectedList = (contact: object, checked: boolean) => {
     if (checked) {
-      setSelected([...selected, contact]);
+      let updatedSelected = [...selected, contact];
+      setSelected(updatedSelected);
     } else {
       setSelected(
         _.remove(selected, (item: object) => {

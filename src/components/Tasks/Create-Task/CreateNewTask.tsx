@@ -7,13 +7,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import assets from "assets/assets";
 import CustomDropDown from "components/Utills/CustomDropDown";
-import React, { useEffect, useState } from "react";
-import de from "date-fns/locale/de";
+import { ChangeEvent, useEffect, useState } from "react";
 import Footer from "./Footer";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
 import {
   PROJECT_APIS,
   getAllProjects,
@@ -25,10 +21,25 @@ import { RootState } from "redux/reducers";
 import { isEmpty } from "lodash";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import UserDropDown from "components/Utills/UserDropdown";
-import { Options } from "../type";
+import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
+import CustomSwitch from "components/Utills/CustomSwitch";
+
+var initialValues = {
+  dueDate: "",
+  topic: "",
+  project: "",
+  assignedToState: [],
+  creator: "",
+  description: "",
+  doneImageRequired: false,
+  doneCommentsRequired: false,
+  invitedNumbers: [],
+};
 
 function CreateNewTask() {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [toggle, setToggle] = useState<boolean>(false);
+  const [selectedData, setSelectedData] =
+    useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
     allOptions: [],
     recentOptions: [],
@@ -79,13 +90,15 @@ function CreateNewTask() {
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
+      //todo : add allProjects
       const getAllProjectOptions = getDropdownOptions(
-        allProjects.allProjects,
+        allProjects,
         "title",
         "_id"
       );
+      //todo : add recentProjects
       const getRecentProjectOptions = getDropdownOptions(
-        allProjects.recentProjects,
+        allProjects,
         "title",
         "_id"
       );
@@ -111,33 +124,20 @@ function CreateNewTask() {
   };
 
   const handleCreateTask = () => {
+    let payload = selectedData;
+    payload.creator = user._id;
     dispatch(
       taskActions.createTask({
-        body: {
-          dueDate: "30-07-2023",
-          // topic: "64b119a742bbd2b53de76045",
-          topic: "64ad0fffb9e0a0a0efbd6b0b",
-          project: "",
-          assignedToState: [
-            {
-              phoneNumber: "+37251234567",
-              userId: "64748b875104dac077e750fb",
-              state: "new",
-            },
-            {
-              phoneNumber: "+923120619435",
-              userId: "644bdaf18fc7508375adb108",
-              state: "new",
-            },
-          ],
-          creator: "644bdaf18fc7508375adb108",
-          description: "",
-          doneImageRequired: false,
-          doneCommentsRequired: false,
-          invitedNumbers: ["+112345678008"],
-        },
+        body: payload,
       })
     );
+  };
+
+  const handleDescriptionChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
+  ) => {
+    let value = event ? event.target.value : "";
+    handleChangeValues(value, "description");
   };
 
   const handleCreateCallback = (type: string, label: string) => {
@@ -161,51 +161,86 @@ function CreateNewTask() {
         );
     }
   };
+
+  const handleChangeValues = (
+    value: ChangeValueType,
+    name: keyof CreateNewTaskFormType
+  ) => {
+    setSelectedData((prevSelectedData) => ({
+      ...prevSelectedData,
+      [name]: value,
+    }));
+  };
   return (
-    <div>
+    <Box sx={{ padding: "16px" }}>
       <CustomDropDown
+        name="topic"
         label={"Topic"}
         options={topicOptions}
         createCallback={handleCreateCallback}
+        handleChangeValues={handleChangeValues}
       />
-      <UserDropDown label={"Assign to"} contacts={userAllContacts} />
+      <UserDropDown
+        name="assignedToState"
+        label={"Assign to"}
+        contacts={userAllContacts}
+        handleChangeValues={handleChangeValues}
+      />
       <CustomDropDown
+        name="project"
         label={"Project"}
         options={projectOptions}
         createCallback={handleCreateCallback}
+        handleChangeValues={handleChangeValues}
       />
       <CustomDatePicker />
       <Box sx={{ padding: "8px", width: "100%" }}>
         <TextField
+          name="description"
           id="description-multiline"
           label="Description"
           multiline
           maxRows={4}
           variant="standard"
           sx={{ width: "100%" }}
+          onChange={handleDescriptionChange}
         />
       </Box>
-      <Box
-        display="flex"
-        alignItems="center"
-        width="100%"
-        justifyContent="space-between"
-      >
-        <Typography>Done requirements</Typography>
-        <Switch
-          // checked={checked}
-          // onChange={handleChange}
-          inputProps={{ "aria-label": "controlled" }}
-        />
-      </Box>
-      <FormGroup>
-        <FormControlLabel control={<Checkbox defaultChecked />} label="Image" />
-        <FormControlLabel control={<Checkbox />} label="Comment" />
-      </FormGroup>
+      <CustomSwitch
+        label="Done requirements"
+        toggle={toggle}
+        handleChange={() => {
+          setToggle(!toggle);
+        }}
+      />
+      {toggle && (
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                defaultChecked
+                onChange={(e, checked) => {
+                  handleChangeValues(checked, "doneImageRequired");
+                }}
+              />
+            }
+            label="Image"
+            name="doneImageRequired"
+          />
+          <FormControlLabel
+            control={<Checkbox />}
+            label="Comment"
+            onChange={(e, checked) => {
+              handleChangeValues(checked, "doneCommentsRequired");
+            }}
+            name="doneCommentsRequired"
+          />
+        </FormGroup>
+      )}
       <Box sx={{ marginTop: "100px" }}>
-        <Footer />
+        <Footer handleSubmitForm={handleCreateTask} />
       </Box>
-    </div>
+    </Box>
   );
 }
 

@@ -7,16 +7,26 @@ import Button from "@mui/material/Button";
 import { Box, ListSubheader, TextField, Typography } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import { Options, OptionType } from "components/Tasks/type";
+import {
+  CreateNewTaskFormType,
+  Options,
+  OptionType,
+  ChangeValueType,
+} from "components/Tasks/type";
 
 interface IProps {
+  name: keyof CreateNewTaskFormType;
   label: string;
   options: Options;
   createCallback?: (type: string, label: string) => void;
+  handleChangeValues: (
+    value: ChangeValueType,
+    name: keyof CreateNewTaskFormType
+  ) => void;
 }
 
 function CustomDropDown(props: IProps) {
-  const { label, options, createCallback } = props;
+  const { label, options, createCallback, handleChangeValues, name } = props;
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -34,7 +44,9 @@ function CustomDropDown(props: IProps) {
   }>({});
 
   const sortOptions = (options: OptionType[]) => {
-    return options.sort((a, b) => a.label.localeCompare(b.label));
+    return options
+      ? options.sort((a, b) => a.label.localeCompare(b.label))
+      : [];
   };
 
   useEffect(() => {
@@ -55,14 +67,13 @@ function CustomDropDown(props: IProps) {
     setSortedOptions(allGroupedData);
   }, [options]);
 
-  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-    console.log(event.target.value, "change events");
-    setSelected(event.target.value);
-    handleClose();
-  };
+  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
+  //   setSelected(event.target.value);
+  //   handleClose();
+  // };
   const handleMenuClick = (item: OptionType) => {
-    console.log("skladklas", item.value);
-    setSelected(item.value);
+    setSelected(item.label);
+    handleChangeValues(item.value, name);
     handleClose();
   };
 
@@ -116,6 +127,11 @@ function CustomDropDown(props: IProps) {
     setSelected("");
   };
 
+  const renderValue = () => {
+    return selected;
+  };
+
+  console.log(selected, "selected");
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
@@ -136,6 +152,7 @@ function CustomDropDown(props: IProps) {
           onClose={handleClose}
           onOpen={handleOpen}
           value={selected}
+          renderValue={renderValue}
           // onChange={handleChange}
           endAdornment={
             selected && (
@@ -177,7 +194,7 @@ function CustomDropDown(props: IProps) {
               <Button onClick={handleCreateClick}>Create</Button>
             )}
           </ListSubheader>
-          {options.recentOptions.length > 0 && (
+          {options?.recentOptions?.length > 0 && (
             <Box sx={{ margin: "8px 16px" }}>
               <Typography>Recent used {label}</Typography>
               {allFilterData.recent.map((item: OptionType) => {
