@@ -11,7 +11,7 @@ const CustomDatePicker = () => {
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Filled picker"
+          label="Date"
           renderInput={(params) => (
             <TextField
               {...params}

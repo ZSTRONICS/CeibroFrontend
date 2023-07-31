@@ -1,15 +1,26 @@
-export const openFormInNewWindow = (path: string) => {
-  const width = 900;
-  const height = 782;
+
+export const openFormInNewWindow = (path: string, windowTitle:string) => {
+  let width = 900;
+  let height = 782;
+  const leftOffset = (window.screen.width - width) / 2 + window.screenX;
+  const topOffset = (window.screen.height - height) / 2 + window.screenY;
+  // if (window.innerWidth < 900) {
+  //   width = window.innerWidth - 50;
+  // }
+  // if (window.innerHeight < 782) {
+  //   height = window.innerHeight - 50;
+  // }
   const newWindow = window.open(
     path,
     "",
-    `width=${width},height=${height},toolbar=no,location=no,resizable=no`
+    `width=${width},height=${height},left=${leftOffset},top=${topOffset},toolbar=no,location=no,resizable=no, status=no`
   );
 
   // Set the title of the new window
   if (newWindow != null) {
-    newWindow.document.title = "";
+    newWindow.addEventListener('load', () => {
+      newWindow.document.title = windowTitle;
+    });
   }
 };
 

@@ -3,21 +3,15 @@ import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
 import { taskActions } from "redux/action";
-import { renderToString } from "react-dom/server";
-import { openFormWindow } from "components/Utills/Globals";
-import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
-import CustomModal from "components/Modal";
-import { WindowPortal } from "components/Utills/WindowPortal";
 import { openFormInNewWindow } from "utills/common";
 
-function Sidebar() {
-  const [open, setOpen] = useState<boolean>(false);
+function Sidebar(props:any) {
+
   const classes = useStyles();
   const dispatch = useDispatch();
   const selectedTab = useSelector(
@@ -30,39 +24,14 @@ function Sidebar() {
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
   const handleRouteClick = (config: SingleConfig) => {
+    props.onClose()
     if (config.key === "newTask") {
-      openFormInNewWindow("/create-new-task");
-      // window.open("/create-new-task", "", "width=900,height=782");
-      // setOpen(true);
+      openFormInNewWindow("/create-new-task", "Create New Task");
+
     } else {
       dispatch(taskActions.selectedTaskFilter(config.key));
     }
   };
-
-  // const renderFormContent = (): string => {
-  //   return `
-  //     <div style="padding: 20px;">
-  //       <h2>Replace this component with create new task form</h2>
-  //       <hr />
-  //       <div>
-  //         ${renderToString(<CreateNewTask />)}
-  //       </div>
-  //     </div>
-  //   `;
-  // };
-  // const getNavbarStyles = () => {
-  //   let styles = {};
-  //   if (isTabletOrMobile) {
-  //     styles = {
-  //       left: navbarOpen ? "0px" : "-300px",
-  //     };
-  //   }
-  //   return styles;
-  // };
-
-  // const toggleSidebar = () => {
-  //   dispatch(appActions.toggleNavbar());
-  // };
 
   return (
     <>
@@ -104,24 +73,6 @@ function Sidebar() {
             );
           })}
       </div>
-      {/* {open && (
-        <WindowPortal onClose={handleWindowPortalClose}>
-          <CreateNewTask />
-          <Typography>asdjkgdsjdjkdfjkasdfjkgdhGGAsfjgasjkGASFJFJKg</Typography>
-        </WindowPortal>
-      )}  */}
-      {open === true && (
-        <CustomModal
-          maxWidth="450px"
-          showFullWidth={true}
-          showDivider={true}
-          showCloseBtn={true}
-          title={"Create new task"}
-          isOpen={open}
-          handleClose={() => setOpen((prev: boolean) => !prev)}
-          children={<CreateNewTask />}
-        />
-      )}
     </>
   );
 }

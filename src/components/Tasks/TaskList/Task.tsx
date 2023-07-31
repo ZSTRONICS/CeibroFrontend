@@ -9,7 +9,6 @@ import { RootState } from "redux/reducers";
 // mui
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
-import CreateNewTask from "../Create-Task/CreateNewTask";
 import TaskDetails from "../TaskDetails";
 import { optionMapping } from "components/Utills/Globals";
 
@@ -34,7 +33,6 @@ const Task = () => {
     loadingAllTaskfromMe,
   } = task;
   const [selectedTab, setSelectedTab] = useState("");
-
   useEffect(() => {
     const key = Object.keys(task[selectedTaskFilter])[0];
     if (!isRenderEffect.current) {
@@ -53,7 +51,7 @@ const Task = () => {
       }
     }
     setSelectedTab(key);
-    setSelectedTask(task[selectedTaskFilter][key][0]);
+    // setSelectedTask(task[selectedTaskFilter][key][0]);
     setFilteredTask(searchInData(task[selectedTaskFilter][key], "", "taskUID"));
     return () => {
       isRenderEffect.current = true;
@@ -77,9 +75,7 @@ const Task = () => {
     }
   }, [selectedTab]);
 
-  console.log("selectedTab", selectedTab);
   const handleTabClick = (type: string) => {
-    console.log("selectedTab type", type);
     setSelectedTab(type);
     setSelectedTask(null);
     // setSelectedTask(task[selectedTaskFilter][type][0]);
@@ -127,6 +123,15 @@ const Task = () => {
 
   taskOngoingCount = ongoing.length;
   taskDoneCount = done.length;
+
+  useEffect(() => {
+    setSelectedTask(null);
+  }, [
+    allTaskFromMe.unread.length,
+    allTaskHidden.canceled.length,
+    taskOngoingCount,
+    taskDoneCount,
+  ]);
 
   const menuOptions = [
     {
@@ -290,7 +295,7 @@ const Task = () => {
         <Box
           className="custom-scrollbar"
           sx={{
-            height: "calc(100vh - 192px)",
+            height: "calc(100vh - 180px)",
             overflow: "auto",
             padding: " 0 1px",
             pl: 0.7,
@@ -314,7 +319,9 @@ const Task = () => {
                     selectedTab
                   )}
                   disableMenu={
-                    selectedTab === "canceled" ? task.creator !== userId : false
+                    selectedTab === "canceled"
+                      ? task.creator._id !== userId
+                      : false
                   }
                 />
               ))}
@@ -322,7 +329,7 @@ const Task = () => {
         </Box>
       </Grid>
       <Grid item md={9}>
-        {selectedTask ? (
+        {selectedTask !== null ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

@@ -37,7 +37,7 @@ export default function TaskDetails(props: IProps) {
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
 
   return (
-    <Box sx={{ height: "calc(100vh - 85px)", overflow: "auto" }}>
+    <Box sx={{ height: "calc(100vh - 85px)", overflow: "auto" }} className="custom-scrollbar">
       <DetailsHeader
         assignedToState={assignedToState}
         userSubState={userSubState}

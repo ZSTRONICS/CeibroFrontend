@@ -5,6 +5,7 @@ import { CommentOutlined, ForwardOutlined } from "@mui/icons-material";
 import assets from "../../../assets/assets";
 import capitalize from "lodash/capitalize";
 import { openFormInNewWindow } from "utills/common";
+import { LoadingButton } from "components/Button";
 
 interface IProps {
   taskId: string;
@@ -24,15 +25,16 @@ enum statusColors {
 const DetailActions: React.FC<IProps> = (props) => {
   const { userSubState, taskUid, dueDate, createdOn, taskId } = props;
   const handleCommentClick = () => {
-    openFormInNewWindow(`/comment-task/${taskId}`);
+    openFormInNewWindow(`/comment-task/${taskId}`, "Task Comment");
   };
 
   const handleForwardClick = () => {
-    openFormInNewWindow(`/forward-task/${taskId}`);
+    openFormInNewWindow(`/forward-task/${taskId}`, "Task Forward");
   };
 
   const handleDoneClick = () => {
     // Handle done button click here
+    openFormInNewWindow(`/comment-task/${taskId}`, "Task Done");
   };
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
@@ -96,50 +98,50 @@ const DetailActions: React.FC<IProps> = (props) => {
               alignItems: "center",
             }}
           >
-            Due date: {dueDate}
+            Due date: {dueDate===""?"N/A":dueDate}
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={6} container justifyContent="flex-end" gap={2}>
-        <Button
+      <Grid item xs={6} container justifyContent="flex-end" alignItems="center" gap={2}>
+        <LoadingButton
           startIcon={<img src={assets.CommentIcon} />}
           onClick={handleCommentClick}
           variant="text"
           sx={{
-            height: "24px",
-            width: "103px",
+            height: "28px",
+            // width: "103px",
+            fontWeight: "700",
             padding: "8px 16px",
-            textTransform: "capitalize",
           }}
         >
           Comment
-        </Button>
-        <Button
+        </LoadingButton>
+        <LoadingButton
           startIcon={<img src={assets.ForwardIcon} />}
           onClick={handleForwardClick}
           variant="text"
           sx={{
-            height: "24px",
-            width: "103px",
-            padding: "8px 16px",
-            textTransform: "capitalize",
+            height: "28px",
+            // width: "103px",
+            fontWeight: "700",
+            padding: "8px 22px",
           }}
         >
           Forward
-        </Button>
-        <Button
+        </LoadingButton>
+        <LoadingButton
           variant="contained"
           onClick={handleDoneClick}
           sx={{
-            height: "24px",
-            width: "103px",
-            padding: "8px 16px",
-            textTransform: "capitalize",
+            height: "28px",
+            // width: "103px",
+            fontWeight: "700",
+            padding: "16px 30px",
           }}
           disabled={userSubState === "done" || userSubState === "canceled"}
         >
           Done
-        </Button>
+        </LoadingButton>
       </Grid>
     </Grid>
   );

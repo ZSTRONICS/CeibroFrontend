@@ -2,6 +2,7 @@ import { IconButton, Menu, MenuItem } from "@mui/material";
 import React, { useState } from "react";
 import Fade from "@mui/material/Fade";
 import assets from "assets/assets";
+import { MenuItemTag } from "components/CustomTags";
 
 export interface Option {
   menuName: string;
@@ -51,15 +52,17 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu=false }) 
           TransitionComponent={Fade}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "center",
+            horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center",
+            horizontal: "right",
           }}
         >
           {options.map((option) => (
-            <MenuItem
+            <MenuItemTag
+              disableGutters
+              
               key={option.menuName}
               onClick={() => {
                 option.callBackHandler();
@@ -67,7 +70,7 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu=false }) 
               }}
             >
               {option.menuName}
-            </MenuItem>
+            </MenuItemTag>
           ))}
         </Menu>
       )}

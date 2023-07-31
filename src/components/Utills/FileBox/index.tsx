@@ -49,9 +49,6 @@ const FileBox: React.FC<IProps> = ({ files, title, size }) => (
         let f_name = "";
         let key = "";
         const { fileName, _id, name } = item;
-        console.log(fileName, "fileName");
-        console.log(_id, "_id");
-        console.log(name, "name");
         if (fileName) {
           f_name = fileName;
           key = _id;

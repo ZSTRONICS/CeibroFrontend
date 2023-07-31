@@ -172,7 +172,7 @@ function CreateNewTask() {
       [name]: value,
     }));
   };
-
+console.log('selectedData', selectedData)
   const handleAttachImageValue = () => {};
   const handleGetLocationValue = () => {};
   const handleSelectDocumentValue = () => {};
@@ -180,7 +180,7 @@ function CreateNewTask() {
   return (
     <Box>
       <TaskHeader title="New task" />
-      <Box sx={{ padding: "16px" }}>
+      <Box sx={{ padding: "16px", }} >
         <CustomDropDown
           name="topic"
           label={"Topic"}
@@ -226,7 +226,7 @@ function CreateNewTask() {
             <FormControlLabel
               control={
                 <Checkbox
-                  defaultChecked
+                  // defaultChecked
                   onChange={(e, checked) => {
                     handleChangeValues(checked, "doneImageRequired");
                   }}

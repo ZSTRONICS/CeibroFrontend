@@ -24,7 +24,6 @@ export default function Nav({ openNav, onCloseNav }: Props) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive("up", "lg", "");
-
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -48,7 +47,7 @@ export default function Nav({ openNav, onCloseNav }: Props) {
           style={{ height: "55px", width: "70px" }}
         />
       </Box>
-      <Sidebar />
+      <Sidebar onClose={onCloseNav}/>
     </Box>
   );
 

@@ -48,15 +48,16 @@ function TaskCard(props: IProps) {
     userSubState,
     seenBy,
   } = task;
-  useEffect(() => {
-    if (!seenBy.includes(userId)) {
-      dispatch(
-        taskActions.taskSeen({
-          other: { taskId: _id },
-        })
-      );
-    }
-  }, [_id, seenBy, userId]);
+  
+  // useEffect(() => {
+  //   if (!seenBy.includes(userId)) {
+  //     dispatch(
+  //       taskActions.taskSeen({
+  //         other: { taskId: _id },
+  //       })
+  //     );
+  //   }
+  // }, [_id, seenBy, userId]);
 
   // const assignedTo =
   // assignedToState.length > 0

@@ -85,12 +85,10 @@ function CustomDropDown(props: IProps) {
   const handleOpen = () => {
     setOpen(true);
   };
-
+  const filteredData: { [key: string]: OptionType[] } = {};
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearchQuery(searchValue);
-
-    const filteredData: { [key: string]: OptionType[] } = {};
 
     Object.entries(sortedOptions).forEach(([groupLetter, groupOptions]) => {
       const filteredOptions = groupOptions.filter((item) =>
@@ -100,7 +98,7 @@ function CustomDropDown(props: IProps) {
         filteredData[groupLetter] = filteredOptions;
       }
     });
-    console.log(filteredData, "filteredData");
+
     setAllFilterData({ all: filteredData, recent: options.recentOptions });
   };
 
@@ -110,9 +108,11 @@ function CustomDropDown(props: IProps) {
       label: searchQuery,
       value: searchQuery,
     };
+    console.log("newItem", newItem);
     // setFilterData((prevData) => [...prevData, newItem]);
     setSelected(searchQuery);
     createCallback && createCallback(label, searchQuery);
+    setAllFilterData({ all: filteredData, recent: options.recentOptions });
     handleClose();
   };
 
@@ -130,8 +130,9 @@ function CustomDropDown(props: IProps) {
   const renderValue = () => {
     return selected;
   };
+  const firstSearchQuery = searchQuery?.[0]?.toUpperCase() || "";
+  const isMatchFound = !!allFilterData.all[firstSearchQuery];
 
-  console.log(selected, "selected");
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
@@ -188,11 +189,23 @@ function CustomDropDown(props: IProps) {
                 disableUnderline: true,
               }}
             />
-            {allFilterData.all[searchQuery?.[0]?.toUpperCase() || ""] ? (
+            {/* {allFilterData.all[searchQuery?.[0]?.toLowerCase() || ""] ? (
               <Button onClick={handleCancelClick}>Cancel</Button>
             ) : (
-              <Button onClick={handleCreateClick}>Create</Button>
-            )}
+              <Button onClick={handleCreateClick}>save</Button>
+            )} */}
+            <>
+              {searchQuery && searchQuery.length > 0 && isMatchFound ? (
+                <Button onClick={handleCancelClick}>Cancel</Button>
+              ) : (
+                <Button
+                  onClick={handleCreateClick}
+                  disabled={searchQuery.length === 0}
+                >
+                  Save
+                </Button>
+              )}
+            </>
           </ListSubheader>
           {options?.recentOptions?.length > 0 && (
             <Box sx={{ margin: "8px 16px" }}>
