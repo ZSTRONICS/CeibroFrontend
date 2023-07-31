@@ -70,6 +70,7 @@ function CreateNewTask() {
   }, []);
 
   useEffect(() => {
+    console.log("topic");
     if (Topics && !isEmpty(Topics)) {
       const topics = [...Topics.allTopics, ...Topics.recentTopics];
       const getAllTopicOptions = getDropdownOptions(
@@ -151,6 +152,9 @@ function CreateNewTask() {
             },
           })
         );
+        //todo check websocket events for new window
+        dispatch(taskActions.getAllTopic());
+
         break;
       case "Project":
         dispatch(
@@ -160,6 +164,8 @@ function CreateNewTask() {
             },
           })
         );
+        //todo check websocket events for new window
+        dispatch(getAllProjects());
     }
   };
 
@@ -172,7 +178,7 @@ function CreateNewTask() {
       [name]: value,
     }));
   };
-console.log('selectedData', selectedData)
+  console.log("selectedData", selectedData);
   const handleAttachImageValue = () => {};
   const handleGetLocationValue = () => {};
   const handleSelectDocumentValue = () => {};
@@ -180,7 +186,7 @@ console.log('selectedData', selectedData)
   return (
     <Box>
       <TaskHeader title="New task" />
-      <Box sx={{ padding: "16px", }} >
+      <Box sx={{ padding: "16px" }}>
         <CustomDropDown
           name="topic"
           label={"Topic"}
@@ -201,7 +207,11 @@ console.log('selectedData', selectedData)
           createCallback={handleCreateCallback}
           handleChangeValues={handleChangeValues}
         />
-        <CustomDatePicker />
+        <CustomDatePicker
+          name="dueDate"
+          label="Due Date"
+          handleChangeValues={handleChangeValues}
+        />
         <Box sx={{ padding: "8px", width: "100%" }}>
           <TextField
             name="description"

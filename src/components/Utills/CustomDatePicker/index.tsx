@@ -3,15 +3,43 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField"; // Import the TextField from MUI
+import { ChangeValueType, CreateNewTaskFormType } from "components/Tasks/type";
+import { useState } from "react";
 
-const CustomDatePicker = () => {
+interface CustomeDatePickerProps {
+  name: string;
+  label: string;
+  handleChangeValues: (
+    value: ChangeValueType,
+    name: keyof CreateNewTaskFormType
+  ) => void;
+}
+
+const CustomDatePicker = ({
+  label,
+  name,
+  handleChangeValues,
+}: CustomeDatePickerProps) => {
+  const [value, setValue] = useState("");
+
+  const handleDateChange = (date: Date | null) => {
+    if (date) {
+      const formattedDate = new Date(date).toLocaleDateString();
+      handleChangeValues(formattedDate, "dueDate");
+      setValue(formattedDate);
+    } else {
+      console.log("No date selected.");
+    }
+  };
+
   return (
     <div
       style={{ display: "flex", flexDirection: "column", marginLeft: "8px" }}
     >
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
-          label="Date"
+          key={name}
+          label={label}
           renderInput={(params) => (
             <TextField
               {...params}
@@ -19,13 +47,8 @@ const CustomDatePicker = () => {
               sx={{ width: "100%" }}
             />
           )}
-          onChange={function (
-            value: unknown,
-            keyboardInputValue?: string | undefined
-          ): void {
-            console.log("");
-          }}
-          value={undefined}
+          onChange={handleDateChange}
+          value={value}
         />
       </LocalizationProvider>
     </div>

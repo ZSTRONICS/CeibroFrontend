@@ -155,7 +155,7 @@ function UserDropDown(props: IProps) {
           id="controlled-open-select"
           sx={{
             "& .MuiSelect-icon": {
-              right: `${selected.length > 0 ? "45px" : 0}`,
+              right: `${selected.length > 0 ? "40px" : 0}`,
             },
           }}
           multiple

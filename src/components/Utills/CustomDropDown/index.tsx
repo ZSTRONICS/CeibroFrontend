@@ -62,7 +62,12 @@ function CustomDropDown(props: IProps) {
       }
       allGroupedData[firstLetter].push(option);
     });
-
+    if (selected) {
+      let updatedSelected = options.allOptions.find(
+        (item) => item.label === selected
+      );
+      handleChangeValues(updatedSelected?.value, name);
+    }
     setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
     setSortedOptions(allGroupedData);
   }, [options]);
@@ -145,7 +150,7 @@ function CustomDropDown(props: IProps) {
           id="controlled-open-select"
           sx={{
             "& .MuiSelect-icon": {
-              right: `${selected ? "45px" : 0}`,
+              right: `${selected ? "40px" : 0}`,
             },
           }}
           variant="standard"
