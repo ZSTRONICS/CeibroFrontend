@@ -1,16 +1,16 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
 import assets from "../../../assets/assets";
-import { File } from "constants/interfaces";
+import { IFile } from "constants/interfaces";
 
 interface IProps {
-  title: string;
-  files: File[];
+  title?: string;
+  files: IFile[] | File[];
   size?: string;
   textColor?: string;
 }
 
-const FileBox: React.FC<IProps> = ({ files, title, }) => (
+const FileBox: React.FC<IProps> = ({ files, title, size }) => (
   <Box
     sx={{
       width: "100%",
@@ -45,11 +45,23 @@ const FileBox: React.FC<IProps> = ({ files, title, }) => (
       </Typography>
     </Box>
     {files.length > 0 ? (
-      files.map((item: File) => {
-        const { fileName, _id } = item;
+      files.map((item: IFile | File) => {
+        let f_name = "";
+        let key = "";
+        const { fileName, _id, name } = item;
+        console.log(fileName, "fileName");
+        console.log(_id, "_id");
+        console.log(name, "name");
+        if (fileName) {
+          f_name = fileName;
+          key = _id;
+        } else if (name) {
+          f_name = name;
+          key = `${name}_${size}`;
+        }
         return (
           <Box
-            key={_id}
+            key={key}
             sx={{
               display: "flex",
               alignItems: "center",
@@ -66,7 +78,7 @@ const FileBox: React.FC<IProps> = ({ files, title, }) => (
                 marginRight: "16px",
               }}
             >
-              {fileName}
+              {f_name}
             </Typography>
             <Typography
               sx={{
@@ -76,7 +88,7 @@ const FileBox: React.FC<IProps> = ({ files, title, }) => (
                 opacity: 0.54,
               }}
             >
-              {/* {fileSize} */}
+              {size && size}
             </Typography>
           </Box>
         );

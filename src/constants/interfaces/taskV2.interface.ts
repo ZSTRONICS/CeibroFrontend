@@ -43,10 +43,10 @@ export interface Task {
   isCanceled: boolean;
   createdAt: string;
   updatedAt: string;
-  files: File[];
+  files: IFile[];
   events: TaskEvent[];
   userSubState: string;
-  creatorState:string
+  creatorState: string;
 }
 
 export interface AssignedUserState extends UserInfo {
@@ -66,7 +66,7 @@ export interface Topic {
   topic: string;
 }
 
-export interface File {
+export interface IFile {
   _id: string;
   fileName: string;
   fileTag: string;
@@ -78,11 +78,11 @@ export interface File {
   comment: string;
 }
 export enum TaskEventType {
-  ForwardTask = 'forwardTask',
-  Comment = 'comment',
-  DoneTask = 'doneTask',
-  CancelTask = 'cancelTask',
-  InvitedUser = 'invitedUser',
+  ForwardTask = "forwardTask",
+  Comment = "comment",
+  DoneTask = "doneTask",
+  CancelTask = "cancelTask",
+  InvitedUser = "invitedUser",
 }
 
 export interface TaskEvent {
@@ -105,5 +105,5 @@ export interface CommentData {
   taskId: string;
   isFileAttached: boolean;
   message: string;
-  files: File[];
+  files: IFile[];
 }

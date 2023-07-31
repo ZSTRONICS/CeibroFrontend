@@ -6,12 +6,12 @@ import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import React from "react";
 import DrawingFiles from "./DrawingFiles";
 import AddedDetails from "./AddedDetails";
-import { File, TaskEvent } from "constants/interfaces";
+import { IFile, TaskEvent } from "constants/interfaces";
 
 interface IProps {
   description: string;
   events: TaskEvent[];
-  media: File[];
+  media: IFile[];
 }
 
 export default function DetailsBody(props: IProps) {
@@ -30,8 +30,8 @@ export default function DetailsBody(props: IProps) {
       >
         {media.length > 0 &&
           media
-            .filter((media: File) => media.comment.length === 0)
-            .map((file: File) => {
+            .filter((media: IFile) => media.comment.length === 0)
+            .map((file: IFile) => {
               return (
                 <Box
                   sx={{
@@ -45,8 +45,8 @@ export default function DetailsBody(props: IProps) {
       </Box>
       {media.length > 0 &&
         media
-          .filter((media: File) => media.comment.length>0)
-          .map((file:File) => {
+          .filter((media: IFile) => media.comment.length > 0)
+          .map((file: IFile) => {
             return (
               <Box
                 sx={{

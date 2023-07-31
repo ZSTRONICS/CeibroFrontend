@@ -23,6 +23,7 @@ import CustomDatePicker from "components/Utills/CustomDatePicker";
 import UserDropDown from "components/Utills/UserDropdown";
 import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
 import CustomSwitch from "components/Utills/CustomSwitch";
+import TaskHeader from "../TaskHeader";
 
 var initialValues = {
   dueDate: "",
@@ -171,74 +172,87 @@ function CreateNewTask() {
       [name]: value,
     }));
   };
+
+  const handleAttachImageValue = () => {};
+  const handleGetLocationValue = () => {};
+  const handleSelectDocumentValue = () => {};
+
   return (
-    <Box sx={{ padding: "16px" }}>
-      <CustomDropDown
-        name="topic"
-        label={"Topic"}
-        options={topicOptions}
-        createCallback={handleCreateCallback}
-        handleChangeValues={handleChangeValues}
-      />
-      <UserDropDown
-        name="assignedToState"
-        label={"Assign to"}
-        contacts={userAllContacts}
-        handleChangeValues={handleChangeValues}
-      />
-      <CustomDropDown
-        name="project"
-        label={"Project"}
-        options={projectOptions}
-        createCallback={handleCreateCallback}
-        handleChangeValues={handleChangeValues}
-      />
-      <CustomDatePicker />
-      <Box sx={{ padding: "8px", width: "100%" }}>
-        <TextField
-          name="description"
-          id="description-multiline"
-          label="Description"
-          multiline
-          maxRows={4}
-          variant="standard"
-          sx={{ width: "100%" }}
-          onChange={handleDescriptionChange}
+    <Box>
+      <TaskHeader title="New task" />
+      <Box sx={{ padding: "16px" }}>
+        <CustomDropDown
+          name="topic"
+          label={"Topic"}
+          options={topicOptions}
+          createCallback={handleCreateCallback}
+          handleChangeValues={handleChangeValues}
         />
-      </Box>
-      <CustomSwitch
-        label="Done requirements"
-        toggle={toggle}
-        handleChange={() => {
-          setToggle(!toggle);
-        }}
-      />
-      {toggle && (
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                defaultChecked
-                onChange={(e, checked) => {
-                  handleChangeValues(checked, "doneImageRequired");
-                }}
-              />
-            }
-            label="Image"
-            name="doneImageRequired"
+        <UserDropDown
+          name="assignedToState"
+          label={"Assign to"}
+          contacts={userAllContacts}
+          handleChangeValues={handleChangeValues}
+        />
+        <CustomDropDown
+          name="project"
+          label={"Project"}
+          options={projectOptions}
+          createCallback={handleCreateCallback}
+          handleChangeValues={handleChangeValues}
+        />
+        <CustomDatePicker />
+        <Box sx={{ padding: "8px", width: "100%" }}>
+          <TextField
+            name="description"
+            id="description-multiline"
+            label="Description"
+            multiline
+            maxRows={4}
+            variant="standard"
+            sx={{ width: "100%" }}
+            onChange={handleDescriptionChange}
           />
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Comment"
-            onChange={(e, checked) => {
-              handleChangeValues(checked, "doneCommentsRequired");
-            }}
-            name="doneCommentsRequired"
+        </Box>
+        <CustomSwitch
+          label="Done requirements"
+          toggle={toggle}
+          handleChange={() => {
+            setToggle(!toggle);
+          }}
+        />
+        {toggle && (
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  defaultChecked
+                  onChange={(e, checked) => {
+                    handleChangeValues(checked, "doneImageRequired");
+                  }}
+                />
+              }
+              label="Image"
+              name="doneImageRequired"
+            />
+            <FormControlLabel
+              control={<Checkbox />}
+              label="Comment"
+              onChange={(e, checked) => {
+                handleChangeValues(checked, "doneCommentsRequired");
+              }}
+              name="doneCommentsRequired"
+            />
+          </FormGroup>
+        )}
+        <Box sx={{ marginTop: "100px" }}>
+          <Footer
+            handleSubmitForm={handleCreateTask}
+            handleAttachImageValue={handleAttachImageValue}
+            handleGetLocationValue={handleGetLocationValue}
+            handleSelectDocumentValue={handleSelectDocumentValue}
           />
-        </FormGroup>
-      )}
-      <Box sx={{ marginTop: "100px" }}>
-        <Footer handleSubmitForm={handleCreateTask} />
+        </Box>
       </Box>
     </Box>
   );

@@ -8,9 +8,12 @@ import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
+  handleAttachImageValue?: (file: File) => void;
+  handleSelectDocumentValue?: (file: File) => void;
+  handleGetLocationValue?: () => void;
 }
 
-const Footer = ({ handleSubmitForm }: FooterPropsType) => {
+const Footer = (props: FooterPropsType) => {
   const handleGetLocation = () => {
     // Code to get user's location
     navigator.geolocation.getCurrentPosition(
@@ -30,8 +33,11 @@ const Footer = ({ handleSubmitForm }: FooterPropsType) => {
     input.type = "file";
     input.accept = "application/pdf";
     input.onchange = (event) => {
-      const file = event.target.files[0];
+      const file = (event.target as HTMLInputElement).files?.[0];
       console.log("Selected PDF file:", file);
+      props.handleSelectDocumentValue &&
+        file &&
+        props.handleSelectDocumentValue(file);
     };
     input.click();
   };
@@ -42,15 +48,13 @@ const Footer = ({ handleSubmitForm }: FooterPropsType) => {
     input.type = "file";
     input.accept = "image/*";
     input.onchange = (event) => {
-      const file = event.target.files[0];
+      const file = (event.target as HTMLInputElement).files?.[0];
       console.log("Selected image file:", file);
+      props.handleAttachImageValue &&
+        file &&
+        props.handleAttachImageValue(file);
     };
     input.click();
-  };
-
-  const handleRightArrowClick = () => {
-    // Placeholder function for the right arrow button
-    console.log("Right Arrow button clicked");
   };
 
   return (
@@ -67,23 +71,32 @@ const Footer = ({ handleSubmitForm }: FooterPropsType) => {
         padding: "8px",
       }}
     >
+      {props.handleGetLocationValue && (
+        <CustomButton
+          label={"Location"}
+          icon={<FmdGoodOutlinedIcon />}
+          variant="outlined"
+          onClick={handleGetLocation}
+        />
+      )}
+      {props.handleSelectDocumentValue && (
+        <CustomButton
+          label={"Document"}
+          icon={<InsertDriveFileOutlinedIcon />}
+          variant="outlined"
+          onClick={handleSelectDocument}
+        />
+      )}
+      {props.handleAttachImageValue && (
+        <CustomButton
+          label={"Attach"}
+          icon={<AttachFileOutlinedIcon />}
+          variant="outlined"
+          onClick={handleAttachImage}
+        />
+      )}
       <CustomButton
-        label={"Location"}
-        icon={<FmdGoodOutlinedIcon />}
-        variant="outlined"
-      />
-      <CustomButton
-        label={"Document"}
-        icon={<InsertDriveFileOutlinedIcon />}
-        variant="outlined"
-      />
-      <CustomButton
-        label={"Attach"}
-        icon={<AttachFileOutlinedIcon />}
-        variant="outlined"
-      />
-      <CustomButton
-        onClick={handleSubmitForm}
+        onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
         variant="contained"
       />

@@ -14,6 +14,7 @@ import { openFormWindow } from "components/Utills/Globals";
 import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 import CustomModal from "components/Modal";
 import { WindowPortal } from "components/Utills/WindowPortal";
+import { openFormInNewWindow } from "utills/common";
 
 function Sidebar() {
   const [open, setOpen] = useState<boolean>(false);
@@ -28,24 +29,9 @@ function Sidebar() {
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
-  const openFormInNewWindow = () => {
-    const width = 900;
-    const height = 782;
-    const newWindow = window.open(
-      "/create-new-task",
-      "",
-      `width=${width},height=${height},toolbar=no,location=no,resizable=no`
-    );
-
-    // Set the title of the new window
-    if (newWindow != null) {
-      newWindow.document.title = "Custom Window Title";
-    }
-  };
-
   const handleRouteClick = (config: SingleConfig) => {
     if (config.key === "newTask") {
-      openFormInNewWindow();
+      openFormInNewWindow("/create-new-task");
       // window.open("/create-new-task", "", "width=900,height=782");
       // setOpen(true);
     } else {

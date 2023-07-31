@@ -6,7 +6,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, Divider } from "@mui/material";
 import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
-import { File, TaskEvent, TaskEventType } from "constants/interfaces";
+import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import {
   AddStatusTag,
   CustomStack,
@@ -23,7 +23,7 @@ export default function AddedDetails(props: IProps) {
   const { events } = props;
   return (
     <div>
-      <Accordion defaultExpanded={true} >
+      <Accordion defaultExpanded={true}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -130,7 +130,7 @@ export default function AddedDetails(props: IProps) {
                             <Divider />
                           </>
                         )}
-                        {commentData?.files.map((file: File) => (
+                        {commentData?.files.map((file: IFile) => (
                           <Box
                             key={file._id} // Add a unique key to help React identify elements
                             sx={{

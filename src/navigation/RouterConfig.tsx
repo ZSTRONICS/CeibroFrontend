@@ -27,6 +27,7 @@ import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 import ForwardTask from "components/Tasks/Forward-Task";
+import NewComment from "components/Tasks/Comment";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}
@@ -57,14 +58,14 @@ const RouterConfig: React.FC<Configs> = () => {
               path="/profile-pic"
               component={RegisterAddProfilePic}
             />
-
+            <PrivateRoute path="/create-new-task" component={CreateNewTask} />
+            <PrivateRoute
+              path="/forward-task/:taskId"
+              component={ForwardTask}
+            />
+            <PrivateRoute path="/comment-task/:taskId" component={NewComment} />
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/create-new-task" component={CreateNewTask} />
-              <PrivateRoute
-                path="/forward-task/:taskId"
-                component={ForwardTask}
-              />
               <PrivateRoute path="/tasks" component={Tasks} />
               <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute

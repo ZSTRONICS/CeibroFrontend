@@ -9,7 +9,7 @@ export const openFormInNewWindow = (path: string) => {
 
   // Set the title of the new window
   if (newWindow != null) {
-    newWindow.document.title = "Custom Window Title";
+    newWindow.document.title = "";
   }
 };
 

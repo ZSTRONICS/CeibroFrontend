@@ -24,7 +24,7 @@ enum statusColors {
 const DetailActions: React.FC<IProps> = (props) => {
   const { userSubState, taskUid, dueDate, createdOn, taskId } = props;
   const handleCommentClick = () => {
-    // Handle comment button click here
+    openFormInNewWindow(`/comment-task/${taskId}`);
   };
 
   const handleForwardClick = () => {
