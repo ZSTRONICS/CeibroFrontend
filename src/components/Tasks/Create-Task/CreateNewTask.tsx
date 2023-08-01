@@ -24,6 +24,8 @@ import UserDropDown from "components/Utills/UserDropdown";
 import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
 import CustomSwitch from "components/Utills/CustomSwitch";
 import TaskHeader from "../TaskHeader";
+import ImageBox from "components/Utills/ImageBox";
+import FileBox from "components/Utills/FileBox";
 
 var initialValues = {
   dueDate: "",
@@ -39,6 +41,8 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [selectedData, setSelectedData] =
     useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
@@ -179,9 +183,14 @@ function CreateNewTask() {
     }));
   };
   console.log("selectedData", selectedData);
-  const handleAttachImageValue = () => {};
   const handleGetLocationValue = () => {};
-  const handleSelectDocumentValue = () => {};
+
+  const handleAttachImageValue = (file: File) => {
+    setSelectedImages([...selectedImages, file]);
+  };
+  const handleSelectDocumentValue = (file: File) => {
+    setSelectedDocuments([...selectedDocuments, file]);
+  };
 
   return (
     <Box>
@@ -254,6 +263,50 @@ function CreateNewTask() {
               name="doneCommentsRequired"
             />
           </FormGroup>
+        )}
+        {selectedImages.length > 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              padding: "16px",
+              overflow: "auto",
+              "&::-webkit-scrollbar": {
+                height: "0.4rem",
+              },
+              "&::-webkit-scrollbar-track": {
+                "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+                borderRadius: "0.2rem",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,.1)",
+              },
+            }}
+          >
+            {selectedImages.map((file) => {
+              return (
+                <Box
+                  sx={{
+                    width: "80px",
+                    height: "80px",
+                    display: "flex",
+                    marginRight: "16px",
+                  }}
+                >
+                  <ImageBox src={URL.createObjectURL(file)} />
+                </Box>
+              );
+            })}
+          </Box>
+        )}
+
+        {selectedDocuments.length > 0 && (
+          <Box
+            sx={{
+              padding: "16px",
+            }}
+          >
+            <FileBox title="Files" files={selectedDocuments} />
+          </Box>
         )}
         <Box sx={{ marginTop: "100px" }}>
           <Footer
