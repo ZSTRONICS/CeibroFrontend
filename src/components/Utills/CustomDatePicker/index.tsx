@@ -26,26 +26,20 @@ const CustomDatePicker = ({
     if (date) {
       const formattedDate = new Date(date).toLocaleDateString();
       handleChangeValues(formattedDate, "dueDate");
-      setValue(formattedDate);
+      setValue(date);
     } else {
       console.log("No date selected.");
     }
   };
 
   return (
-    <div
-      style={{ display: "flex", flexDirection: "column", marginLeft: "8px" }}
-    >
+    <div style={{ display: "flex", flexDirection: "column", marginTop: "8px" }}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <DatePicker
           key={name}
           label={label}
           renderInput={(params) => (
-            <TextField
-              {...params}
-              variant="standard" // Set the variant to "standard"
-              sx={{ width: "100%" }}
-            />
+            <TextField {...params} variant="standard" sx={{ width: "100%" }} />
           )}
           onChange={handleDateChange}
           value={value}

@@ -46,6 +46,7 @@ const Comment = ({ title }: CommentProps) => {
     if (!found) {
       setSelectedDocuments([...selectedDocuments, file]);
     } else {
+      toast.error("Document already added in the list");
     }
   };
 

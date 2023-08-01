@@ -147,7 +147,7 @@ function UserDropDown(props: IProps) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
         variant="standard"
-        sx={{ m: 1, width: "100%", maxWidth: "100%" }}
+        sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
       >
         <InputLabel id="controlled-open-select-label">{label}</InputLabel>
         <Select

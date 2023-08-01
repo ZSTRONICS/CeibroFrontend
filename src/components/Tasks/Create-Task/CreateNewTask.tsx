@@ -3,6 +3,7 @@ import {
   Checkbox,
   FormControlLabel,
   FormGroup,
+  IconButton,
   Switch,
   TextField,
   Typography,
@@ -21,11 +22,20 @@ import { RootState } from "redux/reducers";
 import { isEmpty } from "lodash";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import UserDropDown from "components/Utills/UserDropdown";
-import { ChangeValueType, CreateNewTaskFormType, Options } from "../type";
+import {
+  ChangeValueType,
+  CreateNewTaskFormType,
+  Options,
+  fileType,
+} from "../type";
 import CustomSwitch from "components/Utills/CustomSwitch";
 import TaskHeader from "../TaskHeader";
 import ImageBox from "components/Utills/ImageBox";
 import FileBox from "components/Utills/FileBox";
+import { toast } from "react-toastify";
+import { removeItem } from "utills/common";
+
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
 var initialValues = {
   dueDate: "",
@@ -78,12 +88,14 @@ function CreateNewTask() {
     if (Topics && !isEmpty(Topics)) {
       const topics = [...Topics.allTopics, ...Topics.recentTopics];
       const getAllTopicOptions = getDropdownOptions(
-        Topics.allTopics,
+        //todo null receive in array from backend
+        Topics.allTopics.filter((item: any) => item != null),
         "topic",
         "_id"
       );
       const getRecentTopicOptions = getDropdownOptions(
-        Topics.recentTopics,
+        //todo null receive in array from backend
+        Topics.recentTopics.filter((item: any) => item != null),
         "topic",
         "_id"
       );
@@ -186,10 +198,34 @@ function CreateNewTask() {
   const handleGetLocationValue = () => {};
 
   const handleAttachImageValue = (file: File) => {
-    setSelectedImages([...selectedImages, file]);
+    const found = selectedImages.find((item: File) => {
+      return item.name === file.name;
+    });
+    if (!found) {
+      setSelectedImages([...selectedImages, file]);
+    } else {
+      toast.error("Image already added in the list");
+    }
   };
   const handleSelectDocumentValue = (file: File) => {
-    setSelectedDocuments([...selectedDocuments, file]);
+    const found = selectedDocuments.find((item: File) => {
+      return item.name === file.name;
+    });
+    if (!found) {
+      setSelectedDocuments([...selectedDocuments, file]);
+    } else {
+      toast.error("Document already added in the list");
+    }
+  };
+
+  const handleClearFile = (file: File, type: fileType) => {
+    if (type === "image") {
+      const filterSelectedImages = removeItem(selectedImages, file);
+      setSelectedImages(filterSelectedImages);
+    } else {
+      const filterSelectedDocs = removeItem(selectedDocuments, file);
+      setSelectedDocuments(filterSelectedDocs);
+    }
   };
 
   return (
@@ -221,7 +257,7 @@ function CreateNewTask() {
           label="Due Date"
           handleChangeValues={handleChangeValues}
         />
-        <Box sx={{ padding: "8px", width: "100%" }}>
+        <Box sx={{ marginTop: "8px", width: "100%" }}>
           <TextField
             name="description"
             id="description-multiline"
@@ -293,6 +329,23 @@ function CreateNewTask() {
                   }}
                 >
                   <ImageBox src={URL.createObjectURL(file)} />
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      handleClearFile(file, "image");
+                    }}
+                    sx={{
+                      top: "-6px",
+                      right: "4px",
+                      backgroundColor: "#0076C8",
+                      color: "#fff",
+                      width: "16px",
+                      height: "16px",
+                    }}
+                    disableRipple
+                  >
+                    <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
+                  </IconButton>
                 </Box>
               );
             })}
@@ -305,7 +358,11 @@ function CreateNewTask() {
               padding: "16px",
             }}
           >
-            <FileBox title="Files" files={selectedDocuments} />
+            <FileBox
+              title="Files"
+              files={selectedDocuments}
+              handleClearFile={handleClearFile}
+            />
           </Box>
         )}
         <Box sx={{ marginTop: "100px" }}>

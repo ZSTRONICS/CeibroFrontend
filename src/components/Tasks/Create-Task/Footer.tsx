@@ -74,6 +74,7 @@ const Footer = (props: FooterPropsType) => {
     >
       {props.handleGetLocationValue && (
         <CustomButton
+          disabled
           label={"Location"}
           icon={<FmdGoodOutlinedIcon />}
           variant="outlined"
