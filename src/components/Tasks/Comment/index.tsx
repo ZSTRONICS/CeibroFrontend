@@ -1,23 +1,59 @@
-import { Box, TextField } from "@mui/material";
+import { Box, IconButton, TextField } from "@mui/material";
 import TaskHeader from "../TaskHeader";
 import ImageBox from "components/Utills/ImageBox";
 import FileBox from "components/Utills/FileBox";
 import Footer from "../Create-Task/Footer";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
+import _ from "lodash";
+import { removeItem } from "utills/common";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { toast } from "react-toastify";
+import { fileType } from "../type";
 
-const NewComment = () => {
+interface CommentProps {
+  title: string;
+}
+
+const Comment = ({ title }: CommentProps) => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
+  const [description, setDescription] = useState<string>("");
+
+  const handleClearFile = (file: File, type: fileType) => {
+    if (type === "image") {
+      const filterSelectedImages = removeItem(selectedImages, file);
+      setSelectedImages(filterSelectedImages);
+    } else {
+      const filterSelectedDocs = removeItem(selectedDocuments, file);
+      setSelectedDocuments(filterSelectedDocs);
+    }
+  };
 
   const handleAttachImageValue = (file: File) => {
-    setSelectedImages([...selectedImages, file]);
+    const found = selectedImages.find((item: File) => {
+      return item.name === file.name;
+    });
+    if (!found) {
+      setSelectedImages([...selectedImages, file]);
+    } else {
+      toast.error("Image already added in the list");
+    }
   };
   const handleSelectDocumentValue = (file: File) => {
-    setSelectedDocuments([...selectedDocuments, file]);
+    const found = selectedDocuments.find((item: File) => {
+      return item.name === file.name;
+    });
+    if (!found) {
+      setSelectedDocuments([...selectedDocuments, file]);
+    } else {
+    }
   };
+
+  const handleSubmit = () => {};
+
   return (
     <Box>
-      <TaskHeader title="New comment" />
+      <TaskHeader title={title} />
       <Box sx={{ padding: "16px", width: "100%" }}>
         <TextField
           name="description"
@@ -27,7 +63,9 @@ const NewComment = () => {
           maxRows={4}
           variant="standard"
           sx={{ width: "100%" }}
-          //   onChange={handleDescriptionChange}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setDescription(e.target.value)
+          }
         />
       </Box>
       <Box
@@ -58,6 +96,23 @@ const NewComment = () => {
               }}
             >
               <ImageBox src={URL.createObjectURL(file)} />
+              <IconButton
+                aria-label="delete"
+                onClick={() => {
+                  handleClearFile(file, "image");
+                }}
+                sx={{
+                  top: "-6px",
+                  right: "4px",
+                  backgroundColor: "#0076C8",
+                  color: "#fff",
+                  width: "16px",
+                  height: "16px",
+                }}
+                disableRipple
+              >
+                <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
+              </IconButton>
             </Box>
           );
         })}
@@ -68,12 +123,14 @@ const NewComment = () => {
           padding: "16px",
         }}
       >
-        <FileBox title="Files" files={selectedDocuments} />
+        <FileBox
+          title="Files"
+          files={selectedDocuments}
+          handleClearFile={handleClearFile}
+        />
       </Box>
       <Footer
-        handleSubmitForm={function (): void {
-          console.log("submit button");
-        }}
+        handleSubmitForm={handleSubmit}
         handleAttachImageValue={handleAttachImageValue}
         handleSelectDocumentValue={handleSelectDocumentValue}
       />
@@ -81,4 +138,4 @@ const NewComment = () => {
   );
 };
 
-export default NewComment;
+export default Comment;

@@ -33,8 +33,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleDoneClick = () => {
-    // Handle done button click here
-    openFormInNewWindow(`/comment-task/${taskId}`, "Task Done");
+    openFormInNewWindow(`/done-task/${taskId}`, "Task Done");
   };
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
@@ -98,11 +97,18 @@ const DetailActions: React.FC<IProps> = (props) => {
               alignItems: "center",
             }}
           >
-            Due date: {dueDate===""?"N/A":dueDate}
+            Due date: {dueDate === "" ? "N/A" : dueDate}
           </Typography>
         </Box>
       </Grid>
-      <Grid item xs={6} container justifyContent="flex-end" alignItems="center" gap={2}>
+      <Grid
+        item
+        xs={6}
+        container
+        justifyContent="flex-end"
+        alignItems="center"
+        gap={2}
+      >
         <LoadingButton
           startIcon={<img src={assets.CommentIcon} />}
           onClick={handleCommentClick}

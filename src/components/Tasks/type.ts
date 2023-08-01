@@ -31,3 +31,5 @@ export type ChangeValueType =
   | string
   | string[]
   | undefined;
+
+export type fileType = "image" | "doc";

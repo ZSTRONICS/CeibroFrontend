@@ -1,16 +1,19 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import assets from "../../../assets/assets";
 import { IFile } from "constants/interfaces";
+import ClearIcon from "@mui/icons-material/Clear";
+import { fileType } from "components/Tasks/type";
 
 interface IProps {
   title?: string;
   files: IFile[] | File[];
   size?: string;
   textColor?: string;
+  handleClearFile?: (file: File, type: fileType) => void;
 }
 
-const FileBox: React.FC<IProps> = ({ files, title, size }) => (
+const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => (
   <Box
     sx={{
       width: "100%",
@@ -87,6 +90,25 @@ const FileBox: React.FC<IProps> = ({ files, title, size }) => (
             >
               {size && size}
             </Typography>
+            {handleClearFile && (
+              <IconButton
+                size="small"
+                aria-label="clear selection"
+                onClick={() => handleClearFile(item, "doc")}
+              >
+                <ClearIcon
+                  sx={{
+                    height: "16px",
+                    width: "auto",
+                    color: "#605C5C",
+                    borderRadius: "8px",
+                    borderStyle: "solid",
+                    borderWidth: "1px",
+                    borderColor: "#605C5C",
+                  }}
+                />
+              </IconButton>
+            )}
           </Box>
         );
       })

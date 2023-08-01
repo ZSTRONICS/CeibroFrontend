@@ -1,5 +1,4 @@
-
-export const openFormInNewWindow = (path: string, windowTitle:string) => {
+export const openFormInNewWindow = (path: string, windowTitle: string) => {
   let width = 900;
   let height = 782;
   const leftOffset = (window.screen.width - width) / 2 + window.screenX;
@@ -18,7 +17,7 @@ export const openFormInNewWindow = (path: string, windowTitle:string) => {
 
   // Set the title of the new window
   if (newWindow != null) {
-    newWindow.addEventListener('load', () => {
+    newWindow.addEventListener("load", () => {
       newWindow.document.title = windowTitle;
     });
   }
@@ -48,5 +47,13 @@ export const handleGroupSearch = (
     }
   });
 
+  return filteredData;
+};
+
+//handle remove Item from File array fo image and doc
+export const removeItem = (data: File[], removeFile: File) => {
+  const filteredData = data.filter((item: File) => {
+    return removeFile.name !== item.name;
+  });
   return filteredData;
 };
