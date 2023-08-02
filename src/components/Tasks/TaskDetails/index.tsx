@@ -31,14 +31,21 @@ export default function TaskDetails(props: IProps) {
     invitedNumbers,
     files,
     _id,
+    doneCommentsRequired,
+    doneImageRequired,
   } = props.task;
   // console.log("task", props.task);
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
 
   return (
-    <Box sx={{ height: "calc(100vh - 85px)", overflow: "auto" }} className="custom-scrollbar">
+    <Box
+      sx={{ height: "calc(100vh - 85px)", overflow: "auto" }}
+      className="custom-scrollbar"
+    >
       <DetailsHeader
+        doneCommentsRequired={doneCommentsRequired}
+        doneImageRequired={doneImageRequired}
         assignedToState={assignedToState}
         userSubState={userSubState}
         dueDate={dueDate || ""}

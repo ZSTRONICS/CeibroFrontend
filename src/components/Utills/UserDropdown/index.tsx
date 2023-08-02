@@ -87,7 +87,7 @@ function UserDropDown(props: IProps) {
     let updatedSelected: AssignedToStateType[] = selected.map((item) => {
       let payloadSelected: AssignedToStateType = {
         phoneNumber: item.phoneNumber,
-        userId: item.userId,
+        userId: item._id,
         state: "new",
       };
       return payloadSelected;

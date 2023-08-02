@@ -11,12 +11,12 @@ import { handleGroupSearch } from "utills/common";
 import { AssignedToStateType } from "../type";
 import { useParams } from "react-router-dom";
 
-interface RouteParams {
+interface IProps {
   taskId: string;
 }
 
-const ForwardTask = () => {
-  const { taskId } = useParams<RouteParams>();
+const ForwardTask = ({ taskId }: IProps) => {
+  // const { taskId } = useParams<RouteParams>();
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -29,7 +29,6 @@ const ForwardTask = () => {
   }>({});
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     const payload = {
       other: { userId: user._id },
@@ -47,7 +46,7 @@ const ForwardTask = () => {
       const groupedData: { [key: string]: { label: string; value: string }[] } =
         {};
 
-      sortedContacts.forEach((contact) => {
+      sortedContacts.forEach((contact: any) => {
         const firstLetter = contact.contactFirstName[0].toUpperCase();
         if (!groupedData[firstLetter]) {
           groupedData[firstLetter] = [];
@@ -105,7 +104,7 @@ const ForwardTask = () => {
     <Box>
       <Box
         sx={{
-          width: "900px",
+          width: "100%",
           display: "flex",
           alignItems: "center",
           height: "56px",
@@ -158,8 +157,11 @@ const ForwardTask = () => {
         </Typography>
       </Box>
       <Box
+        className = "custom-scrollbar"
         sx={{
           margin: "8px 16px",
+          height: "calc(100vh - 398px )",
+          overflow: "auto",
           "&::-webkit-scrollbar": {
             height: "0.4rem",
           },

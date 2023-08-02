@@ -164,7 +164,7 @@ export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
 export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
     const existingEvents = taskArray[taskIndex].events;
-    const isUniqueEvent = existingEvents.every((event:any) => event._id !== eventData._id);
+    const isUniqueEvent = existingEvents.every((event: any) => event._id !== eventData._id);
     if (isUniqueEvent) {
       taskArray[taskIndex].events.push(eventData);
       taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
@@ -181,10 +181,13 @@ export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], e
 
 export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
   const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
-  if (taskIndex > -1) {
-    const task = sourceArray.splice(taskIndex, 1)[0];
-    task.hiddenBy.push(...eventData.hiddenBy);
-    targetArray.push(task);
+    if (taskIndex > -1) {
+    const taskToMove = sourceArray[taskIndex]
+    taskToMove.hiddenBy.push(...eventData.hiddenBy)
+    targetArray.unshift(taskToMove);
+    console.log('taskToMove 1', targetArray[0]._id)
+    taskToMove.splice(taskIndex, 1);
+    console.log('taskToMove 2', taskToMove._id)
   }
 }
 /**
@@ -201,7 +204,7 @@ export const isTrue = (arr: any[], itemId: string) => {
  * @return dd-mm-yyyy
  * @param dateString date string is required
  * **/
-export const deDateFormat = (dateStr: Date|string) => {
+export const deDateFormat = (dateStr: Date | string) => {
   return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
 }
 // de date format using moment of utc time mongodb
@@ -218,7 +221,7 @@ export const momentdeDateFormat = (createdAt: Date | any) => {
  * @return dd.mm.yyyy
  * @param mongodbUtc date string is required
  * **/
- const momentdeDateFormatWithDay = (createdAt: Date | any) => {
+const momentdeDateFormatWithDay = (createdAt: Date | any) => {
   let localTime = moment.utc(moment(createdAt)).toDate();
   return moment(localTime).format("ddd, DD.MM.YYYY");
 };

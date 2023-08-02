@@ -19,6 +19,8 @@ interface IProps {
   creator: UserInfo;
   project: Project;
   invitedNumbers: InvitedNumber[];
+  doneImageRequired: boolean;
+  doneCommentsRequired: boolean;
 }
 
 const GridRow = ({ children }: any) => {
@@ -37,8 +39,9 @@ export default function DetailsHeader(props: IProps) {
     creator,
     invitedNumbers,
     taskId,
+    doneImageRequired,
+doneCommentsRequired
   } = props;
-
   const data = [
     { label: "Created by", value: `${creator.firstName} ${creator.surName}` },
     {
@@ -80,6 +83,8 @@ export default function DetailsHeader(props: IProps) {
   return (
     <Box sx={{ padding: "0px 16px" }}>
       <DetailActions
+      doneImageRequired={doneImageRequired}
+      doneCommentsRequired={doneCommentsRequired}
         taskId={taskId}
         userSubState={userSubState}
         dueDate={dueDate}
@@ -95,7 +100,7 @@ export default function DetailsHeader(props: IProps) {
             lineHeight: "20px",
           }}
         >
-          {topic.topic ?? "N/A"}
+          {topic?.topic ?? "N/A"}
         </Typography>
       </Box>
       <Grid container sx={{ padding: "0px 0px 8px 0px" }} gap={0.5}>

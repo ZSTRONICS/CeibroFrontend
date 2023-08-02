@@ -189,17 +189,9 @@ const App: React.FC<MyApp> = () => {
 
   // Send a heartbeat event to the server periodically
   function sendHeartbeat() {
-    if (sock !== null) {
+    if (sock !== null && sock.connected) {
       sock.emit("heartbeat");
-      // hbCounter += 1
-      // if (hbCounter === 6 && hbAckRcvd === false) {
-      //   // reconnect logic here
-      //   console.log('No HB RCVD :>> ');
-      // }
-      // if (hbCounter > 5) {
-      //   hbAckRcvd = false;
-      //   hbCounter = 0;
-      // }
+      setTimeout(sendHeartbeat, 15000);
     }
   }
 
@@ -215,6 +207,7 @@ const App: React.FC<MyApp> = () => {
       const myToken = JSON.parse(tokens)?.access?.token;
 
       sock = io(SERVER_URL, {
+        transports: ['websocket'],
         auth: {
           token: myToken,
         },
@@ -226,35 +219,36 @@ const App: React.FC<MyApp> = () => {
         console.log("Connected to server");
         socket.setUserId(userId);
         socket.setSocket(sock);
+        setTimeout(sendHeartbeat, 15000);
+      });
 
-        if (socketIntervalId === null) {
-          socketIntervalId = setInterval(sendHeartbeat, 400);
-        }
+      sock.on("heartbeatAck", () => {
+        console.log("heartbeatAck");
       });
 
       // Listen for disconnect event
-      sock.on("disconnect", (reason: string) => {
-        console.log(`Disconnected from server: ${reason}`);
-        clearInterval(socketIntervalId);
-        clearInterval(intervalId);
-        let localInterval = setInterval(() => {
-          if (socket.getSocket() != null) {
-            sock.connect();
-          }
-        }, 2000);
-        setLocalIntervalId(localInterval);
-      });
+      // sock.on("disconnect", (reason: string) => {
+      //   console.log(`Disconnected from server: ${reason}`);
+      //   clearInterval(socketIntervalId);
+      //   clearInterval(intervalId);
+      //   let localInterval = setInterval(() => {
+      //     if (socket.getSocket() != null) {
+      //       sock.connect();
+      //     }
+      //   }, 2000);
+      //   setLocalIntervalId(localInterval);
+      // });
 
-      sock.on("connect_error", (err: any) => {
-        clearInterval(socketIntervalId);
-        clearInterval(intervalId);
-        let localInterval = setInterval(() => {
-          if (socket.getSocket() != null) {
-            sock.connect();
-          }
-        }, 1000);
-        setLocalIntervalId(localInterval);
-      });
+      // sock.on("connect_error", (err: any) => {
+      //   clearInterval(socketIntervalId);
+      //   clearInterval(intervalId);
+      //   let localInterval = setInterval(() => {
+      //     if (socket.getSocket() != null) {
+      //       sock.connect();
+      //     }
+      //   }, 1000);
+      //   setLocalIntervalId(localInterval);
+      // });
 
       sock.on("token_invalid", () => {
         const tokens = localStorage.getItem("tokens") || "{}";

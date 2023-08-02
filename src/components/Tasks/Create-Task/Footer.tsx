@@ -5,12 +5,15 @@ import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
 import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
 import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import { Box } from "@mui/material";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
   handleAttachImageValue?: (file: File) => void;
   handleSelectDocumentValue?: (file: File) => void;
   handleGetLocationValue?: () => void;
+  showHeader: boolean | undefined;
+  disabled: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
@@ -56,15 +59,19 @@ const Footer = (props: FooterPropsType) => {
     };
     input.click();
   };
-
+  const position: string = props.showHeader ? "block" : "absolute";
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         justifyContent: "space-around",
-        boxShadow: "0px -2px 6px rgba(0, 0, 0, 0.1)",
+        boxShadow: `${
+          props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
+        }`,
         textTransform: "capitalize",
-        position: "absolute",
+        position: `${position}`,
+        marginTop: `${props.showHeader ? "20px" : "unset"}`,
+        paddingBottom: `${props.showHeader ? "0" : "unset"}`,
         bottom: 0,
         left: 0,
         width: "100%",
@@ -101,8 +108,9 @@ const Footer = (props: FooterPropsType) => {
         onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
         variant="contained"
+        disabled={props.disabled}
       />
-    </div>
+    </Box>
   );
 };
 

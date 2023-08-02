@@ -13,6 +13,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Footer from "./Footer";
 import {
   PROJECT_APIS,
+  docsAction,
   getAllProjects,
   taskActions,
   userApiAction,
@@ -84,9 +85,8 @@ function CreateNewTask() {
   }, []);
 
   useEffect(() => {
-    console.log("topic");
     if (Topics && !isEmpty(Topics)) {
-      const topics = [...Topics.allTopics, ...Topics.recentTopics];
+      // const topics = [...Topics.allTopics, ...Topics.recentTopics];
       const getAllTopicOptions = getDropdownOptions(
         //todo null receive in array from backend
         Topics.allTopics.filter((item: any) => item != null),
@@ -141,14 +141,60 @@ function CreateNewTask() {
     );
   };
 
+  const handleFileUpload = (
+    files: any,
+    moduleName: string,
+    moduleId: string
+  ) => {
+    try {
+      if (!files || files.length === 0) {
+        console.error("No files to upload.");
+        return;
+      }
+
+      const formData = new FormData();
+      const metadataObjects: any = [];
+      files.forEach((file: any) => {
+        formData.append("files", file);
+        metadataObjects.push(
+          JSON.stringify({
+            fileName: file.name,
+            orignalFileName: file.name,
+            tag: "file",
+          })
+        );
+      });
+
+      formData.append("moduleName", moduleName);
+      formData.append("moduleId", moduleId);
+      const finalMetadata = JSON.stringify(metadataObjects);
+      formData.append("metadata", finalMetadata);
+
+      const payload = {
+        body: formData,
+      };
+      // Your dispatch logic here
+      dispatch(docsAction.uploadDocsByModuleNameAndId(payload));
+    } catch (error) {
+      console.error("Error occurred while uploading files:", error);
+    }
+  };
+
   const handleCreateTask = () => {
     let payload = selectedData;
-    payload.creator = user._id;
-    dispatch(
-      taskActions.createTask({
-        body: payload,
-      })
-    );
+    (payload.creator = user._id),
+      dispatch(
+        taskActions.createTask({
+          body: payload,
+          success: (res: any) => {
+            if (selectedImages.length > 0 || selectedDocuments.length > 0) {
+              const filesToUpload = [...selectedImages, ...selectedDocuments];
+              const moduleId = res.data.newTask._id;
+              handleFileUpload(filesToUpload, "Task", moduleId);
+            }
+          },
+        })
+      );
   };
 
   const handleDescriptionChange = (
@@ -194,7 +240,7 @@ function CreateNewTask() {
       [name]: value,
     }));
   };
-  console.log("selectedData", selectedData);
+
   const handleGetLocationValue = () => {};
 
   const handleAttachImageValue = (file: File) => {

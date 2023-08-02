@@ -30,7 +30,7 @@ export default function SelectedContactBox({
   }
 
   return (
-    <Box sx={{ position: "relative", display: "inline-block", m: 1 }}>
+    <Box sx={{ position: "relative", display: "inline-block", m: 1 }} key={contact.contactFullName+1}>
       <Box
         sx={{
           width: "50px",

@@ -1,4 +1,4 @@
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, Button, IconButton, TextField } from "@mui/material";
 import TaskHeader from "../TaskHeader";
 import ImageBox from "components/Utills/ImageBox";
 import FileBox from "components/Utills/FileBox";
@@ -9,16 +9,24 @@ import { removeItem } from "utills/common";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { toast } from "react-toastify";
 import { fileType } from "../type";
+import { useDispatch } from "react-redux";
+import { taskActions } from "redux/action";
+import { useParams } from "react-router-dom";
 
 interface CommentProps {
   title: string;
+  showHeader: boolean;
+  taskId: string;
+  closeModal: () => void;
 }
 
-const Comment = ({ title }: CommentProps) => {
+const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
+  // const { taskId } = useParams<RouteParams>();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [description, setDescription] = useState<string>("");
-
+  const dispatch = useDispatch();
+  const [doOne, setDoOne] = useState(false);
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
       const filterSelectedImages = removeItem(selectedImages, file);
@@ -50,12 +58,63 @@ const Comment = ({ title }: CommentProps) => {
     }
   };
 
-  const handleSubmit = () => {};
+  const handleFileUpload = (files: any, formData: FormData) => {
+    try {
+      if (!files || files.length === 0) {
+        console.error("No files to upload.");
+        return;
+      }
+
+      const metadataObjects: any = [];
+      if (doOne === false) {
+        files.forEach((file: any) => {
+          formData.append("files", file, file.name);
+          // formData.append("files", file);
+          metadataObjects.push(
+            JSON.stringify({
+              fileName: file.name,
+              orignalFileName: file.name,
+              tag: "file",
+            })
+          );
+        });
+        const finalMetadata = JSON.stringify(metadataObjects);
+        formData.append("metadata", finalMetadata);
+        setDoOne(true);
+      }
+    } catch (error) {
+      console.error("Error occurred while uploading files:", error);
+    }
+  };
+
+  const handleSubmit = () => {
+    const formdata = new FormData();
+    const filesToUpload = [...selectedImages, ...selectedDocuments];
+    formdata.append("message", description);
+    if (filesToUpload.length > 0) {
+      handleFileUpload(filesToUpload, formdata);
+    }
+    if (title === "Task Comment") {
+      dispatch(
+        taskActions.taskEventsWithFiles({
+          other: {
+            eventName: "comment",
+            taskId: taskId,
+            hasFiles: filesToUpload.length > 0 ? true : false,
+          },
+          body: formdata,
+          success: (res) => {
+            closeModal();
+          },
+        })
+      );
+    }
+  };
 
   return (
-    <Box>
-      <TaskHeader title={title} />
-      <Box sx={{ padding: "16px", width: "100%" }}>
+    <Box sx={{ width: "100%" }}>
+      {showHeader !== true && <TaskHeader title={title} />}
+      <Box sx={{ padding: "4px", width: "100%" }}>
         <TextField
           name="description"
           id="description-multiline"
@@ -72,7 +131,7 @@ const Comment = ({ title }: CommentProps) => {
       <Box
         sx={{
           display: "flex",
-          padding: "16px",
+          padding: "16px 0",
           overflow: "auto",
           "&::-webkit-scrollbar": {
             height: "0.4rem",
@@ -122,6 +181,7 @@ const Comment = ({ title }: CommentProps) => {
       <Box
         sx={{
           height: "auto",
+          padding: "16px 0",
         }}
       >
         <FileBox
@@ -131,6 +191,14 @@ const Comment = ({ title }: CommentProps) => {
         />
       </Box>
       <Footer
+        disabled={
+          selectedImages.length > 0 ||
+          selectedDocuments.length > 0 ||
+          description.length > 0
+            ? false
+            : true
+        }
+        showHeader={showHeader}
         handleSubmitForm={handleSubmit}
         handleAttachImageValue={handleAttachImageValue}
         handleSelectDocumentValue={handleSelectDocumentValue}

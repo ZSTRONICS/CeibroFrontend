@@ -30,7 +30,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   ...props
 }) => {
   return (
-    <MButton {...props} disabled={loading} disableRipple={true}>
+    <MButton {...props} disableRipple={true}>
       {loading ? <CircularProgress size={20} /> : children}
     </MButton>
   );
