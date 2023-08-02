@@ -191,17 +191,9 @@ const App: React.FC<MyApp> = () => {
 
   // Send a heartbeat event to the server periodically
   function sendHeartbeat() {
-    if (sock !== null) {
-      sock.emit('heartbeat');
-      // hbCounter += 1
-      // if (hbCounter === 6 && hbAckRcvd === false) {
-      //   // reconnect logic here
-      //   console.log('No HB RCVD :>> ');
-      // }
-      // if (hbCounter > 5) {
-      //   hbAckRcvd = false;
-      //   hbCounter = 0;
-      // }
+    if (sock !== null && sock.connected) {
+      sock.emit("heartbeat");
+      setTimeout(sendHeartbeat, 15000);
     }
   }
 
@@ -217,6 +209,7 @@ const App: React.FC<MyApp> = () => {
       const myToken = JSON.parse(tokens)?.access?.token;
 
       sock = io(SERVER_URL, {
+        transports: ['websocket'],
         auth: {
           token: myToken,
         },
@@ -224,44 +217,15 @@ const App: React.FC<MyApp> = () => {
 
       // Listen for connect event
       sock.on("connect", () => {
-
-        if (socketIntervalId !== null) {
-          return;
-        }
-
         clearInterval(intervalId);
         console.log("Connected to server");
         socket.setUserId(String(user._id));
         socket.setSocket(sock);
-
-        if (socketIntervalId === null) {
-          socketIntervalId = setInterval(sendHeartbeat, 10000);
-        }
-
+        setTimeout(sendHeartbeat, 15000);
       });
 
-      // Listen for disconnect event
-      sock.on("disconnect", (reason: string) => {
-        console.log(`Disconnected from server: ${reason}`);
-        socketIntervalId = null;
-        clearInterval(intervalId);
-        let localInterval = setInterval(() => {
-          if (socket.getSocket() != null) {
-            sock.connect();
-          }
-        }, 2000);
-        setLocalIntervalId(localInterval)
-      });
-
-      sock.on("connect_error", (err: any) => {
-        socketIntervalId = null;
-        clearInterval(intervalId);
-        let localInterval = setInterval(() => {
-          if (socket.getSocket() != null) {
-            sock.connect();
-          }
-        }, 1000);
-        setLocalIntervalId(localInterval)
+      sock.on("heartbeatAck", () => {
+        console.log("heartbeatAck");
       });
 
       sock.on("token_invalid", () => {
@@ -299,19 +263,6 @@ const App: React.FC<MyApp> = () => {
           window.location.reload();
         }
       });
-
-      // sock.on("reconnect", (attempt) => {
-
-      //   socket.setSocket(sock);
-      // });
-
-      // sock.on("disconnect", (reason) => {
-      //   if (reason === "io server disconnect") {
-      //     // the disconnection was initiated by the server, you need to reconnect manually
-      //     socket.getSocket().connect();
-      //   }
-      //   // else the socket will automatically try to reconnect
-      // });
 
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
