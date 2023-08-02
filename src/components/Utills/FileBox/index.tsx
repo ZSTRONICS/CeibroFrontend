@@ -47,85 +47,92 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => (
         {title}
       </Typography>
     </Box>
-    {files.length > 0 ? (
-      files.map((item: IFile | File) => {
-        let f_name = "";
-        let key = "";
-        const { fileName, _id, name } = item;
-        if (fileName) {
-          f_name = fileName;
-          key = _id;
-        } else if (name) {
-          f_name = name;
-          key = `${name}_${size}`;
-        }
-        return (
-          <Box
-            key={key}
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              marginRight: "16px",
-            }}
-          >
-            <img width={20} height={20} src={assets.FileIcon} alt="File Icon" />
-            <Typography
+    <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+      {files.length > 0 ? (
+        files.map((item: IFile | File) => {
+          let f_name = "";
+          let key = "";
+          const { fileName, _id, name } = item;
+          if (fileName) {
+            f_name = fileName;
+            key = _id;
+          } else if (name) {
+            f_name = name;
+            key = `${name}_${size}`;
+          }
+          return (
+            <Box
+              key={key}
               sx={{
-                fontFamily: "Inter",
-                fontWeight: 400,
-                fontSize: "14px",
-                marginLeft: "8px",
+                display: "flex",
+                alignItems: "center",
                 marginRight: "16px",
               }}
             >
-              {f_name}
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 400,
-                fontSize: "10px",
-                opacity: 0.54,
-              }}
-            >
-              {size && size}
-            </Typography>
-            {handleClearFile && (
-              <IconButton
-                size="small"
-                aria-label="clear selection"
-                onClick={() => handleClearFile(item, "doc")}
+              <img
+                width={20}
+                height={20}
+                src={assets.FileIcon}
+                alt="File Icon"
+              />
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  marginLeft: "8px",
+                  marginRight: "16px",
+                }}
               >
-                <ClearIcon
-                  sx={{
-                    height: "16px",
-                    width: "auto",
-                    color: "#605C5C",
-                    borderRadius: "8px",
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "#605C5C",
-                  }}
-                />
-              </IconButton>
-            )}
-          </Box>
-        );
-      })
-    ) : (
-      <Typography
-        sx={{
-          fontFamily: "Inter",
-          fontWeight: 400,
-          fontSize: "14px",
-          opacity: 0.87,
-          marginLeft: "8px",
-          marginRight: "16px",
-        }}
-      >
-        No files found
-      </Typography>
-    )}
+                {f_name}
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontWeight: 400,
+                  fontSize: "10px",
+                  opacity: 0.54,
+                }}
+              >
+                {size && size}
+              </Typography>
+              {handleClearFile && (
+                <IconButton
+                  size="small"
+                  aria-label="clear selection"
+                  onClick={() => handleClearFile(item, "doc")}
+                >
+                  <ClearIcon
+                    sx={{
+                      height: "16px",
+                      width: "auto",
+                      color: "#605C5C",
+                      borderRadius: "8px",
+                      borderStyle: "solid",
+                      borderWidth: "1px",
+                      borderColor: "#605C5C",
+                    }}
+                  />
+                </IconButton>
+              )}
+            </Box>
+          );
+        })
+      ) : (
+        <Typography
+          sx={{
+            fontFamily: "Inter",
+            fontWeight: 400,
+            fontSize: "14px",
+            opacity: 0.87,
+            marginLeft: "8px",
+            marginRight: "16px",
+          }}
+        >
+          No files found
+        </Typography>
+      )}
+    </Box>
   </Box>
 );
 

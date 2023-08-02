@@ -20,17 +20,19 @@ const CustomSwitch = (props: CustomSwitchProps) => {
     >
       <Typography>{label}</Typography>
       <Switch
-        sx={{
-          "& .MuiSwitch-switchBase": {
-            "&.Mui-checked": {
-              color: "#fff",
-              "& + .MuiSwitch-track": {
-                opacity: 0.9,
-                backgroundColor: "green",
-              },
-            },
-          },
-        }}
+        sx={
+          {
+            // "& .MuiSwitch-switchBase": {
+            //   "&.Mui-checked": {
+            //     color: "#fff",
+            //     "& + .MuiSwitch-track": {
+            //       opacity: 0.9,
+            //       backgroundColor: "green",
+            //     },
+            //   },
+            // },
+          }
+        }
         checked={toggle}
         onChange={handleChange}
         inputProps={{ "aria-label": "controlled" }}

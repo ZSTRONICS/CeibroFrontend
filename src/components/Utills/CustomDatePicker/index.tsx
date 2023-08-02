@@ -20,13 +20,13 @@ const CustomDatePicker = ({
   name,
   handleChangeValues,
 }: CustomeDatePickerProps) => {
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState<string>(new Date().toLocaleDateString());
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
       const formattedDate = new Date(date).toLocaleDateString();
       handleChangeValues(formattedDate, "dueDate");
-      setValue(date);
+      setValue(formattedDate);
     } else {
       console.log("No date selected.");
     }
@@ -39,7 +39,16 @@ const CustomDatePicker = ({
           key={name}
           label={label}
           renderInput={(params) => (
-            <TextField {...params} variant="standard" sx={{ width: "100%" }} />
+            <TextField
+              {...params}
+              variant="standard"
+              sx={{
+                width: "100%",
+                // ...(params.error && {
+                //   "& .MuiInputBase-root": { color: "black" },
+                // }),
+              }}
+            />
           )}
           onChange={handleDateChange}
           value={value}

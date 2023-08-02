@@ -4,7 +4,14 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Button from "@mui/material/Button";
-import { Box, ListSubheader, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  ListSubheader,
+  TextField,
+  Typography,
+} from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
 import SelectedContactBox from "../SelectedContactBox";
@@ -16,6 +23,8 @@ import {
   AssignedToStateType,
 } from "components/Tasks/type";
 import { handleGroupSearch } from "utills/common";
+import { styled } from "@mui/material/styles";
+import { useSelector } from "react-redux";
 
 interface Option {
   label: string;
@@ -33,6 +42,7 @@ interface IProps {
 }
 
 function UserDropDown(props: IProps) {
+  const [isSelfAssign, setIsSelfAssign] = useState(false);
   const { name, label, contacts, createCallback, handleChangeValues } = props;
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
@@ -43,6 +53,7 @@ function UserDropDown(props: IProps) {
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
+  const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
     if (contacts && contacts.length > 0) {
@@ -134,6 +145,14 @@ function UserDropDown(props: IProps) {
     }
   };
 
+  const handleSelfAssignChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    handleSelectedList(user, checked);
+    setIsSelfAssign(checked);
+  };
+
   const renderValue = () => {
     if (selected.length > 0) {
       const fullNames = selected.map((item) => item.contactFullName).join(", ");
@@ -194,16 +213,26 @@ function UserDropDown(props: IProps) {
               placeholder="Start typing name"
               value={searchQuery}
               onChange={handleSearchChange}
-              style={{ flex: 1 }}
+              style={{
+                flex: 1,
+                borderBottomWidth: "1px",
+                borderColor: "#818181",
+                borderStyle: "solid",
+                marginRight: "8px",
+              }}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
               }}
             />
             {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
-              <Button onClick={handleCancelClick}>Cancel</Button>
+              <CustomButton variant="outlined" onClick={handleCancelClick}>
+                Cancel
+              </CustomButton>
             ) : (
-              <Button onClick={handleClose}>Done</Button>
+              <CustomButton variant="outlined" onClick={handleClose}>
+                Done
+              </CustomButton>
             )}
           </ListSubheader>
           <Box sx={{ display: "flex" }}>
@@ -217,9 +246,57 @@ function UserDropDown(props: IProps) {
                 );
               })}
           </Box>
-          <MenuItem disabled>
-            <Typography>Suggested users</Typography>
-          </MenuItem>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              margin: "16px 16px 0px",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#818181",
+                lineHeight: "16px",
+              }}
+            >
+              Suggested users
+            </Typography>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={isSelfAssign}
+                  onChange={handleSelfAssignChange}
+                  size="small"
+                  color="primary"
+                  sx={{
+                    ml: 1,
+                    fontFamily: "Inter",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "#818181",
+                    lineHeight: "16px",
+                  }}
+                />
+              }
+              label={
+                <Typography
+                  sx={{
+                    fontFamily: "Inter",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    color: "#605C5C",
+                    lineHeight: "16px",
+                  }}
+                >
+                  Self assign
+                </Typography>
+              }
+            />
+          </Box>
           <Box sx={{ margin: "8px 16px" }}>
             {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
               <Typography>{groupLetter}</Typography>,
@@ -242,3 +319,10 @@ function UserDropDown(props: IProps) {
 }
 
 export default UserDropDown;
+
+const CustomButton = styled(Button)(({ theme }) => ({
+  textTransform: "capitalize",
+  height: "28px",
+  color: "#818181",
+  borderColor: "#818181",
+}));

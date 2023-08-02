@@ -121,7 +121,7 @@ const Comment = ({ title }: CommentProps) => {
 
       <Box
         sx={{
-          padding: "16px",
+          height: "auto",
         }}
       >
         <FileBox
