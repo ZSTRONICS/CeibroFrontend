@@ -1,10 +1,10 @@
-import React from "react";
-import { momentdeDateFormat } from "components/Utills/Globals/Common";
-import { GenericTable, MenuColumn } from "./MuiTable/CTable";
-import NameAvatar from "components/Utills/Others/NameAvatar";
+import { ConfirmDescriptionTag, DocumentNameTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import ProfileViewGlobal from "components/Profile/ProfileViewGlobal";
-import { ConfirmDescriptionTag, DocumentNameTag } from "components/CustomTags";
+import { momentdeDateFormat } from "components/Utills/Globals/Common";
+import NameAvatar from "components/Utills/Others/NameAvatar";
+import React from "react";
+import { GenericTable, MenuColumn } from "./MuiTable/CTable";
 
 function AdminUserTables(props: any) {
   const [open, setOpen] = React.useState<boolean>(false);

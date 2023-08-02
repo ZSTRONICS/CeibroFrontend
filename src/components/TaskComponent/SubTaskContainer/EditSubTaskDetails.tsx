@@ -1,48 +1,33 @@
-import React, { useState } from "react";
 import {
-  Button,
-  Typography,
-  Icon,
-  Box,
-  IconButton,
-  ListItem,
-  Hidden,
-  ListItemAvatar,
-  List,
-  ListItemText,
-  Avatar,
-  ListSubheader,
-  TextField,
-  Grid,
   Autocomplete,
-  Divider,
+  Avatar,
+  Box,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListSubheader,
+  TextField
 } from "@mui/material";
-import { makeStyles } from "@material-ui/core";
-import colors from "assets/colors";
-import AddIcon from "@material-ui/icons/Add";
+import { styled } from "@mui/system";
 import assets from "assets/assets";
-import MemberList from "./MemberList";
 import { CButton } from "components/Button";
-import { CustomStack } from "../Tabs/TaskCard";
 import { ListUserName } from "components/CustomTags";
 import { getColorByStatus } from "config/project.config";
-import { styled } from "@mui/system";
-import useStyles from "../CreateSubtask/CreateSubTaskStyles";
-import { RootState } from "redux/reducers/appReducer";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  combinedMemberArrayWithState,
-  getUniqueObjectsFromArr,
-} from "components/Utills/Globals/Common";
+import { RootState } from "redux/reducers/appReducer";
+import useStyles from "../CreateSubtask/CreateSubTaskStyles";
 // import colors from "assets/colors";
+import { TASK_CONFIG } from "config/task.config";
 import { SubtaskState } from "constants/interfaces/task.interface";
+import { toast } from "react-toastify";
 import {
   deleteSubtaskMember,
   patchSubTaskById,
   subtaskMemberMarkAsDone,
 } from "redux/action/task.action";
-import { toast } from "react-toastify";
-import { TASK_CONFIG } from "config/task.config";
 
 function EditSubTaskDetails(props: any) {
   const classes = useStyles();
@@ -260,10 +245,10 @@ function EditSubTaskDetails(props: any) {
   ) => {
     let isAdmin: boolean = false;
     if (userState === SubtaskState.Ongoing) {
-      isAdmin = selectedTaskAdmins.some((admin:any) => admin.id === user._id);
+      isAdmin = selectedTaskAdmins.some((admin: any) => admin.id === user._id);
 
-      if(isAdmin === false){
-        if(String(memberId) === String(user._id)){
+      if (isAdmin === false) {
+        if (String(memberId) === String(user._id)) {
           return true;
         }
       }

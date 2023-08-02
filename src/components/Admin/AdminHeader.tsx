@@ -1,14 +1,12 @@
-import React, { useState } from "react";
 import {
-  Box,
   Divider,
   Grid,
   InputBase,
-  Paper,
-  Typography,
+  Paper
 } from "@mui/material";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import React, { useState } from "react";
 
 function AdminHeader() {
   const [fromDate, setFromDate] = useState<any>("");

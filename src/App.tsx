@@ -264,19 +264,6 @@ const App: React.FC<MyApp> = () => {
         }
       });
 
-      // sock.on("reconnect", (attempt) => {
-
-      //   socket.setSocket(sock);
-      // });
-
-      // sock.on("disconnect", (reason) => {
-      //   if (reason === "io server disconnect") {
-      //     // the disconnection was initiated by the server, you need to reconnect manually
-      //     socket.getSocket().connect();
-      //   }
-      //   // else the socket will automatically try to reconnect
-      // });
-
       sock.on(CHAT_EVENT_REP_OVER_SOCKET, (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const payload = dataRcvd.data;
