@@ -7,8 +7,10 @@ import Title from "components/Topbar/Title";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useHistory } from "react-router-dom";
+import Topbar from "components/Topbar/Topbar";
+import Sidebar from "components/Sidebar/Sidebar";
 
-const NAV_WIDTH = 200;
+const NAV_WIDTH = 72;
 
 const HEADER_MOBILE = 64;
 
@@ -55,7 +57,9 @@ export default function Header({ onOpenNav }: Props) {
         >
           <assets.MenuIcon />
         </IconButton>
-        <Title />
+        {/* <Title /> */}
+
+        <Topbar />
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack

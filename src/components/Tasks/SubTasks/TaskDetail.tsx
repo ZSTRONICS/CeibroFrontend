@@ -9,13 +9,13 @@ import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import CDrawer from "Drawer/CDrawer";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import taskActions, { getAllSubTaskRejection } from "redux/action/task.action";
+import { getAllSubTaskRejection } from "redux/action/task.action";
 import { RootState } from "redux/reducers/appReducer";
 import RecentComments from "./RecentComments";
 import TaskDetailHeader from "./TaskDetailHeader";
 import ViewAllDocs from "./ViewAllDocs";
 import ViewRejectionComments from "./ViewRejectionComments";
-
+import { taskActions } from "redux/action";
 interface Props {
   subtaskDetail: SubtaskInterface;
   taskAdmin: { id: string; label: string }[];
@@ -75,7 +75,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
             {isTaskAdmin && (
               <CBox display="flex" alignItems="center">
                 <CButton
-                  styles={{ fontSize: 14, textTransform: "capitalize" }}
+                  sx={{ fontSize: 14, textTransform: "capitalize" }}
                   onClick={handleRejectionDrawer}
                   startIcon={<VisibilityOutlinedIcon />}
                   label={"Rejections"}
@@ -89,7 +89,7 @@ export default function TaskDetail({ subtaskDetail, taskAdmin }: Props) {
               // mt={1}
             >
               <CButton
-                styles={{ fontSize: 14, textTransform: "capitalize" }}
+                sx={{ fontSize: 14, textTransform: "capitalize" }}
                 onClick={handleAttachmentDrawer}
                 startIcon={<AttachmentIcon />}
                 label={"Attachments"}

@@ -1,6 +1,4 @@
 import moment from "moment-timezone";
-import { useDispatch } from "react-redux";
-import { getPinnedMessages, getRoomMedia, getRoomMessages, getRoomQuestioniars, setSelectedChat } from "redux/action/chat.action";
 
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
@@ -54,7 +52,7 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
 /**
   * @param array pass the string array  
   * @return Functino will return the unique array of elements
-  * **/
+ **/
 
 export const uniqueStringArray = (arr: any[]) => {
   const seen = new Map();  // create a new Map object to keep track of the seen elements
@@ -73,7 +71,7 @@ export const uniqueStringArray = (arr: any[]) => {
 /**
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
-  * **/
+ **/
 export const getDistinctFromTwoArr = (arr: any[], arr2: any[]) => {
   let distinctArray: any = []
   arr.forEach((member: any) => {
@@ -112,22 +110,25 @@ export const getDistinctFromTwoArr = (arr: any[], arr2: any[]) => {
  * @param dataArray the array must have _id
  * @param labelKey must have  string
  * @param valueKey must have  string
- * @return Functino will return { label: "", value: "" }
- * **/
+ * @param {string} topicKey - An optional string param
+ * @returns - Functino will return { label: "", value: "" }
+  **/
 //labelKey for get the value from object and store in label
 //valueKey for get the value from object and store in value
 const formatDropdownData = (
   data: any[] | any,
   labelKey: string,
-  valueKey: string
+  valueKey: string,
+  topicKey?: string
 ) => {
   if (data) {
     return (
       data &&
       data.map((item: any) => {
+        const topic = topicKey ? item[topicKey][topicKey] || "" : "";
         const label = item[labelKey] || "";
         const value = item[valueKey] || "";
-        return { label: label.toString(), value: value.toString() };
+        return { label: `${label.toString()}  ${topic.toString()}`, value: value.toString() };
       })
     );
   } else {
@@ -136,6 +137,59 @@ const formatDropdownData = (
 };
 
 
+/**
+ * @param taskArray the array must have _id
+ * @param itemId must have comparison id string
+ * @return Functino will return  -1 if task not exist
+ * **/
+export const findTaskIndex = (taskArray: any[], itemId: string): number => {
+  const taskIndex = taskArray.findIndex((task: any) => task._id === itemId);
+  return taskIndex;
+};
+
+export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
+  if (taskIndex > -1) {
+    const seenBy = taskArray[taskIndex].seenBy;
+    if (!seenBy.includes(eventData.userId)) {
+      seenBy.push(eventData.userId);
+    }
+  }
+}
+/**
+ * @param taskArray the array must have _id
+ * @param eventData data to be pushed to task events
+ * @param taskIndex check if task exist 
+ * @return Functino will return updated task events
+ * **/
+export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
+  if (taskIndex > -1) {
+    const existingEvents = taskArray[taskIndex].events;
+    const isUniqueEvent = existingEvents.every((event: any) => event._id !== eventData._id);
+    if (isUniqueEvent) {
+      taskArray[taskIndex].events.push(eventData);
+      taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
+    }
+  }
+}
+
+export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], eventData: any): void {
+  const taskIndex = findTaskIndex(sourceArray, eventData._id);
+  sourceArray[taskIndex].events.push(eventData);
+  const task = sourceArray.splice(taskIndex, 1)[0];
+  targetArray.push(task);
+}
+
+export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
+  const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
+    if (taskIndex > -1) {
+    const taskToMove = sourceArray[taskIndex]
+    taskToMove.hiddenBy.push(...eventData.hiddenBy)
+    targetArray.unshift(taskToMove);
+    console.log('taskToMove 1', targetArray[0]._id)
+    taskToMove.splice(taskIndex, 1);
+    console.log('taskToMove 2', taskToMove._id)
+  }
+}
 /**
  * @param array the array must have _id
  * @param itemId must have comparison id string
@@ -150,7 +204,7 @@ export const isTrue = (arr: any[], itemId: string) => {
  * @return dd-mm-yyyy
  * @param dateString date string is required
  * **/
-export const deDateFormat = (dateStr: Date) => {
+export const deDateFormat = (dateStr: Date | string) => {
   return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
 }
 // de date format using moment of utc time mongodb
@@ -163,6 +217,15 @@ export const momentdeDateFormat = (createdAt: Date | any) => {
   return moment(localTime).local().format("DD.MM.YYYY")
 }
 // de date format using moment of utc time mongodb
+/**
+ * @return dd.mm.yyyy
+ * @param mongodbUtc date string is required
+ * **/
+const momentdeDateFormatWithDay = (createdAt: Date | any) => {
+  let localTime = moment.utc(moment(createdAt)).toDate();
+  return moment(localTime).format("ddd, DD.MM.YYYY");
+};
+
 /**
  * @return 12:00AM
  * @param mongodbUtc date string is required
@@ -219,6 +282,39 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
   return filesWithExtension
 };
 
+export const openFormWindow = (content: string) => {
+  const windowWidth = 900;
+  const windowHeight = 782;
+  const windowLeft = (window.innerWidth - windowWidth) / 2;
+  const windowTop = (window.innerHeight - windowHeight) / 2;
+  const url = 'https://dev.ceibro.ee';
+  const windowFeatures = `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop},resizable=no,scrollbars=no,status=no`;
+  const formWindow: Window | null = window.open(undefined, '_blank', windowFeatures);
+
+  // Check if the window was blocked (only for modern browsers)
+  if (!formWindow || formWindow.closed || typeof formWindow.closed === 'undefined') {
+    alert('The new window was blocked. Please allow pop-ups for this site.');
+  } else {
+    const titleTag = `<title>Ceibro</title>`;
+    const baseTag = `<base href="${url}" target="_blank">`;
+
+    const fullContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          ${titleTag}
+          ${baseTag}
+        </head>
+        <body>
+          ${content}
+        </body>
+      </html>
+    `;
+    formWindow.document.write(fullContent);
+  }
+};
+
+
 /**
  * @param SubtaskMembersArr array of extension
  * @param SubtaskUserSate array of object 
@@ -256,4 +352,20 @@ export const tabsIndexProps = (index: number) => {
 //   }
 // }, []);
 
-export { formatDropdownData }
+const optionMapping: { [key: string]: { [key: string]: string } } = {
+  allTaskToMe: {
+    ongoing: "Hide",
+    done: "Hide",
+  },
+  allTaskFromMe: {
+    ongoing: "Cancel",
+    unread: "Cancel",
+  },
+  allTaskHidden: {
+    ongoing: "Un-hide",
+    done: "Un-hide",
+    canceled: "Un-cancel",
+  },
+};
+
+export { formatDropdownData, momentdeDateFormatWithDay, optionMapping }

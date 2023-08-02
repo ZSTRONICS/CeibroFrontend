@@ -1,21 +1,22 @@
-import axios from 'axios'
+import axios from "axios";
 
-// export const SERVER_URL = "https://shielded-plateau-81277.herokuapp.com";
-// export const SERVER_URL = 'https://ceibro.ee'
-export const SERVER_URL = 'https://dev.ceibro.ee'
-// export const SERVER_URL = 'http://13.49.73.179'
+// export const SERVER_URL = "https://backend.ceibro.ee";
+// export const SERVER_URL = "https://dev.ceibro.ee";
+export const SERVER_URL = 'http://10.10.10.38:3000'
 // export const SERVER_URL = "http://localhost:3000";
 // export const SERVER_URL = "http://10.10.10.2:3000";
 
-export const urlV1 = process.env.NODE_ENV==='production'? '/v1' :`${SERVER_URL}/v1`
-export const urlV2 = process.env.NODE_ENV==='production'? '/v2' :`${SERVER_URL}/v2`
+export const urlV1 =
+  process.env.NODE_ENV === "production" ? "/v1" : `${SERVER_URL}/v1`;
+export const urlV2 =
+  process.env.NODE_ENV === "production" ? "/v2" : `${SERVER_URL}/v2`;
 
 const AxiosV1 = axios.create({
-  baseURL: urlV1
+  baseURL: urlV1,
 });
 
 const AxiosV2 = axios.create({
-  baseURL: urlV2
+  baseURL: urlV2,
 });
 
 // API.interceptors.response.use(
@@ -73,8 +74,4 @@ const AxiosV2 = axios.create({
 //   return response;
 // };
 
-export  {
-  AxiosV1,
-  AxiosV2
-};
-
+export { AxiosV1, AxiosV2 };

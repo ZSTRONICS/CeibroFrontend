@@ -18,9 +18,7 @@ import {
 } from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import {
-  Creator,
-  FolderInterface,
+import { FolderInterface, ProjectCreator,
 } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -83,10 +81,10 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     e.stopPropagation();
     dispatch(projectActions.closeProjectDocumentModal());
   };
-  const AccessMemberList = (membersList: Creator[]) => {
+  const AccessMemberList = (membersList: ProjectCreator[]) => {
     return (
       <>
-        {membersList.map((item: Creator, index) => {
+        {membersList.map((item: ProjectCreator, index) => {
           if (item === undefined) {
             return <></>;
           }

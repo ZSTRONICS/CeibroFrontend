@@ -1,6 +1,6 @@
 //@ts-nocheck
 import visual from "./images/Visual.png";
-import mobileVisual from './images/mobileVisual.png'
+import mobileVisual from "./images/mobileVisual.png";
 import logo from "./images/logo.png";
 import contactIcon from "./images/contactIcon.svg";
 import clipboardIcon from "./images/clipboardIcon.png";
@@ -56,51 +56,74 @@ import Add from "./images/Add.png";
 import message from "./sound/message.mp3";
 import blueSearch from "./images/blueSearch.png";
 import Defaulttask from "./images/Defaulttask.jpg";
-import InvitaionIcon from './images/Invitation.svg';
-import filterIcon from './images/filterIcon.svg'
-import DeleteIcon from './images/DeleteIcon.svg'
-import EditIcon from './images/edit.svg';
-import GroupIcon from './images/GroupIcon.svg';
-import GAvatar from './images/GAvatar.png';
+import InvitaionIcon from "./images/Invitation.svg";
+import filterIcon from "./images/filterIcon.svg";
+import DeleteIcon from "./images/DeleteIcon.svg";
+import EditIcon from "./images/edit.svg";
+import GroupIcon from "./images/GroupIcon.svg";
+import GAvatar from "./images/GAvatar.png";
 
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
-import SupervisorAccountOutlinedIcon from '@mui/icons-material/SupervisorAccountOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
-import SendIcon from '@mui/icons-material/Send';
-import ChatOutlinedIcon from '@mui/icons-material/ChatOutlined';
-import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
-import LanguageOutlinedIcon from '@material-ui/icons/LanguageOutlined';
-import MarkUnreadChatAltOutlinedIcon from '@mui/icons-material/MarkUnreadChatAltOutlined';
-import VolumeUpOutlinedIcon from '@mui/icons-material/VolumeUpOutlined';
-import VolumeOffOutlinedIcon from '@mui/icons-material/VolumeOffOutlined';
-import StarIcon from '@mui/icons-material/Star';
-import StarOutlineIcon from '@mui/icons-material/StarOutline';
-import MoreVertOutlinedIcon from '@mui/icons-material/MoreVertOutlined';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import LocationOnOutlinedIcon from '@mui/icons-material/LocationOnOutlined';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import AddIcon from '@mui/icons-material/Add';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import BorderColorIcon from '@mui/icons-material/BorderColor';
-import MenuIcon from '@mui/icons-material/Menu';
-import CancelIcon from '@mui/icons-material/Cancel';
-import CloseIcon from '@mui/icons-material/Close';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import SupervisorAccountOutlinedIcon from "@mui/icons-material/SupervisorAccountOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
+import SendIcon from "@mui/icons-material/Send";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
+import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
+import MarkUnreadChatAltOutlinedIcon from "@mui/icons-material/MarkUnreadChatAltOutlined";
+import VolumeUpOutlinedIcon from "@mui/icons-material/VolumeUpOutlined";
+import VolumeOffOutlinedIcon from "@mui/icons-material/VolumeOffOutlined";
+import StarIcon from "@mui/icons-material/Star";
+import StarOutlineIcon from "@mui/icons-material/StarOutline";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import AddIcon from "@mui/icons-material/Add";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import MenuIcon from "@mui/icons-material/Menu";
+import CancelIcon from "@mui/icons-material/Cancel";
+import CloseIcon from "@mui/icons-material/Close";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
+import DoneAllIcon from "@mui/icons-material/DoneAll";
 
 // cross icon
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
-import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import EmailIcon from '@mui/icons-material/Email';
-import CallIcon from '@mui/icons-material/Call';
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
+import EmailIcon from "@mui/icons-material/Email";
+import CallIcon from "@mui/icons-material/Call";
+
+//tab icons
+import TaskIcon from "./images/task_icon.svg";
+import ProjectIcon from "./images/project_icon.svg";
+import LocationIcon from "./images/location_icon.svg";
+//sub-tab icons
+import NewTaskIcon from "./images/new_task_icon.svg";
+import FromMEIcon from "./images/from_me_icon.svg";
+import ToMeIcon from "./images/to_me_icon.svg";
+import CanceledIcon from "./images/canceled_icon.svg";
+
+import ForwardIcon from "./images/forward_icon.png";
+import CommentIcon from "./images/comment_icon.png";
+import FileIcon from "./images/file_icon.svg";
 
 const assets = {
+  FileIcon,
+  ForwardIcon,
+  CommentIcon,
+  DoneAllIcon,
+  AttachFileOutlinedIcon,
+  ImageOutlinedIcon,
   CancelIcon,
   ExpandMoreIcon,
   CloseIcon,
@@ -193,7 +216,14 @@ const assets = {
   testProject4,
   membersDelete,
   KeyboardArrowRightIcon,
-  AddIcon
+  AddIcon,
+  TaskIcon,
+  ProjectIcon,
+  LocationIcon,
+  NewTaskIcon,
+  FromMEIcon,
+  ToMeIcon,
+  CanceledIcon,
 };
 
 export const sounds = {

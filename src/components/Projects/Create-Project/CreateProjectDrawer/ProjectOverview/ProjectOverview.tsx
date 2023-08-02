@@ -19,7 +19,7 @@ import ProjectOverViewForm from "./ProjectOverViewForm";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import { ProjectOwners } from "constants/interfaces/project.interface";
 import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import '../../../../../components/MuiStyles.css'
+import "../../../../../components/MuiStyles.css";
 const ProjectOverview = () => {
   const classes = useStyles();
   const isRenderEffect = useRef<any>(false);
@@ -32,7 +32,7 @@ const ProjectOverview = () => {
   const { user } = useSelector((state: RootState) => state.auth);
 
   // const [selectedOwners, setSelectedOwners] = useState<dataInterface[]>([]);
-  const updateRights = projectOverview.owner.some(
+  const updateRights = projectOverview.owner?.some(
     (item: Member) => String(item._id) === String(user._id)
   );
   const [showDate, setShowDate] = useState<any>(
@@ -249,7 +249,7 @@ const ProjectOverview = () => {
         >
           <InputHOC title="Owners">
             <MemoizedAutocomplete
-            className="autocompleteContainer"
+              className="autocompleteContainer"
               sx={{
                 backgroundColor: "white",
                 maxWidth: "100%",
@@ -300,7 +300,7 @@ const ProjectOverview = () => {
                     "& .MuiOutlinedInput-notchedOutline": {
                       border: "none",
                       padding: "0px",
-                      borderWidth: '0px !important'
+                      borderWidth: "0px !important",
                     },
                     // border: "1px solid #DBDBE5",
                     // borderRadius: "4px",

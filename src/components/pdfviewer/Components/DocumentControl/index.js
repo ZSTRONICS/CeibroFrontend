@@ -107,9 +107,9 @@ class DocumentControl extends Component {
   }
 
   renderBarContent() {
-    if (!this.props.pdf) {
-      return <div />;
-    }
+    // if (!this.props.pdf) {
+    //   return <div />;
+    // }
     const { classes, file } = this.props;
     return (
       <Toolbar className={classes.toolbar}>

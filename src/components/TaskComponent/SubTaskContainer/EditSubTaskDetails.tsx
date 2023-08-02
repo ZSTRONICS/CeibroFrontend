@@ -260,7 +260,7 @@ function EditSubTaskDetails(props: any) {
   ) => {
     let isAdmin: boolean = false;
     if (userState === SubtaskState.Ongoing) {
-      isAdmin = selectedTaskAdmins.some((admin) => admin.id === user._id);
+      isAdmin = selectedTaskAdmins.some((admin:any) => admin.id === user._id);
 
       if(isAdmin === false){
         if(String(memberId) === String(user._id)){
@@ -441,7 +441,7 @@ function EditSubTaskDetails(props: any) {
                                 }
                                 label={"Remove"}
                                 variant="outlined"
-                                styles={{
+                                sx={{
                                   borderColor: "#FA0808",
                                   fontSize: 12,
                                   fontWeight: "bold",
@@ -461,7 +461,7 @@ function EditSubTaskDetails(props: any) {
                               }
                               label={"Mark As Done"}
                               variant="outlined"
-                              styles={{
+                              sx={{
                                 borderColor: "#55BCB3",
                                 fontSize: 12,
                                 fontWeight: "bold",

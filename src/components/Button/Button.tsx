@@ -3,10 +3,10 @@ import { Button, CircularProgress, ButtonProps } from "@mui/material";
 import { styled } from "@mui/system";
 
 interface LoadingButtonProps extends ButtonProps {
-  loading: boolean | undefined;
+  loading?: boolean | undefined;
 }
 interface CButtonProps extends ButtonProps {
-  label: string;
+  label: string | any;
 }
 
 const CButton = (props: CButtonProps) => {
@@ -15,6 +15,7 @@ const CButton = (props: CButtonProps) => {
       disableRipple={true}
       {...props}
       autoFocus
+      elevation={0}
       className={props.className}
     >
       {props.label}
@@ -29,7 +30,7 @@ const LoadingButton: React.FC<LoadingButtonProps> = ({
   ...props
 }) => {
   return (
-    <MButton {...props} disabled={loading} disableRipple={true}>
+    <MButton {...props} disableRipple={true}>
       {loading ? <CircularProgress size={20} /> : children}
     </MButton>
   );

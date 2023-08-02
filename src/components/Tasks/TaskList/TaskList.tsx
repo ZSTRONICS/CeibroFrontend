@@ -13,7 +13,6 @@ import { getColorByStatus } from "config/project.config";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
-// import { getAllTask } from "redux/action/task.action";
 import { RootState } from "redux/reducers/appReducer";
 import { TaskInterface } from "constants/interfaces/task.interface";
 interface Props{

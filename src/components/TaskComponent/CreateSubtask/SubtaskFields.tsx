@@ -170,7 +170,7 @@ export default function CreateSubTask({ setSubTask }: any) {
           <CBox className={classes.btnDraft}>
             <CButton
               variant="outlined"
-              styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
+              sx={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
               label={"Save as draft"}
             />
           </CBox>
@@ -184,7 +184,7 @@ export default function CreateSubTask({ setSubTask }: any) {
             <CButton
               type="submit"
               variant="contained"
-              styles={{
+              sx={{
                 color: "#fff",
                 fontSize: 12,
                 fontWeight: "bold",
@@ -195,7 +195,7 @@ export default function CreateSubTask({ setSubTask }: any) {
             <CButton
               onClick={() => setSubTask(false)}
               variant="contained"
-              styles={{
+              sx={{
                 color: "#605C5C",
                 backgroundColor: "#ECF0F1",
                 fontSize: 12,

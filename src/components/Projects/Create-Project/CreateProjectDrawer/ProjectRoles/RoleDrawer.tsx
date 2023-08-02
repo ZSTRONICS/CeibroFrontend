@@ -663,7 +663,7 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
         <CButton
           onClick={handleClose}
           variant="outlined"
-          styles={{
+          sx={{
             color: "#605C5C",
             fontSize: 12,
             fontWeight: "700",

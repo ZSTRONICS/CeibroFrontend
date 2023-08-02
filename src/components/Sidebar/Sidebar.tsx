@@ -1,47 +1,37 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
-import { socket } from "../../services/socket.services";
 import "./sidebar.css";
+import { taskActions } from "redux/action";
+import { openFormInNewWindow } from "utills/common";
 
-function Sidebar() {
+function Sidebar(props:any) {
+
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const selectedTab = useSelector(
+    (store: RootState) => store.navigation.selectedTab
+  );
   const configs = useSelector(
-    (store: RootState) => store.navigation.sidebarRoutes
+    (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
-  const history = useHistory();
+  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
 
   const handleRouteClick = (config: SingleConfig) => {
-    if (config.getPath("") !== "chat") {
-      socket.setAppSelectedChat(null);
+    props.onClose()
+    if (config.key === "newTask") {
+      openFormInNewWindow("/create-new-task", "Create New Task");
+
+    } else {
+      dispatch(taskActions.selectedTaskFilter(config.key));
     }
-
-    history.push(`/${config.getPath("")}`);
-    // if (isTabletOrMobile && navbarOpen) {
-    //   dispatch(appActions.setNavbarOpen(false));
-    // }
   };
-
-  // const getNavbarStyles = () => {
-  //   let styles = {};
-  //   if (isTabletOrMobile) {
-  //     styles = {
-  //       left: navbarOpen ? "0px" : "-300px",
-  //     };
-  //   }
-  //   return styles;
-  // };
-
-  // const toggleSidebar = () => {
-  //   dispatch(appActions.toggleNavbar());
-  // };
 
   return (
     <>
@@ -56,15 +46,14 @@ function Sidebar() {
               <div
                 key={config.title}
                 className={`${classes.menue} ${
-                  window.location.pathname.includes(config.getPath(""))
-                    ? classes.active
-                    : ""
+                  selectedTaskFilter.includes(config.key) ? classes.active : ""
                 }`}
                 onClick={() => handleRouteClick(config)}
               >
                 <div className={classes.iconWrapper}>
-                  <Box className={classes.icon}>
-                    {config.icon}
+                  <Box>
+                    <img src={config.icon} />
+
                     {/* <img src={} className={classes.iconInner} alt={''} /> */}
                   </Box>
                 </div>
@@ -104,15 +93,16 @@ const useStyles = makeStyles((theme) => ({
   },
 
   menueWrapper: {
-    // height: "calc(100vh - 200px)",
     overflowY: "auto",
-    // marginTop: "28px",
+    marginTop: "136px",
+    position: "absolute",
+    width: "100%",
+    gap: 20,
   },
   menue: {
-    display: "flex",
-    alignItems: "center",
-    padding: "15px 10px",
-    paddingRight: 0,
+    // display: "flex",
+    textAlign: "center",
+    padding: "16px 6px",
     borderBottom: `1px solid white`,
     fontSize: 16,
     fontWeight: 500,
@@ -120,13 +110,12 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     gap: 13,
     "&:hover": {
-      background:
-        "white",
+      background: "white",
     },
   },
   iconWrapper: {
-    flex: 1,
-    display: "flex",
+    // flex: 1,
+    // display: "flex",
   },
   icon: {
     padding: 8,
@@ -139,14 +128,14 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flex: 4,
-    fontSize: 16,
+    fontSize: 10,
     fontWeight: 500,
   },
   badge: {
     flex: 1,
   },
   active: {
-    background:"white",
+    background: "white",
     color: `${colors.black} !important`,
   },
   help: {

@@ -242,8 +242,7 @@ const SubTaskMenu = ({ subTaskDetail }: Props) => {
       confirmationButtonProps: {sx:{textTransform:'capitalize',padding:'4px 15px', color:'#FA0808', borderColor:'#FA0808', marginRight:'10px'}, variant:"outlined"},
       cancellationText: <CButton
       variant="contained"
-      elevation={0}
-      styles={{
+      sx={{
         color: "#605C5C",
         backgroundColor: "#ECF0F1",
         fontSize: 12,

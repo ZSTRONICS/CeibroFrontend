@@ -14,7 +14,6 @@ import {
   IconButton,
   Menu,
   MenuItem,
-  Popover,
 } from "@mui/material";
 
 import { styled } from "@mui/material/styles";
@@ -22,10 +21,11 @@ import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import TaskBadges from "components/Utills/TaskCard/TaskBadges";
 import { Badge, makeStyles } from "@material-ui/core";
-import taskActions, {
+import {
   deleteTask,
   getAllSubTaskOfTask,
 } from "redux/action/task.action";
+import { taskActions } from "redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { State, TaskInterface } from "constants/interfaces/task.interface";
 import { TASK_CONFIG } from "config/task.config";
@@ -119,8 +119,7 @@ const TaskCard: React.FC<Props> = ({ task, ColorByStatus }) => {
       cancellationText: (
         <CButton
           variant="contained"
-          elevation={0}
-          styles={{
+          sx={{
             color: "#605C5C",
             backgroundColor: "#ECF0F1",
             fontSize: 12,

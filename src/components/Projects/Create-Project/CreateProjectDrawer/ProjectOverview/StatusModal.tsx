@@ -96,7 +96,7 @@ function StatusModal(props: StatusModalProps) {
           />
           <CustomStack justifyContent="flex-end" py={2.2} gap={1.2}> 
           <CButton
-              styles={{
+              sx={{
                 borderColor: "#9D9D9D",
                 fontSize: 12,
                 fontWeight: "500",

@@ -210,10 +210,10 @@ function AdminMain() {
                     />
                 </Grid>
               </Grid>
-          <TabPanel value={0}>
+          <TabPanel value={0} index={0}>
             <AdminUserTables users={filterUsersLocal} />
           </TabPanel>
-          <TabPanel value={1}>
+          <TabPanel value={1} index={1}>
             <AdminUserTables users={filterUsersLocal} />
           </TabPanel>
         </Tabs>

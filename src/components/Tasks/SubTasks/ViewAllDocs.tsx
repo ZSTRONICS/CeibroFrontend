@@ -11,7 +11,7 @@ import { CButton } from "components/Button";
 import {
   CDateTime, CommentName, FileName, Heading, Span
 } from "components/CustomTags";
-import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+import { Tab,  TabPanel,  TabsList } from "components/TaskComponent/Tabs/Tabs";
 import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import {
@@ -77,13 +77,13 @@ function ViewAllDocs(props: Props) {
               <Tab sx={{ fontSize: '1rem' }}>Docs</Tab>
               <Tab sx={{ fontSize: '1rem' }}>Media</Tab>
             </TabsList>
-            <TabPanel value={0}>
+            <TabPanel value={0} index={0}>
               {DocsContent(loadinggetAllDocs, getAllDocsByModule)}
             </TabPanel>
-            <TabPanel value={1}>
+            <TabPanel value={1} index={1}>
               {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(DOC_EXT, getAllDocsByModule))}
             </TabPanel>
-            <TabPanel value={2}>
+            <TabPanel value={2} index={1}>
               {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(MEDIA_EXT, getAllDocsByModule))}
             </TabPanel>
           </Tabs>

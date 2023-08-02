@@ -15,14 +15,12 @@ import { createSubTask } from "redux/action/task.action";
 import CustomModal from "components/Modal";
 import { CButton } from "components/Button";
 import CreateSubTask from "../SubTasks/CreateSubTask";
-import DatePicker from "components/Utills/Inputs/DatePicker";
 import StatusMenu from "components/Utills/Others/StatusMenu";
 import SelectDropdown from "components/Utills/Inputs/SelectDropdown";
 import { TaskInterface } from "constants/interfaces/task.interface";
 import { isTrue } from "components/Utills/Globals/Common";
 import { SubtaskInterface } from "constants/interfaces/subtask.interface";
 import { DOCS_CONFIG } from "config/docs.config";
-import { TASK_CONFIG } from "config/task.config";
 import moment from "moment-timezone";
 import CDatePicker from "components/DatePicker/CDatePicker";
 
@@ -233,7 +231,7 @@ function SubTaskStatusDrawer({ task, subtasks }: Props) {
               label="Add Subtask"
               onClick={() => setSubTask(true)}
               variant={"contained"}
-              styles={{ fontSize: 12, textTransform: "capitalize" }}
+              sx={{ fontSize: 12, textTransform: "capitalize" }}
             />
           </Grid>
         )}

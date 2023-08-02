@@ -6,7 +6,7 @@ export interface RejectionCommentRoot {
 
   export interface RejectionComment {
     _id: string
-    creator: Creator
+    creator: UserInfo
     comment: string
     createdAt: string
     updatedAt: string
@@ -16,4 +16,3 @@ export interface RejectionCommentRoot {
     _id:string,
     description: string,
   }
-  export interface Creator extends UserInfo {}

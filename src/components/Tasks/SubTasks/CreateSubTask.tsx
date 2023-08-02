@@ -181,7 +181,7 @@ export default function CreateSubTask({
       });
     }
 
-    selectedTaskAdmins.forEach((admin) => {
+    selectedTaskAdmins.forEach((admin:any) => {
       if (!membersList.includes(String(admin.id))) {
         stateToPush.push({
           userId: admin.id,
@@ -381,7 +381,7 @@ export default function CreateSubTask({
               <CButton
                 type="submit"
                 variant="outlined"
-                styles={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
+                sx={{ color: "#0076C8", fontSize: 12, fontWeight: "bold" }}
                 label={"Save as draft"}
                 onClick={() => {
                   defaultValues.state = [
@@ -395,7 +395,7 @@ export default function CreateSubTask({
               <CButton
                 type="submit"
                 variant="contained"
-                styles={{ color: "white", fontSize: 12, fontWeight: "bold" }}
+                sx={{ color: "white", fontSize: 12, fontWeight: "bold" }}
                 label={"Update draft"}
                 onClick={() => {
                   defaultValues.files = selectedAttachments;
@@ -423,7 +423,7 @@ export default function CreateSubTask({
             <CButton
               onClick={handleCloseModal}
               variant="contained"
-              styles={{
+              sx={{
                 color: "#605C5C",
                 backgroundColor: "#ECF0F1",
                 fontSize: 12,
@@ -436,7 +436,7 @@ export default function CreateSubTask({
               <CButton
                 type="submit"
                 variant="contained"
-                styles={{
+                sx={{
                   color: "#fff",
                   fontSize: 12,
                   fontWeight: "bold",
@@ -483,7 +483,7 @@ export default function CreateSubTask({
               <CButton
                 type="submit"
                 variant="contained"
-                styles={{
+                sx={{
                   color: "#fff",
                   fontSize: 12,
                   fontWeight: "bold",
@@ -513,7 +513,7 @@ export default function CreateSubTask({
                       }
                     );
 
-                    selectedTaskAdmins.forEach((admin) => {
+                    selectedTaskAdmins.forEach((admin:any) => {
                       if (!membersList.includes(String(admin.id))) {
                         stateToPush.push({
                           userId: admin.id,
@@ -531,7 +531,7 @@ export default function CreateSubTask({
               <CButton
                 type="submit"
                 variant="contained"
-                styles={{ color: "white", fontSize: 12, fontWeight: "bold" }}
+                sx={{ color: "white", fontSize: 12, fontWeight: "bold" }}
                 label={"Assign"}
                 onClick={() => {
                   setAssignToData();

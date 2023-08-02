@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useState, useRef } from "react";
 import doEach from "lodash/forEach";
 // import PropTypes from 'prop-types';
 // components
@@ -10,12 +10,12 @@ import OutlineControl from "./../../Drawer/Outline";
 import { withStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import pdfWorker from "./pdfjs/pdf.worker.js";
-import { scale } from "chroma-js";
-import { ZoomIn, ZoomOut, Refresh } from "@mui/icons-material";
-import { ButtonGroup, Icon, Button } from "@mui/material";
+import { ZoomIn, ZoomOut, Refresh, Room, Close } from "@mui/icons-material";
+import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
+import CustomModal from "components/Modal";
+import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
+import { formatDropdownData } from "components/Utills/Globals";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = pdfWorker;
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 const DocumentViewerStyles = () => ({
@@ -50,151 +50,174 @@ const DocumentViewerStyles = () => ({
     top: 0,
     left: 0,
   },
+  pageContainer: {
+    display: "flex",
+    justifyContent: "center",
+  },
 });
 
-class DocumentViewer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = this.initialState(props);
-    this.scrollPanel = React.createRef();
-    // self members binding
-    const funcs = [
-      "onLoadingPage",
-      "onLoadedPage",
-      "onDocumentSourceSuccess",
-      "onDocumentLoaded",
-      "onPageChanged",
-      "onZoom",
-      "onCreateObject",
-      "onScaleChanged",
-      // render helpers
-      "renderMainDocument",
-      "renderLoadingDocument",
-      "handleZoomIn",
-      "handleZoomOut",
-    ];
-    doEach(funcs, (func) => (this[func] = this[func].bind(this)));
-  }
+const DocumentViewer = (props) => {
+  const [totalPage, setTotalPage] = useState(0);
+  const [page, setPage] = useState(1);
+  const [loadingPage, setLoadingPage] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [last, setLast] = useState(0);
+  const [percentage, setPercentage] = useState(0.5);
+  const [buffer, setBuffer] = useState(0);
+  const [first, setFirst] = useState(true);
+  const [pageFactory, setPageFactory] = useState(null);
+  const [factory, setFactory] = useState(null);
+  const [isZooming, setIsZooming] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [clickX, setClickX] = useState(null);
+  const [clickY, setClickY] = useState(null);
+  const [drawingIcons, setDrawingIcons] = useState([]);
+  const [isOpen, setIsOpen] = useState(false);
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log(this.props.file, "@@@@@@@@@@@@@@@@@");
-  }
+  let scrollPanel,
+    pageRef,
+    canvasRef = useRef(null);
 
-  initialState(props) {
-    return {
-      totalPage: 0, // total number of page
-      page: 1, // default page
-      loadingPage: false,
-      progress: 0,
-      last: 0,
-      percentage: 1,
-      buffer: 0,
-      first: true, // is first page
-      pageFactory: null, // PDFDocument Page factory object
-      factory: null, // PDFDocument factory object
-      isZooming: false,
-    };
-  }
+  const { classes } = props;
 
-  onLoadingPage({ loaded, total }) {
-    let { progress } = this.state;
+  function onLoadingPage({ loaded, total }) {
+    //  state not defined
+    let { progress } = props.state;
     let buffer = 10;
     progress = Math.floor((loaded / total) * 100);
     if (progress < 100) {
       buffer = progress + Math.random() * 10;
     }
-    this.setState({
-      loadingPage: true,
-      progress,
-      buffer,
-    });
+    setLoadingPage(true);
+    setProgress(progress);
+    setBuffer(buffer);
   }
 
-  onDocumentSourceSuccess() {
-    this.setState({
-      loadingPage: true,
-    });
+  function onDocumentSourceSuccess() {
+    setLoadingPage(true);
   }
 
-  onZoom(percentage) {
-    this.setState({
-      percentage,
-    });
+  function onZoom(percentage) {
+    setPercentage(percentage);
   }
 
-  onPageChanged(page) {
-    // console.log(page);
-    this.setState({
-      page,
-      last: page === this.state.totalPage,
-      first: page === 1,
-    });
+  function onPageChanged(page) {
+    setPage(page);
+    setLast(last);
+    setFirst(first);
   }
 
-  onScaleChanged(percentage) {
-    this.setState({
-      percentage,
-    });
+  function onScaleChanged(percentage) {
+    setPercentage(percentage);
   }
 
-  onLoadedPage(pageFactory) {
-    this.setState({
-      loadingPage: false,
-      progress: 0,
-      pageFactory,
-    });
+  function onLoadedPage(pageFactory) {
+    setLoadingPage(false);
+    setProgress(0);
+    setFactory(pageFactory);
   }
 
-  onCreateObject() {
-    console.log(this.scrollPanel);
-  }
+  // function onCreateObject() {
+  //   console.log(scrollPanel);
+  // }
 
-  onDocumentLoaded(factory) {
+  function onDocumentLoaded(factory) {
     const { numPages } = factory;
     let totalPage = numPages;
     let page = 1;
     if (totalPage <= 0) {
       page = 0;
     }
-    console.log(factory, page, totalPage);
-    this.setState({
-      totalPage,
-      last: totalPage === 1,
-      page,
-      factory,
-    });
+    // console.log(factory, page, totalPage);
+    setTotalPage(totalPage);
+    setLast(totalPage === 1);
+    setPage(page);
+    setFactory(factory);
   }
 
-  renderLoadingDocument() {
+  function renderLoadingDocument() {
     return (
-      <div className={this.props.classes.progressContainer}>
+      <div className={classes.progressContainer}>
         <LinearProgress
           variant="buffer"
-          value={this.state.progress}
-          valueBuffer={this.state.buffer}
+          value={progress}
+          valueBuffer={buffer}
         />
       </div>
     );
   }
-  handleZoomIn() {
-    this.state.percentage < 1.5 &&
-      this.setState({
-        percentage: this.state.percentage + 0.1,
-        isZooming: true,
-      });
-    setTimeout(() => this.setState({ isZooming: false }), 500);
+
+  function handleZoomIn() {
+    if (percentage < 1.5) {
+      setPercentage((prevState) => prevState + 0.1);
+      setIsZooming(true);
+      setTimeout(() => setIsZooming(false), 500);
+    }
   }
-  handleZoomOut() {
-    this.state.percentage > 1 &&
-      this.setState({
-        percentage: this.state.percentage - 0.1,
-        isZooming: true,
-      });
-    setTimeout(() => this.setState({ isZooming: false }), 500);
+  function handleZoomOut() {
+    if (percentage > 0.5) {
+      setPercentage((prevState) => prevState - 0.1);
+      setIsZooming(true);
+      setTimeout(() => setIsZooming(false), 500);
+    }
   }
 
-  renderMainDocument() {
-    if (!this.props.pdf) {
+  const handleMarkerClick = () => {
+    setIsActive((prevState) => !prevState);
+  };
+
+  function drawMarker(event) {
+    const canvas = canvasRef.current;
+    if (!canvas || !isActive) return;
+    const canvasRect = canvas.getBoundingClientRect();
+    console.log(canvasRect, "canvas");
+    const clickX = event.clientX - canvasRect.left;
+    const clickY = event.clientY - canvasRect.top;
+    const icon = { x: clickX, y: clickY, tooltip: "" };
+    const icons = [...drawingIcons, icon];
+    console.log(clickX, clickY, "clickX y");
+    setDrawingIcons(icons);
+    setIsOpen(true);
+  }
+
+  const handleCloseModal = () => {
+    setIsOpen(false);
+  };
+
+  const handleAssignTask = () => {
+    // payload for Assign Task
+    const payload = {
+      projectID: "",
+      floorID: "",
+      drawingID: "",
+      iconData: {
+        id: "",
+        x: "",
+        y: "",
+        taskUUID: "",
+        taskLabel: "",
+        pageNo: "",
+      },
+    };
+    const icons = [...drawingIcons];
+    setDrawingIcons(icons);
+    handleCloseModal();
+    console.log("Assign Task");
+  };
+
+  const handleDeleteMarker = (index) => {
+    const icons = [...drawingIcons];
+    icons.splice(index, 1);
+    setDrawingIcons(icons);
+  };
+
+  const renderMainDocument = () => {
+    const buttonStyle = {
+      padding: 0,
+      color: isActive ? "black" : "",
+    };
+
+    if (!props.pdf) {
       return <div />;
     }
     return (
@@ -206,610 +229,210 @@ class DocumentViewer extends Component {
           }}
         >
           <ButtonGroup size="small">
-            <Button onClick={this.handleZoomIn} sx={{ p: 0 }}>
+            <Button onClick={handleZoomIn} sx={{ p: 0 }}>
               <Icon component={ZoomIn} />
             </Button>
-            <Button onClick={this.handleZoomOut} sx={{ p: 0 }}>
+            <Button onClick={handleZoomOut} sx={{ p: 0 }}>
               <Icon component={ZoomOut} />
             </Button>
             <Button
               onClick={() => {
-                this.setState({ percentage: 1 });
+                setPercentage(0.5);
               }}
               sx={{ p: 0 }}
             >
               <Icon component={Refresh} />
             </Button>
+            <Button onClick={handleMarkerClick} sx={buttonStyle}>
+              <Icon component={Room} />
+            </Button>
           </ButtonGroup>
         </div>
-        <div style={{ height: "600px", overflow: "auto" }}>
+        <div
+          style={{
+            height: "600px",
+            overflow: "auto",
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
           <Document
-            file={this.props.file}
-            // url={this.props.pdf}
+            file={props.file}
             noData={<div />}
             loading={<div />}
-            onSourceSuccess={this.onDocumentSourceSuccess}
+            onClick={drawMarker}
+            onSourceSuccess={onDocumentSourceSuccess}
             onSourceError={(error) => {
               console.log(error.message);
             }}
-            onLoadSuccess={this.onDocumentLoaded}
+            onLoadSuccess={onDocumentLoaded}
             style={{
               transition: "transform 0.3s ease",
-              transform: `scale(${this.state.percentage})`,
+              transform: `scale(${percentage})`,
+              height: "100%",
             }}
           >
+            <div style={{ position: "relative" }}>
+              {drawingIcons.length > 0 &&
+                drawingIcons.map((icon, index) => {
+                  return (
+                    <div
+                      key={index}
+                      style={{
+                        position: "absolute",
+                        top: `${icon.y}px`,
+                        left: `${icon.x}px`,
+                        transform: "translate(-50%, -50%)",
+                        zIndex: 99,
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: "-10px",
+                          right: "-10px",
+                          cursor: "pointer",
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleDeleteMarker(index);
+                        }} // Replace handleIconClose with the appropriate function to handle icon close
+                      >
+                        <Tooltip title="Close">
+                          <Icon
+                            component={Close}
+                            style={{
+                              height: "12px",
+                              width: "12px",
+                              color: "black",
+                              backgroundColor: "white",
+                            }}
+                          />
+                        </Tooltip>
+                      </div>
+                      <Tooltip title="Marker tooltip">
+                        <Icon component={Room} style={{ color: "red" }} />
+                      </Tooltip>
+                    </div>
+                  );
+                })}
+            </div>
             <Page
               inputRef={(r) => {
-                this.pageRef = r;
+                pageRef = r;
+                // canvasRef.current = r?.canvas;
               }}
-              onLoadProgress={this.onLoadingPage}
-              onLoadSuccess={this.onLoadedPage}
-              pageNumber={this.state.page}
+              canvasRef={canvasRef}
+              // className={classes.pageContainer}
+              onLoadProgress={onLoadingPage}
+              onLoadSuccess={onLoadedPage}
+              pageNumber={page}
               renderAnnotationLayer={false}
               renderTextLayer={false}
-              scale={this.state.percentage}
+              scale={percentage}
             />
           </Document>
         </div>
       </div>
     );
+  };
+
+  // const { classes } = props;
+  let viewContainerStyle = [classes.viewContainer];
+  // the user does not pick any file
+  if (!props.pdf) {
+    viewContainerStyle = [...viewContainerStyle, classes.viewEmptyContainer];
   }
 
-  // dummyConfig() {
-  //     return {
-  //         "1": {
-  //             "workarea": {
-  //                 "width": 595,
-  //                 "height": 842
-  //             },
-  //             "objects": [
-  //                 {
-  //                     "type": "image",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 297.5,
-  //                     "top": 421,
-  //                     "width": 0,
-  //                     "height": 0,
-  //                     "fill": "rgb(0,0,0)",
-  //                     "stroke": null,
-  //                     "strokeWidth": 0,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "rgba(255, 255, 255, 0)",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "crossOrigin": "",
-  //                     "cropX": 0,
-  //                     "cropY": 0,
-  //                     "id": "workarea",
-  //                     "name": "",
-  //                     "src": "",
-  //                     "link": {},
-  //                     "tooltip": {
-  //                         "enabled": false
-  //                     },
-  //                     "layout": "fixed",
-  //                     "workareaWidth": 595,
-  //                     "workareaHeight": 842,
-  //                     "filters": []
-  //                 },
-  //                 {
-  //                     "type": "circle",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 267,
-  //                     "top": 390.5,
-  //                     "width": 60,
-  //                     "height": 60,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "radius": 30,
-  //                     "startAngle": 0,
-  //                     "endAngle": 6.283185307179586,
-  //                     "id": "a4a12703-197b-4725-8148-54eedfd6ffaa",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 }
-  //             ],
-  //             "animations": [],
-  //             "styles": [],
-  //             "dataSources": []
-  //         },
-  //         "2": {
-  //             "workarea": {
-  //                 "width": 595,
-  //                 "height": 842
-  //             },
-  //             "objects": [
-  //                 {
-  //                     "type": "image",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 297.5,
-  //                     "top": 421,
-  //                     "width": 0,
-  //                     "height": 0,
-  //                     "fill": "rgb(0,0,0)",
-  //                     "stroke": null,
-  //                     "strokeWidth": 0,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "rgba(255, 255, 255, 0)",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "crossOrigin": "",
-  //                     "cropX": 0,
-  //                     "cropY": 0,
-  //                     "id": "workarea",
-  //                     "name": "",
-  //                     "link": {},
-  //                     "tooltip": {
-  //                         "enabled": false
-  //                     },
-  //                     "layout": "fixed",
-  //                     "workareaWidth": 595,
-  //                     "workareaHeight": 842,
-  //                     "src": "",
-  //                     "filters": []
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 101,
-  //                     "top": 148.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "267ec4ab-81a5-4423-895c-b574e897dd3a",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 277,
-  //                     "top": 400.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "5048a58a-0bf0-45d7-8d2a-45dcf2bc155a",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 277,
-  //                     "top": 400.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "73f546ff-5873-45b6-a57c-83f7d530e8b6",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 379,
-  //                     "top": 177.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "085eacb0-2f5c-40e3-a9e1-13872fe8fd2b",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 },
-  //                 {
-  //                     "type": "rect",
-  //                     "version": "2.3.6",
-  //                     "originX": "left",
-  //                     "originY": "top",
-  //                     "left": 225,
-  //                     "top": 230.5,
-  //                     "width": 40,
-  //                     "height": 40,
-  //                     "fill": "rgba(0, 0, 0, 1)",
-  //                     "stroke": "rgba(255, 255, 255, 0)",
-  //                     "strokeWidth": 1,
-  //                     "strokeDashArray": null,
-  //                     "strokeLineCap": "butt",
-  //                     "strokeLineJoin": "miter",
-  //                     "strokeMiterLimit": 4,
-  //                     "scaleX": 1,
-  //                     "scaleY": 1,
-  //                     "angle": 0,
-  //                     "flipX": false,
-  //                     "flipY": false,
-  //                     "opacity": 1,
-  //                     "shadow": null,
-  //                     "visible": true,
-  //                     "clipTo": null,
-  //                     "backgroundColor": "",
-  //                     "fillRule": "nonzero",
-  //                     "paintFirst": "fill",
-  //                     "globalCompositeOperation": "source-over",
-  //                     "transformMatrix": null,
-  //                     "skewX": 0,
-  //                     "skewY": 0,
-  //                     "rx": 0,
-  //                     "ry": 0,
-  //                     "id": "886caf5f-3b8b-474c-9330-264b23f2efaa",
-  //                     "name": "New shape",
-  //                     "link": {
-  //                         "enabled": false,
-  //                         "type": "resource",
-  //                         "state": "new",
-  //                         "dashboard": {}
-  //                     },
-  //                     "tooltip": {
-  //                         "enabled": true,
-  //                         "type": "resource",
-  //                         "template": "<div>{{message.name}}</div>"
-  //                     },
-  //                     "animation": {
-  //                         "type": "none",
-  //                         "loop": true,
-  //                         "autoplay": true,
-  //                         "delay": 100,
-  //                         "duration": 1000
-  //                     },
-  //                     "userProperty": {},
-  //                     "trigger": {
-  //                         "enabled": false,
-  //                         "type": "alarm",
-  //                         "script": "return message.value > 0;",
-  //                         "effect": "style"
-  //                     }
-  //                 }
-  //             ],
-  //             "animations": [],
-  //             "styles": [],
-  //             "dataSources": []
-  //         }
-  //     };
-  // }
-
-  render() {
-    const { classes } = this.props;
-    let viewContainerStyle = [classes.viewContainer];
-    // the user does not pick any file
-    if (!this.props.pdf) {
-      viewContainerStyle = [...viewContainerStyle, classes.viewEmptyContainer];
-    }
-    const { factory, pageFactory, percentage } = this.state;
-    return (
-      <div ref={this.scrollPanel} className={classes.scrollContainer}>
-        <Paper className={viewContainerStyle.join(" ")} elevation={1}>
-          {this.renderMainDocument()}
-          {
-            <DocumentControl
-              currentPage={this.state.page}
-              totalPage={this.state.totalPage}
-              onChangePage={this.onPageChanged}
-              percentage={percentage}
-              onScaleChanged={this.onScaleChanged}
-              pdf={factory}
-              file={this.props.file}
-            />
-          }
-          {factory && (
-            <OutlineControl
-              onChangePage={this.onPageChanged}
-              pdf={factory}
-              totalPage={this.state.totalPage}
-              currentPage={this.state.page}
-            />
-          )}
-          {/* {
+  return (
+    <div ref={scrollPanel} className={classes.scrollContainer}>
+      <Paper className={viewContainerStyle.join(" ")} elevation={1}>
+        {renderMainDocument()}
+        {props.file && (
+          <DocumentControl
+            currentPage={page}
+            totalPage={totalPage}
+            onChangePage={onPageChanged}
+            percentage={percentage}
+            onScaleChanged={onScaleChanged}
+            pdf={factory}
+            file={props.file}
+          />
+        )}
+        {factory && (
+          <OutlineControl
+            onChangePage={onPageChanged}
+            pdf={factory}
+            totalPage={totalPage}
+            currentPage={page}
+          />
+        )}
+        {/* {
                         pageFactory && 
                         <div className={classes.editorContainer}>
                             <ImageMapEditor
-                                totalPage={this.state.totalPage}
-                                currentPage={this.state.page}
-                                onChangePage={this.onPageChanged}
+                                totalPage={totalPage}
+                                currentPage={page}
+                                onChangePage={onPageChanged}
                                 page={pageFactory}
-                                pdf={this.props.pdf}    // pdf arraybuffer object
-                                file={this.props.file}  // pdf file
-                                lastPage={this.state.last}
-                                firstPage={this.state.first}
+                                pdf={props.pdf}    // pdf arraybuffer object
+                                file={props.file}  // pdf file
+                                lastPage={last}
+                                firstPage={first}
                                 percentage={percentage}
-                                onCreateObject={this.onCreateObject}
-                                onZoom={this.onZoom}
+                                onCreateObject={onCreateObject}
+                                onZoom={onZoom}
                                 readOnly={false}
-                                encrypt={this.props.encrypt}
+                                encrypt={props.encrypt}
                             />
                         </div>
                     } */}
-        </Paper>
-      </div>
-    );
-  }
-}
 
-// DocumentViewer.propTypes = {
-// 	pdf: PropTypes.object,
-// 	file: PropTypes.object,
-// 	classes: PropTypes.object.isRequired,
-// };
+        {
+          <CustomModal
+            showCloseBtn={true}
+            title={"Assign Task"}
+            isOpen={isOpen}
+            handleClose={handleCloseModal}
+            children={
+              <>
+                <AutocompleteField
+                  placeholder="Select Task"
+                  label="Task"
+                  options={formatDropdownData(
+                    props.newTask,
+                    "",
+                    "_id",
+                    "topic"
+                  )}
+                  // onChange={handleProjectChange}
+                  sx={{
+                    width: "100%",
+                    border: "1px solid #c4c4c4",
+                    borderRadius: "0 4px 4px 0",
+                  }}
+                  showSideLabel={true}
+                  // groupBy={(option)=> option.label}
+                />
+                <Button
+                  sx={{
+                    marginTop: "8px",
+                    padding: "3px 4px",
+                    textTransform: "capitalize",
+                  }}
+                  variant="contained"
+                  onClick={handleAssignTask}
+                >
+                  Save
+                </Button>
+              </>
+            }
+          />
+        }
+      </Paper>
+    </div>
+  );
+};
 
 export default withStyles(DocumentViewerStyles)(DocumentViewer);

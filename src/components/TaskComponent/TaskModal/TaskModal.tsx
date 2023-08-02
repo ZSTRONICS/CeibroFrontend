@@ -7,25 +7,18 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
-  Divider,
 } from "@mui/material";
-import Link from "@mui/material/Link";
 
 // formik
-import { Form, Formik, useFormikContext } from "formik";
+import { Form, Formik } from "formik";
 
 import useMediaQuery from "@mui/material/useMediaQuery";
 // import CustomizedSwitch from "components/Chat/Questioniar/IOSSwitch";
-import assets from "assets/assets";
 import { CBox } from "components/material-ui";
 import { useDispatch, useSelector } from "react-redux";
 import { theme } from "theme";
-import taskActions, {
-  createTask,
-  getAllTask,
-} from "../../../redux/action/task.action";
+import { taskActions } from "redux/action";
 import { RootState } from "../../../redux/reducers/appReducer";
 // import { TaskAdvanceOptions } from './TaskAdvanceOptions';
 import NewTaskMenu from "./NewTaskMenu";
@@ -67,7 +60,7 @@ export const TaskModal = () => {
       description,
     };
     dispatch(
-      createTask({
+     taskActions.createTask({
         body: payload,
         success: (res) => {
           handleClose();
@@ -166,7 +159,7 @@ export const TaskModal = () => {
                     <CButton
                       type="submit"
                       variant="outlined"
-                      styles={{
+                      sx={{
                         color: "#0076C8",
                         fontSize: 12,
                         fontWeight: "bold",
@@ -187,8 +180,7 @@ export const TaskModal = () => {
                     <CButton
                       onClick={handleClose}
                       variant="contained"
-                      elevation={0}
-                      styles={{
+                      sx={{
                         color: "#605C5C",
                         backgroundColor: "#ECF0F1",
                         fontSize: 12,
@@ -199,7 +191,7 @@ export const TaskModal = () => {
                     <CButton
                       type="submit"
                       variant="contained"
-                      styles={{
+                      sx={{
                         color: "#fff",
                         fontSize: 12,
                         fontWeight: "bold",
