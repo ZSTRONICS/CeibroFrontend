@@ -191,7 +191,7 @@ const App: React.FC<MyApp> = () => {
   function sendHeartbeat() {
     if (sock !== null && sock.connected) {
       sock.emit("heartbeat");
-      setTimeout(sendHeartbeat, 15000);
+      setTimeout(sendHeartbeat, 10000);
     }
   }
 
@@ -219,36 +219,12 @@ const App: React.FC<MyApp> = () => {
         console.log("Connected to server");
         socket.setUserId(userId);
         socket.setSocket(sock);
-        setTimeout(sendHeartbeat, 15000);
+        setTimeout(sendHeartbeat, 10000);
       });
 
       sock.on("heartbeatAck", () => {
         console.log("heartbeatAck");
       });
-
-      // Listen for disconnect event
-      // sock.on("disconnect", (reason: string) => {
-      //   console.log(`Disconnected from server: ${reason}`);
-      //   clearInterval(socketIntervalId);
-      //   clearInterval(intervalId);
-      //   let localInterval = setInterval(() => {
-      //     if (socket.getSocket() != null) {
-      //       sock.connect();
-      //     }
-      //   }, 2000);
-      //   setLocalIntervalId(localInterval);
-      // });
-
-      // sock.on("connect_error", (err: any) => {
-      //   clearInterval(socketIntervalId);
-      //   clearInterval(intervalId);
-      //   let localInterval = setInterval(() => {
-      //     if (socket.getSocket() != null) {
-      //       sock.connect();
-      //     }
-      //   }, 1000);
-      //   setLocalIntervalId(localInterval);
-      // });
 
       sock.on("token_invalid", () => {
         const tokens = localStorage.getItem("tokens") || "{}";
