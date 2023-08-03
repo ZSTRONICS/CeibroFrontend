@@ -37,13 +37,10 @@ export default function ContactBox({
 
   return (
     <Box
-      sx={{ display: "flex", gap: 1.4 }}
+      sx={{ display: "flex", gap: 1.4, marginBottom: "8px", marginTop: "8px" }}
       onClick={(e) => handleCheckBox(!selected)}
     >
-      <Checkbox
-        onChange={(e, checked) => handleCheckBox(checked)}
-        checked={selected}
-      />
+      <Checkbox checked={selected} />
       {imgSrc ? (
         <img
           src={imgSrc}

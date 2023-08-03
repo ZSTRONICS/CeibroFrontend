@@ -4,32 +4,29 @@ import { LoadingButton } from "components/Button";
 import {
   BoldLableTag,
   CustomStack,
-  FileName,
   Span,
   SubHeadingTag,
   SubLabelTag,
 } from "components/CustomTags";
-import GenericMenu, { Option } from "components/GenericMenu/GenericMenu";
+import GenericMenu from "components/GenericMenu/GenericMenu";
 import { momentdeDateFormat } from "components/Utills/Globals";
 import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
 import { Task } from "constants/interfaces";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 
 interface IProps {
   task: Task;
   selectedTaskId: string | undefined;
   handleClick: (task: Task) => void;
-  menuOption:any;
-  disableMenu:boolean
+  menuOption: any;
+  disableMenu: boolean;
 }
 
 function TaskCard(props: IProps) {
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-  const { task, handleClick, selectedTaskId,menuOption, disableMenu } = props;
+  const { task, handleClick, selectedTaskId, menuOption, disableMenu } = props;
   const dispatch = useDispatch();
   const userId = user && String(user._id);
   const {
@@ -48,7 +45,7 @@ function TaskCard(props: IProps) {
     userSubState,
     seenBy,
   } = task;
-  
+
   // useEffect(() => {
   //   if (!seenBy.includes(userId)) {
   //     dispatch(
@@ -108,7 +105,11 @@ function TaskCard(props: IProps) {
                 color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
               }}
             />
-            <GenericMenu options={menuOption} key={_id} disableMenu= {disableMenu} />
+            <GenericMenu
+              options={menuOption}
+              key={_id}
+              disableMenu={disableMenu}
+            />
           </CustomStack>
         }
       />

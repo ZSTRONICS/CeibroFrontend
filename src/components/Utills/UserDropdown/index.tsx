@@ -25,6 +25,7 @@ import {
 import { handleGroupSearch } from "utills/common";
 import { styled } from "@mui/material/styles";
 import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 
 interface Option {
   label: string;
@@ -84,15 +85,22 @@ function UserDropDown(props: IProps) {
   };
 
   const handleClose = () => {
-    let updatedSelected: AssignedToStateType[] = selected.map((item) => {
-      let payloadSelected: AssignedToStateType = {
-        phoneNumber: item.phoneNumber,
-        userId: item._id,
-        state: "new",
-      };
-      return payloadSelected;
+    let invitedNumbers: string[] = [];
+    let updatedSelected: AssignedToStateType[] = [];
+    selected.map((item) => {
+      if (!item.isCeiborUser) {
+        invitedNumbers.push(item.phoneNumber);
+      } else {
+        let payloadSelected: AssignedToStateType = {
+          phoneNumber: item.phoneNumber,
+          userId: item._id,
+          state: "new",
+        };
+        updatedSelected.push(payloadSelected);
+      }
     });
     handleChangeValues(updatedSelected, name);
+    handleChangeValues(invitedNumbers, "invitedNumbers");
     setSearchQuery("");
     setOpen(false);
   };
@@ -128,6 +136,7 @@ function UserDropDown(props: IProps) {
   };
 
   const handleClearClick = () => {
+    setIsSelfAssign(false);
     setSearchQuery("");
     setSelected([]);
   };
@@ -137,11 +146,12 @@ function UserDropDown(props: IProps) {
       let updatedSelected = [...selected, contact];
       setSelected(updatedSelected);
     } else {
-      setSelected(
-        _.remove(selected, (item: object) => {
-          return contact._id != item._id;
-        })
-      );
+      let allSelected = [...selected];
+      if (isSelfAssign) {
+        allSelected.push(user);
+        setIsSelfAssign(!isSelfAssign);
+      }
+      setSelected(allSelected.filter((item) => item._id !== contact._id));
     }
   };
 
@@ -149,14 +159,24 @@ function UserDropDown(props: IProps) {
     event: React.ChangeEvent<HTMLInputElement>,
     checked: boolean
   ) => {
+    user["isCeiborUser"] = true;
     handleSelectedList(user, checked);
     setIsSelfAssign(checked);
   };
 
   const renderValue = () => {
+    console.log(selected, "selected");
     if (selected.length > 0) {
-      const fullNames = selected.map((item) => item.contactFullName).join(", ");
-      return fullNames;
+      const fullNames = selected.map((item) => {
+        if (item.contactFullName) {
+          return item.contactFullName;
+        } else if (item.firstName) {
+          let name = `${item.firstName} ${item.surName}`;
+          return name;
+        }
+        return "";
+      });
+      return fullNames.join(", ");
     } else {
       return "Select Contacts";
     }
@@ -175,6 +195,21 @@ function UserDropDown(props: IProps) {
           sx={{
             "& .MuiSelect-icon": {
               right: `${selected.length > 0 ? "40px" : 0}`,
+            },
+          }}
+          MenuProps={{
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            PaperProps: {
+              style: {
+                maxHeight: "calc(100vh - 240px)",
+              },
             },
           }}
           multiple
@@ -268,6 +303,7 @@ function UserDropDown(props: IProps) {
             <FormControlLabel
               control={
                 <Checkbox
+                  name="self-assign"
                   checked={isSelfAssign}
                   onChange={handleSelfAssignChange}
                   size="small"
