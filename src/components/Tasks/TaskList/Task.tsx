@@ -75,6 +75,18 @@ const Task = () => {
     }
   }, [selectedTab]);
 
+  const markTaskAsSeen = (taskId:string) => {
+    dispatch(taskActions.taskSeen({
+      other: { taskId },
+    }));
+  };
+
+  useEffect(() => {
+    if (selectedTask !== null && !selectedTask.seenBy.includes(userId)) {
+      markTaskAsSeen(selectedTask._id);
+    }
+  }, [selectedTask, userId]);
+
   const handleTabClick = (type: string) => {
     setSelectedTab(type);
     setSelectedTask(null);

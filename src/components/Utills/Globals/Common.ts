@@ -161,13 +161,16 @@ export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
  * @param taskIndex check if task exist 
  * @return Functino will return updated task events
  * **/
-export function addEventToTask(taskArray: any[], eventData: any, taskIndex: number): void {
+export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    const existingEvents = taskArray[taskIndex].events;
-    const isUniqueEvent = existingEvents.every((event: any) => event._id !== eventData._id);
-    if (isUniqueEvent) {
-      taskArray[taskIndex].events.push(eventData);
-      taskArray[taskIndex].seenBy = eventData.taskData.seenBy;
+    const existingEvents: [] = task.events;
+    console.log('existingEvents', existingEvents)
+    const isUniqueEvent = existingEvents.some((event: any) => String(event._id) === String(eventData._id));
+    if (!isUniqueEvent) {
+      task.events.push(eventData);
+      task.seenBy = eventData.taskData.seenBy;
+    } else {
+      console.log("Event already exists ", eventData, task, taskIndex)
     }
   }
 }
@@ -179,17 +182,17 @@ export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], e
   targetArray.push(task);
 }
 
-export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
-  const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
-    if (taskIndex > -1) {
-    const taskToMove = sourceArray[taskIndex]
-    taskToMove.hiddenBy.push(...eventData.hiddenBy)
-    targetArray.unshift(taskToMove);
-    console.log('taskToMove 1', targetArray[0]._id)
-    taskToMove.splice(taskIndex, 1);
-    console.log('taskToMove 2', taskToMove._id)
-  }
-}
+// export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
+//   const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
+//   if (taskIndex > -1) {
+//     const taskToMove = sourceArray[taskIndex]
+//     taskToMove.hiddenBy.push(...eventData.hiddenBy)
+//     targetArray.unshift(taskToMove);
+//     console.log('taskToMove 1', targetArray[0]._id)
+//     taskToMove.splice(taskIndex, 1);
+//     console.log('taskToMove 2', taskToMove._id)
+//   }
+// }
 /**
  * @param array the array must have _id
  * @param itemId must have comparison id string

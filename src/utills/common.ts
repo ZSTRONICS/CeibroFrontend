@@ -1,8 +1,11 @@
+// const windowsMap = new Map();
+
 export const openFormInNewWindow = (path: string, windowTitle: string) => {
   let width = 900;
   let height = 782;
   const leftOffset = (window.screen.width - width) / 2 + window.screenX;
   const topOffset = (window.screen.height - height) / 2 + window.screenY;
+
   // if (window.innerWidth < 900) {
   //   width = window.innerWidth - 50;
   // }
@@ -17,12 +20,24 @@ export const openFormInNewWindow = (path: string, windowTitle: string) => {
 
   // Set the title of the new window
   if (newWindow != null) {
+
     newWindow.addEventListener("load", () => {
       newWindow.document.title = windowTitle;
+      // const windowId = String(Date.now());
+      // windowsMap.set(windowId, newWindow);
+
+
     });
   }
 };
 
+// export const closeWindowWithId = (windowId: any) => {
+//   const windowToClose = windowsMap.get(windowId);
+//   if (windowToClose) {
+//   windowToClose.close(); // Close the window with the specified ID.
+//   windowsMap.delete(windowId); // Clean up the map to free up memory.
+//   }
+// };
 // Now this function for handle contacts search
 export const handleGroupSearch = (
   searchText: string,

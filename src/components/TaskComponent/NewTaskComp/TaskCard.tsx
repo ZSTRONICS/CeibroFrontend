@@ -49,21 +49,6 @@ function TaskCard(props: IProps) {
     seenBy,
   } = task;
   
-  // useEffect(() => {
-  //   if (!seenBy.includes(userId)) {
-  //     dispatch(
-  //       taskActions.taskSeen({
-  //         other: { taskId: _id },
-  //       })
-  //     );
-  //   }
-  // }, [_id, seenBy, userId]);
-
-  // const assignedTo =
-  // assignedToState.length > 0
-  //     ? `${assignedToState[0].firstName} ${assignedToState[0].surName}`
-  //     : "N/A";
-  // console.log("userSubState", userSubState, selectedTaskFilter);
   const isSelectedTask: boolean = selectedTaskId === _id;
   const taskCreated = momentdeDateFormat(createdAt);
 
