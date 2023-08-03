@@ -21,7 +21,7 @@ import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
 
 // material
-import { CssBaseline, ThemeProvider, createTheme } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
 // styling
 import "react-toastify/dist/ReactToastify.css";
@@ -77,7 +77,6 @@ import {
 import { getMyInvitesCount } from "redux/action/user.action";
 import { AxiosV1, SERVER_URL, urlV1 } from "utills/axios";
 import runOneSignal, { InitOneSignal } from "utills/runOneSignal";
-import { theme } from "./theme";
 
 interface MyApp {}
 
@@ -207,7 +206,7 @@ const App: React.FC<MyApp> = () => {
       const myToken = JSON.parse(tokens)?.access?.token;
 
       sock = io(SERVER_URL, {
-        transports: ['websocket'],
+        transports: ["websocket"],
         auth: {
           token: myToken,
         },

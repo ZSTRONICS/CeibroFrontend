@@ -13,6 +13,7 @@ import {
   OptionType,
   ChangeValueType,
 } from "components/Tasks/type";
+import { handleGroupSearch } from "utills/common";
 
 interface IProps {
   name: keyof CreateNewTaskFormType;
@@ -94,17 +95,10 @@ function CustomDropDown(props: IProps) {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setSearchQuery(searchValue);
-
-    Object.entries(sortedOptions).forEach(([groupLetter, groupOptions]) => {
-      const filteredOptions = groupOptions.filter((item) =>
-        item.label.toLowerCase().includes(searchValue.toLowerCase())
-      );
-      if (filteredOptions.length > 0) {
-        filteredData[groupLetter] = filteredOptions;
-      }
+    setAllFilterData({
+      all: handleGroupSearch(searchValue, sortedOptions, "label"),
+      recent: options.recentOptions,
     });
-
-    setAllFilterData({ all: filteredData, recent: options.recentOptions });
   };
 
   const handleCreateClick = () => {
