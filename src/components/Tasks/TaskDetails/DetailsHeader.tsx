@@ -1,12 +1,12 @@
-import { Box } from "@mui/system";
-import DetailActions from "./DetailActions";
 import { Grid, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import {
   AssignedUserState,
   InvitedNumber,
   Project,
   Topic,
 } from "constants/interfaces";
+import DetailActions from "./DetailActions";
 
 interface IProps {
   userSubState: string;
@@ -40,7 +40,7 @@ export default function DetailsHeader(props: IProps) {
     invitedNumbers,
     taskId,
     doneImageRequired,
-doneCommentsRequired
+    doneCommentsRequired,
   } = props;
   const data = [
     { label: "Created by", value: `${creator.firstName} ${creator.surName}` },
@@ -83,13 +83,15 @@ doneCommentsRequired
   return (
     <Box sx={{ padding: "0px 16px" }}>
       <DetailActions
-      doneImageRequired={doneImageRequired}
-      doneCommentsRequired={doneCommentsRequired}
+        doneImageRequired={doneImageRequired}
+        doneCommentsRequired={doneCommentsRequired}
         taskId={taskId}
         userSubState={userSubState}
         dueDate={dueDate}
         taskUid={taskUid}
         createdOn={createdOn}
+        assignedToState={assignedToState}
+        invitedNumbers={invitedNumbers}
       />
       <Box sx={{ height: "30px", width: "100%", padding: "5px 0px" }}>
         <Typography

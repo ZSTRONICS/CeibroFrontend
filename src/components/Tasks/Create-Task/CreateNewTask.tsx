@@ -4,13 +4,18 @@ import {
   FormControlLabel,
   FormGroup,
   IconButton,
-  Switch,
   TextField,
-  Typography,
 } from "@mui/material";
+import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
+import CustomSwitch from "components/Utills/CustomSwitch";
+import FileBox from "components/Utills/FileBox";
+import ImageBox from "components/Utills/ImageBox";
+import UserDropDown from "components/Utills/UserDropdown";
+import { isEmpty } from "lodash";
 import { ChangeEvent, useEffect, useState } from "react";
-import Footer from "./Footer";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import {
   PROJECT_APIS,
   docsAction,
@@ -18,23 +23,16 @@ import {
   taskActions,
   userApiAction,
 } from "redux/action";
-import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { isEmpty } from "lodash";
-import CustomDatePicker from "components/Utills/CustomDatePicker";
-import UserDropDown from "components/Utills/UserDropdown";
+import { removeItem } from "utills/common";
+import TaskHeader from "../TaskHeader";
 import {
   ChangeValueType,
   CreateNewTaskFormType,
   Options,
   fileType,
 } from "../type";
-import CustomSwitch from "components/Utills/CustomSwitch";
-import TaskHeader from "../TaskHeader";
-import ImageBox from "components/Utills/ImageBox";
-import FileBox from "components/Utills/FileBox";
-import { toast } from "react-toastify";
-import { removeItem } from "utills/common";
+import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 
@@ -413,6 +411,8 @@ function CreateNewTask() {
         )}
         <Box sx={{ marginTop: "100px" }}>
           <Footer
+            disabled={false}
+            showHeader={false}
             handleSubmitForm={handleCreateTask}
             handleAttachImageValue={handleAttachImageValue}
             handleGetLocationValue={handleGetLocationValue}

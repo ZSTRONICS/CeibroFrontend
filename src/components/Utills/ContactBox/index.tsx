@@ -1,18 +1,18 @@
 import { Box, Checkbox, Typography } from "@mui/material";
-import React from "react";
-import NameAvatar from "../Others/NameAvatar";
 import { SubHeadingTag, SubLabelTag } from "components/CustomTags";
 
 interface IProps {
   contact: any[];
   handleSelectedList: (contact: object, checked: boolean) => void;
   selected: boolean;
+  isDisabled: boolean;
 }
 
 export default function ContactBox({
   contact,
   handleSelectedList,
   selected,
+  isDisabled,
 }: IProps) {
   const {
     _id,
@@ -22,7 +22,7 @@ export default function ContactBox({
     isCeiborUser = "",
     userCeibroData = {},
   } = contact;
-
+  console.log("isDisabled", isDisabled);
   let imgSrc: string = "";
   let placeholder: string = "";
   if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
