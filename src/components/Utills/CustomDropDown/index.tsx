@@ -39,7 +39,7 @@ interface IProps {
 function CustomDropDown(props: IProps) {
   const dispatch = useDispatch()
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [deleteItem, setDeleteItem] = React.useState<OptionType>(null);
+  const [deleteItem, setDeleteItem] = React.useState<OptionType|null>(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { label, options, createCallback, handleChangeValues, name } = props;
   const [selected, setSelected] = React.useState<string>("");
@@ -145,6 +145,9 @@ function CustomDropDown(props: IProps) {
   };
   const handleDialogState = () => {
     setOpenDialog(!openDialog);
+    if(openDialog){
+      setDeleteItem(null)
+    }
   };
 
   const handleDeleteItem = (option: OptionType) => {
@@ -152,6 +155,9 @@ function CustomDropDown(props: IProps) {
       dispatch(
         taskActions.deleteTopic({
           other: { topicId: option.value },
+          success: (res: any) => {
+            dispatch(taskActions.getAllTopic());
+          },
         })
       );
     }
@@ -164,6 +170,7 @@ function CustomDropDown(props: IProps) {
     event.preventDefault();
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
+    setDeleteItem(item);
   };
   
   const handleCloseMenu = () => {
@@ -171,6 +178,7 @@ function CustomDropDown(props: IProps) {
   };
   
   const handleDeleteClick = (item: OptionType) => {
+    console.log("check", item)
     setDeleteItem(item);
     handleCloseMenu();
     handleDialogState();
@@ -293,13 +301,13 @@ function CustomDropDown(props: IProps) {
                           height: "20px",
                         },
                       }}
-                      onClick={handleInfoMenuClick}
+                      onClick={(e)=>handleInfoMenuClick(e,item)}
                     >
                       <MoreVert />
                     </IconButton>
                     <Menu
                       anchorEl={anchorEl}
-                      open={Boolean(anchorEl)}
+                      open={Boolean(anchorEl) && item.value===deleteItem?.value}
                       onClose={handleCloseMenu}
                     >
                       <MenuItem
