@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Button from "@mui/material/Button";
-import { Box, ListSubheader, TextField, Typography } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
+import { MoreVert } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
-  CreateNewTaskFormType,
-  Options,
-  OptionType,
+  Box,
+  ListSubheader,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
+import IconButton from "@mui/material/IconButton";
+import InputLabel from "@mui/material/InputLabel";
+import Select from "@mui/material/Select";
+import {
   ChangeValueType,
+  CreateNewTaskFormType,
+  OptionType,
+  Options,
 } from "components/Tasks/type";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { taskActions } from "redux/action";
 import { handleGroupSearch } from "utills/common";
+import ConfirmationDialog from "../ConfirmationDialog";
 
 interface IProps {
   name: keyof CreateNewTaskFormType;
@@ -27,6 +37,10 @@ interface IProps {
 }
 
 function CustomDropDown(props: IProps) {
+  const dispatch = useDispatch()
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [deleteItem, setDeleteItem] = React.useState<OptionType>(null);
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const { label, options, createCallback, handleChangeValues, name } = props;
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
@@ -129,8 +143,38 @@ function CustomDropDown(props: IProps) {
   const renderValue = () => {
     return selected;
   };
+  const handleDialogState = () => {
+    setOpenDialog(!openDialog);
+  };
+
+  const handleDeleteItem = (option: OptionType) => {
+    if(label==="Topic"){
+      dispatch(
+        taskActions.deleteTopic({
+          other: { topicId: option.value },
+        })
+      );
+    }
+  };
+
   const firstSearchQuery = searchQuery?.[0]?.toUpperCase() || "";
   const isMatchFound = !!allFilterData.all[firstSearchQuery];
+
+  const handleInfoMenuClick = (event: any, item: OptionType) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+  
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+  
+  const handleDeleteClick = (item: OptionType) => {
+    setDeleteItem(item);
+    handleCloseMenu();
+    handleDialogState();
+  };
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -231,10 +275,43 @@ function CustomDropDown(props: IProps) {
                 ...groupOptions.map((item) => (
                   <Box
                     key={`all-${item.value}`}
-                    sx={{ margin: "8px 16px", cursor: "pointer" }}
+                    sx={{
+                      margin: "8px 16px",
+                      cursor: "pointer",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                     onClick={() => handleMenuClick(item)}
                   >
-                    {item.label}
+                    <Typography>{item.label}</Typography>
+                    <IconButton
+                      edge="end"
+                      sx={{
+                        color: "#0076C8",
+                        "& .MuiSvgIcon-root": {
+                          width: "20px",
+                          height: "20px",
+                        },
+                      }}
+                      onClick={handleInfoMenuClick}
+                    >
+                      <MoreVert />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      open={Boolean(anchorEl)}
+                      onClose={handleCloseMenu}
+                    >
+                      <MenuItem
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleDeleteClick(item);
+                        }}
+                      >
+                        Delete
+                      </MenuItem>
+                    </Menu>
                   </Box>
                 )),
               ]
@@ -242,6 +319,14 @@ function CustomDropDown(props: IProps) {
           </Box>
         </Select>
       </FormControl>
+      {deleteItem && (
+        <ConfirmationDialog
+          item={deleteItem}
+          handleDeleteItem={handleDeleteItem}
+          open={openDialog}
+          handleDialogState={handleDialogState}
+        />
+      )}
     </div>
   );
 }
