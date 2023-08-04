@@ -1,9 +1,4 @@
-import React, { useEffect, useState } from "react";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Button from "@mui/material/Button";
+import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Checkbox,
@@ -12,20 +7,23 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import ClearIcon from "@mui/icons-material/Clear";
-import SelectedContactBox from "../SelectedContactBox";
-import ContactBox from "../ContactBox";
-import _ from "lodash";
-import {
-  CreateNewTaskFormType,
-  ChangeValueType,
-  AssignedToStateType,
-} from "components/Tasks/type";
-import { handleGroupSearch } from "utills/common";
+import InputLabel from "@mui/material/InputLabel";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import {
+  AssignedToStateType,
+  ChangeValueType,
+  CreateNewTaskFormType,
+} from "components/Tasks/type";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import { handleGroupSearch } from "utills/common";
+import ContactBox from "../ContactBox";
+import SelectedContactBox from "../SelectedContactBox";
 
 interface Option {
   label: string;
@@ -87,18 +85,27 @@ function UserDropDown(props: IProps) {
   const handleClose = () => {
     let invitedNumbers: string[] = [];
     let updatedSelected: AssignedToStateType[] = [];
-    selected.map((item) => {
-      if (!item.isCeiborUser) {
-        invitedNumbers.push(item.phoneNumber);
-      } else {
-        let payloadSelected: AssignedToStateType = {
-          phoneNumber: item.phoneNumber,
-          userId: item._id,
-          state: "new",
-        };
-        updatedSelected.push(payloadSelected);
-      }
-    });
+    if (isSelfAssign === true) {
+      updatedSelected.push({
+        phoneNumber: user.phoneNumber,
+        userId: user._id,
+        state: "new",
+      });
+    }
+    selected
+      .filter((item: any) => item._id !== user._id)
+      .map((item) => {
+        if (!item.isCeiborUser && item.userCeibroData === null) {
+          invitedNumbers.push(item.phoneNumber);
+        } else {
+          let payloadSelected: AssignedToStateType = {
+            phoneNumber: item.phoneNumber,
+            userId: item.userCeibroData?._id,
+            state: "new",
+          };
+          updatedSelected.push(payloadSelected);
+        }
+      });
     handleChangeValues(updatedSelected, name);
     handleChangeValues(invitedNumbers, "invitedNumbers");
     setSearchQuery("");
@@ -148,10 +155,10 @@ function UserDropDown(props: IProps) {
     } else {
       let allSelected = [...selected];
       if (isSelfAssign) {
-        allSelected.push(user);
+        // allSelected.push(user);
         setIsSelfAssign(!isSelfAssign);
       }
-      setSelected(allSelected.filter((item) => item._id !== contact._id));
+      setSelected(allSelected.filter((item: any) => item._id !== contact._id));
     }
   };
 
@@ -165,7 +172,6 @@ function UserDropDown(props: IProps) {
   };
 
   const renderValue = () => {
-    console.log(selected, "selected");
     if (selected.length > 0) {
       const fullNames = selected.map((item) => {
         if (item.contactFullName) {

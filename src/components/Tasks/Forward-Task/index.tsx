@@ -2,31 +2,49 @@ import { Box, Typography } from "@mui/material";
 import ContactBox from "components/Utills/ContactBox";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
+import {
+  AssignedUserState,
+  Contact,
+  InvitedNumber,
+} from "constants/interfaces";
+import _ from "lodash";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import _ from "lodash";
 import { taskActions, userApiAction } from "redux/action";
+import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
 import { AssignedToStateType } from "../type";
-import { useParams } from "react-router-dom";
 
 interface IProps {
   taskId: string;
+  assignedToState: AssignedUserState[];
+  invitedNumbers: InvitedNumber[];
 }
 
-const ForwardTask = ({ taskId }: IProps) => {
-  // const { taskId } = useParams<RouteParams>();
+const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [selected, setSelected] = React.useState<any[]>([]);
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
   const [sortedContacts, setSortedContacts] = React.useState<{
     [key: string]: any[];
   }>({});
+
+  const filteredUsers = userAllContacts.filter((contact: Contact) => {
+    const isMatchContact = assignedToState.some(
+      (user) => user.phoneNumber === contact.phoneNumber && contact.isCeiborUser
+    );
+    const isInvitedMember = invitedNumbers.some(
+      (member) => member.phoneNumber === contact.phoneNumber
+    );
+    const shouldInclude = isMatchContact || isInvitedMember;
+
+    return shouldInclude;
+  });
+
+  const [selected, setSelected] = React.useState<any[]>(filteredUsers);
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,7 +57,7 @@ const ForwardTask = ({ taskId }: IProps) => {
 
   useEffect(() => {
     if (userAllContacts && userAllContacts.length > 0) {
-      const sortedContacts = userAllContacts.sort((a, b) =>
+      const sortedContacts = userAllContacts.sort((a: any, b: any) =>
         a.contactFirstName.localeCompare(b.contactFirstName)
       );
 
@@ -56,6 +74,7 @@ const ForwardTask = ({ taskId }: IProps) => {
 
       setFilterData(groupedData);
       setSortedContacts(groupedData);
+      setSelected(filteredUsers);
     }
   }, [userAllContacts]);
 
@@ -72,6 +91,7 @@ const ForwardTask = ({ taskId }: IProps) => {
     }
   };
 
+  console.log("filteredUsers", filteredUsers);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setFilterData(
@@ -157,7 +177,7 @@ const ForwardTask = ({ taskId }: IProps) => {
         </Typography>
       </Box>
       <Box
-        className = "custom-scrollbar"
+        className="custom-scrollbar"
         sx={{
           margin: "8px 16px",
           height: "calc(100vh - 398px )",
@@ -179,6 +199,9 @@ const ForwardTask = ({ taskId }: IProps) => {
           // Use map on the array to render the list items
           ...groupOptions.map((item) => (
             <ContactBox
+              isDisabled={filteredUsers.some(
+                (user: any) => user._id === item._id
+              )}
               contact={item}
               handleSelectedList={handleSelectedList}
               selected={!!selected.find((contact) => contact._id === item._id)}

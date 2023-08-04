@@ -1,11 +1,10 @@
-import * as React from "react";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import TextField from "@mui/material/TextField"; // Import the TextField from MUI
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { ChangeValueType, CreateNewTaskFormType } from "components/Tasks/type";
+import moment from "moment-timezone";
 import { useState } from "react";
-
 interface CustomeDatePickerProps {
   name: string;
   label: string;
@@ -20,24 +19,25 @@ const CustomDatePicker = ({
   name,
   handleChangeValues,
 }: CustomeDatePickerProps) => {
-  const [value, setValue] = useState<string>(new Date().toLocaleDateString());
+  const [value, setValue] = useState<any>(new Date().toLocaleDateString());
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
-      const formattedDate = new Date(date).toLocaleDateString();
-      handleChangeValues(formattedDate, "dueDate");
-      setValue(formattedDate);
+      const newDate = moment(date).format("DD-MM-YYYY");
+      handleChangeValues(newDate, "dueDate");
+      setValue(date);
     } else {
       console.log("No date selected.");
     }
   };
-
+  // const locales = ['en-us', 'en-gb', 'zh-cn', 'de'];
   return (
     <div style={{ display: "flex", flexDirection: "column", marginTop: "8px" }}>
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"de"}>
         <DatePicker
           key={name}
           label={label}
+          inputFormat="DD.MM.YYYY"
           renderInput={(params) => (
             <TextField
               {...params}

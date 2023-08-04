@@ -636,7 +636,7 @@ const App: React.FC<MyApp> = () => {
       });
     }
   }, [isLoggedIn]);
-
+  console.log("rendering");
   return (
     // <ThemeProvider theme={theme}>
     <div className="App">

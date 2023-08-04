@@ -1,14 +1,15 @@
 // @ts-nocheck
-import React, { useState } from "react";
-import { Grid, Button, Typography, Chip, Box } from "@mui/material";
-import assets from "../../../assets/assets";
-import capitalize from "lodash/capitalize";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import { LoadingButton } from "components/Button";
+import CustomModal from "components/Modal";
+import { AssignedUserState, InvitedNumber } from "constants/interfaces";
+import { useOpenCloseModal } from "hooks";
+import capitalize from "lodash/capitalize";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
-import { useOpenCloseModal } from "hooks";
+import assets from "../../../assets/assets";
 import Comment from "../Comment";
-import CustomModal from "components/Modal";
 import ForwardTask from "../Forward-Task";
 
 interface IProps {
@@ -19,6 +20,8 @@ interface IProps {
   createdOn: Date | any;
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
+  assignedToState: AssignedUserState[];
+  invitedNumbers: InvitedNumber[];
 }
 
 enum statusColors {
@@ -37,13 +40,15 @@ const DetailActions: React.FC<IProps> = (props) => {
     taskId,
     doneImageRequired,
     doneCommentsRequired,
+    assignedToState,
+    invitedNumbers,
   } = props;
 
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState("");
 
-  const handleClick = (action) => {
+  const handleClick = (action: string) => {
     setTaskAction(action);
     openModal();
   };
@@ -58,7 +63,7 @@ const DetailActions: React.FC<IProps> = (props) => {
             eventName: "doneTask",
             taskId: taskId,
             hasFiles: false,
-          }
+          },
         })
       );
     }
@@ -68,17 +73,31 @@ const DetailActions: React.FC<IProps> = (props) => {
     statusColors[userSubState as keyof typeof statusColors];
 
   const getModalContent = () => {
-    if (taskAction === "forward") return <ForwardTask taskId={taskId} />;
-    return <Comment title={getTitle()} showHeader={true} taskId={taskId} closeModal={closeModal} />;
+    if (taskAction === "forward")
+      return (
+        <ForwardTask
+          invitedNumbers={invitedNumbers}
+          assignedToState={assignedToState}
+          taskId={taskId}
+        />
+      );
+    return (
+      <Comment
+        title={getTitle()}
+        showHeader={true}
+        taskId={taskId}
+        closeModal={closeModal}
+      />
+    );
   };
 
   const titles = {
-    comment: 'Task Comment',
-    forward: 'Task Forward',
-    done: 'Task Done',
+    comment: "Task Comment",
+    forward: "Task Forward",
+    done: "Task Done",
   };
 
-  const getTitle = () => titles[taskAction] || ""
+  const getTitle = () => titles[taskAction] || "";
   return (
     <>
       <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>

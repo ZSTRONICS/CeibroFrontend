@@ -182,17 +182,19 @@ export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], e
   targetArray.push(task);
 }
 
-// export function moveTask(sourceArray: any[], targetArray: any[], eventData: any): void {
-//   const taskIndex = findTaskIndex(sourceArray, eventData.taskId);
-//   if (taskIndex > -1) {
-//     const taskToMove = sourceArray[taskIndex]
-//     taskToMove.hiddenBy.push(...eventData.hiddenBy)
-//     targetArray.unshift(taskToMove);
-//     console.log('taskToMove 1', targetArray[0]._id)
-//     taskToMove.splice(taskIndex, 1);
-//     console.log('taskToMove 2', taskToMove._id)
-//   }
-// }
+/**
+ * @param task taks object
+ * @param taskIndex 
+ * @param eventData 
+ * **/
+export function updateTak(task: any, taskIndex: any, eventData: any) {
+  if (taskIndex > -1) {
+    addEventToTask(task, eventData, taskIndex);
+    task.creatorState = "canceled";
+    task.userSubState = "canceled";
+  }
+}
+
 /**
  * @param array the array must have _id
  * @param itemId must have comparison id string
@@ -371,4 +373,5 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { formatDropdownData, momentdeDateFormatWithDay, optionMapping }
+export { formatDropdownData, momentdeDateFormatWithDay, optionMapping };
+
