@@ -1,10 +1,9 @@
 // @ts-nocheck
-import { Box, IconButton, Typography } from "@mui/material";
-import { Delete as DeleteIcon, AccountCircle } from "@mui/icons-material";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import React from "react";
+import { Box, IconButton, Typography } from "@mui/material";
 
 interface ContactProps {
+  isDisabled: boolean;
   contact: any;
   handleSelectedList: (contact: object, checked: boolean) => void;
 }
@@ -12,6 +11,7 @@ interface ContactProps {
 export default function SelectedContactBox({
   contact,
   handleSelectedList,
+  isDisabled,
 }: ContactProps) {
   const {
     contactFirstName = "",
@@ -25,13 +25,22 @@ export default function SelectedContactBox({
   let placeholder: string = "";
   if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
     imageSrc = userCeibroData.profilePic;
+  } else if (contact.profilePic) {
+    imageSrc = contact.profilePic;
   } else {
     placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
   }
 
   return (
     <Box
-      sx={{ position: "relative", display: "inline-block", m: 1 }}
+      sx={{
+        position: "relative",
+        display: "inline-block",
+        marginTop: "8px",
+        marginBottom: "8px",
+        pointerEvents: `${isDisabled ? "none" : ""}`,
+        opacity: `${isDisabled ? "0.5" : "1"}`,
+      }}
       key={contact.contactFullName + 1}
     >
       <Box
@@ -56,25 +65,27 @@ export default function SelectedContactBox({
           </Typography>
         )}
       </Box>
-      <IconButton
-        aria-label="delete"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleSelectedList(contact, false);
-        }}
-        sx={{
-          position: "absolute",
-          bottom: "-4px",
-          right: "-6px",
-          backgroundColor: "#0076C8",
-          color: "#fff",
-          width: "16px",
-          height: "16px",
-        }}
-        disableRipple
-      >
-        <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-      </IconButton>
+      {!isDisabled && (
+        <IconButton
+          aria-label="delete"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleSelectedList(contact, false);
+          }}
+          sx={{
+            position: "absolute",
+            bottom: "-4px",
+            right: "-6px",
+            backgroundColor: "#0076C8",
+            color: "#fff",
+            width: "16px",
+            height: "16px",
+          }}
+          disableRipple
+        >
+          <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
+        </IconButton>
+      )}
     </Box>
   );
 }

@@ -5,7 +5,7 @@ interface IProps {
   contact: any[];
   handleSelectedList: (contact: object, checked: boolean) => void;
   selected: boolean;
-  isDisabled: boolean;
+  isDisabled?: boolean;
 }
 
 export default function ContactBox({
@@ -37,10 +37,25 @@ export default function ContactBox({
 
   return (
     <Box
-      sx={{ display: "flex", gap: 1.4, marginBottom: "8px", marginTop: "8px" }}
+      sx={{
+        display: "flex",
+        gap: 1.4,
+        marginBottom: "8px",
+        marginTop: "8px",
+        cursor: `${!isDisabled ? "pointer" : "not-allowed"}`,
+        pointerEvents: `${isDisabled ? "none" : ""}`,
+        opacity: `${isDisabled ? "0.5" : "1"}`,
+      }}
       onClick={(e) => handleCheckBox(!selected)}
     >
-      <Checkbox checked={selected} />
+      <Checkbox
+        checked={selected}
+        sx={{
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+        }}
+      />
       {imgSrc ? (
         <img
           src={imgSrc}

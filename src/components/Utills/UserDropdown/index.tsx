@@ -154,9 +154,8 @@ function UserDropDown(props: IProps) {
       setSelected(updatedSelected);
     } else {
       let allSelected = [...selected];
-      if (isSelfAssign) {
-        // allSelected.push(user);
-        setIsSelfAssign(!isSelfAssign);
+      if (contact._id === user._id) {
+        setIsSelfAssign(checked);
       }
       setSelected(allSelected.filter((item: any) => item._id !== contact._id));
     }
@@ -276,16 +275,46 @@ function UserDropDown(props: IProps) {
               </CustomButton>
             )}
           </ListSubheader>
-          <Box sx={{ display: "flex" }}>
-            {selected.length > 0 &&
+          <Box
+            sx={{
+              minHeight: "66px",
+              display: "flex",
+              paddingLeft: "12px",
+              overflow: "auto",
+              "&::-webkit-scrollbar": {
+                height: "0.4rem",
+              },
+              "&::-webkit-scrollbar-track": {
+                "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+                borderRadius: "0.2rem",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                backgroundColor: "rgba(0,0,0,.1)",
+              },
+            }}
+          >
+            {selected.length > 0 ? (
               selected.map((selectedContact: object) => {
                 return (
                   <SelectedContactBox
+                    isDisabled={false}
                     contact={selectedContact}
                     handleSelectedList={handleSelectedList}
                   />
                 );
-              })}
+              })
+            ) : (
+              <Typography
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                No selected contacts
+              </Typography>
+            )}
           </Box>
           <Box
             sx={{
