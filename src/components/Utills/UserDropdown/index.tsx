@@ -143,6 +143,8 @@ function UserDropDown(props: IProps) {
   };
 
   const handleClearClick = () => {
+    handleChangeValues(undefined,"assignedToState")
+    handleChangeValues(undefined,"invitedNumbers")
     setIsSelfAssign(false);
     setSearchQuery("");
     setSelected([]);

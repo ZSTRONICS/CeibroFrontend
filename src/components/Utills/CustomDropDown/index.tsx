@@ -136,6 +136,7 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleClearClick = () => {
+    handleChangeValues(undefined, name);
     setSearchQuery("");
     setSelected("");
   };
@@ -240,11 +241,6 @@ function CustomDropDown(props: IProps) {
                 disableUnderline: true,
               }}
             />
-            {/* {allFilterData.all[searchQuery?.[0]?.toLowerCase() || ""] ? (
-              <Button onClick={handleCancelClick}>Cancel</Button>
-            ) : (
-              <Button onClick={handleCreateClick}>save</Button>
-            )} */}
             <>
               {searchQuery && searchQuery.length > 0 && isMatchFound ? (
                 <Button onClick={handleCancelClick}>Cancel</Button>

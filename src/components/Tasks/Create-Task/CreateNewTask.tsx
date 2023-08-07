@@ -233,10 +233,18 @@ function CreateNewTask() {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => {
-    setSelectedData((prevSelectedData) => ({
-      ...prevSelectedData,
-      [name]: value,
-    }));
+    if(value===undefined){
+      setSelectedData((prevSelectedData) => ({
+        ...prevSelectedData,
+        [name]: initialValues[name],
+      }));
+    }else{
+      setSelectedData((prevSelectedData) => ({
+        ...prevSelectedData,
+        [name]: value,
+      }));
+    }
+    
   };
 
   const handleGetLocationValue = () => {};
@@ -411,7 +419,14 @@ function CreateNewTask() {
         )}
         <Box sx={{ marginTop: "100px" }}>
           <Footer
-            disabled={false}
+            disabled={
+              selectedData.topic != "" &&
+              (selectedData.assignedToState.length > 0 ||
+                (selectedData.invitedNumbers &&
+                  selectedData.invitedNumbers.length > 0))
+                ? false
+                : true
+            }
             showHeader={false}
             handleSubmitForm={handleCreateTask}
             handleAttachImageValue={handleAttachImageValue}
