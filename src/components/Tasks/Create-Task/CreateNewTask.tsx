@@ -333,7 +333,6 @@ function CreateNewTask() {
             <FormControlLabel
               control={
                 <Checkbox
-                  // defaultChecked
                   onChange={(e, checked) => {
                     handleChangeValues(checked, "doneImageRequired");
                   }}
