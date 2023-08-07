@@ -103,7 +103,6 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
     setIsSelfAssign(checked);
   };
 
-  console.log("filteredUsers", filteredUsers);
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setFilterData(
@@ -113,20 +112,26 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   };
 
   const handleSubmit = () => {
-    let updatedSelected: AssignedToStateType[] = selected.map((item) => {
-      let payloadSelected: AssignedToStateType = {
-        phoneNumber: item.phoneNumber,
-        userId: item.userId,
-        state: "new",
-      };
-      return payloadSelected;
+    let invitedNumbers: string[] = [];
+    let updatedSelected: AssignedToStateType[] = []
+    selected.map((item) => {
+      if (!item.isCeiborUser && item.userCeibroData === null) {
+        invitedNumbers.push(item.phoneNumber);
+      } else {
+        let payloadSelected: AssignedToStateType = {
+          phoneNumber: item.phoneNumber,
+          userId: item.userCeibroData?._id,
+          state: "new",
+        };
+        updatedSelected.push(payloadSelected);
+      }
     });
     dispatch(
       taskActions.forwardTask({
         other: { taskId: taskId },
         body: {
           assignedToState: updatedSelected,
-          invitedNumbers: [],
+          invitedNumbers: invitedNumbers,
         },
       })
     );
