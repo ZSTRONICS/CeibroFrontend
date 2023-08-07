@@ -38,6 +38,8 @@ export default function SelectedContactBox({
         display: "inline-block",
         marginTop: "8px",
         marginBottom: "8px",
+        marginRight:"8px",
+        marginLeft:"4px",
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
       }}

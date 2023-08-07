@@ -37,9 +37,9 @@ interface IProps {
 }
 
 function CustomDropDown(props: IProps) {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [deleteItem, setDeleteItem] = React.useState<OptionType|null>(null);
+  const [deleteItem, setDeleteItem] = React.useState<OptionType | null>(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const { label, options, createCallback, handleChangeValues, name } = props;
   const [selected, setSelected] = React.useState<string>("");
@@ -145,13 +145,13 @@ function CustomDropDown(props: IProps) {
   };
   const handleDialogState = () => {
     setOpenDialog(!openDialog);
-    if(openDialog){
-      setDeleteItem(null)
+    if (openDialog) {
+      setDeleteItem(null);
     }
   };
 
   const handleDeleteItem = (option: OptionType) => {
-    if(label==="Topic"){
+    if (label === "Topic") {
       dispatch(
         taskActions.deleteTopic({
           other: { topicId: option.value },
@@ -172,13 +172,13 @@ function CustomDropDown(props: IProps) {
     setAnchorEl(event.currentTarget);
     setDeleteItem(item);
   };
-  
+
   const handleCloseMenu = () => {
     setAnchorEl(null);
   };
-  
+
   const handleDeleteClick = (item: OptionType) => {
-    console.log("check", item)
+    console.log("check", item);
     setDeleteItem(item);
     handleCloseMenu();
     handleDialogState();
@@ -260,7 +260,17 @@ function CustomDropDown(props: IProps) {
           </ListSubheader>
           {options?.recentOptions?.length > 0 && (
             <Box sx={{ margin: "8px 16px" }}>
-              <Typography>Recent used {label}</Typography>
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  color: "#818181",
+                  lineHeight: "16px",
+                }}
+              >
+                Recent used {label.toLocaleLowerCase()}
+              </Typography>
               {allFilterData.recent.map((item: OptionType) => {
                 return (
                   <Box
@@ -301,13 +311,15 @@ function CustomDropDown(props: IProps) {
                           height: "20px",
                         },
                       }}
-                      onClick={(e)=>handleInfoMenuClick(e,item)}
+                      onClick={(e) => handleInfoMenuClick(e, item)}
                     >
                       <MoreVert />
                     </IconButton>
                     <Menu
                       anchorEl={anchorEl}
-                      open={Boolean(anchorEl) && item.value===deleteItem?.value}
+                      open={
+                        Boolean(anchorEl) && item.value === deleteItem?.value
+                      }
                       onClose={handleCloseMenu}
                     >
                       <MenuItem

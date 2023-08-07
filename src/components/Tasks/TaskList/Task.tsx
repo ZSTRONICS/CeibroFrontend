@@ -7,10 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
+import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import TaskDetails from "../TaskDetails";
-import { optionMapping } from "components/Utills/Globals";
 
 const Task = () => {
   const [value, setValue] = useState(0);
@@ -295,6 +295,7 @@ const Task = () => {
               borderWidth: "0px 0px 1px 0px",
               borderColor: "#818181",
               borderStyle: "solid",
+              paddingLeft:"8px"
             }}
           >
             <InputBase
