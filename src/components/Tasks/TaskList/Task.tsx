@@ -75,14 +75,20 @@ const Task = () => {
     }
   }, [selectedTab]);
 
-  const markTaskAsSeen = (taskId:string) => {
-    dispatch(taskActions.taskSeen({
-      other: { taskId },
-    }));
+  const markTaskAsSeen = (taskId: string) => {
+    dispatch(
+      taskActions.taskSeen({
+        other: { taskId },
+      })
+    );
   };
 
   useEffect(() => {
-    if (selectedTask !== null && !selectedTask.seenBy.includes(userId)) {
+    const taskNeedToBeSeen =
+      selectedTask !== null &&
+      !selectedTask.seenBy.includes(userId) &&
+      selectedTab === "new";
+    if (taskNeedToBeSeen) {
       markTaskAsSeen(selectedTask._id);
     }
   }, [selectedTask, userId]);
@@ -295,7 +301,7 @@ const Task = () => {
               borderWidth: "0px 0px 1px 0px",
               borderColor: "#818181",
               borderStyle: "solid",
-              paddingLeft:"8px"
+              paddingLeft: "8px",
             }}
           >
             <InputBase
