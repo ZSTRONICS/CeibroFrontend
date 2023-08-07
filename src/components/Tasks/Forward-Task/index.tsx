@@ -76,7 +76,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
       setSortedContacts(groupedData);
       setSelected(filteredUsers);
       setIsSelfAssign(
-        assignedToState.some((contact: any) => contact._id === user._id)
+        assignedToState.some((contact: any) => contact.userId === user._id)
       );
     }
   }, [userAllContacts]);
@@ -132,6 +132,8 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
         body: {
           assignedToState: updatedSelected,
           invitedNumbers: invitedNumbers,
+          //todo comment empty for temp
+          comment:""
         },
       })
     );
@@ -217,8 +219,8 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
           Suggested users
         </Typography>
         <FormControlLabel
-          disabled={filteredUsers.some(
-            (contact: any) => contact._id === user._id
+          disabled={assignedToState.some(
+            (contact: any) => contact.userId === user._id
           )}
           control={
             <Checkbox
