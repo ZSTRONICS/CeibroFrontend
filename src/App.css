@@ -143,6 +143,7 @@ iframe
 
 /* custom scrollbar */
 .MuiDialog-paperWidthSm::-webkit-scrollbar,
+.MuiMenu-paper::-webkit-scrollbar, 
 .custom-scrollbar::-webkit-scrollbar {
   width: 16px;
 }
@@ -152,11 +153,13 @@ iframe
 }
 
 .MuiDialog-paperWidthSm::-webkit-scrollbar-track,
+.MuiMenu-paper::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
 .MuiDialog-paperWidthSm::-webkit-scrollbar-thumb,
+.MuiMenu-paper::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: #d6dee1;
   border-radius: 20px;
@@ -165,6 +168,7 @@ iframe
 }
 
 .MuiDialog-paperWidthSm::-webkit-scrollbar-thumb:hover,
+.MuiMenu-paper::-webkit-scrollbar-thumb:hover,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #a8bbbf;
 }

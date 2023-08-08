@@ -3,23 +3,10 @@ import { Grid } from "@material-ui/core";
 import ProjectSection from "./ProjectSection";
 import TaskSection from "./TaskSection";
 import SmartMenuBar from "./SmartMenuBar";
-import { useDispatch } from "react-redux";
-import { taskActions } from "redux/action";
 
 const Dashboard = () => {
   const headerRef: any = useRef();
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(taskActions.getTaskAssignedToMe());
-    dispatch(taskActions.getTaskAssignedToMe());
-    // dispatch(getAllTask());
-    // dispatch(getAllProjects());
-    // dispatch(getMyConnectionsCount());
-    // dispatch(getMyInvitesCount());
-    // dispatch(getAllProjectsWithMembers());
-  }, []);
 
   useEffect(() => {
     if (headerRef.current.clientHeight) {

@@ -2,18 +2,18 @@ import { takeLatest } from 'redux-saga/effects'
 import {
   ACCEPT_ALL_INVITES,
   ACCEPT_INVITE,
+  DELETE_MY_CONNECTION,
   GET_AVAILABLE_CHAT_USER,
   GET_AVAILABLE_USERS,
   GET_MY_ALL_INVITES,
   GET_MY_CONNECTIONS,
-  DELETE_MY_CONNECTION,
   GET_MY_CONNECTIONS_COUNT,
   GET_MY_INVITES_COUNT,
   GET_USER_BY_ID,
-  SEND_INVITATION,
-  UPDATE_PROFILE_PIC,
   RESEND_INVITATION,
   REVOKE_INVITAION,
+  SEND_INVITATION,
+  UPDATE_PROFILE_PIC,
   USER_CONFIG,
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
@@ -22,7 +22,7 @@ const getUserContacts = apiCall({
   useV2Route: true,
   type: USER_CONFIG.GET_USER_CONTACTS,
   method: 'get',
-  path: payload => `users/contacts/${payload.other.userId}`,
+  path: payload => `users/contacts`,
 })
 
 const inviteUser = apiCall({

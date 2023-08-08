@@ -8,10 +8,11 @@ interface RouteParams {
 interface PrivateRouteProps extends RouteProps {
   fallbackComponent?: React.ReactNode;
   component: React.ComponentType<any>;
+  title?: string;
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
-  const { fallbackComponent, component: Component, ...rest } = props;
+  const { fallbackComponent, component: Component, title, ...rest } = props;
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
   if (!isLoggedIn) {
@@ -24,7 +25,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
       render={(props) => {
         const { match } = props;
         const params = match.params as RouteParams;
-        return <Component {...props} {...params} />;
+        return <Component {...props} {...params} title={title} />;
       }}
     />
   );

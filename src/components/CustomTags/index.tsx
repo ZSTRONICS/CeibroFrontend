@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, MenuItem } from "@mui/material";
 import { styled } from "@mui/system";
 
 export const Heading = styled(Typography)(
@@ -52,6 +52,14 @@ const Span = styled("span")`
   font-family: "Inter";
   font-style: normal;
   font-weight: 500;
+  font-size: 10px;
+  color: black;
+`;
+
+const BoldLableTag = styled("span")`
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
   font-size: 10px;
   color: #605c5c;
 `;
@@ -155,4 +163,14 @@ const BackToLoginTag = styled(Box)(({ theme }) => ({
   },
 }));
 
-export { BackToLoginTag, Span, CustomStack };
+const MenuItemTag = styled(MenuItem)(({ theme }) => ({
+  color: "#000000",
+  fontFamily: "Inter",
+  fontSize: 14,
+  padding:'0 8px 0 8px', 
+  fontWeight: 500,
+  textAlign: "center",
+  [theme.breakpoints.down("md")]: {
+  },
+}));
+export { BackToLoginTag,MenuItemTag,  Span, CustomStack, BoldLableTag };

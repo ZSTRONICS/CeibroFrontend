@@ -1,47 +1,109 @@
 export interface Root {
-    allTasks: AllTasksInterface;
+  allTasks: AllTasksInterface;
 }
 
 export interface AllTasksInterface {
-    ongoing: any[];
-    done: any[];
-    unread: Unread[];
-    new: New[];
+  ongoing: Task[];
+  done: Task[];
+  unread: Task[];
+  new: Task[];
 }
 
-export interface Unread extends Task { }
-export interface New extends Task { }
+export interface AllTaskHiddenInterface {
+  ongoing: Task[];
+  done: Task[];
+  canceled: Task[];
+}
+export interface AllTaskToMeInterface {
+  new: Task[];
+  ongoing: Task[];
+  done: Task[];
+}
+export interface AllTaskFromMeInterface {
+  unread: Task[];
+  ongoing: Task[];
+  done: Task[];
+}
 
 export interface Task {
-    _id: string;
-    dueDate: string;
-    doneImageRequired: boolean;
-    doneCommentsRequired: boolean;
-    description: string;
-    project?: Project;
-    locations: any[];
-    recentComments: any[];
-    topic: Topic;
-    rejectionComments: any[];
-    creator: UserInfo;
-    assignedToState: AssignedToState[];
-    creatorState: string;
-    taskUID: string;
-    access: string[];
-    invitedNumbers: string[];
-    createdAt: string;
-    updatedAt: string;
-    __v: number;
+  _id: string;
+  dueDate: string;
+  doneImageRequired: boolean;
+  doneCommentsRequired: boolean;
+  description: string;
+  project: Project;
+  topic: Topic;
+  creator: UserInfo;
+  assignedToState: AssignedUserState[];
+  taskUID: string;
+  access: string[];
+  invitedNumbers: InvitedNumber[];
+  seenBy: string[];
+  hiddenBy: string[];
+  isCanceled: boolean;
+  createdAt: string;
+  updatedAt: string;
+  files: IFile[];
+  events: TaskEvent[];
+  userSubState: string;
+  creatorState: string;
 }
 
-export interface AssignedToState extends UserInfo {
-    userId: string;
-    phoneNumber: string;
-    state: string;
+export interface AssignedUserState extends UserInfo {
+  userId: string;
+  phoneNumber: string;
+  state: string;
+}
+
+export interface InvitedNumber {
+  phoneNumber: string;
+  firstName: string;
+  surName: string;
 }
 
 export interface Topic {
-    _id: string;
-    topic: string;
+  _id: string;
+  topic: string;
 }
 
+export interface IFile {
+  _id: string;
+  fileName: string;
+  fileTag: string;
+  fileUrl: string;
+  uploadStatus: string;
+  moduleType: string;
+  moduleId: string;
+  hasComment: boolean;
+  comment: string;
+}
+export enum TaskEventType {
+  ForwardTask = "forwardTask",
+  Comment = "comment",
+  DoneTask = "doneTask",
+  CancelTask = "cancelTask",
+  InvitedUser = "invitedUser",
+}
+
+export interface TaskEvent {
+  _id: string;
+  taskId: string;
+  eventType: string;
+  initiator: UserInfo;
+  eventData?: EventData[];
+  commentData?: CommentData;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventData extends UserInfo {
+  phoneNumber: string;
+}
+
+export interface CommentData {
+  _id: string;
+  taskId: string;
+  isFileAttached: boolean;
+  message: string;
+  files: IFile[];
+}

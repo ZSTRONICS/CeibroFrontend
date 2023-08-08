@@ -1,18 +1,18 @@
 import React from "react";
 
 import {
-  Grid,
+  Box,
+  Dialog,
   DialogContent,
   Divider,
+  Grid,
   Typography,
-  // Dialog,
-  Box,
 } from "@mui/material";
 //todo migrate to mui latest later becz it give error in add project status comp
-import {  Dialog,} from '@material-ui/core'
-import PropTypes from "prop-types";
-import { Button } from "@mui/material";
+// import { Dialog } from "@material-ui/core";
 import styled from "@emotion/styled";
+import { Button } from "@mui/material";
+import PropTypes from "prop-types";
 
 interface Props {
   isOpen: boolean;
@@ -79,7 +79,10 @@ const CustomModal: React.FC<Props> = ({
 
           {showDivider === true && <Divider sx={{ my: 1 }} />}
           <div style={{ width: "100%" }}>
-            <DialogContent sx={{ padding: "10px 15px" }}>
+            <DialogContent
+              sx={{ padding: "0px" }}
+              onKeyDown={(e) => e.stopPropagation()}
+            >
               {children}
             </DialogContent>
           </div>

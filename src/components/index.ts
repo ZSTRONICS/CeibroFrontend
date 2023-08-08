@@ -6,7 +6,6 @@ import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
 import RegisterConfirmationForm from "./Auth/Register/RegisterConfirmationForm";
 import TermsAndConditions from "./Auth/Register/TermsAndConditions";
 import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
-// import ForgetPassword from "components/Auth/Login/ForgetPassword";
 
 // dashboard
 // import Dashboard from "./Dashboard/Dashboard";
@@ -35,6 +34,7 @@ import AdminMain from "./Admin/AdminMain";
 import RouterConfig from "navigation/RouterConfig";
 import CDrawer from "Drawer/CDrawer";
 import DrawingDetails from "./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails";
+import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
 // Auth
 const Register = lazy(() => import("./Auth/Register/Register"));
@@ -58,6 +58,7 @@ const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProj
 
 export {
   RouterConfig,
+  MockTaskApis,
   ProjectLocations,
   DrawingDetails,
   ForgetConfirmation,

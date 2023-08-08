@@ -138,6 +138,64 @@ const formatDropdownData = (
 
 
 /**
+ * @param taskArray the array must have _id
+ * @param itemId must have comparison id string
+ * @return Functino will return  -1 if task not exist
+ * **/
+export const findTaskIndex = (taskArray: any[], itemId: string): number => {
+  const taskIndex = taskArray.findIndex((task: any) => task._id === itemId);
+  return taskIndex;
+};
+
+export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
+  if (taskIndex > -1) {
+    const seenBy = taskArray[taskIndex].seenBy;
+    if (!seenBy.includes(eventData.userId)) {
+      seenBy.push(eventData.userId);
+    }
+  }
+}
+/**
+ * @param taskArray the array must have _id
+ * @param eventData data to be pushed to task events
+ * @param taskIndex check if task exist 
+ * @return Functino will return updated task events
+ * **/
+export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
+  if (taskIndex > -1) {
+    const existingEvents: [] = task.events;
+    console.log('existingEvents', existingEvents)
+    const isUniqueEvent = existingEvents.some((event: any) => String(event._id) === String(eventData._id));
+    if (!isUniqueEvent) {
+      task.events.push(eventData);
+      task.seenBy = eventData.taskData.seenBy;
+    } else {
+      console.log("Event already exists ", eventData, task, taskIndex)
+    }
+  }
+}
+
+export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], eventData: any): void {
+  const taskIndex = findTaskIndex(sourceArray, eventData._id);
+  sourceArray[taskIndex].events.push(eventData);
+  const task = sourceArray.splice(taskIndex, 1)[0];
+  targetArray.push(task);
+}
+
+/**
+ * @param task taks object
+ * @param taskIndex 
+ * @param eventData 
+ * **/
+export function updateTak(task: any, taskIndex: any, eventData: any) {
+  if (taskIndex > -1) {
+    addEventToTask(task, eventData, taskIndex);
+    task.creatorState = "canceled";
+    task.userSubState = "canceled";
+  }
+}
+
+/**
  * @param array the array must have _id
  * @param itemId must have comparison id string
  * @return Functino will return true or false
@@ -151,7 +209,7 @@ export const isTrue = (arr: any[], itemId: string) => {
  * @return dd-mm-yyyy
  * @param dateString date string is required
  * **/
-export const deDateFormat = (dateStr: Date) => {
+export const deDateFormat = (dateStr: Date | string) => {
   return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
 }
 // de date format using moment of utc time mongodb
@@ -164,6 +222,15 @@ export const momentdeDateFormat = (createdAt: Date | any) => {
   return moment(localTime).local().format("DD.MM.YYYY")
 }
 // de date format using moment of utc time mongodb
+/**
+ * @return dd.mm.yyyy
+ * @param mongodbUtc date string is required
+ * **/
+const momentdeDateFormatWithDay = (createdAt: Date | any) => {
+  let localTime = moment.utc(moment(createdAt)).toDate();
+  return moment(localTime).format("ddd, DD.MM.YYYY");
+};
+
 /**
  * @return 12:00AM
  * @param mongodbUtc date string is required
@@ -220,6 +287,39 @@ export const FILTER_DATA_BY_EXT = (extensionKeys: string[], dataSource: any) => 
   return filesWithExtension
 };
 
+export const openFormWindow = (content: string) => {
+  const windowWidth = 900;
+  const windowHeight = 782;
+  const windowLeft = (window.innerWidth - windowWidth) / 2;
+  const windowTop = (window.innerHeight - windowHeight) / 2;
+  const url = 'https://dev.ceibro.ee';
+  const windowFeatures = `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop},resizable=no,scrollbars=no,status=no`;
+  const formWindow: Window | null = window.open(undefined, '_blank', windowFeatures);
+
+  // Check if the window was blocked (only for modern browsers)
+  if (!formWindow || formWindow.closed || typeof formWindow.closed === 'undefined') {
+    alert('The new window was blocked. Please allow pop-ups for this site.');
+  } else {
+    const titleTag = `<title>Ceibro</title>`;
+    const baseTag = `<base href="${url}" target="_blank">`;
+
+    const fullContent = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          ${titleTag}
+          ${baseTag}
+        </head>
+        <body>
+          ${content}
+        </body>
+      </html>
+    `;
+    formWindow.document.write(fullContent);
+  }
+};
+
+
 /**
  * @param SubtaskMembersArr array of extension
  * @param SubtaskUserSate array of object 
@@ -257,4 +357,21 @@ export const tabsIndexProps = (index: number) => {
 //   }
 // }, []);
 
-export { formatDropdownData }
+const optionMapping: { [key: string]: { [key: string]: string } } = {
+  allTaskToMe: {
+    ongoing: "Hide",
+    done: "Hide",
+  },
+  allTaskFromMe: {
+    ongoing: "Cancel",
+    unread: "Cancel",
+  },
+  allTaskHidden: {
+    ongoing: "Un-hide",
+    done: "Un-hide",
+    canceled: "Un-cancel",
+  },
+};
+
+export { formatDropdownData, momentdeDateFormatWithDay, optionMapping };
+

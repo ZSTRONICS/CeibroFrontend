@@ -1,6 +1,6 @@
 import { DrawingMenu, StickyHeader } from "./Components";
 import { Box, Grid } from "@mui/material";
-import Task from "components/Tasks/TaskList/Task";
+import Tasks from "components/Tasks/TaskList/Task";
 import DocumentReader from "components/pdfviewer/index.js";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,22 +11,21 @@ function DrawingDetails() {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const {
-    allTaskAssignedToMe,
-    allTaskCreatedFromMe,
+    allTaskList,
+    allTaskFromMe,
     loadingAllTaskToMe,
     loadingAllTaskfromMe,
   } = useSelector((state: RootState) => state.task);
   // later debug the issue of re-rendering component
-  // useApiCallOnce(taskActions.getTaskAssignedToMe(), [])
-  // useApiCallOnce(taskActions.getTaskCreatedFromMe(), [])
+  // useApiCallOnce(taskActions.getAllTaskToMe(), [])
+  // useApiCallOnce(taskActions.getAllTaskFromMe(), [])
   useEffect(() => {
     if (!isRenderEffect.current) {
-      if (allTaskAssignedToMe.new.length === 0) {
-        dispatch(taskActions.getTaskAssignedToMe());
+      if (allTaskList.new.length === 0) {
+        dispatch(taskActions.getAllTaskToMe());
       }
-      if (allTaskCreatedFromMe.unread.length === 0) {
-        
-        dispatch(taskActions.getTaskCreatedFromMe());
+      if (allTaskFromMe.unread.length === 0) {
+        dispatch(taskActions.getAllTaskFromMe());
       }
     }
     return () => {
@@ -41,10 +40,10 @@ function DrawingDetails() {
       </Box>
       <Grid container>
         <Grid item md={2.8} sx={sideBarStyle}>
-        <Task/>
+          <Tasks />
         </Grid>
         <Grid item md={8.2}>
-          <DocumentReader  newTask = {allTaskAssignedToMe.new}/>
+          <DocumentReader newTask={allTaskList.new} />
         </Grid>
         <Grid item md={1} sx={sideBarStyle}>
           Toolbar
@@ -57,7 +56,7 @@ const sideBarStyle = {
   position: "relative",
   zIndex: 10,
   height: "calc(100vh - 137px)",
-  overflow:'auto',
+  overflow: "auto",
   display: "flex",
   flexDirection: "column",
   justifyContent: "flex-start",

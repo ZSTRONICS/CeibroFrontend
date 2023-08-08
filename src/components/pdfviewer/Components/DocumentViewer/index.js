@@ -1,20 +1,18 @@
-import React, { Component, useState, useRef } from "react";
-import doEach from "lodash/forEach";
+import { useRef, useState } from "react";
 // import PropTypes from 'prop-types';
 // components
 import { Document, Page, pdfjs } from "react-pdf";
 import DocumentControl from "./../DocumentControl";
-import OutlineControl from "./../../Drawer/Outline";
 //  import ImageMapEditor from './../../../imagemap/ImageMapEditor';
 // material-ui
-import { withStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { ZoomIn, ZoomOut, Refresh, Room, Close } from "@mui/icons-material";
-import { ButtonGroup, Icon, Button, Tooltip } from "@mui/material";
+import Paper from "@material-ui/core/Paper";
+import { withStyles } from "@material-ui/core/styles";
+import { Close, Refresh, Room, ZoomIn, ZoomOut } from "@mui/icons-material";
+import { Button, ButtonGroup, Icon, Tooltip } from "@mui/material";
 import CustomModal from "components/Modal";
-import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { formatDropdownData } from "components/Utills/Globals";
+import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -62,7 +60,7 @@ const DocumentViewer = (props) => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [progress, setProgress] = useState(0);
   const [last, setLast] = useState(0);
-  const [percentage, setPercentage] = useState(0.5);
+  const [percentage, setPercentage] = useState(1);
   const [buffer, setBuffer] = useState(0);
   const [first, setFirst] = useState(true);
   const [pageFactory, setPageFactory] = useState(null);
@@ -117,9 +115,9 @@ const DocumentViewer = (props) => {
     setFactory(pageFactory);
   }
 
-  function onCreateObject() {
-    console.log(scrollPanel);
-  }
+  // function onCreateObject() {
+  //   console.log(scrollPanel);
+  // }
 
   function onDocumentLoaded(factory) {
     const { numPages } = factory;
@@ -128,7 +126,7 @@ const DocumentViewer = (props) => {
     if (totalPage <= 0) {
       page = 0;
     }
-    console.log(factory, page, totalPage);
+    // console.log(factory, page, totalPage);
     setTotalPage(totalPage);
     setLast(totalPage === 1);
     setPage(page);
@@ -243,9 +241,11 @@ const DocumentViewer = (props) => {
             >
               <Icon component={Refresh} />
             </Button>
-            <Button onClick={handleMarkerClick} sx={buttonStyle}>
-              <Icon component={Room} />
-            </Button>
+            {props.newTask !== null && (
+              <Button onClick={handleMarkerClick} sx={buttonStyle}>
+                <Icon component={Room} />
+              </Button>
+            )}
           </ButtonGroup>
         </div>
         <div
@@ -360,14 +360,14 @@ const DocumentViewer = (props) => {
             file={props.file}
           />
         )}
-        {factory && (
+        {/* {factory && (
           <OutlineControl
             onChangePage={onPageChanged}
             pdf={factory}
             totalPage={totalPage}
             currentPage={page}
           />
-        )}
+        )} */}
         {/* {
                         pageFactory && 
                         <div className={classes.editorContainer}>
@@ -389,7 +389,7 @@ const DocumentViewer = (props) => {
                         </div>
                     } */}
 
-        {
+        {props.newTask !== null && (
           <CustomModal
             showCloseBtn={true}
             title={"Assign Task"}
@@ -429,7 +429,7 @@ const DocumentViewer = (props) => {
               </>
             }
           />
-        }
+        )}
       </Paper>
     </div>
   );
