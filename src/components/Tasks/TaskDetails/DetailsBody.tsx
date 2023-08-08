@@ -20,7 +20,6 @@ export default function DetailsBody(props: IProps) {
   const [fileToView, setFileToView] = useState<any | null>(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
 
-  console.log("fileToView", fileToView);
   return (
     <>
       <Box sx={{ paddingLeft: "15px" }}>
@@ -76,7 +75,7 @@ export default function DetailsBody(props: IProps) {
           isOpen={isOpen}
           handleClose={closeModal}
           showCloseBtn={true}
-          title="File Preview"
+          title="Image Preview"
           children={
             <>
               {fileToView !== null && (

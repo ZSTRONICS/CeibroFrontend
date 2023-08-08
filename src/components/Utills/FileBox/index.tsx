@@ -2,10 +2,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Box, IconButton, Typography } from "@mui/material";
 import CustomModal from "components/Modal";
 import { fileType } from "components/Tasks/type";
+import DocumentViewer from "components/pdfviewer/Components/DocumentViewer";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
-import { Document, Page } from "react-pdf";
 import assets from "../../../assets/assets";
 
 interface IProps {
@@ -158,17 +158,19 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
       </Box>
       {isOpen && (
         <CustomModal
-          maxWidth={"sm"}
+          maxWidth={"md"}
           isOpen={isOpen}
           handleClose={closeModal}
           showCloseBtn={true}
-          title="Image Preview"
+          title="File Preview"
           children={
             <>
               {fileToView !== null && (
-                <Document file={fileToView}>
-                  <Page pageNumber={1} />
-                </Document>
+                <DocumentViewer
+                  pdf={fileToView}
+                  file={fileToView}
+                  newTask={null}
+                />
               )}
             </>
           }
