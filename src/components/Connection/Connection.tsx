@@ -30,12 +30,11 @@ const Connections = () => {
 
   useEffect(() => {
     if (!apiCalled) {
-      const payload = {
-        other: { userId: user._id },
-      };
+      // const payload = {
+      //   other: { userId: user._id },
+      // };
 
-      userAllContacts.length < 1 &&
-        dispatch(userApiAction.getUserContacts(payload));
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       setApiCalled(true);
     }
   }, []);

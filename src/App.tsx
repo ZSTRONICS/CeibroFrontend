@@ -370,6 +370,15 @@ const App: React.FC<MyApp> = () => {
               payload: data,
             });
             break;
+          case TASK_CONFIG.TASK_UPDATED_WITH_FIELS:
+            if (!data.access.includes(userId)) {
+              return;
+            }
+            dispatch({
+              type: TASK_CONFIG.PUSH_TASK_TO_STORE,
+              payload: data,
+            });
+            break;
           case TASK_CONFIG.TASK_CREATED:
             if (!data.access.includes(userId)) {
               return;

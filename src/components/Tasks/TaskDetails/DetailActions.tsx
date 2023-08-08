@@ -47,7 +47,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState("");
-
   const handleClick = (action: string) => {
     setTaskAction(action);
     openModal();
@@ -188,6 +187,11 @@ const DetailActions: React.FC<IProps> = (props) => {
             startIcon={<img src={assets.ForwardIcon} />}
             onClick={() => handleClick("forward")}
             variant="text"
+            disabled={
+              userSubState === "done" ||
+              userSubState === "canceled" ||
+              userSubState === "new"
+            }
             sx={{
               height: "28px",
               // width: "103px",
@@ -207,9 +211,9 @@ const DetailActions: React.FC<IProps> = (props) => {
               padding: "16px 30px",
             }}
             disabled={
-              userSubState === "done" || userSubState === "canceled"
-                ? true
-                : false
+              userSubState === "done" ||
+              userSubState === "canceled" ||
+              userSubState === "new"
             }
           >
             Done

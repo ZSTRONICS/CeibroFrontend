@@ -1,11 +1,9 @@
-
-
 import { DOCS_CONFIG } from "config";
 import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 
 const getDocsByModuleNameAndId = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: DOCS_CONFIG.GET_DOCS_BY_MODULNAME_AND_ID,
   method: "get",
   path: (payload) => {
@@ -15,7 +13,7 @@ const getDocsByModuleNameAndId = apiCall({
 })
 
 const uploadDocsByModuleNameAndId = apiCall({
-  useV2Route: false,
+  useV2Route: true,
   type: DOCS_CONFIG.UPLOAD_DOCS_BY_MODULNAME_AND_ID,
   method: "post",
   isFormData: true,

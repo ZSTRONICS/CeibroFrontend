@@ -43,6 +43,7 @@ var initialValues = {
   assignedToState: [],
   creator: "",
   description: "",
+  // isTaskFilesUploading:false
   doneImageRequired: false,
   doneCommentsRequired: false,
   invitedNumbers: [],
@@ -75,11 +76,10 @@ function CreateNewTask() {
   useEffect(() => {
     dispatch(taskActions.getAllTopic());
     dispatch(getAllProjects());
-    const payload = {
-      other: { userId: user._id },
-    };
-    userAllContacts.length < 1 &&
-      dispatch(userApiAction.getUserContacts(payload));
+    // const payload = {
+    //   other: { userId: user._id },
+    // };
+    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
   }, []);
 
   useEffect(() => {
@@ -171,7 +171,7 @@ function CreateNewTask() {
       const payload = {
         body: formData,
       };
-      // Your dispatch logic here
+
       dispatch(docsAction.uploadDocsByModuleNameAndId(payload));
     } catch (error) {
       console.error("Error occurred while uploading files:", error);
@@ -180,19 +180,19 @@ function CreateNewTask() {
 
   const handleCreateTask = () => {
     let payload = selectedData;
-    (payload.creator = user._id),
-      dispatch(
-        taskActions.createTask({
-          body: payload,
-          success: (res: any) => {
-            if (selectedImages.length > 0 || selectedDocuments.length > 0) {
-              const filesToUpload = [...selectedImages, ...selectedDocuments];
-              const moduleId = res.data.newTask._id;
-              handleFileUpload(filesToUpload, "Task", moduleId);
-            }
-          },
-        })
-      );
+    payload.creator = user._id;
+    dispatch(
+      taskActions.createTask({
+        body: payload,
+        success: (res: any) => {
+          if (selectedImages.length > 0 || selectedDocuments.length > 0) {
+            const filesToUpload = [...selectedImages, ...selectedDocuments];
+            const moduleId = res.data.newTask._id;
+            handleFileUpload(filesToUpload, "Task", moduleId);
+          }
+        },
+      })
+    );
   };
 
   const handleDescriptionChange = (
@@ -233,10 +233,17 @@ function CreateNewTask() {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => {
-    setSelectedData((prevSelectedData) => ({
-      ...prevSelectedData,
-      [name]: value,
-    }));
+    if (value === undefined) {
+      setSelectedData((prevSelectedData) => ({
+        ...prevSelectedData,
+        [name]: initialValues[name],
+      }));
+    } else {
+      setSelectedData((prevSelectedData) => ({
+        ...prevSelectedData,
+        [name]: value,
+      }));
+    }
   };
 
   const handleGetLocationValue = () => {};
@@ -325,7 +332,6 @@ function CreateNewTask() {
             <FormControlLabel
               control={
                 <Checkbox
-                  // defaultChecked
                   onChange={(e, checked) => {
                     handleChangeValues(checked, "doneImageRequired");
                   }}
@@ -411,7 +417,14 @@ function CreateNewTask() {
         )}
         <Box sx={{ marginTop: "100px" }}>
           <Footer
-            disabled={false}
+            disabled={
+              selectedData.topic != "" &&
+              (selectedData.assignedToState.length > 0 ||
+                (selectedData.invitedNumbers &&
+                  selectedData.invitedNumbers.length > 0))
+                ? false
+                : true
+            }
             showHeader={false}
             handleSubmitForm={handleCreateTask}
             handleAttachImageValue={handleAttachImageValue}

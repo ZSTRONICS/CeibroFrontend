@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
 import ContactBox from "components/Utills/ContactBox";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
@@ -7,7 +7,6 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import _ from "lodash";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions, userApiAction } from "redux/action";
@@ -22,6 +21,7 @@ interface IProps {
 }
 
 const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
+  const [isSelfAssign, setIsSelfAssign] = React.useState(false);
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -75,6 +75,9 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
       setFilterData(groupedData);
       setSortedContacts(groupedData);
       setSelected(filteredUsers);
+      setIsSelfAssign(
+        assignedToState.some((contact: any) => contact.userId === user._id)
+      );
     }
   }, [userAllContacts]);
 
@@ -83,15 +86,23 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
       let updatedSelected = [...selected, contact];
       setSelected(updatedSelected);
     } else {
-      setSelected(
-        _.remove(selected, (item: object) => {
-          return contact._id != item._id;
-        })
-      );
+      let allSelected = [...selected];
+      if (contact._id === user._id) {
+        setIsSelfAssign(checked);
+      }
+      setSelected(allSelected.filter((item: any) => item._id !== contact._id));
     }
   };
 
-  console.log("filteredUsers", filteredUsers);
+  const handleSelfAssignChange = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    user["isCeiborUser"] = true;
+    handleSelectedList(user, checked);
+    setIsSelfAssign(checked);
+  };
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
     setFilterData(
@@ -101,20 +112,28 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   };
 
   const handleSubmit = () => {
-    let updatedSelected: AssignedToStateType[] = selected.map((item) => {
-      let payloadSelected: AssignedToStateType = {
-        phoneNumber: item.phoneNumber,
-        userId: item.userId,
-        state: "new",
-      };
-      return payloadSelected;
+    let invitedNumbers: string[] = [];
+    let updatedSelected: AssignedToStateType[] = []
+    selected.map((item) => {
+      if (!item.isCeiborUser && item.userCeibroData === null) {
+        invitedNumbers.push(item.phoneNumber);
+      } else {
+        let payloadSelected: AssignedToStateType = {
+          phoneNumber: item.phoneNumber,
+          userId: item.userCeibroData?._id,
+          state: "new",
+        };
+        updatedSelected.push(payloadSelected);
+      }
     });
     dispatch(
       taskActions.forwardTask({
         other: { taskId: taskId },
         body: {
           assignedToState: updatedSelected,
-          invitedNumbers: [],
+          invitedNumbers: invitedNumbers,
+          //todo comment empty for temp
+          comment:""
         },
       })
     );
@@ -139,6 +158,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
       </Box>
       <Box
         sx={{
+          minHeight: "66px",
           display: "flex",
           paddingLeft: "12px",
           overflow: "auto",
@@ -154,27 +174,85 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
           },
         }}
       >
-        {selected.length > 0 &&
+        {selected.length > 0 ? (
           selected.map((selectedContact: object) => {
             return (
               <SelectedContactBox
+                isDisabled={filteredUsers.some(
+                  (user: any) => user._id === selectedContact._id
+                )}
                 contact={selectedContact}
                 handleSelectedList={handleSelectedList}
               />
             );
-          })}
+          })
+        ) : (
+          <Typography
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                No selected contacts
+              </Typography>
+        )}
       </Box>
-      <Box sx={{ margin: "8px 16px" }}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          margin: "16px 16px 0px",
+        }}
+      >
         <Typography
           sx={{
             fontFamily: "Inter",
-            fontWeight: 500,
             fontSize: "12px",
+            fontWeight: 500,
+            color: "#818181",
             lineHeight: "16px",
           }}
         >
           Suggested users
         </Typography>
+        <FormControlLabel
+          disabled={assignedToState.some(
+            (contact: any) => contact.userId === user._id
+          )}
+          control={
+            <Checkbox
+              name="self-assign"
+              checked={isSelfAssign}
+              onChange={handleSelfAssignChange}
+              size="small"
+              color="primary"
+              sx={{
+                ml: 1,
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#818181",
+                lineHeight: "16px",
+              }}
+            />
+          }
+          label={
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#605C5C",
+                lineHeight: "16px",
+              }}
+            >
+              Self assign
+            </Typography>
+          }
+        />
       </Box>
       <Box
         className="custom-scrollbar"

@@ -1,17 +1,15 @@
-import { Box, Button, IconButton, TextField } from "@mui/material";
-import TaskHeader from "../TaskHeader";
-import ImageBox from "components/Utills/ImageBox";
-import FileBox from "components/Utills/FileBox";
-import Footer from "../Create-Task/Footer";
-import { ChangeEvent, useState } from "react";
-import _ from "lodash";
-import { removeItem } from "utills/common";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { toast } from "react-toastify";
-import { fileType } from "../type";
+import { Box, IconButton, TextField } from "@mui/material";
+import FileBox from "components/Utills/FileBox";
+import ImageBox from "components/Utills/ImageBox";
+import { ChangeEvent, useState } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
-import { useParams } from "react-router-dom";
+import { removeItem } from "utills/common";
+import Footer from "../Create-Task/Footer";
+import TaskHeader from "../TaskHeader";
+import { fileType } from "../type";
 
 interface CommentProps {
   title: string;
@@ -112,7 +110,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box sx={{ width: "100%",padding:'8px' }}>
       {showHeader !== true && <TaskHeader title={title} />}
       <Box sx={{ padding: "4px", width: "100%" }}>
         <TextField
