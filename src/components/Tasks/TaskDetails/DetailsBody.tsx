@@ -20,8 +20,8 @@ export default function DetailsBody(props: IProps) {
   const [fileToView, setFileToView] = useState<any | null>(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const handleClick = (file: any) => {
-    openModal();
     setFileToView(file);
+    openModal();
   };
   return (
     <>
