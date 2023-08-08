@@ -49,9 +49,9 @@ function CustomDropDown(props: IProps) {
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
-  const [recentfilterData, setRecentFilterData] = React.useState<{
-    [key: string]: OptionType[];
-  }>({});
+  // const [recentfilterData, setRecentFilterData] = React.useState<{
+  //   [key: string]: OptionType[];
+  // }>({});
 
   // its use for all sorted array
   const [sortedOptions, setSortedOptions] = React.useState<{
@@ -117,10 +117,10 @@ function CustomDropDown(props: IProps) {
 
   const handleCreateClick = () => {
     if (searchQuery.trim() === "") return; // Check for empty searchQuery before proceeding
-    const newItem = {
-      label: searchQuery,
-      value: searchQuery,
-    };
+    // const newItem = {
+    //   label: searchQuery,
+    //   value: searchQuery,
+    // };
     // setFilterData((prevData) => [...prevData, newItem]);
     setSelected(searchQuery);
     createCallback && createCallback(label, searchQuery);

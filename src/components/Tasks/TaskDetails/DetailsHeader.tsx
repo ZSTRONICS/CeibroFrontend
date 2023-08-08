@@ -108,7 +108,7 @@ export default function DetailsHeader(props: IProps) {
       <Grid container sx={{ padding: "0px 0px 8px 0px" }} gap={0.5}>
         {data.map((item) => {
           return (
-            <GridRow>
+            <GridRow key={item.value}>
               <Grid item xs={1.6}>
                 <Typography
                   sx={{

@@ -10,7 +10,7 @@
   --aqua-green: #55bcb3;
   --purple-grey: #DBDBE5;
   --white: white;
-  --dark-gray:#B6B7B8;
+  --dark-gray: #B6B7B8;
   --diva-violet: #5572BC;
 }
 
@@ -20,12 +20,11 @@ body {
   box-sizing: border-box;
 }
 
-iframe
-{
-    display: none !important;
+iframe {
+  display: none !important;
 }
 
-.Custompopover > div{
+.Custompopover>div {
   margin-top: 30px;
 }
 
@@ -42,7 +41,7 @@ iframe
 
 .all-badge .MuiBadge-colorPrimary {
   color: white !important;
-  background: var( --dark-gray);
+  background: var(--dark-gray);
 }
 
 .ongoing-badge .MuiBadge-colorPrimary {
@@ -59,13 +58,14 @@ iframe
   background: var(--aqua-green);
   color: white;
 }
+
 .active-badge .MuiBadge-colorPrimary {
   background: var(--dark-yellow);
   color: white;
 }
 
 .draft-badge .MuiBadge-colorPrimary {
-  background: var( --dark-gray);
+  background: var(--dark-gray);
   color: white;
 }
 
@@ -73,6 +73,7 @@ iframe
   background: var(--btn-red);
   color: white;
 }
+
 .accepted-badge .MuiBadge-colorPrimary {
   background: var(--diva-violet);
   color: white;
@@ -143,7 +144,7 @@ iframe
 
 /* custom scrollbar */
 .MuiDialog-paperWidthSm::-webkit-scrollbar,
-.MuiMenu-paper::-webkit-scrollbar, 
+.MuiMenu-paper::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {
   width: 16px;
 }
@@ -234,26 +235,32 @@ input[type="file"] {
   display: flex;
   align-items: center;
 }
+
 .recentComment {
   display: flex;
   flex-direction: row;
   color: #7D7E80;
   font-size: 14px;
-    font-weight: 500;
+  font-weight: 500;
 }
-.recentComment::after,.recentComment::before{
+
+.recentComment::after,
+.recentComment::before {
   content: "";
   flex: 1 1;
   border-bottom: 1px solid;
   margin: auto;
   color: #7D7E80;
 }
+
 .recentComment:before {
   margin-right: 10px
 }
+
 .recentComment:after {
   margin-left: 10px
 }
+
 .file-preview svg {
   width: 50px;
   height: 50px;
@@ -273,17 +280,20 @@ input[type="file"] {
   line-height: 3;
 }
 
-input, textarea {
+input,
+textarea {
   background-color: white;
 }
+
 input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder{
+textarea::-webkit-input-placeholder {
   font-size: 14px !important;
   color: black !important;
   font-weight: 500 !important;
 }
 
-.black-input, .black-input input {
+.black-input,
+.black-input input {
   color: var(--black) !important;
 }
 
@@ -309,12 +319,12 @@ textarea::-webkit-input-placeholder{
 
 input,
 input::-webkit-input-placeholder,
-textarea, 
-textarea::-webkit-input-placeholder{
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    font-family: Inter !important;
-    color: #AEADBD !important;
+textarea,
+textarea::-webkit-input-placeholder {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  font-family: Inter !important;
+  color: #AEADBD !important;
 }
 
 .css-1pndypt-Input input,
@@ -325,7 +335,7 @@ textarea::-webkit-input-placeholder{
 
 
 button:disabled,
-button[disabled]{
+button[disabled] {
   /* border: 1px solid #999999; */
   /* background-color: #ADB5BD; */
   color: white;
@@ -344,7 +354,7 @@ button[disabled]{
   background-color: var(--white);
   font-weight: 500 !important;
   font-size: 14px !important;
-  color:rgb(0, 0, 0) !important;
+  color: rgb(0, 0, 0) !important;
 }
 
 .width-16 {
@@ -359,6 +369,7 @@ button[disabled]{
 .Component-switchBase-131.Component-checked-134 {
   transform: translateX(8px) !important;
 }
+
 .Component-thumb-133 {
   margin-left: 1px !important;
 }
@@ -367,25 +378,29 @@ button[disabled]{
   margin: 0px !important;
 }
 
-.MuiTypography-root{
+.MuiTypography-root {
   font-family: Inter !important;
 }
+
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   font-size: 14px;
-  font-weight: 500; 
+  font-weight: 500;
   /* padding-left: 10px; */
 }
+
 /* .MuiDialog-paper{
   min-height: 55vh;
 } */
 .css-qc6sy-singleValue {
   margin-left: 10px !important;
 }
-label.dragArea{
+
+label.dragArea {
   border: 1px solid #E2E4E5 !important;
   max-width: 440px !important;
   height: 80px !important;
 }
+
 .react-datepicker-wrapper input {
   width: 95%;
 }
@@ -393,9 +408,11 @@ label.dragArea{
 .pg-viewer-wrapper {
   overflow-y: auto !important;
 }
-.sideBar_icon{
+
+.sideBar_icon {
   color: white;
 }
+
 .pin-message-chip {
   cursor: pointer;
 }
@@ -403,27 +420,30 @@ label.dragArea{
 .pin-message-chip:hover {
   background-color: var(--purple-grey) !important;
 }
-.logoTitleWrapper{
+
+.logoTitleWrapper {
   /* height: 100vh; */
   margin: 0 3.5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 }
-.textOverflowY{
+
+.textOverflowY {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
-          line-clamp: 1; 
+  line-clamp: 1;
   -webkit-box-orient: vertical;
 }
-.textOverflowDescription{
+
+.textOverflowDescription {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3;
-          line-clamp: 3; 
+  line-clamp: 3;
   -webkit-box-orient: vertical;
 }
 
@@ -435,32 +455,62 @@ label.dragArea{
   -o-animation: fadeIn 5s;
   -ms-animation: fadeIn 5s; 
 } */
-.chatReplyBox .replyMessageBg{
+.chatReplyBox .replyMessageBg {
   background: #cde4f4 !important;
   animation: fade 5s linear;
   -webkit-animation: fade 5s linear;
-   -moz-animation: fadeIn 5s;
+  -moz-animation: fadeIn 5s;
   -o-animation: fadeIn 5s;
-  -ms-animation: fadeIn 5s; 
+  -ms-animation: fadeIn 5s;
 }
 
 /* Add animation (fade in the popup) */
 @keyframes fade {
-  0%,100%{ opacity: 1; }
-  100% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 @-webkit-keyframes fade {
-  0%,100%{ opacity: 1; }
-  100% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 @-ms-keyframes fade {
-  0%,100%{ opacity: 1; }
-  100% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
+
 @-o-keyframes fade {
-  0%,100%{ opacity: 1; }
-  100% { opacity: 1; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 /* @keyframes popup {
@@ -496,12 +546,14 @@ label.dragArea{
   opacity: 0;
   cursor: pointer;
 }
-@media (max-width:899px){
-  .logoTitleWrapper{
+
+@media (max-width:899px) {
+  .logoTitleWrapper {
     padding: 0;
     margin: 0;
   }
 }
+
 /* *{
   -ms-overflow-style: none;
 }

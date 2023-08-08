@@ -1,11 +1,12 @@
 // @ts-nocheck
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, IconButton, Typography } from "@mui/material";
+import { Contact } from "constants/interfaces";
 
 interface ContactProps {
   isDisabled: boolean;
   contact: any;
-  handleSelectedList: (contact: object, checked: boolean) => void;
+  handleSelectedList: (contact: Contact, checked: boolean) => void;
 }
 
 export default function SelectedContactBox({
@@ -38,8 +39,8 @@ export default function SelectedContactBox({
         display: "inline-block",
         marginTop: "8px",
         marginBottom: "8px",
-        marginRight:"8px",
-        marginLeft:"4px",
+        marginRight: "8px",
+        marginLeft: "4px",
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
       }}

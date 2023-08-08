@@ -1,7 +1,6 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core";
+import React from "react";
 import InputHOC from "./InputHOC";
-import colors from "assets/colors";
 
 interface DatePickerInt {
   onChange?: (e: any) => void;

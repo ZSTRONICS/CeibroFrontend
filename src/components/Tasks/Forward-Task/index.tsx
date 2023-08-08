@@ -81,7 +81,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
     }
   }, [userAllContacts]);
 
-  const handleSelectedList = (contact: object, checked: boolean) => {
+  const handleSelectedList = (contact: Contact, checked: boolean) => {
     if (checked) {
       let updatedSelected = [...selected, contact];
       setSelected(updatedSelected);
@@ -113,7 +113,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
 
   const handleSubmit = () => {
     let invitedNumbers: string[] = [];
-    let updatedSelected: AssignedToStateType[] = []
+    let updatedSelected: AssignedToStateType[] = [];
     selected.map((item) => {
       if (!item.isCeiborUser && item.userCeibroData === null) {
         invitedNumbers.push(item.phoneNumber);
@@ -133,7 +133,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
           assignedToState: updatedSelected,
           invitedNumbers: invitedNumbers,
           //todo comment empty for temp
-          comment:""
+          comment: "",
         },
       })
     );
@@ -175,7 +175,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
         }}
       >
         {selected.length > 0 ? (
-          selected.map((selectedContact: object) => {
+          selected.map((selectedContact: Contact) => {
             return (
               <SelectedContactBox
                 isDisabled={filteredUsers.some(
@@ -188,15 +188,15 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
           })
         ) : (
           <Typography
-                sx={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                No selected contacts
-              </Typography>
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            No selected contacts
+          </Typography>
         )}
       </Box>
       <Box

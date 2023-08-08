@@ -1,14 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  Autocomplete,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, OutlinedInput, TextField } from "@mui/material";
+import React, { useState } from "react";
 import dialCode from "./dialCode.json";
-import { IPhoneNumber, ICountryData, IPhoneNumberProps } from "./types";
+import { ICountryData, IPhoneNumberProps } from "./types";
 
 export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
   const { name, inputValue, onChange, onBlur, readOnly, disabled } = props;

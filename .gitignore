@@ -12,7 +12,7 @@ build/
 ./src/utills/axios
 # Compiled Java class files
 *.class
-
+src\utills\axios.ts
 # Compiled Python bytecode
 *.py[cod]
 
@@ -50,5 +50,3 @@ Thumbs.db
 *.flv
 *.mov
 *.wmv
-
-src/utills/axios.ts

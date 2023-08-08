@@ -1,12 +1,8 @@
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, Divider } from "@mui/material";
-import ImageBox from "components/Utills/ImageBox";
-import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
-import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
 import {
   AddStatusTag,
   CustomStack,
@@ -15,6 +11,10 @@ import {
   SubHeadingTag,
 } from "components/CustomTags";
 import { momentdeDateFormatWithDay } from "components/Utills/Globals";
+import ImageBox from "components/Utills/ImageBox";
+import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
+import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
+import * as React from "react";
 
 interface IProps {
   events: TaskEvent[];
@@ -69,7 +69,7 @@ export default function AddedDetails(props: IProps) {
                     );
                   case TaskEventType.ForwardTask:
                     return (
-                      <>
+                      <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <DocName>{` ${momentdeDateFormatWithDay(
                             createdAt
@@ -84,11 +84,11 @@ export default function AddedDetails(props: IProps) {
                           )}`}</DocName>
                         </CustomStack>
                         <Divider />
-                      </>
+                      </React.Fragment>
                     );
                   case TaskEventType.CancelTask:
                     return (
-                      <>
+                      <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -99,11 +99,11 @@ export default function AddedDetails(props: IProps) {
                           Task has been Canceled
                         </Span>
                         <Divider />
-                      </>
+                      </React.Fragment>
                     );
                   case TaskEventType.DoneTask:
                     return (
-                      <>
+                      <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Done by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -111,11 +111,11 @@ export default function AddedDetails(props: IProps) {
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         <Divider />
-                      </>
+                      </React.Fragment>
                     );
                   case TaskEventType.Comment:
                     return (
-                      <>
+                      <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Comment by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -150,7 +150,7 @@ export default function AddedDetails(props: IProps) {
                             <Divider />
                           </Box>
                         ))}
-                      </>
+                      </React.Fragment>
                     );
                   default:
                     return null; // Handle any other event types as needed

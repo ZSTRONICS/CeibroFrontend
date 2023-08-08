@@ -13,7 +13,7 @@ interface IProps {
   files: IFile[] | File[];
   size?: string;
   textColor?: string;
-  handleClearFile?: (file: File, type: fileType) => void;
+  handleClearFile?: (file: File | any, type: fileType) => void;
 }
 
 const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
@@ -67,7 +67,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
         </Box>
         <Box sx={{ display: "flex", flexWrap: "wrap" }}>
           {files.length > 0 ? (
-            files.map((item: IFile | File) => {
+            files.map((item: IFile | File | any) => {
               let f_name = "";
               let key = "";
               const { fileName, _id, name } = item;

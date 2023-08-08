@@ -19,7 +19,10 @@ export default function DetailsBody(props: IProps) {
   const { description, events, media } = props;
   const [fileToView, setFileToView] = useState<any | null>(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
-
+  const handleClick = (file: any) => {
+    openModal();
+    setFileToView(file);
+  };
   return (
     <>
       <Box sx={{ paddingLeft: "15px" }}>
@@ -39,13 +42,12 @@ export default function DetailsBody(props: IProps) {
               .map((file: IFile) => {
                 return (
                   <Box
+                    key={file._id}
                     sx={{
                       marginRight: "16px",
                       "&:hover": { cursor: "pointer" },
                     }}
-                    onClick={() => {
-                      openModal(), setFileToView(file);
-                    }}
+                    onClick={() => handleClick(file)}
                   >
                     <ImageBox src={file.fileUrl} />
                   </Box>
@@ -58,6 +60,7 @@ export default function DetailsBody(props: IProps) {
             .map((file: IFile) => {
               return (
                 <Box
+                  key={file._id}
                   sx={{
                     marginBottom: "16px",
                   }}

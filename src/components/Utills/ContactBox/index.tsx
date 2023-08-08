@@ -1,9 +1,10 @@
 import { Box, Checkbox, Typography } from "@mui/material";
 import { SubHeadingTag, SubLabelTag } from "components/CustomTags";
+import { Contact } from "constants/interfaces";
 
 interface IProps {
-  contact: any[];
-  handleSelectedList: (contact: object, checked: boolean) => void;
+  contact: Contact;
+  handleSelectedList: (contact: Contact, checked: boolean) => void;
   selected: boolean;
   isDisabled?: boolean;
 }
@@ -25,8 +26,8 @@ export default function ContactBox({
   console.log("isDisabled", isDisabled);
   let imgSrc: string = "";
   let placeholder: string = "";
-  if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
-    imgSrc = userCeibroData.profilePic;
+  if (isCeiborUser && contact.userCeibroData) {
+    imgSrc = contact.userCeibroData.profilePic;
   } else {
     placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
   }
@@ -80,10 +81,10 @@ export default function ContactBox({
       )}
       <div>
         <SubHeadingTag sx={{ color: "#000" }}>
-          {contactFullName || ""}
+          {contactFullName || "N/A"}
         </SubHeadingTag>
         <SubLabelTag>{`${
-          (userCeibroData && userCeibroData.companyName) || "N/A"
+          contact.userCeibroData?.companyName ?? "N/A"
         }`}</SubLabelTag>
       </div>
       <Box></Box>

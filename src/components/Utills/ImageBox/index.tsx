@@ -1,6 +1,4 @@
 import { Box } from "@mui/system";
-import assets from "assets/assets";
-import React from "react";
 
 interface IProps {
   src: string;

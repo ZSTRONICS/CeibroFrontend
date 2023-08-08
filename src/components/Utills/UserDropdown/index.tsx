@@ -18,6 +18,7 @@ import {
   ChangeValueType,
   CreateNewTaskFormType,
 } from "components/Tasks/type";
+import { Contact } from "constants/interfaces";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -143,14 +144,14 @@ function UserDropDown(props: IProps) {
   };
 
   const handleClearClick = () => {
-    handleChangeValues(undefined,"assignedToState")
-    handleChangeValues(undefined,"invitedNumbers")
+    handleChangeValues(undefined, "assignedToState");
+    handleChangeValues(undefined, "invitedNumbers");
     setIsSelfAssign(false);
     setSearchQuery("");
     setSelected([]);
   };
 
-  const handleSelectedList = (contact: object, checked: boolean) => {
+  const handleSelectedList = (contact: Contact, checked: boolean) => {
     if (checked) {
       let updatedSelected = [...selected, contact];
       setSelected(updatedSelected);
