@@ -121,7 +121,6 @@ function CustomDropDown(props: IProps) {
       label: searchQuery,
       value: searchQuery,
     };
-    console.log("newItem", newItem);
     // setFilterData((prevData) => [...prevData, newItem]);
     setSelected(searchQuery);
     createCallback && createCallback(label, searchQuery);

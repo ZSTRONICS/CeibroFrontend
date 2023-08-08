@@ -47,7 +47,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState("");
-  console.log("userSubState", userSubState);
   const handleClick = (action: string) => {
     setTaskAction(action);
     openModal();
