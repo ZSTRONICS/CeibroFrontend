@@ -52,7 +52,6 @@ function CustomDropDown(props: IProps) {
   // const [recentfilterData, setRecentFilterData] = React.useState<{
   //   [key: string]: OptionType[];
   // }>({});
-
   // its use for all sorted array
   const [sortedOptions, setSortedOptions] = React.useState<{
     [key: string]: any[];
@@ -157,6 +156,9 @@ function CustomDropDown(props: IProps) {
           other: { topicId: option.value },
           success: (res: any) => {
             dispatch(taskActions.getAllTopic());
+            if (option.label === selected) {
+              setSelected("");
+            }
           },
         })
       );

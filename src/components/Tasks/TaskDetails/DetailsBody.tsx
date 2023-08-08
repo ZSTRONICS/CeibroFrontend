@@ -1,4 +1,5 @@
 import { Box } from "@mui/material";
+import ImageLazyLoad from "components/ImgLazyLoad";
 import CustomModal from "components/Modal";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import ImageBox from "components/Utills/ImageBox";
@@ -83,7 +84,11 @@ export default function DetailsBody(props: IProps) {
             <>
               {fileToView !== null && (
                 <div>
-                  <img src={fileToView.fileUrl} width="100%" />
+                  <ImageLazyLoad
+                    src={fileToView.fileUrl}
+                    alt=""
+                    imgZoomHandler={true}
+                  />{" "}
                 </div>
               )}
             </>

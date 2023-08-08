@@ -19,7 +19,7 @@ const CustomDatePicker = ({
   name,
   handleChangeValues,
 }: CustomeDatePickerProps) => {
-  const [value, setValue] = useState<any>(new Date().toLocaleDateString());
+  const [value, setValue] = useState<any>(null);
 
   const handleDateChange = (date: Date | null) => {
     if (date) {

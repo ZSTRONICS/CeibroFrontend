@@ -23,7 +23,7 @@ export default function ContactBox({
     isCeiborUser = "",
     userCeibroData = {},
   } = contact;
-  console.log("isDisabled", isDisabled);
+
   let imgSrc: string = "";
   let placeholder: string = "";
   if (isCeiborUser && contact.userCeibroData) {

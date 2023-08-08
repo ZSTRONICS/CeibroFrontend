@@ -2,7 +2,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Box, IconButton, Typography } from "@mui/material";
 import CustomModal from "components/Modal";
 import { fileType } from "components/Tasks/type";
-import DocumentViewer from "components/pdfviewer/Components/DocumentViewer";
+import PDFViewer from "components/uploadImage/WindowPDFViewer";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
@@ -29,9 +29,12 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
     }
   };
 
+  const handleError = (e: any) => {
+    console.error("Error loading PDF:", e);
+  };
+
   return (
     <>
-      {" "}
       <Box
         sx={{
           width: "100%",
@@ -166,10 +169,10 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
           children={
             <>
               {fileToView !== null && (
-                <DocumentViewer
-                  pdf={fileToView}
-                  file={fileToView}
-                  newTask={null}
+                <PDFViewer
+                  src={fileToView}
+                  onLoad={() => console.log("PDF loaded successfully")}
+                  onError={handleError}
                 />
               )}
             </>

@@ -22,6 +22,7 @@ export interface CreateNewTaskFormType {
   description?: string;
   doneImageRequired?: boolean;
   doneCommentsRequired?: boolean;
+  hasPendingFilesToUpload: boolean;
   invitedNumbers?: string[];
 }
 

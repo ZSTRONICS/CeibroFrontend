@@ -426,7 +426,10 @@ const TaskReducer = (
     case TASK_CONFIG.PUSH_TOPIC_IN_STORE:
       return {
         ...state,
-        // getAllTopic: [...state.getAllTopic, action.payload]
+        Topics: {
+          allTopics: [...state.Topics.allTopics, action.payload],
+          recentTopics: [...state.Topics.recentTopics],
+        }
       };
     // update task when event received
     case TASK_CONFIG.UPDATE_TASK_WITH_EVENTS:

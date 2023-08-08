@@ -43,7 +43,7 @@ var initialValues = {
   assignedToState: [],
   creator: "",
   description: "",
-  // isTaskFilesUploading:false
+  hasPendingFilesToUpload: false,
   doneImageRequired: false,
   doneCommentsRequired: false,
   invitedNumbers: [],
@@ -179,14 +179,15 @@ function CreateNewTask() {
   };
 
   const handleCreateTask = () => {
+    const filesToUpload = [...selectedImages, ...selectedDocuments];
     let payload = selectedData;
     payload.creator = user._id;
+    payload.hasPendingFilesToUpload = filesToUpload.length > 0 ? true : false;
     dispatch(
       taskActions.createTask({
         body: payload,
         success: (res: any) => {
           if (selectedImages.length > 0 || selectedDocuments.length > 0) {
-            const filesToUpload = [...selectedImages, ...selectedDocuments];
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
           }

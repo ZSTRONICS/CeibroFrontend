@@ -1,4 +1,3 @@
-import { DrawingMenu, StickyHeader } from "./Components";
 import { Box, Grid } from "@mui/material";
 import Tasks from "components/Tasks/TaskList/Task";
 import DocumentReader from "components/pdfviewer/index.js";
@@ -6,26 +5,31 @@ import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
+import { DrawingMenu, StickyHeader } from "./Components";
 
 function DrawingDetails() {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
-  const {
-    allTaskList,
-    allTaskFromMe,
-    loadingAllTaskToMe,
-    loadingAllTaskfromMe,
-  } = useSelector((state: RootState) => state.task);
+  const { task } = useSelector((state: RootState) => state);
+  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+
+  const allTasksTome = Object.values(allTaskToMe).flat();
+  const allTasksFromMe = Object.values(allTaskFromMe).flat();
+  const allTasksHidden = Object.values(allTaskHidden).flat();
+
   // later debug the issue of re-rendering component
   // useApiCallOnce(taskActions.getAllTaskToMe(), [])
   // useApiCallOnce(taskActions.getAllTaskFromMe(), [])
   useEffect(() => {
     if (!isRenderEffect.current) {
-      if (allTaskList.new.length === 0) {
+      if (allTasksTome.length === 0) {
         dispatch(taskActions.getAllTaskToMe());
       }
-      if (allTaskFromMe.unread.length === 0) {
+      if (allTasksFromMe.length === 0) {
         dispatch(taskActions.getAllTaskFromMe());
+      }
+      if (allTasksHidden.length === 0) {
+        dispatch(taskActions.getAllTaskHidden());
       }
     }
     return () => {
@@ -39,15 +43,15 @@ function DrawingDetails() {
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box>
       <Grid container>
-        <Grid item md={2.8} sx={sideBarStyle}>
+        <Grid item md={4} sx={sideBarStyle}>
           <Tasks />
         </Grid>
-        <Grid item md={8.2}>
-          <DocumentReader newTask={allTaskList.new} />
+        <Grid item md={8}>
+          <DocumentReader newTask={allTaskToMe.new} />
         </Grid>
-        <Grid item md={1} sx={sideBarStyle}>
+        {/* <Grid item md={1} sx={sideBarStyle}>
           Toolbar
-        </Grid>
+        </Grid> */}
       </Grid>
     </>
   );
