@@ -451,12 +451,19 @@ const TaskReducer = (
       const toMeOngoing = state.allTaskToMe.ongoing;
       const toMeDone = state.allTaskToMe.done;
 
-      const isAssignedToMe = eventData.oldTaskData.isAssignedToMe === true;
-      const isCreator = eventData.oldTaskData.isCreator === true;
-      const isOngoing = eventData.oldTaskData.userSubState === "ongoing";
-      const isHiddenByMe = eventData.oldTaskData.isHiddenByMe === true;
-      const taskIdLocal = eventData.taskId;
+      let isAssignedToMe = false;
+      let isCreator = false;
+      let isOngoing = false;
+      let isHiddenByMe = false;
+      let taskIdLocal = "";
 
+      if (eventData.oldTaskData || eventData.taskId) {
+        isAssignedToMe = eventData.oldTaskData.isAssignedToMe === true;
+        isCreator = eventData.oldTaskData.isCreator === true;
+        isOngoing = eventData.oldTaskData.userSubState === "ongoing";
+        isHiddenByMe = eventData.oldTaskData.isHiddenByMe === true;
+        taskIdLocal = eventData.taskId;
+      }
       // canceled task
       if (eventData.eventType === "cancelTask") {
         if (isCreator && isAssignedToMe) {
@@ -868,40 +875,41 @@ const TaskReducer = (
 
       // forward task and update existing task
       if (eventData.eventType === "TASK_FORWARDED") {
+        console.log('TASK_FORWARDED')
         if (eventData.isAssignedToMe === true) {
-          if (
-            eventData.isHiddenByMe === true) {
-            const taskIndex = findTaskIndex(hiddenOngoing, taskIdLocal);
+          if (eventData.isHiddenByMe === true) {
+            const taskIndex = findTaskIndex(hiddenOngoing, eventData._id);
             if (taskIndex !== -1) {
-              toMeOngoing.unshift(hiddenOngoing[taskIndex]);
+              toMeOngoing.unshift(eventData);
               hiddenOngoing.splice(taskIndex, 1);
               console.log("TASK_FORWARDED hiddenOngoing=> toMeOngoing", toMeOngoing[0]._id);
             }
           } else {
-            const checktaskToMeInOngoing = findTaskIndex(toMeOngoing, taskIdLocal);
-            if (checktaskToMeInOngoing > -1) {
-              toMeOngoing[checktaskToMeInOngoing] = eventData;
-              console.log("TASK_FORWARDED update toMeOngoing", toMeOngoing);
-            }
-            const taskIndex = findTaskIndex(toMeNew, taskIdLocal);
+            const taskIndex = findTaskIndex(toMeNew, eventData._id);
             if (taskIndex > -1) {
-              toMeNew[taskIndex] = eventData;
-              console.log("TASK_FORWARDED update toMeNew", toMeNew[taskIndex]);
+              toMeNew[taskIndex] = { ...eventData };
+              console.log("TASK_FORWARDED update toMeNew", toMeNew[taskIndex]._id);
+            } else {
+              const checktaskToMeInOngoing = findTaskIndex(toMeOngoing, eventData._id);
+              if (checktaskToMeInOngoing > -1) {
+                toMeOngoing[checktaskToMeInOngoing] = { ...eventData };
+                console.log("TASK_FORWARDED update toMeOngoing", toMeOngoing[checktaskToMeInOngoing]._id);
+              }
             }
           }
         }
 
         if (eventData.isCreator === true) {
-          const taskIndex = findTaskIndex(fromMeOngoing, taskIdLocal);
-          if (taskIndex > -1) {
-            fromMeOngoing[taskIndex] = eventData;
-            console.log("TASK_FORWARDED update fromMeOngoing", fromMeOngoing[taskIndex]);
-          }
-
-          const taskIndex1 = findTaskIndex(fromMeUnread, taskIdLocal);
+          const taskIndex1 = findTaskIndex(fromMeUnread, eventData._id);
           if (taskIndex1 > -1) {
-            fromMeUnread[taskIndex1] = eventData;
+            fromMeUnread[taskIndex1] = { ...eventData };
             console.log("TASK_FORWARDED update fromMeUnread", fromMeUnread[taskIndex1]);
+          } else {
+            const taskIndex = findTaskIndex(fromMeOngoing, eventData._id);
+            if (taskIndex > -1) {
+              fromMeOngoing[taskIndex] = { ...eventData };
+              console.log("TASK_FORWARDED update fromMeOngoing", fromMeOngoing[taskIndex]._id);
+            }
           }
         }
 

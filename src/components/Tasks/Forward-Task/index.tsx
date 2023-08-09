@@ -7,7 +7,7 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -18,13 +18,20 @@ interface IProps {
   taskId: string;
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
+  closeModal: () => void;
 }
 
-const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
+const ForwardTask = ({
+  taskId,
+  assignedToState,
+  invitedNumbers,
+  closeModal,
+}: IProps) => {
   const [isSelfAssign, setIsSelfAssign] = React.useState(false);
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [inivetedUser, setInvitedUser] = useState<any>();
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
@@ -45,7 +52,6 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   });
 
   const [selected, setSelected] = React.useState<any[]>(filteredUsers);
-
   const dispatch = useDispatch();
   useEffect(() => {
     const payload = {
@@ -114,8 +120,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   const handleSubmit = () => {
     let invitedUserNumbers: string[] = [];
     let updatedSelected: AssignedToStateType[] = [];
-    console.log(selected,"selected")
-    selected.map((item) => {
+    selected.forEach((item) => {
       const isMatchContact = assignedToState.some(
         (user) => user.phoneNumber === item.phoneNumber
       );
@@ -125,6 +130,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
       if (!isMatchContact && !isInvitedMember) {
         if (!item.isCeiborUser && item.userCeibroData === null) {
           invitedUserNumbers.push(item.phoneNumber);
+          setInvitedUser((prev: any) => [...prev, item.phoneNumber]);
         } else {
           let payloadSelected: AssignedToStateType = {
             phoneNumber: item.phoneNumber,
@@ -132,6 +138,7 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
             state: "new",
           };
           updatedSelected.push(payloadSelected);
+          setInvitedUser((prev: any) => [...prev, item.phoneNumber]);
         }
       }
     });
@@ -140,14 +147,17 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
         other: { taskId: taskId },
         body: {
           assignedToState: updatedSelected,
-          invitedNumbers: invitedNumbers,
+          invitedNumbers: invitedUserNumbers,
           //todo comment empty for temp
           comment: "",
+        },
+        success: () => {
+          closeModal();
         },
       })
     );
   };
-
+  console.log("inivetedUser", inivetedUser);
   return (
     <Box>
       <Box

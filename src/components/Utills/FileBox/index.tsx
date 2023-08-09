@@ -21,7 +21,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
   const [fileToView, setFileToView] = useState<any | null>(null);
 
   const openPDFNewTab = (file: any) => {
-    if (file) {
+    if (file.fileUrl) {
       openModal();
       setFileToView(file.fileUrl);
     } else {
@@ -161,7 +161,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
       </Box>
       {isOpen && (
         <CustomModal
-          maxWidth={"md"}
+          maxWidth={"lg"}
           isOpen={isOpen}
           handleClose={closeModal}
           showCloseBtn={true}

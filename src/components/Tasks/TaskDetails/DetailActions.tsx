@@ -78,6 +78,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           invitedNumbers={invitedNumbers}
           assignedToState={assignedToState}
           taskId={taskId}
+          closeModal={closeModal}
         />
       );
     return (

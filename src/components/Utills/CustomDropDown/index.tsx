@@ -182,7 +182,6 @@ function CustomDropDown(props: IProps) {
   };
 
   const handleDeleteClick = (item: OptionType) => {
-    console.log("check", item);
     setDeleteItem(item);
     handleCloseMenu();
     handleDialogState();
@@ -257,8 +256,8 @@ function CustomDropDown(props: IProps) {
               )}
             </>
           </ListSubheader>
-          {options?.recentOptions?.length > 0 && (
-            <Box sx={{ margin: "8px 16px" }}>
+          {allFilterData.recent.length > 0 && (
+            <Box sx={{ margin: "10px 16px" }}>
               <Typography
                 sx={{
                   fontFamily: "Inter",
@@ -268,7 +267,7 @@ function CustomDropDown(props: IProps) {
                   lineHeight: "16px",
                 }}
               >
-                Recent used {label.toLocaleLowerCase()}
+                Recent used topics
               </Typography>
               {allFilterData.recent.map((item: OptionType) => {
                 return (
