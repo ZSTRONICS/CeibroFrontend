@@ -191,6 +191,16 @@ function CreateNewTask() {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
           }
+          const windowClose = window.getSelection();
+          if (windowClose) {
+            if (filesToUpload.length === 0) {
+              window.close();
+            } else {
+              setTimeout(() => {
+                window.close();
+              }, 5000);
+            }
+          }
         },
       })
     );

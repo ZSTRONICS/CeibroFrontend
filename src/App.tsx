@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import "fontsource-roboto";
 import "moment-timezone";
-import React, { useEffect } from "react";
+import React from "react";
 import { ToastContainer } from "react-toastify";
 
 // components
@@ -33,13 +33,9 @@ import { RootState } from "./redux/reducers/appReducer";
 // axios
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
-import { DOCS_CONFIG } from "config/docs.config";
-import {
-  uploadDocs
-} from "redux/action/task.action";
 import { useSocket } from "utills/SocketUtils";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   const dispatch = useDispatch();
@@ -53,89 +49,88 @@ const App: React.FC<MyApp> = () => {
   const drawerOpen = useSelector(
     (store: RootState) => store.chat.openViewQuestioniar
   );
-  const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
-    (state: RootState) => state.docs
-  );
+  // const { selectedFilesToBeUploaded, uploadPendingFiles } = useSelector(
+  //   (state: RootState) => state.docs
+  // );
 
-  useEffect(() => {
-    if (!uploadPendingFiles) {
-      return;
-    }
+  // useEffect(() => {
+  //   if (!uploadPendingFiles) {
+  //     return;
+  //   }
 
-    let formData = new FormData();
-    let filesPlaceholderData: any[] = [];
+  //   let formData = new FormData();
+  //   let filesPlaceholderData: any[] = [];
 
-    const filesToUpload = selectedFilesToBeUploaded.files;
-    const moduleType = selectedFilesToBeUploaded.moduleName;
-    const moduleId = selectedFilesToBeUploaded.moduleId;
+  //   const filesToUpload = selectedFilesToBeUploaded.files;
+  //   const moduleType = selectedFilesToBeUploaded.moduleName;
+  //   const moduleId = selectedFilesToBeUploaded.moduleId;
 
-    Array.from(filesToUpload).forEach((file: any) => {
-      const chunkSize = 1024 * 1024; // 1MB chunks
-      let offset = 0;
-      // Create an array of chunks
-      const chunks = [];
-      while (offset < file.size) {
-        const chunk = file.slice(offset, offset + chunkSize);
-        chunks.push(chunk);
-        offset += chunkSize;
-      }
-      // Create a new Blob object from the array
-      const blob = new Blob(chunks);
-      formData.append("files", blob, file.name);
+  //   Array.from(filesToUpload).forEach((file: any) => {
+  //     const chunkSize = 1024 * 1024; // 1MB chunks
+  //     let offset = 0;
+  //     // Create an array of chunks
+  //     const chunks = [];
+  //     while (offset < file.size) {
+  //       const chunk = file.slice(offset, offset + chunkSize);
+  //       chunks.push(chunk);
+  //       offset += chunkSize;
+  //     }
+  //     // Create a new Blob object from the array
+  //     const blob = new Blob(chunks);
+  //     formData.append("files", blob, file.name);
 
-      filesPlaceholderData.push({
-        access: [],
-        version: 1,
-        _id: "",
-        uploadedBy: "",
-        fileUrl: "",
-        fileSize: file.size,
-        fileType: "",
-        progress: 1,
-        fileName: file.name,
-        uploadStatus: "",
-        moduleType: moduleType,
-        moduleId: moduleId,
-        createdAt: "",
-        updatedAt: "",
-      });
-    });
-    formData.append("moduleName", moduleType);
-    formData.append("_id", moduleId);
+  //     filesPlaceholderData.push({
+  //       access: [],
+  //       version: 1,
+  //       _id: "",
+  //       uploadedBy: "",
+  //       fileUrl: "",
+  //       fileSize: file.size,
+  //       fileType: "",
+  //       progress: 1,
+  //       fileName: file.name,
+  //       uploadStatus: "",
+  //       moduleType: moduleType,
+  //       moduleId: moduleId,
+  //       createdAt: "",
+  //       updatedAt: "",
+  //     });
+  //   });
+  //   formData.append("moduleName", moduleType);
+  //   formData.append("_id", moduleId);
 
-    dispatch({
-      type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
-      payload: filesPlaceholderData,
-    });
+  //   dispatch({
+  //     type: DOCS_CONFIG.PUSH_FILE_UPLAOD_RESPONSE,
+  //     payload: filesPlaceholderData,
+  //   });
 
-    const payload = {
-      body: formData,
-      success: (res: any) => {
-        if (res.status === 200) {
-          //toast.success("file(s) uploaded");
-          if (res.data.results.files.length > 0) {
-            let allFiles = res.data.results.files;
-            const files = allFiles.map((file: any) => {
-              file.progress = 100;
-              return file;
-            });
-            dispatch({
-              type: DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE,
-              payload: files,
-            });
-          }
-        }
-      },
-    };
+  //   const payload = {
+  //     body: formData,
+  //     success: (res: any) => {
+  //       if (res.status === 200) {
+  //         //toast.success("file(s) uploaded");
+  //         if (res.data.results.files.length > 0) {
+  //           let allFiles = res.data.results.files;
+  //           const files = allFiles.map((file: any) => {
+  //             file.progress = 100;
+  //             return file;
+  //           });
+  //           dispatch({
+  //             type: DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE,
+  //             payload: files,
+  //           });
+  //         }
+  //       }
+  //     },
+  //   };
 
-    dispatch(uploadDocs(payload));
+  //   dispatch(uploadDocs(payload));
 
-    dispatch({
-      type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
-    });
-  }, [uploadPendingFiles]);
+  //   dispatch({
+  //     type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
+  //   });
+  // }, [uploadPendingFiles]);
 
-  console.log('Rendering App')
   useSocket();
   // useSocket(isLoggedIn, user?._id, dispatch);
   return (
