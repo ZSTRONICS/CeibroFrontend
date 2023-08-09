@@ -11,7 +11,7 @@ import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 export const useSocket = () => {
     const [doOnce, setDoOnce] = useState(false);
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
-    const userId = user?.id;
+    const userId = user && user._id;
     const dispatch = useDispatch();
 
     function generateSecureUUID() {
