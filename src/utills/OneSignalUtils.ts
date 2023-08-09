@@ -9,7 +9,7 @@ export default async function runOneSignal() {
 
 
 
-export const  InitOneSignal = async (userId: string) => {
+export const InitOneSignal = async (userId: string) => {
 
   // await OneSignal.setExternalUserId(userId)
 

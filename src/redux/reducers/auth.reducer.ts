@@ -1,46 +1,44 @@
-import { UPDATE_PROFILE_PIC } from "config/user.config";
 import {
   UserInterface,
   userTemplate,
 } from "constants/interfaces/user.interface";
 import { REGISTER } from "redux-persist";
-import { unSubOneSignal } from "utills/runOneSignal";
-import { ActionInterface } from "./appReducer";
 import {
   GET_PROFILE,
   LOGIN,
   LOGOUT,
-  OTP_VERIFY,
   REGISTER_CONFIRMATION,
   REGISTER_PROFILE_SETUP,
   UPDATE_MY_PROFILE,
   UPDATE_PROFILE_PICTURE,
-  USER_CHANGE_NUMBER,
-  USER_CHANGE_PASSWORD,
 } from "../../config/auth.config";
 import {
   requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
+import { ActionInterface } from "./appReducer";
 
 interface authInterface {
   isLoggedIn: boolean;
   user: UserInterface;
   loginLoading: boolean;
   registerLoading: boolean;
+  secureUUID: string | null;
   authSuccessMessage: string | null | undefined;
   authErrorMessage: string | null | undefined;
 }
 
 const intialStatue: authInterface = {
   isLoggedIn: false,
+  secureUUID: null,
   user: userTemplate,
   loginLoading: false,
   registerLoading: false,
   authSuccessMessage: "",
   authErrorMessage: "",
 };
+
 
 const AuthReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
@@ -64,6 +62,18 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     //     loginLoading: false,
     //   };
     // }
+
+    case 'SET_SECURE_UUID':
+      // check if secureUUID is already set
+      if (state.secureUUID) {
+        console.log('secureUUID is already set', state.secureUUID)
+        return state
+      }
+      return {
+        ...state,
+        secureUUID: action.payload
+      }
+
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
@@ -213,6 +223,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         user: currUser,
       };
     }
+
     default:
       return state;
   }

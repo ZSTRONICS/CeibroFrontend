@@ -15,19 +15,18 @@ export const openFormInNewWindow = (path: string, windowTitle: string) => {
   const newWindow = window.open(
     path,
     "",
-    `width=${width},height=${height},left=${leftOffset},top=${topOffset},toolbar=no,location=no,resizable=no, status=no`
+    `width=${width}, height=${height}, left=${leftOffset}, top=${topOffset}, toolbar=no, location=no, resizable=no, status=no`
   );
 
   // Set the title of the new window
   if (newWindow != null) {
-
     newWindow.addEventListener("load", () => {
       newWindow.document.title = windowTitle;
       // const windowId = String(Date.now());
       // windowsMap.set(windowId, newWindow);
-
-
     });
+  } else {
+    alert('The new window was blocked. Please allow pop-ups for this site.');
   }
 };
 

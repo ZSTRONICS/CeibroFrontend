@@ -1,4 +1,5 @@
 import moment from "moment-timezone";
+import { AxiosV2 } from "utills/axios";
 
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
@@ -268,6 +269,9 @@ export const onlyUnique = (value: any, index: any, array: any) => {
 
 export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv', '.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf', '.odt', '.ods', '.odp', '.odg', '.djvu', '.keynote']
 export const MEDIA_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
+const imageFileRegex = /\.(jpg|jpeg|png)$/i;
+
+export const IS_IMAGE = (fileName: string) => imageFileRegex.test(fileName.toLowerCase())
 
 /**
  * @param extensionKeys array of extension
@@ -292,7 +296,7 @@ export const openFormWindow = (content: string) => {
   const windowHeight = 782;
   const windowLeft = (window.innerWidth - windowWidth) / 2;
   const windowTop = (window.innerHeight - windowHeight) / 2;
-  const url = 'https://dev.ceibro.ee';
+  const url = AxiosV2.defaults.baseURL;
   const windowFeatures = `width=${windowWidth},height=${windowHeight},left=${windowLeft},top=${windowTop},resizable=no,scrollbars=no,status=no`;
   const formWindow: Window | null = window.open(undefined, '_blank', windowFeatures);
 
