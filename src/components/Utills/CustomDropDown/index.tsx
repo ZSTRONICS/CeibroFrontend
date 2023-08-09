@@ -110,7 +110,9 @@ function CustomDropDown(props: IProps) {
     setSearchQuery(searchValue);
     setAllFilterData({
       all: handleGroupSearch(searchValue, sortedOptions, "label"),
-      recent: options.recentOptions,
+      recent: options.recentOptions.filter((option) =>
+        option.label.toLowerCase().includes(searchValue.toLowerCase())
+      ),
     });
   };
 

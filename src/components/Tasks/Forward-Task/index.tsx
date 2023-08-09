@@ -112,18 +112,27 @@ const ForwardTask = ({ taskId, assignedToState, invitedNumbers }: IProps) => {
   };
 
   const handleSubmit = () => {
-    let invitedNumbers: string[] = [];
+    let invitedUserNumbers: string[] = [];
     let updatedSelected: AssignedToStateType[] = [];
+    console.log(selected,"selected")
     selected.map((item) => {
-      if (!item.isCeiborUser && item.userCeibroData === null) {
-        invitedNumbers.push(item.phoneNumber);
-      } else {
-        let payloadSelected: AssignedToStateType = {
-          phoneNumber: item.phoneNumber,
-          userId: item.userCeibroData?._id,
-          state: "new",
-        };
-        updatedSelected.push(payloadSelected);
+      const isMatchContact = assignedToState.some(
+        (user) => user.phoneNumber === item.phoneNumber
+      );
+      const isInvitedMember = invitedNumbers.some(
+        (member) => member.phoneNumber === item.phoneNumber
+      );
+      if (!isMatchContact && !isInvitedMember) {
+        if (!item.isCeiborUser && item.userCeibroData === null) {
+          invitedUserNumbers.push(item.phoneNumber);
+        } else {
+          let payloadSelected: AssignedToStateType = {
+            phoneNumber: item.phoneNumber,
+            userId: item.userCeibroData?._id,
+            state: "new",
+          };
+          updatedSelected.push(payloadSelected);
+        }
       }
     });
     dispatch(

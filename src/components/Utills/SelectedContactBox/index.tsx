@@ -33,42 +33,42 @@ export default function SelectedContactBox({
   }
 
   return (
-    <Box
-      sx={{
-        position: "relative",
-        display: "inline-block",
-        marginTop: "8px",
-        marginBottom: "8px",
-        marginRight: "8px",
-        marginLeft: "4px",
-        pointerEvents: `${isDisabled ? "none" : ""}`,
-        opacity: `${isDisabled ? "0.5" : "1"}`,
-      }}
-      key={contact.contactFullName + 1}
-    >
+    !isDisabled && (
       <Box
         sx={{
-          width: "50px",
-          height: "50px",
-          bgcolor: "#F4F4F4", // You can set a placeholder background color here
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          position: "relative",
+          display: "inline-block",
+          marginTop: "8px",
+          marginBottom: "8px",
+          marginRight: "8px",
+          marginLeft: "4px",
+          pointerEvents: `${isDisabled ? "none" : ""}`,
+          opacity: `${isDisabled ? "0.5" : "1"}`,
         }}
+        key={contact.contactFullName + 1}
       >
-        {imageSrc ? (
-          <img
-            src={imageSrc}
-            alt={`profilePic`}
-            style={{ width: "50px", height: "50px" }}
-          />
-        ) : (
-          <Typography variant="body1" color="text.primary">
-            {placeholder}
-          </Typography>
-        )}
-      </Box>
-      {!isDisabled && (
+        <Box
+          sx={{
+            width: "50px",
+            height: "50px",
+            bgcolor: "#F4F4F4", // You can set a placeholder background color here
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {imageSrc ? (
+            <img
+              src={imageSrc}
+              alt={`profilePic`}
+              style={{ width: "50px", height: "50px" }}
+            />
+          ) : (
+            <Typography variant="body1" color="text.primary">
+              {placeholder}
+            </Typography>
+          )}
+        </Box>
         <IconButton
           aria-label="delete"
           onClick={(e) => {
@@ -88,7 +88,7 @@ export default function SelectedContactBox({
         >
           <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
         </IconButton>
-      )}
-    </Box>
+      </Box>
+    )
   );
 }
