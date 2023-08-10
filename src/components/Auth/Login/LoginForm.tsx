@@ -29,10 +29,10 @@ import MessageAlert from "components/MessageAlert/MessageAlert";
 import Loading from "components/Utills/Loader/Loading";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import userAlertMessage from "hooks/userAlertMessage";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
-import userAlertMessage from "hooks/userAlertMessage";
 
 interface Props {
   tokenLoading: boolean;
@@ -79,7 +79,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
       onFailAction: (err: any) => {
         setShowLoading(false);
-        if (err.response.data.code >= 400) {
+        if (err) {
           setAlertMessage(
             err.response.data.message === "Invalid password"
               ? "Incorrect password or invalid phone number"
@@ -143,8 +143,6 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-
-
               {/* {showError && (
                 <MessageAlert message={alertMessage} severity="error" showMessage={true} />
               )}
@@ -220,7 +218,11 @@ const LoginForm: React.FC<Props> = (props) => {
                   {t("auth.ForgetPassword")}
                 </AddStatusTag>
               </div>
-              <MessageAlert message={alertMessage} severity= {showSuccess === true ? "success" : "error"} showMessage={showAlert} />
+              <MessageAlert
+                message={alertMessage}
+                severity={showSuccess === true ? "success" : "error"}
+                showMessage={showAlert}
+              />
 
               <Box
                 sx={{
@@ -229,11 +231,9 @@ const LoginForm: React.FC<Props> = (props) => {
                   // paddingTop: "30px",
                   "@media (max-width:960px)": {
                     // margin: "1% 0",
-
                   },
                 }}
               >
-
                 <Button
                   type="submit"
                   variant="contained"
@@ -254,7 +254,6 @@ const LoginForm: React.FC<Props> = (props) => {
             </form>
           )}
         </Formik>
-     
       </Box>
     </>
   );

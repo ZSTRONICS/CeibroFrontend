@@ -72,6 +72,7 @@ function CreateNewTask() {
   const projects = useSelector((store: RootState) => store.project);
   const { allProjects } = projects;
   const { Topics } = tasks;
+  const windowClose = window.getSelection();
 
   useEffect(() => {
     dispatch(taskActions.getAllTopic());
@@ -168,11 +169,16 @@ function CreateNewTask() {
       const finalMetadata = JSON.stringify(metadataObjects);
       formData.append("metadata", finalMetadata);
 
-      const payload = {
-        body: formData,
-      };
-
-      dispatch(docsAction.uploadDocsByModuleNameAndId(payload));
+      dispatch(
+        docsAction.uploadDocsByModuleNameAndId({
+          body: formData,
+          success: () => {
+            if (windowClose) {
+              window.close();
+            }
+          },
+        })
+      );
     } catch (error) {
       console.error("Error occurred while uploading files:", error);
     }
@@ -191,14 +197,9 @@ function CreateNewTask() {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
           }
-          const windowClose = window.getSelection();
           if (windowClose) {
             if (filesToUpload.length === 0) {
               window.close();
-            } else {
-              setTimeout(() => {
-                window.close();
-              }, 3000);
             }
           }
         },

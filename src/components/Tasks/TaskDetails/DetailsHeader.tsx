@@ -51,14 +51,15 @@ export default function DetailsHeader(props: IProps) {
           ? assignedToState
               .filter((user) => user.firstName || user.surName)
               .map((user) => {
-                if (user.firstName && user.surName) {
-                  return `${user.firstName} ${user.surName}`;
-                } else if (user.firstName) {
-                  return user.firstName;
-                } else if (user.surName) {
-                  return user.surName;
+                const { firstName, surName, phoneNumber } = user;
+                if (firstName && surName) {
+                  return `${firstName} ${surName}`;
+                } else if (firstName) {
+                  return firstName;
+                } else if (surName) {
+                  return surName;
                 } else {
-                  return user.phoneNumber;
+                  return phoneNumber;
                 }
               })
               .join(", ")
@@ -70,9 +71,16 @@ export default function DetailsHeader(props: IProps) {
       value:
         invitedNumbers.length > 0
           ? invitedNumbers
-              .map((item: InvitedNumber) => {
-                if (item.phoneNumber) {
-                  return `${item.phoneNumber}`;
+              .map((user: InvitedNumber) => {
+                const { firstName, surName, phoneNumber } = user;
+                if (firstName && surName) {
+                  return `${firstName} ${surName}`;
+                } else if (firstName) {
+                  return firstName;
+                } else if (surName) {
+                  return surName;
+                } else {
+                  return phoneNumber;
                 }
               })
               .join(", ")

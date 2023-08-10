@@ -1,11 +1,11 @@
-import createSagaMiddleware from "redux-saga";
-import { createStore, applyMiddleware, Store, } from "redux";
+import { Store, applyMiddleware, createStore, } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import "regenerator-runtime/runtime";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
-import rootSaga from "./sagas/rootSagas";
+import createSagaMiddleware from "redux-saga";
+import "regenerator-runtime/runtime";
 import { rootReducer } from "./reducers";
+import rootSaga from "./sagas/rootSagas";
 
 const persistConfig = {
   key: "root",
@@ -28,11 +28,11 @@ sagaMiddleware.run(rootSaga);
 const myStore = { store, persistor };
 
 // remove the saved data in LocalStorage
-export function purgeStoreStates(){
+export function purgeStoreStates() {
   persistor.purge()
 }
 
-if(window.location.pathname==='/login'){  
-  purgeStoreStates()
-}
+// if (window.location.pathname === '/login') {
+//   purgeStoreStates()
+// }
 export default myStore;
