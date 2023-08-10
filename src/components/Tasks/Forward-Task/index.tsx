@@ -7,7 +7,7 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -31,7 +31,6 @@ const ForwardTask = ({
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [inivetedUser, setInvitedUser] = useState<any>();
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
@@ -130,15 +129,26 @@ const ForwardTask = ({
       if (!isMatchContact && !isInvitedMember) {
         if (!item.isCeiborUser && item.userCeibroData === null) {
           invitedUserNumbers.push(item.phoneNumber);
-          setInvitedUser((prev: any) => [...prev, item.phoneNumber]);
         } else {
           let payloadSelected: AssignedToStateType = {
-            phoneNumber: item.phoneNumber,
-            userId: item.userCeibroData?._id,
-            state: "new",
+            phoneNumber: "",
+            userId: "",
+            state: ""
           };
+          if (item._id === user._id) {
+            payloadSelected = {
+              phoneNumber: user.phoneNumber,
+              userId: user._id,
+              state: "new",
+            };
+          } else {
+            payloadSelected = {
+              phoneNumber: item.phoneNumber,
+              userId: item.userCeibroData?._id,
+              state: "new",
+            };
+          }
           updatedSelected.push(payloadSelected);
-          setInvitedUser((prev: any) => [...prev, item.phoneNumber]);
         }
       }
     });
@@ -157,7 +167,25 @@ const ForwardTask = ({
       })
     );
   };
-  console.log("inivetedUser", inivetedUser);
+
+  const checkSelection = () => {
+    let found = selected?.filter((selectUser) => {
+      const isMatchContact = assignedToState.some(
+        (user) =>
+          user.phoneNumber === selectUser.phoneNumber && selectUser.isCeiborUser
+      );
+      const isInvitedMember = invitedNumbers.some(
+        (member) => member.phoneNumber === selectUser.phoneNumber
+      );
+      return isMatchContact || isInvitedMember;
+    });
+    if (found.length === selected.length) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <Box>
       <Box
@@ -169,6 +197,7 @@ const ForwardTask = ({
         }}
       >
         <SearchBox
+          disabled={checkSelection()}
           searchBtnLabel="Forward"
           placeholder="Start typing name"
           handleSearchChange={handleSearchChange}
@@ -193,7 +222,7 @@ const ForwardTask = ({
           },
         }}
       >
-        {selected.length > 0 ? (
+        {!checkSelection() && selected.length > 0 ? (
           selected.map((selectedContact: Contact) => {
             return (
               <SelectedContactBox

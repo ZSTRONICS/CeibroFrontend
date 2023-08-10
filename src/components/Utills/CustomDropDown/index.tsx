@@ -208,6 +208,7 @@ function CustomDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
+          MenuProps={{autoFocus:true,disableAutoFocusItem:true}}
           // onChange={handleChange}
           endAdornment={
             selected && (
