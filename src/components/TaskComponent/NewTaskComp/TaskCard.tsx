@@ -61,6 +61,7 @@ function TaskCard(props: IProps) {
         }`,
       }}
       key={_id}
+      id={_id}
       onClick={() => handleClick(task)}
     >
       <CardHeader
