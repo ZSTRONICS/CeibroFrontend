@@ -40,49 +40,95 @@ export default function AddedDetails(props: IProps) {
                   eventType,
                   eventData,
                   commentData,
+                  invitedMembers,
                 } = event;
                 switch (eventType) {
-                  case TaskEventType.InvitedUser:
-                    const phoneNumbers =
-                      eventData?.map((data) => data.phoneNumber)?.join(", ") ||
-                      "";
-                    const hasMultiplePhoneNumbers =
-                      eventData && eventData?.length > 1;
-                    const phoneNumberText = hasMultiplePhoneNumbers
-                      ? `${phoneNumbers};`
-                      : phoneNumbers;
+                  // case TaskEventType.InvitedUser:
+                  //   const phoneNumbers =
+                  //     eventData?.map((data) => data.phoneNumber)?.join(", ") ||
+                  //     "";
+                  //   const hasMultiplePhoneNumbers =
+                  //     eventData && eventData?.length > 1;
+                  //   const phoneNumberText = hasMultiplePhoneNumbers
+                  //     ? `${phoneNumbers};`
+                  //     : phoneNumbers;
 
-                    return (
-                      <>
-                        <CustomStack gap={1.2} py={0.8}>
-                          <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
-                        </CustomStack>
+                  //   return (
+                  //     <>
+                  //       <CustomStack gap={1.2} py={0.8}>
+                  //         <Span sx={{ fontSize: "12px" }}>invited by</Span>
+                  //         <DocName>{`${initiator.firstName} ${
+                  //           initiator.surName
+                  //         } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                  //       </CustomStack>
 
-                        <CustomStack gap={1.2} py={0.8}>
-                          <DocName>{phoneNumberText}</DocName>
-                        </CustomStack>
-                        <Divider />
-                      </>
-                    );
+                  //       <CustomStack gap={1.2} py={0.8}>
+                  //         <DocName>{phoneNumberText}</DocName>
+                  //       </CustomStack>
+                  //       <Divider />
+                  //     </>
+                  //   );
+
                   case TaskEventType.ForwardTask:
+                    const userInfo =
+                      eventData && eventData.length > 0
+                        ? eventData
+                            .map((user) => {
+                              const { firstName, surName } = user;
+                              if (firstName && surName) {
+                                return `${firstName} ${surName}`;
+                              } else if (firstName) {
+                                return firstName;
+                              } else if (surName) {
+                                return surName;
+                              }
+                            })
+                            .join(", ")
+                        : "N/A";
+
+                    const invitedMembersLocal =
+                      invitedMembers && invitedMembers.length > 0
+                        ? invitedMembers
+                            .map((user) => {
+                              const { firstName, surName, phoneNumber } = user;
+                              if (firstName && surName) {
+                                return `${firstName} ${surName}`;
+                              } else if (firstName) {
+                                return firstName;
+                              } else if (surName) {
+                                return surName;
+                              } else {
+                                return phoneNumber;
+                              }
+                            })
+                            .join(", ")
+                        : "N/A";
                     return (
                       <React.Fragment key={event._id}>
-                        <CustomStack gap={1.2} py={0.8}>
-                          <DocName>{` ${momentdeDateFormatWithDay(
-                            createdAt
-                          )}`}</DocName>
-                          <Span
-                            sx={{ fontSize: "12px" }}
-                          >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
-                        </CustomStack>
-                        <CustomStack gap={1.2} py={0.8}>
-                          <DocName>{` ${momentdeDateFormatWithDay(
-                            createdAt
-                          )}`}</DocName>
-                        </CustomStack>
+                        {eventData && eventData.length > 0 && (
+                          <CustomStack gap={1.2} py={0.8}>
+                            <DocName>{` ${momentdeDateFormatWithDay(
+                              createdAt
+                            )}`}</DocName>
+                            <Span
+                              sx={{ fontSize: "12px" }}
+                            >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
+                            <DocName>{userInfo}</DocName>
+                          </CustomStack>
+                        )}
+                        {invitedMembers.length > 0 && (
+                          <>
+                            <CustomStack gap={1.2} py={0.8}>
+                              <Span sx={{ fontSize: "12px" }}>invited by</Span>
+                              <DocName>{`${initiator.firstName} ${
+                                initiator.surName
+                              } ${momentdeDateFormatWithDay(
+                                createdAt
+                              )}`}</DocName>
+                            </CustomStack>
+                            <DocName>{`${invitedMembersLocal}`}</DocName>
+                          </>
+                        )}
                         <Divider />
                       </React.Fragment>
                     );

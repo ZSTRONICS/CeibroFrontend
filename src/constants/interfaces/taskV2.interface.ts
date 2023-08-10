@@ -92,10 +92,16 @@ export interface TaskEvent {
   initiator: UserInfo;
   eventData?: EventData[];
   commentData?: CommentData;
+  invitedMembers: InvitedMember[]
   createdAt: string;
   updatedAt: string;
 }
 
+export interface InvitedMember {
+  phoneNumber: string;
+  firstName: string;
+  surName: string;
+}
 export interface EventData extends UserInfo {
   phoneNumber: string;
 }

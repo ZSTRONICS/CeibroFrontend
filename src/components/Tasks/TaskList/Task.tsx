@@ -91,7 +91,7 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       markTaskAsSeen(selectedTask._id);
     }
-  }, [selectedTask, userId]);
+  }, [selectedTask]);
 
   const handleTabClick = (type: string) => {
     setSelectedTab(type);

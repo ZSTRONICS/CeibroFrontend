@@ -38,6 +38,7 @@ export default function ContactBox({
 
   return (
     <Box
+      key={_id}
       sx={{
         display: "flex",
         gap: 1.4,

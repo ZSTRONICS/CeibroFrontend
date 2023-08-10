@@ -5,7 +5,7 @@ import { Contact } from "constants/interfaces";
 
 interface ContactProps {
   isDisabled: boolean;
-  contact: any;
+  contact: Contact;
   handleSelectedList: (contact: Contact, checked: boolean) => void;
 }
 
@@ -20,6 +20,7 @@ export default function SelectedContactBox({
     contactSurName = "",
     isCeiborUser = "",
     userCeibroData = {},
+    _id,
   } = contact;
 
   let imageSrc: string = "";
@@ -45,7 +46,7 @@ export default function SelectedContactBox({
           pointerEvents: `${isDisabled ? "none" : ""}`,
           opacity: `${isDisabled ? "0.5" : "1"}`,
         }}
-        key={contact.contactFullName + 1}
+        key={_id}
       >
         <Box
           sx={{
