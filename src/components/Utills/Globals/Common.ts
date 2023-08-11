@@ -137,17 +137,6 @@ const formatDropdownData = (
   }
 };
 
-
-/**
- * @param taskArray the array must have _id
- * @param itemId must have comparison id string
- * @return Functino will return  -1 if task not exist
- * **/
-export const findTaskIndex = (taskArray: any[], itemId: string): number => {
-  const taskIndex = taskArray.findIndex((task: any) => task._id === itemId);
-  return taskIndex;
-};
-
 export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
   if (taskIndex > -1) {
     const seenBy = taskArray[taskIndex].seenBy;
@@ -175,12 +164,6 @@ export function addEventToTask(task: any, eventData: any, taskIndex: number): vo
   }
 }
 
-export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], eventData: any): void {
-  const taskIndex = findTaskIndex(sourceArray, eventData._id);
-  sourceArray[taskIndex].events.push(eventData);
-  const task = sourceArray.splice(taskIndex, 1)[0];
-  targetArray.push(task);
-}
 
 /**
  * @param task taks object

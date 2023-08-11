@@ -155,7 +155,7 @@ export const useSocket = () => {
                     }
                     dispatch({
                         type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: { ...data, eventType: "TASK_FORWARDED", userId },
+                        payload: { task: data, eventType: "TASK_FORWARDED", userId },
                     });
                     break;
 

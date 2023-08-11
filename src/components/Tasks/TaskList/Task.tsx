@@ -327,23 +327,28 @@ const Task = () => {
           >
             {task &&
               filteredTask &&
-              filteredTask.map((task: any) => (
-                <TaskCard
-                  key={task._id}
-                  task={task}
-                  selectedTaskId={selectedTask?._id}
-                  handleClick={handleSelectedTask}
-                  menuOption={filteredMenuOptions(
-                    selectedTaskFilter,
-                    selectedTab
-                  )}
-                  disableMenu={
-                    selectedTab === "canceled"
-                      ? task.creator._id !== userId
-                      : false
-                  }
-                />
-              ))}
+              filteredTask.map((localTask: ITask) => {
+                if (typeof localTask === "undefined") {
+                  return <></>;
+                }
+                return (
+                  <TaskCard
+                    key={localTask._id}
+                    task={localTask}
+                    selectedTaskId={selectedTask?._id}
+                    handleClick={handleSelectedTask}
+                    menuOption={filteredMenuOptions(
+                      selectedTaskFilter,
+                      selectedTab
+                    )}
+                    disableMenu={
+                      selectedTab === "canceled"
+                        ? localTask && localTask.creator._id !== userId
+                        : false
+                    }
+                  />
+                );
+              })}
           </CustomStack>
         </Box>
       </Grid>
