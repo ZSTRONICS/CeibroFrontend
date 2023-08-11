@@ -84,12 +84,20 @@ const Task = () => {
   };
 
   useEffect(() => {
-    const taskNeedToBeSeen =
-      selectedTask !== null &&
-      !selectedTask.seenBy.includes(userId) &&
-      selectedTab === "new";
+    let taskNeedToBeSeen =
+      selectedTask !== null && !selectedTask.seenBy.includes(userId);
+
+    if (
+      selectedTask &&
+      taskNeedToBeSeen &&
+      selectedTaskFilter === "allTaskFromMe" &&
+      selectedTask.creatorState === "unread"
+    ) {
+      taskNeedToBeSeen = false;
+    }
+
     if (taskNeedToBeSeen) {
-      markTaskAsSeen(selectedTask._id);
+      selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
   }, [selectedTask]);
 
@@ -139,8 +147,12 @@ const Task = () => {
       ? allTaskToMe
       : allTaskHidden;
 
-  taskOngoingCount = ongoing.length;
-  taskDoneCount = done.length;
+  ongoing.forEach((task: ITask) =>
+    !task.seenBy.includes(userId) ? (taskOngoingCount += 1) : 0
+  );
+  done.forEach((task: ITask) =>
+    !task.seenBy.includes(userId) ? (taskDoneCount += 1) : 0
+  );
 
   useEffect(() => {
     setSelectedTask(null);
@@ -209,6 +221,21 @@ const Task = () => {
       : [];
   };
 
+  let newUnSeenCount = 0;
+  let fromMeUnReadCount = 0;
+  let canceledCount = 0;
+
+  allTaskToMe.new.forEach((task: ITask) =>
+    !task.seenBy.includes(userId) ? (newUnSeenCount += 1) : 0
+  );
+  allTaskFromMe.unread.forEach((task: ITask) =>
+    !task.seenBy.includes(userId) ? (fromMeUnReadCount += 1) : 0
+  );
+
+  allTaskHidden.canceled.forEach((task: ITask) =>
+    !task.seenBy.includes(userId) ? (canceledCount += 1) : 0
+  );
+
   const renderTabs = (type: string, activeTab: string) => {
     switch (type) {
       case "new":
@@ -216,7 +243,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="New"
-            notfiyCount={allTaskToMe.new.length}
+            notfiyCount={newUnSeenCount}
             bgColor="#CFECFF"
             active={activeTab === "new" ? true : false}
             callback={() => handleTabClick("new")}
@@ -227,7 +254,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Unread"
-            notfiyCount={allTaskFromMe.unread.length}
+            notfiyCount={fromMeUnReadCount}
             bgColor="#CFECFF"
             active={activeTab === "unread" ? true : false}
             callback={() => handleTabClick("unread")}
@@ -260,7 +287,7 @@ const Task = () => {
           <StyledChip
             key={type}
             label="Canceled"
-            notfiyCount={allTaskHidden.canceled.length}
+            notfiyCount={canceledCount}
             bgColor="#FFE7E7"
             active={activeTab === "canceled" ? true : false}
             callback={() => handleTabClick("canceled")}

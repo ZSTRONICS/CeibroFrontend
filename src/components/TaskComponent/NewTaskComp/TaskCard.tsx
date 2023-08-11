@@ -1,6 +1,4 @@
-import { Card, CardActions, CardContent, CardHeader } from "@mui/material";
-import assets from "assets";
-import { LoadingButton } from "components/Button";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import {
   BoldLableTag,
   CustomStack,
@@ -10,7 +8,6 @@ import {
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
 import { momentdeDateFormat } from "components/Utills/Globals";
-import { AttachmentIcon, ViewCommentsIco } from "components/material-ui/icons";
 import { Task } from "constants/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -56,6 +53,18 @@ function TaskCard(props: IProps) {
         minWidth: 280,
         marginTop: "10px",
         cursor: "pointer",
+        border: "1px solid #818181",
+        borderRadius: 1,
+        padding: "2px 9px",
+        borderTop: "none",
+        background:
+          !task.seenBy.includes(userId) &&
+          !(
+            selectedTaskFilter === "allTaskFromMe" &&
+            task.creatorState === "unread"
+          )
+            ? "#EBF5FB"
+            : "",
         boxShadow: `${
           isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
         }`,
@@ -86,11 +95,11 @@ function TaskCard(props: IProps) {
         title=""
         action={
           <CustomStack>
-            <assets.DoneAllIcon
+            {/* <assets.DoneAllIcon
               sx={{
                 color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
               }}
-            />
+            /> */}
             <GenericMenu
               options={menuOption}
               key={_id}
@@ -133,8 +142,8 @@ function TaskCard(props: IProps) {
           {description ?? "No description"}
         </SubLabelTag>
       </CardContent>
-      <CardActions sx={{ py: 0.4, background: "#F4F4F4" }}>
-        <CustomStack gap={1}>
+      {/*   <CardActions sx={{ py: 0.4, background: "#F4F4F4" }}>
+       <CustomStack gap={1}>
           <Span>{`Created ${taskCreated}`} </Span>
           <LoadingButton
             variant="text"
@@ -159,8 +168,8 @@ function TaskCard(props: IProps) {
           >
             File
           </LoadingButton>
-        </CustomStack>
-      </CardActions>
+        </CustomStack> 
+      </CardActions>*/}
     </Card>
   );
 }

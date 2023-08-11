@@ -1,4 +1,4 @@
-import { Chip, Badge } from "@mui/material";
+import { Badge, Chip } from "@mui/material";
 import { styled } from "@mui/system";
 import { MouseEventHandler } from "react"; // Import MouseEventHandler
 
@@ -58,7 +58,7 @@ const StyledChip = ({
       label={label}
       avatar={
         <Badge
-          showZero={true}
+          showZero={false}
           sx={{
             position: "absolute",
             "& .MuiBadge-badge": {

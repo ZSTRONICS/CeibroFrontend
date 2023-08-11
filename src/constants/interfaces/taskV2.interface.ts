@@ -47,6 +47,11 @@ export interface Task {
   events: TaskEvent[];
   userSubState: string;
   creatorState: string;
+  rootState: string;
+  isCreator: boolean;
+  isHiddenByMe: boolean;
+  isSeenByMe: boolean;
+  isAssignedToMe: boolean;
 }
 
 export interface AssignedUserState extends UserInfo {

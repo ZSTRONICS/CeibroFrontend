@@ -165,6 +165,15 @@ export function addEventToTask(task: any, eventData: any, taskIndex: number): vo
 }
 
 
+export function moveTaskOnTopByIndex(taskArray: any, taskIndex: number): void {
+  if (taskIndex > 0) {
+    const task = taskArray[taskIndex]
+    taskArray.splice(taskIndex, 1);
+    taskArray.unshift(task);
+  }
+}
+
+
 /**
  * @param task taks object
  * @param taskIndex 
