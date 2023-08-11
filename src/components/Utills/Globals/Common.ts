@@ -164,9 +164,8 @@ export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
  * **/
 export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    const existingEvents: [] = task.events;
-    console.log('existingEvents', existingEvents)
-    const isUniqueEvent = existingEvents.some((event: any) => String(event._id) === String(eventData._id));
+    console.log('existingEvents', task.events)
+    const isUniqueEvent = task.events.some((event: any) => String(event._id) === String(eventData._id));
     if (!isUniqueEvent) {
       task.events.push(eventData);
       task.seenBy = eventData.taskData.seenBy;
@@ -188,7 +187,7 @@ export function moveTaskToSpecifiedArr(sourceArray: any[], targetArray: any[], e
  * @param taskIndex 
  * @param eventData 
  * **/
-export function updateTak(task: any, taskIndex: any, eventData: any) {
+export function updateTaskOnCancelEvent(task: any, taskIndex: any, eventData: any) {
   if (taskIndex > -1) {
     addEventToTask(task, eventData, taskIndex);
     task.creatorState = "canceled";

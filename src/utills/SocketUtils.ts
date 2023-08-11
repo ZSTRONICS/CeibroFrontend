@@ -14,9 +14,9 @@ export const useSocket = () => {
     const userId = user && user._id;
     const dispatch = useDispatch();
 
-    function generateSecureUUID() {
-        return crypto.randomUUID();
-    }
+    // function generateSecureUUID() {
+    //     return crypto.randomUUID();
+    // }
     const history = useHistory();
 
     useEffect(() => {
@@ -32,17 +32,9 @@ export const useSocket = () => {
             console.log("doOnce return");
             return;
         }
-        setDoOnce(true);
+
         const tokens = localStorage.getItem("tokens") || "{}";
         const myToken = JSON.parse(tokens)?.access?.token;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        const sock = io(SERVER_URL, {
-            transports: ["websocket"],
-            auth: {
-                token: myToken,
-            }
-        });
-
 
         function sendHeartbeat() {
             if (sock !== null && sock.connected) {
@@ -50,6 +42,14 @@ export const useSocket = () => {
                 setTimeout(sendHeartbeat, 10000);
             }
         }
+
+        const sock = io(SERVER_URL, {
+            transports: ["websocket"],
+            auth: {
+                token: myToken,
+            }
+        });
+
         sock.on("connect", () => {
             if (socket.getSocket() !== null) {
                 return;
@@ -134,7 +134,7 @@ export const useSocket = () => {
                         return;
                     }
                     dispatch({
-                        type: TASK_CONFIG.PUSH_TASK_TO_STORE,
+                        type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
                         payload: data,
                     });
                     break;
