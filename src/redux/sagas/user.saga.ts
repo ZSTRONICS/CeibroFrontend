@@ -24,6 +24,12 @@ const getUserContacts = apiCall({
   method: 'get',
   path: payload => `users/contacts`,
 })
+const getRecentUserContacts = apiCall({
+  useV2Route: true,
+  type: USER_CONFIG.GET_RECENT_USER_CONTACTS,
+  method: 'get',
+  path: payload => `users/recent/contacts`,
+})
 
 const inviteUser = apiCall({
   useV2Route: false,
@@ -147,6 +153,7 @@ const getAvailableUsers = apiCall({
 
 function* userSaga() {
   yield takeLatest(USER_CONFIG.GET_USER_CONTACTS, getUserContacts)
+  yield takeLatest(USER_CONFIG.GET_RECENT_USER_CONTACTS,getRecentUserContacts)
   yield takeLatest(RESEND_INVITATION, resendInvites)
   yield takeLatest(REVOKE_INVITAION, revokeInvites)
   yield takeLatest(SEND_INVITATION, inviteUser)
@@ -162,6 +169,7 @@ function* userSaga() {
   yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount)
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers)
   yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers)
+
 
 }
 

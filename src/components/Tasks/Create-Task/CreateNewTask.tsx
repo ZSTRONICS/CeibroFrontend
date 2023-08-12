@@ -64,7 +64,7 @@ function CreateNewTask() {
     recentOptions: [],
   });
   const dispatch = useDispatch();
-  const { userAllContacts, loadingContacts } = useSelector(
+  const { userAllContacts, loadingContacts,recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -81,6 +81,7 @@ function CreateNewTask() {
     //   other: { userId: user._id },
     // };
     userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
   }, []);
 
   useEffect(() => {
@@ -306,6 +307,7 @@ function CreateNewTask() {
           name="assignedToState"
           label={"Assign to"}
           contacts={userAllContacts}
+          recentUserContact={recentUserContact}
           handleChangeValues={handleChangeValues}
         />
         <CustomDropDown

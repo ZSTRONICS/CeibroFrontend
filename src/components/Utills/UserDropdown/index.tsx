@@ -2,6 +2,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Checkbox,
+  Divider,
   FormControlLabel,
   ListSubheader,
   TextField,
@@ -33,7 +34,8 @@ interface Option {
 interface IProps {
   name: keyof CreateNewTaskFormType;
   label: string;
-  contacts: any[];
+  contacts: Contact[];
+  recentUserContact:Contact[]
   createCallback?: (type: string, label: string) => void;
   handleChangeValues: (
     value: ChangeValueType,
@@ -43,7 +45,7 @@ interface IProps {
 
 function UserDropDown(props: IProps) {
   const [isSelfAssign, setIsSelfAssign] = useState(false);
-  const { name, label, contacts, createCallback, handleChangeValues } = props;
+  const { name, label, contacts, createCallback, handleChangeValues,recentUserContact } = props;
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -372,6 +374,15 @@ function UserDropDown(props: IProps) {
             />
           </Box>
           <Box sx={{ margin: "8px 16px" }}>
+             {recentUserContact.length>0 && recentUserContact.map((contact:Contact)=>{
+          return <ContactBox
+              isDisabled={ user._id === contact._id}
+              contact={contact}
+              handleSelectedList={handleSelectedList}
+              selected={!!selected.find((selectUser) => selectUser._id === contact._id)}
+            />
+        })}
+        <Divider sx={{marginTop:"20px",marginBottom:"20px"}} />
             {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
               <Typography>{groupLetter}</Typography>,
               // Use map on the array to render the list items

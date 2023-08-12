@@ -1,4 +1,4 @@
-import { Box, Checkbox, FormControlLabel, Typography } from "@mui/material";
+import { Box, Checkbox, Divider, FormControlLabel, Typography } from "@mui/material";
 import ContactBox from "components/Utills/ContactBox";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
@@ -28,7 +28,7 @@ const ForwardTask = ({
   closeModal,
 }: IProps) => {
   const [isSelfAssign, setIsSelfAssign] = React.useState(false);
-  const { userAllContacts } = useSelector((state: RootState) => state.user);
+  const { userAllContacts,recentUserContact } = useSelector((state: RootState) => state.user);
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [filterData, setFilterData] = React.useState<{
@@ -58,6 +58,7 @@ const ForwardTask = ({
     };
     userAllContacts.length < 1 &&
       dispatch(userApiAction.getUserContacts(payload));
+    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
   }, []);
 
   useEffect(() => {
@@ -320,6 +321,15 @@ const ForwardTask = ({
           },
         }}
       >
+         {recentUserContact.length>0 && recentUserContact.map((contact:Contact)=>{
+          return <ContactBox
+              isDisabled={ user._id === contact._id}
+              contact={contact}
+              handleSelectedList={handleSelectedList}
+              selected={!!selected.find((selectUser) => selectUser._id === contact._id)}
+            />
+        })}
+        <Divider sx={{marginTop:"20px",marginBottom:"20px"}} />
         {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
           <Typography>{groupLetter}</Typography>,
           // Use map on the array to render the list items
