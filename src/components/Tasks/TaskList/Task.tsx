@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
-import { CustomStack } from "components/CustomTags";
 import { TaskCard } from "components/TaskComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
@@ -10,13 +9,18 @@ import { RootState } from "redux/reducers";
 import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
+import { VariableSizeList } from "react-window";
 import TaskDetails from "../TaskDetails";
 
 const Task = () => {
   const [value, setValue] = useState(0);
-  const [filteredTask, setFilteredTask] = useState<ITask[] | null>(null);
+  const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const { user } = useSelector((store: RootState) => store.auth);
+  const headerHeight = 168;
+  const [windowHeight, setWindowHeight] = useState<number>(
+    window.innerHeight - headerHeight
+  );
   const userId = user && String(user._id);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
@@ -296,6 +300,39 @@ const Task = () => {
     }
   };
 
+  const TaskRow = ({ index, style }: any) => {
+    const localTask = filteredTask[index];
+    return (
+      <div style={{ ...style }}>
+        <TaskCard
+          key={localTask._id}
+          task={localTask}
+          selectedTaskId={selectedTask?._id}
+          handleClick={handleSelectedTask}
+          menuOption={filteredMenuOptions(selectedTaskFilter, selectedTab)}
+          disableMenu={
+            selectedTab === "canceled"
+              ? localTask && localTask.creator._id !== userId
+              : false
+          }
+        />
+      </div>
+    );
+  };
+  let id = 0;
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight - headerHeight);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [headerHeight]);
+
   return (
     <Grid container>
       <Grid
@@ -341,42 +378,33 @@ const Task = () => {
         <Box
           className="custom-scrollbar"
           sx={{
-            height: "calc(100vh - 180px)",
-            overflow: "auto",
-            padding: " 0 1px",
+            height: "calc(100vh - 178px)",
+            // overflow: "auto",
+            // padding: " 0 1px",
             pl: 0.7,
+            pr: 0.7,
           }}
         >
-          <CustomStack
-            gap={1.4}
-            flexWrap="wrap"
-            sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
-          >
-            {task &&
-              filteredTask &&
-              filteredTask.map((localTask: ITask) => {
-                if (typeof localTask === "undefined") {
-                  return <></>;
+          <div style={{ position: "relative" }}>
+            {/* <CustomStack
+          // gap={1.4}
+          // flexWrap="wrap"
+          // sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
+          > */}
+            {task && filteredTask && (
+              <VariableSizeList
+                height={windowHeight}
+                itemCount={filteredTask.length}
+                itemSize={(index) =>
+                  filteredTask[index].description.length > 0 ? 141 : 122
                 }
-                return (
-                  <TaskCard
-                    key={localTask._id}
-                    task={localTask}
-                    selectedTaskId={selectedTask?._id}
-                    handleClick={handleSelectedTask}
-                    menuOption={filteredMenuOptions(
-                      selectedTaskFilter,
-                      selectedTab
-                    )}
-                    disableMenu={
-                      selectedTab === "canceled"
-                        ? localTask && localTask.creator._id !== userId
-                        : false
-                    }
-                  />
-                );
-              })}
-          </CustomStack>
+                width={"100%"}
+              >
+                {TaskRow}
+              </VariableSizeList>
+            )}
+          </div>
+          {/* /</CustomStack> */}
         </Box>
       </Grid>
       <Grid item md={9}>
