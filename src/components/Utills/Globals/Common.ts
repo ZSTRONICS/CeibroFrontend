@@ -1,6 +1,12 @@
 import moment from "moment-timezone";
 import { AxiosV2 } from "utills/axios";
 
+declare global {
+  var isSocketConnecting: boolean; // 👈️ disables type checking for property
+}
+global.isSocketConnecting = false;
+export { };
+
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
   let projectMembers: any[] = []

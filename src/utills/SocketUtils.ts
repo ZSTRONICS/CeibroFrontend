@@ -1,6 +1,6 @@
 import { DOCS_CONFIG, TASK_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "redux/reducers";
@@ -9,32 +9,35 @@ import { io } from "socket.io-client";
 import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
-    const [doOnce, setDoOnce] = useState(false);
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
     const userId = user && user._id;
     const dispatch = useDispatch();
-
-    // function generateSecureUUID() {
-    //     return crypto.randomUUID();
-    // }
     const history = useHistory();
 
     useEffect(() => {
-        if (socket.getSocket() !== null) {
-            return;
-        }
-
         if (!isLoggedIn) {
+            global.isSocketConnecting = false;
+            if (socket.getSocket() !== null) {
+                socket.getSocket()?.disconnect();
+                socket.setSocket(null);
+            }
             return;
         }
 
-        if (doOnce) {
-            console.log("doOnce return");
+        if (isLoggedIn && socket.getSocket() !== null) {
+            return;
+        }
+        if (global.isSocketConnecting) {
             return;
         }
 
+        global.isSocketConnecting = true;
         const tokens = localStorage.getItem("tokens") || "{}";
         const myToken = JSON.parse(tokens)?.access?.token;
+
+        function generateSecureUUID() {
+            return crypto.randomUUID();
+        }
 
         function sendHeartbeat() {
             if (sock !== null && sock.connected) {
@@ -43,26 +46,29 @@ export const useSocket = () => {
             }
         }
 
+        function sendSocketEventAck(uuid: string) {
+            if (sock !== null && sock.connected) {
+                sock.emit("eventAck", uuid);
+            }
+        }
+
+        let secureUUID = generateSecureUUID();
+        // secureUUID += "-" + sock.id;
+        console.log("secureUUID", secureUUID);
+
         const sock = io(SERVER_URL, {
             transports: ["websocket"],
             auth: {
                 token: myToken,
-            }
+            }, query: {
+                secureUUID: String(secureUUID),
+            },
         });
 
         sock.on("connect", () => {
             if (socket.getSocket() !== null) {
                 return;
             }
-            // let secureUUID = generateSecureUUID();
-            // secureUUID += "-" + sock.id;
-            // console.log("secureUUID", secureUUID);
-            // // generate secure UUID and store it in store
-            // // dispatch({
-            // //     type: "SET_SECURE_UUID",
-            // //     payload: secureUUID,
-            // // });
-            // localStorage.setItem('secureUUID', secureUUID);
             console.log("Connected to server");
             socket.setUserId(userId);
             socket.setSocket(sock);
@@ -75,6 +81,7 @@ export const useSocket = () => {
 
         sock.on("disconnect", () => {
             console.log("Disconnected from server");
+            global.isSocketConnecting = false;
             socket.setSocket(null);
         });
 
@@ -103,11 +110,13 @@ export const useSocket = () => {
                             sock.connect();
                         } else {
                             alert("Session Expired");
+                            global.isSocketConnecting = false;
                             history.push("/login");
                             window.location.reload();
                         }
                     })
                     .catch((err) => {
+                        global.isSocketConnecting = false;
                         history.push("/login");
                         alert("Session Expired");
                         window.location.reload();
@@ -122,6 +131,9 @@ export const useSocket = () => {
             console.log("eventType--->", dataRcvd);
             const eventType = dataRcvd.eventType;
             const data = dataRcvd.data;
+            if (dataRcvd.uuid !== undefined) {
+                sendSocketEventAck(dataRcvd.uuid);
+            }
             switch (eventType) {
                 case TASK_CONFIG.TOPIC_CREATED:
                     dispatch({
@@ -185,5 +197,4 @@ export const useSocket = () => {
 
     }, [isLoggedIn]);
     // More socket event handling...
-
 };
