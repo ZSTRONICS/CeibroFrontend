@@ -1,19 +1,22 @@
-import React, { useState } from "react";
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory, useLocation } from "react-router-dom";
+import { selectedTaskFilterType } from "redux/type";
+import { openFormInNewWindow } from "utills/common";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
 import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
-import { taskActions } from "redux/action";
-import { openFormInNewWindow } from "utills/common";
 
-function Sidebar(props:any) {
-
+function Sidebar(props: any) {
+  const history = useHistory();
+  const location = useLocation()
   const classes = useStyles();
   const dispatch = useDispatch();
+  const [selectedChildTab, setSelectedChildTab] = useState<selectedTaskFilterType>();
   const selectedTab = useSelector(
     (store: RootState) => store.navigation.selectedTab
   );
@@ -22,14 +25,18 @@ function Sidebar(props:any) {
   );
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
+useEffect(()=>{
+  const subtask:selectedTaskFilterType = location.pathname.split('/')[2] as selectedTaskFilterType
+  subtask&&setSelectedChildTab(subtask)
+},[location])
 
   const handleRouteClick = (config: SingleConfig) => {
-    props.onClose()
+    props.onClose();
     if (config.key === "newTask") {
       openFormInNewWindow("/create-new-task", "Create New Task");
-
     } else {
-      dispatch(taskActions.selectedTaskFilter(config.key));
+       setSelectedChildTab(config.key);
+         history.push(`/tasks/${config.key}`);
     }
   };
 
@@ -46,7 +53,7 @@ function Sidebar(props:any) {
               <div
                 key={config.title}
                 className={`${classes.menue} ${
-                  selectedTaskFilter.includes(config.key) ? classes.active : ""
+                  selectedChildTab === config.key ? classes.active : ""
                 }`}
                 onClick={() => handleRouteClick(config)}
               >

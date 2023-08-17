@@ -40,9 +40,9 @@ interface TaskReducerInt {
 
 const intialStatue: TaskReducerInt = {
   selectedTaskFilter: "allTaskFromMe",
-  allTaskToMe: { done: [], new: [], ongoing: [] },
-  allTaskFromMe: { done: [], ongoing: [], unread: [] },
-  allTaskHidden: { canceled: [], done: [], ongoing: [] },
+  allTaskToMe: { new: [], ongoing: [],done: [] },
+  allTaskFromMe: {  unread: [],ongoing: [], done: [] },
+  allTaskHidden: { ongoing: [], done: [], canceled: [] },
   loadingAllTaskToMe: false,
   loadingAllTaskfromMe: false,
   loadingHiddenTask: false,

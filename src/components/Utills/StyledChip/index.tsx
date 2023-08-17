@@ -4,7 +4,7 @@ import { MouseEventHandler } from "react"; // Import MouseEventHandler
 
 interface StyledChipProps {
   label: string;
-  notfiyCount: number | string;
+  notifyCount: number | string;
   active?: boolean;
   bgColor: string;
   callback: MouseEventHandler<HTMLDivElement>;
@@ -19,7 +19,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 const StyledChip = ({
   label,
-  notfiyCount,
+  notifyCount,
   active,
   bgColor,
   callback,
@@ -68,7 +68,7 @@ const StyledChip = ({
               top: "1px",
             },
           }}
-          badgeContent={notfiyCount}
+          badgeContent={notifyCount}
         />
       }
       onClick={callback}

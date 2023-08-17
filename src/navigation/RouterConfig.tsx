@@ -1,33 +1,33 @@
-import { Suspense } from "react";
-import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
 import {
-  Login,
-  Connections,
-  MockTaskApis,
-  ForgetPassword,
-  ResetPassword,
-  Register,
-  Projects,
-  ProjectLocations,
-  Profile,
-  Tasks,
   AdminMain,
-  RegisterNumberForm,
-  RegisterConfirmationForm,
-  TermsAndConditions,
-  RegisterAddProfilePic,
-  ForgetConfirmation,
+  Connections,
   DrawingDetails,
+  ForgetConfirmation,
+  ForgetPassword,
+  Login,
+  MockTaskApis,
+  Profile,
+  ProjectLocations,
+  Projects,
+  Register,
+  RegisterAddProfilePic,
+  RegisterConfirmationForm,
+  RegisterNumberForm,
+  ResetPassword,
+  Tasks,
+  TermsAndConditions,
 } from "components";
+import { Suspense } from "react";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
 
-import { createBrowserHistory } from "history";
-import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import Comment from "components/Tasks/Comment";
 import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 import ForwardTask from "components/Tasks/Forward-Task";
-import Comment from "components/Tasks/Comment";
+import { createBrowserHistory } from "history";
+import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 export const appHistory = createBrowserHistory();
 
 interface Configs {}
@@ -75,7 +75,7 @@ const RouterConfig: React.FC<Configs> = () => {
             />
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/tasks" component={Tasks} />
+              <PrivateRoute path="/tasks/:subtask?/:filterkey?/:taskid?" component={Tasks} />
               <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact

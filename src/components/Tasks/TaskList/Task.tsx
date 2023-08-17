@@ -9,10 +9,20 @@ import { RootState } from "redux/reducers";
 import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
+import { RouteComponentProps } from "react-router-dom";
 import { VariableSizeList } from "react-window";
+import { selectedTaskFilterType } from "redux/type";
 import TaskDetails from "../TaskDetails";
 
-const Task = () => {
+interface RouteParams {
+  subtask: selectedTaskFilterType;
+  filterkey: string;
+  taskid: string;
+}
+
+interface IProps extends RouteComponentProps<RouteParams> {}
+const Task = (props: IProps) => {
+  const { subtask, filterkey, taskid } = props.match.params;
   const [value, setValue] = useState(0);
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
@@ -29,7 +39,6 @@ const Task = () => {
   const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
   const {
-    selectedTaskFilter,
     allTaskToMe,
     allTaskFromMe,
     allTaskHidden,
@@ -37,47 +46,69 @@ const Task = () => {
     loadingAllTaskfromMe,
   } = task;
   const [selectedTab, setSelectedTab] = useState("");
-  useEffect(() => {
-    const key = Object.keys(task[selectedTaskFilter])[0];
-    if (!isRenderEffect.current) {
-      if (allTaskToMe.new.length === 0) {
-        dispatch(taskActions.getAllTaskToMe());
-      }
-      if (allTaskFromMe.unread.length === 0) {
-        dispatch(taskActions.getAllTaskFromMe());
-      }
-      if (
-        allTaskHidden.ongoing.length === 0 ||
-        allTaskHidden.done.length === 0 ||
-        allTaskHidden.canceled.length === 0
-      ) {
-        dispatch(taskActions.getAllTaskHidden());
-      }
+
+  const getParticukarSubtask = (subtask: selectedTaskFilterType) => {
+    if (subtask === 'allTaskToMe' && !allTaskToMe.new.length)
+      dispatch(taskActions.getAllTaskToMe());
+    else if (subtask === 'allTaskFromMe' && !allTaskFromMe.unread.length)
+      dispatch(taskActions.getAllTaskFromMe());
+    else if (
+      subtask === 'allTaskHidden' &&
+      (!allTaskHidden.ongoing.length ||
+        !allTaskHidden.done.length ||
+        !allTaskHidden.canceled.length)
+    ){
+      dispatch(taskActions.getAllTaskHidden());
     }
-    setSelectedTab(key);
-    // setSelectedTask(task[selectedTaskFilter][key][0]);
-    setFilteredTask(searchInData(task[selectedTaskFilter][key], "", "taskUID"));
-    return () => {
-      isRenderEffect.current = true;
-    };
-  }, []);
+  };
 
   useEffect(() => {
-    setFilteredTask(
-      searchInData(task[selectedTaskFilter][selectedTab], "", "taskUID")
-    );
+    if (subtask) {
+      getParticukarSubtask(subtask);
+      const key = Object.keys(task[subtask])[0];
+      setFilteredTask(searchInData(task[subtask][key], "", "taskUID"));
+    }
+    if (filterkey) {
+      console.log(filterkey, "filterksafkfsjdk");
+
+      setSelectedTab(filterkey);
+    } else {
+      if (subtask) {
+        const key = Object.keys(task[subtask])[0];
+        props.history.push(`/tasks/${subtask}/${key}`);
+      }
+    }
+    if (taskid && taskid !== selectedTask?._id) {
+      console.log(filteredTask, "task ID");
+      if (filteredTask && filteredTask.length > 0) {
+        setSelectedTask(
+          filteredTask.find((taskItem) => taskItem._id === taskid)!
+        );
+      }
+    }
+  }, [subtask,filterkey,taskid]);
+
+  useEffect(() => {
+    subtask &&
+      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
   }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
-    const key = Object.keys(task[selectedTaskFilter])[0];
-    handleTabClick(key);
-  }, [selectedTaskFilter]);
-
-  useEffect(() => {
-    if (selectedTab) {
-      handleTabClick(selectedTab);
+    if (subtask) {
+      const keys = Object.keys(task[subtask]);
+      if (!filterkey && subtask) {
+        props.history.replace(`/tasks/${subtask}/${keys[0]}`);
+        //
+      }
+      handleTabClick(keys[0]);
     }
-  }, [selectedTab]);
+  }, [subtask]);
+
+  // useEffect(() => {
+  //   if (selectedTab) {
+  //     handleTabClick(selectedTab);
+  //   }
+  // }, [selectedTab]);
 
   const markTaskAsSeen = (taskId: string) => {
     dispatch(
@@ -94,7 +125,7 @@ const Task = () => {
     if (
       selectedTask &&
       taskNeedToBeSeen &&
-      selectedTaskFilter === "allTaskFromMe" &&
+      subtask === "allTaskFromMe" &&
       selectedTask.creatorState === "unread"
     ) {
       taskNeedToBeSeen = false;
@@ -106,12 +137,9 @@ const Task = () => {
   }, [selectedTask]);
 
   const handleTabClick = (type: string) => {
-    setSelectedTab(type);
     setSelectedTask(null);
-    // setSelectedTask(task[selectedTaskFilter][type][0]);
-    setFilteredTask(
-      searchInData(task[selectedTaskFilter][type], "", "taskUID")
-    );
+    setFilteredTask(searchInData(task[subtask][type], "", "taskUID"));
+    props.history.push(`/tasks/${subtask}/${type}`);
   };
 
   const handleSelectedTask = (task: ITask) => {
@@ -121,7 +149,7 @@ const Task = () => {
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
     const filterData = searchInData(
-      task[selectedTaskFilter][selectedTab],
+      task[subtask][selectedTab],
       searchTxt,
       "taskUID"
     );
@@ -144,10 +172,9 @@ const Task = () => {
   let taskDoneCount = 0;
 
   const { ongoing, done } =
-    // selectedTaskFilter === "allTaskFromMe" ? allTaskFromMe : allTaskToMe;
-    selectedTaskFilter === "allTaskFromMe"
+    subtask === "allTaskFromMe"
       ? allTaskFromMe
-      : selectedTaskFilter === "allTaskToMe"
+      : subtask === "allTaskToMe"
       ? allTaskToMe
       : allTaskHidden;
 
@@ -241,63 +268,111 @@ const Task = () => {
   );
 
   const renderTabs = (type: string, activeTab: string) => {
-    switch (type) {
-      case "new":
-        return (
-          <StyledChip
-            key={type}
-            label="New"
-            notfiyCount={newUnSeenCount}
-            bgColor="#CFECFF"
-            active={activeTab === "new" ? true : false}
-            callback={() => handleTabClick("new")}
-          />
-        );
-      case "unread":
-        return (
-          <StyledChip
-            key={type}
-            label="Unread"
-            notfiyCount={fromMeUnReadCount}
-            bgColor="#CFECFF"
-            active={activeTab === "unread" ? true : false}
-            callback={() => handleTabClick("unread")}
-          />
-        );
-      case "ongoing":
-        return (
-          <StyledChip
-            key={type}
-            label="Ongoing"
-            notfiyCount={taskOngoingCount}
-            bgColor="#F1B740"
-            active={activeTab === "ongoing" ? true : false}
-            callback={() => handleTabClick("ongoing")}
-          />
-        );
-      case "done":
-        return (
-          <StyledChip
-            key={type}
-            label="Done"
-            notfiyCount={taskDoneCount}
-            bgColor="#55BCB3"
-            active={activeTab === "done" ? true : false}
-            callback={() => handleTabClick("done")}
-          />
-        );
-      case "canceled":
-        return (
-          <StyledChip
-            key={type}
-            label="Canceled"
-            notfiyCount={canceledCount}
-            bgColor="#FFE7E7"
-            active={activeTab === "canceled" ? true : false}
-            callback={() => handleTabClick("canceled")}
-          />
-        );
+    console.log(activeTab, "activeTab");
+    const tabConfig = [
+      {
+        type: "new",
+        label: "New",
+        notifyCount: newUnSeenCount,
+        bgColor: "#CFECFF",
+      },
+      {
+        type: "unread",
+        label: "Unread",
+        notifyCount: fromMeUnReadCount,
+        bgColor: "#CFECFF",
+      },
+      {
+        type: "ongoing",
+        label: "Ongoing",
+        notifyCount: taskOngoingCount,
+        bgColor: "#F1B740",
+      },
+      {
+        type: "done",
+        label: "Done",
+        notifyCount: taskDoneCount,
+        bgColor: "#55BCB3",
+      },
+      {
+        type: "canceled",
+        label: "Canceled",
+        notifyCount: canceledCount,
+        bgColor: "#FFE7E7",
+      },
+    ];
+    const tab = tabConfig.find((tab) => tab.type === type);
+
+    if (!tab) {
+      return null;
     }
+    return (
+      <StyledChip
+        key={tab.type}
+        label={tab.label}
+        notifyCount={tab.notifyCount}
+        bgColor={tab.bgColor}
+        active={activeTab === tab.type}
+        callback={() => handleTabClick(tab.type)}
+      />
+    );
+    // switch (type) {
+    //   case "new":
+    //     return (
+    //       <StyledChip
+    //         key={type}
+    //         label="New"
+    //         notifyCount={newUnSeenCount}
+    //         bgColor="#CFECFF"
+    //         active={activeTab === "new" ? true : false}
+    //         callback={() => handleTabClick("new")}
+    //       />
+    //     );
+    //   case "unread":
+    //     return (
+    //       <StyledChip
+    //         key={type}
+    //         label="Unread"
+    //         notifyCount={fromMeUnReadCount}
+    //         bgColor="#CFECFF"
+    //         active={activeTab === "unread" ? true : false}
+    //         callback={() => handleTabClick("unread")}
+    //       />
+    //     );
+    //   case "ongoing":
+    //     return (
+    //       <StyledChip
+    //         key={type}
+    //         label="Ongoing"
+    //         notifyCount={taskOngoingCount}
+    //         bgColor="#F1B740"
+    //         active={activeTab === "ongoing" ? true : false}
+    //         callback={() => handleTabClick("ongoing")}
+    //       />
+    //     );
+    //   case "done":
+    //     return (
+    //       <StyledChip
+    //         key={type}
+    //         label="Done"
+    //         notifyCount={taskDoneCount}
+    //         bgColor="#55BCB3"
+    //         active={activeTab === "done" ? true : false}
+    //         callback={() => handleTabClick("done")}
+    //       />
+    //     );
+    //   case "canceled":
+    //     return (
+    //       <StyledChip
+    //         key={type}
+    //         label="Canceled"
+    //         notifyCount={canceledCount}
+    //         bgColor="#FFE7E7"
+    //         active={activeTab === "canceled" ? true : false}
+    //         callback={() => handleTabClick("canceled")}
+    //       />
+    //     );
+    // }
   };
 
   const TaskRow = ({ index, style }: any) => {
@@ -309,7 +384,7 @@ const Task = () => {
           task={localTask}
           selectedTaskId={selectedTask?._id}
           handleClick={handleSelectedTask}
-          menuOption={filteredMenuOptions(selectedTaskFilter, selectedTab)}
+          menuOption={filteredMenuOptions(subtask, selectedTab)}
           disableMenu={
             selectedTab === "canceled"
               ? localTask && localTask.creator._id !== userId
@@ -353,8 +428,8 @@ const Task = () => {
             }}
           >
             {task &&
-              selectedTaskFilter &&
-              Object.keys(task[selectedTaskFilter]).map((key: string) => {
+              subtask &&
+              Object.keys(task[subtask]).map((key: string) => {
                 return renderTabs(key, selectedTab);
               })}
           </Box>
