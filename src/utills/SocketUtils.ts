@@ -1,6 +1,6 @@
 import { DOCS_CONFIG, TASK_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { RootState } from "redux/reducers";
@@ -10,16 +10,21 @@ import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+    const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
 
     useEffect(() => {
         if (!isLoggedIn) {
+            console.log("not logged in")
             global.isSocketConnecting = false;
             if (socket.getSocket() !== null) {
-                socket.getSocket()?.disconnect();
-                socket.setSocket(null);
+                console.log("socket found")
+                setShouldSendHeartbeat(false);
+                // socket.getSocket()?.disconnect();
+                socket.getSocket().emit("logout");
+                // socket.setSocket(null);
             }
             return;
         }
@@ -40,14 +45,14 @@ export const useSocket = () => {
         }
 
         function sendHeartbeat() {
-            if (sock !== null && sock.connected) {
+            if (sock !== null && sock.connected && shouldSendHeartbeat) {
                 sock.emit("heartbeat");
                 setTimeout(sendHeartbeat, 10000);
             }
         }
 
         function sendSocketEventAck(uuid: string) {
-            if (sock !== null && sock.connected) {
+            if (sock !== null && sock.connected && shouldSendHeartbeat) {
                 sock.emit("eventAck", uuid);
             }
         }
@@ -82,6 +87,11 @@ export const useSocket = () => {
         sock.on("disconnect", () => {
             console.log("Disconnected from server");
             global.isSocketConnecting = false;
+            try {
+                sock.disconnect();
+            } catch (e) {
+                console.log("error in disconnecting socket", e);
+            }
             socket.setSocket(null);
         });
 

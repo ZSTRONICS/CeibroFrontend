@@ -28,7 +28,6 @@ import ConnectionIcon from "components/material-ui/icons/connections/ConnectionI
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import storage from "redux-persist/lib/storage";
 import { purgeStoreStates } from "redux/store";
-import { socket } from "services/socket.services";
 
 const UserMenu = () => {
   const history = useHistory();
@@ -50,13 +49,13 @@ const UserMenu = () => {
     setAnchorElUser(null);
   };
 
-  const handleUserMenu = (routeName:string) => {
-  history.push(routeName)
+  const handleUserMenu = (routeName: string) => {
+    history.push(routeName)
     setAnchorElUser(null);
   };
 
   const handleLogout = () => {
-    socket.logoutSocketsIO();
+    // socket.logoutSocketsIO();
     handleCloseUserMenu();
     dispatch(logoutUser());
     purgeStoreStates();
@@ -67,41 +66,41 @@ const UserMenu = () => {
   return (
     <>
       <Box sx={{ flexGrow: 0 }}>
-          <Button
+        <Button
           disableRipple
-            onClick={handleOpenUserMenu}
-            aria-controls={anchorElUser ? "menu-appbar" : undefined}
-            aria-expanded={anchorElUser? "true" : undefined}
-            variant="text"
-            sx={{ textTransform: "unset", color:'#131516' }}
-          >
-            <CustomStack gap={1.8}>
-              <NameAvatar
-                firstname={user?.firstName}
-                surname={user?.surName}
-                url={user?.profilePic}
-                variant="rounded"
-              />
-              <Stack
-                direction="column"
-                justifyContent="flex-end"
-                sx={{
-                  "@media (max-width:460px)": {
-                    display: "none",
-                  },
-                }}
-              >
-                <AddStatusTag sx={{ color: "#131516" }}>
-                  {user?.firstName}
-                </AddStatusTag>
-                <AddStatusTag sx={{ color: "#131516" }}>
-                  {user?.surName}{" "}
-                </AddStatusTag>
-              </Stack>
-              <assets.KeyboardArrowDownIcon />
-            </CustomStack>
-          </Button>
-      {anchorElUser&&  <Menu
+          onClick={handleOpenUserMenu}
+          aria-controls={anchorElUser ? "menu-appbar" : undefined}
+          aria-expanded={anchorElUser ? "true" : undefined}
+          variant="text"
+          sx={{ textTransform: "unset", color: '#131516' }}
+        >
+          <CustomStack gap={1.8}>
+            <NameAvatar
+              firstname={user?.firstName}
+              surname={user?.surName}
+              url={user?.profilePic}
+              variant="rounded"
+            />
+            <Stack
+              direction="column"
+              justifyContent="flex-end"
+              sx={{
+                "@media (max-width:460px)": {
+                  display: "none",
+                },
+              }}
+            >
+              <AddStatusTag sx={{ color: "#131516" }}>
+                {user?.firstName}
+              </AddStatusTag>
+              <AddStatusTag sx={{ color: "#131516" }}>
+                {user?.surName}{" "}
+              </AddStatusTag>
+            </Stack>
+            <assets.KeyboardArrowDownIcon />
+          </CustomStack>
+        </Button>
+        {anchorElUser && <Menu
           sx={{ mt: "45px" }}
           id="menu-appbar"
           anchorEl={anchorElUser}
@@ -119,12 +118,12 @@ const UserMenu = () => {
         >
           <MenuItem
             disableRipple
-            onClick={()=>handleUserMenu("/profile")}
+            onClick={() => handleUserMenu("/profile")}
             divider
             sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
-                gap:'16px'
+                gap: '16px'
               },
             }}
           >
@@ -135,11 +134,11 @@ const UserMenu = () => {
           <MenuItem
             disableRipple
             divider
-            onClick={()=>handleUserMenu("/connections")}
+            onClick={() => handleUserMenu("/connections")}
             sx={{
               "&.MuiMenuItem-root": {
                 padding: "10px 20px",
-                gap:'15px'
+                gap: '15px'
               },
             }}
           >
