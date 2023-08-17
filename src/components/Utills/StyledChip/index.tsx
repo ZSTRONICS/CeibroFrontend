@@ -7,6 +7,7 @@ interface StyledChipProps {
   notifyCount: number | string;
   active?: boolean;
   bgColor: string;
+  isDisabled: boolean;
   callback: MouseEventHandler<HTMLDivElement>;
 }
 
@@ -23,9 +24,11 @@ const StyledChip = ({
   active,
   bgColor,
   callback,
+  isDisabled,
 }: StyledChipProps) => {
   return (
     <Chip
+      disabled={isDisabled}
       sx={{
         height: "24px",
         width: "80px",
@@ -34,7 +37,7 @@ const StyledChip = ({
         borderWidth: "1px",
         borderColor: bgColor,
         borderStyle: "solid",
-        backgroundColor: `${active ? bgColor : "white"}`,
+        backgroundColor: `${!isDisabled && active ? bgColor : "white"}`,
         fontFamily: "Inter",
         fontSize: "10px",
         fontWeight: 500,

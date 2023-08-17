@@ -92,21 +92,18 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
     if (filesToUpload.length > 0) {
       handleFileUpload(filesToUpload, formdata);
     }
-    if (title === "Task Comment") {
-      dispatch(
-        taskActions.taskEventsWithFiles({
-          other: {
-            eventName: "comment",
-            taskId: taskId,
-            hasFiles: filesToUpload.length > 0 ? true : false,
-          },
-          body: formdata,
-          success: (res) => {
-            closeModal();
-          },
-        })
-      );
-    }
+    const taskEvent = {
+      other: {
+        eventName: title === "Task Comment" ? "comment" : "doneTask",
+        taskId: taskId,
+        hasFiles: filesToUpload.length > 0,
+      },
+      body: formdata,
+      success: (res: any) => {
+        closeModal();
+      },
+    };
+    dispatch(taskActions.taskEventsWithFiles(taskEvent));
   };
 
   return (

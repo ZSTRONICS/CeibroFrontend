@@ -1,6 +1,7 @@
 class WebSocketService {
   public static socket: any
   userId: string = ""
+  public static selectedProjId: string
   public constructor() {
     WebSocketService.socket = null;
   }
@@ -23,6 +24,14 @@ class WebSocketService {
 
   public setUserId(userId: string) {
     this.userId = userId;
+  }
+
+  public setSelectedProjId(projectId: string) {
+    WebSocketService.selectedProjId = projectId
+  }
+
+  public getSelectedProjId() {
+    return WebSocketService.selectedProjId
   }
 
   public logoutSocketsIO() {
