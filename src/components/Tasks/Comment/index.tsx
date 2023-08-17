@@ -56,7 +56,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
     }
   };
 
-  const handleFileUpload = (files: any, formData: FormData) => {
+  const handleFileUpload = (files: any, formData: FormData | any) => {
     try {
       if (!files || files.length === 0) {
         console.error("No files to upload.");
@@ -110,7 +110,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
   };
 
   return (
-    <Box sx={{ width: "100%",padding:'8px' }}>
+    <Box sx={{ width: "100%", padding: "8px" }}>
       {showHeader !== true && <TaskHeader title={title} />}
       <Box sx={{ padding: "4px", width: "100%" }}>
         <TextField

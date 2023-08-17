@@ -386,9 +386,8 @@ const TaskReducer = (
           ) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
             if (taskIndex !== -1) {
-              const taskToMove = state.allTaskToMe.ongoing[taskIndex];
-              taskToMove.hiddenBy = eventData.hiddenBy
-              state.allTaskHidden.ongoing.unshift(taskToMove);
+              state.allTaskToMe.ongoing[taskIndex].hiddenBy = eventData.hiddenBy
+              state.allTaskHidden.ongoing.unshift(state.allTaskToMe.ongoing[taskIndex]);
               state.allTaskToMe.ongoing.splice(taskIndex, 1)
               console.log("state.allTaskToMe.ongoing => state.allTaskHidden.ongoing", state.allTaskHidden.ongoing[0]._id);
             }
@@ -401,9 +400,8 @@ const TaskReducer = (
           ) {
             const taskIndex = state.allTaskToMe.done.findIndex(task => task._id === eventData.taskId);
             if (taskIndex !== -1) {
-              const taskToMove = state.allTaskToMe.done[taskIndex];
-              taskToMove.hiddenBy.push(...eventData.hiddenBy)
-              state.allTaskHidden.done.unshift(taskToMove);
+              state.allTaskToMe.done[taskIndex].hiddenBy.push(...eventData.hiddenBy)
+              state.allTaskHidden.done.unshift(state.allTaskToMe.done[taskIndex]);
               state.allTaskToMe.done.splice(taskIndex, 1);
               console.log("hidden state.allTaskToMe.done => state.allTaskHidden.done", state.allTaskHidden.done[0]._id);
             }
@@ -513,12 +511,14 @@ const TaskReducer = (
                 // state.allTaskToMe.new[taskIndex] = forwardedTask;
                 state.allTaskToMe.new[toMeNewIndex].events = forwardedTask.events;
                 state.allTaskToMe.new[toMeNewIndex].invitedNumbers = forwardedTask.invitedNumbers;
+                state.allTaskToMe.new[toMeNewIndex].assignedToState = forwardedTask.assignedToState;
                 state.allTaskToMe.new[toMeNewIndex].updatedAt = forwardedTask.updatedAt;
                 moveTaskOnTopByIndex(state.allTaskToMe.new, toMeNewIndex);
                 console.log("TASK_FORWARDED update allTaskToMe.new", state.allTaskToMe.new[toMeNewIndex]._id);
               } else if (toMeOngoingIndex > -1) {
                 // state.allTaskToMe.ongoing[checktaskToMeInOngoing] = forwardedTask;
                 state.allTaskToMe.ongoing[toMeOngoingIndex].events = forwardedTask.events;
+                state.allTaskToMe.ongoing[toMeOngoingIndex].assignedToState = forwardedTask.assignedToState;
                 state.allTaskToMe.ongoing[toMeOngoingIndex].invitedNumbers = forwardedTask.invitedNumbers;
                 state.allTaskToMe.ongoing[toMeOngoingIndex].updatedAt = forwardedTask.updatedAt;
                 moveTaskOnTopByIndex(state.allTaskToMe.ongoing, toMeOngoingIndex);
@@ -537,6 +537,7 @@ const TaskReducer = (
             const fromMeUnreadIndex = state.allTaskFromMe.unread.findIndex((task: any) => task._id === forwardedTask._id);
             if (fromMeUnreadIndex > -1) {
               state.allTaskFromMe.unread[fromMeUnreadIndex].events = forwardedTask.events;
+              state.allTaskFromMe.unread[fromMeUnreadIndex].assignedToState = forwardedTask.assignedToState;
               state.allTaskFromMe.unread[fromMeUnreadIndex].invitedNumbers = forwardedTask.invitedNumbers;
               state.allTaskFromMe.unread[fromMeUnreadIndex].updatedAt = forwardedTask.updatedAt;
               moveTaskOnTopByIndex(state.allTaskFromMe.unread, fromMeUnreadIndex);
@@ -545,6 +546,7 @@ const TaskReducer = (
               const fromMeOngoingIndex = state.allTaskFromMe.ongoing.findIndex((task: any) => task._id === forwardedTask._id);
               if (fromMeOngoingIndex > -1) {
                 state.allTaskFromMe.ongoing[fromMeOngoingIndex].events = forwardedTask.events;
+                state.allTaskFromMe.ongoing[fromMeOngoingIndex].assignedToState = forwardedTask.assignedToState;
                 state.allTaskFromMe.ongoing[fromMeOngoingIndex].invitedNumbers = forwardedTask.invitedNumbers;
                 state.allTaskFromMe.ongoing[fromMeOngoingIndex].updatedAt = forwardedTask.updatedAt;
                 moveTaskOnTopByIndex(state.allTaskFromMe.ongoing, fromMeOngoingIndex);

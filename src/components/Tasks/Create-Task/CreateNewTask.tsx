@@ -35,6 +35,7 @@ import {
 import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { IS_IMAGE } from "components/Utills/Globals";
 
 var initialValues = {
   dueDate: "",
@@ -64,7 +65,7 @@ function CreateNewTask() {
     recentOptions: [],
   });
   const dispatch = useDispatch();
-  const { userAllContacts, loadingContacts,recentUserContact } = useSelector(
+  const { userAllContacts, loadingContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -160,7 +161,7 @@ function CreateNewTask() {
           JSON.stringify({
             fileName: file.name,
             orignalFileName: file.name,
-            tag: "file",
+            tag: IS_IMAGE(file.name) ? "image" : "file",
           })
         );
       });

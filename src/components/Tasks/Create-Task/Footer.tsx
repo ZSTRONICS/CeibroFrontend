@@ -1,11 +1,15 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import CustomButton from "components/Utills/CustomButton";
-import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
-import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
-import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import AttachFileOutlinedIcon from "@mui/icons-material/AttachFileOutlined";
+import FmdGoodOutlinedIcon from "@mui/icons-material/FmdGoodOutlined";
+import InsertDriveFileOutlinedIcon from "@mui/icons-material/InsertDriveFileOutlined";
 import { Box } from "@mui/material";
+import CustomButton from "components/Utills/CustomButton";
+import {
+  isValidDocumentType,
+  isValidImageType,
+  validTypes,
+} from "components/Utills/Globals";
+import { toast } from "react-toastify";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
@@ -34,13 +38,16 @@ const Footer = (props: FooterPropsType) => {
     // Code to handle selecting a PDF file from the system
     const input = document.createElement("input");
     input.type = "file";
-    input.accept = "application/pdf";
+    input.accept = validTypes.join(", ");
     input.onchange = (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
-      console.log("Selected PDF file:", file);
-      props.handleSelectDocumentValue &&
-        file &&
-        props.handleSelectDocumentValue(file);
+      if (file && isValidDocumentType(file.type)) {
+        console.log("Selected document file:", file);
+        props.handleSelectDocumentValue &&
+          props.handleSelectDocumentValue(file);
+      } else {
+        toast.error("Please select a valid document file");
+      }
     };
     input.click();
   };
@@ -52,10 +59,14 @@ const Footer = (props: FooterPropsType) => {
     input.accept = "image/*";
     input.onchange = (event) => {
       const file = (event.target as HTMLInputElement).files?.[0];
-      console.log("Selected image file:", file);
-      props.handleAttachImageValue &&
-        file &&
-        props.handleAttachImageValue(file);
+      if (file && isValidImageType(file.type)) {
+        props.handleAttachImageValue &&
+          file &&
+          props.handleAttachImageValue(file);
+        console.log("Selected image file:", file);
+      } else {
+        toast.error("Please select a valid image file");
+      }
     };
     input.click();
   };

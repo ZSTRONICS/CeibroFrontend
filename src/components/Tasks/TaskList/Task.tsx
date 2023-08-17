@@ -319,7 +319,6 @@ const Task = () => {
       </div>
     );
   };
-  let id = 0;
 
   useEffect(() => {
     const handleResize = () => {
@@ -408,7 +407,8 @@ const Task = () => {
         </Box>
       </Grid>
       <Grid item md={9}>
-        {selectedTask !== null ? (
+        {selectedTask !== null &&
+        filteredTask.some((task: ITask) => task._id === selectedTask._id) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

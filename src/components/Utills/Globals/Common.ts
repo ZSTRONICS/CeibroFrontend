@@ -261,8 +261,44 @@ export const onlyUnique = (value: any, index: any, array: any) => {
 export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv', '.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf', '.odt', '.ods', '.odp', '.odg', '.djvu', '.keynote']
 export const MEDIA_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
 const imageFileRegex = /\.(jpg|jpeg|png)$/i;
-
+export const validTypes = [
+  "text/plain",
+  "text/csv",
+  "application/pdf",
+  "application/rtf",
+  "application/vnd.oasis.opendocument.text",
+  "application/vnd.oasis.opendocument.spreadsheet",
+  "application/vnd.oasis.opendocument.presentation",
+  "application/msword",
+  "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  "application/vnd.ms-word.document.macroEnabled.12",
+  "application/vnd.ms-excel",
+  "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "application/vnd.ms-excel.sheet.macroEnabled.12",
+  "application/vnd.ms-powerpoint",
+  "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  "application/vnd.ms-powerpoint.presentation.macroEnabled.12"
+];
+/**
+ * @param fileName 
+ * @return return true or false
+ * **/
 export const IS_IMAGE = (fileName: string) => imageFileRegex.test(fileName.toLowerCase())
+/**
+ * @param fileType 
+ * @return return true or false
+ * **/
+export function isValidImageType(fileType: string) {
+  return fileType.startsWith('image/');
+}
+
+/**
+ * @param fileType 
+ * @return return true or false
+ * **/
+export function isValidDocumentType(fileType: string) {
+  return validTypes.includes(fileType);
+}
 
 /**
  * @param extensionKeys array of extension
