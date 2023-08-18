@@ -156,6 +156,14 @@ export default function AddedDetails(props: IProps) {
                             initiator.surName
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
+                        {commentData?.message && (
+                          <>
+                            <AddStatusTag sx={{ color: "black" }}>
+                              {commentData.message}
+                            </AddStatusTag>
+                            <Divider />
+                          </>
+                        )}
                         <Divider />
                       </React.Fragment>
                     );

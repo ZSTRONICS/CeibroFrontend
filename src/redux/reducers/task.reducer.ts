@@ -40,8 +40,8 @@ interface TaskReducerInt {
 
 const intialStatue: TaskReducerInt = {
   selectedTaskFilter: "allTaskFromMe",
-  allTaskToMe: { new: [], ongoing: [],done: [] },
-  allTaskFromMe: {  unread: [],ongoing: [], done: [] },
+  allTaskToMe: { new: [], ongoing: [], done: [] },
+  allTaskFromMe: { unread: [], ongoing: [], done: [] },
   allTaskHidden: { ongoing: [], done: [], canceled: [] },
   loadingAllTaskToMe: false,
   loadingAllTaskfromMe: false,
@@ -281,9 +281,11 @@ const TaskReducer = (
           // done task comment to-me [done]
           if (isAssignedToMe && eventData.oldTaskData.userSubState === "done") {
             const checktaskIndex = state.allTaskToMe.done.findIndex(task => task._id === eventData.taskId);
-            addEventToTask(state.allTaskToMe.done[checktaskIndex], eventData, checktaskIndex)
-            moveTaskOnTopByIndex(state.allTaskToMe.done, checktaskIndex);
-            console.log("updated state.allTaskToMe.done 1", state.allTaskToMe.done[checktaskIndex].events);
+            if (checktaskIndex > -1) {
+              addEventToTask(state.allTaskToMe.done[checktaskIndex], eventData, checktaskIndex)
+              moveTaskOnTopByIndex(state.allTaskToMe.done, checktaskIndex);
+              console.log("updated state.allTaskToMe.done 1", state.allTaskToMe.done[checktaskIndex].events);
+            }
           }
           break;
         case "doneTask":

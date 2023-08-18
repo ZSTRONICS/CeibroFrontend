@@ -1,8 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-expressions */
-import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { Grid } from "@mui/material";
+import { SET_CHAT_SEARCH } from "config/chat.config";
+import { ChatMessageInterface } from "constants/interfaces/chat.interface";
+import useResponsive from "hooks/useResponsive";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import colors from "../../assets/colors";
 import { CHAT_LIST } from "../../constants/chat.constants";
@@ -12,17 +15,12 @@ import {
   setGoToMessageId,
 } from "../../redux/action/chat.action";
 import { RootState } from "../../redux/reducers/appReducer";
-import "./chat.css";
 import ChatBody from "./ChatBody";
 import ChatBoxHeader from "./ChatBoxHeader";
 import ChatForm from "./ChatForm";
 import ChatSidebar from "./ChatSidebar";
 import MediaSidebar from "./MediaSidebar";
-import { SET_CHAT_SEARCH } from "config/chat.config";
-import { UserInterface } from "constants/interfaces/user.interface";
-import { socket } from "services/socket.services";
-import { ChatMessageInterface } from "constants/interfaces/chat.interface";
-import useResponsive from "hooks/useResponsive";
+import "./chat.css";
 
 const Chat = () => {
   const classes = useStyles();
@@ -30,7 +28,7 @@ const Chat = () => {
 
   // store
   const { user } = useSelector((state: RootState) => state.auth);
-  const isTabletOrMobile = useResponsive("down","lg","");
+  const isTabletOrMobile = useResponsive("down", "lg", "");
   const goToMessageId: string = useSelector(
     (store: RootState) => store.chat.goToMessageId
   );
@@ -58,30 +56,30 @@ const Chat = () => {
     };
   }, []);
 
-  useEffect(() => {
-    if (selectedChatId) {
-      socket.joinChatRoom(user._id, selectedChatId);
-      const myChat = allChats?.find?.(
-        (room: any) => String(room._id) === String(selectedChatId)
-      );
+  // useEffect(() => {
+  //   if (selectedChatId) {
+  //     socket.joinChatRoom(user._id, selectedChatId);
+  //     const myChat = allChats?.find?.(
+  //       (room: any) => String(room._id) === String(selectedChatId)
+  //     );
 
-      if (myChat) {
-        socket.getUnreadMsgCount(user._id);
-        let members = myChat?.members || [];
-        let myUserIndex = members?.findIndex?.(
-          (member: UserInterface) => member._id === user?._id
-        );
-        setEnable(myUserIndex > -1);
-      } else {
-        setEnable(false);
-      }
-    } else {
-      socket.setAppSelectedChat(null);
-    }
-    return (): void => {
-      selectedChatId;
-    };
-  }, [selectedChatId]);
+  //     if (myChat) {
+  //       socket.getUnreadMsgCount(user._id);
+  //       let members = myChat?.members || [];
+  //       let myUserIndex = members?.findIndex?.(
+  //         (member: UserInterface) => member._id === user?._id
+  //       );
+  //       setEnable(myUserIndex > -1);
+  //     } else {
+  //       setEnable(false);
+  //     }
+  //   } else {
+  //     socket.setAppSelectedChat(null);
+  //   }
+  //   return (): void => {
+  //     selectedChatId;
+  //   };
+  // }, [selectedChatId]);
 
   function gotoMsg(messageId: any): Boolean {
     const elem = document.getElementById(messageId);
@@ -146,7 +144,8 @@ const Chat = () => {
         //   border: "2px solid",
         // }}
       >
-        <Grid item
+        <Grid
+          item
           sx={{
             "@media(max-width:1024px)": {},
           }}

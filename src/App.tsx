@@ -11,8 +11,6 @@ import {
   CreateQuestioniarDrawer,
   CreateTaskDrawer,
   RouterConfig,
-  TaskModal,
-  ViewInvitations,
   ViewQuestioniarDrawer,
 } from "components";
 
@@ -32,10 +30,9 @@ import { RootState } from "./redux/reducers/appReducer";
 
 // axios
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
-import UploadingDocsPreview from "components/uploadImage/UploadingDocsPreview";
 import { useSocket } from "utills/SocketUtils";
 
-interface MyApp { }
+interface MyApp {}
 
 const App: React.FC<MyApp> = () => {
   // const [doOnce, setDoOnce] = React.useState(false);
@@ -55,12 +52,12 @@ const App: React.FC<MyApp> = () => {
     <div className="App">
       <ErrorBoundary>
         {/* component used here for availability of modal on all routes*/}
-        <TaskModal />
+        {/* <TaskModal /> 
         <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
           <ViewInvitations />
-        </div>
+        </div> 
+        <UploadingDocsPreview />*/}
         <CssBaseline />
-        {<UploadingDocsPreview />}
         <CreateQuestioniarDrawer />
         <CDrawer />
         {drawerOpen && <ViewQuestioniarDrawer />}

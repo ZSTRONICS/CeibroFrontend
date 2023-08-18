@@ -1,14 +1,13 @@
-import React, { useEffect } from "react";
 import { Badge, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { Box } from "@mui/system";
-import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import colors from "../../assets/colors";
 import { SingleConfig } from "../../navigation/SidebarConfig";
-import { RootState } from "../../redux/reducers/appReducer";
-import { socket } from "../../services/socket.services";
 import appActions from "../../redux/action/app.action";
+import { RootState } from "../../redux/reducers/appReducer";
 
 const useStyles = makeStyles((theme) => ({
   topMenuWrapper: {
@@ -78,9 +77,6 @@ function Topbar() {
   }, []);
 
   const handleRouteClick = (config: SingleConfig) => {
-    if (config.getPath("") !== "chat") {
-      socket.setAppSelectedChat(null);
-    }
     dispatch(appActions.setSelectedTab(config.key));
     history.push(`/${config.getPath("")}`);
   };

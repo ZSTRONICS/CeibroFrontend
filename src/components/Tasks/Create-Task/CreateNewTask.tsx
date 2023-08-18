@@ -262,22 +262,25 @@ function CreateNewTask() {
 
   const handleGetLocationValue = () => {};
 
-  const handleAttachImageValue = (file: File) => {
+  const handleAttachImageValue = (files: File[]) => {
+    // todo filter match file and append not matched
     const found = selectedImages.find((item: File) => {
-      return item.name === file.name;
+      return files.some((file) => file.name === item.name);
     });
     if (!found) {
-      setSelectedImages([...selectedImages, file]);
+      setSelectedImages([...selectedImages, ...files]);
     } else {
       toast.error("Image already added in the list");
     }
   };
-  const handleSelectDocumentValue = (file: File) => {
+
+  const handleSelectDocumentValue = (files: File[]) => {
+    // todo filter match file and append not matched
     const found = selectedDocuments.find((item: File) => {
-      return item.name === file.name;
+      return files.some((file) => file.name === item.name);
     });
     if (!found) {
-      setSelectedDocuments([...selectedDocuments, file]);
+      setSelectedDocuments([...selectedDocuments, ...files]);
     } else {
       toast.error("Document already added in the list");
     }
@@ -433,7 +436,7 @@ function CreateNewTask() {
         <Box sx={{ marginTop: "100px" }}>
           <Footer
             disabled={
-              selectedData.topic != "" &&
+              selectedData.topic !== "" &&
               (selectedData.assignedToState.length > 0 ||
                 (selectedData.invitedNumbers &&
                   selectedData.invitedNumbers.length > 0))

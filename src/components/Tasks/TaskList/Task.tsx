@@ -10,7 +10,7 @@ import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
-import { RouteComponentProps } from "react-router-dom";
+import { RouteComponentProps, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import TaskDetails from "../TaskDetails";
@@ -23,7 +23,7 @@ interface RouteParams {
 
 interface IProps extends RouteComponentProps<RouteParams> {}
 const Task = (props: IProps) => {
-  const { subtask, filterkey, taskid } = props.match.params;
+  const { subtask, filterkey, taskid } = useParams<RouteParams>();
   const [value, setValue] = useState(0);
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
@@ -72,7 +72,7 @@ const Task = (props: IProps) => {
       dispatch(taskActions.getAllTaskHidden());
     }
   };
-  console.log("selectedTab", selectedTab);
+
   useEffect(() => {
     if (subtask) {
       getParticukarSubtask(subtask);
@@ -106,7 +106,6 @@ const Task = (props: IProps) => {
       const keys = Object.keys(task[subtask]);
       if (!filterkey && subtask) {
         props.history.replace(`/tasks/${subtask}/${keys[0]}`);
-        //
       }
       handleTabClick(keys[0]);
     }
