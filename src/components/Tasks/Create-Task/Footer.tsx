@@ -87,6 +87,7 @@ const Footer = (props: FooterPropsType) => {
       sx={{
         display: "flex",
         justifyContent: "space-around",
+        zIndex: "10",
         boxShadow: `${
           props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
         }`,

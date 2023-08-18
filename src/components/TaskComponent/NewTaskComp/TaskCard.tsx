@@ -55,7 +55,7 @@ function TaskCard(props: IProps) {
         cursor: "pointer",
         border: "1px solid #818181",
         borderRadius: 1,
-        padding: "2px 9px",
+        padding: "5px 9px",
         borderTop: "none",
         background:
           !task.seenBy.includes(userId) &&
@@ -65,7 +65,7 @@ function TaskCard(props: IProps) {
           )
             ? "#EBF5FB"
             : "",
-        boxShadow: `${
+        WebkitBoxShadow: `${
           isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
         }`,
       }}
@@ -77,6 +77,8 @@ function TaskCard(props: IProps) {
         sx={{
           pt: 0,
           pl: 0,
+          pb: 1,
+          pr: 0.1,
         }}
         avatar={
           <CustomStack gap={1}>
@@ -108,18 +110,18 @@ function TaskCard(props: IProps) {
           </CustomStack>
         }
       />
-      <CardContent sx={{ pt: 0 }}>
+      <CardContent sx={{ pt: 0, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
             To:&nbsp;{" "}
-            <span style={{ fontWeight: "500" }}>
+            <span style={{ fontWeight: "500", fontSize: "11px" }}>
               {" "}
               {`${creator.firstName} ${creator.surName}`}
             </span>
           </BoldLableTag>
           <BoldLableTag>
             Project: &nbsp;{" "}
-            <span style={{ fontWeight: "500" }}>
+            <span style={{ fontWeight: "500", fontSize: "11px" }}>
               {project ? project.title : "N/A"}
             </span>
           </BoldLableTag>
@@ -127,16 +129,16 @@ function TaskCard(props: IProps) {
 
         <SubHeadingTag
           className="ellipsis"
-          sx={{ maxWidth: "300px", color: "black" }}
+          sx={{ maxWidth: "300px", color: "black", pb: 1 }}
         >
-          {topic?.topic ?? "N/A"}
+          {topic.topic ?? "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag
           className="textOverflowDescription"
           sx={{
             maxWidth: "350px",
-            WebkitLineClamp: 2,
+            WebkitLineClamp: 1,
           }}
         >
           {description ?? "No description"}

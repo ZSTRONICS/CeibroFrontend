@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment } from "react";
 
 // mui-imports
 import { makeStyles } from "@material-ui/core";
@@ -8,32 +8,23 @@ import { Box, Grid } from "@mui/material";
 // components
 import colors from "assets/colors";
 import NoData from "components/Chat/NoData";
-import TaskCard from "components/TaskComponent/Tabs/TaskCard";
-import { getColorByStatus } from "config/project.config";
+// import TaskCard from "components/TaskComponent/Tabs/TaskCard";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers/appReducer";
 import { TaskInterface } from "constants/interfaces/task.interface";
-interface Props{
-  filteredData:TaskInterface[]
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers/appReducer";
+interface Props {
+  filteredData: TaskInterface[];
 }
 
-function TaskList({filteredData}:Props) {
+function TaskList({ filteredData }: Props) {
   const classes = useStyles();
-  const dispatch = useDispatch();
   const { user } = useSelector((store: RootState) => store.auth);
 
-  // let allTask: TaskInterface[] = useSelector(
-  //   (state: RootState) => state.task.allTask
-  // );
   let getTaskSubTaskFilterByState = useSelector(
     (state: RootState) => state.task.getTaskSubTaskFilterByState
   );
-
-  // let headerHeight = 10;
-  // if(props.props.current){
-  // }
   let filterTask = [...filteredData];
 
   filterTask = filterTask.reduce((acc: any, curr: any) => {
@@ -60,7 +51,9 @@ function TaskList({filteredData}:Props) {
         <Grid
           // sx={{ height: "270px", overflowY: "auto" }}
           className={classes.tasklistContainer}
-          justifyContent={`${filterTask.length===0?'center':'flex-start'}`}
+          justifyContent={`${
+            filterTask.length === 0 ? "center" : "flex-start"
+          }`}
           container
           item
           rowGap={2.5}
@@ -72,22 +65,23 @@ function TaskList({filteredData}:Props) {
           // height={"calc(100vh - 30vh)"}
           // className={classes.cardListContainer}
         >
-          {filterTask &&filterTask.length>0?
+          {filterTask && filterTask.length > 0 ? (
             filterTask.map((task: TaskInterface) => {
               if (task === undefined) {
                 return <></>;
               }
               if (!task.access.includes(user._id)) {
-                return;
+                return <></>;
               }
               return (
                 <Fragment key={task._id}>
-                  <TaskCard ColorByStatus={getColorByStatus} task={task} />
+                  {/* <TaskCard ColorByStatus={getColorByStatus} task={task} /> */}
                 </Fragment>
               );
-            }):
-            <NoData title="No data found!"/>
-            }
+            })
+          ) : (
+            <NoData title="No data found!" />
+          )}
         </Grid>
       )}
     </>
@@ -105,7 +99,6 @@ const useStyles = makeStyles((theme) => ({
     // [theme.breakpoints.down("sm")]: {
     //   maxHeight: "calc(100vh - 350px)",
     // },
-
     // [theme.breakpoints.down(1024)]: {
     //   justifyContent: "center",
     // },
@@ -114,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "flex-start",
-    paddingLeft:'0.2rem',
+    paddingLeft: "0.2rem",
     "@media(max-width:1240px)": {
       justifyContent: "center",
     },

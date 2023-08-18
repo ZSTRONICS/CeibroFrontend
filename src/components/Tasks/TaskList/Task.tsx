@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
@@ -24,19 +24,16 @@ interface RouteParams {
 interface IProps extends RouteComponentProps<RouteParams> {}
 const Task = (props: IProps) => {
   const { subtask, filterkey, taskid } = useParams<RouteParams>();
-  const [value, setValue] = useState(0);
+
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const { user } = useSelector((store: RootState) => store.auth);
-  const headerHeight = 173;
+  const headerHeight = 180;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
   const userId = user && String(user._id);
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-  const isRenderEffect = useRef<any>(false);
+
   const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
   const {
@@ -379,6 +376,7 @@ const Task = (props: IProps) => {
       <Grid
         item
         md={3}
+        xs={4}
         sx={{
           borderRight: "1px solid #ADB5BD",
         }}
@@ -417,13 +415,12 @@ const Task = (props: IProps) => {
           </Box>
         </Box>
         <Box
-          className="custom-scrollbar"
           sx={{
-            height: "calc(100vh - 178px)",
+            // height: "calc(100vh - 178px)",
             // overflow: "auto",
             // padding: " 0 1px",
             pl: 0.7,
-            pr: 0.7,
+            pr: 0.4,
           }}
         >
           <div style={{ position: "relative" }}>
@@ -434,11 +431,12 @@ const Task = (props: IProps) => {
           > */}
             {task && filteredTask && (
               <VariableSizeList
+                className="custom-scrollbar"
                 height={windowHeight}
                 itemCount={filteredTask.length}
-                itemSize={(index) =>
-                  filteredTask[index].description.length > 0 ? 145 : 135
-                }
+                overscanCount={1}
+                layout="vertical"
+                itemSize={(index) => 125}
                 width={"100%"}
               >
                 {TaskRow}
@@ -448,7 +446,7 @@ const Task = (props: IProps) => {
           {/* /</CustomStack> */}
         </Box>
       </Grid>
-      <Grid item md={9} xs={6}>
+      <Grid item md={9} xs={8}>
         {selectedTask !== null &&
         filteredTask.some((task: ITask) => task._id === selectedTask._id) ? (
           <TaskDetails task={selectedTask} />

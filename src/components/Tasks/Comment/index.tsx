@@ -35,25 +35,24 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
     }
   };
 
-  const handleAttachImageValue = (file: File) => {
-    const found = selectedImages.find((item: File) => {
-      return item.name === file.name;
-    });
-    if (!found) {
-      setSelectedImages([...selectedImages, file]);
-    } else {
-      toast.error("Image already added in the list");
+  const handleAttachImageValue = (files: File[]) => {
+    const newFiles = files.filter(
+      (file) => !selectedImages.some((item) => item.name === file.name)
+    );
+    if (newFiles.length < files.length) {
+      toast.error("Some images are already added in the list");
     }
+    setSelectedImages([...selectedImages, ...newFiles]);
   };
-  const handleSelectDocumentValue = (file: File) => {
-    const found = selectedDocuments.find((item: File) => {
-      return item.name === file.name;
-    });
-    if (!found) {
-      setSelectedDocuments([...selectedDocuments, file]);
-    } else {
-      toast.error("Document already added in the list");
+
+  const handleSelectDocumentValue = (files: File[]) => {
+    const newFiles = files.filter(
+      (file) => !selectedDocuments.some((item) => item.name === file.name)
+    );
+    if (newFiles.length < files.length) {
+      toast.error("Some Document already added in the list");
     }
+    setSelectedDocuments([...selectedDocuments, ...files]);
   };
 
   const handleFileUpload = (files: any, formData: FormData | any) => {
@@ -132,7 +131,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
             height: "0.4rem",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
             borderRadius: "0.2rem",
           },
           "&::-webkit-scrollbar-thumb": {

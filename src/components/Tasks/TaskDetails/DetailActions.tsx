@@ -1,6 +1,8 @@
 // @ts-nocheck
-import { Box, Chip, Grid, Typography } from "@mui/material";
+import { Chip, Grid } from "@mui/material";
+import assets from "assets/assets";
 import { LoadingButton } from "components/Button";
+import { SubLabelTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
@@ -8,7 +10,6 @@ import capitalize from "lodash/capitalize";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
-import assets from "../../../assets/assets";
 import Comment from "../Comment";
 import ForwardTask from "../Forward-Task";
 
@@ -47,6 +48,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState("");
+
   const handleClick = (action: string) => {
     setTaskAction(action);
     openModal();
@@ -96,83 +98,65 @@ const DetailActions: React.FC<IProps> = (props) => {
     forward: "Task Forward",
     done: "Task Done",
   };
-
+  const justifyContent = {
+    xs: "flex-start",
+    md: "flex-end",
+  };
   const getTitle = () => titles[taskAction] || "";
   return (
     <>
-      <Grid container alignItems="center" sx={{ margin: "16px 0px" }}>
-        <Grid item xs={6}>
-          <Box sx={{ display: "flex", gap: "30px" }}>
-            <Chip
-              label={capitalize(userSubState)}
-              size="small"
-              sx={{
-                borderColor: chipColor,
-                backgroundColor: chipColor,
-                borderRadius: "20px",
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                padding: "2px 8px",
-              }}
-            />
-            <Chip
-              label={taskUid}
-              size="small"
-              sx={{
-                borderColor: "#818181",
-                backgroundColor: "white",
-                borderWidth: "1px",
-                borderStyle: "solid",
-                borderRadius: "10px",
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                padding: "2px 8px",
-              }}
-            />
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              {createdOn}
-              {/* {new Date().toLocaleDateString("en-GB", {
-              weekday: "short",
-              year: "2-digit",
-              month: "2-digit",
-              day: "2-digit",
-            })} */}
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              Due date: {dueDate === "" ? "N/A" : dueDate}
-            </Typography>
-          </Box>
+      <Grid
+        container
+        mt={1.25}
+        justifyContent="space-between"
+        alignItems="flex-start"
+        rowGap={2}
+      >
+        <Grid item container md={6} xs={12} gap={1.4}>
+          <Chip
+            label={capitalize(userSubState)}
+            size="small"
+            sx={{
+              borderColor: chipColor,
+              backgroundColor: chipColor,
+              borderRadius: "20px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 500,
+              padding: "2px 8px",
+            }}
+          />
+          <Chip
+            label={taskUid}
+            size="small"
+            sx={{
+              borderColor: "#818181",
+              backgroundColor: "white",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderRadius: "10px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 500,
+              padding: "2px 8px",
+            }}
+          />
+          <SubLabelTag sx={{ color: "#818181" }}>{createdOn}</SubLabelTag>
+          <SubLabelTag sx={{ color: "#818181" }}>
+            Due date: {dueDate === "" ? "N/A" : dueDate}
+          </SubLabelTag>
         </Grid>
         <Grid
           item
-          xs={6}
           container
-          justifyContent="flex-end"
-          alignItems="center"
-          gap={2}
+          md={6}
+          xs={12}
+          gap={1.4}
+          justifyContent={justifyContent}
+          flexWrap="nowrap"
         >
           <LoadingButton
-            startIcon={<img src={assets.CommentIcon} />}
+            startIcon={<img src={assets.CommentIcon} alt="Comment" />}
             onClick={() => handleClick("comment")}
             variant="text"
             sx={{
@@ -185,7 +169,7 @@ const DetailActions: React.FC<IProps> = (props) => {
             Comment
           </LoadingButton>
           <LoadingButton
-            startIcon={<img src={assets.ForwardIcon} />}
+            startIcon={<img src={assets.ForwardIcon} alt="Forward" />}
             onClick={() => handleClick("forward")}
             variant="text"
             disabled={
@@ -221,7 +205,6 @@ const DetailActions: React.FC<IProps> = (props) => {
           </LoadingButton>
         </Grid>
       </Grid>
-
       {isOpen === true && (
         <CustomModal
           showFullWidth={true}

@@ -77,6 +77,7 @@ const TaskReducer = (
         const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
           state.allTaskToMe.new.unshift(action.payload);
+          state.allTaskToMe.new[0].userSubState = "new"
           console.log("push task to me new", state.allTaskToMe.new[0]);
         }
       }
@@ -84,6 +85,8 @@ const TaskReducer = (
         const isTaskUnique = !state.allTaskFromMe.unread.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
           state.allTaskFromMe.unread.unshift(action.payload);
+          state.allTaskFromMe.unread[0].userSubState = "unread";
+          state.allTaskFromMe.unread[0].creatorState = "unread";
           console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
         } else {
           console.log("Task is already present in the unread ");
@@ -448,7 +451,7 @@ const TaskReducer = (
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
 
             if (taskIndex > -1) {
-              pushSeenBy(state.allTaskToMe.ongoing, taskIndex, eventData);
+              pushSeenBy(state.allTaskToMe.ongoing[taskIndex], eventData);
               console.log("updated state.allTaskToMe.ongoing seenBy ", state.allTaskToMe.ongoing[taskIndex]._id);
             }
           }
@@ -456,8 +459,8 @@ const TaskReducer = (
           if (isCreator && isOngoing) {
             const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
             if (taskIndex > -1) {
-              pushSeenBy(state.allTaskFromMe.ongoing, taskIndex, eventData);
-              console.log("updated state.allTaskFromMe.ongoing seenBy ", state.allTaskFromMe.ongoing[taskIndex]._id);
+              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
+              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
             }
           }
           // update  task to-me [done] 
@@ -466,8 +469,8 @@ const TaskReducer = (
           ) {
             const taskIndex = state.allTaskToMe.done.findIndex(task => task._id === eventData.taskId);
             if (taskIndex > -1) {
-              pushSeenBy(state.allTaskToMe.done, taskIndex, eventData);
-              console.log("updated ongoing seenBy ", state.allTaskToMe.done[taskIndex]);
+              pushSeenBy(state.allTaskToMe.done[taskIndex], eventData);
+              console.log("updated allTaskToMe done ", state.allTaskToMe.done[taskIndex].seenBy);
             }
           }
           // update  task from-me [done]
@@ -477,7 +480,7 @@ const TaskReducer = (
             const taskIndex = state.allTaskFromMe.done.findIndex(task => task._id === eventData.taskId);
 
             if (taskIndex > -1) {
-              pushSeenBy(state.allTaskFromMe.done, taskIndex, eventData);
+              pushSeenBy(state.allTaskFromMe.done[taskIndex], eventData);
               console.log("updated state.allTaskFromMe.done seenBy ", state.allTaskFromMe.done[taskIndex]);
             }
           }
@@ -488,7 +491,7 @@ const TaskReducer = (
           ) {
             const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
             if (taskIndex > -1) {
-              pushSeenBy(state.allTaskHidden.canceled, taskIndex, eventData);
+              pushSeenBy(state.allTaskHidden.canceled[taskIndex], eventData);
               console.log("updated state.allTaskHidden.canceled seenBy ",
                 state.allTaskHidden.canceled[taskIndex]._id
               );

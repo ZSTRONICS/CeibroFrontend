@@ -143,12 +143,10 @@ const formatDropdownData = (
   }
 };
 
-export function pushSeenBy(taskArray: any[], taskIndex: any, eventData: any) {
-  if (taskIndex > -1) {
-    const seenBy = taskArray[taskIndex].seenBy;
-    if (!seenBy.includes(eventData.userId)) {
-      seenBy.push(eventData.userId);
-    }
+export function pushSeenBy(task: any, eventData: any) {
+  const seenBy = task.seenBy;
+  if (!seenBy.includes(eventData.userId)) {
+    seenBy.push(eventData.userId);
   }
 }
 /**

@@ -263,27 +263,23 @@ function CreateNewTask() {
   const handleGetLocationValue = () => {};
 
   const handleAttachImageValue = (files: File[]) => {
-    // todo filter match file and append not matched
-    const found = selectedImages.find((item: File) => {
-      return files.some((file) => file.name === item.name);
-    });
-    if (!found) {
-      setSelectedImages([...selectedImages, ...files]);
-    } else {
-      toast.error("Image already added in the list");
+    const newFiles = files.filter(
+      (file) => !selectedImages.some((item) => item.name === file.name)
+    );
+    if (newFiles.length < files.length) {
+      toast.error("Some images are already added in the list");
     }
+    setSelectedImages([...selectedImages, ...newFiles]);
   };
 
   const handleSelectDocumentValue = (files: File[]) => {
-    // todo filter match file and append not matched
-    const found = selectedDocuments.find((item: File) => {
-      return files.some((file) => file.name === item.name);
-    });
-    if (!found) {
-      setSelectedDocuments([...selectedDocuments, ...files]);
-    } else {
-      toast.error("Document already added in the list");
+    const newFiles = files.filter(
+      (file) => !selectedDocuments.some((item) => item.name === file.name)
+    );
+    if (newFiles.length < files.length) {
+      toast.error("Some Document already added in the list");
     }
+    setSelectedDocuments([...selectedDocuments, ...files]);
   };
 
   const handleClearFile = (file: File, type: fileType) => {
@@ -423,7 +419,7 @@ function CreateNewTask() {
         {selectedDocuments.length > 0 && (
           <Box
             sx={{
-              padding: "16px",
+              padding: "8px",
             }}
           >
             <FileBox
@@ -433,23 +429,23 @@ function CreateNewTask() {
             />
           </Box>
         )}
-        <Box sx={{ marginTop: "100px" }}>
-          <Footer
-            disabled={
-              selectedData.topic !== "" &&
-              (selectedData.assignedToState.length > 0 ||
-                (selectedData.invitedNumbers &&
-                  selectedData.invitedNumbers.length > 0))
-                ? false
-                : true
-            }
-            showHeader={false}
-            handleSubmitForm={handleCreateTask}
-            handleAttachImageValue={handleAttachImageValue}
-            handleGetLocationValue={handleGetLocationValue}
-            handleSelectDocumentValue={handleSelectDocumentValue}
-          />
-        </Box>
+        {/* <Box sx={{ marginTop: "10px" }}> */}
+        <Footer
+          disabled={
+            selectedData.topic !== "" &&
+            (selectedData.assignedToState.length > 0 ||
+              (selectedData.invitedNumbers &&
+                selectedData.invitedNumbers.length > 0))
+              ? false
+              : true
+          }
+          showHeader={false}
+          handleSubmitForm={handleCreateTask}
+          handleAttachImageValue={handleAttachImageValue}
+          handleGetLocationValue={handleGetLocationValue}
+          handleSelectDocumentValue={handleSelectDocumentValue}
+        />
+        {/* </Box> */}
       </Box>
     </Box>
   );

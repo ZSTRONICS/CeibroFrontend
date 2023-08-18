@@ -38,7 +38,6 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
       <Box
         sx={{
           width: "100%",
-          height: "30px",
           border: "1px solid #e2e4e5",
           padding: "5px 0",
           paddingLeft: "15px",
@@ -68,7 +67,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
             {title}
           </Typography>
         </Box>
-        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+        <Box sx={{ overflow: "auto", width: "100%", maxHeight: "10rem" }}>
           {files.length > 0 ? (
             files.map((item: IFile | File | any) => {
               let f_name = "";
