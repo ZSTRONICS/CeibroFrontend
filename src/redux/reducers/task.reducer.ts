@@ -146,7 +146,7 @@ const TaskReducer = (
                   updateTaskOnCancelEvent(state.allTaskToMe.new[taskIndex], taskIndex, eventData)
                   state.allTaskHidden.canceled.unshift(state.allTaskToMe.new[taskIndex])
                   state.allTaskToMe.new.splice(taskIndex, 1)
-                  console.log('state.allTaskToMe.new => state.allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
+                  console.log('allTaskToMe.new => allTaskHidden.canceled', state.allTaskHidden.canceled[0]._id)
                 }
               } else if (checkTaskExist > -1) {
                 state.allTaskToMe.new.splice(taskIndex, 1)
