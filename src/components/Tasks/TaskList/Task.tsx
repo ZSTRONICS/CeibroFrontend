@@ -348,7 +348,7 @@ const Task = (props: IProps) => {
           task={localTask}
           selectedTaskId={selectedTask?._id}
           handleClick={handleSelectedTask}
-          menuOption={filteredMenuOptions(subtask, selectedTab)}
+          menuOption={subtask && filteredMenuOptions(subtask, selectedTab)}
           disableMenu={
             selectedTab === "canceled"
               ? localTask && localTask.creator._id !== userId
