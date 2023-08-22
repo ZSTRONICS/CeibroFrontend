@@ -414,7 +414,7 @@ const TaskReducer = (
           break;
         case "TASK_SEEN":
           // to-me [new] to-me [ongoing]
-          if (isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
+          if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.creatorStateChanged === true) {
             // find task in new and move to ongoing and update task
             const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
             if (taskIndex > -1) {
