@@ -18,12 +18,12 @@ import TaskDetails from "../TaskDetails";
 interface RouteParams {
   subtask: selectedTaskFilterType;
   filterkey: string;
-  taskid: string;
+  taskuid: string;
 }
 
 interface IProps extends RouteComponentProps<RouteParams> {}
 const Task = (props: IProps) => {
-  const { subtask, filterkey, taskid } = useParams<RouteParams>();
+  const { subtask, filterkey, taskuid } = useParams<RouteParams>();
 
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
@@ -120,26 +120,23 @@ const Task = (props: IProps) => {
       path = `/tasks/${subTaskKey}/${getFilterKey()}`;
       ischangeUrl = true;
       setSelectedTab(getFilterKey());
-    } else if (subtask && filterkey && getTaskDataRequired()) {
+    } else if (subtask && filterkey) {
       setSelectedTab(getFilterKey());
-    } else if (subtask && !filterkey && getTaskDataRequired()) {
+    } else if (subtask && !filterkey ) {
       ischangeUrl = true;
       path = `/tasks/${subTaskKey}/${getFilterKey()}`;
       setSelectedTab(getFilterKey());
     }
-    if (taskid && taskid !== selectedTask?._id) {
-      console.log("task id");
-
+    if (taskuid && taskuid !== selectedTask?.taskUID) {
       if (filteredTask && filteredTask.length > 0) {
-        console.log(" inside task id");
         setSelectedTask(
-          filteredTask.find((taskItem) => taskItem._id === taskid)!
+          filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
         );
-        path = `/tasks/${subtask}/${getFilterKey()}/${taskid}`
+        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`
       }
     }
     ischangeUrl&& props.history.push(path)
-  }, [subtask, filterkey, taskid, allTaskFromMe, allTaskToMe, allTaskHidden,filteredTask]);
+  }, [subtask, filterkey, taskuid, allTaskFromMe, allTaskToMe, allTaskHidden,filteredTask]);
 
   useEffect(() => {
     subtask &&
@@ -184,7 +181,7 @@ const Task = (props: IProps) => {
   };
 
   const handleSelectedTask = (task: ITask) => {
-    props.history.push(`/tasks/${subtask}/${getFilterKey()}/${task._id}`);
+    props.history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -485,7 +482,7 @@ const Task = (props: IProps) => {
       </Grid>
       <Grid item md={9} xs={8}>
         {selectedTask !== null &&
-        filteredTask.some((task: ITask) => task._id === selectedTask._id) ? (
+        filteredTask&&filteredTask.some((task: ITask) => task.taskUID === selectedTask.taskUID) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

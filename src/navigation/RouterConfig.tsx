@@ -75,7 +75,7 @@ const RouterConfig: React.FC<Configs> = () => {
             />
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/tasks/:subtask?/:filterkey?/:taskid?" component={Tasks} />
+              <PrivateRoute path="/tasks/:subtask?/:filterkey?/:taskuid?" component={Tasks} />
               <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact

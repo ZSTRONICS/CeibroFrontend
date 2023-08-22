@@ -1,8 +1,8 @@
-import { IconButton, Menu, MenuItem } from "@mui/material";
-import React, { useState } from "react";
+import { IconButton, Menu } from "@mui/material";
 import Fade from "@mui/material/Fade";
 import assets from "assets/assets";
 import { MenuItemTag } from "components/CustomTags";
+import React, { useState } from "react";
 
 export interface Option {
   menuName: string;
@@ -20,6 +20,8 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu=false }) 
   const open = Boolean(anchorEl);
 
   const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    event.stopPropagation()
     setAnchorEl(event.currentTarget);
   };
 
