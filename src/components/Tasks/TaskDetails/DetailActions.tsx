@@ -9,6 +9,7 @@ import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import Comment from "../Comment";
 import ForwardTask from "../Forward-Task";
@@ -33,6 +34,7 @@ enum statusColors {
   canceled = "#FFE7E7",
 }
 const DetailActions: React.FC<IProps> = (props) => {
+  const { subtask, filterkey, takisd } = useParams<any>();
   const {
     userSubState,
     taskUid,
@@ -44,7 +46,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     assignedToState,
     invitedNumbers,
   } = props;
-
+  const history = useHistory();
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState("");
@@ -55,6 +57,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleDoneClick = () => {
+    history.push(`/tasks/${subtask}/${filterkey}`);
     if (doneImageRequired === true || doneCommentsRequired === true) {
       handleClick("done");
     } else {

@@ -97,7 +97,7 @@ const Task = (props: IProps) => {
   }, [subtask]);
 
   const getFilterKey = () => {
-     const subTaskKey = subtask ?? "allTaskFromMe";
+    const subTaskKey = subtask ?? "allTaskFromMe";
     if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
       return filterkey;
     } else {
@@ -122,7 +122,7 @@ const Task = (props: IProps) => {
       setSelectedTab(getFilterKey());
     } else if (subtask && filterkey) {
       setSelectedTab(getFilterKey());
-    } else if (subtask && !filterkey ) {
+    } else if (subtask && !filterkey) {
       ischangeUrl = true;
       path = `/tasks/${subTaskKey}/${getFilterKey()}`;
       setSelectedTab(getFilterKey());
@@ -132,11 +132,19 @@ const Task = (props: IProps) => {
         setSelectedTask(
           filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
         );
-        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`
+        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
       }
     }
-    ischangeUrl&& props.history.push(path)
-  }, [subtask, filterkey, taskuid, allTaskFromMe, allTaskToMe, allTaskHidden,filteredTask]);
+    ischangeUrl && props.history.push(path);
+  }, [
+    subtask,
+    filterkey,
+    taskuid,
+    allTaskFromMe,
+    allTaskToMe,
+    allTaskHidden,
+    filteredTask,
+  ]);
 
   useEffect(() => {
     subtask &&
@@ -148,7 +156,7 @@ const Task = (props: IProps) => {
       setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
-  }, [selectedTab]);
+  }, [selectedTab, subtask, filterkey]);
 
   const markTaskAsSeen = (taskId: string) => {
     dispatch(
@@ -160,7 +168,9 @@ const Task = (props: IProps) => {
 
   useEffect(() => {
     let taskNeedToBeSeen =
-      selectedTask !== null && !selectedTask.seenBy.includes(userId);
+      selectedTask &&
+      selectedTask !== null &&
+      !selectedTask.seenBy.includes(userId);
 
     if (
       selectedTask &&
@@ -482,7 +492,10 @@ const Task = (props: IProps) => {
       </Grid>
       <Grid item md={9} xs={8}>
         {selectedTask !== null &&
-        filteredTask&&filteredTask.some((task: ITask) => task.taskUID === selectedTask.taskUID) ? (
+        filteredTask &&
+        filteredTask.some(
+          (task: ITask) => task.taskUID === selectedTask.taskUID
+        ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

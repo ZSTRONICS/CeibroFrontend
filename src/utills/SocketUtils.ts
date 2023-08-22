@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
+import { v4 as uuidv4 } from 'uuid';
 import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
@@ -41,7 +42,7 @@ export const useSocket = () => {
         const myToken = JSON.parse(tokens)?.access?.token;
 
         function generateSecureUUID() {
-            return crypto.randomUUID();
+            return uuidv4();
         }
 
         function sendHeartbeat() {
@@ -84,16 +85,16 @@ export const useSocket = () => {
             console.log("heartbeatAck");
         });
 
-        sock.on("disconnect", () => {
-            console.log("Disconnected from server");
-            global.isSocketConnecting = false;
-            try {
-                sock.disconnect();
-            } catch (e) {
-                console.log("error in disconnecting socket", e);
-            }
-            socket.setSocket(null);
-        });
+        // sock.on("disconnect", () => {
+        //     console.log("Disconnected from server");
+        //     global.isSocketConnecting = false;
+        //     try {
+        //         sock.disconnect();
+        //     } catch (e) {
+        //         console.log("error in disconnecting socket", e);
+        //     }
+        //     socket.setSocket(null);
+        // });
 
         sock.on("reconnect", () => {
             console.log("Reconnected to server");
