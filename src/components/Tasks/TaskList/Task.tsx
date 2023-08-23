@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
@@ -96,7 +96,7 @@ const Task = (props: IProps) => {
     }
   }, [subtask]);
 
-  const getFilterKey = () => {
+  const getFilterKey = useCallback(() => {
     const subTaskKey = subtask ?? "allTaskFromMe";
     if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
       return filterkey;
@@ -110,7 +110,7 @@ const Task = (props: IProps) => {
           : 2;
       return keys[keyIndex];
     }
-  };
+  }, [filterkey, subtask, task]);
 
   useEffect(() => {
     let ischangeUrl = false;
@@ -135,6 +135,15 @@ const Task = (props: IProps) => {
         path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
       }
     }
+    const isTaskExistInList =
+      filteredTask &&
+      filteredTask.length > 0 &&
+      filteredTask.some((task) => task.taskUID === taskuid);
+    if (!isTaskExistInList) {
+      setSelectedTask(null);
+      ischangeUrl = true;
+      path = `/tasks/${subtask}/${getFilterKey()}`;
+    }
     ischangeUrl && props.history.push(path);
   }, [
     subtask,
@@ -144,6 +153,8 @@ const Task = (props: IProps) => {
     allTaskToMe,
     allTaskHidden,
     filteredTask,
+    selectedTask?.taskUID,
+    props.history,
   ]);
 
   useEffect(() => {
@@ -156,7 +167,7 @@ const Task = (props: IProps) => {
       setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
-  }, [selectedTab, subtask, filterkey]);
+  }, [selectedTab, subtask, filterkey, task]);
 
   const markTaskAsSeen = (taskId: string) => {
     dispatch(
@@ -494,7 +505,7 @@ const Task = (props: IProps) => {
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask.taskUID
+          (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
           <TaskDetails task={selectedTask} />
         ) : (

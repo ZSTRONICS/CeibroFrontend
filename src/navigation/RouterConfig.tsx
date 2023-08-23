@@ -23,7 +23,7 @@ import { Redirect, Route, Router, Switch } from "react-router-dom";
 
 import PrivateRoute from "./PrivateRoute";
 
-import Comment from "components/Tasks/Comment";
+import NotFound from "components/NotFound";
 import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
 import ForwardTask from "components/Tasks/Forward-Task";
 import { createBrowserHistory } from "history";
@@ -63,7 +63,7 @@ const RouterConfig: React.FC<Configs> = () => {
               path="/forward-task/:taskId"
               component={ForwardTask}
             />
-            <PrivateRoute
+            {/* <PrivateRoute
               path="/comment-task/:taskId"
               component={Comment}
               title={"New comment"}
@@ -72,10 +72,13 @@ const RouterConfig: React.FC<Configs> = () => {
               path="/done-task/:taskId"
               component={Comment}
               title={"Done comment"}
-            />
+            /> */}
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
-              <PrivateRoute path="/tasks/:subtask?/:filterkey?/:taskuid?" component={Tasks} />
+              <PrivateRoute
+                path="/tasks/:subtask/:filterkey?/:taskuid?"
+                component={Tasks}
+              />
               <PrivateRoute path="/projects" component={Projects} />
               <PrivateRoute
                 exact
@@ -92,8 +95,7 @@ const RouterConfig: React.FC<Configs> = () => {
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
-            {/* todo later */}
-            {/* <Route component={NotFound} /> */}
+            <Route path="*" component={NotFound}></Route>
           </Switch>
         </Suspense>
       </Router>
