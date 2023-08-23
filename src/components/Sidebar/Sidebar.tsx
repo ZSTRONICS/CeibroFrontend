@@ -30,8 +30,8 @@ function Sidebar(props: any) {
     const subtask: selectedTaskFilterType = location.pathname.split(
       "/"
     )[2] as selectedTaskFilterType;
-    subtask && setSelectedChildTab(subtask);
-  }, []);
+    subtask ?setSelectedChildTab(subtask):setSelectedChildTab(undefined);
+  }, [location.pathname]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();
