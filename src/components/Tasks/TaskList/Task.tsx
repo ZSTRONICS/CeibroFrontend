@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
@@ -96,8 +96,9 @@ const Task = (props: IProps) => {
     }
   }, [subtask]);
 
-  const getFilterKey = useCallback(() => {
+  const getFilterKey = () => {
     const subTaskKey = subtask ?? "allTaskFromMe";
+
     if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
       return filterkey;
     } else {
@@ -108,43 +109,50 @@ const Task = (props: IProps) => {
           : task[subTaskKey][keys[1]].length > 0
           ? 1
           : 2;
+          console.log(keys[keyIndex],"keys[keyIndex]");
+          
+      console.log(task[subTaskKey][keys[keyIndex]], "filterkey DAta@@@@");
       return keys[keyIndex];
     }
-  }, [filterkey, subtask, task]);
+  };
 
   useEffect(() => {
     let ischangeUrl = false;
     let path = "";
+    console.log(subtask, "sub task", filterkey, "filter key");
+
     const subTaskKey = subtask ?? "allTaskFromMe";
-    if (!subtask && !filterkey) {
-      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-      ischangeUrl = true;
-      setSelectedTab(getFilterKey());
-    } else if (subtask && filterkey) {
-      setSelectedTab(getFilterKey());
-    } else if (subtask && !filterkey) {
-      ischangeUrl = true;
-      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-      setSelectedTab(getFilterKey());
-    }
-    if (taskuid && taskuid !== selectedTask?.taskUID) {
-      if (filteredTask && filteredTask.length > 0) {
-        setSelectedTask(
-          filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
-        );
-        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
+      if (!subtask && !filterkey) {
+        path = `/tasks/${subTaskKey}/${getFilterKey()}`;
+        ischangeUrl = true;
+        setSelectedTab(getFilterKey());
+      } else if (subtask && filterkey) {
+        setSelectedTab(filterkey);
+      } else if (subtask && !filterkey) {
+        ischangeUrl = true;
+        path = `/tasks/${subTaskKey}/${getFilterKey()}`;
+        console.log(path, "path");
+        setSelectedTab(getFilterKey());
       }
-    }
-    const isTaskExistInList =
-      filteredTask &&
-      filteredTask.length > 0 &&
-      filteredTask.some((task) => task.taskUID === taskuid);
-    if (!isTaskExistInList) {
-      setSelectedTask(null);
-      ischangeUrl = true;
-      path = `/tasks/${subtask}/${getFilterKey()}`;
-    }
-    ischangeUrl && props.history.push(path);
+      if (taskuid && taskuid !== selectedTask?.taskUID) {
+        if (filteredTask && filteredTask.length > 0) {
+          setSelectedTask(
+            filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
+          );
+          path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
+        }
+        const isTaskExistInList =
+          filteredTask &&
+          filteredTask.length > 0 &&
+          filteredTask.some((task) => task.taskUID === taskuid);
+        if (!isTaskExistInList) {
+          setSelectedTask(null);
+          ischangeUrl = true;
+          path = `/tasks/${subtask}/${getFilterKey()}`;
+        }
+      }
+    
+    ischangeUrl && path !== "" && props.history.push(path);
   }, [
     subtask,
     filterkey,
@@ -153,13 +161,13 @@ const Task = (props: IProps) => {
     allTaskToMe,
     allTaskHidden,
     filteredTask,
-    selectedTask?.taskUID,
-    props.history,
+    // selectedTask?.taskUID,
+    // props.history,
   ]);
 
   useEffect(() => {
     subtask &&
-      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
+      setFilteredTask(searchInData(task[subtask][getFilterKey()], "", "taskUID"));
   }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
