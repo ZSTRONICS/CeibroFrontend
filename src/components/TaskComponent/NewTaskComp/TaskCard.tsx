@@ -36,6 +36,7 @@ function TaskCard(props: IProps) {
     description,
     topic,
     creator,
+    isCreator,
     access,
     createdAt,
     assignedToState,
@@ -46,6 +47,7 @@ function TaskCard(props: IProps) {
 
   const isSelectedTask: boolean = selectedTaskId === _id;
   const taskCreated = momentdeDateFormat(createdAt);
+  const localUserSubState = userSubState && userSubState !== "unread";
   return (
     <Card
       sx={{
@@ -58,10 +60,7 @@ function TaskCard(props: IProps) {
         padding: "5px 9px",
         borderTop: "none",
         background:
-          !seenBy.includes(userId) &&
-          !(selectedTaskFilter === "allTaskFromMe" && creatorState === "unread")
-            ? "#EBF5FB"
-            : "",
+          !seenBy.includes(userId) && localUserSubState ? "#EBF5FB" : "",
         WebkitBoxShadow: `${
           isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
         }`,

@@ -406,18 +406,20 @@ const Task = (props: IProps) => {
     const localTask = filteredTask[index];
     return (
       <div style={{ ...style }}>
-        <TaskCard
-          key={localTask._id}
-          task={localTask}
-          selectedTaskId={selectedTask?._id}
-          handleClick={handleSelectedTask}
-          menuOption={subtask && filteredMenuOptions(subtask, selectedTab)}
-          disableMenu={
-            selectedTab === "canceled"
-              ? localTask && localTask.creator._id !== userId
-              : false
-          }
-        />
+        {localTask && (
+          <TaskCard
+            key={localTask._id}
+            task={localTask}
+            selectedTaskId={selectedTask?._id}
+            handleClick={handleSelectedTask}
+            menuOption={subtask && filteredMenuOptions(subtask, selectedTab)}
+            disableMenu={
+              selectedTab === "canceled"
+                ? localTask && localTask.creator._id !== userId
+                : false
+            }
+          />
+        )}
       </div>
     );
   };
