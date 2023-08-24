@@ -2,6 +2,7 @@ import { MoreVert } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
+  Divider,
   ListSubheader,
   Menu,
   MenuItem,
@@ -208,7 +209,23 @@ function CustomDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          MenuProps={{autoFocus:true,disableAutoFocusItem:true}}
+          MenuProps={{
+            autoFocus: true,
+            disableAutoFocusItem: true,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            PaperProps: {
+              style: {
+                maxHeight: "calc(100vh - 240px)",
+              },
+            },
+          }}
           // onChange={handleChange}
           endAdornment={
             selected && (
@@ -281,6 +298,7 @@ function CustomDropDown(props: IProps) {
                   </Box>
                 );
               })}
+          <Divider sx={{marginTop:"20px",marginBottom:"20px"}} />
             </Box>
           )}
           <Box sx={{ margin: "8px 16px" }}>
