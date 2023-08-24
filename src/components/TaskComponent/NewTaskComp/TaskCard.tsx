@@ -7,9 +7,8 @@ import {
   SubLabelTag,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
-import { momentdeDateFormat } from "components/Utills/Globals";
 import { Task } from "constants/interfaces";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
 interface IProps {
@@ -18,13 +17,19 @@ interface IProps {
   handleClick: (task: Task) => void;
   menuOption: any;
   disableMenu: boolean;
+  isTaskFromMe: string;
 }
 
 function TaskCard(props: IProps) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-  const { task, handleClick, selectedTaskId, menuOption, disableMenu } = props;
-  const dispatch = useDispatch();
+  const {
+    task,
+    handleClick,
+    selectedTaskId,
+    menuOption,
+    disableMenu,
+    isTaskFromMe,
+  } = props;
   const userId = user && String(user._id);
   const {
     taskUID,
@@ -46,7 +51,7 @@ function TaskCard(props: IProps) {
   } = task;
 
   const isSelectedTask: boolean = selectedTaskId === _id;
-  const taskCreated = momentdeDateFormat(createdAt);
+  // const taskCreated = momentdeDateFormat(createdAt);
   const localUserSubState = userSubState && userSubState !== "unread";
   return (
     <Card
@@ -109,7 +114,7 @@ function TaskCard(props: IProps) {
       <CardContent sx={{ pt: 0, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
-            To:&nbsp;{" "}
+            {isTaskFromMe}&nbsp;{" "}
             <span style={{ fontWeight: "500", fontSize: "11px" }}>
               {" "}
               {`${creator.firstName} ${creator.surName}`}

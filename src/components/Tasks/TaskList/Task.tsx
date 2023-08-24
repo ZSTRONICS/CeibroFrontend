@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
@@ -27,6 +27,7 @@ const Task = (props: IProps) => {
 
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const headerHeight = 180;
   const [windowHeight, setWindowHeight] = useState<number>(
@@ -36,13 +37,7 @@ const Task = (props: IProps) => {
 
   const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
-  const {
-    allTaskToMe,
-    allTaskFromMe,
-    allTaskHidden,
-    loadingAllTaskToMe,
-    loadingAllTaskfromMe,
-  } = task;
+  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const [selectedTab, setSelectedTab] = useState("");
 
   const getTaskDataRequired = () => {
@@ -71,29 +66,34 @@ const Task = (props: IProps) => {
     return true;
   };
 
-  const getParticukarSubtask = useMemo(() => {
+  const getAllTaskOnce = (subtask: string) => {
     if (
-      subtask === "allTaskToMe" &&
       _.isEmpty(allTaskToMe.new) &&
       _.isEmpty(allTaskToMe.ongoing) &&
       _.isEmpty(allTaskToMe.done)
     ) {
       dispatch(taskActions.getAllTaskToMe());
-    } else if (
-      subtask === "allTaskFromMe" &&
+    }
+
+    if (
       _.isEmpty(allTaskFromMe.unread) &&
       _.isEmpty(allTaskFromMe.ongoing) &&
       _.isEmpty(allTaskFromMe.done)
     ) {
       dispatch(taskActions.getAllTaskFromMe());
-    } else if (
-      subtask === "allTaskHidden" &&
+    }
+
+    if (
       _.isEmpty(allTaskHidden.ongoing) &&
       _.isEmpty(allTaskHidden.done) &&
       _.isEmpty(allTaskHidden.canceled)
     ) {
       dispatch(taskActions.getAllTaskHidden());
     }
+  };
+
+  useEffect(() => {
+    getAllTaskOnce(subtask);
   }, [subtask]);
 
   const getFilterKey = () => {
@@ -109,49 +109,33 @@ const Task = (props: IProps) => {
           : task[subTaskKey][keys[1]].length > 0
           ? 1
           : 2;
-          console.log(keys[keyIndex],"keys[keyIndex]");
-          
-      console.log(task[subTaskKey][keys[keyIndex]], "filterkey DAta@@@@");
       return keys[keyIndex];
     }
   };
-
   useEffect(() => {
     let ischangeUrl = false;
     let path = "";
-    console.log(subtask, "sub task", filterkey, "filter key");
-
     const subTaskKey = subtask ?? "allTaskFromMe";
-      if (!subtask && !filterkey) {
-        path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-        ischangeUrl = true;
-        setSelectedTab(getFilterKey());
-      } else if (subtask && filterkey) {
-        setSelectedTab(filterkey);
-      } else if (subtask && !filterkey) {
-        ischangeUrl = true;
-        path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-        console.log(path, "path");
-        setSelectedTab(getFilterKey());
+    if (!subtask && !filterkey) {
+      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
+      ischangeUrl = true;
+      setSelectedTab(getFilterKey());
+    } else if (subtask && filterkey) {
+      setSelectedTab(filterkey);
+    } else if (subtask && !filterkey) {
+      ischangeUrl = true;
+      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
+      console.log(path, "path");
+      setSelectedTab(getFilterKey());
+    }
+    if (taskuid && taskuid !== selectedTask?.taskUID) {
+      if (filteredTask && filteredTask.length > 0) {
+        setSelectedTask(
+          filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
+        );
+        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
       }
-      if (taskuid && taskuid !== selectedTask?.taskUID) {
-        if (filteredTask && filteredTask.length > 0) {
-          setSelectedTask(
-            filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
-          );
-          path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
-        }
-        const isTaskExistInList =
-          filteredTask &&
-          filteredTask.length > 0 &&
-          filteredTask.some((task) => task.taskUID === taskuid);
-        if (!isTaskExistInList) {
-          setSelectedTask(null);
-          ischangeUrl = true;
-          path = `/tasks/${subtask}/${getFilterKey()}`;
-        }
-      }
-    
+    }
     ischangeUrl && path !== "" && props.history.push(path);
   }, [
     subtask,
@@ -161,13 +145,28 @@ const Task = (props: IProps) => {
     allTaskToMe,
     allTaskHidden,
     filteredTask,
-    // selectedTask?.taskUID,
-    // props.history,
+    selectedTask?.taskUID,
+    props.history,
   ]);
 
   useEffect(() => {
+    if (filteredTask && filteredTask.length) {
+      const isTaskExistInList =
+        filteredTask &&
+        filteredTask.length > 0 &&
+        filteredTask.some((task) => task.taskUID === taskuid);
+      if (!isTaskExistInList) {
+        setSelectedTask(null);
+        props.history.push(`/tasks/${subtask}/${getFilterKey()}`);
+      }
+    }
+  }, [filteredTask, selectedTask?.taskUID, taskuid]);
+
+  useEffect(() => {
     subtask &&
-      setFilteredTask(searchInData(task[subtask][getFilterKey()], "", "taskUID"));
+      setFilteredTask(
+        searchInData(task[subtask][getFilterKey()], "", "taskUID")
+      );
   }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
@@ -204,6 +203,26 @@ const Task = (props: IProps) => {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
   }, [selectedTask]);
+
+  useEffect(() => {
+    switch (subtask) {
+      case "allTaskFromMe":
+        setIsTaskFromMe("To");
+        break;
+      case "allTaskToMe":
+        setIsTaskFromMe("From");
+        break;
+      case "allTaskHidden":
+        if (filterkey === "canceled") {
+          setIsTaskFromMe("To");
+        } else {
+          setIsTaskFromMe("From");
+        }
+        break;
+      default:
+        break;
+    }
+  }, [filterkey, subtask]);
 
   const handleTabClick = (type: string) => {
     props.history.push(`/tasks/${subtask}/${type}`);
@@ -409,6 +428,7 @@ const Task = (props: IProps) => {
         {localTask && (
           <TaskCard
             key={localTask._id}
+            isTaskFromMe={isTaskFromMe}
             task={localTask}
             selectedTaskId={selectedTask?._id}
             handleClick={handleSelectedTask}

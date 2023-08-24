@@ -8,6 +8,7 @@ import {
 import ContactBox from "components/Utills/ContactBox";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
+import { TASK_CONFIG } from "config";
 import {
   AssignedUserState,
   Contact,
@@ -170,7 +171,13 @@ const ForwardTask = ({
           //todo comment empty for temp
           comment: "",
         },
-        success: () => {
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: { task: res.data.newTask, eventType: "TASK_FORWARDED" },
+            });
+          }
           closeModal();
         },
       })

@@ -99,7 +99,9 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
       },
       body: formdata,
       success: (res: any) => {
-        closeModal();
+        if (res) {
+          closeModal();
+        }
       },
     };
     dispatch(taskActions.taskEventsWithFiles(taskEvent));

@@ -1,4 +1,3 @@
-import { AssignmentSharp } from "@mui/icons-material";
 import assets from "assets/assets";
 import { selectedTaskFilterType } from "redux/type";
 
@@ -25,12 +24,21 @@ const {
   ToMeIcon,
   CanceledIcon,
 } = assets;
+console.log(
+  window.location.pathname,
+  window.location.pathname.split("/").pop()
+);
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",
     title: "Task",
     icon: TaskIcon,
-    getPath: () => "tasks",
+    getPath: () =>
+      window.location.pathname.split("/").pop() === "tasks"
+        ? "tasks/allTaskFromMe"
+        : window.location.pathname.includes("tasks")
+        ? window.location.pathname
+        : "tasks/allTaskFromMe",
     active: false,
     childTab: {
       newTask: {
