@@ -52,7 +52,6 @@ function TaskCard(props: IProps) {
 
   const isSelectedTask: boolean = selectedTaskId === _id;
   // const taskCreated = momentdeDateFormat(createdAt);
-  const localUserSubState = userSubState && userSubState !== "unread";
   return (
     <Card
       sx={{
@@ -64,8 +63,7 @@ function TaskCard(props: IProps) {
         borderRadius: 1,
         padding: "5px 9px",
         borderTop: "none",
-        background:
-          !seenBy.includes(userId) && localUserSubState ? "#EBF5FB" : "",
+        background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         WebkitBoxShadow: `${
           isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
         }`,
@@ -132,7 +130,7 @@ function TaskCard(props: IProps) {
           className="ellipsis"
           sx={{ maxWidth: "300px", color: "black", pb: 1 }}
         >
-          {topic.topic ?? "N/A"}
+          {topic?.topic ?? "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag

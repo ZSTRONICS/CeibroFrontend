@@ -111,7 +111,10 @@ const TaskReducer = (
 
     // push topic in store
     case TASK_CONFIG.PUSH_TOPIC_IN_STORE:
-      state.Topics.allTopics.unshift(action.payload);
+      const isTopicUnique = !state.Topics.allTopics.some((topic: any) => topic._id === action.payload._id);
+      if (isTopicUnique) {
+        state.Topics.allTopics.unshift(action.payload)
+      }
       return {
         ...state,
       };

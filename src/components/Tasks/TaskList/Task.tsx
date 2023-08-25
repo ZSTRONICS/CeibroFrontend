@@ -123,7 +123,13 @@ const Task = (props: IProps) => {
       console.log(path, "path");
       setSelectedTab(getFilteredKey);
     }
-    if (ischangeUrl && path !== "" && isTaskData&&filteredTask&&filteredTask.length>0) {
+    if (
+      ischangeUrl &&
+      path !== "" &&
+      isTaskData &&
+      filteredTask &&
+      filteredTask.length > 0
+    ) {
       if (taskuid && foundTask) {
         setSelectedTask(foundTask);
         path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
@@ -169,15 +175,6 @@ const Task = (props: IProps) => {
       selectedTask &&
       selectedTask !== null &&
       !selectedTask.seenBy.includes(userId);
-
-    if (
-      selectedTask &&
-      taskNeedToBeSeen &&
-      subtask === "allTaskFromMe" &&
-      selectedTask.creatorState === "unread"
-    ) {
-      taskNeedToBeSeen = false;
-    }
 
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);

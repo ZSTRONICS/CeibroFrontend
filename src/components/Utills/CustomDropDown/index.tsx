@@ -287,10 +287,10 @@ function CustomDropDown(props: IProps) {
               >
                 Recent used topics
               </Typography>
-              {allFilterData.recent.map((item: OptionType) => {
+              {allFilterData.recent.map((item: OptionType, i: any) => {
                 return (
                   <Box
-                    key={`recent-${item.value}`}
+                    key={`recent-${item.value + i}`}
                     sx={{ margin: "8px 16px", cursor: "pointer" }}
                     onClick={() => handleMenuClick(item)}
                   >
@@ -298,18 +298,18 @@ function CustomDropDown(props: IProps) {
                   </Box>
                 );
               })}
-          <Divider sx={{marginTop:"20px",marginBottom:"20px"}} />
+              <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
             </Box>
           )}
           <Box sx={{ margin: "8px 16px" }}>
             {Object.entries(allFilterData.all).map(
-              ([groupLetter, groupOptions]) => [
+              ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array
                 <Typography>{groupLetter}</Typography>,
                 // Use map on the array to render the list items
-                ...groupOptions.map((item) => (
+                ...groupOptions.map((item, i) => (
                   <Box
-                    key={`all-${item.value}`}
+                    key={`all-${item.value + i}`}
                     sx={{
                       margin: "8px 16px",
                       cursor: "pointer",
@@ -340,6 +340,7 @@ function CustomDropDown(props: IProps) {
                       onClose={handleCloseMenu}
                     >
                       <MenuItem
+                        key={i}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();

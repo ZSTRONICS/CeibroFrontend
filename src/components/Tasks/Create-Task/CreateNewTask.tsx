@@ -105,7 +105,7 @@ function CreateNewTask() {
         recentOptions: getRecentTopicOptions,
       });
     }
-  }, [Topics.allTopics]);
+  }, [Topics, Topics.allTopics]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
@@ -224,10 +224,23 @@ function CreateNewTask() {
             body: {
               topic: label,
             },
+            success: (res) => {
+              if (res.data.newTopic) {
+                setTopicOptions({
+                  allOptions: [
+                    {
+                      label: res.data.newTopic.topic,
+                      value: res.data.newTopic._id,
+                    },
+                    ...topicOptions.allOptions,
+                  ],
+                  recentOptions: [...topicOptions.recentOptions],
+                });
+                dispatch(taskActions.getAllTopic());
+              }
+            },
           })
         );
-        //todo check websocket events for new window
-        dispatch(taskActions.getAllTopic());
 
         break;
       case "Project":
@@ -374,7 +387,7 @@ function CreateNewTask() {
                 height: "0.4rem",
               },
               "&::-webkit-scrollbar-track": {
-                "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+                WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
                 borderRadius: "0.2rem",
               },
               "&::-webkit-scrollbar-thumb": {
@@ -382,9 +395,10 @@ function CreateNewTask() {
               },
             }}
           >
-            {selectedImages.map((file) => {
+            {selectedImages.map((file, i) => {
               return (
                 <Box
+                  key={i}
                   sx={{
                     width: "80px",
                     height: "80px",
