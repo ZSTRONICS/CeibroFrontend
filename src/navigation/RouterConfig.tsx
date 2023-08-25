@@ -79,7 +79,7 @@ const RouterConfig: React.FC<Configs> = () => {
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
                 component={Tasks}
               />
-              <PrivateRoute path="/projects" component={Projects} />
+              {/* <PrivateRoute path="/projects" component={Projects} /> */}
               <PrivateRoute
                 exact
                 path="/project/:projectId"

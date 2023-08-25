@@ -24,10 +24,6 @@ const {
   ToMeIcon,
   CanceledIcon,
 } = assets;
-console.log(
-  window.location.pathname,
-  window.location.pathname.split("/").pop()
-);
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",
@@ -103,7 +99,7 @@ const SidebarConfig: SidebarConfigInterface = {
     key: "locations",
     title: "Location",
     icon: LocationIcon,
-    getPath: () => `drawingDetail`,
+    getPath: () => "drawingDetail",
     active: false,
     childTab: {},
   },

@@ -10,7 +10,7 @@ import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
-import { RouteComponentProps, useParams } from "react-router-dom";
+import { RouteComponentProps, useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import TaskDetails from "../TaskDetails";
@@ -38,6 +38,7 @@ const Task = (props: IProps) => {
   const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
 
   const getTaskDataRequired = () => {
@@ -125,7 +126,6 @@ const Task = (props: IProps) => {
     } else if (subtask && !filterkey) {
       ischangeUrl = true;
       path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-      console.log(path, "path");
       setSelectedTab(getFilterKey());
     }
     if (taskuid && taskuid !== selectedTask?.taskUID) {
@@ -136,7 +136,7 @@ const Task = (props: IProps) => {
         path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
       }
     }
-    ischangeUrl && path !== "" && props.history.push(path);
+    ischangeUrl && path !== "" && history.push(path);
   }, [
     subtask,
     filterkey,
@@ -146,7 +146,7 @@ const Task = (props: IProps) => {
     allTaskHidden,
     filteredTask,
     selectedTask?.taskUID,
-    props.history,
+    // props.history,
   ]);
 
   useEffect(() => {

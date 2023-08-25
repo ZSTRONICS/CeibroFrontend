@@ -76,20 +76,31 @@ const TaskReducer = (
       if (action.payload.isAssignedToMe === true) {
         const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
-          const assigneeTask = action.payload
-          assigneeTask.userSubState = "new"
+          const assigneeTask = {
+            ...action.payload,
+            userSubState: 'new',
+          };
           state.allTaskToMe.new.unshift(assigneeTask);
-
-          console.log("push task to me new", state.allTaskToMe.new[0]);
+          console.log("push task to me new", assigneeTask);
         }
       }
       if (action.payload.isCreator === true) {
         const isTaskUnique = !state.allTaskFromMe.unread.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
-          const creatorTask = action.payload
-          creatorTask.userSubState = "unread"
-          state.allTaskFromMe.unread.unshift(creatorTask)
+          const creatorTask = {
+            ...action.payload,
+            userSubState: 'unread',
+          };
+          const newAllTaskFromMe = [creatorTask, ...state.allTaskFromMe.unread];
           console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
+          return {
+            ...state,
+            allTaskFromMe: {
+              ...state.allTaskFromMe,
+              unread: newAllTaskFromMe,
+            },
+          };
+
         } else {
           console.log("Task is already present in the unread ");
         }
