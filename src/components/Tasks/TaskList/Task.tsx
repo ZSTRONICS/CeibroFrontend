@@ -40,31 +40,21 @@ const Task = (props: IProps) => {
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
+  const subTaskKey = subtask ?? "allTaskFromMe";
 
   const getTaskDataRequired = () => {
-    if (
-      subtask === "allTaskToMe" &&
-      _.isEmpty(allTaskToMe.new) &&
-      _.isEmpty(allTaskToMe.ongoing) &&
-      _.isEmpty(allTaskToMe.done)
-    ) {
-      return false;
-    } else if (
-      subtask === "allTaskFromMe" &&
-      _.isEmpty(allTaskFromMe.unread) &&
-      _.isEmpty(allTaskFromMe.ongoing) &&
-      _.isEmpty(allTaskFromMe.done)
-    ) {
-      return false;
-    } else if (
-      subtask === "allTaskHidden" &&
-      _.isEmpty(allTaskHidden.ongoing) &&
-      _.isEmpty(allTaskHidden.done) &&
-      _.isEmpty(allTaskHidden.canceled)
-    ) {
-      return false;
-    }
-    return true;
+    const subtaskPropertyMapping: any = {
+      allTaskToMe: ["new", "ongoing", "done"],
+      allTaskFromMe: ["unread", "ongoing", "done"],
+      allTaskHidden: ["ongoing", "done", "canceled"],
+    };
+    const propertiesToCheck = subtaskPropertyMapping[subtask];
+    let found = propertiesToCheck.some(
+      (property: string) => !_.isEmpty(task[subtask][property])
+    );
+    console.log(found, "found");
+
+    return found;
   };
 
   const getAllTaskOnce = (subtask: string) => {
@@ -98,8 +88,6 @@ const Task = (props: IProps) => {
   }, [subtask]);
 
   const getFilterKey = () => {
-    const subTaskKey = subtask ?? "allTaskFromMe";
-
     if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
       return filterkey;
     } else {
@@ -116,27 +104,32 @@ const Task = (props: IProps) => {
   useEffect(() => {
     let ischangeUrl = false;
     let path = "";
-    const subTaskKey = subtask ?? "allTaskFromMe";
+    let getFilteredKey = getFilterKey();
+    let isTaskData = getTaskDataRequired();
+    let foundTask =
+      filteredTask &&
+      filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
     if (!subtask && !filterkey) {
-      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
+      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
       ischangeUrl = true;
-      setSelectedTab(getFilterKey());
+      setSelectedTab(getFilteredKey);
     } else if (subtask && filterkey) {
+      ischangeUrl = true;
       setSelectedTab(filterkey);
+      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
     } else if (subtask && !filterkey) {
       ischangeUrl = true;
-      path = `/tasks/${subTaskKey}/${getFilterKey()}`;
-      setSelectedTab(getFilterKey());
+      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+      console.log(path, "path");
+      setSelectedTab(getFilteredKey);
     }
-    if (taskuid && taskuid !== selectedTask?.taskUID) {
-      if (filteredTask && filteredTask.length > 0) {
-        setSelectedTask(
-          filteredTask.find((taskItem) => taskItem.taskUID === taskuid)!
-        );
-        path = `/tasks/${subtask}/${getFilterKey()}/${taskuid}`;
+    if (ischangeUrl && path !== "" && isTaskData&&filteredTask&&filteredTask.length>0) {
+      if (taskuid && foundTask) {
+        setSelectedTask(foundTask);
+        path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
       }
+      props.history.push(path);
     }
-    ischangeUrl && path !== "" && history.push(path);
   }, [
     subtask,
     filterkey,
@@ -145,22 +138,9 @@ const Task = (props: IProps) => {
     allTaskToMe,
     allTaskHidden,
     filteredTask,
-    selectedTask?.taskUID,
+    selectedTask,
     // props.history,
   ]);
-
-  useEffect(() => {
-    if (filteredTask && filteredTask.length) {
-      const isTaskExistInList =
-        filteredTask &&
-        filteredTask.length > 0 &&
-        filteredTask.some((task) => task.taskUID === taskuid);
-      if (!isTaskExistInList) {
-        setSelectedTask(null);
-        props.history.push(`/tasks/${subtask}/${getFilterKey()}`);
-      }
-    }
-  }, [filteredTask, selectedTask?.taskUID, taskuid]);
 
   useEffect(() => {
     subtask &&
