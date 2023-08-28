@@ -23,9 +23,10 @@ export const useSocket = () => {
             if (socket.getSocket() !== null) {
                 console.log("socket found")
                 setShouldSendHeartbeat(false);
-                // socket.getSocket()?.disconnect();
                 socket.getSocket().emit("logout");
-                // socket.setSocket(null);
+                socket.getSocket().disconnect();
+                socket.setSocket(null);
+                global.isSocketConnecting = false;
             }
             return;
         }
@@ -61,6 +62,13 @@ export const useSocket = () => {
         let secureUUID = generateSecureUUID();
         // secureUUID += "-" + sock.id;
         console.log("secureUUID", secureUUID);
+
+        // Event listener to handle page refresh, tab/window close, etc.
+        window.addEventListener('beforeunload', async function () {
+            await sock.emit("logout", secureUUID);
+            sock.disconnect();
+            socket.setSocket(null);
+        });
 
         const sock = io(SERVER_URL, {
             transports: ["websocket"],
@@ -99,6 +107,14 @@ export const useSocket = () => {
         sock.on("reconnect", () => {
             console.log("Reconnected to server");
             socket.setSocket(sock);
+        });
+
+        sock.on("logout-web", async () => {
+            console.log("logout-web from server");
+            await sock.emit("logout", secureUUID);
+            sock.disconnect();
+            socket.setSocket(null);
+            window.location.reload();
         });
 
         sock.on("token_invalid", () => {

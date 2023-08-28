@@ -28,6 +28,7 @@ import ConnectionIcon from "components/material-ui/icons/connections/ConnectionI
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import storage from "redux-persist/lib/storage";
 import { purgeStoreStates } from "redux/store";
+import { socket } from "services/socket.services";
 
 const UserMenu = () => {
   const history = useHistory();
@@ -55,7 +56,7 @@ const UserMenu = () => {
   };
 
   const handleLogout = () => {
-    // socket.logoutSocketsIO();
+    socket.getSocket()?.emit('logout-window');
     handleCloseUserMenu();
     dispatch(logoutUser());
     purgeStoreStates();
