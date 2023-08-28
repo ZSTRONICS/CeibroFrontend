@@ -1,6 +1,6 @@
+import { TASK_CONFIG } from "config";
 import { takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
-import { TASK_CONFIG } from "config";
 
 const createTask = apiCall({
   useV2Route: true,
@@ -74,6 +74,7 @@ const taskUnCanel = apiCall({
 
 const taskEventsWithFiles = apiCall({
   useV2Route: true,
+  isFormData: true,
   type: TASK_CONFIG.TASK_EVENT_WITH_FILES,
   method: "post",
   path: (payload) => `/task/upload/${payload.other.eventName}/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`  // eventName = [comment, doneTask]
