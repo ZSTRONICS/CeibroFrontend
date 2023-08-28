@@ -165,6 +165,7 @@ function CustomDropDown(props: IProps) {
             dispatch(taskActions.getAllTopic());
             if (option.label === selected) {
               setSelected("");
+              setSearchQuery("");
             }
           },
         })

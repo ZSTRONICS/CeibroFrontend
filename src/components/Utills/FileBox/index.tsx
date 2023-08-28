@@ -86,7 +86,8 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    marginRight: "16px",
+                    marginRight: 2,
+                    mb: 1.2,
                     "&:hover": {
                       cursor: "pointer",
                     },

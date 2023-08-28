@@ -1,3 +1,4 @@
+import { Box, CircularProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 
 interface Props {
@@ -8,7 +9,7 @@ interface Props {
 
 export default function PDFViewer({ src, onLoad, onError }: Props) {
   const [data, setData] = useState("");
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const req = new XMLHttpRequest();
     req.open("GET", src, true);
@@ -24,6 +25,11 @@ export default function PDFViewer({ src, onLoad, onError }: Props) {
         );
         onLoad(true);
       }
+      setLoading(false);
+    };
+    req.onerror = function (e) {
+      onError(e);
+      setLoading(false);
     };
     req.send();
     return () => {
@@ -31,13 +37,20 @@ export default function PDFViewer({ src, onLoad, onError }: Props) {
     };
   }, [src]);
   return (
-    <object data={data} type="application/pdf" width="100%" height="500px">
-      <p>
-        Unable to display PDF. Please download the PDF to view it:{" "}
-        <a href={src} download>
-          Download PDF
-        </a>
-      </p>
-    </object>
+    <>
+      {loading && (
+        <Box sx={{ textAlign: "center", mt: "10%" }}>
+          <CircularProgress size={35} />
+        </Box>
+      )}
+      <object data={data} type="application/pdf" width="100%" height="500px">
+        <p>
+          Unable to display PDF. Please download the PDF to view it:{" "}
+          <a href={src} download>
+            Download PDF
+          </a>
+        </p>
+      </object>
+    </>
   );
 }

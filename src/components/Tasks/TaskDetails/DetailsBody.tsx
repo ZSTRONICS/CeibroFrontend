@@ -1,12 +1,11 @@
 import { Box } from "@mui/material";
-import ImageLazyLoad from "components/ImgLazyLoad";
-import CustomModal from "components/Modal";
+import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { useState } from "react";
+import React, { useState } from "react";
 import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
 
@@ -38,61 +37,58 @@ export default function DetailsBody(props: IProps) {
           }}
         >
           {media.length > 0 &&
-            media
-              .filter((media: IFile) => media.comment.length === 0)
-              .map((file: IFile) => {
-                return (
+            media.map((file: IFile) => {
+              const hasComment = file.comment.length === 0;
+              return (
+                <React.Fragment key={file._id}>
+                  {hasComment && (
+                    <Box
+                      key={file._id}
+                      sx={{
+                        marginRight: "16px",
+                        "&:hover": { cursor: "pointer" },
+                      }}
+                      onClick={() => handleClick(file)}
+                    >
+                      <ImageBox src={file.fileUrl} />
+                    </Box>
+                  )}
+                </React.Fragment>
+              );
+            })}
+        </Box>
+        {media.length > 0 &&
+          media.map((file: IFile) => {
+            const hasComment = file.comment.length > 0;
+            return (
+              <React.Fragment key={file._id}>
+                {hasComment && (
                   <Box
-                    key={file._id}
                     sx={{
-                      marginRight: "16px",
+                      marginBottom: "16px",
                       "&:hover": { cursor: "pointer" },
                     }}
                     onClick={() => handleClick(file)}
                   >
-                    <ImageBox src={file.fileUrl} />
+                    <ImageBoxWithDesp
+                      src={file.fileUrl}
+                      comment={file.comment}
+                    />
                   </Box>
-                );
-              })}
-        </Box>
-        {media.length > 0 &&
-          media
-            .filter((media: IFile) => media.comment.length > 0)
-            .map((file: IFile) => {
-              return (
-                <Box
-                  key={file._id}
-                  sx={{
-                    marginBottom: "16px",
-                  }}
-                >
-                  <ImageBoxWithDesp src={file.fileUrl} comment={file.comment} />
-                </Box>
-              );
-            })}
+                )}
+              </React.Fragment>
+            );
+          })}
         <DrawingFiles />
         <AddedDetails events={events} />
       </Box>
       {isOpen && (
-        <CustomModal
-          maxWidth={"sm"}
+        <ImagePreviewModal
+          isPdfFile={false}
           isOpen={isOpen}
-          handleClose={closeModal}
-          showCloseBtn={true}
+          closeModal={closeModal}
           title="Image Preview"
-          children={
-            <>
-              {fileToView !== null && (
-                <div>
-                  <ImageLazyLoad
-                    src={fileToView.fileUrl}
-                    alt=""
-                    imgZoomHandler={true}
-                  />{" "}
-                </div>
-              )}
-            </>
-          }
+          fileToView={fileToView}
         />
       )}
     </>

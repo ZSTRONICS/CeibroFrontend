@@ -52,8 +52,6 @@ const Task = (props: IProps) => {
     let found = propertiesToCheck.some(
       (property: string) => !_.isEmpty(task[subtask][property])
     );
-    console.log(found, "found");
-
     return found;
   };
 
@@ -120,7 +118,6 @@ const Task = (props: IProps) => {
     } else if (subtask && !filterkey) {
       ischangeUrl = true;
       path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-      console.log(path, "path");
       setSelectedTab(getFilteredKey);
     }
     if (
@@ -140,14 +137,14 @@ const Task = (props: IProps) => {
     subtask,
     filterkey,
     taskuid,
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
     filteredTask,
     selectedTask,
+    // allTaskFromMe,
+    // allTaskToMe,
+    // allTaskHidden,
     // props.history,
   ]);
-
+  // console.log("selectedTask", selectedTask);
   useEffect(() => {
     subtask &&
       setFilteredTask(
@@ -160,7 +157,14 @@ const Task = (props: IProps) => {
       setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
-  }, [selectedTab, subtask, filterkey, task]);
+  }, [
+    selectedTab,
+    subtask,
+    filterkey,
+    allTaskFromMe,
+    allTaskToMe,
+    allTaskHidden,
+  ]);
 
   const markTaskAsSeen = (taskId: string) => {
     dispatch(
