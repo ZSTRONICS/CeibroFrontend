@@ -100,6 +100,10 @@ function CustomDropDown(props: IProps) {
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
+    setAllFilterData({
+        all: sortedOptions,
+        recent: options.recentOptions
+      });
   };
 
   const handleOpen = () => {
