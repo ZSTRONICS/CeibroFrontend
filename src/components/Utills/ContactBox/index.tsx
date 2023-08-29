@@ -17,19 +17,22 @@ export default function ContactBox({
 }: IProps) {
   const {
     _id,
-    contactFirstName = "",
-    contactFullName = "",
-    contactSurName = "",
-    isCeiborUser = "",
-    userCeibroData = {},
+    contactFirstName,
+    contactFullName,
+    contactSurName,
+    isCeiborUser,
+    userCeibroData,
   } = contact;
+  console.log("contact", contact);
 
   let imgSrc: string = "";
-  let placeholder: string = "";
-  if (isCeiborUser && contact.userCeibroData) {
-    imgSrc = contact.userCeibroData.profilePic;
+  let placeholder: string | undefined = "";
+  if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
+    imgSrc = userCeibroData.profilePic;
   } else {
-    placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
+    placeholder =
+      contactFirstName[0] + contactSurName[0] ||
+      contactFullName.toString().match(/\b\w/g)?.join("");
   }
 
   const handleCheckBox = (checked: boolean) => {
@@ -58,7 +61,7 @@ export default function ContactBox({
           },
         }}
       />
-      {imgSrc ? (
+      {imgSrc !== "" ? (
         <img
           src={imgSrc}
           alt={"profilePic"}
@@ -75,9 +78,11 @@ export default function ContactBox({
             justifyContent: "center",
           }}
         >
-          <Typography variant="body1" color="text.primary">
-            {placeholder}
-          </Typography>
+          {placeholder && (
+            <Typography variant="body1" color="text.primary">
+              {placeholder}
+            </Typography>
+          )}
         </Box>
       )}
       <div>

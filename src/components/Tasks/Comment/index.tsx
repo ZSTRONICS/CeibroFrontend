@@ -2,7 +2,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, IconButton, TextField } from "@mui/material";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
@@ -22,6 +22,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
   // const { taskId } = useParams<RouteParams>();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
   const [doOne, setDoOne] = useState(false);
@@ -100,12 +101,24 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
       body: formdata,
       success: (res: any) => {
         if (res) {
+          setIsSubmit(true);
+          setDescription("");
           closeModal();
         }
+      },
+      onFailAction: () => {
+        setIsSubmit(false);
       },
     };
     dispatch(taskActions.taskEventsWithFiles(taskEvent));
   };
+
+  const handleDescriptionChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setDescription(e.target.value);
+    },
+    [setDescription]
+  );
 
   return (
     <Box sx={{ width: "100%", padding: "8px" }}>
@@ -119,9 +132,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
           maxRows={4}
           variant="standard"
           sx={{ width: "100%" }}
-          onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setDescription(e.target.value)
-          }
+          onChange={handleDescriptionChange}
         />
       </Box>
       <Box
@@ -188,9 +199,10 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
       </Box>
       <Footer
         disabled={
-          selectedImages.length > 0 ||
-          selectedDocuments.length > 0 ||
-          description.length > 0
+          !isSubmit &&
+          (selectedImages.length > 0 ||
+            selectedDocuments.length > 0 ||
+            description.length > 0)
             ? false
             : true
         }

@@ -1,8 +1,8 @@
 import axios from "axios";
 
-export const SERVER_URL = "https://backend.ceibro.ee";
+// export const SERVER_URL = "https://backend.ceibro.ee";
 // export const SERVER_URL = "https://dev.ceibro.ee";
-// export const SERVER_URL = 'http://10.10.10.38:3000'
+export const SERVER_URL = 'http://10.10.10.38:3000'
 // export const SERVER_URL = "http://10.10.10.200:3000";
 
 export const urlV1 =

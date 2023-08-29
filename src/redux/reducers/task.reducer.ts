@@ -470,6 +470,19 @@ const TaskReducer = (
             }
           }
 
+          // from-me unread when only task creator not self assigned
+          if (
+            eventData.isCreator === true &&
+            eventData.oldTaskData.creatorState === "unread" &&
+            !eventData.oldTaskData.isAssignedToMe
+          ) {
+            // find task in unread and move to ongoing
+            const taskIndex = state.allTaskFromMe.unread.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              state.allTaskFromMe.unread[taskIndex].seenBy = eventData.seenBy;
+              console.log("task seen allTaskFromMe.unread", state.allTaskFromMe.unread[taskIndex].seenBy);
+            }
+          }
           // update  task to-me [ongoing]
           if (isAssignedToMe && isOngoing) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
