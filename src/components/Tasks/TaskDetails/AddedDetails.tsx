@@ -1,9 +1,8 @@
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import Accordion from "@mui/material/Accordion";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import AccordionSummary from "@mui/material/AccordionSummary";
-import assets from "assets/assets";
 import {
   AddStatusTag,
   CustomStack,
@@ -12,6 +11,7 @@ import {
   SubHeadingTag,
 } from "components/CustomTags";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
+import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
@@ -37,7 +37,6 @@ export default function AddedDetails(props: IProps) {
     setIsPdf(isPdf);
     openModal();
   };
-  console.log("isPdf", isPdf);
 
   return (
     <>
@@ -173,6 +172,19 @@ export default function AddedDetails(props: IProps) {
                         </React.Fragment>
                       );
                     case TaskEventType.DoneTask:
+                      let mediaLocal: any = [];
+                      let docsLocal: any = [];
+                      if (commentData && commentData?.files.length > 0) {
+                        docsLocal = FILTER_DATA_BY_EXT(
+                          DOC_EXT,
+                          commentData.files
+                        );
+                        mediaLocal = FILTER_DATA_BY_EXT(
+                          MEDIA_EXT,
+                          commentData.files
+                        );
+                      }
+
                       return (
                         <React.Fragment key={event._id}>
                           <CustomStack gap={1.2} py={0.8}>
@@ -191,6 +203,51 @@ export default function AddedDetails(props: IProps) {
                               <Divider />
                             </>
                           )}
+                          <CustomStack py={0.7}>
+                            {mediaLocal.map((file: IFile) => (
+                              <Box
+                                key={file._id} // Add a unique key to help React identify elements
+                                sx={{
+                                  marginRight: "16px",
+                                  marginBottom:
+                                    file.comment.length === 0 ? "0px" : "16px",
+                                  "&:hover": { cursor: "pointer" },
+                                }}
+                                onClick={() => handleClick(file)}
+                              >
+                                {file.comment.length === 0 && (
+                                  <ImageBox src={file.fileUrl} />
+                                )}
+                              </Box>
+                            ))}
+                          </CustomStack>
+
+                          {mediaLocal.map((file: IFile) => {
+                            const hasFileComment = file.comment.length > 0;
+                            return (
+                              <>
+                                {hasFileComment && (
+                                  <Box
+                                    key={file._id}
+                                    sx={{
+                                      marginBottom: "16px",
+                                      "&:hover": { cursor: "pointer" },
+                                    }}
+                                    onClick={() => handleClick(file)}
+                                  >
+                                    <ImageBoxWithDesp
+                                      src={file.fileUrl}
+                                      comment={file.comment}
+                                    />
+                                  </Box>
+                                )}
+                              </>
+                            );
+                          })}
+                          {docsLocal.length > 0 && (
+                            <FileBox files={docsLocal} />
+                          )}
+
                           <Divider />
                         </React.Fragment>
                       );
@@ -204,7 +261,6 @@ export default function AddedDetails(props: IProps) {
                           commentData.files
                         );
                       }
-                      console.log("docs", docs);
                       return (
                         <React.Fragment key={event._id}>
                           <CustomStack gap={1.2} py={0.8}>
@@ -263,42 +319,7 @@ export default function AddedDetails(props: IProps) {
                               </>
                             );
                           })}
-                          {docs.map((file: IFile) => {
-                            return (
-                              <Box
-                                key={file._id}
-                                sx={{
-                                  display: "flex",
-                                  alignItems: "center",
-                                  marginRight: 2,
-                                  mb: 1.2,
-                                  "&:hover": {
-                                    cursor: "pointer",
-                                  },
-                                }}
-                                onClick={() => handleClick(file, true)}
-                              >
-                                <img
-                                  width={20}
-                                  height={20}
-                                  src={assets.FileIcon}
-                                  alt="File Icon"
-                                />
-                                <Typography
-                                  sx={{
-                                    fontFamily: "Inter",
-                                    fontWeight: 400,
-                                    fontSize: "14px",
-                                    marginLeft: "8px",
-                                    marginRight: "16px",
-                                  }}
-                                >
-                                  {file.fileName}
-                                </Typography>
-                              </Box>
-                            );
-                          })}
-                          {/* {docs&&docs.} */}
+                          {docs.length > 0 && <FileBox files={docs} />}
                           <Divider />
                         </React.Fragment>
                       );

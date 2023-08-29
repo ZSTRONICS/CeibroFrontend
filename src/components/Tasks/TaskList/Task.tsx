@@ -49,7 +49,7 @@ const Task = (props: IProps) => {
       allTaskHidden: ["ongoing", "done", "canceled"],
     };
     const propertiesToCheck = subtaskPropertyMapping[subtask];
-    let found = propertiesToCheck.some(
+    let found = propertiesToCheck?.some(
       (property: string) => !_.isEmpty(task[subtask][property])
     );
     return found;
@@ -100,50 +100,47 @@ const Task = (props: IProps) => {
     }
   };
   useEffect(() => {
-    let ischangeUrl = false;
-    let path = "";
-    let getFilteredKey = getFilterKey();
-    let isTaskData = getTaskDataRequired();
-    let foundTask =
-      filteredTask &&
-      filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
-    if (!subtask && !filterkey) {
-      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-      ischangeUrl = true;
-      setSelectedTab(getFilteredKey);
-    } else if (subtask && filterkey) {
-      ischangeUrl = true;
-      setSelectedTab(filterkey);
-      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-    } else if (subtask && !filterkey) {
-      ischangeUrl = true;
-      path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-      setSelectedTab(getFilteredKey);
-    }
-    if (
-      ischangeUrl &&
-      path !== "" &&
-      isTaskData &&
-      filteredTask &&
-      filteredTask.length > 0
-    ) {
-      if (taskuid && foundTask) {
-        setSelectedTask(foundTask);
-        path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
+    if (window.location.href.includes("/tasks")) {
+      let ischangeUrl = false;
+      let path = "";
+      let getFilteredKey = getFilterKey();
+      let isTaskData = getTaskDataRequired();
+      let foundTask =
+        filteredTask &&
+        filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
+      if (!subtask && !filterkey) {
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+        ischangeUrl = true;
+        setSelectedTab(getFilteredKey);
+      } else if (subtask && filterkey) {
+        ischangeUrl = true;
+        setSelectedTab(filterkey);
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+      } else if (subtask && !filterkey) {
+        ischangeUrl = true;
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+        setSelectedTab(getFilteredKey);
       }
-      props.history.push(path);
+      if (
+        ischangeUrl &&
+        path !== "" &&
+        isTaskData &&
+        filteredTask &&
+        filteredTask.length > 0
+      ) {
+        if (taskuid && foundTask) {
+          setSelectedTask(foundTask);
+          path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
+        }
+        history.push(path);
+      }
     }
-  }, [
-    subtask,
-    filterkey,
-    taskuid,
-    filteredTask,
-    selectedTask,
-    // allTaskFromMe,
-    // allTaskToMe,
-    // allTaskHidden,
-    // props.history,
-  ]);
+    return () => {
+      console.log("clear effect");
+      setSelectedTab("");
+      setSelectedTask(null);
+    };
+  }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
   // console.log("selectedTask", selectedTask);
   useEffect(() => {
     subtask &&
@@ -157,16 +154,9 @@ const Task = (props: IProps) => {
       setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
-  }, [
-    selectedTab,
-    subtask,
-    filterkey,
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
-  ]);
+  }, [selectedTab]);
 
-  const markTaskAsSeen = (taskId: string) => {
+  const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
         other: { taskId },
@@ -206,11 +196,11 @@ const Task = (props: IProps) => {
   }, [filterkey, subtask]);
 
   const handleTabClick = (type: string) => {
-    props.history.push(`/tasks/${subtask}/${type}`);
+    history.push(`/tasks/${subtask}/${type}`);
   };
 
   const handleSelectedTask = (task: ITask) => {
-    props.history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
+    history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {

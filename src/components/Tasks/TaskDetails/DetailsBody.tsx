@@ -28,11 +28,13 @@ export default function DetailsBody(props: IProps) {
       <Box sx={{ paddingLeft: "15px" }}>
         <DespcriptionBox description={description} />
         <Box
+          className="custom-scrollbar"
           sx={{
             // height: "96px",
             width: "100%",
-            padding: "0px 0px 16px 0px",
+            padding: "10px 0px 16px 0px",
             marginRight: "16px",
+            overflowX: "auto",
             display: "flex",
           }}
         >

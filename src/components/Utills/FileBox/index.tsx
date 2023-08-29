@@ -38,7 +38,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
       <Box
         sx={{
           width: "100%",
-          border: "1px solid #e2e4e5",
+          border: `${title ? "1px solid #e2e4e5" : ""}`,
           padding: "5px 0",
           paddingLeft: "15px",
           gap: 1,
@@ -47,27 +47,32 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
           color: "#605c5c",
         }}
       >
-        <Box
-          sx={{
-            width: "85px",
-            height: "16px",
-            borderRight: "1px solid #818181",
-            display: "flex",
-            alignItems: "center",
-            paddingRight: "10px",
-          }}
-        >
-          <Typography
+        {title && (
+          <Box
             sx={{
-              fontFamily: "Inter",
-              fontWeight: 500,
-              fontSize: "12px",
+              width: "85px",
+              height: "16px",
+              borderRight: "1px solid #818181",
+              display: "flex",
+              alignItems: "center",
+              paddingRight: "10px",
             }}
           >
-            {title}
-          </Typography>
-        </Box>
-        <Box sx={{ overflow: "auto", width: "100%", maxHeight: "10rem" }}>
+            <Typography
+              sx={{
+                fontFamily: "Inter",
+                fontWeight: 500,
+                fontSize: "12px",
+              }}
+            >
+              {title}
+            </Typography>
+          </Box>
+        )}
+        <Box
+          className="custom-scrollbar"
+          sx={{ overflow: "auto", width: "100%", maxHeight: "10rem" }}
+        >
           {files.length > 0 ? (
             files.map((item: IFile | File | any) => {
               let f_name = "";
