@@ -135,11 +135,10 @@ const Task = (props: IProps) => {
         history.push(path);
       }
     }
-    return () => {
-      console.log("clear effect");
-      setSelectedTab("");
-      setSelectedTask(null);
-    };
+    // return () => {
+    //   setSelectedTab("");
+    //   setSelectedTask(null);
+    // };
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
   // console.log("selectedTask", selectedTask);
   useEffect(() => {
