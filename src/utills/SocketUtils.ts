@@ -76,6 +76,7 @@ export const useSocket = () => {
                 token: myToken,
             }, query: {
                 secureUUID: String(secureUUID),
+                deviceType: "web",
             },
         });
 
