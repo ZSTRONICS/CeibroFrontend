@@ -15,11 +15,7 @@ interface MenuProps {
   disableMenu: boolean;
 }
 
-const GenericMenu: React.FC<MenuProps> = ({
-  icon,
-  options,
-  disableMenu = false,
-}) => {
+const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

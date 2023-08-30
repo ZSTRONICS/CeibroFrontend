@@ -61,7 +61,7 @@ function TaskCard(props: IProps) {
         cursor: "pointer",
         border: "1px solid #818181",
         borderRadius: 1,
-        padding: "5px 9px",
+        padding: "3px 4px",
         borderTop: "none",
         background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         WebkitBoxShadow: `${
@@ -128,7 +128,7 @@ function TaskCard(props: IProps) {
 
         <SubHeadingTag
           className="ellipsis"
-          sx={{ maxWidth: "300px", color: "black", pb: 1 }}
+          sx={{ maxWidth: "300px", color: "black", pb: 0.1 }}
         >
           {topic?.topic ?? "N/A"}
         </SubHeadingTag>

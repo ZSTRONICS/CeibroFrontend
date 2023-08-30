@@ -14,8 +14,9 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { VariableSizeList } from "react-window";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
@@ -38,8 +39,13 @@ const ForwardTask = ({
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
+
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const headerHeight = 220;
+  const [windowHeight, setWindowHeight] = useState<number>(
+    window.innerHeight - headerHeight
+  );
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
@@ -202,6 +208,24 @@ const ForwardTask = ({
     }
   };
 
+  const ContactBoxRow = ({ index, style }: any) => {
+    const contact = recentUserContact[index];
+    return (
+      <div key={index} style={style}>
+        <ContactBox
+          isDisabled={filteredUsers.some(
+            (user: any) => user._id === contact._id
+          )}
+          contact={contact}
+          handleSelectedList={handleSelectedList}
+          selected={
+            !!selected.find((selectUser) => selectUser._id === contact._id)
+          }
+        />
+      </div>
+    );
+  };
+
   return (
     <Box>
       <Box
@@ -336,23 +360,19 @@ const ForwardTask = ({
           },
         }}
       >
-        {recentUserContact.length > 0 &&
-          recentUserContact.map((contact: Contact) => {
-            return (
-              <ContactBox
-                isDisabled={filteredUsers.some(
-                  (user: any) => user._id === contact._id
-                )}
-                contact={contact}
-                handleSelectedList={handleSelectedList}
-                selected={
-                  !!selected.find(
-                    (selectUser) => selectUser._id === contact._id
-                  )
-                }
-              />
-            );
-          })}
+        {recentUserContact.length > 0 && (
+          <VariableSizeList
+            className="custom-scrollbar"
+            height={windowHeight}
+            itemCount={recentUserContact.length}
+            overscanCount={1}
+            layout="vertical"
+            itemSize={(index) => 60}
+            width={"100%"}
+          >
+            {ContactBoxRow}
+          </VariableSizeList>
+        )}
         <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
         {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
           <Typography>{groupLetter}</Typography>,

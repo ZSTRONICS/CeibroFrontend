@@ -140,7 +140,7 @@ const Task = (props: IProps) => {
     //   setSelectedTask(null);
     // };
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
-  // console.log("selectedTask", selectedTask);
+
   useEffect(() => {
     subtask &&
       setFilteredTask(
@@ -436,15 +436,16 @@ const Task = (props: IProps) => {
           borderRight: "1px solid #ADB5BD",
         }}
       >
-        <Box pt={1}>
+        <Box sx={{ padding: "5px 3px" }}>
           <Box
+            className="custom-scrollbar"
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "20px",
+              gap: { xs: 1, md: 1.25 },
               overflow: "auto",
-              padding: "8px 0 4px 0",
+              padding: "8px 0px 4px 0px",
             }}
           >
             {task &&
@@ -491,7 +492,7 @@ const Task = (props: IProps) => {
                 itemCount={filteredTask.length}
                 overscanCount={1}
                 layout="vertical"
-                itemSize={(index) => 125}
+                itemSize={(index) => 110}
                 width={"100%"}
               >
                 {TaskRow}
@@ -516,6 +517,10 @@ const Task = (props: IProps) => {
               alignItems: "center",
               flexDirection: "column",
               height: "100%",
+              fontFamily: "Inter",
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "black",
             }}
           >
             No Task Selected!

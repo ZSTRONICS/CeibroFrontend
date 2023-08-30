@@ -23,7 +23,6 @@ export default function ContactBox({
     isCeiborUser,
     userCeibroData,
   } = contact;
-  console.log("contact", contact);
 
   let imgSrc: string = "";
   let placeholder: string | undefined = "";

@@ -101,9 +101,9 @@ function CustomDropDown(props: IProps) {
     setSearchQuery("");
     setOpen(false);
     setAllFilterData({
-        all: sortedOptions,
-        recent: options.recentOptions
-      });
+      all: sortedOptions,
+      recent: options.recentOptions,
+    });
   };
 
   const handleOpen = () => {
