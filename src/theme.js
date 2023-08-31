@@ -7,7 +7,7 @@ export const theme = createTheme({
       width: "0.4rem",
     },
     "*::-webkit-scrollbar-track": {
-      "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+      WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
       borderRadius: "0.2rem",
     },
     "*::-webkit-scrollbar-thumb": {

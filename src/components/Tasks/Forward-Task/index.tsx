@@ -8,13 +8,15 @@ import {
 import ContactBox from "components/Utills/ContactBox";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
+import { TASK_CONFIG } from "config";
 import {
   AssignedUserState,
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { VariableSizeList } from "react-window";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
@@ -37,8 +39,13 @@ const ForwardTask = ({
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
+
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
+  const headerHeight = 220;
+  const [windowHeight, setWindowHeight] = useState<number>(
+    window.innerHeight - headerHeight
+  );
   const [filterData, setFilterData] = React.useState<{
     [key: string]: any[];
   }>({});
@@ -170,7 +177,13 @@ const ForwardTask = ({
           //todo comment empty for temp
           comment: "",
         },
-        success: () => {
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: { task: res.data.newTask, eventType: "TASK_FORWARDED" },
+            });
+          }
           closeModal();
         },
       })
@@ -193,6 +206,24 @@ const ForwardTask = ({
     } else {
       return false;
     }
+  };
+
+  const ContactBoxRow = ({ index, style }: any) => {
+    const contact = recentUserContact[index];
+    return (
+      <div key={index} style={style}>
+        <ContactBox
+          isDisabled={filteredUsers.some(
+            (user: any) => user._id === contact._id
+          )}
+          contact={contact}
+          handleSelectedList={handleSelectedList}
+          selected={
+            !!selected.find((selectUser) => selectUser._id === contact._id)
+          }
+        />
+      </div>
+    );
   };
 
   return (
@@ -223,7 +254,7 @@ const ForwardTask = ({
             height: "0.4rem",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
             borderRadius: "0.2rem",
           },
           "&::-webkit-scrollbar-thumb": {
@@ -321,7 +352,7 @@ const ForwardTask = ({
             height: "0.4rem",
           },
           "&::-webkit-scrollbar-track": {
-            "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
             borderRadius: "0.2rem",
           },
           "&::-webkit-scrollbar-thumb": {
@@ -329,23 +360,19 @@ const ForwardTask = ({
           },
         }}
       >
-        {recentUserContact.length > 0 &&
-          recentUserContact.map((contact: Contact) => {
-            return (
-              <ContactBox
-                isDisabled={filteredUsers.some(
-                  (user: any) => user._id === contact._id
-                )}
-                contact={contact}
-                handleSelectedList={handleSelectedList}
-                selected={
-                  !!selected.find(
-                    (selectUser) => selectUser._id === contact._id
-                  )
-                }
-              />
-            );
-          })}
+        {recentUserContact.length > 0 && (
+          <VariableSizeList
+            className="custom-scrollbar"
+            height={windowHeight}
+            itemCount={recentUserContact.length}
+            overscanCount={1}
+            layout="vertical"
+            itemSize={(index) => 60}
+            width={"100%"}
+          >
+            {ContactBoxRow}
+          </VariableSizeList>
+        )}
         <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
         {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
           <Typography>{groupLetter}</Typography>,

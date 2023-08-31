@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
+import { v4 as uuidv4 } from 'uuid';
 import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
@@ -22,9 +23,10 @@ export const useSocket = () => {
             if (socket.getSocket() !== null) {
                 console.log("socket found")
                 setShouldSendHeartbeat(false);
-                // socket.getSocket()?.disconnect();
                 socket.getSocket().emit("logout");
-                // socket.setSocket(null);
+                socket.getSocket().disconnect();
+                socket.setSocket(null);
+                global.isSocketConnecting = false;
             }
             return;
         }
@@ -41,7 +43,7 @@ export const useSocket = () => {
         const myToken = JSON.parse(tokens)?.access?.token;
 
         function generateSecureUUID() {
-            return crypto.randomUUID();
+            return uuidv4();
         }
 
         function sendHeartbeat() {
@@ -61,12 +63,20 @@ export const useSocket = () => {
         // secureUUID += "-" + sock.id;
         console.log("secureUUID", secureUUID);
 
+        // Event listener to handle page refresh, tab/window close, etc.
+        window.addEventListener('beforeunload', async function () {
+            await sock.emit("logout", secureUUID);
+            sock.disconnect();
+            socket.setSocket(null);
+        });
+
         const sock = io(SERVER_URL, {
             transports: ["websocket"],
             auth: {
                 token: myToken,
             }, query: {
                 secureUUID: String(secureUUID),
+                deviceType: "web",
             },
         });
 
@@ -84,20 +94,28 @@ export const useSocket = () => {
             console.log("heartbeatAck");
         });
 
-        sock.on("disconnect", () => {
-            console.log("Disconnected from server");
-            global.isSocketConnecting = false;
-            try {
-                sock.disconnect();
-            } catch (e) {
-                console.log("error in disconnecting socket", e);
-            }
-            socket.setSocket(null);
-        });
+        // sock.on("disconnect", () => {
+        //     console.log("Disconnected from server");
+        //     global.isSocketConnecting = false;
+        //     try {
+        //         sock.disconnect();
+        //     } catch (e) {
+        //         console.log("error in disconnecting socket", e);
+        //     }
+        //     socket.setSocket(null);
+        // });
 
         sock.on("reconnect", () => {
             console.log("Reconnected to server");
             socket.setSocket(sock);
+        });
+
+        sock.on("logout-web", async () => {
+            console.log("logout-web from server");
+            await sock.emit("logout", secureUUID);
+            sock.disconnect();
+            socket.setSocket(null);
+            window.location.reload();
         });
 
         sock.on("token_invalid", () => {

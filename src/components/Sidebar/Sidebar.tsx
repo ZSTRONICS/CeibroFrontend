@@ -13,10 +13,11 @@ import "./sidebar.css";
 
 function Sidebar(props: any) {
   const history = useHistory();
-  const location = useLocation()
+  const location = useLocation();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const [selectedChildTab, setSelectedChildTab] = useState<selectedTaskFilterType>();
+  const [selectedChildTab, setSelectedChildTab] =
+    useState<selectedTaskFilterType>();
   const selectedTab = useSelector(
     (store: RootState) => store.navigation.selectedTab
   );
@@ -25,18 +26,20 @@ function Sidebar(props: any) {
   );
   const { user } = useSelector((store: RootState) => store.auth);
   const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-useEffect(()=>{
-  const subtask:selectedTaskFilterType = location.pathname.split('/')[2] as selectedTaskFilterType
-  subtask&&setSelectedChildTab(subtask)
-},[location])
+  useEffect(() => {
+    const subtask: selectedTaskFilterType = location.pathname.split(
+      "/"
+    )[2] as selectedTaskFilterType;
+    subtask ?setSelectedChildTab(subtask):setSelectedChildTab(undefined);
+  }, [location.pathname]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();
     if (config.key === "newTask") {
       openFormInNewWindow("/create-new-task", "Create New Task");
     } else {
-       setSelectedChildTab(config.key);
-         history.push(`/tasks/${config.key}`);
+      setSelectedChildTab(config.key);
+      history.push(`/tasks/${config.key}`);
     }
   };
 

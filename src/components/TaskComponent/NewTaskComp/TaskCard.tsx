@@ -7,9 +7,8 @@ import {
   SubLabelTag,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
-import { momentdeDateFormat } from "components/Utills/Globals";
 import { Task } from "constants/interfaces";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
 interface IProps {
@@ -18,13 +17,19 @@ interface IProps {
   handleClick: (task: Task) => void;
   menuOption: any;
   disableMenu: boolean;
+  isTaskFromMe: string;
 }
 
 function TaskCard(props: IProps) {
   const { user } = useSelector((store: RootState) => store.auth);
-  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
-  const { task, handleClick, selectedTaskId, menuOption, disableMenu } = props;
-  const dispatch = useDispatch();
+  const {
+    task,
+    handleClick,
+    selectedTaskId,
+    menuOption,
+    disableMenu,
+    isTaskFromMe,
+  } = props;
   const userId = user && String(user._id);
   const {
     taskUID,
@@ -36,16 +41,17 @@ function TaskCard(props: IProps) {
     description,
     topic,
     creator,
+    isCreator,
     access,
     createdAt,
     assignedToState,
     userSubState,
     seenBy,
+    creatorState,
   } = task;
 
   const isSelectedTask: boolean = selectedTaskId === _id;
-  const taskCreated = momentdeDateFormat(createdAt);
-
+  // const taskCreated = momentdeDateFormat(createdAt);
   return (
     <Card
       sx={{
@@ -55,16 +61,9 @@ function TaskCard(props: IProps) {
         cursor: "pointer",
         border: "1px solid #818181",
         borderRadius: 1,
-        padding: "5px 9px",
+        padding: "3px 4px",
         borderTop: "none",
-        background:
-          !task.seenBy.includes(userId) &&
-          !(
-            selectedTaskFilter === "allTaskFromMe" &&
-            task.creatorState === "unread"
-          )
-            ? "#EBF5FB"
-            : "",
+        background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         WebkitBoxShadow: `${
           isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
         }`,
@@ -113,7 +112,7 @@ function TaskCard(props: IProps) {
       <CardContent sx={{ pt: 0, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
-            To:&nbsp;{" "}
+            {isTaskFromMe}&nbsp;{" "}
             <span style={{ fontWeight: "500", fontSize: "11px" }}>
               {" "}
               {`${creator.firstName} ${creator.surName}`}
@@ -129,9 +128,9 @@ function TaskCard(props: IProps) {
 
         <SubHeadingTag
           className="ellipsis"
-          sx={{ maxWidth: "300px", color: "black", pb: 1 }}
+          sx={{ maxWidth: "300px", color: "black", pb: 0.1 }}
         >
-          {topic.topic ?? "N/A"}
+          {topic?.topic ?? "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag

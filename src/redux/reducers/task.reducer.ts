@@ -76,29 +76,45 @@ const TaskReducer = (
       if (action.payload.isAssignedToMe === true) {
         const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
-          state.allTaskToMe.new.unshift(action.payload);
-          state.allTaskToMe.new[0].userSubState = "new"
-          console.log("push task to me new", state.allTaskToMe.new[0]);
+          const assigneeTask = {
+            ...action.payload,
+            userSubState: 'new',
+          };
+          state.allTaskToMe.new.unshift(assigneeTask);
+          console.log("push task to me new", assigneeTask);
         }
       }
       if (action.payload.isCreator === true) {
         const isTaskUnique = !state.allTaskFromMe.unread.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
-          state.allTaskFromMe.unread.unshift(action.payload);
-          state.allTaskFromMe.unread[0].userSubState = "unread";
-          state.allTaskFromMe.unread[0].creatorState = "unread";
+          const creatorTask = {
+            ...action.payload,
+            userSubState: 'unread',
+          };
+          const newAllTaskFromMe = [creatorTask, ...state.allTaskFromMe.unread];
           console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
+          return {
+            ...state,
+            allTaskFromMe: {
+              ...state.allTaskFromMe,
+              unread: newAllTaskFromMe,
+            },
+          };
+
         } else {
           console.log("Task is already present in the unread ");
         }
       }
       return {
-        ...state,
-      };
+        ...state
+      }
 
     // push topic in store
     case TASK_CONFIG.PUSH_TOPIC_IN_STORE:
-      state.Topics.allTopics.unshift(action.payload);
+      const isTopicUnique = !state.Topics.allTopics.some((topic: any) => topic._id === action.payload._id);
+      if (isTopicUnique) {
+        state.Topics.allTopics.unshift(action.payload)
+      }
       return {
         ...state,
       };
@@ -193,12 +209,20 @@ const TaskReducer = (
             addEventToTask(state.allTaskHidden.canceled[taskIndex], eventData, taskIndex);
             state.allTaskHidden.canceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
             state.allTaskHidden.canceled[taskIndex].creatorState = "unread";
-            state.allTaskHidden.canceled[taskIndex].userSubState = "new";
-            state.allTaskFromMe.unread.unshift(state.allTaskHidden.canceled[taskIndex]);
-            console.log('UN_CANCEL_TASK state.allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
+            state.allTaskHidden.canceled[taskIndex].isCanceled = false;
+            const modifiedTask = {
+              ...state.allTaskHidden.canceled[taskIndex],
+              userSubState: 'unread',
+            };
+            state.allTaskFromMe.unread.unshift(modifiedTask);
+            console.log('UN_CANCEL_TASK allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
             if (isAssignedToMe) {
-              state.allTaskToMe.new.unshift(state.allTaskHidden.canceled[taskIndex]);
-              console.log("UN_CANCEL_TASK state.allTaskToMe.new", state.allTaskToMe.new[0]._id);
+              const modifiedTask = {
+                ...state.allTaskHidden.canceled[taskIndex],
+                userSubState: 'new',
+              };
+              console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
+              state.allTaskToMe.new.unshift(modifiedTask);
             }
             state.allTaskHidden.canceled.splice(taskIndex, 1)
           }
@@ -414,7 +438,7 @@ const TaskReducer = (
           break;
         case "TASK_SEEN":
           // to-me [new] to-me [ongoing]
-          if (isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
+          if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
             // find task in new and move to ongoing and update task
             const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
             if (taskIndex > -1) {
@@ -446,6 +470,19 @@ const TaskReducer = (
             }
           }
 
+          // from-me unread when only task creator not self assigned
+          if (
+            eventData.isCreator === true &&
+            eventData.oldTaskData.creatorState === "unread" &&
+            !eventData.oldTaskData.isAssignedToMe
+          ) {
+            // find task in unread and move to ongoing
+            const taskIndex = state.allTaskFromMe.unread.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              state.allTaskFromMe.unread[taskIndex].seenBy = eventData.seenBy;
+              console.log("task seen allTaskFromMe.unread", state.allTaskFromMe.unread[taskIndex].seenBy);
+            }
+          }
           // update  task to-me [ongoing]
           if (isAssignedToMe && isOngoing) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
@@ -489,12 +526,10 @@ const TaskReducer = (
           if ((isCreator || isAssignedToMe) &&
             eventData.oldTaskData.creatorState === "canceled"
           ) {
-            const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
+            const taskIndex = state.allTaskHidden.canceled.findIndex((task: any) => task._id === eventData.taskId);
             if (taskIndex > -1) {
               pushSeenBy(state.allTaskHidden.canceled[taskIndex], eventData);
-              console.log("updated state.allTaskHidden.canceled seenBy ",
-                state.allTaskHidden.canceled[taskIndex]._id
-              );
+              console.log("canceled seenBy ", state.allTaskHidden.canceled[taskIndex]._id);
             }
           }
           break;
@@ -676,6 +711,7 @@ const TaskReducer = (
     }
 
     case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
+
       return {
         ...state,
         loadingAllTaskfromMe: false,

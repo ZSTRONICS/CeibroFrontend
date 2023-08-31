@@ -2,6 +2,7 @@ import { MoreVert } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
+  Divider,
   ListSubheader,
   Menu,
   MenuItem,
@@ -99,6 +100,10 @@ function CustomDropDown(props: IProps) {
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
+    setAllFilterData({
+      all: sortedOptions,
+      recent: options.recentOptions,
+    });
   };
 
   const handleOpen = () => {
@@ -160,6 +165,7 @@ function CustomDropDown(props: IProps) {
             dispatch(taskActions.getAllTopic());
             if (option.label === selected) {
               setSelected("");
+              setSearchQuery("");
             }
           },
         })
@@ -208,7 +214,23 @@ function CustomDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          MenuProps={{autoFocus:true,disableAutoFocusItem:true}}
+          MenuProps={{
+            autoFocus: true,
+            disableAutoFocusItem: true,
+            anchorOrigin: {
+              vertical: "bottom",
+              horizontal: "left",
+            },
+            transformOrigin: {
+              vertical: "top",
+              horizontal: "left",
+            },
+            PaperProps: {
+              style: {
+                maxHeight: "calc(100vh - 240px)",
+              },
+            },
+          }}
           // onChange={handleChange}
           endAdornment={
             selected && (
@@ -270,10 +292,10 @@ function CustomDropDown(props: IProps) {
               >
                 Recent used topics
               </Typography>
-              {allFilterData.recent.map((item: OptionType) => {
+              {allFilterData.recent.map((item: OptionType, i: any) => {
                 return (
                   <Box
-                    key={`recent-${item.value}`}
+                    key={`recent-${item.value + i}`}
                     sx={{ margin: "8px 16px", cursor: "pointer" }}
                     onClick={() => handleMenuClick(item)}
                   >
@@ -281,17 +303,18 @@ function CustomDropDown(props: IProps) {
                   </Box>
                 );
               })}
+              <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
             </Box>
           )}
           <Box sx={{ margin: "8px 16px" }}>
             {Object.entries(allFilterData.all).map(
-              ([groupLetter, groupOptions]) => [
+              ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array
                 <Typography>{groupLetter}</Typography>,
                 // Use map on the array to render the list items
-                ...groupOptions.map((item) => (
+                ...groupOptions.map((item, i) => (
                   <Box
-                    key={`all-${item.value}`}
+                    key={`all-${item.value + i}`}
                     sx={{
                       margin: "8px 16px",
                       cursor: "pointer",
@@ -322,6 +345,7 @@ function CustomDropDown(props: IProps) {
                       onClose={handleCloseMenu}
                     >
                       <MenuItem
+                        key={i}
                         onClick={(e) => {
                           e.preventDefault();
                           e.stopPropagation();

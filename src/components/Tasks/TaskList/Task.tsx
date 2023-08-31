@@ -10,7 +10,7 @@ import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
-import { RouteComponentProps, useParams } from "react-router-dom";
+import { RouteComponentProps, useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import TaskDetails from "../TaskDetails";
@@ -18,15 +18,16 @@ import TaskDetails from "../TaskDetails";
 interface RouteParams {
   subtask: selectedTaskFilterType;
   filterkey: string;
-  taskid: string;
+  taskuid: string;
 }
 
 interface IProps extends RouteComponentProps<RouteParams> {}
 const Task = (props: IProps) => {
-  const { subtask, filterkey, taskid } = useParams<RouteParams>();
+  const { subtask, filterkey, taskuid } = useParams<RouteParams>();
 
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const headerHeight = 180;
   const [windowHeight, setWindowHeight] = useState<number>(
@@ -36,32 +37,42 @@ const Task = (props: IProps) => {
 
   const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
-  const {
-    allTaskToMe,
-    allTaskFromMe,
-    allTaskHidden,
-    loadingAllTaskToMe,
-    loadingAllTaskfromMe,
-  } = task;
+  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
+  const subTaskKey = subtask ?? "allTaskFromMe";
 
-  const getParticukarSubtask = (subtask: selectedTaskFilterType) => {
+  const getTaskDataRequired = () => {
+    const subtaskPropertyMapping: any = {
+      allTaskToMe: ["new", "ongoing", "done"],
+      allTaskFromMe: ["unread", "ongoing", "done"],
+      allTaskHidden: ["ongoing", "done", "canceled"],
+    };
+    const propertiesToCheck = subtaskPropertyMapping[subtask];
+    let found = propertiesToCheck?.some(
+      (property: string) => !_.isEmpty(task[subtask][property])
+    );
+    return found;
+  };
+
+  const getAllTaskOnce = (subtask: string) => {
     if (
-      subtask === "allTaskToMe" &&
       _.isEmpty(allTaskToMe.new) &&
       _.isEmpty(allTaskToMe.ongoing) &&
       _.isEmpty(allTaskToMe.done)
-    )
+    ) {
       dispatch(taskActions.getAllTaskToMe());
-    else if (
-      subtask === "allTaskFromMe" &&
+    }
+
+    if (
       _.isEmpty(allTaskFromMe.unread) &&
       _.isEmpty(allTaskFromMe.ongoing) &&
       _.isEmpty(allTaskFromMe.done)
-    )
+    ) {
       dispatch(taskActions.getAllTaskFromMe());
-    else if (
-      subtask === "allTaskHidden" &&
+    }
+
+    if (
       _.isEmpty(allTaskHidden.ongoing) &&
       _.isEmpty(allTaskHidden.done) &&
       _.isEmpty(allTaskHidden.canceled)
@@ -71,50 +82,80 @@ const Task = (props: IProps) => {
   };
 
   useEffect(() => {
-    if (subtask) {
-      getParticukarSubtask(subtask);
-      const key = Object.keys(task[subtask])[0];
-      setFilteredTask(searchInData(task[subtask][key], "", "taskUID"));
-    }
-    if (filterkey) {
-      setSelectedTab(filterkey);
+    getAllTaskOnce(subtask);
+  }, [subtask]);
+
+  const getFilterKey = () => {
+    if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
+      return filterkey;
     } else {
-      if (subtask) {
-        const key = Object.keys(task[subtask])[0];
-        props.history.push(`/tasks/${subtask}/${key}`);
+      const keys = Object.keys(task[subTaskKey]);
+      const keyIndex =
+        task[subTaskKey][keys[0]].length > 0
+          ? 0
+          : task[subTaskKey][keys[1]].length > 0
+          ? 1
+          : 2;
+      return keys[keyIndex];
+    }
+  };
+  useEffect(() => {
+    if (window.location.href.includes("/tasks")) {
+      let ischangeUrl = false;
+      let path = "";
+      let getFilteredKey = getFilterKey();
+      let isTaskData = getTaskDataRequired();
+      let foundTask =
+        filteredTask &&
+        filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
+      if (!subtask && !filterkey) {
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+        ischangeUrl = true;
+        setSelectedTab(getFilteredKey);
+      } else if (subtask && filterkey) {
+        ischangeUrl = true;
+        setSelectedTab(filterkey);
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+      } else if (subtask && !filterkey) {
+        ischangeUrl = true;
+        path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+        setSelectedTab(getFilteredKey);
+      }
+      if (
+        ischangeUrl &&
+        path !== "" &&
+        isTaskData &&
+        filteredTask &&
+        filteredTask.length > 0
+      ) {
+        if (taskuid && foundTask) {
+          setSelectedTask(foundTask);
+          path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
+        }
+        history.push(path);
       }
     }
-    if (taskid && taskid !== selectedTask?._id) {
-      if (filteredTask && filteredTask.length > 0) {
-        setSelectedTask(
-          filteredTask.find((taskItem) => taskItem._id === taskid)!
-        );
-      }
-    }
-  }, [subtask, filterkey, taskid]);
+    // return () => {
+    //   setSelectedTab("");
+    //   setSelectedTask(null);
+    // };
+  }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
 
   useEffect(() => {
     subtask &&
-      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
+      setFilteredTask(
+        searchInData(task[subtask][getFilterKey()], "", "taskUID")
+      );
   }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
-    if (subtask) {
-      const keys = Object.keys(task[subtask]);
-      if (!filterkey && subtask) {
-        props.history.replace(`/tasks/${subtask}/${keys[0]}`);
-      }
-      handleTabClick(keys[0]);
+    if (selectedTab) {
+      setSelectedTask(null);
+      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
-  }, [subtask]);
+  }, [selectedTab]);
 
-  // useEffect(() => {
-  //   if (selectedTab) {
-  //     handleTabClick(selectedTab);
-  //   }
-  // }, [selectedTab]);
-
-  const markTaskAsSeen = (taskId: string) => {
+  const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
         other: { taskId },
@@ -124,30 +165,41 @@ const Task = (props: IProps) => {
 
   useEffect(() => {
     let taskNeedToBeSeen =
-      selectedTask !== null && !selectedTask.seenBy.includes(userId);
-
-    if (
       selectedTask &&
-      taskNeedToBeSeen &&
-      subtask === "allTaskFromMe" &&
-      selectedTask.creatorState === "unread"
-    ) {
-      taskNeedToBeSeen = false;
-    }
+      selectedTask !== null &&
+      !selectedTask.seenBy.includes(userId);
 
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
   }, [selectedTask]);
 
+  useEffect(() => {
+    switch (subtask) {
+      case "allTaskFromMe":
+        setIsTaskFromMe("To");
+        break;
+      case "allTaskToMe":
+        setIsTaskFromMe("From");
+        break;
+      case "allTaskHidden":
+        if (filterkey === "canceled") {
+          setIsTaskFromMe("To");
+        } else {
+          setIsTaskFromMe("From");
+        }
+        break;
+      default:
+        break;
+    }
+  }, [filterkey, subtask]);
+
   const handleTabClick = (type: string) => {
-    setSelectedTask(null);
-    setFilteredTask(searchInData(task[subtask][type], "", "taskUID"));
-    props.history.push(`/tasks/${subtask}/${type}`);
+    history.push(`/tasks/${subtask}/${type}`);
   };
 
   const handleSelectedTask = (task: ITask) => {
-    setSelectedTask(task);
+    history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -343,18 +395,21 @@ const Task = (props: IProps) => {
     const localTask = filteredTask[index];
     return (
       <div style={{ ...style }}>
-        <TaskCard
-          key={localTask._id}
-          task={localTask}
-          selectedTaskId={selectedTask?._id}
-          handleClick={handleSelectedTask}
-          menuOption={filteredMenuOptions(subtask, selectedTab)}
-          disableMenu={
-            selectedTab === "canceled"
-              ? localTask && localTask.creator._id !== userId
-              : false
-          }
-        />
+        {localTask && (
+          <TaskCard
+            key={localTask._id}
+            isTaskFromMe={isTaskFromMe}
+            task={localTask}
+            selectedTaskId={selectedTask?._id}
+            handleClick={handleSelectedTask}
+            menuOption={subtask && filteredMenuOptions(subtask, selectedTab)}
+            disableMenu={
+              selectedTab === "canceled"
+                ? localTask && localTask.creator._id !== userId
+                : false
+            }
+          />
+        )}
       </div>
     );
   };
@@ -381,15 +436,16 @@ const Task = (props: IProps) => {
           borderRight: "1px solid #ADB5BD",
         }}
       >
-        <Box pt={1}>
+        <Box sx={{ padding: "5px 3px" }}>
           <Box
+            className="custom-scrollbar"
             sx={{
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: "20px",
+              gap: { xs: 1, md: 1.25 },
               overflow: "auto",
-              padding: "8px 0 4px 0",
+              padding: "8px 0px 4px 0px",
             }}
           >
             {task &&
@@ -436,7 +492,7 @@ const Task = (props: IProps) => {
                 itemCount={filteredTask.length}
                 overscanCount={1}
                 layout="vertical"
-                itemSize={(index) => 125}
+                itemSize={(index) => 110}
                 width={"100%"}
               >
                 {TaskRow}
@@ -448,7 +504,10 @@ const Task = (props: IProps) => {
       </Grid>
       <Grid item md={9} xs={8}>
         {selectedTask !== null &&
-        filteredTask.some((task: ITask) => task._id === selectedTask._id) ? (
+        filteredTask &&
+        filteredTask.some(
+          (task: ITask) => task.taskUID === selectedTask?.taskUID
+        ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div
@@ -458,6 +517,10 @@ const Task = (props: IProps) => {
               alignItems: "center",
               flexDirection: "column",
               height: "100%",
+              fontFamily: "Inter",
+              fontSize: "14px",
+              fontWeight: 500,
+              color: "black",
             }}
           >
             No Task Selected!

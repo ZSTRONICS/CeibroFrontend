@@ -1,4 +1,3 @@
-import React from "react";
 import { Box, Typography } from "@mui/material";
 
 interface IProps {
@@ -10,7 +9,7 @@ const DespcriptionBox = ({ description }: IProps) => (
     sx={{
       width: "100%",
       // height: "60px",
-      padding: "5px 0px",
+      padding: "14px 0px",
       gap: 1,
     }}
   >
@@ -37,7 +36,7 @@ const DespcriptionBox = ({ description }: IProps) => (
             fontWeight: 500,
             fontSize: "12px",
             lineHeight: "16px",
-            color:'#605c5c'
+            color: "#605c5c",
           }}
         >
           Description
@@ -59,7 +58,7 @@ const DespcriptionBox = ({ description }: IProps) => (
             color: "#000",
           }}
         >
-          {description===""?"N/A":description}
+          {description === "" ? "N/A" : description}
         </Typography>
       </Box>
     </Box>

@@ -18,7 +18,7 @@ import ConnectionCard from "./ConnectionCard";
 const Connections = () => {
   const dispatch = useDispatch();
   const [apiCalled, setApiCalled] = useState(false);
-  const { userAllContacts, loadingContacts,recentUserContact } = useSelector(
+  const { userAllContacts, loadingContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
   const isTabOrMobile = useResponsive("down", "sm", "");
@@ -30,12 +30,9 @@ const Connections = () => {
 
   useEffect(() => {
     if (!apiCalled) {
-      // const payload = {
-      //   other: { userId: user._id },
-      // };
-
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-      recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
+      recentUserContact.length < 1 &&
+        dispatch(userApiAction.getRecentContacts());
       setApiCalled(true);
     }
   }, []);

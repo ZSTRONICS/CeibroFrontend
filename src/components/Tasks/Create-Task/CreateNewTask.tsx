@@ -52,6 +52,7 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
+  const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [selectedData, setSelectedData] =
@@ -65,7 +66,7 @@ function CreateNewTask() {
     recentOptions: [],
   });
   const dispatch = useDispatch();
-  const { userAllContacts, loadingContacts, recentUserContact } = useSelector(
+  const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
@@ -105,7 +106,7 @@ function CreateNewTask() {
         recentOptions: getRecentTopicOptions,
       });
     }
-  }, [Topics.allTopics]);
+  }, [Topics, Topics.allTopics]);
 
   useEffect(() => {
     if (allProjects && !isEmpty(allProjects)) {
@@ -195,6 +196,7 @@ function CreateNewTask() {
       taskActions.createTask({
         body: payload,
         success: (res: any) => {
+          setIsSubmit(true);
           if (selectedImages.length > 0 || selectedDocuments.length > 0) {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
@@ -205,6 +207,9 @@ function CreateNewTask() {
             }
           }
         },
+        onFailAction: () => {
+          setIsSubmit(false);
+        },
       })
     );
   };
@@ -212,6 +217,7 @@ function CreateNewTask() {
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
+    console.log("first");
     let value = event ? event.target.value : "";
     handleChangeValues(value, "description");
   };
@@ -224,10 +230,23 @@ function CreateNewTask() {
             body: {
               topic: label,
             },
+            success: (res) => {
+              if (res.data.newTopic) {
+                setTopicOptions({
+                  allOptions: [
+                    {
+                      label: res.data.newTopic.topic,
+                      value: res.data.newTopic._id,
+                    },
+                    ...topicOptions.allOptions,
+                  ],
+                  recentOptions: [...topicOptions.recentOptions],
+                });
+                dispatch(taskActions.getAllTopic());
+              }
+            },
           })
         );
-        //todo check websocket events for new window
-        dispatch(taskActions.getAllTopic());
 
         break;
       case "Project":
@@ -247,6 +266,7 @@ function CreateNewTask() {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => {
+    console.log("first changes");
     if (value === undefined) {
       setSelectedData((prevSelectedData) => ({
         ...prevSelectedData,
@@ -331,7 +351,7 @@ function CreateNewTask() {
             maxRows={4}
             variant="standard"
             sx={{ width: "100%" }}
-            onChange={handleDescriptionChange}
+            onBlur={handleDescriptionChange}
           />
         </Box>
         <CustomSwitch
@@ -374,7 +394,7 @@ function CreateNewTask() {
                 height: "0.4rem",
               },
               "&::-webkit-scrollbar-track": {
-                "-webkit-box-shadow": "inset 0 0 6px rgba(0,0,0,0.00)",
+                WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
                 borderRadius: "0.2rem",
               },
               "&::-webkit-scrollbar-thumb": {
@@ -382,9 +402,10 @@ function CreateNewTask() {
               },
             }}
           >
-            {selectedImages.map((file) => {
+            {selectedImages.map((file, i) => {
               return (
                 <Box
+                  key={i}
                   sx={{
                     width: "80px",
                     height: "80px",
@@ -433,6 +454,7 @@ function CreateNewTask() {
         <Footer
           disabled={
             selectedData.topic !== "" &&
+            !isSubmit &&
             (selectedData.assignedToState.length > 0 ||
               (selectedData.invitedNumbers &&
                 selectedData.invitedNumbers.length > 0))
