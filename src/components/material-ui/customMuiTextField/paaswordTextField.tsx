@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
-  MenuItem,
   OutlinedInput,
-  Select,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import React, { useState } from "react";
 
 interface IProps {
   name: string;
@@ -25,7 +23,6 @@ interface IProps {
 export const PasswordTextField = (props: IProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { name, label, placeholder, password, onChange, onBlur } = props;
-  const id = label.replace(/\s+/g, "-");
 
   return (
     <>

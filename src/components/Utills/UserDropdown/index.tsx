@@ -27,10 +27,6 @@ import { handleGroupSearch } from "utills/common";
 import ContactBox from "../ContactBox";
 import SelectedContactBox from "../SelectedContactBox";
 
-interface Option {
-  label: string;
-  value: string;
-}
 interface IProps {
   name: keyof CreateNewTaskFormType;
   label: string;
@@ -73,7 +69,7 @@ function UserDropDown(props: IProps) {
       const groupedData: { [key: string]: { label: string; value: string }[] } =
         {};
 
-      sortedContacts.forEach((contact) => {
+      sortedContacts.forEach((contact: any) => {
         const firstLetter = contact.contactFirstName[0].toUpperCase();
         if (!groupedData[firstLetter]) {
           groupedData[firstLetter] = [];

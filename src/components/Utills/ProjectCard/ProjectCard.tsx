@@ -10,8 +10,8 @@ import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
+import { useHistory } from "react-router-dom";
 import { momentdeDateFormat } from "../Globals/Common";
-import { useHistory, useParams } from "react-router-dom";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -37,7 +37,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   } = project;
 
   const dispatch = useDispatch();
-  const { projectId, floorId } = useParams<{ projectId: string; floorId: string }>();
+  // const { projectId, floorId } = useParams<{ projectId: string; floorId: string }>();
 
   const handleProjectClick = () => {
     dispatch(projectActions.setSelectedProject(_id));
@@ -76,7 +76,14 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             </Typography>
           </Status>
           <Status
-            style={{ fontSize:'14px',right: "16px", left: "unset", background:"#1976d2", padding:'1px 6px', borderRadius:'8%' }}
+            style={{
+              fontSize: "14px",
+              right: "16px",
+              left: "unset",
+              background: "#1976d2",
+              padding: "1px 6px",
+              borderRadius: "8%",
+            }}
             onClick={handleLocation}
           >
             <Typography className={classes.statusText}>Location</Typography>

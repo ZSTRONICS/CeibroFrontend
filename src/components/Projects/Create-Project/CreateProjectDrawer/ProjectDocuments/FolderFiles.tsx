@@ -11,18 +11,13 @@ import {
   Typography,
 } from "@material-ui/core";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import { Tooltip } from "@mui/material";
-import {
-  AssignedTag,
-  CustomBadge,
-  CustomStack,
-} from "components/TaskComponent/Tabs/TaskCard";
+import { CustomStack, DocumentNameTag } from "components/CustomTags";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
 import React, { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions, {
+import {
   getFolderFiles,
   uploadFileToFolder,
 } from "redux/action/project.action";
@@ -119,7 +114,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
       // {...getRootProps({
       //   onClick: (event: any) => event.stopPropagation(),
       // })}
-      style={{ minHeight: props.height, height:'100%' }}
+      style={{ minHeight: props.height, height: "100%" }}
     >
       {/* <input {...getInputProps()} /> */}
       <TableContainer>
@@ -192,8 +187,8 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                           rowGap={1}
                           justifyContent="center"
                         >
-                          <AssignedTag>Member</AssignedTag>
-                          <CustomBadge
+                          <DocumentNameTag>Member</DocumentNameTag>
+                          {/* <CustomBadge
                             overlap="circular"
                             color="primary"
                             badgeContent={
@@ -201,7 +196,7 @@ const FolderFiles: React.FC<FolderFilesInt> = (props) => {
                                 <span>{file.access.length}</span>
                               </Tooltip>
                             }
-                          ></CustomBadge>
+                          ></CustomBadge> */}
                         </CustomStack>
                       ) : (
                         "Only you"

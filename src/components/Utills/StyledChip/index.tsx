@@ -1,5 +1,4 @@
 import { Badge, Chip } from "@mui/material";
-import { styled } from "@mui/system";
 import { MouseEventHandler } from "react"; // Import MouseEventHandler
 
 interface StyledChipProps {
@@ -11,12 +10,12 @@ interface StyledChipProps {
   callback: MouseEventHandler<HTMLDivElement>;
 }
 
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    right: 4,
-    top: 4,
-  },
-}));
+// const StyledBadge = styled(Badge)(({ theme }) => ({
+//   "& .MuiBadge-badge": {
+//     right: 4,
+//     top: 4,
+//   },
+// }));
 
 const StyledChip = ({
   label,

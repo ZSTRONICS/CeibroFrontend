@@ -1,8 +1,6 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core";
-import colors from "../../../assets/colors";
-import { Box, Avatar } from "@mui/material";
+import { Avatar, Box } from "@mui/material";
 import { styled } from "@mui/system";
+import React from "react";
 interface NameAvatarProps {
   firstname: string;
   surname?: string;
@@ -63,11 +61,11 @@ export default NameAvatar;
 // });
 
 const AvatarStyle = styled(Avatar)`
-border: 1px solid rgb(222, 226, 230);
-background: rgb(222, 226, 230);
-border-radius: 4px;
-color: black;
-font-size: "14px";
-font-weight: 500;
-text-transform: uppercase;
-`
+  border: 1px solid rgb(222, 226, 230);
+  background: rgb(222, 226, 230);
+  border-radius: 4px;
+  color: black;
+  font-size: "14px";
+  font-weight: 500;
+  text-transform: uppercase;
+`;

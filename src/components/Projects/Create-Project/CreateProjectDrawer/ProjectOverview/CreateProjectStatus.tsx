@@ -11,8 +11,7 @@ import {
 import ClickAwayListener from "@mui/material/ClickAwayListener";
 import assets from "assets/assets";
 import { CButton } from "components/Button";
-import { AddStatusTag } from "components/CustomTags";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { AddStatusTag, CustomStack } from "components/CustomTags";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -28,11 +27,16 @@ function CreateProjectStatus() {
   const [openStatusMenu, setOpenStatusMenu] = React.useState(false);
   const anchorRef = React.useRef<HTMLButtonElement>(null);
   const [openPopupMenu, setOpenPopupMenu] = React.useState(false);
-  const [anchorElemStatus, setAnchorElemStatus] =React.useState<null | HTMLElement>(null);
+  const [anchorElemStatus, setAnchorElemStatus] =
+    React.useState<null | HTMLElement>(null);
   const [editStatusValue, setEditStatusValue] = useState(" ");
-  const projectOverview = useSelector((state: RootState) => state.project.projectOverview);
+  const projectOverview = useSelector(
+    (state: RootState) => state.project.projectOverview
+  );
   const { user } = useSelector((state: RootState) => state.auth);
-  const updateRights= projectOverview.owner.some((item:any)=>String(item._id)===String(user._id))
+  const updateRights = projectOverview.owner.some(
+    (item: any) => String(item._id) === String(user._id)
+  );
 
   const options = projectOverview.extraStatus;
   let index = projectOverview.extraStatus.findIndex(
@@ -64,7 +68,7 @@ function CreateProjectStatus() {
   };
 
   const handleToggle = () => {
-    if(updateRights===true){
+    if (updateRights === true) {
       setOpenStatusMenu((prevOpen) => !prevOpen);
     }
   };

@@ -16,7 +16,6 @@ import { selectedTaskFilterType } from "redux/type";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from "./appReducer";
 interface TaskReducerInt {
-  // showAllTasks:TaskRoot[]
   allTaskToMe: AllTaskToMeInterface;
   allTaskFromMe: AllTaskFromMeInterface;
   allTaskHidden: AllTaskHiddenInterface;
@@ -602,79 +601,7 @@ const TaskReducer = (
 
       return {
         ...state,
-        // allTaskHidden: {
-        //   ...state.allTaskHidden,
-        //   canceled: state.allTaskHidden.canceled,
-        //   ongoing: state.allTaskHidden.ongoing,
-        //   done: state.allTaskHidden.done,
-        // },
-        // allTaskFromMe: {
-        //   ...state.allTaskFromMe,
-        //   done: state.allTaskFromMe.done,
-        //   ongoing: state.allTaskFromMe.ongoing,
-        //   unread: state.allTaskFromMe.unread,
-        // },
-        // allTaskToMe: {
-        //   ...state.allTaskToMe,
-        //   new: state.allTaskToMe.new,
-        //   ongoing: state.allTaskToMe.ongoing,
-        //   done: state.allTaskToMe.done,
-        // },
       };
-
-
-    // Dispatch States Start
-    case TASK_CONFIG.OPEN_NEW_TASK:
-      return {
-        ...state,
-        dialogOpen: true,
-      };
-
-    case TASK_CONFIG.CLOSE_NEW_TASK:
-      return {
-        ...state,
-        dialogOpen: false,
-      };
-
-    case TASK_CONFIG.OPEN_TASK_DRAWER:
-      return {
-        ...state,
-        taskDrawerOpen: true,
-        isEditing: action.payload,
-      };
-
-    case TASK_CONFIG.CLOSE_TASK_DRAWER:
-      return {
-        ...state,
-        taskDrawerOpen: false,
-        isEditing: false,
-      };
-
-    case TASK_CONFIG.SELECTED_TASK_ID:
-      return {
-        ...state,
-        selectedTaskId: action.payload,
-      };
-
-    case TASK_CONFIG.EDIT_TASK: {
-      return {
-        ...state,
-        isEditing: action.payload,
-      };
-    }
-
-    case TASK_CONFIG.OPEN_CONFIRM_DRAWER:
-      return {
-        ...state,
-        openConfirmModal: true,
-      };
-
-    case TASK_CONFIG.CLOSE_CONFIRM_DRAWER:
-      return {
-        ...state,
-        openConfirmModal: false,
-      };
-    // Dispatch States END
 
     // API Request Start
     case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {

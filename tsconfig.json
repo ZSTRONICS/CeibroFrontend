@@ -6,6 +6,7 @@
     // Generate d.ts files
     "declaration": true,
     "skipLibCheck": true,
+    // "noUnusedLocals": true,  // it is used to show all unused imports and var
 
     /* Bundler mode */
     "allowImportingTsExtensions": true,

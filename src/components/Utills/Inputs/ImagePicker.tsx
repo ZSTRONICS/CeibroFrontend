@@ -1,31 +1,27 @@
 import { makeStyles } from "@material-ui/core";
-import React, { useRef, useState } from "react";
-import colors from "../../../assets/colors";
-import { useDispatch, useSelector } from "react-redux";
-import projectActions, {
-  getProjectDetail,
-  updateProjectPicture,
-} from "redux/action/project.action";
-import { RootState } from "redux/reducers/appReducer";
 import assets from "assets/assets";
-import { toast } from "react-toastify";
 import { ProjectInterface } from "constants/interfaces/project.interface";
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import projectActions from "redux/action/project.action";
+import { RootState } from "redux/reducers/appReducer";
+import colors from "../../../assets/colors";
 
 const ImagePicker = () => {
   const ref = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
-  const [url, setUrl] = useState<string | null>(
-    "https://lh3.googleusercontent.com/proxy/ten4SpJ9QmAd8hrlUGL5gWjVehpKHpO-SJskSTYNRF48cVO69HJdP5NaW_TOGDl2gOKmw1hcFIrlCqRZES_KPYuiGxgQ31L1vqw7o_HVX-uTaPQEq5qWG2jfpYCu"
-  );
+  const [url, setUrl] = useState<string | null>("");
 
   const projectOverview: ProjectInterface = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const {user} = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
-  const updateRights= projectOverview.owner.some((item:any)=>String(item._id)===String(user._id))
+  const updateRights = projectOverview.owner.some(
+    (item: any) => String(item._id) === String(user._id)
+  );
 
-  const { selectedProject } = useSelector((state: RootState) => state.project);
+  // const { selectedProject } = useSelector((state: RootState) => state.project);
   const classes = useStyles();
   const dispatch = useDispatch();
 
@@ -74,8 +70,7 @@ const ImagePicker = () => {
         accept=".png, .jpg, .jpeg"
         className={classes.inputFile}
         type="file"
-        
-        disabled={updateRights===true?false:true}
+        disabled={updateRights === true ? false : true}
         onChange={handleFileChange}
       />
       <div
@@ -90,7 +85,11 @@ const ImagePicker = () => {
           })`,
         }}
       >
-        <img className={`w-16 ${classes.icon}`} src={assets.pencilFilled} alt=""/>
+        <img
+          className={`w-16 ${classes.icon}`}
+          src={assets.pencilFilled}
+          alt=""
+        />
       </div>
     </>
   );

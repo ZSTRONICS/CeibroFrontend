@@ -1,20 +1,17 @@
-import React, { useEffect } from "react";
-import { useHistory } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, makeStyles, Typography } from "@material-ui/core";
-import colors from "../../assets/colors";
-import { RootState } from "../../redux/reducers/appReducer";
-import { getMyConnectionsCount } from "redux/action/user.action";
-import assets from "assets/assets";
+import { Button, Typography, makeStyles } from "@material-ui/core";
 import { Badge, Grid, Stack } from "@mui/material";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import React from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router";
+import colors from "../../assets/colors";
+import { RootState } from "../../redux/reducers/appReducer";
 
 interface IConnectionsProps {}
 
 const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
   const classes = useStyles();
   const history = useHistory();
-  const dispatch = useDispatch();
   const { connections } = useSelector((state: RootState) => state?.user);
 
   // useEffect(() => {
@@ -35,15 +32,17 @@ const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
         <Grid item>
           <Stack direction={"row"}>
             <div className={classes.iconContainer}>
-            <ConnectionIcon/>
+              <ConnectionIcon />
             </div>
             <Typography variant="body1" className={classes.connectionText}>
               My Connections
               <Badge
                 showZero={true}
-                sx={{'& .MuiBadge-badge':{
-                  background:"#F1B740 !important"
-                }}}
+                sx={{
+                  "& .MuiBadge-badge": {
+                    background: "#F1B740 !important",
+                  },
+                }}
                 badgeContent={connections.count}
                 className={classes.badge}
               ></Badge>

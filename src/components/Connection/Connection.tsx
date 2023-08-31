@@ -11,7 +11,7 @@ import { RootState } from "redux/reducers/appReducer";
 
 // types
 // component
-import NoData from "components/Chat/NoData";
+import NoData from "components/NotFound/NoData";
 import useResponsive from "hooks/useResponsive";
 import ConnectionCard from "./ConnectionCard";
 
@@ -22,7 +22,6 @@ const Connections = () => {
     (state: RootState) => state.user
   );
   const isTabOrMobile = useResponsive("down", "sm", "");
-  const { user } = useSelector((state: RootState) => state.auth);
   const headerHeight = isTabOrMobile ? 75 : 110;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight

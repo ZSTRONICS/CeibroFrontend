@@ -1,10 +1,8 @@
 import { CButton } from "components/Button";
+import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import Input from "components/Utills/Inputs/Input";
-import InputHOC from "components/Utills/Inputs/InputHOC";
-import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions from "redux/action/project.action";
@@ -23,7 +21,9 @@ function StatusModal(props: StatusModalProps) {
   const projectOverview = useSelector(
     (state: RootState) => state.project.projectOverview
   );
-  const [status, setStatus] = React.useState<string>(props.editStatusValue?props.editStatusValue:"");
+  const [status, setStatus] = React.useState<string>(
+    props.editStatusValue ? props.editStatusValue : ""
+  );
   const projectStatus = projectOverview.extraStatus.filter(
     (item: string) => item !== "" && item !== undefined
   );
@@ -73,56 +73,55 @@ function StatusModal(props: StatusModalProps) {
 
     handleCloseModal();
   };
-  
+
   const handleCloseModal = () => {
     setStatus("");
     props.handleOpenCloseStatusModal();
   };
 
-  return (<>
-  <CustomModal
-      title={props.title}
-      showCloseBtn={false}
-      isOpen={props.openCloseStatusModal}
-      handleClose={handleCloseModal}
-      children={
-        <>
-          <Input
-            title="Status"
-            placeholder="Enter status name"
-            value={status}
-            maxLength={15}
-            onChange={(e: any) => handleChangeStatusValue(e)}
-          />
-          <CustomStack justifyContent="flex-end" py={2.2} gap={1.2}> 
-          <CButton
-              sx={{
-                borderColor: "#9D9D9D",
-                fontSize: 12,
-                fontWeight: "500",
-                borderWidth: 1.5,
-                color: "#9D9D9D",
-                marginRight: 15,
-                textTransform: "capitalize",
-              }}
-              label="Cancel"
-              onClick={handleCloseModal}
-              variant="outlined"
+  return (
+    <>
+      <CustomModal
+        title={props.title}
+        showCloseBtn={false}
+        isOpen={props.openCloseStatusModal}
+        handleClose={handleCloseModal}
+        children={
+          <>
+            <Input
+              title="Status"
+              placeholder="Enter status name"
+              value={status}
+              maxLength={15}
+              onChange={(e: any) => handleChangeStatusValue(e)}
             />
-            <CButton
-              variant="contained"
-              label={props.btnLabel}
-              disabled={String(status).length > 0 ? false : true}
-              onClick={(e: any) => {
-                handleStatus(e, props.btnLabel === "Add" ? false : true);
-              }}
-            />
-           
-          </CustomStack>
-        </>
-      }
-    />
-   
+            <CustomStack justifyContent="flex-end" py={2.2} gap={1.2}>
+              <CButton
+                sx={{
+                  borderColor: "#9D9D9D",
+                  fontSize: 12,
+                  fontWeight: "500",
+                  borderWidth: 1.5,
+                  color: "#9D9D9D",
+                  marginRight: 15,
+                  textTransform: "capitalize",
+                }}
+                label="Cancel"
+                onClick={handleCloseModal}
+                variant="outlined"
+              />
+              <CButton
+                variant="contained"
+                label={props.btnLabel}
+                disabled={String(status).length > 0 ? false : true}
+                onClick={(e: any) => {
+                  handleStatus(e, props.btnLabel === "Add" ? false : true);
+                }}
+              />
+            </CustomStack>
+          </>
+        }
+      />
     </>
   );
 }

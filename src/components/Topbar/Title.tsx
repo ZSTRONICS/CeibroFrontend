@@ -1,24 +1,23 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core";
-import { useHistory } from "react-router";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
+import { useCallback, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 // import CreateChat from "./CreateChat";
-import { CustomStack, TopBarTitle } from "components/CustomTags";
 import AddIcon from "@mui/icons-material/Add";
-import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import TextField from "@mui/material/TextField";
 import { styled } from "@mui/system";
-import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
+import { CButton } from "components/Button";
+import { CustomStack, TopBarTitle } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
+import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import { useOpenCloseModal } from "hooks";
-import { RootState } from "redux/reducers/appReducer";
 import projectActions, { getAllProjects } from "redux/action/project.action";
-import { CButton } from "components/Button";
+import { RootState } from "redux/reducers/appReducer";
 import { socket } from "services/socket.services";
-import { taskActions } from "redux/action";
 
 const Title = () => {
   const dispatch = useDispatch();
@@ -55,7 +54,7 @@ const Title = () => {
   };
 
   const openTaskModal = () => {
-    dispatch(taskActions.openNewTaskModal());
+    // dispatch(taskActions.openNewTaskModal());
   };
 
   const goBack = useCallback(() => {

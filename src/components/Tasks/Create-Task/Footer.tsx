@@ -99,7 +99,7 @@ const Footer = (props: FooterPropsType) => {
         left: 0,
         width: "100%",
         padding: "8px 0",
-        height: "45px",
+        height: "55px",
       }}
     >
       {props.handleGetLocationValue && (

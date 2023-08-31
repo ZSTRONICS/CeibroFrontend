@@ -1,7 +1,8 @@
 import { Grid, IconButton, makeStyles, Typography } from "@material-ui/core";
 import CustomCheckbox from "components/Utills/Inputs/Checkbox";
-import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
+import Loading from "components/Utills/Loader/Loading";
 import NameAvatar from "components/Utills/Others/NameAvatar";
+import { ProjectCreator } from "constants/interfaces";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useEffect, useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
@@ -11,11 +12,9 @@ import {
   getAllDocuments,
   getGroupUsers,
 } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import assets from "../../../../../assets/assets";
 import colors from "../../../../../assets/colors";
-import Loading from "components/Utills/Loader/Loading";
-import { ProjectCreator } from "constants/interfaces";
-import { RootState } from "redux/reducers";
 
 interface ProjectDocsMenuInt {
   groupId: string;

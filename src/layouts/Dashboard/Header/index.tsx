@@ -3,12 +3,10 @@ import PropTypes from "prop-types";
 import { AppBar, Box, IconButton, Stack, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
-import Title from "components/Topbar/Title";
+import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useHistory } from "react-router-dom";
-import Topbar from "components/Topbar/Topbar";
-import Sidebar from "components/Sidebar/Sidebar";
 
 const NAV_WIDTH = 72;
 

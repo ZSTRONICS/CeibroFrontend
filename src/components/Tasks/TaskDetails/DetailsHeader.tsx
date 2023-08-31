@@ -1,11 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import {
-  AssignedUserState,
-  InvitedNumber,
-  Project,
-  Topic,
-} from "constants/interfaces";
+import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
 import DetailActions from "./DetailActions";
 
 interface IProps {

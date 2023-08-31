@@ -23,9 +23,17 @@ import colors from "../../../../../assets/colors";
 // import membersDelete from "../../../../../assets/assets/../assets/membersDelete";
 import assets from "assets/assets";
 import { CButton } from "components/Button";
-import { AddStatusTag, ConfirmDescriptionTag } from "components/CustomTags";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { Member, ProjectMemberInterface, ProjectRolesInterface, roleTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  AddStatusTag,
+  ConfirmDescriptionTag,
+  CustomStack,
+} from "components/CustomTags";
+import {
+  Member,
+  ProjectMemberInterface,
+  ProjectRolesInterface,
+  roleTemplate,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { toast } from "react-toastify";
 import RollOverMenu from "./RollOverMenu";
 
@@ -43,11 +51,11 @@ const MembersTable = () => {
           permission.members.some(
             (member: Member) => String(member._id) === String(user._id)
           )
-        ).find((item: any) => item?.rolePermission);
+        )
+        .find((item: any) => item?.rolePermission);
     return rolePermissionLocal || roleTemplate;
   };
   const myRole: ProjectRolesInterface = getMyRole();
-
 
   const [loading, setLoading] = useState<boolean>(false);
   const confirm = useConfirm();
@@ -150,7 +158,9 @@ const MembersTable = () => {
                   <TableRow key={member._id}>
                     <TableCell component="th" scope="row">
                       <Typography className={classes.nameWrapper}>
-                        {String(member?.user?._id) === String(user._id) ? "Me" : `${member?.user?.firstName} ${member?.user?.surName}`}
+                        {String(member?.user?._id) === String(user._id)
+                          ? "Me"
+                          : `${member?.user?.firstName} ${member?.user?.surName}`}
                       </Typography>
                       <Typography className={classes.organizationName}>
                         Company:{member?.user?.companyName ?? "N/A"}
@@ -158,12 +168,16 @@ const MembersTable = () => {
                       {/* </div> */}
                     </TableCell>
                     <TableCell>
-                      <AddStatusTag sx={{ textTransform: 'capitalize', color: "#000000" }}>
+                      <AddStatusTag
+                        sx={{ textTransform: "capitalize", color: "#000000" }}
+                      >
                         {member.role ? member.role.name : "N/A"}
                       </AddStatusTag>
                     </TableCell>
                     <TableCell>
-                      <AddStatusTag sx={{ textTransform: 'capitalize', color: "#000000" }}>
+                      <AddStatusTag
+                        sx={{ textTransform: "capitalize", color: "#000000" }}
+                      >
                         {member.group ? member.group.name : "N/A"}
                       </AddStatusTag>
                     </TableCell>

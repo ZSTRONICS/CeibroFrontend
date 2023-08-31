@@ -1,10 +1,5 @@
-import React, { useState } from "react";
-import {
-  Button,
-  Dialog,
-  Divider,
-  Grid,
-} from "@mui/material";
+import { Button, Dialog, Divider, Grid } from "@mui/material";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core";
 
@@ -13,13 +8,11 @@ import { useDispatch } from "react-redux";
 
 import colors from "../../assets/colors";
 
-import { UserCeibroData } from "constants/interfaces/user.interface";
-import UserProfileView from "components/Profile/UserProfileView";
-import { CustomStack } from "components/CustomTags";
-import { TopBarTitle } from "components/CustomTags";
 import assets from "assets/assets";
+import { CustomStack, TopBarTitle } from "components/CustomTags";
+import UserProfileView from "components/Profile/UserProfileView";
+import { UserCeibroData } from "constants/interfaces/user.interface";
 import useResponsive from "hooks/useResponsive";
-import { taskActions } from "redux/action";
 
 interface IViewProfileProps {
   userId?: string;
@@ -28,59 +21,19 @@ interface IViewProfileProps {
 }
 
 const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
-  const {disabled, userData } = props;
+  const { disabled, userData } = props;
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
   const dispatch = useDispatch();
-  const isTabletOrMobile = useResponsive("down", 'md', "");
+  const isTabletOrMobile = useResponsive("down", "md", "");
 
   const handleToggle = () => {
     setOpen((prev: boolean) => !prev);
   };
 
   const openTaskModal = () => {
-    dispatch(taskActions.openNewTaskModal());
+    // dispatch(taskActions.openNewTaskModal());
   };
-
-  // const startChatRoom = (roomId: string) => {
-  //   dispatch(
-  //     getRoomMessages({
-  //       other: {
-  //         roomId: roomId,
-  //         limit: 20,
-  //       },
-  //       success: () => {},
-  //     })
-  //   );
-
-  //   dispatch(
-  //     getRoomMedia({
-  //       other: roomId,
-  //     })
-  //   );
-  //   dispatch(
-  //     getPinnedMessages({
-  //       other: roomId,
-  //     })
-  //   );
-  //   const payload = {
-  //     other: roomId,
-  //   };
-  //   dispatch(getRoomQuestioniars(payload));
-
-  //   dispatch(setSelectedChat({ other: roomId }));
-  // };
-
-  // const startRoom = () => {
-  //   const payload = {
-  //     other: { _id: userId },
-  //     success: (res: any) => {
-  //       history.push("chat");
-  //       startChatRoom(res.data.newChat._id);
-  //     },
-  //   };
-  //   dispatch(createSingleRoom(payload));
-  // };
 
   return (
     <>
@@ -104,11 +57,9 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
         maxWidth="xs"
         onClose={handleToggle}
         open={open}
-        sx={
-          {
-            "& .MuiPaper-root": { margin: { xs: 0.3, md: 2.5 } },
-          }
-        }
+        sx={{
+          "& .MuiPaper-root": { margin: { xs: 0.3, md: 2.5 } },
+        }}
       >
         <CustomStack
           sx={{ margin: "14.2px 4px 2px 20px" }}

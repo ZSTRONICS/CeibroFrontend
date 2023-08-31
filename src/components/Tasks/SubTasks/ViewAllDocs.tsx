@@ -1,26 +1,34 @@
-
-import Tabs from '@mui/base/Tabs';
+import Tabs from "@mui/base/Tabs";
 import ExpandCircleDownOutlinedIcon from "@mui/icons-material/ExpandCircleDownOutlined";
 import {
-  Box, CircularProgress, Grid, List,
+  Box,
+  CircularProgress,
+  Grid,
+  List,
   ListItem,
-  ListItemAvatar, ListItemText, useMediaQuery
+  ListItemAvatar,
+  ListItemText,
+  useMediaQuery,
 } from "@mui/material";
 import { styled } from "@mui/system";
 import { CButton } from "components/Button";
 import {
-  CDateTime, CommentName, FileName, Heading, Span
+  CDateTime,
+  CommentName,
+  CustomStack,
+  FileName,
+  Heading,
+  Span,
 } from "components/CustomTags";
-import { Tab,  TabPanel,  TabsList } from "components/TaskComponent/Tabs/Tabs";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
+import { Tab, TabPanel, TabsList } from "components/TaskComponent/Tabs/Tabs";
+// import FilePreviewer from "components/Utills/ChatChip/FilePreviewer";
 import {
   DOC_EXT,
   filesizes,
   FILTER_DATA_BY_EXT,
   MEDIA_EXT,
   momentdeDateFormat,
-  momentTimeFormat
+  momentTimeFormat,
 } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
 import React from "react";
@@ -30,15 +38,17 @@ import { RootState } from "redux/reducers/appReducer";
 import { theme } from "theme";
 
 interface Props {
-  heading: string,
-  handleclosecdrawer: () => void
-  moduleName: string
-  moduleId: string
+  heading: string;
+  handleclosecdrawer: () => void;
+  moduleName: string;
+  moduleId: string;
 }
 
 function ViewAllDocs(props: Props) {
   const tabOrMobileView = useMediaQuery(theme.breakpoints.down("sm"));
-  const { getAllDocsByModule, loadinggetAllDocs } = useSelector((files: RootState) => files.docs);
+  const { getAllDocsByModule, loadinggetAllDocs } = useSelector(
+    (files: RootState) => files.docs
+  );
 
   const dispatch = useDispatch();
 
@@ -73,21 +83,26 @@ function ViewAllDocs(props: Props) {
         <ContentMain>
           <Tabs defaultValue={0}>
             <TabsList>
-              <Tab sx={{ fontSize: '1rem' }}>All</Tab>
-              <Tab sx={{ fontSize: '1rem' }}>Docs</Tab>
-              <Tab sx={{ fontSize: '1rem' }}>Media</Tab>
+              <Tab sx={{ fontSize: "1rem" }}>All</Tab>
+              <Tab sx={{ fontSize: "1rem" }}>Docs</Tab>
+              <Tab sx={{ fontSize: "1rem" }}>Media</Tab>
             </TabsList>
             <TabPanel value={0} index={0}>
               {DocsContent(loadinggetAllDocs, getAllDocsByModule)}
             </TabPanel>
             <TabPanel value={1} index={1}>
-              {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(DOC_EXT, getAllDocsByModule))}
+              {DocsContent(
+                loadinggetAllDocs,
+                FILTER_DATA_BY_EXT(DOC_EXT, getAllDocsByModule)
+              )}
             </TabPanel>
             <TabPanel value={2} index={1}>
-              {DocsContent(loadinggetAllDocs, FILTER_DATA_BY_EXT(MEDIA_EXT, getAllDocsByModule))}
+              {DocsContent(
+                loadinggetAllDocs,
+                FILTER_DATA_BY_EXT(MEDIA_EXT, getAllDocsByModule)
+              )}
             </TabPanel>
           </Tabs>
-
         </ContentMain>
       </Container>
       {!tabOrMobileView && (
@@ -101,12 +116,14 @@ function ViewAllDocs(props: Props) {
 
 export default ViewAllDocs;
 
-const DocsContent = (loadinggetAllDocs: boolean, getAllDocsByModule: FileInterface[]) => {
-
+const DocsContent = (
+  loadinggetAllDocs: boolean,
+  getAllDocsByModule: FileInterface[]
+) => {
   const ListItemAvat = (file: FileInterface) => {
-    let type = file.fileType
+    let type = file.fileType;
     if (DOC_EXT.includes(file.fileType)) {
-      type = file.fileType.replace('.', '')
+      type = file.fileType.replace(".", "");
     }
     const preview = {
       fileType: type,
@@ -116,88 +133,106 @@ const DocsContent = (loadinggetAllDocs: boolean, getAllDocsByModule: FileInterfa
 
     return (
       <ListItemAvatar>
-        <FilePreviewer showControls={false} hideName={true} file={preview} />
+        {/* <FilePreviewer showControls={false} hideName={true} file={preview} /> */}
       </ListItemAvatar>
-    )
+    );
   };
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} md={6}>
-        {loadinggetAllDocs ? <ContentList sx={{ mt: 1, mb: 1, textAlign: "center", maxWidth: 478, width: "376px" }}>
-          <CircularProgress />
-        </ContentList> : <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
-          {getAllDocsByModule.length > 0 ? (
-            getAllDocsByModule.map((file: FileInterface) => {
-              const docsDate = momentdeDateFormat(file.createdAt);
-              const docsTiem = momentTimeFormat(file.createdAt);
-              return (
-                <ListItem
-                  divider
-                  sx={{ paddingLeft: "0" }}
-                  secondaryAction={
-                    <CustomStack
-                      sx={{
-                        display: "flex",
-                        flexDirection: "column",
-                        alignItems: "end",
-                      }}
-                    >
-                      <CDateTime>{docsDate}</CDateTime>
-                      <CDateTime
-                        sx={{
-                          display: "flex",
-                          fontSize: "10px",
-                          alignItems: "flex-end",
-                        }}
-                      >
-                        {docsTiem}
-                      </CDateTime>
-                    </CustomStack>
-                  }
-                >
-                  {ListItemAvat(file)}
-                  <ListItemText
-                    key={file._id}
-                    primary={
-                      <a href={file.fileUrl} download style={{ textDecoration: 'none' }}>
-                        <FileName
-                          sx={{ maxWidth: "200px", width: "100%", color: '#0076C8' }}
-                          className="ellipsis"
-                        >
-                          {file.fileName}
-                        </FileName>
-                      </a>
-                    }
-                    secondary={
+        {loadinggetAllDocs ? (
+          <ContentList
+            sx={{
+              mt: 1,
+              mb: 1,
+              textAlign: "center",
+              maxWidth: 478,
+              width: "376px",
+            }}
+          >
+            <CircularProgress />
+          </ContentList>
+        ) : (
+          <ContentList dense={true} sx={{ maxWidth: 478, width: "376px" }}>
+            {getAllDocsByModule.length > 0 ? (
+              getAllDocsByModule.map((file: FileInterface) => {
+                const docsDate = momentdeDateFormat(file.createdAt);
+                const docsTiem = momentTimeFormat(file.createdAt);
+                return (
+                  <ListItem
+                    divider
+                    sx={{ paddingLeft: "0" }}
+                    secondaryAction={
                       <CustomStack
                         sx={{
+                          display: "flex",
                           flexDirection: "column",
-                          alignItems: "baseline",
+                          alignItems: "end",
                         }}
                       >
-                        {/* <Span>Company. N/A</Span> */}
-
-                        {"fileSize" in file ? (
-                          <Span>{`Size: ${filesizes(
-                            file.fileSize
-                          )}`}</Span>
-                        ) : (
-                          <Span>{`Size: N/A`}</Span>
-                        )}
+                        <CDateTime>{docsDate}</CDateTime>
+                        <CDateTime
+                          sx={{
+                            display: "flex",
+                            fontSize: "10px",
+                            alignItems: "flex-end",
+                          }}
+                        >
+                          {docsTiem}
+                        </CDateTime>
                       </CustomStack>
                     }
-                  />
-                </ListItem>
-              );
-            })
-          ) : (
-            <CommentName>No attachments found!</CommentName>
-          )}
-        </ContentList>}
+                  >
+                    {ListItemAvat(file)}
+                    <ListItemText
+                      key={file._id}
+                      primary={
+                        <a
+                          href={file.fileUrl}
+                          download
+                          style={{ textDecoration: "none" }}
+                        >
+                          <FileName
+                            sx={{
+                              maxWidth: "200px",
+                              width: "100%",
+                              color: "#0076C8",
+                            }}
+                            className="ellipsis"
+                          >
+                            {file.fileName}
+                          </FileName>
+                        </a>
+                      }
+                      secondary={
+                        <CustomStack
+                          sx={{
+                            flexDirection: "column",
+                            alignItems: "baseline",
+                          }}
+                        >
+                          {/* <Span>Company. N/A</Span> */}
+
+                          {"fileSize" in file ? (
+                            <Span>{`Size: ${filesizes(file.fileSize)}`}</Span>
+                          ) : (
+                            <Span>{`Size: N/A`}</Span>
+                          )}
+                        </CustomStack>
+                      }
+                    />
+                  </ListItem>
+                );
+              })
+            ) : (
+              <CommentName>No attachments found!</CommentName>
+            )}
+          </ContentList>
+        )}
       </Grid>
     </Grid>
-  )
-}
+  );
+};
 
 export const Container = styled(Box)(
   ({ theme }) => `

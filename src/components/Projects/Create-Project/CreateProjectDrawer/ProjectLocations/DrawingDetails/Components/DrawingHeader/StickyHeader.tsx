@@ -1,5 +1,4 @@
-import React from "react";
-import { AppBar, Typography, styled } from "@mui/material";
+import { AppBar, styled } from "@mui/material";
 import { Box } from "@mui/system";
 
 interface HeaderProps {
@@ -18,7 +17,7 @@ function StickyHeader(props: HeaderProps) {
       >
         {props.title}
       </Typography> */}
-      <Box sx={{ width: "100%", p: 1, pb:0.5 }}>{props.children} </Box>
+      <Box sx={{ width: "100%", p: 1, pb: 0.5 }}>{props.children} </Box>
     </StyledAppBar>
   );
 }
@@ -31,4 +30,3 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
   color: "unset",
   background: "white",
 }));
-

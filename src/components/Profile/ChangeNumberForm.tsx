@@ -9,23 +9,19 @@ import { useTranslation } from "react-i18next";
 import { Box, Button, Typography } from "@mui/material";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeNumber } from "redux/action/auth.action";
-import { RootState } from "redux/reducers/appReducer";
-
-//toastify
 
 // component
+import { SubLabelTag } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 import Loading from "components/Utills/Loader/Loading";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { UserInterface } from "constants/interfaces/user.interface";
+import userAlertMessage from "hooks/userAlertMessage";
+import { toast } from "react-toastify";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
-import { toast } from "react-toastify";
-import { SubLabelTag } from "components/CustomTags";
-import MessageAlert from "components/MessageAlert/MessageAlert";
-import userAlertMessage from "hooks/userAlertMessage";
 
 interface Props {
   //   tokenLoading: boolean;
@@ -71,12 +67,14 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       onFailAction: (err: any) => {
         setShowLoading(false);
         const errorMessage: string = err.response.data.message;
-        const customErrorMesg:CustomErrorMessages={
+        const customErrorMesg: CustomErrorMessages = {
           "Invalid password": "Incorrect password or invalid phone number",
-          "Password must contain one uppercase letter and one number": "Incorrect password or invalid phone number",
-          "password must be at least 8 characters": "Incorrect password or invalid phone number",
-        }
-        setAlertMessage(customErrorMesg[errorMessage]|| errorMessage);
+          "Password must contain one uppercase letter and one number":
+            "Incorrect password or invalid phone number",
+          "password must be at least 8 characters":
+            "Incorrect password or invalid phone number",
+        };
+        setAlertMessage(customErrorMesg[errorMessage] || errorMessage);
       },
       showErrorToast: false,
     };
@@ -125,7 +123,6 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-
               <SubLabelTag sx={{ fontSize: 14 }}>
                 Entering your new phone number
               </SubLabelTag>

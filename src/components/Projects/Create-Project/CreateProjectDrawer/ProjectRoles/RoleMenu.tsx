@@ -1,14 +1,13 @@
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { IconButton } from "@mui/material";
+import { CButton } from "components/Button";
+import { ConfirmDescriptionTag, CustomStack } from "components/CustomTags";
+import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import colors from "../../../../../assets/colors";
 import assets from "../../../../../assets/assets";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { ConfirmDescriptionTag } from "components/CustomTags";
-import { CButton } from "components/Button";
-import { IconButton } from "@mui/material";
-import { ProjectRolesInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import colors from "../../../../../assets/colors";
 
 interface RoleMenuProps {
   role: ProjectRolesInterface;
@@ -21,14 +20,16 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   const [show, setShow] = useState(false);
   const confirm = useConfirm();
   const [canEdit, setCanEdit] = useState(props.userRole.rolePermission.edit);
-  const [canDelete, setCanDelete] = useState(props.userRole.rolePermission.delete);
+  const [canDelete, setCanDelete] = useState(
+    props.userRole.rolePermission.delete
+  );
 
   const userRole = props.userRole;
   const role = props.role;
 
   if (canEdit === true && userRole.admin === false) {
     if (role.admin === true) {
-      setCanEdit(false);// = false;
+      setCanEdit(false); // = false;
     }
     if (String(role._id) === String(userRole._id)) {
       setCanEdit(false);
@@ -52,7 +53,6 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
   const handleEdit = (e: any) => {
     props.onEdit();
     handleToggle(e);
-
   };
 
   const handleDelete = (e: any) => {
@@ -98,40 +98,43 @@ const RoleMenu: React.FC<RoleMenuProps> = (props) => {
       props.onDelete();
     });
   };
-  const showDropdown = canEdit === false && canDelete === false
+  const showDropdown = canEdit === false && canDelete === false;
 
-  return (<>{showDropdown === false && <div className="dropdown">
-    <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
-      <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
-    </IconButton>
-    {show && (
-      <OutsideClickHandler onOutsideClick={handleToggle}>
-        <div className={`dropdown-content ${classes.dropdownContent}`}>
-          {canEdit === true && (
-            <div onClick={handleEdit} className={classes.btnContainer}>
-              Edit
-            </div>
-          )}
+  return (
+    <>
+      {showDropdown === false && (
+        <div className="dropdown">
+          <IconButton disableRipple disableTouchRipple onClick={handleToggle}>
+            <img src={assets.moreIcon} className={classes.moreIcon} alt="" />
+          </IconButton>
+          {show && (
+            <OutsideClickHandler onOutsideClick={handleToggle}>
+              <div className={`dropdown-content ${classes.dropdownContent}`}>
+                {canEdit === true && (
+                  <div onClick={handleEdit} className={classes.btnContainer}>
+                    Edit
+                  </div>
+                )}
 
-          {canDelete === true && (
-            <>
-              {" "}
-              {canEdit === true && <hr className={classes.break} />}
-              <div
-                onClick={handleDelete}
-                className={classes.btnContainer}
-                style={{ color: "#FA0808" }}
-              >
-                Delete
+                {canDelete === true && (
+                  <>
+                    {" "}
+                    {canEdit === true && <hr className={classes.break} />}
+                    <div
+                      onClick={handleDelete}
+                      className={classes.btnContainer}
+                      style={{ color: "#FA0808" }}
+                    >
+                      Delete
+                    </div>
+                  </>
+                )}
               </div>
-            </>
+            </OutsideClickHandler>
           )}
         </div>
-      </OutsideClickHandler>
-    )}
-  </div>}
-  </>
-
+      )}
+    </>
   );
 };
 

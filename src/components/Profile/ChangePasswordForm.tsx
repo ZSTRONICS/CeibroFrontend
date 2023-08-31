@@ -1,6 +1,6 @@
-import { Button, CircularProgress, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import Alert from "@mui/material/Alert";
-import { changePasswordSchemaValid} from "components/Auth/userSchema/AuthSchema";
+import { changePasswordSchemaValid } from "components/Auth/userSchema/AuthSchema";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
@@ -16,7 +16,7 @@ interface IProps {
 
 const ChangePasswordForm = (props: IProps) => {
   const { t } = useTranslation();
-  const history= useHistory()
+  const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const [error, setError] = useState<boolean>(false);

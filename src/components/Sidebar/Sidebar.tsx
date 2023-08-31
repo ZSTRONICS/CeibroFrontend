@@ -2,7 +2,7 @@ import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { selectedTaskFilterType } from "redux/type";
 import { openFormInNewWindow } from "utills/common";
@@ -15,7 +15,6 @@ function Sidebar(props: any) {
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [selectedChildTab, setSelectedChildTab] =
     useState<selectedTaskFilterType>();
   const selectedTab = useSelector(
@@ -25,12 +24,12 @@ function Sidebar(props: any) {
     (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
-  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
+  // const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
   useEffect(() => {
     const subtask: selectedTaskFilterType = location.pathname.split(
       "/"
     )[2] as selectedTaskFilterType;
-    subtask ?setSelectedChildTab(subtask):setSelectedChildTab(undefined);
+    subtask ? setSelectedChildTab(subtask) : setSelectedChildTab(undefined);
   }, [location.pathname]);
 
   const handleRouteClick = (config: SingleConfig) => {

@@ -1,15 +1,11 @@
-import React, { FC } from "react";
-import { Divider, Box } from "@mui/material";
-import { makeStyles, Typography } from "@material-ui/core";
-import InputHOC from "./InputHOC";
-import Select from "react-select";
+import { makeStyles } from "@material-ui/core";
+import { Box } from "@mui/material";
 import chroma from "chroma-js";
-import colors from "../../../assets/colors";
-import { handleInputChange } from "react-select/src/utils";
+import { FC } from "react";
 import CreatableSelect from "react-select";
-import assets from "assets/assets";
+import colors from "../../../assets/colors";
+import InputHOC from "./InputHOC";
 import { dataInterface } from "./SelectDropdown";
-import HorizontalBreak from "../Others/HorizontalBreak";
 
 const options = [
   { value: "All", label: "All", color: "green" },
@@ -33,8 +29,15 @@ const SelectDropdown: FC<My> = (props) => {
   const classes = useStyles();
   let myOptions: any = props.data || [];
 
-  const { value, title,isMulti, isClearAble, placeholder, zIndex, noOptionMessage } =
-    props;
+  const {
+    value,
+    title,
+    isMulti,
+    isClearAble,
+    placeholder,
+    zIndex,
+    noOptionMessage,
+  } = props;
 
   const colourStyles = {
     placeholder: (defaultStyles: any) => {

@@ -1,48 +1,29 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import "fontsource-roboto";
 import "moment-timezone";
-import React from "react";
 import { ToastContainer } from "react-toastify";
 
 // components
 import { RouterConfig } from "components";
 
-// socket
-
 // material
-// import { CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 
 // styling
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 import "./components/Topbar/ProfileBtn.css";
 
-// redux
-
 // axios
 import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { useSocket } from "utills/SocketUtils";
 
-interface MyApp {}
-
-const App: React.FC<MyApp> = () => {
-  // const [doOnce, setDoOnce] = React.useState(false);
-  // let openProjectdrawer = useSelector(
-  //   (store: RootState) => store.project.drawerOpen
-  // );
-  // let openTaskDrawer = useSelector(
-  //   (state: RootState) => state.task.taskDrawerOpen
-  // );
-  // const drawerOpen = useSelector(
-  //   (store: RootState) => store.chat.openViewQuestioniar
-  // );
-
+const App = () => {
   useSocket();
   return (
     // <ThemeProvider theme={theme}>
     <div className="App">
       <ErrorBoundary>
-        {/* <CssBaseline /> */}
+        <CssBaseline />
         <ToastContainer position="bottom-left" theme="colored" />
         <RouterConfig />
       </ErrorBoundary>
@@ -52,11 +33,7 @@ const App: React.FC<MyApp> = () => {
           <ViewInvitations />
         </div> 
         <UploadingDocsPreview />*/}
-      {/* <CreateQuestioniarDrawer /> */}
-      {/* <CDrawer /> */}
-      {/* {drawerOpen && <ViewQuestioniarDrawer />} */}
       {/* {openProjectdrawer && <CreateProjectDrawer />} */}
-      {/* {openTaskDrawer && <CreateTaskDrawer />} */}
     </div>
     // </ThemeProvider>
   );

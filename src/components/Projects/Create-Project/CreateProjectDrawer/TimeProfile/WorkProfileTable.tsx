@@ -1,32 +1,27 @@
-
-import React, { useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { CircularProgress, Grid, Typography } from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import AlaramIcon from "@material-ui/icons/Alarm";
-import CropOriginalIcon from "@material-ui/icons/CropOriginal";
-import ChatIcon from "@material-ui/icons/Chat";
-import Paper from "@material-ui/core/Paper";
-import { CircularProgress, Typography, Grid } from "@material-ui/core";
-import colors from "../../../../../assets/colors";
+import { makeStyles } from "@material-ui/core/styles";
 import assets from "assets/assets";
 import { useConfirm } from "material-ui-confirm";
+import { useEffect, useState } from "react";
+import colors from "../../../../../assets/colors";
 
+import {
+  ProfileWork,
+  RoleInterface,
+} from "constants/interfaces/project.interface";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
   deleteWork,
   getNewWork,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
-import { toast } from "react-toastify";
-import {
-  ProfileWork,
-  RoleInterface,
-} from "constants/interfaces/project.interface";
 
 function createData(name: string, group: string, role: string) {
   return { name, group, role };
@@ -110,12 +105,16 @@ export default function BasicTable() {
                   </TableCell>
                   <TableCell>
                     <div className={classes.extrasWrapper}>
-                      {row?.time &&  <img src={assets.clockIcon} alt=""/>}
+                      {row?.time && <img src={assets.clockIcon} alt="" />}
                       {row?.photo && (
-                         <img src={assets.wrongImage} className="w-16" alt=""/>
+                        <img src={assets.wrongImage} className="w-16" alt="" />
                       )}
                       {row?.comment && (
-                         <img src={assets.sidebarChatIcon} className="w-16" alt=""/>
+                        <img
+                          src={assets.sidebarChatIcon}
+                          className="w-16"
+                          alt=""
+                        />
                       )}
                     </div>
                   </TableCell>
@@ -134,7 +133,7 @@ export default function BasicTable() {
 
                     <div>
                       <img
-                          src={assets.pencilIcon}
+                        src={assets.pencilIcon}
                         onClick={() => handleWorkClick(row?._id)}
                         className="pointer"
                         alt="edit"
@@ -147,10 +146,11 @@ export default function BasicTable() {
                         />
                       )}
                       <img
-                          src={assets.DeleteIcon}
+                        src={assets.DeleteIcon}
                         className="w-16 pointer"
                         onClick={() => deleteTimeProfileWork(row?._id)}
-                      alt="delete" />
+                        alt="delete"
+                      />
                     </div>
                   </TableCell>
                 </TableRow>

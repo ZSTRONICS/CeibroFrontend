@@ -5,7 +5,7 @@ import { Contact } from "constants/interfaces";
 
 interface ContactProps {
   isDisabled: boolean;
-  contact: Contact;
+  contact: Contact | any;
   handleSelectedList: (contact: Contact, checked: boolean) => void;
 }
 

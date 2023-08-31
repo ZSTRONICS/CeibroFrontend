@@ -46,7 +46,6 @@ const RouterConfig: React.FC<Configs> = () => {
           <Switch>
             <Redirect exact from="/" to="/login" />
             <Route path="/login" component={Login} />
-            {/* <Route path="/verify-email" component={VerifyEmail} /> */}
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
@@ -63,23 +62,12 @@ const RouterConfig: React.FC<Configs> = () => {
               path="/forward-task/:taskId"
               component={ForwardTask}
             />
-            {/* <PrivateRoute
-              path="/comment-task/:taskId"
-              component={Comment}
-              title={"New comment"}
-            />
-            <PrivateRoute
-              path="/done-task/:taskId"
-              component={Comment}
-              title={"Done comment"}
-            /> */}
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
                 component={Tasks}
               />
-              {/* <PrivateRoute path="/projects" component={Projects} /> */}
               <PrivateRoute
                 exact
                 path="/project/:projectId"

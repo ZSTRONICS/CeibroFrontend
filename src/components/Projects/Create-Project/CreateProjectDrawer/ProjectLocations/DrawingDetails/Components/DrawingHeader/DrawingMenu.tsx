@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
-import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
-import { PROJECT_APIS } from "redux/action";
 import { LoadingButton } from "components/Button";
-import projectActions, { getAllProjects } from "redux/action/project.action";
-import { Drawing } from "constants/interfaces";
 import { formatDropdownData } from "components/Utills/Globals";
+import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
+import { Drawing } from "constants/interfaces";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { PROJECT_APIS } from "redux/action";
+import projectActions, { getAllProjects } from "redux/action/project.action";
+import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 
 interface OptionFormat {
@@ -115,7 +115,9 @@ function DrawingMenu() {
     setSelectedDrawingLocal(null);
     if (option.value) {
       setSelectedFloorLocal(option ? option : null);
-      const foundFloor = allFloors.find((floor: any) => floor._id === option.value);
+      const foundFloor = allFloors.find(
+        (floor: any) => floor._id === option.value
+      );
       dispatch(projectActions.setSelectedFloor(foundFloor || null));
       const floor = allFloors.find((floor: any) => floor._id === option.value);
       setDrawings(floor ? floor.drawings : []);
@@ -124,7 +126,9 @@ function DrawingMenu() {
 
   const handleDrawingChange = (event: any, option: any) => {
     if (drawings.length > 0) {
-      const selectedDrawingLocal:any = drawings.find((drawing: Drawing) => drawing._id === option.value);
+      const selectedDrawingLocal: any = drawings.find(
+        (drawing: Drawing) => drawing._id === option.value
+      );
       dispatch(projectActions.setSelectedDrawing(selectedDrawingLocal));
       setSelectedDrawingLocal(option ? option : null);
     }

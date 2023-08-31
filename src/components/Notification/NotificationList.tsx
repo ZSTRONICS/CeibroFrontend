@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Avatar,
   Box,
@@ -10,8 +9,12 @@ import {
   ListSubheader,
   Typography,
 } from "@mui/material";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { CDateTime, ProjectAdminRoleTag } from "components/CustomTags";
+import {
+  CDateTime,
+  CustomStack,
+  ProjectAdminRoleTag,
+} from "components/CustomTags";
+import React from "react";
 // let mapItem: any[] = [1,3,4,5,6,7,8,9];
 var aDay = 24 * 60 * 60 * 1000;
 const mapItem: any[] = [

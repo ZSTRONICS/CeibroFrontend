@@ -213,12 +213,6 @@ export const useSocket = () => {
                         type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
                         payload: data,
                     });
-
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_COMMENT_WITH_FILES_IN_STORE,
-                        payload: data,
-                    });
-
                     break;
             }
         });

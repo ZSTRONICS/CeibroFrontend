@@ -7,24 +7,23 @@ import {
   makeStyles,
   Typography,
 } from "@material-ui/core";
+import Clear from "@mui/icons-material/Clear";
 import {
   Autocomplete,
   Checkbox,
+  Chip,
   Divider,
   FormControlLabel,
   TextField,
-  Chip,
 } from "@mui/material";
 import colors from "assets/colors";
 import { CButton } from "components/Button";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { CustomStack } from "components/CustomTags";
 import { getUniqueObjectsFromArr } from "components/Utills/Globals/Common";
 import Input from "components/Utills/Inputs/Input";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import InputSwitch from "components/Utills/Inputs/InputSwitch";
-import SelectDropdown, {
-  dataInterface,
-} from "components/Utills/Inputs/SelectDropdown";
+import { dataInterface } from "components/Utills/Inputs/SelectDropdown";
 import HorizontalBreak from "components/Utills/Others/HorizontalBreak";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,8 +35,7 @@ import projectActions, {
   updateRole,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
-import Clear from "@mui/icons-material/Clear";
-interface AddRoleProps { }
+interface AddRoleProps {}
 
 const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
   const classes = useStyles();
@@ -47,11 +45,14 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
   const [isMember, setIsMember] = useState(false);
   const [loading, setLoading] = useState<boolean>(false);
 
-  const { roleDrawer, selectedProject, selectedRole } =
-    useSelector((state: RootState) => state.project);
+  const { roleDrawer, selectedProject, selectedRole } = useSelector(
+    (state: RootState) => state.project
+  );
 
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
-  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>([]);
+  const [selectedRolMember, setSelectedRoleMember] = useState<dataInterface[]>(
+    []
+  );
 
   const [rolePermissionLocal, setRolePermissionLocal] = useState(
     selectedRole.rolePermission
@@ -69,30 +70,32 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
     setmemberPermissionLocal({
       create: false,
       edit: false,
-      delete: false
+      delete: false,
     });
 
     setRolePermissionLocal({
       create: false,
       edit: false,
-      delete: false
+      delete: false,
     });
 
     setIsMember(false);
     setIsRole(false);
 
-    dispatch(projectActions.setSelectedRole({
-      ...selectedRole,
-      _id: '',
-      admin: false,
-      creator: "",
-      isDefaultRole: false,
-      memberPermission: { create: false, delete: false, edit: false },
-      rolePermission: { create: false, delete: false, edit: false },
-      members: [],
-      name: "",
-      project: "",
-    }));
+    dispatch(
+      projectActions.setSelectedRole({
+        ...selectedRole,
+        _id: "",
+        admin: false,
+        creator: "",
+        isDefaultRole: false,
+        memberPermission: { create: false, delete: false, edit: false },
+        rolePermission: { create: false, delete: false, edit: false },
+        members: [],
+        name: "",
+        project: "",
+      })
+    );
 
     setAvailableUsers([]);
     setSelectedRoleMember([]);
@@ -180,7 +183,7 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
       setRolePermissionLocal({
         create: false,
         edit: false,
-        delete: false
+        delete: false,
       });
       dispatch(
         projectActions.setSelectedRole({
@@ -197,7 +200,7 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
       setmemberPermissionLocal({
         create: false,
         edit: false,
-        delete: false
+        delete: false,
       });
       dispatch(
         projectActions.setSelectedRole({
@@ -214,17 +217,16 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
       setmemberPermissionLocal({ create: true, edit: true, delete: true });
     } else {
       if (e.target?.checked === false) {
-
         setmemberPermissionLocal({
           create: false,
           edit: false,
-          delete: false
+          delete: false,
         });
 
         setRolePermissionLocal({
           create: false,
           edit: false,
-          delete: false
+          delete: false,
         });
 
         setIsMember(false);
@@ -317,15 +319,16 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
 
   useEffect(() => {
     if (selectedRole._id !== "") {
-      if (selectedRole.rolePermission.create === true ||
+      if (
+        selectedRole.rolePermission.create === true ||
         selectedRole.rolePermission.edit === true ||
         selectedRole.rolePermission.delete === true
       ) {
         setIsRole(true);
-
       }
 
-      if (selectedRole.memberPermission.create === true ||
+      if (
+        selectedRole.memberPermission.create === true ||
         selectedRole.memberPermission.edit === true ||
         selectedRole.memberPermission.delete === true
       ) {
@@ -388,12 +391,22 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
                   <Chip
                     sx={{
                       height: "25px",
-                      fontSize: 12, fontWeight: 500,
+                      fontSize: 12,
+                      fontWeight: 500,
                       backgroundColor: "#F1B740",
                       color: colors.white,
                       borderRadius: "4px",
                     }}
-                    deleteIcon={<Clear style={{ color: '#f1b740', fontSize: '15px', borderRadius: '50%', background: 'white' }} />}
+                    deleteIcon={
+                      <Clear
+                        style={{
+                          color: "#f1b740",
+                          fontSize: "15px",
+                          borderRadius: "50%",
+                          background: "white",
+                        }}
+                      />
+                    }
                     label={option?.label}
                     {...getTagProps({ index })}
                   />
@@ -411,13 +424,13 @@ const RoleDrawer: React.FC<AddRoleProps> = (props: any) => {
                       border: "none",
                     },
                     "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: "none",
-                    },
+                      {
+                        border: "none",
+                      },
                     "& .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
-                    {
-                      border: "none",
-                    },
+                      {
+                        border: "none",
+                      },
                     // "@media(hover) .css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
                     //   {
                     //     border: "none",

@@ -10,7 +10,7 @@ import { optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
-import { RouteComponentProps, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import TaskDetails from "../TaskDetails";
@@ -21,8 +21,7 @@ interface RouteParams {
   taskuid: string;
 }
 
-interface IProps extends RouteComponentProps<RouteParams> {}
-const Task = (props: IProps) => {
+const Task = () => {
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
 
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);

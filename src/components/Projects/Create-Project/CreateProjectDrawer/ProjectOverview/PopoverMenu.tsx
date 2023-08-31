@@ -1,5 +1,5 @@
 import { Menu, MenuItem } from "@mui/material";
-import { CustomButton } from "components/TaskComponent/Tabs/TaskCard";
+import CustomButton from "components/Utills/CustomButton";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
@@ -65,7 +65,7 @@ function PopoverMenu(props: any) {
   // };
 
   const id = props.openStatusPopup ? "status-popover" : undefined;
-  
+
   return (
     <>
       <Menu
@@ -124,7 +124,7 @@ function PopoverMenu(props: any) {
           btnLabel="Update"
           editStatusValue={editStatusValue}
           openCloseStatusModal={openCloseStatusModal}
-          handleOpenCloseStatusModal={()=>handleOpenCloseStatusModal}
+          handleOpenCloseStatusModal={() => handleOpenCloseStatusModal}
         />
       )}
     </>

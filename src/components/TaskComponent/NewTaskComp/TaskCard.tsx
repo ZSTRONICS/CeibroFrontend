@@ -36,18 +36,10 @@ function TaskCard(props: IProps) {
     project,
     _id,
     dueDate,
-    doneImageRequired,
-    doneCommentsRequired,
     description,
     topic,
     creator,
-    isCreator,
-    access,
-    createdAt,
-    assignedToState,
-    userSubState,
     seenBy,
-    creatorState,
   } = task;
 
   const isSelectedTask: boolean = selectedTaskId === _id;
@@ -104,7 +96,7 @@ function TaskCard(props: IProps) {
             <GenericMenu
               options={menuOption}
               key={_id}
-              disableMenu={disableMenu}
+              disableMenu={disableMenu || !isSelectedTask}
             />
           </CustomStack>
         }
