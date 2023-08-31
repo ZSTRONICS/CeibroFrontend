@@ -104,7 +104,7 @@ function TaskCard(props: IProps) {
             <GenericMenu
               options={menuOption}
               key={_id}
-              disableMenu={disableMenu}
+              disableMenu={disableMenu||!isSelectedTask}
             />
           </CustomStack>
         }
