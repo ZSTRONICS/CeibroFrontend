@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 // @mui
-import { AppBar, Box, IconButton, Stack, Toolbar } from "@mui/material";
+import { AppBar, Box, IconButton, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import Topbar from "components/Topbar/Topbar";
@@ -24,8 +24,12 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
   },
 }));
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+const StyledToolbar = styled("div")(({ theme }) => ({
   minHeight: HEADER_MOBILE,
+  display: "flex",
+  alignItems: "center",
+  flexWrap: "nowrap",
+  overflowX: "auto",
   [theme.breakpoints.up("lg")]: {
     minHeight: HEADER_DESKTOP,
     padding: theme.spacing(0, 4),
