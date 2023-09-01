@@ -35,8 +35,8 @@ export default function Nav({ openNav, onCloseNav }: Props) {
     <Box
       sx={{
         height: "100%",
-        display: "flex",
-        flexDirection: "column",
+        // display: "flex",
+        // flexDirection: "column",
         background: "#F4F4F4",
       }}
     >
@@ -47,7 +47,7 @@ export default function Nav({ openNav, onCloseNav }: Props) {
           style={{ height: "55px", width: "70px" }}
         />
       </Box>
-      <Sidebar onClose={onCloseNav}/>
+      <Sidebar onClose={onCloseNav} />
     </Box>
   );
 

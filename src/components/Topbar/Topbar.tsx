@@ -1,6 +1,5 @@
-import { Badge, Typography } from "@mui/material";
+import { Badge, Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
-import { Box } from "@mui/system";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -101,7 +100,7 @@ function Topbar() {
             >
               <div className={classes.topIconWrapper}>
                 <Box className={classes.topIcon}>
-                  <img src={config.icon} />
+                  <img src={config.icon} alt="icons" />
                 </Box>
               </div>
               <Typography className={classes.topTitle}>
