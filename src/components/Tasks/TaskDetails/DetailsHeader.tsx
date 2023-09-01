@@ -100,8 +100,8 @@ export default function DetailsHeader(props: IProps) {
         <Typography
           sx={{
             fontFamily: "Inter",
-            fontWeight: 700,
-            fontSize: "14px",
+            fontWeight: "700 !important",
+            fontSize: "14px !important",
             lineHeight: "20px",
           }}
         >
@@ -116,8 +116,8 @@ export default function DetailsHeader(props: IProps) {
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: 500,
-                    fontSize: "12px",
+                    fontWeight: "500 !important",
+                    fontSize: "12px !important",
                     lineHeight: "16px",
                     color: "#605c5c",
                   }}
@@ -129,10 +129,10 @@ export default function DetailsHeader(props: IProps) {
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: 500,
-                    fontSize: "12px",
+                    fontWeight: "500 !important",
+                    fontSize: "12px !important",
                     lineHeight: "18px",
-                    color: "#131516",
+                    color: "#131516 !important",
                   }}
                 >
                   {item.value}

@@ -193,7 +193,9 @@ export default function AddedDetails(props: IProps) {
                         </CustomStack>
                         {commentData?.message && (
                           <>
-                            <AddStatusTag sx={{ color: "black" }}>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
                               {commentData.message}
                             </AddStatusTag>
                             <Divider />
@@ -262,7 +264,9 @@ export default function AddedDetails(props: IProps) {
                         </CustomStack>
                         {commentData?.message && (
                           <>
-                            <AddStatusTag sx={{ color: "black" }}>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
                               {commentData.message}
                             </AddStatusTag>
                           </>

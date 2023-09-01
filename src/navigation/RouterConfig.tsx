@@ -30,9 +30,7 @@ import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 export const appHistory = createBrowserHistory();
 
-interface Configs {}
-
-const RouterConfig: React.FC<Configs> = () => {
+const RouterConfig = () => {
   return (
     <>
       <Router history={appHistory}>

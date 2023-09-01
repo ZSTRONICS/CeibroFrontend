@@ -88,6 +88,8 @@ const DetailActions: React.FC<IProps> = (props) => {
       );
     return (
       <Comment
+        doneCommentsRequired={doneCommentsRequired}
+        doneImageRequired={doneImageRequired}
         title={getTitle()}
         showHeader={true}
         taskId={taskId}
@@ -210,6 +212,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       </Grid>
       {isOpen === true && (
         <CustomModal
+          maxWidth={"sm"}
           showFullWidth={true}
           showDivider={true}
           showCloseBtn={true}

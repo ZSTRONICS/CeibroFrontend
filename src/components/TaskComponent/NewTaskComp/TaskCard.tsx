@@ -82,7 +82,7 @@ function TaskCard(props: IProps) {
             >
               {taskUID}
             </Span>
-            <Span>{`Due date ${dueDate.replace(/-/g, ".") ?? ""}`}</Span>
+            <Span>{`Due date ${dueDate.replace(/-/g, ".") || "N/A"}`}</Span>
           </CustomStack>
         }
         title=""
@@ -122,7 +122,7 @@ function TaskCard(props: IProps) {
           className="ellipsis"
           sx={{ maxWidth: "300px", color: "black", pb: 0.1 }}
         >
-          {topic?.topic ?? "N/A"}
+          {topic.topic || "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag
@@ -132,7 +132,7 @@ function TaskCard(props: IProps) {
             WebkitLineClamp: 1,
           }}
         >
-          {description ?? "No description"}
+          {description || "No description"}
         </SubLabelTag>
       </CardContent>
       {/*   <CardActions sx={{ py: 0.4, background: "#F4F4F4" }}>

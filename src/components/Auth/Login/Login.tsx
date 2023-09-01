@@ -18,8 +18,8 @@ import { RootState } from "../../../redux/reducers/appReducer";
 // components
 import LoginForm from "./LoginForm";
 
-import useStyles from "./LoginStyles";
 import AuthLayout from "../AuthLayout/AuthLayout";
+import useStyles from "./LoginStyles";
 const Login = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -53,27 +53,24 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
-      history.push("/tasks");
+      history.push("/tasks/allTaskFromMe");
     }
     LoginData();
   }, [isLoggedIn]);
 
   return (
     <AuthLayout title={t("auth.login")}>
-      <LoginForm
-        tokenLoading={tokenLoading}
-        showSuccess={isLoggedIn}
-      />
-           {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
-              {/* <Grid item> */}
-                <Box className={classes.dontHave} sx={{color:'#131516'}}>
-                  {t("auth.dont_have_account")}{" "}
-                  <Link to="/register" className={classes.signup}>
-                    {t("auth.signUp")}
-                  </Link>
-                </Box>
-              {/* </Grid> */}
-              {/* <Grid item>
+      <LoginForm tokenLoading={tokenLoading} showSuccess={isLoggedIn} />
+      {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
+      {/* <Grid item> */}
+      <Box className={classes.dontHave} sx={{ color: "#131516" }}>
+        {t("auth.dont_have_account")}{" "}
+        <Link to="/register" className={classes.signup}>
+          {t("auth.signUp")}
+        </Link>
+      </Box>
+      {/* </Grid> */}
+      {/* <Grid item>
                 <Setting />
               </Grid> */}
       {/* </Grid> */}

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, MenuItem } from "@mui/material";
+import { Box, MenuItem, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 export const Heading = styled(Typography)(
@@ -44,9 +44,9 @@ export const ListUserName = styled(Typography)`
 export const DocName = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
-  font-weight: 700;
-  font-size: 12px;
-  color: #292929;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  color: #292929 !important;
 `;
 const Span = styled("span")`
   font-family: "Inter";
@@ -83,8 +83,8 @@ export const AddStatusTag = styled(Typography)`
 export const SubHeadingTag = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 14px !important;
+  font-weight: 700 !important;
   color: #656565;
 `;
 export const ProjectAdminRoleTag = styled(Typography)`
@@ -167,10 +167,9 @@ const MenuItemTag = styled(MenuItem)(({ theme }) => ({
   color: "#000000",
   fontFamily: "Inter",
   fontSize: 14,
-  padding:'0 8px 0 8px', 
+  padding: "0 8px 0 8px",
   fontWeight: 500,
   textAlign: "center",
-  [theme.breakpoints.down("md")]: {
-  },
+  [theme.breakpoints.down("md")]: {},
 }));
-export { BackToLoginTag,MenuItemTag,  Span, CustomStack, BoldLableTag };
+export { BackToLoginTag, BoldLableTag, CustomStack, MenuItemTag, Span };

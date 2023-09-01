@@ -38,6 +38,7 @@ const CustomDatePicker = ({
           key={name}
           label={label}
           inputFormat="DD.MM.YYYY"
+          minDate={new Date()}
           renderInput={(params) => (
             <TextField
               {...params}

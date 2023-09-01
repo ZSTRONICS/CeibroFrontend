@@ -15,7 +15,7 @@ const DespcriptionBox = ({ description }: IProps) => (
   >
     <Box
       sx={{
-        height: "20px",
+        // height: "20px",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -46,20 +46,22 @@ const DespcriptionBox = ({ description }: IProps) => (
         sx={{
           width: "100%",
           height: "100%",
-          marginLeft: "16px",
+          px: "11px",
+          maxWidth: "85%",
         }}
       >
-        <Typography
-          sx={{
+        <p
+          style={{
             fontFamily: "Inter",
             fontWeight: 500,
             fontSize: "14px",
             lineHeight: "20px",
             color: "#000",
+            wordWrap: "break-word",
           }}
         >
           {description === "" ? "N/A" : description}
-        </Typography>
+        </p>
       </Box>
     </Box>
   </Box>

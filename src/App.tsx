@@ -1,12 +1,12 @@
 import "fontsource-roboto";
-import "moment-timezone";
+// import "moment-timezone";
 import { ToastContainer } from "react-toastify";
 
 // components
 import { RouterConfig } from "components";
 
 // material
-import { CssBaseline } from "@mui/material";
+// import CssBaseline from "@mui/material/CssBaseline";
 
 // styling
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,7 @@ const App = () => {
     // <ThemeProvider theme={theme}>
     <div className="App">
       <ErrorBoundary>
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <ToastContainer position="bottom-left" theme="colored" />
         <RouterConfig />
       </ErrorBoundary>

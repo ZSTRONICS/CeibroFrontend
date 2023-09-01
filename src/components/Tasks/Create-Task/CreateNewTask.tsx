@@ -217,7 +217,6 @@ function CreateNewTask() {
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
-    console.log("first");
     let value = event ? event.target.value : "";
     handleChangeValues(value, "description");
   };
@@ -266,7 +265,6 @@ function CreateNewTask() {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => {
-    console.log("first changes");
     if (value === undefined) {
       setSelectedData((prevSelectedData) => ({
         ...prevSelectedData,
@@ -454,7 +452,6 @@ function CreateNewTask() {
         <Footer
           disabled={
             selectedData.topic !== "" &&
-            !isSubmit &&
             (selectedData.assignedToState.length > 0 ||
               (selectedData.invitedNumbers &&
                 selectedData.invitedNumbers.length > 0))

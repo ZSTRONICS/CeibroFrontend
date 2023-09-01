@@ -15,10 +15,19 @@ interface CommentProps {
   title: string;
   showHeader: boolean;
   taskId: string;
+  doneImageRequired: boolean;
+  doneCommentsRequired: boolean;
   closeModal: () => void;
 }
 
-const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
+const Comment = ({
+  title,
+  showHeader,
+  taskId,
+  closeModal,
+  doneCommentsRequired,
+  doneImageRequired,
+}: CommentProps) => {
   // const { taskId } = useParams<RouteParams>();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
@@ -105,6 +114,9 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
           setDescription("");
           closeModal();
         }
+      },
+      onPending: () => {
+        setIsSubmit(true);
       },
       onFailAction: () => {
         setIsSubmit(false);
@@ -199,10 +211,12 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
       </Box>
       <Footer
         disabled={
-          !isSubmit &&
-          (selectedImages.length > 0 ||
-            selectedDocuments.length > 0 ||
-            description.length > 0)
+          title === "Task Done"
+            ? (doneImageRequired && selectedImages.length === 0) ||
+              (doneCommentsRequired && description.length === 0)
+            : selectedImages.length > 0 ||
+              selectedDocuments.length > 0 ||
+              description.length > 0
             ? false
             : true
         }
