@@ -1,5 +1,6 @@
 import { Badge, Box, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/system";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -8,19 +9,16 @@ import { SingleConfig } from "../../navigation/SidebarConfig";
 import appActions from "../../redux/action/app.action";
 import { RootState } from "../../redux/reducers/appReducer";
 
+const Main = styled("div")(({ theme }) => ({
+  display: "flex",
+  gap: "10px",
+}));
 const useStyles = makeStyles((theme) => ({
-  topMenuWrapper: {
-    overflowY: "auto",
-    display: "flex",
-    height: "40px",
-    width: "-webkit-fill-available",
-  },
   topMenu: {
     display: "flex",
-    width: "135px",
     alignItems: "center",
-    padding: "0px 5px",
-    paddingRight: 0,
+    padding: "0px 10px",
+    paddingLeft: "3px",
     borderBottom: `1px solid white`,
     fontSize: 16,
     fontWeight: 500,
@@ -29,24 +27,17 @@ const useStyles = makeStyles((theme) => ({
     cursor: "pointer",
     gap: 10,
     borderRadius: "8px",
-    // height: "50px",
     "&:hover": {
       background: "white",
       color: `${colors.black} !important`,
     },
   },
-  topIconWrapper: {
-    flex: 1,
-    display: "flex",
-  },
   topIcon: {
-    padding: 5,
+    padding: 4,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: "50%",
-    background: "white",
-    color: colors.black,
   },
   topTitle: {
     flex: 4,
@@ -81,15 +72,14 @@ function Topbar() {
   };
 
   return (
-    <div className={classes.topMenuWrapper}>
+    <Main>
       {configs &&
         Object.values(configs).map((config: any) => {
           if (user && config.title === "Admin" && user.role !== "admin") {
             return null;
           }
-
           return (
-            <div
+            <Box
               key={config.title}
               className={`${classes.topMenu} ${
                 window.location.pathname.includes(config.getPath(""))
@@ -98,12 +88,20 @@ function Topbar() {
               }`}
               onClick={() => handleRouteClick(config)}
             >
-              <div className={classes.topIconWrapper}>
-                <Box className={classes.topIcon}>{<config.icon />}</Box>
-              </div>
-              <Typography className={classes.topTitle}>
-                {config.title}
-              </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 0.5,
+                  gap: 1,
+                }}
+              >
+                <config.icon />
+                <Typography className={classes.topTitle}>
+                  {config.title}
+                </Typography>
+              </Box>
               {config?.notification > 0 && (
                 <div className={classes.topBadge}>
                   <Badge
@@ -113,10 +111,10 @@ function Topbar() {
                   ></Badge>
                 </div>
               )}
-            </div>
+            </Box>
           );
         })}
-    </div>
+    </Main>
   );
 }
 
