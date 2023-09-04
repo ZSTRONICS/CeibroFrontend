@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/system";
 import {
   AssignedToStateType,
   ChangeValueType,
