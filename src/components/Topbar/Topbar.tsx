@@ -99,9 +99,7 @@ function Topbar() {
               onClick={() => handleRouteClick(config)}
             >
               <div className={classes.topIconWrapper}>
-                <Box className={classes.topIcon}>
-                  <img src={config.icon} alt="icons" />
-                </Box>
+                <Box className={classes.topIcon}>{<config.icon />}</Box>
               </div>
               <Typography className={classes.topTitle}>
                 {config.title}

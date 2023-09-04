@@ -101,14 +101,7 @@ import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 //tab icons
-import LocationIcon from "./images/location_icon.svg";
 import ProjectIcon from "./images/project_icon.svg";
-import TaskIcon from "./images/task_icon.svg";
-//sub-tab icons
-import CanceledIcon from "./images/canceled_icon.svg";
-import FromMEIcon from "./images/from_me_icon.svg";
-import NewTaskIcon from "./images/new_task_icon.svg";
-import ToMeIcon from "./images/to_me_icon.svg";
 
 import CommentIcon from "./images/comment_icon.png";
 import FileIcon from "./images/file_icon.svg";
@@ -220,13 +213,7 @@ const assets = {
   membersDelete,
   KeyboardArrowRightIcon,
   AddIcon,
-  TaskIcon,
   ProjectIcon,
-  LocationIcon,
-  NewTaskIcon,
-  FromMEIcon,
-  ToMeIcon,
-  CanceledIcon,
 };
 
 export const sounds = {

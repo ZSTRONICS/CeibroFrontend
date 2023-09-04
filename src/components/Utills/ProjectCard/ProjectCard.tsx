@@ -229,7 +229,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
 export default ProjectCard;
 
-const ProjectCardContain = styled.div`
+const ProjectCardContain = styled("div")`
   margin: 15px 10px;
   max-width: 285px;
   width: 285px;
@@ -238,15 +238,15 @@ const ProjectCardContain = styled.div`
   cursor: pointer;
   height: 250px;
 `;
-const ImageCard = styled.div`
+const ImageCard = styled("div")`
   position: relative;
 `;
-const Image = styled.img`
+const Image = styled("img")`
   width: 100%;
   height: 100px;
   border-radius: 4px;
 `;
-const Status = styled.div`
+const Status = styled("div")`
   position: absolute;
   top: 10px;
   left: 10px;

@@ -40,7 +40,7 @@ export const useSocket = () => {
 
         global.isSocketConnecting = true;
         const tokens = localStorage.getItem("tokens") || "{}";
-        const myToken = JSON.parse(tokens)?.access?.token;
+        const myToken = tokens && JSON.parse(tokens)?.access?.token;
 
         function generateSecureUUID() {
             return uuidv4();

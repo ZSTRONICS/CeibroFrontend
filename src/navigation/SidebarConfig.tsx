@@ -1,4 +1,12 @@
-import assets from "assets/assets";
+import {
+  CanceledIcon,
+  FromMEIcon,
+  LocationIcon,
+  NewTaskIcon,
+  ProjectIcon,
+  TaskIcon,
+  ToMeIcon,
+} from "components/material-ui/icons";
 import { selectedTaskFilterType } from "redux/type";
 
 export interface SingleConfig {
@@ -15,15 +23,6 @@ export interface SidebarConfigInterface {
   [key: string]: SingleConfig;
 }
 
-const {
-  TaskIcon,
-  LocationIcon,
-  ProjectIcon,
-  NewTaskIcon,
-  FromMEIcon,
-  ToMeIcon,
-  CanceledIcon,
-} = assets;
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",

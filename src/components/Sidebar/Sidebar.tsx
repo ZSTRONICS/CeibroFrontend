@@ -61,9 +61,7 @@ function Sidebar(props: any) {
               >
                 <div className={classes.iconWrapper}>
                   <Box>
-                    <img src={config.icon} />
-
-                    {/* <img src={} className={classes.iconInner} alt={''} /> */}
+                    <config.icon />
                   </Box>
                 </div>
                 <Typography className={classes.title}>
