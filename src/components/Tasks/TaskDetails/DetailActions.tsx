@@ -84,6 +84,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           assignedToState={assignedToState}
           taskId={taskId}
           closeModal={closeModal}
+          isOpen={isOpen}
         />
       );
     return (

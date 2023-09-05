@@ -14,7 +14,7 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { VariableSizeList } from "react-window";
 import { taskActions, userApiAction } from "redux/action";
@@ -27,6 +27,7 @@ interface IProps {
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
   closeModal: () => void;
+  isOpen: boolean;
 }
 
 const ForwardTask = ({
@@ -34,8 +35,12 @@ const ForwardTask = ({
   assignedToState,
   invitedNumbers,
   closeModal,
+  isOpen,
 }: IProps) => {
   const [isSelfAssign, setIsSelfAssign] = React.useState(false);
+  const itemRef: any = useRef(null);
+  const itemRef1: any = useRef(null);
+
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
@@ -43,6 +48,7 @@ const ForwardTask = ({
   const { user } = useSelector((state: RootState) => state.auth);
   const [searchQuery, setSearchQuery] = React.useState("");
   const headerHeight = 220;
+
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -101,6 +107,12 @@ const ForwardTask = ({
       );
     }
   }, [userAllContacts]);
+
+  useEffect(() => {
+    if (isOpen) {
+      getListHeight(recentUserContact);
+    }
+  }, [isOpen]);
 
   const handleSelectedList = (contact: Contact, checked: boolean) => {
     if (checked) {
@@ -213,6 +225,7 @@ const ForwardTask = ({
     return (
       <div key={index} style={style}>
         <ContactBox
+          key={index + "alreadySelected"}
           isDisabled={filteredUsers.some(
             (user: any) => user._id === contact._id
           )}
@@ -224,6 +237,11 @@ const ForwardTask = ({
         />
       </div>
     );
+  };
+
+  const getListHeight = (list: any[]) => {
+    const rowHeight = 60;
+    return list.length * rowHeight;
   };
 
   return (
@@ -363,7 +381,7 @@ const ForwardTask = ({
         {recentUserContact.length > 0 && (
           <VariableSizeList
             className="custom-scrollbar"
-            height={windowHeight}
+            height={getListHeight(recentUserContact)}
             itemCount={recentUserContact.length}
             overscanCount={1}
             layout="vertical"
@@ -376,17 +394,33 @@ const ForwardTask = ({
         <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
         {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
           <Typography>{groupLetter}</Typography>,
-          // Use map on the array to render the list items
-          ...groupOptions.map((item) => (
-            <ContactBox
-              isDisabled={filteredUsers.some(
-                (user: any) => user._id === item._id
-              )}
-              contact={item}
-              handleSelectedList={handleSelectedList}
-              selected={!!selected.find((contact) => contact._id === item._id)}
-            />
-          )),
+          <VariableSizeList
+            height={getListHeight(groupOptions)}
+            itemCount={groupOptions.length}
+            itemSize={() => 60} // Pass the function to calculate item size
+            width={300} // Set the desired width of the list
+          >
+            {({ index, style }) => {
+              const localContact: any = groupOptions[index];
+              return (
+                <div style={style}>
+                  <ContactBox
+                    key={localContact._id} // Don't forget to add a unique key
+                    isDisabled={filteredUsers.some(
+                      (user: any) => user._id === localContact._id
+                    )}
+                    contact={localContact}
+                    handleSelectedList={handleSelectedList}
+                    selected={
+                      !!selected.find(
+                        (contact) => contact._id === localContact._id
+                      )
+                    }
+                  />
+                </div>
+              );
+            }}
+          </VariableSizeList>,
         ])}
       </Box>
     </Box>

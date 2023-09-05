@@ -40,7 +40,7 @@ export default function ContactBox({
 
   return (
     <Box
-      key={_id}
+      key={_id + "ContactBox"}
       sx={{
         display: "flex",
         gap: 1.4,
@@ -50,7 +50,7 @@ export default function ContactBox({
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
       }}
-      onClick={(e) => handleCheckBox(!selected)}
+      onClick={(e: any) => handleCheckBox(!selected)}
     >
       <Checkbox
         checked={selected}

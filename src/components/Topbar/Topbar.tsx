@@ -1,5 +1,4 @@
-import { Badge, Box, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { Badge, Box } from "@mui/material";
 import { styled } from "@mui/system";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,48 +12,27 @@ const Main = styled("div")(({ theme }) => ({
   display: "flex",
   gap: "10px",
 }));
-const useStyles = makeStyles((theme) => ({
-  topMenu: {
-    display: "flex",
-    alignItems: "center",
-    padding: "0px 10px",
-    paddingLeft: "3px",
-    borderBottom: `1px solid white`,
-    fontSize: 16,
-    fontWeight: 500,
-    fontFamily: "Inter",
-    color: colors.primary,
-    cursor: "pointer",
-    gap: 10,
-    borderRadius: "8px",
-    "&:hover": {
-      background: "white",
-      color: `${colors.black} !important`,
-    },
+
+const topMenu = {
+  display: "flex",
+  alignItems: "center",
+  padding: "0px 10px",
+  paddingLeft: "3px",
+  borderBottom: `1px solid white`,
+  fontSize: 16,
+  fontWeight: 500,
+  fontFamily: "Inter",
+  color: colors.primary,
+  cursor: "pointer",
+  gap: 10,
+  borderRadius: "8px",
+  "&:hover": {
+    background: "white",
+    color: `${colors.black} !important`,
   },
-  topIcon: {
-    padding: 4,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-  },
-  topTitle: {
-    flex: 4,
-    fontSize: 16,
-    fontWeight: 500,
-  },
-  topBadge: {
-    flex: 1,
-  },
-  active: {
-    background: "#F4F4F4",
-    // color: `${colors.black} !important`,
-  },
-}));
+};
 
 function Topbar() {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const configs = useSelector(
     (store: RootState) => store.navigation.sidebarRoutes
@@ -81,11 +59,14 @@ function Topbar() {
           return (
             <Box
               key={config.title}
-              className={`${classes.topMenu} ${
-                window.location.pathname.includes(config.getPath(""))
-                  ? classes.active
-                  : ""
-              }`}
+              sx={topMenu}
+              style={{
+                background: window.location.pathname.includes(
+                  config.getPath("")
+                )
+                  ? "#F4F4F4"
+                  : "",
+              }}
               onClick={() => handleRouteClick(config)}
             >
               <Box
@@ -98,18 +79,16 @@ function Topbar() {
                 }}
               >
                 <config.icon />
-                <Typography className={classes.topTitle}>
+                <p style={{ flex: 4, fontSize: 16, fontWeight: 500 }}>
                   {config.title}
-                </Typography>
+                </p>
               </Box>
               {config?.notification > 0 && (
-                <div className={classes.topBadge}>
-                  <Badge
-                    overlap="circular"
-                    badgeContent={config.notification}
-                    color="error"
-                  ></Badge>
-                </div>
+                <Badge
+                  overlap="circular"
+                  badgeContent={config.notification}
+                  color="error"
+                ></Badge>
               )}
             </Box>
           );

@@ -465,7 +465,7 @@ const TaskReducer = (
               state.allTaskFromMe.unread[taskIndex].creatorState = "ongoing"
               state.allTaskFromMe.ongoing.unshift(state.allTaskFromMe.unread[taskIndex]);
               state.allTaskFromMe.unread.splice(taskIndex, 1);
-              console.log("task seen state.allTaskFromMe.unread => state.allTaskFromMe.ongoing", state.allTaskFromMe.ongoing[state.allTaskFromMe.ongoing.length - 1]);
+              console.log("task seen allTaskFromMe.unread => allTaskFromMe.ongoing", state.allTaskFromMe.ongoing[0].seenBy);
             }
           }
 

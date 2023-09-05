@@ -36,6 +36,7 @@ export default function SelectedContactBox({
   return (
     !isDisabled && (
       <Box
+        key={_id + "SelectedContactBox"}
         sx={{
           position: "relative",
           display: "inline-block",
@@ -46,7 +47,6 @@ export default function SelectedContactBox({
           pointerEvents: `${isDisabled ? "none" : ""}`,
           opacity: `${isDisabled ? "0.5" : "1"}`,
         }}
-        key={_id}
       >
         <Box
           sx={{
