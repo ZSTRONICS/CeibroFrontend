@@ -48,6 +48,7 @@ import usersFolder from "./images/userFolderIcon.png";
 import whitePencil from "./images/whitePencil.png";
 
 import Add from "./images/Add.png";
+import CeibroWaterMark from "./images/CeibroWaterMark.png";
 import Defaulttask from "./images/Defaulttask.jpg";
 import DeleteIcon from "./images/DeleteIcon.svg";
 import GAvatar from "./images/GAvatar.png";
@@ -59,7 +60,6 @@ import testProject4 from "./images/TestProject4.png";
 import blueSearch from "./images/blueSearch.png";
 import EditIcon from "./images/edit.svg";
 import filterIcon from "./images/filterIcon.svg";
-
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
@@ -115,6 +115,7 @@ import message from "./sound/message.mp3";
 
 const assets = {
   FileIcon,
+  CeibroWaterMark,
   ForwardIcon,
   CommentIcon,
   DoneAllIcon,

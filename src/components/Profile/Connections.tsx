@@ -1,22 +1,15 @@
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import { Badge, Grid, Stack } from "@mui/material";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
-import React from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers/appReducer";
 
-interface IConnectionsProps {}
-
-const Connections: React.FunctionComponent<IConnectionsProps> = (props) => {
+const Connections = () => {
   const classes = useStyles();
   const history = useHistory();
   const { connections } = useSelector((state: RootState) => state?.user);
-
-  // useEffect(() => {
-  //   dispatch(getMyConnectionsCount());
-  // }, []);
 
   const handleClick = () => {
     history.push("/connections");

@@ -54,7 +54,7 @@ const Task = () => {
     return found;
   };
 
-  const getAllTaskOnce = (subtask: string) => {
+  const getAllTaskOnce = () => {
     if (
       _.isEmpty(allTaskToMe.new) &&
       _.isEmpty(allTaskToMe.ongoing) &&
@@ -81,7 +81,7 @@ const Task = () => {
   };
 
   useEffect(() => {
-    getAllTaskOnce(subtask);
+    getAllTaskOnce();
   }, [subtask]);
 
   const getFilterKey = () => {

@@ -6,7 +6,5 @@ import ProjectIcon from "./ProjectIcon";
 import TaskIcon from "./TaskIcon";
 import ToMeIcon from "./ToMeIcon";
 
-export {
-    CanceledIcon, FromMEIcon, LocationIcon, NewTaskIcon, ProjectIcon, TaskIcon, ToMeIcon
-};
+export { CanceledIcon, FromMEIcon, LocationIcon, NewTaskIcon, ProjectIcon, TaskIcon, ToMeIcon };
 

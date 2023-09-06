@@ -234,12 +234,6 @@ const NavigationReducer = (
         menue: action.payload,
       };
 
-    case requestPending(GET_PROJECTS): {
-      return {
-        ...state,
-      };
-    }
-
     // get all floors by projectId
     case requestPending(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
       return {
@@ -261,7 +255,11 @@ const NavigationReducer = (
         isFloorLoading: false,
       };
     }
-
+    case requestPending(GET_PROJECTS): {
+      return {
+        ...state,
+      };
+    }
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;
       let newProjects: any = [];
@@ -289,6 +287,11 @@ const NavigationReducer = (
       return {
         ...state,
         allProjects: [...state.allProjects],
+      };
+    }
+    case requestFail(GET_PROJECTS): {
+      return {
+        ...state,
       };
     }
 

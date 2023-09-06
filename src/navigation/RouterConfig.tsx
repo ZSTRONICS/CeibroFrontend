@@ -1,33 +1,9 @@
 import { Box, CircularProgress } from "@mui/material";
-import {
-  AdminMain,
-  Connections,
-  DrawingDetails,
-  ForgetConfirmation,
-  ForgetPassword,
-  Login,
-  MockTaskApis,
-  Profile,
-  ProjectLocations,
-  Projects,
-  Register,
-  RegisterAddProfilePic,
-  RegisterConfirmationForm,
-  RegisterNumberForm,
-  ResetPassword,
-  Tasks,
-  TermsAndConditions,
-} from "components";
 import { Suspense } from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 
-import PrivateRoute from "./PrivateRoute";
-
-import NotFound from "components/NotFound";
-import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
-import ForwardTask from "components/Tasks/Forward-Task";
 import { createBrowserHistory } from "history";
-import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import CommingSoon from "./CommingSoon";
 export const appHistory = createBrowserHistory();
 
 const RouterConfig = () => {
@@ -42,7 +18,8 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Redirect exact from="/" to="/login" />
+            {/* <Redirect exact from="/" to="/login" /> */}
+            {/* <Redirect exact from="/" to="/login" />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
@@ -81,7 +58,9 @@ const RouterConfig = () => {
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
-            <Route path="*" component={NotFound}></Route>
+            <Route path="*" component={NotFound}></Route>*/}
+            <Route path="/comming-soon" component={CommingSoon}></Route>
+            <Redirect from="/" to="/comming-soon" />
           </Switch>
         </Suspense>
       </Router>
