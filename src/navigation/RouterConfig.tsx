@@ -3,7 +3,31 @@ import { Suspense } from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 
 import { createBrowserHistory } from "history";
-import CommingSoon from "./CommingSoon";
+// import CommingSoon from "./CommingSoon";
+import {
+  AdminMain,
+  Connections,
+  CreateNewTask,
+  DrawingDetails,
+  ForgetConfirmation,
+  ForgetPassword,
+  ForwardTask,
+  Login,
+  MockTaskApis,
+  Profile,
+  ProjectLocations,
+  Projects,
+  Register,
+  RegisterAddProfilePic,
+  RegisterConfirmationForm,
+  RegisterNumberForm,
+  ResetPassword,
+  Tasks,
+  TermsAndConditions,
+} from "components";
+import NotFound from "components/NotFound";
+import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
 const RouterConfig = () => {
@@ -18,8 +42,7 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            {/* <Redirect exact from="/" to="/login" /> */}
-            {/* <Redirect exact from="/" to="/login" />
+            <Redirect exact from="/" to="/login" />
             <Route path="/login" component={Login} />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
@@ -58,9 +81,9 @@ const RouterConfig = () => {
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
-            <Route path="*" component={NotFound}></Route>*/}
-            <Route path="/comming-soon" component={CommingSoon}></Route>
-            <Redirect from="/" to="/comming-soon" />
+            <Route path="*" component={NotFound}></Route>
+            {/* <Route path="/comming-soon" component={CommingSoon}></Route>
+            <Redirect from="/" to="/comming-soon" /> */}
           </Switch>
         </Suspense>
       </Router>

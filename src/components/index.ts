@@ -20,6 +20,7 @@ import AdminMain from "./Admin/AdminMain";
 import CDrawer from "Drawer/CDrawer";
 import RouterConfig from "navigation/RouterConfig";
 import DrawingDetails from "./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails";
+import ForwardTask from "./Tasks/Forward-Task";
 import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
 // Auth
@@ -35,6 +36,7 @@ const Profile = lazy(() => import("./Profile/Profile"));
 
 // task
 const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
+const CreateNewTask = lazy(() => import("./Tasks/Create-Task/CreateNewTask"));
 
 // project
 const Projects = lazy(() => import("./Projects/ProjectList/Project"));
@@ -43,9 +45,7 @@ const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProj
 
 
 export {
-  AdminMain, CDrawer, Connections, CreateProjectDrawer, DrawingDetails,
-  ForgetConfirmation, ForgetPassword, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
-  RegisterConfirmationForm,
-  RegisterNumberForm, ResetPassword, RouterConfig, Tasks, TermsAndConditions, ViewInvitations
+  AdminMain, CDrawer, Connections, CreateNewTask, CreateProjectDrawer, DrawingDetails, ForgetConfirmation, ForgetPassword, ForwardTask, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
+  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Tasks, TermsAndConditions, ViewInvitations
 };
 
