@@ -1,5 +1,5 @@
 import { Box, Grid } from "@mui/material";
-import Tasks from "components/Tasks/TaskList/Task";
+import Task from "components/Tasks/TaskList/Task";
 import DocumentReader from "components/pdfviewer/index.js";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,9 +17,6 @@ function DrawingDetails() {
   const allTasksFromMe = Object.values(allTaskFromMe).flat();
   const allTasksHidden = Object.values(allTaskHidden).flat();
 
-  // later debug the issue of re-rendering component
-  // useApiCallOnce(taskActions.getAllTaskToMe(), [])
-  // useApiCallOnce(taskActions.getAllTaskFromMe(), [])
   useEffect(() => {
     if (!isRenderEffect.current) {
       if (allTasksTome.length === 0) {
@@ -44,7 +41,7 @@ function DrawingDetails() {
       </Box>
       <Grid container>
         <Grid item md={4} sx={sideBarStyle}>
-          <Tasks />
+          <Task />
         </Grid>
         <Grid item md={8}>
           <DocumentReader newTask={allTaskToMe.new} />

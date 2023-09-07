@@ -59,12 +59,12 @@ const intialStatue: TaskReducerInt = {
   Topics: { allTopics: [], recentTopics: [] },
 };
 
+console.log('task reducer')
 const TaskReducer = (
   state = intialStatue,
   action: ActionInterface
 ): TaskReducerInt => {
   switch (action.type) {
-
     case TASK_CONFIG.SELECTED_TASK_FILTER:
       return {
         ...state,

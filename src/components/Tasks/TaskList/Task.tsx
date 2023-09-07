@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
@@ -23,7 +23,7 @@ interface RouteParams {
 
 const Task = () => {
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
-
+  const isRenderEffect = useRef<any>(false);
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
@@ -81,7 +81,12 @@ const Task = () => {
   };
 
   useEffect(() => {
-    getAllTaskOnce();
+    if (!isRenderEffect.current) {
+      getAllTaskOnce();
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, [subtask]);
 
   const getFilterKey = () => {

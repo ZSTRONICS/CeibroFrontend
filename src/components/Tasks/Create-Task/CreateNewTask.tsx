@@ -13,7 +13,7 @@ import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -52,6 +52,7 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
+  const isRenderEffect = useRef<any>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
@@ -77,13 +78,16 @@ function CreateNewTask() {
   const windowClose = window.getSelection();
 
   useEffect(() => {
-    dispatch(taskActions.getAllTopic());
-    dispatch(getAllProjects());
-    // const payload = {
-    //   other: { userId: user._id },
-    // };
-    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
+    if (!isRenderEffect.current) {
+      dispatch(taskActions.getAllTopic());
+      dispatch(getAllProjects());
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      recentUserContact.length < 1 &&
+        dispatch(userApiAction.getRecentContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, []);
 
   useEffect(() => {

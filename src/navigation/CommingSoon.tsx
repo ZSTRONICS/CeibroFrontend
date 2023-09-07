@@ -39,7 +39,7 @@ function CommingSoon() {
             fontSize: { md: "2.2rem !important", xs: "1.5rem !important" },
           }}
         >
-          Comming Soon
+          Coming Soon
         </SubHeadingTag>
       </Grid>
       <Grid
