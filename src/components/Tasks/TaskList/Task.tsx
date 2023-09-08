@@ -13,6 +13,8 @@ import _, { isEmpty } from "lodash";
 import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 
 interface RouteParams {
@@ -28,6 +30,12 @@ const Task = () => {
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
+  const [emptyScreenContent, setEmptyScreenContent] = useState([
+    {
+      heading: "",
+      description: "",
+    },
+  ]);
   const headerHeight = 180;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
@@ -90,16 +98,17 @@ const Task = () => {
   }, []);
 
   const getFilterKey = () => {
-    if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
+    if (subTaskKey && filterkey) {
       return filterkey;
     } else {
+      let keyIndex = 0;
       const keys = Object.keys(task[subTaskKey]);
-      const keyIndex =
-        task[subTaskKey][keys[0]].length > 0
-          ? 0
-          : task[subTaskKey][keys[1]].length > 0
-          ? 1
-          : 2;
+      if (keys[0] === "new" || keys[0] === "unread") {
+        keyIndex = task[subTaskKey][keys[0]].length > 0 ? 0 : 1;
+      }
+      // : task[subTaskKey][keys[1]].length > 0
+      // ? 1
+      // : 2;
       return keys[keyIndex];
     }
   };
@@ -183,15 +192,93 @@ const Task = () => {
     switch (subtask) {
       case "allTaskFromMe":
         setIsTaskFromMe("To");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Ongoing_Qestion_et,
+              description: taskConstantEt.FromMe_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Ongoing_Qestion_en,
+              description: taskConstantEn.FromMe_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Done_Qestion_et,
+              description: taskConstantEt.FromMe_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Done_Qestion_en,
+              description: taskConstantEn.FromMe_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskToMe":
         setIsTaskFromMe("From");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Ongoing_Qestion_et,
+              description: taskConstantEt.To_Me_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Ongoing_Qestion_en,
+              description: taskConstantEn.To_Me_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Done_Qestion_et,
+              description: taskConstantEt.To_Me_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Done_Qestion_en,
+              description: taskConstantEn.To_Me_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskHidden":
         if (filterkey === "canceled") {
           setIsTaskFromMe("To");
-        } else {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Canceled_Qestion_et,
+              description: taskConstantEt.Hidden_Canceled_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Canceled_Qestion_en,
+              description: taskConstantEn.Hidden_Canceled_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
           setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Done_Qestion_et,
+              description: taskConstantEt.Hidden_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Done_Qestion_en,
+              description: taskConstantEn.Hidden_Done_desc_en,
+            },
+          ]);
+        } else if (filterkey === "ongoing") {
+          setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Ongoing_Qestion_et,
+              description: taskConstantEt.Hidden_Ongoing_Qestion_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Ongoing_Qestion_en,
+              description: taskConstantEn.Hidden_Ongoing_desc_en,
+            },
+          ]);
         }
         break;
       default:
@@ -361,21 +448,21 @@ const Task = () => {
         type: "ongoing",
         label: "Ongoing",
         notifyCount: taskOngoingCount,
-        isDisabled: ongoingHasTask,
+        isDisabled: false,
         bgColor: "#F1B740",
       },
       {
         type: "done",
         label: "Done",
         notifyCount: taskDoneCount,
-        isDisabled: doneHasTask,
+        isDisabled: false,
         bgColor: "#55BCB3",
       },
       {
         type: "canceled",
         label: "Canceled",
         notifyCount: canceledCount,
-        isDisabled: isEmpty(allTaskHidden.canceled),
+        isDisabled: false,
         bgColor: "#FFE7E7",
       },
     ];
@@ -436,7 +523,8 @@ const Task = () => {
     <Grid container>
       <Grid
         item
-        md={3}
+        lg={2.6}
+        md={3.45}
         xs={4}
         sx={{
           borderRight: "1px solid #ADB5BD",
@@ -449,7 +537,7 @@ const Task = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 2.2, lg: 3.5 },
+              gap: { xs: 1, md: 2.2, lg: 4 },
               overflow: "auto",
               padding: "8px 0px 4px 0px",
             }}
@@ -460,21 +548,23 @@ const Task = () => {
                 return renderTabs(key, selectedTab);
               })}
           </Box>
-          <Box
-            sx={{
-              width: "100%",
-              borderWidth: "0px 0px 1px 0px",
-              borderColor: "#818181",
-              borderStyle: "solid",
-              paddingLeft: "8px",
-            }}
-          >
-            <InputBase
-              placeholder="Start typing to search"
-              sx={{ height: "48px" }}
-              onChange={handleSearch}
-            />
-          </Box>
+          {filteredTask.length !== 0 && (
+            <Box
+              sx={{
+                width: "100%",
+                borderWidth: "0px 0px 1px 0px",
+                borderColor: "#818181",
+                borderStyle: "solid",
+                paddingLeft: "8px",
+              }}
+            >
+              <InputBase
+                placeholder="Start typing to search"
+                sx={{ height: "48px" }}
+                onChange={handleSearch}
+              />
+            </Box>
+          )}
         </Box>
         <Box
           sx={{
@@ -482,16 +572,18 @@ const Task = () => {
             // overflow: "auto",
             // padding: " 0 1px",
             pl: 0.7,
-            pr: 0.4,
+            pr: 0.7,
           }}
         >
-          <div style={{ position: "relative" }}>
-            {/* <CustomStack
-          // gap={1.4}
-          // flexWrap="wrap"
-          // sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
-          > */}
-            {task && filteredTask && (
+          {task && filteredTask.length === 0 ? (
+            <div style={{ height: windowHeight }}>
+              <EmptyScreenDescription
+                showWaterMark={true}
+                content={emptyScreenContent}
+              />
+            </div>
+          ) : (
+            <div style={{ position: "relative" }}>
               <VariableSizeList
                 className="custom-scrollbar"
                 height={windowHeight}
@@ -503,12 +595,11 @@ const Task = () => {
               >
                 {TaskRow}
               </VariableSizeList>
-            )}
-          </div>
-          {/* /</CustomStack> */}
+            </div>
+          )}
         </Box>
       </Grid>
-      <Grid item md={9} xs={8}>
+      <Grid item md={8.55} lg={9.4} xs={7}>
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

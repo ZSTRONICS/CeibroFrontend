@@ -8,6 +8,28 @@ export const Heading = styled(Typography)(
     font-size: 18px;
     `
 );
+
+const SubHeading = styled(Typography)(({ theme }) => ({
+  color: "#0076C8",
+  fontSize: 16,
+  fontWeight: 500,
+  lineHeight: "20px",
+  [theme.breakpoints.down("md")]: {
+    fontSize: 14,
+  },
+}));
+
+const DescriptionTag = styled(Typography)(({ theme }) => ({
+  fontSize: 15,
+  fontWeight: 500,
+  lineHeight: "20px",
+  letterSpacing: "0em",
+  color: "#131516",
+  [theme.breakpoints.down("md")]: {
+    fontSize: 12,
+  },
+}));
+
 export const CommentName = styled(Typography)(
   ({ theme }) => `
     font-weight: 700;
@@ -172,4 +194,12 @@ const MenuItemTag = styled(MenuItem)(({ theme }) => ({
   textAlign: "center",
   [theme.breakpoints.down("md")]: {},
 }));
-export { BackToLoginTag, BoldLableTag, CustomStack, MenuItemTag, Span };
+export {
+  BackToLoginTag,
+  BoldLableTag,
+  CustomStack,
+  DescriptionTag,
+  MenuItemTag,
+  Span,
+  SubHeading,
+};

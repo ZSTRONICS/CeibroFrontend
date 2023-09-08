@@ -59,11 +59,9 @@ function Sidebar(props: any) {
                 }`}
                 onClick={() => handleRouteClick(config)}
               >
-                <div className={classes.iconWrapper}>
-                  <Box>
-                    <config.icon />
-                  </Box>
-                </div>
+                <Box>
+                  <config.icon />
+                </Box>
                 <Typography className={classes.title}>
                   {config.title}
                 </Typography>
@@ -109,30 +107,17 @@ const useStyles = makeStyles((theme) => ({
   menue: {
     // display: "flex",
     textAlign: "center",
-    padding: "16px 6px",
+    padding: "10px 6px",
     borderBottom: `1px solid white`,
-    fontSize: 16,
-    fontWeight: 500,
     color: colors.primary,
     cursor: "pointer",
     gap: 13,
+    margin: "10px 0",
     "&:hover": {
       background: "white",
     },
   },
-  iconWrapper: {
-    // flex: 1,
-    // display: "flex",
-  },
-  icon: {
-    padding: 8,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    background: "white",
-    color: colors.black,
-  },
+
   title: {
     flex: 4,
     fontSize: 10,
@@ -143,37 +128,6 @@ const useStyles = makeStyles((theme) => ({
   },
   active: {
     background: "white",
-    color: `${colors.black} !important`,
-  },
-  help: {
-    // height: '50px',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  helpIcon: {
-    color: colors.white,
-    // fontSize: 25,
-    position: "absolute",
-    zIndex: 2,
-    left: 45,
-  },
-  helpInnerWrapper: {
-    background: colors.black,
-    left: 65,
-    position: "absolute",
-    zIndex: 1,
-    width: 10,
-    height: 10,
-  },
-  helpText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: colors.primary,
-  },
-  iconInner: {
-    width: 12,
-    heihgt: 12,
+    boxShadow: "0px 2px 2px 0px #3b95d3",
   },
 }));

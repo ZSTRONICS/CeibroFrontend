@@ -39,7 +39,7 @@ export default function TaskDetails(props: IProps) {
   return (
     <Box
       key={_id}
-      sx={{ height: "calc(100vh - 85px)", overflow: "auto" }}
+      sx={{ height: "calc(100vh - 85px)", overflowY: "hidden" }}
       className="custom-scrollbar"
     >
       <DetailsHeader
