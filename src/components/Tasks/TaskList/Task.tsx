@@ -35,7 +35,7 @@ const Task = () => {
   const userId = user && String(user._id);
 
   const dispatch = useDispatch();
-  const { task } = useSelector((state: RootState) => state);
+  const task = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
@@ -87,7 +87,7 @@ const Task = () => {
     return () => {
       isRenderEffect.current = true;
     };
-  }, [subtask]);
+  }, []);
 
   const getFilterKey = () => {
     if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
@@ -146,10 +146,11 @@ const Task = () => {
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
 
   useEffect(() => {
-    subtask &&
+    if (subtask) {
       setFilteredTask(
         searchInData(task[subtask][getFilterKey()], "", "taskUID")
       );
+    }
   }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
 
   useEffect(() => {
@@ -204,6 +205,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
+    // setSelectedTask(task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -447,7 +449,7 @@ const Task = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 1.25 },
+              gap: { xs: 1, md: 2.2, lg: 3.5 },
               overflow: "auto",
               padding: "8px 0px 4px 0px",
             }}

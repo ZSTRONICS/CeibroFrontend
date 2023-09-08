@@ -71,16 +71,18 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const tasks = useSelector((store: RootState) => store.task);
-  const projects = useSelector((store: RootState) => store.project);
-  const { allProjects } = projects;
-  const { Topics } = tasks;
+  const Topics = useSelector((state: RootState) => state.task.Topics);
+  const allProjects = useSelector(
+    (state: RootState) => state.project.allProjects
+  );
   const windowClose = window.getSelection();
 
   useEffect(() => {
     if (!isRenderEffect.current) {
       dispatch(taskActions.getAllTopic());
-      dispatch(getAllProjects());
+      if (allProjects.length === 0) {
+        dispatch(getAllProjects());
+      }
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
         dispatch(userApiAction.getRecentContacts());

@@ -22,16 +22,7 @@ interface TaskReducerInt {
   loadingAllTaskToMe: boolean;
   loadingAllTaskfromMe: boolean;
   loadingHiddenTask: boolean;
-  page: number;
-  limit: number;
-  totalPages: number;
-  totalResults: number;
   taskLoading: boolean;
-  dialogOpen: boolean;
-  openConfirmModal: boolean;
-  selectedTaskId: string;
-  taskDrawerOpen: boolean;
-  isEditing: boolean;
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
@@ -45,21 +36,11 @@ const intialStatue: TaskReducerInt = {
   loadingAllTaskToMe: false,
   loadingAllTaskfromMe: false,
   loadingHiddenTask: false,
-  isEditing: false,
-  page: 0,
-  limit: 0,
-  totalPages: 0,
-  totalResults: 0,
   taskLoading: false,
-  openConfirmModal: false,
-  dialogOpen: false,
-  selectedTaskId: "",
-  taskDrawerOpen: false,
   loadingTopics: false,
   Topics: { allTopics: [], recentTopics: [] },
 };
 
-console.log('task reducer')
 const TaskReducer = (
   state = intialStatue,
   action: ActionInterface

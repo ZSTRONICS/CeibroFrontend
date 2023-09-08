@@ -1,6 +1,5 @@
-import React from "react";
-import { Typography, IconButton, Box } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { Box, IconButton, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import assets from "assets/assets";
 
@@ -10,7 +9,6 @@ const useStyles = makeStyles((theme) => ({
   },
   backButton: {
     marginRight: "16px",
-    borderBottom: "2px solid #0076C8",
   },
   logo: {
     width: "72px",
