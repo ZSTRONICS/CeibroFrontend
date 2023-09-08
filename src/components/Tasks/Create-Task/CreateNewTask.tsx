@@ -13,7 +13,7 @@ import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -52,7 +52,6 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
-  const isRenderEffect = useRef<any>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
@@ -71,25 +70,20 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const Topics = useSelector((state: RootState) => state.task.Topics);
-  const allProjects = useSelector(
-    (state: RootState) => state.project.allProjects
-  );
+  const tasks = useSelector((store: RootState) => store.task);
+  const projects = useSelector((store: RootState) => store.project);
+  const { allProjects } = projects;
+  const { Topics } = tasks;
   const windowClose = window.getSelection();
 
   useEffect(() => {
-    if (!isRenderEffect.current) {
-      dispatch(taskActions.getAllTopic());
-      if (allProjects.length === 0) {
-        dispatch(getAllProjects());
-      }
-      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-      recentUserContact.length < 1 &&
-        dispatch(userApiAction.getRecentContacts());
-    }
-    return () => {
-      isRenderEffect.current = true;
-    };
+    dispatch(taskActions.getAllTopic());
+    dispatch(getAllProjects());
+    // const payload = {
+    //   other: { userId: user._id },
+    // };
+    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
   }, []);
 
   useEffect(() => {
@@ -455,7 +449,10 @@ function CreateNewTask() {
           </Box>
         )}
         {/* <Box sx={{ marginTop: "10px" }}> */}
+        {/* </Box> */}
+      </Box>
         <Footer
+        position="relative"
           disabled={
             selectedData.topic !== "" &&
             (selectedData.assignedToState.length > 0 ||
@@ -470,8 +467,6 @@ function CreateNewTask() {
           handleGetLocationValue={handleGetLocationValue}
           handleSelectDocumentValue={handleSelectDocumentValue}
         />
-        {/* </Box> */}
-      </Box>
     </Box>
   );
 }

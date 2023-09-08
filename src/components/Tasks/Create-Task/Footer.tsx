@@ -19,6 +19,7 @@ interface FooterPropsType {
   handleGetLocationValue?: () => void;
   showHeader: boolean | undefined;
   disabled: boolean;
+  position?:string
 }
 
 const Footer = (props: FooterPropsType) => {
@@ -81,7 +82,7 @@ const Footer = (props: FooterPropsType) => {
     };
     input.click();
   };
-  const position: string = props.showHeader ? "block" : "absolute";
+  const position: string = props.showHeader ? "block" : props.position??"absolute";
   return (
     <Box
       sx={{
