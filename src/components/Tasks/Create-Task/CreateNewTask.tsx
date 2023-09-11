@@ -36,6 +36,8 @@ import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { IS_IMAGE } from "components/Utills/Globals";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 
 var initialValues = {
   dueDate: "",
@@ -79,11 +81,11 @@ function CreateNewTask() {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-    dispatch(taskActions.getAllTopic());
+      dispatch(taskActions.getAllTopic());
       if (allProjects.length === 0) {
-    dispatch(getAllProjects());
+        dispatch(getAllProjects());
       }
-    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
         dispatch(userApiAction.getRecentContacts());
     }
@@ -366,27 +368,44 @@ function CreateNewTask() {
           }}
         />
         {toggle && (
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={(e, checked) => {
-                    handleChangeValues(checked, "doneImageRequired");
-                  }}
-                />
-              }
-              label="Image"
-              name="doneImageRequired"
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Comment"
-              onChange={(e, checked) => {
-                handleChangeValues(checked, "doneCommentsRequired");
-              }}
-              name="doneCommentsRequired"
-            />
-          </FormGroup>
+          <>
+            <FormGroup row={true} sx={{ gap: 2 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e, checked) => {
+                      handleChangeValues(checked, "doneImageRequired");
+                    }}
+                  />
+                }
+                label="Image"
+                name="doneImageRequired"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Comment"
+                onChange={(e, checked) => {
+                  handleChangeValues(checked, "doneCommentsRequired");
+                }}
+                name="doneCommentsRequired"
+              />
+            </FormGroup>
+            {selectedImages.length === 0 && selectedDocuments.length === 0 && (
+              <EmptyScreenDescription
+                showWaterMark={false}
+                content={[
+                  {
+                    heading: taskConstantEt.done_requirement_quest_et,
+                    description: taskConstantEt.done_requirement_desc_et,
+                  },
+                  {
+                    heading: taskConstantEn.done_requirement_quest_en,
+                    description: taskConstantEn.done_requirement_desc_en,
+                  },
+                ]}
+              />
+            )}
+          </>
         )}
         {selectedImages.length > 0 && (
           <Box
@@ -444,7 +463,7 @@ function CreateNewTask() {
         {selectedDocuments.length > 0 && (
           <Box
             sx={{
-              padding: "8px",
+              padding: "4px 8px",
             }}
           >
             <FileBox
@@ -454,25 +473,22 @@ function CreateNewTask() {
             />
           </Box>
         )}
-        {/* <Box sx={{ marginTop: "10px" }}> */}
-        {/* </Box> */}
       </Box>
-        <Footer
-        position="relative"
-          disabled={
-            selectedData.topic !== "" &&
-            (selectedData.assignedToState.length > 0 ||
-              (selectedData.invitedNumbers &&
-                selectedData.invitedNumbers.length > 0))
-              ? false
-              : true
-          }
-          showHeader={false}
-          handleSubmitForm={handleCreateTask}
-          handleAttachImageValue={handleAttachImageValue}
-          handleGetLocationValue={handleGetLocationValue}
-          handleSelectDocumentValue={handleSelectDocumentValue}
-        />
+      <Footer
+        disabled={
+          selectedData.topic !== "" &&
+          (selectedData.assignedToState.length > 0 ||
+            (selectedData.invitedNumbers &&
+              selectedData.invitedNumbers.length > 0))
+            ? false
+            : true
+        }
+        showHeader={false}
+        handleSubmitForm={handleCreateTask}
+        handleAttachImageValue={handleAttachImageValue}
+        handleGetLocationValue={handleGetLocationValue}
+        handleSelectDocumentValue={handleSelectDocumentValue}
+      />
     </Box>
   );
 }

@@ -71,7 +71,13 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
         )}
         <Box
           className="custom-scrollbar"
-          sx={{ overflow: "auto", width: "100%", maxHeight: "10rem" }}
+          sx={{
+            overflow: "auto",
+            width: "100%",
+            maxHeight: "6rem",
+            display: "flex",
+            flexWrap: "wrap",
+          }}
         >
           {files.length > 0 ? (
             files.map((item: IFile | File | any) => {

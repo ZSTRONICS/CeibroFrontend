@@ -25,6 +25,8 @@ const DescriptionTag = styled(Typography)(({ theme }) => ({
   lineHeight: "20px",
   letterSpacing: "0em",
   color: "#131516",
+  whiteSpace: "pre-wrap",
+
   [theme.breakpoints.down("md")]: {
     fontSize: 12,
   },
@@ -201,5 +203,6 @@ export {
   DescriptionTag,
   MenuItemTag,
   Span,
-  SubHeading,
+  SubHeading
 };
+

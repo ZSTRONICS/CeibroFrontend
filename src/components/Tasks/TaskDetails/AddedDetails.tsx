@@ -60,7 +60,7 @@ export default function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: "calc(83vh - 330px)",
+              height: "calc(84vh - 327px)",
               overflow: "auto",
             }}
           >

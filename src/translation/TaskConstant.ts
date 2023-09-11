@@ -14,7 +14,10 @@ const taskConstantEt = {
     Hidden_Done_Qestion_et: "Mis on Hidden - Done staatus taskil?",
     Hidden_Done_desc_et: "Tehtud ja peidetud ülesannete loend. Et hoida lahus oma tegemata ja tegemist vajavaid ülesandeid, hoia sulle määratud ülesannete loendis näpp ülesandel ja vajuta 'Hide'. Tehtud ülesandeid näed edaspidi 'Hidden-Done' saki all.",
     Hidden_Canceled_Qestion_et: "Mis on Hidden - Canceled staatus taskil?",
-    Hidden_Canceled_desc_et: "Loend tühistatud ülesannetest. Siin näed nii sinu poolt loodud ja tühistatud kui sulle määratud ja määraja poolt tühistatud tööülesandeid. Ceibro lisab kõik tühistatud ülesanded automaatselt siia."
+    Hidden_Canceled_desc_et: "Loend tühistatud ülesannetest. Siin näed nii sinu poolt loodud ja tühistatud kui sulle määratud ja määraja poolt tühistatud tööülesandeid. Ceibro lisab kõik tühistatud ülesanded automaatselt siia.",
+
+    done_requirement_quest_et: "Mis on Done requirements?",
+    done_requirement_desc_et: "Määra tööülesande lõpetatuks ('Done') märkimise reeglid. Kui märgid linnukese Pildi (Image) ja/või kommentaari (Comment) ette, ei saa ülesannet enne tehtuks märkida, kui lisatud on pilt ja/või kommentaar.",
 }
 
 const taskConstantEn = {
@@ -33,7 +36,10 @@ const taskConstantEn = {
     Hidden_Done_Qestion_en: "What is the Hidden - Done state for task?",
     Hidden_Done_desc_en: "Keep your task list organised and hide Done tasks. Hold your finger on a task (in mini view) and choose hide. You can then see these tasks under a Hidden tab.",
     Hidden_Canceled_Qestion_en: "What is the Hidden - Canceled state for task?",
-    Hidden_Canceled_desc_en: "The list of tasks that you have created and cancelled and tasks that have been assigned to you and cancelled by the task owner."
+    Hidden_Canceled_desc_en: "The list of tasks that you have created and cancelled and tasks that have been assigned to you and cancelled by the task owner.",
+
+    done_requirement_quest_en: "What is Done requirements?",
+    done_requirement_desc_en: `Ask for set requirements to be filled before marking a task as Done. Put a check mark to necessary completion requirements to set how a task must be completed. Image requires uploading a photo before marking the task done. Comment requires adding a comment before marking the task as done.`
 }
 
 export { taskConstantEn, taskConstantEt }
