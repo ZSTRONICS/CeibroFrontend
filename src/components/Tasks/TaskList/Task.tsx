@@ -156,11 +156,12 @@ const Task = () => {
 
   useEffect(() => {
     if (subtask) {
+      !taskuid && setSelectedTask(null);
       setFilteredTask(
         searchInData(task[subtask][getFilterKey()], "", "taskUID")
       );
     }
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
+  }, [allTaskFromMe, allTaskToMe, allTaskHidden,subtask]);
 
   useEffect(() => {
     if (selectedTab) {

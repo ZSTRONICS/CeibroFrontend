@@ -2,8 +2,9 @@ import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
+import appActions from "redux/action/app.action";
 import { selectedTaskFilterType } from "redux/type";
 import { openFormInNewWindow } from "utills/common";
 import colors from "../../assets/colors";
@@ -12,6 +13,7 @@ import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
 
 function Sidebar(props: any) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
@@ -21,16 +23,19 @@ function Sidebar(props: any) {
     (store: RootState) => store.navigation.selectedTab
   );
   const configs = useSelector(
-    (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
+    (store: RootState) => store.navigation.sidebarRoutes[selectedTab]?.childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
   // const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
   useEffect(() => {
-    const subtask: selectedTaskFilterType = location.pathname.split(
-      "/"
-    )[2] as selectedTaskFilterType;
+    const splitedPath  = location.pathname.split("/")
+    const mainTab:selectedTaskFilterType = splitedPath[1] as selectedTaskFilterType
+    if(mainTab!==selectedTab){
+      dispatch(appActions.setSelectedTab(mainTab));
+    }
+    const subtask: selectedTaskFilterType = splitedPath[2] as selectedTaskFilterType;
     subtask ? setSelectedChildTab(subtask) : setSelectedChildTab(undefined);
-  }, [location.pathname]);
+  }, [location.pathname,selectedTab]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();
