@@ -22,7 +22,7 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   };
   return (
     <CustomModal
-      maxWidth={isPdfFile ? "lg" : "sm"}
+      maxWidth={isPdfFile ? "lg" : "md"}
       isOpen={isOpen}
       handleClose={closeModal}
       showCloseBtn={true}
@@ -30,7 +30,7 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
       children={
         <>
           {fileToView && (
-            <div>
+            <>
               {isPdfFile ? (
                 <PDFViewer
                   src={fileToView.fileUrl}
@@ -39,12 +39,13 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                 />
               ) : (
                 <ImageLazyLoad
+                  maxWidth="600px"
                   src={fileToView.fileUrl}
                   alt=""
                   imgZoomHandler={true}
                 />
               )}
-            </div>
+            </>
           )}
         </>
       }

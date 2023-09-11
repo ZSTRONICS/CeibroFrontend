@@ -36,7 +36,7 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 180;
+  const headerHeight = 185;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -161,7 +161,7 @@ const Task = () => {
         searchInData(task[subtask][getFilterKey()], "", "taskUID")
       );
     }
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden,subtask]);
+  }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask]);
 
   useEffect(() => {
     if (selectedTab) {
@@ -293,7 +293,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
-    // setSelectedTask(task);
+    setSelectedTask(task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -524,8 +524,8 @@ const Task = () => {
     <Grid container>
       <Grid
         item
-        lg={2.6}
-        md={3.45}
+        lg={2.8}
+        md={3.5}
         xs={4}
         sx={{
           borderRight: "1px solid #ADB5BD",
@@ -577,7 +577,7 @@ const Task = () => {
           }}
         >
           {task && filteredTask.length === 0 ? (
-            <div style={{ height: windowHeight }}>
+            <div style={{ height: windowHeight + 55 }}>
               <EmptyScreenDescription
                 showWaterMark={true}
                 content={emptyScreenContent}
@@ -600,7 +600,7 @@ const Task = () => {
           )}
         </Box>
       </Grid>
-      <Grid item md={8.55} lg={9.4} xs={7}>
+      <Grid item md={8.5} lg={9.2} xs={7}>
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

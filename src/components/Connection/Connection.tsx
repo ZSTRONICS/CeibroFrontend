@@ -20,7 +20,7 @@ const Connections = () => {
     (state: RootState) => state.user
   );
   const isTabOrMobile = useResponsive("down", "sm", "");
-  const headerHeight = isTabOrMobile ? 75 : 110;
+  const headerHeight = isTabOrMobile ? 80 : 120;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -85,7 +85,7 @@ const Connections = () => {
       ) : (
         <div style={{ position: "relative" }} id="Contactscontainer">
           <VariableSizeList
-            height={windowHeight}
+            height={windowHeight + 35}
             itemCount={userAllContacts.length}
             itemSize={() => 57}
             width={"100%"}
