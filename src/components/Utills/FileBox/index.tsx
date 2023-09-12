@@ -39,7 +39,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
         sx={{
           width: "100%",
           border: `${title ? "1px solid #e2e4e5" : ""}`,
-          padding: "5px 0",
+          padding: "5px 0 0 5px",
           paddingLeft: "15px",
           gap: 1,
           display: "flex",

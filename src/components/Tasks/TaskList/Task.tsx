@@ -36,7 +36,7 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 185;
+  const headerHeight = 172;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -524,7 +524,7 @@ const Task = () => {
     <Grid container>
       <Grid
         item
-        lg={2.8}
+        lg={2.85}
         md={3.5}
         xs={4}
         sx={{
@@ -600,7 +600,7 @@ const Task = () => {
           )}
         </Box>
       </Grid>
-      <Grid item md={8.5} lg={9.2} xs={7}>
+      <Grid item md={8.5} lg={9.15} xs={7}>
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

@@ -26,9 +26,10 @@ import React, { useEffect, useRef } from "react";
 
 interface IProps {
   events: TaskEvent[];
+  hasFile: boolean;
 }
 export default function AddedDetails(props: IProps) {
-  const { events } = props;
+  const { events, hasFile } = props;
   const listRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
@@ -44,7 +45,7 @@ export default function AddedDetails(props: IProps) {
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
   }, [events.length]);
-
+  const contentHeight = hasFile ? "409px" : "570px";
   return (
     <>
       <div>
@@ -60,8 +61,9 @@ export default function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: "calc(100vh - 456px)",
+              height: `calc(95vh - ${contentHeight})`,
               overflow: "auto",
+              pb: 1,
             }}
           >
             {events.length > 0 ? (
@@ -218,7 +220,7 @@ export default function AddedDetails(props: IProps) {
                         <CustomStack py={0.7}>
                           {mediaLocal.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id + i} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -286,7 +288,7 @@ export default function AddedDetails(props: IProps) {
                         <CustomStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id + i} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -327,7 +329,7 @@ export default function AddedDetails(props: IProps) {
                       </React.Fragment>
                     );
                   default:
-                    return null; // Handle any other event types as needed
+                    return null;
                 }
               })
             ) : (
