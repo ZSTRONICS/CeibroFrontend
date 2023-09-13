@@ -44,7 +44,6 @@ const ConnectionCard = ({
   if (isTabOrMobile && listCards) {
     listCards.forEach((element: HTMLElement) => {
       element.style.position = "relative";
-      // const offsetHeight = element.offsetHeight;
     });
   }
 

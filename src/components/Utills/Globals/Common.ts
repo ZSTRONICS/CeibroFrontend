@@ -30,6 +30,11 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   });
 };
 
+function countUnseenTasks(tasks: any[], userId: string) {
+  // count is the accumulator, which starts at 0
+  return tasks.reduce((count, task) => (task.seenBy.includes(userId) ? count : count + 1), 0);
+}
+
 /**
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
@@ -408,5 +413,5 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { formatDropdownData, momentdeDateFormatWithDay, optionMapping };
+export { countUnseenTasks, formatDropdownData, momentdeDateFormatWithDay, optionMapping };
 

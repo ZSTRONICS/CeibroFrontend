@@ -1,13 +1,14 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
-import { TaskCard } from "components/TaskComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
-import { optionMapping } from "components/Utills/Globals";
+import { TaskCard } from "components/TaskComponent";
+import { countUnseenTasks, optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
+import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
 import { useHistory, useParams } from "react-router-dom";
@@ -26,10 +27,12 @@ interface RouteParams {
 const Task = () => {
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
   const isRenderEffect = useRef<any>(false);
+  const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
+  const userId = user && String(user._id);
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -40,14 +43,21 @@ const Task = () => {
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
-  const userId = user && String(user._id);
 
-  const dispatch = useDispatch();
-  const task = useSelector((state: RootState) => state.task);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const task: any = useSelector((state: RootState) => state.task);
+  const {
+    allTaskToMe,
+    allTaskFromMe,
+    allTaskHidden,
+    loadingAllTaskToMe,
+    loadingAllTaskfromMe,
+    loadingHiddenTask,
+  } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
+  const isallTakLoading =
+    loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
 
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
@@ -402,32 +412,9 @@ const Task = () => {
       : [];
   };
 
-  let newUnSeenCount = 0;
-  let fromMeUnReadCount = 0;
-  let canceledCount = 0;
-  let ongoingHasTask = false;
-  let doneHasTask = false;
-
-  allTaskToMe.new.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (newUnSeenCount += 1) : 0
-  );
-  allTaskFromMe.unread.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (fromMeUnReadCount += 1) : 0
-  );
-
-  allTaskHidden.canceled.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (canceledCount += 1) : 0
-  );
-  const taskLists: any = {
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
-  };
-
-  if (taskLists.hasOwnProperty(subtask)) {
-    ongoingHasTask = isEmpty(taskLists[subtask].ongoing);
-    doneHasTask = isEmpty(taskLists[subtask].done);
-  }
+  const newUnSeenCount = countUnseenTasks(allTaskToMe.new, userId);
+  const fromMeUnReadCount = countUnseenTasks(allTaskFromMe.unread, userId);
+  const canceledCount = countUnseenTasks(allTaskHidden.canceled, userId);
 
   const renderTabs = (type: string, activeTab: string) => {
     const tabConfig = [
@@ -487,6 +474,9 @@ const Task = () => {
 
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
+    if (!localTask) {
+      return <TaskCardSkeleton key={index} />;
+    }
     return (
       <div style={{ ...style }}>
         {localTask && (
@@ -519,6 +509,39 @@ const Task = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [headerHeight]);
+
+  const LoadingSkeleton = () => (
+    <Box style={{ height: "calc(100vh - 182px)" }}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TaskCardSkeleton key={index} />
+      ))}
+    </Box>
+  );
+
+  const EmptyScreen = () => (
+    <div style={{ height: windowHeight }}>
+      <EmptyScreenDescription
+        showWaterMark={true}
+        content={emptyScreenContent}
+      />
+    </div>
+  );
+
+  const TaskList = () => (
+    <div style={{ position: "relative" }}>
+      <VariableSizeList
+        className="custom-scrollbar"
+        height={windowHeight}
+        itemCount={filteredTask.length}
+        overscanCount={4}
+        layout="vertical"
+        itemSize={(index) => 115}
+        width={"100%"}
+      >
+        {TaskRow}
+      </VariableSizeList>
+    </div>
+  );
 
   return (
     <Grid container>
@@ -567,36 +590,13 @@ const Task = () => {
             </Box>
           )}
         </Box>
-        <Box
-          sx={{
-            // height: "calc(100vh - 178px)",
-            // overflow: "auto",
-            // padding: " 0 1px",
-            pl: 0.7,
-            pr: 0.7,
-          }}
-        >
-          {task && filteredTask.length === 0 ? (
-            <div style={{ height: windowHeight + 55 }}>
-              <EmptyScreenDescription
-                showWaterMark={true}
-                content={emptyScreenContent}
-              />
-            </div>
+        <Box sx={{ pl: 0.7, pr: 0.5 }}>
+          {isallTakLoading ? (
+            <LoadingSkeleton />
+          ) : task && filteredTask.length === 0 ? (
+            <EmptyScreen />
           ) : (
-            <div style={{ position: "relative" }}>
-              <VariableSizeList
-                className="custom-scrollbar"
-                height={windowHeight}
-                itemCount={filteredTask.length}
-                overscanCount={1}
-                layout="vertical"
-                itemSize={(index) => 115}
-                width={"100%"}
-              >
-                {TaskRow}
-              </VariableSizeList>
-            </div>
+            <TaskList />
           )}
         </Box>
       </Grid>
