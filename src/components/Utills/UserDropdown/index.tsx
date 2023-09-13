@@ -14,6 +14,7 @@ import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { styled } from "@mui/system";
+import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
   ChangeValueType,
@@ -393,19 +394,7 @@ function UserDropDown(props: IProps) {
                 );
               })}
             <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-            {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
-              <Typography>{groupLetter}</Typography>,
-              // Use map on the array to render the list items
-              ...groupOptions.map((item) => (
-                <ContactBox
-                  contact={item}
-                  handleSelectedList={handleSelectedList}
-                  selected={
-                    !!selected.find((contact) => contact._id === item._id)
-                  }
-                />
-              )),
-            ])}
+        <GroupContactList filterData={filterData} selected={selected} handleSelectedList={handleSelectedList}/>
           </Box>
         </Select>
       </FormControl>
