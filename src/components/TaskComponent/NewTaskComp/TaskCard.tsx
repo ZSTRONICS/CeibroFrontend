@@ -88,11 +88,6 @@ function TaskCard(props: IProps) {
         title=""
         action={
           <CustomStack>
-            {/* <assets.DoneAllIcon
-              sx={{
-                color: `${seenBy.includes(userId) ? "#0076C8" : "#0000008A"}`,
-              }}
-            /> */}
             <GenericMenu
               options={menuOption}
               key={_id}
@@ -110,9 +105,17 @@ function TaskCard(props: IProps) {
               {`${creator.firstName} ${creator.surName}`}
             </span>
           </BoldLableTag>
-          <BoldLableTag>
+          <BoldLableTag
+            sx={{ display: "flex", maxWidth: "120px", WebkitLineClamp: 1 }}
+            className="textOverflowDescription"
+          >
             Project: &nbsp;{" "}
-            <span style={{ fontWeight: "500", fontSize: "11px" }}>
+            <span
+              style={{
+                fontWeight: "500",
+                fontSize: "11px",
+              }}
+            >
               {project ? project.title : "N/A"}
             </span>
           </BoldLableTag>

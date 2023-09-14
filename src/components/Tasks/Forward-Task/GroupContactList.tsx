@@ -36,9 +36,10 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
         contactListElements.push(
           <ContactBox
             key={item._id}
-            isDisabled={filteredUsers&&filteredUsers.some(
-              (user: any) => user._id === item._id
-            )}
+            isDisabled={
+              filteredUsers &&
+              filteredUsers.some((user: any) => user._id === item._id)
+            }
             contact={item}
             handleSelectedList={handleSelectedList}
             selected={!!selected.find((contact) => contact._id === item._id)}
@@ -49,15 +50,24 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
 
     return contactListElements;
   };
-  const contactList = useMemo(() => renderContactList(), [filterData,selected]);
-  console.log(contactList, "contact list");
-  const Row = ({ index, style }) => <div style={style}>{contactList[index]}</div>;
+
+  const contactList = useMemo(
+    () => renderContactList(),
+    [filterData, selected]
+  );
+
+  const Row = ({ index, style }: any) => (
+    <div style={style}>{contactList[index]}</div>
+  );
+
   return (
     <VariableSizeList
-      height={240} 
+      className="contacts-scrollbar"
+      height={420}
       width={"100%"}
       itemCount={contactList.length}
       itemSize={getItemSize}
+      overscanCount={10}
     >
       {Row}
     </VariableSizeList>

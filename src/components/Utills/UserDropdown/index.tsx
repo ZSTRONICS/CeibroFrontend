@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { styled } from "@mui/system";
 import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
@@ -83,11 +83,11 @@ function UserDropDown(props: IProps) {
     }
   }, [contacts]);
 
-  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-    console.log(event, "change events");
-    // setSelected(event.target.value);
-    // handleClose();
-  };
+  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
+  //   console.log(event, "change events");
+  //   // setSelected(event.target.value);
+  //   // handleClose();
+  // };
 
   const handleClose = () => {
     let invitedNumbers: string[] = [];
@@ -233,7 +233,7 @@ function UserDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          onChange={handleChange}
+          // onChange={handleChange}
           endAdornment={
             selected.length > 0 && (
               <IconButton
@@ -394,7 +394,11 @@ function UserDropDown(props: IProps) {
                 );
               })}
             <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-        <GroupContactList filterData={filterData} selected={selected} handleSelectedList={handleSelectedList}/>
+            <GroupContactList
+              filterData={filterData}
+              selected={selected}
+              handleSelectedList={handleSelectedList}
+            />
           </Box>
         </Select>
       </FormControl>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Chip, Grid } from "@mui/material";
 import assets from "assets/assets";
 import { LoadingButton } from "components/Button";
@@ -33,8 +32,10 @@ enum statusColors {
   done = "#55BCB3",
   canceled = "#FFE7E7",
 }
+type TaskAction = "comment" | "forward" | "done";
+
 const DetailActions: React.FC<IProps> = (props) => {
-  const { subtask, filterkey, takisd } = useParams<any>();
+  const { subtask, filterkey } = useParams<any>();
   const {
     userSubState,
     taskUid,
@@ -49,9 +50,9 @@ const DetailActions: React.FC<IProps> = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-  const [taskAction, setTaskAction] = useState("");
+  const [taskAction, setTaskAction] = useState<TaskAction>("comment");
 
-  const handleClick = (action: string) => {
+  const handleClick = (action: TaskAction) => {
     setTaskAction(action);
     openModal();
   };
