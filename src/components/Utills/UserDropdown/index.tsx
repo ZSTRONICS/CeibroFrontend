@@ -25,7 +25,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
-import ContactBox from "../ContactBox";
 import SelectedContactBox from "../SelectedContactBox";
 
 interface IProps {
@@ -378,7 +377,7 @@ function UserDropDown(props: IProps) {
             />
           </Box>
           <Box sx={{ margin: "8px 16px" }}>
-            {recentUserContact.length > 0 &&
+            {/* {recentUserContact.length > 0 &&
               recentUserContact.map((contact: Contact) => {
                 return (
                   <ContactBox
@@ -392,11 +391,12 @@ function UserDropDown(props: IProps) {
                     }
                   />
                 );
-              })}
+              })} */}
             <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
             <GroupContactList
               filterData={filterData}
               selected={selected}
+              recentData={{"Recent Users":recentUserContact}}
               handleSelectedList={handleSelectedList}
             />
           </Box>

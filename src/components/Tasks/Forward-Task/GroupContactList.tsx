@@ -1,3 +1,4 @@
+import { Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ContactBox from "components/Utills/ContactBox";
 import { Contact } from "constants/interfaces";
@@ -6,6 +7,7 @@ import { VariableSizeList } from "react-window";
 
 interface GroupContactListProps {
   filterData: { [key: string]: any[] };
+  recentData?: { [key: string]: any[] };
   filteredUsers?: any[];
   selected: any[];
   handleSelectedList: (contact: Contact, checked: boolean) => void;
@@ -13,6 +15,7 @@ interface GroupContactListProps {
 
 const GroupContactList: React.FC<GroupContactListProps> = ({
   filterData,
+  recentData = {},
   filteredUsers,
   selected,
   handleSelectedList,
@@ -22,18 +25,20 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     let size = 60;
     if (React.isValidElement(item) && item.type === Typography) {
       size = 30;
+    }else if(React.isValidElement(item) && item.type === Divider){
+size = 45;
     }
     return size;
   };
 
-  const renderContactList = () => {
-    const contactListElements: any[] = [];
-    Object.entries(filterData).forEach(([groupLetter, groupOptions]) => {
-      contactListElements.push(
+  const createElementList = (data: { [key: string]: any[] }) => {
+    let createdElementedList: any[] = [];
+    Object.entries(data).forEach(([groupLetter, groupOptions]) => {
+      createdElementedList.push(
         <Typography key={`group-${groupLetter}`}>{groupLetter}</Typography>
       );
       groupOptions.forEach((item) => {
-        contactListElements.push(
+        createdElementedList.push(
           <ContactBox
             key={item._id}
             isDisabled={
@@ -47,13 +52,19 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
         );
       });
     });
+    return createdElementedList;
+  };
 
+  const renderContactList = () => {
+    let contactListElements: any[] = [];
+    const divider = <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
+    contactListElements = [...createElementList(recentData),divider,...createElementList(filterData)]
     return contactListElements;
   };
 
   const contactList = useMemo(
     () => renderContactList(),
-    [filterData, selected]
+    [filterData, selected, recentData]
   );
 
   const Row = ({ index, style }: any) => (
