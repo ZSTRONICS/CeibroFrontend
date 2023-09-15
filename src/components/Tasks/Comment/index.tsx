@@ -28,7 +28,6 @@ const Comment = ({
   doneCommentsRequired,
   doneImageRequired,
 }: CommentProps) => {
-  // const { taskId } = useParams<RouteParams>();
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -96,6 +95,7 @@ const Comment = ({
 
   const handleSubmit = () => {
     const formdata = new FormData();
+    setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
     formdata.append("message", description);
     if (filesToUpload.length > 0) {
@@ -110,13 +110,13 @@ const Comment = ({
       body: formdata,
       success: (res: any) => {
         if (res) {
-          setIsSubmit(true);
+          setIsSubmit(false);
           setDescription("");
           closeModal();
+          setSelectedImages([]);
+          setSelectedDocuments([]);
+          setDescription("");
         }
-      },
-      onPending: () => {
-        setIsSubmit(true);
       },
       onFailAction: () => {
         setIsSubmit(false);
@@ -211,14 +211,15 @@ const Comment = ({
       </Box>
       <Footer
         disabled={
-          title === "Task Done"
+          isSubmit ||
+          (title === "Task Done"
             ? (doneImageRequired && selectedImages.length === 0) ||
               (doneCommentsRequired && description.length === 0)
             : selectedImages.length > 0 ||
               selectedDocuments.length > 0 ||
               description.length > 0
             ? false
-            : true
+            : true)
         }
         showHeader={showHeader}
         handleSubmitForm={handleSubmit}

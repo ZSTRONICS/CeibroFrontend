@@ -163,7 +163,7 @@ iframe {
 
 /* custom scrollbar */
 .contacts-scrollbar::-webkit-scrollbar {
-  width: 20px;
+  width: 17px;
 }
 
 .contacts-scrollbar::-webkit-scrollbar-track {

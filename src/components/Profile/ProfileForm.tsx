@@ -1,5 +1,4 @@
-// @ts-nocheck
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 // material & react-icon
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,18 +23,17 @@ import { setValidationSchema } from "components/Auth/userSchema/ProfileSchema";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 // i18next
+import CustomModal from "components/Modal";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
-import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import CustomModal from "components/Modal";
-import ChangePasswordForm from "./ChangePasswordForm";
 import ChangeNumberForm from "./ChangeNumberForm";
+import ChangePasswordForm from "./ChangePasswordForm";
 import NumberConfirmationForm from "./NumberConfirmationForm";
 
 const ProfileForm = () => {
   const classes = useStyles();
   const { t } = useTranslation();
-  const confirmPassRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   let user: Partial<UserInterface> | any = useSelector(
@@ -81,7 +79,7 @@ const ProfileForm = () => {
   };
 
   const userPhoneNumber = String(phoneNumber)?.slice(countryCode?.length);
-  const formik = useFormik({
+  const formik: any = useFormik({
     initialValues: {
       firstName: firstName ?? "",
       surName: surName ?? "",
@@ -97,9 +95,9 @@ const ProfileForm = () => {
     },
   });
 
-  function checkOnUpdateData(e:any) {
+  function checkOnUpdateData(e: any) {
     const hasChanges = Object.keys(formik.values).some((key: string) => {
-      const formikValue = formik.values[key];
+      const formikValue: any = formik.values[key];
       const userValue = user[key];
       if (key === "phoneNumber" || key === "dialCode") {
         return false;
@@ -131,21 +129,23 @@ const ProfileForm = () => {
 
   const handleModal = (type: ModalType) => {
     setIsOpen(true);
-  
-    const modalOptions: Record<ModalType, { title: string, children: JSX.Element }> = {
+
+    const modalOptions: Record<
+      ModalType,
+      { title: string; children: JSX.Element }
+    > = {
       "change-password": {
         title: "Change password",
-        children: <ChangePasswordForm closeDialog={closeDialog} />
+        children: <ChangePasswordForm closeDialog={closeDialog} />,
       },
       "change-number": {
         title: "Change phone number",
-        children: <ChangeNumberForm closeDialog={closeDialog} />
+        children: <ChangeNumberForm closeDialog={closeDialog} />,
       },
-
     };
 
     const { title, children } = modalOptions[type];
-  
+
     setModalTitle(title);
     setModalChildren(children);
   };
@@ -153,7 +153,7 @@ const ProfileForm = () => {
   return (
     <>
       <Grid container item xs={12} md={6}>
-        <Grid item className={classes.mainContainer}>
+        <Grid item>
           <form onSubmit={formik.handleSubmit}>
             <Grid item xs={12} md={6} style={{ maxWidth: "100%" }}>
               <Grid item container>
@@ -283,7 +283,7 @@ const ProfileForm = () => {
                       fontWeight: 500,
                       color: "#0076C8",
                       paddingLeft: "20px",
-                      width:"max-content"
+                      width: "max-content",
                     }}
                     onClick={() => handleModal("change-number")}
                   >
@@ -309,7 +309,7 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
-                <Grid item container  mt={1}>
+                <Grid item container mt={1}>
                   <Grid item xs={12}>
                     <Divider />
                   </Grid>
@@ -378,9 +378,7 @@ const useStyles = makeStyles({
       pt: 0.4,
     },
   },
-  mainContainer: {
-    // paddingTop: "10px",
-  },
+
   btnWrapper: {
     gap: "30px",
     marginTop: "30px",

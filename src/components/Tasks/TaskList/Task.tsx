@@ -116,9 +116,6 @@ const Task = () => {
       if (keys[0] === "new" || keys[0] === "unread") {
         keyIndex = task[subTaskKey][keys[0]].length > 0 ? 0 : 1;
       }
-      // : task[subTaskKey][keys[1]].length > 0
-      // ? 1
-      // : 2;
       return keys[keyIndex];
     }
   };
@@ -158,10 +155,6 @@ const Task = () => {
         history.push(path);
       }
     }
-    // return () => {
-    //   setSelectedTab("");
-    //   setSelectedTask(null);
-    // };
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
 
   useEffect(() => {
@@ -303,7 +296,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
-    setSelectedTask(task);
+    setSelectedTask(() => task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -511,7 +504,7 @@ const Task = () => {
   }, [headerHeight]);
 
   const LoadingSkeleton = () => (
-    <Box style={{ height: "calc(100vh - 182px)" }}>
+    <Box style={{ height: windowHeight }}>
       {Array.from({ length: 6 }).map((_, index) => (
         <TaskCardSkeleton key={index} />
       ))}
@@ -524,22 +517,6 @@ const Task = () => {
         showWaterMark={true}
         content={emptyScreenContent}
       />
-    </div>
-  );
-
-  const TaskList = () => (
-    <div style={{ position: "relative" }}>
-      <VariableSizeList
-        className="custom-scrollbar"
-        height={windowHeight}
-        itemCount={filteredTask.length}
-        overscanCount={4}
-        layout="vertical"
-        itemSize={(index) => 115}
-        width={"100%"}
-      >
-        {TaskRow}
-      </VariableSizeList>
     </div>
   );
 
@@ -596,7 +573,17 @@ const Task = () => {
           ) : task && filteredTask.length === 0 ? (
             <EmptyScreen />
           ) : (
-            <TaskList />
+            <VariableSizeList
+              className="custom-scrollbar"
+              height={windowHeight}
+              itemCount={filteredTask.length}
+              overscanCount={10}
+              layout="vertical"
+              itemSize={(index) => 115}
+              width={"100%"}
+            >
+              {TaskRow}
+            </VariableSizeList>
           )}
         </Box>
       </Grid>

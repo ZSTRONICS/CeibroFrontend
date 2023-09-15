@@ -109,17 +109,10 @@ const ForwardTask = ({
         }
         localGroupContacts[firstLetter].push(contact);
       });
-      const updatedLocalGroupContacts: ContactsState = {};
-      if (recentUserContact.length > 0) {
-        updatedLocalGroupContacts["Suggested users"] = recentUserContact;
-      }
-
       setSortedContacts({
-        ...updatedLocalGroupContacts,
         ...localGroupContacts,
       });
       setAllContactsList({
-        ...updatedLocalGroupContacts,
         ...localGroupContacts,
       });
 
@@ -348,6 +341,7 @@ const ForwardTask = ({
           filterData={allContactsList}
           filteredUsers={selectedUsers}
           selected={selected}
+          recentData={{ "Suggested Users": recentUserContact }}
           handleSelectedList={handleSelectedList}
         />
       </Box>

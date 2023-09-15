@@ -221,7 +221,7 @@ function UserDropDown(props: IProps) {
             },
             PaperProps: {
               style: {
-                maxHeight: "calc(100vh - 240px)",
+                maxHeight: "calc(100vh - 100px)",
               },
             },
           }}
@@ -287,7 +287,7 @@ function UserDropDown(props: IProps) {
             sx={{
               minHeight: "66px",
               display: "flex",
-              paddingLeft: "12px",
+              padding: "6px 7px",
               overflow: "auto",
               "&::-webkit-scrollbar": {
                 height: "0.4rem",
@@ -317,7 +317,7 @@ function UserDropDown(props: IProps) {
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "end",
                 }}
               >
                 No selected contacts
@@ -328,21 +328,10 @@ function UserDropDown(props: IProps) {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              margin: "16px 16px 0px",
+              justifyContent: "flex-end",
+              margin: "0px 8px 0px",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                lineHeight: "16px",
-              }}
-            >
-              Suggested users
-            </Typography>
             <FormControlLabel
               control={
                 <Checkbox
@@ -376,27 +365,12 @@ function UserDropDown(props: IProps) {
               }
             />
           </Box>
-          <Box sx={{ margin: "8px 16px" }}>
-            {/* {recentUserContact.length > 0 &&
-              recentUserContact.map((contact: Contact) => {
-                return (
-                  <ContactBox
-                    isDisabled={user._id === contact._id}
-                    contact={contact}
-                    handleSelectedList={handleSelectedList}
-                    selected={
-                      !!selected.find(
-                        (selectUser) => selectUser._id === contact._id
-                      )
-                    }
-                  />
-                );
-              })} */}
-            <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
+          <Box sx={{ margin: "0px 10px" }}>
+            <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
             <GroupContactList
               filterData={filterData}
               selected={selected}
-              recentData={{"Recent Users":recentUserContact}}
+              recentData={{ "Suggested Users": recentUserContact }}
               handleSelectedList={handleSelectedList}
             />
           </Box>

@@ -23,7 +23,6 @@ interface FooterPropsType {
 
 const Footer = (props: FooterPropsType) => {
   const handleGetLocation = () => {
-    // Code to get user's location
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log("Latitude: " + position.coords.latitude);

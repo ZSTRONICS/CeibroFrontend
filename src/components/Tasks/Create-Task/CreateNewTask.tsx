@@ -196,6 +196,7 @@ function CreateNewTask() {
   };
 
   const handleCreateTask = () => {
+    setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
     let payload = selectedData;
     payload.creator = user._id;
@@ -204,7 +205,7 @@ function CreateNewTask() {
       taskActions.createTask({
         body: payload,
         success: (res: any) => {
-          setIsSubmit(true);
+          setIsSubmit(false);
           if (selectedImages.length > 0 || selectedDocuments.length > 0) {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
@@ -221,7 +222,6 @@ function CreateNewTask() {
       })
     );
   };
-
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
@@ -354,7 +354,7 @@ function CreateNewTask() {
             id="description-multiline"
             label="Description"
             multiline
-            maxRows={4}
+            maxRows={2}
             variant="standard"
             sx={{ width: "100%" }}
             onBlur={handleDescriptionChange}
@@ -476,12 +476,13 @@ function CreateNewTask() {
       </Box>
       <Footer
         disabled={
-          selectedData.topic !== "" &&
+          isSubmit ||
+          (selectedData.topic !== "" &&
           (selectedData.assignedToState.length > 0 ||
             (selectedData.invitedNumbers &&
               selectedData.invitedNumbers.length > 0))
             ? false
-            : true
+            : true)
         }
         showHeader={false}
         handleSubmitForm={handleCreateTask}

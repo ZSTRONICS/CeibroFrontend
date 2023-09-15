@@ -57,7 +57,7 @@ export default function ContactBox({
       />
       <div>
         <SubHeadingTag sx={{ color: "#000" }}>
-          {contactFullName || ""}
+          {`${contactFirstName} ${contactSurName}`}
         </SubHeadingTag>
         <SubLabelTag>{`${userCeibroData?.companyName || "N/A"}`}</SubLabelTag>
       </div>
