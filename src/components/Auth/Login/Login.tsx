@@ -61,19 +61,12 @@ const Login = () => {
   return (
     <AuthLayout title={t("auth.login")}>
       <LoginForm tokenLoading={tokenLoading} showSuccess={isLoggedIn} />
-      {/* <Grid container item className={classes.langContainer} pt={1.5}> */}
-      {/* <Grid item> */}
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>
         {t("auth.dont_have_account")}{" "}
         <Link to="/register" className={classes.signup}>
           {t("auth.signUp")}
         </Link>
       </Box>
-      {/* </Grid> */}
-      {/* <Grid item>
-                <Setting />
-              </Grid> */}
-      {/* </Grid> */}
     </AuthLayout>
   );
 };

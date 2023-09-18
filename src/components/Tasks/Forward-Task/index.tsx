@@ -202,8 +202,12 @@ const ForwardTask = ({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: { task: res.data.newTask, eventType: "TASK_FORWARDED" },
             });
+            closeModal();
           }
+        },
+        onFailAction: () => {
           closeModal();
+          // todo show toast error
         },
       })
     );

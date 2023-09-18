@@ -46,7 +46,7 @@ function Topbar() {
 
   const handleRouteClick = (config: SingleConfig) => {
     dispatch(appActions.setSelectedTab(config.key));
-    history.push(`/${config.getPath("")}`);
+    history.push(`/${config.getPath()}`);
   };
 
   return (

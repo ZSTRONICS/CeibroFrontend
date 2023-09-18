@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { AppBar, Box, IconButton, Stack } from "@mui/material";
 import { styled } from "@mui/system";
 import assets from "assets/assets";
+import Notification from "components/Notification/Notification";
 import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
@@ -83,7 +84,7 @@ export default function Header({ onOpenNav }: Props) {
           </div>
 
           <UserMenu />
-          {/* <Notification value={""} /> */}
+          <Notification value={""} />
         </Stack>
       </StyledToolbar>
     </StyledRoot>

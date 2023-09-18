@@ -14,6 +14,7 @@ import {
   CustomStack,
   ProjectAdminRoleTag,
 } from "components/CustomTags";
+import EmptyScreenDescription from "components/Tasks/EmptyScreenDescription";
 import React from "react";
 // let mapItem: any[] = [1,3,4,5,6,7,8,9];
 var aDay = 24 * 60 * 60 * 1000;
@@ -22,12 +23,6 @@ const mapItem: any[] = [
   // { id: '3', text: 'Item 3', timestamp: new Date(Date.now()-aDay*1) },
   // { id: '6', text: 'Item 6', timestamp: (new Date(Date.now()-aDay*23))},
   // { id: '2', text: 'Item 2', timestamp: 1649144582000 },
-  // { id: '4', text: 'Item 4', timestamp: 1649129782000 },
-  // { id: '5', text: 'Item 7', timestamp: 1649114982000 },
-  // { id: '5', text: 'Item 5', timestamp: 1649114982000 },
-  // { id: '5', text: 'Item 8', timestamp: 1649114982000 },
-  // { id: '5', text: 'Item 9', timestamp: 1649114982000 },
-  // { id: '5', text: 'Item 9', timestamp: 1649114982000 },
 ];
 
 const NotificationList = () => {
@@ -72,9 +67,6 @@ const NotificationList = () => {
     return groups;
   };
 
-  // console.log('groupByDate', groupByDate(mapItem))
-  // console.log(timeSince(new Date(Date.now()-aDay)));
-  // console.log(timeSince(new Date(Date.now()-aDay*31)));
   const groups = groupByDate(mapItem);
   return (
     <>
@@ -180,7 +172,18 @@ const NotificationList = () => {
             sx={{ pt: 3, textAlign: "center" }}
             primary={
               <>
-                <Typography>No data found!</Typography>
+                <div style={{ height: "50vh" }}>
+                  <EmptyScreenDescription
+                    showWaterMark={true}
+                    content={[
+                      {
+                        heading: "",
+                        description:
+                          "You have no new notifications from the \nlast 30 days.",
+                      },
+                    ]}
+                  />
+                </div>
               </>
             }
           />

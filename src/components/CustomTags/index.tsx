@@ -9,6 +9,19 @@ export const Heading = styled(Typography)(
     `
 );
 
+const CustomTitle = styled(Typography)`
+  font-family: "Inter";
+  font-weight: 600 !important;
+  font-size: 24px !important;
+  padding-bottom: 0px;
+  @media (max-width: 768px) {
+    font-size: 20px;
+  }
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
+`;
+
 const SubHeading = styled(Typography)(({ theme }) => ({
   color: "#0076C8",
   fontSize: 16,
@@ -111,12 +124,13 @@ export const SubHeadingTag = styled(Typography)`
   font-weight: 700 !important;
   color: #656565;
 `;
+
 export const ProjectAdminRoleTag = styled(Typography)`
-  font-family: "Inter";
-  font-style: normal;
-  font-size: 16px;
-  font-weight: 600;
-  color: #000000;
+  && {
+    font-weight: 600;
+    font-size: 16px;
+    color: #000000;
+  }
 `;
 export const RoleLabelTag = styled(Typography)`
   font-family: "Inter";
@@ -200,9 +214,9 @@ export {
   BackToLoginTag,
   BoldLableTag,
   CustomStack,
+  CustomTitle,
   DescriptionTag,
   MenuItemTag,
   Span,
-  SubHeading
+  SubHeading,
 };
-

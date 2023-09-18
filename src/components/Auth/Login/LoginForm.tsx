@@ -46,7 +46,7 @@ interface IInputValues {
 }
 
 const LoginForm: React.FC<Props> = (props) => {
-  const { tokenLoading, showSuccess } = props;
+  const { showSuccess } = props;
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);
@@ -143,17 +143,6 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {/* {showError && (
-                <MessageAlert message={alertMessage} severity="error" showMessage={true} />
-              )}
-              {showSuccess && (
-                <MessageAlert
-                  message="Logged in successfully"
-                  severity="success"
-                  showMessage={true}
-                />
-              )} */}
-
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   typeName="phone-number"

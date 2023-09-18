@@ -71,6 +71,10 @@ const RouterConfig = () => {
                 component={ProjectLocations}
               />
               <PrivateRoute path="/projects" component={Projects} />
+              {/* <PrivateRoute
+                path="/projects/newProject"
+                component={() => <>new project</>}
+              /> */}
               <PrivateRoute
                 exact
                 path="/drawingDetail"

@@ -40,7 +40,7 @@ export const PasswordTextField = (props: IProps) => {
           placeholder={placeholder ?? placeholder}
           onChange={onChange}
           onBlur={onBlur}
-          value={password ? password : undefined}
+          value={password ? password : ""}
           endAdornment={
             <InputAdornment position="end">
               <IconButton

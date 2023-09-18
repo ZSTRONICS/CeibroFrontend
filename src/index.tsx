@@ -1,4 +1,5 @@
 import { ThemeProvider } from "@material-ui/styles";
+import { CssBaseline } from "@mui/material";
 import { ConfirmProvider } from "material-ui-confirm";
 import * as React from "react";
 import ReactDOM from "react-dom/client";
@@ -25,6 +26,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <Provider store={Store.store}>
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <PersistGate loading={null} persistor={Store.persistor}>
         <ConfirmProvider>
           <React.StrictMode>

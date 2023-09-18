@@ -28,14 +28,16 @@ function Sidebar(props: any) {
   const { user } = useSelector((store: RootState) => store.auth);
   // const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
   useEffect(() => {
-    const splitedPath  = location.pathname.split("/")
-    const mainTab:selectedTaskFilterType = splitedPath[1] as selectedTaskFilterType
-    if(mainTab!==selectedTab){
+    const splitedPath = location.pathname.split("/");
+    const mainTab: selectedTaskFilterType =
+      splitedPath[1] as selectedTaskFilterType;
+    if (mainTab !== selectedTab) {
       dispatch(appActions.setSelectedTab(mainTab));
     }
-    const subtask: selectedTaskFilterType = splitedPath[2] as selectedTaskFilterType;
+    const subtask: selectedTaskFilterType =
+      splitedPath[2] as selectedTaskFilterType;
     subtask ? setSelectedChildTab(subtask) : setSelectedChildTab(undefined);
-  }, [location.pathname,selectedTab]);
+  }, [location.pathname, selectedTab]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();

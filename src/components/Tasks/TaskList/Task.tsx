@@ -468,7 +468,7 @@ const Task = () => {
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
     if (!localTask) {
-      return <TaskCardSkeleton key={index} />;
+      return <></>;
     }
     return (
       <div style={{ ...style }}>
