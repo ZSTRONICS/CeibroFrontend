@@ -160,7 +160,7 @@ export const useSocket = () => {
             const eventType = dataRcvd.eventType;
             const data = dataRcvd.data;
             if (dataRcvd.uuid !== undefined) {
-                sendSocketEventAck(dataRcvd.uuid);
+                setTimeout(() => { sendSocketEventAck(dataRcvd.uuid); }, 50);
             }
             switch (eventType) {
                 case TASK_CONFIG.TOPIC_CREATED:
