@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, IconButton, Typography } from "@mui/material";
 import { Contact } from "constants/interfaces";
@@ -15,10 +14,9 @@ export default function SelectedContactBox({
   isDisabled,
 }: ContactProps) {
   const {
-    contactFirstName = "",
-    contactFullName = "",
-    contactSurName = "",
-    isCeiborUser = "",
+    contactFirstName,
+    contactSurName,
+    isCeiborUser,
     userCeibroData = {},
     _id,
   } = contact;
@@ -30,7 +28,9 @@ export default function SelectedContactBox({
   } else if (contact.profilePic) {
     imageSrc = contact.profilePic;
   } else {
-    placeholder = contactFullName ? contactFullName.slice(0, 2) : "NA";
+    const firstInitial = contactFirstName ? contactFirstName[0] : "";
+    const lastInitial = contactSurName ? contactSurName[0] : "";
+    placeholder = `${firstInitial}${lastInitial}` || "NA";
   }
 
   return (
@@ -41,9 +41,10 @@ export default function SelectedContactBox({
           position: "relative",
           display: "inline-block",
           marginTop: "8px",
-          marginBottom: "8px",
+          marginBottom: "2px",
           marginRight: "8px",
           marginLeft: "4px",
+          borderRadius: "6px",
           pointerEvents: `${isDisabled ? "none" : ""}`,
           opacity: `${isDisabled ? "0.5" : "1"}`,
         }}
@@ -52,7 +53,7 @@ export default function SelectedContactBox({
           sx={{
             width: "50px",
             height: "50px",
-            bgcolor: "#F4F4F4", // You can set a placeholder background color here
+            bgcolor: "#F4F4F4",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

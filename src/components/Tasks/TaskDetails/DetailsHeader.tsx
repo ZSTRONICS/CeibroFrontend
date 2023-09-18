@@ -84,7 +84,7 @@ export default function DetailsHeader(props: IProps) {
   ];
 
   return (
-    <Box sx={{ padding: "0px 16px" }}>
+    <Box sx={{ padding: "0px 16px 0 5px" }}>
       <DetailActions
         doneImageRequired={doneImageRequired}
         doneCommentsRequired={doneCommentsRequired}

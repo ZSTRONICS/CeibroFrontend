@@ -5,6 +5,7 @@ interface ImageProps {
   alt: string;
   placeholder?: string;
   handleLoad?: () => void;
+  maxWidth: any;
   imgZoomHandler?: boolean;
 }
 
@@ -14,6 +15,7 @@ const ImageLazyLoad: React.FC<ImageProps> = ({
   placeholder,
   handleLoad,
   imgZoomHandler,
+  maxWidth,
 }) => {
   const [imageSrc, setImageSrc] = useState(placeholder);
   const [zoomLevel, setZoomLevel] = useState(100);
@@ -78,7 +80,7 @@ const ImageLazyLoad: React.FC<ImageProps> = ({
   return (
     <>
       {imgZoomHandler === true ? (
-        <div>
+        <div style={{ maxWidth: maxWidth, margin: "0 auto" }}>
           {/* <div
             style={{
               display: "flex",

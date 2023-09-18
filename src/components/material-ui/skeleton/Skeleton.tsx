@@ -1,8 +1,5 @@
-import React from 'react'
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton, { SkeletonProps } from "@mui/material/Skeleton";
 
-export function CSkeleton(props: any) {
-  return (
-    <Skeleton {...props} animation="wave" />
-  )
+export function CSkeleton(props: SkeletonProps) {
+  return <Skeleton {...props} animation="wave" />;
 }

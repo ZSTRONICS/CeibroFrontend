@@ -13,7 +13,7 @@ import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
@@ -36,6 +36,8 @@ import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { IS_IMAGE } from "components/Utills/Globals";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 
 var initialValues = {
   dueDate: "",
@@ -52,6 +54,7 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
+  const isRenderEffect = useRef<any>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
@@ -70,20 +73,25 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const tasks = useSelector((store: RootState) => store.task);
-  const projects = useSelector((store: RootState) => store.project);
-  const { allProjects } = projects;
-  const { Topics } = tasks;
+  const Topics = useSelector((state: RootState) => state.task.Topics);
+  const allProjects = useSelector(
+    (state: RootState) => state.project.allProjects
+  );
   const windowClose = window.getSelection();
 
   useEffect(() => {
-    dispatch(taskActions.getAllTopic());
-    dispatch(getAllProjects());
-    // const payload = {
-    //   other: { userId: user._id },
-    // };
-    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
+    if (!isRenderEffect.current) {
+      dispatch(taskActions.getAllTopic());
+      if (allProjects.length === 0) {
+        dispatch(getAllProjects());
+      }
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      recentUserContact.length < 1 &&
+        dispatch(userApiAction.getRecentContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -188,6 +196,7 @@ function CreateNewTask() {
   };
 
   const handleCreateTask = () => {
+    setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
     let payload = selectedData;
     payload.creator = user._id;
@@ -196,7 +205,7 @@ function CreateNewTask() {
       taskActions.createTask({
         body: payload,
         success: (res: any) => {
-          setIsSubmit(true);
+          setIsSubmit(false);
           if (selectedImages.length > 0 || selectedDocuments.length > 0) {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
@@ -213,7 +222,6 @@ function CreateNewTask() {
       })
     );
   };
-
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
@@ -346,7 +354,7 @@ function CreateNewTask() {
             id="description-multiline"
             label="Description"
             multiline
-            maxRows={4}
+            maxRows={2}
             variant="standard"
             sx={{ width: "100%" }}
             onBlur={handleDescriptionChange}
@@ -360,27 +368,44 @@ function CreateNewTask() {
           }}
         />
         {toggle && (
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={(e, checked) => {
-                    handleChangeValues(checked, "doneImageRequired");
-                  }}
-                />
-              }
-              label="Image"
-              name="doneImageRequired"
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Comment"
-              onChange={(e, checked) => {
-                handleChangeValues(checked, "doneCommentsRequired");
-              }}
-              name="doneCommentsRequired"
-            />
-          </FormGroup>
+          <>
+            <FormGroup row={true} sx={{ gap: 2 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e, checked) => {
+                      handleChangeValues(checked, "doneImageRequired");
+                    }}
+                  />
+                }
+                label="Image"
+                name="doneImageRequired"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Comment"
+                onChange={(e, checked) => {
+                  handleChangeValues(checked, "doneCommentsRequired");
+                }}
+                name="doneCommentsRequired"
+              />
+            </FormGroup>
+            {selectedImages.length === 0 && selectedDocuments.length === 0 && (
+              <EmptyScreenDescription
+                showWaterMark={false}
+                content={[
+                  {
+                    heading: taskConstantEt.done_requirement_quest_et,
+                    description: taskConstantEt.done_requirement_desc_et,
+                  },
+                  {
+                    heading: taskConstantEn.done_requirement_quest_en,
+                    description: taskConstantEn.done_requirement_desc_en,
+                  },
+                ]}
+              />
+            )}
+          </>
         )}
         {selectedImages.length > 0 && (
           <Box
@@ -438,7 +463,7 @@ function CreateNewTask() {
         {selectedDocuments.length > 0 && (
           <Box
             sx={{
-              padding: "8px",
+              padding: "4px 8px",
             }}
           >
             <FileBox
@@ -448,24 +473,23 @@ function CreateNewTask() {
             />
           </Box>
         )}
-        {/* <Box sx={{ marginTop: "10px" }}> */}
-        <Footer
-          disabled={
-            selectedData.topic !== "" &&
-            (selectedData.assignedToState.length > 0 ||
-              (selectedData.invitedNumbers &&
-                selectedData.invitedNumbers.length > 0))
-              ? false
-              : true
-          }
-          showHeader={false}
-          handleSubmitForm={handleCreateTask}
-          handleAttachImageValue={handleAttachImageValue}
-          handleGetLocationValue={handleGetLocationValue}
-          handleSelectDocumentValue={handleSelectDocumentValue}
-        />
-        {/* </Box> */}
       </Box>
+      <Footer
+        disabled={
+          isSubmit ||
+          (selectedData.topic !== "" &&
+          (selectedData.assignedToState.length > 0 ||
+            (selectedData.invitedNumbers &&
+              selectedData.invitedNumbers.length > 0))
+            ? false
+            : true)
+        }
+        showHeader={false}
+        handleSubmitForm={handleCreateTask}
+        handleAttachImageValue={handleAttachImageValue}
+        handleGetLocationValue={handleGetLocationValue}
+        handleSelectDocumentValue={handleSelectDocumentValue}
+      />
     </Box>
   );
 }

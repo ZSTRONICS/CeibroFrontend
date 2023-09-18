@@ -2,8 +2,9 @@ import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
+import appActions from "redux/action/app.action";
 import { selectedTaskFilterType } from "redux/type";
 import { openFormInNewWindow } from "utills/common";
 import colors from "../../assets/colors";
@@ -12,6 +13,7 @@ import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
 
 function Sidebar(props: any) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
@@ -21,16 +23,19 @@ function Sidebar(props: any) {
     (store: RootState) => store.navigation.selectedTab
   );
   const configs = useSelector(
-    (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
+    (store: RootState) => store.navigation.sidebarRoutes[selectedTab]?.childTab
   );
   const { user } = useSelector((store: RootState) => store.auth);
   // const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
   useEffect(() => {
-    const subtask: selectedTaskFilterType = location.pathname.split(
-      "/"
-    )[2] as selectedTaskFilterType;
+    const splitedPath  = location.pathname.split("/")
+    const mainTab:selectedTaskFilterType = splitedPath[1] as selectedTaskFilterType
+    if(mainTab!==selectedTab){
+      dispatch(appActions.setSelectedTab(mainTab));
+    }
+    const subtask: selectedTaskFilterType = splitedPath[2] as selectedTaskFilterType;
     subtask ? setSelectedChildTab(subtask) : setSelectedChildTab(undefined);
-  }, [location.pathname]);
+  }, [location.pathname,selectedTab]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();
@@ -59,11 +64,9 @@ function Sidebar(props: any) {
                 }`}
                 onClick={() => handleRouteClick(config)}
               >
-                <div className={classes.iconWrapper}>
-                  <Box>
-                    <config.icon />
-                  </Box>
-                </div>
+                <Box>
+                  <config.icon />
+                </Box>
                 <Typography className={classes.title}>
                   {config.title}
                 </Typography>
@@ -109,30 +112,17 @@ const useStyles = makeStyles((theme) => ({
   menue: {
     // display: "flex",
     textAlign: "center",
-    padding: "16px 6px",
+    padding: "10px 6px",
     borderBottom: `1px solid white`,
-    fontSize: 16,
-    fontWeight: 500,
     color: colors.primary,
     cursor: "pointer",
     gap: 13,
+    margin: "10px 0",
     "&:hover": {
       background: "white",
     },
   },
-  iconWrapper: {
-    // flex: 1,
-    // display: "flex",
-  },
-  icon: {
-    padding: 8,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    background: "white",
-    color: colors.black,
-  },
+
   title: {
     flex: 4,
     fontSize: 10,
@@ -143,37 +133,6 @@ const useStyles = makeStyles((theme) => ({
   },
   active: {
     background: "white",
-    color: `${colors.black} !important`,
-  },
-  help: {
-    // height: '50px',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  helpIcon: {
-    color: colors.white,
-    // fontSize: 25,
-    position: "absolute",
-    zIndex: 2,
-    left: 45,
-  },
-  helpInnerWrapper: {
-    background: colors.black,
-    left: 65,
-    position: "absolute",
-    zIndex: 1,
-    width: 10,
-    height: 10,
-  },
-  helpText: {
-    fontSize: 16,
-    fontWeight: 500,
-    color: colors.primary,
-  },
-  iconInner: {
-    width: 12,
-    heihgt: 12,
+    boxShadow: "0px 2px 2px 0px #3b95d3",
   },
 }));

@@ -162,6 +162,21 @@ iframe {
 }
 
 /* custom scrollbar */
+.contacts-scrollbar::-webkit-scrollbar {
+  width: 17px;
+}
+
+.contacts-scrollbar::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.contacts-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #d6dee1;
+  border-radius: 7px;
+  border: 4px solid transparent;
+  background-clip: content-box;
+}
+
 .MuiDialog-paperWidthSm::-webkit-scrollbar,
 .MuiMenu-paper::-webkit-scrollbar,
 .custom-scrollbar::-webkit-scrollbar {

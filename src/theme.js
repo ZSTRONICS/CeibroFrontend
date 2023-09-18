@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme } from "@mui/material/styles";
 import colors from "./assets/colors";
 
 export const theme = createTheme({
@@ -24,7 +24,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: ["Inter"].join(","),
+    fontFamily: "Inter",
     fontSize: 12,
     fontWeight: 500,
     button: {

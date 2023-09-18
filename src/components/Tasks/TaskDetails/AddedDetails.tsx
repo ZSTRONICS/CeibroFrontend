@@ -22,14 +22,15 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 interface IProps {
   events: TaskEvent[];
+  hasFile: boolean;
 }
 export default function AddedDetails(props: IProps) {
-  const { events } = props;
-  // const listRef: any = useRef(null);
+  const { events, hasFile } = props;
+  const listRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
@@ -39,12 +40,12 @@ export default function AddedDetails(props: IProps) {
     openModal();
   };
 
-  // useEffect(() => {
-  //   if (listRef.current) {
-  //     listRef.current.scrollTo(0, listRef.current.scrollHeight);
-  //   }
-  // }, [events.length]);
-
+  useEffect(() => {
+    if (listRef.current) {
+      listRef.current.scrollTo(0, listRef.current.scrollHeight);
+    }
+  }, [events.length]);
+  const contentHeight = hasFile ? "409px" : "570px";
   return (
     <>
       <div>
@@ -57,19 +58,13 @@ export default function AddedDetails(props: IProps) {
             <SubHeadingTag sx={{ color: "black" }}>Added Detail</SubHeadingTag>
           </AccordionSummary>
           <AccordionDetails
-          // ref={listRef}
-          // sx={{
-          //   height: "calc(83vh - 271px)",
-          //   overflow: "auto",
-          //   scrollbarWidth: "none",
-          //   msOverflowStyle: "none",
-          //   "&::-webkit-scrollbar": {
-          //     width: "0.5em",
-          //   },
-          //   "&::-webkit-scrollbar-thumb": {
-          //     background: "transparent",
-          //   },
-          // }}
+            ref={listRef}
+            className="custom-scrollbar"
+            sx={{
+              height: `calc(95vh - ${contentHeight})`,
+              overflow: "auto",
+              pb: 1,
+            }}
           >
             {events.length > 0 ? (
               events.map((event: TaskEvent) => {
@@ -225,7 +220,7 @@ export default function AddedDetails(props: IProps) {
                         <CustomStack py={0.7}>
                           {mediaLocal.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id + i} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -293,7 +288,7 @@ export default function AddedDetails(props: IProps) {
                         <CustomStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id + i} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -334,7 +329,7 @@ export default function AddedDetails(props: IProps) {
                       </React.Fragment>
                     );
                   default:
-                    return null; // Handle any other event types as needed
+                    return null;
                 }
               })
             ) : (

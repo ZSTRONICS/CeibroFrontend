@@ -2,8 +2,6 @@ import { Box, CircularProgress } from "@mui/material";
 import { Suspense } from "react";
 import { Redirect, Route, Router, Switch } from "react-router-dom";
 
-import { createBrowserHistory } from "history";
-// import CommingSoon from "./CommingSoon";
 import {
   AdminMain,
   Connections,
@@ -22,10 +20,11 @@ import {
   RegisterConfirmationForm,
   RegisterNumberForm,
   ResetPassword,
-  Tasks,
+  Task,
   TermsAndConditions,
 } from "components";
 import NotFound from "components/NotFound";
+import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
@@ -64,7 +63,7 @@ const RouterConfig = () => {
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
-                component={Tasks}
+                component={Task}
               />
               <PrivateRoute
                 exact

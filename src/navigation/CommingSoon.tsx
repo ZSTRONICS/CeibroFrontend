@@ -39,7 +39,7 @@ function CommingSoon() {
             fontSize: { md: "2.2rem !important", xs: "1.5rem !important" },
           }}
         >
-          Comming Soon
+          Coming Soon
         </SubHeadingTag>
       </Grid>
       <Grid
@@ -50,7 +50,7 @@ function CommingSoon() {
           display: { xs: "none", md: "block", sm: "block" },
           width: "100%",
           height: "100%",
-          background: `url(${assets.visual}) no-repeat`,
+          background: `url(${assets.visualWebp}) no-repeat`,
           backgroundSize: "100% 100%",
         }}
       ></Grid>

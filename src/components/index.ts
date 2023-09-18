@@ -35,7 +35,7 @@ const Connections = lazy(() => import("./Connection/Connection"));
 const Profile = lazy(() => import("./Profile/Profile"));
 
 // task
-const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
+const Task = lazy(() => import("./Tasks/TaskList/Task"));
 const CreateNewTask = lazy(() => import("./Tasks/Create-Task/CreateNewTask"));
 
 // project
@@ -46,6 +46,6 @@ const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProj
 
 export {
   AdminMain, CDrawer, Connections, CreateNewTask, CreateProjectDrawer, DrawingDetails, ForgetConfirmation, ForgetPassword, ForwardTask, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
-  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Tasks, TermsAndConditions, ViewInvitations
+  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Task, TermsAndConditions, ViewInvitations
 };
 

@@ -1,18 +1,21 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
-import { TaskCard } from "components/TaskComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
-import { optionMapping } from "components/Utills/Globals";
+import { TaskCard } from "components/TaskComponent";
+import { countUnseenTasks, optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
+import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
 import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 
 interface RouteParams {
@@ -23,23 +26,38 @@ interface RouteParams {
 
 const Task = () => {
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
-
+  const isRenderEffect = useRef<any>(false);
+  const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
-  const headerHeight = 180;
+  const userId = user && String(user._id);
+  const [emptyScreenContent, setEmptyScreenContent] = useState([
+    {
+      heading: "",
+      description: "",
+    },
+  ]);
+  const headerHeight = 172;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
-  const userId = user && String(user._id);
 
-  const dispatch = useDispatch();
-  const { task } = useSelector((state: RootState) => state);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const task: any = useSelector((state: RootState) => state.task);
+  const {
+    allTaskToMe,
+    allTaskFromMe,
+    allTaskHidden,
+    loadingAllTaskToMe,
+    loadingAllTaskfromMe,
+    loadingHiddenTask,
+  } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
+  const isallTakLoading =
+    loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
 
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
@@ -81,20 +99,23 @@ const Task = () => {
   };
 
   useEffect(() => {
-    getAllTaskOnce();
-  }, [subtask]);
+    if (!isRenderEffect.current) {
+      getAllTaskOnce();
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
 
   const getFilterKey = () => {
-    if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
+    if (subTaskKey && filterkey) {
       return filterkey;
     } else {
+      let keyIndex = 0;
       const keys = Object.keys(task[subTaskKey]);
-      const keyIndex =
-        task[subTaskKey][keys[0]].length > 0
-          ? 0
-          : task[subTaskKey][keys[1]].length > 0
-          ? 1
-          : 2;
+      if (keys[0] === "new" || keys[0] === "unread") {
+        keyIndex = task[subTaskKey][keys[0]].length > 0 ? 0 : 1;
+      }
       return keys[keyIndex];
     }
   };
@@ -134,22 +155,20 @@ const Task = () => {
         history.push(path);
       }
     }
-    // return () => {
-    //   setSelectedTab("");
-    //   setSelectedTask(null);
-    // };
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
 
   useEffect(() => {
-    subtask &&
+    if (subtask) {
+      !taskuid && setSelectedTask(null);
       setFilteredTask(
         searchInData(task[subtask][getFilterKey()], "", "taskUID")
       );
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
+    }
+  }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask]);
 
   useEffect(() => {
     if (selectedTab) {
-      setSelectedTask(null);
+      !taskuid && setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
     }
   }, [selectedTab]);
@@ -177,15 +196,93 @@ const Task = () => {
     switch (subtask) {
       case "allTaskFromMe":
         setIsTaskFromMe("To");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Ongoing_Qestion_et,
+              description: taskConstantEt.FromMe_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Ongoing_Qestion_en,
+              description: taskConstantEn.FromMe_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Done_Qestion_et,
+              description: taskConstantEt.FromMe_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Done_Qestion_en,
+              description: taskConstantEn.FromMe_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskToMe":
         setIsTaskFromMe("From");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Ongoing_Qestion_et,
+              description: taskConstantEt.To_Me_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Ongoing_Qestion_en,
+              description: taskConstantEn.To_Me_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Done_Qestion_et,
+              description: taskConstantEt.To_Me_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Done_Qestion_en,
+              description: taskConstantEn.To_Me_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskHidden":
         if (filterkey === "canceled") {
           setIsTaskFromMe("To");
-        } else {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Canceled_Qestion_et,
+              description: taskConstantEt.Hidden_Canceled_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Canceled_Qestion_en,
+              description: taskConstantEn.Hidden_Canceled_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
           setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Done_Qestion_et,
+              description: taskConstantEt.Hidden_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Done_Qestion_en,
+              description: taskConstantEn.Hidden_Done_desc_en,
+            },
+          ]);
+        } else if (filterkey === "ongoing") {
+          setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Ongoing_Qestion_et,
+              description: taskConstantEt.Hidden_Ongoing_Qestion_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Ongoing_Qestion_en,
+              description: taskConstantEn.Hidden_Ongoing_desc_en,
+            },
+          ]);
         }
         break;
       default:
@@ -199,6 +296,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
+    setSelectedTask(() => task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -307,32 +405,9 @@ const Task = () => {
       : [];
   };
 
-  let newUnSeenCount = 0;
-  let fromMeUnReadCount = 0;
-  let canceledCount = 0;
-  let ongoingHasTask = false;
-  let doneHasTask = false;
-
-  allTaskToMe.new.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (newUnSeenCount += 1) : 0
-  );
-  allTaskFromMe.unread.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (fromMeUnReadCount += 1) : 0
-  );
-
-  allTaskHidden.canceled.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (canceledCount += 1) : 0
-  );
-  const taskLists: any = {
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
-  };
-
-  if (taskLists.hasOwnProperty(subtask)) {
-    ongoingHasTask = isEmpty(taskLists[subtask].ongoing);
-    doneHasTask = isEmpty(taskLists[subtask].done);
-  }
+  const newUnSeenCount = countUnseenTasks(allTaskToMe.new, userId);
+  const fromMeUnReadCount = countUnseenTasks(allTaskFromMe.unread, userId);
+  const canceledCount = countUnseenTasks(allTaskHidden.canceled, userId);
 
   const renderTabs = (type: string, activeTab: string) => {
     const tabConfig = [
@@ -354,21 +429,21 @@ const Task = () => {
         type: "ongoing",
         label: "Ongoing",
         notifyCount: taskOngoingCount,
-        isDisabled: ongoingHasTask,
+        isDisabled: false,
         bgColor: "#F1B740",
       },
       {
         type: "done",
         label: "Done",
         notifyCount: taskDoneCount,
-        isDisabled: doneHasTask,
+        isDisabled: false,
         bgColor: "#55BCB3",
       },
       {
         type: "canceled",
         label: "Canceled",
         notifyCount: canceledCount,
-        isDisabled: isEmpty(allTaskHidden.canceled),
+        isDisabled: false,
         bgColor: "#FFE7E7",
       },
     ];
@@ -392,6 +467,9 @@ const Task = () => {
 
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
+    if (!localTask) {
+      return <TaskCardSkeleton key={index} />;
+    }
     return (
       <div style={{ ...style }}>
         {localTask && (
@@ -425,11 +503,29 @@ const Task = () => {
     };
   }, [headerHeight]);
 
+  const LoadingSkeleton = () => (
+    <Box style={{ height: windowHeight }}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TaskCardSkeleton key={index} />
+      ))}
+    </Box>
+  );
+
+  const EmptyScreen = () => (
+    <div style={{ height: windowHeight }}>
+      <EmptyScreenDescription
+        showWaterMark={true}
+        content={emptyScreenContent}
+      />
+    </div>
+  );
+
   return (
     <Grid container>
       <Grid
         item
-        md={3}
+        lg={2.85}
+        md={3.5}
         xs={4}
         sx={{
           borderRight: "1px solid #ADB5BD",
@@ -442,7 +538,7 @@ const Task = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 1.25 },
+              gap: { xs: 1, md: 2.2, lg: 4 },
               overflow: "auto",
               padding: "8px 0px 4px 0px",
             }}
@@ -453,55 +549,45 @@ const Task = () => {
                 return renderTabs(key, selectedTab);
               })}
           </Box>
-          <Box
-            sx={{
-              width: "100%",
-              borderWidth: "0px 0px 1px 0px",
-              borderColor: "#818181",
-              borderStyle: "solid",
-              paddingLeft: "8px",
-            }}
-          >
-            <InputBase
-              placeholder="Start typing to search"
-              sx={{ height: "48px" }}
-              onChange={handleSearch}
-            />
-          </Box>
+          {filteredTask.length !== 0 && (
+            <Box
+              sx={{
+                width: "100%",
+                borderWidth: "0px 0px 1px 0px",
+                borderColor: "#818181",
+                borderStyle: "solid",
+                paddingLeft: "8px",
+              }}
+            >
+              <InputBase
+                placeholder="Start typing to search"
+                sx={{ height: "48px" }}
+                onChange={handleSearch}
+              />
+            </Box>
+          )}
         </Box>
-        <Box
-          sx={{
-            // height: "calc(100vh - 178px)",
-            // overflow: "auto",
-            // padding: " 0 1px",
-            pl: 0.7,
-            pr: 0.4,
-          }}
-        >
-          <div style={{ position: "relative" }}>
-            {/* <CustomStack
-          // gap={1.4}
-          // flexWrap="wrap"
-          // sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
-          > */}
-            {task && filteredTask && (
-              <VariableSizeList
-                className="custom-scrollbar"
-                height={windowHeight}
-                itemCount={filteredTask.length}
-                overscanCount={1}
-                layout="vertical"
-                itemSize={(index) => 115}
-                width={"100%"}
-              >
-                {TaskRow}
-              </VariableSizeList>
-            )}
-          </div>
-          {/* /</CustomStack> */}
+        <Box sx={{ pl: 0.7, pr: 0.5 }}>
+          {isallTakLoading ? (
+            <LoadingSkeleton />
+          ) : task && filteredTask.length === 0 ? (
+            <EmptyScreen />
+          ) : (
+            <VariableSizeList
+              className="custom-scrollbar"
+              height={windowHeight}
+              itemCount={filteredTask.length}
+              overscanCount={10}
+              layout="vertical"
+              itemSize={(index) => 115}
+              width={"100%"}
+            >
+              {TaskRow}
+            </VariableSizeList>
+          )}
         </Box>
       </Grid>
-      <Grid item md={9} xs={8}>
+      <Grid item md={8.5} lg={9.15} xs={7}>
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

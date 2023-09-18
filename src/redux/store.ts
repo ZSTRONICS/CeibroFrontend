@@ -4,7 +4,7 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 import createSagaMiddleware from "redux-saga";
 import "regenerator-runtime/runtime";
-import { rootReducer } from "./reducers";
+import { rootReducer } from "./reducers/index";
 import rootSaga from "./sagas/rootSagas";
 
 const persistConfig = {

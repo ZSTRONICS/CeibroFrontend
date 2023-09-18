@@ -25,7 +25,7 @@ export default function DetailsBody(props: IProps) {
   };
   return (
     <>
-      <Box sx={{ paddingLeft: "15px" }}>
+      <Box sx={{ paddingLeft: "5px" }}>
         <DespcriptionBox description={description} />
         <Box
           className="custom-scrollbar"
@@ -82,7 +82,7 @@ export default function DetailsBody(props: IProps) {
             );
           })}
         <DrawingFiles />
-        <AddedDetails events={events} />
+        <AddedDetails events={events} hasFile={media.length === 0} />
       </Box>
       {isOpen && (
         <ImagePreviewModal
