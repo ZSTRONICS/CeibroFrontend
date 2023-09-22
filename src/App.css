@@ -1,4 +1,7 @@
 :root {
+  font-family: Inter, system-ui, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
   --primary: #0076c8;
   --accent: #c9e2d9;
   --light-accent: #d5ebe366;
@@ -12,6 +15,11 @@
   --white: white;
   --dark-gray: #B6B7B8;
   --diva-violet: #5572BC;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
 }
 
 /* Reset Styles */

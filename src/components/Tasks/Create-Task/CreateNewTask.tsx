@@ -144,8 +144,7 @@ function CreateNewTask() {
   ) => {
     return (
       data &&
-      data.map((item: object) => {
-        //@ts-ignore
+      data.map((item: any) => {
         return { label: item[labelName], value: item[valueName] };
       })
     );

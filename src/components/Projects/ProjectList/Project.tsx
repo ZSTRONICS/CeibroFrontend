@@ -144,7 +144,7 @@ const Project = () => {
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
 
   const [headerHeight, setHeaderHeight] = useState<string>("");
-  let isTimeOut: NodeJS.Timeout;
+  let isTimeOut: NodeJS.Timeout | any;
 
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {

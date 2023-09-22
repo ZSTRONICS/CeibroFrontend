@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 //react router dom
 import { useHistory } from "react-router";
@@ -7,23 +7,19 @@ import { useHistory } from "react-router";
 import Alert from "@mui/material/Alert";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
-import {
-  registerRequest,
-  registerSetupProfile,
-} from "redux/action/auth.action";
-import { RootState } from "redux/reducers/appReducer";
+import { useDispatch } from "react-redux";
+import { registerSetupProfile } from "redux/action/auth.action";
 
 // components
 
 // i18next
 import { useTranslation } from "react-i18next";
 //formik
-import { Formik } from "formik";
-import { setValidationSchema } from "../userSchema/RegisterSchema";
-import { Grid, Button, Typography, Divider } from "@mui/material";
+import { Button, Divider, Grid, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { Formik } from "formik";
+import { setValidationSchema } from "../userSchema/RegisterSchema";
 import useStyles from "./RegisterStyles";
 
 const RegisterForm = () => {
@@ -79,7 +75,13 @@ const RegisterForm = () => {
     password: string;
   }): boolean => {
     const { email, firstName, surName, password } = values;
-    return !(password && password.length > 0 && email && firstName && surName);
+    return !(
+      password &&
+      password.length > 0 &&
+      email &&
+      firstName.length > 1 &&
+      surName.length > 1
+    );
   };
   const marginBottom = 2.4;
   return (
@@ -161,7 +163,7 @@ const RegisterForm = () => {
                 />
                 {errors.email && (
                   <Typography className={`error-text ${classes.errorText}`}>
-                    { errors.email}
+                    {errors.email}
                   </Typography>
                 )}
               </CBox>
@@ -259,7 +261,7 @@ const RegisterForm = () => {
                       width: "100%",
                       borderColor: "red",
                       color: "red",
-                      py:{xs:0.3, md:1.3},
+                      py: { xs: 0.3, md: 1.3 },
                       textTransform: "capitalize !important",
                     }}
                     onClick={() => history.push("/login")}
@@ -276,7 +278,7 @@ const RegisterForm = () => {
                       color: "#fff",
                       textTransform: "capitalize !important",
                       backgroundColor: "#0076C8",
-                      py:{xs:0.5, md:1.5}
+                      py: { xs: 0.5, md: 1.5 },
                     }}
                     type="submit"
                     disabled={checkValidInputs(values)}

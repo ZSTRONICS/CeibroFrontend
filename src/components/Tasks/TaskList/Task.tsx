@@ -9,6 +9,7 @@ import { TaskCard } from "components/TaskComponent";
 import { countUnseenTasks, optionMapping } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
+import { TASK_CONFIG } from "config";
 import { Task as ITask } from "constants/interfaces";
 import _, { isEmpty } from "lodash";
 import { useHistory, useParams } from "react-router-dom";
@@ -177,6 +178,18 @@ const Task = () => {
     dispatch(
       taskActions.taskSeen({
         other: { taskId },
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: {
+                ...res.data.taskSeen,
+                userId,
+                eventType: TASK_CONFIG.TASK_SEEN,
+              },
+            });
+          }
+        },
       })
     );
   };
@@ -549,23 +562,23 @@ const Task = () => {
                 return renderTabs(key, selectedTab);
               })}
           </Box>
-          {filteredTask.length !== 0 && (
-            <Box
-              sx={{
-                width: "100%",
-                borderWidth: "0px 0px 1px 0px",
-                borderColor: "#818181",
-                borderStyle: "solid",
-                paddingLeft: "8px",
-              }}
-            >
-              <InputBase
-                placeholder="Start typing to search"
-                sx={{ height: "48px" }}
-                onChange={handleSearch}
-              />
-            </Box>
-          )}
+          {/* {filteredTask.length !== 0 && ( */}
+          <Box
+            sx={{
+              width: "100%",
+              borderWidth: "0px 0px 1px 0px",
+              borderColor: "#818181",
+              borderStyle: "solid",
+              paddingLeft: "8px",
+            }}
+          >
+            <InputBase
+              placeholder="Start typing to search"
+              sx={{ height: "48px" }}
+              onChange={handleSearch}
+            />
+          </Box>
+          {/* )} */}
         </Box>
         <Box sx={{ pl: 0.7, pr: 0.5 }}>
           {isallTakLoading ? (

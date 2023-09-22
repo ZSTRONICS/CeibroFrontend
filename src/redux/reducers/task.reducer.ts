@@ -183,7 +183,7 @@ const TaskReducer = (
             }
           }
           break;
-        case "UN_CANCEL_TASK":
+        case TASK_CONFIG.UN_CANCEL_TASK:
           const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
           if (taskIndex > -1) {
             addEventToTask(state.allTaskHidden.canceled[taskIndex], eventData, taskIndex);
@@ -194,8 +194,10 @@ const TaskReducer = (
               ...state.allTaskHidden.canceled[taskIndex],
               userSubState: 'unread',
             };
-            state.allTaskFromMe.unread.unshift(modifiedTask);
-            console.log('UN_CANCEL_TASK allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
+            if (eventData.oldTaskData.isCreator) {
+              state.allTaskFromMe.unread.unshift(modifiedTask);
+              // console.log('UN_CANCEL_TASK allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
+            }
             if (isAssignedToMe) {
               const modifiedTask = {
                 ...state.allTaskHidden.canceled[taskIndex],

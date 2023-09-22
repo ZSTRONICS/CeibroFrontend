@@ -18,6 +18,8 @@ import { ErrorBoundary } from "components/ErrorBoundary/ErrorBoundary";
 import { useSocket } from "utills/SocketUtils";
 
 const App = () => {
+  const isOnline = navigator.onLine;
+  console.log("isOnline", isOnline);
   useSocket();
   return (
     // <ThemeProvider theme={theme}>
