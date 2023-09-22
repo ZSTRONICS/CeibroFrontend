@@ -46,6 +46,7 @@ export default function AddedDetails(props: IProps) {
     }
   }, [events.length]);
   const contentHeight = hasFile ? "409px" : "570px";
+  console.log("events", events);
   return (
     <>
       <div>
@@ -144,15 +145,22 @@ export default function AddedDetails(props: IProps) {
                     return (
                       <React.Fragment key={event._id + "invitedMembersLocal"}>
                         {eventData && eventData.length > 0 && (
-                          <CustomStack gap={1.2} py={0.8}>
-                            <DocName>{` ${momentdeDateFormatWithDay(
-                              createdAt
-                            )}`}</DocName>
-                            <Span
-                              sx={{ fontSize: "12px" }}
-                            >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
-                            <DocName>{userInfo}</DocName>
-                          </CustomStack>
+                          <>
+                            <CustomStack gap={1.2} py={0.8}>
+                              <DocName>{` ${momentdeDateFormatWithDay(
+                                createdAt
+                              )}`}</DocName>
+                              <Span
+                                sx={{ fontSize: "12px" }}
+                              >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
+                              <DocName>{userInfo}</DocName>
+                            </CustomStack>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
+                              {commentData?.message || ""}
+                            </AddStatusTag>
+                          </>
                         )}
                         {invitedMembers.length > 0 && (
                           <React.Fragment key={event._id + "invitedMembers"}>
@@ -181,6 +189,21 @@ export default function AddedDetails(props: IProps) {
                         </CustomStack>
                         <Span sx={{ fontSize: "12px" }}>
                           Task has been Canceled
+                        </Span>
+                        <Divider />
+                      </React.Fragment>
+                    );
+                  case TaskEventType.UnCancelTask:
+                    return (
+                      <React.Fragment key={event._id + "CancelTask"}>
+                        <CustomStack gap={1.2} py={0.8}>
+                          <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
+                          <DocName>{`${initiator.firstName} ${
+                            initiator.surName
+                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                        </CustomStack>
+                        <Span sx={{ fontSize: "12px" }}>
+                          Task has been Un-canceled
                         </Span>
                         <Divider />
                       </React.Fragment>
