@@ -1,17 +1,17 @@
-import React, { useState } from "react";
-import useStyles from "./RegisterStyles";
 import {
-  Typography,
   Button,
-  Grid,
-  FormControlLabel,
   Checkbox,
+  FormControlLabel,
+  Grid,
+  Typography,
 } from "@mui/material";
-import AuthLayout from "../AuthLayout/AuthLayout";
-import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import { TopBarTitle } from "components/CustomTags";
 import useResponsive from "hooks/useResponsive";
+import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import AuthLayout from "../AuthLayout/AuthLayout";
+import useStyles from "./RegisterStyles";
 
 export default function TermsAndConditions() {
   const classes = useStyles();
@@ -24,7 +24,9 @@ export default function TermsAndConditions() {
     <AuthLayout title={t("auth.terms_conditions")}>
       {isTabletOrMobile && (
         <div>
-          <TopBarTitle sx={{ fontSize: 28, pb:3 }}>Terms & Conditions</TopBarTitle>
+          <TopBarTitle sx={{ fontSize: 28, pb: 3 }}>
+            Terms & Conditions
+          </TopBarTitle>
         </div>
       )}
       <div>
@@ -86,7 +88,7 @@ export default function TermsAndConditions() {
             <Button
               variant="outlined"
               sx={{ width: "100%", borderColor: "#000", color: "#000" }}
-              onClick={() => history.push("/login")}
+              onClick={() => history.push("/private-login")}
             >
               Cancel
             </Button>

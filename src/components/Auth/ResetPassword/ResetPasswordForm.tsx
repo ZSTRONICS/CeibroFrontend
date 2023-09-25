@@ -1,6 +1,11 @@
 import { Button, CircularProgress, Typography } from "@mui/material";
 import colors from "assets/colors";
+import { CustomStack } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
+import { CBox } from "components/material-ui";
+import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
+import userAlertMessage from "hooks/userAlertMessage";
 import queryString from "query-string";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,11 +14,6 @@ import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import { resetPassword } from "redux/action/auth.action";
 import { resetPasswordSchemaValidation } from "../userSchema/AuthSchema";
-import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { CBox } from "components/material-ui";
-import MessageAlert from "components/MessageAlert/MessageAlert";
-import userAlertMessage from "hooks/userAlertMessage";
-import { CustomStack } from "components/CustomTags";
 
 const ResetPasswordForm = () => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const ResetPasswordForm = () => {
         setSuccess(res);
         if (res) {
           localStorage.clear();
-          history.push("/login");
+          history.push("/private-login");
         }
         toast.success(`${t("auth.password_reset_successfully")}`);
         action?.resetForm?.();

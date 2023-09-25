@@ -17,7 +17,10 @@ const ResetPassword = () => {
       <ResetPasswordForm />
       <BackToLoginTag>
         Remember! &nbsp; &nbsp;
-        <Link to="/login" style={{ color: "#0076c8", textDecoration: "none" }}>
+        <Link
+          to="/private-login"
+          style={{ color: "#0076c8", textDecoration: "none" }}
+        >
           Login
         </Link>
       </BackToLoginTag>

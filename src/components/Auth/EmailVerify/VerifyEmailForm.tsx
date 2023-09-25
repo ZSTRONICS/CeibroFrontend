@@ -1,15 +1,15 @@
-import { Typography, Button, CircularProgress } from "@material-ui/core";
+import { Button, CircularProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import Alert from "@mui/material/Alert";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import { toast } from "react-toastify";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import TextField from "../../Utills/Inputs/TextField";
-import { useDispatch } from "react-redux";
 import { otpVerify } from "../../../redux/action/auth.action";
-import Alert from "@mui/material/Alert";
-import { toast } from "react-toastify";
-import { useTranslation } from "react-i18next";
+import TextField from "../../Utills/Inputs/TextField";
 
 const VerifyEmailForm = () => {
   const classes = useStyles();
@@ -34,7 +34,7 @@ const VerifyEmailForm = () => {
         setSuccess(res);
         setOtp("");
         toast.success(`${t("auth.email_verified")}`);
-        history.push("/login");
+        history.push("/private-login");
       },
       onFailAction: (err: any) => {
         setError(true);
@@ -71,7 +71,6 @@ const VerifyEmailForm = () => {
         )}
 
         {/* {error && <Alert severity="error">Invalid OTP</Alert>} */}
-
 
         <TextField
           placeholder={"otp"}

@@ -33,7 +33,7 @@ const ChangePasswordForm = (props: IProps) => {
         setLoading(false);
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/login");
+        history.push("/private-login");
       },
       onFailAction: (err: any) => {
         if (err.response.data.code >= 400) {

@@ -39,9 +39,7 @@ const UserMenu = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections, } = useSelector(
-    (state: RootState) => state?.user
-  );
+  const { connections } = useSelector((state: RootState) => state?.user);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -51,17 +49,17 @@ const UserMenu = () => {
   };
 
   const handleUserMenu = (routeName: string) => {
-    history.push(routeName)
+    history.push(routeName);
     setAnchorElUser(null);
   };
 
   const handleLogout = () => {
-    socket.getSocket()?.emit('logout-window');
+    socket.getSocket()?.emit("logout-window");
     handleCloseUserMenu();
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
-    history.push("/login");
+    history.push("/private-login");
   };
 
   return (
@@ -73,7 +71,7 @@ const UserMenu = () => {
           aria-controls={anchorElUser ? "menu-appbar" : undefined}
           aria-expanded={anchorElUser ? "true" : undefined}
           variant="text"
-          sx={{ textTransform: "unset", color: '#131516' }}
+          sx={{ textTransform: "unset", color: "#131516" }}
         >
           <CustomStack gap={1.8}>
             <NameAvatar
@@ -101,94 +99,96 @@ const UserMenu = () => {
             <assets.KeyboardArrowDownIcon />
           </CustomStack>
         </Button>
-        {anchorElUser && <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem
-            disableRipple
-            onClick={() => handleUserMenu("/profile")}
-            divider
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-                gap: '16px'
-              },
+        {anchorElUser && (
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
-          >
-            <ProfileIcon />
-            Profile
-          </MenuItem>
-
-          <MenuItem
-            disableRipple
-            divider
-            onClick={() => handleUserMenu("/connections")}
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-                gap: '15px'
-              },
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
           >
-            <Stack
-              direction="row"
-              spacing={2}
+            <MenuItem
+              disableRipple
+              onClick={() => handleUserMenu("/profile")}
+              divider
               sx={{
-                paddingRight: "16px",
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                  gap: "16px",
+                },
               }}
             >
-              <Box display="flex" alignItems="center">
-                <ConnectionIcon />
-              </Box>
-              <Typography textAlign="center"> My Connections</Typography>
-              <Box
-                display="flex"
-                alignItems="center"
-                sx={{ padding: " 0 10px 0" }}
-              >
-                <Badge
-                  sx={{
-                    color: "#F1B740",
-                  }}
-                  showZero={true}
-                  color="primary"
-                  badgeContent={connections.count}
-                  overlap="circular"
-                />
-              </Box>
-            </Stack>
-          </MenuItem>
+              <ProfileIcon />
+              Profile
+            </MenuItem>
 
-          <MenuItem
-            disableRipple
-            onClick={handleLogout}
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Box display="flex" alignItems="center">
-                <LogoutIcon />
-              </Box>
-              <Typography textAlign="center">Logout</Typography>
-            </Stack>
-          </MenuItem>
-        </Menu>}
+            <MenuItem
+              disableRipple
+              divider
+              onClick={() => handleUserMenu("/connections")}
+              sx={{
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                  gap: "15px",
+                },
+              }}
+            >
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  paddingRight: "16px",
+                }}
+              >
+                <Box display="flex" alignItems="center">
+                  <ConnectionIcon />
+                </Box>
+                <Typography textAlign="center"> My Connections</Typography>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  sx={{ padding: " 0 10px 0" }}
+                >
+                  <Badge
+                    sx={{
+                      color: "#F1B740",
+                    }}
+                    showZero={true}
+                    color="primary"
+                    badgeContent={connections.count}
+                    overlap="circular"
+                  />
+                </Box>
+              </Stack>
+            </MenuItem>
+
+            <MenuItem
+              disableRipple
+              onClick={handleLogout}
+              sx={{
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                },
+              }}
+            >
+              <Stack direction="row" spacing={2}>
+                <Box display="flex" alignItems="center">
+                  <LogoutIcon />
+                </Box>
+                <Typography textAlign="center">Logout</Typography>
+              </Stack>
+            </MenuItem>
+          </Menu>
+        )}
       </Box>
     </>
   );

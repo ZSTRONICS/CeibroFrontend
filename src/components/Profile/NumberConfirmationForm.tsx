@@ -1,21 +1,21 @@
 import { Button, Typography } from "@mui/material";
+import { SubLabelTag } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
+import userAlertMessage from "hooks/userAlertMessage";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import useStyles from "../Auth/Register/RegisterStyles";
+import { toast } from "react-toastify";
 import {
   authApiAction,
   logoutUser,
   verifyChangeNumber,
 } from "redux/action/auth.action";
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import { SubLabelTag } from "components/CustomTags";
-import { toast } from "react-toastify";
-import MessageAlert from "components/MessageAlert/MessageAlert";
-import userAlertMessage from "hooks/userAlertMessage";
+import useStyles from "../Auth/Register/RegisterStyles";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -58,7 +58,7 @@ export default function NumberConfirmationForm(props: IProps) {
       success: (res: any) => {
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/login");
+        history.push("/private-login");
       },
       onFailAction: (err: any) => {
         setAlertMessage(err.response.data.message);
