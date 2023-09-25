@@ -587,82 +587,119 @@ const TaskReducer = (
       };
 
     // API Request Start
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    case requestPending(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
-        loadingAllTaskToMe: true,
-      };
+        loadingAllTaskToMe: true
+      }
     }
-
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_TO_ME):
+    case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
+      const { fromMe, hidden, toMe, } = action.payload.allTasks
       return {
         ...state,
         loadingAllTaskToMe: false,
         allTaskToMe: {
-          new: action.payload.allTasks.new,
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
+          new: toMe.new,
+          ongoing: toMe.ongoing,
+          done: toMe.done,
         },
-      };
+        allTaskFromMe: {
+          unread: fromMe.new,
+          ongoing: fromMe.ongoing,
+          done: fromMe.done,
+        },
+        allTaskHidden: {
+          ongoing: hidden.ongoing,
+          done: hidden.done,
+          canceled: hidden.canceled,
+        },
+      }
+    }
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    case requestFail(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
         loadingAllTaskToMe: false,
-      };
+      }
     }
+
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: true,
+    //   };
+    // }
+
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_TO_ME):
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: false,
+    // allTaskToMe: {
+    //   new: action.payload.allTasks.new,
+    //   ongoing: action.payload.allTasks.ongoing,
+    //   done: action.payload.allTasks.done,
+    // },
+    // };
+
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: false,
+    //   };
+    // }
 
     // get task created from me
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
-      return {
-        ...state,
-        loadingAllTaskfromMe: true,
-      };
-    }
 
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: true,
+    //   };
+    // }
 
-      return {
-        ...state,
-        loadingAllTaskfromMe: false,
-        allTaskFromMe: {
-          unread: action.payload.allTasks.unread,
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
-        },
-      };
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
-      return {
-        ...state,
-        loadingAllTaskfromMe: false,
-      };
-    }
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: false,
+    //     // allTaskFromMe: {
+    //     //   unread: action.payload.allTasks.unread,
+    //     //   ongoing: action.payload.allTasks.ongoing,
+    //     //   done: action.payload.allTasks.done,
+    //     // },
+    //   };
 
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
-      return {
-        ...state,
-        loadingHiddenTask: true,
-      };
-    }
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: false,
+    //   };
+    // }
 
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_HIDDEN):
-      return {
-        ...state,
-        loadingHiddenTask: false,
-        allTaskHidden: {
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
-          canceled: action.payload.allTasks.canceled,
-        },
-      };
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: true,
+    //   };
+    // }
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
-      return {
-        ...state,
-        loadingHiddenTask: false,
-      };
-    }
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_HIDDEN):
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: false,
+    //     // allTaskHidden: {
+    //     //   ongoing: action.payload.allTasks.ongoing,
+    //     //   done: action.payload.allTasks.done,
+    //     //   canceled: action.payload.allTasks.canceled,
+    //     // },
+    //   };
+
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: false,
+    //   };
+    // }
 
     case requestPending(TASK_CONFIG.GET_ALL_TOPIC): {
       return {

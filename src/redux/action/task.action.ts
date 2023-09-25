@@ -9,6 +9,7 @@ const taskActions = {
       payload: taskFilter,
     };
   },
+  syncAllTasks: createAction(TASK_CONFIG.SYNC_ALL_TASKS),
   createTask: createAction(TASK_CONFIG.CREATE_TASK),
   createTopic: createAction(TASK_CONFIG.CREATE_TOPIC),
   getAllTopic: createAction(TASK_CONFIG.GET_ALL_TOPIC),

@@ -101,7 +101,8 @@ const Task = () => {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      getAllTaskOnce();
+      dispatch(taskActions.syncAllTasks());
+      // getAllTaskOnce();
     }
     return () => {
       isRenderEffect.current = true;
