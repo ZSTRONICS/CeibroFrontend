@@ -88,7 +88,7 @@ export default function TermsAndConditions() {
             <Button
               variant="outlined"
               sx={{ width: "100%", borderColor: "#000", color: "#000" }}
-              onClick={() => history.push("/private-login")}
+              onClick={() => history.push("/login")}
             >
               Cancel
             </Button>

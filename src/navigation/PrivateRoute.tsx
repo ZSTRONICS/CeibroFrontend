@@ -18,7 +18,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
   );
 
   if (!isLoggedIn) {
-    return <Redirect to="/comming-soon" />;
+    return <Redirect to="/login" />;
   }
 
   return (

@@ -46,7 +46,6 @@ export default function AddedDetails(props: IProps) {
     }
   }, [events.length]);
   const contentHeight = hasFile ? "409px" : "570px";
-  console.log("events", events);
   return (
     <>
       <div>

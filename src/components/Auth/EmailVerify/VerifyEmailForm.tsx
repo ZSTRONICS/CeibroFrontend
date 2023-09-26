@@ -34,7 +34,7 @@ const VerifyEmailForm = () => {
         setSuccess(res);
         setOtp("");
         toast.success(`${t("auth.email_verified")}`);
-        history.push("/private-login");
+        history.push("/login");
       },
       onFailAction: (err: any) => {
         setError(true);

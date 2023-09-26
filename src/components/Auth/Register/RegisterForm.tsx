@@ -264,7 +264,7 @@ const RegisterForm = () => {
                       py: { xs: 0.3, md: 1.3 },
                       textTransform: "capitalize !important",
                     }}
-                    onClick={() => history.push("/private-login")}
+                    onClick={() => history.push("/login")}
                   >
                     Cancel
                   </Button>

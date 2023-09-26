@@ -175,41 +175,36 @@ const DetailActions: React.FC<IProps> = (props) => {
           >
             Comment
           </LoadingButton>
-          <LoadingButton
-            startIcon={<img src={assets.ForwardIcon} alt="Forward" />}
-            onClick={() => handleClick("forward")}
-            variant="text"
-            disabled={
-              userSubState === "done" ||
-              userSubState === "canceled" ||
-              userSubState === "new"
-            }
-            sx={{
-              height: "28px",
-              // width: "103px",
-              fontWeight: "700",
-              padding: "8px 22px",
-            }}
-          >
-            Forward
-          </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            onClick={handleDoneClick}
-            sx={{
-              height: "28px",
-              // width: "103px",
-              fontWeight: "700",
-              padding: "16px 30px",
-            }}
-            disabled={
-              userSubState === "done" ||
-              userSubState === "canceled" ||
-              userSubState === "new"
-            }
-          >
-            Done
-          </LoadingButton>
+          {!["done", "canceled", "new"].includes(userSubState) && (
+            <>
+              <LoadingButton
+                startIcon={<img src={assets.ForwardIcon} alt="Forward" />}
+                onClick={() => handleClick("forward")}
+                variant="text"
+                disabled={false}
+                sx={{
+                  height: "28px",
+                  fontWeight: "700",
+                  padding: "8px 22px",
+                }}
+              >
+                Forward
+              </LoadingButton>
+
+              <LoadingButton
+                variant="contained"
+                onClick={handleDoneClick}
+                sx={{
+                  height: "28px",
+                  fontWeight: "700",
+                  padding: "16px 30px",
+                }}
+                disabled={false}
+              >
+                Done
+              </LoadingButton>
+            </>
+          )}
         </Grid>
       </Grid>
       {isOpen === true && (

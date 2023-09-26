@@ -37,7 +37,7 @@ const ResetPasswordForm = () => {
         setSuccess(res);
         if (res) {
           localStorage.clear();
-          history.push("/private-login");
+          history.push("/login");
         }
         toast.success(`${t("auth.password_reset_successfully")}`);
         action?.resetForm?.();
@@ -121,13 +121,14 @@ const ResetPasswordForm = () => {
               />
               <CustomStack>
                 <Button
-                  sx={{ width: "100%" ,  py: { xs: 1, md: 1.5 }}}
+                  sx={{ width: "100%", py: { xs: 1, md: 1.5 } }}
                   variant="contained"
                   color="primary"
                   type="submit"
                   disabled={
                     values.password.length < 6 ||
-                    values.confirmPassword.length < 6||loading
+                    values.confirmPassword.length < 6 ||
+                    loading
                   }
                 >
                   {isDiabled && loading && (

@@ -26,7 +26,6 @@ import {
 import NotFound from "components/NotFound";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
-import CommingSoon from "./CommingSoon";
 import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
@@ -42,9 +41,11 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Route path="/comming-soon" component={CommingSoon} />
+            <Route path="/login" component={Login} />
+            <Redirect exact from="/" to="/login" />
+            {/* <Route path="/comming-soon" component={CommingSoon} />
             <Redirect exact from="/" to="/comming-soon" />
-            <Route path="/private-login" component={Login} />
+            <Route path="/private-login" component={Login} /> */}
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
@@ -82,7 +83,7 @@ const RouterConfig = () => {
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
-            <Route path="*" component={NotFound}></Route>
+            <Route path="*" component={NotFound} />
             {/* <Route path="/comming-soon" component={CommingSoon}></Route>
             <Redirect from="/" to="/comming-soon" /> */}
           </Switch>

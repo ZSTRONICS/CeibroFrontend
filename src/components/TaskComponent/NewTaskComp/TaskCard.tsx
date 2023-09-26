@@ -39,11 +39,15 @@ function TaskCard(props: IProps) {
     description,
     topic,
     creator,
+    isCreator,
     seenBy,
+    userSubState,
   } = task;
 
   const isSelectedTask: boolean = selectedTaskId === _id;
-  // const taskCreated = momentdeDateFormat(createdAt);
+  const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
+  const isCanceled: boolean = userSubState === "canceled";
+
   return (
     <Card
       sx={{
@@ -51,7 +55,9 @@ function TaskCard(props: IProps) {
         minWidth: 280,
         marginTop: "10px",
         cursor: "pointer",
-        border: "1px solid #818181",
+        border: `${
+          isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
+        }`,
         borderRadius: 1,
         padding: "3px 4px",
         borderTop: "none",
@@ -99,7 +105,8 @@ function TaskCard(props: IProps) {
       <CardContent sx={{ pt: 0, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
           <BoldLableTag>
-            {isTaskFromMe}&nbsp;{" "}
+            {isCanceled && !isCreator ? "From" : isTaskFromMe}
+            &nbsp;{" "}
             <span style={{ fontWeight: "500", fontSize: "11px" }}>
               {" "}
               {`${creator.firstName} ${creator.surName}`}

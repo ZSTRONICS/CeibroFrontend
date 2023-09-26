@@ -58,7 +58,7 @@ export default function NumberConfirmationForm(props: IProps) {
       success: (res: any) => {
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/private-login");
+        history.push("/login");
       },
       onFailAction: (err: any) => {
         setAlertMessage(err.response.data.message);

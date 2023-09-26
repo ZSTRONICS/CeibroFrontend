@@ -59,7 +59,7 @@ const UserMenu = () => {
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
-    history.push("/private-login");
+    history.push("/login");
   };
 
   return (

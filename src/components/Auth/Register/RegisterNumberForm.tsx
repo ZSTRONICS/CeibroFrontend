@@ -134,7 +134,7 @@ export default function RegisterNumberForm() {
 
         <Box className={classes.dontHave} sx={{ color: "#131516" }}>
           {t("auth.back_to")}{" "}
-          <Link to="/private-login" className={classes.signup}>
+          <Link to="/login" className={classes.signup}>
             Login
           </Link>
         </Box>

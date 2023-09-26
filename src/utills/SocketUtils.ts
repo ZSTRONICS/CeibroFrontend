@@ -139,18 +139,18 @@ export const useSocket = () => {
                         } else {
                             alert("Session Expired");
                             global.isSocketConnecting = false;
-                            history.push("/private-login");
+                            history.push("/login");
                             window.location.reload();
                         }
                     })
                     .catch((err) => {
                         global.isSocketConnecting = false;
-                        history.push("/private-login");
+                        history.push("/login");
                         alert("Session Expired");
                         window.location.reload();
                     });
             } else {
-                history.push("/private-login");
+                history.push("/login");
                 window.location.reload();
             }
         });

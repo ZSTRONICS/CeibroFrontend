@@ -34,7 +34,7 @@ const ForgetPassword = () => {
         <BackToLoginTag>
           {t("auth.Remember")} &nbsp; &nbsp;
           <Link
-            to="/private-login"
+            to="/login"
             style={{ color: "#0076c8", textDecoration: "none" }}
           >
             {t("auth.login")}
