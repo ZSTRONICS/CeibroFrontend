@@ -61,7 +61,7 @@ function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: `calc(95vh - ${contentHeight})`,
+              height: `calc(100vh - ${contentHeight})`,
               overflow: "auto",
               pb: 1,
             }}
@@ -375,4 +375,4 @@ function AddedDetails(props: IProps) {
   );
 }
 
-export default React.memo(AddedDetails);
+export default AddedDetails;

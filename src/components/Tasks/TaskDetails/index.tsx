@@ -7,7 +7,6 @@ import {
   momentdeDateFormatWithDay,
 } from "components/Utills/Globals";
 import { Task } from "constants/interfaces";
-import React from "react";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -33,7 +32,7 @@ function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
   } = props.task;
-  // console.log("task", props.task);
+
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
 
@@ -70,5 +69,4 @@ function TaskDetails(props: IProps) {
   );
 }
 
-
-export default React.memo(TaskDetails);
+export default TaskDetails;

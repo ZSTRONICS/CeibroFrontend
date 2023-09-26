@@ -11,7 +11,7 @@ import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { Task as ITask } from "constants/interfaces";
 import _ from "lodash";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -24,8 +24,9 @@ interface RouteParams {
   filterkey: string;
   taskuid: string;
 }
-
 const Task = () => {
+  const location = useLocation();
+
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
@@ -34,6 +35,8 @@ const Task = () => {
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
+  const isTaskRoute = location.pathname.split("/");
+
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -73,36 +76,9 @@ const Task = () => {
     return found;
   };
 
-  const getAllTaskOnce = () => {
-    if (
-      _.isEmpty(allTaskToMe.new) &&
-      _.isEmpty(allTaskToMe.ongoing) &&
-      _.isEmpty(allTaskToMe.done)
-    ) {
-      dispatch(taskActions.getAllTaskToMe());
-    }
-
-    if (
-      _.isEmpty(allTaskFromMe.unread) &&
-      _.isEmpty(allTaskFromMe.ongoing) &&
-      _.isEmpty(allTaskFromMe.done)
-    ) {
-      dispatch(taskActions.getAllTaskFromMe());
-    }
-
-    if (
-      _.isEmpty(allTaskHidden.ongoing) &&
-      _.isEmpty(allTaskHidden.done) &&
-      _.isEmpty(allTaskHidden.canceled)
-    ) {
-      dispatch(taskActions.getAllTaskHidden());
-    }
-  };
-
   useEffect(() => {
     if (!isRenderEffect.current) {
       dispatch(taskActions.syncAllTasks());
-      // getAllTaskOnce();
     }
     return () => {
       isRenderEffect.current = true;
@@ -122,7 +98,7 @@ const Task = () => {
     }
   };
   useEffect(() => {
-    if (window.location.href.includes("/tasks")) {
+    if (isTaskRoute[1] === "tasks") {
       let ischangeUrl = false;
       let path = "";
       let getFilteredKey = getFilterKey();
@@ -134,19 +110,19 @@ const Task = () => {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;
         selectedTab != null &&
-          selectedTab != getFilteredKey &&
+          selectedTab !== getFilteredKey &&
           setSelectedTab(getFilteredKey);
       } else if (subtask && filterkey) {
         ischangeUrl = true;
         selectedTab != null &&
-          selectedTab != filterkey &&
+          selectedTab !== filterkey &&
           setSelectedTab(filterkey);
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
       } else if (subtask && !filterkey) {
         ischangeUrl = true;
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         selectedTab != null &&
-          selectedTab != getFilteredKey &&
+          selectedTab !== getFilteredKey &&
           setSelectedTab(getFilteredKey);
       }
       if (
@@ -359,7 +335,7 @@ const Task = () => {
   );
 
   useEffect(() => {
-    selectedTask != null && setSelectedTask(null);
+    selectedTask !== null && setSelectedTask(null);
   }, [
     allTaskFromMe.unread.length,
     allTaskHidden.canceled.length,
@@ -501,7 +477,7 @@ const Task = () => {
               padding: "8px 0px 4px 0px",
             }}
           >
-            {task && subtask && filteredTask.length > 0 && (
+            {task && subtask && (
               <FilterTabs
                 subTaskKey={subtask}
                 activeTab={selectedTab}
@@ -554,7 +530,7 @@ const Task = () => {
         filteredTask.some(
           (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
-          selectedTask && <TaskDetails task={selectedTask} />
+          <TaskDetails task={selectedTask} />
         ) : (
           <div
             style={{

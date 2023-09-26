@@ -604,7 +604,7 @@ const TaskReducer = (
           done: toMe.done,
         },
         allTaskFromMe: {
-          unread: fromMe.new,
+          unread: fromMe.unread,
           ongoing: fromMe.ongoing,
           done: fromMe.done,
         },
