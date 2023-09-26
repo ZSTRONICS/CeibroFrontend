@@ -84,6 +84,7 @@ const RouterConfig = () => {
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
             <Route path="*" component={NotFound} />
+
             {/* <Route path="/comming-soon" component={CommingSoon}></Route>
             <Redirect from="/" to="/comming-soon" /> */}
           </Switch>
