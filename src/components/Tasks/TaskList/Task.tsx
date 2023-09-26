@@ -6,18 +6,18 @@ import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
 import { TaskCard } from "components/TaskComponent";
-import { countUnseenTasks, optionMapping } from "components/Utills/Globals";
-import StyledChip from "components/Utills/StyledChip";
+import { optionMapping } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { Task as ITask } from "constants/interfaces";
-import _, { isEmpty } from "lodash";
+import _ from "lodash";
 import { useHistory, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
+import FilterTabs from "./FilterTabs";
 
 interface RouteParams {
   subtask: selectedTaskFilterType;
@@ -133,15 +133,21 @@ const Task = () => {
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;
-        setSelectedTab(getFilteredKey);
+        selectedTab != null &&
+          selectedTab != getFilteredKey &&
+          setSelectedTab(getFilteredKey);
       } else if (subtask && filterkey) {
         ischangeUrl = true;
-        setSelectedTab(filterkey);
+        selectedTab != null &&
+          selectedTab != filterkey &&
+          setSelectedTab(filterkey);
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
       } else if (subtask && !filterkey) {
         ischangeUrl = true;
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-        setSelectedTab(getFilteredKey);
+        selectedTab != null &&
+          selectedTab != getFilteredKey &&
+          setSelectedTab(getFilteredKey);
       }
       if (
         ischangeUrl &&
@@ -353,7 +359,7 @@ const Task = () => {
   );
 
   useEffect(() => {
-    setSelectedTask(null);
+    selectedTask != null && setSelectedTask(null);
   }, [
     allTaskFromMe.unread.length,
     allTaskHidden.canceled.length,
@@ -418,67 +424,6 @@ const Task = () => {
       ? menuOptions.filter((option) => option.menuName === optionName)
       : [];
   };
-
-  const newUnSeenCount = countUnseenTasks(allTaskToMe.new, userId);
-  const fromMeUnReadCount = countUnseenTasks(allTaskFromMe.unread, userId);
-  const canceledCount = countUnseenTasks(allTaskHidden.canceled, userId);
-
-  const renderTabs = (type: string, activeTab: string) => {
-    const tabConfig = [
-      {
-        type: "new",
-        label: "New",
-        notifyCount: newUnSeenCount,
-        isDisabled: isEmpty(allTaskToMe.new),
-        bgColor: "#CFECFF",
-      },
-      {
-        type: "unread",
-        label: "Unread",
-        notifyCount: fromMeUnReadCount,
-        isDisabled: isEmpty(allTaskFromMe.unread),
-        bgColor: "#CFECFF",
-      },
-      {
-        type: "ongoing",
-        label: "Ongoing",
-        notifyCount: taskOngoingCount,
-        isDisabled: false,
-        bgColor: "#F1B740",
-      },
-      {
-        type: "done",
-        label: "Done",
-        notifyCount: taskDoneCount,
-        isDisabled: false,
-        bgColor: "#55BCB3",
-      },
-      {
-        type: "canceled",
-        label: "Canceled",
-        notifyCount: canceledCount,
-        isDisabled: false,
-        bgColor: "#FFE7E7",
-      },
-    ];
-    const tab = tabConfig.find((tab) => tab.type === type);
-
-    if (!tab) {
-      return null;
-    }
-    return (
-      <StyledChip
-        isDisabled={tab.isDisabled}
-        key={tab.type}
-        label={tab.label}
-        notifyCount={tab.notifyCount}
-        bgColor={tab.bgColor}
-        active={activeTab === tab.type}
-        callback={() => handleTabClick(tab.type)}
-      />
-    );
-  };
-
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
     if (!localTask) {
@@ -533,7 +478,6 @@ const Task = () => {
       />
     </div>
   );
-
   return (
     <Grid container>
       <Grid
@@ -557,11 +501,14 @@ const Task = () => {
               padding: "8px 0px 4px 0px",
             }}
           >
-            {task &&
-              subtask &&
-              Object.keys(task[subtask]).map((key: string) => {
-                return renderTabs(key, selectedTab);
-              })}
+            {task && subtask && filteredTask.length > 0 && (
+              <FilterTabs
+                subTaskKey={subtask}
+                activeTab={selectedTab}
+                filterKeys={Object.keys(task[subtask])}
+                handleTabClick={handleTabClick}
+              />
+            )}
           </Box>
           {/* {filteredTask.length !== 0 && ( */}
           <Box
@@ -607,7 +554,7 @@ const Task = () => {
         filteredTask.some(
           (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
-          <TaskDetails task={selectedTask} />
+          selectedTask && <TaskDetails task={selectedTask} />
         ) : (
           <div
             style={{

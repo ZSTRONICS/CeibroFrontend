@@ -7,6 +7,7 @@ import {
   momentdeDateFormatWithDay,
 } from "components/Utills/Globals";
 import { Task } from "constants/interfaces";
+import React from "react";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -14,7 +15,7 @@ interface IProps {
   task: Task;
   handleClick?: (task: Task) => void;
 }
-export default function TaskDetails(props: IProps) {
+function TaskDetails(props: IProps) {
   const {
     dueDate,
     taskUID,
@@ -68,3 +69,6 @@ export default function TaskDetails(props: IProps) {
     </Box>
   );
 }
+
+
+export default React.memo(TaskDetails);

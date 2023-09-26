@@ -28,7 +28,7 @@ interface IProps {
   events: TaskEvent[];
   hasFile: boolean;
 }
-export default function AddedDetails(props: IProps) {
+function AddedDetails(props: IProps) {
   const { events, hasFile } = props;
   const listRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
@@ -374,3 +374,5 @@ export default function AddedDetails(props: IProps) {
     </>
   );
 }
+
+export default React.memo(AddedDetails);

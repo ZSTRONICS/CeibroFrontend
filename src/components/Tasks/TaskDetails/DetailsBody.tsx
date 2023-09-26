@@ -5,7 +5,7 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useState } from "react";
+import { useState } from "react";
 import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
 
@@ -42,8 +42,8 @@ export default function DetailsBody(props: IProps) {
             media.map((file: IFile) => {
               const hasComment = file.comment.length === 0;
               return (
-                <React.Fragment key={file._id}>
-                  {hasComment && (
+                // <React.Fragment key={file._id}>
+                //   {hasComment && (
                     <Box
                       key={file._id}
                       sx={{
@@ -52,14 +52,17 @@ export default function DetailsBody(props: IProps) {
                       }}
                       onClick={() => handleClick(file)}
                     >
-                      <ImageBox src={file.fileUrl} />
+                     {hasComment?<ImageBox src={file.fileUrl} />: <ImageBoxWithDesp
+                      src={file.fileUrl}
+                      comment={file.comment}
+                    />}
                     </Box>
-                  )}
-                </React.Fragment>
+                //   )}
+                // </React.Fragment>
               );
             })}
         </Box>
-        {media.length > 0 &&
+        {/* {media.length > 0 &&
           media.map((file: IFile) => {
             const hasComment = file.comment.length > 0;
             return (
@@ -80,9 +83,11 @@ export default function DetailsBody(props: IProps) {
                 )}
               </React.Fragment>
             );
-          })}
+          })} */}
         <DrawingFiles />
-        <AddedDetails events={events} hasFile={media.length === 0} />
+        {events && events.length && (
+          <AddedDetails events={events} hasFile={media.length === 0} />
+        )}
       </Box>
       {isOpen && (
         <ImagePreviewModal
