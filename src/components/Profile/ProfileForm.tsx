@@ -81,13 +81,13 @@ const ProfileForm = () => {
   const userPhoneNumber = String(phoneNumber)?.slice(countryCode?.length);
   const formik: any = useFormik({
     initialValues: {
-      firstName: firstName ?? "",
-      surName: surName ?? "",
-      email: email ?? "",
-      jobTitle: jobTitle ?? "",
-      dialCode: countryCode ?? "",
-      phoneNumber: userPhoneNumber ?? "",
-      companyName: companyName ?? "",
+      firstName: firstName || "",
+      surName: surName || "",
+      email: email || "",
+      jobTitle: jobTitle || "",
+      dialCode: countryCode || "",
+      phoneNumber: userPhoneNumber || "",
+      companyName: companyName || "",
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
@@ -159,6 +159,7 @@ const ProfileForm = () => {
               <Grid item container>
                 <Grid item xs={12} md={12} className={classes.rowWrapper}>
                   <TextField
+                    required
                     className={classes.inputBg}
                     sx={{ background: "white" }}
                     fullWidth
@@ -180,6 +181,7 @@ const ProfileForm = () => {
 
                 <Grid item xs={12} md={12} className={classes.rowWrapper}>
                   <TextField
+                    required
                     className={classes.inputBg}
                     sx={{ background: "white" }}
                     fullWidth
@@ -200,6 +202,7 @@ const ProfileForm = () => {
 
                 <Grid item xs={12} className={classes.rowWrapper}>
                   <TextField
+                    required
                     className={classes.inputBg}
                     sx={{ background: "white" }}
                     fullWidth
@@ -210,10 +213,10 @@ const ProfileForm = () => {
                     name="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
-                    onFocus={(e: any) => {
-                      e.preventDefault();
-                      e.target.blur();
-                    }}
+                    // onFocus={(e: any) => {
+                    //   e.preventDefault();
+                    //   e.target.blur();
+                    // }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     onBlur={checkOnUpdateData}
                     helperText={formik.errors.email as string}
@@ -232,12 +235,12 @@ const ProfileForm = () => {
                     name="companyName"
                     value={formik.values.companyName}
                     onChange={formik.handleChange}
+                    onBlur={checkOnUpdateData}
                     error={
                       formik.touched.companyName &&
                       Boolean(formik.errors.companyName)
                     }
                     helperText={formik.errors.companyName as string}
-                    onBlur={checkOnUpdateData}
                   />
                 </Grid>
 
@@ -257,8 +260,6 @@ const ProfileForm = () => {
                   </Typography>
                 )} */}
                 </Grid>
-
-                {/* <Grid container spacing={2} className={classes.rowWrapper}> */}
                 <Grid item xs={12} md={7} className={classes.rowWrapper}>
                   <CustomMuiTextField
                     typeName="phone-number"
@@ -290,7 +291,6 @@ const ProfileForm = () => {
                     Change phone number
                   </Typography>
                 </Grid>
-                {/* </Grid> */}
                 <Grid container my={2}>
                   <Grid item xs={12}>
                     <Divider />
@@ -330,7 +330,13 @@ const ProfileForm = () => {
                     variant="contained"
                     color="primary"
                     type="submit"
-                    disabled={isDisabled || !onUpdate}
+                    disabled={
+                      isDisabled ||
+                      !onUpdate ||
+                      formik.values.firstName.length === 0 ||
+                      formik.values.surName.length === 0 ||
+                      formik.values.email.length === 0
+                    }
                   >
                     Update
                     {isDisabled && loading && (
@@ -340,13 +346,6 @@ const ProfileForm = () => {
                       />
                     )}
                   </Button>
-                  {/* <Button
-                    variant="text"
-                    sx={{ color: "red", border: "1px solid" }}
-                    size="medium"
-                  >
-                    <BiTrash className={classes.deleteIcon} /> Delete Account
-                  </Button> */}
                 </Grid>
               </Grid>
             </Grid>

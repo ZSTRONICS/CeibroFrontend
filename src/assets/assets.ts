@@ -4,6 +4,7 @@ import visualWebp from "./images/Visual.webp";
 import addUser from "./images/addUser.svg";
 import blueDocument from "./images/blueDocument.svg";
 import folderIcon from "./images/blueFolder.png";
+import blueUser from './images/blueUser.webp';
 import calender from "./images/calender.png";
 import camera from "./images/camera.svg";
 import chatIcon from "./images/chatIcon.png";
@@ -194,6 +195,7 @@ const assets = {
   usersFolder,
   pencilFilled,
   Add,
+  blueUser,
   blueSearch,
   calender,
   Defaulttask,

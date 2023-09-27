@@ -1,19 +1,14 @@
-import { Button, Typography, makeStyles } from "@material-ui/core";
-import { Badge, Grid, Stack } from "@mui/material";
+import { Badge, Button, Grid, Stack, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { Link } from "react-router-dom";
 import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers/appReducer";
 
 const Connections = () => {
   const classes = useStyles();
-  const history = useHistory();
-  const { connections } = useSelector((state: RootState) => state?.user);
-
-  const handleClick = () => {
-    history.push("/connections");
-  };
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
 
   return (
     <>
@@ -36,16 +31,22 @@ const Connections = () => {
                     background: "#F1B740 !important",
                   },
                 }}
-                badgeContent={connections.count}
+                badgeContent={userAllContacts.length || 0}
                 className={classes.badge}
               ></Badge>
             </Typography>
           </Stack>
         </Grid>
         <Grid item>
-          <Button onClick={handleClick} color="primary" variant="outlined">
-            View
-          </Button>
+          <Link to="/connections">
+            <Button
+              color="primary"
+              variant="outlined"
+              sx={{ fontWeight: "500", fontSize: "14px" }}
+            >
+              View
+            </Button>
+          </Link>
         </Grid>
       </Grid>
     </>

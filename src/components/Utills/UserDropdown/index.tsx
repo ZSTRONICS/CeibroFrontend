@@ -181,11 +181,13 @@ function UserDropDown(props: IProps) {
   const renderValue = () => {
     if (selected.length > 0) {
       const fullNames = selected.map((item) => {
+        if (item._id === user._id) {
+          return "Me";
+        }
         if (item.contactFullName) {
           return item.contactFullName;
         } else if (item.firstName) {
-          let name = `${item.firstName} ${item.surName}`;
-          return name;
+          return `${item.firstName} ${item.surName}`;
         }
         return "";
       });

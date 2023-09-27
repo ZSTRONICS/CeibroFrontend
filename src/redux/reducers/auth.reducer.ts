@@ -66,7 +66,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     case 'SET_SECURE_UUID':
       // check if secureUUID is already set
       if (state.secureUUID) {
-        console.log('secureUUID is already set', state.secureUUID)
         return state
       }
       return {

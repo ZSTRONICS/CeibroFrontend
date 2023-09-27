@@ -1,11 +1,10 @@
-import { makeStyles } from "@material-ui/core";
-import React, { useEffect, useRef, useState } from "react";
-import colors from "../../assets/colors";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { UpdateProfilePicture } from "redux/action/auth.action";
-import assets from "assets/assets";
 import { Box, CircularProgress, Grid } from "@mui/material";
+import { makeStyles } from "@mui/styles";
+import assets from "assets/assets";
+import React, { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
+import { UpdateProfilePicture } from "redux/action/auth.action";
+import colors from "../../assets/colors";
 
 interface Props {
   profilePic: string | undefined | null | any;
@@ -14,17 +13,19 @@ interface Props {
 const ProfileImagePicker: React.FC<Props> = (props) => {
   const { profilePic } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageUrl, setImageUrl] = useState<string | any>(
+    profilePic ? profilePic : assets.blueUser
+  );
 
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
   const classes = useStyles();
 
-  useEffect(() => {
-    if (profilePic) {
-      setImageUrl(profilePic);
-    }
-  }, [profilePic]);
+  // useEffect(() => {
+  //   if (profilePic) {
+  //     setImageUrl(profilePic);
+  //   }
+  // }, [profilePic]);
 
   const handleClick = () => {
     if (ref.current !== null) {
@@ -39,7 +40,6 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       const formData = new FormData();
       if (e.target.files) {
         const localFile = e.target.files[0];
-        // setImageUrl(URL.createObjectURL(localFile));
         formData.append("profilePic", localFile);
         const payload = {
           body: formData,
@@ -76,23 +76,18 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       <div
         onClick={handleClick}
         className={classes.outerWrapper}
-        style={{ backgroundImage: `url(${imageUrl})`}}
+        style={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundSize: "contain",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
       >
         {showLoader === true && (
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress size={40} />
           </Box>
         )}
-
-        {/* <img
-          id="img"
-          style={{ border: "2px solid black", maxWidth: "500px" }}
-          src={imageUrl}
-          loading="lazy"
-          decoding="sync"
-          alt=""
-        /> */}
-
         <img
           src={assets.whitePencil}
           className={`width-16 ${classes.icon} imgPicker`}

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // material
 import {
@@ -27,19 +27,28 @@ import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import storage from "redux-persist/lib/storage";
+import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
 
 const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const isRenderEffect = useRef<any>(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections } = useSelector((state: RootState) => state?.user);
+  const { userAllContacts } = useSelector((state: RootState) => state?.user);
+  useEffect(() => {
+    if (!isRenderEffect.current) {
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -55,7 +64,7 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     socket.getSocket()?.emit("logout-window");
-    handleCloseUserMenu();
+    setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
@@ -90,10 +99,10 @@ const UserMenu = () => {
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.firstName}
+                {user.firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.surName}{" "}
+                {user.surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
@@ -164,7 +173,7 @@ const UserMenu = () => {
                     }}
                     showZero={true}
                     color="primary"
-                    badgeContent={connections.count}
+                    badgeContent={userAllContacts.length}
                     overlap="circular"
                   />
                 </Box>

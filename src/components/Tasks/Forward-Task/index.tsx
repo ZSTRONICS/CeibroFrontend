@@ -53,14 +53,9 @@ const ForwardTask = ({
   const [sortedContacts, setSortedContacts] =
     useState<ContactsState>(initialState);
 
-  const payload = {
-    other: { userId: user._id },
-  };
-
   useEffect(() => {
     if (!isRenderEffect.current) {
-      userAllContacts.length < 1 &&
-        dispatch(userApiAction.getUserContacts(payload));
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
         dispatch(userApiAction.getRecentContacts());
     }

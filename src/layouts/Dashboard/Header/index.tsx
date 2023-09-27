@@ -7,6 +7,7 @@ import Notification from "components/Notification/Notification";
 import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import { useResponsive } from "hooks";
 import { useHistory } from "react-router-dom";
 
 const NAV_WIDTH = 72;
@@ -46,21 +47,24 @@ interface Props {
 
 export default function Header({ onOpenNav }: Props) {
   const history = useHistory();
+  const isLargeScreen = useResponsive("up", "lg", "");
+
   return (
     <StyledRoot>
       <StyledToolbar>
-        <IconButton
-          onClick={onOpenNav}
-          sx={{
-            mr: 0.5,
-            color: "text.primary",
-            padding: 0.1,
-            display: { lg: "none" },
-          }}
-        >
-          <assets.MenuIcon />
-        </IconButton>
-        {/* <Title /> */}
+        {!isLargeScreen && (
+          <IconButton
+            onClick={onOpenNav}
+            sx={{
+              mr: 0.5,
+              color: "text.primary",
+              padding: 0.1,
+              display: { lg: "none" },
+            }}
+          >
+            <assets.MenuIcon />
+          </IconButton>
+        )}
 
         <Topbar />
         <Box sx={{ flexGrow: 1 }} />
