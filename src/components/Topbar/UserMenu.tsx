@@ -40,7 +40,7 @@ const UserMenu = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { userAllContacts } = useSelector((state: RootState) => state?.user);
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     if (!isRenderEffect.current) {
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
@@ -99,10 +99,10 @@ const UserMenu = () => {
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user.firstName || ""}
+                {user?.firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user.surName || ""}
+                {user?.surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
