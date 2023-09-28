@@ -45,7 +45,7 @@ const ForwardTask = ({
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
-
+const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState<Contact[]>(recentUserContact);
   const [isSelfAssign, setIsSelfAssign] = useState(false);
   const [selected, setSelected] = useState<any[]>([]);
   const [allContactsList, setAllContactsList] =
@@ -115,6 +115,7 @@ const ForwardTask = ({
         assignedToState.some((contact: any) => contact.userId === user._id)
       );
     }
+    setFilteredRecentUserContact(recentUserContact)
   }, [userAllContacts, recentUserContact]);
 
   const handleSelectedList = (contact: Contact, checked: boolean) => {
@@ -144,6 +145,10 @@ const ForwardTask = ({
     setAllContactsList(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
+    const recentFilteredData = recentUserContact.filter((Option:Contact) =>
+      Option["contactFullName"].toLowerCase().includes(searchValue.toLowerCase())
+    )
+    setFilteredRecentUserContact(recentFilteredData)
   };
 
   const handleSubmit = () => {
@@ -340,7 +345,7 @@ const ForwardTask = ({
           filterData={allContactsList}
           filteredUsers={selectedUsers}
           selected={selected}
-          recentData={{ "Suggested Users": recentUserContact }}
+          recentData={{ "Suggested Users": filteredRecentUserContact }}
           handleSelectedList={handleSelectedList}
         />
       </Box>

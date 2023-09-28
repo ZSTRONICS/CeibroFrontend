@@ -49,6 +49,7 @@ function UserDropDown(props: IProps) {
     handleChangeValues,
     recentUserContact,
   } = props;
+  const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -59,6 +60,10 @@ function UserDropDown(props: IProps) {
     [key: string]: any[];
   }>({});
   const { user } = useSelector((state: RootState) => state.auth);
+
+useEffect(()=>{
+  setFilteredRecentUserContact(recentUserContact)
+},[recentUserContact])
 
   useEffect(() => {
     if (contacts && contacts.length > 0) {
@@ -127,6 +132,10 @@ function UserDropDown(props: IProps) {
     setFilterData(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
+    const recentFilteredData = recentUserContact.filter((Option) =>
+      Option["contactFullName"].toLowerCase().includes(searchValue.toLowerCase())
+    )
+    setFilteredRecentUserContact(recentFilteredData)
     setSearchQuery(searchValue);
   };
 
@@ -372,7 +381,7 @@ function UserDropDown(props: IProps) {
             <GroupContactList
               filterData={filterData}
               selected={selected}
-              recentData={{ "Suggested Users": recentUserContact }}
+              recentData={{ "Suggested Users": filteredRecentUserContact }}
               handleSelectedList={handleSelectedList}
             />
           </Box>

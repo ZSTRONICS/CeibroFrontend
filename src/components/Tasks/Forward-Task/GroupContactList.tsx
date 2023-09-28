@@ -2,7 +2,7 @@ import { Divider } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import ContactBox from "components/Utills/ContactBox";
 import { Contact } from "constants/interfaces";
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { VariableSizeList } from "react-window";
 
 interface GroupContactListProps {
@@ -20,16 +20,8 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
   selected,
   handleSelectedList,
 }) => {
-  const getItemSize = (index: number): number => {
-    const item = contactList[index];
-    let size = 60;
-    if (React.isValidElement(item) && item.type === Typography) {
-      size = 30;
-    }else if(React.isValidElement(item) && item.type === Divider){
-size = 45;
-    }
-    return size;
-  };
+  const [contactListElement, setContactListElement] = useState<any[]>([]);
+  const [itemSizes, setItemSizes] = useState<number[]>([]);
 
   const createElementList = (data: { [key: string]: any[] }) => {
     let createdElementedList: any[] = [];
@@ -55,29 +47,61 @@ size = 45;
     return createdElementedList;
   };
 
+  const getItemSize = (renderContactListEle: any[]) => {
+    let newItemsize = [];
+    for (let i = 0; i < renderContactListEle.length; i++) {
+      const item = renderContactListEle[i];
+      let size = 60;
+      if (React.isValidElement(item) && item.type === Typography) {
+        size = 30;
+      } else if (React.isValidElement(item) && item.type === Divider) {
+        size = 45;
+      }
+      newItemsize.push(size);
+    }
+    return newItemsize;
+  };
+
   const renderContactList = () => {
     let contactListElements: any[] = [];
-    const divider = <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-    contactListElements = [...createElementList(recentData),divider,...createElementList(filterData)]
+    const divider = (
+      <Divider
+        key={"divider"}
+        sx={{ marginTop: "20px", marginBottom: "20px" }}
+      />
+    );
+    if(recentData){
+      contactListElements = [
+        ...createElementList(recentData),
+        divider,
+        ...createElementList(filterData),
+      ];
+    }else{
+      contactListElements = [
+        ...createElementList(filterData),
+      ];
+    }
     return contactListElements;
   };
 
-  const contactList = useMemo(
-    () => renderContactList(),
-    [filterData, selected, recentData]
-  );
+  useEffect(() => {
+    let renderContactListEle = renderContactList();
+    setItemSizes(getItemSize(renderContactListEle));
+    setContactListElement(renderContactListEle);
+  }, [filterData, selected, recentData]);
 
   const Row = ({ index, style }: any) => (
-    <div style={style}>{contactList[index]}</div>
+    <div style={style}>{contactListElement[index]}</div>
   );
 
   return (
     <VariableSizeList
+      key={itemSizes.length}
       className="contacts-scrollbar"
       height={420}
       width={"100%"}
-      itemCount={contactList.length}
-      itemSize={getItemSize}
+      itemCount={contactListElement.length}
+      itemSize={(index) => itemSizes[index]}
       overscanCount={10}
     >
       {Row}
