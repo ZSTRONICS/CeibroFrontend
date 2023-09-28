@@ -82,6 +82,11 @@
       "react-app/jest"
     ]
   },
+  "optimization": {
+    "splitChunks": {
+      "chunks": "all"
+    }
+  },
   "browserslist": {
     "production": [
       ">0.2%",
