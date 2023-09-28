@@ -1,4 +1,4 @@
-import { Badge, Box, Button, Typography } from "@mui/material";
+import { Badge, Button } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { CustomStack } from "components/CustomTags";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
@@ -18,9 +18,9 @@ const Connections = () => {
         gap={2}
         sx={{ justifyContent: "space-between", flexWrap: "no-wrap" }}
       >
-        <Box>
+        <div>
           <ConnectionIcon />
-          <Typography variant="body1" className={classes.connectionText}>
+          <div className={classes.connectionText}>
             My Connections
             <Badge
               showZero={true}
@@ -32,8 +32,8 @@ const Connections = () => {
               badgeContent={userAllContacts.length || 0}
               className={classes.badge}
             />
-          </Typography>
-        </Box>
+          </div>
+        </div>
 
         <Link to="/connections">
           <Button
@@ -66,7 +66,7 @@ const useStyles = makeStyles({
     width: "100%",
   },
   connectionText: {
-    fontSize: 14,
+    fontSize: 15,
     display: "inline-block",
     fontWeight: 500,
     paddingLeft: "16px",
