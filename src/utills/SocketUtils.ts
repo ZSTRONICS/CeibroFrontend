@@ -34,14 +34,19 @@ export const useSocket = () => {
         if (isLoggedIn && socket.getSocket() !== null) {
             return;
         }
+
         if (global.isSocketConnecting) {
             return;
         }
 
-        global.isSocketConnecting = true;
-        const tokens = localStorage.getItem("tokens") || "{}";
+        const tokens = localStorage.getItem("tokens") || null;
+        if (!tokens) {
+            return;
+        }
+
         const myToken = tokens && JSON.parse(tokens)?.access?.token;
 
+        global.isSocketConnecting = true;
         function generateSecureUUID() {
             return uuidv4();
         }
@@ -59,8 +64,7 @@ export const useSocket = () => {
             }
         }
 
-        let secureUUID = generateSecureUUID();
-        // secureUUID += "-" + sock.id;
+        const secureUUID = generateSecureUUID();
         console.log("secureUUID", secureUUID);
 
         // Event listener to handle page refresh, tab/window close, etc.
@@ -119,6 +123,8 @@ export const useSocket = () => {
         });
 
         sock.on("token_invalid", () => {
+            console.log("token_invalid received from server");
+
             const tokens = localStorage.getItem("tokens") || "{}";
             const jsonToken = JSON.parse(tokens);
             if ("refresh" in jsonToken) {
@@ -159,9 +165,7 @@ export const useSocket = () => {
             console.log("eventType--->", dataRcvd);
             const eventType = dataRcvd.eventType;
             const data = dataRcvd.data;
-            if (dataRcvd.uuid !== undefined) {
-                setTimeout(() => { sendSocketEventAck(dataRcvd.uuid); }, 50);
-            }
+            sendSocketEventAck(dataRcvd.uuid);
             switch (eventType) {
                 case TASK_CONFIG.TOPIC_CREATED:
                     dispatch({
