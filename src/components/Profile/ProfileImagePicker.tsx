@@ -75,8 +75,16 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
       />
       <div
         onClick={handleClick}
-        className={classes.outerWrapper}
         style={{
+          marginTop: "8px",
+          border: `1px solid ${colors.purpleGrey}`,
+          height: 200,
+          maxWidth: "100%",
+          position: "relative",
+          cursor: "pointer",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
           backgroundImage: `url(${imageUrl})`,
           backgroundSize: "contain",
           backgroundPosition: "center",
@@ -101,19 +109,6 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
 export default ProfileImagePicker;
 
 const useStyles = makeStyles({
-  outerWrapper: {
-    marginTop: "8px",
-    border: `1px solid ${colors.purpleGrey}`,
-    height: 200,
-    maxWidth: "100%",
-    position: "relative",
-    cursor: "pointer",
-    backgroundSize: "100% 100%",
-    backgroundRepeat: "no-repeat",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-  },
   icon: {
     position: "absolute",
     right: 0,

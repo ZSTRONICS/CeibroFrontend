@@ -45,7 +45,7 @@ function AddedDetails(props: IProps) {
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
   }, [events.length]);
-  const contentHeight = hasFile ? "409px" : "570px";
+  const contentHeight = hasFile ? "409px" : "540px";
   return (
     <>
       <div>
@@ -63,7 +63,7 @@ function AddedDetails(props: IProps) {
             sx={{
               height: `calc(100vh - ${contentHeight})`,
               overflow: "auto",
-              pb: 1,
+              pb: 5,
             }}
           >
             {events.length > 0 ? (

@@ -90,9 +90,9 @@ const UserMenu = () => {
               variant="rounded"
             />
             <Stack
-              direction="column"
               justifyContent="flex-end"
               sx={{
+                flexDirection: "column !important",
                 "@media (max-width:460px)": {
                   display: "none",
                 },
@@ -122,6 +122,9 @@ const UserMenu = () => {
               vertical: "top",
               horizontal: "right",
             }}
+            MenuListProps={{
+              role: "listbox",
+            }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
           >
@@ -146,38 +149,24 @@ const UserMenu = () => {
               onClick={() => handleUserMenu("/connections")}
               sx={{
                 "&.MuiMenuItem-root": {
-                  padding: "10px 20px",
+                  padding: "12px 20px",
                   gap: "15px",
                 },
               }}
             >
-              <Stack
-                direction="row"
-                spacing={2}
+              <ConnectionIcon />
+              <Typography textAlign="center"> My Connections</Typography>
+
+              <Badge
                 sx={{
-                  paddingRight: "16px",
+                  color: "#F1B740",
+                  padding: "0px  14px",
                 }}
-              >
-                <Box display="flex" alignItems="center">
-                  <ConnectionIcon />
-                </Box>
-                <Typography textAlign="center"> My Connections</Typography>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  sx={{ padding: " 0 10px 0" }}
-                >
-                  <Badge
-                    sx={{
-                      color: "#F1B740",
-                    }}
-                    showZero={true}
-                    color="primary"
-                    badgeContent={userAllContacts.length}
-                    overlap="circular"
-                  />
-                </Box>
-              </Stack>
+                showZero={true}
+                color="primary"
+                badgeContent={userAllContacts.length}
+                overlap="circular"
+              />
             </MenuItem>
 
             <MenuItem

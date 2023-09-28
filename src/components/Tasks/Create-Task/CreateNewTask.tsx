@@ -85,7 +85,7 @@ function CreateNewTask() {
       if (allProjects.length === 0) {
         dispatch(getAllProjects());
       }
-      // userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
         dispatch(userApiAction.getRecentContacts());
     }

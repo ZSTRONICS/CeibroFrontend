@@ -78,7 +78,8 @@ const Task = () => {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      (allTaskFromMe.ongoing.length < 1 || allTaskToMe.ongoing.length < 1) &&
+      (allTaskFromMe.ongoing.length < 1 ||
+        (allTaskToMe.ongoing.length < 1 && allTaskToMe.new.length < 1)) &&
         dispatch(taskActions.syncAllTasks());
     }
     return () => {
