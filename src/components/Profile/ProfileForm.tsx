@@ -213,10 +213,6 @@ const ProfileForm = () => {
                     name="email"
                     value={formik.values.email}
                     onChange={formik.handleChange}
-                    // onFocus={(e: any) => {
-                    //   e.preventDefault();
-                    //   e.target.blur();
-                    // }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
                     onBlur={checkOnUpdateData}
                     helperText={formik.errors.email as string}
@@ -254,11 +250,6 @@ const ProfileForm = () => {
                     onChange={formik.handleChange}
                     onBlur={checkOnUpdateData}
                   />
-                  {/* {errors.jobTitle && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.jobTitle && touched.jobTitle && errors.jobTitle}
-                  </Typography>
-                )} */}
                 </Grid>
                 <Grid item xs={12} md={7} className={classes.rowWrapper}>
                   <CustomMuiTextField
@@ -309,46 +300,27 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
-                <Grid item container mt={1}>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  className={`${classes.rowWrapper} ${classes.btnWrapper}`}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "30px",
-                    marginTop: "25px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={
-                      isDisabled ||
-                      !onUpdate ||
-                      formik.values.firstName.length === 0 ||
-                      formik.values.surName.length === 0 ||
-                      formik.values.email.length === 0
-                    }
-                  >
-                    Update
-                    {isDisabled && loading && (
-                      <CircularProgress
-                        size={20}
-                        className={classes.progress}
-                      />
-                    )}
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
+            <Divider sx={{ mt: 1, mb: 3 }} />
+            <Button
+              sx={{ ml: 3 }}
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={
+                isDisabled ||
+                !onUpdate ||
+                formik.values.firstName.length === 0 ||
+                formik.values.surName.length === 0 ||
+                formik.values.email.length === 0
+              }
+            >
+              Update
+              {isDisabled && loading && (
+                <CircularProgress size={20} className={classes.progress} />
+              )}
+            </Button>
           </form>
         </Grid>
       </Grid>
@@ -378,10 +350,6 @@ const useStyles = makeStyles({
     },
   },
 
-  btnWrapper: {
-    gap: "30px",
-    marginTop: "30px",
-  },
   rowWrapper: {
     display: "flex",
     justifyContent: "flex-end",

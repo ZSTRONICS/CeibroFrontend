@@ -11,14 +11,6 @@ import Store from "./redux/store";
 import "./translation/i18next";
 // import '../src/translation/i18next'
 
-// import { findDOMNode } from "react-dom";
-// hoist ThemeProvider to static const to avoid rerendering.its ensure that
-//  tag generated would not recalculate on each render.
-
-// will do it later while refactoring
-// "#":"react-file-utils" FOR ICON PREVIEW,
-// const MuiThemeProvider = <ThemeProvider theme={theme} />
-
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -37,13 +29,3 @@ root.render(
     </ThemeProvider>
   </Provider>
 );
-
-// Hot reloadable translation json files
-// if (module.hot) {
-//   module.hot.accept(['../src/translation/i18next'], () => {
-//     // No need to render the App again because i18next works with the hooks
-//   });
-// }
-// If you want to start measuring performance in your app, pass a function
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-// reportWebVitals();

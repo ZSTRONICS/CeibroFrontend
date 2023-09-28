@@ -84,7 +84,17 @@
   },
   "optimization": {
     "splitChunks": {
-      "chunks": "all"
+      "chunks": "all",
+      "minSize": 20000,
+      "maxSize": 0,
+      "name": true,
+      "cacheGroups": {
+        "vendor": {
+          "test": "/[\\/]node_modules[\\/]/",
+          "priority": -10,
+          "filename": "vendors.js"
+        }
+      }
     }
   },
   "browserslist": {
