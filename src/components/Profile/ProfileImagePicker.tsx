@@ -114,7 +114,7 @@ const useStyles = makeStyles({
     right: 0,
     bottom: 0,
     color: colors.white,
-    background: colors.primary,
+    background: `${colors.primary} !important`,
     padding: 2,
   },
   inputFile: {
