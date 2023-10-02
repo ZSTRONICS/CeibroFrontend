@@ -30,7 +30,7 @@ const CustomButton = ({ label, icon, ...rest }: CustomButtonProps) => {
           sx={{
             fontFamily: "Inter",
             fontWeight: 500,
-            fontSize: "10px",
+            fontSize: "12px",
             lineHeight: "16px",
             textAlign: "center",
           }}

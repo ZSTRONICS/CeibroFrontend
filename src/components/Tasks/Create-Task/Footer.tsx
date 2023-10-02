@@ -72,7 +72,6 @@ const Footer = (props: FooterPropsType) => {
         if (!_.isEmpty(validFiles)) {
           props.handleAttachImageValue &&
             props.handleAttachImageValue(validFiles);
-          // console.log("Selected image file:", file);
         } else {
           toast.error("Please select a valid image file");
         }
@@ -98,8 +97,8 @@ const Footer = (props: FooterPropsType) => {
         bottom: 0,
         left: 0,
         width: "100%",
-        padding: "8px 0",
-        height: "55px",
+        padding: "7px 0",
+        height: "57px",
       }}
     >
       {props.handleGetLocationValue && (
@@ -113,6 +112,12 @@ const Footer = (props: FooterPropsType) => {
       )}
       {props.handleSelectDocumentValue && (
         <CustomButton
+          sx={{
+            border: "none !important",
+            "&:hover": {
+              border: "0px solid transparent",
+            },
+          }}
           label={"Document"}
           icon={<InsertDriveFileOutlinedIcon />}
           variant="outlined"
@@ -121,6 +126,12 @@ const Footer = (props: FooterPropsType) => {
       )}
       {props.handleAttachImageValue && (
         <CustomButton
+          sx={{
+            border: "none !important",
+            "&:hover": {
+              border: "0px solid transparent",
+            },
+          }}
           label={"Attach"}
           icon={<AttachFileOutlinedIcon />}
           variant="outlined"
@@ -128,6 +139,12 @@ const Footer = (props: FooterPropsType) => {
         />
       )}
       <CustomButton
+        sx={{
+          border: "none !important",
+          "&:hover": {
+            border: "0px solid transparent",
+          },
+        }}
         onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
         variant="contained"

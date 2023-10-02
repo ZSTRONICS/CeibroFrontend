@@ -61,7 +61,7 @@ const Comment = ({
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleFileUpload = (files: any, formData: FormData | any) => {

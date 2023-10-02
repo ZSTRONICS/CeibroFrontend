@@ -324,32 +324,6 @@ const Task = () => {
     return filteredData;
   }
 
-  let taskOngoingCount = 0;
-  let taskDoneCount = 0;
-
-  const { ongoing, done } =
-    subtask === "allTaskFromMe"
-      ? allTaskFromMe
-      : subtask === "allTaskToMe"
-      ? allTaskToMe
-      : allTaskHidden;
-
-  ongoing.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskOngoingCount += 1) : 0
-  );
-  done.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskDoneCount += 1) : 0
-  );
-
-  useEffect(() => {
-    selectedTask !== null && setSelectedTask(null);
-  }, [
-    allTaskFromMe.unread.length,
-    allTaskHidden.canceled.length,
-    taskOngoingCount,
-    taskDoneCount,
-  ]);
-
   const menuOptions = [
     {
       menuName: "Hide",

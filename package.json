@@ -87,6 +87,8 @@
       "chunks": "all",
       "minSize": 20000,
       "maxSize": 0,
+      "maxAsyncRequests": 30,
+      "maxInitialRequests": 30,
       "name": true,
       "cacheGroups": {
         "vendor": {

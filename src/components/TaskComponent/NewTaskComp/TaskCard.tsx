@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Badge, Card, CardContent, CardHeader, Tooltip } from "@mui/material";
 import {
   BoldLableTag,
   CustomStack,
@@ -7,7 +7,7 @@ import {
   SubLabelTag,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
-import { Task } from "constants/interfaces";
+import { AssignedUserState, Task } from "constants/interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
@@ -42,11 +42,48 @@ function TaskCard(props: IProps) {
     isCreator,
     seenBy,
     userSubState,
+    assignedToState,
   } = task;
 
   const isSelectedTask: boolean = selectedTaskId === _id;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
+  const assignToNames = () =>
+    assignedToState.length > 0 ? (
+      <Badge
+        overlap="circular"
+        color="primary"
+        sx={{
+          padding: "0 6px",
+          width: "16px",
+          height: "16px",
+          "& .MuiBadge-badge": {
+            width: "16px",
+            height: "16px",
+          },
+        }}
+        badgeContent={
+          <Tooltip title={AssignedToList(assignedToState)}>
+            <span>{assignedToState.length}</span>
+          </Tooltip>
+        }
+      ></Badge>
+    ) : (
+      <></>
+    );
+
+  const AssignedToList = (membersList: AssignedUserState[]) => {
+    return (
+      <>
+        {membersList.map((item: AssignedUserState, index) => (
+          <span key={item._id} style={{ textTransform: "capitalize" }}>
+            {`${item.firstName} ${item.surName}`}
+            {index !== membersList.length - 1 && <br />}
+          </span>
+        ))}
+      </>
+    );
+  };
 
   return (
     <Card
@@ -112,6 +149,7 @@ function TaskCard(props: IProps) {
               {`${creator.firstName} ${creator.surName}`}
             </span>
           </BoldLableTag>
+          {assignToNames()}
           <BoldLableTag
             sx={{ display: "flex", maxWidth: "120px", WebkitLineClamp: 1 }}
             className="textOverflowDescription"
@@ -145,34 +183,6 @@ function TaskCard(props: IProps) {
           {description || "No description"}
         </SubLabelTag>
       </CardContent>
-      {/*   <CardActions sx={{ py: 0.4, background: "#F4F4F4" }}>
-       <CustomStack gap={1}>
-          <Span>{`Created ${taskCreated}`} </Span>
-          <LoadingButton
-            variant="text"
-            sx={{ color: "black", fontSize: "10px" }}
-            startIcon={<ViewCommentsIco />}
-          >
-            Comment
-          </LoadingButton>
-          <LoadingButton
-            variant="text"
-            sx={{ color: "black", fontSize: "10px" }}
-            startIcon={
-              <assets.ImageOutlinedIcon sx={{ color: "#0076C8 !important" }} />
-            }
-          >
-            Photo
-          </LoadingButton>
-          <LoadingButton
-            sx={{ color: "black", fontSize: "10px" }}
-            variant="text"
-            startIcon={<AttachmentIcon style={{ rotate: "315eg" }} />}
-          >
-            File
-          </LoadingButton>
-        </CustomStack> 
-      </CardActions>*/}
     </Card>
   );
 }
