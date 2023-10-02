@@ -304,7 +304,7 @@ function CreateNewTask() {
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleClearFile = (file: File, type: fileType) => {

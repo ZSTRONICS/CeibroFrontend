@@ -1,10 +1,10 @@
 import { Badge, Card, CardContent, CardHeader, Tooltip } from "@mui/material";
 import {
-  BoldLableTag,
   CustomStack,
   Span,
   SubHeadingTag,
   SubLabelTag,
+  TaskCardLabel,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
 import { AssignedUserState, Task } from "constants/interfaces";
@@ -55,12 +55,6 @@ function TaskCard(props: IProps) {
         color="primary"
         sx={{
           padding: "0 6px",
-          width: "16px",
-          height: "16px",
-          "& .MuiBadge-badge": {
-            width: "16px",
-            height: "16px",
-          },
         }}
         badgeContent={
           <Tooltip title={AssignedToList(assignedToState)}>
@@ -139,21 +133,22 @@ function TaskCard(props: IProps) {
           </CustomStack>
         }
       />
-      <CardContent sx={{ pt: 0, "&:last-child": { pb: 0 } }}>
+      <CardContent sx={{ pt: 0, p: 1, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
-          <BoldLableTag>
-            {isCanceled && !isCreator ? "From" : isTaskFromMe}
-            &nbsp;{" "}
-            <span style={{ fontWeight: "500", fontSize: "11px" }}>
-              {" "}
+          <TaskCardLabel className="textOverflowDescription">
+            {isCanceled && !isCreator ? "From" : isTaskFromMe} &nbsp;{" "}
+            <span
+              style={{
+                fontWeight: "500",
+                fontSize: "11px",
+              }}
+            >
               {`${creator.firstName} ${creator.surName}`}
             </span>
-          </BoldLableTag>
+          </TaskCardLabel>
+
           {assignToNames()}
-          <BoldLableTag
-            sx={{ display: "flex", maxWidth: "120px", WebkitLineClamp: 1 }}
-            className="textOverflowDescription"
-          >
+          <TaskCardLabel className="textOverflowDescription">
             Project: &nbsp;{" "}
             <span
               style={{
@@ -163,12 +158,17 @@ function TaskCard(props: IProps) {
             >
               {project ? project.title : "N/A"}
             </span>
-          </BoldLableTag>
+          </TaskCardLabel>
         </CustomStack>
 
         <SubHeadingTag
           className="ellipsis"
-          sx={{ maxWidth: "300px", color: "black", pb: 0.1 }}
+          sx={{
+            maxWidth: "300px",
+            color: "black",
+            pb: 0.1,
+            WebkitLineClamp: 1,
+          }}
         >
           {topic.topic || "N/A"}
         </SubHeadingTag>

@@ -8,14 +8,12 @@ const DespcriptionBox = ({ description }: IProps) => (
   <Box
     sx={{
       width: "100%",
-      // height: "60px",
       padding: "14px 0px",
       gap: 1,
     }}
   >
     <Box
       sx={{
-        // height: "20px",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -45,9 +43,12 @@ const DespcriptionBox = ({ description }: IProps) => (
       <Box
         sx={{
           width: "100%",
-          height: "100%",
           px: "11px",
+          height: `${description.length > 100 ? "10vh" : "unset"}`,
+          overflow: "auto",
           maxWidth: "85%",
+          display: "flex",
+          alignItems: "center",
         }}
       >
         <p

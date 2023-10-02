@@ -1,6 +1,5 @@
 import { Box, MenuItem, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-
 export const Heading = styled(Typography)(
   ({ theme }) => `
     font-family: Inter;
@@ -185,7 +184,15 @@ const CustomStack = styled(Stack)`
   flex-direction: row;
   align-items: center;
 `;
-
+const TaskCardLabel = styled("p")`
+  max-width: 110px;
+  width: 100%;
+  font-weight: 700;
+  font-size: 10px;
+  color: #605c5c;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+`;
 const BackToLoginTag = styled(Box)(({ theme }) => ({
   color: "#000000",
   fontFamily: "Inter",
@@ -219,4 +226,5 @@ export {
   MenuItemTag,
   Span,
   SubHeading,
+  TaskCardLabel,
 };

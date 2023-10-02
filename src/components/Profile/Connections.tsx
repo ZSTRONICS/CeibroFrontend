@@ -1,5 +1,5 @@
 import { Badge, Button } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { CustomStack } from "components/CustomTags";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useSelector } from "react-redux";
@@ -14,13 +14,27 @@ const Connections = () => {
   return (
     <>
       <CustomStack
-        className={classes.connectionsContainer}
         gap={2}
-        sx={{ justifyContent: "space-between", flexWrap: "no-wrap" }}
+        sx={{
+          justifyContent: "space-between",
+          flexWrap: "no-wrap",
+          border: "1px solid #E2E4E5 !important",
+          background: colors.white,
+          padding: "10px 14px",
+          marginTop: 1.2,
+        }}
       >
         <div>
           <ConnectionIcon />
-          <div className={classes.connectionText}>
+          <div
+            style={{
+              fontSize: 15,
+              display: "inline-block",
+              fontWeight: 500,
+              paddingLeft: "16px",
+              paddingTop: 4,
+            }}
+          >
             My Connections
             <Badge
               showZero={true}
@@ -52,25 +66,12 @@ const Connections = () => {
 export default Connections;
 
 const useStyles = makeStyles({
-  connectionsContainer: {
-    border: `1px solid #E2E4E5`,
-    background: colors.white,
-    padding: "10px 14px",
-    marginTop: 10,
-  },
   iconContainer: {
     width: "34px",
     padding: "4px 5px 0px 4px",
   },
   icon: {
     width: "100%",
-  },
-  connectionText: {
-    fontSize: 15,
-    display: "inline-block",
-    fontWeight: 500,
-    paddingLeft: "16px",
-    paddingTop: 4,
   },
   badge: {
     marginLeft: "20px",
