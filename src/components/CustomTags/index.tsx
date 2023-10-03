@@ -184,6 +184,11 @@ const CustomStack = styled(Stack)`
   flex-direction: row;
   align-items: center;
 `;
+const ImageStack = styled(Stack)`
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+`;
 const TaskCardLabel = styled("p")`
   max-width: 110px;
   width: 100%;
@@ -222,9 +227,9 @@ export {
   BoldLableTag,
   CustomStack,
   CustomTitle,
-  DescriptionTag,
-  MenuItemTag,
+  DescriptionTag, ImageStack, MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel,
+  TaskCardLabel
 };
+

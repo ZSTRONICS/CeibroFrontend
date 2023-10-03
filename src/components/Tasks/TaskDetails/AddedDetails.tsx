@@ -7,6 +7,7 @@ import {
   AddStatusTag,
   CustomStack,
   DocName,
+  ImageStack,
   Span,
   SubHeadingTag,
 } from "components/CustomTags";
@@ -239,7 +240,7 @@ function AddedDetails(props: IProps) {
                             <Divider />
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {mediaLocal.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -256,7 +257,7 @@ function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {mediaLocal.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
@@ -307,7 +308,7 @@ function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -324,7 +325,7 @@ function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {media.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
