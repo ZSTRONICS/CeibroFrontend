@@ -464,6 +464,15 @@ const TaskReducer = (
               console.log("task seen allTaskFromMe.unread", state.allTaskFromMe.unread[taskIndex].seenBy);
             }
           }
+          // update  task from-me [ongoing] 
+          if (isCreator && isOngoing) {
+            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
+              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
+            }
+          }
+
           // update  task to-me [ongoing]
           if (isAssignedToMe && isOngoing) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
@@ -473,14 +482,7 @@ const TaskReducer = (
               console.log("updated state.allTaskToMe.ongoing seenBy ", state.allTaskToMe.ongoing[taskIndex]._id);
             }
           }
-          // update  task from-me [ongoing] 
-          if (isCreator && isOngoing) {
-            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
-            if (taskIndex > -1) {
-              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
-              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
-            }
-          }
+
           // update  task to-me [done] 
           if (isAssignedToMe &&
             eventData.oldTaskData.userSubState === "done"

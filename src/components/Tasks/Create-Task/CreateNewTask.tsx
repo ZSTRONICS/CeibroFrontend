@@ -325,12 +325,10 @@ function CreateNewTask() {
         (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
         ? false
         : true;
-        console.log(selectedData.dueDate,"selectedData.dueDate");
-        
     if (selectedData.dueDate === "Invalid date") {
-      valid = true
+      valid = true;
     }
-    return  isSubmit || valid;
+    return isSubmit || valid;
   };
 
   return (

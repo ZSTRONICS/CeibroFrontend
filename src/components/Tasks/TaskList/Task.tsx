@@ -193,7 +193,7 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
-  }, [selectedTask]);
+  }, [selectedTask, selectedTask?.events.length]);
 
   useEffect(() => {
     switch (subtask) {

@@ -46,7 +46,7 @@ function AddedDetails(props: IProps) {
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
   }, [events.length]);
-  const contentHeight = hasFile ? "520px" : "425px";
+  const contentHeight = hasFile ? "510px" : "425px";
   return (
     <>
       <div>

@@ -92,7 +92,7 @@ const ViewProfile: React.FunctionComponent<IViewProfileProps> = (props) => {
             variant="contained"
             size="medium"
             color="primary"
-            onClick={openTaskModal}
+            // onClick={openTaskModal}
             sx={{ textTransform: "capitalize", width: "80%" }}
           >
             Create task

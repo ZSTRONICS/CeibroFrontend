@@ -22,21 +22,12 @@ export const openFormInNewWindow = (path: string, windowTitle: string) => {
   if (newWindow != null) {
     newWindow.addEventListener("load", () => {
       newWindow.document.title = windowTitle;
-      // const windowId = String(Date.now());
-      // windowsMap.set(windowId, newWindow);
     });
   } else {
     alert('The new window was blocked. Please allow pop-ups for this site.');
   }
 };
 
-// export const closeWindowWithId = (windowId: any) => {
-//   const windowToClose = windowsMap.get(windowId);
-//   if (windowToClose) {
-//   windowToClose.close(); // Close the window with the specified ID.
-//   windowsMap.delete(windowId); // Clean up the map to free up memory.
-//   }
-// };
 // Now this function for handle contacts search
 export const handleGroupSearch = (
   searchText: string,
