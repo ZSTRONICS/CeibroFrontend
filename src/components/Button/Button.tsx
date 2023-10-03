@@ -1,6 +1,6 @@
+import { Button, ButtonProps, CircularProgress } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import React from "react";
-import { Button, CircularProgress, ButtonProps } from "@mui/material";
-import { styled } from "@mui/system";
 
 interface LoadingButtonProps extends ButtonProps {
   loading?: boolean | undefined;

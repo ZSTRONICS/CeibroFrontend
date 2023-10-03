@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
@@ -49,7 +49,8 @@ function UserDropDown(props: IProps) {
     handleChangeValues,
     recentUserContact,
   } = props;
-  const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState<Contact[]>(recentUserContact);
+  const [filteredRecentUserContact, setFilteredRecentUserContact] =
+    React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -61,9 +62,9 @@ function UserDropDown(props: IProps) {
   }>({});
   const { user } = useSelector((state: RootState) => state.auth);
 
-useEffect(()=>{
-  setFilteredRecentUserContact(recentUserContact)
-},[recentUserContact])
+  useEffect(() => {
+    setFilteredRecentUserContact(recentUserContact);
+  }, [recentUserContact]);
 
   useEffect(() => {
     if (contacts && contacts.length > 0) {
@@ -133,9 +134,11 @@ useEffect(()=>{
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
     const recentFilteredData = recentUserContact.filter((Option) =>
-      Option["contactFullName"].toLowerCase().includes(searchValue.toLowerCase())
-    )
-    setFilteredRecentUserContact(recentFilteredData)
+      Option["contactFullName"]
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
+    setFilteredRecentUserContact(recentFilteredData);
     setSearchQuery(searchValue);
   };
 

@@ -148,7 +148,10 @@ function TaskCard(props: IProps) {
           </TaskCardLabel>
 
           {assignToNames()}
-          <TaskCardLabel className="textOverflowDescription">
+          <TaskCardLabel
+            className="textOverflowDescription"
+            style={{ paddingLeft: "10px" }}
+          >
             Project: &nbsp;{" "}
             <span
               style={{

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 // @mui
 import { AppBar, Box, IconButton, Stack } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
 import Notification from "components/Notification/Notification";
 import Topbar from "components/Topbar/Topbar";
