@@ -317,6 +317,22 @@ function CreateNewTask() {
     }
   };
 
+  const handleDisableSubmit = () => {
+    let valid = true;
+    valid =
+      selectedData.topic !== "" &&
+      (selectedData.assignedToState.length > 0 ||
+        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+        ? false
+        : true;
+        console.log(selectedData.dueDate,"selectedData.dueDate");
+        
+    if (selectedData.dueDate === "Invalid date") {
+      valid = true
+    }
+    return  isSubmit || valid;
+  };
+
   return (
     <Box>
       <TaskHeader title="New task" />
@@ -474,15 +490,7 @@ function CreateNewTask() {
         )}
       </Box>
       <Footer
-        disabled={
-          isSubmit ||
-          (selectedData.topic !== "" &&
-          (selectedData.assignedToState.length > 0 ||
-            (selectedData.invitedNumbers &&
-              selectedData.invitedNumbers.length > 0))
-            ? false
-            : true)
-        }
+        disabled={handleDisableSubmit()}
         showHeader={false}
         handleSubmitForm={handleCreateTask}
         handleAttachImageValue={handleAttachImageValue}
