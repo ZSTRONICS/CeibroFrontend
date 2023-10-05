@@ -1,5 +1,5 @@
 import { Avatar, Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import React from "react";
 interface NameAvatarProps {
   firstname: string;

@@ -8,7 +8,7 @@ import { useHistory } from "react-router";
 import AddIcon from "@mui/icons-material/Add";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import { CButton } from "components/Button";
 import { CustomStack, TopBarTitle } from "components/CustomTags";
 import CustomModal from "components/Modal";

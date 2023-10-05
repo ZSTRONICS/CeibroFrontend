@@ -97,14 +97,13 @@ const ProfileForm = () => {
 
   function checkOnUpdateData(e: any) {
     const hasChanges = Object.keys(formik.values).some((key: string) => {
-      const formikValue: any = formik.values[key];
-      const userValue = user[key];
+      const formikValue: any = e.target.value;
+      const userValue = user[e.target.name];
       if (key === "phoneNumber" || key === "dialCode") {
         return false;
       }
       return formikValue !== userValue;
     });
-
     if (hasChanges) {
       setOnUpdate(hasChanges);
     } else {
@@ -169,12 +168,15 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="firstName"
                     value={formik.values.firstName}
-                    onChange={formik.handleChange}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.firstName &&
                       Boolean(formik.errors.firstName)
                     }
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.firstName as string}
                   />
                 </Grid>
@@ -191,11 +193,14 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="surName"
                     value={formik.values.surName}
-                    onChange={formik.handleChange}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.surName && Boolean(formik.errors.surName)
                     }
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.surName as string}
                   />
                 </Grid>
@@ -212,13 +217,12 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="email"
                     value={formik.values.email}
-                    onChange={formik.handleChange}
-                    // onFocus={(e: any) => {
-                    //   e.preventDefault();
-                    //   e.target.blur();
-                    // }}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.email as string}
                   />
                 </Grid>
@@ -234,8 +238,11 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="companyName"
                     value={formik.values.companyName}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.companyName &&
                       Boolean(formik.errors.companyName)
@@ -251,14 +258,12 @@ const ProfileForm = () => {
                     label="Job title"
                     placeholder={t("auth.register.job_title")}
                     inputValue={formik.values.jobTitle}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                   />
-                  {/* {errors.jobTitle && (
-                  <Typography className={`error-text ${classes.errorText}`}>
-                    {errors.jobTitle && touched.jobTitle && errors.jobTitle}
-                  </Typography>
-                )} */}
                 </Grid>
                 <Grid item xs={12} md={7} className={classes.rowWrapper}>
                   <CustomMuiTextField
@@ -268,8 +273,11 @@ const ProfileForm = () => {
                       phoneNumber: formik.values.phoneNumber,
                       dialCode: formik.values.dialCode,
                     }}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     disabled={true}
                   />
                 </Grid>
@@ -309,46 +317,27 @@ const ProfileForm = () => {
                     Change Password
                   </Button>
                 </div>
-                <Grid item container mt={1}>
-                  <Grid item xs={12}>
-                    <Divider />
-                  </Grid>
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                  className={`${classes.rowWrapper} ${classes.btnWrapper}`}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    gap: "30px",
-                    marginTop: "25px",
-                  }}
-                >
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    disabled={
-                      isDisabled ||
-                      !onUpdate ||
-                      formik.values.firstName.length === 0 ||
-                      formik.values.surName.length === 0 ||
-                      formik.values.email.length === 0
-                    }
-                  >
-                    Update
-                    {isDisabled && loading && (
-                      <CircularProgress
-                        size={20}
-                        className={classes.progress}
-                      />
-                    )}
-                  </Button>
-                </Grid>
               </Grid>
             </Grid>
+            <Divider sx={{ mt: 1, mb: 3 }} />
+            <Button
+              sx={{ ml: 3 }}
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={
+                isDisabled ||
+                !onUpdate ||
+                formik.values.firstName.length === 0 ||
+                formik.values.surName.length === 0 ||
+                formik.values.email.length === 0
+              }
+            >
+              Update
+              {isDisabled && loading && (
+                <CircularProgress size={20} className={classes.progress} />
+              )}
+            </Button>
           </form>
         </Grid>
       </Grid>
@@ -378,10 +367,6 @@ const useStyles = makeStyles({
     },
   },
 
-  btnWrapper: {
-    gap: "30px",
-    marginTop: "30px",
-  },
   rowWrapper: {
     display: "flex",
     justifyContent: "flex-end",

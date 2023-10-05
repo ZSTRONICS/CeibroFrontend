@@ -96,11 +96,6 @@ iframe {
   color: white;
 }
 
-.rejected-badge .MuiBadge-colorPrimary {
-  background: var(--btn-red);
-  color: white;
-}
-
 .accepted-badge .MuiBadge-colorPrimary {
   background: var(--diva-violet);
   color: white;
@@ -136,25 +131,6 @@ iframe {
 .emptyBorder:focus-visible {
   border: none;
   outline: none;
-}
-
-.custom-btn {
-  display: inline-block;
-  font-weight: 400;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  border: 1px solid transparent;
-  padding: 0.375rem 0.75rem;
-  font-size: 1rem;
-  line-height: 1.5;
-  border-radius: 0.25rem;
-  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out,
-    border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
 .css-1wa3eu0-placeholder {
@@ -278,49 +254,6 @@ input[type="file"] {
   align-items: center;
 }
 
-.recentComment {
-  display: flex;
-  flex-direction: row;
-  color: #7D7E80;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.recentComment::after,
-.recentComment::before {
-  content: "";
-  flex: 1 1;
-  border-bottom: 1px solid;
-  margin: auto;
-  color: #7D7E80;
-}
-
-.recentComment:before {
-  margin-right: 10px
-}
-
-.recentComment:after {
-  margin-left: 10px
-}
-
-.file-preview svg {
-  width: 50px;
-  height: 50px;
-}
-
-.file-preview img {
-  width: 36px;
-  height: 36px;
-}
-
-.chat-room-media .MuiBadge-anchorOriginTopRightRectangle {
-  right: -5;
-}
-
-.create-question-row input::-webkit-input-placeholder {
-  font-size: 12px;
-  line-height: 3;
-}
 
 input,
 textarea {
@@ -343,11 +276,6 @@ textarea::-webkit-input-placeholder {
   color: black !important
 }
 
-.options-text .MuiFormControlLabel-label {
-  font-weight: 500 !important;
-  font-size: 14px;
-  text-align: justify;
-}
 
 .MuiFormControlLabel-label.Mui-disabled {
   color: black !important;
@@ -378,8 +306,6 @@ textarea::-webkit-input-placeholder {
 
 button:disabled,
 button[disabled] {
-  /* border: 1px solid #999999; */
-  /* background-color: #ADB5BD; */
   color: white;
 }
 
@@ -387,9 +313,6 @@ button[disabled] {
   font-size: 10px !important;
   font-weight: bold !important;
   color: white !important;
-  /* padding: 6px !important;
-  height: 16px !important;
-  min-width: 14px !important; */
 }
 
 .MuiInputBase-input {
@@ -412,10 +335,6 @@ button[disabled] {
   transform: translateX(8px) !important;
 }
 
-.Component-thumb-133 {
-  margin-left: 1px !important;
-}
-
 .MuiFormControlLabel-root {
   margin: 0px !important;
 }
@@ -427,44 +346,17 @@ button[disabled] {
 .MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1 {
   font-size: 14px;
   font-weight: 500;
-  /* padding-left: 10px; */
-}
-
-/* .MuiDialog-paper{
-  min-height: 55vh;
-} */
-.css-qc6sy-singleValue {
-  margin-left: 10px !important;
-}
-
-label.dragArea {
-  border: 1px solid #E2E4E5 !important;
-  max-width: 440px !important;
-  height: 80px !important;
 }
 
 .react-datepicker-wrapper input {
   width: 95%;
 }
 
-.pg-viewer-wrapper {
-  overflow-y: auto !important;
-}
-
 .sideBar_icon {
   color: white;
 }
 
-.pin-message-chip {
-  cursor: pointer;
-}
-
-.pin-message-chip:hover {
-  background-color: var(--purple-grey) !important;
-}
-
 .logoTitleWrapper {
-  /* height: 100vh; */
   margin: 0 3.5rem;
   display: flex;
   flex-direction: column;
@@ -489,24 +381,6 @@ label.dragArea {
   -webkit-box-orient: vertical;
 }
 
-/* .chatReplyBox :nth-child(1) >div{
-  background: #cde4f4 !important;
-  animation: fade 5s linear;
-  -webkit-animation: fade 5s linear;
-   -moz-animation: fadeIn 5s;
-  -o-animation: fadeIn 5s;
-  -ms-animation: fadeIn 5s; 
-} */
-.chatReplyBox .replyMessageBg {
-  background: #cde4f4 !important;
-  animation: fade 5s linear;
-  -webkit-animation: fade 5s linear;
-  -moz-animation: fadeIn 5s;
-  -o-animation: fadeIn 5s;
-  -ms-animation: fadeIn 5s;
-}
-
-/* Add animation (fade in the popup) */
 @keyframes fade {
 
   0%,
@@ -555,29 +429,6 @@ label.dragArea {
   }
 }
 
-/* @keyframes popup {
-  0%{
-    transform: scale(1);
-  }
-  50%{
-    transform: scale(1.4);
-  }
-  60%{
-    transform: scale(1.1);
-  }
-  70%{
-    transform: scale(1.2);
-  }
-  80%{
-    transform: scale(1);
-  }
-  90%{
-    transform: scale(1.1);
-  }
-  100%{
-    transform: scale(1);
-  }
-} */
 
 .file-upload-box .file-upload-input {
   position: absolute;
@@ -595,10 +446,3 @@ label.dragArea {
     margin: 0;
   }
 }
-
-/* *{
-  -ms-overflow-style: none;
-}
-::-webkit-scrollbar {
-  display: none;
-} */

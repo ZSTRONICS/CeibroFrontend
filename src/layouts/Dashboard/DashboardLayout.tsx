@@ -1,6 +1,6 @@
 import { useState } from "react";
 // @mui
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import Header from "./Header";
 import Nav from "./Sidenav";
 

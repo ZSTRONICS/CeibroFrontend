@@ -1,15 +1,15 @@
-import React from "react";
 import {
+  Autocomplete,
+  CircularProgress,
   FormControl,
   InputLabel,
   OutlinedInput,
   TextField,
-  Autocomplete,
-  CircularProgress,
 } from "@mui/material";
-import { AutocompleteOption, GenericAutocompleteProps } from "./types";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
+import React from "react";
 import { DropDownSvg } from "../icons/CustomSvgIcon/dropDown";
+import { AutocompleteOption, GenericAutocompleteProps } from "./types";
 
 interface IProps {
   name: string;
@@ -74,7 +74,7 @@ function AutocompleteField<T extends AutocompleteOption>({
       <StyledAutocomplete
         {...props}
         options={options}
-        id={'autocomplete-input'}
+        id={"autocomplete-input"}
         popupIcon={DropDownSvg()}
         getOptionLabel={(option: any) => option.label}
         renderInput={(params: any) => (
@@ -87,7 +87,9 @@ function AutocompleteField<T extends AutocompleteOption>({
               ...params.InputProps,
               endAdornment: (
                 <>
-                  {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {loading ? (
+                    <CircularProgress color="inherit" size={20} />
+                  ) : null}
                   {params.InputProps.endAdornment}
                 </>
               ),

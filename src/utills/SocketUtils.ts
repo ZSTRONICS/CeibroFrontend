@@ -183,11 +183,9 @@ export const useSocket = () => {
                         payload: data,
                     });
                     break;
-
                 case TASK_CONFIG.TASK_SEEN:
                 case TASK_CONFIG.TASK_SHOWN:
                 case TASK_CONFIG.TASK_HIDDEN:
-                case TASK_CONFIG.UN_CANCEL_TASK:
                     dispatch({
                         type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                         payload: { ...data, userId, eventType },
@@ -205,6 +203,7 @@ export const useSocket = () => {
                     break;
 
                 case TASK_CONFIG.CANCELED_TASK:
+                case TASK_CONFIG.UN_CANCEL_TASK:
                 case TASK_CONFIG.TASK_DONE:
                 case TASK_CONFIG.NEW_TASK_COMMENT:
                     dispatch({

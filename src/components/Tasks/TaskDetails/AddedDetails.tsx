@@ -7,6 +7,7 @@ import {
   AddStatusTag,
   CustomStack,
   DocName,
+  ImageStack,
   Span,
   SubHeadingTag,
 } from "components/CustomTags";
@@ -45,7 +46,7 @@ function AddedDetails(props: IProps) {
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
   }, [events.length]);
-  const contentHeight = hasFile ? "409px" : "540px";
+  const contentHeight = hasFile ? "510px" : "425px";
   return (
     <>
       <div>
@@ -61,7 +62,7 @@ function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: `calc(100vh - ${contentHeight})`,
+              height: `calc(95vh - ${contentHeight})`,
               overflow: "auto",
               pb: 5,
             }}
@@ -239,7 +240,7 @@ function AddedDetails(props: IProps) {
                             <Divider />
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {mediaLocal.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -256,7 +257,7 @@ function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {mediaLocal.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
@@ -293,7 +294,7 @@ function AddedDetails(props: IProps) {
                     return (
                       <React.Fragment key={event._id + "Comment"}>
                         <CustomStack gap={1.2} py={0.8}>
-                          <Span sx={{ fontSize: "12px" }}>Comment by</Span>
+                          {/* <Span sx={{ fontSize: "12px" }}>Comment by</Span> */}
                           <DocName>{`${initiator.firstName} ${
                             initiator.surName
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
@@ -307,7 +308,7 @@ function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -324,7 +325,7 @@ function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {media.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;

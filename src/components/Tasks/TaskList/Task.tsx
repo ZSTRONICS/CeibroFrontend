@@ -78,9 +78,14 @@ const Task = () => {
 
   useEffect(() => {
     if (!isRenderEffect.current) {
-      (allTaskFromMe.ongoing.length < 1 ||
-        (allTaskToMe.ongoing.length < 1 && allTaskToMe.new.length < 1)) &&
+      if (
+        _.isEmpty(allTaskFromMe.ongoing) &&
+        _.isEmpty(allTaskFromMe.unread) &&
+        _.isEmpty(allTaskToMe.new) &&
+        _.isEmpty(allTaskToMe.ongoing)
+      ) {
         dispatch(taskActions.syncAllTasks());
+      }
     }
     return () => {
       isRenderEffect.current = true;
@@ -188,7 +193,7 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
-  }, [selectedTask]);
+  }, [selectedTask, selectedTask?.events.length]);
 
   useEffect(() => {
     switch (subtask) {
@@ -319,32 +324,6 @@ const Task = () => {
     return filteredData;
   }
 
-  let taskOngoingCount = 0;
-  let taskDoneCount = 0;
-
-  const { ongoing, done } =
-    subtask === "allTaskFromMe"
-      ? allTaskFromMe
-      : subtask === "allTaskToMe"
-      ? allTaskToMe
-      : allTaskHidden;
-
-  ongoing.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskOngoingCount += 1) : 0
-  );
-  done.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskDoneCount += 1) : 0
-  );
-
-  useEffect(() => {
-    selectedTask !== null && setSelectedTask(null);
-  }, [
-    allTaskFromMe.unread.length,
-    allTaskHidden.canceled.length,
-    taskOngoingCount,
-    taskDoneCount,
-  ]);
-
   const menuOptions = [
     {
       menuName: "Hide",
@@ -474,9 +453,9 @@ const Task = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 2.2, lg: 4 },
+              gap: { xs: 1, md: 2.2, lg: 3 },
               overflow: "auto",
-              padding: "8px 0px 4px 0px",
+              padding: "8px 8px 4px 8px",
             }}
           >
             {task && subtask && (

@@ -40,13 +40,19 @@ function FilterTabs(props: FilterTabProps) {
         break;
       case "ongoing":
         label = "Ongoing";
-        tasks = subTaskKey === "allTaskFromMe" ? allTaskFromMe.ongoing : [];
+        tasks =
+          subTaskKey === "allTaskFromMe"
+            ? allTaskFromMe.ongoing
+            : allTaskToMe.ongoing;
         bgColor = "#F1B740";
         isDisabled = false;
         break;
       case "done":
         label = "Done";
-        tasks = subTaskKey === "allTaskFromMe" ? allTaskFromMe.done : [];
+        tasks =
+          subTaskKey === "allTaskFromMe"
+            ? allTaskFromMe.done
+            : allTaskToMe.done;
         bgColor = "#55BCB3";
         isDisabled = false;
         break;

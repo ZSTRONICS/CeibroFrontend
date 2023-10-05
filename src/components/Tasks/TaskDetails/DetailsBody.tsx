@@ -89,9 +89,7 @@ export default function DetailsBody(props: IProps) {
             );
           })} */}
         <DrawingFiles />
-        {events && (
-          <AddedDetails events={events} hasFile={media.length === 0} />
-        )}
+        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       </Box>
       {isOpen && (
         <ImagePreviewModal

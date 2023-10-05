@@ -27,6 +27,7 @@ const CustomDatePicker = ({
       handleChangeValues(newDate, "dueDate");
       setValue(date);
     } else {
+      handleChangeValues("", "dueDate");
       console.log("No date selected.");
     }
   };

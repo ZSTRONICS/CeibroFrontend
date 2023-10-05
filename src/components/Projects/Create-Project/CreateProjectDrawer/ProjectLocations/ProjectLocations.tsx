@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import NoData from "components/NotFound/NoData";

@@ -147,25 +147,6 @@ const MockTaskApis = () => {
         );
       }
       if (selectedApi.value === "doneTaskWithCommentFiles") {
-        const fetchFile = (filePath: any) => {
-          return new Promise((resolve, reject) => {
-            fetch(filePath)
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("File fetch request failed.");
-                }
-                return response.blob();
-              })
-              .then((fileBlob) => {
-                const file = new File([fileBlob], "ui.png", { type: "*/*" });
-                resolve(file);
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-        };
-
         const formdata = new FormData();
 
         formdata.append(

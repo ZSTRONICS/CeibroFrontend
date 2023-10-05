@@ -304,7 +304,7 @@ function CreateNewTask() {
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleClearFile = (file: File, type: fileType) => {
@@ -315,6 +315,20 @@ function CreateNewTask() {
       const filterSelectedDocs = removeItem(selectedDocuments, file);
       setSelectedDocuments(filterSelectedDocs);
     }
+  };
+
+  const handleDisableSubmit = () => {
+    let valid = true;
+    valid =
+      selectedData.topic !== "" &&
+      (selectedData.assignedToState.length > 0 ||
+        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+        ? false
+        : true;
+    if (selectedData.dueDate === "Invalid date") {
+      valid = true;
+    }
+    return isSubmit || valid;
   };
 
   return (
@@ -474,15 +488,7 @@ function CreateNewTask() {
         )}
       </Box>
       <Footer
-        disabled={
-          isSubmit ||
-          (selectedData.topic !== "" &&
-          (selectedData.assignedToState.length > 0 ||
-            (selectedData.invitedNumbers &&
-              selectedData.invitedNumbers.length > 0))
-            ? false
-            : true)
-        }
+        disabled={handleDisableSubmit()}
         showHeader={false}
         handleSubmitForm={handleCreateTask}
         handleAttachImageValue={handleAttachImageValue}

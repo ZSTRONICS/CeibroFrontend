@@ -1,15 +1,12 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import { styled } from "@mui/system";
+import Box from "@mui/material/Box";
+import { styled } from "@mui/material/styles";
 
 export function CBox(props: any) {
-    return (
-        <MBox {...props} />
-    )
+  return <MBox {...props} />;
 }
 
 const MBox = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
       font-family: Inter;
       `
-  );
+);
