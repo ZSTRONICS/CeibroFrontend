@@ -20,7 +20,6 @@ import pencilFilled from "./images/pencilFilled.png";
 import primaryNudgeIcon from "./images/primaryNudge.svg";
 import questionMarkIcon from "./images/questionMark.png";
 import searchIcon from "./images/searchIcon.png";
-import sendIcon from "./images/sendIcon.png";
 import sidebarChatIcon from "./images/sidebarChat.png";
 import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
@@ -80,9 +79,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 //tab icons
 import ProjectIcon from "./images/project_icon.svg";
 
-import CommentIcon from "./images/comment_icon.png";
 import FileIcon from "./images/file_icon.svg";
-import ForwardIcon from "./images/forward_icon.png";
 import membersDelete from "./images/membersDelete.png";
 
 // material-imports-icon
@@ -92,8 +89,6 @@ import membersDelete from "./images/membersDelete.png";
 const assets = {
   FileIcon,
   CeibroWaterMark,
-  ForwardIcon,
-  CommentIcon,
   DoneAllIcon,
   AttachFileOutlinedIcon,
   ImageOutlinedIcon,
@@ -142,7 +137,6 @@ const assets = {
   moreIcon,
   usersIcon,
   mediaIcon,
-  sendIcon,
   clearIcon,
   addUser,
   blueDocument,

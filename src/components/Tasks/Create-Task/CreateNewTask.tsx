@@ -228,6 +228,16 @@ function CreateNewTask() {
     handleChangeValues(value, "description");
   };
 
+  // window.postMessage(
+  //   console.log(
+  //     JSON.stringify({
+  //       message: "this is test message",
+  //       time: new Date(),
+  //     })
+  //   ),
+  //   "http://create-new-task"
+  // );
+
   const handleCreateCallback = (type: string, label: string) => {
     switch (type) {
       case "Topic":

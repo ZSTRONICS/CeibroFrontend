@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
 import { countUnseenTasks } from "components/Utills/Globals";
 import {
-  CanceledIcon,
   FromMEIcon,
+  HiddenIcon,
   ToMeIcon,
   UnseenFromMe,
   UnseenHidden,
@@ -86,7 +86,7 @@ function Sidebar(props: any) {
   if (selectedTab === "tasks" && configs) {
     configs.allTaskFromMe.icon = countFromMe >= 1 ? UnseenFromMe : FromMEIcon;
     configs.allTaskToMe.icon = countToMe >= 1 ? UnseenToMe : ToMeIcon;
-    configs.allTaskHidden.icon = countHidden >= 1 ? UnseenHidden : CanceledIcon;
+    configs.allTaskHidden.icon = countHidden >= 1 ? UnseenHidden : HiddenIcon;
   }
 
   return (
@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "10px 6px",
     borderBottom: `1px solid white`,
-    color: colors.primary,
+
     cursor: "pointer",
     gap: 13,
     margin: "10px 0",
@@ -176,5 +176,6 @@ const useStyles = makeStyles((theme) => ({
   active: {
     background: "white",
     boxShadow: "0px 2px 2px 0px #3b95d3",
+    color: colors.primary,
   },
 }));

@@ -1,6 +1,6 @@
 import {
-  CanceledIcon,
   FromMEIcon,
+  HiddenIcon,
   LocationIcon,
   NewTaskIcon,
   ProjectIcon,
@@ -66,7 +66,7 @@ const SidebarConfig: SidebarConfigInterface = {
       allTaskHidden: {
         key: "allTaskHidden",
         title: "Hidden",
-        icon: CanceledIcon,
+        icon: HiddenIcon,
         getPath: () => "tasks/allTaskHidden",
         active: false,
         childTab: {},

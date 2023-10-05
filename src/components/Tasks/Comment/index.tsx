@@ -2,6 +2,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, IconButton, TextField } from "@mui/material";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
+import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -110,6 +111,10 @@ const Comment = ({
       body: formdata,
       success: (res: any) => {
         if (res) {
+          dispatch({
+            type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+            payload: res.data.data,
+          });
           setIsSubmit(false);
           setDescription("");
           closeModal();

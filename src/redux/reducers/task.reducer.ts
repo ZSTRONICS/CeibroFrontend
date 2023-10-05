@@ -72,7 +72,7 @@ const TaskReducer = (
             userSubState: 'unread',
           };
           const newAllTaskFromMe = [creatorTask, ...state.allTaskFromMe.unread];
-          console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
+          console.log("pus task from-me [unread]", newAllTaskFromMe[0]);
           return {
             ...state,
             allTaskFromMe: {
@@ -418,7 +418,7 @@ const TaskReducer = (
           }
           break;
         case "TASK_SEEN":
-          // to-me [new] to-me [ongoing]
+          // to-me [new]=> to-me [ongoing]
           if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
             // find task in new and move to ongoing and update task
             const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
@@ -433,7 +433,18 @@ const TaskReducer = (
             }
           }
 
-          // from-me [unread] from-me [ongoing]
+          if (
+            eventData.isCreator &&
+            eventData.oldTaskData.userSubState === "new" &&
+            eventData.oldTaskData.isAssignedToMe
+          ) {
+            // find task in to-me [ongoing]
+            const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              state.allTaskToMe.ongoing[taskIndex].seenBy = eventData.seenBy;
+            }
+          }
+          // from-me [unread] => from-me [ongoing]
           if (
             eventData.isCreator === true &&
             eventData.creatorStateChanged &&

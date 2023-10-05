@@ -1,8 +1,9 @@
 import { Chip, Grid } from "@mui/material";
-import assets from "assets/assets";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
+import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
+import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
@@ -69,6 +70,14 @@ const DetailActions: React.FC<IProps> = (props) => {
             taskId: taskId,
             hasFiles: false,
           },
+          success: (res: any) => {
+            if (res) {
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                payload: res.data.data,
+              });
+            }
+          },
         })
       );
     }
@@ -105,6 +114,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     forward: "Task Forward",
     done: "Task Done",
   };
+
   const justifyContent = {
     xs: "flex-start",
     md: "flex-end",
@@ -163,7 +173,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           flexWrap="nowrap"
         >
           <LoadingButton
-            startIcon={<img src={assets.CommentIcon} alt="Comment" />}
+            startIcon={<ReplyIcon />}
             onClick={() => handleClick("comment")}
             variant="text"
             sx={{
@@ -173,12 +183,12 @@ const DetailActions: React.FC<IProps> = (props) => {
               padding: "8px 16px",
             }}
           >
-            Comment
+            Reply
           </LoadingButton>
           {!["done", "canceled", "new"].includes(userSubState) && (
             <>
               <LoadingButton
-                startIcon={<img src={assets.ForwardIcon} alt="Forward" />}
+                startIcon={<ForwardIcon />}
                 onClick={() => handleClick("forward")}
                 variant="text"
                 disabled={false}

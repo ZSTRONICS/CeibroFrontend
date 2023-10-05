@@ -112,6 +112,8 @@ export const useSocket = () => {
         sock.on("reconnect", () => {
             console.log("Reconnected to server");
             socket.setSocket(sock);
+            setTimeout(sendHeartbeat, 10000);
+
         });
 
         sock.on("logout-web", async () => {
@@ -201,9 +203,9 @@ export const useSocket = () => {
                     });
                     break;
 
+                case TASK_CONFIG.TASK_DONE:
                 case TASK_CONFIG.CANCELED_TASK:
                 case TASK_CONFIG.UN_CANCEL_TASK:
-                case TASK_CONFIG.TASK_DONE:
                 case TASK_CONFIG.NEW_TASK_COMMENT:
                     dispatch({
                         type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
