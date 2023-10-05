@@ -81,39 +81,34 @@ export const useSocket = () => {
             }, query: {
                 secureUUID: String(secureUUID),
                 deviceType: "web",
-            },
+            }
         });
 
         sock.on("connect", () => {
-            if (socket.getSocket() !== null) {
+            if (sock.recovered) {
+                console.log("recovered");
+                socket.setSocket(sock);
+                setTimeout(sendHeartbeat, 10000);
                 return;
             }
+
             console.log("Connected to server");
             socket.setUserId(userId);
             socket.setSocket(sock);
             setTimeout(sendHeartbeat, 10000);
         });
 
-        sock.on("heartbeatAck", () => {
-            console.log("heartbeatAck");
+        sock.on("disconnect", () => {
+            console.log("Socket Disconnected from server");
+            if (sock.io.engine) {
+                console.log("Closing previous socket connection");
+                // close the low-level connection and trigger a reconnection
+                sock.io.engine.close();
+            }
         });
 
-        // sock.on("disconnect", () => {
-        //     console.log("Disconnected from server");
-        //     global.isSocketConnecting = false;
-        //     try {
-        //         sock.disconnect();
-        //     } catch (e) {
-        //         console.log("error in disconnecting socket", e);
-        //     }
-        //     socket.setSocket(null);
-        // });
-
-        sock.on("reconnect", () => {
-            console.log("Reconnected to server");
-            socket.setSocket(sock);
-            setTimeout(sendHeartbeat, 10000);
-
+        sock.on("heartbeatAck", () => {
+            console.log("heartbeatAck");
         });
 
         sock.on("logout-web", async () => {
@@ -163,7 +158,11 @@ export const useSocket = () => {
             }
         });
 
-        sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
+        sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
+            if (ack) {
+                console.log(`sending ack to server, ${ack}`);
+                ack();
+            }
             console.log("eventType--->", dataRcvd);
             const eventType = dataRcvd.eventType;
             const data = dataRcvd.data;

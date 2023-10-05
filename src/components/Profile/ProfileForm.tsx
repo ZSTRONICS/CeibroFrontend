@@ -97,14 +97,13 @@ const ProfileForm = () => {
 
   function checkOnUpdateData(e: any) {
     const hasChanges = Object.keys(formik.values).some((key: string) => {
-      const formikValue: any = formik.values[key];
-      const userValue = user[key];
+      const formikValue: any = e.target.value;
+      const userValue = user[e.target.name];
       if (key === "phoneNumber" || key === "dialCode") {
         return false;
       }
       return formikValue !== userValue;
     });
-
     if (hasChanges) {
       setOnUpdate(hasChanges);
     } else {
@@ -169,12 +168,15 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="firstName"
                     value={formik.values.firstName}
-                    onChange={formik.handleChange}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.firstName &&
                       Boolean(formik.errors.firstName)
                     }
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.firstName as string}
                   />
                 </Grid>
@@ -191,11 +193,14 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="surName"
                     value={formik.values.surName}
-                    onChange={formik.handleChange}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.surName && Boolean(formik.errors.surName)
                     }
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.surName as string}
                   />
                 </Grid>
@@ -212,9 +217,12 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="email"
                     value={formik.values.email}
-                    onChange={formik.handleChange}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={formik.touched.email && Boolean(formik.errors.email)}
-                    onBlur={checkOnUpdateData}
                     helperText={formik.errors.email as string}
                   />
                 </Grid>
@@ -230,8 +238,11 @@ const ProfileForm = () => {
                     variant="outlined"
                     name="companyName"
                     value={formik.values.companyName}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     error={
                       formik.touched.companyName &&
                       Boolean(formik.errors.companyName)
@@ -247,8 +258,11 @@ const ProfileForm = () => {
                     label="Job title"
                     placeholder={t("auth.register.job_title")}
                     inputValue={formik.values.jobTitle}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                   />
                 </Grid>
                 <Grid item xs={12} md={7} className={classes.rowWrapper}>
@@ -259,8 +273,11 @@ const ProfileForm = () => {
                       phoneNumber: formik.values.phoneNumber,
                       dialCode: formik.values.dialCode,
                     }}
-                    onChange={formik.handleChange}
-                    onBlur={checkOnUpdateData}
+                    onChange={(e)=>
+                      {
+                        formik.handleChange(e)
+                        checkOnUpdateData(e)
+                      }}
                     disabled={true}
                   />
                 </Grid>

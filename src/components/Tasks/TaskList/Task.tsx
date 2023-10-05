@@ -453,9 +453,9 @@ const Task = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 2.2, lg: 4 },
+              gap: { xs: 1, md: 2.2, lg: 3 },
               overflow: "auto",
-              padding: "8px 0px 4px 0px",
+              padding: "8px 8px 4px 8px",
             }}
           >
             {task && subtask && (
