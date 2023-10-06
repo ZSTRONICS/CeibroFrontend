@@ -88,12 +88,6 @@ function UserDropDown(props: IProps) {
     }
   }, [contacts]);
 
-  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-  //   console.log(event, "change events");
-  //   // setSelected(event.target.value);
-  //   // handleClose();
-  // };
-
   const handleClose = () => {
     let invitedNumbers: string[] = [];
     let updatedSelected: AssignedToStateType[] = [];
@@ -140,18 +134,6 @@ function UserDropDown(props: IProps) {
     );
     setFilteredRecentUserContact(recentFilteredData);
     setSearchQuery(searchValue);
-  };
-
-  const handleCreateClick = () => {
-    if (searchQuery.trim() === "") return; // Check for empty searchQuery before proceeding
-    const newItem = {
-      label: searchQuery,
-      value: searchQuery,
-    };
-    // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected([]);
-    createCallback && createCallback(label, searchQuery);
-    handleClose();
   };
 
   const handleCancelClick = () => {
@@ -246,7 +228,6 @@ function UserDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          // onChange={handleChange}
           endAdornment={
             selected.length > 0 && (
               <IconButton

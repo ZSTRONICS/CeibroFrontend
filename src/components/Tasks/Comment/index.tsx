@@ -215,6 +215,7 @@ const Comment = ({
         />
       </Box>
       <Footer
+        isSubmitted={isSubmit}
         disabled={
           isSubmit ||
           (title === "Task Done"

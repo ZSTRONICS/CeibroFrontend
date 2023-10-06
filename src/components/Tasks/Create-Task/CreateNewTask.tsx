@@ -93,7 +93,6 @@ function CreateNewTask() {
       isRenderEffect.current = true;
     };
   }, []);
-
   useEffect(() => {
     if (Topics && !isEmpty(Topics)) {
       // const topics = [...Topics.allTopics, ...Topics.recentTopics];
@@ -204,7 +203,7 @@ function CreateNewTask() {
       taskActions.createTask({
         body: payload,
         success: (res: any) => {
-          setIsSubmit(false);
+          // setIsSubmit(false);
           if (selectedImages.length > 0 || selectedDocuments.length > 0) {
             const moduleId = res.data.newTask._id;
             handleFileUpload(filesToUpload, "Task", moduleId);
@@ -498,6 +497,7 @@ function CreateNewTask() {
         )}
       </Box>
       <Footer
+        isSubmitted={isSubmit}
         disabled={handleDisableSubmit()}
         showHeader={false}
         handleSubmitForm={handleCreateTask}

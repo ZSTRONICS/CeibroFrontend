@@ -1,10 +1,4 @@
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
 import { TASK_CONFIG } from "config";
@@ -13,7 +7,7 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
@@ -45,9 +39,10 @@ const ForwardTask = ({
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
-const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState<Contact[]>(recentUserContact);
-  const [isSelfAssign, setIsSelfAssign] = useState(false);
-  const [selected, setSelected] = useState<any[]>([]);
+  const [filteredRecentUserContact, setFilteredRecentUserContact] =
+    React.useState<Contact[]>(recentUserContact);
+  // const [isSelfAssign, setIsSelfAssign] = useState(false);
+
   const [allContactsList, setAllContactsList] =
     useState<ContactsState>(initialState);
   const [sortedContacts, setSortedContacts] =
@@ -78,8 +73,10 @@ const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState
       return shouldInclude;
     }
   );
+
+  const [selected, setSelected] = useState<any[]>(selectedUsers);
+
   useEffect(() => {
-    setSelected(selectedUsers);
     if (userAllContacts && userAllContacts.length > 0) {
       const sorted = userAllContacts.sort((a: any, b: any) => {
         const nameA = a.contactFirstName.toLowerCase();
@@ -111,44 +108,37 @@ const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState
         ...localGroupContacts,
       });
 
-      setIsSelfAssign(
-        assignedToState.some((contact: any) => contact.userId === user._id)
-      );
+      // setIsSelfAssign(
+      //   assignedToState.some((contact: any) => contact.userId === user._id)
+      // );
     }
-    setFilteredRecentUserContact(recentUserContact)
+    setFilteredRecentUserContact(recentUserContact);
   }, [userAllContacts, recentUserContact]);
 
-  const handleSelectedList = (contact: Contact, checked: boolean) => {
-    if (checked) {
-      let updatedSelected = [...selected, contact];
-      setSelected(updatedSelected);
-    } else {
-      let allSelected = [...selected];
-      if (contact._id === user._id) {
-        setIsSelfAssign(checked);
-      }
-      setSelected(allSelected.filter((item: any) => item._id !== contact._id));
-    }
-  };
-
-  const handleSelfAssignChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => {
-    user["isCeiborUser"] = true;
-    handleSelectedList(user, checked);
-    setIsSelfAssign(checked);
-  };
+  const handleSelectedList = useMemo(() => {
+    return (contact: any, checked: any) => {
+      setSelected((prevSelected) => {
+        if (checked) {
+          return [...prevSelected, contact];
+        } else {
+          return prevSelected.filter((item) => item._id !== contact._id);
+        }
+      });
+    };
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     const searchValue = event.target.value;
     setAllContactsList(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
-    const recentFilteredData = recentUserContact.filter((Option:Contact) =>
-      Option["contactFullName"].toLowerCase().includes(searchValue.toLowerCase())
-    )
-    setFilteredRecentUserContact(recentFilteredData)
+    const recentFilteredData = recentUserContact.filter((Option: Contact) =>
+      Option["contactFullName"]
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
+    setFilteredRecentUserContact(recentFilteredData);
   };
 
   const handleSubmit = () => {
@@ -289,51 +279,6 @@ const [filteredRecentUserContact, setFilteredRecentUserContact] = React.useState
             </Typography>
           )}
         </Box>
-      </Box>
-
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          margin: "4px 20px 0px",
-        }}
-      >
-        <FormControlLabel
-          disabled={assignedToState.some(
-            (contact: any) => contact.userId === user._id
-          )}
-          control={
-            <Checkbox
-              name="self-assign"
-              checked={isSelfAssign}
-              onChange={handleSelfAssignChange}
-              size="small"
-              color="primary"
-              sx={{
-                ml: 1,
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                lineHeight: "16px",
-              }}
-            />
-          }
-          label={
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#605C5C",
-                lineHeight: "16px",
-              }}
-            >
-              Self assign
-            </Typography>
-          }
-        />
       </Box>
       <Box
         sx={{

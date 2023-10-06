@@ -160,7 +160,7 @@ export const useSocket = () => {
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
             if (ack) {
-                console.log(`sending ack to server, ${ack}`);
+                console.log(`sending ack to server`)
                 ack();
             }
             console.log("eventType--->", dataRcvd);

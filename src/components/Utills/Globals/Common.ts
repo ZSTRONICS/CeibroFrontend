@@ -162,13 +162,13 @@ export function pushSeenBy(task: any, eventData: any) {
  * **/
 export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    console.log('existingEvents', task.events)
+    // console.log('existingEvents', task.events)
     const isUniqueEvent = task.events.some((event: any) => String(event._id) === String(eventData._id));
     if (!isUniqueEvent) {
       task.events.push(eventData);
       task.seenBy = eventData.taskData.seenBy;
     } else {
-      console.log("Event already exists ", eventData, task, taskIndex)
+      // console.log("Event already exists ", eventData, task, taskIndex)
     }
   }
 }

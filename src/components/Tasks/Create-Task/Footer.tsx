@@ -19,6 +19,7 @@ interface FooterPropsType {
   handleGetLocationValue?: () => void;
   showHeader: boolean | undefined;
   disabled: boolean;
+  isSubmitted: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
@@ -121,6 +122,7 @@ const Footer = (props: FooterPropsType) => {
           label={"Document"}
           icon={<InsertDriveFileOutlinedIcon />}
           variant="outlined"
+          disabled={props.isSubmitted || false}
           onClick={handleSelectDocument}
         />
       )}
@@ -135,6 +137,7 @@ const Footer = (props: FooterPropsType) => {
           label={"Attach"}
           icon={<AttachFileOutlinedIcon />}
           variant="outlined"
+          disabled={props.isSubmitted || false}
           onClick={handleAttachImage}
         />
       )}
@@ -148,7 +151,8 @@ const Footer = (props: FooterPropsType) => {
         onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
         variant="contained"
-        disabled={props.disabled}
+        loading={props.isSubmitted}
+        disabled={props.disabled || props.isSubmitted}
       />
     </Box>
   );

@@ -1,3 +1,4 @@
+import { CircularProgress } from "@mui/material";
 import Button, { ButtonProps } from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ReactNode } from "react";
@@ -5,15 +6,16 @@ import { ReactNode } from "react";
 interface CustomButtonProps extends ButtonProps {
   label?: string;
   icon?: ReactNode;
+  loading?: boolean;
 }
 
-const CustomButton = ({ label, icon, ...rest }: CustomButtonProps) => {
+const CustomButton = ({ label, loading, icon, ...rest }: CustomButtonProps) => {
   return (
     <Button
       sx={{
         display: "flex",
         flexDirection: "column",
-        alignItems: "center", // Center the icon horizontally
+        alignItems: "center",
         p: "0px",
         textTransform: "capitalize",
         border: "none",
@@ -25,7 +27,10 @@ const CustomButton = ({ label, icon, ...rest }: CustomButtonProps) => {
       startIcon={icon ? icon : null}
       {...rest}
     >
-      {label && (
+      {" "}
+      {loading ? (
+        <CircularProgress size={20} />
+      ) : (
         <Typography
           sx={{
             fontFamily: "Inter",
