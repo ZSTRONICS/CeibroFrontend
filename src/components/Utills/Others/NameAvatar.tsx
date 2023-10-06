@@ -29,7 +29,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     <>
       <Box>
         {url ? (
-          <Avatar id="pic-avatar" src={url} {...avatarProps} />
+          <Avatar id="pic-avatar" srcSet={url} {...avatarProps} />
         ) : (
           <AvatarStyle
             id="name-avatar"

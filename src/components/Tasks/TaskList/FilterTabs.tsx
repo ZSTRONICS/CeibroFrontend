@@ -18,7 +18,6 @@ function FilterTabs(props: FilterTabProps) {
   const userId = user && String(user._id);
   const task: any = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
-
   const renderTabs = filterKeys.map((key: string) => {
     let label = "";
     let tasks: Task[] = [];
@@ -43,7 +42,9 @@ function FilterTabs(props: FilterTabProps) {
         tasks =
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.ongoing
-            : allTaskToMe.ongoing;
+            : subTaskKey === "allTaskToMe"
+            ? allTaskToMe.ongoing
+            : allTaskHidden.ongoing;
         bgColor = "#F1B740";
         isDisabled = false;
         break;
@@ -52,7 +53,9 @@ function FilterTabs(props: FilterTabProps) {
         tasks =
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.done
-            : allTaskToMe.done;
+            : subTaskKey === "allTaskToMe"
+            ? allTaskToMe.done
+            : allTaskHidden.done;
         bgColor = "#55BCB3";
         isDisabled = false;
         break;

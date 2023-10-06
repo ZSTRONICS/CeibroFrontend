@@ -16,13 +16,7 @@ export default function ContactBox({
   selected,
   isDisabled,
 }: IProps) {
-  const {
-    _id,
-    contactFirstName,
-    contactFullName,
-    contactSurName,
-    userCeibroData,
-  } = contact;
+  const { _id, contactFirstName, contactSurName, userCeibroData } = contact;
 
   const handleCheckBox = (checked: boolean) => {
     handleSelectedList(contact, checked);
