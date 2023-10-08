@@ -23,7 +23,7 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface IProps {
   events: TaskEvent[];
@@ -32,6 +32,7 @@ interface IProps {
 function AddedDetails(props: IProps) {
   const { events, hasFile } = props;
   const listRef: any = useRef(null);
+  const [heightOffset, setHeightOffset] = useState();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
@@ -43,10 +44,14 @@ function AddedDetails(props: IProps) {
 
   useEffect(() => {
     if (listRef.current) {
+      const newTop = listRef.current.getBoundingClientRect().top;
+      const newHeightOffset = hasFile ? newTop + 16 : newTop;
+      if (newHeightOffset !== heightOffset) {
+        setHeightOffset(newHeightOffset);
+      }
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
-  }, [events.length]);
-  const contentHeight = hasFile ? "510px" : "425px";
+  }, [events.length, listRef]);
   return (
     <>
       <div>
@@ -62,7 +67,7 @@ function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: `calc(95vh - ${contentHeight})`,
+              maxHeight: `calc(95vh - ${heightOffset}px)`,
               overflow: "auto",
               pb: 5,
             }}
