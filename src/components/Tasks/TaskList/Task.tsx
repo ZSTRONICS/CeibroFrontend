@@ -31,6 +31,7 @@ const Task = () => {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
@@ -144,9 +145,11 @@ const Task = () => {
           path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
         }
         history.push(path);
+      }else if(filteredTask.length === 0 && taskuid ){
+        history.push(path);
       }
     }
-  }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
+  }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
     if (subtask) {
@@ -158,6 +161,7 @@ const Task = () => {
   }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask]);
 
   useEffect(() => {
+    setSearchText('')
     if (selectedTab) {
       !taskuid && setSelectedTask(null);
       setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
@@ -309,6 +313,7 @@ const Task = () => {
       searchTxt,
       "taskUID"
     );
+    setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
@@ -334,6 +339,11 @@ const Task = () => {
               other: { taskId: selectedTask._id },
             })
           );
+          setFilteredTask(
+            filteredTask.filter((item: any) => {
+              item.taskUID !== selectedTask._id;
+            })
+          );
         }
       },
     },
@@ -344,6 +354,11 @@ const Task = () => {
           dispatch(
             taskActions.taskShow({
               other: { taskId: selectedTask._id },
+            })
+          );
+          setFilteredTask(
+            filteredTask.filter((item: any) => {
+              item.taskUID !== selectedTask._id;
             })
           );
         }
@@ -358,6 +373,11 @@ const Task = () => {
               other: { taskId: selectedTask._id },
             })
           );
+          setFilteredTask(
+            filteredTask.filter((item: any) => {
+              item.taskUID !== selectedTask._id;
+            })
+          );
         }
       },
     },
@@ -368,6 +388,11 @@ const Task = () => {
           dispatch(
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
+            })
+          );
+          setFilteredTask(
+            filteredTask.filter((item: any) => {
+              item.taskUID !== selectedTask._id;
             })
           );
         }
