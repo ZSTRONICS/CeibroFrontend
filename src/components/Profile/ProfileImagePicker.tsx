@@ -1,5 +1,4 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import assets from "assets/assets";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -19,7 +18,6 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
 
   const [showLoader, setShowLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
-  const classes = useStyles();
 
   // useEffect(() => {
   //   if (profilePic) {
@@ -69,7 +67,7 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
         ref={ref}
         id="files"
         accept="image/*"
-        className={classes.inputFile}
+        style={{ visibility: "hidden" }}
         type="file"
         onChange={handleFileChange}
       />
@@ -96,28 +94,22 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
             <CircularProgress size={40} />
           </Box>
         )}
-        <img
-          src={assets.whitePencil}
-          className={`width-16 ${classes.icon} imgPicker`}
-          alt="edit"
-        />
+        <svg
+          style={{ position: "absolute", right: 0, bottom: 0, padding: 2 }}
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M5 19H6.4L15.025 10.375L13.625 8.975L5 17.6V19ZM19.3 8.925L15.05 4.725L16.45 3.325C16.8333 2.94167 17.3042 2.75 17.8625 2.75C18.4208 2.75 18.8917 2.94167 19.275 3.325L20.675 4.725C21.0583 5.10833 21.2583 5.57083 21.275 6.1125C21.2917 6.65417 21.1083 7.11667 20.725 7.5L19.3 8.925ZM17.85 10.4L7.25 21H3V16.75L13.6 6.15L17.85 10.4Z"
+            fill="#0076C8"
+          />
+        </svg>
       </div>
     </Grid>
   );
 };
 
 export default ProfileImagePicker;
-
-const useStyles = makeStyles({
-  icon: {
-    position: "absolute",
-    right: 0,
-    bottom: 0,
-    color: colors.white,
-    background: `${colors.primary} !important`,
-    padding: 2,
-  },
-  inputFile: {
-    visibility: "hidden",
-  },
-});

@@ -26,7 +26,6 @@ import sidebarFolderIcon from "./images/sidebarFolder.png";
 import sidebarPaseIcon from "./images/testclipboard.png";
 import unreadMessage from "./images/unreadMessage.png";
 import usersIcon from "./images/usersIcon.png";
-import whitePencil from "./images/whitePencil.png";
 
 import Add from "./images/Add.png";
 import CeibroWaterMark from "./images/CeibroWaterMark.png";
@@ -151,7 +150,6 @@ const assets = {
   blackPencil,
   notification,
   unreadMessage,
-  whitePencil,
   emoji,
   pencilFilled,
   Add,
