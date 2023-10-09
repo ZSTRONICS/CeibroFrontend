@@ -60,6 +60,7 @@ const Task = () => {
   } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
+  const [subTaskFilter, setSubTaskFilter] = useState<selectedTaskFilterType>("allTaskFromMe");
   const subTaskKey = subtask ?? "allTaskFromMe";
   const isallTakLoading =
     loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
@@ -152,6 +153,10 @@ const Task = () => {
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
+    if(subTaskFilter!==subtask){
+      setSearchText('')
+      setSubTaskFilter(subtask)
+    }
     if (subtask) {
       !taskuid && setSelectedTask(null);
       setFilteredTask(
@@ -503,6 +508,7 @@ const Task = () => {
             }}
           >
             <InputBase
+            value={searchText}
               placeholder="Start typing to search"
               sx={{ height: "48px" }}
               onChange={handleSearch}
