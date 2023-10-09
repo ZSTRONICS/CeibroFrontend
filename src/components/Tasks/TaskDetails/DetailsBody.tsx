@@ -42,8 +42,6 @@ export default function DetailsBody(props: IProps) {
             media.map((file: IFile) => {
               const hasComment = file.comment.length === 0;
               return (
-                // <React.Fragment key={file._id}>
-                //   {hasComment && (
                 <Box
                   key={file._id}
                   sx={{
@@ -61,33 +59,9 @@ export default function DetailsBody(props: IProps) {
                     />
                   )}
                 </Box>
-                //   )}
-                // </React.Fragment>
               );
             })}
         </Box>
-        {/* {media.length > 0 &&
-          media.map((file: IFile) => {
-            const hasComment = file.comment.length > 0;
-            return (
-              <React.Fragment key={file._id}>
-                {hasComment && (
-                  <Box
-                    sx={{
-                      marginBottom: "16px",
-                      "&:hover": { cursor: "pointer" },
-                    }}
-                    onClick={() => handleClick(file)}
-                  >
-                    <ImageBoxWithDesp
-                      src={file.fileUrl}
-                      comment={file.comment}
-                    />
-                  </Box>
-                )}
-              </React.Fragment>
-            );
-          })} */}
         <DrawingFiles />
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       </Box>
