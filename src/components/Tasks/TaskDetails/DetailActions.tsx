@@ -59,7 +59,6 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleDoneClick = () => {
-    history.push(`/tasks/${subtask}/${filterkey}`);
     if (doneImageRequired === true || doneCommentsRequired === true) {
       handleClick("done");
     } else {
@@ -71,6 +70,7 @@ const DetailActions: React.FC<IProps> = (props) => {
             hasFiles: false,
           },
           success: (res: any) => {
+            history.push(`/tasks/${subtask}/${filterkey}`);
             if (res) {
               dispatch({
                 type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,

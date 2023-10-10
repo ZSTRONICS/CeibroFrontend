@@ -149,20 +149,26 @@ const Task = () => {
   }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
 
   useEffect(() => {
-    if (subtask) {
+    if (subtask || selectedTab) {
       !taskuid && setSelectedTask(null);
-      setFilteredTask(
-        searchInData(task[subtask][getFilterKey()], "", "taskUID")
-      );
-    }
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask]);
 
-  useEffect(() => {
-    if (selectedTab) {
-      !taskuid && setSelectedTask(null);
-      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
+      let dataToSearch;
+      if (subtask) {
+        dataToSearch = task[subtask][getFilterKey()];
+      } else if (selectedTab) {
+        dataToSearch = task[subtask][selectedTab];
+      }
+
+      setFilteredTask(searchInData(dataToSearch, "", "taskUID"));
     }
-  }, [selectedTab]);
+  }, [
+    allTaskFromMe,
+    allTaskToMe,
+    allTaskHidden,
+    subtask,
+    selectedTab,
+    taskuid,
+  ]);
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
@@ -467,7 +473,6 @@ const Task = () => {
               />
             )}
           </Box>
-          {/* {filteredTask.length !== 0 && ( */}
           <Box
             sx={{
               width: "100%",
@@ -479,11 +484,10 @@ const Task = () => {
           >
             <InputBase
               placeholder="Start typing to search"
-              sx={{ height: "48px" }}
+              sx={{ height: "48px", width: "100%" }}
               onChange={handleSearch}
             />
           </Box>
-          {/* )} */}
         </Box>
         <Box sx={{ pl: 0.7, pr: 0.5 }}>
           {isallTakLoading ? (

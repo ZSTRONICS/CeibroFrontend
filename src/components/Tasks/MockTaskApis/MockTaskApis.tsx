@@ -183,6 +183,37 @@ const MockTaskApis = () => {
           })
         );
       }
+      if (selectedApi.value === "createTaskWithFiles") {
+        const formdata = new FormData();
+        formdata.append("dueDate", "28-10-2023");
+        formdata.append("topic", "64f736813bc4a418e498d2c1");
+        formdata.append("project", "");
+        formdata.append("creator", "64f735383bc4a418e498d0ae");
+        formdata.append(
+          "assignedToState",
+          JSON.stringify(
+            JSON.stringify([
+              {
+                phoneNumber: "+923120619435",
+                userId: "64f7144039b14025ab86ca4d",
+                state: "new",
+              },
+            ])
+          )
+        );
+        formdata.append("description", "");
+        formdata.append("doneImageRequired", "false");
+        formdata.append("doneCommentsRequired", "false");
+        formdata.append("invitedNumbers", JSON.stringify(JSON.stringify([])));
+        dispatch(
+          taskActions.createTask({
+            other: {
+              hasFiles: false,
+            },
+            body: formdata,
+          })
+        );
+      }
 
       if (selectedApi.value === "tasksWithComment+files") {
         const formdata = new FormData();
@@ -228,6 +259,7 @@ const MockTaskApis = () => {
 const mockTaskApis = [
   { title: "createTopic: /task/topic", id: "createTopic" },
   { title: "createTask: /task", id: "createTask" },
+  { title: "createTaskWithFiles: /task/files", id: "createTaskWithFiles" },
   { title: "forwardTask: /task/forward/:taskId", id: "forwardTask" },
   { title: "getAllTopic: /task/topic", id: "getAllTopic" },
   { title: "getAllTaskToMe: /task/to-me", id: "getAllTaskToMe" },
