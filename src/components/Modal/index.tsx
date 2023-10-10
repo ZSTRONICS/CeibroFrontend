@@ -31,7 +31,8 @@ const CustomModal: React.FC<Props> = ({
   showDivider,
   showFullWidth,
 }) => {
-  const closeModal = (e: any) => {
+  const closeModal = (e: any, reason?: any) => {
+    if (reason === "backdropClick") return true;
     if (!e.target.closest(".MuiDrawer-root")) {
       e.stopPropagation();
     }
