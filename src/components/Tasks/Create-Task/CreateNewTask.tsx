@@ -310,9 +310,9 @@ function CreateNewTask() {
         },
         body: formData,
         success: (res: any) => {
-          setIsSubmit(false);
-          if (windowClose) {
-            if (filesToUpload.length === 0) {
+          if (res) {
+            setIsSubmit(false);
+            if (windowClose) {
               window.close();
             }
           }
