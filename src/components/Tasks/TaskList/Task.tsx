@@ -344,12 +344,24 @@ const Task = () => {
           dispatch(
             taskActions.taskHide({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                if (res) {
+                  dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: {
+                      ...res.data,
+                      userId,
+                      eventType: TASK_CONFIG.TASK_HIDDEN,
+                    },
+                  });
+                }
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
-          );
-          setFilteredTask(
-            filteredTask.filter(
-              (item: any) => item.taskUID !== selectedTask._id
-            )
           );
         }
       },
@@ -361,12 +373,24 @@ const Task = () => {
           dispatch(
             taskActions.taskShow({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                if (res) {
+                  dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: {
+                      ...res.data,
+                      userId,
+                      eventType: TASK_CONFIG.TASK_SHOWN,
+                    },
+                  });
+                }
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
-          );
-          setFilteredTask(
-            filteredTask.filter(
-              (item: any) => item.taskUID !== selectedTask._id
-            )
           );
         }
       },
@@ -378,12 +402,18 @@ const Task = () => {
           dispatch(
             taskActions.taskCaneled({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                dispatch({
+                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                  payload: res.data.data,
+                });
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
-          );
-          setFilteredTask(
-            filteredTask.filter(
-              (item: any) => item.taskUID !== selectedTask._id
-            )
           );
         }
       },
@@ -395,12 +425,18 @@ const Task = () => {
           dispatch(
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                dispatch({
+                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                  payload: res.data.data,
+                });
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
-          );
-          setFilteredTask(
-            filteredTask.filter(
-              (item: any) => item.taskUID !== selectedTask._id
-            )
           );
         }
       },

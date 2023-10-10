@@ -197,7 +197,6 @@ const ForwardTask = ({
         },
         onFailAction: () => {
           closeModal();
-          // todo show toast error
         },
       })
     );
