@@ -6,7 +6,8 @@ const createTask = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.CREATE_TASK,
   method: "post",
-  path: "/task",
+  isFormData: true,
+  path: (payload) => `/task/files?hasFiles=${payload.other.hasFiles}`
 })
 
 const createTopic = apiCall({

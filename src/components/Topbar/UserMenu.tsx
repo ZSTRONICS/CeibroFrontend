@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // material
 import {
@@ -27,19 +27,28 @@ import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import storage from "redux-persist/lib/storage";
+import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
 
 const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const isRenderEffect = useRef<any>(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections } = useSelector((state: RootState) => state?.user);
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    if (!isRenderEffect.current) {
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -55,7 +64,7 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     socket.getSocket()?.emit("logout-window");
-    handleCloseUserMenu();
+    setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
@@ -81,19 +90,19 @@ const UserMenu = () => {
               variant="rounded"
             />
             <Stack
-              direction="column"
               justifyContent="flex-end"
               sx={{
+                flexDirection: "column !important",
                 "@media (max-width:460px)": {
                   display: "none",
                 },
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.firstName}
+                {user?.firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.surName}{" "}
+                {user?.surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
@@ -112,6 +121,9 @@ const UserMenu = () => {
             transformOrigin={{
               vertical: "top",
               horizontal: "right",
+            }}
+            MenuListProps={{
+              role: "listbox",
             }}
             open={Boolean(anchorElUser)}
             onClose={handleCloseUserMenu}
@@ -137,38 +149,24 @@ const UserMenu = () => {
               onClick={() => handleUserMenu("/connections")}
               sx={{
                 "&.MuiMenuItem-root": {
-                  padding: "10px 20px",
+                  padding: "12px 20px",
                   gap: "15px",
                 },
               }}
             >
-              <Stack
-                direction="row"
-                spacing={2}
+              <ConnectionIcon />
+              <Typography textAlign="center"> My Connections</Typography>
+
+              <Badge
                 sx={{
-                  paddingRight: "16px",
+                  color: "#F1B740",
+                  padding: "0px  14px",
                 }}
-              >
-                <Box display="flex" alignItems="center">
-                  <ConnectionIcon />
-                </Box>
-                <Typography textAlign="center"> My Connections</Typography>
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  sx={{ padding: " 0 10px 0" }}
-                >
-                  <Badge
-                    sx={{
-                      color: "#F1B740",
-                    }}
-                    showZero={true}
-                    color="primary"
-                    badgeContent={connections.count}
-                    overlap="circular"
-                  />
-                </Box>
-              </Stack>
+                showZero={true}
+                color="primary"
+                badgeContent={userAllContacts.length}
+                overlap="circular"
+              />
             </MenuItem>
 
             <MenuItem

@@ -7,6 +7,7 @@ import {
   AddStatusTag,
   CustomStack,
   DocName,
+  ImageStack,
   Span,
   SubHeadingTag,
 } from "components/CustomTags";
@@ -22,15 +23,16 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface IProps {
   events: TaskEvent[];
   hasFile: boolean;
 }
-export default function AddedDetails(props: IProps) {
+function AddedDetails(props: IProps) {
   const { events, hasFile } = props;
   const listRef: any = useRef(null);
+  const [heightOffset, setHeightOffset] = useState();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
@@ -42,10 +44,14 @@ export default function AddedDetails(props: IProps) {
 
   useEffect(() => {
     if (listRef.current) {
+      const newTop = listRef.current.getBoundingClientRect().top;
+      const newHeightOffset = hasFile ? newTop + 16 : newTop;
+      if (newHeightOffset !== heightOffset) {
+        setHeightOffset(newHeightOffset);
+      }
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
-  }, [events.length]);
-  const contentHeight = hasFile ? "409px" : "570px";
+  }, [events.length, listRef]);
   return (
     <>
       <div>
@@ -61,9 +67,9 @@ export default function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              height: `calc(95vh - ${contentHeight})`,
+              maxHeight: `calc(100vh - ${heightOffset}px)`,
               overflow: "auto",
-              pb: 1,
+              pb: 5,
             }}
           >
             {events.length > 0 ? (
@@ -239,7 +245,7 @@ export default function AddedDetails(props: IProps) {
                             <Divider />
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {mediaLocal.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -256,7 +262,7 @@ export default function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {mediaLocal.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
@@ -293,7 +299,7 @@ export default function AddedDetails(props: IProps) {
                     return (
                       <React.Fragment key={event._id + "Comment"}>
                         <CustomStack gap={1.2} py={0.8}>
-                          <Span sx={{ fontSize: "12px" }}>Comment by</Span>
+                          {/* <Span sx={{ fontSize: "12px" }}>Comment by</Span> */}
                           <DocName>{`${initiator.firstName} ${
                             initiator.surName
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
@@ -307,7 +313,7 @@ export default function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
-                        <CustomStack py={0.7}>
+                        <ImageStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
                               key={file._id + i}
@@ -324,7 +330,7 @@ export default function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {media.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
@@ -374,3 +380,5 @@ export default function AddedDetails(props: IProps) {
     </>
   );
 }
+
+export default AddedDetails;

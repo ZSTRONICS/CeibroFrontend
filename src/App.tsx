@@ -81,9 +81,6 @@ const App = () => {
       </ErrorBoundary>
       {/* component used here for availability of modal on all routes*/}
       {/* <TaskModal /> 
-        <div style={{ opacity: 0, visibility: "hidden", width: 0, height: 0 }}>
-          <ViewInvitations />
-        </div> 
         <UploadingDocsPreview />*/}
       {/* {openProjectdrawer && <CreateProjectDrawer />} */}
     </div>

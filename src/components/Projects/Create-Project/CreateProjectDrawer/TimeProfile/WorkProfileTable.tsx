@@ -106,9 +106,9 @@ export default function BasicTable() {
                   <TableCell>
                     <div className={classes.extrasWrapper}>
                       {row?.time && <img src={assets.clockIcon} alt="" />}
-                      {row?.photo && (
+                      {/* {row?.photo && (
                         <img src={assets.wrongImage} className="w-16" alt="" />
-                      )}
+                      )} */}
                       {row?.comment && (
                         <img
                           src={assets.sidebarChatIcon}

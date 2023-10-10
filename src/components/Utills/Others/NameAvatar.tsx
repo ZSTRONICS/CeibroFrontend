@@ -1,5 +1,5 @@
 import { Avatar, Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import React from "react";
 interface NameAvatarProps {
   firstname: string;
@@ -29,7 +29,7 @@ const NameAvatar: React.FC<NameAvatarProps> = (props) => {
     <>
       <Box>
         {url ? (
-          <Avatar id="pic-avatar" src={url} {...avatarProps} />
+          <Avatar id="pic-avatar" srcSet={url} {...avatarProps} />
         ) : (
           <AvatarStyle
             id="name-avatar"

@@ -66,8 +66,14 @@ const StyledChip = ({
             "& .MuiBadge-badge": {
               color: "#000 !important",
               backgroundColor: bgColor,
-              right: "-24px",
-              top: "1px",
+              right: "-20px",
+              top: "2px",
+              border: ".8px solid white",
+            },
+            "@media (max-width: 700px)": {
+              "& .MuiBadge-badge": {
+                right: "-8px ",
+              },
             },
           }}
           badgeContent={notifyCount}

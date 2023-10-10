@@ -1,3 +1,5 @@
+import ForwardIcon from "./TaskIcons/ForwardIcon";
+import ReplyIcon from "./TaskIcons/ReplyIcon";
 export * from "./ConfigIcons";
 export { AttachmentIcon } from "./attachment/Attachment";
 export { ViewCommentsIco } from "./attachment/ViewCommentsIco";
@@ -12,8 +14,8 @@ export { MediaIcon } from "./media/Media";
 export { MemberIcon } from "./member/Member";
 export { MesageIcon } from "./mesage/Mesage";
 export { NotificationIcon } from "./notification/Notification";
-export { PinIcon } from "./pin/Pin";
 export { ProfileIcon } from "./profile/Profile";
 export { QuestionnairIcon } from "./questionnair/Questionnair";
 export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
+export { ForwardIcon, ReplyIcon };

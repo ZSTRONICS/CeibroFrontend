@@ -7,8 +7,6 @@ import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
 import TermsAndConditions from "./Auth/Register/TermsAndConditions";
 import ResetPassword from "./Auth/ResetPassword/ResetPassword";
 
-import ViewInvitations from "./Profile/ViewInvitations";
-
 // task
 // import Projects from "./Projects/ProjectList/Project";
 import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
@@ -46,6 +44,6 @@ const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProj
 
 export {
   AdminMain, CDrawer, Connections, CreateNewTask, CreateProjectDrawer, DrawingDetails, ForgetConfirmation, ForgetPassword, ForwardTask, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
-  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Task, TermsAndConditions, ViewInvitations
+  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Task, TermsAndConditions
 };
 

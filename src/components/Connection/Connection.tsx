@@ -17,7 +17,7 @@ const Connections = () => {
   const isRenderEffect = useRef<any>(false);
   const containerRef = useRef<any>(null);
 
-  const { userAllContacts, loadingContacts, recentUserContact } = useSelector(
+  const { userAllContacts, loadingContacts } = useSelector(
     (state: RootState) => state.user
   );
   const isTabOrMobile = useResponsive("down", "sm", "");
@@ -29,8 +29,6 @@ const Connections = () => {
   useEffect(() => {
     if (!isRenderEffect.current) {
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-      recentUserContact.length < 1 &&
-        dispatch(userApiAction.getRecentContacts());
     }
     return () => {
       isRenderEffect.current = true;

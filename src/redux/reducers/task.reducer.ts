@@ -72,7 +72,7 @@ const TaskReducer = (
             userSubState: 'unread',
           };
           const newAllTaskFromMe = [creatorTask, ...state.allTaskFromMe.unread];
-          console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
+          console.log("pus task from-me [unread]", newAllTaskFromMe[0]);
           return {
             ...state,
             allTaskFromMe: {
@@ -183,7 +183,7 @@ const TaskReducer = (
             }
           }
           break;
-        case TASK_CONFIG.UN_CANCEL_TASK:
+        case "unCancelTask":
           const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
           if (taskIndex > -1) {
             addEventToTask(state.allTaskHidden.canceled[taskIndex], eventData, taskIndex);
@@ -196,7 +196,6 @@ const TaskReducer = (
             };
             if (eventData.oldTaskData.isCreator) {
               state.allTaskFromMe.unread.unshift(modifiedTask);
-              // console.log('UN_CANCEL_TASK allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
             }
             if (isAssignedToMe) {
               const modifiedTask = {
@@ -419,7 +418,7 @@ const TaskReducer = (
           }
           break;
         case "TASK_SEEN":
-          // to-me [new] to-me [ongoing]
+          // to-me [new]=> to-me [ongoing]
           if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
             // find task in new and move to ongoing and update task
             const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
@@ -434,7 +433,18 @@ const TaskReducer = (
             }
           }
 
-          // from-me [unread] from-me [ongoing]
+          if (
+            eventData.isCreator &&
+            eventData.oldTaskData.userSubState === "new" &&
+            eventData.oldTaskData.isAssignedToMe
+          ) {
+            // find task in to-me [ongoing]
+            const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              state.allTaskToMe.ongoing[taskIndex].seenBy = eventData.seenBy;
+            }
+          }
+          // from-me [unread] => from-me [ongoing]
           if (
             eventData.isCreator === true &&
             eventData.creatorStateChanged &&
@@ -465,6 +475,15 @@ const TaskReducer = (
               console.log("task seen allTaskFromMe.unread", state.allTaskFromMe.unread[taskIndex].seenBy);
             }
           }
+          // update  task from-me [ongoing] 
+          if (isCreator && isOngoing) {
+            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
+              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
+            }
+          }
+
           // update  task to-me [ongoing]
           if (isAssignedToMe && isOngoing) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
@@ -474,14 +493,7 @@ const TaskReducer = (
               console.log("updated state.allTaskToMe.ongoing seenBy ", state.allTaskToMe.ongoing[taskIndex]._id);
             }
           }
-          // update  task from-me [ongoing] 
-          if (isCreator && isOngoing) {
-            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
-            if (taskIndex > -1) {
-              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
-              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
-            }
-          }
+
           // update  task to-me [done] 
           if (isAssignedToMe &&
             eventData.oldTaskData.userSubState === "done"
@@ -604,7 +616,7 @@ const TaskReducer = (
           done: toMe.done,
         },
         allTaskFromMe: {
-          unread: fromMe.new,
+          unread: fromMe.unread,
           ongoing: fromMe.ongoing,
           done: fromMe.done,
         },

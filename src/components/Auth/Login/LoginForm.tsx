@@ -30,6 +30,7 @@ import Loading from "components/Utills/Loader/Loading";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
+import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
@@ -90,7 +91,9 @@ const LoginForm: React.FC<Props> = (props) => {
           purgeStoreStates();
         }
       },
-
+      success: (res: any) => {
+        dispatch(userApiAction.getUserContacts());
+      },
       showErrorToast: false,
     };
     setShowLoading(true);

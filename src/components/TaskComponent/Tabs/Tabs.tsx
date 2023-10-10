@@ -3,7 +3,7 @@ import { buttonClasses } from "@mui/base/Button";
 import TabUnstyled, { tabClasses } from "@mui/base/Tab";
 import TabsListUnstyled from "@mui/base/TabsList";
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import useResponsive from "hooks/useResponsive";
 import React, { useEffect, useRef, useState } from "react";
 

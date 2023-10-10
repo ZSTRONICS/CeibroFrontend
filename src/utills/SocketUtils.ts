@@ -34,14 +34,19 @@ export const useSocket = () => {
         if (isLoggedIn && socket.getSocket() !== null) {
             return;
         }
+
         if (global.isSocketConnecting) {
             return;
         }
 
-        global.isSocketConnecting = true;
-        const tokens = localStorage.getItem("tokens") || "{}";
+        const tokens = localStorage.getItem("tokens") || null;
+        if (!tokens) {
+            return;
+        }
+
         const myToken = tokens && JSON.parse(tokens)?.access?.token;
 
+        global.isSocketConnecting = true;
         function generateSecureUUID() {
             return uuidv4();
         }
@@ -59,8 +64,7 @@ export const useSocket = () => {
             }
         }
 
-        let secureUUID = generateSecureUUID();
-        // secureUUID += "-" + sock.id;
+        const secureUUID = generateSecureUUID();
         console.log("secureUUID", secureUUID);
 
         // Event listener to handle page refresh, tab/window close, etc.
@@ -77,37 +81,34 @@ export const useSocket = () => {
             }, query: {
                 secureUUID: String(secureUUID),
                 deviceType: "web",
-            },
+            }
         });
 
         sock.on("connect", () => {
-            if (socket.getSocket() !== null) {
+            if (sock.recovered) {
+                console.log("recovered");
+                socket.setSocket(sock);
+                setTimeout(sendHeartbeat, 10000);
                 return;
             }
+
             console.log("Connected to server");
             socket.setUserId(userId);
             socket.setSocket(sock);
             setTimeout(sendHeartbeat, 10000);
         });
 
-        sock.on("heartbeatAck", () => {
-            console.log("heartbeatAck");
+        sock.on("disconnect", () => {
+            console.log("Socket Disconnected from server");
+            if (sock.io.engine) {
+                console.log("Closing previous socket connection");
+                // close the low-level connection and trigger a reconnection
+                sock.io.engine.close();
+            }
         });
 
-        // sock.on("disconnect", () => {
-        //     console.log("Disconnected from server");
-        //     global.isSocketConnecting = false;
-        //     try {
-        //         sock.disconnect();
-        //     } catch (e) {
-        //         console.log("error in disconnecting socket", e);
-        //     }
-        //     socket.setSocket(null);
-        // });
-
-        sock.on("reconnect", () => {
-            console.log("Reconnected to server");
-            socket.setSocket(sock);
+        sock.on("heartbeatAck", () => {
+            console.log("heartbeatAck");
         });
 
         sock.on("logout-web", async () => {
@@ -119,6 +120,8 @@ export const useSocket = () => {
         });
 
         sock.on("token_invalid", () => {
+            console.log("token_invalid received from server");
+
             const tokens = localStorage.getItem("tokens") || "{}";
             const jsonToken = JSON.parse(tokens);
             if ("refresh" in jsonToken) {
@@ -155,13 +158,15 @@ export const useSocket = () => {
             }
         });
 
-        sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any) => {
+        sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
+            if (ack) {
+                console.log(`sending ack to server`)
+                ack();
+            }
             console.log("eventType--->", dataRcvd);
             const eventType = dataRcvd.eventType;
             const data = dataRcvd.data;
-            if (dataRcvd.uuid !== undefined) {
-                setTimeout(() => { sendSocketEventAck(dataRcvd.uuid); }, 50);
-            }
+            sendSocketEventAck(dataRcvd.uuid);
             switch (eventType) {
                 case TASK_CONFIG.TOPIC_CREATED:
                     dispatch({
@@ -178,11 +183,9 @@ export const useSocket = () => {
                         payload: data,
                     });
                     break;
-
                 case TASK_CONFIG.TASK_SEEN:
                 case TASK_CONFIG.TASK_SHOWN:
                 case TASK_CONFIG.TASK_HIDDEN:
-                case TASK_CONFIG.UN_CANCEL_TASK:
                     dispatch({
                         type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                         payload: { ...data, userId, eventType },
@@ -199,8 +202,9 @@ export const useSocket = () => {
                     });
                     break;
 
-                case TASK_CONFIG.CANCELED_TASK:
                 case TASK_CONFIG.TASK_DONE:
+                case TASK_CONFIG.CANCELED_TASK:
+                case TASK_CONFIG.UN_CANCEL_TASK:
                 case TASK_CONFIG.NEW_TASK_COMMENT:
                     dispatch({
                         type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,

@@ -18,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   PROJECT_APIS,
-  docsAction,
   getAllProjects,
   taskActions,
   userApiAction,
@@ -93,7 +92,6 @@ function CreateNewTask() {
       isRenderEffect.current = true;
     };
   }, []);
-
   useEffect(() => {
     if (Topics && !isEmpty(Topics)) {
       // const topics = [...Topics.allTopics, ...Topics.recentTopics];
@@ -150,77 +148,6 @@ function CreateNewTask() {
     );
   };
 
-  const handleFileUpload = (
-    files: any,
-    moduleName: string,
-    moduleId: string
-  ) => {
-    try {
-      if (!files || files.length === 0) {
-        console.error("No files to upload.");
-        return;
-      }
-
-      const formData = new FormData();
-      const metadataObjects: any = [];
-      files.forEach((file: any) => {
-        formData.append("files", file);
-        metadataObjects.push(
-          JSON.stringify({
-            fileName: file.name,
-            orignalFileName: file.name,
-            tag: IS_IMAGE(file.name) ? "image" : "file",
-          })
-        );
-      });
-
-      formData.append("moduleName", moduleName);
-      formData.append("moduleId", moduleId);
-      const finalMetadata = JSON.stringify(metadataObjects);
-      formData.append("metadata", finalMetadata);
-
-      dispatch(
-        docsAction.uploadDocsByModuleNameAndId({
-          body: formData,
-          success: () => {
-            if (windowClose) {
-              window.close();
-            }
-          },
-        })
-      );
-    } catch (error) {
-      console.error("Error occurred while uploading files:", error);
-    }
-  };
-
-  const handleCreateTask = () => {
-    setIsSubmit(true);
-    const filesToUpload = [...selectedImages, ...selectedDocuments];
-    let payload = selectedData;
-    payload.creator = user._id;
-    payload.hasPendingFilesToUpload = filesToUpload.length > 0 ? true : false;
-    dispatch(
-      taskActions.createTask({
-        body: payload,
-        success: (res: any) => {
-          setIsSubmit(false);
-          if (selectedImages.length > 0 || selectedDocuments.length > 0) {
-            const moduleId = res.data.newTask._id;
-            handleFileUpload(filesToUpload, "Task", moduleId);
-          }
-          if (windowClose) {
-            if (filesToUpload.length === 0) {
-              window.close();
-            }
-          }
-        },
-        onFailAction: () => {
-          setIsSubmit(false);
-        },
-      })
-    );
-  };
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
@@ -285,8 +212,6 @@ function CreateNewTask() {
     }
   };
 
-  const handleGetLocationValue = () => {};
-
   const handleAttachImageValue = (files: File[]) => {
     const newFiles = files.filter(
       (file) => !selectedImages.some((item) => item.name === file.name)
@@ -304,7 +229,7 @@ function CreateNewTask() {
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleClearFile = (file: File, type: fileType) => {
@@ -317,6 +242,87 @@ function CreateNewTask() {
     }
   };
 
+  const handleDisableSubmit = () => {
+    let valid = true;
+    valid =
+      selectedData.topic !== "" &&
+      (selectedData.assignedToState.length > 0 ||
+        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+        ? false
+        : true;
+    if (selectedData.dueDate === "Invalid date") {
+      valid = true;
+    }
+    return isSubmit || valid;
+  };
+  const handleCreateTask = () => {
+    const formData = new FormData();
+    setIsSubmit(true);
+    const filesToUpload = [...selectedImages, ...selectedDocuments];
+    formData.append("dueDate", selectedData.dueDate || "");
+    formData.append("topic", selectedData.topic);
+    formData.append("project", selectedData.project || "");
+    formData.append("creator", user._id);
+    formData.append(
+      "assignedToState",
+      JSON.stringify(JSON.stringify(selectedData.assignedToState))
+    );
+    formData.append("description", selectedData.description || "");
+    formData.append(
+      "doneImageRequired",
+      String(selectedData.doneImageRequired)
+    );
+    formData.append(
+      "doneCommentsRequired",
+      String(selectedData.doneCommentsRequired)
+    );
+    formData.append(
+      "invitedNumbers",
+      JSON.stringify(JSON.stringify(selectedData.invitedNumbers))
+    );
+    if (selectedImages.length > 0 || selectedDocuments.length > 0) {
+      try {
+        if (!filesToUpload || filesToUpload.length === 0) {
+          console.error("No files to upload.");
+          return;
+        }
+        const metadataObjects: any = [];
+        filesToUpload.forEach((file: any) => {
+          formData.append("files", file);
+          metadataObjects.push(
+            JSON.stringify({
+              fileName: file.name,
+              orignalFileName: file.name,
+              tag: IS_IMAGE(file.name) ? "image" : "file",
+            })
+          );
+        });
+        const finalMetadata = JSON.stringify(metadataObjects);
+        formData.append("metadata", finalMetadata);
+      } catch (error) {
+        console.error("Error occurred while uploading files:", error);
+      }
+    }
+    dispatch(
+      taskActions.createTask({
+        other: {
+          hasFiles: filesToUpload.length > 0,
+        },
+        body: formData,
+        success: (res: any) => {
+          setIsSubmit(false);
+          if (windowClose) {
+            if (filesToUpload.length === 0) {
+              window.close();
+            }
+          }
+        },
+        onFailAction: () => {
+          setIsSubmit(false);
+        },
+      })
+    );
+  };
   return (
     <Box>
       <TaskHeader title="New task" />
@@ -474,19 +480,12 @@ function CreateNewTask() {
         )}
       </Box>
       <Footer
-        disabled={
-          isSubmit ||
-          (selectedData.topic !== "" &&
-          (selectedData.assignedToState.length > 0 ||
-            (selectedData.invitedNumbers &&
-              selectedData.invitedNumbers.length > 0))
-            ? false
-            : true)
-        }
+        isSubmitted={isSubmit}
+        disabled={handleDisableSubmit()}
         showHeader={false}
         handleSubmitForm={handleCreateTask}
         handleAttachImageValue={handleAttachImageValue}
-        handleGetLocationValue={handleGetLocationValue}
+        handleGetLocationValue={() => {}}
         handleSelectDocumentValue={handleSelectDocumentValue}
       />
     </Box>

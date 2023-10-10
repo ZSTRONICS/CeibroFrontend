@@ -41,8 +41,8 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Route path="/login" component={Login} />
             <Redirect exact from="/" to="/login" />
+            <Route path="/login" component={Login} />
             {/* <Route path="/comming-soon" component={CommingSoon} />
             <Redirect exact from="/" to="/comming-soon" />
             <Route path="/private-login" component={Login} /> */}
@@ -84,6 +84,7 @@ const RouterConfig = () => {
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
             <Route path="*" component={NotFound} />
+
             {/* <Route path="/comming-soon" component={CommingSoon}></Route>
             <Redirect from="/" to="/comming-soon" /> */}
           </Switch>

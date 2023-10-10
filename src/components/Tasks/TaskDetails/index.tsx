@@ -14,7 +14,7 @@ interface IProps {
   task: Task;
   handleClick?: (task: Task) => void;
 }
-export default function TaskDetails(props: IProps) {
+function TaskDetails(props: IProps) {
   const {
     dueDate,
     taskUID,
@@ -32,7 +32,7 @@ export default function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
   } = props.task;
-  // console.log("task", props.task);
+
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
 
@@ -68,3 +68,5 @@ export default function TaskDetails(props: IProps) {
     </Box>
   );
 }
+
+export default TaskDetails;

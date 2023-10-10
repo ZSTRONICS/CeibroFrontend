@@ -13,7 +13,7 @@ import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
 import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
@@ -49,6 +49,8 @@ function UserDropDown(props: IProps) {
     handleChangeValues,
     recentUserContact,
   } = props;
+  const [filteredRecentUserContact, setFilteredRecentUserContact] =
+    React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -59,6 +61,10 @@ function UserDropDown(props: IProps) {
     [key: string]: any[];
   }>({});
   const { user } = useSelector((state: RootState) => state.auth);
+
+  useEffect(() => {
+    setFilteredRecentUserContact(recentUserContact);
+  }, [recentUserContact]);
 
   useEffect(() => {
     if (contacts && contacts.length > 0) {
@@ -81,12 +87,6 @@ function UserDropDown(props: IProps) {
       setSortedContacts(groupedData);
     }
   }, [contacts]);
-
-  // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-  //   console.log(event, "change events");
-  //   // setSelected(event.target.value);
-  //   // handleClose();
-  // };
 
   const handleClose = () => {
     let invitedNumbers: string[] = [];
@@ -127,19 +127,13 @@ function UserDropDown(props: IProps) {
     setFilterData(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
+    const recentFilteredData = recentUserContact.filter((Option) =>
+      Option["contactFullName"]
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
+    setFilteredRecentUserContact(recentFilteredData);
     setSearchQuery(searchValue);
-  };
-
-  const handleCreateClick = () => {
-    if (searchQuery.trim() === "") return; // Check for empty searchQuery before proceeding
-    const newItem = {
-      label: searchQuery,
-      value: searchQuery,
-    };
-    // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected([]);
-    createCallback && createCallback(label, searchQuery);
-    handleClose();
   };
 
   const handleCancelClick = () => {
@@ -181,11 +175,13 @@ function UserDropDown(props: IProps) {
   const renderValue = () => {
     if (selected.length > 0) {
       const fullNames = selected.map((item) => {
+        if (item._id === user._id) {
+          return "Me";
+        }
         if (item.contactFullName) {
           return item.contactFullName;
         } else if (item.firstName) {
-          let name = `${item.firstName} ${item.surName}`;
-          return name;
+          return `${item.firstName} ${item.surName}`;
         }
         return "";
       });
@@ -232,7 +228,6 @@ function UserDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          // onChange={handleChange}
           endAdornment={
             selected.length > 0 && (
               <IconButton
@@ -370,7 +365,7 @@ function UserDropDown(props: IProps) {
             <GroupContactList
               filterData={filterData}
               selected={selected}
-              recentData={{ "Suggested Users": recentUserContact }}
+              recentData={{ "Suggested Users": filteredRecentUserContact }}
               handleSelectedList={handleSelectedList}
             />
           </Box>
