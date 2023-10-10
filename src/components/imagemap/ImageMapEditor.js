@@ -1,6 +1,6 @@
-import { Badge, Button, Menu, Popconfirm } from "antd";
+import { Badge, Button, Menu } from "antd";
 import { ResizeSensor } from "css-element-queries";
-import React, { Component } from "react";
+import { Component } from "react";
 // import ab2str from 'arraybuffer-to-string';
 import i18n from "i18next";
 import debounce from "lodash/debounce";
@@ -13,7 +13,6 @@ import ImageMapItems from "./ImageMapItems";
 
 import "../../libs/fontawesome-5.2.0/css/all.css";
 import "../../styles/index.less";
-import CommonButton from "../common/CommonButton";
 import Container from "../common/Container";
 
 const propertiesToInclude = [
@@ -824,45 +823,45 @@ class ImageMapEditor extends Component {
     //     height = page.height;
     // }
 
-    const action = (
-      <React.Fragment>
-        <CommonButton
-          className="rde-action-btn"
-          shape="circle"
-          icon="file-download"
-          disabled={!editing}
-          tooltipTitle={i18n.t("action.download")}
-          onClick={onDownload}
-          tooltipPlacement="bottomRight"
-        />
-        {editing ? (
-          <Popconfirm
-            title={i18n.t("imagemap.imagemap-editing-confirm")}
-            okText={i18n.t("action.ok")}
-            cancelText={i18n.t("action.cancel")}
-            onConfirm={onUpload}
-            placement="bottomRight"
-          >
-            <CommonButton
-              className="rde-action-btn"
-              shape="circle"
-              icon="file-upload"
-              tooltipTitle={i18n.t("action.upload")}
-              tooltipPlacement="bottomRight"
-            />
-          </Popconfirm>
-        ) : (
-          <CommonButton
-            className="rde-action-btn"
-            shape="circle"
-            icon="file-upload"
-            tooltipTitle={i18n.t("action.upload")}
-            tooltipPlacement="bottomRight"
-            onClick={onUpload}
-          />
-        )}
-      </React.Fragment>
-    );
+    // const action = (
+    //   <React.Fragment>
+    //     <CommonButton
+    //       className="rde-action-btn"
+    //       shape="circle"
+    //       icon="file-download"
+    //       disabled={!editing}
+    //       tooltipTitle={i18n.t("action.download")}
+    //       onClick={onDownload}
+    //       tooltipPlacement="bottomRight"
+    //     />
+    //     {editing ? (
+    //       <Popconfirm
+    //         title={i18n.t("imagemap.imagemap-editing-confirm")}
+    //         okText={i18n.t("action.ok")}
+    //         cancelText={i18n.t("action.cancel")}
+    //         onConfirm={onUpload}
+    //         placement="bottomRight"
+    //       >
+    //         <CommonButton
+    //           className="rde-action-btn"
+    //           shape="circle"
+    //           icon="file-upload"
+    //           tooltipTitle={i18n.t("action.upload")}
+    //           tooltipPlacement="bottomRight"
+    //         />
+    //       </Popconfirm>
+    //     ) : (
+    //       <CommonButton
+    //         className="rde-action-btn"
+    //         shape="circle"
+    //         icon="file-upload"
+    //         tooltipTitle={i18n.t("action.upload")}
+    //         tooltipPlacement="bottomRight"
+    //         onClick={onUpload}
+    //       />
+    //     )}
+    //   </React.Fragment>
+    // );
     const content = (
       <div className="rde-editor">
         <ImageMapItems
