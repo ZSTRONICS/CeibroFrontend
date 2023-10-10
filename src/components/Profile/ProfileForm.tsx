@@ -69,6 +69,7 @@ const ProfileForm = () => {
       },
       success: () => {
         toast.success("Profile updated successfully");
+        setOnUpdate(false);
         setLoading(false);
       },
       finallyAction: () => {
@@ -330,7 +331,8 @@ const ProfileForm = () => {
                 !onUpdate ||
                 formik.values.firstName.length === 0 ||
                 formik.values.surName.length === 0 ||
-                formik.values.email.length === 0
+                formik.values.email.length === 0 ||
+                loading
               }
             >
               Update

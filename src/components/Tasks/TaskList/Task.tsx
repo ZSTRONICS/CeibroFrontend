@@ -31,6 +31,7 @@ const Task = () => {
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
@@ -59,6 +60,8 @@ const Task = () => {
   } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
+  const [subTaskFilter, setSubTaskFilter] =
+    useState<selectedTaskFilterType>("allTaskFromMe");
   const subTaskKey = subtask ?? "allTaskFromMe";
   const isallTakLoading =
     loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
@@ -144,9 +147,11 @@ const Task = () => {
           path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
         }
         history.push(path);
+      } else if (filteredTask.length === 0 && taskuid) {
+        history.push(path);
       }
     }
-  }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
+  }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
     if (subtask || selectedTab) {
@@ -315,6 +320,7 @@ const Task = () => {
       searchTxt,
       "taskUID"
     );
+    setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
@@ -340,6 +346,11 @@ const Task = () => {
               other: { taskId: selectedTask._id },
             })
           );
+          setFilteredTask(
+            filteredTask.filter(
+              (item: any) => item.taskUID !== selectedTask._id
+            )
+          );
         }
       },
     },
@@ -351,6 +362,11 @@ const Task = () => {
             taskActions.taskShow({
               other: { taskId: selectedTask._id },
             })
+          );
+          setFilteredTask(
+            filteredTask.filter(
+              (item: any) => item.taskUID !== selectedTask._id
+            )
           );
         }
       },
@@ -364,6 +380,11 @@ const Task = () => {
               other: { taskId: selectedTask._id },
             })
           );
+          setFilteredTask(
+            filteredTask.filter(
+              (item: any) => item.taskUID !== selectedTask._id
+            )
+          );
         }
       },
     },
@@ -375,6 +396,11 @@ const Task = () => {
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
             })
+          );
+          setFilteredTask(
+            filteredTask.filter(
+              (item: any) => item.taskUID !== selectedTask._id
+            )
           );
         }
       },
@@ -483,6 +509,7 @@ const Task = () => {
             }}
           >
             <InputBase
+              value={searchText}
               placeholder="Start typing to search"
               sx={{ height: "48px", width: "100%" }}
               onChange={handleSearch}
