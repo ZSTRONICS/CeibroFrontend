@@ -166,13 +166,13 @@ const Task = () => {
 
       setFilteredTask(searchInData(dataToSearch, "", "taskUID"));
     }
+    setSearchText('')
   }, [
     allTaskFromMe,
     allTaskToMe,
     allTaskHidden,
     subtask,
     selectedTab,
-    taskuid,
   ]);
 
   const markTaskAsSeen = (taskId: string): void => {
