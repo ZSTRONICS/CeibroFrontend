@@ -37,7 +37,7 @@ const Task = () => {
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
-  const [updateTaskEvent, setUpdateTaskEvent] = useState(false);
+  const [updateTaskEvent, setUpdateTaskEvent] = useState<any>(null);
 
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
@@ -340,6 +340,15 @@ const Task = () => {
     return filteredData;
   }
 
+  useEffect(() => {
+    if (updateTaskEvent !== null) {
+      dispatch({
+        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+        payload: updateTaskEvent.data.data,
+      });
+    }
+  }, [updateTaskEvent]);
+
   const menuOptions = [
     {
       menuName: "Hide",
@@ -435,6 +444,7 @@ const Task = () => {
                 );
                 setFilteredTask(localTasks);
                 setSelectedTask(null);
+                setUpdateTaskEvent(res);
                 // dispatch({
                 //   type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                 //   payload: res.data.data,
