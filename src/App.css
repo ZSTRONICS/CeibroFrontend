@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   --primary: #0076c8;
@@ -32,7 +32,7 @@
 }
 
 body {
-  font-family: "Inter" !important;
+  font-family: 'Inter', sans-serif;
   font-weight: 400;
   font-size: 1rem;
 }

@@ -26,7 +26,6 @@
     "chroma-js": "^2.1.2",
     "dayjs": "^1.11.9",
     "emoji-picker-react": "^3.4.8",
-    "fontsource-roboto": "^4.0.0",
     "formik": "^2.2.9",
     "i18next": "^22.0.6",
     "i18next-browser-languagedetector": "^7.0.1",
@@ -104,5 +103,47 @@
     "@types/react-select": "^4.0.17",
     "@types/uuid": "^9.0.3",
     "redux-devtools-extension": "^2.13.9"
+  },
+  "optimization": {
+    "splitChunks": {
+      "chunks": "all",
+      "minSize": 40000,
+      "maxSize": 0,
+      "minChunks": 1,
+      "maxAsyncRequests": 30,
+      "maxInitialRequests": 30,
+      "automaticNameDelimiter": "~",
+      "name": true,
+      "cacheGroups": {
+        "vendors": {
+          "test": "[\\\\/]node_modules[\\\\/]",
+          "name": "vendors",
+          "chunks": "all"
+        },
+        "commons": {
+          "name": "commons",
+          "test": "[\\\\/]node_modules[\\\\/]",
+          "chunks": "initial",
+          "minChunks": 2
+        },
+        "static-assets": {
+          "name": "static-assets",
+          "chunks": "all",
+          "minChunks": 2,
+          "test": "/\\.(png|jpg|jpeg|gif|svg|json|ico|pdf|doc|docx|webp|eot|woff|woff2|ttf)$/i"
+        },
+        "default": {
+          "minChunks": 2,
+          "priority": -20,
+          "reuseExistingChunk": true
+        },
+        "styles": {
+          "name": "styles",
+          "test": "/.css$/",
+          "chunks": "all",
+          "enforce": true
+        }
+      }
+    }
   }
 }
