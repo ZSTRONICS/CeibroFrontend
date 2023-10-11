@@ -1,11 +1,11 @@
 import { buttonClasses } from "@mui/base/Button";
 // import TabPanelUnstyled from "@mui/base/TabPanel";
-import TabsListUnstyled from "@mui/base/TabsList";
 import TabUnstyled, { tabClasses } from "@mui/base/Tab";
-import { Box, Typography } from "@mui/material";
-import { styled } from "@mui/system";
+import TabsListUnstyled from "@mui/base/TabsList";
+import { Box } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import useResponsive from "hooks/useResponsive";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -24,11 +24,7 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Box sx={{ p: 1 }}>
-          {children}
-        </Box>
-      )}
+      {value === index && <Box sx={{ p: 1 }}>{children}</Box>}
     </div>
   );
 }

@@ -3,7 +3,7 @@ import FileBox from "components/Utills/FileBox";
 
 export default function DrawingFiles() {
   return (
-    <Box>
+    <Box sx={{ mb: 1 }}>
       <FileBox
         title="Location"
         files={[

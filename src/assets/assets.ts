@@ -1,65 +1,41 @@
-//@ts-nocheck
 import notification from "./images/Notification.png";
-import nudgeIcon from "./images/Nudge.png";
-import visual from "./images/Visual.png";
+import visualWebp from "./images/Visual.webp";
 import addUser from "./images/addUser.svg";
 import blueDocument from "./images/blueDocument.svg";
 import folderIcon from "./images/blueFolder.png";
-import blueUser from "./images/blueUser.png";
+import blueUser from './images/blueUser.webp';
+import calender from "./images/calender.png";
 import chatIcon from "./images/chatIcon.png";
-import chevrondown from "./images/chevron-down.png";
-import chevronRight from "./images/chevronRight.png";
 import clearIcon from "./images/clearIcon.png";
 import clip from "./images/clip.png";
 import clipboardIcon from "./images/clipboardIcon.png";
 import clockIcon from "./images/clockIcon.png";
-import contactIcon from "./images/contactIcon.svg";
-import documentIcon from "./images/documentIcon.png";
-import favouriteIcon from "./images/favourite.png";
-import favouriteFilledIcon from "./images/favouriteFilled.png";
-import logo from "./images/logo.png";
+import blackPencil from "./images/edit.svg";
+import emoji from "./images/emoji.svg";
+import logo from "./images/logo.webp";
 import mediaIcon from "./images/mediaIcon.png";
-import mobileVisual from "./images/mobileVisual.png";
 import moreIcon from "./images/moreIcon.png";
 import pencilIcon from "./images/pencil.png";
-import pinIcon from "./images/pin.svg";
+import pencilFilled from "./images/pencilFilled.png";
 import primaryNudgeIcon from "./images/primaryNudge.svg";
 import questionMarkIcon from "./images/questionMark.png";
 import searchIcon from "./images/searchIcon.png";
-import sendIcon from "./images/sendIcon.png";
 import sidebarChatIcon from "./images/sidebarChat.png";
 import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
 import sidebarPaseIcon from "./images/testclipboard.png";
 import unreadMessage from "./images/unreadMessage.png";
 import usersIcon from "./images/usersIcon.png";
-import volumeMute from "./images/volumeMute.png";
-import wrongImage from "./images/wrongImage.png";
-// import logout from "./images/logout.png"
-import calender from "./images/calender.png";
-import camera from "./images/camera.svg";
-import contactsBlack from "./images/contactsBlack.png";
-import blackPencil from "./images/edit.svg";
-import emoji from "./images/emoji.svg";
-import logoutNew from "./images/logoutNew.png";
-import mic from "./images/mic.svg";
-import pencilFilled from "./images/pencilFilled.png";
-import usersFolder from "./images/userFolderIcon.png";
-import whitePencil from "./images/whitePencil.png";
 
 import Add from "./images/Add.png";
+import CeibroWaterMark from "./images/CeibroWaterMark.png";
 import Defaulttask from "./images/Defaulttask.jpg";
 import DeleteIcon from "./images/DeleteIcon.svg";
-import GAvatar from "./images/GAvatar.png";
 import GroupIcon from "./images/GroupIcon.svg";
 import InvitaionIcon from "./images/Invitation.svg";
-import testProject2 from "./images/TestProject2.png";
-import testProject3 from "./images/TestProject3.png";
-import testProject4 from "./images/TestProject4.png";
 import blueSearch from "./images/blueSearch.png";
 import EditIcon from "./images/edit.svg";
 import filterIcon from "./images/filterIcon.svg";
-
 // material-imports-icon
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown";
 import LanguageOutlinedIcon from "@material-ui/icons/LanguageOutlined";
@@ -85,7 +61,6 @@ import MenuIcon from "@mui/icons-material/Menu";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SendIcon from "@mui/icons-material/Send";
 import SendOutlinedIcon from "@mui/icons-material/SendOutlined";
 import StarIcon from "@mui/icons-material/Star";
@@ -101,20 +76,10 @@ import ErrorOutlineOutlinedIcon from "@mui/icons-material/ErrorOutlineOutlined";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 
 //tab icons
-import LocationIcon from "./images/location_icon.svg";
 import ProjectIcon from "./images/project_icon.svg";
-import TaskIcon from "./images/task_icon.svg";
-//sub-tab icons
-import CanceledIcon from "./images/canceled_icon.svg";
-import FromMEIcon from "./images/from_me_icon.svg";
-import NewTaskIcon from "./images/new_task_icon.svg";
-import ToMeIcon from "./images/to_me_icon.svg";
 
-import CommentIcon from "./images/comment_icon.png";
 import FileIcon from "./images/file_icon.svg";
-import ForwardIcon from "./images/forward_icon.png";
 import membersDelete from "./images/membersDelete.png";
-import message from "./sound/message.mp3";
 
 // material-imports-icon
 
@@ -122,8 +87,7 @@ import message from "./sound/message.mp3";
 
 const assets = {
   FileIcon,
-  ForwardIcon,
-  CommentIcon,
+  CeibroWaterMark,
   DoneAllIcon,
   AttachFileOutlinedIcon,
   ImageOutlinedIcon,
@@ -135,7 +99,6 @@ const assets = {
   NotificationsOutlinedIcon,
   CallIcon,
   ErrorOutlineOutlinedIcon,
-  logoutNew,
   HighlightOffIcon,
   CloudUploadIcon,
   BorderColorIcon,
@@ -145,7 +108,6 @@ const assets = {
   ErrorOutlinedIcon,
   CheckCircleIcon,
   GroupIcon,
-  GAvatar,
   MoreVertOutlinedIcon,
   StarOutlineIcon,
   StarIcon,
@@ -160,7 +122,6 @@ const assets = {
   SendOutlinedIcon,
   DeleteIcon,
   KeyboardArrowDown,
-  SearchOutlinedIcon,
   EditIcon,
   SupervisorAccountOutlinedIcon,
   filterIcon,
@@ -169,68 +130,37 @@ const assets = {
   sidebarFolderIcon,
   sidebarChatIcon,
   sidebarPaseIcon,
-  visual,
-  mobileVisual,
+  visualWebp,
   logo,
-  contactIcon,
   clipboardIcon,
   moreIcon,
   usersIcon,
-  pinIcon,
   mediaIcon,
-  documentIcon,
-  sendIcon,
   clearIcon,
   addUser,
   blueDocument,
-  nudgeIcon,
   primaryNudgeIcon,
   questionMarkIcon,
   searchIcon,
   clip,
   chatIcon,
   folderIcon,
-  blueUser,
-  chevrondown,
-  chevronRight,
-  wrongImage,
   clockIcon,
   pencilIcon,
   blackPencil,
   notification,
-  volumeMute,
   unreadMessage,
-  favouriteIcon,
-  favouriteFilledIcon,
-  // bluePencil,
-  whitePencil,
-  contactsBlack,
-  camera,
-  mic,
   emoji,
-  usersFolder,
   pencilFilled,
   Add,
+  blueUser,
   blueSearch,
   calender,
   Defaulttask,
-  testProject2,
-  testProject3,
-  testProject4,
   membersDelete,
   KeyboardArrowRightIcon,
   AddIcon,
-  TaskIcon,
   ProjectIcon,
-  LocationIcon,
-  NewTaskIcon,
-  FromMEIcon,
-  ToMeIcon,
-  CanceledIcon,
-};
-
-export const sounds = {
-  message,
 };
 
 export default assets;

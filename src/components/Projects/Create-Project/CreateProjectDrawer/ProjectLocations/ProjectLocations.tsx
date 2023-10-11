@@ -1,18 +1,18 @@
-import React from "react";
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { styled } from "@mui/material/styles";
+import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
+import NoData from "components/NotFound/NoData";
+import CardSkeleton from "components/material-ui/skeleton/CardSkeleton";
 import { useApiCallOnce, useOpenCloseModal } from "hooks";
+import React from "react";
 import { useSelector } from "react-redux";
+import { RouteComponentProps } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
+import { RootState } from "redux/reducers";
+import { socket } from "services/socket.services";
 import AddDrawingFloor from "./AddDrawingFloor";
 import { FloorContent, FloorTabs } from "./LocationTabs";
-import { RouteComponentProps } from "react-router-dom";
-import { socket } from "services/socket.services";
-import NoData from "components/Chat/NoData";
-import CardSkeleton from "components/material-ui/skeleton/CardSkeleton";
-import { CustomStack } from "components/CustomTags";
-import { RootState } from "redux/reducers";
 
 interface RouteParams {
   projectId: string;
@@ -30,7 +30,7 @@ function ProjectLocations(props: IProps) {
     setSelectedTab(newValue);
   };
 
-  const { allFloors, isFloorLoading, } = useSelector(
+  const { allFloors, isFloorLoading } = useSelector(
     (state: RootState) => state.project
   );
 
@@ -76,8 +76,11 @@ function ProjectLocations(props: IProps) {
               handleModal={openModal}
             />
           </TabsListMain>
-          <Box id="container" sx={{ height: 'calc(100vh - 84px)', overflow:'auto' }}>
-          <FloorContent floors={allFloors} selectedTab={selectedTab} />
+          <Box
+            id="container"
+            sx={{ height: "calc(100vh - 84px)", overflow: "auto" }}
+          >
+            <FloorContent floors={allFloors} selectedTab={selectedTab} />
           </Box>
         </>
       ) : (

@@ -16,23 +16,13 @@ import { selectedTaskFilterType } from "redux/type";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from "./appReducer";
 interface TaskReducerInt {
-  // showAllTasks:TaskRoot[]
   allTaskToMe: AllTaskToMeInterface;
   allTaskFromMe: AllTaskFromMeInterface;
   allTaskHidden: AllTaskHiddenInterface;
   loadingAllTaskToMe: boolean;
   loadingAllTaskfromMe: boolean;
   loadingHiddenTask: boolean;
-  page: number;
-  limit: number;
-  totalPages: number;
-  totalResults: number;
   taskLoading: boolean;
-  dialogOpen: boolean;
-  openConfirmModal: boolean;
-  selectedTaskId: string;
-  taskDrawerOpen: boolean;
-  isEditing: boolean;
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
@@ -46,16 +36,7 @@ const intialStatue: TaskReducerInt = {
   loadingAllTaskToMe: false,
   loadingAllTaskfromMe: false,
   loadingHiddenTask: false,
-  isEditing: false,
-  page: 0,
-  limit: 0,
-  totalPages: 0,
-  totalResults: 0,
   taskLoading: false,
-  openConfirmModal: false,
-  dialogOpen: false,
-  selectedTaskId: "",
-  taskDrawerOpen: false,
   loadingTopics: false,
   Topics: { allTopics: [], recentTopics: [] },
 };
@@ -65,7 +46,6 @@ const TaskReducer = (
   action: ActionInterface
 ): TaskReducerInt => {
   switch (action.type) {
-
     case TASK_CONFIG.SELECTED_TASK_FILTER:
       return {
         ...state,
@@ -92,7 +72,7 @@ const TaskReducer = (
             userSubState: 'unread',
           };
           const newAllTaskFromMe = [creatorTask, ...state.allTaskFromMe.unread];
-          console.log("pus task from-me [unread]", state.allTaskFromMe.unread[0]);
+          console.log("pus task from-me [unread]", newAllTaskFromMe[0]);
           return {
             ...state,
             allTaskFromMe: {
@@ -203,7 +183,7 @@ const TaskReducer = (
             }
           }
           break;
-        case "UN_CANCEL_TASK":
+        case "unCancelTask":
           const taskIndex = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
           if (taskIndex > -1) {
             addEventToTask(state.allTaskHidden.canceled[taskIndex], eventData, taskIndex);
@@ -214,8 +194,9 @@ const TaskReducer = (
               ...state.allTaskHidden.canceled[taskIndex],
               userSubState: 'unread',
             };
-            state.allTaskFromMe.unread.unshift(modifiedTask);
-            console.log('UN_CANCEL_TASK allTaskFromMe.unread', state.allTaskFromMe.unread[0]._id);
+            if (eventData.oldTaskData.isCreator) {
+              state.allTaskFromMe.unread.unshift(modifiedTask);
+            }
             if (isAssignedToMe) {
               const modifiedTask = {
                 ...state.allTaskHidden.canceled[taskIndex],
@@ -437,7 +418,7 @@ const TaskReducer = (
           }
           break;
         case "TASK_SEEN":
-          // to-me [new] to-me [ongoing]
+          // to-me [new]=> to-me [ongoing]
           if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
             // find task in new and move to ongoing and update task
             const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
@@ -452,7 +433,18 @@ const TaskReducer = (
             }
           }
 
-          // from-me [unread] from-me [ongoing]
+          if (
+            eventData.isCreator &&
+            eventData.oldTaskData.userSubState === "new" &&
+            eventData.oldTaskData.isAssignedToMe
+          ) {
+            // find task in to-me [ongoing]
+            const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              state.allTaskToMe.ongoing[taskIndex].seenBy = eventData.seenBy;
+            }
+          }
+          // from-me [unread] => from-me [ongoing]
           if (
             eventData.isCreator === true &&
             eventData.creatorStateChanged &&
@@ -466,7 +458,7 @@ const TaskReducer = (
               state.allTaskFromMe.unread[taskIndex].creatorState = "ongoing"
               state.allTaskFromMe.ongoing.unshift(state.allTaskFromMe.unread[taskIndex]);
               state.allTaskFromMe.unread.splice(taskIndex, 1);
-              console.log("task seen state.allTaskFromMe.unread => state.allTaskFromMe.ongoing", state.allTaskFromMe.ongoing[state.allTaskFromMe.ongoing.length - 1]);
+              console.log("task seen allTaskFromMe.unread => allTaskFromMe.ongoing", state.allTaskFromMe.ongoing[0].seenBy);
             }
           }
 
@@ -483,6 +475,15 @@ const TaskReducer = (
               console.log("task seen allTaskFromMe.unread", state.allTaskFromMe.unread[taskIndex].seenBy);
             }
           }
+          // update  task from-me [ongoing] 
+          if (isCreator && isOngoing) {
+            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
+            if (taskIndex > -1) {
+              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
+              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
+            }
+          }
+
           // update  task to-me [ongoing]
           if (isAssignedToMe && isOngoing) {
             const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
@@ -492,14 +493,7 @@ const TaskReducer = (
               console.log("updated state.allTaskToMe.ongoing seenBy ", state.allTaskToMe.ongoing[taskIndex]._id);
             }
           }
-          // update  task from-me [ongoing] 
-          if (isCreator && isOngoing) {
-            const taskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === eventData.taskId);
-            if (taskIndex > -1) {
-              pushSeenBy(state.allTaskFromMe.ongoing[taskIndex], eventData);
-              console.log("updated allTaskFromMe.ongoing seenBy", state.allTaskFromMe.ongoing[taskIndex].seenBy);
-            }
-          }
+
           // update  task to-me [done] 
           if (isAssignedToMe &&
             eventData.oldTaskData.userSubState === "done"
@@ -602,157 +596,122 @@ const TaskReducer = (
 
       return {
         ...state,
-        // allTaskHidden: {
-        //   ...state.allTaskHidden,
-        //   canceled: state.allTaskHidden.canceled,
-        //   ongoing: state.allTaskHidden.ongoing,
-        //   done: state.allTaskHidden.done,
-        // },
-        // allTaskFromMe: {
-        //   ...state.allTaskFromMe,
-        //   done: state.allTaskFromMe.done,
-        //   ongoing: state.allTaskFromMe.ongoing,
-        //   unread: state.allTaskFromMe.unread,
-        // },
-        // allTaskToMe: {
-        //   ...state.allTaskToMe,
-        //   new: state.allTaskToMe.new,
-        //   ongoing: state.allTaskToMe.ongoing,
-        //   done: state.allTaskToMe.done,
-        // },
       };
-
-
-    // Dispatch States Start
-    case TASK_CONFIG.OPEN_NEW_TASK:
-      return {
-        ...state,
-        dialogOpen: true,
-      };
-
-    case TASK_CONFIG.CLOSE_NEW_TASK:
-      return {
-        ...state,
-        dialogOpen: false,
-      };
-
-    case TASK_CONFIG.OPEN_TASK_DRAWER:
-      return {
-        ...state,
-        taskDrawerOpen: true,
-        isEditing: action.payload,
-      };
-
-    case TASK_CONFIG.CLOSE_TASK_DRAWER:
-      return {
-        ...state,
-        taskDrawerOpen: false,
-        isEditing: false,
-      };
-
-    case TASK_CONFIG.SELECTED_TASK_ID:
-      return {
-        ...state,
-        selectedTaskId: action.payload,
-      };
-
-    case TASK_CONFIG.EDIT_TASK: {
-      return {
-        ...state,
-        isEditing: action.payload,
-      };
-    }
-
-    case TASK_CONFIG.OPEN_CONFIRM_DRAWER:
-      return {
-        ...state,
-        openConfirmModal: true,
-      };
-
-    case TASK_CONFIG.CLOSE_CONFIRM_DRAWER:
-      return {
-        ...state,
-        openConfirmModal: false,
-      };
-    // Dispatch States END
 
     // API Request Start
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    case requestPending(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
-        loadingAllTaskToMe: true,
-      };
+        loadingAllTaskToMe: true
+      }
     }
-
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_TO_ME):
+    case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
+      const { fromMe, hidden, toMe, } = action.payload.allTasks
       return {
         ...state,
         loadingAllTaskToMe: false,
         allTaskToMe: {
-          new: action.payload.allTasks.new,
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
+          new: toMe.new,
+          ongoing: toMe.ongoing,
+          done: toMe.done,
         },
-      };
+        allTaskFromMe: {
+          unread: fromMe.unread,
+          ongoing: fromMe.ongoing,
+          done: fromMe.done,
+        },
+        allTaskHidden: {
+          ongoing: hidden.ongoing,
+          done: hidden.done,
+          canceled: hidden.canceled,
+        },
+      }
+    }
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    case requestFail(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
         loadingAllTaskToMe: false,
-      };
+      }
     }
+
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: true,
+    //   };
+    // }
+
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_TO_ME):
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: false,
+    // allTaskToMe: {
+    //   new: action.payload.allTasks.new,
+    //   ongoing: action.payload.allTasks.ongoing,
+    //   done: action.payload.allTasks.done,
+    // },
+    // };
+
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_TO_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskToMe: false,
+    //   };
+    // }
 
     // get task created from me
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
-      return {
-        ...state,
-        loadingAllTaskfromMe: true,
-      };
-    }
 
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: true,
+    //   };
+    // }
 
-      return {
-        ...state,
-        loadingAllTaskfromMe: false,
-        allTaskFromMe: {
-          unread: action.payload.allTasks.unread,
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
-        },
-      };
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_FROM_ME):
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
-      return {
-        ...state,
-        loadingAllTaskfromMe: false,
-      };
-    }
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: false,
+    //     // allTaskFromMe: {
+    //     //   unread: action.payload.allTasks.unread,
+    //     //   ongoing: action.payload.allTasks.ongoing,
+    //     //   done: action.payload.allTasks.done,
+    //     // },
+    //   };
 
-    case requestPending(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
-      return {
-        ...state,
-        loadingHiddenTask: true,
-      };
-    }
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_FROM_ME): {
+    //   return {
+    //     ...state,
+    //     loadingAllTaskfromMe: false,
+    //   };
+    // }
 
-    case requestSuccess(TASK_CONFIG.GET_ALL_TASK_HIDDEN):
-      return {
-        ...state,
-        loadingHiddenTask: false,
-        allTaskHidden: {
-          ongoing: action.payload.allTasks.ongoing,
-          done: action.payload.allTasks.done,
-          canceled: action.payload.allTasks.canceled,
-        },
-      };
+    // case requestPending(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: true,
+    //   };
+    // }
 
-    case requestFail(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
-      return {
-        ...state,
-        loadingHiddenTask: false,
-      };
-    }
+    // case requestSuccess(TASK_CONFIG.GET_ALL_TASK_HIDDEN):
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: false,
+    //     // allTaskHidden: {
+    //     //   ongoing: action.payload.allTasks.ongoing,
+    //     //   done: action.payload.allTasks.done,
+    //     //   canceled: action.payload.allTasks.canceled,
+    //     // },
+    //   };
+
+    // case requestFail(TASK_CONFIG.GET_ALL_TASK_HIDDEN): {
+    //   return {
+    //     ...state,
+    //     loadingHiddenTask: false,
+    //   };
+    // }
 
     case requestPending(TASK_CONFIG.GET_ALL_TOPIC): {
       return {

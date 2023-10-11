@@ -1,46 +1,70 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 // components
 import { Box, Grid, InputBase } from "@mui/material";
-import { TaskCard } from "components/TaskComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
+import { TaskCard } from "components/TaskComponent";
 import { optionMapping } from "components/Utills/Globals";
-import StyledChip from "components/Utills/StyledChip";
+import { TaskCardSkeleton } from "components/material-ui/skeleton";
+import { TASK_CONFIG } from "config";
 import { Task as ITask } from "constants/interfaces";
-import _, { isEmpty } from "lodash";
-import { RouteComponentProps, useHistory, useParams } from "react-router-dom";
+import _ from "lodash";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
+import FilterTabs from "./FilterTabs";
 
 interface RouteParams {
   subtask: selectedTaskFilterType;
   filterkey: string;
   taskuid: string;
 }
+const Task = () => {
+  const location = useLocation();
 
-interface IProps extends RouteComponentProps<RouteParams> {}
-const Task = (props: IProps) => {
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
-
+  const isRenderEffect = useRef<any>(false);
+  const dispatch = useDispatch();
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [isTaskFromMe, setIsTaskFromMe] = useState("To");
   const { user } = useSelector((store: RootState) => store.auth);
-  const headerHeight = 180;
+  const userId = user && String(user._id);
+  const isTaskRoute = location.pathname.split("/");
+
+  const [emptyScreenContent, setEmptyScreenContent] = useState([
+    {
+      heading: "",
+      description: "",
+    },
+  ]);
+  const headerHeight = 172;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
-  const userId = user && String(user._id);
 
-  const dispatch = useDispatch();
-  const { task } = useSelector((state: RootState) => state);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const task: any = useSelector((state: RootState) => state.task);
+  const {
+    allTaskToMe,
+    allTaskFromMe,
+    allTaskHidden,
+    loadingAllTaskToMe,
+    loadingAllTaskfromMe,
+    loadingHiddenTask,
+  } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
+  const [subTaskFilter, setSubTaskFilter] =
+    useState<selectedTaskFilterType>("allTaskFromMe");
   const subTaskKey = subtask ?? "allTaskFromMe";
+  const isallTakLoading =
+    loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
 
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
@@ -55,52 +79,36 @@ const Task = (props: IProps) => {
     return found;
   };
 
-  const getAllTaskOnce = (subtask: string) => {
-    if (
-      _.isEmpty(allTaskToMe.new) &&
-      _.isEmpty(allTaskToMe.ongoing) &&
-      _.isEmpty(allTaskToMe.done)
-    ) {
-      dispatch(taskActions.getAllTaskToMe());
-    }
-
-    if (
-      _.isEmpty(allTaskFromMe.unread) &&
-      _.isEmpty(allTaskFromMe.ongoing) &&
-      _.isEmpty(allTaskFromMe.done)
-    ) {
-      dispatch(taskActions.getAllTaskFromMe());
-    }
-
-    if (
-      _.isEmpty(allTaskHidden.ongoing) &&
-      _.isEmpty(allTaskHidden.done) &&
-      _.isEmpty(allTaskHidden.canceled)
-    ) {
-      dispatch(taskActions.getAllTaskHidden());
-    }
-  };
-
   useEffect(() => {
-    getAllTaskOnce(subtask);
-  }, [subtask]);
+    if (!isRenderEffect.current) {
+      if (
+        _.isEmpty(allTaskFromMe.ongoing) &&
+        _.isEmpty(allTaskFromMe.unread) &&
+        _.isEmpty(allTaskToMe.new) &&
+        _.isEmpty(allTaskToMe.ongoing)
+      ) {
+        dispatch(taskActions.syncAllTasks());
+      }
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
 
   const getFilterKey = () => {
-    if (subTaskKey && filterkey && task[subTaskKey][filterkey].length > 0) {
+    if (subTaskKey && filterkey) {
       return filterkey;
     } else {
+      let keyIndex = 0;
       const keys = Object.keys(task[subTaskKey]);
-      const keyIndex =
-        task[subTaskKey][keys[0]].length > 0
-          ? 0
-          : task[subTaskKey][keys[1]].length > 0
-          ? 1
-          : 2;
+      if (keys[0] === "new" || keys[0] === "unread") {
+        keyIndex = task[subTaskKey][keys[0]].length > 0 ? 0 : 1;
+      }
       return keys[keyIndex];
     }
   };
   useEffect(() => {
-    if (window.location.href.includes("/tasks")) {
+    if (isTaskRoute[1] === "tasks") {
       let ischangeUrl = false;
       let path = "";
       let getFilteredKey = getFilterKey();
@@ -111,15 +119,21 @@ const Task = (props: IProps) => {
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;
-        setSelectedTab(getFilteredKey);
+        selectedTab != null &&
+          selectedTab !== getFilteredKey &&
+          setSelectedTab(getFilteredKey);
       } else if (subtask && filterkey) {
         ischangeUrl = true;
-        setSelectedTab(filterkey);
+        selectedTab != null &&
+          selectedTab !== filterkey &&
+          setSelectedTab(filterkey);
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
       } else if (subtask && !filterkey) {
         ischangeUrl = true;
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
-        setSelectedTab(getFilteredKey);
+        selectedTab != null &&
+          selectedTab !== getFilteredKey &&
+          setSelectedTab(getFilteredKey);
       }
       if (
         ischangeUrl &&
@@ -133,32 +147,50 @@ const Task = (props: IProps) => {
           path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
         }
         history.push(path);
+      } else if (filteredTask.length === 0 && taskuid) {
+        history.push(path);
       }
     }
-    // return () => {
-    //   setSelectedTab("");
-    //   setSelectedTask(null);
-    // };
-  }, [subtask, filterkey, taskuid, filteredTask, selectedTask]);
+  }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
-    subtask &&
-      setFilteredTask(
-        searchInData(task[subtask][getFilterKey()], "", "taskUID")
-      );
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden]);
+    if (subtask || selectedTab) {
+      !taskuid && setSelectedTask(null);
 
-  useEffect(() => {
-    if (selectedTab) {
-      setSelectedTask(null);
-      setFilteredTask(searchInData(task[subtask][selectedTab], "", "taskUID"));
+      let dataToSearch;
+      if (subtask) {
+        dataToSearch = task[subtask][getFilterKey()];
+      } else if (selectedTab) {
+        dataToSearch = task[subtask][selectedTab];
+      }
+
+      setFilteredTask(searchInData(dataToSearch, "", "taskUID"));
     }
-  }, [selectedTab]);
+  }, [
+    allTaskFromMe,
+    allTaskToMe,
+    allTaskHidden,
+    subtask,
+    selectedTab,
+    taskuid,
+  ]);
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
         other: { taskId },
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: {
+                ...res.data.taskSeen,
+                userId,
+                eventType: TASK_CONFIG.TASK_SEEN,
+              },
+            });
+          }
+        },
       })
     );
   };
@@ -178,15 +210,93 @@ const Task = (props: IProps) => {
     switch (subtask) {
       case "allTaskFromMe":
         setIsTaskFromMe("To");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Ongoing_Qestion_et,
+              description: taskConstantEt.FromMe_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Ongoing_Qestion_en,
+              description: taskConstantEn.FromMe_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.FromMe_Done_Qestion_et,
+              description: taskConstantEt.FromMe_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.FromMe_Done_Qestion_en,
+              description: taskConstantEn.FromMe_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskToMe":
         setIsTaskFromMe("From");
+        if (filterkey === "ongoing") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Ongoing_Qestion_et,
+              description: taskConstantEt.To_Me_Ongoing_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Ongoing_Qestion_en,
+              description: taskConstantEn.To_Me_Ongoing_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.To_Me_Done_Qestion_et,
+              description: taskConstantEt.To_Me_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.To_Me_Done_Qestion_en,
+              description: taskConstantEn.To_Me_Done_desc_en,
+            },
+          ]);
+        }
         break;
       case "allTaskHidden":
         if (filterkey === "canceled") {
           setIsTaskFromMe("To");
-        } else {
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Canceled_Qestion_et,
+              description: taskConstantEt.Hidden_Canceled_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Canceled_Qestion_en,
+              description: taskConstantEn.Hidden_Canceled_desc_en,
+            },
+          ]);
+        } else if (filterkey === "done") {
           setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Done_Qestion_et,
+              description: taskConstantEt.Hidden_Done_desc_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Done_Qestion_en,
+              description: taskConstantEn.Hidden_Done_desc_en,
+            },
+          ]);
+        } else if (filterkey === "ongoing") {
+          setIsTaskFromMe("From");
+          setEmptyScreenContent([
+            {
+              heading: taskConstantEt.Hidden_Ongoing_Qestion_et,
+              description: taskConstantEt.Hidden_Ongoing_Qestion_et,
+            },
+            {
+              heading: taskConstantEn.Hidden_Ongoing_Qestion_en,
+              description: taskConstantEn.Hidden_Ongoing_desc_en,
+            },
+          ]);
         }
         break;
       default:
@@ -200,6 +310,7 @@ const Task = (props: IProps) => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
+    setSelectedTask(() => task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -209,6 +320,7 @@ const Task = (props: IProps) => {
       searchTxt,
       "taskUID"
     );
+    setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
@@ -224,32 +336,6 @@ const Task = (props: IProps) => {
     return filteredData;
   }
 
-  let taskOngoingCount = 0;
-  let taskDoneCount = 0;
-
-  const { ongoing, done } =
-    subtask === "allTaskFromMe"
-      ? allTaskFromMe
-      : subtask === "allTaskToMe"
-      ? allTaskToMe
-      : allTaskHidden;
-
-  ongoing.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskOngoingCount += 1) : 0
-  );
-  done.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (taskDoneCount += 1) : 0
-  );
-
-  useEffect(() => {
-    setSelectedTask(null);
-  }, [
-    allTaskFromMe.unread.length,
-    allTaskHidden.canceled.length,
-    taskOngoingCount,
-    taskDoneCount,
-  ]);
-
   const menuOptions = [
     {
       menuName: "Hide",
@@ -258,6 +344,23 @@ const Task = (props: IProps) => {
           dispatch(
             taskActions.taskHide({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                if (res) {
+                  dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: {
+                      ...res.data,
+                      userId,
+                      eventType: TASK_CONFIG.TASK_HIDDEN,
+                    },
+                  });
+                }
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
           );
         }
@@ -270,6 +373,23 @@ const Task = (props: IProps) => {
           dispatch(
             taskActions.taskShow({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                if (res) {
+                  dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: {
+                      ...res.data,
+                      userId,
+                      eventType: TASK_CONFIG.TASK_SHOWN,
+                    },
+                  });
+                }
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
           );
         }
@@ -282,6 +402,17 @@ const Task = (props: IProps) => {
           dispatch(
             taskActions.taskCaneled({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                dispatch({
+                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                  payload: res.data.data,
+                });
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
           );
         }
@@ -294,6 +425,17 @@ const Task = (props: IProps) => {
           dispatch(
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
+              success: (res: any) => {
+                dispatch({
+                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                  payload: res.data.data,
+                });
+                setFilteredTask(
+                  filteredTask.filter(
+                    (item: any) => item.taskUID !== selectedTask._id
+                  )
+                );
+              },
             })
           );
         }
@@ -307,92 +449,11 @@ const Task = (props: IProps) => {
       ? menuOptions.filter((option) => option.menuName === optionName)
       : [];
   };
-
-  let newUnSeenCount = 0;
-  let fromMeUnReadCount = 0;
-  let canceledCount = 0;
-  let ongoingHasTask = false;
-  let doneHasTask = false;
-
-  allTaskToMe.new.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (newUnSeenCount += 1) : 0
-  );
-  allTaskFromMe.unread.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (fromMeUnReadCount += 1) : 0
-  );
-
-  allTaskHidden.canceled.forEach((task: ITask) =>
-    !task.seenBy.includes(userId) ? (canceledCount += 1) : 0
-  );
-  const taskLists: any = {
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
-  };
-
-  if (taskLists.hasOwnProperty(subtask)) {
-    ongoingHasTask = isEmpty(taskLists[subtask].ongoing);
-    doneHasTask = isEmpty(taskLists[subtask].done);
-  }
-
-  const renderTabs = (type: string, activeTab: string) => {
-    const tabConfig = [
-      {
-        type: "new",
-        label: "New",
-        notifyCount: newUnSeenCount,
-        isDisabled: isEmpty(allTaskToMe.new),
-        bgColor: "#CFECFF",
-      },
-      {
-        type: "unread",
-        label: "Unread",
-        notifyCount: fromMeUnReadCount,
-        isDisabled: isEmpty(allTaskFromMe.unread),
-        bgColor: "#CFECFF",
-      },
-      {
-        type: "ongoing",
-        label: "Ongoing",
-        notifyCount: taskOngoingCount,
-        isDisabled: ongoingHasTask,
-        bgColor: "#F1B740",
-      },
-      {
-        type: "done",
-        label: "Done",
-        notifyCount: taskDoneCount,
-        isDisabled: doneHasTask,
-        bgColor: "#55BCB3",
-      },
-      {
-        type: "canceled",
-        label: "Canceled",
-        notifyCount: canceledCount,
-        isDisabled: isEmpty(allTaskHidden.canceled),
-        bgColor: "#FFE7E7",
-      },
-    ];
-    const tab = tabConfig.find((tab) => tab.type === type);
-
-    if (!tab) {
-      return null;
-    }
-    return (
-      <StyledChip
-        isDisabled={tab.isDisabled}
-        key={tab.type}
-        label={tab.label}
-        notifyCount={tab.notifyCount}
-        bgColor={tab.bgColor}
-        active={activeTab === tab.type}
-        callback={() => handleTabClick(tab.type)}
-      />
-    );
-  };
-
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
+    if (!localTask) {
+      return <></>;
+    }
     return (
       <div style={{ ...style }}>
         {localTask && (
@@ -426,11 +487,28 @@ const Task = (props: IProps) => {
     };
   }, [headerHeight]);
 
+  const LoadingSkeleton = () => (
+    <Box style={{ height: windowHeight }}>
+      {Array.from({ length: 6 }).map((_, index) => (
+        <TaskCardSkeleton key={index} />
+      ))}
+    </Box>
+  );
+
+  const EmptyScreen = () => (
+    <div style={{ height: windowHeight }}>
+      <EmptyScreenDescription
+        showWaterMark={true}
+        content={emptyScreenContent}
+      />
+    </div>
+  );
   return (
     <Grid container>
       <Grid
         item
-        md={3}
+        lg={2.85}
+        md={3.5}
         xs={4}
         sx={{
           borderRight: "1px solid #ADB5BD",
@@ -443,16 +521,19 @@ const Task = (props: IProps) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 1.25 },
+              gap: { xs: 1, md: 2.2, lg: 3 },
               overflow: "auto",
-              padding: "8px 0px 4px 0px",
+              padding: "8px 8px 4px 8px",
             }}
           >
-            {task &&
-              subtask &&
-              Object.keys(task[subtask]).map((key: string) => {
-                return renderTabs(key, selectedTab);
-              })}
+            {task && subtask && (
+              <FilterTabs
+                subTaskKey={subtask}
+                activeTab={selectedTab}
+                filterKeys={Object.keys(task[subtask])}
+                handleTabClick={handleTabClick}
+              />
+            )}
           </Box>
           <Box
             sx={{
@@ -464,45 +545,34 @@ const Task = (props: IProps) => {
             }}
           >
             <InputBase
+              value={searchText}
               placeholder="Start typing to search"
-              sx={{ height: "48px" }}
+              sx={{ height: "48px", width: "100%" }}
               onChange={handleSearch}
             />
           </Box>
         </Box>
-        <Box
-          sx={{
-            // height: "calc(100vh - 178px)",
-            // overflow: "auto",
-            // padding: " 0 1px",
-            pl: 0.7,
-            pr: 0.4,
-          }}
-        >
-          <div style={{ position: "relative" }}>
-            {/* <CustomStack
-          // gap={1.4}
-          // flexWrap="wrap"
-          // sx={{ scrollbarWidth: "8px", alignItems: "flex-start" }}
-          > */}
-            {task && filteredTask && (
-              <VariableSizeList
-                className="custom-scrollbar"
-                height={windowHeight}
-                itemCount={filteredTask.length}
-                overscanCount={1}
-                layout="vertical"
-                itemSize={(index) => 110}
-                width={"100%"}
-              >
-                {TaskRow}
-              </VariableSizeList>
-            )}
-          </div>
-          {/* /</CustomStack> */}
+        <Box sx={{ pl: 0.7, pr: 0.5 }}>
+          {isallTakLoading ? (
+            <LoadingSkeleton />
+          ) : task && filteredTask.length === 0 ? (
+            <EmptyScreen />
+          ) : (
+            <VariableSizeList
+              className="custom-scrollbar"
+              height={windowHeight}
+              itemCount={filteredTask.length}
+              overscanCount={10}
+              layout="vertical"
+              itemSize={(index) => 115}
+              width={"100%"}
+            >
+              {TaskRow}
+            </VariableSizeList>
+          )}
         </Box>
       </Grid>
-      <Grid item md={9} xs={8}>
+      <Grid item md={8.5} lg={9.15} xs={7}>
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

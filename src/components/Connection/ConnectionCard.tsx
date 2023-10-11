@@ -1,14 +1,13 @@
-import React from "react";
 // mui
 import { Box, Button, Grid } from "@mui/material";
 
 // components
 import { CustomStack, SubHeadingTag, SubLabelTag } from "components/CustomTags";
 import NameAvatar from "components/Utills/Others/NameAvatar";
-import ViewProfile from "./ViewProfile";
 import SvgIcon from "components/material-ui/icons/CustomSvgIcon/SvgIcon";
-import useResponsive from "hooks/useResponsive";
 import { UserCeibroData } from "constants/interfaces/user.interface";
+import useResponsive from "hooks/useResponsive";
+import ViewProfile from "./ViewProfile";
 
 interface IConnectionsProps {
   style: any;
@@ -20,7 +19,7 @@ interface IConnectionsProps {
   companyName: string | undefined;
   profilePic: string | undefined;
   ceibroUserData: UserCeibroData | undefined;
-  listIndex:any
+  listIndex: any;
 }
 
 const ConnectionCard = ({
@@ -38,12 +37,13 @@ const ConnectionCard = ({
   const isTabOrMobile = useResponsive("down", "sm", "");
   const iconColor = isBlocked ? "red" : isCeiborUser ? "#F1B740" : "#818181";
 
-  const listCards = Array.from(document.querySelectorAll('.listCard')) as HTMLElement[];
+  const listCards = Array.from(
+    document.querySelectorAll(".listCard")
+  ) as HTMLElement[];
 
   if (isTabOrMobile && listCards) {
     listCards.forEach((element: HTMLElement) => {
-      element.style.position = 'relative';
-      // const offsetHeight = element.offsetHeight;
+      element.style.position = "relative";
     });
   }
 
@@ -58,9 +58,9 @@ const ConnectionCard = ({
           <CustomStack gap={1} justifyContent="space-between">
             <Box sx={{ display: "flex", gap: 1.4 }}>
               <NameAvatar
-                url={profilePic && profilePic}
-                firstname={firstName ? firstName : ""}
-                surname={surName ? surName : ""}
+                url={profilePic || ""}
+                firstname={firstName}
+                surname={surName}
               />
               <div>
                 <SubHeadingTag sx={{ color: "#0076C8" }}>
@@ -95,10 +95,11 @@ const ConnectionCard = ({
                 />
               </SvgIcon>
             )}
-           <Button  
-             size={isTabOrMobile ? "small" : "medium"}
-              variant="contained">
-                Create task
+            <Button
+              size={isTabOrMobile ? "small" : "medium"}
+              variant="contained"
+            >
+              Create task
             </Button>
 
             <ViewProfile

@@ -2,6 +2,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, IconButton, TextField } from "@mui/material";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
+import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -15,11 +16,19 @@ interface CommentProps {
   title: string;
   showHeader: boolean;
   taskId: string;
+  doneImageRequired: boolean;
+  doneCommentsRequired: boolean;
   closeModal: () => void;
 }
 
-const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
-  // const { taskId } = useParams<RouteParams>();
+const Comment = ({
+  title,
+  showHeader,
+  taskId,
+  closeModal,
+  doneCommentsRequired,
+  doneImageRequired,
+}: CommentProps) => {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
@@ -53,7 +62,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleFileUpload = (files: any, formData: FormData | any) => {
@@ -87,6 +96,7 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
 
   const handleSubmit = () => {
     const formdata = new FormData();
+    setIsSubmit(true);
     const filesToUpload = [...selectedImages, ...selectedDocuments];
     formdata.append("message", description);
     if (filesToUpload.length > 0) {
@@ -101,9 +111,16 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
       body: formdata,
       success: (res: any) => {
         if (res) {
-          setIsSubmit(true);
+          dispatch({
+            type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+            payload: res.data.data,
+          });
+          setIsSubmit(false);
           setDescription("");
           closeModal();
+          setSelectedImages([]);
+          setSelectedDocuments([]);
+          setDescription("");
         }
       },
       onFailAction: () => {
@@ -198,13 +215,17 @@ const Comment = ({ title, showHeader, taskId, closeModal }: CommentProps) => {
         />
       </Box>
       <Footer
+        isSubmitted={isSubmit}
         disabled={
-          !isSubmit &&
-          (selectedImages.length > 0 ||
-            selectedDocuments.length > 0 ||
-            description.length > 0)
+          isSubmit ||
+          (title === "Task Done"
+            ? (doneImageRequired && selectedImages.length === 0) ||
+              (doneCommentsRequired && description.length === 0)
+            : selectedImages.length > 0 ||
+              selectedDocuments.length > 0 ||
+              description.length > 0
             ? false
-            : true
+            : true)
         }
         showHeader={showHeader}
         handleSubmitForm={handleSubmit}

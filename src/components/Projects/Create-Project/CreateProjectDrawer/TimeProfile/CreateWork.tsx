@@ -1,39 +1,34 @@
-import React, { useEffect, useState } from "react";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import ListIcon from "@material-ui/icons/List";
 import {
   CircularProgress,
   Grid,
-  ListItemIcon,
-  makeStyles,
   Typography,
+  makeStyles,
 } from "@material-ui/core";
-import InputText from "../../../../Utills/Inputs/InputText";
-import SelectDropdown, {
-  dataInterface,
-} from "../../../../Utills/Inputs/SelectDropdown";
+import Button from "@material-ui/core/Button";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { Close } from "@material-ui/icons";
-import colors from "../../../../../assets/colors";
-import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
 import InputCheckbox from "components/Utills/Inputs/InputCheckbox";
+import { mapRoles } from "helpers/project.helper";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import projectActions, {
+  PROJECT_APIS,
   createProfileWork,
   getNewWork,
-  PROJECT_APIS,
   getWorkById,
   updateWork,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
-import { mapRoles } from "helpers/project.helper";
-import { toast } from "react-toastify";
-import { Toast } from "react-toastify/dist/components";
+import colors from "../../../../../assets/colors";
+import InputSwitch from "../../../../Utills/Inputs/InputSwitch";
+import InputText from "../../../../Utills/Inputs/InputText";
+import SelectDropdown, {
+  dataInterface,
+} from "../../../../Utills/Inputs/SelectDropdown";
 
 const CreateWork = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -196,7 +191,7 @@ const CreateWork = () => {
                 onChange={(e: any) =>
                   setData({ ...data, name: e.target.value })
                 }
-                value={data?.name || ''}
+                value={data?.name || ""}
                 placeholder="Select/Add work"
               />
             </Grid>

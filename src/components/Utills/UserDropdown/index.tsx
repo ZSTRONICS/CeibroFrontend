@@ -12,8 +12,9 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
 import InputLabel from "@mui/material/InputLabel";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
   ChangeValueType,
@@ -24,13 +25,8 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
-import ContactBox from "../ContactBox";
 import SelectedContactBox from "../SelectedContactBox";
 
-interface Option {
-  label: string;
-  value: string;
-}
 interface IProps {
   name: keyof CreateNewTaskFormType;
   label: string;
@@ -53,6 +49,8 @@ function UserDropDown(props: IProps) {
     handleChangeValues,
     recentUserContact,
   } = props;
+  const [filteredRecentUserContact, setFilteredRecentUserContact] =
+    React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
   const [open, setOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
@@ -65,6 +63,10 @@ function UserDropDown(props: IProps) {
   const { user } = useSelector((state: RootState) => state.auth);
 
   useEffect(() => {
+    setFilteredRecentUserContact(recentUserContact);
+  }, [recentUserContact]);
+
+  useEffect(() => {
     if (contacts && contacts.length > 0) {
       const sortedContacts = contacts.sort((a, b) =>
         a.contactFirstName.localeCompare(b.contactFirstName)
@@ -73,7 +75,7 @@ function UserDropDown(props: IProps) {
       const groupedData: { [key: string]: { label: string; value: string }[] } =
         {};
 
-      sortedContacts.forEach((contact) => {
+      sortedContacts.forEach((contact: any) => {
         const firstLetter = contact.contactFirstName[0].toUpperCase();
         if (!groupedData[firstLetter]) {
           groupedData[firstLetter] = [];
@@ -85,12 +87,6 @@ function UserDropDown(props: IProps) {
       setSortedContacts(groupedData);
     }
   }, [contacts]);
-
-  const handleChange = (event: SelectChangeEvent<typeof selected>) => {
-    console.log(event, "change events");
-    // setSelected(event.target.value);
-    // handleClose();
-  };
 
   const handleClose = () => {
     let invitedNumbers: string[] = [];
@@ -131,19 +127,13 @@ function UserDropDown(props: IProps) {
     setFilterData(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
+    const recentFilteredData = recentUserContact.filter((Option) =>
+      Option["contactFullName"]
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
+    setFilteredRecentUserContact(recentFilteredData);
     setSearchQuery(searchValue);
-  };
-
-  const handleCreateClick = () => {
-    if (searchQuery.trim() === "") return; // Check for empty searchQuery before proceeding
-    const newItem = {
-      label: searchQuery,
-      value: searchQuery,
-    };
-    // setFilterData((prevData) => [...prevData, newItem]);
-    setSelected([]);
-    createCallback && createCallback(label, searchQuery);
-    handleClose();
   };
 
   const handleCancelClick = () => {
@@ -185,11 +175,13 @@ function UserDropDown(props: IProps) {
   const renderValue = () => {
     if (selected.length > 0) {
       const fullNames = selected.map((item) => {
+        if (item._id === user._id) {
+          return "Me";
+        }
         if (item.contactFullName) {
           return item.contactFullName;
         } else if (item.firstName) {
-          let name = `${item.firstName} ${item.surName}`;
-          return name;
+          return `${item.firstName} ${item.surName}`;
         }
         return "";
       });
@@ -225,7 +217,7 @@ function UserDropDown(props: IProps) {
             },
             PaperProps: {
               style: {
-                maxHeight: "calc(100vh - 240px)",
+                maxHeight: "calc(100vh - 100px)",
               },
             },
           }}
@@ -236,7 +228,6 @@ function UserDropDown(props: IProps) {
           onOpen={handleOpen}
           value={selected}
           renderValue={renderValue}
-          onChange={handleChange}
           endAdornment={
             selected.length > 0 && (
               <IconButton
@@ -291,7 +282,7 @@ function UserDropDown(props: IProps) {
             sx={{
               minHeight: "66px",
               display: "flex",
-              paddingLeft: "12px",
+              padding: "6px 7px",
               overflow: "auto",
               "&::-webkit-scrollbar": {
                 height: "0.4rem",
@@ -321,7 +312,7 @@ function UserDropDown(props: IProps) {
                   width: "100%",
                   display: "flex",
                   justifyContent: "center",
-                  alignItems: "center",
+                  alignItems: "end",
                 }}
               >
                 No selected contacts
@@ -332,21 +323,10 @@ function UserDropDown(props: IProps) {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between",
-              margin: "16px 16px 0px",
+              justifyContent: "flex-end",
+              margin: "0px 8px 0px",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                lineHeight: "16px",
-              }}
-            >
-              Suggested users
-            </Typography>
             <FormControlLabel
               control={
                 <Checkbox
@@ -380,36 +360,14 @@ function UserDropDown(props: IProps) {
               }
             />
           </Box>
-          <Box sx={{ margin: "8px 16px" }}>
-            {recentUserContact.length > 0 &&
-              recentUserContact.map((contact: Contact) => {
-                return (
-                  <ContactBox
-                    isDisabled={user._id === contact._id}
-                    contact={contact}
-                    handleSelectedList={handleSelectedList}
-                    selected={
-                      !!selected.find(
-                        (selectUser) => selectUser._id === contact._id
-                      )
-                    }
-                  />
-                );
-              })}
-            <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-            {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
-              <Typography>{groupLetter}</Typography>,
-              // Use map on the array to render the list items
-              ...groupOptions.map((item) => (
-                <ContactBox
-                  contact={item}
-                  handleSelectedList={handleSelectedList}
-                  selected={
-                    !!selected.find((contact) => contact._id === item._id)
-                  }
-                />
-              )),
-            ])}
+          <Box sx={{ margin: "0px 10px" }}>
+            <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
+            <GroupContactList
+              filterData={filterData}
+              selected={selected}
+              recentData={{ "Suggested Users": filteredRecentUserContact }}
+              handleSelectedList={handleSelectedList}
+            />
           </Box>
         </Select>
       </FormControl>

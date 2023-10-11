@@ -1,19 +1,16 @@
-import React, { FC } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-import InputHOC from "./InputHOC";
-import Select from "react-select";
+import { makeStyles } from "@material-ui/core";
 import chroma from "chroma-js";
-import colors from "../../../assets/colors";
-import { handleInputChange } from "react-select/src/utils";
+import { FC } from "react";
 import CreatableSelect from "react-select/creatable";
-import assets from "../../../assets/assets";
+import colors from "../../../assets/colors";
+import InputHOC from "./InputHOC";
 import { dataInterface } from "./SelectDropdown";
 
-const options = [
-  { value: "All", label: "All", color: "green" },
-  { value: "Project1", label: "Project 1", color: "yellow" },
-  { value: "Project2", label: "Project 2", color: "brown" },
-];
+// const options = [
+//   { value: "All", label: "All", color: "green" },
+//   { value: "Project1", label: "Project 1", color: "yellow" },
+//   { value: "Project2", label: "Project 2", color: "brown" },
+// ];
 
 interface My {
   title: string;

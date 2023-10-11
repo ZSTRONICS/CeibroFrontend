@@ -1,10 +1,10 @@
 
 import { toast } from 'react-toastify'
 import { call, put, select } from 'redux-saga/effects'
-import { AxiosV1, AxiosV2 } from './axios'
-import { requestFail, requestPending, requestSuccess } from './status'
 import { logoutUser } from '../redux/action'
 import { RootState } from '../redux/reducers'
+import { AxiosV1, AxiosV2 } from './axios'
+import { requestFail, requestPending, requestSuccess } from './status'
 
 interface ApiCall {
   type: string
@@ -109,7 +109,6 @@ const apiCall = ({
         ) {
           yield put(logoutUser())
           return
-          // appHistory.push("/login");
         }
 
         const msg = err?.response?.data?.message || err?.message || 'Unknown error'

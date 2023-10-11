@@ -1,15 +1,9 @@
-import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-import { Box, Button, Grid, Typography } from "@mui/material";
-import StatusMenu from "../Utills/Others/StatusMenu";
-import { getAllStatus } from "../../config/project.config";
-import ProjectList from "./ProjectList";
-import projectActions, {
-  getAllProjects,
-  getAllProjectsWithMembers,
-} from "../../redux/action/project.action";
+import { Button, Grid, Typography } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
+import projectActions from "../../redux/action/project.action";
+import ProjectList from "./ProjectList";
 
 const myStatus = [
   {
@@ -120,18 +114,18 @@ const useStyles = makeStyles({
     display: "flex",
     flexWrap: "wrap",
     justifyContent: "flex-end",
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       justifyContent: "flex-start",
     },
   },
   titleContainer: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       paddingTop: 14,
       paddingBottom: 14,
     },
   },
   viewAll: {
-    ["@media (max-width:960px)"]: {
+    "@media (max-width:960px)": {
       marginLeft: 10,
       marginTop: 10,
     },

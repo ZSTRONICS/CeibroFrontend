@@ -1,11 +1,6 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import {
-  AssignedUserState,
-  InvitedNumber,
-  Project,
-  Topic,
-} from "constants/interfaces";
+import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
 import DetailActions from "./DetailActions";
 
 interface IProps {
@@ -89,7 +84,7 @@ export default function DetailsHeader(props: IProps) {
   ];
 
   return (
-    <Box sx={{ padding: "0px 16px" }}>
+    <Box sx={{ padding: "0px 16px 0 5px" }}>
       <DetailActions
         doneImageRequired={doneImageRequired}
         doneCommentsRequired={doneCommentsRequired}
@@ -105,8 +100,8 @@ export default function DetailsHeader(props: IProps) {
         <Typography
           sx={{
             fontFamily: "Inter",
-            fontWeight: 700,
-            fontSize: "14px",
+            fontWeight: "700 !important",
+            fontSize: "14px !important",
             lineHeight: "20px",
           }}
         >
@@ -121,8 +116,8 @@ export default function DetailsHeader(props: IProps) {
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: 500,
-                    fontSize: "12px",
+                    fontWeight: "500 !important",
+                    fontSize: "12px !important",
                     lineHeight: "16px",
                     color: "#605c5c",
                   }}
@@ -134,10 +129,10 @@ export default function DetailsHeader(props: IProps) {
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: 500,
-                    fontSize: "12px",
+                    fontWeight: "500 !important",
+                    fontSize: "12px !important",
                     lineHeight: "18px",
-                    color: "#131516",
+                    color: "#131516 !important",
                   }}
                 >
                   {item.value}

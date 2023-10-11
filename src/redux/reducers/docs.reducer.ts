@@ -1,5 +1,5 @@
 import { DOCS_CONFIG } from "config/docs.config";
-import { DocsInterface, FileUploaded, FileUploadProgress, FileInterface, DocsInterfaceRoot } from "constants/interfaces/docs.interface";
+import { DocsInterface, FileInterface, FileUploadProgress, FileUploaded } from "constants/interfaces/docs.interface";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from "./appReducer";
 

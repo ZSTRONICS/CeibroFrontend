@@ -1,17 +1,21 @@
 import { CircularProgress, makeStyles } from "@material-ui/core";
-import NoData from "components/Chat/NoData";
+import NoData from "components/NotFound/NoData";
 import { ProjectGroupInterface } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import projectActions, { deleteGroup, getGroup } from "redux/action/project.action";
+import projectActions, {
+  deleteGroup,
+  getGroup,
+} from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import colors from "../../../../../assets/colors";
 import GroupChip from "../../../../Utills/GroupChip/GroupChip";
 
 const ProjectGroupsList = () => {
   const { selectedProject, groupList } = useSelector(
-    (state: RootState) => state?.project);
+    (state: RootState) => state?.project
+  );
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState<boolean>(false);

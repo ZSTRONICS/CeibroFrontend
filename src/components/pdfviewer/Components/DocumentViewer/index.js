@@ -5,7 +5,6 @@ import { Document, Page, pdfjs } from "react-pdf";
 import DocumentControl from "./../DocumentControl";
 //  import ImageMapEditor from './../../../imagemap/ImageMapEditor';
 // material-ui
-import LinearProgress from "@material-ui/core/LinearProgress";
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { Close, Refresh, Room, ZoomIn, ZoomOut } from "@mui/icons-material";
@@ -63,12 +62,12 @@ const DocumentViewer = (props) => {
   const [percentage, setPercentage] = useState(1);
   const [buffer, setBuffer] = useState(0);
   const [first, setFirst] = useState(true);
-  const [pageFactory, setPageFactory] = useState(null);
+  // const [pageFactory, setPageFactory] = useState(null);
   const [factory, setFactory] = useState(null);
   const [isZooming, setIsZooming] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [clickX, setClickX] = useState(null);
-  const [clickY, setClickY] = useState(null);
+  // const [clickX, setClickX] = useState(null);
+  // const [clickY, setClickY] = useState(null);
   const [drawingIcons, setDrawingIcons] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -133,17 +132,17 @@ const DocumentViewer = (props) => {
     setFactory(factory);
   }
 
-  function renderLoadingDocument() {
-    return (
-      <div className={classes.progressContainer}>
-        <LinearProgress
-          variant="buffer"
-          value={progress}
-          valueBuffer={buffer}
-        />
-      </div>
-    );
-  }
+  // function renderLoadingDocument() {
+  //   return (
+  //     <div className={classes.progressContainer}>
+  //       <LinearProgress
+  //         variant="buffer"
+  //         value={progress}
+  //         valueBuffer={buffer}
+  //       />
+  //     </div>
+  //   );
+  // }
 
   function handleZoomIn() {
     if (percentage < 1.5) {
@@ -184,19 +183,19 @@ const DocumentViewer = (props) => {
 
   const handleAssignTask = () => {
     // payload for Assign Task
-    const payload = {
-      projectID: "",
-      floorID: "",
-      drawingID: "",
-      iconData: {
-        id: "",
-        x: "",
-        y: "",
-        taskUUID: "",
-        taskLabel: "",
-        pageNo: "",
-      },
-    };
+    // const payload = {
+    //   projectID: "",
+    //   floorID: "",
+    //   drawingID: "",
+    //   iconData: {
+    //     id: "",
+    //     x: "",
+    //     y: "",
+    //     taskUUID: "",
+    //     taskLabel: "",
+    //     pageNo: "",
+    //   },
+    // };
     const icons = [...drawingIcons];
     setDrawingIcons(icons);
     handleCloseModal();

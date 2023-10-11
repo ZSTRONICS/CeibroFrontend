@@ -1,6 +1,7 @@
-import { Box, Checkbox, Typography } from "@mui/material";
-import { SubHeadingTag, SubLabelTag } from "components/CustomTags";
+import Checkbox from "@mui/material/Checkbox";
+import { CustomStack, SubHeadingTag, SubLabelTag } from "components/CustomTags";
 import { Contact } from "constants/interfaces";
+import NameAvatar from "../Others/NameAvatar";
 
 interface IProps {
   contact: Contact;
@@ -15,32 +16,15 @@ export default function ContactBox({
   selected,
   isDisabled,
 }: IProps) {
-  const {
-    _id,
-    contactFirstName,
-    contactFullName,
-    contactSurName,
-    isCeiborUser,
-    userCeibroData,
-  } = contact;
-
-  let imgSrc: string = "";
-  let placeholder: string | undefined = "";
-  if (isCeiborUser && userCeibroData && userCeibroData.profilePic) {
-    imgSrc = userCeibroData.profilePic;
-  } else {
-    placeholder =
-      contactFirstName[0] + contactSurName[0] ||
-      contactFullName.toString().match(/\b\w/g)?.join("");
-  }
+  const { _id, contactFirstName, contactSurName, userCeibroData } = contact;
 
   const handleCheckBox = (checked: boolean) => {
     handleSelectedList(contact, checked);
   };
 
   return (
-    <Box
-      key={_id}
+    <CustomStack
+      key={_id + "ContactBox"}
       sx={{
         display: "flex",
         gap: 1.4,
@@ -50,7 +34,7 @@ export default function ContactBox({
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
       }}
-      onClick={(e) => handleCheckBox(!selected)}
+      onClick={(e: any) => handleCheckBox(!selected)}
     >
       <Checkbox
         checked={selected}
@@ -60,39 +44,17 @@ export default function ContactBox({
           },
         }}
       />
-      {imgSrc !== "" ? (
-        <img
-          src={imgSrc}
-          alt={"profilePic"}
-          style={{ width: "50px", height: "50px" }}
-        />
-      ) : (
-        <Box
-          sx={{
-            width: "50px",
-            height: "50px",
-            bgcolor: "#F4F4F4", // You can set a placeholder background color here
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          {placeholder && (
-            <Typography variant="body1" color="text.primary">
-              {placeholder}
-            </Typography>
-          )}
-        </Box>
-      )}
+      <NameAvatar
+        url={userCeibroData?.profilePic || ""}
+        firstname={contactFirstName}
+        surname={contactSurName}
+      />
       <div>
         <SubHeadingTag sx={{ color: "#000" }}>
-          {contactFullName || "N/A"}
+          {`${contactFirstName} ${contactSurName}`}
         </SubHeadingTag>
-        <SubLabelTag>{`${
-          contact.userCeibroData?.companyName ?? "N/A"
-        }`}</SubLabelTag>
+        <SubLabelTag>{`${userCeibroData?.companyName || "N/A"}`}</SubLabelTag>
       </div>
-      <Box></Box>
-    </Box>
+    </CustomStack>
   );
 }

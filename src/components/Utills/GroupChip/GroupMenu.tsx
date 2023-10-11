@@ -1,15 +1,13 @@
 import { IconButton, makeStyles } from "@material-ui/core";
 import { Typography } from "@mui/material";
 import { CButton } from "components/Button";
-import { ConfirmDescriptionTag } from "components/CustomTags";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { ConfirmDescriptionTag, CustomStack } from "components/CustomTags";
+
 import { useConfirm } from "material-ui-confirm";
 import { useState } from "react";
 import OutsideClickHandler from "react-outside-click-handler";
-import { useSelector } from "react-redux";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
-import { RootState } from "../../../redux/reducers/appReducer";
 
 interface GroupMenueInt {
   onEdit: () => void;
@@ -152,15 +150,14 @@ const useStyles = makeStyles({
     alignItems: "",
   },
   menuText: {
-    '&.MuiTypography-root':{
-      fontWeight: '500 !important',
-    fontSize: 15,
-
+    "&.MuiTypography-root": {
+      fontWeight: "500 !important",
+      fontSize: 15,
     },
     fontSize: 15,
-    fontWeight: 500 ,
+    fontWeight: 500,
     marginLeft: 10,
-   
+
     color: colors.textPrimary,
   },
   break: {
@@ -172,6 +169,5 @@ const useStyles = makeStyles({
   },
   deleteText: {
     color: colors.btnRed,
-    
   },
 });

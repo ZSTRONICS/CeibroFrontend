@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 // material
 import {
@@ -27,21 +27,28 @@ import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
 import storage from "redux-persist/lib/storage";
+import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
 
 const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-
+  const isRenderEffect = useRef<any>(false);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { connections, } = useSelector(
-    (state: RootState) => state?.user
-  );
+  const { userAllContacts } = useSelector((state: RootState) => state.user);
+  useEffect(() => {
+    if (!isRenderEffect.current) {
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
+  }, []);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -51,13 +58,13 @@ const UserMenu = () => {
   };
 
   const handleUserMenu = (routeName: string) => {
-    history.push(routeName)
+    history.push(routeName);
     setAnchorElUser(null);
   };
 
   const handleLogout = () => {
-    socket.getSocket()?.emit('logout-window');
-    handleCloseUserMenu();
+    socket.getSocket()?.emit("logout-window");
+    setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
@@ -73,7 +80,7 @@ const UserMenu = () => {
           aria-controls={anchorElUser ? "menu-appbar" : undefined}
           aria-expanded={anchorElUser ? "true" : undefined}
           variant="text"
-          sx={{ textTransform: "unset", color: '#131516' }}
+          sx={{ textTransform: "unset", color: "#131516" }}
         >
           <CustomStack gap={1.8}>
             <NameAvatar
@@ -83,112 +90,103 @@ const UserMenu = () => {
               variant="rounded"
             />
             <Stack
-              direction="column"
               justifyContent="flex-end"
               sx={{
+                flexDirection: "column !important",
                 "@media (max-width:460px)": {
                   display: "none",
                 },
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.firstName}
+                {user?.firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.surName}{" "}
+                {user?.surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
           </CustomStack>
         </Button>
-        {anchorElUser && <Menu
-          sx={{ mt: "45px" }}
-          id="menu-appbar"
-          anchorEl={anchorElUser}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={Boolean(anchorElUser)}
-          onClose={handleCloseUserMenu}
-        >
-          <MenuItem
-            disableRipple
-            onClick={() => handleUserMenu("/profile")}
-            divider
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-                gap: '16px'
-              },
+        {anchorElUser && (
+          <Menu
+            sx={{ mt: "45px" }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
-          >
-            <ProfileIcon />
-            Profile
-          </MenuItem>
-
-          <MenuItem
-            disableRipple
-            divider
-            onClick={() => handleUserMenu("/connections")}
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-                gap: '15px'
-              },
+            keepMounted
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
             }}
+            MenuListProps={{
+              role: "listbox",
+            }}
+            open={Boolean(anchorElUser)}
+            onClose={handleCloseUserMenu}
           >
-            <Stack
-              direction="row"
-              spacing={2}
+            <MenuItem
+              disableRipple
+              onClick={() => handleUserMenu("/profile")}
+              divider
               sx={{
-                paddingRight: "16px",
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                  gap: "16px",
+                },
               }}
             >
-              <Box display="flex" alignItems="center">
-                <ConnectionIcon />
-              </Box>
-              <Typography textAlign="center"> My Connections</Typography>
-              <Box
-                display="flex"
-                alignItems="center"
-                sx={{ padding: " 0 10px 0" }}
-              >
-                <Badge
-                  sx={{
-                    color: "#F1B740",
-                  }}
-                  showZero={true}
-                  color="primary"
-                  badgeContent={connections.count}
-                  overlap="circular"
-                />
-              </Box>
-            </Stack>
-          </MenuItem>
+              <ProfileIcon />
+              Profile
+            </MenuItem>
 
-          <MenuItem
-            disableRipple
-            onClick={handleLogout}
-            sx={{
-              "&.MuiMenuItem-root": {
-                padding: "10px 20px",
-              },
-            }}
-          >
-            <Stack direction="row" spacing={2}>
-              <Box display="flex" alignItems="center">
-                <LogoutIcon />
-              </Box>
-              <Typography textAlign="center">Logout</Typography>
-            </Stack>
-          </MenuItem>
-        </Menu>}
+            <MenuItem
+              disableRipple
+              divider
+              onClick={() => handleUserMenu("/connections")}
+              sx={{
+                "&.MuiMenuItem-root": {
+                  padding: "12px 20px",
+                  gap: "15px",
+                },
+              }}
+            >
+              <ConnectionIcon />
+              <Typography textAlign="center"> My Connections</Typography>
+
+              <Badge
+                sx={{
+                  color: "#F1B740",
+                  padding: "0px  14px",
+                }}
+                showZero={true}
+                color="primary"
+                badgeContent={userAllContacts.length}
+                overlap="circular"
+              />
+            </MenuItem>
+
+            <MenuItem
+              disableRipple
+              onClick={handleLogout}
+              sx={{
+                "&.MuiMenuItem-root": {
+                  padding: "10px 20px",
+                },
+              }}
+            >
+              <Stack direction="row" spacing={2}>
+                <Box display="flex" alignItems="center">
+                  <LogoutIcon />
+                </Box>
+                <Typography textAlign="center">Logout</Typography>
+              </Stack>
+            </MenuItem>
+          </Menu>
+        )}
       </Box>
     </>
   );

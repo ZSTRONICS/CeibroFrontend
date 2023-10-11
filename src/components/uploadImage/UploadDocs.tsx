@@ -7,15 +7,12 @@ import {
   styled,
 } from "@mui/material";
 import { CButton } from "components/Button";
+import { CustomStack } from "components/CustomTags";
 import { CloudUploadIcon } from "components/material-ui/icons/cloudUpload/CloudUpload";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import { DOCS_CONFIG } from "config/docs.config";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import { useRef, useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
-import { uploadDocs } from "redux/action/task.action";
-import { RootState } from "redux/reducers/appReducer";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import "./upload.css";
 
 interface Props {
@@ -130,8 +127,8 @@ const UploadDocs = (props: Props) => {
     };
 
     setSelectedFile([]);
-    dispatch(uploadDocs(payload));
-    
+    // dispatch(uploadDocs(payload));
+
     dispatch({
       type: DOCS_CONFIG.CLEAR_SELECTED_FILES_TO_BE_UPLOADED,
     });

@@ -3,8 +3,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import { Divider, Grid, Paper, Typography } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { CButton } from "components/Button";
+import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
 import UploadDocs from "components/uploadImage/UploadDocs";
 import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
@@ -27,7 +27,8 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { selectedProject, folderList } = useSelector(
-    (state: RootState) => state?.project);
+    (state: RootState) => state?.project
+  );
   const { selectedFolder, handleGoBack, isFolder } = props;
   const [findDoc, setFindDoc] = useState<any>("");
 
@@ -46,7 +47,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
 
   useEffect(() => {
     if (findDoc === "") {
-      return
+      return;
     } else if (findDoc !== "") {
       dispatch(getAllDocuments({ other: { selectedProject, findDoc } }));
     }
@@ -65,7 +66,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
 
   useEffect(() => {
     if (findDoc !== "") {
-      return
+      return;
     }
     if (findDoc === "") {
       dispatch(
@@ -74,7 +75,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
         })
       );
     }
-  }, [findDoc])
+  }, [findDoc]);
 
   return (
     <>
@@ -99,7 +100,7 @@ const ProjectDocumentHeader: React.FC<headerInterface> = (props) => {
             />
             <InputBase
               onKeyPress={(event) => {
-                if (event.key === 'Enter') {
+                if (event.key === "Enter") {
                   event.preventDefault();
                   return false;
                 }

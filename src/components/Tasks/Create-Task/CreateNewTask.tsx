@@ -13,12 +13,11 @@ import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   PROJECT_APIS,
-  docsAction,
   getAllProjects,
   taskActions,
   userApiAction,
@@ -36,6 +35,8 @@ import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { IS_IMAGE } from "components/Utills/Globals";
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import EmptyScreenDescription from "../EmptyScreenDescription";
 
 var initialValues = {
   dueDate: "",
@@ -52,6 +53,7 @@ var initialValues = {
 
 function CreateNewTask() {
   const [toggle, setToggle] = useState<boolean>(false);
+  const isRenderEffect = useRef<any>(false);
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
@@ -70,22 +72,26 @@ function CreateNewTask() {
     (state: RootState) => state.user
   );
   const { user } = useSelector((state: RootState) => state.auth);
-  const tasks = useSelector((store: RootState) => store.task);
-  const projects = useSelector((store: RootState) => store.project);
-  const { allProjects } = projects;
-  const { Topics } = tasks;
+  const Topics = useSelector((state: RootState) => state.task.Topics);
+  const allProjects = useSelector(
+    (state: RootState) => state.project.allProjects
+  );
   const windowClose = window.getSelection();
 
   useEffect(() => {
-    dispatch(taskActions.getAllTopic());
-    dispatch(getAllProjects());
-    // const payload = {
-    //   other: { userId: user._id },
-    // };
-    userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
+    if (!isRenderEffect.current) {
+      dispatch(taskActions.getAllTopic());
+      if (allProjects.length === 0) {
+        dispatch(getAllProjects());
+      }
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      recentUserContact.length < 1 &&
+        dispatch(userApiAction.getRecentContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, []);
-
   useEffect(() => {
     if (Topics && !isEmpty(Topics)) {
       // const topics = [...Topics.allTopics, ...Topics.recentTopics];
@@ -136,80 +142,8 @@ function CreateNewTask() {
   ) => {
     return (
       data &&
-      data.map((item: object) => {
-        //@ts-ignore
+      data.map((item: any) => {
         return { label: item[labelName], value: item[valueName] };
-      })
-    );
-  };
-
-  const handleFileUpload = (
-    files: any,
-    moduleName: string,
-    moduleId: string
-  ) => {
-    try {
-      if (!files || files.length === 0) {
-        console.error("No files to upload.");
-        return;
-      }
-
-      const formData = new FormData();
-      const metadataObjects: any = [];
-      files.forEach((file: any) => {
-        formData.append("files", file);
-        metadataObjects.push(
-          JSON.stringify({
-            fileName: file.name,
-            orignalFileName: file.name,
-            tag: IS_IMAGE(file.name) ? "image" : "file",
-          })
-        );
-      });
-
-      formData.append("moduleName", moduleName);
-      formData.append("moduleId", moduleId);
-      const finalMetadata = JSON.stringify(metadataObjects);
-      formData.append("metadata", finalMetadata);
-
-      dispatch(
-        docsAction.uploadDocsByModuleNameAndId({
-          body: formData,
-          success: () => {
-            if (windowClose) {
-              window.close();
-            }
-          },
-        })
-      );
-    } catch (error) {
-      console.error("Error occurred while uploading files:", error);
-    }
-  };
-
-  const handleCreateTask = () => {
-    const filesToUpload = [...selectedImages, ...selectedDocuments];
-    let payload = selectedData;
-    payload.creator = user._id;
-    payload.hasPendingFilesToUpload = filesToUpload.length > 0 ? true : false;
-    dispatch(
-      taskActions.createTask({
-        body: payload,
-        success: (res: any) => {
-          setIsSubmit(true);
-          if (selectedImages.length > 0 || selectedDocuments.length > 0) {
-            const moduleId = res.data.newTask._id;
-            handleFileUpload(filesToUpload, "Task", moduleId);
-          }
-          if (windowClose) {
-            if (filesToUpload.length === 0) {
-              window.close();
-            }
-          }
-        },
-        onFailAction: () => {
-          setIsSubmit(false);
-        },
       })
     );
   };
@@ -217,7 +151,6 @@ function CreateNewTask() {
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined
   ) => {
-    console.log("first");
     let value = event ? event.target.value : "";
     handleChangeValues(value, "description");
   };
@@ -266,7 +199,6 @@ function CreateNewTask() {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => {
-    console.log("first changes");
     if (value === undefined) {
       setSelectedData((prevSelectedData) => ({
         ...prevSelectedData,
@@ -279,8 +211,6 @@ function CreateNewTask() {
       }));
     }
   };
-
-  const handleGetLocationValue = () => {};
 
   const handleAttachImageValue = (files: File[]) => {
     const newFiles = files.filter(
@@ -299,7 +229,7 @@ function CreateNewTask() {
     if (newFiles.length < files.length) {
       toast.error("Some Document already added in the list");
     }
-    setSelectedDocuments([...selectedDocuments, ...files]);
+    setSelectedDocuments([...selectedDocuments, ...newFiles]);
   };
 
   const handleClearFile = (file: File, type: fileType) => {
@@ -312,6 +242,87 @@ function CreateNewTask() {
     }
   };
 
+  const handleDisableSubmit = () => {
+    let valid = true;
+    valid =
+      selectedData.topic !== "" &&
+      (selectedData.assignedToState.length > 0 ||
+        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+        ? false
+        : true;
+    if (selectedData.dueDate === "Invalid date") {
+      valid = true;
+    }
+    return isSubmit || valid;
+  };
+  const handleCreateTask = () => {
+    const formData = new FormData();
+    setIsSubmit(true);
+    const filesToUpload = [...selectedImages, ...selectedDocuments];
+    formData.append("dueDate", selectedData.dueDate || "");
+    formData.append("topic", selectedData.topic);
+    formData.append("project", selectedData.project || "");
+    formData.append("creator", user._id);
+    formData.append(
+      "assignedToState",
+      JSON.stringify(JSON.stringify(selectedData.assignedToState))
+    );
+    formData.append("description", selectedData.description || "");
+    formData.append(
+      "doneImageRequired",
+      String(selectedData.doneImageRequired)
+    );
+    formData.append(
+      "doneCommentsRequired",
+      String(selectedData.doneCommentsRequired)
+    );
+    formData.append(
+      "invitedNumbers",
+      JSON.stringify(JSON.stringify(selectedData.invitedNumbers))
+    );
+    if (selectedImages.length > 0 || selectedDocuments.length > 0) {
+      try {
+        if (!filesToUpload || filesToUpload.length === 0) {
+          console.error("No files to upload.");
+          return;
+        }
+        const metadataObjects: any = [];
+        filesToUpload.forEach((file: any) => {
+          formData.append("files", file);
+          metadataObjects.push(
+            JSON.stringify({
+              fileName: file.name,
+              orignalFileName: file.name,
+              tag: IS_IMAGE(file.name) ? "image" : "file",
+            })
+          );
+        });
+        const finalMetadata = JSON.stringify(metadataObjects);
+        formData.append("metadata", finalMetadata);
+      } catch (error) {
+        console.error("Error occurred while uploading files:", error);
+      }
+    }
+    dispatch(
+      taskActions.createTask({
+        other: {
+          hasFiles: filesToUpload.length > 0,
+        },
+        body: formData,
+        success: (res: any) => {
+          if (res) {
+            setIsSubmit(false);
+            if (windowClose) {
+              window.close();
+            }
+          }
+        },
+        onFailAction: () => {
+          setIsSubmit(false);
+        },
+      })
+    );
+  };
   return (
     <Box>
       <TaskHeader title="New task" />
@@ -348,7 +359,7 @@ function CreateNewTask() {
             id="description-multiline"
             label="Description"
             multiline
-            maxRows={4}
+            maxRows={2}
             variant="standard"
             sx={{ width: "100%" }}
             onBlur={handleDescriptionChange}
@@ -362,27 +373,44 @@ function CreateNewTask() {
           }}
         />
         {toggle && (
-          <FormGroup>
-            <FormControlLabel
-              control={
-                <Checkbox
-                  onChange={(e, checked) => {
-                    handleChangeValues(checked, "doneImageRequired");
-                  }}
-                />
-              }
-              label="Image"
-              name="doneImageRequired"
-            />
-            <FormControlLabel
-              control={<Checkbox />}
-              label="Comment"
-              onChange={(e, checked) => {
-                handleChangeValues(checked, "doneCommentsRequired");
-              }}
-              name="doneCommentsRequired"
-            />
-          </FormGroup>
+          <>
+            <FormGroup row={true} sx={{ gap: 2 }}>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    onChange={(e, checked) => {
+                      handleChangeValues(checked, "doneImageRequired");
+                    }}
+                  />
+                }
+                label="Image"
+                name="doneImageRequired"
+              />
+              <FormControlLabel
+                control={<Checkbox />}
+                label="Comment"
+                onChange={(e, checked) => {
+                  handleChangeValues(checked, "doneCommentsRequired");
+                }}
+                name="doneCommentsRequired"
+              />
+            </FormGroup>
+            {selectedImages.length === 0 && selectedDocuments.length === 0 && (
+              <EmptyScreenDescription
+                showWaterMark={false}
+                content={[
+                  {
+                    heading: taskConstantEt.done_requirement_quest_et,
+                    description: taskConstantEt.done_requirement_desc_et,
+                  },
+                  {
+                    heading: taskConstantEn.done_requirement_quest_en,
+                    description: taskConstantEn.done_requirement_desc_en,
+                  },
+                ]}
+              />
+            )}
+          </>
         )}
         {selectedImages.length > 0 && (
           <Box
@@ -440,7 +468,7 @@ function CreateNewTask() {
         {selectedDocuments.length > 0 && (
           <Box
             sx={{
-              padding: "8px",
+              padding: "4px 8px",
             }}
           >
             <FileBox
@@ -450,25 +478,16 @@ function CreateNewTask() {
             />
           </Box>
         )}
-        {/* <Box sx={{ marginTop: "10px" }}> */}
-        <Footer
-          disabled={
-            selectedData.topic !== "" &&
-            !isSubmit &&
-            (selectedData.assignedToState.length > 0 ||
-              (selectedData.invitedNumbers &&
-                selectedData.invitedNumbers.length > 0))
-              ? false
-              : true
-          }
-          showHeader={false}
-          handleSubmitForm={handleCreateTask}
-          handleAttachImageValue={handleAttachImageValue}
-          handleGetLocationValue={handleGetLocationValue}
-          handleSelectDocumentValue={handleSelectDocumentValue}
-        />
-        {/* </Box> */}
       </Box>
+      <Footer
+        isSubmitted={isSubmit}
+        disabled={handleDisableSubmit()}
+        showHeader={false}
+        handleSubmitForm={handleCreateTask}
+        handleAttachImageValue={handleAttachImageValue}
+        handleGetLocationValue={() => {}}
+        handleSelectDocumentValue={handleSelectDocumentValue}
+      />
     </Box>
   );
 }

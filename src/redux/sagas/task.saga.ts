@@ -6,7 +6,8 @@ const createTask = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.CREATE_TASK,
   method: "post",
-  path: "/task",
+  isFormData: true,
+  path: (payload) => `/task/files?hasFiles=${payload.other.hasFiles}`
 })
 
 const createTopic = apiCall({
@@ -14,6 +15,12 @@ const createTopic = apiCall({
   type: TASK_CONFIG.CREATE_TOPIC,
   method: "post",
   path: "/task/topic",
+})
+const syncAllTasks = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.SYNC_ALL_TASKS,
+  method: "get",
+  path: "/task/sync/2020-01-05T17:01:40.038Z"
 })
 
 const getAllTopic = apiCall({
@@ -119,6 +126,7 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.DELETE_TOPIC, deleteTopic)
   // task
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
+  yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.FORWARD_TASK, forwardTask)
   yield takeLatest(TASK_CONFIG.TASK_SEEN, taskSeen)

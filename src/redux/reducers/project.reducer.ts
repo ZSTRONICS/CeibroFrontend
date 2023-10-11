@@ -1,75 +1,75 @@
-import { ActionInterface } from "./appReducer";
 import {
   CLOSE_DOCUMENT_DRAWER,
+  CLOSE_FILE_VIEW_DRAWER,
   CLOSE_GROUP_DRAWER,
+  CLOSE_MEMBER_DRAWER,
   CLOSE_ROLE_DRAWER,
+  CLOSE_TIME_PROFILE_DRAWER,
+  CLOSE_WORK_DRAWER,
+  CREATE_NEW_PROFILE,
+  DELETE_PROJECT,
   GET_FILTER_PROJECTS,
   GET_FOLDER_FILES,
   GET_GROUP,
+  GET_GROUP_BY_ID,
   GET_MEMBER,
+  GET_NEW_WORK,
+  GET_PERMISSIONS,
   GET_PROJECTS,
-  GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECTS_MEMBERS,
+  GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECT_DETAIL,
-  PROJECT_CONFIG,
+  GET_PROJECT_PROFILE,
+  GET_STATUS,
+  GET_TIME_PROFILE_BY_ID,
   OPEN_DOCUMENT_DRAWER,
+  OPEN_FILE_VIEW_DRAWER,
   OPEN_GROUP_DRAWER,
+  OPEN_MEMBER_DRAWER,
   OPEN_ROLE_DRAWER,
+  OPEN_TIME_PROFILE_DRAWER,
+  OPEN_WORK_DRAWER,
+  PROJECT_CONFIG,
+  SELECTED_FILE_TYPE,
+  SELECTED_FILE_URL,
+  SET_GROUP,
   SET_PROJECT_OVERVIEW,
   SET_ROLE,
+  SET_SEARCH_PROJECT,
   SET_SELECTED_DATE,
+  SET_SELECTED_GROUP,
   SET_SELECTED_PROJECT,
   SET_SELECTED_ROLE,
   SET_SELECTED_STATUS,
-  SET_SELECTED_GROUP,
-  GET_GROUP_BY_ID,
-  SET_GROUP,
-  GET_PROJECT_PROFILE,
-  CLOSE_TIME_PROFILE_DRAWER,
-  OPEN_TIME_PROFILE_DRAWER,
   SET_SELECTED_TIME_PROFILE,
-  GET_TIME_PROFILE_BY_ID,
-  GET_STATUS,
-  SET_SEARCH_PROJECT,
-  GET_NEW_WORK,
-  SET_SELECTED_WORK,
-  CLOSE_WORK_DRAWER,
-  OPEN_WORK_DRAWER,
-  GET_PERMISSIONS,
   SET_SELECTED_USER,
-  CLOSE_MEMBER_DRAWER,
-  OPEN_MEMBER_DRAWER,
-  CREATE_NEW_PROFILE,
-  OPEN_FILE_VIEW_DRAWER,
-  CLOSE_FILE_VIEW_DRAWER,
-  SELECTED_FILE_URL,
-  SELECTED_FILE_TYPE,
-  DELETE_PROJECT,
+  SET_SELECTED_WORK,
 } from "config";
+import { ActionInterface } from "./appReducer";
 
+import projectReduxConfigs from "config/project.config";
+import { Floor, UserInterface } from "constants/interfaces";
+import {
+  ProjectGroupInterface,
+  ProjectMemberInterface,
+  ProjectRolesInterface,
+  memberTemplate,
+} from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import {
+  FolderInterfaceRoot,
+  GroupInterface,
+  ProjectInterface,
+  RoleInterface,
+  groupTemplate,
+  projectOverviewTemplate,
+  projectProfileInterface,
+  rolesTemplate,
+} from "constants/interfaces/project.interface";
 import {
   requestFail,
   requestPending,
   requestSuccess,
 } from "../../utills/status";
-import {
-  ProjectInterface,
-  RoleInterface,
-  projectOverviewTemplate,
-  rolesTemplate,
-  GroupInterface,
-  groupTemplate,
-  projectProfileInterface,
-  FolderInterfaceRoot,
-} from "constants/interfaces/project.interface";
-import {
-  ProjectGroupInterface,
-  ProjectMemberInterface,
-  memberTemplate,
-  ProjectRolesInterface,
-} from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import { Floor, FloorInterface, UserInterface } from "constants/interfaces";
-import projectReduxConfigs from "config/project.config";
 
 interface ProjectReducerInt {
   drawerOpen: boolean;
@@ -234,12 +234,6 @@ const NavigationReducer = (
         menue: action.payload,
       };
 
-    case requestPending(GET_PROJECTS): {
-      return {
-        ...state,
-      };
-    }
-
     // get all floors by projectId
     case requestPending(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID): {
       return {
@@ -261,7 +255,11 @@ const NavigationReducer = (
         isFloorLoading: false,
       };
     }
-
+    case requestPending(GET_PROJECTS): {
+      return {
+        ...state,
+      };
+    }
     case requestSuccess(GET_PROJECTS): {
       let projects = action.payload.results;
       let newProjects: any = [];
@@ -289,6 +287,11 @@ const NavigationReducer = (
       return {
         ...state,
         allProjects: [...state.allProjects],
+      };
+    }
+    case requestFail(GET_PROJECTS): {
+      return {
+        ...state,
       };
     }
 

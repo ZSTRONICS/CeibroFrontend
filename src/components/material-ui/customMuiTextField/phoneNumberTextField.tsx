@@ -4,7 +4,7 @@ import dialCode from "./dialCode.json";
 import { ICountryData, IPhoneNumberProps } from "./types";
 
 export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
-  const { name, inputValue, onChange, onBlur, readOnly, disabled } = props;
+  const { name, inputValue, onChange, onBlur, disabled } = props;
   const [country, setCountry] = useState<ICountryData>(
     dialCode.find((item) => item.dial_code === inputValue.dialCode)!
   );

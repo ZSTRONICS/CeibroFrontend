@@ -1,4 +1,3 @@
-import { maxWidth } from "@material-ui/system";
 import { FC } from "react";
 import "./inputText.css";
 
@@ -9,7 +8,7 @@ interface InputTextInterface {
   className?: any;
   name?: any;
   disabled?: boolean;
-  onBlur?:any
+  onBlur?: any;
 }
 
 const InputText: FC<InputTextInterface> = (props) => {

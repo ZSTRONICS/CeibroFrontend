@@ -1,4 +1,4 @@
-import styled from "@emotion/styled";
+import { styled } from "@mui/material/styles";
 // import { Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Typography } from "@mui/material";
@@ -10,8 +10,8 @@ import projectActions from "redux/action/project.action";
 import colors from "../../../assets/colors";
 
 import Box from "@mui/material/Box";
+import { useHistory } from "react-router-dom";
 import { momentdeDateFormat } from "../Globals/Common";
-import { useHistory, useParams } from "react-router-dom";
 interface ProjectCardInterface {
   project: ProjectInterface;
 }
@@ -37,7 +37,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
   } = project;
 
   const dispatch = useDispatch();
-  const { projectId, floorId } = useParams<{ projectId: string; floorId: string }>();
+  // const { projectId, floorId } = useParams<{ projectId: string; floorId: string }>();
 
   const handleProjectClick = () => {
     dispatch(projectActions.setSelectedProject(_id));
@@ -76,7 +76,14 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
             </Typography>
           </Status>
           <Status
-            style={{ fontSize:'14px',right: "16px", left: "unset", background:"#1976d2", padding:'1px 6px', borderRadius:'8%' }}
+            style={{
+              fontSize: "14px",
+              right: "16px",
+              left: "unset",
+              background: "#1976d2",
+              padding: "1px 6px",
+              borderRadius: "8%",
+            }}
             onClick={handleLocation}
           >
             <Typography className={classes.statusText}>Location</Typography>
@@ -222,7 +229,7 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
 
 export default ProjectCard;
 
-const ProjectCardContain = styled.div`
+const ProjectCardContain = styled("div")`
   margin: 15px 10px;
   max-width: 285px;
   width: 285px;
@@ -231,15 +238,15 @@ const ProjectCardContain = styled.div`
   cursor: pointer;
   height: 250px;
 `;
-const ImageCard = styled.div`
+const ImageCard = styled("div")`
   position: relative;
 `;
-const Image = styled.img`
+const Image = styled("img")`
   width: 100%;
   height: 100px;
   border-radius: 4px;
 `;
-const Status = styled.div`
+const Status = styled("div")`
   position: absolute;
   top: 10px;
   left: 10px;

@@ -1,9 +1,19 @@
 import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Box } from "@mui/material";
+import { countUnseenTasks } from "components/Utills/Globals";
+import {
+  FromMEIcon,
+  HiddenIcon,
+  ToMeIcon,
+  UnseenFromMe,
+  UnseenHidden,
+  UnseenToMe,
+} from "components/material-ui/icons";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
+import appActions from "redux/action/app.action";
 import { selectedTaskFilterType } from "redux/type";
 import { openFormInNewWindow } from "utills/common";
 import colors from "../../assets/colors";
@@ -12,26 +22,31 @@ import { RootState } from "../../redux/reducers/appReducer";
 import "./sidebar.css";
 
 function Sidebar(props: any) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
   const classes = useStyles();
-  const dispatch = useDispatch();
   const [selectedChildTab, setSelectedChildTab] =
     useState<selectedTaskFilterType>();
-  const selectedTab = useSelector(
-    (store: RootState) => store.navigation.selectedTab
-  );
-  const configs = useSelector(
-    (store: RootState) => store.navigation.sidebarRoutes[selectedTab].childTab
-  );
   const { user } = useSelector((store: RootState) => store.auth);
-  const { selectedTaskFilter } = useSelector((store: RootState) => store.task);
+  const task: any = useSelector((state: RootState) => state.task);
+  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const { selectedTab, sidebarRoutes } = useSelector(
+    (store: RootState) => store.navigation
+  );
+  const configs = sidebarRoutes[selectedTab]?.childTab;
+  const splitedPath = location.pathname.split("/");
+
   useEffect(() => {
-    const subtask: selectedTaskFilterType = location.pathname.split(
-      "/"
-    )[2] as selectedTaskFilterType;
-    subtask ?setSelectedChildTab(subtask):setSelectedChildTab(undefined);
-  }, [location.pathname]);
+    const mainTab: selectedTaskFilterType =
+      splitedPath[1] as selectedTaskFilterType;
+    if (mainTab !== selectedTab) {
+      dispatch(appActions.setSelectedTab(mainTab));
+    }
+    const subtask: selectedTaskFilterType =
+      splitedPath[2] as selectedTaskFilterType;
+    subtask ? setSelectedChildTab(subtask) : setSelectedChildTab(undefined);
+  }, [location.pathname, selectedTab]);
 
   const handleRouteClick = (config: SingleConfig) => {
     props.onClose();
@@ -42,6 +57,37 @@ function Sidebar(props: any) {
       history.push(`/tasks/${config.key}`);
     }
   };
+
+  function countUnseenTasksFromLists(taskLists: any, userId: string) {
+    return countUnseenTasks(
+      taskLists.reduce(
+        (accumulated: any, current: any) => [...accumulated, ...current],
+        []
+      ),
+      userId
+    );
+  }
+
+  const countToMe = countUnseenTasksFromLists(
+    [allTaskToMe.new, allTaskToMe.ongoing, allTaskToMe.done],
+    user?._id
+  );
+
+  const countFromMe = countUnseenTasksFromLists(
+    [allTaskFromMe.unread, allTaskFromMe.ongoing, allTaskFromMe.done],
+    user?._id
+  );
+
+  const countHidden = countUnseenTasksFromLists(
+    [allTaskHidden.ongoing, allTaskHidden.done, allTaskHidden.canceled],
+    user?._id
+  );
+
+  if (selectedTab === "tasks" && configs) {
+    configs.allTaskFromMe.icon = countFromMe >= 1 ? UnseenFromMe : FromMEIcon;
+    configs.allTaskToMe.icon = countToMe >= 1 ? UnseenToMe : ToMeIcon;
+    configs.allTaskHidden.icon = countHidden >= 1 ? UnseenHidden : HiddenIcon;
+  }
 
   return (
     <>
@@ -60,13 +106,9 @@ function Sidebar(props: any) {
                 }`}
                 onClick={() => handleRouteClick(config)}
               >
-                <div className={classes.iconWrapper}>
-                  <Box>
-                    <img src={config.icon} />
-
-                    {/* <img src={} className={classes.iconInner} alt={''} /> */}
-                  </Box>
-                </div>
+                <Box>
+                  <config.icon />
+                </Box>
                 <Typography className={classes.title}>
                   {config.title}
                 </Typography>
@@ -104,7 +146,7 @@ const useStyles = makeStyles((theme) => ({
 
   menueWrapper: {
     overflowY: "auto",
-    marginTop: "136px",
+    marginTop: "30px",
     position: "absolute",
     width: "100%",
     gap: 20,
@@ -112,30 +154,17 @@ const useStyles = makeStyles((theme) => ({
   menue: {
     // display: "flex",
     textAlign: "center",
-    padding: "16px 6px",
+    padding: "10px 6px",
     borderBottom: `1px solid white`,
-    fontSize: 16,
-    fontWeight: 500,
-    color: colors.primary,
+
     cursor: "pointer",
     gap: 13,
+    margin: "10px 0",
     "&:hover": {
       background: "white",
     },
   },
-  iconWrapper: {
-    // flex: 1,
-    // display: "flex",
-  },
-  icon: {
-    padding: 8,
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: "50%",
-    background: "white",
-    color: colors.black,
-  },
+
   title: {
     flex: 4,
     fontSize: 10,
@@ -146,37 +175,7 @@ const useStyles = makeStyles((theme) => ({
   },
   active: {
     background: "white",
-    color: `${colors.black} !important`,
-  },
-  help: {
-    // height: '50px',
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  helpIcon: {
-    color: colors.white,
-    // fontSize: 25,
-    position: "absolute",
-    zIndex: 2,
-    left: 45,
-  },
-  helpInnerWrapper: {
-    background: colors.black,
-    left: 65,
-    position: "absolute",
-    zIndex: 1,
-    width: 10,
-    height: 10,
-  },
-  helpText: {
-    fontSize: 16,
-    fontWeight: 500,
+    boxShadow: "0px 2px 2px 0px #3b95d3",
     color: colors.primary,
-  },
-  iconInner: {
-    width: 12,
-    heihgt: 12,
   },
 }));

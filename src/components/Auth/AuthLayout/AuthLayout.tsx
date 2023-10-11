@@ -1,12 +1,12 @@
 import { Box, Grid } from "@mui/material";
+import assets from "assets/assets";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import { CBox } from "components/material-ui";
 import CeibroLogo from "components/material-ui/icons/CeibroLogo/CeibroLogo";
 import CeibroMobileLogo from "components/material-ui/icons/CeibroLogo/CeibroMobileLogo";
 import useResponsive from "hooks/useResponsive";
-import ImageTile from "../Login/ImageTile";
-import useStyles from "../Register/RegisterStyles";
 import { useRouteMatch } from "react-router-dom";
+import useStyles from "../Register/RegisterStyles";
 
 interface Iprops {
   title: string;
@@ -24,9 +24,6 @@ const AuthLayout = (props: Iprops) => {
     "/confirmation",
   ]);
   const showBg = useRouteMatch(["/profile-pic", "/profile-setup", "/t&c"]);
-  // location.pathname.includes("/t&c") ||
-  // location.pathname.includes("/profile-setup") ||
-  // location.pathname.includes("/profile-pic")
   return (
     <Grid container className={classes.register}>
       <Grid
@@ -72,9 +69,17 @@ const AuthLayout = (props: Iprops) => {
       </Grid>
 
       {!isTabletOrMobile && (
-        <Grid item md={7} lg={8} className={classes.tileWrapper}>
-          <ImageTile />
-        </Grid>
+        <Grid
+          item
+          md={7}
+          lg={8}
+          sx={{
+            width: "100%",
+            height: "100vh",
+            background: `url(${assets.visualWebp}) no-repeat`,
+            backgroundSize: "100% 100vh",
+          }}
+        ></Grid>
       )}
     </Grid>
   );

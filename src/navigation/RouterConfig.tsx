@@ -1,10 +1,15 @@
 import { Box, CircularProgress } from "@mui/material";
+import { Suspense } from "react";
+import { Redirect, Route, Router, Switch } from "react-router-dom";
+
 import {
   AdminMain,
   Connections,
+  CreateNewTask,
   DrawingDetails,
   ForgetConfirmation,
   ForgetPassword,
+  ForwardTask,
   Login,
   MockTaskApis,
   Profile,
@@ -15,24 +20,16 @@ import {
   RegisterConfirmationForm,
   RegisterNumberForm,
   ResetPassword,
-  Tasks,
+  Task,
   TermsAndConditions,
 } from "components";
-import { Suspense } from "react";
-import { Redirect, Route, Router, Switch } from "react-router-dom";
-
-import PrivateRoute from "./PrivateRoute";
-
 import NotFound from "components/NotFound";
-import CreateNewTask from "components/Tasks/Create-Task/CreateNewTask";
-import ForwardTask from "components/Tasks/Forward-Task";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
-interface Configs {}
-
-const RouterConfig: React.FC<Configs> = () => {
+const RouterConfig = () => {
   return (
     <>
       <Router history={appHistory}>
@@ -46,7 +43,9 @@ const RouterConfig: React.FC<Configs> = () => {
           <Switch>
             <Redirect exact from="/" to="/login" />
             <Route path="/login" component={Login} />
-            {/* <Route path="/verify-email" component={VerifyEmail} /> */}
+            {/* <Route path="/comming-soon" component={CommingSoon} />
+            <Redirect exact from="/" to="/comming-soon" />
+            <Route path="/private-login" component={Login} /> */}
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
@@ -63,23 +62,12 @@ const RouterConfig: React.FC<Configs> = () => {
               path="/forward-task/:taskId"
               component={ForwardTask}
             />
-            {/* <PrivateRoute
-              path="/comment-task/:taskId"
-              component={Comment}
-              title={"New comment"}
-            />
-            <PrivateRoute
-              path="/done-task/:taskId"
-              component={Comment}
-              title={"Done comment"}
-            /> */}
             <DashboardLayout>
               <PrivateRoute path="/profile" component={Profile} />
               <PrivateRoute
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
-                component={Tasks}
+                component={Task}
               />
-              {/* <PrivateRoute path="/projects" component={Projects} /> */}
               <PrivateRoute
                 exact
                 path="/project/:projectId"
@@ -95,7 +83,10 @@ const RouterConfig: React.FC<Configs> = () => {
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
             </DashboardLayout>
-            <Route path="*" component={NotFound}></Route>
+            <Route path="*" component={NotFound} />
+
+            {/* <Route path="/comming-soon" component={CommingSoon}></Route>
+            <Redirect from="/" to="/comming-soon" /> */}
           </Switch>
         </Suspense>
       </Router>

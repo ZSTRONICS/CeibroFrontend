@@ -30,6 +30,11 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   });
 };
 
+function countUnseenTasks(tasks: any[], userId: string) {
+  // count is the accumulator, which starts at 0
+  return tasks.reduce((count, task) => (task.seenBy.includes(userId) ? count : count + 1), 0);
+}
+
 /**
   * @param array pass the array of objects 
   * @return Functino will return the unique objects
@@ -157,13 +162,13 @@ export function pushSeenBy(task: any, eventData: any) {
  * **/
 export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
-    console.log('existingEvents', task.events)
+    // console.log('existingEvents', task.events)
     const isUniqueEvent = task.events.some((event: any) => String(event._id) === String(eventData._id));
     if (!isUniqueEvent) {
       task.events.push(eventData);
       task.seenBy = eventData.taskData.seenBy;
     } else {
-      console.log("Event already exists ", eventData, task, taskIndex)
+      // console.log("Event already exists ", eventData, task, taskIndex)
     }
   }
 }
@@ -408,5 +413,5 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { formatDropdownData, momentdeDateFormatWithDay, optionMapping };
+export { countUnseenTasks, formatDropdownData, momentdeDateFormatWithDay, optionMapping };
 

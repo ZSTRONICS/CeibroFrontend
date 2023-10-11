@@ -1,5 +1,4 @@
 import {
-  CircularProgress,
   makeStyles,
   Table,
   TableBody,
@@ -8,18 +7,11 @@ import {
   TableHead,
   TableRow,
 } from "@material-ui/core";
-import { Tooltip } from "@mui/material";
-import { DocumentNameTag } from "components/CustomTags";
+import { CustomStack, DocumentNameTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
-import {
-  CustomBadge,
-  CustomStack,
-  AssignedTag,
-} from "components/TaskComponent/Tabs/TaskCard";
 import { momentdeDateFormat } from "components/Utills/Globals/Common";
 import { FileInterface } from "constants/interfaces/docs.interface";
-import { FolderInterface, ProjectCreator,
-} from "constants/interfaces/project.interface";
+import { FolderInterface } from "constants/interfaces/project.interface";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getAllDocuments } from "redux/action/project.action";
@@ -30,12 +22,12 @@ import ProjectAccessModal from "./ProjectAccessModal";
 
 interface ProjectDocumentListInt {
   onFolderClick?: (folder: FolderInterface) => any;
-  height:string
+  height: string;
 }
 
 const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state?.auth);
+  // const { user } = useSelector((state: RootState) => state?.auth);
 
   const {
     selectedProject,
@@ -81,40 +73,42 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
     e.stopPropagation();
     dispatch(projectActions.closeProjectDocumentModal());
   };
-  const AccessMemberList = (membersList: ProjectCreator[]) => {
-    return (
-      <>
-        {membersList.map((item: ProjectCreator, index) => {
-          if (item === undefined) {
-            return <></>;
-          }
-          if (index === membersList.length - 1) {
-            return (
-              <span
-                style={{ textTransform: "capitalize" }}
-                key={item._id}
-              >{`${item.firstName} ${item.surName}`}</span>
-            );
-          } else {
-            return (
-              <span style={{ textTransform: "capitalize" }} key={item._id}>
-                {`${item.firstName} ${item.surName}`}
-                <br />
-              </span>
-            );
-          }
-        })}
-      </>
-    );
-  };
+  // const AccessMemberList = (membersList: ProjectCreator[]) => {
+  //   return (
+  //     <>
+  //       {membersList.map((item: ProjectCreator, index) => {
+  //         if (item === undefined) {
+  //           return <></>;
+  //         }
+  //         if (index === membersList.length - 1) {
+  //           return (
+  //             <span
+  //               style={{ textTransform: "capitalize" }}
+  //               key={item._id}
+  //             >{`${item.firstName} ${item.surName}`}</span>
+  //           );
+  //         } else {
+  //           return (
+  //             <span style={{ textTransform: "capitalize" }} key={item._id}>
+  //               {`${item.firstName} ${item.surName}`}
+  //               <br />
+  //             </span>
+  //           );
+  //         }
+  //       })}
+  //     </>
+  //   );
+  // };
 
   return (
-    <div 
-      style={{ minHeight: props.height,height: "100%",}}
-    >
-      <TableContainer >
-        <Table stickyHeader={true} className={classes.table} aria-label="simple table">
-          <TableHead >
+    <div style={{ minHeight: props.height, height: "100%" }}>
+      <TableContainer>
+        <Table
+          stickyHeader={true}
+          className={classes.table}
+          aria-label="simple table"
+        >
+          <TableHead>
             <TableRow>
               <TableCell className={`${classes.tableTitle}`}>Name</TableCell>
               <TableCell className={`${classes.tableTitle}`} align="center">
@@ -179,7 +173,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                         rowGap={1}
                         justifyContent="center"
                       >
-                        <AssignedTag>Member</AssignedTag>
+                        {/* <AssignedTag>Member</AssignedTag>
                         <CustomBadge
                           overlap="circular"
                           color="primary"
@@ -188,7 +182,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                               <span>{row.access.length}</span>
                             </Tooltip>
                           }
-                        ></CustomBadge>
+                        ></CustomBadge> */}
                       </CustomStack>
                     ) : (
                       "Only you"
@@ -251,8 +245,8 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                           rowGap={1}
                           justifyContent="center"
                         >
-                          <AssignedTag>Member</AssignedTag>
-                          <CustomBadge
+                          {/* <AssignedTag>Member</AssignedTag> */}
+                          {/* <CustomBadge
                             overlap="circular"
                             color="primary"
                             badgeContent={
@@ -260,7 +254,7 @@ const ProjectDocumentList: React.FC<ProjectDocumentListInt> = (props) => {
                                 <span>{file.access.length}</span>
                               </Tooltip>
                             }
-                          ></CustomBadge>
+                          ></CustomBadge> */}
                         </CustomStack>
                       ) : (
                         "N/A"

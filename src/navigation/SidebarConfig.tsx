@@ -1,4 +1,12 @@
-import assets from "assets/assets";
+import {
+  FromMEIcon,
+  HiddenIcon,
+  LocationIcon,
+  NewTaskIcon,
+  ProjectIcon,
+  TaskIcon,
+  ToMeIcon,
+} from "components/material-ui/icons";
 import { selectedTaskFilterType } from "redux/type";
 
 export interface SingleConfig {
@@ -8,22 +16,13 @@ export interface SingleConfig {
   notification?: number;
   childTab: SidebarConfigInterface;
   active?: boolean | undefined;
-  getPath: (id: string) => string;
+  getPath: () => string;
 }
 
 export interface SidebarConfigInterface {
   [key: string]: SingleConfig;
 }
 
-const {
-  TaskIcon,
-  LocationIcon,
-  ProjectIcon,
-  NewTaskIcon,
-  FromMEIcon,
-  ToMeIcon,
-  CanceledIcon,
-} = assets;
 const SidebarConfig: SidebarConfigInterface = {
   tasks: {
     key: "tasks",
@@ -50,7 +49,7 @@ const SidebarConfig: SidebarConfigInterface = {
         key: "allTaskFromMe",
         title: "From me",
         icon: FromMEIcon,
-        getPath: () => "tasks/fromMe",
+        getPath: () => "tasks/allTaskFromMe",
         active: false,
         childTab: {},
         notification: 0,
@@ -59,7 +58,7 @@ const SidebarConfig: SidebarConfigInterface = {
         key: "allTaskToMe",
         title: "To me",
         icon: ToMeIcon,
-        getPath: () => "tasks/toMe",
+        getPath: () => "tasks/allTaskToMe",
         active: false,
         childTab: {},
         notification: 0,
@@ -67,8 +66,8 @@ const SidebarConfig: SidebarConfigInterface = {
       allTaskHidden: {
         key: "allTaskHidden",
         title: "Hidden",
-        icon: CanceledIcon,
-        getPath: () => "tasks/hiddenTask",
+        icon: HiddenIcon,
+        getPath: () => "tasks/allTaskHidden",
         active: false,
         childTab: {},
         notification: 0,
@@ -83,15 +82,15 @@ const SidebarConfig: SidebarConfigInterface = {
     getPath: () => "projects",
     active: false,
     childTab: {
-      newProject: {
-        key: "newProject",
-        title: "New Project",
-        icon: NewTaskIcon,
-        getPath: () => "newProject",
-        active: false,
-        childTab: {},
-        notification: 0,
-      },
+      //   newProject: {
+      //     key: "newProject",
+      //     title: "New Project",
+      //     icon: NewTaskIcon,
+      //     getPath: () => "/projects/newProject",
+      //     active: false,
+      //     childTab: {},
+      //     notification: 0,
+      //   },
     },
     notification: 0,
   },

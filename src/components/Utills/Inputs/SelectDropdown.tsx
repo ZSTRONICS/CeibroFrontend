@@ -1,16 +1,15 @@
-import React, { FC } from "react";
 import { makeStyles } from "@material-ui/core";
-import InputHOC from "./InputHOC";
-import Select from "react-select";
 import chroma from "chroma-js";
+import { FC } from "react";
+import Select from "react-select";
 import colors from "../../../assets/colors";
-import { handleInputChange } from "react-select/src/utils";
+import InputHOC from "./InputHOC";
 
-const options = [
-  { value: "All", label: "All", color: "green" },
-  { value: "Project1", label: "Project 1", color: "yellow" },
-  { value: "Project2", label: "Project 2", color: "brown" },
-];
+// const options = [
+//   { value: "All", label: "All", color: "green" },
+//   { value: "Project1", label: "Project 1", color: "yellow" },
+//   { value: "Project2", label: "Project 2", color: "brown" },
+// ];
 
 export interface dataInterface {
   value: string;
@@ -42,7 +41,6 @@ const SelectDropdown: FC<My> = (props) => {
     isMulti,
     isClearAble,
     placeholder,
-    zIndex,
     noOptionMessage,
     isDisabled = false,
     defaultValue,

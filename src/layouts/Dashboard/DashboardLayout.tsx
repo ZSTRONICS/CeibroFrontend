@@ -3,11 +3,9 @@ import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Header from "./Header";
 import Nav from "./Sidenav";
-import { useRouteMatch } from "react-router-dom";
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 70;
-let isDrawingDetail: any = false;
 export const StyledRoot = styled("div")({
   display: "flex",
   minHeight: "100%",
@@ -20,7 +18,7 @@ const Main = styled("div")(({ theme }) => ({
   minHeight: "100%",
   background: "white",
   paddingTop: APP_BAR_MOBILE,
-  paddingBottom: theme.spacing(1.4),
+  paddingBottom: theme.spacing(0.56),
   [theme.breakpoints.up("lg")]: {
     paddingTop: APP_BAR_DESKTOP + 1,
     // paddingLeft: !isDrawingDetail && theme.spacing(2),
@@ -30,9 +28,6 @@ const Main = styled("div")(({ theme }) => ({
 
 function DashboardLayout(props: any) {
   const [open, setOpen] = useState(false);
-  const matchRoute = useRouteMatch("/drawingDetail");
-  isDrawingDetail = matchRoute;
-
   const handleOpenCloseNav = () => {
     setOpen((prev: boolean) => !prev);
   };

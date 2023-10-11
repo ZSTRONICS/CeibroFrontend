@@ -1,11 +1,10 @@
-import { Reducer, combineReducers, AnyAction } from "redux";
+import { Reducer, combineReducers } from "redux";
+import authReducer from "./auth.reducer";
+import DocsReducer from "./docs.reducer";
 import navigationReducer from "./navigation.reducer";
 import projectReducer from "./project.reducer";
 import TaskReducer from "./task.reducer";
-import authReducer from "./auth.reducer";
-import chatReducer from "./chat.reducer";
 import userReducer from "./user.reducer";
-import DocsReducer from "./docs.reducer";
 interface Reducers {
   [key: string]: Reducer<any, any>;
 }
@@ -16,7 +15,6 @@ const appReducer = combineReducers<Reducers>({
   task: TaskReducer,
   docs: DocsReducer,
   auth: authReducer,
-  chat: chatReducer,
   user: userReducer,
 });
 

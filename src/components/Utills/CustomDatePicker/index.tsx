@@ -27,6 +27,7 @@ const CustomDatePicker = ({
       handleChangeValues(newDate, "dueDate");
       setValue(date);
     } else {
+      handleChangeValues("", "dueDate");
       console.log("No date selected.");
     }
   };
@@ -38,6 +39,7 @@ const CustomDatePicker = ({
           key={name}
           label={label}
           inputFormat="DD.MM.YYYY"
+          minDate={new Date()}
           renderInput={(params) => (
             <TextField
               {...params}

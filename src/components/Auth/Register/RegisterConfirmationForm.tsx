@@ -1,21 +1,21 @@
 import { Box, Button, Typography } from "@mui/material";
+import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
+import useResponsive from "hooks/useResponsive";
+import userAlertMessage from "hooks/userAlertMessage";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
-import useStyles from "./RegisterStyles";
-import AuthLayout from "../AuthLayout/AuthLayout";
 import {
   authApiAction,
   registerConfirmationRequest,
 } from "redux/action/auth.action";
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
-import useResponsive from "hooks/useResponsive";
-import { SubLabelTag, TopBarTitle } from "components/CustomTags";
-import MessageAlert from "components/MessageAlert/MessageAlert";
-import userAlertMessage from "hooks/userAlertMessage";
+import AuthLayout from "../AuthLayout/AuthLayout";
+import useStyles from "./RegisterStyles";
 
 export default function RegisterConfirmationForm() {
   const { t } = useTranslation();

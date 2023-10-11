@@ -7,6 +7,7 @@ import {
   AddStatusTag,
   CustomStack,
   DocName,
+  ImageStack,
   Span,
   SubHeadingTag,
 } from "components/CustomTags";
@@ -22,13 +23,16 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import * as React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 interface IProps {
   events: TaskEvent[];
+  hasFile: boolean;
 }
-export default function AddedDetails(props: IProps) {
-  const { events } = props;
+function AddedDetails(props: IProps) {
+  const { events, hasFile } = props;
+  const listRef: any = useRef(null);
+  const [heightOffset, setHeightOffset] = useState();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
@@ -38,6 +42,16 @@ export default function AddedDetails(props: IProps) {
     openModal();
   };
 
+  useEffect(() => {
+    if (listRef.current) {
+      const newTop = listRef.current.getBoundingClientRect().top;
+      const newHeightOffset = hasFile ? newTop + 16 : newTop;
+      if (newHeightOffset !== heightOffset) {
+        setHeightOffset(newHeightOffset);
+      }
+      listRef.current.scrollTo(0, listRef.current.scrollHeight);
+    }
+  }, [events.length, listRef]);
   return (
     <>
       <div>
@@ -49,7 +63,15 @@ export default function AddedDetails(props: IProps) {
           >
             <SubHeadingTag sx={{ color: "black" }}>Added Detail</SubHeadingTag>
           </AccordionSummary>
-          <AccordionDetails>
+          <AccordionDetails
+            ref={listRef}
+            className="custom-scrollbar"
+            sx={{
+              maxHeight: `calc(100vh - ${heightOffset}px)`,
+              overflow: "auto",
+              pb: 5,
+            }}
+          >
             {events.length > 0 ? (
               events.map((event: TaskEvent) => {
                 const {
@@ -80,7 +102,7 @@ export default function AddedDetails(props: IProps) {
                 switch (eventType) {
                   case TaskEventType.InvitedUser:
                     return (
-                      <>
+                      <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>invited by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -88,7 +110,7 @@ export default function AddedDetails(props: IProps) {
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         <DocName>{`${invitedMembersData}`}</DocName>
-                      </>
+                      </React.Fragment>
                     );
 
                   case TaskEventType.ForwardTask:
@@ -126,20 +148,27 @@ export default function AddedDetails(props: IProps) {
                             .join(", ")
                         : "N/A";
                     return (
-                      <React.Fragment key={event._id}>
+                      <React.Fragment key={event._id + "invitedMembersLocal"}>
                         {eventData && eventData.length > 0 && (
-                          <CustomStack gap={1.2} py={0.8}>
-                            <DocName>{` ${momentdeDateFormatWithDay(
-                              createdAt
-                            )}`}</DocName>
-                            <Span
-                              sx={{ fontSize: "12px" }}
-                            >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
-                            <DocName>{userInfo}</DocName>
-                          </CustomStack>
+                          <>
+                            <CustomStack gap={1.2} py={0.8}>
+                              <DocName>{` ${momentdeDateFormatWithDay(
+                                createdAt
+                              )}`}</DocName>
+                              <Span
+                                sx={{ fontSize: "12px" }}
+                              >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
+                              <DocName>{userInfo}</DocName>
+                            </CustomStack>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
+                              {commentData?.message || ""}
+                            </AddStatusTag>
+                          </>
                         )}
                         {invitedMembers.length > 0 && (
-                          <>
+                          <React.Fragment key={event._id + "invitedMembers"}>
                             <CustomStack gap={1.2} py={0.8}>
                               <Span sx={{ fontSize: "12px" }}>invited by</Span>
                               <DocName>{`${initiator.firstName} ${
@@ -149,14 +178,14 @@ export default function AddedDetails(props: IProps) {
                               )}`}</DocName>
                             </CustomStack>
                             <DocName>{`${invitedMembersLocal}`}</DocName>
-                          </>
+                          </React.Fragment>
                         )}
                         <Divider />
                       </React.Fragment>
                     );
                   case TaskEventType.CancelTask:
                     return (
-                      <React.Fragment key={event._id}>
+                      <React.Fragment key={event._id + "CancelTask"}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -165,6 +194,21 @@ export default function AddedDetails(props: IProps) {
                         </CustomStack>
                         <Span sx={{ fontSize: "12px" }}>
                           Task has been Canceled
+                        </Span>
+                        <Divider />
+                      </React.Fragment>
+                    );
+                  case TaskEventType.UnCancelTask:
+                    return (
+                      <React.Fragment key={event._id + "CancelTask"}>
+                        <CustomStack gap={1.2} py={0.8}>
+                          <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
+                          <DocName>{`${initiator.firstName} ${
+                            initiator.surName
+                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                        </CustomStack>
+                        <Span sx={{ fontSize: "12px" }}>
+                          Task has been Un-canceled
                         </Span>
                         <Divider />
                       </React.Fragment>
@@ -184,7 +228,7 @@ export default function AddedDetails(props: IProps) {
                     }
 
                     return (
-                      <React.Fragment key={event._id}>
+                      <React.Fragment key={event._id + "DoneTask"}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Done by</Span>
                           <DocName>{`${initiator.firstName} ${
@@ -193,16 +237,18 @@ export default function AddedDetails(props: IProps) {
                         </CustomStack>
                         {commentData?.message && (
                           <>
-                            <AddStatusTag sx={{ color: "black" }}>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
                               {commentData.message}
                             </AddStatusTag>
                             <Divider />
                           </>
                         )}
-                        <CustomStack py={0.7}>
-                          {mediaLocal.map((file: IFile) => (
+                        <ImageStack py={0.7}>
+                          {mediaLocal.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -216,28 +262,26 @@ export default function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {mediaLocal.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
                           return (
-                            <>
-                              {hasFileComment && (
-                                <Box
-                                  key={file._id}
-                                  sx={{
-                                    marginBottom: "16px",
-                                    "&:hover": { cursor: "pointer" },
-                                  }}
-                                  onClick={() => handleClick(file)}
-                                >
-                                  <ImageBoxWithDesp
-                                    src={file.fileUrl}
-                                    comment={file.comment}
-                                  />
-                                </Box>
-                              )}
-                            </>
+                            hasFileComment && (
+                              <Box
+                                key={file._id + "mediaLocal"}
+                                sx={{
+                                  marginBottom: "16px",
+                                  "&:hover": { cursor: "pointer" },
+                                }}
+                                onClick={() => handleClick(file)}
+                              >
+                                <ImageBoxWithDesp
+                                  src={file.fileUrl}
+                                  comment={file.comment}
+                                />
+                              </Box>
+                            )
                           );
                         })}
                         {docsLocal.length > 0 && <FileBox files={docsLocal} />}
@@ -253,24 +297,26 @@ export default function AddedDetails(props: IProps) {
                       media = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
                     }
                     return (
-                      <React.Fragment key={event._id}>
+                      <React.Fragment key={event._id + "Comment"}>
                         <CustomStack gap={1.2} py={0.8}>
-                          <Span sx={{ fontSize: "12px" }}>Comment by</Span>
+                          {/* <Span sx={{ fontSize: "12px" }}>Comment by</Span> */}
                           <DocName>{`${initiator.firstName} ${
                             initiator.surName
                           } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         {commentData?.message && (
                           <>
-                            <AddStatusTag sx={{ color: "black" }}>
+                            <AddStatusTag
+                              sx={{ color: "black", wordWrap: "break-word" }}
+                            >
                               {commentData.message}
                             </AddStatusTag>
                           </>
                         )}
-                        <CustomStack py={0.7}>
-                          {media.map((file: IFile) => (
+                        <ImageStack py={0.7}>
+                          {media.map((file: IFile, i: any) => (
                             <Box
-                              key={file._id} // Add a unique key to help React identify elements
+                              key={file._id + i}
                               sx={{
                                 marginRight: "16px",
                                 marginBottom:
@@ -284,28 +330,26 @@ export default function AddedDetails(props: IProps) {
                               )}
                             </Box>
                           ))}
-                        </CustomStack>
+                        </ImageStack>
 
                         {media.map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
                           return (
-                            <>
-                              {hasFileComment && (
-                                <Box
-                                  key={file._id}
-                                  sx={{
-                                    marginBottom: "16px",
-                                    "&:hover": { cursor: "pointer" },
-                                  }}
-                                  onClick={() => handleClick(file)}
-                                >
-                                  <ImageBoxWithDesp
-                                    src={file.fileUrl}
-                                    comment={file.comment}
-                                  />
-                                </Box>
-                              )}
-                            </>
+                            hasFileComment && (
+                              <Box
+                                key={file._id}
+                                sx={{
+                                  marginBottom: "16px",
+                                  "&:hover": { cursor: "pointer" },
+                                }}
+                                onClick={() => handleClick(file)}
+                              >
+                                <ImageBoxWithDesp
+                                  src={file.fileUrl}
+                                  comment={file.comment}
+                                />
+                              </Box>
+                            )
                           );
                         })}
                         {docs.length > 0 && <FileBox files={docs} />}
@@ -313,7 +357,7 @@ export default function AddedDetails(props: IProps) {
                       </React.Fragment>
                     );
                   default:
-                    return null; // Handle any other event types as needed
+                    return null;
                 }
               })
             ) : (
@@ -336,3 +380,5 @@ export default function AddedDetails(props: IProps) {
     </>
   );
 }
+
+export default AddedDetails;

@@ -1,11 +1,4 @@
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  Typography,
-} from "@mui/material";
-import ContactBox from "components/Utills/ContactBox";
+import { Box, Divider, Typography } from "@mui/material";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
 import { TASK_CONFIG } from "config";
@@ -14,122 +7,138 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { VariableSizeList } from "react-window";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
 import { AssignedToStateType } from "../type";
+import GroupContactList from "./GroupContactList";
 
 interface IProps {
   taskId: string;
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
   closeModal: () => void;
+  isOpen: boolean;
 }
+type ContactsState = {
+  [key: string]: any[];
+};
 
+const initialState: ContactsState = {};
 const ForwardTask = ({
   taskId,
   assignedToState,
   invitedNumbers,
   closeModal,
 }: IProps) => {
-  const [isSelfAssign, setIsSelfAssign] = React.useState(false);
+  const dispatch = useDispatch();
+  const isRenderEffect = useRef<boolean>(false);
+  const { user } = useSelector((state: RootState) => state.auth);
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
+  const [filteredRecentUserContact, setFilteredRecentUserContact] =
+    React.useState<Contact[]>(recentUserContact);
+  // const [isSelfAssign, setIsSelfAssign] = useState(false);
 
-  const { user } = useSelector((state: RootState) => state.auth);
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const headerHeight = 220;
-  const [windowHeight, setWindowHeight] = useState<number>(
-    window.innerHeight - headerHeight
-  );
-  const [filterData, setFilterData] = React.useState<{
-    [key: string]: any[];
-  }>({});
-  const [sortedContacts, setSortedContacts] = React.useState<{
-    [key: string]: any[];
-  }>({});
+  const [allContactsList, setAllContactsList] =
+    useState<ContactsState>(initialState);
+  const [sortedContacts, setSortedContacts] =
+    useState<ContactsState>(initialState);
 
-  const filteredUsers = userAllContacts.filter((contact: Contact) => {
-    const isMatchContact = assignedToState.some(
-      (user) => user.phoneNumber === contact.phoneNumber && contact.isCeiborUser
-    );
-    const isInvitedMember = invitedNumbers.some(
-      (member) => member.phoneNumber === contact.phoneNumber
-    );
-    const shouldInclude = isMatchContact || isInvitedMember;
-
-    return shouldInclude;
-  });
-
-  const [selected, setSelected] = React.useState<any[]>(filteredUsers);
-  const dispatch = useDispatch();
   useEffect(() => {
-    const payload = {
-      other: { userId: user._id },
+    if (!isRenderEffect.current) {
+      userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
+      recentUserContact.length < 1 &&
+        dispatch(userApiAction.getRecentContacts());
+    }
+    return () => {
+      isRenderEffect.current = true;
     };
-    userAllContacts.length < 1 &&
-      dispatch(userApiAction.getUserContacts(payload));
-    recentUserContact.length < 1 && dispatch(userApiAction.getRecentContacts());
   }, []);
+
+  const selectedUsers = [...recentUserContact, ...userAllContacts].filter(
+    (contact: Contact) => {
+      const isMatchContact = assignedToState.some(
+        (user) =>
+          user.phoneNumber === contact.phoneNumber && contact.isCeiborUser
+      );
+      const isInvitedMember = invitedNumbers.some(
+        (member) => member.phoneNumber === contact.phoneNumber
+      );
+      const shouldInclude = isMatchContact || isInvitedMember;
+
+      return shouldInclude;
+    }
+  );
+
+  const [selected, setSelected] = useState<any[]>(selectedUsers);
 
   useEffect(() => {
     if (userAllContacts && userAllContacts.length > 0) {
-      const sortedContacts = userAllContacts.sort((a: any, b: any) =>
-        a.contactFirstName.localeCompare(b.contactFirstName)
-      );
-
-      const groupedData: { [key: string]: { label: string; value: string }[] } =
-        {};
-
-      sortedContacts.forEach((contact: any) => {
-        const firstLetter = contact.contactFirstName[0].toUpperCase();
-        if (!groupedData[firstLetter]) {
-          groupedData[firstLetter] = [];
+      const sorted = userAllContacts.sort((a: any, b: any) => {
+        const nameA = a.contactFirstName.toLowerCase();
+        const nameB = b.contactFirstName.toLowerCase();
+        const startsWithNumberOrSpecialA = /^[0-9$#]/.test(nameA);
+        const startsWithNumberOrSpecialB = /^[0-9$#]/.test(nameB);
+        if (startsWithNumberOrSpecialA && startsWithNumberOrSpecialB) {
+          return nameA.localeCompare(nameB);
+        } else if (startsWithNumberOrSpecialA) {
+          return 1;
+        } else if (startsWithNumberOrSpecialB) {
+          return -1;
+        } else {
+          return nameA.localeCompare(nameB);
         }
-        groupedData[firstLetter].push(contact);
+      });
+      const localGroupContacts: ContactsState = {};
+      sorted.forEach((contact: any) => {
+        const firstLetter = contact.contactFirstName[0].toUpperCase();
+        if (!localGroupContacts[firstLetter]) {
+          localGroupContacts[firstLetter] = [];
+        }
+        localGroupContacts[firstLetter].push(contact);
+      });
+      setSortedContacts({
+        ...localGroupContacts,
+      });
+      setAllContactsList({
+        ...localGroupContacts,
       });
 
-      setFilterData(groupedData);
-      setSortedContacts(groupedData);
-      setSelected(filteredUsers);
-      setIsSelfAssign(
-        assignedToState.some((contact: any) => contact.userId === user._id)
-      );
+      // setIsSelfAssign(
+      //   assignedToState.some((contact: any) => contact.userId === user._id)
+      // );
     }
-  }, [userAllContacts]);
+    setFilteredRecentUserContact(recentUserContact);
+  }, [userAllContacts, recentUserContact]);
 
-  const handleSelectedList = (contact: Contact, checked: boolean) => {
-    if (checked) {
-      let updatedSelected = [...selected, contact];
-      setSelected(updatedSelected);
-    } else {
-      let allSelected = [...selected];
-      if (contact._id === user._id) {
-        setIsSelfAssign(checked);
-      }
-      setSelected(allSelected.filter((item: any) => item._id !== contact._id));
-    }
-  };
-
-  const handleSelfAssignChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    checked: boolean
-  ) => {
-    user["isCeiborUser"] = true;
-    handleSelectedList(user, checked);
-    setIsSelfAssign(checked);
-  };
+  const handleSelectedList = useMemo(() => {
+    return (contact: any, checked: any) => {
+      setSelected((prevSelected) => {
+        if (checked) {
+          return [...prevSelected, contact];
+        } else {
+          return prevSelected.filter((item) => item._id !== contact._id);
+        }
+      });
+    };
+  }, []);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
     const searchValue = event.target.value;
-    setFilterData(
+    setAllContactsList(
       handleGroupSearch(searchValue, sortedContacts, "contactFullName")
     );
-    setSearchQuery(searchValue);
+    const recentFilteredData = recentUserContact.filter((Option: Contact) =>
+      Option["contactFullName"]
+        .toLowerCase()
+        .includes(searchValue.toLowerCase())
+    );
+    setFilteredRecentUserContact(recentFilteredData);
   };
 
   const handleSubmit = () => {
@@ -183,7 +192,10 @@ const ForwardTask = ({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: { task: res.data.newTask, eventType: "TASK_FORWARDED" },
             });
+            closeModal();
           }
+        },
+        onFailAction: () => {
           closeModal();
         },
       })
@@ -208,32 +220,11 @@ const ForwardTask = ({
     }
   };
 
-  const ContactBoxRow = ({ index, style }: any) => {
-    const contact = recentUserContact[index];
-    return (
-      <div key={index} style={style}>
-        <ContactBox
-          isDisabled={filteredUsers.some(
-            (user: any) => user._id === contact._id
-          )}
-          contact={contact}
-          handleSelectedList={handleSelectedList}
-          selected={
-            !!selected.find((selectUser) => selectUser._id === contact._id)
-          }
-        />
-      </div>
-    );
-  };
-
   return (
     <Box>
       <Box
         sx={{
           width: "100%",
-          display: "flex",
-          alignItems: "center",
-          height: "56px",
         }}
       >
         <SearchBox
@@ -243,151 +234,64 @@ const ForwardTask = ({
           handleSearchChange={handleSearchChange}
           handleSubmit={handleSubmit}
         />
-      </Box>
-      <Box
-        sx={{
-          minHeight: "66px",
-          display: "flex",
-          paddingLeft: "12px",
-          overflow: "auto",
-          "&::-webkit-scrollbar": {
-            height: "0.4rem",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-            borderRadius: "0.2rem",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.1)",
-          },
-        }}
-      >
-        {!checkSelection() && selected.length > 0 ? (
-          selected.map((selectedContact: Contact) => {
-            return (
-              <SelectedContactBox
-                isDisabled={filteredUsers.some(
-                  (user: any) => user._id === selectedContact._id
-                )}
-                contact={selectedContact}
-                handleSelectedList={handleSelectedList}
-              />
-            );
-          })
-        ) : (
-          <Typography
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            No selected contacts
-          </Typography>
-        )}
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          margin: "16px 16px 0px",
-        }}
-      >
-        <Typography
+        <Box
           sx={{
-            fontFamily: "Inter",
-            fontSize: "12px",
-            fontWeight: 500,
-            color: "#818181",
-            lineHeight: "16px",
+            minHeight: "66px",
+            display: "flex",
+            paddingLeft: "12px",
+            pb: 1,
+            overflow: "auto",
+            "&::-webkit-scrollbar": {
+              height: "0.3rem",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              borderRadius: "0.2rem",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.1)",
+            },
           }}
         >
-          Suggested users
-        </Typography>
-        <FormControlLabel
-          disabled={assignedToState.some(
-            (contact: any) => contact.userId === user._id
-          )}
-          control={
-            <Checkbox
-              name="self-assign"
-              checked={isSelfAssign}
-              onChange={handleSelfAssignChange}
-              size="small"
-              color="primary"
-              sx={{
-                ml: 1,
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#818181",
-                lineHeight: "16px",
-              }}
-            />
-          }
-          label={
+          {!checkSelection() && selected.length > 0 ? (
+            selected.map((selectedContact: Contact) => {
+              return (
+                <SelectedContactBox
+                  isDisabled={selectedUsers.some(
+                    (user: any) => user._id === selectedContact._id
+                  )}
+                  contact={selectedContact}
+                  handleSelectedList={handleSelectedList}
+                />
+              );
+            })
+          ) : (
             <Typography
               sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: 500,
-                color: "#605C5C",
-                lineHeight: "16px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "end",
               }}
             >
-              Self assign
+              Please select any task assignee
             </Typography>
-          }
-        />
+          )}
+        </Box>
       </Box>
       <Box
-        className="custom-scrollbar"
         sx={{
           margin: "8px 16px",
-          height: "calc(100vh - 398px )",
-          overflow: "auto",
-          "&::-webkit-scrollbar": {
-            height: "0.4rem",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-            borderRadius: "0.2rem",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.1)",
-          },
         }}
       >
-        {recentUserContact.length > 0 && (
-          <VariableSizeList
-            className="custom-scrollbar"
-            height={windowHeight}
-            itemCount={recentUserContact.length}
-            overscanCount={1}
-            layout="vertical"
-            itemSize={(index) => 60}
-            width={"100%"}
-          >
-            {ContactBoxRow}
-          </VariableSizeList>
-        )}
-        <Divider sx={{ marginTop: "20px", marginBottom: "20px" }} />
-        {Object.entries(filterData).map(([groupLetter, groupOptions]) => [
-          <Typography>{groupLetter}</Typography>,
-          // Use map on the array to render the list items
-          ...groupOptions.map((item) => (
-            <ContactBox
-              isDisabled={filteredUsers.some(
-                (user: any) => user._id === item._id
-              )}
-              contact={item}
-              handleSelectedList={handleSelectedList}
-              selected={!!selected.find((contact) => contact._id === item._id)}
-            />
-          )),
-        ])}
+        <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
+        <GroupContactList
+          filterData={allContactsList}
+          filteredUsers={selectedUsers}
+          selected={selected}
+          recentData={{ "Suggested Users": filteredRecentUserContact }}
+          handleSelectedList={handleSelectedList}
+        />
       </Box>
     </Box>
   );

@@ -5,7 +5,7 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import React, { useState } from "react";
+import { useState } from "react";
 import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
 
@@ -25,7 +25,7 @@ export default function DetailsBody(props: IProps) {
   };
   return (
     <>
-      <Box sx={{ paddingLeft: "15px" }}>
+      <Box sx={{ paddingLeft: "5px" }}>
         <DespcriptionBox description={description} />
         <Box
           className="custom-scrollbar"
@@ -42,47 +42,28 @@ export default function DetailsBody(props: IProps) {
             media.map((file: IFile) => {
               const hasComment = file.comment.length === 0;
               return (
-                <React.Fragment key={file._id}>
-                  {hasComment && (
-                    <Box
-                      key={file._id}
-                      sx={{
-                        marginRight: "16px",
-                        "&:hover": { cursor: "pointer" },
-                      }}
-                      onClick={() => handleClick(file)}
-                    >
-                      <ImageBox src={file.fileUrl} />
-                    </Box>
-                  )}
-                </React.Fragment>
-              );
-            })}
-        </Box>
-        {media.length > 0 &&
-          media.map((file: IFile) => {
-            const hasComment = file.comment.length > 0;
-            return (
-              <React.Fragment key={file._id}>
-                {hasComment && (
-                  <Box
-                    sx={{
-                      marginBottom: "16px",
-                      "&:hover": { cursor: "pointer" },
-                    }}
-                    onClick={() => handleClick(file)}
-                  >
+                <Box
+                  key={file._id}
+                  sx={{
+                    marginRight: "16px",
+                    "&:hover": { cursor: "pointer" },
+                  }}
+                  onClick={() => handleClick(file)}
+                >
+                  {hasComment ? (
+                    <ImageBox src={file.fileUrl} />
+                  ) : (
                     <ImageBoxWithDesp
                       src={file.fileUrl}
                       comment={file.comment}
                     />
-                  </Box>
-                )}
-              </React.Fragment>
-            );
-          })}
+                  )}
+                </Box>
+              );
+            })}
+        </Box>
         <DrawingFiles />
-        <AddedDetails events={events} />
+        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       </Box>
       {isOpen && (
         <ImagePreviewModal

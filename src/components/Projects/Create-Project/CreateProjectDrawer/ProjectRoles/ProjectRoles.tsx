@@ -1,17 +1,15 @@
 import { Grid, makeStyles } from "@material-ui/core";
 // import { Box, Button, Grid, makeStyles, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import projectActions, { PROJECT_APIS } from "redux/action/project.action";
-import RolesTable from "./RolesTable";
-import RoleDrawer from "./RoleDrawer";
+import { CButton } from "components/Button";
+import { ProjectAdminRoleTag } from "components/CustomTags";
 import {
   Member,
   roleTemplate,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { useDispatch, useSelector } from "react-redux";
+import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
-import { ProjectAdminRoleTag } from "components/CustomTags";
-import { CButton } from "components/Button";
-import { useEffect } from "react";
+import RoleDrawer from "./RoleDrawer";
 
 const ProjectRoles = () => {
   const classes = useStyles();
@@ -47,8 +45,8 @@ const ProjectRoles = () => {
     <>
       <Grid item xs={12}>
         <Grid item xs={12} className={classes.actionWrapper}>
-          {
-            myRole.create === true && <>
+          {myRole.create === true && (
+            <>
               <ProjectAdminRoleTag>New Role</ProjectAdminRoleTag>
 
               <CButton
@@ -65,13 +63,13 @@ const ProjectRoles = () => {
                 }}
               />
             </>
-          }
+          )}
 
           <RoleDrawer />
         </Grid>
 
         <Grid item xs={12}>
-          <RolesTable />
+          {/* <RolesTable /> */}
         </Grid>
       </Grid>
     </>

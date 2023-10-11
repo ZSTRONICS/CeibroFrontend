@@ -1,20 +1,20 @@
 import { Box, Button, Typography } from "@mui/material";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import MessageAlert from "components/MessageAlert/MessageAlert";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik, FormikProps } from "formik";
 import useResponsive from "hooks/useResponsive";
+import userAlertMessage from "hooks/userAlertMessage";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
-import AuthLayout from "../AuthLayout/AuthLayout";
-import useStyles from "./RegisterStyles";
-import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 import { handlePhoneChange } from "../../../utills/formFunctions";
-import userAlertMessage from "hooks/userAlertMessage";
-import MessageAlert from "components/MessageAlert/MessageAlert";
+import AuthLayout from "../AuthLayout/AuthLayout";
+import { RegisterNumberSchema } from "../userSchema/AuthSchema";
+import useStyles from "./RegisterStyles";
 
 type FormValues = {
   dialCode: string;

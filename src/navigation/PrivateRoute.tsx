@@ -13,7 +13,9 @@ interface PrivateRouteProps extends RouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = (props) => {
   const { fallbackComponent, component: Component, title, ...rest } = props;
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const isLoggedIn: any = useSelector(
+    (state: RootState) => state.auth.isLoggedIn
+  );
 
   if (!isLoggedIn) {
     return <Redirect to="/login" />;

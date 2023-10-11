@@ -1,40 +1,38 @@
-// @ts-nocheck
-import { Box, CircularProgress } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VariableSizeList } from "react-window";
 
 // redux
-//@ts-ignore
 import { useDispatch, useSelector } from "react-redux";
 import { userApiAction } from "redux/action/user.action";
 import { RootState } from "redux/reducers/appReducer";
 
-// types
 // component
-import NoData from "components/Chat/NoData";
+import NoData from "components/NotFound/NoData";
+import { ConnectionCardSkeleton } from "components/material-ui/skeleton";
 import useResponsive from "hooks/useResponsive";
 import ConnectionCard from "./ConnectionCard";
 
 const Connections = () => {
   const dispatch = useDispatch();
-  const [apiCalled, setApiCalled] = useState(false);
-  const { userAllContacts, loadingContacts, recentUserContact } = useSelector(
+  const isRenderEffect = useRef<any>(false);
+  const containerRef = useRef<any>(null);
+
+  const { userAllContacts, loadingContacts } = useSelector(
     (state: RootState) => state.user
   );
   const isTabOrMobile = useResponsive("down", "sm", "");
-  const { user } = useSelector((state: RootState) => state.auth);
-  const headerHeight = isTabOrMobile ? 75 : 110;
+  const headerHeight = isTabOrMobile ? 80 : 120;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
 
   useEffect(() => {
-    if (!apiCalled) {
+    if (!isRenderEffect.current) {
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
-      recentUserContact.length < 1 &&
-        dispatch(userApiAction.getRecentContacts());
-      setApiCalled(true);
     }
+    return () => {
+      isRenderEffect.current = true;
+    };
   }, []);
 
   useEffect(() => {
@@ -51,6 +49,9 @@ const Connections = () => {
 
   const ContactRow = ({ index, style }: any) => {
     const userContact = userAllContacts[index];
+    if (!userContact) {
+      return <></>;
+    }
     const {
       contactFirstName,
       contactSurName,
@@ -78,18 +79,22 @@ const Connections = () => {
 
   return (
     <>
-      {loadingContacts && (
-        <Box sx={{ textAlign: "center", mt: "10%" }}>
-          <CircularProgress size={35} />
-        </Box>
-      )}
-      {!loadingContacts && userAllContacts.length < 1 ? (
+      {loadingContacts ? (
+        Array.from({ length: 10 }).map((_, index) => (
+          <ConnectionCardSkeleton key={index} />
+        ))
+      ) : userAllContacts.length < 1 ? (
         <NoData title="No Data Found" />
       ) : (
-        <div style={{ position: "relative" }} id="Contactscontainer">
+        <div
+          style={{ position: "relative" }}
+          id="Contactscontainer"
+          ref={containerRef}
+        >
           <VariableSizeList
-            height={windowHeight}
+            height={windowHeight + 35}
             itemCount={userAllContacts.length}
+            overscanCount={13}
             itemSize={() => 57}
             width={"100%"}
           >

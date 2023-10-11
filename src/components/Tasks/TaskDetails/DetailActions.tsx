@@ -1,9 +1,9 @@
-// @ts-nocheck
 import { Chip, Grid } from "@mui/material";
-import assets from "assets/assets";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
+import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
+import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
@@ -33,8 +33,10 @@ enum statusColors {
   done = "#55BCB3",
   canceled = "#FFE7E7",
 }
+type TaskAction = "comment" | "forward" | "done";
+
 const DetailActions: React.FC<IProps> = (props) => {
-  const { subtask, filterkey, takisd } = useParams<any>();
+  const { subtask, filterkey } = useParams<any>();
   const {
     userSubState,
     taskUid,
@@ -49,15 +51,14 @@ const DetailActions: React.FC<IProps> = (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
-  const [taskAction, setTaskAction] = useState("");
+  const [taskAction, setTaskAction] = useState<TaskAction>("comment");
 
-  const handleClick = (action: string) => {
+  const handleClick = (action: TaskAction) => {
     setTaskAction(action);
     openModal();
   };
 
   const handleDoneClick = () => {
-    history.push(`/tasks/${subtask}/${filterkey}`);
     if (doneImageRequired === true || doneCommentsRequired === true) {
       handleClick("done");
     } else {
@@ -67,6 +68,15 @@ const DetailActions: React.FC<IProps> = (props) => {
             eventName: "doneTask",
             taskId: taskId,
             hasFiles: false,
+          },
+          success: (res: any) => {
+            history.push(`/tasks/${subtask}/${filterkey}`);
+            if (res) {
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                payload: res.data.data,
+              });
+            }
           },
         })
       );
@@ -84,10 +94,13 @@ const DetailActions: React.FC<IProps> = (props) => {
           assignedToState={assignedToState}
           taskId={taskId}
           closeModal={closeModal}
+          isOpen={isOpen}
         />
       );
     return (
       <Comment
+        doneCommentsRequired={doneCommentsRequired}
+        doneImageRequired={doneImageRequired}
         title={getTitle()}
         showHeader={true}
         taskId={taskId}
@@ -101,6 +114,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     forward: "Task Forward",
     done: "Task Done",
   };
+
   const justifyContent = {
     xs: "flex-start",
     md: "flex-end",
@@ -159,7 +173,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           flexWrap="nowrap"
         >
           <LoadingButton
-            startIcon={<img src={assets.CommentIcon} alt="Comment" />}
+            startIcon={<ReplyIcon />}
             onClick={() => handleClick("comment")}
             variant="text"
             sx={{
@@ -169,47 +183,43 @@ const DetailActions: React.FC<IProps> = (props) => {
               padding: "8px 16px",
             }}
           >
-            Comment
+            Reply
           </LoadingButton>
-          <LoadingButton
-            startIcon={<img src={assets.ForwardIcon} alt="Forward" />}
-            onClick={() => handleClick("forward")}
-            variant="text"
-            disabled={
-              userSubState === "done" ||
-              userSubState === "canceled" ||
-              userSubState === "new"
-            }
-            sx={{
-              height: "28px",
-              // width: "103px",
-              fontWeight: "700",
-              padding: "8px 22px",
-            }}
-          >
-            Forward
-          </LoadingButton>
-          <LoadingButton
-            variant="contained"
-            onClick={handleDoneClick}
-            sx={{
-              height: "28px",
-              // width: "103px",
-              fontWeight: "700",
-              padding: "16px 30px",
-            }}
-            disabled={
-              userSubState === "done" ||
-              userSubState === "canceled" ||
-              userSubState === "new"
-            }
-          >
-            Done
-          </LoadingButton>
+          {!["done", "canceled", "new"].includes(userSubState) && (
+            <>
+              <LoadingButton
+                startIcon={<ForwardIcon />}
+                onClick={() => handleClick("forward")}
+                variant="text"
+                disabled={false}
+                sx={{
+                  height: "28px",
+                  fontWeight: "700",
+                  padding: "8px 22px",
+                }}
+              >
+                Forward
+              </LoadingButton>
+
+              <LoadingButton
+                variant="contained"
+                onClick={handleDoneClick}
+                sx={{
+                  height: "28px",
+                  fontWeight: "700",
+                  padding: "16px 30px",
+                }}
+                disabled={false}
+              >
+                Done
+              </LoadingButton>
+            </>
+          )}
         </Grid>
       </Grid>
       {isOpen === true && (
         <CustomModal
+          maxWidth={"sm"}
           showFullWidth={true}
           showDivider={true}
           showCloseBtn={true}

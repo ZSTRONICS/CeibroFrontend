@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   FormControl,
   IconButton,
   InputAdornment,
   InputLabel,
-  MenuItem,
   OutlinedInput,
-  Select,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import React, { useState } from "react";
 
 interface IProps {
   name: string;
@@ -25,25 +23,28 @@ interface IProps {
 export const PasswordTextField = (props: IProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const { name, label, placeholder, password, onChange, onBlur } = props;
-  const id = label.replace(/\s+/g, "-");
 
   return (
     <>
       <FormControl sx={{ width: "100%" }} size="small" variant="outlined">
         <InputLabel htmlFor={"pwd"}>{label}</InputLabel>
         <OutlinedInput
-          autoComplete="off"
+          autoComplete="Password"
           inputProps={{
             autoComplete: "off",
+            form: {
+              autoComplete: "off",
+            },
           }}
           id={"pwd"}
+          autoFocus={false}
           name={name}
           type={showPassword ? "text" : "password"}
           label={label}
           placeholder={placeholder ?? placeholder}
           onChange={onChange}
           onBlur={onBlur}
-          value={password ? password : undefined}
+          value={password ? password : ""}
           endAdornment={
             <InputAdornment position="end">
               <IconButton

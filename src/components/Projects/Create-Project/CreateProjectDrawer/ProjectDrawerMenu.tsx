@@ -1,9 +1,8 @@
-import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { Grid, Typography } from "@mui/material";
-import colors from "../../../../assets/colors";
 import { useDispatch, useSelector } from "react-redux";
-import projectActions, { PROJECT_APIS } from "../../../../redux/action/project.action";
+import colors from "../../../../assets/colors";
+import projectActions from "../../../../redux/action/project.action";
 import { RootState } from "../../../../redux/reducers/appReducer";
 
 const menus = [
@@ -53,7 +52,6 @@ function ProjectDrawerMenu() {
 
   return (
     <>
-      {/* <PermissionState> */}
       <Grid
         container
         sx={{
@@ -98,7 +96,6 @@ function ProjectDrawerMenu() {
           <HorizontalBreak />
         </Grid>
       )} */}
-      {/* </PermissionState> */}
     </>
   );
 }

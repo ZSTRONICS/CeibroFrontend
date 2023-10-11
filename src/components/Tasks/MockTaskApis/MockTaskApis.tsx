@@ -147,25 +147,6 @@ const MockTaskApis = () => {
         );
       }
       if (selectedApi.value === "doneTaskWithCommentFiles") {
-        const fetchFile = (filePath: any) => {
-          return new Promise((resolve, reject) => {
-            fetch(filePath)
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("File fetch request failed.");
-                }
-                return response.blob();
-              })
-              .then((fileBlob) => {
-                const file = new File([fileBlob], "ui.png", { type: "*/*" });
-                resolve(file);
-              })
-              .catch((error) => {
-                reject(error);
-              });
-          });
-        };
-
         const formdata = new FormData();
 
         formdata.append(
@@ -196,6 +177,37 @@ const MockTaskApis = () => {
             other: {
               eventName: "comment",
               taskId: "64b279cb2e7ae3852ea4e6c8",
+              hasFiles: false,
+            },
+            body: formdata,
+          })
+        );
+      }
+      if (selectedApi.value === "createTaskWithFiles") {
+        const formdata = new FormData();
+        formdata.append("dueDate", "28-10-2023");
+        formdata.append("topic", "64f736813bc4a418e498d2c1");
+        formdata.append("project", "");
+        formdata.append("creator", "64f735383bc4a418e498d0ae");
+        formdata.append(
+          "assignedToState",
+          JSON.stringify(
+            JSON.stringify([
+              {
+                phoneNumber: "+923120619435",
+                userId: "64f7144039b14025ab86ca4d",
+                state: "new",
+              },
+            ])
+          )
+        );
+        formdata.append("description", "");
+        formdata.append("doneImageRequired", "false");
+        formdata.append("doneCommentsRequired", "false");
+        formdata.append("invitedNumbers", JSON.stringify(JSON.stringify([])));
+        dispatch(
+          taskActions.createTask({
+            other: {
               hasFiles: false,
             },
             body: formdata,
@@ -247,6 +259,7 @@ const MockTaskApis = () => {
 const mockTaskApis = [
   { title: "createTopic: /task/topic", id: "createTopic" },
   { title: "createTask: /task", id: "createTask" },
+  { title: "createTaskWithFiles: /task/files", id: "createTaskWithFiles" },
   { title: "forwardTask: /task/forward/:taskId", id: "forwardTask" },
   { title: "getAllTopic: /task/topic", id: "getAllTopic" },
   { title: "getAllTaskToMe: /task/to-me", id: "getAllTaskToMe" },

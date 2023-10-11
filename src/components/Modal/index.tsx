@@ -1,18 +1,14 @@
-import React from "react";
-
 import {
   Box,
+  Button,
   Dialog,
   DialogContent,
   Divider,
   Grid,
-  Typography,
 } from "@mui/material";
-//todo migrate to mui latest later becz it give error in add project status comp
-// import { Dialog } from "@material-ui/core";
-import styled from "@emotion/styled";
-import { Button } from "@mui/material";
+import { CustomTitle } from "components/CustomTags";
 import PropTypes from "prop-types";
+import React from "react";
 
 interface Props {
   isOpen: boolean;
@@ -35,7 +31,8 @@ const CustomModal: React.FC<Props> = ({
   showDivider,
   showFullWidth,
 }) => {
-  const closeModal = (e: any) => {
+  const closeModal = (e: any, reason?: any) => {
+    if (reason === "backdropClick") return true;
     if (!e.target.closest(".MuiDrawer-root")) {
       e.stopPropagation();
     }
@@ -59,7 +56,7 @@ const CustomModal: React.FC<Props> = ({
             sx={{ padding: "9px 5px 0px 12px" }}
           >
             <Grid item>
-              <CustomTitle>{title}</CustomTitle>
+              <CustomTitle sx={{ fontsize: 3 }}>{title}</CustomTitle>
             </Grid>
             {showCloseBtn && (
               <Grid item>
@@ -101,18 +98,3 @@ CustomModal.propTypes = {
 };
 
 export default CustomModal;
-
-const CustomTitle = styled(Typography)`
-  font-family: "Inter";
-  font-weight: 600;
-  font-size: 24px;
-  padding-bottom: 0px;
-
-  @media (max-width: 768px) {
-    font-size: 20px;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 16px;
-  }
-`;

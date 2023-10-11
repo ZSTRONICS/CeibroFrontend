@@ -1,17 +1,16 @@
-import { Button, Grid, makeStyles } from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
-import MembersTable from "./MembersTable";
-import CreateMember from "./CreateMember";
+import { Grid, makeStyles } from "@material-ui/core";
 import { SubHeadingTag } from "components/CustomTags";
-import { RootState } from "redux/reducers/appReducer";
-import { useDispatch, useSelector } from "react-redux";
 import {
   Member,
   ProjectRolesInterface,
   roleTemplate,
 } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PROJECT_APIS } from "redux/action/project.action";
+import { RootState } from "redux/reducers/appReducer";
+import CreateMember from "./CreateMember";
+import MembersTable from "./MembersTable";
 
 const ProjectMembers = () => {
   const classes = useStyles();
@@ -21,9 +20,7 @@ const ProjectMembers = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
-  const {
-    selectedProject,
-  } = useSelector((state: RootState) => state.project);
+  const { selectedProject } = useSelector((state: RootState) => state.project);
 
   useEffect(() => {
     dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));

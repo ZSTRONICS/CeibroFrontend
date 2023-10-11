@@ -296,7 +296,11 @@ function CustomDropDown(props: IProps) {
                 return (
                   <Box
                     key={`recent-${item.value + i}`}
-                    sx={{ margin: "8px 16px", cursor: "pointer" }}
+                    sx={{
+                      margin: "8px 16px",
+                      cursor: "pointer",
+                      fontWeight: 400,
+                    }}
                     onClick={() => handleMenuClick(item)}
                   >
                     {item.label}

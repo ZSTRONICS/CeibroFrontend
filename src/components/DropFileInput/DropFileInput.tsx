@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import ImgCard from "components/Auth/Register/ImgCard";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
+import { CustomStack } from "components/CustomTags";
 import { CloudUploadIconForPic } from "components/material-ui/icons/cloudUpload/CloudUpload";
 import { CustomBox } from "components/uploadImage/UploadDocs";
 import React, { useState } from "react";
@@ -19,7 +19,7 @@ const DragAndDrop: React.FC<IProps> = ({
   const [url, setUrl] = useState<any>("");
   const [isDragging, setIsDragging] = useState(false);
   const [isPdfFile, setIsPdfFile] = useState<boolean>(false);
-  const [fileName, setFileName]=  useState<string>("");
+  const [fileName, setFileName] = useState<string>("");
 
   const getFileExtension = (fileName: string): string => {
     const parts = fileName.split(".");
@@ -38,13 +38,13 @@ const DragAndDrop: React.FC<IProps> = ({
     return fileURL + "#toolbar=0";
   };
 
-  const handleDrop =  (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(false);
     const selectedFile = e.dataTransfer.files[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setFileName(selectedFile.name)
+      setFileName(selectedFile.name);
       let fileURL = generateFilePreview(selectedFile);
       const fileExtension = getFileExtension(selectedFile.name);
       setIsPdfFile(isPDFFile(fileExtension));
@@ -61,10 +61,10 @@ const DragAndDrop: React.FC<IProps> = ({
     setIsDragging(false);
   };
 
-  const onUploadFiles =  (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onUploadFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target && e.target.files) {
       const selectedFile = e.target.files?.[0];
-      setFileName(selectedFile.name)
+      setFileName(selectedFile.name);
       const fileExtension = getFileExtension(selectedFile.name);
       setIsPdfFile(isPDFFile(fileExtension));
       if (selectedFile) {
@@ -131,7 +131,9 @@ const DragAndDrop: React.FC<IProps> = ({
                   multiple={false}
                   type="file"
                   accept={isAcceptAllFileTypes ? "application/pdf" : "image/*"}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => onUploadFiles(e)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    onUploadFiles(e)
+                  }
                 />
                 <Button
                   LinkComponent="a"

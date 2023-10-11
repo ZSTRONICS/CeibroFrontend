@@ -88,6 +88,7 @@ export enum TaskEventType {
   DoneTask = "doneTask",
   CancelTask = "cancelTask",
   InvitedUser = "invitedUser",
+  UnCancelTask = "unCancelTask"
 }
 
 export interface TaskEvent {

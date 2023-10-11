@@ -7,23 +7,7 @@ import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
 import TermsAndConditions from "./Auth/Register/TermsAndConditions";
 import ResetPassword from "./Auth/ResetPassword/ResetPassword";
 
-// dashboard
-// import Dashboard from "./Dashboard/Dashboard";
-// import Profile from "./Profile/Profile";
-// import Connections from "./Connection/Connection";
-import ViewInvitations from "./Profile/ViewInvitations";
-
-// chat
-import Chat from "./Chat/Chat";
-import CreateQuestioniarDrawer from "./Chat/Questioniar/CreateQuestioniar";
-import ViewQuestioniarDrawer from "./Chat/Questioniar/ViewQuestioniar";
-
 // task
-// import Tasks from "./Tasks/TaskList/Task";
-import { TaskModal } from "./TaskComponent/TaskModal/TaskModal";
-import CreateTaskDrawer from "./Tasks/Create-Task/CreateTaskDrawer";
-
-// project
 // import Projects from "./Projects/ProjectList/Project";
 import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 
@@ -34,6 +18,7 @@ import AdminMain from "./Admin/AdminMain";
 import CDrawer from "Drawer/CDrawer";
 import RouterConfig from "navigation/RouterConfig";
 import DrawingDetails from "./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails";
+import ForwardTask from "./Tasks/Forward-Task";
 import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
 // Auth
@@ -48,7 +33,8 @@ const Connections = lazy(() => import("./Connection/Connection"));
 const Profile = lazy(() => import("./Profile/Profile"));
 
 // task
-const Tasks = lazy(() => import("./Tasks/TaskList/Task"));
+const Task = lazy(() => import("./Tasks/TaskList/Task"));
+const CreateNewTask = lazy(() => import("./Tasks/Create-Task/CreateNewTask"));
 
 // project
 const Projects = lazy(() => import("./Projects/ProjectList/Project"));
@@ -57,9 +43,7 @@ const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProj
 
 
 export {
-  AdminMain, CDrawer, Chat, Connections, CreateProjectDrawer, CreateQuestioniarDrawer, CreateTaskDrawer, DrawingDetails,
-  ForgetConfirmation, ForgetPassword, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
-  RegisterConfirmationForm,
-  RegisterNumberForm, ResetPassword, RouterConfig, TaskModal, Tasks, TermsAndConditions, ViewInvitations, ViewQuestioniarDrawer
+  AdminMain, CDrawer, Connections, CreateNewTask, CreateProjectDrawer, DrawingDetails, ForgetConfirmation, ForgetPassword, ForwardTask, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
+  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Task, TermsAndConditions
 };
 

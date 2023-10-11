@@ -22,21 +22,12 @@ export const openFormInNewWindow = (path: string, windowTitle: string) => {
   if (newWindow != null) {
     newWindow.addEventListener("load", () => {
       newWindow.document.title = windowTitle;
-      // const windowId = String(Date.now());
-      // windowsMap.set(windowId, newWindow);
     });
   } else {
     alert('The new window was blocked. Please allow pop-ups for this site.');
   }
 };
 
-// export const closeWindowWithId = (windowId: any) => {
-//   const windowToClose = windowsMap.get(windowId);
-//   if (windowToClose) {
-//   windowToClose.close(); // Close the window with the specified ID.
-//   windowsMap.delete(windowId); // Clean up the map to free up memory.
-//   }
-// };
 // Now this function for handle contacts search
 export const handleGroupSearch = (
   searchText: string,
@@ -45,22 +36,21 @@ export const handleGroupSearch = (
 ) => {
   if (searchText === "" || !searchKey) return sortedData;
 
-  const searchCharacter = searchText.charAt(0).toLowerCase();
+  // const searchCharacter = searchText.charAt(0).toLowerCase();
   const filteredData: { [key: string]: any[] } = {};
 
   Object.entries(sortedData).forEach(([groupLetter, groupOptions]) => {
-    if (groupLetter.startsWith(searchCharacter.toUpperCase())) {
-      const filteredOptions = groupOptions.filter((groupOption) =>
-        groupOption[searchKey].toLowerCase().includes(searchText.toLowerCase())
-      );
-      if (filteredOptions.length > 0) {
-        filteredData[groupLetter] = filteredOptions;
-      }
-      //this return for break the forEach loop
-      return;
+    // if (groupLetter.startsWith(searchCharacter.toUpperCase())) {
+    const filteredOptions = groupOptions.filter((groupOption) =>
+      groupOption[searchKey].toLowerCase().includes(searchText.toLowerCase())
+    );
+    if (filteredOptions.length > 0) {
+      filteredData[groupLetter] = filteredOptions;
     }
+    //this return for break the forEach loop
+    // return;
   });
-
+  // });
   return filteredData;
 };
 

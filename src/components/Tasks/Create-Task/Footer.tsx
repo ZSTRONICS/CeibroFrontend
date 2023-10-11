@@ -19,11 +19,11 @@ interface FooterPropsType {
   handleGetLocationValue?: () => void;
   showHeader: boolean | undefined;
   disabled: boolean;
+  isSubmitted: boolean;
 }
 
 const Footer = (props: FooterPropsType) => {
   const handleGetLocation = () => {
-    // Code to get user's location
     navigator.geolocation.getCurrentPosition(
       (position) => {
         console.log("Latitude: " + position.coords.latitude);
@@ -73,7 +73,6 @@ const Footer = (props: FooterPropsType) => {
         if (!_.isEmpty(validFiles)) {
           props.handleAttachImageValue &&
             props.handleAttachImageValue(validFiles);
-          // console.log("Selected image file:", file);
         } else {
           toast.error("Please select a valid image file");
         }
@@ -87,7 +86,8 @@ const Footer = (props: FooterPropsType) => {
       sx={{
         display: "flex",
         justifyContent: "space-around",
-        zIndex: "10",
+        zIndex: "50",
+        background: "white",
         boxShadow: `${
           props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
         }`,
@@ -98,8 +98,8 @@ const Footer = (props: FooterPropsType) => {
         bottom: 0,
         left: 0,
         width: "100%",
-        padding: "8px 0",
-        height: "45px",
+        padding: "7px 0",
+        height: "57px",
       }}
     >
       {props.handleGetLocationValue && (
@@ -113,25 +113,46 @@ const Footer = (props: FooterPropsType) => {
       )}
       {props.handleSelectDocumentValue && (
         <CustomButton
+          sx={{
+            border: "none !important",
+            "&:hover": {
+              border: "0px solid transparent",
+            },
+          }}
           label={"Document"}
           icon={<InsertDriveFileOutlinedIcon />}
           variant="outlined"
+          disabled={props.isSubmitted || false}
           onClick={handleSelectDocument}
         />
       )}
       {props.handleAttachImageValue && (
         <CustomButton
+          sx={{
+            border: "none !important",
+            "&:hover": {
+              border: "0px solid transparent",
+            },
+          }}
           label={"Attach"}
           icon={<AttachFileOutlinedIcon />}
           variant="outlined"
+          disabled={props.isSubmitted || false}
           onClick={handleAttachImage}
         />
       )}
       <CustomButton
+        sx={{
+          border: "none !important",
+          "&:hover": {
+            border: "0px solid transparent",
+          },
+        }}
         onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
         variant="contained"
-        disabled={props.disabled}
+        loading={props.isSubmitted}
+        disabled={props.disabled || props.isSubmitted}
       />
     </Box>
   );

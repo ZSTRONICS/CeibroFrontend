@@ -3,38 +3,41 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
+import Clear from "@mui/icons-material/Clear";
 import {
   Autocomplete,
-  TextField,
-  Chip,
-  Grid,
   Avatar,
+  Chip,
   Divider,
+  Grid,
+  TextField,
 } from "@mui/material";
+import assets from "assets/assets";
 import colors from "assets/colors";
 import { CButton } from "components/Button";
+import {
+  CustomStack,
+  EditMemberLabelTag,
+  EditMemberNameTag,
+} from "components/CustomTags";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import { memberTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { mapGroups } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
+  PROJECT_APIS,
   createMember,
   getAvailableProjectMembers,
   getGroup,
   getMember,
-  PROJECT_APIS,
   updateMember,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import SelectDropdown, {
   dataInterface,
 } from "../../../../Utills/Inputs/SelectDropdown";
-import Clear from "@mui/icons-material/Clear";
-import { memberTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
-import { CustomStack } from "components/TaskComponent/Tabs/TaskCard";
-import { EditMemberLabelTag, EditMemberNameTag } from "components/CustomTags";
-import assets from "assets/assets";
 
 const MemberDialog = () => {
   const {
@@ -54,7 +57,6 @@ const MemberDialog = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [availableUsers, setAvailableUsers] = useState<dataInterface[]>([]);
 
-
   const classes = useStyle();
   const isDiabled = !loading ? false : true;
   const handleClickOpen = () => {
@@ -62,7 +64,7 @@ const MemberDialog = () => {
   };
 
   const handleClose = () => {
-    setSelectedUser([])
+    setSelectedUser([]);
     dispatch(projectActions.setSelectedMember(memberTemplate));
     setSelectGroups("");
     setSelectRoles("");
@@ -81,7 +83,8 @@ const MemberDialog = () => {
           }));
           setAvailableUsers(availableMembers);
         },
-      }));
+      })
+    );
     dispatch(PROJECT_APIS.getProjectRolesById({ other: selectedProject }));
     dispatch(getGroup({ other: selectedProject }));
   }, [memberDrawer]);
@@ -199,7 +202,6 @@ const MemberDialog = () => {
     dispatch(updateMember(payload));
   };
 
-
   return (
     <div>
       <CButton
@@ -216,9 +218,9 @@ const MemberDialog = () => {
       >
         <DialogContent>
           <div className={classes.body}>
-            {selectedMember._id !== "" ?
+            {selectedMember._id !== "" ? (
               <Grid container gap={0.8}>
-                <Grid item >
+                <Grid item>
                   {selectedMember.user.profilePic ? (
                     <Avatar
                       alt="avater"
@@ -245,29 +247,37 @@ const MemberDialog = () => {
                     </EditMemberLabelTag>
                   </CustomStack>
                   <CustomStack gap={0.6}>
-                    <assets.EmailIcon sx={{ color: '#7D7E80', fontSize: '16px' }} />
-                    {selectedMember.user.workEmail ?
+                    <assets.EmailIcon
+                      sx={{ color: "#7D7E80", fontSize: "16px" }}
+                    />
+                    {selectedMember.user.workEmail ? (
                       <EditMemberNameTag sx={{ fontSize: 12, fontWeight: 500 }}>
                         {`${selectedMember.user.workEmail}`}
-                      </EditMemberNameTag> :
+                      </EditMemberNameTag>
+                    ) : (
                       <EditMemberLabelTag>N/A</EditMemberLabelTag>
-                    }
+                    )}
                   </CustomStack>
 
                   <CustomStack gap={0.6}>
-                    <assets.CallIcon sx={{ color: '#7D7E80', fontSize: '16px' }} />
-                    {selectedMember.user.companyPhone ? <EditMemberNameTag sx={{ fontSize: 12, fontWeight: 500 }}>
-                      {`${selectedMember.user.companyPhone}`}
-                    </EditMemberNameTag> :
-                      <EditMemberLabelTag>N/A</EditMemberLabelTag>}
+                    <assets.CallIcon
+                      sx={{ color: "#7D7E80", fontSize: "16px" }}
+                    />
+                    {selectedMember.user.companyPhone ? (
+                      <EditMemberNameTag sx={{ fontSize: 12, fontWeight: 500 }}>
+                        {`${selectedMember.user.companyPhone}`}
+                      </EditMemberNameTag>
+                    ) : (
+                      <EditMemberLabelTag>N/A</EditMemberLabelTag>
+                    )}
                   </CustomStack>
                 </Grid>
-                <Divider sx={{ width: "100%", py: '5px' }} />
+                <Divider sx={{ width: "100%", py: "5px" }} />
               </Grid>
-              :
+            ) : (
               <InputHOC title="Member">
                 <Autocomplete
-                  sx={{ width: '100%', marginTop: '5px' }}
+                  sx={{ width: "100%", marginTop: "5px" }}
                   multiple={true}
                   id="project_members1"
                   filterSelectedOptions
@@ -275,19 +285,31 @@ const MemberDialog = () => {
                   limitTags={1}
                   options={availableUsers}
                   size="small"
-                  onChange={(event, value) => { setSelectedUser([...value]) }}
+                  onChange={(event, value) => {
+                    setSelectedUser([...value]);
+                  }}
                   renderTags={(tagValue, getTagProps) =>
                     tagValue.map((option, index) => {
                       return (
                         <Chip
                           sx={{
                             height: "25px",
-                            fontSize: 12, fontWeight: 500,
+                            fontSize: 12,
+                            fontWeight: 500,
                             backgroundColor: "#F1B740",
                             color: colors.white,
                             borderRadius: "4px",
                           }}
-                          deleteIcon={<Clear style={{ color: '#f1b740', fontSize: '15px', borderRadius: '50%', background: 'white' }} />}
+                          deleteIcon={
+                            <Clear
+                              style={{
+                                color: "#f1b740",
+                                fontSize: "15px",
+                                borderRadius: "50%",
+                                background: "white",
+                              }}
+                            />
+                          }
                           label={option?.label}
                           {...getTagProps({ index })}
                         />
@@ -305,15 +327,15 @@ const MemberDialog = () => {
                       {...params}
                       name="members"
                       placeholder="Select member(s)"
-                    />)}
+                    />
+                  )}
                 />
               </InputHOC>
-            }
-
+            )}
 
             <div
               className={classes.meta}
-              style={{ zIndex: 10, position: "relative", paddingTop: '10px' }}
+              style={{ zIndex: 10, position: "relative", paddingTop: "10px" }}
             >
               <SelectDropdown
                 title="Role"
@@ -339,7 +361,7 @@ const MemberDialog = () => {
         <DialogActions
           style={{
             paddingRight: "25px",
-            paddingBottom: 15
+            paddingBottom: 15,
           }}
         >
           <Button onClick={handleClose} color="primary">
@@ -349,7 +371,12 @@ const MemberDialog = () => {
             onClick={handleSubmit}
             color="primary"
             variant="contained"
-            disabled={(selectedUser.length > 0 || selectedMember._id !== "") ? false : true}>
+            disabled={
+              selectedUser.length > 0 || selectedMember._id !== ""
+                ? false
+                : true
+            }
+          >
             {selectedMember._id !== "" ? "Update" : "Add"}
             {isDiabled && loading && (
               <CircularProgress size={20} className={classes.progress} />

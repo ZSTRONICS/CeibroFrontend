@@ -1,14 +1,13 @@
-import { Button, Grid, makeStyles, Typography } from "@material-ui/core";
-import ListIcon from "@material-ui/icons/List";
+import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { CButton } from "components/Button";
+import { SubHeadingTag } from "components/CustomTags";
+import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 import { useDispatch } from "react-redux";
 import projectActions from "redux/action/project.action";
 import colors from "../../../../../assets/colors";
 import HorizontalBreak from "../../../../Utills/Others/HorizontalBreak";
-import ProjectGroupsList from "./ProjectGroupsList";
 import ProjectDrawer from "./ProjectDrawer";
-import { SubHeadingTag } from "components/CustomTags";
-import { CButton } from "components/Button";
-import { groupTemplate } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import ProjectGroupsList from "./ProjectGroupsList";
 
 const ProjectGroups = () => {
   const classes = useStyles();

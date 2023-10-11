@@ -1,26 +1,17 @@
-import React, { useState, useEffect, useRef } from "react";
-import ProjectList from "./ProjectList";
-import SelectDropdown, {
-  dataInterface,
-} from "../../Utills/Inputs/SelectDropdown";
 import { makeStyles } from "@material-ui/core";
 import { Autocomplete, Grid, TextField } from "@mui/material";
-import {
-  getColorByStatus,
-  // getProjectStatus,
-} from "../../../config/project.config";
-import { useDispatch, useSelector } from "react-redux";
 import colors from "assets/colors";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getColorByStatus } from "../../../config/project.config";
+import { dataInterface } from "../../Utills/Inputs/SelectDropdown";
+import ProjectList from "./ProjectList";
 
-import {
-  getAllProjects,
-  getAllProjectsWithMembers,
-} from "redux/action/project.action";
-import { RootState } from "redux/reducers/appReducer";
-import { getAvailableUsers } from "redux/action/user.action";
 import CDatePicker from "components/DatePicker/CDatePicker";
-import moment from "moment-timezone";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import moment from "moment-timezone";
+import { getAllProjects } from "redux/action/project.action";
+import { RootState } from "redux/reducers/appReducer";
 import "../../../components/MuiStyles.css";
 const Project = () => {
   const classes = useStyles();
@@ -64,7 +55,7 @@ const Project = () => {
   ]);
 
   useEffect(() => {
-    if (isRenderEffect.current === false&& allProjects.length === 0 ) {
+    if (isRenderEffect.current === false && allProjects.length === 0) {
       dispatch(getAllProjects());
       // dispatch(getAllProjectsWithMembers());
       // const payload = {
@@ -153,7 +144,7 @@ const Project = () => {
   const [showProjectList, setShowProjectList] = useState<boolean>(false);
 
   const [headerHeight, setHeaderHeight] = useState<string>("");
-  let isTimeOut: NodeJS.Timeout;
+  let isTimeOut: NodeJS.Timeout | any;
 
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
@@ -198,10 +189,7 @@ const Project = () => {
       <Grid item xs={12}>
         {/* {loading && <CircularProgress size={20} className={classes.progress} />} */}
         <Grid container ref={headerRef} className={classes.outerWrapper}>
-          <Grid
-            item
-            sx={{ width: "100%", maxWidth: "240px", height: "40px" }}
-          >
+          <Grid item sx={{ width: "100%", maxWidth: "240px", height: "40px" }}>
             <CDatePicker
               IsdisablePast={false}
               showLabel={true}
@@ -239,7 +227,7 @@ const Project = () => {
           >
             <InputHOC title="Owner">
               <Autocomplete
-              className="autocompleteContainer"
+                className="autocompleteContainer"
                 disablePortal
                 sx={{ width: "100%" }}
                 id="project_members1"
@@ -268,10 +256,9 @@ const Project = () => {
             sx={{ width: "100%", maxWidth: "350px", height: "40px" }}
             className={classes.datePicker}
           >
-
             <InputHOC title="Status">
               <Autocomplete
-              className="autocompleteContainer"
+                className="autocompleteContainer"
                 disablePortal
                 sx={{ width: "100%" }}
                 // multiple={false}

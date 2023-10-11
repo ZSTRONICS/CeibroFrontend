@@ -30,6 +30,7 @@ import Loading from "components/Utills/Loader/Loading";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
+import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
@@ -46,7 +47,7 @@ interface IInputValues {
 }
 
 const LoginForm: React.FC<Props> = (props) => {
-  const { tokenLoading, showSuccess } = props;
+  const { showSuccess } = props;
   const { t } = useTranslation();
   const signinSchema = SigninSchemaValidation(t);
   const [checked, setChecked] = useState(false);
@@ -90,7 +91,9 @@ const LoginForm: React.FC<Props> = (props) => {
           purgeStoreStates();
         }
       },
-
+      success: (res: any) => {
+        dispatch(userApiAction.getUserContacts());
+      },
       showErrorToast: false,
     };
     setShowLoading(true);
@@ -143,17 +146,6 @@ const LoginForm: React.FC<Props> = (props) => {
                 }
               }}
             >
-              {/* {showError && (
-                <MessageAlert message={alertMessage} severity="error" showMessage={true} />
-              )}
-              {showSuccess && (
-                <MessageAlert
-                  message="Logged in successfully"
-                  severity="success"
-                  showMessage={true}
-                />
-              )} */}
-
               <CBox mb={2.5} pt={2}>
                 <CustomMuiTextField
                   typeName="phone-number"

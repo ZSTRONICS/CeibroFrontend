@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 // @mui
-import { AppBar, Box, IconButton, Stack, Toolbar } from "@mui/material";
+import { AppBar, Box, IconButton, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
-import Title from "components/Topbar/Title";
+import Notification from "components/Notification/Notification";
+import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import { useResponsive } from "hooks";
 import { useHistory } from "react-router-dom";
-import Topbar from "components/Topbar/Topbar";
-import Sidebar from "components/Sidebar/Sidebar";
 
 const NAV_WIDTH = 72;
 
@@ -26,8 +26,12 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
   },
 }));
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+const StyledToolbar = styled("div")(({ theme }) => ({
   minHeight: HEADER_MOBILE,
+  display: "flex",
+  alignItems: "center",
+  flexWrap: "nowrap",
+  overflowX: "auto",
   [theme.breakpoints.up("lg")]: {
     minHeight: HEADER_DESKTOP,
     padding: theme.spacing(0, 4),
@@ -43,21 +47,24 @@ interface Props {
 
 export default function Header({ onOpenNav }: Props) {
   const history = useHistory();
+  const isLargeScreen = useResponsive("up", "lg", "");
+
   return (
     <StyledRoot>
       <StyledToolbar>
-        <IconButton
-          onClick={onOpenNav}
-          sx={{
-            mr: 0.5,
-            color: "text.primary",
-            padding: 0.1,
-            display: { lg: "none" },
-          }}
-        >
-          <assets.MenuIcon />
-        </IconButton>
-        {/* <Title /> */}
+        {!isLargeScreen && (
+          <IconButton
+            onClick={onOpenNav}
+            sx={{
+              mr: 0.5,
+              color: "text.primary",
+              padding: 0.1,
+              display: { lg: "none" },
+            }}
+          >
+            <assets.MenuIcon />
+          </IconButton>
+        )}
 
         <Topbar />
         <Box sx={{ flexGrow: 1 }} />
@@ -81,7 +88,7 @@ export default function Header({ onOpenNav }: Props) {
           </div>
 
           <UserMenu />
-          {/* <Notification value={""} /> */}
+          <Notification value={""} />
         </Stack>
       </StyledToolbar>
     </StyledRoot>

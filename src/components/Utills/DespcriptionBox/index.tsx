@@ -8,14 +8,12 @@ const DespcriptionBox = ({ description }: IProps) => (
   <Box
     sx={{
       width: "100%",
-      // height: "60px",
       padding: "14px 0px",
       gap: 1,
     }}
   >
     <Box
       sx={{
-        height: "20px",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -45,21 +43,26 @@ const DespcriptionBox = ({ description }: IProps) => (
       <Box
         sx={{
           width: "100%",
-          height: "100%",
-          marginLeft: "16px",
+          px: "11px",
+
+          overflow: "auto",
+          maxWidth: "85%",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        <Typography
-          sx={{
-            fontFamily: "Inter",
+        <p
+          style={{
             fontWeight: 500,
             fontSize: "14px",
-            lineHeight: "20px",
             color: "#000",
+            wordWrap: "break-word",
+            paddingTop: "5px",
+            height: `${description.length > 100 ? "10vh" : "unset"}`,
           }}
         >
           {description === "" ? "N/A" : description}
-        </Typography>
+        </p>
       </Box>
     </Box>
   </Box>
