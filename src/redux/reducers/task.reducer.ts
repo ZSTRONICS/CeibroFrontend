@@ -9,7 +9,7 @@ import {
   AllTaskFromMeInterface,
   AllTaskHiddenInterface,
   AllTaskToMeInterface,
-  Task,
+  Task
 } from "constants/interfaces";
 import { TopicInterface } from "constants/interfaces/topic.interface";
 import { selectedTaskFilterType } from "redux/type";
@@ -19,10 +19,7 @@ interface TaskReducerInt {
   allTaskToMe: AllTaskToMeInterface;
   allTaskFromMe: AllTaskFromMeInterface;
   allTaskHidden: AllTaskHiddenInterface;
-  loadingAllTaskToMe: boolean;
-  loadingAllTaskfromMe: boolean;
-  loadingHiddenTask: boolean;
-  taskLoading: boolean;
+  loadingAllTasks: boolean;
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
@@ -33,10 +30,7 @@ const intialStatue: TaskReducerInt = {
   allTaskToMe: { new: [], ongoing: [], done: [] },
   allTaskFromMe: { unread: [], ongoing: [], done: [] },
   allTaskHidden: { ongoing: [], done: [], canceled: [] },
-  loadingAllTaskToMe: false,
-  loadingAllTaskfromMe: false,
-  loadingHiddenTask: false,
-  taskLoading: false,
+  loadingAllTasks: true,
   loadingTopics: false,
   Topics: { allTopics: [], recentTopics: [] },
 };
@@ -602,14 +596,14 @@ const TaskReducer = (
     case requestPending(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
-        loadingAllTaskToMe: true
+        loadingAllTasks: true
       }
     }
     case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
       const { fromMe, hidden, toMe, } = action.payload.allTasks
       return {
         ...state,
-        loadingAllTaskToMe: false,
+        loadingAllTasks: false,
         allTaskToMe: {
           new: toMe.new,
           ongoing: toMe.ongoing,
@@ -631,7 +625,7 @@ const TaskReducer = (
     case requestFail(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,
-        loadingAllTaskToMe: false,
+        loadingAllTasks: false,
       }
     }
 

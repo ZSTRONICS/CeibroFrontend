@@ -37,6 +37,7 @@ const Task = () => {
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
+  const [updateTaskEvent, setUpdateTaskEvent] = useState(false);
 
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
@@ -50,22 +51,10 @@ const Task = () => {
   );
 
   const task: any = useSelector((state: RootState) => state.task);
-  const {
-    allTaskToMe,
-    allTaskFromMe,
-    allTaskHidden,
-    loadingAllTaskToMe,
-    loadingAllTaskfromMe,
-    loadingHiddenTask,
-  } = task;
+  const { allTaskToMe, allTaskFromMe, allTaskHidden, loadingAllTasks } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
-  const [subTaskFilter, setSubTaskFilter] =
-    useState<selectedTaskFilterType>("allTaskFromMe");
   const subTaskKey = subtask ?? "allTaskFromMe";
-  const isallTakLoading =
-    loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
-
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
       allTaskToMe: ["new", "ongoing", "done"],
@@ -108,14 +97,19 @@ const Task = () => {
     }
   };
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
+    // console.log(loadingAllTasks, "taskuid", taskuid, subtask, getFilterKey(), filteredTask.length);
     if (isTaskRoute[1] === "tasks") {
       let ischangeUrl = false;
       let path = "";
       let getFilteredKey = getFilterKey();
       let isTaskData = getTaskDataRequired();
-      let foundTask =
-        filteredTask &&
-        filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
+      let foundTask = filteredTask.find(
+        (taskItem) => taskItem.taskUID === taskuid
+      );
+
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;
@@ -154,6 +148,9 @@ const Task = () => {
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
     if (subtask || selectedTab) {
       !taskuid && setSelectedTask(null);
 
@@ -163,17 +160,21 @@ const Task = () => {
       } else if (selectedTab) {
         dataToSearch = task[subtask][selectedTab];
       }
-
-      setFilteredTask(searchInData(dataToSearch, "", "taskUID"));
+      // selecting top most task by default
+      const data = searchInData(dataToSearch, "", "taskUID");
+      if (!taskuid || taskuid === "") {
+        const newSelectedTask = data.length > 0 ? data[0] : null;
+        if (newSelectedTask) {
+          history.push(
+            `/tasks/${subtask}/${getFilterKey()}/${newSelectedTask?.taskUID}`
+          );
+        }
+        // setSelectedTask(newSelectedTask);
+      }
+      setFilteredTask(data);
     }
-    setSearchText('')
-  }, [
-    allTaskFromMe,
-    allTaskToMe,
-    allTaskHidden,
-    subtask,
-    selectedTab,
-  ]);
+    setSearchText("");
+  }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask, selectedTab]);
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
@@ -196,6 +197,9 @@ const Task = () => {
   };
 
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
     let taskNeedToBeSeen =
       selectedTask &&
       selectedTask !== null &&
@@ -204,8 +208,8 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
-  }, [selectedTask]);
-
+  }, [selectedTask, selectedTask?.events.length]);
+  console.log("selected", selectedTask);
   useEffect(() => {
     switch (subtask) {
       case "allTaskFromMe":
@@ -310,7 +314,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
-    setSelectedTask(() => task);
+    setSelectedTask(task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -357,7 +361,7 @@ const Task = () => {
                 }
                 setFilteredTask(
                   filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask._id
+                    (item: any) => item.taskUID !== selectedTask.taskUID
                   )
                 );
               },
@@ -386,7 +390,7 @@ const Task = () => {
                 }
                 setFilteredTask(
                   filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask._id
+                    (item: any) => item.taskUID !== selectedTask.taskUID
                   )
                 );
               },
@@ -409,7 +413,7 @@ const Task = () => {
                 });
                 setFilteredTask(
                   filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask._id
+                    (item: any) => item.taskUID !== selectedTask.taskUID
                   )
                 );
               },
@@ -426,15 +430,18 @@ const Task = () => {
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
               success: (res: any) => {
-                dispatch({
-                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                  payload: res.data.data,
-                });
-                setFilteredTask(
-                  filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask._id
-                  )
+                const localTasks = filteredTask.filter(
+                  (item: any) => String(item._id) !== String(selectedTask._id)
                 );
+                setFilteredTask(localTasks);
+                setSelectedTask(null);
+                // dispatch({
+                //   type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                //   payload: res.data.data,
+                // });
+                // to do
+                // let x =  setTimeout(() => {}, 500);
+                // clearTimeout(x);
               },
             })
           );
@@ -553,7 +560,7 @@ const Task = () => {
           </Box>
         </Box>
         <Box sx={{ pl: 0.7, pr: 0.5 }}>
-          {isallTakLoading ? (
+          {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
             <EmptyScreen />
