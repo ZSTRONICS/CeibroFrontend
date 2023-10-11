@@ -209,7 +209,7 @@ const Task = () => {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
   }, [selectedTask, selectedTask?.events.length]);
-  console.log("selected", selectedTask);
+
   useEffect(() => {
     switch (subtask) {
       case "allTaskFromMe":
@@ -445,13 +445,6 @@ const Task = () => {
                 setFilteredTask(localTasks);
                 setSelectedTask(null);
                 setUpdateTaskEvent(res);
-                // dispatch({
-                //   type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                //   payload: res.data.data,
-                // });
-                // to do
-                // let x =  setTimeout(() => {}, 500);
-                // clearTimeout(x);
               },
             })
           );
