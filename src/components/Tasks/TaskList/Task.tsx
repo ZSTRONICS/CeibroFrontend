@@ -5,9 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
+import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TaskCard } from "components/TaskComponent";
 import { optionMapping } from "components/Utills/Globals";
-import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { Task as ITask } from "constants/interfaces";
 import _ from "lodash";
@@ -54,18 +54,13 @@ const Task = () => {
     allTaskToMe,
     allTaskFromMe,
     allTaskHidden,
-    loadingAllTaskToMe,
-    loadingAllTaskfromMe,
-    loadingHiddenTask,
+    loadingAllTasks
   } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const [subTaskFilter, setSubTaskFilter] =
     useState<selectedTaskFilterType>("allTaskFromMe");
   const subTaskKey = subtask ?? "allTaskFromMe";
-  const isallTakLoading =
-    loadingAllTaskfromMe || loadingHiddenTask || loadingAllTaskToMe;
-
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
       allTaskToMe: ["new", "ongoing", "done"],
@@ -108,14 +103,17 @@ const Task = () => {
     }
   };
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
+    // console.log(loadingAllTasks, "taskuid", taskuid, subtask, getFilterKey(), filteredTask.length);
     if (isTaskRoute[1] === "tasks") {
       let ischangeUrl = false;
       let path = "";
       let getFilteredKey = getFilterKey();
       let isTaskData = getTaskDataRequired();
-      let foundTask =
-        filteredTask &&
-        filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
+      let foundTask = filteredTask.find((taskItem) => taskItem.taskUID === taskuid);
+
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;
@@ -154,6 +152,9 @@ const Task = () => {
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
     if (subtask || selectedTab) {
       !taskuid && setSelectedTask(null);
 
@@ -163,8 +164,13 @@ const Task = () => {
       } else if (selectedTab) {
         dataToSearch = task[subtask][selectedTab];
       }
-
-      setFilteredTask(searchInData(dataToSearch, "", "taskUID"));
+      // selecting top most task by default
+      const data = searchInData(dataToSearch, "", "taskUID");
+      if (!taskuid || taskuid === '') {
+        const newSelectedTask = data.length > 0 ? data[0] : null;
+        setSelectedTask(newSelectedTask);
+      }
+      setFilteredTask(data);
     }
   }, [
     allTaskFromMe,
@@ -172,7 +178,7 @@ const Task = () => {
     allTaskHidden,
     subtask,
     selectedTab,
-    taskuid,
+    taskuid
   ]);
 
   const markTaskAsSeen = (taskId: string): void => {
@@ -196,6 +202,9 @@ const Task = () => {
   };
 
   useEffect(() => {
+    if (loadingAllTasks) {
+      return;
+    }
     let taskNeedToBeSeen =
       selectedTask &&
       selectedTask !== null &&
@@ -204,7 +213,7 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
-  }, [selectedTask]);
+  }, [selectedTask, selectedTask?.events.length]);
 
   useEffect(() => {
     switch (subtask) {
@@ -310,7 +319,7 @@ const Task = () => {
 
   const handleSelectedTask = (task: ITask) => {
     history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
-    setSelectedTask(() => task);
+    setSelectedTask(task);
   };
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
@@ -426,15 +435,12 @@ const Task = () => {
             taskActions.taskUnCanel({
               other: { taskId: selectedTask._id },
               success: (res: any) => {
-                dispatch({
-                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                  payload: res.data.data,
-                });
-                setFilteredTask(
-                  filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask._id
-                  )
-                );
+                const localTasks = filteredTask.filter((item: any) => String(item._id) !== String(selectedTask._id))
+                setFilteredTask(localTasks);
+                // dispatch({
+                //   type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                //   payload: res.data.data,
+                // });
               },
             })
           );
@@ -553,7 +559,7 @@ const Task = () => {
           </Box>
         </Box>
         <Box sx={{ pl: 0.7, pr: 0.5 }}>
-          {isallTakLoading ? (
+          {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
             <EmptyScreen />
@@ -574,10 +580,10 @@ const Task = () => {
       </Grid>
       <Grid item md={8.5} lg={9.15} xs={7}>
         {selectedTask !== null &&
-        filteredTask &&
-        filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask?.taskUID
-        ) ? (
+          filteredTask &&
+          filteredTask.some(
+            (task: ITask) => task.taskUID === selectedTask?.taskUID
+          ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div
