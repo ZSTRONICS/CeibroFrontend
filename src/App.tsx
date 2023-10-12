@@ -1,7 +1,6 @@
-import "fontsource-roboto";
 // import "moment-timezone";
 import { ToastContainer } from "react-toastify";
-
+import "./assets/InterFont.css";
 // components
 
 // material

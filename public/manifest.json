@@ -1,15 +1,15 @@
 {
   "short_name": "Ceibro App",
-  "name": "Ceibro is an application for managing construction projects.",
+  "name": "Ceibro - Construction Project Management",
   "icons": [
     {
-      "src": "ceibro03.png",
+      "src": "icon.png",
       "type": "image/png",
       "sizes": "20x24"
     }
   ],
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "background_color": "#ffffff",
+  "theme_color": "#000000"
 }
