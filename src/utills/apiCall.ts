@@ -54,8 +54,22 @@ const apiCall = ({
     }
     header['Access-Control-Allow-Origin'] = '*'
 
-    if (idToken && idToken !== 'undefined' && idToken !== 'null') {
-      header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
+    const tokenLessRoutes = [
+      "/auth/login",
+      "/auth/veify-email",
+      "/auth/register",
+      "/auth/otp/verify",
+      `/auth/forget-password`,
+      "/auth/otp/verify-nodel",
+      "/auth/reset-password"
+    ]
+
+    if (!tokenLessRoutes.includes(`${path}`)) {
+      if (idToken && idToken !== 'undefined' && idToken !== 'null') {
+        header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
+      } else {
+        return;
+      }
     }
 
     try {

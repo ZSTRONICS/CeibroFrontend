@@ -20,7 +20,7 @@ const syncAllTasks = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.SYNC_ALL_TASKS,
   method: "get",
-  path: "/task/sync/2020-01-05T17:01:40.038Z"
+  path: (payload) => `/task/sync/${payload.other.syncTime}`
 })
 
 const getAllTopic = apiCall({

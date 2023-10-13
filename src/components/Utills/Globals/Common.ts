@@ -166,6 +166,9 @@ export function addEventToTask(task: any, eventData: any, taskIndex: number): vo
     const isUniqueEvent = task.events.some((event: any) => String(event._id) === String(eventData._id));
     if (!isUniqueEvent) {
       task.events.push(eventData);
+      // sort task events by createdAt with latest on bottom
+      const events = task.events.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      task.events = events;
       task.seenBy = eventData.taskData.seenBy;
     } else {
       // console.log("Event already exists ", eventData, task, taskIndex)

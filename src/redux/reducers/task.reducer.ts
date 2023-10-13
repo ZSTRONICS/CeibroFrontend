@@ -16,6 +16,7 @@ import { selectedTaskFilterType } from "redux/type";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from "./appReducer";
 interface TaskReducerInt {
+  RECENT_TASK_UPDATED_TIME_STAMP: string;
   allTaskToMe: AllTaskToMeInterface;
   allTaskFromMe: AllTaskFromMeInterface;
   allTaskHidden: AllTaskHiddenInterface;
@@ -26,6 +27,7 @@ interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
+  RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",
   allTaskToMe: { new: [], ongoing: [], done: [] },
   allTaskFromMe: { unread: [], ongoing: [], done: [] },
@@ -47,6 +49,22 @@ const TaskReducer = (
       };
 
     case TASK_CONFIG.PUSH_NEW_TASK_TO_STORE:
+      const taskUpdatedAt = action.payload.updatedAt;
+      if (taskUpdatedAt) {
+        const currentUpdatedAt = new Date(taskUpdatedAt);
+        const recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
+        if (currentUpdatedAt > recentTaskUpdatedDate) {
+          // console.log("TASK_CREATED", "updating RECENT_TASK_UPDATED_TIME_STAMP");
+          state.RECENT_TASK_UPDATED_TIME_STAMP = taskUpdatedAt;
+        } else if (currentUpdatedAt !== recentTaskUpdatedDate) {
+          // console.log("TIME NOT UPDATED", taskUpdatedAt, state.RECENT_TASK_UPDATED_TIME_STAMP)
+          // console.log("TASK_CREATED", "eventData.taskUpdatedAt is not recent");
+        }
+      } else {
+        console.log("TASK_CREATED", "taskUpdatedAt not found in eventData");
+      }
+
+
       if (action.payload.isAssignedToMe === true) {
         const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
@@ -102,6 +120,37 @@ const TaskReducer = (
       const isCreator = eventData?.oldTaskData?.isCreator || false;
       const isOngoing = eventData?.oldTaskData?.userSubState === "ongoing" || false;
       const isHiddenByMe = eventData?.oldTaskData?.isHiddenByMe || false;
+
+
+      let currentUpdatedAt = null;
+      let recentTaskUpdatedDate = null;
+
+      if (eventData.eventType === "TASK_FORWARDED") {
+        currentUpdatedAt = new Date(eventData.task.updatedAt);
+        recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
+      }
+
+      if (eventData.taskUpdatedAt) {
+        currentUpdatedAt = new Date(eventData.taskUpdatedAt);
+        recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
+      } else {
+        console.log(eventData.eventType, "taskUpdatedAt not found in eventData");
+      }
+
+      if (currentUpdatedAt && recentTaskUpdatedDate) {
+        if (currentUpdatedAt > recentTaskUpdatedDate) {
+          // console.log(eventData.eventType, "updating RECENT_TASK_UPDATED_TIME_STAMP");
+
+          if (eventData.eventType === "TASK_FORWARDED") {
+            state.RECENT_TASK_UPDATED_TIME_STAMP = eventData.task.updatedAt;
+          } else {
+            state.RECENT_TASK_UPDATED_TIME_STAMP = eventData.taskUpdatedAt;
+          }
+        } else if (currentUpdatedAt !== recentTaskUpdatedDate) {
+          // console.log("TIME NOT UPDATED", currentUpdatedAt.toString(), state.RECENT_TASK_UPDATED_TIME_STAMP)
+          // console.log(eventData.eventType, "eventData.taskUpdatedAt is not recent");
+        }
+      }
 
       switch (eventData.eventType) {
         case "cancelTask":
@@ -600,7 +649,16 @@ const TaskReducer = (
       }
     }
     case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
-      const { fromMe, hidden, toMe } = action.payload.allTasks
+      const { fromMe, hidden, toMe, latestUpdatedAt } = action.payload.allTasks
+      // assign latestUpdatedAt to RECENT_TASK_UPDATED_TIME_STAMP if the latestUpdatedAt
+      //  is greater than RECENT_TASK_UPDATED_TIME_STAMP both values are in string
+      const currentUpdatedAt = new Date(latestUpdatedAt);
+      const recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
+
+      if (currentUpdatedAt > recentTaskUpdatedDate) {
+        state.RECENT_TASK_UPDATED_TIME_STAMP = latestUpdatedAt;
+      }
+
       return {
         ...state,
         loadingAllTasks: false,

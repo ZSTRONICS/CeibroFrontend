@@ -51,7 +51,7 @@ const Task = () => {
   );
 
   const task: any = useSelector((state: RootState) => state.task);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden, loadingAllTasks } = task;
+  const { allTaskToMe, allTaskFromMe, allTaskHidden, loadingAllTasks, RECENT_TASK_UPDATED_TIME_STAMP } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
@@ -76,7 +76,13 @@ const Task = () => {
         _.isEmpty(allTaskToMe.new) &&
         _.isEmpty(allTaskToMe.ongoing)
       ) {
-        dispatch(taskActions.syncAllTasks());
+        dispatch(taskActions.syncAllTasks(
+          {
+            other: {
+              syncTime: RECENT_TASK_UPDATED_TIME_STAMP,
+            },
+          }
+        ));
       }
     }
     return () => {
@@ -584,10 +590,10 @@ const Task = () => {
       </Grid>
       <Grid item md={8.5} lg={9.15} xs={7}>
         {selectedTask !== null &&
-        filteredTask &&
-        filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask?.taskUID
-        ) ? (
+          filteredTask &&
+          filteredTask.some(
+            (task: ITask) => task.taskUID === selectedTask?.taskUID
+          ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

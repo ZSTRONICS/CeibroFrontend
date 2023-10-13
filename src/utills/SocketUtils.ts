@@ -12,10 +12,71 @@ import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+    const { RECENT_TASK_UPDATED_TIME_STAMP } = useSelector((store: RootState) => store.task);
     const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
+
+    const handleSocketEvents = (dataRcvd: any) => {
+        const eventType = dataRcvd.eventType;
+        const data = dataRcvd.data;
+        switch (eventType) {
+            case TASK_CONFIG.TOPIC_CREATED:
+                dispatch({
+                    type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
+                    payload: data,
+                });
+                break;
+            case TASK_CONFIG.TASK_CREATED:
+                if (!data.access.includes(userId)) {
+                    return;
+                }
+                dispatch({
+                    type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
+                    payload: data,
+                });
+                break;
+            case TASK_CONFIG.TASK_SEEN:
+            case TASK_CONFIG.TASK_SHOWN:
+            case TASK_CONFIG.TASK_HIDDEN:
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: { ...data, userId, eventType },
+                });
+
+                break;
+
+            case TASK_CONFIG.TASK_FORWARDED:
+                if (!data.access.includes(userId)) {
+                    return;
+                }
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },
+                });
+                break;
+
+            case TASK_CONFIG.TASK_DONE:
+            case TASK_CONFIG.CANCELED_TASK:
+            case TASK_CONFIG.UN_CANCEL_TASK:
+            case TASK_CONFIG.NEW_TASK_COMMENT:
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                    payload: data,
+                });
+                break;
+
+            case DOCS_CONFIG.COMMENT_WITH_FILES:
+                dispatch({
+                    type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
+                    payload: data,
+                });
+                break;
+        }
+    }
+
+
     useEffect(() => {
         if (!isLoggedIn) {
             console.log("not logged in")
@@ -54,7 +115,7 @@ export const useSocket = () => {
         function sendHeartbeat() {
             if (sock !== null && sock.connected && shouldSendHeartbeat) {
                 sock.emit("heartbeat");
-                setTimeout(sendHeartbeat, 10000);
+                setTimeout(sendHeartbeat, 5000);
             }
         }
 
@@ -88,14 +149,14 @@ export const useSocket = () => {
             if (sock.recovered) {
                 console.log("recovered");
                 socket.setSocket(sock);
-                sendHeartbeat();
+                setTimeout(sendHeartbeat, 1000);
                 return;
             }
 
             console.log("Connected to server");
             socket.setUserId(userId);
             socket.setSocket(sock);
-            setTimeout(sendHeartbeat, 10000);
+            setTimeout(sendHeartbeat, 1000);
         });
 
         sock.on("disconnect", () => {
@@ -113,7 +174,13 @@ export const useSocket = () => {
 
         sock.on("RE_SYNC_DATA", () => {
             sock.emit("RE_SYNC_DATA_ACK");
-            dispatch(taskActions.syncAllTasks());
+            dispatch(taskActions.syncAllTasks(
+                {
+                    other: {
+                        syncTime: RECENT_TASK_UPDATED_TIME_STAMP,
+                    },
+                }
+            ));
             dispatch(userApiAction.getUserContacts());
             console.log("RE_SYNC_DATA_ACK");
         });
@@ -166,66 +233,13 @@ export const useSocket = () => {
         });
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
+            console.log("eventType--->", dataRcvd);
             if (ack) {
                 console.log(`sending ack to server`)
                 ack();
             }
-            console.log("eventType--->", dataRcvd);
-            const eventType = dataRcvd.eventType;
-            const data = dataRcvd.data;
             sendSocketEventAck(dataRcvd.uuid);
-            switch (eventType) {
-                case TASK_CONFIG.TOPIC_CREATED:
-                    dispatch({
-                        type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
-                        payload: data,
-                    });
-                    break;
-                case TASK_CONFIG.TASK_CREATED:
-                    if (!data.access.includes(userId)) {
-                        return;
-                    }
-                    dispatch({
-                        type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
-                        payload: data,
-                    });
-                    break;
-                case TASK_CONFIG.TASK_SEEN:
-                case TASK_CONFIG.TASK_SHOWN:
-                case TASK_CONFIG.TASK_HIDDEN:
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: { ...data, userId, eventType },
-                    });
-                    break;
-
-                case TASK_CONFIG.TASK_FORWARDED:
-                    if (!data.access.includes(userId)) {
-                        return;
-                    }
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: { task: data, eventType: "TASK_FORWARDED", userId },
-                    });
-                    break;
-
-                case TASK_CONFIG.TASK_DONE:
-                case TASK_CONFIG.CANCELED_TASK:
-                case TASK_CONFIG.UN_CANCEL_TASK:
-                case TASK_CONFIG.NEW_TASK_COMMENT:
-                    dispatch({
-                        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                        payload: data,
-                    });
-                    break;
-
-                case DOCS_CONFIG.COMMENT_WITH_FILES:
-                    dispatch({
-                        type: DOCS_CONFIG.COMMENT_FILES_UPLOADED,
-                        payload: data,
-                    });
-                    break;
-            }
+            handleSocketEvents(dataRcvd);
         });
 
     }, [isLoggedIn]);
