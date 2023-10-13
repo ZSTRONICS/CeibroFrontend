@@ -1,17 +1,13 @@
-import React from "react";
 import { Badge, Button, Grid, makeStyles } from "@material-ui/core";
-import colors from "../../assets/colors";
-import InputInvite from "../Profile/InputInvite";
+import Box from "@mui/material/Box";
+import ViewInvitations from "components/Profile/ViewInvitations";
+import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import assets from "../../assets/assets";
-import { useDispatch, useSelector } from "react-redux";
+import colors from "../../assets/colors";
 import { RootState } from "../../redux/reducers/appReducer";
-import {
-  openViewInvitations,
-} from "redux/action/user.action";
-import ViewInvitations from "components/Profile/ViewInvitations";
-import Box from "@mui/material/Box";
-import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
+import InputInvite from "../Profile/InputInvite";
 
 const SmartMenuBar = () => {
   const classes = useStyles();
@@ -20,18 +16,17 @@ const SmartMenuBar = () => {
   const { connections } = useSelector((state: RootState) => state?.user);
   const { invites } = useSelector((state: RootState) => state?.user);
 
-
   const goToConnections = () => {
     history.push("/connections");
   };
 
   return (
-    <Grid container >
+    <Grid container>
       <Grid item xs={12} md={5} lg={4}>
         <div className={`${classes.connectionWrapper} ongoing-badge`}>
           <Box className={classes.connectionTitle}>
             <div className={classes.smartMenuIcon}>
-            <ConnectionIcon />
+              <ConnectionIcon />
             </div>
             <span className="align-center">
               <span
@@ -39,7 +34,12 @@ const SmartMenuBar = () => {
               >
                 My Connections
               </span>
-              <Badge overlap='circular' showZero={true} badgeContent={connections.count} color="primary"></Badge>
+              <Badge
+                overlap="circular"
+                showZero={true}
+                badgeContent={connections.count}
+                color="primary"
+              ></Badge>
             </span>
           </Box>
 
@@ -77,7 +77,11 @@ const SmartMenuBar = () => {
               >
                 Invitations
               </span>
-            <Badge showZero={true} badgeContent={invites.count} color="error"></Badge>
+              <Badge
+                showZero={true}
+                badgeContent={invites.count}
+                color="error"
+              ></Badge>
             </span>
           </Box>
           <Button
@@ -85,7 +89,6 @@ const SmartMenuBar = () => {
             color="primary"
             variant="outlined"
             className={classes.viewBtn}
-            onClick={() => dispatch(openViewInvitations())}
           >
             View
           </Button>

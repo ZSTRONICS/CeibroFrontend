@@ -600,7 +600,7 @@ const TaskReducer = (
       }
     }
     case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
-      const { fromMe, hidden, toMe, } = action.payload.allTasks
+      const { fromMe, hidden, toMe } = action.payload.allTasks
       return {
         ...state,
         loadingAllTasks: false,

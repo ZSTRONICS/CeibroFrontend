@@ -3,6 +3,7 @@ import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
@@ -15,7 +16,6 @@ export const useSocket = () => {
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
-
     useEffect(() => {
         if (!isLoggedIn) {
             console.log("not logged in")
@@ -88,7 +88,7 @@ export const useSocket = () => {
             if (sock.recovered) {
                 console.log("recovered");
                 socket.setSocket(sock);
-                setTimeout(sendHeartbeat, 10000);
+                sendHeartbeat();
                 return;
             }
 
@@ -109,6 +109,13 @@ export const useSocket = () => {
 
         sock.on("heartbeatAck", () => {
             console.log("heartbeatAck");
+        });
+
+        sock.on("RE_SYNC_DATA", () => {
+            sock.emit("RE_SYNC_DATA_ACK");
+            dispatch(taskActions.syncAllTasks());
+            dispatch(userApiAction.getUserContacts());
+            console.log("RE_SYNC_DATA_ACK");
         });
 
         sock.on("logout-web", async () => {

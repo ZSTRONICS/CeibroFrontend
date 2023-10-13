@@ -7,14 +7,12 @@ import {
   GET_AVAILABLE_USERS,
   GET_MY_ALL_INVITES,
   GET_MY_CONNECTIONS,
-  GET_MY_CONNECTIONS_COUNT,
-  GET_MY_INVITES_COUNT,
   GET_USER_BY_ID,
   RESEND_INVITATION,
   REVOKE_INVITAION,
   SEND_INVITATION,
   UPDATE_PROFILE_PIC,
-  USER_CONFIG,
+  USER_CONFIG
 } from '../../config/user.config'
 import apiCall from '../../utills/apiCall'
 
@@ -96,25 +94,11 @@ const acceptAllInvite = apiCall({
   path: payload => `users/invite/accept-all/${payload?.other?.accepted}`,
 })
 
-const getMyAllInviteCount = apiCall({
-  useV2Route: false,
-  type: GET_MY_INVITES_COUNT,
-  method: 'get',
-  path: '/users/invite/count',
-})
-
 const getUsersByRole = apiCall({
   useV2Route: false,
   type: USER_CONFIG.GET_USERS_BY_ROLE,
   method: 'get',
   path: payload => `/users?role=${payload.other.role}`,
-})
-
-const getMyConnectionsCount = apiCall({
-  useV2Route: false,
-  type: GET_MY_CONNECTIONS_COUNT,
-  method: 'get',
-  path: '/users/connections/count',
 })
 
 const getUserById = apiCall({
@@ -153,7 +137,7 @@ const getAvailableUsers = apiCall({
 
 function* userSaga() {
   yield takeLatest(USER_CONFIG.GET_USER_CONTACTS, getUserContacts)
-  yield takeLatest(USER_CONFIG.GET_RECENT_USER_CONTACTS,getRecentUserContacts)
+  yield takeLatest(USER_CONFIG.GET_RECENT_USER_CONTACTS, getRecentUserContacts)
   yield takeLatest(RESEND_INVITATION, resendInvites)
   yield takeLatest(REVOKE_INVITAION, revokeInvites)
   yield takeLatest(SEND_INVITATION, inviteUser)
@@ -163,10 +147,8 @@ function* userSaga() {
   yield takeLatest(USER_CONFIG.GET_USERS_BY_ROLE, getUsersByRole)
   yield takeLatest(DELETE_MY_CONNECTION, deleteMyConnection)
   yield takeLatest(ACCEPT_ALL_INVITES, acceptAllInvite)
-  yield takeLatest(GET_MY_INVITES_COUNT, getMyAllInviteCount)
   yield takeLatest(GET_USER_BY_ID, getUserById)
   yield takeLatest(UPDATE_PROFILE_PIC, updateProfilePic)
-  yield takeLatest(GET_MY_CONNECTIONS_COUNT, getMyConnectionsCount)
   yield takeLatest(GET_AVAILABLE_CHAT_USER, getAvailableChatUsers)
   yield takeLatest(GET_AVAILABLE_USERS, getAvailableUsers)
 

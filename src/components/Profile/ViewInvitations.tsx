@@ -1,35 +1,36 @@
 import {
   Button,
-  Dialog, DialogContent, DialogTitle, makeStyles
-} from '@material-ui/core'
-import IconButton from '@material-ui/core/IconButton'
-import CloseIcon from '@material-ui/icons/Close'
-import React, { useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  makeStyles,
+} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   acceptAllInvites,
   closeViewIvitations,
-  openViewInvitations
-} from 'redux/action/user.action'
-import { RootState } from 'redux/reducers/appReducer'
-import colors from '../../assets/colors'
-import InvitationsList from './InvitationsList'
+} from "redux/action/user.action";
+import { RootState } from "redux/reducers/appReducer";
+import colors from "../../assets/colors";
+import InvitationsList from "./InvitationsList";
 
 interface IViewInvitationsProps {
-  hideBtn?: boolean
+  hideBtn?: boolean;
 }
 
-const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props => {
-  const dispatch = useDispatch()
-  const ref = useRef()
-  const classes = useStyles()
-  const { openInvites } = useSelector((state: RootState) => state.user)
-  const { hideBtn } = props
+const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = (
+  props
+) => {
+  const dispatch = useDispatch();
+  const ref = useRef();
+  const classes = useStyles();
+  const { openInvites } = useSelector((state: RootState) => state.user);
+  const { hideBtn } = props;
 
-  const handleOpen = () => {
-    // setOpen(!open);
-    dispatch(openViewInvitations())
-  }
+  const handleOpen = () => {};
 
   //   React.useEffect(() => {
   //     const payload = {
@@ -53,18 +54,18 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
     const payload = {
       success: (val: any) => {
         //  @ts-ignore
-        ref?.current?.getMyInvites() //accessing invitationList component
+        ref?.current?.getMyInvites(); //accessing invitationList component
       },
       other: {
         accepted,
       },
-    }
-    dispatch(acceptAllInvites(payload))
-  }
+    };
+    dispatch(acceptAllInvites(payload));
+  };
 
   const handleClose = () => {
-    dispatch(closeViewIvitations())
-  }
+    dispatch(closeViewIvitations());
+  };
 
   return (
     <>
@@ -80,9 +81,9 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
             size="small"
             onClick={handleClose}
             style={{
-              position: 'absolute',
-              right: '8px',
-              top: '8px',
+              position: "absolute",
+              right: "8px",
+              top: "8px",
             }}
           >
             <CloseIcon />
@@ -110,16 +111,16 @@ const ViewInvitations: React.FunctionComponent<IViewInvitationsProps> = props =>
         <InvitationsList ref={ref} />
       </Dialog>
     </>
-  )
-}
+  );
+};
 
-export default ViewInvitations
+export default ViewInvitations;
 
 const useStyles = makeStyles({
   titleWrapper: {
     width: 400,
-    display: 'flex',
-    justifyContent: 'space-between',
+    display: "flex",
+    justifyContent: "space-between",
     borderBottom: `1px solid ${colors.mediumGrey}`,
     paddingBottom: 10,
   },
@@ -132,4 +133,4 @@ const useStyles = makeStyles({
     fontWeight: 500,
     color: colors.btnRed,
   },
-})
+});

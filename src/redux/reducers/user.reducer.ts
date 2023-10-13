@@ -9,11 +9,7 @@ import { ActionInterface } from "./appReducer";
 import {
   CLOSE_VIEW_INVITATIONS,
   DELETE_MY_CONNECTION,
-  DISABLE_REFRESH_CONNECTIONS,
   GET_MY_CONNECTIONS,
-  GET_MY_CONNECTIONS_COUNT,
-  GET_MY_INVITES_COUNT,
-  OPEN_VIEW_INVITATIONS,
   USER_CONFIG,
 } from "config/user.config";
 
@@ -93,12 +89,6 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
         loadingContacts: false,
       };
     }
-    case requestSuccess(GET_MY_INVITES_COUNT): {
-      return {
-        ...state,
-        invites: action.payload,
-      };
-    }
     case requestSuccess(DELETE_MY_CONNECTION): {
       return {
         ...state,
@@ -113,26 +103,6 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
       };
     }
 
-    case DISABLE_REFRESH_CONNECTIONS: {
-      return {
-        ...state,
-        refreshMyconnections: false,
-      };
-    }
-
-    case requestSuccess(GET_MY_CONNECTIONS_COUNT): {
-      return {
-        ...state,
-        connections: action.payload,
-      };
-    }
-
-    case OPEN_VIEW_INVITATIONS: {
-      return {
-        ...state,
-        openInvites: true,
-      };
-    }
 
     case CLOSE_VIEW_INVITATIONS: {
       return {
@@ -140,13 +110,6 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
         openInvites: false,
       };
     }
-
-    // case requestSuccess(GET_MY_INVITES_COUNT): {
-    //   return {
-    //     ...state,
-    //     createChatLoading: false,
-    //   };
-    // }
 
     default:
       return state;

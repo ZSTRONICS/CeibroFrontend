@@ -1,6 +1,7 @@
 import { Button, CircularProgress, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@mui/material/Alert";
+import TextField from "@mui/material/TextField";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -9,7 +10,6 @@ import { toast } from "react-toastify";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import { otpVerify } from "../../../redux/action/auth.action";
-import TextField from "../../Utills/Inputs/TextField";
 
 const VerifyEmailForm = () => {
   const classes = useStyles();
@@ -69,9 +69,6 @@ const VerifyEmailForm = () => {
             {loading ? "Verifying email..." : "Register User Successfully"}
           </Alert>
         )}
-
-        {/* {error && <Alert severity="error">Invalid OTP</Alert>} */}
-
         <TextField
           placeholder={"otp"}
           className={classes.inputs}
