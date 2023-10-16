@@ -95,7 +95,13 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
           </Box>
         )}
         <svg
-          style={{ position: "absolute", right: 0, bottom: 0, padding: 2 }}
+          style={{
+            position: "absolute",
+            right: 0,
+            bottom: 0,
+            padding: 2,
+            backgroundColor: "whitesmoke",
+          }}
           xmlns="http://www.w3.org/2000/svg"
           width="24"
           height="24"

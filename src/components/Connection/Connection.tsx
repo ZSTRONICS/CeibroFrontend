@@ -9,6 +9,7 @@ import { RootState } from "redux/reducers/appReducer";
 // component
 import NoData from "components/NotFound/NoData";
 import { ConnectionCardSkeleton } from "components/material-ui/skeleton";
+import { Contact } from "constants/interfaces";
 import useResponsive from "hooks/useResponsive";
 import ConnectionCard from "./ConnectionCard";
 
@@ -48,7 +49,7 @@ const Connections = () => {
   }, [headerHeight]);
 
   const ContactRow = ({ index, style }: any) => {
-    const userContact = userAllContacts[index];
+    const userContact: Contact = userAllContacts[index];
     if (!userContact) {
       return <></>;
     }
@@ -66,10 +67,9 @@ const Connections = () => {
         listIndex={index}
         style={style}
         ceibroUserData={userCeibroData}
-        firstName={contactFirstName}
-        surName={contactSurName}
+        firstName={userCeibroData ? userCeibroData.firstName : contactFirstName}
+        surName={userCeibroData ? userCeibroData.surName : contactSurName}
         companyName={userCeibroData?.companyName}
-        contactFullName={contactFullName}
         isBlocked={isBlocked}
         isCeiborUser={isCeiborUser}
         profilePic={userCeibroData?.profilePic}

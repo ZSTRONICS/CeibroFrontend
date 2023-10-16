@@ -1,15 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 // material
-import {
-  Badge,
-  Box,
-  Button,
-  Menu,
-  MenuItem,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Badge, Box, Button, Menu, MenuItem, Stack } from "@mui/material";
 
 // router-dom
 import { useHistory } from "react-router";
@@ -26,7 +18,6 @@ import NameAvatar from "components/Utills/Others/NameAvatar";
 import { LogoutIcon } from "components/material-ui/icons/Logout/LogoutIcon";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { ProfileIcon } from "components/material-ui/icons/profileicon/ProfileIcon";
-import storage from "redux-persist/lib/storage";
 import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
@@ -68,7 +59,6 @@ const UserMenu = () => {
     setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
-    storage.removeItem("persist:root");
     history.push(LOGIN_ROUTE);
   };
 
@@ -156,8 +146,7 @@ const UserMenu = () => {
               }}
             >
               <ConnectionIcon />
-              <Typography textAlign="center"> My Connections</Typography>
-
+              My Connections
               <Badge
                 sx={{
                   color: "#F1B740",
@@ -169,22 +158,18 @@ const UserMenu = () => {
                 overlap="circular"
               />
             </MenuItem>
-
             <MenuItem
               disableRipple
               onClick={handleLogout}
               sx={{
+                gap: 2,
                 "&.MuiMenuItem-root": {
                   padding: "10px 20px",
                 },
               }}
             >
-              <Stack direction="row" spacing={2}>
-                <Box display="flex" alignItems="center">
-                  <LogoutIcon />
-                </Box>
-                <Typography textAlign="center">Logout</Typography>
-              </Stack>
+              <LogoutIcon />
+              Logout
             </MenuItem>
           </Menu>
         )}

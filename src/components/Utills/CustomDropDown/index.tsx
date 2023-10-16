@@ -307,7 +307,13 @@ function CustomDropDown(props: IProps) {
                   </Box>
                 );
               })}
-              <Divider sx={{ marginTop: "20px", marginBottom: "20px", pointerEvents:'none' }} />
+              <Divider
+                sx={{
+                  marginTop: "20px",
+                  marginBottom: "20px",
+                  pointerEvents: "none",
+                }}
+              />
             </Box>
           )}
           <Box sx={{ margin: "8px 16px" }}>

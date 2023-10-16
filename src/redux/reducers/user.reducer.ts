@@ -39,6 +39,28 @@ const intialStatue: UserReducerInt = {
 
 const UserReducer = (state = intialStatue, action: ActionInterface) => {
   switch (action.type) {
+    case USER_CONFIG.USER_UPDATED_IN_STORE:
+      const { firstName, surName, email, phoneNumber, profilePic, jobTitle, countryCode, companyName, _id } = action.payload
+      const userIndex = state.userAllContacts.findIndex((cotact: Contact) => cotact.isCeiborUser && cotact.userCeibroData?._id === _id);
+      if (userIndex > -1) {
+        const userContact = state.userAllContacts[userIndex];
+        userContact.phoneNumber = phoneNumber;
+        userContact.countryCode = countryCode;
+        if (userContact.userCeibroData) {
+          userContact.userCeibroData = {
+            ...userContact.userCeibroData,
+            email,
+            firstName,
+            surName,
+            jobTitle,
+            companyName,
+            profilePic
+          };
+        }
+      }
+      return {
+        ...state,
+      };
     case requestPending(USER_CONFIG.GET_USER_CONTACTS): {
       return {
         ...state,

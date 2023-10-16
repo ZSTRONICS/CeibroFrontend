@@ -15,7 +15,7 @@ import { TopicInterface } from "constants/interfaces/topic.interface";
 import { selectedTaskFilterType } from "redux/type";
 import { requestFail, requestPending, requestSuccess } from "utills/status";
 import { ActionInterface } from "./appReducer";
-interface TaskReducerInt {
+export interface TaskReducerInt {
   RECENT_TASK_UPDATED_TIME_STAMP: string;
   allTaskToMe: AllTaskToMeInterface;
   allTaskFromMe: AllTaskFromMeInterface;
@@ -37,7 +37,7 @@ const intialStatue: TaskReducerInt = {
   Topics: { allTopics: [], recentTopics: [] },
 };
 
-const TaskReducer = (
+const taskReducer = (
   state = intialStatue,
   action: ActionInterface
 ): TaskReducerInt => {
@@ -791,4 +791,4 @@ const TaskReducer = (
   }
 };
 
-export default TaskReducer;
+export default taskReducer;

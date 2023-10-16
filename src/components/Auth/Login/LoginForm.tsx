@@ -145,6 +145,7 @@ const LoginForm: React.FC<Props> = (props) => {
             values,
           }) => (
             <form
+              autoComplete="off"
               onSubmit={handleSubmit}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {

@@ -14,7 +14,6 @@ interface IConnectionsProps {
   isCeiborUser: boolean;
   firstName: string;
   surName: string;
-  contactFullName: string;
   isBlocked: boolean;
   companyName: string | undefined;
   profilePic: string | undefined;
@@ -25,7 +24,6 @@ interface IConnectionsProps {
 const ConnectionCard = ({
   style,
   companyName,
-  contactFullName,
   isCeiborUser,
   isBlocked,
   profilePic,
@@ -64,7 +62,7 @@ const ConnectionCard = ({
               />
               <div>
                 <SubHeadingTag sx={{ color: "#0076C8" }}>
-                  {contactFullName}
+                  {`${firstName} ${surName}`}
                 </SubHeadingTag>
                 <SubLabelTag>{`Company: ${
                   companyName ? companyName : "N/A"

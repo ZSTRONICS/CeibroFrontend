@@ -1,4 +1,4 @@
-import { DOCS_CONFIG, TASK_CONFIG } from "config";
+import { DOCS_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,12 @@ export const useSocket = () => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
         switch (eventType) {
+            case USER_CONFIG.USER_UPDATED:
+                dispatch({
+                    type: USER_CONFIG.USER_UPDATED_IN_STORE,
+                    payload: data,
+                });
+                break;
             case TASK_CONFIG.TOPIC_CREATED:
                 dispatch({
                     type: TASK_CONFIG.PUSH_TOPIC_IN_STORE,
@@ -75,7 +81,6 @@ export const useSocket = () => {
                 break;
         }
     }
-
 
     useEffect(() => {
         if (!isLoggedIn) {
