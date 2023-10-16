@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
+import { LOGIN_ROUTE } from "utills/axios";
 import assets from "../../../assets/assets";
 import colors from "../../../assets/colors";
 import { otpVerify } from "../../../redux/action/auth.action";
@@ -34,7 +35,7 @@ const VerifyEmailForm = () => {
         setSuccess(res);
         setOtp("");
         toast.success(`${t("auth.email_verified")}`);
-        history.push("/login");
+        history.push(LOGIN_ROUTE);
       },
       onFailAction: (err: any) => {
         setError(true);

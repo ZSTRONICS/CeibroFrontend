@@ -14,6 +14,7 @@ import {
   authApiAction,
   registerConfirmationRequest,
 } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 
@@ -177,7 +178,7 @@ export default function RegisterConfirmationForm() {
       </div>
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>
         {t("auth.back_to")}{" "}
-        <Link to="/login" className={classes.signup}>
+        <Link to={LOGIN_ROUTE} className={classes.signup}>
           Login
         </Link>
       </Box>

@@ -10,6 +10,7 @@ import useResponsive from "hooks/useResponsive";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 
@@ -88,7 +89,7 @@ export default function TermsAndConditions() {
             <Button
               variant="outlined"
               sx={{ width: "100%", borderColor: "#000", color: "#000" }}
-              onClick={() => history.push("/login")}
+              onClick={() => history.push(LOGIN_ROUTE)}
             >
               Cancel
             </Button>

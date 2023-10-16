@@ -7,6 +7,7 @@ import {
 import useResponsive from "hooks/useResponsive";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "../Register/RegisterStyles";
 import ForgetPasswordForm from "./ForgetPasswordForm";
@@ -34,7 +35,7 @@ const ForgetPassword = () => {
         <BackToLoginTag>
           {t("auth.Remember")} &nbsp; &nbsp;
           <Link
-            to="/login"
+            to={LOGIN_ROUTE}
             style={{ color: "#0076c8", textDecoration: "none" }}
           >
             {t("auth.login")}

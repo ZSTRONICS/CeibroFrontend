@@ -11,6 +11,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import { handlePhoneChange } from "../../../utills/formFunctions";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
@@ -134,7 +135,7 @@ export default function RegisterNumberForm() {
 
         <Box className={classes.dontHave} sx={{ color: "#131516" }}>
           {t("auth.back_to")}{" "}
-          <Link to="/login" className={classes.signup}>
+          <Link to={LOGIN_ROUTE} className={classes.signup}>
             Login
           </Link>
         </Box>

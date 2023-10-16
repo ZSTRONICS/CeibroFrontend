@@ -26,6 +26,8 @@ import {
 import NotFound from "components/NotFound";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
+import { LOGIN_ROUTE } from "utills/axios";
+import CommingSoon from "./CommingSoon";
 import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
@@ -41,11 +43,11 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Redirect exact from="/" to="/login" />
-            <Route path="/login" component={Login} />
-            {/* <Route path="/comming-soon" component={CommingSoon} />
+            {/* <Redirect exact from="/" to="/login" />
+            <Route path="/login" component={Login} /> */}
+            <Route path="/comming-soon" component={CommingSoon} />
             <Redirect exact from="/" to="/comming-soon" />
-            <Route path="/private-login" component={Login} /> */}
+            <Route path={LOGIN_ROUTE} component={Login} />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />

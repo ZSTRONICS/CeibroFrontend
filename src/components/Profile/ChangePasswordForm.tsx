@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { changePassword, logoutUser } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 
 interface IProps {
   closeDialog: (text?: string) => void;
@@ -33,7 +34,7 @@ const ChangePasswordForm = (props: IProps) => {
         setLoading(false);
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/login");
+        history.push(LOGIN_ROUTE);
       },
       onFailAction: (err: any) => {
         if (err.response.data.code >= 400) {

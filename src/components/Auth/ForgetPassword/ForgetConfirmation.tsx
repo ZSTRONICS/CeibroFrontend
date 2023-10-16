@@ -96,7 +96,7 @@ const ForgetConfirmation: React.FC = () => {
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
-      // subTitle={t("auth.enter_your_phone_no")}
+    // subTitle={t("auth.enter_your_phone_no")}
     >
       <div className={classes.registerNumberForm}>
         {isTabletOrMobile && (
@@ -115,7 +115,7 @@ const ForgetConfirmation: React.FC = () => {
       </div>
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>
         {t("auth.back_to")}{" "}
-        <Link to="/login" className={classes.signup}>
+        <Link to="/private-login" className={classes.signup}>
           Login
         </Link>
       </Box>

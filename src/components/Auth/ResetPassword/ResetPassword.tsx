@@ -1,6 +1,7 @@
 import { BackToLoginTag, TopBarTitle } from "components/CustomTags";
 import useResponsive from "hooks/useResponsive";
 import { Link } from "react-router-dom";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import ResetPasswordForm from "./ResetPasswordForm";
 
@@ -17,7 +18,7 @@ const ResetPassword = () => {
       <ResetPasswordForm />
       <BackToLoginTag>
         Remember! &nbsp; &nbsp;
-        <Link to="/login" style={{ color: "#0076c8", textDecoration: "none" }}>
+        <Link to={LOGIN_ROUTE} style={{ color: "#0076c8", textDecoration: "none" }}>
           Login
         </Link>
       </BackToLoginTag>

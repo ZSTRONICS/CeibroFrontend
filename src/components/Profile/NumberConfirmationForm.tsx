@@ -15,6 +15,7 @@ import {
   logoutUser,
   verifyChangeNumber,
 } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import useStyles from "../Auth/Register/RegisterStyles";
 
 interface IProps {
@@ -58,7 +59,7 @@ export default function NumberConfirmationForm(props: IProps) {
       success: (res: any) => {
         props.closeDialog();
         dispatch(logoutUser());
-        history.push("/login");
+        history.push(LOGIN_ROUTE);
       },
       onFailAction: (err: any) => {
         setAlertMessage(err.response.data.message);

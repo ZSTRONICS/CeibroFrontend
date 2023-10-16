@@ -19,6 +19,7 @@ import { Button, Divider, Grid, Typography } from "@mui/material";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
+import { LOGIN_ROUTE } from "utills/axios";
 import { setValidationSchema } from "../userSchema/RegisterSchema";
 import useStyles from "./RegisterStyles";
 
@@ -226,7 +227,7 @@ const RegisterForm = () => {
                   placeholder="Password"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  // required={true}
+                // required={true}
                 />
                 {errors.password && (
                   <Typography className={`error-text ${classes.errorText}`}>
@@ -264,7 +265,7 @@ const RegisterForm = () => {
                       py: { xs: 0.3, md: 1.3 },
                       textTransform: "capitalize !important",
                     }}
-                    onClick={() => history.push("/login")}
+                    onClick={() => history.push(LOGIN_ROUTE)}
                   >
                     Cancel
                   </Button>

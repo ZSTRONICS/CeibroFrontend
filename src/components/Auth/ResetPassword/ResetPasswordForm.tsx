@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 import { toast } from "react-toastify";
 import { resetPassword } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import { resetPasswordSchemaValidation } from "../userSchema/AuthSchema";
 
 const ResetPasswordForm = () => {
@@ -37,7 +38,7 @@ const ResetPasswordForm = () => {
         setSuccess(res);
         if (res) {
           localStorage.clear();
-          history.push("/login");
+          history.push(LOGIN_ROUTE);
         }
         toast.success(`${t("auth.password_reset_successfully")}`);
         action?.resetForm?.();

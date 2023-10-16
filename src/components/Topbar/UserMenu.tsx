@@ -30,6 +30,7 @@ import storage from "redux-persist/lib/storage";
 import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
 import { socket } from "services/socket.services";
+import { LOGIN_ROUTE } from "utills/axios";
 
 const UserMenu = () => {
   const history = useHistory();
@@ -68,7 +69,7 @@ const UserMenu = () => {
     dispatch(logoutUser());
     purgeStoreStates();
     storage.removeItem("persist:root");
-    history.push("/login");
+    history.push(LOGIN_ROUTE);
   };
 
   return (

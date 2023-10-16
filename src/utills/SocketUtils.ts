@@ -8,7 +8,7 @@ import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 import { io } from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
-import { AxiosV2, SERVER_URL, urlV2 } from "./axios";
+import { AxiosV2, LOGIN_ROUTE, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
@@ -216,18 +216,18 @@ export const useSocket = () => {
                         } else {
                             alert("Session Expired");
                             global.isSocketConnecting = false;
-                            history.push("/login");
+                            history.push(LOGIN_ROUTE);
                             window.location.reload();
                         }
                     })
                     .catch((err) => {
                         global.isSocketConnecting = false;
-                        history.push("/login");
+                        history.push(LOGIN_ROUTE);
                         alert("Session Expired");
                         window.location.reload();
                     });
             } else {
-                history.push("/login");
+                history.push(LOGIN_ROUTE);
                 window.location.reload();
             }
         });
