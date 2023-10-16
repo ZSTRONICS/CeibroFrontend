@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
 import { LOGIN_ROUTE } from "utills/axios";
-import { handlePhoneChange } from "../../../utills/formFunctions";
+import { checkValidPhoneNumber, handlePhoneChange } from "../../../utills/formFunctions";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 import useStyles from "./RegisterStyles";
@@ -51,7 +51,12 @@ export default function RegisterNumberForm() {
         setAlertMessage(err.response.data.message);
       },
     };
-    dispatch(registerRequest(payload));
+    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+    if (checkPhoneNumber?.isValid) {
+       dispatch(registerRequest(payload));
+    } else {
+      setAlertMessage(checkPhoneNumber.msg);
+    }
   };
 
   const isTabletOrMobile = useResponsive("down", "md", "");

@@ -30,6 +30,7 @@
     "i18next": "^22.0.6",
     "i18next-browser-languagedetector": "^7.0.1",
     "jodit-react": "^1.1.1",
+    "libphonenumber-js": "^1.10.47",
     "lodash": "^4.17.21",
     "material-ui-confirm": "^3.0.8",
     "moment-timezone": "^0.5.34",

@@ -32,7 +32,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { userApiAction } from "redux/action";
 import { purgeStoreStates } from "redux/store";
-import { handlePhoneChange } from "utills/formFunctions";
+import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 
 interface Props {
@@ -97,7 +97,13 @@ const LoginForm: React.FC<Props> = (props) => {
       showErrorToast: false,
     };
     setShowLoading(true);
-    dispatch(loginRequest(payload));
+    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+    if (checkPhoneNumber?.isValid) {
+      dispatch(loginRequest(payload));
+    } else {
+      setAlertMessage(checkPhoneNumber.msg);
+      setShowLoading(false);
+    }
   };
 
   const checkValidInputs = (values: any) => {

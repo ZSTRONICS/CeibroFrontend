@@ -20,7 +20,7 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { toast } from "react-toastify";
-import { handlePhoneChange } from "utills/formFunctions";
+import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 
 interface Props {
@@ -78,7 +78,13 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-    dispatch(changeNumber(payload));
+    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+    if (checkPhoneNumber?.isValid) {
+      dispatch(changeNumber(payload));
+    } else {
+      setShowLoading(false);
+      setAlertMessage(checkPhoneNumber.msg);
+    }
   };
 
   const checkValidInputs = (values: any) => {
