@@ -323,7 +323,7 @@ function UserDropDown(props: IProps) {
             sx={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "flex-start",
               margin: "0px 8px 0px",
             }}
           >
