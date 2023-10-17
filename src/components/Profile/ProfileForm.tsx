@@ -25,6 +25,7 @@ import { toast } from "react-toastify";
 // i18next
 import CustomModal from "components/Modal";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
+import { UPDATE_MY_PROFILE } from "config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
 import ChangeNumberForm from "./ChangeNumberForm";
@@ -44,7 +45,6 @@ const ProfileForm = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [modalChildren, setModalChildren] = useState<JSX.Element | null>(null);
   const [modalTitle, setModalTitle] = useState("");
-  const [newNumber, setNewNumber] = useState("");
   const [onUpdate, setOnUpdate] = useState(false);
   const {
     phoneNumber,
@@ -67,7 +67,8 @@ const ProfileForm = () => {
         companyName,
         jobTitle,
       },
-      success: () => {
+      success: (res: any) => {
+        dispatch({ type: UPDATE_MY_PROFILE, payload: res.data.user });
         toast.success("Profile updated successfully");
         setOnUpdate(false);
         setLoading(false);
@@ -114,7 +115,6 @@ const ProfileForm = () => {
 
   const closeDialog = (number?: string) => {
     if (number && number !== "") {
-      setNewNumber(number);
       setModalTitle("Phone confirmation");
       setModalChildren(
         <NumberConfirmationForm closeDialog={closeDialog} newNumber={number} />

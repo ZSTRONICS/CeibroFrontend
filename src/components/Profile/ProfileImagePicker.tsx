@@ -1,29 +1,19 @@
 import { Box, CircularProgress, Grid } from "@mui/material";
 import assets from "assets/assets";
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import { useDispatch } from "react-redux";
 import { UpdateProfilePicture } from "redux/action/auth.action";
 import colors from "../../assets/colors";
 
 interface Props {
   profilePic: string | undefined | null | any;
+  profilePicUploading: boolean;
 }
 
 const ProfileImagePicker: React.FC<Props> = (props) => {
-  const { profilePic } = props;
+  const { profilePic, profilePicUploading } = props;
   const ref = useRef<HTMLInputElement>(null);
-  const [imageUrl, setImageUrl] = useState<string | any>(
-    profilePic ? profilePic : assets.blueUser
-  );
-
-  const [showLoader, setShowLoader] = useState<boolean>(false);
   const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   if (profilePic) {
-  //     setImageUrl(profilePic);
-  //   }
-  // }, [profilePic]);
 
   const handleClick = () => {
     if (ref.current !== null) {
@@ -33,26 +23,12 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     try {
-      setShowLoader(true);
-
       const formData = new FormData();
       if (e.target.files) {
         const localFile = e.target.files[0];
         formData.append("profilePic", localFile);
         const payload = {
           body: formData,
-          onFailAction: (err: any) => {
-            setShowLoader(false);
-            if (err) {
-              console.error("Failed to upload image");
-            }
-          },
-          success: (res: any) => {
-            setShowLoader(false);
-            if (res.status === 200) {
-              setImageUrl(res.data.profilePic);
-            }
-          },
         };
         dispatch(UpdateProfilePicture(payload));
       }
@@ -83,13 +59,13 @@ const ProfileImagePicker: React.FC<Props> = (props) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          backgroundImage: `url(${imageUrl})`,
+          backgroundImage: `url(${profilePic ? profilePic : assets.blueUser})`,
           backgroundSize: "contain",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
-        {showLoader === true && (
+        {profilePicUploading && (
           <Box sx={{ textAlign: "center" }}>
             <CircularProgress size={40} />
           </Box>

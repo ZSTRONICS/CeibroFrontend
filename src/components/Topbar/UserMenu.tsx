@@ -32,6 +32,7 @@ const UserMenu = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
+  const { firstName, surName, profilePic } = user;
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     if (!isRenderEffect.current) {
@@ -75,9 +76,9 @@ const UserMenu = () => {
         >
           <CustomStack gap={1.8}>
             <NameAvatar
-              firstname={user?.firstName}
-              surname={user?.surName}
-              url={user?.profilePic}
+              firstname={firstName}
+              surname={surName}
+              url={profilePic}
               variant="rounded"
             />
             <Stack
@@ -90,10 +91,10 @@ const UserMenu = () => {
               }}
             >
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.firstName || ""}
+                {firstName || ""}
               </AddStatusTag>
               <AddStatusTag sx={{ color: "#131516" }}>
-                {user?.surName || ""}
+                {surName || ""}
               </AddStatusTag>
             </Stack>
             <assets.KeyboardArrowDownIcon />
