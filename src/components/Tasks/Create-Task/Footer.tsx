@@ -147,6 +147,10 @@ const Footer = (props: FooterPropsType) => {
           "&:hover": {
             border: "0px solid transparent",
           },
+          "& .MuiButton-startIcon":{
+            marginLeft:0,
+            marginRight:0
+          }
         }}
         onClick={props.handleSubmitForm}
         icon={<ArrowForwardOutlinedIcon />}
