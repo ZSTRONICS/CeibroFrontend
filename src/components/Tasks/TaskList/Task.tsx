@@ -185,7 +185,6 @@ const Task = () => {
       }
       setFilteredTask(data);
     }
-    setSearchText("");
   }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask, selectedTab]);
 
   const markTaskAsSeen = (taskId: string): void => {
@@ -348,7 +347,6 @@ const Task = () => {
         return searchValue.includes(searchText.toLowerCase());
       });
     }
-
     return filteredData;
   }
 

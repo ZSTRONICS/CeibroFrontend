@@ -1,38 +1,13 @@
 import { Box, Grid } from "@mui/material";
 import Task from "components/Tasks/TaskList/Task";
 import DocumentReader from "components/pdfviewer/index.js";
-import { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { taskActions } from "redux/action";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { DrawingMenu, StickyHeader } from "./Components";
 
 function DrawingDetails() {
-  const isRenderEffect = useRef<any>(false);
-  const dispatch = useDispatch();
   const { task } = useSelector((state: RootState) => state);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
-
-  const allTasksTome = Object.values(allTaskToMe).flat();
-  const allTasksFromMe = Object.values(allTaskFromMe).flat();
-  const allTasksHidden = Object.values(allTaskHidden).flat();
-
-  useEffect(() => {
-    if (!isRenderEffect.current) {
-      if (allTasksTome.length === 0) {
-        dispatch(taskActions.getAllTaskToMe());
-      }
-      if (allTasksFromMe.length === 0) {
-        dispatch(taskActions.getAllTaskFromMe());
-      }
-      if (allTasksHidden.length === 0) {
-        dispatch(taskActions.getAllTaskHidden());
-      }
-    }
-    return () => {
-      isRenderEffect.current = true;
-    };
-  }, []);
+  const { allTaskToMe } = task;
 
   return (
     <>

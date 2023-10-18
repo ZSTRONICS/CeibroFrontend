@@ -23,6 +23,20 @@ const syncAllTasks = apiCall({
   path: (payload) => `/task/sync/${payload.other.syncTime}`
 })
 
+const getAllTasksAllEvents = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS,
+  method: "get",
+  path: (payload) => `task/syncTask/2023-10-17T16:13:41.345Z`
+})
+
+const syncTaskEventsByTaskId = apiCall({
+  useV2Route: true,
+  type: TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID,
+  method: "post",
+  path: (payload) => `/task/syncEvents/${payload.other.taskId}`
+})
+
 const getAllTopic = apiCall({
   useV2Route: true,
   type: TASK_CONFIG.GET_ALL_TOPIC,
@@ -87,30 +101,6 @@ const taskEventsWithFiles = apiCall({
   path: (payload) => `/task/upload/${payload.other.eventName}/${payload.other.taskId}?hasFiles=${payload.other.hasFiles}`  // eventName = [comment, doneTask]
 })
 
-// get task assigned to me 
-const getAllTaskToMe = apiCall({
-  useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_TO_ME,
-  method: "get",
-  path: "/task/to-me",
-})
-
-// get task created from me 
-const getAllTaskFromMe = apiCall({
-  useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_FROM_ME,
-  method: "get",
-  path: "/task/from-me",
-})
-
-// get task created from me 
-const getAllTaskHidden = apiCall({
-  useV2Route: true,
-  type: TASK_CONFIG.GET_ALL_TASK_HIDDEN,
-  method: "get",
-  path: "/task/hidden",
-})
-
 const uploadDocs = apiCall({
   useV2Route: false,
   type: TASK_CONFIG.UPLOAD_TASK_DOCS,
@@ -127,6 +117,8 @@ function* taskSaga() {
   // task
   yield takeLatest(TASK_CONFIG.CREATE_TASK, createTask)
   yield takeLatest(TASK_CONFIG.SYNC_ALL_TASKS, syncAllTasks)
+  yield takeLatest(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS, getAllTasksAllEvents)
+  yield takeLatest(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID, syncTaskEventsByTaskId)
   yield takeLatest(TASK_CONFIG.UPLOAD_TASK_DOCS, uploadDocs)
   yield takeLatest(TASK_CONFIG.FORWARD_TASK, forwardTask)
   yield takeLatest(TASK_CONFIG.TASK_SEEN, taskSeen)
@@ -135,11 +127,6 @@ function* taskSaga() {
   yield takeLatest(TASK_CONFIG.TASK_CANCELED, taskCaneled)
   yield takeLatest(TASK_CONFIG.TASK_UN_CANCEL, taskUnCanel)
   yield takeLatest(TASK_CONFIG.TASK_EVENT_WITH_FILES, taskEventsWithFiles)
-
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_TO_ME, getAllTaskToMe)
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_FROM_ME, getAllTaskFromMe)
-  yield takeLatest(TASK_CONFIG.GET_ALL_TASK_HIDDEN, getAllTaskHidden)
-
 }
 
 export default taskSaga

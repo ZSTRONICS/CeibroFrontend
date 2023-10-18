@@ -67,16 +67,19 @@ const MockTaskApis = () => {
       if (selectedApi.value === "getAllTopic") {
         dispatch(taskActions.getAllTopic());
       }
-      if (selectedApi.value === "getAllTaskToMe") {
-        dispatch(taskActions.getAllTaskToMe());
+      if (selectedApi.value === "getAllTaskAllEvents") {
+        dispatch(taskActions.getAllTasksAllEvents());
       }
-      if (selectedApi.value === "getAllTaskFromMe") {
-        dispatch(taskActions.getAllTaskFromMe());
+      if (selectedApi.value === "syncTaskEventsByTaskId") {
+        dispatch(
+          taskActions.syncTaskEventsByTaskId({
+            other: { taskId: "652fe8decb9983308b49941e" },
+            body: {
+              eventIds: ["652f9e7d0e89745624ea46cd"],
+            },
+          })
+        );
       }
-      if (selectedApi.value === "getAllTaskHidden") {
-        dispatch(taskActions.getAllTaskHidden());
-      }
-
       if (selectedApi.value === "forwardTask") {
         dispatch(
           taskActions.forwardTask({
@@ -262,9 +265,11 @@ const mockTaskApis = [
   { title: "createTaskWithFiles: /task/files", id: "createTaskWithFiles" },
   { title: "forwardTask: /task/forward/:taskId", id: "forwardTask" },
   { title: "getAllTopic: /task/topic", id: "getAllTopic" },
-  { title: "getAllTaskToMe: /task/to-me", id: "getAllTaskToMe" },
-  { title: "getAllTaskFromMe: /task/from-me", id: "getAllTaskFromMe" },
-  { title: "getAllTaskHidden: /task/hidden", id: "getAllTaskHidden" },
+  { title: "getAllTaskAllEvents: /task/timeStamp", id: "getAllTaskAllEvents" },
+  {
+    title: "syncTaskEventsByTaskId: /task/syncEvents",
+    id: "syncTaskEventsByTaskId",
+  },
   { title: "taskCaneled: //task/cancel/:taskId", id: "taskCaneled" },
   { title: "taskUnCanel: //task/uncancel/:taskId", id: "taskUnCanel" },
   { title: "taskSeen: /task/seen/:taskId", id: "taskSeen" },

@@ -22,7 +22,7 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
   };
   return (
     <CustomModal
-      maxWidth={isPdfFile ? "lg" : "md"}
+      maxWidth={"false"}
       isOpen={isOpen}
       handleClose={closeModal}
       showCloseBtn={true}
@@ -39,9 +39,9 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
                 />
               ) : (
                 <ImageLazyLoad
-                  maxWidth="600px"
+                  maxWidth="100%"
                   src={fileToView.fileUrl}
-                  alt=""
+                  alt="image"
                   imgZoomHandler={true}
                 />
               )}

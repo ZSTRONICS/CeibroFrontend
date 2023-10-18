@@ -1,8 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Box, IconButton, Typography } from "@mui/material";
-import CustomModal from "components/Modal";
+import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import { fileType } from "components/Tasks/type";
-import PDFViewer from "components/uploadImage/WindowPDFViewer";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
@@ -13,24 +12,27 @@ interface IProps {
   files: IFile[] | File[];
   size?: string;
   textColor?: string;
+  showFullHeight?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
 }
 
-const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
+const FileBox: React.FC<IProps> = ({
+  files,
+  title,
+  size,
+  showFullHeight,
+  handleClearFile,
+}) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [fileToView, setFileToView] = useState<any | null>(null);
 
   const openPDFNewTab = (file: any) => {
     if (file.fileUrl) {
       openModal();
-      setFileToView(file.fileUrl);
+      setFileToView(file);
     } else {
       console.log("not open ");
     }
-  };
-
-  const handleError = (e: any) => {
-    console.error("Error loading PDF:", e);
   };
 
   return (
@@ -74,7 +76,7 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
           sx={{
             overflow: "auto",
             width: "100%",
-            maxHeight: "6rem",
+            maxHeight: `${!showFullHeight ? "100%" : "6.5rem"}`,
             display: "flex",
             flexWrap: "wrap",
           }}
@@ -171,23 +173,12 @@ const FileBox: React.FC<IProps> = ({ files, title, size, handleClearFile }) => {
         </Box>
       </Box>
       {isOpen && (
-        <CustomModal
-          maxWidth={"lg"}
+        <ImagePreviewModal
+          isPdfFile={true}
           isOpen={isOpen}
-          handleClose={closeModal}
-          showCloseBtn={true}
+          closeModal={closeModal}
           title="File Preview"
-          children={
-            <>
-              {fileToView !== null && (
-                <PDFViewer
-                  src={fileToView}
-                  onLoad={() => console.log("PDF loaded successfully")}
-                  onError={handleError}
-                />
-              )}
-            </>
-          }
+          fileToView={fileToView}
         />
       )}
     </>

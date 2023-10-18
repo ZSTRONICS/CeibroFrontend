@@ -9,6 +9,8 @@ const taskActions = {
       payload: taskFilter,
     };
   },
+  getAllTasksAllEvents: createAction(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS),
+  syncTaskEventsByTaskId: createAction(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID),
   syncAllTasks: createAction(TASK_CONFIG.SYNC_ALL_TASKS),
   createTask: createAction(TASK_CONFIG.CREATE_TASK),
   createTopic: createAction(TASK_CONFIG.CREATE_TOPIC),
@@ -21,9 +23,6 @@ const taskActions = {
   taskCaneled: createAction(TASK_CONFIG.TASK_CANCELED),
   taskUnCanel: createAction(TASK_CONFIG.TASK_UN_CANCEL),
   taskEventsWithFiles: createAction(TASK_CONFIG.TASK_EVENT_WITH_FILES),
-  getAllTaskToMe: createAction(TASK_CONFIG.GET_ALL_TASK_TO_ME),
-  getAllTaskFromMe: createAction(TASK_CONFIG.GET_ALL_TASK_FROM_ME),
-  getAllTaskHidden: createAction(TASK_CONFIG.GET_ALL_TASK_HIDDEN),
 };
 
 export default taskActions;

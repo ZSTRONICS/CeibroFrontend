@@ -35,22 +35,16 @@ const TaskHeader = ({ title }: TaskHeaderProps): JSX.Element => {
     <Box
       sx={{
         display: "flex",
-        position: "static",
+        position: "fixed",
+        width: "100%",
         alignItems: "center",
         justifyContent: "space-between",
         height: "52px",
+        backgroundColor: "white",
+        zIndex: "10",
       }}
     >
       <Box className={classes.container}>
-        {/* <IconButton
-          edge="start"
-          sx={{ color: "#0076C8" }}
-          aria-label="back"
-          className={classes.backButton}
-          onClick={handleBackButtonClick}
-        >
-          <ArrowBackIcon />
-        </IconButton> */}
         <Typography
           variant="h6"
           component="div"

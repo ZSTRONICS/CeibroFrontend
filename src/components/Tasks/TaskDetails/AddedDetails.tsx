@@ -36,9 +36,9 @@ function AddedDetails(props: IProps) {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
-  const handleClick = (file: any, isPdf: boolean = false) => {
+  const handleClick = (file: any) => {
     setFileToView(file);
-    setIsPdf(isPdf);
+    setIsPdf(true);
     openModal();
   };
 

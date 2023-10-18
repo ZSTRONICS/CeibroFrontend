@@ -43,7 +43,7 @@ export default function PDFViewer({ src, onLoad, onError }: Props) {
           <CircularProgress size={35} />
         </Box>
       )}
-      <object data={data} type="application/pdf" width="100%" height="500px">
+      <object data={data} type="application/pdf" width="100%" height="750px">
         <p>
           Unable to display PDF. Please download the PDF to view it:{" "}
           <a href={src} download>

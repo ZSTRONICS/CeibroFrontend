@@ -324,171 +324,199 @@ function CreateNewTask() {
     );
   };
   return (
-    <Box>
-      <TaskHeader title="New task" />
-      <Box sx={{ padding: "16px" }}>
-        <CustomDropDown
-          name="topic"
-          label={"Topic"}
-          options={topicOptions}
-          createCallback={handleCreateCallback}
-          handleChangeValues={handleChangeValues}
-        />
-        <UserDropDown
-          name="assignedToState"
-          label={"Assign to"}
-          contacts={userAllContacts}
-          recentUserContact={recentUserContact}
-          handleChangeValues={handleChangeValues}
-        />
-        <CustomDropDown
-          name="project"
-          label={"Project"}
-          options={projectOptions}
-          createCallback={handleCreateCallback}
-          handleChangeValues={handleChangeValues}
-        />
-        <CustomDatePicker
-          name="dueDate"
-          label="Due Date"
-          handleChangeValues={handleChangeValues}
-        />
-        <Box sx={{ marginTop: "8px", width: "100%" }}>
-          <TextField
-            name="description"
-            id="description-multiline"
-            label="Description"
-            multiline
-            maxRows={2}
-            variant="standard"
-            sx={{ width: "100%" }}
-            onBlur={handleDescriptionChange}
-          />
-        </Box>
-        <CustomSwitch
-          label="Done requirements"
-          toggle={toggle}
-          handleChange={() => {
-            setToggle(!toggle);
-          }}
-        />
-        {toggle && (
-          <>
-            <FormGroup row={true} sx={{ gap: 2 }}>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    onChange={(e, checked) => {
-                      handleChangeValues(checked, "doneImageRequired");
-                    }}
-                  />
-                }
-                label="Image"
-                name="doneImageRequired"
-              />
-              <FormControlLabel
-                control={<Checkbox />}
-                label="Comment"
-                onChange={(e, checked) => {
-                  handleChangeValues(checked, "doneCommentsRequired");
-                }}
-                name="doneCommentsRequired"
-              />
-            </FormGroup>
-            {selectedImages.length === 0 && selectedDocuments.length === 0 && (
-              <EmptyScreenDescription
-                showWaterMark={false}
-                content={[
-                  {
-                    heading: taskConstantEt.done_requirement_quest_et,
-                    description: taskConstantEt.done_requirement_desc_et,
-                  },
-                  {
-                    heading: taskConstantEn.done_requirement_quest_en,
-                    description: taskConstantEn.done_requirement_desc_en,
-                  },
-                ]}
-              />
-            )}
-          </>
-        )}
-        {selectedImages.length > 0 && (
+    <>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          height: "100vh",
+          justifyContent: "space-between",
+        }}
+      >
+        <Box>
+          <TaskHeader title="New task" />
           <Box
+            className="custom-scrollbar"
             sx={{
-              display: "flex",
               padding: "16px",
+              mt: 3,
+              height: "calc(100vh - 54px)",
               overflow: "auto",
-              "&::-webkit-scrollbar": {
-                height: "0.4rem",
-              },
-              "&::-webkit-scrollbar-track": {
-                WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                borderRadius: "0.2rem",
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "rgba(0,0,0,.1)",
-              },
             }}
           >
-            {selectedImages.map((file, i) => {
-              return (
-                <Box
-                  key={i}
-                  sx={{
-                    width: "80px",
-                    height: "80px",
-                    display: "flex",
-                    marginRight: "16px",
-                  }}
-                >
-                  <ImageBox src={URL.createObjectURL(file)} />
-                  <IconButton
-                    aria-label="delete"
-                    onClick={() => {
-                      handleClearFile(file, "image");
-                    }}
-                    sx={{
-                      top: "-6px",
-                      right: "4px",
-                      backgroundColor: "#0076C8",
-                      color: "#fff",
-                      width: "16px",
-                      height: "16px",
-                    }}
-                    disableRipple
-                  >
-                    <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-                  </IconButton>
-                </Box>
-              );
-            })}
-          </Box>
-        )}
-
-        {selectedDocuments.length > 0 && (
-          <Box
-            sx={{
-              padding: "4px 8px",
-            }}
-          >
-            <FileBox
-              title="Files"
-              files={selectedDocuments}
-              handleClearFile={handleClearFile}
+            <CustomDropDown
+              name="topic"
+              label={"Topic"}
+              options={topicOptions}
+              createCallback={handleCreateCallback}
+              handleChangeValues={handleChangeValues}
             />
+            <UserDropDown
+              name="assignedToState"
+              label={"Assign to"}
+              contacts={userAllContacts}
+              recentUserContact={recentUserContact}
+              handleChangeValues={handleChangeValues}
+            />
+            <CustomDropDown
+              name="project"
+              label={"Project"}
+              options={projectOptions}
+              createCallback={handleCreateCallback}
+              handleChangeValues={handleChangeValues}
+            />
+            <CustomDatePicker
+              name="dueDate"
+              label="Due Date"
+              handleChangeValues={handleChangeValues}
+            />
+            <Box sx={{ marginTop: "8px", width: "100%" }}>
+              <TextField
+                name="description"
+                id="description-multiline"
+                label="Description"
+                multiline
+                // maxRows={15}
+                variant="standard"
+                sx={{ width: "100%" }}
+                onBlur={handleDescriptionChange}
+              />
+            </Box>
+
+            {selectedImages.length > 0 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  gap: "12px",
+                  padding: "16px",
+                  mt: 1,
+                  overflow: "auto",
+                  "&::-webkit-scrollbar": {
+                    height: "0.4rem",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+                    borderRadius: "0.2rem",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    backgroundColor: "rgba(0,0,0,.1)",
+                  },
+                }}
+              >
+                {selectedImages.map((file, i) => {
+                  return (
+                    <Box
+                      key={i}
+                      sx={{
+                        width: "80px",
+                        height: "80px",
+                        display: "flex",
+                        marginRight: "16px",
+                      }}
+                    >
+                      <ImageBox src={URL.createObjectURL(file)} />
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => {
+                          handleClearFile(file, "image");
+                        }}
+                        sx={{
+                          top: "-6px",
+                          right: "4px",
+                          backgroundColor: "#0076C8",
+                          color: "#fff",
+                          width: "16px",
+                          height: "16px",
+                        }}
+                        disableRipple
+                      >
+                        <ClearOutlinedIcon
+                          sx={{ width: "16px", height: "16px" }}
+                        />
+                      </IconButton>
+                    </Box>
+                  );
+                })}
+              </Box>
+            )}
+
+            {selectedDocuments.length > 0 && (
+              <Box
+                sx={{
+                  padding: "4px 8px",
+                }}
+              >
+                <FileBox
+                  title="Files"
+                  showFullHeight={false}
+                  files={selectedDocuments}
+                  handleClearFile={handleClearFile}
+                />
+              </Box>
+            )}
+            <Box sx={{ pt: 1, pb: 3, pl: 0.76 }}>
+              <CustomSwitch
+                label="Done requirements"
+                toggle={toggle}
+                handleChange={() => {
+                  setToggle(!toggle);
+                }}
+              />
+              {toggle && (
+                <>
+                  <FormGroup row={true} sx={{ gap: 2 }}>
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          onChange={(e, checked) => {
+                            handleChangeValues(checked, "doneImageRequired");
+                          }}
+                        />
+                      }
+                      label="Image"
+                      name="doneImageRequired"
+                    />
+                    <FormControlLabel
+                      control={<Checkbox />}
+                      label="Comment"
+                      onChange={(e, checked) => {
+                        handleChangeValues(checked, "doneCommentsRequired");
+                      }}
+                      name="doneCommentsRequired"
+                    />
+                  </FormGroup>
+                  {toggle && (
+                    <EmptyScreenDescription
+                      showWaterMark={false}
+                      content={[
+                        {
+                          heading: taskConstantEt.done_requirement_quest_et,
+                          description: taskConstantEt.done_requirement_desc_et,
+                        },
+                        {
+                          heading: taskConstantEn.done_requirement_quest_en,
+                          description: taskConstantEn.done_requirement_desc_en,
+                        },
+                      ]}
+                    />
+                  )}
+                </>
+              )}
+            </Box>
           </Box>
-        )}
+        </Box>
+        <Footer
+          isSubmitted={isSubmit}
+          disabled={handleDisableSubmit()}
+          showHeader={false}
+          handleSubmitForm={handleCreateTask}
+          handleAttachImageValue={handleAttachImageValue}
+          handleGetLocationValue={() => {}}
+          handleSelectDocumentValue={handleSelectDocumentValue}
+        />
       </Box>
-      <Footer
-        isSubmitted={isSubmit}
-        disabled={handleDisableSubmit()}
-        showHeader={false}
-        handleSubmitForm={handleCreateTask}
-        handleAttachImageValue={handleAttachImageValue}
-        handleGetLocationValue={() => {}}
-        handleSelectDocumentValue={handleSelectDocumentValue}
-      />
-    </Box>
+    </>
   );
 }
 

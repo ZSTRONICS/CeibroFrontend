@@ -33,14 +33,16 @@ const CustomDatePicker = ({
   };
   // const locales = ['en-us', 'en-gb', 'zh-cn', 'de'];
   return (
-    <div style={{ display: "flex", flexDirection: "column", marginTop: "8px" }}>
+    <div
+      style={{ display: "flex", flexDirection: "column", marginTop: "16px" }}
+    >
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale={"de"}>
         <DatePicker
           key={name}
           label={label}
           inputFormat="DD.MM.YYYY"
           minDate={new Date()}
-          InputAdornmentProps={{ position: 'start' }}
+          InputAdornmentProps={{ position: "start" }}
           renderInput={(params) => (
             <TextField
               {...params}

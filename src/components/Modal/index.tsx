@@ -38,6 +38,7 @@ const CustomModal: React.FC<Props> = ({
     }
     handleClose(e);
   };
+
   const localWidth = maxWidth || "sm";
   return (
     <>
