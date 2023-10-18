@@ -38,7 +38,7 @@ const Profile = () => {
         profilePicUploading={profilePicUploading}
       />
       {isTabletOrMobile && ConnectionView}
-      <ProfileForm />
+      <ProfileForm user={user} />
       {!isTabletOrMobile && ConnectionView}
     </Grid>
   );

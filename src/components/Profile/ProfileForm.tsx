@@ -1,7 +1,6 @@
 import { useState } from "react";
 
 // material & react-icon
-import { makeStyles } from "@material-ui/core/styles";
 import {
   Button,
   CircularProgress,
@@ -9,11 +8,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { updateMyProfile } from "redux/action/auth.action";
-import { RootState } from "redux/reducers/appReducer";
 
 import colors from "../../assets/colors";
 
@@ -32,14 +31,15 @@ import ChangeNumberForm from "./ChangeNumberForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import NumberConfirmationForm from "./NumberConfirmationForm";
 
-const ProfileForm = () => {
+interface Props {
+  user: Partial<UserInterface> | any;
+}
+
+const ProfileForm = ({ user }: Props) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
-  let user: Partial<UserInterface> | any = useSelector(
-    (state: RootState) => state.auth.user
-  );
   const isDisabled = !loading ? false : true;
   const profileSchema = setValidationSchema(t);
   const [isOpen, setIsOpen] = useState(false);
@@ -91,6 +91,7 @@ const ProfileForm = () => {
       phoneNumber: userPhoneNumber || "",
       companyName: companyName || "",
     },
+    enableReinitialize: true,
     validationSchema: profileSchema,
     onSubmit: (values) => {
       handleSubmit(values);

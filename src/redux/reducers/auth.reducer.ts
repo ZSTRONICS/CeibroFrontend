@@ -213,7 +213,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
     }
     case USER_CONFIG.USER_UPDATED_IN_STORE:
     case UPDATE_MY_PROFILE: {
-      const { firstName, surName, email, phoneNumber, companyName, jobTitle, _id } = action.payload
+      const { firstName, profilePic, surName, email, phoneNumber, companyName, jobTitle, _id } = action.payload
       let updatedUser = {
         ...state.user
       }
@@ -225,6 +225,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
           email: email,
           phoneNumber: phoneNumber,
           companyName: companyName,
+          profilePic: profilePic,
           jobTitle: jobTitle,
         };
       }

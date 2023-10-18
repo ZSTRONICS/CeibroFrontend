@@ -1,4 +1,4 @@
-import { Chip, Grid } from "@mui/material";
+import { Box, Chip, Grid } from "@mui/material";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
@@ -200,19 +200,34 @@ const DetailActions: React.FC<IProps> = (props) => {
               >
                 Forward
               </LoadingButton>
-
-              <LoadingButton
-                variant="contained"
-                onClick={handleDoneClick}
-                sx={{
-                  height: "28px",
-                  fontWeight: "700",
-                  padding: "16px 30px",
-                }}
-                disabled={false}
-              >
-                Done
-              </LoadingButton>
+              <Box sx={{ position: "relative" }}>
+                <LoadingButton
+                  variant="contained"
+                  onClick={handleDoneClick}
+                  sx={{
+                    height: "28px",
+                    fontWeight: "700",
+                    padding: "16px 30px",
+                  }}
+                  disabled={false}
+                >
+                  Done
+                </LoadingButton>
+                {(doneCommentsRequired || doneImageRequired) && (
+                  <span
+                    style={{
+                      height: "10px",
+                      width: "10px",
+                      backgroundColor: "red",
+                      borderRadius: "50%",
+                      display: "inline-block",
+                      position: "absolute",
+                      top: "13%",
+                      right: "6%",
+                    }}
+                  ></span>
+                )}
+              </Box>
             </>
           )}
         </Grid>

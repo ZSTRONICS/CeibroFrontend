@@ -584,9 +584,9 @@ const Task = () => {
               className="custom-scrollbar"
               height={windowHeight}
               itemCount={filteredTask.length}
-              overscanCount={10}
+              overscanCount={20}
               layout="vertical"
-              itemSize={(index) => 115}
+              itemSize={(index) => 130}
               width={"100%"}
             >
               {TaskRow}

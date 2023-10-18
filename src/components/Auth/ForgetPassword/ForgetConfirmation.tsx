@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import { authApiAction, otpVerify } from "redux/action/auth.action";
+import { LOGIN_ROUTE } from "utills/axios";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import VerificationForm from "../CommonForm/VerificationForm";
 import useStyles from "../Register/RegisterStyles";
@@ -96,7 +97,7 @@ const ForgetConfirmation: React.FC = () => {
   return (
     <AuthLayout
       title={t("auth.phone_number_confirmation")}
-    // subTitle={t("auth.enter_your_phone_no")}
+      // subTitle={t("auth.enter_your_phone_no")}
     >
       <div className={classes.registerNumberForm}>
         {isTabletOrMobile && (
@@ -115,7 +116,7 @@ const ForgetConfirmation: React.FC = () => {
       </div>
       <Box className={classes.dontHave} sx={{ color: "#131516" }}>
         {t("auth.back_to")}{" "}
-        <Link to="/private-login" className={classes.signup}>
+        <Link to={LOGIN_ROUTE} className={classes.signup}>
           Login
         </Link>
       </Box>

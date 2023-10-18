@@ -163,11 +163,11 @@ export function pushSeenBy(task: any, eventData: any) {
 export function addEventToTask(task: any, eventData: any, taskIndex: number): void {
   if (taskIndex > -1) {
     // console.log('existingEvents', task.events)
-    const isUniqueEvent = task.events.some((event: any) => String(event._id) === String(eventData._id));
+    const isUniqueEvent = task.events?.some((event: any) => String(event._id) === String(eventData._id));
     if (!isUniqueEvent) {
-      task.events.push(eventData);
+      task.events?.push(eventData);
       // sort task events by createdAt with latest on bottom
-      const events = task.events.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      const events = task.events?.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
       task.events = events;
       task.seenBy = eventData.taskData.seenBy;
     } else {
@@ -222,6 +222,9 @@ export const deDateFormat = (dateStr: Date | string) => {
  * @param mongodbUtc date string is required
  * **/
 export const momentdeDateFormat = (createdAt: Date | any) => {
+  if (!moment(createdAt).isValid()) {
+    return "N/A"
+  }
   let localTime = moment.utc(moment(createdAt)).toDate()
   return moment(localTime).local().format("DD.MM.YYYY")
 }
@@ -242,6 +245,27 @@ const momentdeDateFormatWithDay = (createdAt: Date | any) => {
 export const momentTimeFormat = (createdAt: Date | any) => {
   let localTime = moment.utc(moment(createdAt)).toDate()
   return moment(localTime).local().format('HH:mm');
+}
+
+/**
+ * @return Monday 13:30 
+ * @param mongodbUtc date string is required
+ * **/
+export const momentLocalDateTime = (createdAt: Date | any) => {
+  if (!moment(createdAt).isValid()) {
+    return "N/A"
+  }
+  const currentDate = moment();
+  const inputDate = moment(createdAt);
+  if (currentDate.isSame(inputDate, 'day')) {
+    return 'Today ' + inputDate.format('HH:mm');
+  } else if (currentDate.clone().subtract(1, 'day').isSame(inputDate, 'day')) {
+    return 'Yesterday ' + inputDate.format('HH:mm');
+  } else if (currentDate.isSame(inputDate, 'week')) {
+    return inputDate.format('dddd HH:mm');
+  } else {
+    return inputDate.format('DD.MM.YY HH:mm');
+  }
 }
 
 // calculate file size 

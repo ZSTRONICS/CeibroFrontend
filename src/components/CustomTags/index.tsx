@@ -190,7 +190,7 @@ const ImageStack = styled(Stack)`
   align-items: center;
 `;
 const TaskCardLabel = styled("p")`
-  max-width: 110px;
+  max-width: 120px;
   width: 100%;
   font-weight: 700;
   font-size: 10px;
@@ -227,9 +227,10 @@ export {
   BoldLableTag,
   CustomStack,
   CustomTitle,
-  DescriptionTag, ImageStack, MenuItemTag,
+  DescriptionTag,
+  ImageStack,
+  MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel
+  TaskCardLabel,
 };
-

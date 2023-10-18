@@ -43,8 +43,6 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            {/* <Redirect exact from="/" to="/login" />
-            <Route path="/login" component={Login} /> */}
             <Route path="/comming-soon" component={CommingSoon} />
             <Redirect exact from="/" to="/comming-soon" />
             <Route path={LOGIN_ROUTE} component={Login} />
