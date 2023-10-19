@@ -64,7 +64,7 @@ function TaskDetails(props: IProps) {
         // forwardCallback={}
         // Callback={}
       />
-      <FileBox title="Files" files={docs} />
+      <FileBox title="Files" files={docs} showFullHeight={false} />
       <DetailsBody description={description} media={media} events={events} />
     </Box>
   );

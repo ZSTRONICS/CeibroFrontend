@@ -451,7 +451,7 @@ function CreateNewTask() {
               >
                 <FileBox
                   title="Files"
-                  showFullHeight={false}
+                  showFullHeight={true}
                   files={selectedDocuments}
                   handleClearFile={handleClearFile}
                 />

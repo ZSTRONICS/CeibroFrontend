@@ -75,7 +75,7 @@ const FileBox: React.FC<IProps> = ({
           sx={{
             overflow: "auto",
             width: "100%",
-            maxHeight: `${!showFullHeight ? "100%" : "6.5rem"}`,
+            maxHeight: `${showFullHeight ? "100%" : "6.5rem"}`,
             display: "flex",
             flexWrap: "wrap",
           }}
@@ -98,7 +98,7 @@ const FileBox: React.FC<IProps> = ({
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    padding:"8px",
+                    padding: "8px",
                     "&:hover": {
                       cursor: "pointer",
                     },
