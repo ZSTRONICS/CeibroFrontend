@@ -5,7 +5,7 @@ import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
 
@@ -18,14 +18,24 @@ interface IProps {
 export default function DetailsBody(props: IProps) {
   const { description, events, media } = props;
   const [fileToView, setFileToView] = useState<any | null>(null);
+  const [heightOffset, setHeightOffset] = useState();
+  const listRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const handleClick = (file: any) => {
     setFileToView(file);
     openModal();
   };
+
+useEffect(() => {
+    if (listRef.current) {
+      const newTop = listRef.current.getBoundingClientRect().top;
+        setHeightOffset(newTop);
+    }
+  }, [listRef]);
+
   return (
     <>
-      <Box sx={{ paddingLeft: "5px" }}>
+      <Box ref={listRef} sx={{ paddingLeft: "5px",overflow:'auto',maxHeight:`calc(100vh - ${heightOffset}px)` }}>
         <DespcriptionBox description={description} />
         <Box
           className="custom-scrollbar"
@@ -33,8 +43,9 @@ export default function DetailsBody(props: IProps) {
             // height: "96px",
             width: "100%",
             padding: "10px 0px 16px 0px",
-            marginRight: "16px",
-            overflowX: "auto",
+            // marginRight: "16px",
+            // overflowX: "auto",
+            flexWrap:"wrap",
             display: "flex",
           }}
         >

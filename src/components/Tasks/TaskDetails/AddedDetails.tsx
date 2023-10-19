@@ -67,8 +67,8 @@ function AddedDetails(props: IProps) {
             ref={listRef}
             className="custom-scrollbar"
             sx={{
-              maxHeight: `calc(100vh - ${heightOffset}px)`,
-              overflow: "auto",
+              // maxHeight: `calc(100vh - ${heightOffset}px)`,
+              // overflow: "auto",
               pb: 5,
             }}
           >
