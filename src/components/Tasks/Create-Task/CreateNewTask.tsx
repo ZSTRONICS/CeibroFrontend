@@ -1,6 +1,8 @@
 import {
+  Backdrop,
   Box,
   Checkbox,
+  CircularProgress,
   FormControlLabel,
   FormGroup,
   IconButton,
@@ -516,6 +518,12 @@ function CreateNewTask() {
           handleSelectDocumentValue={handleSelectDocumentValue}
         />
       </Box>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isSubmit}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </>
   );
 }

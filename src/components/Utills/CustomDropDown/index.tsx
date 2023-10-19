@@ -297,7 +297,7 @@ function CustomDropDown(props: IProps) {
                   <Box
                     key={`recent-${item.value + i}`}
                     sx={{
-                      margin: "8px 16px",
+                      padding: "8px 16px",
                       cursor: "pointer",
                       fontWeight: 400,
                     }}
@@ -307,15 +307,14 @@ function CustomDropDown(props: IProps) {
                   </Box>
                 );
               })}
-              <Divider
-                sx={{
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  pointerEvents: "none",
-                }}
-              />
             </Box>
           )}
+          <Divider
+            sx={{
+              margin: "20px",
+              pointerEvents: "none",
+            }}
+          />
           <Box sx={{ margin: "8px 16px" }}>
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [

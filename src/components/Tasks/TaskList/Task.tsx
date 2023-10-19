@@ -173,7 +173,7 @@ const Task = () => {
         dataToSearch = task[subtask][selectedTab];
       }
       // selecting top most task by default
-      const data = searchInData(dataToSearch, "", "taskUID");
+      const data = searchInData(dataToSearch, searchText, "taskUID");
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
         if (newSelectedTask) {
