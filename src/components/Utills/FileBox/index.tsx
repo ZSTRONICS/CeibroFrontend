@@ -41,7 +41,6 @@ const FileBox: React.FC<IProps> = ({
         sx={{
           width: "100%",
           border: `${title ? "1px solid #e2e4e5" : ""}`,
-          padding: "5px 0 0 5px",
           paddingLeft: "15px",
           gap: 1,
           display: "flex",
@@ -99,8 +98,7 @@ const FileBox: React.FC<IProps> = ({
                   sx={{
                     display: "flex",
                     alignItems: "center",
-                    marginRight: 2,
-                    mb: 1.2,
+                    padding:"8px",
                     "&:hover": {
                       cursor: "pointer",
                     },

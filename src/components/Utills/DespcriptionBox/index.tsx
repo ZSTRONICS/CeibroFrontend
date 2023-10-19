@@ -44,8 +44,7 @@ const DespcriptionBox = ({ description }: IProps) => (
         sx={{
           width: "100%",
           px: "11px",
-
-          overflow: "auto",
+          // overflow: "auto",
           maxWidth: "85%",
           display: "flex",
           alignItems: "center",
@@ -58,7 +57,7 @@ const DespcriptionBox = ({ description }: IProps) => (
             color: "#000",
             wordWrap: "break-word",
             paddingTop: "5px",
-            height: `${description.length > 100 ? "10vh" : "unset"}`,
+            // height: `${description.length > 100 ? "10vh" : "unset"}`,
           }}
         >
           {description === "" ? "N/A" : description}
