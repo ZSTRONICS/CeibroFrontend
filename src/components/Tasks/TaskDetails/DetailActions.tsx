@@ -129,7 +129,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         alignItems="flex-start"
         rowGap={2}
       >
-        <Grid item container md={6} xs={12} gap={1.4}>
+        <Grid item container md={6} xs={12} gap={1.4} alignItems="center">
           <Chip
             label={capitalize(userSubState)}
             size="small"
