@@ -173,7 +173,7 @@ const Task = () => {
         dataToSearch = task[subtask][selectedTab];
       }
       // selecting top most task by default
-      const data = searchInData(dataToSearch, searchText, "taskUID");
+      const data = searchInData(dataToSearch, searchText, ["taskUID","topic.topic"]);
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
         if (newSelectedTask) {
@@ -333,22 +333,24 @@ const Task = () => {
     const filterData = searchInData(
       task[subtask][selectedTab],
       searchTxt,
-      "taskUID"
+      ["taskUID","topic.topic"]
     );
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
-  function searchInData(data: ITask[], searchText: string, property: string) {
-    let filteredData: ITask[] = data;
-    if (searchText !== "") {
-      filteredData = data.filter((item: any) => {
-        const searchValue = item[property].toLowerCase();
-        return searchValue.includes(searchText.toLowerCase());
-      });
-    }
-    return filteredData;
+function searchInData(data: ITask[], searchText: string, properties: string[]) {
+  if (searchText === "") {
+    return data;
   }
+  return data.filter((item: ITask) => {
+    const lowerSearchText = searchText.toLowerCase();
+    return properties.some((property) => {
+      const searchValue = _.get(item, property);
+      return searchValue && searchValue.toString().toLowerCase().includes(lowerSearchText);
+    });
+  });
+}
 
   useEffect(() => {
     if (updateTaskEvent !== null) {
