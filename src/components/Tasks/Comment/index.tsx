@@ -210,6 +210,7 @@ const Comment = ({
       >
         <FileBox
           title="Files"
+          showFullHeight={true}
           files={selectedDocuments}
           handleClearFile={handleClearFile}
         />
