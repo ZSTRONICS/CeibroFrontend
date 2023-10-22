@@ -72,17 +72,17 @@ const SelectDropdown: FC<My> = (props) => {
         backgroundColor: isDisabled
           ? null
           : isSelected
-          ? colors.darkYellow
-          : isFocused
-          ? color.alpha(0.1).css()
-          : null,
+            ? colors.darkYellow
+            : isFocused
+              ? color.alpha(0.1).css()
+              : null,
         color: isDisabled
           ? "#ccc"
           : isSelected
-          ? chroma.contrast(color, "white") > 2
-            ? "white"
-            : "black"
-          : colors.black,
+            ? chroma.contrast(color, "white") > 2
+              ? "white"
+              : "black"
+            : colors.black,
         cursor: isDisabled ? "not-allowed" : "default",
 
         ":active": {
@@ -154,7 +154,7 @@ const SelectDropdown: FC<My> = (props) => {
             isClearable={isClearAble}
             noOptionsMessage={() => noOptionMessage || ""}
             menuPlacement="bottom"
-            // formatCreateLabel={formatCreateLabel}
+          // formatCreateLabel={formatCreateLabel}
           />
         </div>
       </div>

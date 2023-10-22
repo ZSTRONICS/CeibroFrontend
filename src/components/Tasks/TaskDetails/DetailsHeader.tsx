@@ -38,47 +38,47 @@ export default function DetailsHeader(props: IProps) {
     doneCommentsRequired,
   } = props;
   const data = [
-    { label: "Created by", value: `${creator.firstName} ${creator.surName}` },
+    { label: "From", value: `${creator.firstName} ${creator.surName}` },
     {
-      label: "Sent To",
+      label: "Sent to",
       value:
         assignedToState.length > 0
           ? assignedToState
-              .filter((user) => user.firstName || user.surName)
-              .map((user) => {
-                const { firstName, surName, phoneNumber } = user;
-                if (firstName && surName) {
-                  return `${firstName} ${surName}`;
-                } else if (firstName) {
-                  return firstName;
-                } else if (surName) {
-                  return surName;
-                } else {
-                  return phoneNumber;
-                }
-              })
-              .join(", ")
+            .filter((user) => user.firstName || user.surName)
+            .map((user) => {
+              const { firstName, surName, phoneNumber } = user;
+              if (firstName && surName) {
+                return `${firstName} ${surName}`;
+              } else if (firstName) {
+                return firstName;
+              } else if (surName) {
+                return surName;
+              } else {
+                return phoneNumber;
+              }
+            })
+            .join(", ")
           : "N/A",
     },
     { label: "Project", value: project ? project.title : "N/A" },
     {
-      label: "Invited Numbers",
+      label: "Invitees",
       value:
         invitedNumbers.length > 0
           ? invitedNumbers
-              .map((user: InvitedNumber) => {
-                const { firstName, surName, phoneNumber } = user;
-                if (firstName && surName) {
-                  return `${firstName} ${surName}`;
-                } else if (firstName) {
-                  return firstName;
-                } else if (surName) {
-                  return surName;
-                } else {
-                  return phoneNumber;
-                }
-              })
-              .join(", ")
+            .map((user: InvitedNumber) => {
+              const { firstName, surName, phoneNumber } = user;
+              if (firstName && surName) {
+                return `${firstName} ${surName}`;
+              } else if (firstName) {
+                return firstName;
+              } else if (surName) {
+                return surName;
+              } else {
+                return phoneNumber;
+              }
+            })
+            .join(", ")
           : "N/A",
     },
   ];

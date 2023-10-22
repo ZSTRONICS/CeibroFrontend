@@ -248,44 +248,49 @@ const ProfileForm = ({ user }: Props) => {
                   checkOnUpdateData(e);
                 }}
               />
+            </Grid>
 
-              <Grid item xs={12} md={7}>
-                <CustomMuiTextField
-                  typeName="phone-number"
-                  name="phoneNumber"
-                  inputValue={{
-                    phoneNumber: formik.values.phoneNumber,
-                    dialCode: formik.values.dialCode,
-                  }}
-                  onChange={(e) => {
-                    formik.handleChange(e);
-                    checkOnUpdateData(e);
-                  }}
-                  disabled={true}
-                />
-              </Grid>
+            <Grid item xs={12} md={5} sx={{ gap: { md: 2, sm: 1 }, paddingTop: { md: 2, sm: 1 } }}>
+              <CustomMuiTextField
+                typeName="phone-number"
+                name="phoneNumber"
+                inputValue={{
+                  phoneNumber: formik.values.phoneNumber,
+                  dialCode: formik.values.dialCode,
+                }}
+                onChange={(e) => {
+                  formik.handleChange(e);
+                  checkOnUpdateData(e);
+                }}
+                disabled={true}
+              />
+
               <Typography
                 style={{
                   backgroundColor: "transparent",
                   border: "none",
                   cursor: "pointer",
-                  fontFamily: "Inter",
+
                   fontSize: "14px",
                   fontWeight: 500,
-                  color: "#0076C8",
-                  paddingLeft: "20px",
+                  paddingTop: "10px",
+                  color: "#0075D0",
                   width: "max-content",
                 }}
                 onClick={() => handleModal("change-number")}
               >
                 Change phone number
               </Typography>
+            </Grid>
+
+            <Grid item container sx={{ gap: { md: 2, sm: 1 }, paddingBottom: { md: 2, sm: 1 } }}>
               <Grid container my={2}>
                 <Grid item xs={12}>
                   <Divider />
                 </Grid>
               </Grid>
-              <div style={{ color: "#0076C8", textTransform: "capitalize" }}>
+
+              <div style={{ color: "#0075D0", textTransform: "capitalize" }}>
                 <Button
                   variant="text"
                   sx={{ border: "1px solid" }}
@@ -296,8 +301,12 @@ const ProfileForm = ({ user }: Props) => {
                 </Button>
               </div>
             </Grid>
+            <Divider sx={{ mt: 1, mb: 3 }} />
           </Grid>
-          <Divider sx={{ mt: 1, mb: 3 }} />
+
+
+
+
           <Button
             sx={{ ml: 3 }}
             variant="contained"

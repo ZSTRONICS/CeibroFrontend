@@ -156,7 +156,7 @@ const ChangePasswordForm = (props: IProps) => {
               variant="contained"
               color="primary"
               type="submit"
-              sx={{ width: "100%", backgroundColor: "#0076C8", padding: 1 }}
+              sx={{ width: "100%", backgroundColor: "#0075D0", padding: 1 }}
               disabled={checkValidInputs(values)}
             >
               {t("auth.confirm")}

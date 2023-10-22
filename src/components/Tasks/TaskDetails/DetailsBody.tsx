@@ -26,16 +26,16 @@ export default function DetailsBody(props: IProps) {
     openModal();
   };
 
-useEffect(() => {
+  useEffect(() => {
     if (listRef.current) {
       const newTop = listRef.current.getBoundingClientRect().top;
-        setHeightOffset(newTop);
+      setHeightOffset(newTop);
     }
   }, [listRef]);
 
   return (
     <>
-      <Box ref={listRef} sx={{ paddingLeft: "5px",overflow:'auto',maxHeight:`calc(100vh - ${heightOffset}px)` }}>
+      <Box ref={listRef} sx={{ paddingLeft: "5px", overflow: 'auto', maxHeight: `calc(100vh - ${heightOffset}px)` }}>
         <DespcriptionBox description={description} />
         <Box
           className="custom-scrollbar"
@@ -45,7 +45,7 @@ useEffect(() => {
             padding: "10px 0px 16px 0px",
             // marginRight: "16px",
             // overflowX: "auto",
-            flexWrap:"wrap",
+            flexWrap: "wrap",
             display: "flex",
           }}
         >

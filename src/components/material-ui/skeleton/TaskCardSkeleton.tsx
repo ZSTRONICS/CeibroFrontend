@@ -7,8 +7,8 @@ function TaskCardSkeleton() {
   return (
     <Card
       sx={{
-        width: "100%",
-        minWidth: 260,
+        width: "98%",
+        minWidth: 240,
         marginTop: "10px",
         cursor: "pointer",
         border: "1px solid #e3e3e3",

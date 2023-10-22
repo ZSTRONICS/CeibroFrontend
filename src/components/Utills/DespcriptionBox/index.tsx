@@ -16,16 +16,20 @@ const DespcriptionBox = ({ description }: IProps) => (
       sx={{
         width: "100%",
         display: "flex",
-        alignItems: "center",
+        alignItems: "top",
       }}
     >
       <Box
         sx={{
+          mt: 1,
           width: "85px",
-          height: "16px",
-          borderWidth: "0px 1px 0px 0px",
-          borderColor: "#818181",
-          borderStyle: "solid",
+          height: "20px",
+          pr: 15,
+          borderRight: "1.5px solid #818181",
+          gap: 1,
+          display: "flex",
+          alignItems: "center",
+
         }}
       >
         <Typography
@@ -45,7 +49,7 @@ const DespcriptionBox = ({ description }: IProps) => (
           width: "100%",
           px: "11px",
           // overflow: "auto",
-          maxWidth: "85%",
+          maxWidth: "95%",
           display: "flex",
           alignItems: "center",
         }}
@@ -56,6 +60,7 @@ const DespcriptionBox = ({ description }: IProps) => (
             fontSize: "14px",
             color: "#000",
             wordWrap: "break-word",
+            wordBreak: "break-all", // Ensure text breaks between characters
             paddingTop: "5px",
             // height: `${description.length > 100 ? "10vh" : "unset"}`,
           }}

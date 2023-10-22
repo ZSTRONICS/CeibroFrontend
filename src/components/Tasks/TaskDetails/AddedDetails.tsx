@@ -51,7 +51,7 @@ function AddedDetails(props: IProps) {
       }
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
-  }, [events.length, listRef]);
+  }, [events?.length, listRef]);
   return (
     <>
       <div>
@@ -72,7 +72,7 @@ function AddedDetails(props: IProps) {
               pb: 5,
             }}
           >
-            {events.length > 0 ? (
+            {events?.length > 0 ? (
               events.map((event: TaskEvent) => {
                 const {
                   initiator,
@@ -105,9 +105,8 @@ function AddedDetails(props: IProps) {
                       <React.Fragment key={event._id}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          <DocName>{`${initiator.firstName} ${initiator.surName
+                            } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         <DocName>{`${invitedMembersData}`}</DocName>
                       </React.Fragment>
@@ -117,35 +116,35 @@ function AddedDetails(props: IProps) {
                     const userInfo =
                       eventData && eventData.length > 0
                         ? eventData
-                            .map((user) => {
-                              const { firstName, surName } = user;
-                              if (firstName && surName) {
-                                return `${firstName} ${surName}`;
-                              } else if (firstName) {
-                                return firstName;
-                              } else if (surName) {
-                                return surName;
-                              }
-                            })
-                            .join(", ")
+                          .map((user) => {
+                            const { firstName, surName, phoneNumber } = user;
+                            if (firstName && surName) {
+                              return `${firstName} ${surName}`;
+                            } else if (firstName) {
+                              return firstName;
+                            } else if (surName) {
+                              return surName;
+                            }
+                            return phoneNumber;
+                          })
+                          .join(", ")
                         : "N/A";
 
                     const invitedMembersLocal =
                       invitedMembers && invitedMembers.length > 0
                         ? invitedMembers
-                            .map((user) => {
-                              const { firstName, surName, phoneNumber } = user;
-                              if (firstName && surName) {
-                                return `${firstName} ${surName}`;
-                              } else if (firstName) {
-                                return firstName;
-                              } else if (surName) {
-                                return surName;
-                              } else {
-                                return phoneNumber;
-                              }
-                            })
-                            .join(", ")
+                          .map((user) => {
+                            const { firstName, surName, phoneNumber } = user;
+                            if (firstName && surName) {
+                              return `${firstName} ${surName}`;
+                            } else if (firstName) {
+                              return firstName;
+                            } else if (surName) {
+                              return surName;
+                            }
+                            return phoneNumber;
+                          })
+                          .join(", ")
                         : "N/A";
                     return (
                       <React.Fragment key={event._id + "invitedMembersLocal"}>
@@ -161,7 +160,7 @@ function AddedDetails(props: IProps) {
                               <DocName>{userInfo}</DocName>
                             </CustomStack>
                             <AddStatusTag
-                              sx={{ color: "black", wordWrap: "break-word" }}
+                              sx={{ color: "black", wordWrap: "break-word", wordBreak: "break-all" }}
                             >
                               {commentData?.message || ""}
                             </AddStatusTag>
@@ -171,11 +170,10 @@ function AddedDetails(props: IProps) {
                           <React.Fragment key={event._id + "invitedMembers"}>
                             <CustomStack gap={1.2} py={0.8}>
                               <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                              <DocName>{`${initiator.firstName} ${
-                                initiator.surName
-                              } ${momentdeDateFormatWithDay(
-                                createdAt
-                              )}`}</DocName>
+                              <DocName>{`${initiator.firstName} ${initiator.surName
+                                } ${momentdeDateFormatWithDay(
+                                  createdAt
+                                )}`}</DocName>
                             </CustomStack>
                             <DocName>{`${invitedMembersLocal}`}</DocName>
                           </React.Fragment>
@@ -188,9 +186,8 @@ function AddedDetails(props: IProps) {
                       <React.Fragment key={event._id + "CancelTask"}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          <DocName>{`${initiator.firstName} ${initiator.surName
+                            } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         <Span sx={{ fontSize: "12px" }}>
                           Task has been Canceled
@@ -203,9 +200,8 @@ function AddedDetails(props: IProps) {
                       <React.Fragment key={event._id + "CancelTask"}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          <DocName>{`${initiator.firstName} ${initiator.surName
+                            } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         <Span sx={{ fontSize: "12px" }}>
                           Task has been Un-canceled
@@ -231,14 +227,13 @@ function AddedDetails(props: IProps) {
                       <React.Fragment key={event._id + "DoneTask"}>
                         <CustomStack gap={1.2} py={0.8}>
                           <Span sx={{ fontSize: "12px" }}>Done by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          <DocName>{`${initiator.firstName} ${initiator.surName
+                            } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         {commentData?.message && (
                           <>
                             <AddStatusTag
-                              sx={{ color: "black", wordWrap: "break-word" }}
+                              sx={{ color: "black", wordWrap: "break-word", wordBreak: "break-all" }}
                             >
                               {commentData.message}
                             </AddStatusTag>
@@ -300,14 +295,13 @@ function AddedDetails(props: IProps) {
                       <React.Fragment key={event._id + "Comment"}>
                         <CustomStack gap={1.2} py={0.8}>
                           {/* <Span sx={{ fontSize: "12px" }}>Comment by</Span> */}
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          <DocName>{`${initiator.firstName} ${initiator.surName
+                            } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
                         </CustomStack>
                         {commentData?.message && (
                           <>
                             <AddStatusTag
-                              sx={{ color: "black", wordWrap: "break-word" }}
+                              sx={{ color: "black", wordWrap: "break-word", wordBreak: "break-all" }}
                             >
                               {commentData.message}
                             </AddStatusTag>

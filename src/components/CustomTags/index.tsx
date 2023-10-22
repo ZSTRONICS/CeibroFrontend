@@ -22,7 +22,7 @@ const CustomTitle = styled(Typography)`
 `;
 
 const SubHeading = styled(Typography)(({ theme }) => ({
-  color: "#0076C8",
+  color: "#0075D0",
   fontSize: 16,
   fontWeight: 500,
   lineHeight: "20px",
@@ -192,9 +192,9 @@ const ImageStack = styled(Stack)`
 const TaskCardLabel = styled("p")`
   max-width: 120px;
   width: 100%;
-  font-weight: 700;
-  font-size: 10px;
-  color: #605c5c;
+  font-weight: 800;
+  font-size: 11px;
+  color: #605b5c;
   -webkit-line-clamp: 1;
   display: -webkit-box;
 `;
@@ -232,5 +232,6 @@ export {
   MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel,
+  TaskCardLabel
 };
+

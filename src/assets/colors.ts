@@ -10,7 +10,7 @@ const colors = {
   senderBox: '#fffefdba',
   senderBoxBorder: '#F8DCA2',
   receiverBoxBg: '#F8FCFF',
-  receiverBoxTitle: '#0076C8',
+  receiverBoxTitle: '#0075D0',
   receiverBoxBorder: '#0076c87a',
   senderBoxTitle: '#F1B740',
   senderNameColor: '',
@@ -49,7 +49,7 @@ const colors = {
   green: "#009900",
 
   assigned: "rgb(0, 118, 200)",
-  new: '#0076C8',
+  new: '#0075D0',
   draft: '#bdc3c7',
   all: '#B6B7B8',
   ongoing: '#f1b740',

@@ -188,7 +188,7 @@ const Comment = ({
                 sx={{
                   top: "-6px",
                   right: "4px",
-                  backgroundColor: "#0076C8",
+                  backgroundColor: "#0075D0",
                   color: "#fff",
                   width: "16px",
                   height: "16px",
@@ -221,12 +221,12 @@ const Comment = ({
           isSubmit ||
           (title === "Task Done"
             ? (doneImageRequired && selectedImages.length === 0) ||
-              (doneCommentsRequired && description.length === 0)
+            (doneCommentsRequired && description.length === 0)
             : selectedImages.length > 0 ||
               selectedDocuments.length > 0 ||
               description.length > 0
-            ? false
-            : true)
+              ? false
+              : true)
         }
         showHeader={showHeader}
         handleSubmitForm={handleSubmit}

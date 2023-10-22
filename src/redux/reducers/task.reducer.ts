@@ -9,7 +9,7 @@ import {
   AllTaskFromMeInterface,
   AllTaskHiddenInterface,
   AllTaskToMeInterface,
-  Task
+  ITask,
 } from "constants/interfaces";
 import { TopicInterface } from "constants/interfaces/topic.interface";
 import { selectedTaskFilterType } from "redux/type";
@@ -410,7 +410,7 @@ const taskReducer = (
         case "TASK_SHOWN":
           // task unHide from hidden [ongoing]  and move to to-me [ongoing]
           if (eventData.userSubState === "ongoing") {
-            const taskIndex = state.allTaskHidden.ongoing.findIndex((task: Task) => task._id === eventData.taskId);
+            const taskIndex = state.allTaskHidden.ongoing.findIndex((task: ITask) => task._id === eventData.taskId);
             if (taskIndex !== -1) {
               const hiddenBy = state.allTaskHidden.ongoing[taskIndex].hiddenBy;
               let index = hiddenBy.indexOf(eventData.userId);
@@ -422,7 +422,7 @@ const taskReducer = (
           }
           // task unHide from hidden [done] and move to to-me [done]
           if (eventData.userSubState === "done") {
-            const taskIndex = state.allTaskHidden.done.findIndex((task: Task) => task._id === eventData.taskId)
+            const taskIndex = state.allTaskHidden.done.findIndex((task: ITask) => task._id === eventData.taskId)
             if (taskIndex !== -1) {
               state.allTaskHidden.done[taskIndex].hiddenBy.push(...eventData.hiddenBy)
               state.allTaskToMe.done.unshift(state.allTaskHidden.done[taskIndex]);
@@ -464,7 +464,7 @@ const taskReducer = (
           // to-me [new]=> to-me [ongoing]
           if (eventData.isAssignedToMe && eventData.oldTaskData.userSubState === "new" && eventData.stateChanged === true) {
             // find task in new and move to ongoing and update task
-            const taskIndex = state.allTaskToMe.new.findIndex((task: Task) => task._id === eventData.taskId);
+            const taskIndex = state.allTaskToMe.new.findIndex((task: ITask) => task._id === eventData.taskId);
             if (taskIndex > -1) {
               // pushSeenBy(state.allTaskToMe.new, taskIndex, eventData);
               state.allTaskToMe.new[taskIndex].userSubState = "ongoing"

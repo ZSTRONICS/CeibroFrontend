@@ -6,13 +6,13 @@ import {
   MEDIA_EXT,
   momentdeDateFormatWithDay,
 } from "components/Utills/Globals";
-import { Task } from "constants/interfaces";
+import { ITask } from "constants/interfaces";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
 interface IProps {
-  task: Task;
-  handleClick?: (task: Task) => void;
+  task: ITask;
+  handleClick?: (task: ITask) => void;
 }
 function TaskDetails(props: IProps) {
   const {
@@ -60,12 +60,12 @@ function TaskDetails(props: IProps) {
         invitedNumbers={invitedNumbers}
         taskId={_id}
         createdOn={momentdeDateFormatWithDay(createdAt)}
-        // commentCallback={}
-        // forwardCallback={}
-        // Callback={}
+      // commentCallback={}
+      // forwardCallback={}
+      // Callback={}
       />
-      <FileBox title="Files" files={docs} showFullHeight={false} />
-      <DetailsBody description={description} media={media} events={events} />
+      <FileBox media={media} title="Files" bt={true} bb={true} files={docs} />
+      {events ? <DetailsBody media={media} description={description} events={events} /> : <></>}
     </Box>
   );
 }

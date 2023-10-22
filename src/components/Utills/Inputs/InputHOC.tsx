@@ -1,13 +1,13 @@
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import assets from "assets/assets";
-import React, { FC } from "react";
+import { FC } from "react";
 import colors from "../../../assets/colors";
 
 interface InputHOCInterface {
   title: string;
   showIcon?: boolean;
-  children:any
+  children: any
 }
 
 const InputHOC: FC<InputHOCInterface> = (props) => {

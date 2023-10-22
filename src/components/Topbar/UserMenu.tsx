@@ -32,7 +32,9 @@ const UserMenu = () => {
   );
 
   const { user } = useSelector((state: RootState) => state.auth);
-  const { firstName, surName, profilePic } = user;
+
+  const { firstName, surName, profilePic } = user || {};
+
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   useEffect(() => {
     if (!isRenderEffect.current) {
@@ -64,7 +66,7 @@ const UserMenu = () => {
   };
 
   return (
-    <>
+    !user ? <></> : <>
       <Box sx={{ flexGrow: 0 }}>
         <Button
           disableRipple

@@ -169,8 +169,8 @@ const ProjectCard: FC<ProjectCardInterface> = (props) => {
                 ? `${creator?.firstName}`
                 : // ${creator?.surName}
                 isDefault === true
-                ? `${owner?.[0]?.firstName}`
-                : // ${owner?.[0]?.surName}
+                  ? `${owner?.[0]?.firstName}`
+                  : // ${owner?.[0]?.surName}
                   "N/A"}
               {/* {owner?.[0]?.surName} */}
 

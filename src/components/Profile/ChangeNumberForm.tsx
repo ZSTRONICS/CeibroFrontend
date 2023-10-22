@@ -177,7 +177,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
               <Button
                 type="submit"
                 variant="contained"
-                sx={{ width: "100%", backgroundColor: "#0076C8", padding: 1 }}
+                sx={{ width: "100%", backgroundColor: "#0075D0", padding: 1 }}
                 disabled={checkValidInputs(values) || showLoading}
               >
                 {showLoading ? (

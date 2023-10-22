@@ -1,14 +1,14 @@
-import { CBox } from "components/material-ui";
-import { useState } from "react";
-import AuthLayout from "../AuthLayout/AuthLayout";
 import { Button } from "@mui/material";
-import { useHistory } from "react-router-dom";
-import { t } from "i18next";
-import DragAndDrop from "components/DropFileInput/DropFileInput";
 import { SubLabelTag, TopBarTitle } from "components/CustomTags";
+import DragAndDrop from "components/DropFileInput/DropFileInput";
+import { CBox } from "components/material-ui";
 import useResponsive from "hooks/useResponsive";
+import { t } from "i18next";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { UpdateProfilePicture } from "redux/action/auth.action";
+import AuthLayout from "../AuthLayout/AuthLayout";
 
 export default function RegisterAddProfilePic(): JSX.Element {
   const [file, setFile] = useState<string | Blob>("");
@@ -19,7 +19,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
   const uploadImage = async () => {
     try {
       const formData = new FormData();
-      if(file){
+      if (file) {
         formData.append('profilePic', file);
         const payload = {
           body: formData,
@@ -33,10 +33,10 @@ export default function RegisterAddProfilePic(): JSX.Element {
           },
         };
         dispatch(UpdateProfilePicture(payload));
-      }else{
+      } else {
         history.push("/tasks");
       }
-  
+
     } catch (error) {
       console.error('Error occurred while uploading image:', error);
     }
@@ -66,7 +66,7 @@ export default function RegisterAddProfilePic(): JSX.Element {
         />
       </CBox>
       <Button
-        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2,   py:{xs:0.5, md:1.5} }}
+        sx={{ maxWidth: "390px", width: "100%", margin: "0 auto", mt: 2, py: { xs: 0.5, md: 1.5 } }}
         variant={file ? "contained" : "outlined"}
         color="primary"
         type="submit"

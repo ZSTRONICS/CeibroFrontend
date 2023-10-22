@@ -209,7 +209,7 @@ const LoginForm: React.FC<Props> = (props) => {
                 <AddStatusTag
                   sx={{
                     marginBottom: 0,
-                    color: "#0076C8",
+                    color: "#0075D0",
                     cursor: "pointer",
                   }}
                   onClick={handlePasswordForget}
@@ -238,7 +238,7 @@ const LoginForm: React.FC<Props> = (props) => {
                   variant="contained"
                   sx={{
                     width: "100%",
-                    backgroundColor: "#0076C8",
+                    backgroundColor: "#0075D0",
                     py: { xs: 1, md: 1.5 },
                   }}
                   disabled={checkValidInputs(values) || showLoading}

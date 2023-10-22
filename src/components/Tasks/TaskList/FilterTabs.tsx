@@ -1,6 +1,6 @@
 import { countUnseenTasks } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
-import { Task } from "constants/interfaces";
+import { ITask } from "constants/interfaces";
 import { isEmpty } from "lodash";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -20,7 +20,7 @@ function FilterTabs(props: FilterTabProps) {
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const renderTabs = filterKeys.map((key: string) => {
     let label = "";
-    let tasks: Task[] = [];
+    let tasks: ITask[] = [];
     let bgColor = "";
     let isDisabled = false;
 
@@ -43,8 +43,8 @@ function FilterTabs(props: FilterTabProps) {
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.ongoing
             : subTaskKey === "allTaskToMe"
-            ? allTaskToMe.ongoing
-            : allTaskHidden.ongoing;
+              ? allTaskToMe.ongoing
+              : allTaskHidden.ongoing;
         bgColor = "#F1B740";
         isDisabled = false;
         break;
@@ -54,8 +54,8 @@ function FilterTabs(props: FilterTabProps) {
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.done
             : subTaskKey === "allTaskToMe"
-            ? allTaskToMe.done
-            : allTaskHidden.done;
+              ? allTaskToMe.done
+              : allTaskHidden.done;
         bgColor = "#55BCB3";
         isDisabled = false;
         break;

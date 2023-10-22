@@ -53,9 +53,9 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoggedIn) {
+      LoginData();
       history.push("/tasks/allTaskFromMe");
     }
-    LoginData();
   }, [isLoggedIn]);
 
   return (

@@ -142,7 +142,7 @@ export default RoleMenu;
 
 const useStyles = makeStyles({
   btnContainer: {
-    color: "#0076C8",
+    color: "#0075D0",
     fontSize: "15px",
     fontWeight: 500,
     cursor: "pointer",

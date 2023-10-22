@@ -8,6 +8,9 @@ import React, { useState } from "react";
 import assets from "../../../assets/assets";
 
 interface IProps {
+  bt?: boolean;
+  bb?: boolean;
+  media?: any;
   title?: string;
   files: IFile[] | File[];
   size?: string;
@@ -17,7 +20,10 @@ interface IProps {
 }
 
 const FileBox: React.FC<IProps> = ({
+  bb,
+  bt,
   files,
+  media,
   title,
   size,
   showFullHeight,
@@ -35,13 +41,19 @@ const FileBox: React.FC<IProps> = ({
     }
   };
 
+  const handleClick = (file: any) => {
+    setFileToView(file);
+    openModal();
+  };
+
   return (
     <>
       <Box
         sx={{
           width: "100%",
-          border: `${title ? "1px solid #e2e4e5" : ""}`,
-          paddingLeft: "15px",
+          borderTop: bt ? "1px solid #ccc" : "none",
+          borderBottom: bb ? "1px solid #ccc" : "none",
+          paddingLeft: "5px",
           gap: 1,
           display: "flex",
           alignItems: "center",
@@ -51,12 +63,16 @@ const FileBox: React.FC<IProps> = ({
         {title && (
           <Box
             sx={{
+              mt: 0.6,
+              mb: 0.6,
               width: "85px",
-              height: "16px",
-              borderRight: "1px solid #818181",
+              height: "20px",
+              pr: 15,
+              borderRight: "1.5px solid #818181",
+              gap: 1,
               display: "flex",
               alignItems: "center",
-              paddingRight: "10px",
+              paddingRight: 15,
             }}
           >
             <Typography
@@ -165,11 +181,50 @@ const FileBox: React.FC<IProps> = ({
                 marginRight: "16px",
               }}
             >
-              No files found
+              No attachment found
             </Typography>
           )}
         </Box>
       </Box>
+
+
+
+      {/* <Box
+        className="custom-scrollbar"
+        sx={{
+          // height: "96px",
+          width: "100%",
+          padding: "10px 0px 16px 0px",
+          // marginRight: "16px",
+          // overflowX: "auto",
+          flexWrap: "wrap",
+          display: "flex",
+        }}
+      > */}
+      {/* {media && media.length > 0 &&
+        media.map((file: IFile) => {
+          const hasComment = file.comment.length === 0;
+
+          <Box
+            key={file._id}
+            sx={{
+              marginRight: "16px",
+              "&:hover": { cursor: "pointer" },
+            }}
+            onClick={() => handleClick(file)}
+          >
+            {hasComment ? (
+              <ImageBox src={file.fileUrl} />
+            ) : (
+              <ImageBoxWithDesp
+                src={file.fileUrl}
+                comment={file.comment}
+              />
+            )}
+          </Box>
+        })} */}
+      {/* </Box> */}
+
       {isOpen && (
         <ImagePreviewModal
           isPdfFile={true}

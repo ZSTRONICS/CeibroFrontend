@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Card,
   CardContent,
@@ -18,14 +17,14 @@ import {
   momentLocalDateTime,
   momentdeDateFormat,
 } from "components/Utills/Globals";
-import { AssignedUserState, Task } from "constants/interfaces";
+import { AssignedUserState, ITask } from "constants/interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 
 interface IProps {
-  task: Task;
+  task: ITask;
   selectedTaskId: string | undefined;
-  handleClick: (task: Task) => void;
+  handleClick: (task: ITask) => void;
   menuOption: any;
   disableMenu: boolean;
   isTaskFromMe: string;
@@ -62,18 +61,18 @@ function TaskCard(props: IProps) {
   const isCanceled: boolean = userSubState === "canceled";
   const assignToNames = () =>
     assignedToState.length > 0 ? (
-      <Badge
-        overlap="circular"
-        color="primary"
-        sx={{
-          padding: "0 4px",
-        }}
-        badgeContent={
-          <Tooltip title={AssignedToList(assignedToState)}>
-            <span>{assignedToState.length}</span>
-          </Tooltip>
-        }
-      ></Badge>
+      <Tooltip title={AssignedToList(assignedToState)}>
+        <span style={{
+
+          fontSize: 12,
+          padding: "4px",
+          fontWeight: 500,
+          backgroundColor: "transparent",
+          color: 'black',
+        }}>
+          +{assignedToState.length}
+        </span>
+      </Tooltip>
     ) : (
       <></>
     );
@@ -98,16 +97,15 @@ function TaskCard(props: IProps) {
         minWidth: 280,
         mt: 1,
         cursor: "pointer",
-        border: `${
-          isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
-        }`,
-        borderRadius: 1,
+        border: `${isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
+          }`,
+        borderRadius: 2,
         padding: "3px 4px",
+        paddingTop: "0px",
         borderTop: "none",
         background: !seenBy.includes(userId) ? "#EBF5FB" : "",
-        WebkitBoxShadow: `${
-          isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
-        }`,
+        WebkitBoxShadow: `${isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
+          }`,
       }}
       key={_id}
       id={_id}
@@ -115,17 +113,21 @@ function TaskCard(props: IProps) {
     >
       <CardHeader
         sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           pt: 0,
           pl: 0,
-          pb: 0.1,
+          pb: 0,
           pr: 0.1,
         }}
-        avatar={
+        title={
           <CustomStack gap={1}>
             <Span
               sx={{
                 border: "1px solid #818181",
-                borderRadius: 1,
+                borderRadius: 2,
                 padding: "2px 9px",
               }}
             >
@@ -135,7 +137,6 @@ function TaskCard(props: IProps) {
             <Span>{`Due date ${momentdeDateFormat(dueDate)}`}</Span>
           </CustomStack>
         }
-        title=""
         action={
           <CustomStack>
             <GenericMenu
@@ -146,6 +147,7 @@ function TaskCard(props: IProps) {
           </CustomStack>
         }
       />
+
       <CardContent sx={{ pt: 0, p: 0.5, "&:last-child": { pb: 0 } }}>
         <CustomStack justifyContent="space-between">
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
@@ -153,8 +155,8 @@ function TaskCard(props: IProps) {
               {isCanceled && !isCreator ? "From" : isTaskFromMe}:&nbsp;{""}
               <span
                 style={{
-                  fontWeight: "500",
-                  fontSize: "11px",
+                  fontWeight: "540",
+                  fontSize: "12px",
                 }}
               >
                 {`${creator.firstName} ${creator.surName}`}
@@ -198,9 +200,11 @@ function TaskCard(props: IProps) {
           sx={{
             maxWidth: "350px",
             WebkitLineClamp: 2,
+            wordWrap: "break-word",
+            wordBreak: "break-all",
           }}
         >
-          {description || "No description"}
+          {description}
         </SubLabelTag>
       </CardContent>
     </Card>
@@ -208,3 +212,4 @@ function TaskCard(props: IProps) {
 }
 
 export { TaskCard };
+

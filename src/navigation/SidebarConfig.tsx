@@ -32,8 +32,8 @@ const SidebarConfig: SidebarConfigInterface = {
       window.location.pathname.split("/").pop() === "tasks"
         ? "tasks/allTaskFromMe"
         : window.location.pathname.includes("tasks")
-        ? window.location.pathname
-        : "tasks/allTaskFromMe",
+          ? window.location.pathname
+          : "tasks/allTaskFromMe",
     active: false,
     childTab: {
       newTask: {

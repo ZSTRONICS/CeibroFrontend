@@ -27,7 +27,6 @@ import NotFound from "components/NotFound";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 import { LOGIN_ROUTE } from "utills/axios";
-import CommingSoon from "./CommingSoon";
 import PrivateRoute from "./PrivateRoute";
 export const appHistory = createBrowserHistory();
 
@@ -43,9 +42,17 @@ const RouterConfig = () => {
           }
         >
           <Switch>
-            <Route path="/comming-soon" component={CommingSoon} />
-            <Redirect exact from="/" to="/comming-soon" />
+            <Redirect exact from="/" to={LOGIN_ROUTE} />
+
+            {/* <Route path="/comming-soon" component={CommingSoon} />
+            <Redirect exact from="/" to="/comming-soon" /> */}
             <Route path={LOGIN_ROUTE} component={Login} />
+            <Route path="/playstore" component={
+              () => {
+                window.location.href = "https://play.google.com/store/apps/details?id=com.zstronics.ceibro";
+                return <></>;
+              }
+            } />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />
@@ -53,6 +60,8 @@ const RouterConfig = () => {
             <Route path="/confirmation" component={RegisterConfirmationForm} />
             <Route path="/t&c" component={TermsAndConditions} />
             <Route path="/profile-setup" component={Register} />
+
+            <Redirect exact from="/tasks" to="/tasks/allTaskFromMe" />
             <PrivateRoute
               path="/profile-pic"
               component={RegisterAddProfilePic}

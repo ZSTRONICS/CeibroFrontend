@@ -278,7 +278,7 @@ const RegisterForm = () => {
                       borderColor: "#000",
                       color: "#fff",
                       textTransform: "capitalize !important",
-                      backgroundColor: "#0076C8",
+                      backgroundColor: "#0075D0",
                       py: { xs: 0.5, md: 1.5 },
                     }}
                     type="submit"

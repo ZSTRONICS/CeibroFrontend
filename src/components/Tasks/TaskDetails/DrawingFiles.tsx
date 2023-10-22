@@ -6,6 +6,7 @@ export default function DrawingFiles() {
     <Box sx={{ mb: 1 }}>
       <FileBox
         title="Location"
+        bb={true}
         files={[
           {
             fileName: "N/A",

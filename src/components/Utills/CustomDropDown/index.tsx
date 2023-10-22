@@ -336,7 +336,7 @@ function CustomDropDown(props: IProps) {
                     <IconButton
                       edge="end"
                       sx={{
-                        color: "#0076C8",
+                        color: "#0075D0",
                         "& .MuiSvgIcon-root": {
                           width: "20px",
                           height: "20px",

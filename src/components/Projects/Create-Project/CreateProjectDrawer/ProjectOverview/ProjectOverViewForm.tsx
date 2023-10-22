@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { Grid, TextField } from "@mui/material";
+import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import InputText from "../../../../Utills/Inputs/InputText";
-import { Member } from "constants/interfaces/ProjectRoleMemberGroup.interface";
 
 const ProjectOverViewForm = () => {
   const classes = useStyles();
@@ -78,8 +78,8 @@ const ProjectOverViewForm = () => {
             projectOverview.isDefault
               ? true
               : updateRights === true
-              ? false
-              : true
+                ? false
+                : true
           }
         />
       </Grid>
@@ -93,7 +93,7 @@ const ProjectOverViewForm = () => {
           name="location"
           placeholder="Enter address"
           disabled={
-           updateRights === true
+            updateRights === true
               ? false
               : true
           }
@@ -104,9 +104,9 @@ const ProjectOverViewForm = () => {
         <TextField
           sx={{
             "& .css-8q2m5j-MuiInputBase-root-MuiInput-root.Mui-disabled:before":
-              {
-                borderBottomStyle: "none",
-              },
+            {
+              borderBottomStyle: "none",
+            },
           }}
           id="standard-multiline-flexible"
           placeholder="Enter description"
@@ -184,13 +184,13 @@ const useStyles = makeStyles({
       borderBottom: "none",
     },
     "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:after, .MuiInputBase-root-MuiInput-root:after":
-      {
-        borderBottom: "none",
-      },
+    {
+      borderBottom: "none",
+    },
     "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before, .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before ":
-      {
-        borderBottom: "none",
-      },
+    {
+      borderBottom: "none",
+    },
     "& .css-8q2m5j-MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
     },

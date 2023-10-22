@@ -148,7 +148,7 @@ const DragAndDrop: React.FC<IProps> = ({
                   }}
                 >
                   Drag your file here with mouse or
-                  <span style={{ color: "#0076C8" }}> &nbsp;browse</span>
+                  <span style={{ color: "#0075D0" }}> &nbsp;browse</span>
                 </Button>
               </CustomStack>
             </Box>

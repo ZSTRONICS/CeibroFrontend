@@ -1,23 +1,23 @@
-import { REGISTER } from "redux-persist";
-import { toast } from "react-toastify";
-import { takeLatest } from "redux-saga/effects";
 import {
+  AUTH_CONFIG,
   CREATE_ROOM,
   FORGET_PASSWORD,
   GET_PROFILE,
   LOGIN,
   OTP_VERIFY,
   REGISTER_CONFIRMATION,
-  RESET_PASSWORD,
-  UPDATE_PROFILE_PICTURE,
-  VERIFY_EMAIL,
   REGISTER_PROFILE_SETUP,
-  AUTH_CONFIG,
+  RESET_PASSWORD,
   UPDATE_MY_PROFILE,
-  USER_CHANGE_PASSWORD,
+  UPDATE_PROFILE_PICTURE,
   USER_CHANGE_NUMBER,
+  USER_CHANGE_PASSWORD,
   USER_VERIFY_CHANGE_NUMBER,
+  VERIFY_EMAIL
 } from "config";
+import { toast } from "react-toastify";
+import { REGISTER } from "redux-persist";
+import { takeLatest } from "redux-saga/effects";
 import apiCall from "../../utills/apiCall";
 import { ActionInterface } from "../reducers/appReducer";
 
@@ -35,7 +35,7 @@ const verifyEmail = apiCall({
   method: "post",
   path: "/auth/veify-email",
   onFailSaga: (err) => {
-    console.error("it is failed", err);
+    console.error("Failed to verify", err);
   },
 });
 
@@ -44,6 +44,9 @@ const registerRequest = apiCall({
   type: REGISTER,
   method: "post",
   path: "/auth/register",
+  onFailSaga: (err) => {
+    console.error("Failed to register", err);
+  },
   success: (_res: any) => {
     toast.success("Verification code sent on your number");
   },
@@ -55,7 +58,7 @@ const registerConfirmationRequest = apiCall({
   method: "post",
   path: "/auth/otp/verify",
   success: (_res: any) => {
-    toast.success("Verifieid your number");
+    toast.success("Phone number verification successful");
   },
 });
 
@@ -72,7 +75,7 @@ const registerSetupProfile = apiCall({
   method: "post",
   path: (payload) => `/users/${payload?.other}/profile`,
   success: (_res: any) => {
-    toast.success("Successfully setup profile");
+    toast.success("Profile setup successful");
   },
 });
 

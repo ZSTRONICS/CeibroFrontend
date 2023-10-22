@@ -1,3 +1,4 @@
+import { ITask } from "constants/interfaces";
 import moment from "moment-timezone";
 import { AxiosV2 } from "utills/axios";
 
@@ -237,6 +238,16 @@ const momentdeDateFormatWithDay = (createdAt: Date | any) => {
   let localTime = moment.utc(moment(createdAt)).toDate();
   return moment(localTime).format("ddd, DD.MM.YYYY");
 };
+
+export const getTaskCardHeight = (task: ITask) => {
+  try {
+    const height = task.description.length > 0 ? (task.description.length > 49 ? 127 : 110) : 90
+    return height;
+  } catch (error) {
+    console.log("error calculating task card height => ", error);
+    return 100;
+  }
+}
 
 /**
  * @return 12:00AM

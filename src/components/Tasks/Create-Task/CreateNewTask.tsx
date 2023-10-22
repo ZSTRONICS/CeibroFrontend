@@ -248,8 +248,8 @@ function CreateNewTask() {
     let valid = true;
     valid =
       selectedData.topic !== "" &&
-      (selectedData.assignedToState.length > 0 ||
-        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+        (selectedData.assignedToState.length > 0 ||
+          (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
         ? false
         : true;
     if (selectedData.dueDate === "Invalid date") {
@@ -426,7 +426,7 @@ function CreateNewTask() {
                         sx={{
                           top: "-6px",
                           right: "4px",
-                          backgroundColor: "#0076C8",
+                          backgroundColor: "#0075D0",
                           color: "#fff",
                           width: "16px",
                           height: "16px",
@@ -514,7 +514,7 @@ function CreateNewTask() {
           showHeader={false}
           handleSubmitForm={handleCreateTask}
           handleAttachImageValue={handleAttachImageValue}
-          handleGetLocationValue={() => {}}
+          handleGetLocationValue={() => { }}
           handleSelectDocumentValue={handleSelectDocumentValue}
         />
       </Box>

@@ -1,6 +1,7 @@
 import { lazy } from "react";
 // Auth
 import ForgetPassword from "./Auth/ForgetPassword/ForgetPassword";
+import Login from "./Auth/Login/Login";
 import RegisterAddProfilePic from "./Auth/Register/RegisterAddProfilePic";
 import RegisterConfirmationForm from "./Auth/Register/RegisterConfirmationForm";
 import RegisterNumberForm from "./Auth/Register/RegisterNumberForm";
@@ -23,7 +24,7 @@ import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
 // Auth
 const Register = lazy(() => import("./Auth/Register/Register"));
-const Login = lazy(() => import("./Auth/Login/Login"));
+
 const ForgetConfirmation = lazy(() => import("./Auth/ForgetPassword/ForgetConfirmation"))
 
 // connection

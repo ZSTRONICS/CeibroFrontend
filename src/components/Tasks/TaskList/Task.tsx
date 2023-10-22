@@ -6,10 +6,10 @@ import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
 import { TaskCard } from "components/TaskComponent";
-import { optionMapping } from "components/Utills/Globals";
+import { getTaskCardHeight, optionMapping } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
-import { Task as ITask } from "constants/interfaces";
+import { ITask } from "constants/interfaces";
 import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
@@ -50,6 +50,7 @@ const Task = () => {
     window.innerHeight - headerHeight
   );
 
+  const taskCardListRef: any = useRef();
   const task: any = useSelector((state: RootState) => state.task);
   const {
     allTaskToMe,
@@ -157,6 +158,10 @@ const Task = () => {
         history.push(path);
       }
     }
+    // Clearing Variable Task Card List Cache in 10ms
+    setTimeout(() => {
+      clearTaskCardListCache();
+    }, 10);
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
@@ -173,7 +178,7 @@ const Task = () => {
         dataToSearch = task[subtask][selectedTab];
       }
       // selecting top most task by default
-      const data = searchInData(dataToSearch, searchText, ["taskUID","topic.topic"]);
+      const data = searchInData(dataToSearch, searchText, ["taskUID", "topic.topic"]);
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
         if (newSelectedTask) {
@@ -333,24 +338,24 @@ const Task = () => {
     const filterData = searchInData(
       task[subtask][selectedTab],
       searchTxt,
-      ["taskUID","topic.topic"]
+      ["taskUID", "topic.topic"]
     );
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
-function searchInData(data: ITask[], searchText: string, properties: string[]) {
-  if (searchText === "") {
-    return data;
-  }
-  return data.filter((item: ITask) => {
-    const lowerSearchText = searchText.toLowerCase();
-    return properties.some((property) => {
-      const searchValue = _.get(item, property);
-      return searchValue && searchValue.toString().toLowerCase().includes(lowerSearchText);
+  function searchInData(data: ITask[], searchText: string, properties: string[]) {
+    if (searchText === "") {
+      return data;
+    }
+    return data.filter((item: ITask) => {
+      const lowerSearchText = searchText.toLowerCase();
+      return properties.some((property) => {
+        const searchValue = _.get(item, property);
+        return searchValue && searchValue.toString().toLowerCase().includes(lowerSearchText);
+      });
     });
-  });
-}
+  }
 
   useEffect(() => {
     if (updateTaskEvent !== null) {
@@ -465,6 +470,16 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
     },
   ];
 
+  const clearTaskCardListCache = () => {
+    if (taskCardListRef && taskCardListRef.current) {
+      taskCardListRef.current.resetAfterIndex(0, true);
+    } else {
+      setTimeout(() => {
+        clearTaskCardListCache();
+      }, 10);
+    }
+  }
+
   const filteredMenuOptions = (myState: string, subState: string) => {
     const optionName = optionMapping[myState]?.[subState];
     return optionName
@@ -497,17 +512,40 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
     );
   };
 
+  const windowWidth = window.innerWidth;
+  const [taskCardlgSize, setTaskCardlgSize] = useState<number>(2.85);
+  const [taskDescriptionlgSize, setTaskDescriptionlgSize] = useState<number>(9.15);
+  const [taskDescriptionMdSize, setTaskDescriptionMdSize] = useState<number>(8.5);
+
+  const handleResize = () => {
+    let changed = false;
+    setWindowHeight(window.innerHeight - (headerHeight + 15));
+    if (windowWidth >= 1200 && windowWidth <= 1360) {
+      setTaskCardlgSize(3.5);
+      setTaskDescriptionlgSize(8.5);
+      changed = true;
+    }
+    if (windowWidth > 1600) {
+      setTaskCardlgSize(2.55);
+      setTaskDescriptionlgSize(9.35);
+      changed = true;
+    }
+    if (windowWidth < 1200) {
+      setTaskDescriptionMdSize(8);
+      changed = true;
+    }
+    if (!changed) {
+      setTaskCardlgSize(2.85);
+      setTaskDescriptionlgSize(9.15);
+      setTaskDescriptionMdSize(8.5);
+    }
+  };
+
   useEffect(() => {
-    const handleResize = () => {
-      setWindowHeight(window.innerHeight - headerHeight);
-    };
-
     window.addEventListener("resize", handleResize);
+    handleResize();
+  }, []);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [headerHeight]);
 
   const LoadingSkeleton = () => (
     <Box style={{ height: windowHeight }}>
@@ -529,10 +567,11 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
     <Grid container>
       <Grid
         item
-        lg={2.85}
-        md={3.5}
-        xs={4}
+        lg={taskCardlgSize}
+        md={3.9}
+        xs={5}
         sx={{
+          paddingLeft: "10px",
           borderRight: "1px solid #ADB5BD",
         }}
       >
@@ -543,7 +582,7 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              gap: { xs: 1, md: 2.2, lg: 3 },
+              gap: { xs: 2.5, md: 2.2, lg: 3 },
               overflow: "auto",
               padding: "8px 8px 4px 8px",
             }}
@@ -560,33 +599,39 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
           <Box
             sx={{
               width: "100%",
-              borderWidth: "0px 0px 1px 0px",
-              borderColor: "#818181",
-              borderStyle: "solid",
               paddingLeft: "8px",
             }}
           >
             <InputBase
               value={searchText}
               placeholder="Start typing to search"
-              sx={{ height: "48px", width: "100%" }}
+
+              sx={{
+                borderWidth: "0px 0px 1px 0px",
+                borderColor: "#818181",
+                borderStyle: "solid",
+                height: "48px",
+                width: "95%"
+              }}
               onChange={handleSearch}
             />
           </Box>
         </Box>
-        <Box sx={{ pl: 0.7, pr: 0.5 }}>
+
+        <Box sx={{ pl: 0.7, pr: 0.5, mt: 2 }}>
           {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
             <EmptyScreen />
           ) : (
             <VariableSizeList
+              ref={taskCardListRef}
               className="custom-scrollbar"
               height={windowHeight}
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
-              itemSize={(index) => 130}
+              itemSize={(index) => (getTaskCardHeight(filteredTask[index]) + 15)}
               width={"100%"}
             >
               {TaskRow}
@@ -594,12 +639,12 @@ function searchInData(data: ITask[], searchText: string, properties: string[]) {
           )}
         </Box>
       </Grid>
-      <Grid item md={8.5} lg={9.15} xs={7}>
+      <Grid item md={taskDescriptionMdSize} lg={taskDescriptionlgSize} xs={7}>
         {selectedTask !== null &&
-        filteredTask &&
-        filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask?.taskUID
-        ) ? (
+          filteredTask &&
+          filteredTask.some(
+            (task: ITask) => task.taskUID === selectedTask?.taskUID
+          ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

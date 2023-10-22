@@ -61,12 +61,11 @@ const ConnectionCard = ({
                 surname={surName}
               />
               <div>
-                <SubHeadingTag sx={{ color: "#0076C8" }}>
+                <SubHeadingTag sx={{ color: "#0075D0" }}>
                   {`${firstName} ${surName}`}
                 </SubHeadingTag>
-                <SubLabelTag>{`Company: ${
-                  companyName ? companyName : "N/A"
-                }`}</SubLabelTag>
+                <SubLabelTag>{`Company: ${companyName ? companyName : "N/A"
+                  }`}</SubLabelTag>
               </div>
             </Box>
             {isTabOrMobile && (

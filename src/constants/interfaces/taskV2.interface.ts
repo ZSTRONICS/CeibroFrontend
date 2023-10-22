@@ -3,29 +3,29 @@ export interface Root {
 }
 
 export interface AllTasksInterface {
-  ongoing: Task[];
-  done: Task[];
-  unread: Task[];
-  new: Task[];
+  ongoing: ITask[];
+  done: ITask[];
+  unread: ITask[];
+  new: ITask[];
 }
 
 export interface AllTaskHiddenInterface {
-  ongoing: Task[];
-  done: Task[];
-  canceled: Task[];
+  ongoing: ITask[];
+  done: ITask[];
+  canceled: ITask[];
 }
 export interface AllTaskToMeInterface {
-  new: Task[];
-  ongoing: Task[];
-  done: Task[];
+  new: ITask[];
+  ongoing: ITask[];
+  done: ITask[];
 }
 export interface AllTaskFromMeInterface {
-  unread: Task[];
-  ongoing: Task[];
-  done: Task[];
+  unread: ITask[];
+  ongoing: ITask[];
+  done: ITask[];
 }
 
-export interface Task {
+export interface ITask {
   _id: string;
   dueDate: string;
   doneImageRequired: boolean;

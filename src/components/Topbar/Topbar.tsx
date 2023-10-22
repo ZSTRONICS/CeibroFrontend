@@ -46,7 +46,25 @@ function Topbar() {
 
   const handleRouteClick = (config: SingleConfig) => {
     dispatch(appActions.setSelectedTab(config.key));
-    history.push(`/${config.getPath()}`);
+    let path = config.getPath();
+    if (path[0] === "/") {
+      path = path.slice(1);
+    }
+    if (path[path.length - 1] === "/") {
+      path = path.slice(0, path.length - 1);
+    }
+
+    if (window.location.pathname.includes(path)) {
+      return;
+    }
+
+    if (window.location.pathname.includes("/tasks") && path.includes("tasks/")) {
+      const lastPath = path.split("/")[1];
+      window.location.pathname = '/tasks/' + lastPath;
+      return;
+    }
+
+    history.push(`/${path}`);
   };
 
   return (

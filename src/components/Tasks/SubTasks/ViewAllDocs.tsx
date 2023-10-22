@@ -196,7 +196,7 @@ const DocsContent = (
                             sx={{
                               maxWidth: "200px",
                               width: "100%",
-                              color: "#0076C8",
+                              color: "#0075D0",
                             }}
                             className="ellipsis"
                           >
