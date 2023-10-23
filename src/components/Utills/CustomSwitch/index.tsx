@@ -1,5 +1,4 @@
-import { Box, Typography, Switch } from "@mui/material";
-import { CreateNewTaskFormType } from "components/Tasks/type";
+import { Box, Switch, Typography } from "@mui/material";
 import { ChangeEvent } from "react";
 
 interface CustomSwitchProps {
@@ -22,6 +21,7 @@ const CustomSwitch = (props: CustomSwitchProps) => {
       <Switch
         sx={
           {
+            fontFamily:'Inter',
             // "& .MuiSwitch-switchBase": {
             //   "&.Mui-checked": {
             //     color: "#fff",

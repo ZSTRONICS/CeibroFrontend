@@ -199,11 +199,12 @@ function CustomDropDown(props: IProps) {
         variant="standard"
         sx={{ marginTop: "16px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel id="controlled-open-select-label">{label}</InputLabel>
+        <InputLabel id="controlled-open-select-label" sx={{fontFamily:'Inter'}}>{label}</InputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
+            fontFamily:'Inter',
             "& .MuiSelect-icon": {
               right: `${selected ? "40px" : 0}`,
             },
@@ -260,7 +261,7 @@ function CustomDropDown(props: IProps) {
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}
-              style={{ flex: 1 }}
+              style={{ flex: 1 ,fontFamily:'Inter'}}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -268,11 +269,12 @@ function CustomDropDown(props: IProps) {
             />
             <>
               {searchQuery && searchQuery.length > 0 && isMatchFound ? (
-                <Button onClick={handleCancelClick}>Cancel</Button>
+                <Button onClick={handleCancelClick} sx={{fontFamily:"Inter"}}>Cancel</Button>
               ) : (
                 <Button
                   onClick={handleCreateClick}
                   disabled={searchQuery.length === 0}
+                  sx={{fontFamily:"Inter"}}
                 >
                   Save
                 </Button>
@@ -300,6 +302,7 @@ function CustomDropDown(props: IProps) {
                       padding: "8px 16px",
                       cursor: "pointer",
                       fontWeight: 400,
+                      fontFamily: "Inter",
                     }}
                     onClick={() => handleMenuClick(item)}
                   >
@@ -315,7 +318,7 @@ function CustomDropDown(props: IProps) {
               pointerEvents: "none",
             }}
           />
-          <Box sx={{ margin: "8px 16px" }}>
+          <Box sx={{ margin: "8px 16px",fontFamily: "Inter", }}>
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array

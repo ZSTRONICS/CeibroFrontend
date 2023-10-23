@@ -43,12 +43,17 @@ const CustomDatePicker = ({
           inputFormat="DD.MM.YYYY"
           minDate={new Date()}
           InputAdornmentProps={{ position: "start" }}
+          PopperProps={{
+            sx:{marginLeft:'-35px !important'},
+          placement: "auto-start", 
+          }}
           renderInput={(params) => (
             <TextField
               {...params}
               variant="standard"
               sx={{
                 width: "100%",
+                
                 // ...(params.error && {
                 //   "& .MuiInputBase-root": { color: "black" },
                 // }),

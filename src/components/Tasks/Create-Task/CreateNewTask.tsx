@@ -380,7 +380,7 @@ function CreateNewTask() {
                 multiline
                 // maxRows={15}
                 variant="standard"
-                sx={{ width: "100%" }}
+                sx={{ width: "100%",fontFamily:'Inter' }}
                 onBlur={handleDescriptionChange}
               />
             </Box>
@@ -457,7 +457,7 @@ function CreateNewTask() {
                 />
               </Box>
             )}
-            <Box sx={{ pt: 1, pb: 3, pl: 0.76 }}>
+            <Box sx={{ pt: 1, pb: 3, }}>
               <CustomSwitch
                 label="Done requirements"
                 toggle={toggle}
