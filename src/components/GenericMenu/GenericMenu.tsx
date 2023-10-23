@@ -13,9 +13,10 @@ interface MenuProps {
   icon?: any;
   options: Option[];
   disableMenu: boolean;
+  paddingTop?: null | number;
 }
 
-const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu }) => {
+const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu, paddingTop = null }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -32,6 +33,7 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu }) => {
   return (
     <>
       <IconButton
+        sx={paddingTop !== null ? { pt: 0.5, pb: 0 } : undefined}
         aria-label="more"
         id="long-button"
         aria-controls={open ? "long-menu" : undefined}
@@ -54,7 +56,7 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu }) => {
           TransitionComponent={Fade}
           anchorOrigin={{
             vertical: "bottom",
-            horizontal: "right",
+            horizontal: "center",
           }}
           transformOrigin={{
             vertical: "top",

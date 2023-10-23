@@ -53,7 +53,7 @@ const FileBox: React.FC<IProps> = ({
           width: "100%",
           borderTop: bt ? "1px solid #ccc" : "none",
           borderBottom: bb ? "1px solid #ccc" : "none",
-          paddingLeft: "5px",
+          // paddingLeft: "5px",
           gap: 1,
           display: "flex",
           alignItems: "center",
@@ -68,8 +68,9 @@ const FileBox: React.FC<IProps> = ({
               width: "85px",
               height: "20px",
               pr: 15,
-              borderRight: "1.5px solid #818181",
-              gap: 1,
+              pl: 0,
+              borderRight: "1.9px solid #818181",
+              //gap: 1,
               display: "flex",
               alignItems: "center",
               paddingRight: 15,
@@ -78,7 +79,7 @@ const FileBox: React.FC<IProps> = ({
             <Typography
               sx={{
                 fontFamily: "Inter",
-                fontWeight: 500,
+                fontWeight: 600,
                 fontSize: "12px",
               }}
             >
@@ -115,6 +116,7 @@ const FileBox: React.FC<IProps> = ({
                     display: "flex",
                     alignItems: "center",
                     padding: "8px",
+                    pl: 0,
                     "&:hover": {
                       cursor: "pointer",
                     },
@@ -130,7 +132,8 @@ const FileBox: React.FC<IProps> = ({
                   <Typography
                     sx={{
                       fontFamily: "Inter",
-                      fontWeight: 400,
+                      fontWeight: 450,
+                      color: "#131516",
                       fontSize: "14px",
                       marginLeft: "8px",
                       marginRight: "16px",
@@ -141,7 +144,7 @@ const FileBox: React.FC<IProps> = ({
                   <Typography
                     sx={{
                       fontFamily: "Inter",
-                      fontWeight: 400,
+                      fontWeight: 450,
                       fontSize: "10px",
                       opacity: 0.54,
                     }}
@@ -174,10 +177,10 @@ const FileBox: React.FC<IProps> = ({
             <Typography
               sx={{
                 fontFamily: "Inter",
-                fontWeight: 400,
-                fontSize: "14px",
-                opacity: 0.87,
-                marginLeft: "8px",
+                fontWeight: 450,
+                fontSize: "13px",
+                opacity: 0.9,
+                marginLeft: "5px",
                 marginRight: "16px",
               }}
             >

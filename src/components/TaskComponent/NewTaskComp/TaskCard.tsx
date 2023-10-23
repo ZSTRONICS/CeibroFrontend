@@ -55,7 +55,7 @@ function TaskCard(props: IProps) {
     userSubState,
     assignedToState,
   } = task;
-  const taskCreatedAt = momentLocalDateTime(createdAt);
+  const taskCreatedAt = momentLocalDateTime(createdAt).split(' ');
   const isSelectedTask: boolean = selectedTaskId === _id;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
@@ -63,12 +63,10 @@ function TaskCard(props: IProps) {
     assignedToState.length > 0 ? (
       <Tooltip title={AssignedToList(assignedToState)}>
         <span style={{
-
-          fontSize: 12,
+          fontWeight: "600",
+          fontSize: "11px",
           padding: "4px",
-          fontWeight: 500,
           backgroundColor: "transparent",
-          color: 'black',
         }}>
           +{assignedToState.length}
         </span>
@@ -100,8 +98,8 @@ function TaskCard(props: IProps) {
         border: `${isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
           }`,
         borderRadius: 2,
-        padding: "3px 4px",
-        paddingTop: "0px",
+        // padding: "3px 4px",
+        // paddingTop: "0px",
         borderTop: "none",
         background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         WebkitBoxShadow: `${isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
@@ -126,37 +124,57 @@ function TaskCard(props: IProps) {
           <CustomStack gap={1}>
             <Span
               sx={{
+                color: "0d0d0d",
+                fontWeight: 600,
                 border: "1px solid #818181",
-                borderRadius: 2,
+                borderRadius: 1,
                 padding: "2px 9px",
               }}
             >
               {taskUID}
             </Span>
-            <Span>{`${taskCreatedAt}`}</Span>
-            <Span>{`Due date ${momentdeDateFormat(dueDate)}`}</Span>
+            <Span sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}>
+              {`${taskCreatedAt[0]}`}
+            </Span>
+
+            <Span sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}>
+              {`${taskCreatedAt[1]}`}
+            </Span>
+
+            {momentdeDateFormat(dueDate) === "N/A" ? <></> : <Span>{`Due date ${momentdeDateFormat(dueDate)}`}</Span>}
           </CustomStack>
         }
+
         action={
           <CustomStack>
             <GenericMenu
               options={menuOption}
               key={_id}
               disableMenu={disableMenu || !isSelectedTask}
+              paddingTop={0}
             />
           </CustomStack>
         }
       />
 
-      <CardContent sx={{ pt: 0, p: 0.5, "&:last-child": { pb: 0 } }}>
+      <CardContent sx={{
+        pl: 1.5,
+        pt: 0, "&:last-child": { pb: 0 }
+      }}>
         <CustomStack justifyContent="space-between">
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
             <TaskCardLabel className="textOverflowDescription">
               {isCanceled && !isCreator ? "From" : isTaskFromMe}:&nbsp;{""}
               <span
                 style={{
-                  fontWeight: "540",
-                  fontSize: "12px",
+                  fontWeight: "600",
+                  fontSize: "11px",
                 }}
               >
                 {`${creator.firstName} ${creator.surName}`}
@@ -173,7 +191,7 @@ function TaskCard(props: IProps) {
               Project: &nbsp;{""}
               <span
                 style={{
-                  fontWeight: "500",
+                  fontWeight: "600",
                   fontSize: "11px",
                 }}
               >
@@ -192,7 +210,7 @@ function TaskCard(props: IProps) {
             WebkitLineClamp: 1,
           }}
         >
-          {topic.topic || "N/A"}
+          {topic?.topic ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1) : "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag

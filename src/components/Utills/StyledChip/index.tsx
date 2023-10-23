@@ -29,17 +29,17 @@ const StyledChip = ({
     <Chip
       disabled={isDisabled}
       sx={{
+        fontFamily: "Inter",
+        fontWeight: 600,
+        fontSize: "11px",
         height: "24px",
         width: "80px",
         borderRadius: "8px",
         padding: "4px 3px",
-        borderWidth: "1px",
+        borderWidth: "1.5px",
         borderColor: bgColor,
         borderStyle: "solid",
         backgroundColor: `${!isDisabled && active ? bgColor : "white"}`,
-        fontFamily: "Inter",
-        fontSize: "10px",
-        fontWeight: 500,
         lineHeight: "16px",
         cursor: "pointer",
         "&:hover, &:focus": {
@@ -59,7 +59,7 @@ const StyledChip = ({
       }}
       label={label}
       avatar={
-        <Badge
+        notifyCount === 0 ? <></> : <Badge
           showZero={false}
           sx={{
             position: "absolute",
@@ -68,7 +68,7 @@ const StyledChip = ({
               backgroundColor: bgColor,
               right: "-20px",
               top: "2px",
-              border: ".8px solid white",
+              border: "2px solid white",
             },
             "@media (max-width: 700px)": {
               "& .MuiBadge-badge": {
@@ -76,7 +76,7 @@ const StyledChip = ({
               },
             },
           }}
-          badgeContent={notifyCount}
+          badgeContent={notifyCount >= '99' ? `+${99}` : `+${notifyCount}`}
         />
       }
       onClick={callback}

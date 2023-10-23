@@ -8,7 +8,7 @@ const DespcriptionBox = ({ description }: IProps) => (
   <Box
     sx={{
       width: "100%",
-      padding: "14px 0px 14px 5px",
+      padding: "14px 0px 14px 0px",
       gap: 1,
     }}
   >
@@ -35,7 +35,7 @@ const DespcriptionBox = ({ description }: IProps) => (
         <Typography
           sx={{
             fontFamily: "Inter",
-            fontWeight: 500,
+            fontWeight: 600,
             fontSize: "12px",
             lineHeight: "16px",
             color: "#605c5c",

@@ -161,7 +161,7 @@ const Task = () => {
     // Clearing Variable Task Card List Cache in 10ms
     setTimeout(() => {
       clearTaskCardListCache();
-    }, 10);
+    }, 5);
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
@@ -476,7 +476,7 @@ const Task = () => {
     } else {
       setTimeout(() => {
         clearTaskCardListCache();
-      }, 10);
+      }, 5);
     }
   }
 
@@ -569,8 +569,10 @@ const Task = () => {
         item
         lg={taskCardlgSize}
         md={3.9}
+        pt={1}
         xs={5}
         sx={{
+          pb: 0,
           paddingLeft: "10px",
           borderRight: "1px solid #ADB5BD",
         }}
@@ -618,7 +620,7 @@ const Task = () => {
           </Box>
         </Box>
 
-        <Box sx={{ pl: "6px", mt: 2 }}>
+        <Box sx={{ pl: "6px", mt: 2, pb: 0 }}>
           {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
@@ -627,7 +629,7 @@ const Task = () => {
             <VariableSizeList
               ref={taskCardListRef}
               className="custom-scrollbar"
-              style={{overflow:'scroll'}}
+              style={{ overflow: 'scroll' }}
               height={windowHeight}
               itemCount={filteredTask.length}
               overscanCount={20}

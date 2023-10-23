@@ -1,6 +1,7 @@
 import { Grid, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
+import { useEffect, useState } from "react";
 import DetailActions from "./DetailActions";
 
 interface IProps {
@@ -82,9 +83,23 @@ export default function DetailsHeader(props: IProps) {
           : "N/A",
     },
   ];
+  const windowWidth = window.innerWidth;
+  let gap = windowWidth >= 786 && windowWidth < 1200 ? 2 : windowWidth >= 1200 && windowWidth < 1360 ? 2 : windowWidth >= 1460 ? 1.4 : 1.5;
+
+  const [rowGap, setRowGap] = useState<number>(gap);
+  const handleResize = () => {
+    const windowWidth = window.innerWidth;
+    let gap = windowWidth >= 786 && windowWidth < 1200 ? 2 : windowWidth >= 1200 && windowWidth < 1360 ? 2 : windowWidth >= 1460 ? 1.4 : 1.5;
+    setRowGap(gap);
+    return gap;
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+  }, []);
 
   return (
-    <Box sx={{ padding: "0px 16px 0 5px" }}>
+    <Box sx={{ padding: "0px 0px 0px 0px" }}>
       <DetailActions
         doneImageRequired={doneImageRequired}
         doneCommentsRequired={doneCommentsRequired}
@@ -105,18 +120,18 @@ export default function DetailsHeader(props: IProps) {
             lineHeight: "20px",
           }}
         >
-          {topic?.topic ?? "N/A"}
+          {topic?.topic ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1) : "N/A"}
         </Typography>
       </Box>
       <Grid container sx={{ padding: "0px 0px 8px 0px" }} gap={0.5}>
         {data.map((item) => {
           return (
             <GridRow key={item.label}>
-              <Grid item xs={1.6}>
+              <Grid item xs={rowGap}>
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: "500 !important",
+                    fontWeight: "600 !important",
                     fontSize: "12px !important",
                     lineHeight: "16px",
                     color: "#605c5c",
@@ -129,7 +144,7 @@ export default function DetailsHeader(props: IProps) {
                 <Typography
                   sx={{
                     fontFamily: "Inter",
-                    fontWeight: "500 !important",
+                    fontWeight: "600 !important",
                     fontSize: "12px !important",
                     lineHeight: "18px",
                     color: "#131516 !important",
@@ -142,6 +157,6 @@ export default function DetailsHeader(props: IProps) {
           );
         })}
       </Grid>
-    </Box>
+    </Box >
   );
 }

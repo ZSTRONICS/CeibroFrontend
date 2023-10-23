@@ -142,7 +142,7 @@ export const SubLabelTag = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
   font-size: 12px !important;
-  font-weight: 500 !important;
+  font-weight: 600 !important;
   color: #605c5c;
 `;
 export const ConfirmDescriptionTag = styled(Typography)`

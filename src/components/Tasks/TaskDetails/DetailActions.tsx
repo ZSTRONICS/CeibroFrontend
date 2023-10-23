@@ -139,7 +139,8 @@ const DetailActions: React.FC<IProps> = (props) => {
               borderRadius: "20px",
               fontFamily: "Inter",
               fontSize: "12px",
-              fontWeight: 500,
+              fontWeight: 600,
+              color: "#131516",
               padding: "2px 8px",
             }}
           />
@@ -154,12 +155,13 @@ const DetailActions: React.FC<IProps> = (props) => {
               borderRadius: "10px",
               fontFamily: "Inter",
               fontSize: "12px",
-              fontWeight: 500,
+              fontWeight: 600,
+              color: "#131516",
               padding: "2px 8px",
             }}
           />
-          <SubLabelTag sx={{ color: "#818181" }}>{createdOn}</SubLabelTag>
-          <SubLabelTag sx={{ color: "#818181" }}>
+          <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
+          <SubLabelTag sx={{ color: "#131516" }}>
             Due date: {dueDate === "" ? "N/A" : dueDate}
           </SubLabelTag>
         </Grid>
