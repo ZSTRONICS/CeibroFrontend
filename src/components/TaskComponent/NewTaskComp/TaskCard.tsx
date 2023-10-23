@@ -216,6 +216,7 @@ function TaskCard(props: IProps) {
         <SubLabelTag
           className="textOverflowDescription"
           sx={{
+            pb: 0.5,
             maxWidth: "350px",
             WebkitLineClamp: 2,
             wordWrap: "break-word",

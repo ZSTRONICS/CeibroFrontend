@@ -241,7 +241,7 @@ const momentdeDateFormatWithDay = (createdAt: Date | any) => {
 
 export const getTaskCardHeight = (task: ITask) => {
   try {
-    const height = task.description.length > 0 ? (task.description.length > 57 ? 105 : 90) : 70;
+    const height = task.description.length > 0 ? (task.description.length > 57 ? 107 : 90) : 72;
     return height;
   } catch (error) {
     console.log("error calculating task card height => ", error);

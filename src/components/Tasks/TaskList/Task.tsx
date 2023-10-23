@@ -634,7 +634,7 @@ const Task = () => {
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
-              itemSize={(index) => (getTaskCardHeight(filteredTask[index]) + 15)}
+              itemSize={(index) => (getTaskCardHeight(filteredTask[index]) + 18)}
               width={"100%"}
             >
               {TaskRow}
