@@ -35,7 +35,7 @@ export default function DetailsBody(props: IProps) {
 
   return (
     <>
-      <Box ref={listRef} sx={{ paddingLeft: "5px", overflow: 'auto', maxHeight: `calc(100vh - ${heightOffset}px)` }}>
+      <Box ref={listRef} sx={{ overflow: 'auto', maxHeight: `calc(100vh - ${heightOffset}px)`,paddingLeft:'0px' }}>
         <DespcriptionBox description={description} />
         <Box
           className="custom-scrollbar"

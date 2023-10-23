@@ -87,6 +87,7 @@ const UserMenu = () => {
               justifyContent="flex-end"
               sx={{
                 flexDirection: "column !important",
+                alignItems:"flex-start",
                 "@media (max-width:460px)": {
                   display: "none",
                 },

@@ -8,7 +8,7 @@ const DespcriptionBox = ({ description }: IProps) => (
   <Box
     sx={{
       width: "100%",
-      padding: "14px 0px",
+      padding: "14px 0px 14px 5px",
       gap: 1,
     }}
   >

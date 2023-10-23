@@ -15,6 +15,8 @@ const Main = styled("div")(({ theme }) => ({
 
 const topMenu = {
   display: "flex",
+  minWidth:"135px",
+  height:"50px",
   alignItems: "center",
   padding: "0px 10px",
   paddingLeft: "3px",

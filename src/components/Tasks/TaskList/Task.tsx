@@ -575,7 +575,7 @@ const Task = () => {
           borderRight: "1px solid #ADB5BD",
         }}
       >
-        <Box sx={{ padding: "5px 3px" }}>
+        <Box>
           <Box
             className="custom-scrollbar"
             sx={{
@@ -618,7 +618,7 @@ const Task = () => {
           </Box>
         </Box>
 
-        <Box sx={{ pl: 0.7, pr: 0.5, mt: 2 }}>
+        <Box sx={{ pl: "6px", mt: 2 }}>
           {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
@@ -627,6 +627,7 @@ const Task = () => {
             <VariableSizeList
               ref={taskCardListRef}
               className="custom-scrollbar"
+              style={{overflow:'scroll'}}
               height={windowHeight}
               itemCount={filteredTask.length}
               overscanCount={20}

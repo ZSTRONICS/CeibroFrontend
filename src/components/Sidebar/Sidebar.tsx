@@ -155,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
     // display: "flex",
     textAlign: "center",
     padding: "10px 6px",
-    borderBottom: `1px solid white`,
+    // borderBottom: `1px solid white`,
 
     cursor: "pointer",
     gap: 13,

@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { AppBar, Box, IconButton, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import assets from "assets/assets";
-import Notification from "components/Notification/Notification";
 import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
@@ -34,7 +33,7 @@ const StyledToolbar = styled("div")(({ theme }) => ({
   overflowX: "auto",
   [theme.breakpoints.up("lg")]: {
     minHeight: HEADER_DESKTOP,
-    padding: theme.spacing(0, 4),
+    padding: theme.spacing(0, 2),
   },
 }));
 
@@ -82,13 +81,13 @@ export default function Header({ onOpenNav }: Props) {
             onClick={() => {
               history.push("/connections");
             }}
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer",display:"flex" }}
           >
             <ConnectionIcon />
           </div>
 
           <UserMenu />
-          <Notification value={""} />
+          {/* <Notification value={""} /> */}
         </Stack>
       </StyledToolbar>
     </StyledRoot>
