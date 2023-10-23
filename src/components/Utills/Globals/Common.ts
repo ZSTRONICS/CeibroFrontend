@@ -222,11 +222,11 @@ export const deDateFormat = (dateStr: Date | string) => {
  * @return dd.mm.yyyy
  * @param mongodbUtc date string is required
  * **/
-export const momentdeDateFormat = (createdAt: Date | any) => {
-  if (!moment(createdAt).isValid()) {
+export const momentdeDateFormat = (value: Date | any) => {
+  if (!moment(value).isValid()) {
     return "N/A"
   }
-  let localTime = moment.utc(moment(createdAt)).toDate()
+  let localTime = moment.utc(moment(value)).toDate()
   return moment(localTime).local().format("DD.MM.YYYY")
 }
 // de date format using moment of utc time mongodb
@@ -234,8 +234,8 @@ export const momentdeDateFormat = (createdAt: Date | any) => {
  * @return dd.mm.yyyy
  * @param mongodbUtc date string is required
  * **/
-const momentdeDateFormatWithDay = (createdAt: Date | any) => {
-  let localTime = moment.utc(moment(createdAt)).toDate();
+const momentdeDateFormatWithDay = (value: Date | any) => {
+  let localTime = moment.utc(moment(value)).toDate();
   return moment(localTime).format("ddd, DD.MM.YYYY");
 };
 

@@ -14,8 +14,7 @@ import {
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
 import {
-  momentLocalDateTime,
-  momentdeDateFormat,
+  momentLocalDateTime
 } from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
 import { useSelector } from "react-redux";
@@ -147,7 +146,15 @@ function TaskCard(props: IProps) {
               {`${taskCreatedAt[1]}`}
             </Span>
 
-            {momentdeDateFormat(dueDate) === "N/A" ? <></> : <Span>{`Due date ${momentdeDateFormat(dueDate)}`}</Span>}
+            {dueDate && dueDate !== "" ? <Span sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }} >{`Due date ${dueDate}`}</Span> :
+              <Span sx={{
+                color: "0d0d0d",
+                fontWeight: 600,
+              }} >{`Due date N/A`}</Span>
+            }
           </CustomStack>
         }
 
