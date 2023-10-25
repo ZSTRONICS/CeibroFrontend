@@ -110,7 +110,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const titles = {
-    comment: "Task Comment",
+    comment: "Comment",
     forward: "Task Forward",
     done: "Task Done",
   };

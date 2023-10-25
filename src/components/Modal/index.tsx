@@ -50,17 +50,16 @@ const CustomModal: React.FC<Props> = ({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box sx={{ m: { xs: 0.75, md: 1.5 } }}>
+        <Box sx={{ mt: { xs: 0.75, md: 1.5 }}}>
           <Grid
             container
             justifyContent="space-between"
-            sx={{ padding: "9px 5px 0px 12px" }}
           >
-            <Grid item>
+            <Grid item sx={{ ml: { xs: 0.75, md: 1.5 } }}>
               <CustomTitle sx={{ fontsize: 3 }}>{title}</CustomTitle>
             </Grid>
             {showCloseBtn && (
-              <Grid item>
+              <Grid item sx={{ mr: { xs: 0.75, md: 1.5 } }}>
                 <Button
                   sx={{
                     padding: "3px 4px",

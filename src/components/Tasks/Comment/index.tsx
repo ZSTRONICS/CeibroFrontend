@@ -1,5 +1,5 @@
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { Box, IconButton, TextField } from "@mui/material";
+import { Box, Divider, IconButton, TextField } from "@mui/material";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import { TASK_CONFIG } from "config";
@@ -138,9 +138,10 @@ const Comment = ({
   );
 
   return (
+    <>
     <Box sx={{ width: "100%", padding: "8px" }}>
       {showHeader !== true && <TaskHeader title={title} />}
-      <Box sx={{ padding: "4px", width: "100%" }}>
+      <Box sx={{ padding: "8px", width: "100%" }}>
         <TextField
           name="description"
           id="description-multiline"
@@ -155,7 +156,7 @@ const Comment = ({
       <Box
         sx={{
           display: "flex",
-          padding: "16px 0",
+          padding: "16px 8px",
           overflow: "auto",
           "&::-webkit-scrollbar": {
             height: "0.4rem",
@@ -205,16 +206,19 @@ const Comment = ({
       <Box
         sx={{
           height: "auto",
-          padding: "16px 0",
+          padding: "16px 8px",
         }}
       >
+        <Divider key="top-divider" sx={{marginBottom:"8px"}}/>
         <FileBox
           title="Files"
           showFullHeight={false}
           files={selectedDocuments}
           handleClearFile={handleClearFile}
         />
+        <Divider key="bottom-divider" sx={{marginTop:'8px'}}/>
       </Box>
+    </Box>
       <Footer
         isSubmitted={isSubmit}
         disabled={
@@ -233,7 +237,7 @@ const Comment = ({
         handleAttachImageValue={handleAttachImageValue}
         handleSelectDocumentValue={handleSelectDocumentValue}
       />
-    </Box>
+    </>
   );
 };
 

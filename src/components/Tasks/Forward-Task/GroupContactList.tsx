@@ -27,7 +27,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     let createdElementedList: any[] = [];
     Object.entries(data).forEach(([groupLetter, groupOptions]) => {
       createdElementedList.push(
-        <Typography key={`group-${groupLetter}`}>{groupLetter}</Typography>
+        <Typography sx={{fontFamily:'Inter',fontSize:'12px',fontWeight:500,color:'#605C5C'}} key={`group-${groupLetter}`}>{groupLetter}</Typography>
       );
       groupOptions.forEach((item) => {
         createdElementedList.push(

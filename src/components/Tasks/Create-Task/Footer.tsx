@@ -88,6 +88,7 @@ const Footer = (props: FooterPropsType) => {
         justifyContent: "space-around",
         zIndex: "50",
         background: "white",
+        borderTop:'1px solid rgba(0, 0, 0, 0.1)',
         boxShadow: `${
           props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
         }`,
