@@ -161,7 +161,7 @@ const Task = () => {
     // Clearing Variable Task Card List Cache in 10ms
     setTimeout(() => {
       clearTaskCardListCache();
-    }, 5);
+    }, 10);
   }, [subtask, filterkey, taskuid, filteredTask.length, selectedTask]);
 
   useEffect(() => {
@@ -178,7 +178,11 @@ const Task = () => {
         dataToSearch = task[subtask][selectedTab];
       }
       // selecting top most task by default
-      const data = searchInData(dataToSearch, searchText, ["taskUID", "topic.topic"]);
+      const data = searchInData(dataToSearch, searchText, [
+        "taskUID",
+        "topic.topic",
+        "description",
+      ]);
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
         if (newSelectedTask) {
@@ -224,6 +228,9 @@ const Task = () => {
     if (taskNeedToBeSeen) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
+    setTimeout(() => {
+      clearTaskCardListCache();
+    }, 5);
   }, [selectedTask, selectedTask?.events?.length]);
 
   useEffect(() => {
@@ -335,16 +342,20 @@ const Task = () => {
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
-    const filterData = searchInData(
-      task[subtask][selectedTab],
-      searchTxt,
-      ["taskUID", "topic.topic"]
-    );
+    const filterData = searchInData(task[subtask][selectedTab], searchTxt, [
+      "taskUID",
+      "topic.topic",
+      "description",
+    ]);
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
 
-  function searchInData(data: ITask[], searchText: string, properties: string[]) {
+  function searchInData(
+    data: ITask[],
+    searchText: string,
+    properties: string[]
+  ) {
     if (searchText === "") {
       return data;
     }
@@ -352,7 +363,10 @@ const Task = () => {
       const lowerSearchText = searchText.toLowerCase();
       return properties.some((property) => {
         const searchValue = _.get(item, property);
-        return searchValue && searchValue.toString().toLowerCase().includes(lowerSearchText);
+        return (
+          searchValue &&
+          searchValue.toString().toLowerCase().includes(lowerSearchText)
+        );
       });
     });
   }
@@ -478,7 +492,7 @@ const Task = () => {
         clearTaskCardListCache();
       }, 5);
     }
-  }
+  };
 
   const filteredMenuOptions = (myState: string, subState: string) => {
     const optionName = optionMapping[myState]?.[subState];
@@ -514,8 +528,10 @@ const Task = () => {
 
   const windowWidth = window.innerWidth;
   const [taskCardlgSize, setTaskCardlgSize] = useState<number>(2.85);
-  const [taskDescriptionlgSize, setTaskDescriptionlgSize] = useState<number>(9.15);
-  const [taskDescriptionMdSize, setTaskDescriptionMdSize] = useState<number>(8.5);
+  const [taskDescriptionlgSize, setTaskDescriptionlgSize] =
+    useState<number>(9.15);
+  const [taskDescriptionMdSize, setTaskDescriptionMdSize] =
+    useState<number>(8.5);
 
   const handleResize = () => {
     let changed = false;
@@ -545,7 +561,6 @@ const Task = () => {
     window.addEventListener("resize", handleResize);
     handleResize();
   }, []);
-
 
   const LoadingSkeleton = () => (
     <Box style={{ height: windowHeight }}>
@@ -607,13 +622,12 @@ const Task = () => {
             <InputBase
               value={searchText}
               placeholder="Start typing to search"
-
               sx={{
                 borderWidth: "0px 0px 1px 0px",
                 borderColor: "#818181",
                 borderStyle: "solid",
                 height: "48px",
-                width: "95%"
+                width: "95%",
               }}
               onChange={handleSearch}
             />
@@ -629,12 +643,12 @@ const Task = () => {
             <VariableSizeList
               ref={taskCardListRef}
               className="custom-scrollbar"
-              style={{ overflow: 'scroll' }}
+              style={{ overflow: "scroll" }}
               height={windowHeight}
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
-              itemSize={(index) => (getTaskCardHeight(filteredTask[index]) + 18)}
+              itemSize={(index) => getTaskCardHeight(filteredTask[index]) + 18}
               width={"100%"}
             >
               {TaskRow}
@@ -644,10 +658,10 @@ const Task = () => {
       </Grid>
       <Grid item md={taskDescriptionMdSize} lg={taskDescriptionlgSize} xs={7}>
         {selectedTask !== null &&
-          filteredTask &&
-          filteredTask.some(
-            (task: ITask) => task.taskUID === selectedTask?.taskUID
-          ) ? (
+        filteredTask &&
+        filteredTask.some(
+          (task: ITask) => task.taskUID === selectedTask?.taskUID
+        ) ? (
           <TaskDetails task={selectedTask} />
         ) : (
           <div

@@ -239,10 +239,10 @@ export const useSocket = () => {
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
             console.log("eventType--->", dataRcvd);
-            if (ack) {
-                console.log(`sending ack to server`)
-                ack();
-            }
+            // if (ack) {
+            //     console.log(`sending ack to server`)
+            //     ack();
+            // }
             sendSocketEventAck(dataRcvd.uuid);
             handleSocketEvents(dataRcvd);
         });

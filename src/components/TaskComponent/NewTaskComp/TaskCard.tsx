@@ -1,10 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Tooltip,
-} from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Tooltip } from "@mui/material";
 import {
   CustomStack,
   Span,
@@ -13,9 +7,7 @@ import {
   TaskCardLabel,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
-import {
-  momentLocalDateTime
-} from "components/Utills/Globals";
+import { momentLocalDateTime } from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -54,19 +46,21 @@ function TaskCard(props: IProps) {
     userSubState,
     assignedToState,
   } = task;
-  const taskCreatedAt = momentLocalDateTime(createdAt).split(' ');
+  const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
   const isSelectedTask: boolean = selectedTaskId === _id;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
   const assignToNames = () =>
     assignedToState.length > 0 ? (
       <Tooltip title={AssignedToList(assignedToState)}>
-        <span style={{
-          fontWeight: "600",
-          fontSize: "11px",
-          padding: "4px",
-          backgroundColor: "transparent",
-        }}>
+        <span
+          style={{
+            fontWeight: "600",
+            fontSize: "11px",
+            padding: "4px",
+            backgroundColor: "transparent",
+          }}
+        >
           +{assignedToState.length}
         </span>
       </Tooltip>
@@ -94,15 +88,17 @@ function TaskCard(props: IProps) {
         minWidth: 280,
         mt: 1,
         cursor: "pointer",
-        border: `${isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
-          }`,
+        border: `${
+          isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
+        }`,
         borderRadius: 2,
         // padding: "3px 4px",
         // paddingTop: "0px",
         borderTop: "none",
         background: !seenBy.includes(userId) ? "#EBF5FB" : "",
-        WebkitBoxShadow: `${isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
-          }`,
+        WebkitBoxShadow: `${
+          isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
+        }`,
       }}
       key={_id}
       id={_id}
@@ -110,10 +106,10 @@ function TaskCard(props: IProps) {
     >
       <CardHeader
         sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
           pt: 0,
           pl: 0,
           pb: 0,
@@ -126,38 +122,48 @@ function TaskCard(props: IProps) {
                 color: "0d0d0d",
                 fontWeight: 600,
                 border: "1px solid #818181",
-                borderRadius: 1,
+                borderRadius: "9px",
                 padding: "2px 9px",
+                ml: "-2px",
               }}
             >
               {taskUID}
             </Span>
-            <Span sx={{
-              color: "0d0d0d",
-              fontWeight: 600,
-            }}>
+            <Span
+              sx={{
+                color: "0d0d0d",
+                fontWeight: 600,
+              }}
+            >
               {`${taskCreatedAt[0]}`}
             </Span>
 
-            <Span sx={{
-              color: "0d0d0d",
-              fontWeight: 600,
-            }}>
+            <Span
+              sx={{
+                color: "0d0d0d",
+                fontWeight: 600,
+              }}
+            >
               {`${taskCreatedAt[1]}`}
             </Span>
 
-            {dueDate && dueDate !== "" ? <Span sx={{
-              color: "0d0d0d",
-              fontWeight: 600,
-            }} >{`Due date ${dueDate}`}</Span> :
-              <Span sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-              }} >{`Due date N/A`}</Span>
-            }
+            {dueDate && dueDate !== "" ? (
+              <Span
+                sx={{
+                  color: "0d0d0d",
+                  fontWeight: 600,
+                }}
+              >{`Due date ${dueDate}`}</Span>
+            ) : (
+              <Span
+                sx={{
+                  color: "0d0d0d",
+                  fontWeight: 600,
+                }}
+              >{`Due date N/A`}</Span>
+            )}
           </CustomStack>
         }
-
         action={
           <CustomStack>
             <GenericMenu
@@ -170,10 +176,13 @@ function TaskCard(props: IProps) {
         }
       />
 
-      <CardContent sx={{
-        pl: 1.5,
-        pt: 0, "&:last-child": { pb: 0 }
-      }}>
+      <CardContent
+        sx={{
+          pl: 1.5,
+          pt: 0,
+          "&:last-child": { pb: 0 },
+        }}
+      >
         <CustomStack justifyContent="space-between">
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
             <TaskCardLabel className="textOverflowDescription">
@@ -217,7 +226,9 @@ function TaskCard(props: IProps) {
             WebkitLineClamp: 1,
           }}
         >
-          {topic?.topic ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1) : "N/A"}
+          {topic?.topic
+            ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1)
+            : "N/A"}
         </SubHeadingTag>
 
         <SubLabelTag
@@ -238,4 +249,3 @@ function TaskCard(props: IProps) {
 }
 
 export { TaskCard };
-
