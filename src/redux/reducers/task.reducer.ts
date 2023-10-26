@@ -64,8 +64,7 @@ const taskReducer = (
         console.log("TASK_CREATED", "taskUpdatedAt not found in eventData");
       }
 
-
-      if (action.payload.isAssignedToMe === true) {
+      if (action.payload.isAssignedToMe && action.payload.toMeState === 'new') {
         const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
           const assigneeTask = {
@@ -76,7 +75,7 @@ const taskReducer = (
           console.log("push task to me new", assigneeTask);
         }
       }
-      if (action.payload.isCreator === true) {
+      if (action.payload.isCreator && action.payload.fromMeState === "unread") {
         const isTaskUnique = !state.allTaskFromMe.unread.some((task: any) => task._id === action.payload._id);
         if (isTaskUnique) {
           const creatorTask = {

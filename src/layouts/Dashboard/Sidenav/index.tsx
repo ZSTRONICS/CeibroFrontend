@@ -4,7 +4,6 @@ import { useLocation } from "react-router-dom";
 // @mui
 import { Box, Drawer } from "@mui/material";
 // hooks
-import assets from "assets/assets";
 import Sidebar from "components/Sidebar/Sidebar";
 import useResponsive from "../../../hooks/useResponsive";
 
@@ -34,19 +33,11 @@ export default function Nav({ openNav, onCloseNav }: Props) {
   const renderContent = (
     <Box
       sx={{
-        height: "100%",
-        // display: "flex",
-        // flexDirection: "column",
+        height: "calc(100vh - 53px) ",
+        mt: "3rem",
         background: "#F4F4F4",
       }}
     >
-      <Box sx={{ display: "inline-flex", pb: 1.4 }}>
-        <img
-          src={assets.logo}
-          alt="ceibro-logo"
-          style={{ height: "55px", width: "70px" }}
-        />
-      </Box>
       <Sidebar onClose={onCloseNav} />
     </Box>
   );
@@ -68,6 +59,8 @@ export default function Nav({ openNav, onCloseNav }: Props) {
               width: NAV_WIDTH,
               bgcolor: "background.default",
               borderRightStyle: "dashed",
+              position: "relative",
+              zIndex: 1,
             },
           }}
         >

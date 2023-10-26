@@ -16,13 +16,12 @@ const Main = styled("div")(({ theme }) => ({
   flexGrow: 1,
   overflow: "auto",
   minHeight: "100%",
-  background: "white",
+  background: "#F4F4F4",
+  marginTop: "1rem",
   paddingTop: APP_BAR_MOBILE,
   paddingBottom: theme.spacing(0.56),
   [theme.breakpoints.up("lg")]: {
-    paddingTop: APP_BAR_DESKTOP + 1,
-    // paddingLeft: !isDrawingDetail && theme.spacing(2),
-    // paddingRight: !isDrawingDetail && theme.spacing(2),
+    paddingTop: APP_BAR_DESKTOP + 5,
   },
 }));
 

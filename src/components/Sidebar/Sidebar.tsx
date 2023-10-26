@@ -1,6 +1,5 @@
-import { Badge, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { countUnseenTasks } from "components/Utills/Globals";
 import {
   FromMEIcon,
@@ -109,10 +108,12 @@ function Sidebar(props: any) {
                 <Box>
                   <config.icon />
                 </Box>
-                <Typography className={classes.title}>
+                <Typography
+                  sx={{ fontSize: 10, fontWeight: 600, color: colors.primary }}
+                >
                   {config.title}
                 </Typography>
-                <div className={classes.badge}>
+                {/* <div className={classes.badge}>
                   {config?.notification > 0 && (
                     <Badge
                       overlap="circular"
@@ -120,7 +121,7 @@ function Sidebar(props: any) {
                       color="error"
                     ></Badge>
                   )}
-                </div>
+                </div> */}
               </div>
             );
           })}
@@ -135,8 +136,6 @@ const useStyles = makeStyles((theme) => ({
   sidebarWrapper: {
     background: colors.defaultGrey,
     boxShadow: "1px 0 4px -3px #888",
-    // width: 200,
-    // height: "100vh",
     position: "absolute",
     [theme.breakpoints.down("md")]: {
       position: "absolute",
@@ -152,11 +151,8 @@ const useStyles = makeStyles((theme) => ({
     gap: 20,
   },
   menue: {
-    // display: "flex",
     textAlign: "center",
     padding: "10px 6px",
-    // borderBottom: `1px solid white`,
-
     cursor: "pointer",
     gap: 13,
     margin: "10px 0",
@@ -165,14 +161,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 
-  title: {
-    flex: 4,
-    fontSize: 10,
-    fontWeight: 500,
-  },
-  badge: {
-    flex: 1,
-  },
   active: {
     background: "white",
     boxShadow: "0px 2px 2px 0px #3b95d3",

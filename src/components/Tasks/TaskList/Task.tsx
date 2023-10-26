@@ -45,7 +45,7 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 172;
+  const headerHeight = 197;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -527,27 +527,27 @@ const Task = () => {
   };
 
   const windowWidth = window.innerWidth;
-  const [taskCardlgSize, setTaskCardlgSize] = useState<number>(2.85);
+  const [taskCardlgSize, setTaskCardlgSize] = useState<number>(2.8);
   const [taskDescriptionlgSize, setTaskDescriptionlgSize] =
     useState<number>(9.15);
   const [taskDescriptionMdSize, setTaskDescriptionMdSize] =
-    useState<number>(8.5);
+    useState<number>(8.1);
 
   const handleResize = () => {
     let changed = false;
-    setWindowHeight(window.innerHeight - (headerHeight + 15));
+    setWindowHeight(window.innerHeight - (headerHeight + 16));
     if (windowWidth >= 1200 && windowWidth <= 1360) {
       setTaskCardlgSize(3.5);
-      setTaskDescriptionlgSize(8.5);
+      setTaskDescriptionlgSize(8.3);
       changed = true;
     }
     if (windowWidth > 1600) {
       setTaskCardlgSize(2.55);
-      setTaskDescriptionlgSize(9.35);
+      setTaskDescriptionlgSize(9.3);
       changed = true;
     }
     if (windowWidth < 1200) {
-      setTaskDescriptionMdSize(8);
+      setTaskDescriptionMdSize(7.9);
       changed = true;
     }
     if (!changed) {
@@ -590,6 +590,8 @@ const Task = () => {
           pb: 0,
           paddingLeft: "10px",
           borderRight: "1px solid #ADB5BD",
+          marginRight: "10px",
+          backgroundColor: "white",
         }}
       >
         <Box>
@@ -656,7 +658,16 @@ const Task = () => {
           )}
         </Box>
       </Grid>
-      <Grid item md={taskDescriptionMdSize} lg={taskDescriptionlgSize} xs={7}>
+      <Grid
+        item
+        md={taskDescriptionMdSize}
+        lg={taskDescriptionlgSize}
+        xs={7}
+        sx={{
+          backgroundColor: "white",
+          marginRight: 1,
+        }}
+      >
         {selectedTask !== null &&
         filteredTask &&
         filteredTask.some(

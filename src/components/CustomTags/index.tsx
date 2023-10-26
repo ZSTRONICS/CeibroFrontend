@@ -232,6 +232,5 @@ export {
   MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel
+  TaskCardLabel,
 };
-

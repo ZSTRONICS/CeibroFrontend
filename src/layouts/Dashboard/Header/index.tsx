@@ -9,19 +9,18 @@ import ConnectionIcon from "components/material-ui/icons/connections/ConnectionI
 import { useResponsive } from "hooks";
 import { useHistory } from "react-router-dom";
 
-const NAV_WIDTH = 72;
-
 const HEADER_MOBILE = 64;
 
-const HEADER_DESKTOP = 70;
+const HEADER_DESKTOP = 51;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
-  boxShadow: "none",
   borderBottom: "1px solid #E2E4E5",
   color: "unset",
   background: "white",
+  zIndex: 10,
+  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important",
   [theme.breakpoints.up("lg")]: {
-    width: `calc(100% - ${NAV_WIDTH + 1}px)`,
+    width: "100%",
   },
 }));
 
@@ -81,7 +80,7 @@ export default function Header({ onOpenNav }: Props) {
             onClick={() => {
               history.push("/connections");
             }}
-            style={{ cursor: "pointer",display:"flex" }}
+            style={{ cursor: "pointer", display: "flex" }}
           >
             <ConnectionIcon />
           </div>

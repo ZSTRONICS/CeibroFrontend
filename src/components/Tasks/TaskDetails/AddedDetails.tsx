@@ -57,13 +57,13 @@ function AddedDetails(props: IProps) {
       <div>
         <Accordion
           defaultExpanded={true}
-          sx={{borderBottom: "1px solid #ccc",}}
+          sx={{ borderBottom: "1px solid #ccc" }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}
             aria-controls="panel1a-content"
             id="panel1a-header"
-            sx={{ paddingLeft: "7px", paddingRight: "7px",  }}
+            sx={{ paddingLeft: "7px", paddingRight: "7px" }}
           >
             <SubHeadingTag sx={{ color: "black" }}>Added Detail</SubHeadingTag>
           </AccordionSummary>
@@ -171,7 +171,6 @@ function AddedDetails(props: IProps) {
                               sx={{
                                 color: "black",
                                 wordWrap: "break-word",
-                                wordBreak: "break-all",
                               }}
                             >
                               {commentData?.message || ""}
@@ -252,7 +251,6 @@ function AddedDetails(props: IProps) {
                               sx={{
                                 color: "black",
                                 wordWrap: "break-word",
-                                wordBreak: "break-all",
                               }}
                             >
                               {commentData.message}
@@ -325,7 +323,6 @@ function AddedDetails(props: IProps) {
                               sx={{
                                 color: "black",
                                 wordWrap: "break-word",
-                                wordBreak: "break-all",
                               }}
                             >
                               {commentData.message}

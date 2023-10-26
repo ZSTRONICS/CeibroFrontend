@@ -56,7 +56,6 @@ const Connections = () => {
     const {
       contactFirstName,
       contactSurName,
-      contactFullName,
       isCeiborUser,
       isBlocked,
       userCeibroData,
@@ -67,8 +66,8 @@ const Connections = () => {
         listIndex={index}
         style={style}
         ceibroUserData={userCeibroData}
-        firstName={userCeibroData ? userCeibroData.firstName : contactFirstName}
-        surName={userCeibroData ? userCeibroData.surName : contactSurName}
+        firstName={contactFirstName}
+        surName={contactSurName}
         companyName={userCeibroData?.companyName}
         isBlocked={isBlocked}
         isCeiborUser={isCeiborUser}

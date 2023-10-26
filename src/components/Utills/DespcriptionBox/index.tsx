@@ -25,11 +25,9 @@ const DespcriptionBox = ({ description }: IProps) => (
           width: "85px",
           height: "20px",
           pr: 15,
-          borderRight: "1.9px solid #818181",
           gap: 1,
           display: "flex",
           alignItems: "center",
-
         }}
       >
         <Typography
@@ -48,7 +46,7 @@ const DespcriptionBox = ({ description }: IProps) => (
         sx={{
           width: "100%",
           px: "11px",
-          // overflow: "auto",
+          borderLeft: "1.9px solid #818181",
           maxWidth: "95%",
           display: "flex",
           alignItems: "center",
@@ -59,10 +57,11 @@ const DespcriptionBox = ({ description }: IProps) => (
             fontWeight: 500,
             fontSize: "14px",
             color: "#000",
-            wordWrap: "break-word",
-            wordBreak: "break-all", // Ensure text breaks between characters
             paddingTop: "5px",
-            // height: `${description.length > 100 ? "10vh" : "unset"}`,
+            wordWrap: "break-word",
+            // hyphens: "auto",
+            // MozHyphens: "auto",
+            // msHyphens: "auto",
           }}
         >
           {description === "" ? "N/A" : description}

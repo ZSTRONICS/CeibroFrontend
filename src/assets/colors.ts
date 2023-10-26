@@ -26,7 +26,7 @@ const colors = {
   grey: "rgb(236, 240, 241)",
   borderGrey: "#dbdbe5",
   mediumGrey: "#bdc3c7",
-  textGrey: "#605C5C",
+  textGrey: "#605b5c",
   secondaryGrey: "rgb(222, 226, 230)",
   purpleGrey: "#DBDBE5",
   inputGrey: "#AEADBD",
