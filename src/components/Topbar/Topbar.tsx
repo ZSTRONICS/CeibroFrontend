@@ -16,6 +16,7 @@ const Main = styled("div")(({ theme }) => ({
 
 const topMenu = {
   padding: "0px 2px",
+
   fontSize: 12,
   background:
     "linear-gradient(0deg,  0%,  100%), linear-gradient(0deg, white 0%, white 100%)",
@@ -75,69 +76,72 @@ function Topbar() {
           padding: "6px 20px 5px 20px",
           flexDirection: "column",
           alignItems: "center",
-          gap: "6px",
+          gap: "12px",
         }}
       >
         <MainLogo />
       </Box>
-      <Box />
-      {configs &&
-        Object.values(configs).map((config: any) => {
-          const havePath = window.location.pathname.includes(
-            config.getPath("")
-          );
-          console.log(`havePath: ${havePath}`);
-          if (user && config.title === "Admin" && user.role !== "admin") {
-            return null;
-          }
-          return (
-            <Box
-              key={config.title}
-              sx={topMenu}
-              style={{
-                color: havePath ? "#131516" : colors.textGrey,
-                boxShadow: havePath
-                  ? "0px 4px 4px rgba(0, 0, 0, 0.25) inset"
-                  : "",
 
-                borderBottom: havePath ? "1px black solid" : "",
-              }}
-              onClick={() => handleRouteClick(config)}
-            >
+      <Box />
+      <Box sx={{ display: "flex", alignItems: "center", ml: { xs: 1, md: 4 } }}>
+        {configs &&
+          Object.values(configs).map((config: any) => {
+            const havePath = window.location.pathname.includes(
+              config.getPath("")
+            );
+            console.log(`havePath: ${havePath}`);
+            if (user && config.title === "Admin" && user.role !== "admin") {
+              return null;
+            }
+            return (
               <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  maxWidth: "90px",
-                  padding: "9px 33px 4px 33px",
-                  gap: "4px",
-                  flex: " 1 0 0",
-                  alignSelf: "stretch",
+                key={config.title}
+                sx={topMenu}
+                style={{
+                  color: havePath ? "#131516" : colors.textGrey,
+                  boxShadow: havePath
+                    ? "0px 4px 4px rgba(0, 0, 0, 0.25) inset"
+                    : "",
+
+                  borderBottom: havePath ? "1px black solid" : "",
                 }}
+                onClick={() => handleRouteClick(config)}
               >
-                <config.icon />
-                <p
-                  style={{
-                    flex: 4,
-                    fontSize: 12,
-                    fontWeight: havePath ? 700 : 500,
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    maxWidth: "90px",
+                    padding: "9px 33px 4px 33px",
+                    gap: "4px",
+                    flex: " 1 0 0",
+                    alignSelf: "stretch",
                   }}
                 >
-                  {config.title}
-                </p>
+                  <config.icon />
+                  <p
+                    style={{
+                      flex: 4,
+                      fontSize: 12,
+                      fontWeight: havePath ? 700 : 500,
+                    }}
+                  >
+                    {config.title}
+                  </p>
+                </Box>
+                {config?.notification > 0 && (
+                  <Badge
+                    overlap="circular"
+                    badgeContent={config.notification}
+                    color="error"
+                  ></Badge>
+                )}
               </Box>
-              {config?.notification > 0 && (
-                <Badge
-                  overlap="circular"
-                  badgeContent={config.notification}
-                  color="error"
-                ></Badge>
-              )}
-            </Box>
-          );
-        })}
+            );
+          })}
+      </Box>
     </Main>
   );
 }
