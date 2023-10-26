@@ -89,7 +89,6 @@ function Topbar() {
             const havePath = window.location.pathname.includes(
               config.getPath("")
             );
-            console.log(`havePath: ${havePath}`);
             if (user && config.title === "Admin" && user.role !== "admin") {
               return null;
             }

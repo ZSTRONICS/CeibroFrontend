@@ -104,7 +104,7 @@ const Comment = ({
     }
     const taskEvent = {
       other: {
-        eventName: title === "Task Comment" ? "comment" : "doneTask",
+        eventName: title === "Comment" ? "comment" : "doneTask",
         taskId: taskId,
         hasFiles: filesToUpload.length > 0,
       },
@@ -139,98 +139,98 @@ const Comment = ({
 
   return (
     <>
-    <Box sx={{ width: "100%", padding: "8px" }}>
-      {showHeader !== true && <TaskHeader title={title} />}
-      <Box sx={{ padding: "8px", width: "100%" }}>
-        <TextField
-          name="description"
-          id="description-multiline"
-          label="Description"
-          multiline
-          maxRows={4}
-          variant="standard"
-          sx={{ width: "100%" }}
-          onChange={handleDescriptionChange}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          padding: "16px 8px",
-          overflow: "auto",
-          "&::-webkit-scrollbar": {
-            height: "0.4rem",
-          },
-          "&::-webkit-scrollbar-track": {
-            WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-            borderRadius: "0.2rem",
-          },
-          "&::-webkit-scrollbar-thumb": {
-            backgroundColor: "rgba(0,0,0,.1)",
-          },
-        }}
-      >
-        {selectedImages.map((file) => {
-          return (
-            <Box
-              sx={{
-                width: "80px",
-                height: "80px",
-                display: "flex",
-                marginRight: "16px",
-              }}
-            >
-              <ImageBox src={URL.createObjectURL(file)} />
-              <IconButton
-                aria-label="delete"
-                onClick={() => {
-                  handleClearFile(file, "image");
-                }}
+      <Box sx={{ width: "100%", padding: "8px" }}>
+        {showHeader !== true && <TaskHeader title={title} />}
+        <Box sx={{ padding: "8px", width: "100%" }}>
+          <TextField
+            name="description"
+            id="description-multiline"
+            label="Description"
+            multiline
+            maxRows={4}
+            variant="standard"
+            sx={{ width: "100%" }}
+            onChange={handleDescriptionChange}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            padding: "16px 8px",
+            overflow: "auto",
+            "&::-webkit-scrollbar": {
+              height: "0.4rem",
+            },
+            "&::-webkit-scrollbar-track": {
+              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+              borderRadius: "0.2rem",
+            },
+            "&::-webkit-scrollbar-thumb": {
+              backgroundColor: "rgba(0,0,0,.1)",
+            },
+          }}
+        >
+          {selectedImages.map((file) => {
+            return (
+              <Box
                 sx={{
-                  top: "-6px",
-                  right: "4px",
-                  backgroundColor: "#0075D0",
-                  color: "#fff",
-                  width: "16px",
-                  height: "16px",
+                  width: "80px",
+                  height: "80px",
+                  display: "flex",
+                  marginRight: "16px",
                 }}
-                disableRipple
               >
-                <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-              </IconButton>
-            </Box>
-          );
-        })}
-      </Box>
+                <ImageBox src={URL.createObjectURL(file)} />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    handleClearFile(file, "image");
+                  }}
+                  sx={{
+                    top: "-6px",
+                    right: "4px",
+                    backgroundColor: "#0075D0",
+                    color: "#fff",
+                    width: "16px",
+                    height: "16px",
+                  }}
+                  disableRipple
+                >
+                  <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
+                </IconButton>
+              </Box>
+            );
+          })}
+        </Box>
 
-      <Box
-        sx={{
-          height: "auto",
-          padding: "16px 8px",
-        }}
-      >
-        <Divider key="top-divider" sx={{marginBottom:"8px"}}/>
-        <FileBox
-          title="Files"
-          showFullHeight={false}
-          files={selectedDocuments}
-          handleClearFile={handleClearFile}
-        />
-        <Divider key="bottom-divider" sx={{marginTop:'8px'}}/>
+        <Box
+          sx={{
+            height: "auto",
+            padding: "16px 8px",
+          }}
+        >
+          <Divider key="top-divider" sx={{ marginBottom: "8px" }} />
+          <FileBox
+            title="Files"
+            showFullHeight={false}
+            files={selectedDocuments}
+            handleClearFile={handleClearFile}
+          />
+          <Divider key="bottom-divider" sx={{ marginTop: "8px" }} />
+        </Box>
       </Box>
-    </Box>
       <Footer
         isSubmitted={isSubmit}
         disabled={
           isSubmit ||
           (title === "Task Done"
             ? (doneImageRequired && selectedImages.length === 0) ||
-            (doneCommentsRequired && description.length === 0)
+              (doneCommentsRequired && description.length === 0)
             : selectedImages.length > 0 ||
               selectedDocuments.length > 0 ||
               description.length > 0
-              ? false
-              : true)
+            ? false
+            : true)
         }
         showHeader={showHeader}
         handleSubmitForm={handleSubmit}
