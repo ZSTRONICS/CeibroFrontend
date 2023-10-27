@@ -18,7 +18,7 @@ const StyledRoot = styled(AppBar)(({ theme }) => ({
   color: "unset",
   background: "white",
   zIndex: 10,
-  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important",
+  boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, 0.25) !important",
   [theme.breakpoints.up("lg")]: {
     width: "100%",
   },

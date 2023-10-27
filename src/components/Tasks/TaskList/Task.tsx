@@ -45,7 +45,7 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 197;
+  const headerHeight = 170;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -582,15 +582,15 @@ const Task = () => {
     <Grid container>
       <Grid
         item
-        lg={taskCardlgSize}
-        md={3.9}
+        // lg={taskCardlgSize}
+        lg={2.8}
+        md={3.82}
         pt={1}
-        xs={5}
+        xs={4.65}
         sx={{
           pb: 0,
           paddingLeft: "10px",
           borderRight: "1px solid #ADB5BD",
-          marginRight: "10px",
           backgroundColor: "white",
         }}
       >
@@ -660,12 +660,14 @@ const Task = () => {
       </Grid>
       <Grid
         item
-        md={taskDescriptionMdSize}
-        lg={taskDescriptionlgSize}
-        xs={7}
+        // md={taskDescriptionMdSize}
+        // lg={taskDescriptionlgSize}
+        lg={9.05}
+        md={7.85}
+        xs={6.8}
         sx={{
           backgroundColor: "white",
-          marginRight: 1,
+          ml: 1.5,
         }}
       >
         {selectedTask !== null &&

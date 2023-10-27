@@ -65,15 +65,12 @@ const FileBox: React.FC<IProps> = ({
             sx={{
               mt: 0.6,
               mb: 0.6,
-              width: "85px",
+              width: "83px",
               height: "20px",
-              pr: 15,
               pl: 0,
-              borderRight: "1.9px solid #818181",
-              //gap: 1,
               display: "flex",
               alignItems: "center",
-              paddingRight: 15,
+              paddingRight: 2,
             }}
           >
             <Typography
@@ -92,9 +89,11 @@ const FileBox: React.FC<IProps> = ({
           sx={{
             overflow: "auto",
             width: "100%",
+            borderLeft: "1.9px solid #818181",
             maxHeight: `${showFullHeight ? "100%" : "6.5rem"}`,
             display: "flex",
             flexWrap: "wrap",
+            pl: 1.25,
           }}
         >
           {files.length > 0 ? (
@@ -189,8 +188,6 @@ const FileBox: React.FC<IProps> = ({
           )}
         </Box>
       </Box>
-
-
 
       {/* <Box
         className="custom-scrollbar"

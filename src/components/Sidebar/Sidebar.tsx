@@ -145,7 +145,7 @@ const useStyles = makeStyles((theme) => ({
 
   menueWrapper: {
     overflowY: "auto",
-    marginTop: "30px",
+    top: "20%",
     position: "absolute",
     width: "100%",
     gap: 20,
@@ -154,7 +154,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     padding: "10px 6px",
     cursor: "pointer",
-    gap: 13,
+    gap: 20,
     margin: "10px 0",
     "&:hover": {
       background: "white",
@@ -163,7 +163,8 @@ const useStyles = makeStyles((theme) => ({
 
   active: {
     background: "white",
-    boxShadow: "0px 2px 2px 0px #3b95d3",
+    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     color: colors.primary,
+    borderBottom: "1px solid #0076C8",
   },
 }));

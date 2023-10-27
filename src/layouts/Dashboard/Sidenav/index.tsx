@@ -35,7 +35,7 @@ export default function Nav({ openNav, onCloseNav }: Props) {
       sx={{
         height: "calc(100vh - 53px) ",
         mt: "3rem",
-        background: "#F4F4F4",
+        background: "rgba(244, 244, 244, 1)",
       }}
     >
       <Sidebar onClose={onCloseNav} />

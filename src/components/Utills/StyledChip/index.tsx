@@ -59,25 +59,30 @@ const StyledChip = ({
       }}
       label={label}
       avatar={
-        notifyCount === 0 ? <></> : <Badge
-          showZero={false}
-          sx={{
-            position: "absolute",
-            "& .MuiBadge-badge": {
-              color: "#000 !important",
-              backgroundColor: bgColor,
-              right: "-20px",
-              top: "2px",
-              border: "2px solid white",
-            },
-            "@media (max-width: 700px)": {
+        notifyCount === 0 ? (
+          <></>
+        ) : (
+          <Badge
+            showZero={false}
+            sx={{
+              position: "absolute",
               "& .MuiBadge-badge": {
-                right: "-8px ",
+                color: "#000 !important",
+                backgroundColor: bgColor,
+                right: "-20px",
+                top: "2px",
+                border: "2px solid white",
+                padding: "10px 4px",
               },
-            },
-          }}
-          badgeContent={notifyCount >= '99' ? `+${99}` : `+${notifyCount}`}
-        />
+              "@media (max-width: 700px)": {
+                "& .MuiBadge-badge": {
+                  right: "-8px ",
+                },
+              },
+            }}
+            badgeContent={notifyCount >= "99" ? `+${99}` : `+${notifyCount}`}
+          />
+        )
       }
       onClick={callback}
     />

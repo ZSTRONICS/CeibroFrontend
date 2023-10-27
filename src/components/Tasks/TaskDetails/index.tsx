@@ -40,7 +40,7 @@ function TaskDetails(props: IProps) {
     <Box
       key={_id}
       sx={{
-        height: "calc(100vh - 76px)",
+        height: "calc(100vh - 78px)",
         overflowY: "hidden",
         marginLeft: "10px",
         marginRight: "10px",
@@ -60,12 +60,16 @@ function TaskDetails(props: IProps) {
         invitedNumbers={invitedNumbers}
         taskId={_id}
         createdOn={momentdeDateFormatWithDay(createdAt)}
-      // commentCallback={}
-      // forwardCallback={}
-      // Callback={}
+        // commentCallback={}
+        // forwardCallback={}
+        // Callback={}
       />
       <FileBox media={media} title="Files" bt={true} bb={true} files={docs} />
-      {events ? <DetailsBody media={media} description={description} events={events} /> : <></>}
+      {events ? (
+        <DetailsBody media={media} description={description} events={events} />
+      ) : (
+        <></>
+      )}
     </Box>
   );
 }
