@@ -9,16 +9,15 @@ import ConnectionIcon from "components/material-ui/icons/connections/ConnectionI
 import { useResponsive } from "hooks";
 import { useHistory } from "react-router-dom";
 
-const HEADER_MOBILE = 64;
+const HEADER_MOBILE = 48;
 
 const HEADER_DESKTOP = 51;
 
 const StyledRoot = styled(AppBar)(({ theme }) => ({
-  borderBottom: "1px solid #E2E4E5",
   color: "unset",
   background: "white",
   zIndex: 10,
-  boxShadow: "0px 3px 3px 0px rgba(0, 0, 0, 0.25) !important",
+  boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25) !important",
   [theme.breakpoints.up("lg")]: {
     width: "100%",
   },
@@ -30,6 +29,7 @@ const StyledToolbar = styled("div")(({ theme }) => ({
   alignItems: "center",
   flexWrap: "nowrap",
   overflowX: "auto",
+  marginBottom: "-2.3px",
   [theme.breakpoints.up("lg")]: {
     minHeight: HEADER_DESKTOP,
     padding: theme.spacing(0, 2),

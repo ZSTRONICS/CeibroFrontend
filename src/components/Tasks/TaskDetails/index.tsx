@@ -40,7 +40,6 @@ function TaskDetails(props: IProps) {
     <Box
       key={_id}
       sx={{
-        height: "calc(100vh - 78px)",
         overflowY: "hidden",
         marginLeft: "10px",
         marginRight: "10px",

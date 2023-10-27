@@ -91,14 +91,22 @@ function TaskCard(props: IProps) {
         border: `${
           isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
         }`,
-        borderRadius: 2,
+        borderRadius: "8px",
+        borderTopRightRadius: "20px",
+        borderTopStyle: "none",
+        WebkitBoxShadow: `${
+          isSelectedTask === true
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : "none"
+        }`,
         // padding: "3px 4px",
         // paddingTop: "0px",
-        borderTop: "none",
-        background: !seenBy.includes(userId) ? "#EBF5FB" : "",
-        WebkitBoxShadow: `${
-          isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
-        }`,
+        // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
+        background: isSelectedTask ? "#EBF5FB" : "",
+
+        // WebkitBoxShadow: `${
+        //   isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
+        // }`,
       }}
       key={_id}
       id={_id}
@@ -122,7 +130,7 @@ function TaskCard(props: IProps) {
                 color: "0d0d0d",
                 fontWeight: 600,
                 border: "1px solid #818181",
-                borderRadius: "9px",
+                borderRadius: "4px",
                 padding: "2px 9px",
                 ml: "-2px",
               }}

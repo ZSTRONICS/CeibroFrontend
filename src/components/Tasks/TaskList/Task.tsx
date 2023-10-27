@@ -45,7 +45,7 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 170;
+  const headerHeight = 87;
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
@@ -506,7 +506,7 @@ const Task = () => {
       return <></>;
     }
     return (
-      <div style={{ ...style }}>
+      <div style={{ ...style, width: "97%" }}>
         {localTask && (
           <TaskCard
             key={localTask._id}
@@ -526,35 +526,8 @@ const Task = () => {
     );
   };
 
-  const windowWidth = window.innerWidth;
-  const [taskCardlgSize, setTaskCardlgSize] = useState<number>(2.8);
-  const [taskDescriptionlgSize, setTaskDescriptionlgSize] =
-    useState<number>(9.15);
-  const [taskDescriptionMdSize, setTaskDescriptionMdSize] =
-    useState<number>(8.1);
-
   const handleResize = () => {
-    let changed = false;
     setWindowHeight(window.innerHeight - (headerHeight + 16));
-    if (windowWidth >= 1200 && windowWidth <= 1360) {
-      setTaskCardlgSize(3.5);
-      setTaskDescriptionlgSize(8.3);
-      changed = true;
-    }
-    if (windowWidth > 1600) {
-      setTaskCardlgSize(2.55);
-      setTaskDescriptionlgSize(9.3);
-      changed = true;
-    }
-    if (windowWidth < 1200) {
-      setTaskDescriptionMdSize(7.9);
-      changed = true;
-    }
-    if (!changed) {
-      setTaskCardlgSize(2.85);
-      setTaskDescriptionlgSize(9.15);
-      setTaskDescriptionMdSize(8.5);
-    }
   };
 
   useEffect(() => {
@@ -578,20 +551,24 @@ const Task = () => {
       />
     </div>
   );
+
+  const TASK_CARD_GAP_BETWEEN = 10;
   return (
     <Grid container>
       <Grid
         item
-        // lg={taskCardlgSize}
-        lg={2.8}
+        height={windowHeight}
+        lg={2.56}
         md={3.82}
+        xs={4.95}
         pt={1}
-        xs={4.65}
+        // mb={3}
         sx={{
-          pb: 0,
-          paddingLeft: "10px",
-          borderRight: "1px solid #ADB5BD",
-          backgroundColor: "white",
+          paddingLeft: "16px",
+          paddingRight: "10px",
+          borderRadius: "4px",
+          background: "#FFF",
+          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         }}
       >
         <Box>
@@ -636,7 +613,14 @@ const Task = () => {
           </Box>
         </Box>
 
-        <Box sx={{ pl: "6px", mt: 2, pb: 0 }}>
+        <Box
+          sx={{
+            pl: "6px",
+            mt: 2,
+            mb: 0,
+            pb: 0,
+          }}
+        >
           {loadingAllTasks ? (
             <LoadingSkeleton />
           ) : task && filteredTask.length === 0 ? (
@@ -644,13 +628,15 @@ const Task = () => {
           ) : (
             <VariableSizeList
               ref={taskCardListRef}
-              className="custom-scrollbar"
-              style={{ overflow: "scroll" }}
-              height={windowHeight}
+              // className="custom-scrollbar"
+              style={{ overflowY: "auto" }}
+              height={windowHeight - 123}
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
-              itemSize={(index) => getTaskCardHeight(filteredTask[index]) + 18}
+              itemSize={(index) =>
+                getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
+              }
               width={"100%"}
             >
               {TaskRow}
@@ -658,16 +644,20 @@ const Task = () => {
           )}
         </Box>
       </Grid>
+
       <Grid
+        height={windowHeight}
         item
-        // md={taskDescriptionMdSize}
-        // lg={taskDescriptionlgSize}
-        lg={9.05}
-        md={7.85}
-        xs={6.8}
+        lg={9.1}
+        md={7.8}
+        xs={6.53}
         sx={{
+          borderRadius: "4px",
+          background: "#FFF",
+          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           backgroundColor: "white",
-          ml: 1.5,
+          ml: 2,
+          mr: 2,
         }}
       >
         {selectedTask !== null &&

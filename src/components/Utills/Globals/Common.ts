@@ -241,7 +241,11 @@ const momentdeDateFormatWithDay = (value: Date | any) => {
 
 export const getTaskCardHeight = (task: ITask) => {
   try {
-    const height = task.description.length > 0 ? (task.description.length > 57 ? 107 : 90) : 72;
+    const SINGLE_LINE_DESCRIPTION_CARD_HEIGHT = 90;
+    const DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT = 107;
+    const NO_DESCRIPTION_CARD_HEIGHT = 72;
+    const CHAR_COUNT_DESCRIPTION = 57;
+    const height = task.description.length > 0 ? (task.description.length > CHAR_COUNT_DESCRIPTION ? DOUBLE_LINE_DESCRIPTION_CARD_HEIGHT : SINGLE_LINE_DESCRIPTION_CARD_HEIGHT) : NO_DESCRIPTION_CARD_HEIGHT;
     return height;
   } catch (error) {
     console.log("error calculating task card height => ", error);

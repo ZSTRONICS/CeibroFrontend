@@ -102,7 +102,7 @@ function Topbar() {
                     ? "0px 4px 4px rgba(0, 0, 0, 0.25) inset"
                     : "",
 
-                  borderBottom: havePath ? "1px black solid" : "",
+                  borderBottom: havePath ? "1.5px black solid" : "",
                 }}
                 onClick={() => handleRouteClick(config)}
               >

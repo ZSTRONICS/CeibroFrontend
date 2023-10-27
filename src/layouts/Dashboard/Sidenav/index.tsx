@@ -12,14 +12,16 @@ const NAV_WIDTH = 72;
 Nav.propTypes = {
   openNav: PropTypes.bool,
   onCloseNav: PropTypes.func,
+  height: PropTypes.string,
 };
 
 interface Props {
   openNav: any;
   onCloseNav: any;
+  height: any;
 }
 
-export default function Nav({ openNav, onCloseNav }: Props) {
+export default function Nav({ openNav, onCloseNav, height }: Props) {
   const { pathname } = useLocation();
 
   const isDesktop = useResponsive("up", "lg", "");
@@ -33,8 +35,9 @@ export default function Nav({ openNav, onCloseNav }: Props) {
   const renderContent = (
     <Box
       sx={{
-        height: "calc(100vh - 53px) ",
-        mt: "3rem",
+        overflow: "hidden",
+        height,
+        width: { lg: NAV_WIDTH },
         background: "rgba(244, 244, 244, 1)",
       }}
     >
@@ -46,6 +49,7 @@ export default function Nav({ openNav, onCloseNav }: Props) {
     <Box
       component="nav"
       sx={{
+        overflow: "hidden",
         flexShrink: { lg: 0 },
         width: { lg: NAV_WIDTH },
       }}
@@ -56,9 +60,8 @@ export default function Nav({ openNav, onCloseNav }: Props) {
           variant="permanent"
           PaperProps={{
             sx: {
+              overflow: "hidden",
               width: NAV_WIDTH,
-              bgcolor: "background.default",
-              borderRightStyle: "dashed",
               position: "relative",
               zIndex: 1,
             },
