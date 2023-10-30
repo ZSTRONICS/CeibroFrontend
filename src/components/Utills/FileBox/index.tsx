@@ -1,7 +1,7 @@
-import ClearIcon from "@mui/icons-material/Clear";
 import { Box, IconButton, Typography } from "@mui/material";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import { fileType } from "components/Tasks/type";
+import { ClearIconSvgGray } from "components/material-ui/icons";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
@@ -53,7 +53,6 @@ const FileBox: React.FC<IProps> = ({
           width: "100%",
           borderTop: bt ? "1px solid #ccc" : "none",
           borderBottom: bb ? "1px solid #ccc" : "none",
-          // paddingLeft: "5px",
           gap: 1,
           display: "flex",
           alignItems: "center",
@@ -156,17 +155,7 @@ const FileBox: React.FC<IProps> = ({
                       aria-label="clear selection"
                       onClick={() => handleClearFile(item, "doc")}
                     >
-                      <ClearIcon
-                        sx={{
-                          height: "16px",
-                          width: "auto",
-                          color: "#605C5C",
-                          borderRadius: "8px",
-                          borderStyle: "solid",
-                          borderWidth: "1px",
-                          borderColor: "#605C5C",
-                        }}
-                      />
+                      <ClearIconSvgGray height="20" width="20" />
                     </IconButton>
                   )}
                 </Box>

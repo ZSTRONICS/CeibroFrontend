@@ -1,24 +1,24 @@
 import { MoreVert } from "@mui/icons-material";
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   ListSubheader,
   Menu,
   MenuItem,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
+import { MUIInputLabel, RequiredFieldMark } from "components/CustomTags";
 import {
   ChangeValueType,
   CreateNewTaskFormType,
   OptionType,
   Options,
 } from "components/Tasks/type";
+import { ClearIconSvgGray } from "components/material-ui/icons";
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
@@ -49,6 +49,7 @@ function CustomDropDown(props: IProps) {
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
+  console.log(label === "Topic", selected);
   // const [recentfilterData, setRecentFilterData] = React.useState<{
   //   [key: string]: OptionType[];
   // }>({});
@@ -196,17 +197,21 @@ function CustomDropDown(props: IProps) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <FormControl
         variant="standard"
-        sx={{ marginTop: "16px", width: "100%", maxWidth: "100%" }}
+        sx={{ marginTop: "14px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel id="controlled-open-select-label" sx={{ fontFamily: 'Inter', fontSize: "14px", fontWeight: 500, }}>{label}</InputLabel>
+        {label === "Topic" && selected.length === 0 && (
+          <RequiredFieldMark>*</RequiredFieldMark>
+        )}
+        <MUIInputLabel id="controlled-open-select-label">{label}</MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
-            fontFamily: 'Inter',
+            fontFamily: "Inter",
             "& .MuiSelect-icon": {
               right: `${selected ? "40px" : 0}`,
             },
+            svg: { color: "#000000" },
           }}
           variant="standard"
           open={open}
@@ -239,16 +244,7 @@ function CustomDropDown(props: IProps) {
                 aria-label="clear selection"
                 onClick={handleClearClick}
               >
-                <ClearIcon
-                  sx={{
-                    height: "24px",
-                    color: "#605C5C",
-                    borderRadius: "12px",
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "#605C5C",
-                  }}
-                />
+                <ClearIconSvgGray />
               </IconButton>
             )
           }
@@ -258,14 +254,17 @@ function CustomDropDown(props: IProps) {
               borderBottom: "1.9px solid #A0A0B0",
               display: "flex",
               alignItems: "center",
-              width: "100%"
+              width: "100%",
             }}
           >
             <TextField
-              placeholder="Search..."
+              placeholder="Start typing"
               value={searchQuery}
               onChange={handleSearchChange}
-              style={{ flex: 1, fontFamily: 'Inter' }}
+              style={{ flex: 1, fontFamily: "Inter" }}
+              sx={{
+                label: { color: "605b5c" },
+              }}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -273,7 +272,12 @@ function CustomDropDown(props: IProps) {
             />
             <>
               {searchQuery && searchQuery.length > 0 && isMatchFound ? (
-                <Button onClick={handleCancelClick} sx={{ fontFamily: "Inter" }}>Cancel</Button>
+                <Button
+                  onClick={handleCancelClick}
+                  sx={{ fontFamily: "Inter" }}
+                >
+                  Cancel
+                </Button>
               ) : (
                 <Button
                   onClick={handleCreateClick}
@@ -307,7 +311,7 @@ function CustomDropDown(props: IProps) {
                       borderBottom: "1px solid #E0E0E0",
                       padding: "10px 0",
                       cursor: "pointer",
-                      color: '#000000',
+                      color: "#000000",
                       fontSize: "13px",
                       fontWeight: 600,
                       fontFamily: "Inter",
@@ -320,19 +324,21 @@ function CustomDropDown(props: IProps) {
               })}
             </Box>
           )}
-          <Box sx={{ margin: "8px 10px", fontFamily: "Inter", }}>
+          <Box sx={{ margin: "8px 10px", fontFamily: "Inter" }}>
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array
                 <Typography
                   sx={{
                     paddingTop: "20px",
-                    color: '#000000',
+                    color: "#000000",
                     fontSize: "13px",
                     fontWeight: 700,
                     fontFamily: "Inter",
                   }}
-                >{groupLetter}</Typography>,
+                >
+                  {groupLetter}
+                </Typography>,
                 // Use map on the array to render the list items
                 ...groupOptions.map((item, i) => (
                   <Box
@@ -342,20 +348,23 @@ function CustomDropDown(props: IProps) {
                       padding: "8px 0",
                       cursor: "pointer",
                       display: "flex",
-                      color: '#000000',
+                      color: "#000000",
                       fontWeight: 600,
                       fontFamily: "Inter",
                       justifyContent: "space-between",
                     }}
                     onClick={() => handleMenuClick(item)}
                   >
-
-                    <Typography sx={{
-                      color: '#0E0E0E',
-                      fontSize: "13px",
-                      fontWeight: 600,
-                      fontFamily: "Inter",
-                    }}>{item.label}</Typography>
+                    <Typography
+                      sx={{
+                        color: "#0E0E0E",
+                        fontSize: "13px",
+                        fontWeight: 600,
+                        fontFamily: "Inter",
+                      }}
+                    >
+                      {item.label}
+                    </Typography>
                     <IconButton
                       edge="end"
                       sx={{
@@ -393,7 +402,7 @@ function CustomDropDown(props: IProps) {
                         sx={{
                           paddingBottom: 0,
                           paddingTop: 0,
-                          color: '#0E0E0E',
+                          color: "#0E0E0E",
                           fontSize: "13px",
                           fontWeight: 600,
                           fontFamily: "Inter",

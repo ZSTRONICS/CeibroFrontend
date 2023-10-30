@@ -24,7 +24,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     form: {
       height: "100vh",
-      overflowY: "scroll",
+      overflowY: "auto",
       paddingBottom: 10,
     },
 

@@ -59,7 +59,7 @@ function ProjectDrawerMenu() {
           "@media(max-width:960px)": {
             paddingLeft: "10px",
             flexWrap: "nowrap",
-            overflowX: "scroll",
+            overflowX: "auto",
           },
         }}
       >

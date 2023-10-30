@@ -7,6 +7,7 @@ import {
   TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { MUIInputLabel } from "components/CustomTags";
 import React from "react";
 import { DropDownSvg } from "../icons/CustomSvgIcon/dropDown";
 import { AutocompleteOption, GenericAutocompleteProps } from "./types";
@@ -41,8 +42,8 @@ export const SimpleTextField = (props: IProps) => {
   };
   const id = label.replace(/\s+/g, "-");
   return (
-    <FormControl sx={{ width: "100%" }} variant="outlined" size="small">
-      <InputLabel htmlFor={id}>{label}</InputLabel>
+    <FormControl sx={{ width: "100%" }} variant="standard" size="small">
+      <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>
       <OutlinedInput
         required={required}
         id={id}

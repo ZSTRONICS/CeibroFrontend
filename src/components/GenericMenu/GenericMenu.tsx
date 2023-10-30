@@ -42,7 +42,7 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu, paddingT
         onClick={handleMenuClick}
         disabled={disableMenu || options.length === 0}
       >
-        <assets.MoreVertOutlinedIcon />
+        <assets.MoreVertOutlinedIcon color="primary"/>
       </IconButton>
       {anchorEl && (
         <Menu

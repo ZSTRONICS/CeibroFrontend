@@ -17,6 +17,7 @@ export const useSocket = () => {
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
+    const windowClose = window.getSelection();
 
     const handleSocketEvents = (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
@@ -85,6 +86,9 @@ export const useSocket = () => {
     useEffect(() => {
         if (!isLoggedIn) {
             console.log("not logged in")
+            if (windowClose) {
+                window.close();
+            }
             global.isSocketConnecting = false;
             if (socket.getSocket() !== null) {
                 console.log("socket found")

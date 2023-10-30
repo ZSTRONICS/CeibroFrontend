@@ -1,3 +1,4 @@
+import ClearIconSvgGray from "../icons/CustomSvgIcon/ClearIconSvgGray";
 import ForwardIcon from "./TaskIcons/ForwardIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
 export * from "./ConfigIcons";
@@ -18,4 +19,4 @@ export { ProfileIcon } from "./profile/Profile";
 export { QuestionnairIcon } from "./questionnair/Questionnair";
 export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
-export { ForwardIcon, ReplyIcon };
+export { ClearIconSvgGray, ForwardIcon, ReplyIcon };

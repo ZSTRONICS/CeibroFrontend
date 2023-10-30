@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, Tooltip } from "@mui/material";
+import { Box, Card, CardContent, Tooltip } from "@mui/material";
 import {
   CustomStack,
   Span,
@@ -92,97 +92,82 @@ function TaskCard(props: IProps) {
           isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
         }`,
         borderRadius: "8px",
-        borderTopRightRadius: "20px",
+        borderTopRightRadius: isSelectedTask ? "15px" : "10px",
+        borderTopLeftRadius: "5px",
         borderTopStyle: "none",
         WebkitBoxShadow: `${
           isSelectedTask === true
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
             : "none"
         }`,
-        // padding: "3px 4px",
-        // paddingTop: "0px",
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
-
-        // WebkitBoxShadow: `${
-        //   isSelectedTask === true ? "0px -4px 0px 0px #3b95d3" : "none"
-        // }`,
       }}
       key={_id}
       id={_id}
       onClick={() => handleClick(task)}
     >
-      <CardHeader
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          pt: 0,
-          pl: 0,
-          pb: 0,
-          pr: 0.1,
-        }}
-        title={
-          <CustomStack gap={1}>
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-                border: "1px solid #818181",
-                borderRadius: "4px",
-                padding: "2px 9px",
-                ml: "-2px",
-              }}
-            >
-              {taskUID}
-            </Span>
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-              }}
-            >
-              {`${taskCreatedAt[0]}`}
-            </Span>
+      <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative" }}>
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+            border: "1px solid #818181",
+            borderRadius: "4px",
+            padding: "2px 9px",
+            backgroundColor: "white",
+            borderTopLeftRadius: "4px",
+            ml: "-1px",
+            WebkitBoxShadow: `${
+              isSelectedTask === true
+                ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
+                : "none"
+            }`,
+          }}
+        >
+          {taskUID}
+        </Span>
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+          }}
+        >
+          {`${taskCreatedAt[0]}`}
+        </Span>
 
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-              }}
-            >
-              {`${taskCreatedAt[1]}`}
-            </Span>
-
-            {dueDate && dueDate !== "" ? (
-              <Span
-                sx={{
-                  color: "0d0d0d",
-                  fontWeight: 600,
-                }}
-              >{`Due date ${dueDate}`}</Span>
-            ) : (
-              <Span
-                sx={{
-                  color: "0d0d0d",
-                  fontWeight: 600,
-                }}
-              >{`Due date N/A`}</Span>
-            )}
-          </CustomStack>
-        }
-        action={
-          <CustomStack>
-            <GenericMenu
-              options={menuOption}
-              key={_id}
-              disableMenu={disableMenu || !isSelectedTask}
-              paddingTop={0}
-            />
-          </CustomStack>
-        }
-      />
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+          }}
+        >
+          {`${taskCreatedAt[1]}`}
+        </Span>
+        {dueDate && dueDate !== "" ? (
+          <Span
+            sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}
+          >{`Due date ${dueDate}`}</Span>
+        ) : (
+          <Span
+            sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}
+          >{`Due date N/A`}</Span>
+        )}
+        <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
+          <GenericMenu
+            options={menuOption}
+            key={_id}
+            disableMenu={disableMenu || !isSelectedTask}
+            paddingTop={0}
+          />
+        </Box>
+      </CustomStack>
 
       <CardContent
         sx={{

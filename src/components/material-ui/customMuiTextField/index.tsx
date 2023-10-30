@@ -1,6 +1,6 @@
 import React from "react";
-import { PhoneNumberTextField } from "./phoneNumberTextField";
 import { PasswordTextField } from "./paaswordTextField";
+import { PhoneNumberTextField } from "./phoneNumberTextField";
 import { SimpleTextField } from "./simpleTextField";
 import {
   IAutoCompleteProps,

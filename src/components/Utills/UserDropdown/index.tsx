@@ -1,4 +1,3 @@
-import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
   Checkbox,
@@ -11,15 +10,16 @@ import {
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
-import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
 import { styled } from "@mui/material/styles";
+import { MUIInputLabel, RequiredFieldMark } from "components/CustomTags";
 import GroupContactList from "components/Tasks/Forward-Task/GroupContactList";
 import {
   AssignedToStateType,
   ChangeValueType,
   CreateNewTaskFormType,
 } from "components/Tasks/type";
+import { ClearIconSvgGray } from "components/material-ui/icons";
 import { Contact } from "constants/interfaces";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -41,14 +41,8 @@ interface IProps {
 
 function UserDropDown(props: IProps) {
   const [isSelfAssign, setIsSelfAssign] = useState(false);
-  const {
-    name,
-    label,
-    contacts,
-    createCallback,
-    handleChangeValues,
-    recentUserContact,
-  } = props;
+  const { name, label, contacts, handleChangeValues, recentUserContact } =
+    props;
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);
   const [selected, setSelected] = React.useState<any[]>([]);
@@ -197,11 +191,10 @@ function UserDropDown(props: IProps) {
         variant="standard"
         sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel sx={{
-          fontFamily: "Inter",
-          fontSize: "14px",
-          fontWeight: 500,
-        }} id="controlled-open-select-label">{label}</InputLabel>
+        {label === "Assign to" && selected.length === 0 && (
+          <RequiredFieldMark>*</RequiredFieldMark>
+        )}
+        <MUIInputLabel id="controlled-open-select-label">{label}</MUIInputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
@@ -209,6 +202,7 @@ function UserDropDown(props: IProps) {
             "& .MuiSelect-icon": {
               right: `${selected.length > 0 ? "40px" : 0}`,
             },
+            svg: { color: "#000000" },
           }}
           MenuProps={{
             anchorOrigin: {
@@ -239,16 +233,7 @@ function UserDropDown(props: IProps) {
                 aria-label="clear selection"
                 onClick={handleClearClick}
               >
-                <ClearIcon
-                  sx={{
-                    height: "24px",
-                    color: "#605C5C",
-                    borderRadius: "12px",
-                    borderStyle: "solid",
-                    borderWidth: "1px",
-                    borderColor: "#605C5C",
-                  }}
-                />
+                <ClearIconSvgGray />
               </IconButton>
             )
           }
@@ -319,7 +304,7 @@ function UserDropDown(props: IProps) {
                   alignItems: "end",
                 }}
               >
-                No selected contacts
+                Select task assignee(s)
               </Typography>
             )}
           </Box>

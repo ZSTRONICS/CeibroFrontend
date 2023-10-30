@@ -3,10 +3,13 @@ import {
   Box,
   Checkbox,
   CircularProgress,
+  Divider,
+  FormControl,
   FormControlLabel,
   FormGroup,
   IconButton,
-  TextField,
+  Input,
+  Typography,
 } from "@mui/material";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
@@ -36,6 +39,7 @@ import {
 import Footer from "./Footer";
 
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
+import { MUIInputLabel } from "components/CustomTags";
 import { IS_IMAGE } from "components/Utills/Globals";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
@@ -248,8 +252,8 @@ function CreateNewTask() {
     let valid = true;
     valid =
       selectedData.topic !== "" &&
-        (selectedData.assignedToState.length > 0 ||
-          (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
+      (selectedData.assignedToState.length > 0 ||
+        (selectedData.invitedNumbers && selectedData.invitedNumbers.length > 0))
         ? false
         : true;
     if (selectedData.dueDate === "Invalid date") {
@@ -325,6 +329,7 @@ function CreateNewTask() {
       })
     );
   };
+
   return (
     <>
       <Box
@@ -340,7 +345,7 @@ function CreateNewTask() {
           <Box
             className="custom-scrollbar"
             sx={{
-              padding: "16px",
+              padding: "20px 16px 20px 16px",
               mt: 3,
               height: "calc(100vh - 54px)",
               overflow: "auto",
@@ -369,78 +374,106 @@ function CreateNewTask() {
             />
             <CustomDatePicker
               name="dueDate"
-              label="Due Date"
+              label="Due date"
               handleChangeValues={handleChangeValues}
             />
             <Box sx={{ marginTop: "8px", width: "100%" }}>
-              <TextField
-                name="description"
-                id="description-multiline"
-                label="Description"
-                multiline
-                // maxRows={15}
+              <FormControl
                 variant="standard"
-                sx={{ width: "100%",fontFamily:'Inter' }}
-                onBlur={handleDescriptionChange}
-              />
-            </Box>
-
-            {selectedImages.length > 0 && (
-              <Box
-                sx={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "12px",
-                  padding: "16px",
-                  mt: 1,
-                  overflow: "auto",
-                  "&::-webkit-scrollbar": {
-                    height: "0.4rem",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                    borderRadius: "0.2rem",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "rgba(0,0,0,.1)",
-                  },
-                }}
+                sx={{ width: "100%", fontFamily: "Inter" }}
               >
-                {selectedImages.map((file, i) => {
-                  return (
-                    <Box
-                      key={i}
-                      sx={{
-                        width: "80px",
-                        height: "80px",
-                        display: "flex",
-                        marginRight: "16px",
-                      }}
-                    >
-                      <ImageBox src={URL.createObjectURL(file)} />
-                      <IconButton
-                        aria-label="delete"
-                        onClick={() => {
-                          handleClearFile(file, "image");
-                        }}
-                        sx={{
-                          top: "-6px",
-                          right: "4px",
-                          backgroundColor: "#0075D0",
-                          color: "#fff",
-                          width: "16px",
-                          height: "16px",
-                        }}
-                        disableRipple
-                      >
-                        <ClearOutlinedIcon
-                          sx={{ width: "16px", height: "16px" }}
-                        />
-                      </IconButton>
-                    </Box>
-                  );
-                })}
-              </Box>
+                <MUIInputLabel htmlFor="description">Description</MUIInputLabel>
+                <Input
+                  name="description"
+                  id="description"
+                  onBlur={handleDescriptionChange}
+                  required
+                  multiline
+                />
+              </FormControl>
+            </Box>
+            {/* todo create seperate component for Images preview */}
+            {selectedImages.length > 0 && (
+              <>
+                <Box
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    gap: 5,
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontWeight: 600,
+                      fontSize: "12px",
+                      color: "#605C5C",
+                      pr: 1.2,
+                    }}
+                  >
+                    Images
+                  </Typography>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      flexWrap: "wrap",
+                      gap: "12px",
+                      columnGap: "16px",
+                      padding: "16px 8px 10px 16px",
+
+                      overflow: "auto",
+                      borderLeft: "1.9px solid #818181",
+                      "&::-webkit-scrollbar": {
+                        height: "0.4rem",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+                        borderRadius: "0.2rem",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        backgroundColor: "rgba(0,0,0,.1)",
+                      },
+                    }}
+                  >
+                    {selectedImages.map((file, i) => {
+                      return (
+                        <Box
+                          key={i}
+                          sx={{
+                            width: "80px",
+                            height: "80px",
+                            display: "flex",
+                            marginRight: "16px",
+                          }}
+                        >
+                          <ImageBox src={URL.createObjectURL(file)} />
+                          <IconButton
+                            aria-label="delete"
+                            onClick={() => {
+                              handleClearFile(file, "image");
+                            }}
+                            sx={{
+                              top: "-6px",
+                              right: "4px",
+                              backgroundColor: "#0075D0",
+                              color: "#fff",
+                              width: "16px",
+                              height: "16px",
+                            }}
+                            disableRipple
+                          >
+                            <ClearOutlinedIcon
+                              sx={{ width: "16px", height: "16px" }}
+                            />
+                          </IconButton>
+                        </Box>
+                      );
+                    })}
+                  </Box>
+                </Box>
+                <Divider sx={{ my: 1, borderColor: "#9e9e9e" }} />
+              </>
             )}
 
             {selectedDocuments.length > 0 && (
@@ -455,9 +488,10 @@ function CreateNewTask() {
                   files={selectedDocuments}
                   handleClearFile={handleClearFile}
                 />
+                <Divider sx={{ my: 1, borderColor: "#9e9e9e" }} />
               </Box>
             )}
-            <Box sx={{ pt: 1, pb: 3, }}>
+            <Box sx={{ pt: 1, pb: 3 }}>
               <CustomSwitch
                 label="Done requirements"
                 toggle={toggle}
@@ -467,20 +501,54 @@ function CreateNewTask() {
               />
               {toggle && (
                 <>
-                  <FormGroup row={true} sx={{ gap: 2 }}>
+                  <FormGroup
+                    row={true}
+                    sx={{
+                      gap: 1,
+                      mt: 1.25,
+                      mb: 1,
+                      p: 1.4,
+                      flexDirection: "column",
+                      backgroundColor: "#F4F4F4",
+                      borderRadius: 1,
+                    }}
+                  >
                     <FormControlLabel
+                      sx={{ color: "black" }}
                       control={
                         <Checkbox
-                          onChange={(e, checked) => {
-                            handleChangeValues(checked, "doneImageRequired");
+                          sx={{
+                            "&.MuiCheckbox-root": {
+                              color: "black",
+                              padding: "6px 10px",
+                            },
+                            "&.Mui-checked": {
+                              color: "#0076C8 !important",
+                            },
                           }}
                         />
                       }
+                      onChange={(e, checked) => {
+                        handleChangeValues(checked, "doneImageRequired");
+                      }}
                       label="Image"
                       name="doneImageRequired"
                     />
                     <FormControlLabel
-                      control={<Checkbox />}
+                      sx={{ color: "black" }}
+                      control={
+                        <Checkbox
+                          sx={{
+                            "&.MuiCheckbox-root": {
+                              color: "black",
+                              padding: "6px 10px",
+                            },
+                            "&.Mui-checked": {
+                              color: "#0076C8 !important",
+                            },
+                          }}
+                        />
+                      }
                       label="Comment"
                       onChange={(e, checked) => {
                         handleChangeValues(checked, "doneCommentsRequired");
@@ -514,12 +582,12 @@ function CreateNewTask() {
           showHeader={false}
           handleSubmitForm={handleCreateTask}
           handleAttachImageValue={handleAttachImageValue}
-          handleGetLocationValue={() => { }}
+          handleGetLocationValue={() => {}}
           handleSelectDocumentValue={handleSelectDocumentValue}
         />
       </Box>
       <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
         open={isSubmit}
       >
         <CircularProgress color="inherit" />

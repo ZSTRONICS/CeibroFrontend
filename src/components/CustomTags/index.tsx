@@ -1,4 +1,4 @@
-import { Box, MenuItem, Stack, Typography } from "@mui/material";
+import { Box, InputLabel, MenuItem, Stack, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 export const Heading = styled(Typography)(
   ({ theme }) => `
@@ -8,6 +8,12 @@ export const Heading = styled(Typography)(
     `
 );
 
+const MUIInputLabel = styled(InputLabel)`
+  font-family: "Inter";
+  font-weight: 500;
+  font-size: 14px;
+  color: #605b5c;
+`;
 const CustomTitle = styled(Typography)`
   font-family: "Inter";
   font-weight: 600 !important;
@@ -98,6 +104,15 @@ const BoldLableTag = styled("span")`
   font-weight: 700;
   font-size: 10px;
   color: #605c5c;
+`;
+
+export const RequiredFieldMark = styled("span")`
+  fontweight: 500;
+  fontfamily: "Inter";
+  color: #d9000d;
+  position: absolute;
+  right: 4%;
+  top: 33%;
 `;
 export const CLink = styled("a")`
   font-family: "Inter";
@@ -229,6 +244,7 @@ export {
   CustomTitle,
   DescriptionTag,
   ImageStack,
+  MUIInputLabel,
   MenuItemTag,
   Span,
   SubHeading,

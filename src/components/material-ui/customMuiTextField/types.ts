@@ -61,7 +61,7 @@ export interface GenericAutocompleteProps<T extends AutocompleteOption>
   extends Omit<AutocompleteProps<T, false, false, false>, "renderInput"> {
   options: T[];
   label: string;
-  showSideLabel?:boolean
+  showSideLabel?: boolean
   placeholder: string;
 }
 export interface IAutoCompleteProps extends Common {

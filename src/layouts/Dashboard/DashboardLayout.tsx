@@ -5,8 +5,6 @@ import { styled } from "@mui/material/styles";
 import Header from "./Header";
 import Nav from "./Sidenav";
 
-const APP_BAR_MOBILE = 58;
-// const APP_BAR_DESKTOP = 56;
 const isTaskRoute = window.location.pathname.includes("/tasks");
 const HEADER_HEIGHT = 84;
 const MARGIN_BOTTOM = 16;
@@ -47,6 +45,7 @@ function DashboardLayout(props: any) {
           overflow: "hidden",
           height: `calc(100vh - ${HEADER_HEIGHT + MARGIN_BOTTOM}px)`,
           mt: `${HEADER_HEIGHT}px`,
+          flexWrap: "nowrap",
         }}
         item
         container

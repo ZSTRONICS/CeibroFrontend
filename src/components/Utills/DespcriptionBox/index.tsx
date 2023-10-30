@@ -24,7 +24,7 @@ const DespcriptionBox = ({ description }: IProps) => (
           mt: 1,
           width: "85px",
           height: "20px",
-          pr: 15,
+          pr: "87px",
           gap: 1,
           display: "flex",
           alignItems: "center",

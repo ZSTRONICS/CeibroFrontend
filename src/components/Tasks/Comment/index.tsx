@@ -1,5 +1,6 @@
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { Box, Divider, IconButton, TextField } from "@mui/material";
+import { Box, Divider, FormControl, IconButton, Input } from "@mui/material";
+import { MUIInputLabel } from "components/CustomTags";
 import FileBox from "components/Utills/FileBox";
 import ImageBox from "components/Utills/ImageBox";
 import { TASK_CONFIG } from "config";
@@ -142,16 +143,21 @@ const Comment = ({
       <Box sx={{ width: "100%", padding: "8px" }}>
         {showHeader !== true && <TaskHeader title={title} />}
         <Box sx={{ padding: "8px", width: "100%" }}>
-          <TextField
-            name="description"
-            id="description-multiline"
-            label="Description"
-            multiline
-            maxRows={4}
+          <FormControl
             variant="standard"
-            sx={{ width: "100%" }}
-            onChange={handleDescriptionChange}
-          />
+            sx={{ width: "100%", fontFamily: "Inter" }}
+          >
+            <MUIInputLabel htmlFor="description">Description</MUIInputLabel>
+            <Input
+              name="description"
+              id="description"
+              required
+              multiline
+              maxRows={5}
+              sx={{ width: "100%" }}
+              onChange={handleDescriptionChange}
+            />
+          </FormControl>
         </Box>
         <Box
           sx={{
