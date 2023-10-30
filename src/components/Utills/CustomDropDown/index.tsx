@@ -2,12 +2,11 @@ import { MoreVert } from "@mui/icons-material";
 import ClearIcon from "@mui/icons-material/Clear";
 import {
   Box,
-  Divider,
   ListSubheader,
   Menu,
   MenuItem,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
@@ -199,12 +198,12 @@ function CustomDropDown(props: IProps) {
         variant="standard"
         sx={{ marginTop: "16px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel id="controlled-open-select-label" sx={{fontFamily:'Inter'}}>{label}</InputLabel>
+        <InputLabel id="controlled-open-select-label" sx={{ fontFamily: 'Inter', fontSize: "14px", fontWeight: 500, }}>{label}</InputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"
           sx={{
-            fontFamily:'Inter',
+            fontFamily: 'Inter',
             "& .MuiSelect-icon": {
               right: `${selected ? "40px" : 0}`,
             },
@@ -255,13 +254,18 @@ function CustomDropDown(props: IProps) {
           }
         >
           <ListSubheader
-            style={{ display: "flex", alignItems: "center", width: "100%" }}
+            style={{
+              borderBottom: "1.9px solid #A0A0B0",
+              display: "flex",
+              alignItems: "center",
+              width: "100%"
+            }}
           >
             <TextField
               placeholder="Search..."
               value={searchQuery}
               onChange={handleSearchChange}
-              style={{ flex: 1 ,fontFamily:'Inter'}}
+              style={{ flex: 1, fontFamily: 'Inter' }}
               variant="standard"
               InputProps={{
                 disableUnderline: true,
@@ -269,24 +273,25 @@ function CustomDropDown(props: IProps) {
             />
             <>
               {searchQuery && searchQuery.length > 0 && isMatchFound ? (
-                <Button onClick={handleCancelClick} sx={{fontFamily:"Inter"}}>Cancel</Button>
+                <Button onClick={handleCancelClick} sx={{ fontFamily: "Inter" }}>Cancel</Button>
               ) : (
                 <Button
                   onClick={handleCreateClick}
                   disabled={searchQuery.length === 0}
-                  sx={{fontFamily:"Inter"}}
+                  sx={{ fontFamily: "Inter" }}
                 >
                   Save
                 </Button>
               )}
             </>
           </ListSubheader>
+
           {allFilterData.recent.length > 0 && (
-            <Box sx={{ margin: "10px 16px" }}>
+            <Box sx={{ margin: "10px 10px", marginBottom: "0px" }}>
               <Typography
                 sx={{
                   fontFamily: "Inter",
-                  fontSize: "12px",
+                  fontSize: "11px",
                   fontWeight: 500,
                   color: "#818181",
                   lineHeight: "16px",
@@ -299,9 +304,12 @@ function CustomDropDown(props: IProps) {
                   <Box
                     key={`recent-${item.value + i}`}
                     sx={{
-                      padding: "8px 16px",
+                      borderBottom: "1px solid #E0E0E0",
+                      padding: "10px 0",
                       cursor: "pointer",
-                      fontWeight: 400,
+                      color: '#000000',
+                      fontSize: "13px",
+                      fontWeight: 600,
                       fontFamily: "Inter",
                     }}
                     onClick={() => handleMenuClick(item)}
@@ -312,36 +320,49 @@ function CustomDropDown(props: IProps) {
               })}
             </Box>
           )}
-          <Divider
-            sx={{
-              margin: "20px",
-              pointerEvents: "none",
-            }}
-          />
-          <Box sx={{ margin: "8px 16px",fontFamily: "Inter", }}>
+          <Box sx={{ margin: "8px 10px", fontFamily: "Inter", }}>
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array
-                <Typography>{groupLetter}</Typography>,
+                <Typography
+                  sx={{
+                    paddingTop: "20px",
+                    color: '#000000',
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    fontFamily: "Inter",
+                  }}
+                >{groupLetter}</Typography>,
                 // Use map on the array to render the list items
                 ...groupOptions.map((item, i) => (
                   <Box
                     key={`all-${item.value + i}`}
                     sx={{
-                      margin: "8px 16px",
+                      borderBottom: "1px solid #E0E0E0",
+                      padding: "8px 0",
                       cursor: "pointer",
                       display: "flex",
+                      color: '#000000',
+                      fontWeight: 600,
+                      fontFamily: "Inter",
                       justifyContent: "space-between",
                     }}
                     onClick={() => handleMenuClick(item)}
                   >
-                    <Typography>{item.label}</Typography>
+
+                    <Typography sx={{
+                      color: '#0E0E0E',
+                      fontSize: "13px",
+                      fontWeight: 600,
+                      fontFamily: "Inter",
+                    }}>{item.label}</Typography>
                     <IconButton
                       edge="end"
                       sx={{
                         color: "#0075D0",
+                        padding: "0",
                         "& .MuiSvgIcon-root": {
-                          width: "20px",
+                          padding: "0",
                           height: "20px",
                         },
                       }}
@@ -350,6 +371,18 @@ function CustomDropDown(props: IProps) {
                       <MoreVert />
                     </IconButton>
                     <Menu
+                      sx={{
+                        padding: 0,
+                      }}
+                      elevation={3}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "center",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
                       anchorEl={anchorEl}
                       open={
                         Boolean(anchorEl) && item.value === deleteItem?.value
@@ -357,6 +390,14 @@ function CustomDropDown(props: IProps) {
                       onClose={handleCloseMenu}
                     >
                       <MenuItem
+                        sx={{
+                          paddingBottom: 0,
+                          paddingTop: 0,
+                          color: '#0E0E0E',
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          fontFamily: "Inter",
+                        }}
                         key={i}
                         onClick={(e) => {
                           e.preventDefault();

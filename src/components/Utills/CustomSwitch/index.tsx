@@ -5,8 +5,8 @@ interface CustomSwitchProps {
   label: string;
   toggle: boolean;
   handleChange:
-    | ((event: ChangeEvent<HTMLInputElement>, checked: boolean) => void)
-    | undefined;
+  | ((event: ChangeEvent<HTMLInputElement>, checked: boolean) => void)
+  | undefined;
 }
 const CustomSwitch = (props: CustomSwitchProps) => {
   const { label, handleChange, toggle } = props;
@@ -17,11 +17,11 @@ const CustomSwitch = (props: CustomSwitchProps) => {
       width="100%"
       justifyContent="space-between"
     >
-      <Typography>{label}</Typography>
+      <Typography sx={{ fontFamily: 'Inter', fontSize: "14px", fontWeight: 500 }} >{label}</Typography>
       <Switch
         sx={
           {
-            fontFamily:'Inter',
+            fontFamily: 'Inter',
             // "& .MuiSwitch-switchBase": {
             //   "&.Mui-checked": {
             //     color: "#fff",

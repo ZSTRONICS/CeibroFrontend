@@ -197,7 +197,11 @@ function UserDropDown(props: IProps) {
         variant="standard"
         sx={{ marginTop: "8px", width: "100%", maxWidth: "100%" }}
       >
-        <InputLabel id="controlled-open-select-label">{label}</InputLabel>
+        <InputLabel sx={{
+          fontFamily: "Inter",
+          fontSize: "14px",
+          fontWeight: 500,
+        }} id="controlled-open-select-label">{label}</InputLabel>
         <Select
           labelId="controlled-open-select-label"
           id="controlled-open-select"

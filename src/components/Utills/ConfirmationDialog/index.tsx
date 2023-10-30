@@ -24,34 +24,67 @@ function ConfirmationDialog({
     <Dialog
       open={open}
       onClose={handleDialogState}
-      sx={{ minWidth: "280px", minHeight: "147px",}}
+      sx={{ minWidth: "280px", minHeight: "147px", }}
     >
-      <Box sx={{ width: "280px", height: "83px",padding:"22px 24px"  }}>
+      <Box sx={{ width: "280px", height: "83px", padding: "22px 24px" }}>
         <Typography
-          sx={{ width: "232px", height: "30px", textAlign: "center",lineHeight:"20px" }}
+          sx={{
+            width: "232px",
+            height: "30px",
+            textAlign: "center",
+            lineHeight: "20px",
+            color: '#0E0E0E',
+            fontSize: "14px",
+            fontWeight: 600,
+            fontFamily: "Inter",
+          }}
         >
           Do you want to delete?
         </Typography>
         <Typography
-          sx={{ width: "232px", height: "30px", textAlign: "center",lineHeight:"20px" }}
+          sx={{
+            width: "232px",
+            height: "30px",
+            textAlign: "center",
+            lineHeight: "20px",
+            color: '#0E0E0E',
+            fontSize: "12px",
+            fontWeight: 500,
+            fontFamily: "Inter",
+          }}
         >
           {item.label}
         </Typography>
       </Box>
       <Box
         sx={{
-          display:"flex",
+          display: "flex",
           width: "100%",
           borderTop: "1px solid #818181",
-          height: "52px",
-          padding: "8px",
+          height: "40px",
         }}
       >
-        <Box sx={{display:"flex",gap:"8px"}}>
-          <Button onClick={handleDialogState} color="primary" sx={{padding:"10px 8px",width:"140px",borderRight: "1px solid #818181",}}>
+        <Box sx={{ display: "flex", gap: "20px" }}>
+          <Button onClick={handleDialogState}
+            color="primary"
+            sx={{
+              fontWeight: 500,
+              fontFamily: "Inter",
+              width: "140px",
+              fontSize: "14px",
+              borderRight: "1px solid #818181",
+            }}>
             No
           </Button>
-          <Button onClick={handleDeleteConfirmed} color="primary" autoFocus sx={{padding:"10px 8px",width:"140px"}}>
+
+          <Button onClick={handleDeleteConfirmed}
+            color="primary"
+            sx={{
+              fontWeight: 500,
+              fontFamily: "Inter",
+              width: "120px",
+              fontSize: "14px",
+            }}>
             Yes
           </Button>
         </Box>

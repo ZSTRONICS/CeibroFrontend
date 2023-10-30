@@ -27,7 +27,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     let createdElementedList: any[] = [];
     Object.entries(data).forEach(([groupLetter, groupOptions]) => {
       createdElementedList.push(
-        <Typography sx={{fontFamily:'Inter',fontSize:'12px',fontWeight:500,color:'#605C5C'}} key={`group-${groupLetter}`}>{groupLetter}</Typography>
+        <Typography sx={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500, color: '#0D0D0D' }} key={`group-${groupLetter}`}>{groupLetter}</Typography>
       );
       groupOptions.forEach((item) => {
         createdElementedList.push(
@@ -70,13 +70,13 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
         sx={{ marginTop: "20px", marginBottom: "20px" }}
       />
     );
-    if(recentData){
+    if (recentData) {
       contactListElements = [
         ...createElementList(recentData),
         divider,
         ...createElementList(filterData),
       ];
-    }else{
+    } else {
       contactListElements = [
         ...createElementList(filterData),
       ];
