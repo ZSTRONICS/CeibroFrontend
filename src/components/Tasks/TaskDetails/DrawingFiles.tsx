@@ -20,7 +20,6 @@ export default function DrawingFiles() {
             uploadStatus: "",
           },
         ]}
-        size={""}
       />
     </Box>
   );

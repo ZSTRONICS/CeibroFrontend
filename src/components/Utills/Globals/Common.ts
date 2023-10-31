@@ -176,6 +176,36 @@ export function addEventToTask(task: any, eventData: any, taskIndex: number): vo
     }
   }
 }
+/**
+ * @param taskArray the array must have _id
+ * @param eventData data to be pushed to task events
+ * @param taskIndex check if task exist 
+ * @return Functino will return updated task events
+ * **/
+export function addUniqueEventToTask(task: any, forwardedTask: any): void {
+  // console.log('existingEvents', task.events)
+  const isUniqueEvent = task.events?.some((event: any) => String(event._id) === String(forwardedTask._id));
+  if (!isUniqueEvent) {
+    const updatedEvent = {
+      _id: forwardedTask._id,
+      taskId: forwardedTask.taskId,
+      eventType: forwardedTask.eventType,
+      initiator: forwardedTask.initiator,
+      eventData: forwardedTask.eventData,
+      commentData: forwardedTask.commentData,
+      invitedMembers: forwardedTask.invitedMembers,
+      createdAt: forwardedTask.createdAt,
+      updatedAt: forwardedTask.updatedAt,
+    }
+    task.events?.push(updatedEvent);
+    // sort task events by createdAt with latest on bottom
+    const events = task.events?.sort((a: any, b: any) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+    task.events = events;
+    task.seenBy = forwardedTask.taskData.seenBy;
+  } else {
+    // console.log("Event already exists ", task.events);
+  }
+}
 
 
 export function moveTaskOnTopByIndex(taskArray: any, taskIndex: number): void {
@@ -228,6 +258,17 @@ export const momentdeDateFormat = (value: Date | any) => {
   }
   let localTime = moment.utc(moment(value)).toDate()
   return moment(localTime).local().format("DD.MM.YYYY")
+}
+/**
+ * @return dd.mm.yy
+ * @param mongodbUtc date string is required
+ * **/
+export const dateFormatWithYearSplit = (value: Date | any) => {
+  if (!moment(value).isValid()) {
+    return "N/A"
+  }
+  let localTime = moment.utc(moment(value)).toDate()
+  return moment(localTime).local().format("DD.MM.YY")
 }
 // de date format using moment of utc time mongodb
 /**

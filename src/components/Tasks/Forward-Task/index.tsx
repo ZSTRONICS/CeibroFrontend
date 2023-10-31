@@ -190,7 +190,7 @@ const ForwardTask = ({
           if (res) {
             dispatch({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-              payload: { task: res.data.newTask, eventType: "TASK_FORWARDED" },
+              payload: { task: res.data.data, eventType: "TASK_FORWARDED" },
             });
             closeModal();
           }

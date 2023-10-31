@@ -7,10 +7,11 @@ import {
   TaskCardLabel,
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
-import { momentLocalDateTime } from "components/Utills/Globals";
+import {
+  dateFormatWithYearSplit,
+  momentLocalDateTime,
+} from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
 
 interface IProps {
   task: ITask;
@@ -22,7 +23,6 @@ interface IProps {
 }
 
 function TaskCard(props: IProps) {
-  const { user } = useSelector((store: RootState) => store.auth);
   const {
     task,
     handleClick,
@@ -31,7 +31,6 @@ function TaskCard(props: IProps) {
     disableMenu,
     isTaskFromMe,
   } = props;
-  const userId = user && String(user._id);
   const {
     taskUID,
     project,
@@ -46,10 +45,12 @@ function TaskCard(props: IProps) {
     assignedToState,
   } = task;
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
-  const [month, day, year] = dueDate.split("-");
-  const formattedYear = year.slice(-2);
-  const formattedDate = `${day}.${month}.${formattedYear}`;
+  const formattedDate = dateFormatWithYearSplit(dueDate);
   const isSelectedTask: boolean = selectedTaskId === _id;
+  const trucateText =
+    project?.title.length > 8
+      ? project?.title.slice(0, 8) + "..."
+      : project?.title;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
   const assignToNames = () =>
@@ -87,7 +88,7 @@ function TaskCard(props: IProps) {
     <Card
       sx={{
         width: "100%",
-        minWidth: 280,
+        minWidth: 285,
         mt: 1,
         cursor: "pointer",
         border: `${
@@ -116,7 +117,7 @@ function TaskCard(props: IProps) {
             fontWeight: 600,
             border: "1px solid #818181",
             borderRadius: "4px",
-            padding: "2px 9px",
+            padding: "2px 6px",
             backgroundColor: "white",
             borderTopLeftRadius: "4px",
             ml: "-1px",
@@ -175,10 +176,11 @@ function TaskCard(props: IProps) {
         sx={{
           pl: 1.5,
           pt: 0,
+          px: 1.2,
           "&:last-child": { pb: 0 },
         }}
       >
-        <CustomStack justifyContent="space-between">
+        <CustomStack justifyContent="space-between" pt={0.2}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
             <TaskCardLabel className="textOverflowDescription">
               {isCanceled && !isCreator ? "From" : isTaskFromMe}:&nbsp;{""}
@@ -194,10 +196,10 @@ function TaskCard(props: IProps) {
             {assignToNames()}
           </Box>
 
-          {project && (
+          {project?.title && (
             <TaskCardLabel
               className="textOverflowDescription"
-              style={{ paddingLeft: "10px" }}
+              style={{ paddingLeft: "2px", whiteSpace: "nowrap" }}
             >
               Project: &nbsp;{""}
               <span
@@ -206,7 +208,7 @@ function TaskCard(props: IProps) {
                   fontSize: "11px",
                 }}
               >
-                {project.title}
+                {trucateText}
               </span>
             </TaskCardLabel>
           )}

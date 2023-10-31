@@ -35,6 +35,12 @@ export const useSocket = () => {
                     payload: data,
                 });
                 break;
+            case TASK_CONFIG.TASK_FORWARDED_TO_ME:
+                dispatch({
+                    type: TASK_CONFIG.PUSH_FORWARDED_TO_ME_NEW,
+                    payload: data,
+                });
+                break;
             case TASK_CONFIG.TASK_CREATED:
                 if (!data.access.includes(userId)) {
                     return;
@@ -55,9 +61,6 @@ export const useSocket = () => {
                 break;
 
             case TASK_CONFIG.TASK_FORWARDED:
-                if (!data.access.includes(userId)) {
-                    return;
-                }
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },

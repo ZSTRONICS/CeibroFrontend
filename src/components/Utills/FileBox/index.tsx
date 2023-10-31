@@ -14,7 +14,6 @@ interface IProps {
   media?: any;
   title?: string;
   files: IFile[] | File[];
-  size?: string;
   textColor?: string;
   showFullHeight?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
@@ -25,13 +24,11 @@ const FileBox: React.FC<IProps> = ({
   bt,
   files,
   title,
-  size,
   showFullHeight,
   handleClearFile,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [fileToView, setFileToView] = useState<any | null>(null);
-  console.log("files", files);
   const openPDFNewTab = (file: any) => {
     if (file.fileUrl) {
       openModal();
@@ -106,7 +103,7 @@ const FileBox: React.FC<IProps> = ({
                 key = _id;
               } else if (name) {
                 f_name = name;
-                key = `${name}_${size}`;
+                key = `${name}`;
               }
               return (
                 <Box
@@ -139,16 +136,18 @@ const FileBox: React.FC<IProps> = ({
                   >
                     {f_name}
                   </Typography>
-                  <Typography
-                    sx={{
-                      fontFamily: "Inter",
-                      fontWeight: 600,
-                      fontSize: "11px",
-                      opacity: 0.54,
-                    }}
-                  >
-                    {fileSize}
-                  </Typography>
+                  {item.size && (
+                    <Typography
+                      sx={{
+                        fontFamily: "Inter",
+                        fontWeight: 600,
+                        fontSize: "11px",
+                        opacity: 0.54,
+                      }}
+                    >
+                      {fileSize}
+                    </Typography>
+                  )}
                   {handleClearFile && (
                     <IconButton
                       size="small"

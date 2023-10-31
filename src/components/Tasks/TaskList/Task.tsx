@@ -558,7 +558,7 @@ const Task = () => {
       <Grid
         item
         height={windowHeight}
-        lg={2.56}
+        lg={2.68}
         md={3.82}
         xs={4.95}
         pt={1}
@@ -648,7 +648,7 @@ const Task = () => {
       <Grid
         height={windowHeight}
         item
-        lg={9.1}
+        lg={9}
         md={7.8}
         xs={6.53}
         sx={{
