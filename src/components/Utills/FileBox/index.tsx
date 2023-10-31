@@ -6,6 +6,7 @@ import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
 import assets from "../../../assets/assets";
+import { filesizes } from "../Globals";
 
 interface IProps {
   bt?: boolean;
@@ -23,7 +24,6 @@ const FileBox: React.FC<IProps> = ({
   bb,
   bt,
   files,
-  media,
   title,
   size,
   showFullHeight,
@@ -31,7 +31,7 @@ const FileBox: React.FC<IProps> = ({
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [fileToView, setFileToView] = useState<any | null>(null);
-
+  console.log("files", files);
   const openPDFNewTab = (file: any) => {
     if (file.fileUrl) {
       openModal();
@@ -97,6 +97,7 @@ const FileBox: React.FC<IProps> = ({
         >
           {files.length > 0 ? (
             files.map((item: IFile | File | any) => {
+              const fileSize = filesizes(item.size);
               let f_name = "";
               let key = "";
               const { fileName, _id, name } = item;
@@ -114,6 +115,7 @@ const FileBox: React.FC<IProps> = ({
                     display: "flex",
                     alignItems: "center",
                     padding: "8px",
+                    gap: "7px",
                     pl: 0,
                     "&:hover": {
                       cursor: "pointer",
@@ -133,8 +135,6 @@ const FileBox: React.FC<IProps> = ({
                       fontWeight: 450,
                       color: "#131516",
                       fontSize: "14px",
-                      marginLeft: "8px",
-                      marginRight: "16px",
                     }}
                   >
                     {f_name}
@@ -142,12 +142,12 @@ const FileBox: React.FC<IProps> = ({
                   <Typography
                     sx={{
                       fontFamily: "Inter",
-                      fontWeight: 450,
-                      fontSize: "10px",
+                      fontWeight: 600,
+                      fontSize: "11px",
                       opacity: 0.54,
                     }}
                   >
-                    {size && size}
+                    {fileSize}
                   </Typography>
                   {handleClearFile && (
                     <IconButton

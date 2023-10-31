@@ -239,7 +239,12 @@ function UserDropDown(props: IProps) {
           }
         >
           <ListSubheader
-            style={{ display: "flex", alignItems: "center", width: "100%" }}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              width: "100%",
+              gap: "5px",
+            }}
           >
             <TextField
               placeholder="Start typing name"
@@ -349,7 +354,7 @@ function UserDropDown(props: IProps) {
               }
             />
           </Box>
-          <Box sx={{ margin: "0px 10px" }}>
+          <Box sx={{ margin: "0px 16px" }}>
             <Divider sx={{ marginTop: "8px", marginBottom: "20px" }} />
             <GroupContactList
               filterData={filterData}

@@ -295,7 +295,7 @@ function CustomDropDown(props: IProps) {
               <Typography
                 sx={{
                   fontFamily: "Inter",
-                  fontSize: "11px",
+                  fontSize: "12px",
                   fontWeight: 500,
                   color: "#818181",
                   lineHeight: "16px",
@@ -312,7 +312,7 @@ function CustomDropDown(props: IProps) {
                       padding: "10px 0",
                       cursor: "pointer",
                       color: "#000000",
-                      fontSize: "13px",
+                      fontSize: "14px",
                       fontWeight: 600,
                       fontFamily: "Inter",
                     }}
@@ -332,7 +332,7 @@ function CustomDropDown(props: IProps) {
                   sx={{
                     paddingTop: "20px",
                     color: "#000000",
-                    fontSize: "13px",
+                    fontSize: "14px",
                     fontWeight: 700,
                     fontFamily: "Inter",
                   }}
@@ -349,7 +349,6 @@ function CustomDropDown(props: IProps) {
                       cursor: "pointer",
                       display: "flex",
                       color: "#000000",
-                      fontWeight: 600,
                       fontFamily: "Inter",
                       justifyContent: "space-between",
                     }}
@@ -358,7 +357,7 @@ function CustomDropDown(props: IProps) {
                     <Typography
                       sx={{
                         color: "#0E0E0E",
-                        fontSize: "13px",
+                        fontSize: "14px",
                         fontWeight: 600,
                         fontFamily: "Inter",
                       }}

@@ -42,11 +42,13 @@ function TaskCard(props: IProps) {
     topic,
     creator,
     isCreator,
-    seenBy,
     userSubState,
     assignedToState,
   } = task;
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
+  const [month, day, year] = dueDate.split("-");
+  const formattedYear = year.slice(-2);
+  const formattedDate = `${day}.${month}.${formattedYear}`;
   const isSelectedTask: boolean = selectedTaskId === _id;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
@@ -150,7 +152,7 @@ function TaskCard(props: IProps) {
               color: "0d0d0d",
               fontWeight: 600,
             }}
-          >{`Due date ${dueDate}`}</Span>
+          >{`Due date ${formattedDate}`}</Span>
         ) : (
           <Span
             sx={{

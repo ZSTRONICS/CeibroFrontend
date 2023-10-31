@@ -41,6 +41,14 @@ const CustomDatePicker = ({
           key={name}
           label={label}
           inputFormat="DD.MM.YYYY"
+          componentsProps={{
+            actionBar: {
+              actions: ["clear"],
+              onClick: () => {
+                setValue(null);
+              },
+            },
+          }}
           minDate={new Date()}
           InputAdornmentProps={{ position: "start" }}
           PopperProps={{
@@ -53,7 +61,7 @@ const CustomDatePicker = ({
               variant="standard"
               sx={{
                 width: "100%",
-                label: { color: "#605b5c", fontWeight: 500, fontSize: "14px" },
+                label: { color: "#757575", fontWeight: 600, fontSize: "16px" },
               }}
             />
           )}

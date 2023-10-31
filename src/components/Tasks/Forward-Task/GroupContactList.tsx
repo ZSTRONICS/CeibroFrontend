@@ -26,8 +26,22 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
   const createElementList = (data: { [key: string]: any[] }) => {
     let createdElementedList: any[] = [];
     Object.entries(data).forEach(([groupLetter, groupOptions]) => {
+      const isSuggestedLabel = groupLetter === "Suggested Users";
       createdElementedList.push(
-        <Typography sx={{ fontFamily: 'Inter', fontSize: '12px', fontWeight: 500, color: '#0D0D0D' }} key={`group-${groupLetter}`}>{groupLetter}</Typography>
+        <Typography
+          sx={{
+            fontFamily: "Inter",
+            fontSize: "14px",
+            fontWeight: isSuggestedLabel ? 500 : 700,
+            color: isSuggestedLabel ? "605b5c" : "black",
+            pl: 1.4,
+            pt: 1,
+            lineHeight: "20px",
+          }}
+          key={`group-${groupLetter}`}
+        >
+          {groupLetter}
+        </Typography>
       );
       groupOptions.forEach((item) => {
         createdElementedList.push(
@@ -51,7 +65,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     let newItemsize = [];
     for (let i = 0; i < renderContactListEle.length; i++) {
       const item = renderContactListEle[i];
-      let size = 60;
+      let size = 54;
       if (React.isValidElement(item) && item.type === Typography) {
         size = 30;
       } else if (React.isValidElement(item) && item.type === Divider) {
@@ -77,9 +91,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
         ...createElementList(filterData),
       ];
     } else {
-      contactListElements = [
-        ...createElementList(filterData),
-      ];
+      contactListElements = [...createElementList(filterData)];
     }
     return contactListElements;
   };
