@@ -12,9 +12,11 @@ import {
   momentLocalDateTime,
 } from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
+import { useState } from "react";
 
 interface IProps {
   task: ITask;
+  userId: string;
   selectedTaskId: string | undefined;
   handleClick: (task: ITask) => void;
   menuOption: any;
@@ -30,6 +32,7 @@ function TaskCard(props: IProps) {
     menuOption,
     disableMenu,
     isTaskFromMe,
+    userId,
   } = props;
   const {
     taskUID,
@@ -43,9 +46,11 @@ function TaskCard(props: IProps) {
     isCreator,
     userSubState,
     assignedToState,
+    seenBy,
   } = task;
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
   const formattedDate = dateFormatWithYearSplit(dueDate);
+  const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const isSelectedTask: boolean = selectedTaskId === _id;
   const trucateText =
     project?.title.length > 8
@@ -86,10 +91,12 @@ function TaskCard(props: IProps) {
 
   return (
     <Card
+      onMouseOver={() => setIsMouseOver(true)}
+      onMouseOut={() => setIsMouseOver(false)}
       sx={{
         width: "100%",
-        minWidth: 285,
-        mt: 1,
+        minWidth: 290,
+        maxWidth: 320,
         cursor: "pointer",
         border: `${
           isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
@@ -101,10 +108,18 @@ function TaskCard(props: IProps) {
         WebkitBoxShadow: `${
           isSelectedTask === true
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : !seenBy.includes(userId)
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
             : "none"
         }`,
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
+        "&:hover": {
+          WebkitBoxShadow: !seenBy.includes(userId)
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset",
+          borderTopRightRadius: "15px",
+        },
       }}
       key={_id}
       id={_id}
@@ -122,7 +137,7 @@ function TaskCard(props: IProps) {
             borderTopLeftRadius: "4px",
             ml: "-1px",
             WebkitBoxShadow: `${
-              isSelectedTask === true
+              isSelectedTask || isMouseOver
                 ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
                 : "none"
             }`,
@@ -164,6 +179,7 @@ function TaskCard(props: IProps) {
         )}
         <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
           <GenericMenu
+            userState={userSubState}
             options={menuOption}
             key={_id}
             disableMenu={disableMenu || !isSelectedTask}

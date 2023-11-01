@@ -13,10 +13,17 @@ interface MenuProps {
   icon?: any;
   options: Option[];
   disableMenu: boolean;
+  userState: string;
   paddingTop?: null | number;
 }
 
-const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu, paddingTop = null }) => {
+const GenericMenu: React.FC<MenuProps> = ({
+  icon,
+  options,
+  disableMenu,
+  userState,
+  paddingTop = null,
+}) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -42,10 +49,13 @@ const GenericMenu: React.FC<MenuProps> = ({ icon, options, disableMenu, paddingT
         onClick={handleMenuClick}
         disabled={disableMenu || options.length === 0}
       >
-        <assets.MoreVertOutlinedIcon color="primary"/>
+        <assets.MoreVertOutlinedIcon
+          color={userState === "done" ? "disabled" : "primary"}
+        />
       </IconButton>
       {anchorEl && (
         <Menu
+          sx={{ ul: { py: 0.5 } }}
           id="fade-menu"
           MenuListProps={{
             "aria-labelledby": "fade-button",

@@ -216,7 +216,6 @@ const ProfileForm = ({ user }: Props) => {
                 error={formik.touched.email && Boolean(formik.errors.email)}
                 helperText={formik.errors.email as string}
               />
-
               <TextField
                 sx={{ background: "white" }}
                 fullWidth
@@ -236,21 +235,32 @@ const ProfileForm = ({ user }: Props) => {
                 }
                 helperText={formik.errors.companyName as string}
               />
-
-              <CustomMuiTextField
-                typeName="text-field"
-                name="jobTitle"
+              <TextField
+                sx={{ background: "white" }}
+                fullWidth
+                size="small"
+                id="outlined-basic"
                 label="Job title"
-                placeholder={t("auth.register.job_title")}
-                inputValue={formik.values.jobTitle}
+                variant="outlined"
+                name="jobTitle"
+                value={formik.values.jobTitle}
                 onChange={(e) => {
                   formik.handleChange(e);
                   checkOnUpdateData(e);
                 }}
+                error={
+                  formik.touched.jobTitle && Boolean(formik.errors.jobTitle)
+                }
+                helperText={formik.errors.jobTitle as string}
               />
             </Grid>
 
-            <Grid item xs={12} md={5} sx={{ gap: { md: 2, sm: 1 }, paddingTop: { md: 2, sm: 1 } }}>
+            <Grid
+              item
+              xs={12}
+              md={5}
+              sx={{ gap: { md: 2, sm: 1 }, paddingTop: { md: 2, sm: 1 } }}
+            >
               <CustomMuiTextField
                 typeName="phone-number"
                 name="phoneNumber"
@@ -283,7 +293,11 @@ const ProfileForm = ({ user }: Props) => {
               </Typography>
             </Grid>
 
-            <Grid item container sx={{ gap: { md: 2, sm: 1 }, paddingBottom: { md: 2, sm: 1 } }}>
+            <Grid
+              item
+              container
+              sx={{ gap: { md: 2, sm: 1 }, paddingBottom: { md: 2, sm: 1 } }}
+            >
               <Grid container my={2}>
                 <Grid item xs={12}>
                   <Divider />
@@ -303,9 +317,6 @@ const ProfileForm = ({ user }: Props) => {
             </Grid>
             <Divider sx={{ mt: 1, mb: 3 }} />
           </Grid>
-
-
-
 
           <Button
             sx={{ ml: 3 }}

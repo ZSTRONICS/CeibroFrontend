@@ -598,9 +598,9 @@ const taskReducer = (
                 state.allTaskHidden.ongoing[taskIndex].invitedNumbers = forwardedTask.taskData.invitedNumbers;
                 state.allTaskHidden.ongoing[taskIndex].assignedToState = forwardedTask.taskData.assignedToState;
                 state.allTaskHidden.ongoing[taskIndex].updatedAt = forwardedTask.updatedAt;
-                const updatedTask = state.allTaskHidden.ongoing.splice(taskIndex, 1)
-                state.allTaskToMe.ongoing.unshift(...updatedTask);
-                // console.log("TASK_FORWARDED allTaskHidden.ongoing=> allTaskToMe.ongoing", state.allTaskToMe.ongoing[0]);
+                state.allTaskToMe.ongoing.unshift(state.allTaskHidden.ongoing[taskIndex]);
+                state.allTaskHidden.ongoing.splice(taskIndex, 1)
+                // console.log("TASK_FORWARDED allTaskHidden.ongoing=> allTaskToMe.ongoing", state.allTaskToMe.ongoing[0].events);
               }
             } else {
               const toMeNewIndex = state.allTaskToMe.new.findIndex((task: any) => task._id === forwardedTask.taskId);

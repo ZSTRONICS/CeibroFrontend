@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 // mui
+import assets from "assets";
 import { TaskCard } from "components/TaskComponent";
 import { getTaskCardHeight, optionMapping } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
@@ -26,7 +27,6 @@ interface RouteParams {
 }
 const Task = () => {
   const location = useLocation();
-
   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
   const isRenderEffect = useRef<any>(false);
   const dispatch = useDispatch();
@@ -38,7 +38,6 @@ const Task = () => {
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [updateTaskEvent, setUpdateTaskEvent] = useState<any>(null);
-
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -55,7 +54,6 @@ const Task = () => {
   const {
     allTaskToMe,
     allTaskFromMe,
-    allTaskHidden,
     loadingAllTasks,
     RECENT_TASK_UPDATED_TIME_STAMP,
   } = task;
@@ -109,6 +107,7 @@ const Task = () => {
       return keys[keyIndex];
     }
   };
+
   useEffect(() => {
     if (loadingAllTasks) {
       return;
@@ -135,6 +134,7 @@ const Task = () => {
           selectedTab !== filterkey &&
           setSelectedTab(filterkey);
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
+        setSelectedTask(null);
       } else if (subtask && !filterkey) {
         ischangeUrl = true;
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
@@ -194,8 +194,15 @@ const Task = () => {
       }
       setFilteredTask(data);
     }
-  }, [allTaskFromMe, allTaskToMe, allTaskHidden, subtask, selectedTab]);
-
+  }, [
+    // allTaskFromMe,
+    // allTaskToMe,
+    // allTaskHidden,
+    subtask,
+    selectedTab,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  ]);
+  console.log("RECENT_TASK_UPDATED_TIME_STAMP", RECENT_TASK_UPDATED_TIME_STAMP);
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
@@ -506,9 +513,10 @@ const Task = () => {
       return <></>;
     }
     return (
-      <div style={{ ...style, width: "97%" }}>
+      <div style={{ ...style, width: "98%" }}>
         {localTask && (
           <TaskCard
+            userId={userId}
             key={localTask._id}
             isTaskFromMe={isTaskFromMe}
             task={localTask}
@@ -552,18 +560,16 @@ const Task = () => {
     </div>
   );
 
-  const TASK_CARD_GAP_BETWEEN = 10;
+  const TASK_CARD_GAP_BETWEEN = 14;
   return (
-    <Grid container>
+    <Grid container flexWrap={"nowrap"}>
       <Grid
         item
         height={windowHeight}
-        lg={2.68}
-        md={3.82}
-        xs={4.95}
         pt={1}
-        // mb={3}
         sx={{
+          maxWidth: "22.5rem",
+          width: "100%",
           paddingLeft: "16px",
           paddingRight: "10px",
           borderRadius: "4px",
@@ -571,54 +577,52 @@ const Task = () => {
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         }}
       >
-        <Box>
-          <Box
-            className="custom-scrollbar"
-            sx={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: { xs: 2.5, md: 2.2, lg: 3 },
-              overflow: "auto",
-              padding: "8px 8px 4px 8px",
-            }}
-          >
-            {task && subtask && (
-              <FilterTabs
-                subTaskKey={subtask}
-                activeTab={selectedTab}
-                filterKeys={Object.keys(task[subtask])}
-                handleTabClick={handleTabClick}
-              />
-            )}
-          </Box>
-          <Box
-            sx={{
-              width: "100%",
-              paddingLeft: "8px",
-            }}
-          >
-            <InputBase
-              value={searchText}
-              placeholder="Start typing to search"
-              sx={{
-                borderWidth: "0px 0px 1px 0px",
-                borderColor: "#818181",
-                borderStyle: "solid",
-                height: "48px",
-                width: "95%",
-              }}
-              onChange={handleSearch}
+        <Box
+          className="custom-scrollbar"
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: { xs: 1.25, md: 2.5 },
+            overflow: "auto",
+            padding: "12px 6px 8px 1px",
+          }}
+        >
+          {task && subtask && (
+            <FilterTabs
+              subTaskKey={subtask}
+              activeTab={selectedTab}
+              filterKeys={Object.keys(task[subtask])}
+              handleTabClick={handleTabClick}
             />
-          </Box>
+          )}
         </Box>
-
         <Box
           sx={{
-            pl: "6px",
-            mt: 2,
-            mb: 0,
-            pb: 0,
+            width: "100%",
+            pt: 1.25,
+          }}
+        >
+          <InputBase
+            type="search"
+            value={searchText}
+            placeholder="Start typing to search"
+            sx={{
+              borderWidth: "0px 0px 1px 0px",
+              borderColor: "#818181",
+              borderStyle: "solid",
+              width: "100%",
+              paddingLeft: "38px",
+              background: `url(${assets.searchSvgIcon})no-repeat`,
+              backgroundPosition: "5px center",
+            }}
+            onChange={handleSearch}
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: 3,
+            pb: 1,
           }}
         >
           {loadingAllTasks ? (
@@ -648,11 +652,9 @@ const Task = () => {
       <Grid
         height={windowHeight}
         item
-        lg={9}
-        md={7.8}
-        xs={6.53}
         sx={{
           borderRadius: "4px",
+          width: "100%",
           background: "#FFF",
           boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           backgroundColor: "white",

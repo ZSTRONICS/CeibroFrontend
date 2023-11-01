@@ -20,6 +20,7 @@ import pencilFilled from "./images/pencilFilled.png";
 import primaryNudgeIcon from "./images/primaryNudge.svg";
 import questionMarkIcon from "./images/questionMark.png";
 import searchIcon from "./images/searchIcon.png";
+import searchSvgIcon from "./images/searchSvgIcon.svg";
 import sidebarChatIcon from "./images/sidebarChat.png";
 import sidebarDashboardIcon from "./images/sidebarDashboardIcon.png";
 import sidebarFolderIcon from "./images/sidebarFolder.png";
@@ -142,6 +143,7 @@ const assets = {
   primaryNudgeIcon,
   questionMarkIcon,
   searchIcon,
+  searchSvgIcon,
   clip,
   chatIcon,
   folderIcon,

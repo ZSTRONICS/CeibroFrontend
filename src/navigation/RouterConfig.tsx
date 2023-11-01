@@ -48,14 +48,15 @@ const RouterConfig = () => {
 
             {/* <Redirect exact from="/" to={LOGIN_ROUTE} /> */}
 
-
             <Route path={LOGIN_ROUTE} component={Login} />
-            <Route path="/playstore" component={
-              () => {
-                window.location.href = "https://play.google.com/store/apps/details?id=com.zstronics.ceibro";
+            <Route
+              path="/playstore"
+              component={() => {
+                window.location.href =
+                  "https://play.google.com/store/apps/details?id=com.zstronics.ceibro";
                 return <></>;
-              }
-            } />
+              }}
+            />
             <Route path="/forgot-password" component={ForgetPassword} />
             <Route path="/forget-confirmation" component={ForgetConfirmation} />
             <Route path="/reset-password" component={ResetPassword} />

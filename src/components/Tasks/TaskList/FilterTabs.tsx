@@ -43,8 +43,8 @@ function FilterTabs(props: FilterTabProps) {
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.ongoing
             : subTaskKey === "allTaskToMe"
-              ? allTaskToMe.ongoing
-              : allTaskHidden.ongoing;
+            ? allTaskToMe.ongoing
+            : allTaskHidden.ongoing;
         bgColor = "#F1B740";
         isDisabled = false;
         break;
@@ -54,8 +54,8 @@ function FilterTabs(props: FilterTabProps) {
           subTaskKey === "allTaskFromMe"
             ? allTaskFromMe.done
             : subTaskKey === "allTaskToMe"
-              ? allTaskToMe.done
-              : allTaskHidden.done;
+            ? allTaskToMe.done
+            : allTaskHidden.done;
         bgColor = "#55BCB3";
         isDisabled = false;
         break;
@@ -74,7 +74,9 @@ function FilterTabs(props: FilterTabProps) {
         isDisabled={isDisabled}
         key={key}
         label={label}
-        notifyCount={notifyCount}
+        notifyCount={
+          label === "Unread" ? allTaskFromMe.unread.length : notifyCount
+        }
         bgColor={bgColor}
         active={activeTab === key}
         callback={() => handleTabClick(key)}

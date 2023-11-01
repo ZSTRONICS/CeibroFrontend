@@ -3,7 +3,7 @@ import { MouseEventHandler } from "react"; // Import MouseEventHandler
 
 interface StyledChipProps {
   label: string;
-  notifyCount: number | string;
+  notifyCount: number | string | any;
   active?: boolean;
   bgColor: string;
   isDisabled: boolean;
@@ -31,31 +31,22 @@ const StyledChip = ({
       sx={{
         fontFamily: "Inter",
         fontWeight: 600,
-        fontSize: "11px",
-        height: "24px",
-        width: "80px",
-        borderRadius: "8px",
-        padding: "4px 3px",
-        borderWidth: "1.5px",
-        borderColor: bgColor,
-        borderStyle: "solid",
+        fontSize: "11.2px",
+        height: "26px",
+        maxWidth: "85px",
+        minWidth: "80px",
+        width: "100%",
+        borderRadius: "4px",
+        padding: "4px 6px",
+        border: `1.2px solid ${bgColor}`,
+        boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         backgroundColor: `${!isDisabled && active ? bgColor : "white"}`,
         lineHeight: "16px",
         cursor: "pointer",
         "&:hover, &:focus": {
           backgroundColor: `${active ? bgColor : "white"}`,
         },
-        // Responsive styles
-        "@media (max-width: 600px)": {
-          width: "80px",
-          fontSize: "8px",
-          padding: "2px 8px",
-        },
-        "@media (max-width: 400px)": {
-          width: "60px",
-          fontSize: "6px",
-          padding: "2px 6px",
-        },
+        span: { p: 0 },
       }}
       label={label}
       avatar={
@@ -69,10 +60,11 @@ const StyledChip = ({
               "& .MuiBadge-badge": {
                 color: "#000 !important",
                 backgroundColor: bgColor,
-                right: "-20px",
-                top: "2px",
+                right: "-24px",
+                top: "0px",
                 border: "2px solid white",
                 padding: "10px 4px",
+                borderRadius: "60%",
               },
               "@media (max-width: 700px)": {
                 "& .MuiBadge-badge": {
