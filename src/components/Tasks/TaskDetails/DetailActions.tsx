@@ -1,4 +1,5 @@
 import { Box, Chip, Grid } from "@mui/material";
+import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
 import CustomModal from "components/Modal";
@@ -110,7 +111,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const titles = {
-    comment: "Comment",
+    comment: "New comment",
     forward: "Task Forward",
     done: "Task Done",
   };
@@ -177,12 +178,12 @@ const DetailActions: React.FC<IProps> = (props) => {
           <LoadingButton
             startIcon={<ReplyIcon />}
             onClick={() => handleClick("comment")}
-            variant="text"
+            variant="outlined"
             sx={{
               height: "28px",
               // width: "103px",
               fontWeight: "700",
-              padding: "8px 16px",
+              padding: "8px 18px",
             }}
           >
             Reply
@@ -192,12 +193,12 @@ const DetailActions: React.FC<IProps> = (props) => {
               <LoadingButton
                 startIcon={<ForwardIcon />}
                 onClick={() => handleClick("forward")}
-                variant="text"
+                variant="outlined"
                 disabled={false}
                 sx={{
                   height: "28px",
                   fontWeight: "700",
-                  padding: "8px 22px",
+                  padding: "8px 18px",
                 }}
               >
                 Forward
@@ -241,11 +242,18 @@ const DetailActions: React.FC<IProps> = (props) => {
           showDivider={true}
           showCloseBtn={true}
           title={getTitle()}
-          isOpen={isOpen}
+          isOpen={false}
           handleClose={closeModal}
           children={getModalContent()}
         />
       )}
+      <DragableDrawer
+        title={getTitle()}
+        children={getModalContent()}
+        openModal={openModal}
+        closeModal={closeModal}
+        isOpen={isOpen}
+      />
     </>
   );
 };

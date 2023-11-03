@@ -31,6 +31,10 @@
   box-sizing: border-box;
 }
 
+/* .MuiAvatar-root {
+  font-family: 'Inter', sans-serif !important;
+} */
+
 body {
   font-family: 'Inter', sans-serif !important;
   font-weight: 400;
@@ -126,6 +130,30 @@ iframe {
 
 .emptyBorder:active {
   border: none;
+}
+
+.split-element {
+  position: relative;
+  height: 10px;
+}
+
+.split-element::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  transform: translateX(1%);
+  width: 47%;
+  border-bottom: 1px solid;
+}
+
+.split-element::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  transform: translateX(-1%);
+  width: 43%;
+  border-bottom: 1px solid;
 }
 
 .emptyBorder:focus-visible {

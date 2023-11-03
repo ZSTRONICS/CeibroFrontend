@@ -198,11 +198,15 @@ export const useSocket = () => {
         });
 
         sock.on("logout-web", async () => {
-            console.log("logout-web from server");
-            await sock.emit("logout", secureUUID);
-            sock.disconnect();
-            socket.setSocket(null);
-            window.location.reload();
+            try {
+                console.log("logout-web from server");
+                await sock.emit("logout", secureUUID);
+                sock.disconnect();
+                socket.setSocket(null);
+                window.location.reload();
+            } catch (error) {
+                console.log("socket error: ", error);
+            }
         });
 
         sock.on("token_invalid", () => {

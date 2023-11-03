@@ -64,9 +64,10 @@ const UserMenu = () => {
     purgeStoreStates();
     history.push(LOGIN_ROUTE);
   };
-
-  return (
-    !user ? <></> : <>
+  return !user ? (
+    <></>
+  ) : (
+    <>
       <Box sx={{ flexGrow: 0 }}>
         <Button
           disableRipple
@@ -87,7 +88,7 @@ const UserMenu = () => {
               justifyContent="flex-end"
               sx={{
                 flexDirection: "column !important",
-                alignItems:"flex-start",
+                alignItems: "flex-start",
                 "@media (max-width:460px)": {
                   display: "none",
                 },

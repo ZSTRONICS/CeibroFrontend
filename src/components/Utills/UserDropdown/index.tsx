@@ -110,6 +110,7 @@ function UserDropDown(props: IProps) {
     handleChangeValues(invitedNumbers, "invitedNumbers");
     setSearchQuery("");
     setOpen(false);
+    setFilterData(handleGroupSearch("", sortedContacts, "contactFullName"));
   };
 
   const handleOpen = () => {
@@ -247,6 +248,7 @@ function UserDropDown(props: IProps) {
             }}
           >
             <TextField
+              type="search"
               placeholder="Start typing name"
               value={searchQuery}
               onChange={handleSearchChange}
@@ -262,15 +264,9 @@ function UserDropDown(props: IProps) {
                 disableUnderline: true,
               }}
             />
-            {filterData[searchQuery?.[0]?.toUpperCase() || ""] ? (
-              <CustomButton variant="outlined" onClick={handleCancelClick}>
-                Cancel
-              </CustomButton>
-            ) : (
-              <CustomButton variant="outlined" onClick={handleClose}>
-                Done
-              </CustomButton>
-            )}
+            <CustomButton variant="outlined" onClick={handleClose}>
+              Done
+            </CustomButton>
           </ListSubheader>
           <Box
             sx={{

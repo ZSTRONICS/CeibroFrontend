@@ -94,7 +94,10 @@ const Comment = ({
       console.error("Error occurred while uploading files:", error);
     }
   };
-
+  const handleCloseModal = () => {
+    closeModal();
+    setDescription("");
+  };
   const handleSubmit = () => {
     const formdata = new FormData();
     setIsSubmit(true);
@@ -105,7 +108,7 @@ const Comment = ({
     }
     const taskEvent = {
       other: {
-        eventName: title === "Comment" ? "comment" : "doneTask",
+        eventName: title === "Task Done" ? "doneTask" : "comment",
         taskId: taskId,
         hasFiles: filesToUpload.length > 0,
       },
@@ -117,11 +120,9 @@ const Comment = ({
             payload: res.data.data,
           });
           setIsSubmit(false);
-          setDescription("");
-          closeModal();
+          handleCloseModal();
           setSelectedImages([]);
           setSelectedDocuments([]);
-          setDescription("");
         }
       },
       onFailAction: () => {
@@ -154,6 +155,7 @@ const Comment = ({
               required
               multiline
               maxRows={5}
+              value={description}
               sx={{ width: "100%" }}
               onChange={handleDescriptionChange}
             />

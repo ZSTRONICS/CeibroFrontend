@@ -112,7 +112,6 @@ const Task = () => {
     if (loadingAllTasks) {
       return;
     }
-    // console.log(loadingAllTasks, "taskuid", taskuid, subtask, getFilterKey(), filteredTask.length);
     if (isTaskRoute[1] === "tasks") {
       let ischangeUrl = false;
       let path = "";
@@ -190,19 +189,10 @@ const Task = () => {
             `/tasks/${subtask}/${getFilterKey()}/${newSelectedTask?.taskUID}`
           );
         }
-        // setSelectedTask(newSelectedTask);
       }
       setFilteredTask(data);
     }
-  }, [
-    // allTaskFromMe,
-    // allTaskToMe,
-    // allTaskHidden,
-    subtask,
-    selectedTab,
-    RECENT_TASK_UPDATED_TIME_STAMP,
-  ]);
-  console.log("RECENT_TASK_UPDATED_TIME_STAMP", RECENT_TASK_UPDATED_TIME_STAMP);
+  }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
