@@ -21,6 +21,7 @@ import {
 } from "components/Utills/Globals";
 import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useEffect, useRef, useState } from "react";
@@ -329,6 +330,7 @@ function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
+                        {media.length>0&&<ReadMoreWrapper title="Images">
                         <ImageStack py={0.7}>
                           {media.map((file: IFile, i: any) => (
                             <Box
@@ -347,28 +349,30 @@ function AddedDetails(props: IProps) {
                             </Box>
                           ))}
                         </ImageStack>
-
-                        {media.map((file: IFile) => {
+                        </ReadMoreWrapper>}
+                       {media.filter((file:IFile) => file.comment.length > 0).length>0&&<ReadMoreWrapper title="Images with comments">
+                        {media.filter((file:IFile) => file.comment.length > 0).map((file: IFile) => {
                           const hasFileComment = file.comment.length > 0;
                           return (
                             hasFileComment && (
                               <Box
-                                key={file._id}
-                                sx={{
-                                  marginBottom: "16px",
-                                  "&:hover": { cursor: "pointer" },
-                                }}
-                                onClick={() => handleClick(file)}
+                              key={file._id}
+                              sx={{
+                                marginBottom: "16px",
+                                "&:hover": { cursor: "pointer" },
+                              }}
+                              onClick={() => handleClick(file)}
                               >
                                 <ImageBoxWithDesp
                                   src={file.fileUrl}
                                   comment={file.comment}
-                                />
+                                  />
                               </Box>
                             )
-                          );
-                        })}
-                        {docs.length > 0 && <FileBox files={docs} />}
+                            );
+                          })}
+                          </ReadMoreWrapper>}
+                        {docs.length > 0 && <FileBox files={docs} title="Files"/>}
                         <Divider />
                       </React.Fragment>
                     );

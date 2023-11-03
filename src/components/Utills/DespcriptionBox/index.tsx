@@ -59,9 +59,6 @@ const DespcriptionBox = ({ description }: IProps) => (
             color: "#000",
             paddingTop: "5px",
             wordWrap: "break-word",
-            // hyphens: "auto",
-            // MozHyphens: "auto",
-            // msHyphens: "auto",
           }}
         >
           {description === "" ? "N/A" : description}

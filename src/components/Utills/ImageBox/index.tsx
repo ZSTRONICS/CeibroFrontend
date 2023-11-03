@@ -8,8 +8,8 @@ export default function ImageBox({ src }: IProps) {
     <Box>
       <img
         style={{
-          height: "80px",
-          width: "80px",
+          height: "150px",
+          width: "150px",
           borderRadius: "8px",
         }}
         src={src}

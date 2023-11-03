@@ -1,4 +1,4 @@
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import { fileType } from "components/Tasks/type";
 import { ClearIconSvgGray } from "components/material-ui/icons";
@@ -7,6 +7,7 @@ import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
 import assets from "../../../assets/assets";
 import { filesizes } from "../Globals";
+import ReadMoreWrapper from "../ReadMoreWrapper";
 
 interface IProps {
   bt?: boolean;
@@ -37,7 +38,17 @@ const FileBox: React.FC<IProps> = ({
       console.log("not open ");
     }
   };
+function trimFileName(filename:string) {
+  if (filename.length <= 16) {
+    return filename; 
+  }
 
+  const start = filename.slice(0, 7);
+  const end = filename.slice(-7);
+  const trimmedName = start + '...' + end;
+  
+  return trimmedName;
+}
   const handleClick = (file: any) => {
     setFileToView(file);
     openModal();
@@ -45,7 +56,7 @@ const FileBox: React.FC<IProps> = ({
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
           width: "100%",
           borderTop: bt ? "1px solid #ccc" : "none",
@@ -55,43 +66,8 @@ const FileBox: React.FC<IProps> = ({
           alignItems: "center",
           color: "#605c5c",
         }}
-      >
-        {title && (
-          <Box
-            sx={{
-              mt: 0.6,
-              mb: 0.6,
-              width: "83px",
-              height: "20px",
-              pl: 0,
-              display: "flex",
-              alignItems: "center",
-              paddingRight: 2,
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 600,
-                fontSize: "12px",
-              }}
-            >
-              {title}
-            </Typography>
-          </Box>
-        )}
-        <Box
-          className="custom-scrollbar"
-          sx={{
-            overflow: "auto",
-            width: "100%",
-            borderLeft: "1.9px solid #818181",
-            maxHeight: `${showFullHeight ? "100%" : "6.5rem"}`,
-            display: "flex",
-            flexWrap: "wrap",
-            pl: 1.25,
-          }}
-        >
+      > */}
+       <ReadMoreWrapper title={title??''}  >
           {files.length > 0 ? (
             files.map((item: IFile | File | any) => {
               const fileSize = filesizes(item.size);
@@ -126,6 +102,7 @@ const FileBox: React.FC<IProps> = ({
                     src={assets.FileIcon}
                     alt="File Icon"
                   />
+                  <Tooltip title={f_name}>
                   <Typography
                     sx={{
                       fontFamily: "Inter",
@@ -134,8 +111,9 @@ const FileBox: React.FC<IProps> = ({
                       fontSize: "14px",
                     }}
                   >
-                    {f_name}
+                    {trimFileName(f_name)}
                   </Typography>
+                  </Tooltip>
                   {item.size && (
                     <Typography
                       sx={{
@@ -174,8 +152,8 @@ const FileBox: React.FC<IProps> = ({
               No attachment found
             </Typography>
           )}
-        </Box>
-      </Box>
+        </ReadMoreWrapper>
+      {/* </Box> */}
 
       {/* <Box
         className="custom-scrollbar"
