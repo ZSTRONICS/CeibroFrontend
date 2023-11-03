@@ -2,7 +2,6 @@ import { Box, Chip, Grid } from "@mui/material";
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
-import CustomModal from "components/Modal";
 import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
@@ -235,7 +234,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           )}
         </Grid>
       </Grid>
-      {isOpen === true && (
+      {/* {isOpen === true && (
         <CustomModal
           maxWidth={"sm"}
           showFullWidth={true}
@@ -246,7 +245,7 @@ const DetailActions: React.FC<IProps> = (props) => {
           handleClose={closeModal}
           children={getModalContent()}
         />
-      )}
+      )} */}
       <DragableDrawer
         title={getTitle()}
         children={getModalContent()}

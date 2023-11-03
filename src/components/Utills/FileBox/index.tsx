@@ -38,17 +38,17 @@ const FileBox: React.FC<IProps> = ({
       console.log("not open ");
     }
   };
-function trimFileName(filename:string) {
-  if (filename.length <= 16) {
-    return filename; 
-  }
+  function trimFileName(filename: string) {
+    if (filename.length <= 16) {
+      return filename;
+    }
 
-  const start = filename.slice(0, 7);
-  const end = filename.slice(-7);
-  const trimmedName = start + '...' + end;
-  
-  return trimmedName;
-}
+    const start = filename.slice(0, 7);
+    const end = filename.slice(-7);
+    const trimmedName = start + "..." + end;
+
+    return trimmedName;
+  }
   const handleClick = (file: any) => {
     setFileToView(file);
     openModal();
@@ -67,42 +67,42 @@ function trimFileName(filename:string) {
           color: "#605c5c",
         }}
       > */}
-       <ReadMoreWrapper title={title??''}  >
-          {files.length > 0 ? (
-            files.map((item: IFile | File | any) => {
-              const fileSize = filesizes(item.size);
-              let f_name = "";
-              let key = "";
-              const { fileName, _id, name } = item;
-              if (fileName) {
-                f_name = fileName;
-                key = _id;
-              } else if (name) {
-                f_name = name;
-                key = `${name}`;
-              }
-              return (
-                <Box
-                  key={key}
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    padding: "8px",
-                    gap: "7px",
-                    pl: 0,
-                    "&:hover": {
-                      cursor: "pointer",
-                    },
-                  }}
-                  onClick={() => openPDFNewTab(item)}
-                >
-                  <img
-                    width={20}
-                    height={20}
-                    src={assets.FileIcon}
-                    alt="File Icon"
-                  />
-                  <Tooltip title={f_name}>
+      <ReadMoreWrapper title={title ?? ""}>
+        {files.length > 0 ? (
+          files.map((item: IFile | File | any) => {
+            const fileSize = filesizes(item.size);
+            let f_name = "";
+            let key = "";
+            const { fileName, _id, name } = item;
+            if (fileName) {
+              f_name = fileName;
+              key = _id;
+            } else if (name) {
+              f_name = name;
+              key = `${name}`;
+            }
+            return (
+              <Box
+                key={key}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "8px",
+                  gap: "7px",
+                  pl: 0,
+                  "&:hover": {
+                    cursor: "pointer",
+                  },
+                }}
+                onClick={() => openPDFNewTab(item)}
+              >
+                <img
+                  width={20}
+                  height={20}
+                  src={assets.FileIcon}
+                  alt="File Icon"
+                />
+                <Tooltip title={f_name}>
                   <Typography
                     sx={{
                       fontFamily: "Inter",
@@ -113,46 +113,46 @@ function trimFileName(filename:string) {
                   >
                     {trimFileName(f_name)}
                   </Typography>
-                  </Tooltip>
-                  {item.size && (
-                    <Typography
-                      sx={{
-                        fontFamily: "Inter",
-                        fontWeight: 600,
-                        fontSize: "11px",
-                        opacity: 0.54,
-                      }}
-                    >
-                      {fileSize}
-                    </Typography>
-                  )}
-                  {handleClearFile && (
-                    <IconButton
-                      size="small"
-                      aria-label="clear selection"
-                      onClick={() => handleClearFile(item, "doc")}
-                    >
-                      <ClearIconSvgGray height="20" width="20" />
-                    </IconButton>
-                  )}
-                </Box>
-              );
-            })
-          ) : (
-            <Typography
-              sx={{
-                fontFamily: "Inter",
-                fontWeight: 450,
-                fontSize: "13px",
-                opacity: 0.9,
-                marginLeft: "5px",
-                marginRight: "16px",
-              }}
-            >
-              No attachment found
-            </Typography>
-          )}
-        </ReadMoreWrapper>
+                </Tooltip>
+                {item.size && (
+                  <Typography
+                    sx={{
+                      fontFamily: "Inter",
+                      fontWeight: 600,
+                      fontSize: "11px",
+                      opacity: 0.54,
+                    }}
+                  >
+                    {fileSize}
+                  </Typography>
+                )}
+                {handleClearFile && (
+                  <IconButton
+                    size="small"
+                    aria-label="clear selection"
+                    onClick={() => handleClearFile(item, "doc")}
+                  >
+                    <ClearIconSvgGray height="20" width="20" />
+                  </IconButton>
+                )}
+              </Box>
+            );
+          })
+        ) : (
+          <Typography
+            sx={{
+              fontFamily: "Inter",
+              fontWeight: 450,
+              fontSize: "13px",
+              opacity: 0.9,
+              marginLeft: "5px",
+              marginRight: "16px",
+            }}
+          >
+            No attachment found
+          </Typography>
+        )}
+      </ReadMoreWrapper>
       {/* </Box> */}
 
       {/* <Box

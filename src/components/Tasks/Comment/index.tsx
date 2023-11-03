@@ -2,7 +2,6 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, Divider, FormControl, IconButton, Input } from "@mui/material";
 import { MUIInputLabel } from "components/CustomTags";
 import FileBox from "components/Utills/FileBox";
-import ImageBox from "components/Utills/ImageBox";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -154,7 +153,7 @@ const Comment = ({
               id="description"
               required
               multiline
-              maxRows={5}
+              maxRows={10}
               value={description}
               sx={{ width: "100%" }}
               onChange={handleDescriptionChange}
@@ -164,8 +163,9 @@ const Comment = ({
         <Box
           sx={{
             display: "flex",
+            flexWrap: "nowrap",
             padding: "16px 8px",
-            overflow: "auto",
+            overflowY: "auto",
             "&::-webkit-scrollbar": {
               height: "0.4rem",
             },
@@ -182,13 +182,21 @@ const Comment = ({
             return (
               <Box
                 sx={{
-                  width: "80px",
-                  height: "80px",
                   display: "flex",
                   marginRight: "16px",
+                  gap: "16px",
                 }}
               >
-                <ImageBox src={URL.createObjectURL(file)} />
+                <img
+                  style={{
+                    height: "110px",
+                    width: "110px",
+                    borderRadius: "8px",
+                  }}
+                  alt={"iamge"}
+                  src={URL.createObjectURL(file)}
+                />
+                {/* <ImageBox src={URL.createObjectURL(file)} /> */}
                 <IconButton
                   aria-label="delete"
                   onClick={() => {

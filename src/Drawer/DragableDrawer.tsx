@@ -1,5 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import { LoadingButton } from "components/Button";
 import { useEffect, useState } from "react";
 // import Draggable, { DraggableData } from "react-draggable";
 interface Props {
@@ -79,7 +80,7 @@ function DragableDrawer({
             left: "unset",
             right: "1%",
             bottom: "2%",
-            overflowY: "hidden",
+            overflowY: "auto",
           },
         }}
       >
@@ -108,16 +109,36 @@ function DragableDrawer({
                 <DragableLines />
                 <DragableLines2 />
               </div>
-              <Typography
-                sx={{
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  p: 2,
-                  color: "text.primary",
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  paddingRight: "20px",
                 }}
               >
-                {title}
-              </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    p: 2,
+                    color: "text.primary",
+                  }}
+                >
+                  {title}
+                </Typography>
+                <LoadingButton
+                  onClick={() => closeModal()}
+                  variant="outlined"
+                  sx={{
+                    height: "28px",
+                    fontWeight: "700",
+                    padding: "8px 18px",
+                  }}
+                >
+                  Close
+                </LoadingButton>
+              </div>
             </StyledBox>
             <StyledBox
               sx={{

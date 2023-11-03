@@ -70,19 +70,21 @@ export default function DetailsBody(props: IProps) {
           paddingLeft: "0px",
         }}
       >
-        <ReadMoreWrapper title="Description" readMore={true}>
-          <p
-            style={{
-              fontWeight: 400,
-              fontSize: "14px",
-              color: "#000",
-              paddingTop: "5px",
-              wordWrap: "break-word",
-            }}
-          >
-            {description === "" ? "N/A" : description}
-          </p>
-        </ReadMoreWrapper>
+        {description && description !== "" && (
+          <ReadMoreWrapper title="Description" readMore={true}>
+            <p
+              style={{
+                fontWeight: 400,
+                fontSize: "14px",
+                color: "#000",
+                paddingTop: "5px",
+                wordWrap: "break-word",
+              }}
+            >
+              {description}
+            </p>
+          </ReadMoreWrapper>
+        )}
         {/* <DespcriptionBox description={description} /> */}
         {mediaWithoutComment.length > 0 && (
           <ReadMoreWrapper title="Images" readMore={true}>

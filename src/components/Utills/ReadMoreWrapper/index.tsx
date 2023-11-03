@@ -60,6 +60,7 @@ const ReadMoreWrapper = ({
             width: "100%",
             display: "flex",
             justifyContent: "space-between",
+            overflow: "auto",
           }}
         >
           <Box
@@ -69,10 +70,11 @@ const ReadMoreWrapper = ({
               borderLeft: "1.9px solid #818181",
               maxWidth: "95%",
               display: "flex",
+              flexWrap: "wrap",
               alignItems: "center",
             }}
           >
-            {children??<>NA</>}
+            {children ?? <>NA</>}
           </Box>
           {count && (
             <Box sx={{ display: "flex" }}>
@@ -97,20 +99,22 @@ const ReadMoreWrapper = ({
           )}
         </Box>
       </Box>
-      {readMore&&<Box
-        sx={{
-          cursor: "pointer",
-          display: "flex",
-          justifyContent: "end",
-          fontFamily: "Inter",
-          fontSize: "12px",
-          fontWeight: "400",
-          color: "#0076C8",
-        }}
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        {isExpanded ? "View less" : "View more"}
-      </Box>}
+      {readMore && (
+        <Box
+          sx={{
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: "end",
+            fontFamily: "Inter",
+            fontSize: "12px",
+            fontWeight: "400",
+            color: "#0076C8",
+          }}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? "View less" : "View more"}
+        </Box>
+      )}
     </Box>
   );
 };

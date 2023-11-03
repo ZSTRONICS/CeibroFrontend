@@ -39,57 +39,70 @@ export default function DetailsHeader(props: IProps) {
     doneCommentsRequired,
   } = props;
   const data = [
-    { label: "From", value: `${creator.firstName} ${creator.surName}` },
+    { label: "Created by", value: `${creator.firstName} ${creator.surName}` },
     {
       label: "Sent to",
       value:
         assignedToState.length > 0
           ? assignedToState
-            .filter((user) => user.firstName || user.surName)
-            .map((user) => {
-              const { firstName, surName, phoneNumber } = user;
-              if (firstName && surName) {
-                return `${firstName} ${surName}`;
-              } else if (firstName) {
-                return firstName;
-              } else if (surName) {
-                return surName;
-              } else {
-                return phoneNumber;
-              }
-            })
-            .join(", ")
+              .filter((user) => user.firstName || user.surName)
+              .map((user) => {
+                const { firstName, surName, phoneNumber } = user;
+                if (firstName && surName) {
+                  return `${firstName} ${surName}`;
+                } else if (firstName) {
+                  return firstName;
+                } else if (surName) {
+                  return surName;
+                } else {
+                  return phoneNumber;
+                }
+              })
+              .join(", ")
           : "N/A",
     },
-    { label: "Project", value: project ? project.title : "N/A" },
+    { label: "Project", value: project && project.title },
     {
       label: "Invitees",
       value:
-        invitedNumbers.length > 0
-          ? invitedNumbers
-            .map((user: InvitedNumber) => {
-              const { firstName, surName, phoneNumber } = user;
-              if (firstName && surName) {
-                return `${firstName} ${surName}`;
-              } else if (firstName) {
-                return firstName;
-              } else if (surName) {
-                return surName;
-              } else {
-                return phoneNumber;
-              }
-            })
-            .join(", ")
-          : "N/A",
+        invitedNumbers.length > 0 &&
+        invitedNumbers
+          .map((user: InvitedNumber) => {
+            const { firstName, surName, phoneNumber } = user;
+            if (firstName && surName) {
+              return `${firstName} ${surName}`;
+            } else if (firstName) {
+              return firstName;
+            } else if (surName) {
+              return surName;
+            } else {
+              return phoneNumber;
+            }
+          })
+          .join(", "),
     },
   ];
   const windowWidth = window.innerWidth;
-  let gap = windowWidth >= 786 && windowWidth < 1200 ? 2 : windowWidth >= 1200 && windowWidth < 1360 ? 2 : windowWidth >= 1460 ? 1.4 : 1.5;
+  let gap =
+    windowWidth >= 786 && windowWidth < 1200
+      ? 2
+      : windowWidth >= 1200 && windowWidth < 1360
+      ? 2
+      : windowWidth >= 1460
+      ? 1.4
+      : 1.5;
 
   const [rowGap, setRowGap] = useState<number>(gap);
   const handleResize = () => {
     const windowWidth = window.innerWidth;
-    let gap = windowWidth >= 786 && windowWidth < 1200 ? 2 : windowWidth >= 1200 && windowWidth < 1360 ? 2 : windowWidth >= 1460 ? 1.4 : 1.5;
+    let gap =
+      windowWidth >= 786 && windowWidth < 1200
+        ? 2
+        : windowWidth >= 1200 && windowWidth < 1360
+        ? 2
+        : windowWidth >= 1460
+        ? 1.4
+        : 1.5;
     setRowGap(gap);
     return gap;
   };
@@ -120,11 +133,16 @@ export default function DetailsHeader(props: IProps) {
             lineHeight: "20px",
           }}
         >
-          {topic?.topic ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1) : "N/A"}
+          {topic?.topic
+            ? topic.topic.charAt(0).toUpperCase() + topic.topic.slice(1)
+            : "N/A"}
         </Typography>
       </Box>
       <Grid container sx={{ padding: "0px 0px 8px 0px" }} gap={0.5}>
         {data.map((item) => {
+          if (!item.value) {
+            return <></>;
+          }
           return (
             <GridRow key={item.label}>
               <Grid item xs={rowGap}>
@@ -157,6 +175,6 @@ export default function DetailsHeader(props: IProps) {
           );
         })}
       </Grid>
-    </Box >
+    </Box>
   );
 }

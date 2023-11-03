@@ -13,6 +13,7 @@ export default function ImageBox({ src }: IProps) {
           borderRadius: "8px",
         }}
         src={src}
+        alt="images"
       />
     </Box>
   );
