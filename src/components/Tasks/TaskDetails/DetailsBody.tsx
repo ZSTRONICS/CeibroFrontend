@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
+import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import ImageBox from "components/Utills/ImageBox";
 import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
@@ -9,7 +9,6 @@ import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
-
 const CustomScrollbarBox = styled(Box)({
   width: "100%",
   padding: "10px 0px 16px 0px",
@@ -31,14 +30,16 @@ interface IProps {
 
 export default function DetailsBody(props: IProps) {
   const { description, events, media } = props;
-  const [fileToView, setFileToView] = useState<any | null>(null);
+  const [images, setImages] = useState<any | null>(null);
   const [mediaWithComment, setMediaWithComment] = useState<IFile[]>([]);
   const [mediaWithoutComment, setMediaWithoutComment] = useState<IFile[]>([]);
   const [heightOffset, setHeightOffset] = useState();
   const listRef: any = useRef(null);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
-  const handleClick = (file: any) => {
-    setFileToView(file);
+  const [currentImgIndex, setCurrentImageIndex] = useState(0);
+  const handleClick = (files: any, index: number) => {
+    setImages(files);
+    setCurrentImageIndex(index);
     openModal();
   };
 
@@ -89,11 +90,11 @@ export default function DetailsBody(props: IProps) {
         {mediaWithoutComment.length > 0 && (
           <ReadMoreWrapper title="Images" readMore={true}>
             <CustomScrollbarBox>
-              {mediaWithoutComment.map((file: IFile) => {
+              {mediaWithoutComment.map((file: IFile, index: any) => {
                 return (
                   <ImageBoxWrapper
-                    key={file._id}
-                    onClick={() => handleClick(file)}
+                    key={file._id + index}
+                    onClick={() => handleClick(mediaWithoutComment, index)}
                   >
                     <ImageBox src={file.fileUrl} />
                   </ImageBoxWrapper>
@@ -105,11 +106,11 @@ export default function DetailsBody(props: IProps) {
         {mediaWithComment.length > 0 && (
           <ReadMoreWrapper title="Images" readMore={true}>
             <CustomScrollbarBox>
-              {mediaWithComment.map((file: IFile) => {
+              {mediaWithComment.map((file: IFile, index: any) => {
                 return (
                   <ImageBoxWrapper
-                    key={file._id}
-                    onClick={() => handleClick(file)}
+                    key={file._id + index}
+                    onClick={() => handleClick(mediaWithComment, index)}
                   >
                     <ImageBoxWithDesp
                       src={file.fileUrl}
@@ -124,13 +125,16 @@ export default function DetailsBody(props: IProps) {
         <DrawingFiles />
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       </Box>
-      {isOpen && (
-        <ImagePreviewModal
-          isPdfFile={false}
+      {isOpen && images.length > 0 && (
+        <ImgsViewerSlider
+          imgs={images.map((image: any) => ({
+            src: image.fileUrl,
+            caption: image.fileName,
+            srcSet: [`${image.fileUrl} auto`],
+          }))}
+          currImg={currentImgIndex}
           isOpen={isOpen}
-          closeModal={closeModal}
-          title="Image Preview"
-          fileToView={fileToView}
+          onClose={closeModal}
         />
       )}
     </>

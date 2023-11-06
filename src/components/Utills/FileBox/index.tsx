@@ -25,7 +25,6 @@ const FileBox: React.FC<IProps> = ({
   bt,
   files,
   title,
-  showFullHeight,
   handleClearFile,
 }) => {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
@@ -49,10 +48,10 @@ const FileBox: React.FC<IProps> = ({
 
     return trimmedName;
   }
-  const handleClick = (file: any) => {
-    setFileToView(file);
-    openModal();
-  };
+  // const handleClick = (file: any) => {
+  //   setFileToView(file);
+  //   openModal();
+  // };
 
   return (
     <>

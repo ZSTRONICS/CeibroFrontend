@@ -441,10 +441,7 @@ function CreateNewTask() {
                         <Box
                           key={i}
                           sx={{
-                            width: "80px",
-                            height: "80px",
                             display: "flex",
-                            marginRight: "16px",
                           }}
                         >
                           <ImageBox src={URL.createObjectURL(file)} />

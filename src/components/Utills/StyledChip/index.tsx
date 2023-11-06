@@ -36,7 +36,7 @@ const StyledChip = ({
         maxWidth: "85px",
         minWidth: "80px",
         width: "100%",
-        borderRadius: "4px",
+        borderRadius: "5px",
         padding: "4px 6px",
         border: `1.2px solid ${bgColor}`,
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",

@@ -2,6 +2,7 @@ import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { Box, Divider, FormControl, IconButton, Input } from "@mui/material";
 import { MUIInputLabel } from "components/CustomTags";
 import FileBox from "components/Utills/FileBox";
+import { IS_IMAGE } from "components/Utills/Globals";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -81,7 +82,7 @@ const Comment = ({
             JSON.stringify({
               fileName: file.name,
               orignalFileName: file.name,
-              tag: "file",
+              tag: IS_IMAGE(file.name) ? "image" : "file",
             })
           );
         });

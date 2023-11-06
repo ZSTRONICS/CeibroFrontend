@@ -12,6 +12,7 @@ import {
   SubHeadingTag,
 } from "components/CustomTags";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
+import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
@@ -25,11 +26,11 @@ import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useEffect, useRef, useState } from "react";
-
 interface IProps {
   events: TaskEvent[];
   hasFile: boolean;
 }
+
 function AddedDetails(props: IProps) {
   const { events, hasFile } = props;
   const listRef: any = useRef(null);
@@ -37,9 +38,23 @@ function AddedDetails(props: IProps) {
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const [isPdf, setIsPdf] = React.useState<boolean>(false);
   const [fileToView, setFileToView] = React.useState<any | null>(null);
-  const handleClick = (file: any) => {
-    setFileToView(file);
-    setIsPdf(true);
+  const [images, setImages] = useState<any>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  const handleClose = () => {
+    setImages([]);
+    setCurrentImageIndex(0);
+    closeModal();
+  };
+
+  const handleClick = (data: any, isImage: boolean, index: number) => {
+    if (isImage) {
+      setImages(data);
+      setCurrentImageIndex(index);
+    } else {
+      setFileToView(data);
+      setIsPdf(true);
+    }
     openModal();
   };
 
@@ -53,6 +68,7 @@ function AddedDetails(props: IProps) {
       listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
   }, [events?.length, listRef]);
+
   return (
     <>
       <div>
@@ -269,7 +285,7 @@ function AddedDetails(props: IProps) {
                                   file.comment.length === 0 ? "0px" : "16px",
                                 "&:hover": { cursor: "pointer" },
                               }}
-                              onClick={() => handleClick(file)}
+                              onClick={() => handleClick(mediaLocal, true, i)}
                             >
                               {file.comment.length === 0 && (
                                 <ImageBox src={file.fileUrl} />
@@ -278,7 +294,7 @@ function AddedDetails(props: IProps) {
                           ))}
                         </ImageStack>
 
-                        {mediaLocal.map((file: IFile) => {
+                        {mediaLocal.map((file: IFile, index: any) => {
                           const hasFileComment = file.comment.length > 0;
                           return (
                             hasFileComment && (
@@ -288,7 +304,9 @@ function AddedDetails(props: IProps) {
                                   marginBottom: "16px",
                                   "&:hover": { cursor: "pointer" },
                                 }}
-                                onClick={() => handleClick(file)}
+                                onClick={() =>
+                                  handleClick(mediaLocal, true, index)
+                                }
                               >
                                 <ImageBoxWithDesp
                                   src={file.fileUrl}
@@ -330,49 +348,62 @@ function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
-                        {media.length>0&&<ReadMoreWrapper title="Images">
-                        <ImageStack py={0.7}>
-                          {media.map((file: IFile, i: any) => (
-                            <Box
-                              key={file._id + i}
-                              sx={{
-                                marginRight: "16px",
-                                marginBottom:
-                                  file.comment.length === 0 ? "0px" : "16px",
-                                "&:hover": { cursor: "pointer" },
-                              }}
-                              onClick={() => handleClick(file)}
-                            >
-                              {file.comment.length === 0 && (
-                                <ImageBox src={file.fileUrl} />
-                              )}
-                            </Box>
-                          ))}
-                        </ImageStack>
-                        </ReadMoreWrapper>}
-                       {media.filter((file:IFile) => file.comment.length > 0).length>0&&<ReadMoreWrapper title="Images with comments">
-                        {media.filter((file:IFile) => file.comment.length > 0).map((file: IFile) => {
-                          const hasFileComment = file.comment.length > 0;
-                          return (
-                            hasFileComment && (
-                              <Box
-                              key={file._id}
-                              sx={{
-                                marginBottom: "16px",
-                                "&:hover": { cursor: "pointer" },
-                              }}
-                              onClick={() => handleClick(file)}
-                              >
-                                <ImageBoxWithDesp
-                                  src={file.fileUrl}
-                                  comment={file.comment}
-                                  />
-                              </Box>
-                            )
-                            );
-                          })}
-                          </ReadMoreWrapper>}
-                        {docs.length > 0 && <FileBox files={docs} title="Files"/>}
+                        {media.length > 0 && (
+                          <ReadMoreWrapper title="Images">
+                            <ImageStack py={0.7}>
+                              {media.map((file: IFile, i: any) => (
+                                <Box
+                                  key={file._id + i}
+                                  sx={{
+                                    marginRight: "16px",
+                                    marginBottom:
+                                      file.comment.length === 0
+                                        ? "0px"
+                                        : "16px",
+                                    "&:hover": { cursor: "pointer" },
+                                  }}
+                                  onClick={() => handleClick(media, true, i)}
+                                >
+                                  {file.comment.length === 0 && (
+                                    <ImageBox src={file.fileUrl} />
+                                  )}
+                                </Box>
+                              ))}
+                            </ImageStack>
+                          </ReadMoreWrapper>
+                        )}
+                        {media.filter((file: IFile) => file.comment.length > 0)
+                          .length > 0 && (
+                          <ReadMoreWrapper title="Images with comments">
+                            {media
+                              .filter((file: IFile) => file.comment.length > 0)
+                              .map((file: IFile, index: any) => {
+                                const hasFileComment = file.comment.length > 0;
+                                return (
+                                  hasFileComment && (
+                                    <Box
+                                      key={file._id}
+                                      sx={{
+                                        marginBottom: "16px",
+                                        "&:hover": { cursor: "pointer" },
+                                      }}
+                                      onClick={() =>
+                                        handleClick(media, true, index)
+                                      }
+                                    >
+                                      <ImageBoxWithDesp
+                                        src={file.fileUrl}
+                                        comment={file.comment}
+                                      />
+                                    </Box>
+                                  )
+                                );
+                              })}
+                          </ReadMoreWrapper>
+                        )}
+                        {docs.length > 0 && (
+                          <FileBox files={docs} title="Files" />
+                        )}
                         <Divider />
                       </React.Fragment>
                     );
@@ -388,13 +419,25 @@ function AddedDetails(props: IProps) {
           </AccordionDetails>
         </Accordion>
       </div>
-      {isOpen && (
+      {isOpen && isPdf && (
         <ImagePreviewModal
           isOpen={isOpen}
           isPdfFile={isPdf}
           closeModal={closeModal}
           title={isPdf ? "File Preview" : "Image Preview"}
           fileToView={fileToView}
+        />
+      )}
+      {isOpen && !isPdf && images.length > 0 && (
+        <ImgsViewerSlider
+          imgs={images.map((image: any) => ({
+            src: image.fileUrl,
+            caption: image.fileName,
+            srcSet: [`${image.fileUrl} auto`],
+          }))}
+          currImg={currentImageIndex}
+          isOpen={isOpen}
+          onClose={handleClose}
         />
       )}
     </>

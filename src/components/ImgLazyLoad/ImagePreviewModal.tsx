@@ -21,35 +21,37 @@ const ImagePreviewModal: React.FC<ImagePreviewModalProps> = ({
     console.error("Error loading PDF:", e);
   };
   return (
-    <CustomModal
-      maxWidth={"false"}
-      isOpen={isOpen}
-      handleClose={closeModal}
-      showCloseBtn={true}
-      title={title}
-      children={
-        <>
-          {fileToView && (
-            <>
-              {isPdfFile ? (
-                <PDFViewer
-                  src={fileToView.fileUrl}
-                  onLoad={() => console.log("PDF loaded successfully")}
-                  onError={handleError}
-                />
-              ) : (
-                <ImageLazyLoad
-                  maxWidth="100%"
-                  src={fileToView.fileUrl}
-                  alt="image"
-                  imgZoomHandler={true}
-                />
-              )}
-            </>
-          )}
-        </>
-      }
-    />
+    <>
+      <CustomModal
+        maxWidth={"false"}
+        isOpen={isOpen}
+        handleClose={closeModal}
+        showCloseBtn={true}
+        title={title}
+        children={
+          <>
+            {fileToView && (
+              <>
+                {isPdfFile ? (
+                  <PDFViewer
+                    src={fileToView.fileUrl}
+                    onLoad={() => console.log("PDF loaded successfully")}
+                    onError={handleError}
+                  />
+                ) : (
+                  <ImageLazyLoad
+                    maxWidth="100%"
+                    src={fileToView.fileUrl}
+                    alt="image"
+                    imgZoomHandler={true}
+                  />
+                )}
+              </>
+            )}
+          </>
+        }
+      />
+    </>
   );
 };
 
