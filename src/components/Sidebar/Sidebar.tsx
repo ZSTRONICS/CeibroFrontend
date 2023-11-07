@@ -1,6 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
-import { countUnseenTasks } from "components/Utills/Globals";
+import {
+  countUnseenTasks,
+  updateLocalStorageObject,
+} from "components/Utills/Globals";
 import {
   FromMEIcon,
   HiddenIcon,
@@ -29,12 +32,21 @@ function Sidebar(props: any) {
     useState<selectedTaskFilterType>();
   const { user } = useSelector((store: RootState) => store.auth);
   const task: any = useSelector((state: RootState) => state.task);
-  const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
+  const {
+    allTaskToMe,
+    allTaskFromMe,
+    allTaskHidden,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  } = task;
   const { selectedTab, sidebarRoutes } = useSelector(
     (store: RootState) => store.navigation
   );
   const configs = sidebarRoutes[selectedTab]?.childTab;
   const splitedPath = location.pathname.split("/");
+  let taskUnseenTabs = JSON.parse(localStorage.getItem("unSeenTasks") as any);
+  const [isTaskTabSeen, setisTaskTabSeen] = useState(taskUnseenTabs);
+  // const [doOnce, setDoOnce] = useState(true);
+  const updatedConfigs = { ...configs };
 
   useEffect(() => {
     const mainTab: selectedTaskFilterType =
@@ -56,7 +68,6 @@ function Sidebar(props: any) {
       history.push(`/tasks/${config.key}`);
     }
   };
-
   function countUnseenTasksFromLists(taskLists: any, userId: string) {
     return countUnseenTasks(
       taskLists.reduce(
@@ -82,17 +93,47 @@ function Sidebar(props: any) {
     user?._id
   );
 
+  // if (selectedTab === "tasks" && configs) {
+  //   updatedConfigs.allTaskFromMe.icon =
+  //     countFromMe >= 1 ? UnseenFromMe : FromMEIcon;
+  //   updatedConfigs.allTaskToMe.icon = countToMe >= 1 ? UnseenToMe : ToMeIcon;
+  //   updatedConfigs.allTaskHidden.icon =
+  //     countHidden >= 1 ? UnseenHidden : HiddenIcon;
+  // }
+  useEffect(() => {
+    let updatedState: any = { ...isTaskTabSeen };
+    if (selectedChildTab === "allTaskToMe") {
+      updatedState = { isTomeUnseen: false };
+    } else if (selectedChildTab === "allTaskFromMe") {
+      updatedState = { isFromMeUnseen: false };
+    } else if (selectedChildTab === "allTaskHidden") {
+      updatedState = { isHiddenUnseen: false };
+    }
+    if (updatedState) {
+      setTimeout(() => {
+        updateLocalStorageObject(updatedState);
+        setisTaskTabSeen(updatedState);
+      }, 100);
+    }
+  }, [RECENT_TASK_UPDATED_TIME_STAMP, selectedChildTab]);
+
   if (selectedTab === "tasks" && configs) {
-    configs.allTaskFromMe.icon = countFromMe >= 1 ? UnseenFromMe : FromMEIcon;
-    configs.allTaskToMe.icon = countToMe >= 1 ? UnseenToMe : ToMeIcon;
-    configs.allTaskHidden.icon = countHidden >= 1 ? UnseenHidden : HiddenIcon;
+    configs.allTaskFromMe.icon = taskUnseenTabs.isFromMeUnseen
+      ? UnseenFromMe
+      : FromMEIcon;
+    configs.allTaskToMe.icon = taskUnseenTabs.isTomeUnseen
+      ? UnseenToMe
+      : ToMeIcon;
+    configs.allTaskHidden.icon = taskUnseenTabs.isHiddenUnseen
+      ? UnseenHidden
+      : HiddenIcon;
   }
 
   return (
     <>
       <div className={classes.menueWrapper}>
-        {configs &&
-          Object.values(configs).map((config: any) => {
+        {updatedConfigs &&
+          Object.values(updatedConfigs).map((config: any) => {
             if (user && config.title === "Admin" && user.role !== "admin") {
               return <React.Fragment key={config.title} />;
             }

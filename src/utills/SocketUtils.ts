@@ -1,3 +1,4 @@
+import { updateLocalStorageObject } from "components/Utills/Globals";
 import { DOCS_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
@@ -18,7 +19,6 @@ export const useSocket = () => {
     const dispatch = useDispatch();
     const history = useHistory();
     const windowClose = window.getSelection();
-
     const handleSocketEvents = (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
@@ -45,8 +45,24 @@ export const useSocket = () => {
                 if (!data.access.includes(userId)) {
                     return;
                 }
+                updateLocalStorageObject({
+                    isTomeUnseen: data.toMeState === 'new' ? true : false,
+                    isFromMeUnseen: data.fromMeState === "unread" ? true : false,
+                });
                 dispatch({
                     type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
+                    payload: data,
+                });
+                break;
+
+            case TASK_CONFIG.NEW_TASK_COMMENT:
+                updateLocalStorageObject({
+                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
+                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
+                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
+                });
+                dispatch({
+                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
                 });
                 break;
@@ -61,6 +77,11 @@ export const useSocket = () => {
                 break;
 
             case TASK_CONFIG.TASK_FORWARDED:
+                updateLocalStorageObject({
+                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
+                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
+                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
+                });
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },
@@ -70,7 +91,11 @@ export const useSocket = () => {
             case TASK_CONFIG.TASK_DONE:
             case TASK_CONFIG.CANCELED_TASK:
             case TASK_CONFIG.UN_CANCEL_TASK:
-            case TASK_CONFIG.NEW_TASK_COMMENT:
+                updateLocalStorageObject({
+                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
+                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
+                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
+                });
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
@@ -249,6 +274,7 @@ export const useSocket = () => {
         });
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
+
             console.log("eventType--->", dataRcvd);
             // if (ack) {
             //     console.log(`sending ack to server`)

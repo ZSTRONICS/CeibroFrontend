@@ -170,11 +170,11 @@ const Project = () => {
       if (showProjectList === false) {
         setShowProjectList(true);
       }
-      if (isTimeOut && isTimeOut.hasRef()) {
+      if (isTimeOut && isTimeOut?.hasRef()) {
         isTimeOut.unref();
       }
     } else {
-      if (!isTimeOut || !isTimeOut.hasRef()) {
+      if (!isTimeOut || !isTimeOut?.hasRef()) {
         isTimeOut = setTimeout(() => {
           getHeaderHeight();
         }, 50);

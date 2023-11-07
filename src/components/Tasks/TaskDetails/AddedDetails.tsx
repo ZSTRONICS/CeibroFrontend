@@ -432,7 +432,7 @@ function AddedDetails(props: IProps) {
         <ImgsViewerSlider
           imgs={images.map((image: any) => ({
             src: image.fileUrl,
-            caption: image.fileName,
+            caption: image.comment,
             srcSet: [`${image.fileUrl} auto`],
           }))}
           currImg={currentImageIndex}

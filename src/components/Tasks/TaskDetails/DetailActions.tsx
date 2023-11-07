@@ -179,10 +179,10 @@ const DetailActions: React.FC<IProps> = (props) => {
             onClick={() => handleClick("comment")}
             variant="outlined"
             sx={{
-              height: "28px",
-              // width: "103px",
+              borderRadius: "4px",
               fontWeight: "700",
-              padding: "8px 18px",
+              border: "1px solid #0076C8",
+              padding: "0px 16px",
             }}
           >
             Reply
@@ -195,9 +195,10 @@ const DetailActions: React.FC<IProps> = (props) => {
                 variant="outlined"
                 disabled={false}
                 sx={{
-                  height: "28px",
+                  borderRadius: "4px",
                   fontWeight: "700",
-                  padding: "8px 18px",
+                  border: "1px solid #0076C8",
+                  padding: "0px 14px",
                 }}
               >
                 Forward
@@ -207,9 +208,11 @@ const DetailActions: React.FC<IProps> = (props) => {
                   variant="contained"
                   onClick={handleDoneClick}
                   sx={{
-                    height: "28px",
+                    borderRadius: "4px",
                     fontWeight: "700",
-                    padding: "16px 30px",
+                    border: "1px solid #0076C8",
+                    padding: "0px 16px",
+                    width: "100px",
                   }}
                   disabled={false}
                 >

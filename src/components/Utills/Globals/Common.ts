@@ -22,6 +22,25 @@ export const getSelectedProjectMembers = (projectId: string, projectWithMembers:
   return projectMembers;
 };
 
+const updateLocalStorageObject = (updateObject: any) => {
+  try {
+    let storedString = localStorage.getItem("unSeenTasks");
+    let storedObject = {};
+    if (storedString) {
+      storedObject = JSON.parse(storedString);
+      if (typeof storedObject !== 'object' || storedObject === null) {
+        throw new Error('Data in local storage is not an object.');
+      }
+    }
+    Object.assign(storedObject, updateObject);
+    localStorage.setItem("unSeenTasks", JSON.stringify(storedObject));
+    return storedObject;
+  } catch (error) {
+    console.error('Error updating local storage:', error);
+    return {};
+  }
+};
+
 export const getUserFormatedDataForAutoComplete = (arr: any) => {
   return arr?.map((member: any) => {
     return {
@@ -497,5 +516,5 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { countUnseenTasks, formatDropdownData, momentdeDateFormatWithDay, optionMapping };
+export { countUnseenTasks, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject };
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import ImgsViewer from "react-images-viewer";
 
@@ -14,10 +15,14 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
   currImg,
 }) => {
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(currImg || 0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(currImg);
+  useEffect(() => {
+    setCurrentImageIndex(currImg);
+  }, [currImg]);
 
   const handleClose = () => {
     setLoadingError(false);
+    setCurrentImageIndex(0);
     onClose();
   };
 
@@ -32,21 +37,21 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
       prevIndex === imgs.length - 1 ? 0 : prevIndex + 1
     );
   };
-  useEffect(() => {
-    let loadingTimeout: NodeJS.Timeout;
-    if (isOpen) {
-      loadingTimeout = setTimeout(() => {
-        setLoadingError(true);
-        setTimeout(() => {
-          handleClose();
-        }, 3000);
-      }, 5000);
-    }
+  // useEffect(() => {
+  //   let loadingTimeout: NodeJS.Timeout;
+  //   if (isOpen) {
+  //     loadingTimeout = setTimeout(() => {
+  //       setLoadingError(true);
+  //       setTimeout(() => {
+  //         handleClose();
+  //       }, 3000);
+  //     }, 10000);
+  //   }
 
-    return () => {
-      clearTimeout(loadingTimeout);
-    };
-  }, [isOpen]);
+  //   return () => {
+  //     clearTimeout(loadingTimeout);
+  //   };
+  // }, [isOpen]);
   return (
     <>
       {imgs.length > 0 && (
