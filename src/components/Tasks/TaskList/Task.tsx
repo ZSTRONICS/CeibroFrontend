@@ -55,11 +55,13 @@ const Task = () => {
     allTaskToMe,
     allTaskFromMe,
     loadingAllTasks,
+    allTaskHidden,
     RECENT_TASK_UPDATED_TIME_STAMP,
   } = task;
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
+
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
       allTaskToMe: ["new", "ongoing", "done"],

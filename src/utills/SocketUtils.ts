@@ -92,9 +92,9 @@ export const useSocket = () => {
             case TASK_CONFIG.CANCELED_TASK:
             case TASK_CONFIG.UN_CANCEL_TASK:
                 updateLocalStorageObject({
-                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
-                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
-                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
+                    isTomeUnseen: data.newTaskData.toMeState !== "NA" ? true : false,
+                    isFromMeUnseen: data.newTaskData.fromMeState !== "NA" ? true : false,
+                    isHiddenUnseen: data.newTaskData.hiddenState !== "NA" ? true : false,
                 });
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,

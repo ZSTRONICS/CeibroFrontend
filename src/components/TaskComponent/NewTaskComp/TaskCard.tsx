@@ -59,7 +59,7 @@ function TaskCard(props: IProps) {
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
   const assignToNames = () =>
-    assignedToState.length > 0 ? (
+    assignedToState.length > 1 ? (
       <Tooltip title={AssignedToList(assignedToState)}>
         <span
           style={{
@@ -69,7 +69,7 @@ function TaskCard(props: IProps) {
             backgroundColor: "transparent",
           }}
         >
-          +{assignedToState.length}
+          +{assignedToState.length - 1}
         </span>
       </Tooltip>
     ) : (
@@ -182,6 +182,7 @@ function TaskCard(props: IProps) {
             userState={userSubState}
             options={menuOption}
             key={_id}
+            isCreator={isCreator}
             disableMenu={disableMenu || !isSelectedTask}
             paddingTop={0}
           />
@@ -206,10 +207,16 @@ function TaskCard(props: IProps) {
                   fontSize: "11px",
                 }}
               >
-                {`${creator.firstName} ${creator.surName}`}
+                {`${
+                  isTaskFromMe === "To"
+                    ? assignedToState[0].firstName +
+                      " " +
+                      assignedToState[0].surName
+                    : creator.firstName + " " + creator.surName
+                }`}
               </span>
             </TaskCardLabel>
-            {assignToNames()}
+            {isTaskFromMe !== "From" && assignToNames()}
           </Box>
 
           {project?.title && (

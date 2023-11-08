@@ -15,6 +15,7 @@ interface MenuProps {
   disableMenu: boolean;
   userState: string;
   paddingTop?: null | number;
+  isCreator: boolean;
 }
 
 const GenericMenu: React.FC<MenuProps> = ({
@@ -22,6 +23,7 @@ const GenericMenu: React.FC<MenuProps> = ({
   options,
   disableMenu,
   userState,
+  isCreator,
   paddingTop = null,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -36,7 +38,9 @@ const GenericMenu: React.FC<MenuProps> = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-
+  const iconColor =
+    (userState === "done" && isCreator) ||
+    (userState === "canceled" && !isCreator);
   return (
     <>
       <IconButton
@@ -50,7 +54,7 @@ const GenericMenu: React.FC<MenuProps> = ({
         disabled={disableMenu || options.length === 0}
       >
         <assets.MoreVertOutlinedIcon
-          color={userState === "done" ? "disabled" : "primary"}
+          color={iconColor ? "disabled" : "primary"}
         />
       </IconButton>
       {anchorEl && (

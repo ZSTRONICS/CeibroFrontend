@@ -22,6 +22,15 @@ export const getSelectedProjectMembers = (projectId: string, projectWithMembers:
   return projectMembers;
 };
 
+function countUnseenTasksFromLists(taskLists: any) {
+  return countUnseenTasks(
+    taskLists.reduce(
+      (accumulated: any, current: any) => [...accumulated, ...current],
+      []
+    )
+  );
+}
+
 const updateLocalStorageObject = (updateObject: any) => {
   try {
     let storedString = localStorage.getItem("unSeenTasks");
@@ -50,9 +59,9 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   });
 };
 
-function countUnseenTasks(tasks: any[], userId: string) {
+function countUnseenTasks(tasks: any[]) {
   // count is the accumulator, which starts at 0
-  return tasks.reduce((count, task) => (task.seenBy.includes(userId) ? count : count + 1), 0);
+  return tasks.reduce((count, task) => (task.isSeenByMe ? count : count + 1), 0);
 }
 
 /**
@@ -516,5 +525,5 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { countUnseenTasks, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject };
+export { countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject };
 

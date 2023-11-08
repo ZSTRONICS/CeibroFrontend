@@ -93,12 +93,6 @@ const LoginForm: React.FC<Props> = (props) => {
       },
       success: (res: any) => {
         dispatch(userApiAction.getUserContacts());
-        const unSeenTasks = {
-          isFromMeUnseen: false,
-          isTomeUnseen: false,
-          isHiddenUnseen: false,
-        };
-        localStorage.setItem("unSeenTasks", JSON.stringify(unSeenTasks));
       },
       showErrorToast: false,
     };

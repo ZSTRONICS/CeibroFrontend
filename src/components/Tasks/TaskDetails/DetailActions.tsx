@@ -183,6 +183,9 @@ const DetailActions: React.FC<IProps> = (props) => {
               fontWeight: "700",
               border: "1px solid #0076C8",
               padding: "0px 16px",
+              span: {
+                mr: "4px",
+              },
             }}
           >
             Reply
@@ -198,7 +201,10 @@ const DetailActions: React.FC<IProps> = (props) => {
                   borderRadius: "4px",
                   fontWeight: "700",
                   border: "1px solid #0076C8",
-                  padding: "0px 14px",
+                  padding: "0px 12px",
+                  span: {
+                    marginRight: "4px",
+                  },
                 }}
               >
                 Forward

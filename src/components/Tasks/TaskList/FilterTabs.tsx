@@ -14,8 +14,6 @@ interface FilterTabProps {
 
 function FilterTabs(props: FilterTabProps) {
   const { activeTab, filterKeys, subTaskKey, handleTabClick } = props;
-  const { user } = useSelector((store: RootState) => store.auth);
-  const userId = user && String(user._id);
   const task: any = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const renderTabs = filterKeys.map((key: string) => {
@@ -68,7 +66,7 @@ function FilterTabs(props: FilterTabProps) {
       default:
         break;
     }
-    const notifyCount = countUnseenTasks(tasks, userId);
+    const notifyCount = countUnseenTasks(tasks);
     return (
       <StyledChip
         isDisabled={isDisabled}

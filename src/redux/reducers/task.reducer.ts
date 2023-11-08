@@ -1,8 +1,10 @@
 import {
   addEventToTask,
   addUniqueEventToTask,
+  countUnseenTasksFromLists,
   moveTaskOnTopByIndex,
   pushSeenBy,
+  updateLocalStorageObject,
   updateTaskOnCancelEvent
 } from "components/Utills/Globals";
 import { TASK_CONFIG } from "config";
@@ -661,8 +663,15 @@ const taskReducer = (
     }
     case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
       const { fromMe, hidden, toMe, latestUpdatedAt } = action.payload.allTasks
-      // assign latestUpdatedAt to RECENT_TASK_UPDATED_TIME_STAMP if the latestUpdatedAt
-      //  is greater than RECENT_TASK_UPDATED_TIME_STAMP both values are in string
+      const countToMe = countUnseenTasksFromLists([toMe.new, toMe.ongoing, toMe.done]);
+      const countFromMe = countUnseenTasksFromLists([fromMe.unread, fromMe.ongoing, fromMe.done]);
+      const countHidden = countUnseenTasksFromLists([hidden.canceled, hidden.ongoing, hidden.done]);
+      const updatedConfigs = {
+        isTomeUnseen: countToMe >= 1 ? true : false,
+        isFromMeUnseen: countFromMe >= 1 ? true : false,
+        isHiddenUnseen: countHidden >= 1 ? true : false,
+      };
+      updateLocalStorageObject(updatedConfigs)
       const currentUpdatedAt = new Date(latestUpdatedAt);
       const recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
 
