@@ -1,7 +1,5 @@
 import { Box } from "@mui/material";
 import { styled } from "@mui/system";
-import ImageBox from "components/Utills/ImageBox";
-import ImageBoxWithDesp from "components/Utills/ImageBoxWithDesp";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
@@ -21,7 +19,7 @@ const ImageBoxWrapper = styled(Box)({
   },
 });
 interface IProps {
-  description: string;
+  description?: string;
   events: TaskEvent[];
   media: IFile[];
   handleFiles: any;
@@ -62,59 +60,45 @@ export default function DetailsBody(props: IProps) {
           paddingLeft: "0px",
         }}
       >
-        {description && description !== "" && (
-          <ReadMoreWrapper title="Description" readMore={true}>
-            <p
-              style={{
-                fontWeight: 400,
-                fontSize: "14px",
-                color: "#000",
-                paddingTop: "5px",
-                wordWrap: "break-word",
-              }}
-            >
-              {description}
-            </p>
-          </ReadMoreWrapper>
-        )}
+        <ReadMoreWrapper title="Description" readMore={!!description??false} type="text" data={description} />
         {mediaWithoutComment.length > 0 && (
-          <ReadMoreWrapper title="Images" readMore={true}>
-            <CustomScrollbarBox>
-              {mediaWithoutComment.map((file: IFile, index: any) => {
-                return (
-                  <ImageBoxWrapper
-                    key={file._id + index}
-                    onClick={() =>
-                      props.handleFiles(mediaWithoutComment, file._id)
-                    }
-                  >
-                    <ImageBox src={file.fileUrl} />
-                  </ImageBoxWrapper>
-                );
-              })}
-            </CustomScrollbarBox>
-          </ReadMoreWrapper>
+          <ReadMoreWrapper title="Images" readMore={true} type='image' data={mediaWithoutComment} />
+            // <CustomScrollbarBox>
+            //   {mediaWithoutComment.map((file: IFile, index: any) => {
+            //     return (
+            //       <ImageBoxWrapper
+            //         key={file._id + index}
+            //         onClick={() =>
+            //           props.handleFiles(mediaWithoutComment, file._id)
+            //         }
+            //       >
+            //         <ImageBox src={file.fileUrl} />
+            //       </ImageBoxWrapper>
+            //     );
+            //   })}
+            // </CustomScrollbarBox>
+          // </ReadMoreWrapper>
         )}
         {mediaWithComment.length > 0 && (
-          <ReadMoreWrapper title="Images" readMore={true}>
-            <CustomScrollbarBox>
-              {mediaWithComment.map((file: IFile, index: any) => {
-                return (
-                  <ImageBoxWrapper
-                    key={file._id + index}
-                    onClick={() =>
-                      props.handleFiles(mediaWithComment, file._id)
-                    }
-                  >
-                    <ImageBoxWithDesp
-                      src={file.fileUrl}
-                      comment={file.comment}
-                    />
-                  </ImageBoxWrapper>
-                );
-              })}
-            </CustomScrollbarBox>
-          </ReadMoreWrapper>
+          <ReadMoreWrapper title="Images" readMore={true} type='imageWithDesp' data={mediaWithComment} />
+            // <CustomScrollbarBox>
+            //   {mediaWithComment.map((file: IFile, index: any) => {
+            //     return (
+            //       <ImageBoxWrapper
+            //         key={file._id + index}
+            //         onClick={() =>
+            //           props.handleFiles(mediaWithComment, file._id)
+            //         }
+            //       >
+            //         <ImageBoxWithDesp
+            //           src={file.fileUrl}
+            //           comment={file.comment}
+            //         />
+            //       </ImageBoxWrapper>
+            //     );
+            //   })}
+            // </CustomScrollbarBox>
+          // </ReadMoreWrapper>
         )}
         <DrawingFiles />
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}
