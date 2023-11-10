@@ -1,8 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
-import { LoadingButton } from "components/Button";
 import { useEffect, useState } from "react";
-// import Draggable, { DraggableData } from "react-draggable";
+import Draggable, { DraggableData } from "react-draggable";
 interface Props {
   isOpen: boolean;
   openModal: any;
@@ -48,17 +47,17 @@ function DragableDrawer({
     }
   }, [isOpen]);
 
-  // const handleStart = (e: any) => {
-  //   e.stopPropagation();
-  // };
+  const handleStart = (e: any) => {
+    e.stopPropagation();
+  };
 
-  // const handleDrag = (e: any, data: DraggableData) => {
-  //   const newHeight = drawerHeight - data.y;
-  //   setDrawerHeight(newHeight);
-  //   if (newHeight < 90) {
-  //     closeModal();
-  //   }
-  // };
+  const handleDrag = (e: any, data: DraggableData) => {
+    const newHeight = drawerHeight - data.y;
+    setDrawerHeight(newHeight);
+    if (newHeight < 90) {
+      closeModal();
+    }
+  };
   return (
     <div style={{ height: "100%" }}>
       <SwipeableDrawer
@@ -74,85 +73,74 @@ function DragableDrawer({
         }}
         sx={{
           "&.MuiDrawer-root > .MuiPaper-root": {
-            height: `${drawerHeight}px`,
             width: `calc(100vw - 29rem)`,
             overflow: "visible",
             left: "unset",
             right: "1%",
             bottom: "2%",
-            overflowY: "auto",
+            overflowY: "hidden",
           },
         }}
       >
         {isOpen && (
-          // <Draggable
-          //   axis="y"
-          //   handle={".handle"}
-          //   onStart={handleStart}
-          //   onDrag={handleDrag}
-          //   bounds={{ bottom: 350 }}
-          // >
-          <StyledBox>
-            <StyledBox
-              className={"handle"}
-              sx={{
-                borderTopLeftRadius: 8,
-                borderTopRightRadius: 8,
-                visibility: "visible",
-                // cursor: "grab",
-              }}
-            >
-              <div
-                style={{ display: "flex", flexDirection: "column" }}
-                className="split-element"
-              >
-                <DragableLines />
-                <DragableLines2 />
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingRight: "20px",
+          <Draggable
+            axis="y"
+            handle={".handle"}
+            onStart={handleStart}
+            onDrag={handleDrag}
+            bounds={{ bottom: 350 }}
+          >
+            <StyledBox>
+              <StyledBox
+                className={"handle"}
+                sx={{
+                  borderTopLeftRadius: 8,
+                  borderTopRightRadius: 8,
+                  visibility: "visible",
+                  cursor: "row-resize",
                 }}
               >
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontWeight: 700,
-                    p: 2,
-                    color: "text.primary",
+                <div
+                  style={{ display: "flex", flexDirection: "column" }}
+                  className="split-element"
+                >
+                  <DragableLines />
+                  <DragableLines2 />
+                </div>
+              </StyledBox>
+              <StyledBox
+                sx={{
+                  px: 2,
+                  overflow: "auto",
+                  // border: "1px solid",
+                  height: `${drawerHeight}px`,
+                  pb: "3rem",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    paddingRight: "20px",
                   }}
                 >
-                  {title}
-                </Typography>
-                <LoadingButton
-                  onClick={() => closeModal()}
-                  variant="outlined"
-                  sx={{
-                    height: "28px",
-                    fontWeight: "700",
-                    padding: "8px 18px",
-                  }}
-                >
-                  Close
-                </LoadingButton>
-              </div>
+                  <Typography
+                    sx={{
+                      fontSize: "14px",
+                      fontWeight: 700,
+                      pt: 1.5,
+                      color: "text.primary",
+                    }}
+                  >
+                    {title}
+                  </Typography>
+                </div>
+                {children}
+              </StyledBox>
             </StyledBox>
-            <StyledBox
-              sx={{
-                px: 2,
-                height: "100%",
-                overflow: "auto",
-                // border: "1px solid",
-              }}
-            >
-              {children}
-            </StyledBox>
-          </StyledBox>
+          </Draggable>
         )}
-        {/* </Draggable> */}
       </SwipeableDrawer>
     </div>
   );

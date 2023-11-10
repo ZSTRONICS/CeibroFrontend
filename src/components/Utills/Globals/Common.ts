@@ -383,6 +383,9 @@ export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt'
 export const MEDIA_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
 const imageFileRegex = /\.(jpg|jpeg|png)$/i;
 export const validTypes = [
+  "image/*",
+  "application/zip",
+  "application/x-zip-compressed",
   "text/plain",
   "text/csv",
   "application/pdf",
@@ -525,5 +528,7 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export { countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject };
+export {
+  countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
+};
 

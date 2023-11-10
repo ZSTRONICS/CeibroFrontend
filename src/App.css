@@ -45,6 +45,30 @@ html {
   font-size: 16px;
 }
 
+/* .hide {
+  display: none;
+}
+
+.myDIV:hover+.hide {
+  display: block;
+  background-color: red;
+} */
+
+span.react-simple-image-viewer__close {
+  top: 7%;
+  right: 4%;
+}
+
+div.react-simple-image-viewer__modal-content {
+  width: 60vw;
+  height: 100vh;
+  max-height: 100%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (max-width: 768px) {
   body {
     font-size: 0.9rem;
@@ -141,7 +165,7 @@ iframe {
   content: '';
   position: absolute;
   bottom: 0;
-  transform: translateX(1%);
+  transform: translateX(3%);
   width: 47%;
   border-bottom: 1px solid;
 }

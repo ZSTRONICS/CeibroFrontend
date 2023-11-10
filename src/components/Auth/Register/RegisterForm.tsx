@@ -118,6 +118,7 @@ const RegisterForm = () => {
               {incorrectAuth && <Alert severity="error">{errorMessage}</Alert>}
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  inputVariant="outlined"
                   required={true}
                   typeName="text-field"
                   name="firstName"
@@ -135,6 +136,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  inputVariant="outlined"
                   required={true}
                   typeName="text-field"
                   name="surName"
@@ -153,6 +155,7 @@ const RegisterForm = () => {
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
                   // required={true}
+                  inputVariant="outlined"
                   typeName="text-field"
                   subType="email"
                   name="email"
@@ -170,6 +173,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  inputVariant="outlined"
                   typeName="text-field"
                   name="companyName"
                   label="Company name"
@@ -189,6 +193,7 @@ const RegisterForm = () => {
               </CBox>
               <CBox mb={marginBottom}>
                 <CustomMuiTextField
+                  inputVariant="outlined"
                   typeName="text-field"
                   name="jobTitle"
                   label="Job title"
@@ -227,7 +232,7 @@ const RegisterForm = () => {
                   placeholder="Password"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                // required={true}
+                  // required={true}
                 />
                 {errors.password && (
                   <Typography className={`error-text ${classes.errorText}`}>

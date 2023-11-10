@@ -1,11 +1,19 @@
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import { fileType } from "components/Tasks/type";
-import { ClearIconSvgGray } from "components/material-ui/icons";
+import {
+  ClearIconSvgGray,
+  DefaultFileThumbnail,
+  DocFileThumbnail,
+  DrawingFileThumbnail,
+  ExcelFileThumbnail,
+  PdfIconThumnails,
+  TextFileThumbnail,
+  ZipFileThumbnail,
+} from "components/material-ui/icons";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
-import assets from "../../../assets/assets";
 import { filesizes } from "../Globals";
 import ReadMoreWrapper from "../ReadMoreWrapper";
 
@@ -37,6 +45,7 @@ const FileBox: React.FC<IProps> = ({
       console.log("not open ");
     }
   };
+
   function trimFileName(filename: string) {
     if (filename.length <= 16) {
       return filename;
@@ -52,6 +61,44 @@ const FileBox: React.FC<IProps> = ({
   //   setFileToView(file);
   //   openModal();
   // };
+
+  const getFileIconThumbnail = (fileType: string) => {
+    console.log("getFileIconThumbnail", fileType);
+    switch (fileType) {
+      case "application/pdf":
+      case ".pdf":
+        return <PdfIconThumnails />;
+      case "text/csv":
+      case ".csv":
+      case "application/vnd.ms-excel":
+      case "application/vnd.oasis.opendocument.spreadsheet":
+      case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
+      case "application/vnd.ms-excel.sheet.macroEnabled.12":
+        return <ExcelFileThumbnail />;
+      case "text/plain":
+      case ".txt":
+      case "application/vnd.oasis.opendocument.text":
+        return <TextFileThumbnail />;
+      case "application/msword":
+      case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+        return <DocFileThumbnail />;
+      case "application/autocad_dwg":
+      case "image/vnd.dwg":
+      case "application/dwg":
+      case "application/x-dwg":
+      case "application/x-autocad":
+      case "image/x-dwg":
+      case "drawing/dwg":
+      case ".dwg":
+        return <DrawingFileThumbnail />;
+      case "application/zip":
+      case "application/x-zip-compressed":
+      case ".zip":
+        return <ZipFileThumbnail />;
+      default:
+        <DefaultFileThumbnail />;
+    }
+  };
 
   return (
     <>
@@ -95,12 +142,15 @@ const FileBox: React.FC<IProps> = ({
                 }}
                 onClick={() => openPDFNewTab(item)}
               >
-                <img
+                {item.type
+                  ? getFileIconThumbnail(item.type)
+                  : getFileIconThumbnail(item.fileType)}
+                {/* <img
                   width={20}
                   height={20}
                   src={assets.FileIcon}
                   alt="File Icon"
-                />
+                /> */}
                 <Tooltip title={f_name}>
                   <Typography
                     sx={{

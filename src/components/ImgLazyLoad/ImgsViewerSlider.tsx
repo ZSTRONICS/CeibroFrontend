@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React, { useEffect, useState } from "react";
-import ImgsViewer from "react-images-viewer";
+import ImageViewer from "react-simple-image-viewer";
 
 interface ImagePreviewModalProps {
   isOpen: boolean;
@@ -15,7 +14,7 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
   currImg,
 }) => {
   const [loadingError, setLoadingError] = useState<boolean>(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(currImg);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(currImg);
   useEffect(() => {
     setCurrentImageIndex(currImg);
   }, [currImg]);
@@ -54,14 +53,16 @@ const ImgsViewerSlider: React.FC<ImagePreviewModalProps> = ({
   // }, [isOpen]);
   return (
     <>
-      {imgs.length > 0 && (
-        <ImgsViewer
-          imgs={imgs}
-          currImg={currentImageIndex}
-          isOpen={isOpen}
+      {isOpen && imgs.length > 0 && (
+        <ImageViewer
+          src={imgs}
+          currentIndex={currentImageIndex}
           onClose={handleClose}
-          onClickPrev={gotoPrevious}
-          onClickNext={gotoNext}
+          disableScroll={true}
+          backgroundStyle={{
+            backgroundColor: "rgba(0,0,0,0.9)",
+          }}
+          closeOnClickOutside={true}
         />
       )}
     </>

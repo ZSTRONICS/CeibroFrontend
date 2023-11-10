@@ -124,6 +124,7 @@ export default function RegisterConfirmationForm() {
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
               <CBox mb={3.1} pt={2}>
                 <CustomMuiTextField
+                  inputVariant="outlined"
                   name="verificationCode"
                   typeName="text-field"
                   label="Enter your code"

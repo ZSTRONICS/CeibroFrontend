@@ -36,41 +36,39 @@ const ReadMoreWrapper = ({
   const [isReadMore, setIsReadMore] = useState(readMore);
   const [height, setHeight] = useState("auto");
   const [images, setImages] = useState<any | null>(null);
-  const [currentImgIndex, setCurrentImageIndex] = useState(0);
+  const [currentImgIndex, setCurrentImageIndex] = useState<number>(0);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const despRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
 
-
-const getHeight = (compRef:MutableRefObject<HTMLDivElement | null>,type:'text'|'image'|'imageWithDesp') =>{
+  const getHeight = (
+    compRef: MutableRefObject<HTMLDivElement | null>,
+    type: "text" | "image" | "imageWithDesp"
+  ) => {
     if (compRef.current) {
-        const lineHeight = parseInt(
-          getComputedStyle(compRef.current).lineHeight
-        );
-        const maxHeight = type==='text'?4 * lineHeight:166;
-        const currentHeight = compRef.current.clientHeight;
-        if (currentHeight > maxHeight) {
-          setIsReadMore(false);
-          setHeight(maxHeight + "px");
-        } else {
-          setIsReadMore(true);
-          setHeight(maxHeight + "px");
-        }
+      const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
+      const maxHeight = type === "text" ? 4 * lineHeight : 166;
+      const currentHeight = compRef.current.clientHeight;
+      if (currentHeight > maxHeight) {
+        setIsReadMore(false);
+        setHeight(maxHeight + "px");
+      } else {
+        setIsReadMore(true);
+        setHeight(maxHeight + "px");
       }
-  }
+    }
+  };
 
   useEffect(() => {
-    if (type==='text') {
-      getHeight(despRef,type)
+    if (type === "text") {
+      getHeight(despRef, type);
     } else if (type === "image") {
-      getHeight(imageRef,type)
-    }else if (type === 'imageWithDesp') {
-      getHeight(imageRef,type)
+      getHeight(imageRef, type);
+    } else if (type === "imageWithDesp") {
+      getHeight(imageRef, type);
     }
   }, [data]);
-
-  
 
   const handleMore = () => {
     setIsExpanded(!isExpanded);
@@ -84,20 +82,17 @@ const getHeight = (compRef:MutableRefObject<HTMLDivElement | null>,type:'text'|'
   };
 
   const handleClick = (files: any, index: number) => {
-    console.log(files, "files", index, "index");
     setImages(files);
     setCurrentImageIndex(index);
     openModal();
   };
-  console.log(isOpen, "isopen", images, "images", data, "data");
-
   return (
     <>
       <Box
         key={`key${useId()}`}
         sx={{
           width: "100%",
-          padding: "16px 8px 16px 8px",
+          padding: "12px 8px 10px 8px",
           gap: 1,
         }}
       >
@@ -106,15 +101,12 @@ const getHeight = (compRef:MutableRefObject<HTMLDivElement | null>,type:'text'|'
             width: "100%",
             display: "flex",
             alignItems: "center",
+            gap: "57px",
           }}
         >
           <Box
             sx={{
               mt: 1,
-              width: "85px",
-              gap: 1,
-              display: "flex",
-              alignItems: "center",
             }}
           >
             <Typography
@@ -173,6 +165,7 @@ const getHeight = (compRef:MutableRefObject<HTMLDivElement | null>,type:'text'|'
                     padding: "10px 0px 16px 0px",
                     display: "flex",
                     flexWrap: "wrap",
+                    gap: 1.7,
                   }}
                 >
                   {data &&
@@ -261,11 +254,7 @@ const getHeight = (compRef:MutableRefObject<HTMLDivElement | null>,type:'text'|'
       </Box>
       {isOpen && images.length > 0 && (
         <ImgsViewerSlider
-          imgs={images.map((image: any) => ({
-            src: image.fileUrl,
-            caption: image.fileName,
-            srcSet: [`${image.fileUrl} auto`],
-          }))}
+          imgs={images.map((image: any) => image.fileUrl)}
           currImg={currentImgIndex}
           isOpen={isOpen}
           onClose={closeModal}

@@ -224,7 +224,7 @@ const Task = () => {
       selectedTask !== null &&
       !selectedTask.seenBy.includes(userId);
 
-    if (taskNeedToBeSeen) {
+    if (taskNeedToBeSeen || selectedTask?.userSubState === "new") {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
     setTimeout(() => {

@@ -18,6 +18,7 @@ interface IProps {
   type?: string;
   required?: boolean;
   placeholder?: string;
+  inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: {
@@ -35,6 +36,7 @@ export const SimpleTextField = (props: IProps) => {
     required,
     inputValue,
     onChange,
+    inputVariant,
     onBlur,
   } = props;
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +44,11 @@ export const SimpleTextField = (props: IProps) => {
   };
   const id = label.replace(/\s+/g, "-");
   return (
-    <FormControl sx={{ width: "100%" }} variant="standard" size="small">
+    <FormControl
+      sx={{ width: "100%" }}
+      variant={inputVariant || "outlined"}
+      size="small"
+    >
       <MUIInputLabel htmlFor={id}>{label}</MUIInputLabel>
       <OutlinedInput
         required={required}

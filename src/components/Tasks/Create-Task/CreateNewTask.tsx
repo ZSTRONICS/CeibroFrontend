@@ -7,15 +7,12 @@ import {
   FormControl,
   FormControlLabel,
   FormGroup,
-  IconButton,
   Input,
-  Typography,
 } from "@mui/material";
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import CustomSwitch from "components/Utills/CustomSwitch";
 import FileBox from "components/Utills/FileBox";
-import ImageBox from "components/Utills/ImageBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -38,9 +35,9 @@ import {
 } from "../type";
 import Footer from "./Footer";
 
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import { MUIInputLabel } from "components/CustomTags";
 import { IS_IMAGE } from "components/Utills/Globals";
+import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 
@@ -392,85 +389,13 @@ function CreateNewTask() {
                 />
               </FormControl>
             </Box>
-            {/* todo create seperate component for Images preview */}
             {selectedImages.length > 0 && (
-              <>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    mt: 1,
-                    gap: 5,
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontFamily: "Inter",
-                      fontWeight: 600,
-                      fontSize: "12px",
-                      color: "#605C5C",
-                      pr: 1.2,
-                    }}
-                  >
-                    Images
-                  </Typography>
-                  <Box
-                    sx={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: "12px",
-                      columnGap: "16px",
-                      padding: "16px 8px 10px 16px",
-
-                      overflow: "auto",
-                      borderLeft: "1.9px solid #818181",
-                      "&::-webkit-scrollbar": {
-                        height: "0.4rem",
-                      },
-                      "&::-webkit-scrollbar-track": {
-                        WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                        borderRadius: "0.2rem",
-                      },
-                      "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: "rgba(0,0,0,.1)",
-                      },
-                    }}
-                  >
-                    {selectedImages.map((file, i) => {
-                      return (
-                        <Box
-                          key={i}
-                          sx={{
-                            display: "flex",
-                          }}
-                        >
-                          <ImageBox src={URL.createObjectURL(file)} />
-                          <IconButton
-                            aria-label="delete"
-                            onClick={() => {
-                              handleClearFile(file, "image");
-                            }}
-                            sx={{
-                              top: "-6px",
-                              right: "4px",
-                              backgroundColor: "#0075D0",
-                              color: "#fff",
-                              width: "16px",
-                              height: "16px",
-                            }}
-                            disableRipple
-                          >
-                            <ClearOutlinedIcon
-                              sx={{ width: "16px", height: "16px" }}
-                            />
-                          </IconButton>
-                        </Box>
-                      );
-                    })}
-                  </Box>
-                </Box>
-                <Divider sx={{ my: 1, borderColor: "#9e9e9e" }} />
-              </>
+              <ImagesToUpload
+                selectedImages={selectedImages}
+                onClearFile={(file: any, type: any) =>
+                  handleClearFile(file, type)
+                }
+              />
             )}
 
             {selectedDocuments.length > 0 && (
@@ -574,6 +499,7 @@ function CreateNewTask() {
           </Box>
         </Box>
         <Footer
+          handleClose={() => {}}
           isSubmitted={isSubmit}
           disabled={handleDisableSubmit()}
           showHeader={false}

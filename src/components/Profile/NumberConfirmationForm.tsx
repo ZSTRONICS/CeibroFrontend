@@ -111,6 +111,7 @@ export default function NumberConfirmationForm(props: IProps) {
           <form onSubmit={handleSubmit} style={{ width: "100%" }}>
             <CBox mb={3.1}>
               <CustomMuiTextField
+                inputVariant="outlined"
                 name="verificationCode"
                 typeName="text-field"
                 label="Enter your code"

@@ -45,6 +45,7 @@ export const CustomMuiTextField: React.FC<Props> = (props) => {
     case "text-field":
       return (
         <SimpleTextField
+          inputVariant={props.inputVariant}
           required={props.required}
           name={props.name}
           label={props.label}

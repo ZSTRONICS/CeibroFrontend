@@ -1,8 +1,10 @@
 import ClearIconSvgGray from "../icons/CustomSvgIcon/ClearIconSvgGray";
+import FileDownloadIcon from "./TaskIcons/FileDownloadIcon";
 import ForwardIcon from "./TaskIcons/ForwardIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
 export * from "./ConfigIcons";
 export { AttachmentIcon } from "./attachment/Attachment";
+export * from "./attachment/FileIconThumnails";
 export { ViewCommentsIco } from "./attachment/ViewCommentsIco";
 export { ChatIcon } from "./chat/Chat";
 export { DeleteIcon } from "./delete/Delete";
@@ -19,4 +21,4 @@ export { ProfileIcon } from "./profile/Profile";
 export { QuestionnairIcon } from "./questionnair/Questionnair";
 export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
-export { ClearIconSvgGray, ForwardIcon, ReplyIcon };
+export { ClearIconSvgGray, FileDownloadIcon, ForwardIcon, ReplyIcon };

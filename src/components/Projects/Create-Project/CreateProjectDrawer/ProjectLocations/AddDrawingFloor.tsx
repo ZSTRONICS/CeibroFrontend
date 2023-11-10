@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { LoadingButton } from "components/Button/Button";
 import DragAndDrop from "components/DropFileInput/DropFileInput";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { LoadingButton } from "components/Button/Button";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
 import { PROJECT_APIS, docsAction } from "redux/action";
+import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 
 interface IProps {
@@ -46,7 +46,7 @@ function AddDrawingFloor(props: IProps) {
         '\\"'
       );
       const finalMetadata = `"${metadataString}"`;
-      if (file&&floorId) {
+      if (file && floorId) {
         formData.append("files", file);
         formData.append("moduleName", "Floor");
         formData.append("moduleId", floorId);
@@ -74,6 +74,7 @@ function AddDrawingFloor(props: IProps) {
       {showTextField && (
         <CBox sx={{ width: "100%", mt: 2 }}>
           <CustomMuiTextField
+            inputVariant="standard"
             typeName="text-field"
             inputValue={drwingFloorName}
             label={showImgDragDrop ? "Drawing Name" : "Floor Name"}

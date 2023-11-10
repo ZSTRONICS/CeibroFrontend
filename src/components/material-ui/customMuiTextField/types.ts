@@ -49,6 +49,7 @@ export interface ITextFieldProps extends Common {
   required?: boolean;
   label: string;
   placeholder: string;
+  inputVariant: "standard" | "outlined" | "filled";
   inputValue: string;
 }
 

@@ -1,8 +1,8 @@
-import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
-import { Box, Divider, FormControl, IconButton, Input } from "@mui/material";
+import { Box, Divider, FormControl, Input } from "@mui/material";
 import { MUIInputLabel } from "components/CustomTags";
 import FileBox from "components/Utills/FileBox";
 import { IS_IMAGE } from "components/Utills/Globals";
+import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -141,18 +141,53 @@ const Comment = ({
 
   return (
     <>
-      <Box sx={{ width: "100%", padding: "8px" }}>
+      <Box sx={{ width: "100%", pt: "8px" }}>
         {showHeader !== true && <TaskHeader title={title} />}
-        <Box sx={{ padding: "8px", width: "100%" }}>
+        {selectedImages.length > 0 && (
+          <ImagesToUpload
+            isComment={true}
+            selectedImages={selectedImages}
+            onClearFile={(file: any, type: any) => handleClearFile(file, type)}
+          />
+        )}
+        {selectedDocuments.length > 0 && (
+          <>
+            <FileBox
+              title="Files"
+              showFullHeight={false}
+              files={selectedDocuments}
+              handleClearFile={handleClearFile}
+            />
+            <Divider
+              key="bottom-divider"
+              sx={{
+                my: 1.25,
+                borderColor: "#9e9e9e",
+                borderRadius: "4px",
+                opacity: "0.9",
+                background: "#F4F4F4",
+                filter: "blur(2px)",
+              }}
+            />
+          </>
+        )}
+        <Box
+          sx={{
+            height: "auto",
+            padding: "2px 2px",
+            mt: 0.5,
+          }}
+        >
           <FormControl
             variant="standard"
             sx={{ width: "100%", fontFamily: "Inter" }}
           >
-            <MUIInputLabel htmlFor="description">Description</MUIInputLabel>
+            <MUIInputLabel htmlFor="description">Comment</MUIInputLabel>
             <Input
               name="description"
               id="description"
               required
+              autoFocus
               multiline
               maxRows={10}
               value={description}
@@ -161,82 +196,9 @@ const Comment = ({
             />
           </FormControl>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexWrap: "nowrap",
-            padding: "16px 8px",
-            overflowY: "auto",
-            "&::-webkit-scrollbar": {
-              height: "0.4rem",
-            },
-            "&::-webkit-scrollbar-track": {
-              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-              borderRadius: "0.2rem",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "rgba(0,0,0,.1)",
-            },
-          }}
-        >
-          {selectedImages.map((file) => {
-            return (
-              <Box
-                sx={{
-                  display: "flex",
-                  marginRight: "16px",
-                  gap: "16px",
-                }}
-              >
-                <img
-                  style={{
-                    height: "110px",
-                    width: "110px",
-                    borderRadius: "8px",
-                  }}
-                  alt={"iamge"}
-                  src={URL.createObjectURL(file)}
-                />
-                {/* <ImageBox src={URL.createObjectURL(file)} /> */}
-                <IconButton
-                  aria-label="delete"
-                  onClick={() => {
-                    handleClearFile(file, "image");
-                  }}
-                  sx={{
-                    top: "-6px",
-                    right: "4px",
-                    backgroundColor: "#0075D0",
-                    color: "#fff",
-                    width: "16px",
-                    height: "16px",
-                  }}
-                  disableRipple
-                >
-                  <ClearOutlinedIcon sx={{ width: "16px", height: "16px" }} />
-                </IconButton>
-              </Box>
-            );
-          })}
-        </Box>
-
-        <Box
-          sx={{
-            height: "auto",
-            padding: "16px 8px",
-          }}
-        >
-          <Divider key="top-divider" sx={{ marginBottom: "8px" }} />
-          <FileBox
-            title="Files"
-            showFullHeight={false}
-            files={selectedDocuments}
-            handleClearFile={handleClearFile}
-          />
-          <Divider key="bottom-divider" sx={{ marginTop: "8px" }} />
-        </Box>
       </Box>
       <Footer
+        isCommentUi={true}
         isSubmitted={isSubmit}
         disabled={
           isSubmit ||
@@ -249,6 +211,7 @@ const Comment = ({
             ? false
             : true)
         }
+        handleClose={handleCloseModal}
         showHeader={showHeader}
         handleSubmitForm={handleSubmit}
         handleAttachImageValue={handleAttachImageValue}

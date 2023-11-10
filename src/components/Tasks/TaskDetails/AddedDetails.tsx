@@ -8,7 +8,7 @@ import {
   CustomStack,
   DocName,
   Span,
-  SubHeadingTag
+  SubHeadingTag,
 } from "components/CustomTags";
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
@@ -44,16 +44,16 @@ function AddedDetails(props: IProps) {
     closeModal();
   };
 
-  const handleClick = (data: any, isImage: boolean, index: number) => {
-    if (isImage) {
-      setImages(data);
-      setCurrentImageIndex(index);
-    } else {
-      setFileToView(data);
-      setIsPdf(true);
-    }
-    openModal();
-  };
+  // const handleClick = (data: any, isImage: boolean, index: number) => {
+  //   if (isImage) {
+  //     setImages(data);
+  //     setCurrentImageIndex(index);
+  //   } else {
+  //     setFileToView(data);
+  //     setIsPdf(true);
+  //   }
+  //   openModal();
+  // };
 
   useEffect(() => {
     if (listRef.current) {
@@ -273,27 +273,41 @@ function AddedDetails(props: IProps) {
                           </>
                         )}
                         {/* <ImageStack py={0.7}> */}
-                          {mediaLocal.map((file: IFile, i: any) => (
-                            <ReadMoreWrapper title="Images" type='image' data={mediaLocal.filter((file: IFile) => !(file.comment.length > 0))} />
-                            // <Box
-                            //   key={file._id + i}
-                            //   sx={{
-                            //     marginRight: "16px",
-                            //     marginBottom:
-                            //       file.comment.length === 0 ? "0px" : "16px",
-                            //     "&:hover": { cursor: "pointer" },
-                            //   }}
-                            //   onClick={() => handleClick(mediaLocal, true, i)}
-                            // >
-                            //   {file.comment.length === 0 && (
-                            //     <ImageBox src={file.fileUrl} />
-                            //   )}
-                            // </Box>
-                          ))}
+                        {mediaLocal.map((file: IFile, i: any) => (
+                          <ReadMoreWrapper
+                            title="Images"
+                            type="image"
+                            data={mediaLocal.filter(
+                              (file: IFile) => !(file.comment.length > 0)
+                            )}
+                          />
+                          // <Box
+                          //   key={file._id + i}
+                          //   sx={{
+                          //     marginRight: "16px",
+                          //     marginBottom:
+                          //       file.comment.length === 0 ? "0px" : "16px",
+                          //     "&:hover": { cursor: "pointer" },
+                          //   }}
+                          //   onClick={() => handleClick(mediaLocal, true, i)}
+                          // >
+                          //   {file.comment.length === 0 && (
+                          //     <ImageBox src={file.fileUrl} />
+                          //   )}
+                          // </Box>
+                        ))}
                         {/* </ImageStack> */}
 
                         {mediaLocal.map((file: IFile, index: any) => {
-                          return <ReadMoreWrapper title="Images with comments" type='imageWithDesp' data={mediaLocal.filter((file: IFile) => file.comment.length > 0)} />
+                          return (
+                            <ReadMoreWrapper
+                              title="Images with comments"
+                              type="imageWithDesp"
+                              data={mediaLocal.filter(
+                                (file: IFile) => file.comment.length > 0
+                              )}
+                            />
+                          );
                           // const hasFileComment = file.comment.length > 0;
                           // return (
                           //   hasFileComment && (
@@ -348,7 +362,13 @@ function AddedDetails(props: IProps) {
                           </>
                         )}
                         {media.length > 0 && (
-                          <ReadMoreWrapper title="Images" type='image' data={media.filter((file: IFile) => !(file.comment.length > 0))} />
+                          <ReadMoreWrapper
+                            title="Images"
+                            type="image"
+                            data={media.filter(
+                              (file: IFile) => !(file.comment.length > 0)
+                            )}
+                          />
                           // <ReadMoreWrapper title="Images">
                           //   <ImageStack py={0.7}>
                           //     {media.map((file: IFile, i: any) => (
@@ -374,7 +394,13 @@ function AddedDetails(props: IProps) {
                         )}
                         {media.filter((file: IFile) => file.comment.length > 0)
                           .length > 0 && (
-                            <ReadMoreWrapper title="Images with comments" type='imageWithDesp' data={media.filter((file: IFile) => file.comment.length > 0)} />
+                          <ReadMoreWrapper
+                            title="Images with comments"
+                            type="imageWithDesp"
+                            data={media.filter(
+                              (file: IFile) => file.comment.length > 0
+                            )}
+                          />
                           // <ReadMoreWrapper title="Images with comments">
                           //   {media
                           //     .filter((file: IFile) => file.comment.length > 0)
@@ -431,11 +457,7 @@ function AddedDetails(props: IProps) {
       )}
       {isOpen && !isPdf && images.length > 0 && (
         <ImgsViewerSlider
-          imgs={images.map((image: any) => ({
-            src: image.fileUrl,
-            caption: image.comment,
-            srcSet: [`${image.fileUrl} auto`],
-          }))}
+          imgs={images.map((image: any) => image.fileUrl)}
           currImg={currentImageIndex}
           isOpen={isOpen}
           onClose={handleClose}

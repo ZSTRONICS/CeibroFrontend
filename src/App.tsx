@@ -2,7 +2,6 @@
 import { ToastContainer } from "react-toastify";
 import "./assets/InterFont.css";
 // components
-
 // material
 // import CssBaseline from "@mui/material/CssBaseline";
 

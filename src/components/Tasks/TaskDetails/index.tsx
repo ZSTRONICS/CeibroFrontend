@@ -98,11 +98,7 @@ function TaskDetails(props: IProps) {
       )}
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
-          imgs={uniqueImageFiles.map((image: any) => ({
-            src: image.fileUrl,
-            caption: image.comment,
-            srcSet: [`${image.fileUrl} auto`],
-          }))}
+          imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}
           currImg={currentImageIndex}
           isOpen={isOpen}
           onClose={closeModal}
