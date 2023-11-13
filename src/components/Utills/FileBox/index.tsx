@@ -133,8 +133,8 @@ const FileBox: React.FC<IProps> = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  padding: "8px",
-                  gap: "7px",
+                  // padding: "8px",
+                  gap: "16px",
                   pl: 0,
                   "&:hover": {
                     cursor: "pointer",

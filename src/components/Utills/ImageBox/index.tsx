@@ -7,18 +7,18 @@ export default function ImageBox({ src }: IProps) {
   return (
     <Box
       sx={{
-        maxWidth: "150px",
-        maxHeight: "150px",
-        width: "100%",
-        height: "100%",
+        // maxWidth: "150px",
+        // maxHeight: "150px",
+        // width: "150px",
+        // height: "150px",
       }}
     >
       <img
         className="myDIV"
         loading="lazy"
         style={{
-          width: "100%",
-          height: "100%",
+           width: "150px",
+        height: "150px",
           borderRadius: "8px",
         }}
         src={src}

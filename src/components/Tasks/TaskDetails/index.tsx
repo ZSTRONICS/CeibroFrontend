@@ -66,8 +66,8 @@ function TaskDetails(props: IProps) {
       key={_id}
       sx={{
         overflowY: "hidden",
-        marginLeft: "10px",
-        marginRight: "10px",
+        marginLeft: "16px",
+        marginRight: "16px",
       }}
       className="custom-scrollbar"
     >

@@ -26,17 +26,17 @@ const ImageBoxWrapper = styled(Box)({
 
 const ReadMoreWrapper = ({
   title,
-  readMore = false,
+  readMore,
   count,
   children,
   type,
   data,
 }: ReadMoreWrapperProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isReadMore, setIsReadMore] = useState(readMore);
+  const [isReadMore, setIsReadMore] = useState(false);
   const [height, setHeight] = useState("auto");
   const [images, setImages] = useState<any | null>(null);
-  const [currentImgIndex, setCurrentImageIndex] = useState<number>(0);
+  const [currentImgIndex, setCurrentImageIndex] = useState(0);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const despRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
@@ -48,15 +48,15 @@ const ReadMoreWrapper = ({
   ) => {
     if (compRef.current) {
       const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
-      const maxHeight = type === "text" ? 4 * lineHeight : 166;
+      const maxHeight = type === "text" ? 4 * lineHeight : 152;
+      console.log(type,":",maxHeight);
+      
       const currentHeight = compRef.current.clientHeight;
-      if (currentHeight > maxHeight) {
-        setIsReadMore(false);
-        setHeight(maxHeight + "px");
-      } else {
+      console.log("currentHeight",type,":",currentHeight);
+      if (currentHeight > maxHeight+5) {
         setIsReadMore(true);
-        setHeight(maxHeight + "px");
-      }
+      } 
+      setHeight(maxHeight+'px')
     }
   };
 
@@ -68,16 +68,16 @@ const ReadMoreWrapper = ({
     } else if (type === "imageWithDesp") {
       getHeight(imageRef, type);
     }
-  }, [data]);
+  }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
   const handleMore = () => {
     setIsExpanded(!isExpanded);
     if (type === "image") {
-      !isExpanded ? setHeight("100%") : setHeight("166px");
+      !isExpanded ? setHeight("100%") : setHeight("152px");
     } else if (type === "imageWithDesp") {
-      !isExpanded ? setHeight("100%") : setHeight("166px");
+      !isExpanded ? setHeight("100%") : setHeight("152px");
     } else {
-      !isExpanded ? setHeight("100%") : setHeight("94px");
+      !isExpanded ? setHeight("100%") : setHeight("84px");
     }
   };
 
@@ -92,7 +92,7 @@ const ReadMoreWrapper = ({
         key={`key${useId()}`}
         sx={{
           width: "100%",
-          padding: "12px 8px 10px 8px",
+          padding: "8px 0px 8px 0px",
           gap: 1,
         }}
       >
@@ -101,18 +101,21 @@ const ReadMoreWrapper = ({
             width: "100%",
             display: "flex",
             alignItems: "center",
-            gap: "57px",
           }}
         >
           <Box
             sx={{
-              mt: 1,
+              minWidth: "83px",
+              height: "20px",
+              gap: 1,
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <Typography
               sx={{
                 fontFamily: "Inter",
-                fontWeight: 500,
+                fontWeight: 600,
                 fontSize: "12px",
                 lineHeight: "16px",
                 color: "#605c5c",
@@ -132,7 +135,8 @@ const ReadMoreWrapper = ({
             <Box
               sx={{
                 width: "100%",
-                px: "11px",
+                px: "16px",
+                gap:'16px',
                 borderLeft: "1.9px solid #818181",
                 maxWidth: "95%",
                 display: "flex",
@@ -140,7 +144,7 @@ const ReadMoreWrapper = ({
                 alignItems: "center",
               }}
             >
-              {type === "text" && (
+              {type === "text" &&(
                 <p
                   ref={despRef}
                   style={{
@@ -149,7 +153,6 @@ const ReadMoreWrapper = ({
                     color: "#000",
                     maxHeight: `${height}`,
                     overflow: "hidden",
-                    paddingTop: "5px",
                     wordWrap: "break-word",
                   }}
                 >
@@ -162,10 +165,8 @@ const ReadMoreWrapper = ({
                   sx={{
                     maxHeight: `${height}`,
                     width: "100%",
-                    padding: "10px 0px 16px 0px",
                     display: "flex",
                     flexWrap: "wrap",
-                    gap: 1.7,
                   }}
                 >
                   {data &&
@@ -224,7 +225,7 @@ const ReadMoreWrapper = ({
                   +{count}
                 </Box>
               )}
-              {isReadMore && (
+              {isReadMore &&  (
                 <IconButton
                   onClick={handleMore}
                   sx={{ height: "24px", width: "24px" }}
@@ -254,7 +255,11 @@ const ReadMoreWrapper = ({
       </Box>
       {isOpen && images.length > 0 && (
         <ImgsViewerSlider
-          imgs={images.map((image: any) => image.fileUrl)}
+          imgs={images.map((image: any) => ({
+            src: image.fileUrl,
+            caption: image.fileName,
+            srcSet: [`${image.fileUrl} auto`],
+          }))}
           currImg={currentImgIndex}
           isOpen={isOpen}
           onClose={closeModal}

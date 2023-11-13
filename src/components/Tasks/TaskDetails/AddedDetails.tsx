@@ -66,6 +66,7 @@ function AddedDetails(props: IProps) {
     }
   }, [events?.length, listRef]);
 
+
   return (
     <>
       <div>
@@ -244,12 +245,18 @@ function AddedDetails(props: IProps) {
                       docsLocal = FILTER_DATA_BY_EXT(
                         DOC_EXT,
                         commentData.files
-                      );
-                      mediaLocal = FILTER_DATA_BY_EXT(
-                        MEDIA_EXT,
-                        commentData.files
-                      );
-                    }
+                        );
+                        mediaLocal = FILTER_DATA_BY_EXT(
+                          MEDIA_EXT,
+                          commentData.files
+                          );
+                        }
+                        let mediaLocalWithComment:any = mediaLocal.filter(
+                                (file: IFile) => file.comment.length > 0
+                              )
+                        let mediaLocalWithoutComment:any = mediaLocal.filter(
+                                (file: IFile) => !(file.comment.length > 0)
+                              )
 
                     return (
                       <React.Fragment key={event._id + "DoneTask"}>
@@ -273,13 +280,11 @@ function AddedDetails(props: IProps) {
                           </>
                         )}
                         {/* <ImageStack py={0.7}> */}
-                        {mediaLocal.map((file: IFile, i: any) => (
+                        {mediaLocalWithoutComment.map((file: IFile, i: any) => (
                           <ReadMoreWrapper
                             title="Images"
                             type="image"
-                            data={mediaLocal.filter(
-                              (file: IFile) => !(file.comment.length > 0)
-                            )}
+                            data={mediaLocalWithoutComment}
                           />
                           // <Box
                           //   key={file._id + i}
@@ -298,14 +303,12 @@ function AddedDetails(props: IProps) {
                         ))}
                         {/* </ImageStack> */}
 
-                        {mediaLocal.map((file: IFile, index: any) => {
+                        {mediaLocalWithComment.map((file: IFile, index: any) => {
                           return (
                             <ReadMoreWrapper
                               title="Images with comments"
                               type="imageWithDesp"
-                              data={mediaLocal.filter(
-                                (file: IFile) => file.comment.length > 0
-                              )}
+                              data={mediaLocalWithComment}
                             />
                           );
                           // const hasFileComment = file.comment.length > 0;
@@ -341,6 +344,12 @@ function AddedDetails(props: IProps) {
                       docs = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
                       media = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
                     }
+                     let mediaWithComment:any = media.filter(
+                                (file: IFile) => file.comment.length > 0
+                              )
+                        let mediaWithoutComment:any = media.filter(
+                                (file: IFile) => !(file.comment.length > 0)
+                              )
                     return (
                       <React.Fragment key={event._id + "Comment"}>
                         <CustomStack gap={1.2} py={0.8}>
@@ -361,13 +370,11 @@ function AddedDetails(props: IProps) {
                             </AddStatusTag>
                           </>
                         )}
-                        {media.length > 0 && (
+                        {mediaWithoutComment.length > 0 && (
                           <ReadMoreWrapper
                             title="Images"
                             type="image"
-                            data={media.filter(
-                              (file: IFile) => !(file.comment.length > 0)
-                            )}
+                            data={mediaWithoutComment}
                           />
                           // <ReadMoreWrapper title="Images">
                           //   <ImageStack py={0.7}>
@@ -392,14 +399,12 @@ function AddedDetails(props: IProps) {
                           //   </ImageStack>
                           // </ReadMoreWrapper>
                         )}
-                        {media.filter((file: IFile) => file.comment.length > 0)
+                        {mediaWithComment.filter((file: IFile) => file.comment.length > 0)
                           .length > 0 && (
                           <ReadMoreWrapper
                             title="Images with comments"
                             type="imageWithDesp"
-                            data={media.filter(
-                              (file: IFile) => file.comment.length > 0
-                            )}
+                            data={mediaWithComment}
                           />
                           // <ReadMoreWrapper title="Images with comments">
                           //   {media

@@ -2,13 +2,16 @@ import { Box, Typography } from "@mui/material";
 
 interface IProps {
   description: string;
+  title:string;
+  titleWidth?:string
+  despFontSize?:string
+  despFontWeight?:string|number
 }
 
-const DespcriptionBox = ({ description }: IProps) => (
+const DespcriptionBox = ({ description,title,titleWidth,despFontSize,despFontWeight }: IProps) => (
   <Box
     sx={{
-      width: "100%",
-      padding: "14px 0px 14px 0px",
+      padding: "8px 0px 8px 0px",
       gap: 1,
     }}
   >
@@ -16,15 +19,13 @@ const DespcriptionBox = ({ description }: IProps) => (
       sx={{
         width: "100%",
         display: "flex",
-        alignItems: "top",
+        alignItems: "center",
       }}
     >
       <Box
         sx={{
-          mt: 1,
-          width: "85px",
+          minWidth: titleWidth??'83px',
           height: "20px",
-          pr: "87px",
           gap: 1,
           display: "flex",
           alignItems: "center",
@@ -33,18 +34,18 @@ const DespcriptionBox = ({ description }: IProps) => (
         <Typography
           sx={{
             fontFamily: "Inter",
-            fontWeight: 600,
+            fontWeight: 500,
             fontSize: "12px",
             lineHeight: "16px",
             color: "#605c5c",
           }}
         >
-          Description
+          {title}
         </Typography>
       </Box>
       <Box
         sx={{
-          width: "100%",
+          // width: "100%",
           px: "11px",
           borderLeft: "1.9px solid #818181",
           maxWidth: "95%",
@@ -52,17 +53,16 @@ const DespcriptionBox = ({ description }: IProps) => (
           alignItems: "center",
         }}
       >
-        <p
+        <Typography
           style={{
-            fontWeight: 500,
-            fontSize: "14px",
+            fontWeight: despFontWeight??500,
+            fontSize: despFontSize??"12px",
             color: "#000",
-            paddingTop: "5px",
             wordWrap: "break-word",
           }}
         >
           {description === "" ? "N/A" : description}
-        </p>
+        </Typography>
       </Box>
     </Box>
   </Box>
