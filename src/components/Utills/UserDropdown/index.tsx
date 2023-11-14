@@ -131,11 +131,11 @@ function UserDropDown(props: IProps) {
     setSearchQuery(searchValue);
   };
 
-  const handleCancelClick = () => {
-    setSearchQuery("");
-    setSelected([]);
-    handleClose();
-  };
+  // const handleCancelClick = () => {
+  //   setSearchQuery("");
+  //   setSelected([]);
+  //   handleClose();
+  // };
 
   const handleClearClick = () => {
     handleChangeValues(undefined, "assignedToState");

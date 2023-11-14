@@ -39,7 +39,7 @@ function DragableDrawer({
   openModal,
   children,
 }: Props) {
-  const containerHeight = window.innerHeight - 500;
+  const containerHeight = window.innerHeight - 750;
   const [drawerHeight, setDrawerHeight] = useState(containerHeight);
   useEffect(() => {
     if (!isOpen) {
@@ -89,6 +89,7 @@ function DragableDrawer({
             onStart={handleStart}
             onDrag={handleDrag}
             bounds={{ bottom: 350 }}
+            scale={2}
           >
             <StyledBox>
               <StyledBox
@@ -107,8 +108,20 @@ function DragableDrawer({
                   <DragableLines />
                   <DragableLines2 />
                 </div>
+                <Typography
+                  sx={{
+                    fontSize: "14px",
+                    fontWeight: 700,
+                    pt: 1,
+                    pl: 2,
+                    color: "text.primary",
+                  }}
+                >
+                  {title}
+                </Typography>
               </StyledBox>
               <StyledBox
+                id="draggableContainer"
                 sx={{
                   px: 2,
                   overflow: "auto",
@@ -117,25 +130,6 @@ function DragableDrawer({
                   pb: "3rem",
                 }}
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingRight: "20px",
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      fontSize: "14px",
-                      fontWeight: 700,
-                      pt: 1.5,
-                      color: "text.primary",
-                    }}
-                  >
-                    {title}
-                  </Typography>
-                </div>
                 {children}
               </StyledBox>
             </StyledBox>

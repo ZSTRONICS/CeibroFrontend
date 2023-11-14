@@ -156,7 +156,7 @@ export const RoleLabelTag = styled(Typography)`
 export const SubLabelTag = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
-  font-size: 12px !important;
+  font-size: 12px;
   font-weight: 600 !important;
   color: #605c5c;
 `;

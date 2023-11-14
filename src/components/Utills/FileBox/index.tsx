@@ -57,13 +57,8 @@ const FileBox: React.FC<IProps> = ({
 
     return trimmedName;
   }
-  // const handleClick = (file: any) => {
-  //   setFileToView(file);
-  //   openModal();
-  // };
 
   const getFileIconThumbnail = (fileType: string) => {
-    console.log("getFileIconThumbnail", fileType);
     switch (fileType) {
       case "application/pdf":
       case ".pdf":

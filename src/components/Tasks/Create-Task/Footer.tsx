@@ -15,6 +15,7 @@ interface FooterPropsType {
   handleGetLocationValue?: () => void;
   handleClose: () => void;
   isCommentUi?: boolean;
+  isForwardUi?: boolean;
   showHeader: boolean | undefined;
   disabled: boolean;
   isSubmitted: boolean;
@@ -34,7 +35,6 @@ const Footer = (props: FooterPropsType) => {
   };
 
   const handleSelectDocument = () => {
-    // Code to handle selecting a PDF file from the system
     const input = document.createElement("input");
     input.type = "file";
     input.multiple = true;
@@ -42,14 +42,13 @@ const Footer = (props: FooterPropsType) => {
     input.onchange = (event) => {
       const files = (event.target as HTMLInputElement).files;
       if (files && !_.isEmpty(files)) {
-        const attachments = Array.from(files).filter(
-          (file) => file.type.split("/")[0] === "image"
+        const attachments = Array.from(files).filter((file) =>
+          file.type.startsWith("image/")
         );
         const validFiles = Array.from(files).filter((file) =>
           isValidDocumentType(file.type)
         );
         if (attachments.length > 0) {
-          console.log("attachments", attachments);
           props.handleAttachImageValue &&
             props.handleAttachImageValue(attachments);
         }
@@ -104,11 +103,11 @@ const Footer = (props: FooterPropsType) => {
         position: `${position}`,
         // marginTop: `${props.showHeader ? "20px" : "unset"}`,
         paddingBottom: `${props.showHeader ? "0" : "unset"}`,
-        bottom: "1%",
+        bottom: "0",
         left: 0,
         width: "100%",
         gap: 1,
-        padding: "7px 20px",
+        padding: "7px 14px",
         height: "57px",
         pr: "3%",
       }}
@@ -162,7 +161,7 @@ const Footer = (props: FooterPropsType) => {
         </>
       )}
       <CustomStack sx={{ gap: 5 }}>
-        {props.handleSelectDocumentValue && (
+        {!props.isForwardUi && props.handleSelectDocumentValue && (
           <CustomButton
             sx={{
               border: "none !important",

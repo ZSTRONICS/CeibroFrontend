@@ -111,7 +111,7 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const titles = {
     comment: "New comment",
-    forward: "Task Forward",
+    forward: "Forward",
     done: "Task Done",
   };
 

@@ -1,5 +1,12 @@
-import { Box, Divider, Typography } from "@mui/material";
-import SearchBox from "components/Utills/SearchBox";
+import {
+  Box,
+  Divider,
+  FormControl,
+  Input,
+  Select,
+  Typography,
+} from "@mui/material";
+import { MUIInputLabel, SubLabelTag } from "components/CustomTags";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
 import { TASK_CONFIG } from "config";
 import {
@@ -7,11 +14,20 @@ import {
   Contact,
   InvitedNumber,
 } from "constants/interfaces";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useOpenCloseModal } from "hooks";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { handleGroupSearch } from "utills/common";
+import Footer from "../Create-Task/Footer";
 import { AssignedToStateType } from "../type";
 import GroupContactList from "./GroupContactList";
 
@@ -35,10 +51,16 @@ const ForwardTask = ({
 }: IProps) => {
   const dispatch = useDispatch();
   const isRenderEffect = useRef<boolean>(false);
+  const [comment, setComment] = useState<string>("");
   const { user } = useSelector((state: RootState) => state.auth);
   const { userAllContacts, recentUserContact } = useSelector(
     (state: RootState) => state.user
   );
+  const {
+    isOpen,
+    openModal,
+    closeModal: closeModalLocal,
+  } = useOpenCloseModal();
   const [filteredRecentUserContact, setFilteredRecentUserContact] =
     React.useState<Contact[]>(recentUserContact);
   // const [isSelfAssign, setIsSelfAssign] = useState(false);
@@ -47,6 +69,12 @@ const ForwardTask = ({
     useState<ContactsState>(initialState);
   const [sortedContacts, setSortedContacts] =
     useState<ContactsState>(initialState);
+  const handleDescriptionChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setComment(e.target.value);
+    },
+    [setComment]
+  );
 
   useEffect(() => {
     if (!isRenderEffect.current) {
@@ -75,6 +103,8 @@ const ForwardTask = ({
   );
 
   const [selected, setSelected] = useState<any[]>(selectedUsers);
+  let invitedUserNumbers: string[] = [];
+  let updatedSelected: AssignedToStateType[] = [];
 
   useEffect(() => {
     if (userAllContacts && userAllContacts.length > 0) {
@@ -141,50 +171,82 @@ const ForwardTask = ({
     setFilteredRecentUserContact(recentFilteredData);
   };
 
-  const handleSubmit = () => {
-    let invitedUserNumbers: string[] = [];
-    let updatedSelected: AssignedToStateType[] = [];
+  const isMatchPhoneNumber = (phoneNumber: any, assignedToState: any) =>
+    assignedToState.some((item: any) => item.phoneNumber === phoneNumber);
+
+  const checkSelection = () => {
+    const isUserInAssignedState = (selectUser: any) =>
+      assignedToState.some(
+        (user) =>
+          user.phoneNumber === selectUser.phoneNumber && selectUser.isCeiborUser
+      );
+    const isUserInvited = (selectUser: any) =>
+      invitedNumbers.some(
+        (member) => member.phoneNumber === selectUser.phoneNumber
+      );
+
     selected.forEach((item) => {
-      const isMatchContact = assignedToState.some(
-        (user) => user.phoneNumber === item.phoneNumber
+      const isMatchContact = isMatchPhoneNumber(
+        item.phoneNumber,
+        assignedToState
       );
-      const isInvitedMember = invitedNumbers.some(
-        (member) => member.phoneNumber === item.phoneNumber
+      const isInvitedMember = isMatchPhoneNumber(
+        item.phoneNumber,
+        invitedNumbers
       );
+
       if (!isMatchContact && !isInvitedMember) {
-        if (!item.isCeiborUser && item.userCeibroData === null) {
+        if (!item.isCeiborUser && !item.userCeibroData) {
           invitedUserNumbers.push(item.phoneNumber);
         } else {
-          let payloadSelected: AssignedToStateType = {
-            phoneNumber: "",
-            userId: "",
-            state: "",
+          const payloadSelected = {
+            phoneNumber:
+              item._id === user._id ? user.phoneNumber : item.phoneNumber,
+            userId: item._id === user._id ? user._id : item.userCeibroData?._id,
+            state: "new",
           };
-          if (item._id === user._id) {
-            payloadSelected = {
-              phoneNumber: user.phoneNumber,
-              userId: user._id,
-              state: "new",
-            };
-          } else {
-            payloadSelected = {
-              phoneNumber: item.phoneNumber,
-              userId: item.userCeibroData?._id,
-              state: "new",
-            };
-          }
           updatedSelected.push(payloadSelected);
         }
       }
     });
+
+    const found = selected.filter(
+      (selectUser) =>
+        isUserInAssignedState(selectUser) || isUserInvited(selectUser)
+    );
+
+    return found.length === selected.length;
+  };
+
+  const renderValue = () => {
+    if (selected.length > 0) {
+      const fullNames = selected
+        .filter(
+          (userContact) =>
+            !isMatchPhoneNumber(userContact.phoneNumber, selectedUsers)
+        )
+        .map((item: any) => {
+          if (item.contactFullName) {
+            return item.contactFullName;
+          } else if (item.firstName) {
+            return `${item.firstName} ${item.surName}`;
+          }
+          return "";
+        });
+      return fullNames.join(", ");
+    } else {
+      return "Forward To";
+    }
+  };
+
+  const handleSubmit = () => {
     dispatch(
       taskActions.forwardTask({
         other: { taskId: taskId },
         body: {
           assignedToState: updatedSelected,
           invitedNumbers: invitedUserNumbers,
-          //todo comment empty for temp
-          comment: "",
+          comment: comment,
         },
         success: (res: any) => {
           if (res) {
@@ -202,97 +264,193 @@ const ForwardTask = ({
     );
   };
 
-  const checkSelection = () => {
-    let found = selected?.filter((selectUser) => {
-      const isMatchContact = assignedToState.some(
-        (user) =>
-          user.phoneNumber === selectUser.phoneNumber && selectUser.isCeiborUser
-      );
-      const isInvitedMember = invitedNumbers.some(
-        (member) => member.phoneNumber === selectUser.phoneNumber
-      );
-      return isMatchContact || isInvitedMember;
-    });
-    if (found.length === selected.length) {
-      return true;
-    } else {
-      return false;
-    }
+  const handleClearClick = () => {
+    const clearSelectedContacts = selected.filter(
+      (contactLocal: any) =>
+        !isMatchPhoneNumber(contactLocal.phoneNumber, selectedUsers)
+    );
+    setSelected(clearSelectedContacts);
   };
 
   return (
     <Box>
-      <Box
-        sx={{
-          width: "100%",
-        }}
-      >
-        <SearchBox
-          disabled={checkSelection()}
-          searchBtnLabel="Forward"
-          placeholder="Start typing name"
-          handleSearchChange={handleSearchChange}
-          handleSubmit={handleSubmit}
-        />
-        <Box
+      <Box sx={{ display: "flex", alignItems: "baseline" }}>
+        <SubLabelTag sx={{ pr: 1, display: { md: "none", lg: "block" } }}>
+          Forward
+        </SubLabelTag>
+
+        <FormControl
+          variant="standard"
           sx={{
-            minHeight: "66px",
-            display: "flex",
-            paddingLeft: "12px",
-            pb: 1,
-            overflow: "auto",
-            "&::-webkit-scrollbar": {
-              height: "0.3rem",
-            },
-            "&::-webkit-scrollbar-track": {
-              WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-              borderRadius: "0.2rem",
-            },
-            "&::-webkit-scrollbar-thumb": {
-              backgroundColor: "rgba(0,0,0,.1)",
-            },
+            marginTop: "8px",
+            width: "100%",
+            maxWidth: "100%",
+            pl: 1,
+            borderLeft: "1px solid #818181",
           }}
         >
-          {!checkSelection() && selected.length > 0 ? (
-            selected.map((selectedContact: Contact) => {
-              return (
-                <SelectedContactBox
-                  isDisabled={selectedUsers.some(
-                    (user: any) => user._id === selectedContact._id
-                  )}
-                  contact={selectedContact}
-                  handleSelectedList={handleSelectedList}
-                />
-              );
-            })
-          ) : (
-            <Typography
+          {/* <MUIInputLabel
+            id="controlled-open-select-label"
+            sx={{
+              pl: "1rem",
+              top: "-50%",
+              display: {
+                md: "block",
+                lg: selected.length === 0 && !isOpen ? "block" : "none",
+              },
+            }}
+          >
+            Forward to
+          </MUIInputLabel> */}
+          <Select
+            className="custom-select"
+            labelId="controlled-open-select-label"
+            id="controlled-open-select"
+            sx={{
+              "&.custom-select": {
+                mt: 0,
+                // pr: 2,
+              },
+              "& .MuiSelect-icon": {
+                right: 0,
+              },
+              svg: { color: "#000000" },
+            }}
+            MenuProps={{
+              anchorOrigin: {
+                vertical: "bottom",
+                horizontal: "left",
+              },
+              transformOrigin: {
+                vertical: "top",
+                horizontal: "left",
+              },
+              PaperProps: {
+                style: {
+                  maxHeight: "calc(100vh - 100px)",
+                },
+              },
+            }}
+            multiple
+            variant="standard"
+            open={isOpen}
+            onClose={closeModalLocal}
+            onOpen={openModal}
+            value={selected}
+            renderValue={renderValue}
+            // endAdornment={
+            //   selected.length > 0 && (
+            //     <IconButton
+            //       sx={{ display: "none" }}
+            //       size="small"
+            //       aria-label="clear selection"
+            //       // onClick={handleClearClick}
+            //     >
+            //       <ClearIconSvgGray />
+            //     </IconButton>
+            //   )
+            // }
+          >
+            <Box
               sx={{
-                width: "100%",
+                minHeight: "66px",
                 display: "flex",
-                justifyContent: "center",
-                alignItems: "end",
+                paddingLeft: "12px",
+                pb: 1,
+                overflow: "auto",
+                "&::-webkit-scrollbar": {
+                  height: "0.3rem",
+                },
+                "&::-webkit-scrollbar-track": {
+                  WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+                  borderRadius: "0.2rem",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  backgroundColor: "rgba(0,0,0,.1)",
+                },
               }}
             >
-              Please select any task assignee
-            </Typography>
-          )}
-        </Box>
+              {!checkSelection() && selected.length > 0 ? (
+                selected.map((selectedContact: Contact) => {
+                  return (
+                    <SelectedContactBox
+                      isDisabled={selectedUsers.some(
+                        (user: any) => user._id === selectedContact._id
+                      )}
+                      contact={selectedContact}
+                      handleSelectedList={handleSelectedList}
+                    />
+                  );
+                })
+              ) : (
+                <Typography
+                  sx={{
+                    width: "100%",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "end",
+                  }}
+                >
+                  Please select any task assignee
+                </Typography>
+              )}
+            </Box>
+            <Box
+              sx={{
+                margin: "8px 16px",
+              }}
+            >
+              <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
+              <GroupContactList
+                filterData={allContactsList}
+                filteredUsers={selectedUsers}
+                selected={selected}
+                recentData={{ "Suggested Users": filteredRecentUserContact }}
+                handleSelectedList={handleSelectedList}
+              />
+            </Box>
+          </Select>
+        </FormControl>
       </Box>
+
+      {/* comment Box */}
       <Box
         sx={{
-          margin: "8px 16px",
+          height: "auto",
+          padding: "2px 2px",
+          mt: 0.5,
         }}
       >
-        <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
-        <GroupContactList
-          filterData={allContactsList}
-          filteredUsers={selectedUsers}
-          selected={selected}
-          recentData={{ "Suggested Users": filteredRecentUserContact }}
-          handleSelectedList={handleSelectedList}
-        />
+        <FormControl
+          variant="standard"
+          sx={{ width: "100%", fontFamily: "Inter" }}
+        >
+          <MUIInputLabel htmlFor="comment">Comment</MUIInputLabel>
+          <Input
+            name="comment"
+            id="comment"
+            required
+            autoFocus
+            multiline
+            maxRows={10}
+            value={comment}
+            sx={{ width: "100%" }}
+            onChange={handleDescriptionChange}
+          />
+        </FormControl>
       </Box>
+
+      <Footer
+        isCommentUi={true}
+        isForwardUi={true}
+        isSubmitted={false}
+        disabled={false}
+        handleClose={closeModal}
+        showHeader={false}
+        handleSubmitForm={handleSubmit}
+        handleAttachImageValue={() => {}}
+        handleSelectDocumentValue={() => {}}
+      />
     </Box>
   );
 };
