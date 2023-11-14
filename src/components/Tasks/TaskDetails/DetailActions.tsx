@@ -7,7 +7,7 @@ import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
@@ -24,6 +24,8 @@ interface IProps {
   doneCommentsRequired: boolean;
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
+  isExpanded:boolean
+  setIsExpanded:Dispatch<SetStateAction<boolean>>
 }
 
 enum statusColors {
@@ -47,6 +49,8 @@ const DetailActions: React.FC<IProps> = (props) => {
     doneCommentsRequired,
     assignedToState,
     invitedNumbers,
+    isExpanded,
+    setIsExpanded
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -125,50 +129,15 @@ const DetailActions: React.FC<IProps> = (props) => {
       <Grid
         container
         mt={1.25}
-        justifyContent="space-between"
+        justifyContent="end"
         alignItems="flex-start"
         rowGap={2}
       >
-        <Grid item container md={6} xs={12} gap={1.4} alignItems="center">
-          <Chip
-            label={capitalize(userSubState)}
-            size="small"
-            sx={{
-              borderColor: chipColor,
-              backgroundColor: chipColor,
-              borderRadius: "20px",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: 600,
-              color: "#131516",
-              padding: "2px 8px",
-            }}
-          />
-          <Chip
-            label={taskUid}
-            size="small"
-            sx={{
-              borderColor: "#818181",
-              backgroundColor: "white",
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderRadius: "10px",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: 600,
-              color: "#131516",
-              padding: "2px 8px",
-            }}
-          />
-          <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
-          <SubLabelTag sx={{ color: "#131516" }}>
-            Due date: {dueDate === "" ? "N/A" : dueDate}
-          </SubLabelTag>
-        </Grid>
+      
         <Grid
           item
           container
-          md={6}
+          md={12}
           xs={12}
           gap={1.4}
           justifyContent={justifyContent}
@@ -243,6 +212,64 @@ const DetailActions: React.FC<IProps> = (props) => {
           )}
         </Grid>
       </Grid>
+      <Grid
+        container
+        mt={1.25}
+        justifyContent={'space-between'}
+        alignItems="flex-start"
+        rowGap={2}
+      >
+        <Grid item container md={10} xs={12} gap={1.4} alignItems="center">
+          <Chip
+            label={capitalize(userSubState)}
+            size="small"
+            sx={{
+              borderColor: chipColor,
+              backgroundColor: chipColor,
+              borderRadius: "20px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 600,
+              color: "#131516",
+              padding: "2px 8px",
+            }}
+          />
+          <Chip
+            label={taskUid}
+            size="small"
+            sx={{
+              borderColor: "#818181",
+              backgroundColor: "white",
+              borderWidth: "1px",
+              borderStyle: "solid",
+              borderRadius: "10px",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: 600,
+              color: "#131516",
+              padding: "2px 8px",
+            }}
+          />
+          <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
+          <SubLabelTag sx={{ color: "#131516" }}>
+            Due date: {dueDate === "" ? "N/A" : dueDate}
+          </SubLabelTag>
+        </Grid>
+         <Box
+          sx={{
+            cursor: "pointer",
+            display: "flex",
+            alignSelf:'center',
+            fontFamily: "Inter",
+            fontSize: "12px",
+            fontWeight: "400",
+            color: "#0076C8",
+          }}
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          {isExpanded ? "View less" : "View more"}
+        </Box>
+        </Grid>
       {/* {isOpen === true && (
         <CustomModal
           maxWidth={"sm"}

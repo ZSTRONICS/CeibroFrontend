@@ -3,7 +3,6 @@ import { styled } from "@mui/system";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
-import AddedDetails from "./AddedDetails";
 import DrawingFiles from "./DrawingFiles";
 const CustomScrollbarBox = styled(Box)({
   width: "100%",
@@ -63,45 +62,12 @@ export default function DetailsBody(props: IProps) {
         <ReadMoreWrapper title="Description" readMore={!!description??false} type="text" data={description} />
         {mediaWithoutComment.length > 0 && (
           <ReadMoreWrapper title="Images" readMore={true} type='image' data={mediaWithoutComment} />
-            // <CustomScrollbarBox>
-            //   {mediaWithoutComment.map((file: IFile, index: any) => {
-            //     return (
-            //       <ImageBoxWrapper
-            //         key={file._id + index}
-            //         onClick={() =>
-            //           props.handleFiles(mediaWithoutComment, file._id)
-            //         }
-            //       >
-            //         <ImageBox src={file.fileUrl} />
-            //       </ImageBoxWrapper>
-            //     );
-            //   })}
-            // </CustomScrollbarBox>
-          // </ReadMoreWrapper>
         )}
         {mediaWithComment.length > 0 && (
           <ReadMoreWrapper title="Images" readMore={true} type='imageWithDesp' data={mediaWithComment} />
-            // <CustomScrollbarBox>
-            //   {mediaWithComment.map((file: IFile, index: any) => {
-            //     return (
-            //       <ImageBoxWrapper
-            //         key={file._id + index}
-            //         onClick={() =>
-            //           props.handleFiles(mediaWithComment, file._id)
-            //         }
-            //       >
-            //         <ImageBoxWithDesp
-            //           src={file.fileUrl}
-            //           comment={file.comment}
-            //         />
-            //       </ImageBoxWrapper>
-            //     );
-            //   })}
-            // </CustomScrollbarBox>
-          // </ReadMoreWrapper>
         )}
         <DrawingFiles />
-        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
+        {/* {events && <AddedDetails events={events} hasFile={media.length > 0} />} */}
       </Box>
     </>
   );

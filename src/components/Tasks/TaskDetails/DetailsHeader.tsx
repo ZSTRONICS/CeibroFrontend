@@ -2,9 +2,10 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import CustomDivider from "components/Utills/CustomDivider";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import DetailActions from "./DetailActions";
 import ExpandedHeaderView from "./ExpandedHeaderView";
 
@@ -21,6 +22,8 @@ interface IProps {
   invitedNumbers: InvitedNumber[];
   doneImageRequired: boolean;
   doneCommentsRequired: boolean;
+  isShowFullView:boolean,
+  setIsShowFullView: Dispatch<SetStateAction<boolean>>
 }
 
 interface InfoBoxProps {
@@ -43,6 +46,8 @@ export default function DetailsHeader(props: IProps) {
     taskId,
     doneImageRequired,
     doneCommentsRequired,
+    isShowFullView,
+    setIsShowFullView
   } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -179,7 +184,10 @@ export default function DetailsHeader(props: IProps) {
         createdOn={createdOn}
         assignedToState={assignedToState}
         invitedNumbers={invitedNumbers}
+        isExpanded={isShowFullView}
+        setIsExpanded={setIsShowFullView}
       />
+      <CustomDivider />
       <Box>
         {!isExpanded && (
           <Box>
@@ -268,6 +276,7 @@ export default function DetailsHeader(props: IProps) {
         >
           {isExpanded ? "View less" : "View more"}
         </Box>
+         <CustomDivider/>
       </Box>
     </Box>
   );

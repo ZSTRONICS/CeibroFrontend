@@ -11,6 +11,7 @@ import {
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useState } from "react";
+import AddedDetails from "./AddedDetails";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -36,6 +37,7 @@ function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
   } = props.task;
+  const [isShowFullView,setIsShowFullView] = useState(false)
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
@@ -84,7 +86,10 @@ function TaskDetails(props: IProps) {
         invitedNumbers={invitedNumbers}
         taskId={_id}
         createdOn={momentdeDateFormatWithDay(createdAt)}
+        isShowFullView={isShowFullView}
+        setIsShowFullView={setIsShowFullView}
       />
+      {isShowFullView &&<>
       <FileBox media={media} title="Files" bt={true} bb={true} files={docs} />
       {events ? (
         <DetailsBody
@@ -95,7 +100,8 @@ function TaskDetails(props: IProps) {
         />
       ) : (
         <></>
-      )}
+      )}</>}
+      {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}
