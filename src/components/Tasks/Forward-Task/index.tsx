@@ -6,7 +6,12 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import { MUIInputLabel, SubLabelTag } from "components/CustomTags";
+import {
+  CustomDivider,
+  MUIInputLabel,
+  SubLabelTag,
+} from "components/CustomTags";
+import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
 import { TASK_CONFIG } from "config";
 import {
@@ -263,22 +268,20 @@ const ForwardTask = ({
       })
     );
   };
-
-  const handleClearClick = () => {
-    const clearSelectedContacts = selected.filter(
-      (contactLocal: any) =>
-        !isMatchPhoneNumber(contactLocal.phoneNumber, selectedUsers)
-    );
-    setSelected(clearSelectedContacts);
+  const beforeAfterStyles = {
+    "&::before, &::after": {
+      borderBottom: "none",
+    },
   };
-
   return (
-    <Box>
+    <>
+      <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
       <Box sx={{ display: "flex", alignItems: "baseline" }}>
-        <SubLabelTag sx={{ pr: 1, display: { md: "none", lg: "block" } }}>
+        <SubLabelTag
+          sx={{ fontSize: "14px", pr: 1, display: { md: "none", lg: "block" } }}
+        >
           Forward
         </SubLabelTag>
-
         <FormControl
           variant="standard"
           sx={{
@@ -286,7 +289,7 @@ const ForwardTask = ({
             width: "100%",
             maxWidth: "100%",
             pl: 1,
-            borderLeft: "1px solid #818181",
+            borderLeft: "1.9px solid #818181",
           }}
         >
           {/* <MUIInputLabel
@@ -307,9 +310,17 @@ const ForwardTask = ({
             labelId="controlled-open-select-label"
             id="controlled-open-select"
             sx={{
+              position: "relative",
+              width: "100%",
+              "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                borderBottom: "none !important",
+              },
+              ...beforeAfterStyles,
               "&.custom-select": {
                 mt: 0,
-                // pr: 2,
+              },
+              "&.MuiSelect-select": {
+                p: 0,
               },
               "& .MuiSelect-icon": {
                 right: 0,
@@ -327,7 +338,8 @@ const ForwardTask = ({
               },
               PaperProps: {
                 style: {
-                  maxHeight: "calc(100vh - 100px)",
+                  maxHeight: "calc(100vh - 120px)",
+                  width: `calc(100vw - 29.4rem)`,
                 },
               },
             }}
@@ -335,7 +347,12 @@ const ForwardTask = ({
             variant="standard"
             open={isOpen}
             onClose={closeModalLocal}
-            onOpen={openModal}
+            onOpen={() => {
+              setAllContactsList(
+                handleGroupSearch("", sortedContacts, "contactFullName")
+              );
+              openModal();
+            }}
             value={selected}
             renderValue={renderValue}
             // endAdornment={
@@ -357,7 +374,9 @@ const ForwardTask = ({
                 display: "flex",
                 paddingLeft: "12px",
                 pb: 1,
+                maxWidth: "98%",
                 overflow: "auto",
+                pr: 1,
                 "&::-webkit-scrollbar": {
                   height: "0.3rem",
                 },
@@ -397,7 +416,7 @@ const ForwardTask = ({
             </Box>
             <Box
               sx={{
-                margin: "8px 16px",
+                margin: "3px 16px",
               }}
             >
               <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
@@ -409,11 +428,17 @@ const ForwardTask = ({
                 handleSelectedList={handleSelectedList}
               />
             </Box>
+            <SearchBox
+              disabled={false}
+              searchBtnLabel="OK"
+              placeholder="Start typing name"
+              handleSearchChange={handleSearchChange}
+              handleSubmit={closeModalLocal}
+            />
           </Select>
         </FormControl>
       </Box>
-
-      {/* comment Box */}
+      <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
       <Box
         sx={{
           height: "auto",
@@ -434,10 +459,17 @@ const ForwardTask = ({
             multiline
             maxRows={10}
             value={comment}
-            sx={{ width: "100%" }}
+            sx={{
+              width: "100%",
+              "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                borderBottom: "none !important",
+              },
+              ...beforeAfterStyles,
+            }}
             onChange={handleDescriptionChange}
           />
         </FormControl>
+        <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
       </Box>
 
       <Footer
@@ -451,7 +483,7 @@ const ForwardTask = ({
         handleAttachImageValue={() => {}}
         handleSelectDocumentValue={() => {}}
       />
-    </Box>
+    </>
   );
 };
 

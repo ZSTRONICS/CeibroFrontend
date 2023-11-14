@@ -110,7 +110,7 @@ const GroupContactList: React.FC<GroupContactListProps> = ({
     <VariableSizeList
       key={itemSizes.length}
       className="contacts-scrollbar"
-      height={430}
+      height={350}
       width={"100%"}
       itemCount={contactListElement.length}
       itemSize={(index) => itemSizes[index]}

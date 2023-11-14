@@ -49,14 +49,11 @@ const ReadMoreWrapper = ({
     if (compRef.current) {
       const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
       const maxHeight = type === "text" ? 4 * lineHeight : 152;
-      console.log(type,":",maxHeight);
-      
       const currentHeight = compRef.current.clientHeight;
-      console.log("currentHeight",type,":",currentHeight);
-      if (currentHeight > maxHeight+5) {
+      if (currentHeight > maxHeight + 5) {
         setIsReadMore(true);
-      } 
-      setHeight(maxHeight+'px')
+      }
+      setHeight(maxHeight + "px");
     }
   };
 
@@ -106,7 +103,6 @@ const ReadMoreWrapper = ({
           <Box
             sx={{
               minWidth: "83px",
-              height: "20px",
               gap: 1,
               display: "flex",
               alignItems: "center",
@@ -136,7 +132,7 @@ const ReadMoreWrapper = ({
               sx={{
                 width: "100%",
                 px: "16px",
-                gap:'16px',
+                gap: "16px",
                 borderLeft: "1.9px solid #818181",
                 maxWidth: "95%",
                 display: "flex",
@@ -144,7 +140,7 @@ const ReadMoreWrapper = ({
                 alignItems: "center",
               }}
             >
-              {type === "text" &&(
+              {type === "text" && (
                 <p
                   ref={despRef}
                   style={{
@@ -225,7 +221,7 @@ const ReadMoreWrapper = ({
                   +{count}
                 </Box>
               )}
-              {isReadMore &&  (
+              {isReadMore && (
                 <IconButton
                   onClick={handleMore}
                   sx={{ height: "24px", width: "24px" }}
@@ -255,11 +251,7 @@ const ReadMoreWrapper = ({
       </Box>
       {isOpen && images.length > 0 && (
         <ImgsViewerSlider
-          imgs={images.map((image: any) => ({
-            src: image.fileUrl,
-            caption: image.fileName,
-            srcSet: [`${image.fileUrl} auto`],
-          }))}
+          imgs={images.map((image: any) => image.fileUrl)}
           currImg={currentImgIndex}
           isOpen={isOpen}
           onClose={closeModal}

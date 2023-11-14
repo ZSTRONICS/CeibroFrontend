@@ -1,4 +1,11 @@
-import { Box, InputLabel, MenuItem, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  InputLabel,
+  MenuItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 export const Heading = styled(Typography)(
   ({ theme }) => `
@@ -227,7 +234,13 @@ const BackToLoginTag = styled(Box)(({ theme }) => ({
     marginTop: 20,
   },
 }));
-
+const CustomDivider = styled(Divider)(({ theme }) => ({
+  borderColor: "#9e9e9e",
+  borderRadius: "4px",
+  opacity: "0.9",
+  background: "#F4F4F4",
+  filter: "blur(1px)",
+}));
 const MenuItemTag = styled(MenuItem)(({ theme }) => ({
   color: "#000000",
   fontFamily: "Inter",
@@ -240,6 +253,7 @@ const MenuItemTag = styled(MenuItem)(({ theme }) => ({
 export {
   BackToLoginTag,
   BoldLableTag,
+  CustomDivider,
   CustomStack,
   CustomTitle,
   DescriptionTag,

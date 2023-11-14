@@ -21,7 +21,7 @@ export default function SearchBox(props: IProps) {
     <Box
       sx={{
         width: "100%",
-        padding: "4px 16px",
+        padding: "0px 16px",
         display: "flex",
         gap: "12px",
         boxSizing: "border-box",
@@ -40,12 +40,12 @@ export default function SearchBox(props: IProps) {
       <Box>
         <Button
           disabled={disabled}
-          variant="outlined"
+          variant="contained"
           sx={{
             textTransform: "capitalize",
-            height: "28px",
-            color: "#818181",
-            borderColor: "#818181",
+            // height: "28px",
+            // color: "#818181",
+            // borderColor: "#818181",
           }}
           onClick={handleSubmit}
         >

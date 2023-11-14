@@ -39,7 +39,7 @@ function DragableDrawer({
   openModal,
   children,
 }: Props) {
-  const containerHeight = window.innerHeight - 750;
+  const containerHeight = window.innerHeight - 710;
   const [drawerHeight, setDrawerHeight] = useState(containerHeight);
   useEffect(() => {
     if (!isOpen) {
