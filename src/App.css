@@ -59,6 +59,10 @@ span.react-simple-image-viewer__close {
   right: 4%;
 }
 
+div#ReactSimpleImageViewer {
+  z-index: 50;
+}
+
 div.react-simple-image-viewer__modal-content {
   width: 60vw;
   height: 100vh;
@@ -66,6 +70,7 @@ div.react-simple-image-viewer__modal-content {
   text-align: center;
   display: flex;
   align-items: center;
+
   justify-content: center;
 }
 
@@ -175,8 +180,8 @@ iframe {
   position: absolute;
   bottom: 0;
   right: 0;
-  transform: translateX(-1%);
-  width: 43%;
+  transform: translateX(-3%);
+  width: 44%;
   border-bottom: 1px solid;
 }
 

@@ -239,7 +239,7 @@ const CustomDivider = styled(Divider)(({ theme }) => ({
   borderRadius: "4px",
   opacity: "0.9",
   background: "#F4F4F4",
-  filter: "blur(1px)",
+  filter: "blur(2px)",
 }));
 const MenuItemTag = styled(MenuItem)(({ theme }) => ({
   color: "#000000",

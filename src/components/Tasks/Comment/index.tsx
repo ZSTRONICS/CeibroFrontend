@@ -1,7 +1,7 @@
 import { Box, Divider, FormControl, Input } from "@mui/material";
-import { MUIInputLabel } from "components/CustomTags";
+import { CustomDivider, MUIInputLabel } from "components/CustomTags";
 import FileBox from "components/Utills/FileBox";
-import { IS_IMAGE } from "components/Utills/Globals";
+import { IS_IMAGE, hasOnlySpaces } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
@@ -134,7 +134,11 @@ const Comment = ({
 
   const handleDescriptionChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setDescription(e.target.value);
+      if (hasOnlySpaces(e.target.value)) {
+        setDescription("");
+      } else {
+        setDescription(e.target.value);
+      }
     },
     [setDescription]
   );
@@ -182,19 +186,28 @@ const Comment = ({
             variant="standard"
             sx={{ width: "100%", fontFamily: "Inter" }}
           >
-            <MUIInputLabel htmlFor="description">Comment</MUIInputLabel>
+            <MUIInputLabel htmlFor="comment">Comment</MUIInputLabel>
             <Input
-              name="description"
-              id="description"
+              name="comment"
+              id="comment"
               required
               autoFocus
               multiline
               maxRows={10}
               value={description}
-              sx={{ width: "100%" }}
+              sx={{
+                width: "100%",
+                "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                  borderBottom: "none !important",
+                },
+                "&::before, &::after": {
+                  borderBottom: "none",
+                },
+              }}
               onChange={handleDescriptionChange}
             />
           </FormControl>
+          <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
         </Box>
       </Box>
       <Footer

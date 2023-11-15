@@ -423,6 +423,13 @@ export function isValidImageType(fileType: string) {
 export function isValidDocumentType(fileType: string) {
   return validTypes.includes(fileType);
 }
+/**
+ * @param inputString 
+ * @return return true or false
+ * **/
+function hasOnlySpaces(inputString: string) {
+  return /^\s*$/.test(inputString);
+}
 
 /**
  * @param extensionKeys array of extension
@@ -529,6 +536,6 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
 };
 
 export {
-  countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
+  countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
 };
 

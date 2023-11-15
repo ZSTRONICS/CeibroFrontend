@@ -11,6 +11,7 @@ import {
   MUIInputLabel,
   SubLabelTag,
 } from "components/CustomTags";
+import { hasOnlySpaces } from "components/Utills/Globals";
 import SearchBox from "components/Utills/SearchBox";
 import SelectedContactBox from "components/Utills/SelectedContactBox";
 import { TASK_CONFIG } from "config";
@@ -76,7 +77,11 @@ const ForwardTask = ({
     useState<ContactsState>(initialState);
   const handleDescriptionChange = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
-      setComment(e.target.value);
+      if (hasOnlySpaces(e.target.value)) {
+        setComment("");
+      } else {
+        setComment(e.target.value);
+      }
     },
     [setComment]
   );
@@ -240,7 +245,7 @@ const ForwardTask = ({
         });
       return fullNames.join(", ");
     } else {
-      return "Forward To";
+      return "";
     }
   };
 
@@ -273,6 +278,8 @@ const ForwardTask = ({
       borderBottom: "none",
     },
   };
+  const hasAssignTo = renderValue();
+  console.log("hasAssignTo", hasAssignTo.length);
   return (
     <>
       <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
@@ -292,11 +299,12 @@ const ForwardTask = ({
             borderLeft: "1.9px solid #818181",
           }}
         >
-          {/* <MUIInputLabel
+          <MUIInputLabel
             id="controlled-open-select-label"
             sx={{
+              "&.Mui-focused": { color: "transparent", display: "none" },
               pl: "1rem",
-              top: "-50%",
+              top: "-40%",
               display: {
                 md: "block",
                 lg: selected.length === 0 && !isOpen ? "block" : "none",
@@ -304,7 +312,7 @@ const ForwardTask = ({
             }}
           >
             Forward to
-          </MUIInputLabel> */}
+          </MUIInputLabel>
           <Select
             className="custom-select"
             labelId="controlled-open-select-label"
@@ -476,9 +484,9 @@ const ForwardTask = ({
         isCommentUi={true}
         isForwardUi={true}
         isSubmitted={false}
-        disabled={false}
+        showHeader={true}
+        disabled={hasAssignTo.length === 0}
         handleClose={closeModal}
-        showHeader={false}
         handleSubmitForm={handleSubmit}
         handleAttachImageValue={() => {}}
         handleSelectDocumentValue={() => {}}

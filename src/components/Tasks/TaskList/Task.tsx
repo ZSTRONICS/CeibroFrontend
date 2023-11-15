@@ -643,6 +643,7 @@ const Task = () => {
 
       <Grid
         height={windowHeight}
+        id="taskDetailContainer"
         item
         sx={{
           borderRadius: "4px",

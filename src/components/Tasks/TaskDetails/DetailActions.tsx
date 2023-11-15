@@ -24,8 +24,8 @@ interface IProps {
   doneCommentsRequired: boolean;
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
-  isExpanded:boolean
-  setIsExpanded:Dispatch<SetStateAction<boolean>>
+  isExpanded: boolean;
+  setIsExpanded: Dispatch<SetStateAction<boolean>>;
 }
 
 enum statusColors {
@@ -50,7 +50,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     assignedToState,
     invitedNumbers,
     isExpanded,
-    setIsExpanded
+    setIsExpanded,
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -133,7 +133,6 @@ const DetailActions: React.FC<IProps> = (props) => {
         alignItems="flex-start"
         rowGap={2}
       >
-      
         <Grid
           item
           container
@@ -215,7 +214,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       <Grid
         container
         mt={1.25}
-        justifyContent={'space-between'}
+        justifyContent={"space-between"}
         alignItems="flex-start"
         rowGap={2}
       >
@@ -255,11 +254,11 @@ const DetailActions: React.FC<IProps> = (props) => {
             Due date: {dueDate === "" ? "N/A" : dueDate}
           </SubLabelTag>
         </Grid>
-         <Box
+        <Box
           sx={{
             cursor: "pointer",
             display: "flex",
-            alignSelf:'center',
+            alignSelf: "center",
             fontFamily: "Inter",
             fontSize: "12px",
             fontWeight: "400",
@@ -269,7 +268,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         >
           {isExpanded ? "View less" : "View more"}
         </Box>
-        </Grid>
+      </Grid>
       {/* {isOpen === true && (
         <CustomModal
           maxWidth={"sm"}

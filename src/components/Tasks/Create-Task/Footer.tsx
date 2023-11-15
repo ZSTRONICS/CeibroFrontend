@@ -16,7 +16,7 @@ interface FooterPropsType {
   handleClose: () => void;
   isCommentUi?: boolean;
   isForwardUi?: boolean;
-  showHeader: boolean | undefined;
+  showHeader: boolean;
   disabled: boolean;
   isSubmitted: boolean;
 }
@@ -95,15 +95,14 @@ const Footer = (props: FooterPropsType) => {
         zIndex: "50",
         alignItems: "center",
         background: "white",
-        borderTop: props.showHeader ? "" : "1px solid rgba(0, 0, 0, 0.1)",
+        borderTop: "1px solid rgba(0, 0, 0, 0.1)",
         boxShadow: `${
-          props.showHeader ? "" : "0px -2px 6px rgba(0, 0, 0, 0.1)"
+          props.showHeader ? "0px -2px 6px rgba(0, 0, 0, 0.1)" : "none"
         }`,
         textTransform: "capitalize",
         position: `${position}`,
-        // marginTop: `${props.showHeader ? "20px" : "unset"}`,
         paddingBottom: `${props.showHeader ? "0" : "unset"}`,
-        bottom: "0",
+        bottom: 0,
         left: 0,
         width: "100%",
         gap: 1,

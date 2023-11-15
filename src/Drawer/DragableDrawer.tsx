@@ -1,7 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import { useEffect, useState } from "react";
-import Draggable, { DraggableData } from "react-draggable";
+import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 interface Props {
   isOpen: boolean;
   openModal: any;
@@ -32,66 +31,80 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
   left: "calc(50% - 15px)",
 }));
 
-function DragableDrawer({
-  isOpen,
-  closeModal,
-  title,
-  openModal,
-  children,
-}: Props) {
-  const containerHeight = window.innerHeight - 710;
+function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
+  const containerHeight = window.innerHeight - 690;
   const [drawerHeight, setDrawerHeight] = useState(containerHeight);
+
+  const [state, setState] = useState({
+    activeDrags: 0,
+    deltaPosition: { x: -16, y: 470 },
+  });
+
   useEffect(() => {
     if (!isOpen) {
       setDrawerHeight(containerHeight);
+      setState({
+        ...state,
+        deltaPosition: {
+          x: -16,
+          y: 475,
+        },
+      });
     }
   }, [isOpen]);
 
-  const handleStart = (e: any) => {
-    e.stopPropagation();
+  const onStart = () => {
+    setState({ ...state, activeDrags: state.activeDrags + 1 });
   };
 
-  const handleDrag = (e: any, data: DraggableData) => {
-    const newHeight = drawerHeight - data.y;
+  const handleDrag = (event: DraggableEvent, data: DraggableData) => {
+    const { x, y } = state.deltaPosition;
+    setState({
+      ...state,
+      deltaPosition: {
+        x: -16,
+        y: y + data.deltaY,
+      },
+    });
+    const newHeight = window.innerHeight - y - data.deltaY - 215;
     setDrawerHeight(newHeight);
-    if (newHeight < 90) {
+  };
+
+  let containerWidth: number = 500;
+  const taskDetailContainer = document.getElementById("taskDetailContainer");
+  if (taskDetailContainer) {
+    containerWidth = taskDetailContainer.clientWidth;
+  }
+
+  const onStop = () => {
+    setState({ ...state, activeDrags: state.activeDrags - 1 });
+    if (drawerHeight < 120) {
       closeModal();
     }
   };
+
   return (
-    <div style={{ height: "100%" }}>
-      <SwipeableDrawer
-        variant="persistent"
-        anchor="bottom"
-        open={isOpen}
-        onClose={() => closeModal()}
-        onOpen={() => openModal()}
-        swipeAreaWidth={20}
-        disableSwipeToOpen={false}
-        ModalProps={{
-          keepMounted: true,
-        }}
-        sx={{
-          "&.MuiDrawer-root > .MuiPaper-root": {
-            width: `calc(100vw - 29rem)`,
-            overflow: "visible",
-            left: "unset",
-            right: "1%",
-            bottom: "2%",
-            overflowY: "hidden",
-          },
-        }}
-      >
-        {isOpen && (
+    <>
+      {isOpen && (
+        <>
           <Draggable
+            allowAnyClick={true}
             axis="y"
+            defaultPosition={state.deltaPosition}
             handle={".handle"}
-            onStart={handleStart}
+            onStart={onStart}
+            onStop={onStop}
             onDrag={handleDrag}
-            bounds={{ bottom: 350 }}
-            scale={2}
+            bounds={{ top: 150, bottom: 610 }}
           >
-            <StyledBox>
+            <StyledBox
+              style={{
+                background: "white",
+                position: "absolute",
+                width: `${containerWidth}px`,
+                zIndex: "10",
+              }}
+            >
               <StyledBox
                 className={"handle"}
                 sx={{
@@ -108,12 +121,14 @@ function DragableDrawer({
                   <DragableLines />
                   <DragableLines2 />
                 </div>
+              </StyledBox>
+              <StyledBox>
                 <Typography
                   sx={{
                     fontSize: "14px",
                     fontWeight: 700,
                     pt: 1,
-                    pl: 2,
+                    pl: 2.5,
                     color: "text.primary",
                   }}
                 >
@@ -125,7 +140,6 @@ function DragableDrawer({
                 sx={{
                   px: 2,
                   overflow: "auto",
-                  // border: "1px solid",
                   height: `${drawerHeight}px`,
                   pb: "3rem",
                 }}
@@ -134,9 +148,9 @@ function DragableDrawer({
               </StyledBox>
             </StyledBox>
           </Draggable>
-        )}
-      </SwipeableDrawer>
-    </div>
+        </>
+      )}
+    </>
   );
 }
 
