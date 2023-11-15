@@ -1,5 +1,6 @@
 import { Box } from "@mui/material";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
+import CustomDivider from "components/Utills/CustomDivider";
 import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
@@ -10,8 +11,9 @@ import {
 } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AddedDetails from "./AddedDetails";
+import DetailActions from "./DetailActions";
 import DetailsBody from "./DetailsBody";
 import DetailsHeader from "./DetailsHeader";
 
@@ -37,7 +39,7 @@ function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
   } = props.task;
-  const [isShowFullView,setIsShowFullView] = useState(false)
+  const [isShowFullView, setIsShowFullView] = useState(false);
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
@@ -53,6 +55,16 @@ function TaskDetails(props: IProps) {
 
   const allFiles = [...filteredFiles, ...eventsFiles];
   const uniqueImageFiles = Array.from(new Set(allFiles));
+  const containerRef: any = useRef(null);
+  const [heightOffset, setHeightOffset] = useState();
+
+useEffect(() => {
+    if (containerRef.current) {
+      const newTop = containerRef.current.getBoundingClientRect().top;
+      setHeightOffset(newTop+32);
+    }
+  }, [containerRef]);
+
   const handleFiles = (files: any, selectedFileId: string) => {
     const currentIndex = allFiles.findIndex(
       (file: any) => file._id === selectedFileId
@@ -67,41 +79,56 @@ function TaskDetails(props: IProps) {
     <Box
       key={_id}
       sx={{
-        overflowY: "hidden",
         marginLeft: "16px",
         marginRight: "16px",
       }}
       className="custom-scrollbar"
     >
-      <DetailsHeader
-        doneCommentsRequired={doneCommentsRequired}
+      <DetailActions
         doneImageRequired={doneImageRequired}
-        assignedToState={assignedToState}
-        userSubState={userSubState}
-        dueDate={dueDate || ""}
-        taskUid={taskUID}
-        topic={topic}
-        creator={creator}
-        project={project}
-        invitedNumbers={invitedNumbers}
+        doneCommentsRequired={doneCommentsRequired}
         taskId={_id}
-        createdOn={momentdeDateFormatWithDay(createdAt)}
-        isShowFullView={isShowFullView}
-        setIsShowFullView={setIsShowFullView}
+        userSubState={userSubState}
+        dueDate={dueDate}
+        taskUid={taskUID}
+        createdOn={() => momentdeDateFormatWithDay(createdAt)}
+        assignedToState={assignedToState}
+        invitedNumbers={invitedNumbers}
+        isExpanded={isShowFullView}
+        setIsExpanded={setIsShowFullView}
       />
-      {isShowFullView &&<>
-      <FileBox media={media} title="Files" bt={true} bb={true} files={docs} />
-      {events ? (
-        <DetailsBody
-          media={media}
-          description={description}
-          events={events}
-          handleFiles={handleFiles}
+      <CustomDivider />
+      <Box ref={containerRef}  className="custom-scrollbar" sx={{ overflow: "scroll", maxHeight: `calc(100vh - ${heightOffset}px)`, }}>
+        <DetailsHeader
+          assignedToState={assignedToState}
+          topic={topic}
+          creator={creator}
+          project={project}
+          invitedNumbers={invitedNumbers}
         />
-      ) : (
-        <></>
-      )}</>}
-      {events && <AddedDetails events={events} hasFile={media.length > 0} />}
+        {isShowFullView && (
+          <>
+            <FileBox
+              media={media}
+              title="Files"
+              bt={true}
+              bb={true}
+              files={docs}
+            />
+            {events ? (
+              <DetailsBody
+                media={media}
+                description={description}
+                events={events}
+                handleFiles={handleFiles}
+              />
+            ) : (
+              <></>
+            )}
+          </>
+        )}
+        {events && <AddedDetails events={events} hasFile={media.length > 0} />}
+      </Box>
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}

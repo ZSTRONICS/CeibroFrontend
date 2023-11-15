@@ -72,7 +72,7 @@ function AddedDetails(props: IProps) {
       <div>
         <Accordion
           defaultExpanded={true}
-          sx={{ borderBottom: "1px solid #ccc" }}
+          // sx={{ borderBottom: "1px solid #ccc" }}
         >
           <AccordionSummary
             expandIcon={<ExpandMoreIcon />}

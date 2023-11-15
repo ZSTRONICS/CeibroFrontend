@@ -5,25 +5,15 @@ import { Box } from "@mui/system";
 import CustomDivider from "components/Utills/CustomDivider";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import DetailActions from "./DetailActions";
+import { useEffect, useState } from "react";
 import ExpandedHeaderView from "./ExpandedHeaderView";
 
 interface IProps {
-  userSubState: string;
   assignedToState: AssignedUserState[];
-  dueDate: string;
-  taskId: string;
-  taskUid: string;
   topic: Topic;
-  createdOn: Date | any;
   creator: UserInfo;
   project: Project;
   invitedNumbers: InvitedNumber[];
-  doneImageRequired: boolean;
-  doneCommentsRequired: boolean;
-  isShowFullView:boolean,
-  setIsShowFullView: Dispatch<SetStateAction<boolean>>
 }
 
 interface InfoBoxProps {
@@ -34,20 +24,11 @@ interface InfoBoxProps {
 
 export default function DetailsHeader(props: IProps) {
   const {
-    userSubState,
     assignedToState,
-    dueDate,
     project,
-    taskUid,
     topic,
-    createdOn,
     creator,
     invitedNumbers,
-    taskId,
-    doneImageRequired,
-    doneCommentsRequired,
-    isShowFullView,
-    setIsShowFullView
   } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -174,20 +155,6 @@ export default function DetailsHeader(props: IProps) {
 
   return (
     <Box sx={{ padding: "0px 0px 0px 0px" }}>
-      <DetailActions
-        doneImageRequired={doneImageRequired}
-        doneCommentsRequired={doneCommentsRequired}
-        taskId={taskId}
-        userSubState={userSubState}
-        dueDate={dueDate}
-        taskUid={taskUid}
-        createdOn={createdOn}
-        assignedToState={assignedToState}
-        invitedNumbers={invitedNumbers}
-        isExpanded={isShowFullView}
-        setIsExpanded={setIsShowFullView}
-      />
-      <CustomDivider />
       <Box>
         {!isExpanded && (
           <Box>
