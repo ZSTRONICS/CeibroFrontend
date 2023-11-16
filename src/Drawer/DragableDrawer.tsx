@@ -78,7 +78,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
 
   const onStop = () => {
     setState({ ...state, activeDrags: state.activeDrags - 1 });
-    if (drawerHeight < 120) {
+    if (drawerHeight < 140) {
       closeModal();
     }
   };

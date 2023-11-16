@@ -193,7 +193,6 @@ const Comment = ({
               required
               autoFocus
               multiline
-              maxRows={10}
               value={description}
               sx={{
                 width: "100%",

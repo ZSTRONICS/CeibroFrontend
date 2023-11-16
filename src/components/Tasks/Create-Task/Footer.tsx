@@ -92,7 +92,7 @@ const Footer = (props: FooterPropsType) => {
       sx={{
         display: "flex",
         justifyContent: "space-between",
-        zIndex: "50",
+        zIndex: "15",
         alignItems: "center",
         background: "white",
         borderTop: "1px solid rgba(0, 0, 0, 0.1)",

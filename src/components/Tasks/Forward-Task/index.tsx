@@ -465,7 +465,6 @@ const ForwardTask = ({
             required
             autoFocus
             multiline
-            maxRows={10}
             value={comment}
             sx={{
               width: "100%",
