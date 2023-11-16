@@ -22,7 +22,7 @@ interface IProps {
   bb?: boolean;
   media?: any;
   title?: string;
-  files: IFile[] | File[];
+  files?: IFile[] | File[] | string;
   textColor?: string;
   showFullHeight?: boolean;
   handleClearFile?: (file: File | any, type: fileType) => void;
@@ -109,7 +109,7 @@ const FileBox: React.FC<IProps> = ({
         }}
       > */}
       <ReadMoreWrapper title={title ?? ""}>
-        {files.length > 0 ? (
+        {files && Array.isArray(files)&& files.length > 0 ? (
           files.map((item: IFile | File | any) => {
             const fileSize = filesizes(item.size);
             let f_name = "";

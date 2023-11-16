@@ -6,6 +6,7 @@ import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { MutableRefObject, useEffect, useId, useRef, useState } from "react";
+import FileBox from "../FileBox";
 import ImageBox from "../ImageBox";
 import ImageBoxWithDesp from "../ImageBoxWithDesp";
 
@@ -13,8 +14,8 @@ interface ReadMoreWrapperProps {
   title: string;
   readMore?: boolean;
   count?: number;
-  type?: "text" | "image" | "imageWithDesp";
-  data?: string | IFile[] | undefined;
+  type?: "text" | "image" | "imageWithDesp"|"file";
+  data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
 }
 const ImageBoxWrapper = styled(Box)({
@@ -205,6 +206,13 @@ const ReadMoreWrapper = ({
                     })}
                 </Box>
               )}
+              {type==="file"&&
+              <FileBox
+              title={title}
+              bt={true}
+              bb={true}
+              files={data}
+            />}
               {children ?? ""}
             </Box>
             <Box sx={{ display: "flex" }}>
