@@ -1,3 +1,4 @@
+import { unSeenTasks } from "components/Utills/Globals";
 import { USER_CONFIG } from "config";
 import {
   UserInterface,
@@ -58,11 +59,6 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
-      const unSeenTasks = {
-        isFromMeUnseen: false,
-        isTomeUnseen: false,
-        isHiddenUnseen: false,
-      };
       localStorage.setItem("unSeenTasks", JSON.stringify(unSeenTasks));
       return {
         ...state,

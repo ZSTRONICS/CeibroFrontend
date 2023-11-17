@@ -23,10 +23,10 @@ import { createAction } from "./action";
 
 export const authApiAction = {
   resendOtpRequest: createAction(AUTH_CONFIG.RESEND_OTP),
+  registerSetupProfile: createAction(REGISTER_PROFILE_SETUP)
 };
 export const registerRequest = createAction(REGISTER);
 export const registerConfirmationRequest = createAction(REGISTER_CONFIRMATION);
-export const registerSetupProfile = createAction(REGISTER_PROFILE_SETUP);
 export const UpdateProfilePicture = createAction(UPDATE_PROFILE_PICTURE);
 
 export const loginRequest = createAction(LOGIN);

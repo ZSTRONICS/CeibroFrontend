@@ -17,7 +17,7 @@ import ForwardTask from "../Forward-Task";
 interface IProps {
   taskId: string;
   userSubState: string;
-  dueDate: string;
+  dueDate: string | null;
   taskUid: string;
   createdOn: Date | any;
   doneImageRequired: boolean;
@@ -129,6 +129,7 @@ const DetailActions: React.FC<IProps> = (props) => {
       <Grid
         container
         mt={1.25}
+        mb={1.5}
         justifyContent="end"
         alignItems="flex-start"
         rowGap={2}
@@ -213,19 +214,19 @@ const DetailActions: React.FC<IProps> = (props) => {
       </Grid>
       <Grid
         container
-        mt={1.25}
+        my={1.5}
         justifyContent={"space-between"}
         alignItems="flex-start"
         rowGap={2}
       >
-        <Grid item container md={10} xs={12} gap={1.4} alignItems="center">
+        <Grid item container md={10} xs={12} gap={1.7} alignItems="center">
           <Chip
             label={capitalize(userSubState)}
             size="small"
             sx={{
               borderColor: chipColor,
               backgroundColor: chipColor,
-              borderRadius: "20px",
+              borderRadius: "4px",
               fontFamily: "Inter",
               fontSize: "12px",
               fontWeight: 600,
@@ -241,7 +242,8 @@ const DetailActions: React.FC<IProps> = (props) => {
               backgroundColor: "white",
               borderWidth: "1px",
               borderStyle: "solid",
-              borderRadius: "10px",
+              borderRadius: "5px",
+              ml: 1.25,
               fontFamily: "Inter",
               fontSize: "12px",
               fontWeight: 600,
@@ -250,9 +252,11 @@ const DetailActions: React.FC<IProps> = (props) => {
             }}
           />
           <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
-          <SubLabelTag sx={{ color: "#131516" }}>
-            Due date: {dueDate === "" ? "N/A" : dueDate}
-          </SubLabelTag>
+          {dueDate && (
+            <SubLabelTag sx={{ color: "#131516" }}>
+              Due date: {dueDate}
+            </SubLabelTag>
+          )}
         </Grid>
         <Box
           sx={{

@@ -59,9 +59,13 @@ export const getUserFormatedDataForAutoComplete = (arr: any) => {
   });
 };
 
+function countUnseenTasksForTabs(tasks: any[], userId: string) {
+  return tasks.reduce((count, task) => (task.seenBy.includes(userId) ? count : count + 1), 0);
+}
+
 function countUnseenTasks(tasks: any[]) {
   // count is the accumulator, which starts at 0
-  return tasks.reduce((count, task) => (task.isSeenByMe ? count : count + 1), 0);
+  return tasks.reduce((count, task) => (!task.isSeenByMe ? count : count + 1), 0);
 }
 
 /**
@@ -87,7 +91,11 @@ export const getUniqueObjectsFromArr = (arr: any[], removeMember = {}) => {
 
   return distinctArray
 }
-
+export const unSeenTasks = {
+  isFromMeUnseen: false,
+  isTomeUnseen: false,
+  isHiddenUnseen: false,
+};
 
 
 /**
@@ -275,15 +283,26 @@ export const isTrue = (arr: any[], itemId: string) => {
 export const deDateFormat = (dateStr: Date | string) => {
   return new Date(String(dateStr)).toLocaleString('de').slice(0, 10).replaceAll('.', '-')
 }
+/**
+ * @return dd-mm-yyyy
+ * @param dateString date string is required
+ * **/
+export const convertDateFormat = (dateString: string) => {
+  if (dateString === "") {
+    return null;
+  }
+  const originalDate = moment(dateString, 'DD-MM-YYYY');
+  return originalDate.format('DD.MM.YYYY');
+};
 // de date format using moment of utc time mongodb
 /**
  * @return dd.mm.yyyy
  * @param mongodbUtc date string is required
  * **/
 export const momentdeDateFormat = (value: Date | any) => {
-  if (!moment(value).isValid()) {
-    return "N/A"
-  }
+  // if (!moment(value).isValid()) {
+  //   return "N/A"
+  // }
   let localTime = moment.utc(moment(value)).toDate()
   return moment(localTime).local().format("DD.MM.YYYY")
 }
@@ -342,15 +361,28 @@ export const momentLocalDateTime = (createdAt: Date | any) => {
   const currentDate = moment();
   const inputDate = moment(createdAt);
   if (currentDate.isSame(inputDate, 'day')) {
-    return 'Today ' + inputDate.format('HH:mm');
+    return 'Today, ' + inputDate.format('HH:mm');
   } else if (currentDate.clone().subtract(1, 'day').isSame(inputDate, 'day')) {
-    return 'Yesterday ' + inputDate.format('HH:mm');
+    return 'Yesterday, ' + inputDate.format('HH:mm');
   } else if (currentDate.isSame(inputDate, 'week')) {
     return inputDate.format('dddd HH:mm');
   } else {
     return inputDate.format('DD.MM.YY HH:mm');
   }
 }
+/**
+ * @return Monday 13:30 
+ * @param mongodbUtc date string is required
+ * **/
+export const momentLocalDate = (createdAt: Date | any) => {
+  if (!moment(createdAt).isValid()) {
+    return "N/A"
+  }
+  const inputDate = moment.utc(createdAt).toDate();
+  var weekDayName = moment(inputDate).format('dddd').substring(0, 3);
+  const formattedDate = moment(inputDate).format('DD.MM.YY');
+  return `${weekDayName}, ${formattedDate}`
+};
 
 // calculate file size 
 /**
@@ -536,6 +568,6 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
 };
 
 export {
-  countUnseenTasks, countUnseenTasksFromLists, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
+  countUnseenTasks, countUnseenTasksForTabs, countUnseenTasksFromLists, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
 };
 

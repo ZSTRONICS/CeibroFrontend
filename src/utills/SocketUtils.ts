@@ -11,6 +11,18 @@ import { io } from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
 import { AxiosV2, LOGIN_ROUTE, SERVER_URL, urlV2 } from "./axios";
 
+const updateLocalStorageTabSeen = (newTaskData: any) => {
+    const { isAssignedToMe, toMeState,
+        fromMeState,
+        isCreator,
+        hiddenState, } = newTaskData
+    return updateLocalStorageObject({
+        isTomeUnseen: isAssignedToMe && toMeState !== "NA" ? true : false,
+        isFromMeUnseen: isCreator && fromMeState !== "NA" ? true : false,
+        isHiddenUnseen: hiddenState !== "NA" ? true : false,
+    });
+}
+
 export const useSocket = () => {
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
     const { RECENT_TASK_UPDATED_TIME_STAMP } = useSelector((store: RootState) => store.task);
@@ -45,26 +57,21 @@ export const useSocket = () => {
                 if (!data.access.includes(userId)) {
                     return;
                 }
-                updateLocalStorageObject({
-                    isTomeUnseen: data.toMeState === 'new' ? true : false,
-                    isFromMeUnseen: data.fromMeState === "unread" ? true : false,
-                });
                 dispatch({
                     type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
                     payload: data,
                 });
-                break;
-
-            case TASK_CONFIG.NEW_TASK_COMMENT:
                 updateLocalStorageObject({
-                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
-                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
-                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
+                    isTomeUnseen: data.toMeState === 'new' ? true : false,
+                    isFromMeUnseen: data.fromMeState === "unread" ? true : false,
                 });
+                break;
+            case TASK_CONFIG.NEW_TASK_COMMENT:
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
                 });
+                updateLocalStorageTabSeen(data.oldTaskData)
                 break;
             case TASK_CONFIG.TASK_SEEN:
             case TASK_CONFIG.TASK_SHOWN:
@@ -73,33 +80,22 @@ export const useSocket = () => {
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { ...data, userId, eventType },
                 });
-
                 break;
-
             case TASK_CONFIG.TASK_FORWARDED:
-                updateLocalStorageObject({
-                    isTomeUnseen: data.oldTaskData.toMeState !== "NA" ? true : false,
-                    isFromMeUnseen: data.oldTaskData.fromMeState !== "NA" ? true : false,
-                    isHiddenUnseen: data.oldTaskData.hiddenState !== "NA" ? true : false,
-                });
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },
                 });
+                updateLocalStorageTabSeen(data.oldTaskData)
                 break;
-
             case TASK_CONFIG.TASK_DONE:
             case TASK_CONFIG.CANCELED_TASK:
             case TASK_CONFIG.UN_CANCEL_TASK:
-                updateLocalStorageObject({
-                    isTomeUnseen: data.newTaskData.toMeState !== "NA" ? true : false,
-                    isFromMeUnseen: data.newTaskData.fromMeState !== "NA" ? true : false,
-                    isHiddenUnseen: data.newTaskData.hiddenState !== "NA" ? true : false,
-                });
                 dispatch({
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
                 });
+                updateLocalStorageTabSeen(data.newTaskData)
                 break;
 
             case DOCS_CONFIG.COMMENT_WITH_FILES:

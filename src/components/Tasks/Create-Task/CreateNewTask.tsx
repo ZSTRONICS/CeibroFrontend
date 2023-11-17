@@ -190,6 +190,7 @@ function CreateNewTask() {
           PROJECT_APIS.createProject({
             body: {
               title: label,
+              description: "",
             },
           })
         );

@@ -1,22 +1,10 @@
 import { Box } from "@mui/material";
-import { styled } from "@mui/system";
+import { CustomDivider } from "components/CustomTags";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
 import DrawingFiles from "./DrawingFiles";
-const CustomScrollbarBox = styled(Box)({
-  width: "100%",
-  padding: "10px 0px 16px 0px",
-  display: "flex",
-  flexWrap: "wrap",
-});
 
-const ImageBoxWrapper = styled(Box)({
-  marginRight: "16px",
-  "&:hover": {
-    cursor: "pointer",
-  },
-});
 interface IProps {
   description?: string;
   events: TaskEvent[];
@@ -25,7 +13,7 @@ interface IProps {
 }
 
 export default function DetailsBody(props: IProps) {
-  const { description, events, media } = props;
+  const { description, media } = props;
   const [mediaWithComment, setMediaWithComment] = useState<IFile[]>([]);
   const [mediaWithoutComment, setMediaWithoutComment] = useState<IFile[]>([]);
   const [heightOffset, setHeightOffset] = useState();
@@ -59,15 +47,42 @@ export default function DetailsBody(props: IProps) {
           paddingLeft: "0px",
         }}
       >
-        <ReadMoreWrapper title="Description" readMore={!!description??false} type="text" data={description} />
+        {description && (
+          <>
+            <ReadMoreWrapper
+              title="Description"
+              readMore={!!description ?? false}
+              type="text"
+              data={description}
+            />
+            <CustomDivider />
+          </>
+        )}
         {mediaWithoutComment.length > 0 && (
-          <ReadMoreWrapper title="Images" readMore={true} type='image' data={mediaWithoutComment} />
+          <>
+            <ReadMoreWrapper
+              title="Images"
+              count={mediaWithoutComment.length}
+              readMore={true}
+              type="image"
+              data={mediaWithoutComment}
+            />
+            <CustomDivider />
+          </>
         )}
         {mediaWithComment.length > 0 && (
-          <ReadMoreWrapper title="Images" readMore={true} type='imageWithDesp' data={mediaWithComment} />
+          <>
+            <ReadMoreWrapper
+              title="Images"
+              readMore={true}
+              count={mediaWithComment.length}
+              type="imageWithDesp"
+              data={mediaWithComment}
+            />
+            <CustomDivider />
+          </>
         )}
         <DrawingFiles />
-        {/* {events && <AddedDetails events={events} hasFile={media.length > 0} />} */}
       </Box>
     </>
   );

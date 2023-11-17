@@ -1,4 +1,4 @@
-import { countUnseenTasks } from "components/Utills/Globals";
+import { countUnseenTasksForTabs } from "components/Utills/Globals";
 import StyledChip from "components/Utills/StyledChip";
 import { ITask } from "constants/interfaces";
 import { isEmpty } from "lodash";
@@ -8,12 +8,13 @@ import { RootState } from "redux/reducers";
 interface FilterTabProps {
   subTaskKey: string;
   activeTab: string;
+  userId: string;
   filterKeys: string[];
   handleTabClick: (type: string) => void;
 }
 
 function FilterTabs(props: FilterTabProps) {
-  const { activeTab, filterKeys, subTaskKey, handleTabClick } = props;
+  const { activeTab, userId, filterKeys, subTaskKey, handleTabClick } = props;
   const task: any = useSelector((state: RootState) => state.task);
   const { allTaskToMe, allTaskFromMe, allTaskHidden } = task;
   const renderTabs = filterKeys.map((key: string) => {
@@ -66,7 +67,7 @@ function FilterTabs(props: FilterTabProps) {
       default:
         break;
     }
-    const notifyCount = countUnseenTasks(tasks);
+    const notifyCount = countUnseenTasksForTabs(tasks, userId);
     return (
       <StyledChip
         isDisabled={isDisabled}

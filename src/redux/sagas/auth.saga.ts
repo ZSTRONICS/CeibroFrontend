@@ -1,6 +1,5 @@
 import {
   AUTH_CONFIG,
-  CREATE_ROOM,
   FORGET_PASSWORD,
   GET_PROFILE,
   LOGIN,
@@ -19,7 +18,6 @@ import { toast } from "react-toastify";
 import { REGISTER } from "redux-persist";
 import { takeLatest } from "redux-saga/effects";
 import apiCall from "../../utills/apiCall";
-import { ActionInterface } from "../reducers/appReducer";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
 const loginRequest = apiCall({
@@ -73,20 +71,7 @@ const registerSetupProfile = apiCall({
   useV2Route: true,
   type: REGISTER_PROFILE_SETUP,
   method: "post",
-  path: (payload) => `/users/${payload?.other}/profile`,
-  success: (_res: any) => {
-    toast.success("Profile setup successful");
-  },
-});
-
-const createChatRoom = apiCall({
-  useV2Route: false,
-  type: CREATE_ROOM,
-  method: "post",
-  path: "/chat/rooms",
-  success: (_res: any, _action: ActionInterface) => {
-    toast.success("Chat room created successfully");
-  },
+  path: (payload) => `/users/${payload.other}/profile`,
 });
 
 const getMyProfile = apiCall({
@@ -152,7 +137,6 @@ const resetPassword = apiCall({
   type: RESET_PASSWORD,
   method: "post",
   path: "/auth/reset-password",
-  // reset-password?otp=grgdfvdf
 });
 
 function* projectSaga() {
@@ -161,7 +145,6 @@ function* projectSaga() {
   yield takeLatest(REGISTER_CONFIRMATION, registerConfirmationRequest);
   yield takeLatest(AUTH_CONFIG.RESEND_OTP, resendOtp);
   yield takeLatest(REGISTER_PROFILE_SETUP, registerSetupProfile);
-  yield takeLatest(CREATE_ROOM, createChatRoom);
   yield takeLatest(VERIFY_EMAIL, verifyEmail);
   yield takeLatest(GET_PROFILE, getMyProfile);
   yield takeLatest(UPDATE_PROFILE_PICTURE, updateProfilePicture);

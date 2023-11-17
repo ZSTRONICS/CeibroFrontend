@@ -1,17 +1,20 @@
 import { Box } from "@mui/material";
+import { CustomDivider } from "components/CustomTags";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
-import CustomDivider from "components/Utills/CustomDivider";
 import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
   IS_IMAGE,
   MEDIA_EXT,
-  momentdeDateFormatWithDay,
+  convertDateFormat,
+  momentLocalDate,
 } from "components/Utills/Globals";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 import AddedDetails from "./AddedDetails";
 import DetailActions from "./DetailActions";
 import DetailsBody from "./DetailsBody";
@@ -41,6 +44,9 @@ function TaskDetails(props: IProps) {
   } = props.task;
   const [isShowFullView, setIsShowFullView] = useState(false);
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
+  const taskDragContHeight = useSelector(
+    (store: RootState) => store.task.taskDragContHeight
+  );
   const docs = FILTER_DATA_BY_EXT(DOC_EXT, files);
   const media = FILTER_DATA_BY_EXT(MEDIA_EXT, files);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -58,12 +64,22 @@ function TaskDetails(props: IProps) {
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
 
-useEffect(() => {
+  useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
-      setHeightOffset(newTop+32);
+      if (taskDragContHeight > 120) {
+        setHeightOffset(newTop + 32 + taskDragContHeight);
+      } else {
+        setHeightOffset(newTop + 32);
+      }
     }
-  }, [containerRef]);
+  }, [containerRef, taskDragContHeight]);
+
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
+    }
+  }, [events?.length, containerRef]);
 
   const handleFiles = (files: any, selectedFileId: string) => {
     const currentIndex = allFiles.findIndex(
@@ -89,16 +105,23 @@ useEffect(() => {
         doneCommentsRequired={doneCommentsRequired}
         taskId={_id}
         userSubState={userSubState}
-        dueDate={dueDate}
+        dueDate={convertDateFormat(dueDate)}
         taskUid={taskUID}
-        createdOn={() => momentdeDateFormatWithDay(createdAt)}
+        createdOn={momentLocalDate(createdAt)}
         assignedToState={assignedToState}
         invitedNumbers={invitedNumbers}
         isExpanded={isShowFullView}
         setIsExpanded={setIsShowFullView}
       />
-      <CustomDivider />
-      <Box ref={containerRef}  className="custom-scrollbar" sx={{ overflow: "scroll", maxHeight: `calc(100vh - ${heightOffset}px)`, }}>
+      <CustomDivider sx={{ my: 1.3 }} />
+      <Box
+        ref={containerRef}
+        className="custom-scrollbar"
+        sx={{
+          overflow: "scroll",
+          maxHeight: `calc(100vh - ${heightOffset}px)`,
+        }}
+      >
         <DetailsHeader
           assignedToState={assignedToState}
           topic={topic}
@@ -115,13 +138,17 @@ useEffect(() => {
               bb={true}
               files={docs}
             />
+            <CustomDivider />
             {events ? (
-              <DetailsBody
-                media={media}
-                description={description}
-                events={events}
-                handleFiles={handleFiles}
-              />
+              <>
+                <DetailsBody
+                  media={media}
+                  description={description}
+                  events={events}
+                  handleFiles={handleFiles}
+                />
+                <CustomDivider />
+              </>
             ) : (
               <></>
             )}

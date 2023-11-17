@@ -238,6 +238,7 @@ const CustomDivider = styled(Divider)(({ theme }) => ({
   borderColor: "#9e9e9e",
   borderRadius: "4px",
   opacity: "0.9",
+  margin: "10px 0",
   background: "#F4F4F4",
   filter: "blur(2px)",
 }));

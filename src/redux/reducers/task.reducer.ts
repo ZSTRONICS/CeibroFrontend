@@ -27,9 +27,11 @@ export interface TaskReducerInt {
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
+  taskDragContHeight: number;
 }
 
 const intialStatue: TaskReducerInt = {
+  taskDragContHeight: 0,
   RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",
   allTaskToMe: { new: [], ongoing: [], done: [] },
@@ -51,6 +53,11 @@ const taskReducer = (
         selectedTaskFilter: action.payload,
       };
 
+    case TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT:
+      return {
+        ...state,
+        taskDragContHeight: action.payload
+      }
 
     case TASK_CONFIG.PUSH_FORWARDED_TO_ME_NEW:
       if (action.payload.task.isAssignedToMe && action.payload.task.toMeState === 'new') {
@@ -665,6 +672,7 @@ const taskReducer = (
       const { fromMe, hidden, toMe, latestUpdatedAt } = action.payload.allTasks
       const countToMe = countUnseenTasksFromLists([toMe.new, toMe.ongoing, toMe.done]);
       const countFromMe = countUnseenTasksFromLists([fromMe.unread, fromMe.ongoing, fromMe.done]);
+      console.log(countFromMe, countToMe)
       const countHidden = countUnseenTasksFromLists([hidden.canceled, hidden.ongoing, hidden.done]);
       const updatedConfigs = {
         isTomeUnseen: countToMe >= 1 ? true : false,

@@ -261,7 +261,7 @@ const NavigationReducer = (
       };
     }
     case requestSuccess(GET_PROJECTS): {
-      let projects = action.payload.results;
+      let projects = action.payload.allProjects;
       let newProjects: any = [];
 
       if (state.allProjects.length === 0) {

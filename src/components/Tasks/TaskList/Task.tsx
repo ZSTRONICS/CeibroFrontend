@@ -582,6 +582,7 @@ const Task = () => {
         >
           {task && subtask && (
             <FilterTabs
+              userId={userId}
               subTaskKey={subtask}
               activeTab={selectedTab}
               filterKeys={Object.keys(task[subtask])}

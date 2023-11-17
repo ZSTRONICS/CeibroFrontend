@@ -2,7 +2,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import CustomDivider from "components/Utills/CustomDivider";
+import { CustomDivider } from "components/CustomTags";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
 import { useEffect, useState } from "react";
@@ -23,13 +23,7 @@ interface InfoBoxProps {
 }
 
 export default function DetailsHeader(props: IProps) {
-  const {
-    assignedToState,
-    project,
-    topic,
-    creator,
-    invitedNumbers,
-  } = props;
+  const { assignedToState, project, topic, creator, invitedNumbers } = props;
   const [isExpanded, setIsExpanded] = useState(false);
 
   const capitalizeFirstLetter = (str: string | undefined): string =>
@@ -113,7 +107,7 @@ export default function DetailsHeader(props: IProps) {
   const renderLabel = (label: string): JSX.Element => (
     <Box
       sx={{
-        minWidth: "73px",
+        minWidth: label === "Sent to" || label === "Invitees" ? "50px" : "73px",
         height: "20px",
         gap: 1,
         display: "flex",
@@ -243,7 +237,7 @@ export default function DetailsHeader(props: IProps) {
         >
           {isExpanded ? "View less" : "View more"}
         </Box>
-         <CustomDivider/>
+        <CustomDivider sx={{ my: 1.4 }} />
       </Box>
     </Box>
   );

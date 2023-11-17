@@ -14,7 +14,7 @@ interface ReadMoreWrapperProps {
   title: string;
   readMore?: boolean;
   count?: number;
-  type?: "text" | "image" | "imageWithDesp"|"file";
+  type?: "text" | "image" | "imageWithDesp" | "file";
   data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
 }
@@ -42,7 +42,7 @@ const ReadMoreWrapper = ({
   const despRef = useRef<HTMLDivElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
-
+  const [localCount, setLocalCount] = useState<number | null>(null);
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | null>,
     type: "text" | "image" | "imageWithDesp"
@@ -57,14 +57,34 @@ const ReadMoreWrapper = ({
       setHeight(maxHeight + "px");
     }
   };
-
+  const getWidthWithMarginAndPadding = (
+    compRef: MutableRefObject<HTMLDivElement | null>
+  ) => {
+    if (compRef.current) {
+      const computedStyle = getComputedStyle(compRef.current);
+      const width = compRef.current.offsetWidth;
+      const marginLeft = parseFloat(computedStyle.marginLeft);
+      const marginRight = parseFloat(computedStyle.marginRight);
+      const widthWithMarginAndPadding = width + marginLeft + marginRight;
+      console.log(widthWithMarginAndPadding);
+      return widthWithMarginAndPadding;
+    }
+    return 0;
+  };
   useEffect(() => {
     if (type === "text") {
       getHeight(despRef, type);
     } else if (type === "image") {
       getHeight(imageRef, type);
+      // const imgContWidth = getWidthWithMarginAndPadding(imageRef);
+      // if (count && count > 0) {
+      //   if (imgContWidth > 200) {
+      //     setLocalCount(count - Math.floor(imgContWidth / 166));
+      //   }
+      // }
     } else if (type === "imageWithDesp") {
       getHeight(imageRef, type);
+      getWidthWithMarginAndPadding(imageRef);
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
@@ -84,6 +104,7 @@ const ReadMoreWrapper = ({
     setCurrentImageIndex(index);
     openModal();
   };
+
   return (
     <>
       <Box
@@ -151,6 +172,7 @@ const ReadMoreWrapper = ({
                     maxHeight: `${height}`,
                     overflow: "hidden",
                     wordWrap: "break-word",
+                    overflowWrap: "anywhere",
                   }}
                 >
                   {data ? String(data) : "N/A"}
@@ -188,12 +210,14 @@ const ReadMoreWrapper = ({
                     padding: "10px 0px 16px 0px",
                     display: "flex",
                     flexWrap: "wrap",
+                    rowGap: "10px",
                   }}
                 >
                   {data &&
                     (data as IFile[]).map((file: IFile, index: any) => {
                       return (
                         <ImageBoxWrapper
+                          sx={{ width: "100%" }}
                           key={file._id + index}
                           onClick={() => handleClick(data, index)}
                         >
@@ -206,17 +230,13 @@ const ReadMoreWrapper = ({
                     })}
                 </Box>
               )}
-              {type==="file"&&
-              <FileBox
-              title={title}
-              bt={true}
-              bb={true}
-              files={data}
-            />}
+              {type === "file" && (
+                <FileBox title={title} bt={true} bb={true} files={data} />
+              )}
               {children ?? ""}
             </Box>
             <Box sx={{ display: "flex" }}>
-              {count && (
+              {count ? (
                 <Box
                   sx={{
                     fontFamily: "Inter",
@@ -228,6 +248,8 @@ const ReadMoreWrapper = ({
                 >
                   +{count}
                 </Box>
+              ) : (
+                <></>
               )}
               {isReadMore && (
                 <IconButton

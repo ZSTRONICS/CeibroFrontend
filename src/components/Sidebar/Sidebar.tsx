@@ -71,7 +71,6 @@ function Sidebar(props: any) {
       if (updatedState) {
         setTimeout(() => {
           const res = updateLocalStorageObject(updatedState);
-          console.log(res);
           setisTaskTabSeen(res);
         }, 100);
       }

@@ -147,10 +147,6 @@ const ForwardTask = ({
       setAllContactsList({
         ...localGroupContacts,
       });
-
-      // setIsSelfAssign(
-      //   assignedToState.some((contact: any) => contact.userId === user._id)
-      // );
     }
     setFilteredRecentUserContact(recentUserContact);
   }, [userAllContacts, recentUserContact]);
@@ -279,7 +275,6 @@ const ForwardTask = ({
     },
   };
   const hasAssignTo = renderValue();
-  console.log("hasAssignTo", hasAssignTo.length);
   return (
     <>
       <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />

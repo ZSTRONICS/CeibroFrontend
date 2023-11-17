@@ -1,4 +1,3 @@
-import { put, takeLatest } from "redux-saga/effects";
 import {
   ADD_REMOVE_FOLDER_USER,
   CREATE_FOLDER,
@@ -23,10 +22,11 @@ import {
   GET_PROJECTS, GET_PROJECTS_MEMBERS, GET_PROJECTS_WITH_MEMBERS, GET_PROJECTS_WITH_PAGINATION,
   GET_PROJECT_DETAIL,
   GET_PROJECT_PROFILE,
-  PROJECT_CONFIG,
   GET_STATUS,
   GET_TIME_PROFILE_BY_ID,
-  GET_WORK_BY_ID, UPDATE_GROUP,
+  GET_WORK_BY_ID,
+  PROJECT_CONFIG,
+  UPDATE_GROUP,
   UPDATE_MEMBER,
   UPDATE_PROJECT,
   UPDATE_PROJECT_PICTURE,
@@ -35,6 +35,7 @@ import {
   UPDATE_WORK,
   UPLOAD_FILE_TO_FOLDER
 } from "config";
+import { put, takeLatest } from "redux-saga/effects";
 import apiCall from "utills/apiCall";
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
@@ -138,6 +139,7 @@ const getProjectMembers = apiCall({
 
 const createProject = apiCall({
   useV2Route: true,
+  isFormData: true,
   type: CREATE_PROJECT,
   method: "post",
   path: `/project`,

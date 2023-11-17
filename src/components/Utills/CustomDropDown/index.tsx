@@ -49,7 +49,6 @@ function CustomDropDown(props: IProps) {
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
-  console.log(label === "Topic", selected);
   // const [recentfilterData, setRecentFilterData] = React.useState<{
   //   [key: string]: OptionType[];
   // }>({});
@@ -301,7 +300,10 @@ function CustomDropDown(props: IProps) {
                   lineHeight: "16px",
                 }}
               >
-                Recent used topics
+                Recent used{" "}
+                <span
+                  style={{ textTransform: "lowercase" }}
+                >{`${label}s`}</span>
               </Typography>
               {allFilterData.recent.map((item: OptionType, i: any) => {
                 return (
@@ -364,20 +366,22 @@ function CustomDropDown(props: IProps) {
                     >
                       {item.label}
                     </Typography>
-                    <IconButton
-                      edge="end"
-                      sx={{
-                        color: "#0075D0",
-                        padding: "0",
-                        "& .MuiSvgIcon-root": {
+                    {label === "Topic" && (
+                      <IconButton
+                        edge="end"
+                        sx={{
+                          color: "#0075D0",
                           padding: "0",
-                          height: "20px",
-                        },
-                      }}
-                      onClick={(e) => handleInfoMenuClick(e, item)}
-                    >
-                      <MoreVert />
-                    </IconButton>
+                          "& .MuiSvgIcon-root": {
+                            padding: "0",
+                            height: "20px",
+                          },
+                        }}
+                        onClick={(e) => handleInfoMenuClick(e, item)}
+                      >
+                        <MoreVert />
+                      </IconButton>
+                    )}
                     <Menu
                       sx={{
                         padding: 0,

@@ -1,6 +1,8 @@
 import { Box, Typography, styled } from "@mui/material";
+import { TASK_CONFIG } from "config";
 import { useEffect, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import { useDispatch } from "react-redux";
 interface Props {
   isOpen: boolean;
   openModal: any;
@@ -34,7 +36,7 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const containerHeight = window.innerHeight - 690;
   const [drawerHeight, setDrawerHeight] = useState(containerHeight);
-
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     activeDrags: 0,
     deltaPosition: { x: -16, y: 470 },
@@ -53,10 +55,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     }
   }, [isOpen]);
 
-  const onStart = () => {
-    setState({ ...state, activeDrags: state.activeDrags + 1 });
-  };
-
+  // TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT
   const handleDrag = (event: DraggableEvent, data: DraggableData) => {
     const { x, y } = state.deltaPosition;
     setState({
@@ -75,9 +74,16 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   if (taskDetailContainer) {
     containerWidth = taskDetailContainer.clientWidth;
   }
+  const onStart = () => {
+    setState({ ...state, activeDrags: state.activeDrags + 1 });
+  };
 
   const onStop = () => {
     setState({ ...state, activeDrags: state.activeDrags - 1 });
+    dispatch({
+      type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+      payload: drawerHeight,
+    });
     if (drawerHeight < 140) {
       closeModal();
     }
@@ -98,6 +104,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
             bounds={{ top: 150, bottom: 610 }}
           >
             <StyledBox
+              id="dragableContainer"
               style={{
                 background: "white",
                 position: "absolute",
@@ -136,7 +143,6 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
                 </Typography>
               </StyledBox>
               <StyledBox
-                id="draggableContainer"
                 sx={{
                   px: 2,
                   overflow: "auto",

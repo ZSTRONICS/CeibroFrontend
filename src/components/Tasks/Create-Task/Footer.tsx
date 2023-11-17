@@ -6,7 +6,9 @@ import { LoadingButton } from "components/Button";
 import { CustomStack } from "components/CustomTags";
 import CustomButton from "components/Utills/CustomButton";
 import { isValidDocumentType, validTypes } from "components/Utills/Globals";
+import { TASK_CONFIG } from "config";
 import _ from "lodash";
+import { useDispatch } from "react-redux";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
@@ -22,6 +24,7 @@ interface FooterPropsType {
 }
 
 const Footer = (props: FooterPropsType) => {
+  const dispatch = useDispatch();
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -116,7 +119,13 @@ const Footer = (props: FooterPropsType) => {
           <LoadingButton
             color="error"
             variant="outlined"
-            onClick={() => props.handleClose()}
+            onClick={() => {
+              props.handleClose();
+              dispatch({
+                type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+                payload: 0,
+              });
+            }}
             sx={{
               fontSize: "12px",
               borderRadius: "4px",

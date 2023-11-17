@@ -3,7 +3,7 @@ import { SubLabelTag, TopBarTitle } from "components/CustomTags";
 import MessageAlert from "components/MessageAlert/MessageAlert";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import { Formik, FormikProps } from "formik";
+import { Form, Formik, FormikProps } from "formik";
 import useResponsive from "hooks/useResponsive";
 import userAlertMessage from "hooks/userAlertMessage";
 import { useRef, useState } from "react";
@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
 import { LOGIN_ROUTE } from "utills/axios";
-import { checkValidPhoneNumber, handlePhoneChange } from "../../../utills/formFunctions";
+import {
+  checkValidPhoneNumber,
+  handlePhoneChange,
+} from "../../../utills/formFunctions";
 import AuthLayout from "../AuthLayout/AuthLayout";
 import { RegisterNumberSchema } from "../userSchema/AuthSchema";
 import useStyles from "./RegisterStyles";
@@ -29,14 +32,14 @@ export default function RegisterNumberForm() {
   const dispatch = useDispatch();
   const registerPhoneNumberSchema = RegisterNumberSchema(t);
   const formikRef = useRef<FormikProps<FormValues | any>>(null);
-
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
-
+  const [isSumit, setIsSubmit] = useState<boolean>(false);
   const handleSubmit = (values: any, action: any) => {
     const { dialCode, phoneNumber } = values;
     localStorage.setItem("phoneNumber", phoneNumber);
     localStorage.setItem("dialCode", dialCode);
+    setIsSubmit(true);
     const payload = {
       body: {
         phoneNumber: dialCode + phoneNumber,
@@ -45,15 +48,17 @@ export default function RegisterNumberForm() {
         history.push("/confirmation");
         action?.resetForm?.();
         setShowSuccessAlert(true);
+        setIsSubmit(false);
         setAlertMessage(res.data.message);
       },
       onFailAction: (err: any) => {
         setAlertMessage(err.response.data.message);
+        setIsSubmit(false);
       },
     };
     const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
     if (checkPhoneNumber?.isValid) {
-       dispatch(registerRequest(payload));
+      dispatch(registerRequest(payload));
     } else {
       setAlertMessage(checkPhoneNumber.msg);
     }
@@ -88,15 +93,8 @@ export default function RegisterNumberForm() {
             onSubmit={handleSubmit}
             innerRef={formikRef}
           >
-            {({
-              values,
-              errors,
-              touched,
-              handleBlur,
-              handleSubmit,
-              isValid,
-            }) => (
-              <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+            {({ values, errors, touched, handleBlur, handleSubmit }) => (
+              <Form onSubmit={handleSubmit} style={{ width: "100%" }}>
                 <CBox mb={3}>
                   <CustomMuiTextField
                     typeName="phone-number"
@@ -125,7 +123,7 @@ export default function RegisterNumberForm() {
                   <Button
                     sx={{ py: { xs: 1, md: 1.5 } }}
                     className={classes.loginButton}
-                    disabled={values.phoneNumber.length > 0 ? false : true}
+                    disabled={values.phoneNumber.length === 0 || isSumit}
                     variant="contained"
                     color="primary"
                     type="submit"
@@ -133,7 +131,7 @@ export default function RegisterNumberForm() {
                     Continue
                   </Button>
                 </div>
-              </form>
+              </Form>
             )}
           </Formik>
         </div>
