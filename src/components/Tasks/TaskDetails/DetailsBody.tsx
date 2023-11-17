@@ -42,8 +42,7 @@ export default function DetailsBody(props: IProps) {
       <Box
         ref={listRef}
         sx={{
-          overflow: "auto",
-          maxHeight: `calc(100vh - ${heightOffset}px)`,
+          // maxHeight: `calc(100vh - ${heightOffset}px)`,
           paddingLeft: "0px",
         }}
       >

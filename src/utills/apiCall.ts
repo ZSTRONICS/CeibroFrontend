@@ -67,9 +67,7 @@ const apiCall = ({
     if (!tokenLessRoutes.includes(`${path}`)) {
       if (idToken && idToken !== 'undefined' && idToken !== 'null') {
         header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
-      } else {
-        return;
-      }
+      } 
     }
 
     try {

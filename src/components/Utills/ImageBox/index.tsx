@@ -5,16 +5,7 @@ interface IProps {
 }
 export default function ImageBox({ src }: IProps) {
   return (
-    <Box
-      sx={
-        {
-          // maxWidth: "150px",
-          // maxHeight: "150px",
-          // width: "150px",
-          // height: "150px",
-        }
-      }
-    >
+    <Box>
       <img
         className="myDIV"
         loading="lazy"
@@ -22,18 +13,11 @@ export default function ImageBox({ src }: IProps) {
           width: "150px",
           height: "150px",
           borderRadius: "8px",
+          objectFit:'contain'
         }}
         src={src}
         alt="images"
       />
-      {/* <a
-        className="hide"
-        href={src}
-        download
-        style={{ color: "unset", position: "absolute", top: 0, right: ".5%" }}
-      >
-        <FileDownloadIcon />
-      </a> */}
     </Box>
   );
 }
