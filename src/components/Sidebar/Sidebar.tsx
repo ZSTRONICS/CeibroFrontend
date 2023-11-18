@@ -77,7 +77,7 @@ function Sidebar(props: any) {
     }
   }, [RECENT_TASK_UPDATED_TIME_STAMP, selectedChildTab]);
 
-  if (selectedTab === "tasks" && configs) {
+  if (selectedTab === "tasks" && configs && isTaskTabSeen) {
     configs.allTaskFromMe.icon = isTaskTabSeen.isFromMeUnseen
       ? UnseenFromMe
       : FromMEIcon;
@@ -101,9 +101,8 @@ function Sidebar(props: any) {
             return (
               <div
                 key={config.title}
-                className={`${classes.menue} ${
-                  selectedChildTab === config.key ? classes.active : ""
-                }`}
+                className={`${classes.menue} ${selectedChildTab === config.key ? classes.active : ""
+                  }`}
                 onClick={() => handleRouteClick(config)}
               >
                 <Box>
