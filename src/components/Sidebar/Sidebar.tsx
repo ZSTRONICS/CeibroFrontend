@@ -1,6 +1,5 @@
 import { makeStyles } from "@material-ui/core/styles";
 import { Box, Typography } from "@mui/material";
-import { updateLocalStorageObject } from "components/Utills/Globals";
 import {
   FromMEIcon,
   HiddenIcon,
@@ -9,6 +8,7 @@ import {
   UnseenHidden,
   UnseenToMe,
 } from "components/material-ui/icons";
+import { TASK_CONFIG } from "config";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
@@ -29,15 +29,12 @@ function Sidebar(props: any) {
     useState<selectedTaskFilterType>();
   const { user } = useSelector((store: RootState) => store.auth);
   const task: any = useSelector((state: RootState) => state.task);
-  const { RECENT_TASK_UPDATED_TIME_STAMP } = task;
+  const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = task;
   const { selectedTab, sidebarRoutes } = useSelector(
     (store: RootState) => store.navigation
   );
   const configs = sidebarRoutes[selectedTab]?.childTab;
   const splitedPath = location.pathname.split("/");
-  let taskUnseenTabs = JSON.parse(localStorage.getItem("unSeenTasks") as any);
-  const [isTaskTabSeen, setisTaskTabSeen] = useState(taskUnseenTabs);
-
   useEffect(() => {
     const mainTab: selectedTaskFilterType =
       splitedPath[1] as selectedTaskFilterType;
@@ -60,33 +57,35 @@ function Sidebar(props: any) {
   };
   useEffect(() => {
     if (selectedTab === "tasks" && configs) {
-      let updatedState: any = { ...taskUnseenTabs };
+      let updatedState: any = { ...unSeenTasks };
       if (selectedChildTab === "allTaskToMe") {
-        updatedState = { ...taskUnseenTabs, isTomeUnseen: false };
+        updatedState = { ...unSeenTasks, isTomeUnseen: false };
+        dispatch({
+          type: TASK_CONFIG.TASK_UNSEEN_TABS,
+          payload: updatedState,
+        });
       } else if (selectedChildTab === "allTaskFromMe") {
-        updatedState = { ...taskUnseenTabs, isFromMeUnseen: false };
+        updatedState = { ...unSeenTasks, isFromMeUnseen: false };
+        dispatch({
+          type: TASK_CONFIG.TASK_UNSEEN_TABS,
+          payload: updatedState,
+        });
       } else if (selectedChildTab === "allTaskHidden") {
-        updatedState = { ...taskUnseenTabs, isHiddenUnseen: false };
-      }
-      if (updatedState) {
-        setTimeout(() => {
-          const res = updateLocalStorageObject(updatedState);
-          setisTaskTabSeen(res);
-        }, 100);
+        updatedState = { ...unSeenTasks, isHiddenUnseen: false };
+        dispatch({
+          type: TASK_CONFIG.TASK_UNSEEN_TABS,
+          payload: updatedState,
+        });
       }
     }
-  }, [RECENT_TASK_UPDATED_TIME_STAMP, selectedChildTab]);
+  }, [location.pathname]);
 
-  if (selectedTab === "tasks" && configs && isTaskTabSeen) {
-    configs.allTaskFromMe.icon = isTaskTabSeen.isFromMeUnseen
-      ? UnseenFromMe
-      : FromMEIcon;
-    configs.allTaskToMe.icon = isTaskTabSeen.isTomeUnseen
-      ? UnseenToMe
-      : ToMeIcon;
-    configs.allTaskHidden.icon = isTaskTabSeen.isHiddenUnseen
-      ? UnseenHidden
-      : HiddenIcon;
+  if (selectedTab === "tasks" && configs && unSeenTasks) {
+    const { isFromMeUnseen, isTomeUnseen, isHiddenUnseen } = unSeenTasks;
+    const { allTaskFromMe, allTaskToMe, allTaskHidden } = configs;
+    allTaskFromMe.icon = isFromMeUnseen ? UnseenFromMe : FromMEIcon;
+    allTaskToMe.icon = isTomeUnseen ? UnseenToMe : ToMeIcon;
+    allTaskHidden.icon = isHiddenUnseen ? UnseenHidden : HiddenIcon;
   }
 
   return (
@@ -101,8 +100,9 @@ function Sidebar(props: any) {
             return (
               <div
                 key={config.title}
-                className={`${classes.menue} ${selectedChildTab === config.key ? classes.active : ""
-                  }`}
+                className={`${classes.menue} ${
+                  selectedChildTab === config.key ? classes.active : ""
+                }`}
                 onClick={() => handleRouteClick(config)}
               >
                 <Box>

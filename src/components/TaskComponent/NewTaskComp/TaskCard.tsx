@@ -179,11 +179,10 @@ function TaskCard(props: IProps) {
         )}
         <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
           <GenericMenu
-            userState={userSubState}
             options={menuOption}
             key={_id}
-            isCreator={isCreator}
-            disableMenu={disableMenu || !isSelectedTask}
+            disableMenu={disableMenu}
+            isTaskSelected={!isSelectedTask}
             paddingTop={0}
           />
         </Box>

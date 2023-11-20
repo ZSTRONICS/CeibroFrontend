@@ -68,9 +68,9 @@ function TaskDetails(props: IProps) {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
       if (taskDragContHeight > 120) {
-        setHeightOffset(newTop + 32 + taskDragContHeight);
+        setHeightOffset(newTop + 22 + taskDragContHeight);
       } else {
-        setHeightOffset(newTop + 32);
+        setHeightOffset(newTop + 22);
       }
     }
   }, [containerRef, taskDragContHeight]);

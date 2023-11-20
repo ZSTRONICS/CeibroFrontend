@@ -72,7 +72,7 @@ export default function DetailsBody(props: IProps) {
         {mediaWithComment.length > 0 && (
           <>
             <ReadMoreWrapper
-              title="Images"
+              title="Images with comments"
               readMore={true}
               count={mediaWithComment.length}
               type="imageWithDesp"

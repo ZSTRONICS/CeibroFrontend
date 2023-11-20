@@ -108,7 +108,7 @@ const ReadMoreWrapper = ({
   return (
     <>
       <Box
-        key={`key${useId()}`}
+        key={`key${useId()}` + 1}
         sx={{
           width: "100%",
           padding: "8px 0px 8px 0px",

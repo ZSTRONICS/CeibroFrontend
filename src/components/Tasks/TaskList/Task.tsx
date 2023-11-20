@@ -98,16 +98,24 @@ const Task = () => {
   }, []);
 
   const getFilterKey = () => {
+    const defaultKeys = ["new", "unread"];
     if (subTaskKey && filterkey) {
-      return filterkey;
-    } else {
-      let keyIndex = 0;
-      const keys = Object.keys(task[subTaskKey]);
-      if (keys[0] === "new" || keys[0] === "unread") {
-        keyIndex = task[subTaskKey][keys[0]].length > 0 ? 0 : 1;
+      if (
+        defaultKeys.includes(filterkey) &&
+        task[subTaskKey][filterkey].length === 0
+      ) {
+        return "ongoing";
       }
-      return keys[keyIndex];
+      return filterkey;
     }
+    const keys = Object.keys(task[subTaskKey]);
+
+    const keyIndex = defaultKeys.includes(keys[0])
+      ? task[subTaskKey][keys[0]].length > 0
+        ? 0
+        : 1
+      : 0;
+    return keys[keyIndex];
   };
 
   useEffect(() => {

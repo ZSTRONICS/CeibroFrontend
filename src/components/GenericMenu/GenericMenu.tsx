@@ -13,17 +13,15 @@ interface MenuProps {
   icon?: any;
   options: Option[];
   disableMenu: boolean;
-  userState: string;
   paddingTop?: null | number;
-  isCreator: boolean;
+  isTaskSelected: boolean;
 }
 
 const GenericMenu: React.FC<MenuProps> = ({
   icon,
   options,
   disableMenu,
-  userState,
-  isCreator,
+  isTaskSelected,
   paddingTop = null,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -38,9 +36,7 @@ const GenericMenu: React.FC<MenuProps> = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const iconColor =
-    (userState === "done" && isCreator) ||
-    (userState === "canceled" && !isCreator);
+  const isMenuDisabled = disableMenu || options.length === 0;
   return (
     <>
       <IconButton
@@ -51,10 +47,10 @@ const GenericMenu: React.FC<MenuProps> = ({
         aria-expanded={open ? "true" : undefined}
         aria-haspopup="true"
         onClick={handleMenuClick}
-        disabled={disableMenu || options.length === 0}
+        disabled={isMenuDisabled || isTaskSelected}
       >
         <assets.MoreVertOutlinedIcon
-          color={iconColor ? "disabled" : "primary"}
+          color={isMenuDisabled ? "disabled" : "primary"}
         />
       </IconButton>
       {anchorEl && (

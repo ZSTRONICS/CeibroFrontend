@@ -260,6 +260,10 @@ const ForwardTask = ({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: { task: res.data.data, eventType: "TASK_FORWARDED" },
             });
+            dispatch({
+              type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+              payload: 0,
+            });
             closeModal();
           }
         },

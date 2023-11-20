@@ -6,7 +6,6 @@ import { LoadingButton } from "components/Button";
 import { CustomStack } from "components/CustomTags";
 import CustomButton from "components/Utills/CustomButton";
 import { isValidDocumentType, validTypes } from "components/Utills/Globals";
-import { TASK_CONFIG } from "config";
 import _ from "lodash";
 import { useDispatch } from "react-redux";
 
@@ -88,6 +87,9 @@ const Footer = (props: FooterPropsType) => {
   //   };
   //   input.click();
   // };
+  const handleClick = () => {
+    props.handleClose();
+  };
 
   const position: string = props.showHeader ? "absolute" : "fixed";
   return (
@@ -119,13 +121,7 @@ const Footer = (props: FooterPropsType) => {
           <LoadingButton
             color="error"
             variant="outlined"
-            onClick={() => {
-              props.handleClose();
-              dispatch({
-                type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-                payload: 0,
-              });
-            }}
+            onClick={handleClick}
             sx={{
               fontSize: "12px",
               borderRadius: "4px",

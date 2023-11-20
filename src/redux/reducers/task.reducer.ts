@@ -4,7 +4,7 @@ import {
   countUnseenTasksFromLists,
   moveTaskOnTopByIndex,
   pushSeenBy,
-  updateLocalStorageObject,
+  unSeenTasks,
   updateTaskOnCancelEvent
 } from "components/Utills/Globals";
 import { TASK_CONFIG } from "config";
@@ -27,11 +27,13 @@ export interface TaskReducerInt {
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
+  unSeenTasks: any;
   taskDragContHeight: number;
 }
 
 const intialStatue: TaskReducerInt = {
   taskDragContHeight: 0,
+  unSeenTasks: unSeenTasks,
   RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",
   allTaskToMe: { new: [], ongoing: [], done: [] },
@@ -293,6 +295,15 @@ const taskReducer = (
             if (checktaskIndex > -1) {
               addEventToTask(state.allTaskFromMe.unread[checktaskIndex], eventData, checktaskIndex);
               moveTaskOnTopByIndex(state.allTaskFromMe.unread, checktaskIndex);
+              if (eventData.newTaskData.creatorState === 'ongoing') {
+                state.allTaskFromMe.unread[checktaskIndex].assignedToState = eventData.taskData.assignedToState;
+                state.allTaskFromMe.unread[checktaskIndex].seenBy = eventData.taskData.seenBy;
+                state.allTaskFromMe.unread[checktaskIndex].hiddenBy = eventData.taskData.hiddenBy;
+                state.allTaskFromMe.unread[checktaskIndex].creatorState = 'ongoing';
+                state.allTaskFromMe.unread[checktaskIndex].userSubState = 'ongoing';
+                state.allTaskFromMe.ongoing.unshift(state.allTaskFromMe.unread[checktaskIndex]);
+                state.allTaskFromMe.unread.splice(checktaskIndex, 1);
+              }
               console.log("updated state.allTaskFromMe.unread", state.allTaskFromMe.unread[checktaskIndex]);
             }
           }
@@ -303,6 +314,14 @@ const taskReducer = (
             if (checktaskIndex > -1) {
               addEventToTask(state.allTaskToMe.new[checktaskIndex], eventData, checktaskIndex);
               moveTaskOnTopByIndex(state.allTaskToMe.new, checktaskIndex);
+              if (eventData.newTaskData.isAssignedToMe && eventData.newTaskData.toMeState === "ongoing") {
+                state.allTaskToMe.new[checktaskIndex].assignedToState = eventData.taskData.assignedToState;
+                state.allTaskToMe.new[checktaskIndex].seenBy = eventData.taskData.seenBy;
+                state.allTaskToMe.new[checktaskIndex].creatorState = 'ongoing';
+                state.allTaskToMe.new[checktaskIndex].userSubState = 'ongoing';
+                state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[checktaskIndex]);
+                state.allTaskToMe.new.splice(checktaskIndex, 1);
+              }
               console.log("updated new", state.allTaskToMe.new[state.allTaskToMe.new.length - 1]);
             }
           }
@@ -661,6 +680,12 @@ const taskReducer = (
         ...state,
       };
 
+    case TASK_CONFIG.TASK_UNSEEN_TABS: {
+      return {
+        ...state,
+        unSeenTasks: action.payload
+      }
+    }
     // API Request Start
     case requestPending(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
@@ -679,7 +704,7 @@ const taskReducer = (
         isFromMeUnseen: countFromMe >= 1 ? true : false,
         isHiddenUnseen: countHidden >= 1 ? true : false,
       };
-      updateLocalStorageObject(updatedConfigs)
+      state.unSeenTasks = updatedConfigs
       const currentUpdatedAt = new Date(latestUpdatedAt);
       const recentTaskUpdatedDate = new Date(state.RECENT_TASK_UPDATED_TIME_STAMP);
 

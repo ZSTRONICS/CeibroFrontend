@@ -19,6 +19,7 @@ const StyledTypographyBox = ({ text }: IProps) => (
         fontSize: "14px",
         lineHeight: "20px",
         color: "#000",
+        overflowWrap: "anywhere",
       }}
     >
       {text}

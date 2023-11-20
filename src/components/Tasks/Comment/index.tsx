@@ -119,6 +119,10 @@ const Comment = ({
             type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
             payload: res.data.data,
           });
+          dispatch({
+            type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+            payload: 0,
+          });
           setIsSubmit(false);
           handleCloseModal();
           setSelectedImages([]);

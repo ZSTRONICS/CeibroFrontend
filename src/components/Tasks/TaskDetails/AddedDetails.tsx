@@ -281,7 +281,7 @@ function AddedDetails(props: IProps) {
                         <CustomDivider />
                       </>
                     )}
-                    {mediaLocalWithoutComment.map((file: IFile, i: any) => (
+                    {mediaLocalWithoutComment.length > 0 && (
                       <>
                         <ReadMoreWrapper
                           title="Images"
@@ -291,20 +291,18 @@ function AddedDetails(props: IProps) {
                         />
                         <CustomDivider />
                       </>
-                    ))}
-                    {mediaLocalWithComment.map((file: IFile, index: any) => {
-                      return (
-                        <>
-                          <ReadMoreWrapper
-                            count={mediaLocalWithComment.length}
-                            title="Images with comments"
-                            type="imageWithDesp"
-                            data={mediaLocalWithComment}
-                          />
-                          <CustomDivider />
-                        </>
-                      );
-                    })}
+                    )}
+                    {mediaLocalWithComment.length > 0 && (
+                      <>
+                        <ReadMoreWrapper
+                          count={mediaLocalWithComment.length}
+                          title="Images with comments"
+                          type="imageWithDesp"
+                          data={mediaLocalWithComment}
+                        />
+                        <CustomDivider />
+                      </>
+                    )}
                     {docsLocal.length > 0 && (
                       <>
                         <FileBox files={docsLocal} />

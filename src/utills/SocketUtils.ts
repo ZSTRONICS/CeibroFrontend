@@ -1,4 +1,3 @@
-import { updateLocalStorageObject } from "components/Utills/Globals";
 import { DOCS_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
@@ -11,26 +10,30 @@ import { io } from "socket.io-client";
 import { v4 as uuidv4 } from 'uuid';
 import { AxiosV2, LOGIN_ROUTE, SERVER_URL, urlV2 } from "./axios";
 
-const updateLocalStorageTabSeen = (newTaskData: any) => {
-    const { isAssignedToMe, toMeState,
-        fromMeState,
-        isCreator,
-        hiddenState, } = newTaskData
-    return updateLocalStorageObject({
-        isTomeUnseen: isAssignedToMe && toMeState !== "NA" ? true : false,
-        isFromMeUnseen: isCreator && fromMeState !== "NA" ? true : false,
-        isHiddenUnseen: hiddenState !== "NA" ? true : false,
-    });
-}
-
 export const useSocket = () => {
     const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
-    const { RECENT_TASK_UPDATED_TIME_STAMP } = useSelector((store: RootState) => store.task);
+    const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = useSelector((store: RootState) => store.task);
     const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
     const windowClose = window.getSelection();
+
+    const updateLocalTaskTabSeen = (newTaskData: any) => {
+        const { toMeState,
+            fromMeState,
+            isCreator,
+            hiddenState,
+            isSeenByMe } = newTaskData
+        return dispatch({
+            type: TASK_CONFIG.TASK_UNSEEN_TABS,
+            payload: {
+                isTomeUnseen: !isSeenByMe && toMeState !== "NA" ? true : unSeenTasks.isTomeUnseen,
+                isFromMeUnseen: !isSeenByMe && isCreator && fromMeState !== "NA" ? true : unSeenTasks.isFromMeUnseen,
+                isHiddenUnseen: !isSeenByMe && hiddenState !== "NA" ? true : unSeenTasks.isHiddenUnseen,
+            }
+        });
+    }
     const handleSocketEvents = (dataRcvd: any) => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
@@ -61,9 +64,13 @@ export const useSocket = () => {
                     type: TASK_CONFIG.PUSH_NEW_TASK_TO_STORE,
                     payload: data,
                 });
-                updateLocalStorageObject({
-                    isTomeUnseen: data.toMeState === 'new' ? true : false,
-                    isFromMeUnseen: data.fromMeState === "unread" ? true : false,
+                dispatch({
+                    type: TASK_CONFIG.TASK_UNSEEN_TABS,
+                    payload: {
+                        isTomeUnseen: data.isAssignedToMe && data.toMeState === 'new' ? true : unSeenTasks.isTomeUnseen,
+                        isFromMeUnseen: data.isCreator && data.fromMeState === "unread" ? true : unSeenTasks.isFromMeUnseen,
+                        isHiddenUnseen: unSeenTasks.isHiddenUnseen,
+                    }
                 });
                 break;
             case TASK_CONFIG.NEW_TASK_COMMENT:
@@ -71,7 +78,7 @@ export const useSocket = () => {
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
                 });
-                updateLocalStorageTabSeen(data.oldTaskData)
+                updateLocalTaskTabSeen(data.oldTaskData)
                 break;
             case TASK_CONFIG.TASK_SEEN:
             case TASK_CONFIG.TASK_SHOWN:
@@ -86,7 +93,7 @@ export const useSocket = () => {
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: { task: data, eventType: "TASK_FORWARDED", userId, taskUpdatedAt: data.updatedAt },
                 });
-                updateLocalStorageTabSeen(data.oldTaskData)
+                updateLocalTaskTabSeen(data.oldTaskData)
                 break;
             case TASK_CONFIG.TASK_DONE:
             case TASK_CONFIG.CANCELED_TASK:
@@ -95,7 +102,7 @@ export const useSocket = () => {
                     type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                     payload: data,
                 });
-                updateLocalStorageTabSeen(data.newTaskData)
+                updateLocalTaskTabSeen(data.newTaskData)
                 break;
 
             case DOCS_CONFIG.COMMENT_WITH_FILES:
