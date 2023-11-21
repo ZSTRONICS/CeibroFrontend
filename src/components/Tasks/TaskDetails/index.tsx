@@ -66,19 +66,19 @@ function TaskDetails(props: IProps) {
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
 
-  useEffect(()=>{
-    if(parms.filterkey==='unread'||parms.filterkey==='new'){
-      setIsShowFullView(true)
-}
-  },[])
+  useEffect(() => {
+    if (parms.filterkey === "unread" || parms.filterkey === "new") {
+      setIsShowFullView(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
       if (taskDragContHeight > 120) {
-        setHeightOffset(newTop + 22 + taskDragContHeight);
+        setHeightOffset(newTop + 60 + taskDragContHeight);
       } else {
-        setHeightOffset(newTop + 22);
+        setHeightOffset(newTop + 25);
       }
     }
   }, [containerRef, taskDragContHeight]);
@@ -87,7 +87,7 @@ function TaskDetails(props: IProps) {
     if (containerRef.current) {
       containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
     }
-  }, [events?.length, containerRef]);
+  }, [events?.length]);
 
   const handleFiles = (files: any, selectedFileId: string) => {
     const currentIndex = allFiles.findIndex(
@@ -126,7 +126,7 @@ function TaskDetails(props: IProps) {
         ref={containerRef}
         className="custom-scrollbar"
         sx={{
-          overflow: "scroll",
+          overflow: "auto",
           maxHeight: `calc(100vh - ${heightOffset}px)`,
         }}
       >

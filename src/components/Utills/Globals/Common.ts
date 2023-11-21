@@ -6,7 +6,6 @@ declare global {
   var isSocketConnecting: boolean; // 👈️ disables type checking for property
 }
 global.isSocketConnecting = false;
-export { };
 
 export const getSelectedProjectMembers = (projectId: string, projectWithMembers: any[]): any[] => {
   // eslint-disable-next-line array-callback-return
@@ -21,15 +20,6 @@ export const getSelectedProjectMembers = (projectId: string, projectWithMembers:
   })
   return projectMembers;
 };
-
-function countUnseenTasksFromLists(taskLists: any) {
-  return countUnseenTasks(
-    taskLists.reduce(
-      (accumulated: any, current: any) => [...accumulated, ...current],
-      []
-    )
-  );
-}
 
 const updateLocalStorageObject = (updateObject: any) => {
   try {
@@ -65,7 +55,7 @@ function countUnseenTasksForTabs(tasks: any[], userId: string) {
 
 function countUnseenTasks(tasks: any[]) {
   // count is the accumulator, which starts at 0
-  return tasks.reduce((count, task) => (!task.isSeenByMe ? count : count + 1), 0);
+  return tasks.reduce((count, task) => (!task.isSeenByMe ? count + 1 : count), 0);
 }
 
 /**
@@ -568,6 +558,6 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
 };
 
 export {
-  countUnseenTasks, countUnseenTasksForTabs, countUnseenTasksFromLists, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
+  countUnseenTasks, countUnseenTasksForTabs, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
 };
 

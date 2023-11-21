@@ -109,7 +109,7 @@ const FileBox: React.FC<IProps> = ({
         }}
       > */}
       <ReadMoreWrapper title={title ?? ""}>
-        {files && Array.isArray(files)&& files.length > 0 ? (
+        {files && Array.isArray(files) && files.length > 0 ? (
           files.map((item: IFile | File | any) => {
             const fileSize = filesizes(item.size);
             let f_name = "";

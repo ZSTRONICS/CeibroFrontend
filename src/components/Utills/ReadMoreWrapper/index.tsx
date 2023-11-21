@@ -19,7 +19,7 @@ interface ReadMoreWrapperProps {
   children?: JSX.Element | JSX.Element[];
 }
 const ImageBoxWrapper = styled(Box)({
-  marginRight: "16px",
+  marginRight: "10px",
   "&:hover": {
     cursor: "pointer",
   },
@@ -43,26 +43,27 @@ const ReadMoreWrapper = ({
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
-  
+
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | null>,
     type: "text" | "image" | "imageWithDesp"
-    ) => {
-      if (compRef.current) {
-        const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
-        const maxHeight = type === "text" ? 4 * lineHeight : 152;
-        const currentHeight = compRef.current.clientHeight;
-        if (currentHeight > maxHeight + 5) {
-          setIsReadMore(true);
-        }
-        if(!(isExpanded||readMore)){
-          setHeight(maxHeight + "px")
-        }else{
-          setHeight('100%')
-          setIsExpanded(true)
-        }
+  ) => {
+    if (compRef.current) {
+      const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
+      const maxHeight = type === "text" ? 4 * lineHeight : 152;
+      const currentHeight = compRef.current.clientHeight;
+      if (currentHeight > maxHeight + 5) {
+        setIsReadMore(true);
+      }
+      if (!(isExpanded || readMore)) {
+        setHeight(maxHeight + "px");
+      } else {
+        setHeight("100%");
+        setIsExpanded(true);
+      }
     }
   };
+
   const getWidthWithMarginAndPadding = (
     compRef: MutableRefObject<HTMLDivElement | null>
   ) => {
@@ -72,25 +73,25 @@ const ReadMoreWrapper = ({
       const marginLeft = parseFloat(computedStyle.marginLeft);
       const marginRight = parseFloat(computedStyle.marginRight);
       const widthWithMarginAndPadding = width + marginLeft + marginRight;
-      console.log(widthWithMarginAndPadding);
       return widthWithMarginAndPadding;
     }
     return 0;
   };
+
   useEffect(() => {
     if (type === "text") {
       getHeight(despRef, type);
     } else if (type === "image") {
       getHeight(imageRef, type);
-      // const imgContWidth = getWidthWithMarginAndPadding(imageRef);
-      // if (count && count > 0) {
-      //   if (imgContWidth > 200) {
-      //     setLocalCount(count - Math.floor(imgContWidth / 166));
-      //   }
-      // }
+      const imgContWidth = getWidthWithMarginAndPadding(imageRef);
+      if (count && count > 0) {
+        if (imgContWidth > 150) {
+          setLocalCount(count - Math.floor(imgContWidth / 166));
+        }
+      }
     } else if (type === "imageWithDesp") {
       getHeight(imageRef, type);
-      getWidthWithMarginAndPadding(imageRef);
+      // getWidthWithMarginAndPadding(imageRef);
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
@@ -130,7 +131,7 @@ const ReadMoreWrapper = ({
         >
           <Box
             sx={{
-              minWidth: "83px",
+              width: "90px",
               gap: 1,
               display: "flex",
               alignItems: "center",
@@ -143,6 +144,7 @@ const ReadMoreWrapper = ({
                 fontSize: "12px",
                 lineHeight: "16px",
                 color: "#605c5c",
+                width: "100%",
               }}
             >
               {title}
@@ -242,7 +244,7 @@ const ReadMoreWrapper = ({
               {children ?? ""}
             </Box>
             <Box sx={{ display: "flex" }}>
-              {count ? (
+              {!isExpanded && localCount && localCount > 0 ? (
                 <Box
                   sx={{
                     fontFamily: "Inter",
@@ -252,7 +254,7 @@ const ReadMoreWrapper = ({
                     paddingRight: "4px",
                   }}
                 >
-                  +{count}
+                  +{localCount}
                 </Box>
               ) : (
                 <></>
@@ -260,7 +262,7 @@ const ReadMoreWrapper = ({
               {isReadMore && (
                 <IconButton
                   onClick={handleMore}
-                  sx={{ height: "24px", width: "24px" }}
+                  sx={{ height: "24px", width: "40px" }}
                 >
                   {isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
                 </IconButton>

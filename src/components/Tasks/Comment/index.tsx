@@ -5,9 +5,10 @@ import { IS_IMAGE, hasOnlySpaces } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 import { removeItem } from "utills/common";
 import Footer from "../Create-Task/Footer";
 import TaskHeader from "../TaskHeader";
@@ -36,6 +37,9 @@ const Comment = ({
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
   const [doOne, setDoOne] = useState(false);
+  const taskDragContHeight = useSelector(
+    (store: RootState) => store.task.taskDragContHeight
+  );
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
       const filterSelectedImages = removeItem(selectedImages, file);
@@ -149,7 +153,14 @@ const Comment = ({
 
   return (
     <>
-      <Box sx={{ width: "100%", pt: "8px" }}>
+      <Box
+        sx={{
+          width: "100%",
+          pt: "8px",
+          height: `${taskDragContHeight - 65}px`,
+          overflow: "auto",
+        }}
+      >
         {showHeader !== true && <TaskHeader title={title} />}
         {selectedImages.length > 0 && (
           <ImagesToUpload

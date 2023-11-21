@@ -7,7 +7,6 @@ import { CustomStack } from "components/CustomTags";
 import CustomButton from "components/Utills/CustomButton";
 import { isValidDocumentType, validTypes } from "components/Utills/Globals";
 import _ from "lodash";
-import { useDispatch } from "react-redux";
 
 interface FooterPropsType {
   handleSubmitForm: () => void;
@@ -23,7 +22,6 @@ interface FooterPropsType {
 }
 
 const Footer = (props: FooterPropsType) => {
-  const dispatch = useDispatch();
   const handleGetLocation = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {

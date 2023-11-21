@@ -56,29 +56,25 @@ function Sidebar(props: any) {
     }
   };
   useEffect(() => {
-    if (selectedTab === "tasks" && configs) {
-      let updatedState: any = { ...unSeenTasks };
-      if (selectedChildTab === "allTaskToMe") {
-        updatedState = { ...unSeenTasks, isTomeUnseen: false };
-        dispatch({
-          type: TASK_CONFIG.TASK_UNSEEN_TABS,
-          payload: updatedState,
-        });
-      } else if (selectedChildTab === "allTaskFromMe") {
-        updatedState = { ...unSeenTasks, isFromMeUnseen: false };
-        dispatch({
-          type: TASK_CONFIG.TASK_UNSEEN_TABS,
-          payload: updatedState,
-        });
-      } else if (selectedChildTab === "allTaskHidden") {
-        updatedState = { ...unSeenTasks, isHiddenUnseen: false };
+    if (selectedTab === "tasks" && configs && selectedChildTab) {
+      const tabMappings: any = {
+        allTaskToMe: "isTomeUnseen",
+        allTaskFromMe: "isFromMeUnseen",
+        allTaskHidden: "isHiddenUnseen",
+      };
+      const selectedTabKey = tabMappings[selectedChildTab];
+      if (selectedTabKey !== undefined) {
+        const updatedState = {
+          ...unSeenTasks,
+          [selectedTabKey]: false,
+        };
         dispatch({
           type: TASK_CONFIG.TASK_UNSEEN_TABS,
           payload: updatedState,
         });
       }
     }
-  }, [location.pathname]);
+  }, [RECENT_TASK_UPDATED_TIME_STAMP, location.pathname]);
 
   if (selectedTab === "tasks" && configs && unSeenTasks) {
     const { isFromMeUnseen, isTomeUnseen, isHiddenUnseen } = unSeenTasks;

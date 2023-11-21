@@ -1,7 +1,7 @@
 import {
   addEventToTask,
   addUniqueEventToTask,
-  countUnseenTasksFromLists,
+  countUnseenTasks,
   moveTaskOnTopByIndex,
   pushSeenBy,
   unSeenTasks,
@@ -695,10 +695,9 @@ const taskReducer = (
     }
     case requestSuccess(TASK_CONFIG.SYNC_ALL_TASKS): {
       const { fromMe, hidden, toMe, latestUpdatedAt } = action.payload.allTasks
-      const countToMe = countUnseenTasksFromLists([toMe.new, toMe.ongoing, toMe.done]);
-      const countFromMe = countUnseenTasksFromLists([fromMe.unread, fromMe.ongoing, fromMe.done]);
-      console.log(countFromMe, countToMe)
-      const countHidden = countUnseenTasksFromLists([hidden.canceled, hidden.ongoing, hidden.done]);
+      const countToMe = countUnseenTasks([...toMe.new, ...toMe.ongoing, ...toMe.done]);
+      const countFromMe = countUnseenTasks([...fromMe.unread, ...fromMe.ongoing, ...fromMe.done]);
+      const countHidden = countUnseenTasks([...hidden.canceled, ...hidden.ongoing, ...hidden.done]);
       const updatedConfigs = {
         isTomeUnseen: countToMe >= 1 ? true : false,
         isFromMeUnseen: countFromMe >= 1 ? true : false,

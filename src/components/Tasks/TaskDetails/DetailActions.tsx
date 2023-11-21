@@ -59,6 +59,10 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const handleClick = (action: TaskAction) => {
     setTaskAction(action);
+    dispatch({
+      type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+      payload: window.innerHeight - 715,
+    });
     openModal();
   };
 
