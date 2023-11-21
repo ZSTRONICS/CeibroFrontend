@@ -33,7 +33,7 @@ const ReadMoreWrapper = ({
   type,
   data,
 }: ReadMoreWrapperProps) => {
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(readMore);
   const [isReadMore, setIsReadMore] = useState(false);
   const [height, setHeight] = useState("auto");
   const [images, setImages] = useState<any | null>(null);
@@ -43,18 +43,24 @@ const ReadMoreWrapper = ({
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
+  
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | null>,
     type: "text" | "image" | "imageWithDesp"
-  ) => {
-    if (compRef.current) {
-      const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
-      const maxHeight = type === "text" ? 4 * lineHeight : 152;
-      const currentHeight = compRef.current.clientHeight;
-      if (currentHeight > maxHeight + 5) {
-        setIsReadMore(true);
-      }
-      setHeight(maxHeight + "px");
+    ) => {
+      if (compRef.current) {
+        const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
+        const maxHeight = type === "text" ? 4 * lineHeight : 152;
+        const currentHeight = compRef.current.clientHeight;
+        if (currentHeight > maxHeight + 5) {
+          setIsReadMore(true);
+        }
+        if(!(isExpanded||readMore)){
+          setHeight(maxHeight + "px")
+        }else{
+          setHeight('100%')
+          setIsExpanded(true)
+        }
     }
   };
   const getWidthWithMarginAndPadding = (

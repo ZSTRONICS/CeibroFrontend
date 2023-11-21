@@ -6,6 +6,7 @@ import { CustomDivider } from "components/CustomTags";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import ExpandedHeaderView from "./ExpandedHeaderView";
 
 interface IProps {
@@ -25,6 +26,7 @@ interface InfoBoxProps {
 export default function DetailsHeader(props: IProps) {
   const { assignedToState, project, topic, creator, invitedNumbers } = props;
   const [isExpanded, setIsExpanded] = useState(false);
+  const parms = useParams<{ filterkey: string }>();
 
   const capitalizeFirstLetter = (str: string | undefined): string =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
@@ -90,6 +92,9 @@ export default function DetailsHeader(props: IProps) {
   };
 
   useEffect(() => {
+    if (parms.filterkey === "unread" || parms.filterkey === "new") {
+      setIsExpanded(true);
+    }
     window.addEventListener("resize", handleResize);
   }, []);
 

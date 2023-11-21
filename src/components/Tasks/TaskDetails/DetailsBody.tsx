@@ -3,6 +3,7 @@ import { CustomDivider } from "components/CustomTags";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
+import { useParams } from "react-router-dom";
 import DrawingFiles from "./DrawingFiles";
 
 interface IProps {
@@ -18,6 +19,14 @@ export default function DetailsBody(props: IProps) {
   const [mediaWithoutComment, setMediaWithoutComment] = useState<IFile[]>([]);
   const [heightOffset, setHeightOffset] = useState();
   const listRef: any = useRef(null);
+  const [isReadMore, setIsReadMore] = useState(false);
+  const parms = useParams<{ filterkey: string }>();
+
+  useEffect(() => {
+    if (parms.filterkey === "unread" || parms.filterkey === "new") {
+      setIsReadMore(true);
+    }
+  }, []);
 
   useEffect(() => {
     if (listRef.current) {
@@ -50,7 +59,7 @@ export default function DetailsBody(props: IProps) {
           <>
             <ReadMoreWrapper
               title="Description"
-              readMore={!!description ?? false}
+              readMore={isReadMore}
               type="text"
               data={description}
             />
@@ -62,7 +71,7 @@ export default function DetailsBody(props: IProps) {
             <ReadMoreWrapper
               title="Images"
               count={mediaWithoutComment.length}
-              readMore={true}
+              readMore={isReadMore}
               type="image"
               data={mediaWithoutComment}
             />
@@ -73,7 +82,7 @@ export default function DetailsBody(props: IProps) {
           <>
             <ReadMoreWrapper
               title="Images with comments"
-              readMore={true}
+              readMore={isReadMore}
               count={mediaWithComment.length}
               type="imageWithDesp"
               data={mediaWithComment}

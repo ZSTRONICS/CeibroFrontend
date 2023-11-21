@@ -14,6 +14,7 @@ import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { RootState } from "redux/reducers";
 import AddedDetails from "./AddedDetails";
 import DetailActions from "./DetailActions";
@@ -43,6 +44,7 @@ function TaskDetails(props: IProps) {
     doneImageRequired,
   } = props.task;
   const [isShowFullView, setIsShowFullView] = useState(false);
+  const parms = useParams<{ filterkey: string }>();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
@@ -63,6 +65,12 @@ function TaskDetails(props: IProps) {
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
+
+  useEffect(()=>{
+    if(parms.filterkey==='unread'||parms.filterkey==='new'){
+      setIsShowFullView(true)
+}
+  },[])
 
   useEffect(() => {
     if (containerRef.current) {
