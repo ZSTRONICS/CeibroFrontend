@@ -30,6 +30,7 @@ interface IProps {
 function AddedDetails(props: IProps) {
   const { user } = useSelector((state: RootState) => state.auth);
   const { events, hasFile } = props;
+  const isInitialRender = useRef(true);
   const listRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
@@ -55,16 +56,21 @@ function AddedDetails(props: IProps) {
   //   openModal();
   // };
 
-  useEffect(() => {
+ useEffect(() => {
     if (listRef.current) {
       const newTop = listRef.current.getBoundingClientRect().top;
       const newHeightOffset = hasFile ? newTop + 16 : newTop;
-      if (newHeightOffset !== heightOffset) {
-        setHeightOffset(newHeightOffset);
+      if (!isInitialRender.current) {
+        if (newHeightOffset !== heightOffset) {
+          setHeightOffset(newHeightOffset);
+        }
+        listRef.current.scrollTo(0, listRef.current.scrollHeight);
+      } else {
+        isInitialRender.current = false;
       }
-      listRef.current.scrollTo(0, listRef.current.scrollHeight);
     }
-  }, [events?.length, listRef]);
+  }, [events?.length, hasFile]);
+
 
   return (
     <>

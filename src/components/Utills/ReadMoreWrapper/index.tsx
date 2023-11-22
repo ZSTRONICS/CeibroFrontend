@@ -27,7 +27,7 @@ const ImageBoxWrapper = styled(Box)({
 
 const ReadMoreWrapper = ({
   title,
-  readMore,
+  readMore=false,
   count,
   children,
   type,
@@ -90,8 +90,8 @@ const ReadMoreWrapper = ({
         }
       }
     } else if (type === "imageWithDesp") {
-      getHeight(imageRef, type);
-      // getWidthWithMarginAndPadding(imageRef);
+      getHeight(imageWithCommentRef, type);
+       count && count > 0 && setLocalCount(count-1)
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
