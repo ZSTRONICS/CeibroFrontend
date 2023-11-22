@@ -682,7 +682,10 @@ const Task = () => {
         filteredTask.some(
           (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
-          <TaskDetails task={selectedTask} />
+          <TaskDetails
+            task={selectedTask}
+            TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+          />
         ) : (
           <div
             style={{

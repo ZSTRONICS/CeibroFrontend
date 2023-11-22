@@ -23,6 +23,7 @@ import DetailsHeader from "./DetailsHeader";
 
 interface IProps {
   task: ITask;
+  TASK_UPDATED_TIME_STAMP: string;
   handleClick?: (task: ITask) => void;
 }
 function TaskDetails(props: IProps) {
@@ -65,6 +66,8 @@ function TaskDetails(props: IProps) {
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
+  const [initialRender, setInitialRender] = useState(true);
+
   useEffect(() => {
     if (parms.filterkey === "unread" || parms.filterkey === "new") {
       setIsShowFullView(true);
@@ -83,10 +86,13 @@ function TaskDetails(props: IProps) {
   }, [containerRef, taskDragContHeight]);
 
   useEffect(() => {
-    if (containerRef.current) {
+    if (containerRef.current && !initialRender) {
       containerRef.current.scrollTo(0, containerRef.current.scrollHeight);
     }
-  }, [events?.length]);
+    return () => {
+      setInitialRender(false);
+    };
+  }, [props.TASK_UPDATED_TIME_STAMP]);
 
   const handleFiles = (files: any, selectedFileId: string) => {
     const currentIndex = allFiles.findIndex(
