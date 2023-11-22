@@ -58,6 +58,7 @@ function TaskCard(props: IProps) {
       : project?.title;
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
+  const cardLabel = isCanceled && !isCreator ? "From" : isTaskFromMe;
   const assignToNames = () =>
     assignedToState.length > 1 ? (
       <Tooltip title={AssignedToList(assignedToState)}>
@@ -75,7 +76,6 @@ function TaskCard(props: IProps) {
     ) : (
       <></>
     );
-
   const AssignedToList = (membersList: AssignedUserState[]) => {
     return (
       <>
@@ -89,6 +89,25 @@ function TaskCard(props: IProps) {
     );
   };
 
+  const TaskCardLabelContent = () => {
+    const labelContent = cardLabel === "To" ? assignedToState[0] : creator;
+    const displayName = `${labelContent.firstName || ""} ${
+      labelContent.surName || ""
+    }`;
+    return (
+      <>
+        {cardLabel}:&nbsp;{""}
+        <span
+          style={{
+            fontWeight: "600",
+            fontSize: "11px",
+          }}
+        >
+          {displayName}
+        </span>
+      </>
+    );
+  };
   return (
     <Card
       onMouseOver={() => setIsMouseOver(true)}
@@ -199,23 +218,9 @@ function TaskCard(props: IProps) {
         <CustomStack justifyContent="space-between" pt={0.2}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
             <TaskCardLabel className="textOverflowDescription">
-              {isCanceled && !isCreator ? "From" : isTaskFromMe}:&nbsp;{""}
-              <span
-                style={{
-                  fontWeight: "600",
-                  fontSize: "11px",
-                }}
-              >
-                {`${
-                  isTaskFromMe === "To"
-                    ? assignedToState[0].firstName +
-                      " " +
-                      assignedToState[0].surName
-                    : creator.firstName + " " + creator.surName
-                }`}
-              </span>
+              <TaskCardLabelContent />
             </TaskCardLabel>
-            {isTaskFromMe !== "From" && assignToNames()}
+            {cardLabel !== "From" && assignToNames()}
           </Box>
 
           {project?.title && (

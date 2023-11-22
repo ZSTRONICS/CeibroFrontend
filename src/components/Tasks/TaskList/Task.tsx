@@ -7,7 +7,11 @@ import { RootState } from "redux/reducers";
 // mui
 import assets from "assets";
 import { TaskCard } from "components/TaskComponent";
-import { getTaskCardHeight, optionMapping } from "components/Utills/Globals";
+import {
+  getTaskCardHeight,
+  optionMapping,
+  subtaskToIsTaskFromMe,
+} from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
@@ -241,9 +245,18 @@ const Task = () => {
   }, [selectedTask, selectedTask?.events?.length]);
 
   useEffect(() => {
+    const newIsTaskFromMe = subtaskToIsTaskFromMe[subtask];
+    if (typeof newIsTaskFromMe === "string") {
+      setIsTaskFromMe(newIsTaskFromMe);
+    } else if (
+      typeof newIsTaskFromMe === "object" &&
+      newIsTaskFromMe[filterkey]
+    ) {
+      setIsTaskFromMe(newIsTaskFromMe[filterkey]);
+    }
+
     switch (subtask) {
       case "allTaskFromMe":
-        setIsTaskFromMe("To");
         if (filterkey === "ongoing") {
           setEmptyScreenContent([
             {
@@ -269,7 +282,6 @@ const Task = () => {
         }
         break;
       case "allTaskToMe":
-        setIsTaskFromMe("From");
         if (filterkey === "ongoing") {
           setEmptyScreenContent([
             {
@@ -296,7 +308,6 @@ const Task = () => {
         break;
       case "allTaskHidden":
         if (filterkey === "canceled") {
-          setIsTaskFromMe("To");
           setEmptyScreenContent([
             {
               heading: taskConstantEt.Hidden_Canceled_Qestion_et,
@@ -308,7 +319,6 @@ const Task = () => {
             },
           ]);
         } else if (filterkey === "done") {
-          setIsTaskFromMe("From");
           setEmptyScreenContent([
             {
               heading: taskConstantEt.Hidden_Done_Qestion_et,
@@ -320,7 +330,6 @@ const Task = () => {
             },
           ]);
         } else if (filterkey === "ongoing") {
-          setIsTaskFromMe("From");
           setEmptyScreenContent([
             {
               heading: taskConstantEt.Hidden_Ongoing_Qestion_et,

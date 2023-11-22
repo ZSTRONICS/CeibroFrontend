@@ -87,6 +87,15 @@ export const unSeenTasks = {
   isHiddenUnseen: false,
 };
 
+export const subtaskToIsTaskFromMe: Record<string, string | Record<string, string>> = {
+  allTaskFromMe: "To",
+  allTaskToMe: "From",
+  allTaskHidden: {
+    canceled: "To",
+    done: "From",
+    ongoing: "From",
+  },
+};
 
 /**
   * @param array pass the string array  

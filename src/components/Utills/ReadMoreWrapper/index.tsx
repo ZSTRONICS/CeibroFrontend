@@ -86,7 +86,7 @@ const ReadMoreWrapper = ({
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
       if (count && count > 0) {
         if (imgContWidth > 150) {
-          setLocalCount(count - Math.floor(imgContWidth / 166));
+          setLocalCount(count - Math.floor(imgContWidth / 170));
         }
       }
     } else if (type === "imageWithDesp") {

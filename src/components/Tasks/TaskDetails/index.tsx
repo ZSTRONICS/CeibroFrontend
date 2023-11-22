@@ -65,7 +65,6 @@ function TaskDetails(props: IProps) {
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState();
-
   useEffect(() => {
     if (parms.filterkey === "unread" || parms.filterkey === "new") {
       setIsShowFullView(true);
