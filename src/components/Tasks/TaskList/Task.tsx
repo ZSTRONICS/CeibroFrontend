@@ -202,6 +202,10 @@ const Task = () => {
       }
       setFilteredTask(data);
     }
+    // Clearing Variable Task Card List Cache in 10ms
+    setTimeout(() => {
+      clearTaskCardListCache();
+    }, 10);
   }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
