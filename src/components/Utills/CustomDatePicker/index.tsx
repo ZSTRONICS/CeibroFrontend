@@ -20,6 +20,7 @@ const CustomDatePicker = ({
   handleChangeValues,
 }: CustomeDatePickerProps) => {
   const [value, setValue] = useState<any>(null);
+  const [open, setOpen] = useState(false);
 
   const handleDateChange = (date: Date | null) => {
     if (date) {
@@ -49,6 +50,9 @@ const CustomDatePicker = ({
               },
             },
           }}
+          open={open}
+          onOpen={()=>setOpen(true)}
+          onClose={()=>setOpen(false)}
           minDate={new Date()}
           InputAdornmentProps={{ position: "start" }}
           PopperProps={{
@@ -63,6 +67,7 @@ const CustomDatePicker = ({
                 width: "100%",
                 label: { color: "#757575", fontWeight: 600, fontSize: "16px" },
               }}
+              onClick={()=>setOpen(true)}
             />
           )}
           onChange={handleDateChange}

@@ -39,13 +39,13 @@ const ReadMoreWrapper = ({
   const [images, setImages] = useState<any | null>(null);
   const [currentImgIndex, setCurrentImageIndex] = useState(0);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
-  const despRef = useRef<HTMLDivElement | null>(null);
+  const despRef = useRef<HTMLPreElement |null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
 
   const getHeight = (
-    compRef: MutableRefObject<HTMLDivElement | null>,
+    compRef: MutableRefObject<HTMLDivElement |HTMLPreElement| null>,
     type: "text" | "image" | "imageWithDesp"
   ) => {
     if (compRef.current) {
@@ -171,20 +171,22 @@ const ReadMoreWrapper = ({
               }}
             >
               {type === "text" && (
-                <p
+                <pre
                   ref={despRef}
                   style={{
                     fontWeight: 400,
                     fontSize: "14px",
+                    fontFamily:'Inter',
                     color: "#000",
                     maxHeight: `${height}`,
                     overflow: "hidden",
                     wordWrap: "break-word",
+                    whiteSpace:'pre-wrap',
                     overflowWrap: "anywhere",
                   }}
                 >
-                  {data ? String(data) : "N/A"}
-                </p>
+                  {data ? String(data): "N/A"}
+                </pre>
               )}
               {type === "image" && (
                 <Box
