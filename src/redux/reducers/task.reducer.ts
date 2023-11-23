@@ -238,7 +238,6 @@ const taskReducer = (
                 }
               } else {
                 // to-me [ongoing]  => hidden [canceled]
-                console.log('isOngoing', isOngoing)
                 const taskIndex = state.allTaskToMe.ongoing.findIndex(task => task._id === eventData.taskId);
                 const checkTaskExist = state.allTaskHidden.canceled.findIndex(task => task._id === eventData.taskId);
                 if (checkTaskExist === -1) {

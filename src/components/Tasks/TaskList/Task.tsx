@@ -37,11 +37,12 @@ const Task = () => {
   const [filteredTask, setFilteredTask] = useState<ITask[]>([]);
   const [searchText, setSearchText] = useState<string>("");
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
-  const [isTaskFromMe, setIsTaskFromMe] = useState("To");
+  const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [updateTaskEvent, setUpdateTaskEvent] = useState<any>(null);
+  const [currentTask, setCurrentTask] = useState<number>(-1);
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -52,7 +53,6 @@ const Task = () => {
   const [windowHeight, setWindowHeight] = useState<number>(
     window.innerHeight - headerHeight
   );
-
   const taskCardListRef: any = useRef();
   const task: any = useSelector((state: RootState) => state.task);
   const {
@@ -148,6 +148,7 @@ const Task = () => {
           setSelectedTab(filterkey);
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         setSelectedTask(null);
+        setCurrentTask(0);
       } else if (subtask && !filterkey) {
         ischangeUrl = true;
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
@@ -164,6 +165,8 @@ const Task = () => {
       ) {
         if (taskuid && foundTask) {
           setSelectedTask(foundTask);
+          const selecteTaskIndex = filteredTask.indexOf(foundTask);
+          setCurrentTask(selecteTaskIndex);
           path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
         }
         history.push(path);
@@ -196,15 +199,27 @@ const Task = () => {
         "topic.topic",
         "description",
       ]);
-      if (!taskuid || taskuid === "") {
-        const newSelectedTask = data.length > 0 ? data[0] : null;
-        if (newSelectedTask) {
-          history.push(
-            `/tasks/${subtask}/${getFilterKey()}/${newSelectedTask?.taskUID}`
-          );
+      let newSelectedTask = data && data.length > 0 ? data : null;
+      setFilteredTask(data);
+      if (currentTask > -1 && newSelectedTask && newSelectedTask.length > 0) {
+        let nextTask = null;
+        if (filteredTask[currentTask]) {
+          nextTask = filteredTask[currentTask];
+          setCurrentTask(currentTask);
+        } else if (!nextTask) {
+          nextTask = filteredTask[currentTask - 1];
+          setCurrentTask(currentTask - 1);
+        }
+        const { isCreator, userSubState, taskUID, isAssignedToMe } =
+          newSelectedTask[currentTask] || nextTask;
+        const isTaskTabNavigate =
+          (isCreator && userSubState === "unread") ||
+          (isAssignedToMe && userSubState === "new");
+
+        if (!isTaskTabNavigate) {
+          history.push(`/tasks/${subtask}/${getFilterKey()}/${taskUID}`);
         }
       }
-      setFilteredTask(data);
     }
     // Clearing Variable Task Card List Cache in 10ms
     setTimeout(() => {
