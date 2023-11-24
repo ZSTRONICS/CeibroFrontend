@@ -186,7 +186,6 @@ const Task = () => {
     }
     if (subtask || selectedTab) {
       !taskuid && setSelectedTask(null);
-
       let dataToSearch;
       if (subtask) {
         dataToSearch = task[subtask][getFilterKey()];
@@ -199,27 +198,29 @@ const Task = () => {
         "topic.topic",
         "description",
       ]);
-      let newSelectedTask = data && data.length > 0 ? data : null;
-      setFilteredTask(data);
-      if (currentTask > -1 && newSelectedTask && newSelectedTask.length > 0) {
-        let nextTask = null;
-        if (filteredTask[currentTask]) {
-          nextTask = filteredTask[currentTask];
-          setCurrentTask(currentTask);
-        } else if (!nextTask) {
-          nextTask = filteredTask[currentTask - 1];
-          setCurrentTask(currentTask - 1);
-        }
-        const { isCreator, userSubState, taskUID, isAssignedToMe } =
-          newSelectedTask[currentTask] || nextTask;
-        const isTaskTabNavigate =
-          (isCreator && userSubState === "unread") ||
-          (isAssignedToMe && userSubState === "new");
 
-        if (!isTaskTabNavigate) {
-          history.push(`/tasks/${subtask}/${getFilterKey()}/${taskUID}`);
+      // let nextTask = null;
+      // if (filteredTask[currentTask]) {
+      //   nextTask = filteredTask[currentTask];
+      //   setCurrentTask(currentTask);
+      // } else if (!nextTask) {
+      //   nextTask = filteredTask[currentTask - 1];
+      //   setCurrentTask(currentTask - 1);
+      // }
+      if (!taskuid || taskuid === "") {
+        const newSelectedTask = data.length > 0 ? data[0] : null;
+        if (newSelectedTask) {
+          const { isCreator, userSubState, taskUID, isAssignedToMe } =
+            newSelectedTask;
+          const isTaskTabNavigate =
+            (isCreator && userSubState === "unread") ||
+            (isAssignedToMe && userSubState === "new");
+          if (!isTaskTabNavigate) {
+            history.push(`/tasks/${subtask}/${getFilterKey()}/${taskUID}`);
+          }
         }
       }
+      setFilteredTask(data);
     }
     // Clearing Variable Task Card List Cache in 10ms
     setTimeout(() => {
@@ -606,7 +607,7 @@ const Task = () => {
         }}
       >
         <Box
-          className="custom-scrollbar"
+          // className="custom-scrollbar"
           sx={{
             display: "flex",
             alignItems: "center",
@@ -661,7 +662,6 @@ const Task = () => {
           ) : (
             <VariableSizeList
               ref={taskCardListRef}
-              // className="custom-scrollbar"
               style={{ overflowY: "auto" }}
               height={windowHeight - 123}
               itemCount={filteredTask.length}

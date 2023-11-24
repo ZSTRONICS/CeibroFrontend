@@ -1,7 +1,6 @@
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton, Typography } from "@mui/material";
 import { Box } from "@mui/system";
+import assets from "assets";
 import { CustomDivider } from "components/CustomTags";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
@@ -166,7 +165,11 @@ export default function DetailsHeader(props: IProps) {
                 onClick={() => setIsExpanded(!isExpanded)}
                 sx={{ height: "24px", width: "24px" }}
               >
-                {isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                {isExpanded ? (
+                  <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                ) : (
+                  <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                )}
               </IconButton>
             </Box>
             <Box sx={{ display: "flex" }}>
@@ -211,7 +214,11 @@ export default function DetailsHeader(props: IProps) {
                 onClick={() => setIsExpanded(!isExpanded)}
                 sx={{ height: "24px", width: "24px" }}
               >
-                {isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                {isExpanded ? (
+                  <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                ) : (
+                  <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                )}
               </IconButton>
             </Box>
 

@@ -1,7 +1,6 @@
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Box, Typography, styled } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
+import assets from "assets";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
@@ -27,7 +26,7 @@ const ImageBoxWrapper = styled(Box)({
 
 const ReadMoreWrapper = ({
   title,
-  readMore=false,
+  readMore = false,
   count,
   children,
   type,
@@ -39,13 +38,13 @@ const ReadMoreWrapper = ({
   const [images, setImages] = useState<any | null>(null);
   const [currentImgIndex, setCurrentImageIndex] = useState(0);
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
-  const despRef = useRef<HTMLPreElement |null>(null);
+  const despRef = useRef<HTMLPreElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
 
   const getHeight = (
-    compRef: MutableRefObject<HTMLDivElement |HTMLPreElement| null>,
+    compRef: MutableRefObject<HTMLDivElement | HTMLPreElement | null>,
     type: "text" | "image" | "imageWithDesp"
   ) => {
     if (compRef.current) {
@@ -91,7 +90,7 @@ const ReadMoreWrapper = ({
       }
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type);
-       count && count > 0 && setLocalCount(count-1)
+      count && count > 0 && setLocalCount(count - 1);
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
@@ -176,16 +175,16 @@ const ReadMoreWrapper = ({
                   style={{
                     fontWeight: 400,
                     fontSize: "14px",
-                    fontFamily:'Inter',
+                    fontFamily: "Inter",
                     color: "#000",
                     maxHeight: `${height}`,
                     overflow: "hidden",
                     wordWrap: "break-word",
-                    whiteSpace:'pre-wrap',
+                    whiteSpace: "pre-wrap",
                     overflowWrap: "anywhere",
                   }}
                 >
-                  {data ? String(data): "N/A"}
+                  {data ? String(data) : "N/A"}
                 </pre>
               )}
               {type === "image" && (
@@ -266,7 +265,11 @@ const ReadMoreWrapper = ({
                   onClick={handleMore}
                   sx={{ height: "24px", width: "40px" }}
                 >
-                  {isExpanded ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+                  {isExpanded ? (
+                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                  ) : (
+                    <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                  )}
                 </IconButton>
               )}
             </Box>

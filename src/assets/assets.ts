@@ -51,6 +51,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ImageOutlinedIcon from "@mui/icons-material/ImageOutlined";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -94,6 +95,7 @@ const assets = {
   ImageOutlinedIcon,
   CancelIcon,
   ExpandMoreIcon,
+  ExpandLessIcon,
   CloseIcon,
   MenuIcon,
   EmailIcon,

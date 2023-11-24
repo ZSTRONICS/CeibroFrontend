@@ -51,8 +51,8 @@ const CustomDatePicker = ({
             },
           }}
           open={open}
-          onOpen={()=>setOpen(true)}
-          onClose={()=>setOpen(false)}
+          onOpen={() => setOpen(true)}
+          onClose={() => setOpen(false)}
           minDate={new Date()}
           InputAdornmentProps={{ position: "start" }}
           PopperProps={{
@@ -67,7 +67,7 @@ const CustomDatePicker = ({
                 width: "100%",
                 label: { color: "#757575", fontWeight: 600, fontSize: "16px" },
               }}
-              onClick={()=>setOpen(true)}
+              onClick={() => setOpen(true)}
             />
           )}
           onChange={handleDateChange}

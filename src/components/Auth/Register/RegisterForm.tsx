@@ -80,10 +80,10 @@ const RegisterForm = () => {
     const { email, firstName, surName, password } = values;
     return !(
       password &&
-      password.length > 0 &&
+      password.length > 7 &&
       email &&
-      firstName.length > 1 &&
-      surName.length > 1
+      firstName.length > 0 &&
+      surName.length > 0
     );
   };
 
