@@ -45,16 +45,17 @@ const ReadMoreWrapper = ({
 
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | HTMLPreElement | null>,
-    type: "text" | "image" | "imageWithDesp"
+    type: "text" | "image" | "imageWithDesp",
+    hasExpanded:boolean
   ) => {
     if (compRef.current) {
       const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
-      const maxHeight = type === "text" ? 4 * lineHeight : 152;
+      const maxHeight = type === "text" ? 10 * lineHeight : 152;
       const currentHeight = compRef.current.clientHeight;
       if (currentHeight > maxHeight + 5) {
         setIsReadMore(true);
       }
-      if (!(isExpanded || readMore)) {
+      if (!(hasExpanded || readMore)) {
         setHeight(maxHeight + "px");
       } else {
         setHeight("100%");
@@ -77,9 +78,9 @@ const ReadMoreWrapper = ({
 
   useEffect(() => {
     if (type === "text") {
-      getHeight(despRef, type);
+      getHeight(despRef, type,isExpanded);
     } else if (type === "image") {
-      getHeight(imageRef, type);
+      getHeight(imageRef, type,isExpanded);
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
       if (count && count > 0) {
         if (imgContWidth > 150) {
@@ -87,19 +88,18 @@ const ReadMoreWrapper = ({
         }
       }
     } else if (type === "imageWithDesp") {
-      getHeight(imageWithCommentRef, type);
+      getHeight(imageWithCommentRef, type,isExpanded);
       count && count > 0 && setLocalCount(count - 1);
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
   const handleMore = () => {
-    setIsExpanded(!isExpanded);
     if (type === "image") {
-      !isExpanded ? setHeight("100%") : setHeight("152px");
+      getHeight(imageRef, type,!isExpanded);
     } else if (type === "imageWithDesp") {
-      !isExpanded ? setHeight("100%") : setHeight("152px");
+      getHeight(imageWithCommentRef, type,!isExpanded);
     } else {
-      !isExpanded ? setHeight("100%") : setHeight("84px");
+      getHeight(despRef, 'text',isExpanded);
     }
   };
 

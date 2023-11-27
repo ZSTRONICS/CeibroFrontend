@@ -134,6 +134,16 @@ const Task = () => {
       let foundTask = filteredTask.find(
         (taskItem) => taskItem.taskUID === taskuid
       );
+      let foundIndex = filteredTask.findIndex(
+        (item, index) => index === currentTask
+      );
+      if (!foundTask && filteredTask.length > 0) {
+        if (foundIndex!=-1&&filteredTask.length-1!==foundIndex) {
+          foundTask = filteredTask[currentTask];
+        } else {
+          foundTask = filteredTask[currentTask - 1];
+        }
+      }
 
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
@@ -167,7 +177,7 @@ const Task = () => {
           setSelectedTask(foundTask);
           const selecteTaskIndex = filteredTask.indexOf(foundTask);
           setCurrentTask(selecteTaskIndex);
-          path = `/tasks/${subTaskKey}/${getFilteredKey}/${taskuid}`;
+          path = `/tasks/${subTaskKey}/${getFilteredKey}/${foundTask.taskUID}`;
         }
         history.push(path);
       } else if (filteredTask.length === 0 && taskuid) {
