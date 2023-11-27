@@ -91,9 +91,8 @@ function TaskCard(props: IProps) {
 
   const TaskCardLabelContent = () => {
     const labelContent = cardLabel === "To" ? assignedToState[0] : creator;
-    const displayName = `${labelContent.firstName || ""} ${
-      labelContent.surName || ""
-    }`;
+    const { firstName = "", surName = "" } = labelContent || {};
+    const displayName = `${firstName || ""} ${surName || ""}`;
     return (
       <>
         {cardLabel}:&nbsp;{""}

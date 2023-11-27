@@ -67,11 +67,9 @@ const ReadMoreWrapper = ({
     compRef: MutableRefObject<HTMLDivElement | null>
   ) => {
     if (compRef.current) {
-      const computedStyle = getComputedStyle(compRef.current);
+      // const computedStyle = getComputedStyle(compRef.current);
       const width = compRef.current.offsetWidth;
-      const marginLeft = parseFloat(computedStyle.marginLeft);
-      const marginRight = parseFloat(computedStyle.marginRight);
-      const widthWithMarginAndPadding = width + marginLeft + marginRight;
+      const widthWithMarginAndPadding = width - 32;
       return widthWithMarginAndPadding;
     }
     return 0;
@@ -85,7 +83,7 @@ const ReadMoreWrapper = ({
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
       if (count && count > 0) {
         if (imgContWidth > 150) {
-          setLocalCount(count - Math.floor(imgContWidth / 170));
+          setLocalCount(count - Math.floor(imgContWidth / 160));
         }
       }
     } else if (type === "imageWithDesp") {
@@ -193,6 +191,7 @@ const ReadMoreWrapper = ({
                   sx={{
                     maxHeight: `${height}`,
                     width: "100%",
+                    border: "1px solid",
                     display: "flex",
                     flexWrap: "wrap",
                   }}

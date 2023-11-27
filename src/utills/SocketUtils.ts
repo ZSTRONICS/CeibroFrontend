@@ -55,6 +55,14 @@ export const useSocket = () => {
                     type: TASK_CONFIG.PUSH_FORWARDED_TO_ME_NEW,
                     payload: data,
                 });
+                dispatch({
+                    type: TASK_CONFIG.TASK_UNSEEN_TABS,
+                    payload: {
+                        isTomeUnseen: data.task.isAssignedToMe && data.task.toMeState === 'new' ? true : unSeenTasks.isTomeUnseen,
+                        isFromMeUnseen: data.task.isCreator && data.task.fromMeState === "ongoing" ? true : unSeenTasks.isFromMeUnseen,
+                        isHiddenUnseen: unSeenTasks.isHiddenUnseen,
+                    }
+                });
                 break;
             case TASK_CONFIG.TASK_CREATED:
                 if (!data.access.includes(userId)) {

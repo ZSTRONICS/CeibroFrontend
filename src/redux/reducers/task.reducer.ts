@@ -62,12 +62,33 @@ const taskReducer = (
 
     case TASK_CONFIG.PUSH_FORWARDED_TO_ME_NEW:
       if (action.payload.task.isAssignedToMe && action.payload.task.toMeState === 'new') {
-        const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload._id);
+        const isTaskUnique = !state.allTaskToMe.new.some((task: any) => task._id === action.payload.task._id);
+        const taskToUpdate = action.payload.task;
+        const taskEvents = action.payload.taskEvents;
+        const unreadTaskIndex = state.allTaskFromMe.unread.findIndex(task => task._id === action.payload.task._id)
+        const ongoingTaskIndex = state.allTaskFromMe.ongoing.findIndex(task => task._id === action.payload.task._id)
+        if (action.payload.task.isCreator) {
+          if (unreadTaskIndex > -1) {
+            const updatedUnreadTask = {
+              ...taskToUpdate,
+              userSubState: 'unread',
+              events: [...taskEvents]
+            };
+            state.allTaskFromMe.unread[unreadTaskIndex] = updatedUnreadTask
+          } else if (ongoingTaskIndex > -1) {
+            const updatedOngoingTask = {
+              ...taskToUpdate,
+              userSubState: 'ongoing',
+              events: [...taskEvents]
+            };
+            state.allTaskFromMe.ongoing[ongoingTaskIndex] = updatedOngoingTask
+          }
+        }
         if (isTaskUnique) {
           const assigneeTask = {
-            ...action.payload.task,
             userSubState: 'new',
-            events: [...action.payload.taskEvents]
+            ...taskToUpdate,
+            events: [...taskEvents]
           };
           state.allTaskToMe.new.unshift(assigneeTask);
           console.log("push task to me new", assigneeTask);
@@ -102,7 +123,7 @@ const taskReducer = (
             events: []
           };
           state.allTaskToMe.new.unshift(assigneeTask);
-          console.log("push task to me new", assigneeTask);
+          // console.log("push task to me new", assigneeTask);
         }
       }
       if (action.payload.isCreator && action.payload.fromMeState === "unread") {
@@ -610,7 +631,7 @@ const taskReducer = (
           break;
         case "TASK_FORWARDED":
           const forwardedTask = eventData.task;
-          if (forwardedTask.newTaskData.isAssignedToMe) {
+          if (forwardedTask.newTaskData.rootState === "to-me" && forwardedTask.newTaskData.isAssignedToMe) {
             if (forwardedTask.oldTaskData.isHiddenByMe) {
               const taskIndex = state.allTaskHidden.ongoing.findIndex((task: any) => task._id === forwardedTask.taskId);
               if (taskIndex !== -1) {
@@ -630,7 +651,12 @@ const taskReducer = (
                 state.allTaskToMe.new[toMeNewIndex].invitedNumbers = forwardedTask.taskData.invitedNumbers;
                 state.allTaskToMe.new[toMeNewIndex].assignedToState = forwardedTask.taskData.assignedToState;
                 state.allTaskToMe.new[toMeNewIndex].updatedAt = forwardedTask.updatedAt;
+                state.allTaskToMe.new[toMeNewIndex].userSubState = forwardedTask.newTaskData.userSubState;
                 moveTaskOnTopByIndex(state.allTaskToMe.new, toMeNewIndex);
+                if (forwardedTask.newTaskData.userSubState === "ongoing" && forwardedTask.oldTaskData.userSubState === "new") {
+                  state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[toMeNewIndex]);
+                  state.allTaskToMe.new.splice(toMeNewIndex, 1)
+                }
                 // console.log("TASK_FORWARDED update allTaskToMe.new", state.allTaskToMe.new[toMeNewIndex]._id);
               } else if (toMeOngoingIndex > -1) {
                 addUniqueEventToTask(state.allTaskToMe.ongoing[toMeOngoingIndex], forwardedTask)
@@ -642,14 +668,20 @@ const taskReducer = (
               }
             }
           }
-          if (forwardedTask.newTaskData.isCreator) {
+          if (forwardedTask.newTaskData.isCreator && forwardedTask.newTaskData.rootState === "from-me") {
             const fromMeUnreadIndex = state.allTaskFromMe.unread.findIndex((task: any) => task._id === forwardedTask.taskId);
             if (fromMeUnreadIndex > -1) {
               state.allTaskFromMe.unread[fromMeUnreadIndex].assignedToState = forwardedTask.taskData.assignedToState;
               state.allTaskFromMe.unread[fromMeUnreadIndex].invitedNumbers = forwardedTask.taskData.invitedNumbers;
+              state.allTaskFromMe.unread[fromMeUnreadIndex].userSubState = forwardedTask.newTaskData.userSubState;
               state.allTaskFromMe.unread[fromMeUnreadIndex].updatedAt = forwardedTask.taskUpdatedAt;
               addUniqueEventToTask(state.allTaskFromMe.unread[fromMeUnreadIndex], forwardedTask)
               moveTaskOnTopByIndex(state.allTaskFromMe.unread, fromMeUnreadIndex);
+              if (forwardedTask.newTaskData.userSubState === "ongoing") {
+                state.allTaskFromMe.ongoing.unshift(state.allTaskFromMe.unread[fromMeUnreadIndex]);
+                state.allTaskFromMe.unread.splice(fromMeUnreadIndex, 1)
+                // console.log("task forward from notifications", state.allTaskFromMe.ongoing[0])
+              }
               // console.log("TASK_FORWARDED update allTaskFromMe.unread", state.allTaskFromMe.unread[fromMeUnreadIndex]);
             } else {
               const fromMeOngoingIndex = state.allTaskFromMe.ongoing.findIndex((task: any) => task._id === forwardedTask.taskId);
