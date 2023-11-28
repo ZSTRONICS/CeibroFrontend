@@ -46,7 +46,7 @@ const ReadMoreWrapper = ({
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | HTMLPreElement | null>,
     type: "text" | "image" | "imageWithDesp",
-    hasExpanded:boolean
+    hasExpanded: boolean
   ) => {
     if (compRef.current) {
       const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
@@ -78,9 +78,9 @@ const ReadMoreWrapper = ({
 
   useEffect(() => {
     if (type === "text") {
-      getHeight(despRef, type,isExpanded);
+      getHeight(despRef, type, isExpanded);
     } else if (type === "image") {
-      getHeight(imageRef, type,isExpanded);
+      getHeight(imageRef, type, isExpanded);
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
       if (count && count > 0) {
         if (imgContWidth > 150) {
@@ -88,18 +88,18 @@ const ReadMoreWrapper = ({
         }
       }
     } else if (type === "imageWithDesp") {
-      getHeight(imageWithCommentRef, type,isExpanded);
+      getHeight(imageWithCommentRef, type, isExpanded);
       count && count > 0 && setLocalCount(count - 1);
     }
   }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
 
   const handleMore = () => {
     if (type === "image") {
-      getHeight(imageRef, type,!isExpanded);
+      getHeight(imageRef, type, !isExpanded);
     } else if (type === "imageWithDesp") {
-      getHeight(imageWithCommentRef, type,!isExpanded);
+      getHeight(imageWithCommentRef, type, !isExpanded);
     } else {
-      getHeight(despRef, 'text',isExpanded);
+      getHeight(despRef, "text", isExpanded);
     }
   };
 
@@ -191,7 +191,6 @@ const ReadMoreWrapper = ({
                   sx={{
                     maxHeight: `${height}`,
                     width: "100%",
-                    border: "1px solid",
                     display: "flex",
                     flexWrap: "wrap",
                   }}
