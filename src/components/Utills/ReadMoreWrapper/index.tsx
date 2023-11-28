@@ -2,6 +2,7 @@ import { Box, Typography, styled } from "@mui/material";
 import IconButton from "@mui/material/IconButton";
 import assets from "assets";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
+import { fileType } from "components/Tasks/type";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { MutableRefObject, useEffect, useId, useRef, useState } from "react";
@@ -16,6 +17,8 @@ interface ReadMoreWrapperProps {
   type?: "text" | "image" | "imageWithDesp" | "file";
   data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
+  callback?: (file: File | any, type: fileType) => void,
+  allowExpandedView?:boolean
 }
 const ImageBoxWrapper = styled(Box)({
   marginRight: "10px",
@@ -31,6 +34,8 @@ const ReadMoreWrapper = ({
   children,
   type,
   data,
+  callback,
+  allowExpandedView=true
 }: ReadMoreWrapperProps) => {
   const [isExpanded, setIsExpanded] = useState(readMore);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -40,23 +45,31 @@ const ReadMoreWrapper = ({
   const { closeModal, isOpen, openModal } = useOpenCloseModal();
   const despRef = useRef<HTMLPreElement | null>(null);
   const imageRef = useRef<HTMLDivElement | null>(null);
+  const fileCompRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
 
+  const compHeight = {
+    file: 21,
+    image: 152,
+    imageWithDesp: 152,
+  };
+
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | HTMLPreElement | null>,
-    type: "text" | "image" | "imageWithDesp",
+    type: "text" | "image" | "imageWithDesp" | "file",
     hasExpanded: boolean
   ) => {
     if (compRef.current) {
       const lineHeight = parseInt(getComputedStyle(compRef.current).lineHeight);
-      const maxHeight = type === "text" ? 10 * lineHeight : 152;
+      const maxHeight = type === "text" ? 10 * lineHeight : compHeight[type];
       const currentHeight = compRef.current.clientHeight;
       if (currentHeight > maxHeight + 5) {
         setIsReadMore(true);
       }
       if (!(hasExpanded || readMore)) {
         setHeight(maxHeight + "px");
+        setIsExpanded(false);
       } else {
         setHeight("100%");
         setIsExpanded(true);
@@ -90,16 +103,35 @@ const ReadMoreWrapper = ({
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type, isExpanded);
       count && count > 0 && setLocalCount(count - 1);
+    } else if (type === "file") {
+      if(fileCompRef.current){
+        const compHeight = parseInt(getComputedStyle(fileCompRef.current).height);
+        const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
+        console.log(compHeight,"lineHeight");
+        if (count && count > 0) {
+          setLocalCount(count - Math.floor(fileCompWidth / 153));
+        }
+      }
+      getHeight(fileCompRef, type, isExpanded);
     }
-  }, [data, despRef.current, imageRef.current, imageWithCommentRef.current]);
+  }, [
+    data,
+    despRef.current,
+    imageRef.current,
+    imageWithCommentRef.current,
+    fileCompRef.current,
+  ]);
 
   const handleMore = () => {
     if (type === "image") {
       getHeight(imageRef, type, !isExpanded);
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type, !isExpanded);
-    } else {
-      getHeight(despRef, "text", isExpanded);
+    }else if (type === "file"){
+      getHeight(fileCompRef, type, !isExpanded);
+    }
+    else {
+      getHeight(despRef, "text", !isExpanded);
     }
   };
 
@@ -238,12 +270,18 @@ const ReadMoreWrapper = ({
                 </Box>
               )}
               {type === "file" && (
-                <FileBox title={title} bt={true} bb={true} files={data} />
+                <Box ref={fileCompRef} sx={{maxHeight:`${allowExpandedView?height:'auto'}`}}>
+                  <FileBox
+                    title={title}
+                    files={data}
+                    handleClearFile={callback}
+                  />
+                </Box>
               )}
               {children ?? ""}
             </Box>
             <Box sx={{ display: "flex" }}>
-              {!isExpanded && localCount && localCount > 0 ? (
+              {!isExpanded &&isReadMore && localCount && localCount > 0 ? (
                 <Box
                   sx={{
                     fontFamily: "Inter",
@@ -258,7 +296,7 @@ const ReadMoreWrapper = ({
               ) : (
                 <></>
               )}
-              {isReadMore && (
+              {isReadMore &&allowExpandedView&& (
                 <IconButton
                   onClick={handleMore}
                   sx={{ height: "24px", width: "40px" }}
@@ -273,7 +311,7 @@ const ReadMoreWrapper = ({
             </Box>
           </Box>
         </Box>
-        {isReadMore && (
+        {isReadMore &&allowExpandedView&& (
           <Box
             sx={{
               cursor: "pointer",

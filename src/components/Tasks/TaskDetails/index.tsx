@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 import { CustomDivider } from "components/CustomTags";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
-import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
@@ -10,6 +9,7 @@ import {
   convertDateFormat,
   momentLocalDate,
 } from "components/Utills/Globals";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
@@ -146,12 +146,11 @@ function TaskDetails(props: IProps) {
         />
         {isShowFullView && (
           <>
-            <FileBox
-              media={media}
+            <ReadMoreWrapper
+              count={docs.length}
               title="Files"
-              bt={true}
-              bb={true}
-              files={docs}
+              type="file"
+              data={docs}
             />
             <CustomDivider />
             {events ? (

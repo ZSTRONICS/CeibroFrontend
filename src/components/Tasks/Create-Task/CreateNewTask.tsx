@@ -12,7 +12,6 @@ import {
 import CustomDatePicker from "components/Utills/CustomDatePicker";
 import CustomDropDown from "components/Utills/CustomDropDown";
 import CustomSwitch from "components/Utills/CustomSwitch";
-import FileBox from "components/Utills/FileBox";
 import UserDropDown from "components/Utills/UserDropdown";
 import { isEmpty } from "lodash";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
@@ -38,6 +37,7 @@ import Footer from "./Footer";
 import { MUIInputLabel } from "components/CustomTags";
 import { IS_IMAGE } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 
@@ -400,16 +400,14 @@ function CreateNewTask() {
             )}
 
             {selectedDocuments.length > 0 && (
-              <Box
-                sx={{
-                  padding: "4px 8px",
-                }}
-              >
-                <FileBox
+              <Box>
+                <ReadMoreWrapper
+                  count={selectedDocuments.length}
                   title="Files"
-                  showFullHeight={true}
-                  files={selectedDocuments}
-                  handleClearFile={handleClearFile}
+                  type="file"
+                  data={selectedDocuments}
+                  callback={handleClearFile}
+                  allowExpandedView={false}
                 />
                 <Divider sx={{ my: 1, borderColor: "#9e9e9e" }} />
               </Box>

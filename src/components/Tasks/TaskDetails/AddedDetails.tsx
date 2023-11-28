@@ -8,7 +8,6 @@ import {
 import ImagePreviewModal from "components/ImgLazyLoad/ImagePreviewModal";
 import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import CustomDivider from "components/Utills/CustomDivider";
-import FileBox from "components/Utills/FileBox";
 import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
@@ -56,7 +55,7 @@ function AddedDetails(props: IProps) {
   //   openModal();
   // };
 
- useEffect(() => {
+  useEffect(() => {
     if (listRef.current) {
       const newTop = listRef.current.getBoundingClientRect().top;
       const newHeightOffset = hasFile ? newTop + 16 : newTop;
@@ -311,7 +310,12 @@ function AddedDetails(props: IProps) {
                     )}
                     {docsLocal.length > 0 && (
                       <>
-                        <FileBox files={docsLocal} />
+                        <ReadMoreWrapper
+                          count={docsLocal.length}
+                          title="Files"
+                          type="file"
+                          data={docsLocal}
+                        />
                         <CustomDivider />
                       </>
                     )}
@@ -353,7 +357,12 @@ function AddedDetails(props: IProps) {
                     )}
                     {docs.length > 0 && (
                       <>
-                        <FileBox files={docs} title="Files" /> <CustomDivider />
+                        <ReadMoreWrapper
+                          count={docs.length}
+                          title="Files"
+                          type="file"
+                          data={docs}
+                        />
                       </>
                     )}
                     {mediaWithoutComment.length > 0 && (

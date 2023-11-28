@@ -15,7 +15,6 @@ import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
 import { filesizes } from "../Globals";
-import ReadMoreWrapper from "../ReadMoreWrapper";
 
 interface IProps {
   bt?: boolean;
@@ -97,18 +96,18 @@ const FileBox: React.FC<IProps> = ({
 
   return (
     <>
-      {/* <Box
-        sx={{
+      <Box
+       sx={{
           width: "100%",
-          borderTop: bt ? "1px solid #ccc" : "none",
-          borderBottom: bb ? "1px solid #ccc" : "none",
           gap: 1,
           display: "flex",
           alignItems: "center",
+          flexWrap:'wrap',
           color: "#605c5c",
+          overflow:'auto'
+          
         }}
-      > */}
-      <ReadMoreWrapper title={title ?? ""}>
+      >
         {files && Array.isArray(files) && files.length > 0 ? (
           files.map((item: IFile | File | any) => {
             const fileSize = filesizes(item.size);
@@ -196,9 +195,7 @@ const FileBox: React.FC<IProps> = ({
             No attachment found
           </Typography>
         )}
-      </ReadMoreWrapper>
-      {/* </Box> */}
-
+      </Box>
       {/* <Box
         className="custom-scrollbar"
         sx={{

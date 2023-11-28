@@ -25,6 +25,7 @@ interface InfoBoxProps {
 export default function DetailsHeader(props: IProps) {
   const { assignedToState, project, topic, creator, invitedNumbers } = props;
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isReadMore, setIsReadMore] = useState(false)
   const parms = useParams<{ filterkey: string }>();
 
   const capitalizeFirstLetter = (str: string | undefined): string =>
@@ -93,6 +94,9 @@ export default function DetailsHeader(props: IProps) {
   useEffect(() => {
     if (parms.filterkey === "unread" || parms.filterkey === "new") {
       setIsExpanded(true);
+      if (invitedNumbers.length > 4 || assignedToState.length > 4) {
+        setIsReadMore(true)
+      }
     }
     window.addEventListener("resize", handleResize);
   }, []);
@@ -161,6 +165,7 @@ export default function DetailsHeader(props: IProps) {
                 label: "Topic",
                 value: capitalizeFirstLetter(topic.topic) || "N/A",
               })}
+              {isReadMore&&
               <IconButton
                 onClick={() => setIsExpanded(!isExpanded)}
                 sx={{ height: "24px", width: "24px" }}
@@ -170,7 +175,7 @@ export default function DetailsHeader(props: IProps) {
                 ) : (
                   <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
                 )}
-              </IconButton>
+              </IconButton>}
             </Box>
             <Box sx={{ display: "flex" }}>
               {renderInfoBox({
@@ -235,7 +240,7 @@ export default function DetailsHeader(props: IProps) {
             />
           </>
         )}
-        <Box
+        {isReadMore&&<Box
           sx={{
             cursor: "pointer",
             display: "flex",
@@ -248,7 +253,7 @@ export default function DetailsHeader(props: IProps) {
           onClick={() => setIsExpanded(!isExpanded)}
         >
           {isExpanded ? "View less" : "View more"}
-        </Box>
+        </Box>}
         <CustomDivider sx={{ my: 1.4 }} />
       </Box>
     </Box>
