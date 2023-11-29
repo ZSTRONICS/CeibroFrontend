@@ -44,9 +44,10 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     containerWidth = taskDetailContainer.clientWidth - 10;
     taskDetailContHeight = taskDetailContainer.clientHeight;
   }
-  const largeScreenCalc = isLargeScreen ? 2 / 3.48 : 2 / 3.53;
+  const largeScreenCalc = isLargeScreen ? 2 / 3.66 : 2 / 3.53;
   const defaultHeight = taskDetailContHeight * largeScreenCalc;
   const defaultContainerHeight = taskDetailContHeight / 3.61;
+  // console.log( defaultHeight, taskDetailContHeight);
   const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
   const [state, setState] = useState({
     activeDrags: 0,
@@ -103,7 +104,6 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
       closeModal();
     }
   };
-
   return (
     <>
       {isOpen && (
