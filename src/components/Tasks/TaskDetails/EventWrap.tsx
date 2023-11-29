@@ -10,10 +10,11 @@ interface EventWrapProps {
 const EventWrap: React.FC<EventWrapProps> = ({ children, key, creator }) => {
   const style = {
     backgroundColor: creator ? "#EAEAEA" : "#D3E9F9",
-    marginRight: creator ? "64px" : "0",
-    marginLeft: ` ${creator ? "0" : "64px"}`,
+    marginRight: creator ? "82px" : "0",
+    marginLeft: ` ${creator ? "0" : "82px"}`,
     padding: "8px 16px 8px 16px",
     marginBottom: "11px",
+    borderRadius: "4px",
   };
 
   return (

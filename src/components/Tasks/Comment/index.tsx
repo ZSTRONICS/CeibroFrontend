@@ -4,14 +4,12 @@ import FileBox from "components/Utills/FileBox";
 import { IS_IMAGE, hasOnlySpaces } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import { TASK_CONFIG } from "config";
-import { ChangeEvent, useCallback, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ChangeEvent, useCallback, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { taskActions } from "redux/action";
-import { RootState } from "redux/reducers";
 import { removeItem } from "utills/common";
 import Footer from "../Create-Task/Footer";
-import TaskHeader from "../TaskHeader";
 import { fileType } from "../type";
 
 interface CommentProps {
@@ -36,10 +34,8 @@ const Comment = ({
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
   const dispatch = useDispatch();
+  const commentRef = useRef<HTMLDivElement | null>(null);
   const [doOne, setDoOne] = useState(false);
-  const taskDragContHeight = useSelector(
-    (store: RootState) => store.task.taskDragContHeight
-  );
   const handleClearFile = (file: File, type: fileType) => {
     if (type === "image") {
       const filterSelectedImages = removeItem(selectedImages, file);
@@ -123,10 +119,6 @@ const Comment = ({
             type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
             payload: res.data.data,
           });
-          dispatch({
-            type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-            payload: 0,
-          });
           setIsSubmit(false);
           handleCloseModal();
           setSelectedImages([]);
@@ -150,18 +142,16 @@ const Comment = ({
     },
     [setDescription]
   );
-
   return (
     <>
       <Box
         sx={{
           width: "100%",
           pt: "8px",
-          height: `${taskDragContHeight - 65}px`,
+          height: "100%",
           overflow: "auto",
         }}
       >
-        {showHeader !== true && <TaskHeader title={title} />}
         {selectedImages.length > 0 && (
           <ImagesToUpload
             isComment={true}
@@ -191,8 +181,8 @@ const Comment = ({
           </>
         )}
         <Box
+          ref={commentRef}
           sx={{
-            height: "auto",
             padding: "2px 2px",
             mt: 0.5,
           }}

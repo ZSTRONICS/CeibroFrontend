@@ -34,23 +34,35 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 }));
 
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
-  const containerHeight = window.innerHeight - 730;
-  const [drawerHeight, setDrawerHeight] = useState(containerHeight);
   const dispatch = useDispatch();
+  const taskDetailContainer = document.getElementById("taskDetailContainer");
+  let taskDetailContHeight = 200;
+  let containerWidth: number = 200;
+  if (taskDetailContainer) {
+    containerWidth = taskDetailContainer.clientWidth - 10;
+    taskDetailContHeight = taskDetailContainer.clientHeight;
+  }
+  const defaultHeight = taskDetailContHeight * (2 / 3.37);
+  const defaultContainerHeight = taskDetailContHeight / 4;
+  const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
   const [state, setState] = useState({
     activeDrags: 0,
-    deltaPosition: { x: -16, y: 490 },
+    deltaPosition: { x: -16, y: drawerHeight },
   });
+
+  const containerStyle: any = {
+    background: "white",
+    position: "absolute",
+    zIndex: "10",
+    width: `${containerWidth}px`,
+  };
 
   useEffect(() => {
     if (!isOpen) {
-      setDrawerHeight(containerHeight);
+      setDrawerHeight(defaultContainerHeight);
       setState({
         ...state,
-        deltaPosition: {
-          x: -16,
-          y: 490,
-        },
+        deltaPosition: { x: -16, y: defaultHeight },
       });
       dispatch({
         type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
@@ -61,22 +73,19 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
 
   const handleDrag = (event: DraggableEvent, data: DraggableData) => {
     const { x, y } = state.deltaPosition;
-    setState({
-      ...state,
-      deltaPosition: {
-        x: -16,
-        y: y + data.deltaY,
-      },
-    });
-    const newHeight = window.innerHeight - y - data.deltaY - 237;
-    setDrawerHeight(newHeight);
+    if (data.lastY > 15) {
+      setState({
+        ...state,
+        deltaPosition: {
+          x: -16,
+          y: y + data.deltaY,
+        },
+      });
+      const newHeight = taskDetailContHeight - y - data.deltaY - 130;
+      setDrawerHeight(newHeight);
+    }
   };
 
-  let containerWidth: number = 500;
-  const taskDetailContainer = document.getElementById("taskDetailContainer");
-  if (taskDetailContainer) {
-    containerWidth = taskDetailContainer.clientWidth;
-  }
   const onStart = () => {
     setState({ ...state, activeDrags: state.activeDrags + 1 });
   };
@@ -99,22 +108,17 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
           <Draggable
             allowAnyClick={true}
             axis="y"
-            defaultPosition={state.deltaPosition}
+            position={state.deltaPosition}
             handle={".handle"}
             onStart={onStart}
             onStop={onStop}
             onDrag={handleDrag}
-            bounds={{ top: 150, bottom: 610 }}
+            bounds={{
+              top: 150,
+              bottom: 610,
+            }}
           >
-            <StyledBox
-              id="dragableContainer"
-              style={{
-                background: "white",
-                position: "absolute",
-                width: `${containerWidth}px`,
-                zIndex: "10",
-              }}
-            >
+            <StyledBox id="dragableContainer" style={containerStyle}>
               <StyledBox
                 className={"handle"}
                 sx={{
@@ -150,7 +154,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
                   px: 2,
                   // overflow: "auto",
                   height: `${drawerHeight}px`,
-                  pb: "3rem",
+                  pb: "3.5rem",
                 }}
               >
                 {children}

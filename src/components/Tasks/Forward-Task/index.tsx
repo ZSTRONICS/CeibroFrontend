@@ -262,10 +262,6 @@ const ForwardTask = ({
               type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
               payload: { task: res.data.data, eventType: "TASK_FORWARDED" },
             });
-            dispatch({
-              type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-              payload: 0,
-            });
             closeModal();
           }
         },
@@ -283,206 +279,215 @@ const ForwardTask = ({
   const hasAssignTo = renderValue();
   return (
     <>
-      <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
-      <Box sx={{ height: `${taskDragContHeight - 65}px`, overflow: "auto" }}>
-        <Box sx={{ display: "flex", alignItems: "baseline" }}>
-          <SubLabelTag
-            sx={{
-              fontSize: "14px",
-              pr: 1,
-              display: { md: "none", lg: "block" },
-            }}
-          >
-            Forward
-          </SubLabelTag>
-          <FormControl
-            variant="standard"
-            sx={{
-              marginTop: "8px",
-              width: "100%",
-              maxWidth: "100%",
-              pl: 1,
-              borderLeft: "1.9px solid #818181",
-            }}
-          >
-            <MUIInputLabel
-              id="controlled-open-select-label"
-              sx={{
-                "&.Mui-focused": { color: "transparent", display: "none" },
-                pl: "1rem",
-                top: "-40%",
-                display: {
-                  md: "block",
-                  lg: selected.length === 0 && !isOpen ? "block" : "none",
-                },
-              }}
-            >
-              Forward to
-            </MUIInputLabel>
-            <Select
-              className="custom-select"
-              labelId="controlled-open-select-label"
-              id="controlled-open-select"
-              sx={{
-                position: "relative",
-                width: "100%",
-                "&:hover:not(.Mui-disabled, .Mui-error):before": {
-                  borderBottom: "none !important",
-                },
-                ...beforeAfterStyles,
-                "&.custom-select": {
-                  mt: 0,
-                },
-                "&.MuiSelect-select": {
-                  p: 0,
-                },
-                "& .MuiSelect-icon": {
-                  right: 0,
-                },
-                svg: { color: "#000000" },
-              }}
-              MenuProps={{
-                anchorOrigin: {
-                  vertical: "bottom",
-                  horizontal: "left",
-                },
-                transformOrigin: {
-                  vertical: "top",
-                  horizontal: "left",
-                },
-                PaperProps: {
-                  style: {
-                    maxHeight: "calc(100vh - 120px)",
-                    width: `calc(100vw - 29.4rem)`,
-                  },
-                },
-              }}
-              multiple
-              variant="standard"
-              open={isOpen}
-              onClose={closeModalLocal}
-              onOpen={() => {
-                setAllContactsList(
-                  handleGroupSearch("", sortedContacts, "contactFullName")
-                );
-                openModal();
-              }}
-              value={selected}
-              renderValue={renderValue}
-              // endAdornment={
-              //   selected.length > 0 && (
-              //     <IconButton
-              //       sx={{ display: "none" }}
-              //       size="small"
-              //       aria-label="clear selection"
-              //       // onClick={handleClearClick}
-              //     >
-              //       <ClearIconSvgGray />
-              //     </IconButton>
-              //   )
-              // }
-            >
-              <Box
-                sx={{
-                  minHeight: "66px",
-                  display: "flex",
-                  paddingLeft: "12px",
-                  pb: 1,
-                  maxWidth: "98%",
-                  overflow: "auto",
-                  pr: 1,
-                  "&::-webkit-scrollbar": {
-                    height: "0.3rem",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
-                    borderRadius: "0.2rem",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "rgba(0,0,0,.1)",
-                  },
-                }}
-              >
-                {!checkSelection() && selected.length > 0 ? (
-                  selected.map((selectedContact: Contact) => {
-                    return (
-                      <SelectedContactBox
-                        isDisabled={selectedUsers.some(
-                          (user: any) => user._id === selectedContact._id
-                        )}
-                        contact={selectedContact}
-                        handleSelectedList={handleSelectedList}
-                      />
-                    );
-                  })
-                ) : (
-                  <Typography
-                    sx={{
-                      width: "100%",
-                      display: "flex",
-                      justifyContent: "center",
-                      alignItems: "end",
-                    }}
-                  >
-                    Please select any task assignee
-                  </Typography>
-                )}
-              </Box>
-              <Box
-                sx={{
-                  margin: "3px 16px",
-                }}
-              >
-                <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
-                <GroupContactList
-                  filterData={allContactsList}
-                  filteredUsers={selectedUsers}
-                  selected={selected}
-                  recentData={{ "Suggested Users": filteredRecentUserContact }}
-                  handleSelectedList={handleSelectedList}
-                />
-              </Box>
-              <SearchBox
-                disabled={false}
-                searchBtnLabel="OK"
-                placeholder="Start typing name"
-                handleSearchChange={handleSearchChange}
-                handleSubmit={closeModalLocal}
-              />
-            </Select>
-          </FormControl>
-        </Box>
+      <Box sx={{ height: "100%", overflow: "auto" }}>
         <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
-        <Box
-          sx={{
-            height: "auto",
-            padding: "2px 2px",
-            mt: 0.5,
-          }}
-        >
-          <FormControl
-            variant="standard"
-            sx={{ width: "100%", fontFamily: "Inter" }}
+        <Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "baseline",
+              height: "100%",
+            }}
           >
-            <MUIInputLabel htmlFor="comment">Comment</MUIInputLabel>
-            <Input
-              name="comment"
-              id="comment"
-              required
-              autoFocus
-              multiline
-              value={comment}
+            <SubLabelTag
               sx={{
-                width: "100%",
-                "&:hover:not(.Mui-disabled, .Mui-error):before": {
-                  borderBottom: "none !important",
-                },
-                ...beforeAfterStyles,
+                fontSize: "14px",
+                pr: 1,
+                display: { md: "none", lg: "block" },
               }}
-              onChange={handleDescriptionChange}
-            />
-          </FormControl>
-          <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
+            >
+              Forward
+            </SubLabelTag>
+            <FormControl
+              variant="standard"
+              sx={{
+                marginTop: "8px",
+                width: "100%",
+                maxWidth: "100%",
+                pl: 1,
+                borderLeft: "1.9px solid #818181",
+              }}
+            >
+              <MUIInputLabel
+                id="controlled-open-select-label"
+                sx={{
+                  "&.Mui-focused": { color: "transparent", display: "none" },
+                  pl: "1rem",
+                  top: "36%",
+                  display: {
+                    md: "block",
+                    lg: selected.length === 0 && !isOpen ? "block" : "none",
+                  },
+                }}
+              >
+                Forward to
+              </MUIInputLabel>
+              <Select
+                className="custom-select"
+                labelId="controlled-open-select-label"
+                id="controlled-open-select"
+                sx={{
+                  position: "relative",
+                  width: "100%",
+                  "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                    borderBottom: "none !important",
+                  },
+                  ...beforeAfterStyles,
+                  "&.custom-select": {
+                    mt: 0,
+                  },
+                  "&.MuiSelect-select": {
+                    p: 0,
+                  },
+                  "& .MuiSelect-icon": {
+                    right: 0,
+                  },
+                  svg: { color: "#000000" },
+                }}
+                MenuProps={{
+                  anchorOrigin: {
+                    vertical: "bottom",
+                    horizontal: "left",
+                  },
+                  transformOrigin: {
+                    vertical: "top",
+                    horizontal: "left",
+                  },
+                  PaperProps: {
+                    style: {
+                      maxHeight: "calc(100vh - 120px)",
+                      width: `calc(100vw - 29.4rem)`,
+                    },
+                  },
+                }}
+                multiple
+                variant="standard"
+                open={isOpen}
+                onClose={closeModalLocal}
+                onOpen={() => {
+                  setAllContactsList(
+                    handleGroupSearch("", sortedContacts, "contactFullName")
+                  );
+                  openModal();
+                }}
+                value={selected}
+                renderValue={renderValue}
+                // endAdornment={
+                //   selected.length > 0 && (
+                //     <IconButton
+                //       sx={{ display: "none" }}
+                //       size="small"
+                //       aria-label="clear selection"
+                //       // onClick={handleClearClick}
+                //     >
+                //       <ClearIconSvgGray />
+                //     </IconButton>
+                //   )
+                // }
+              >
+                <Box
+                  sx={{
+                    minHeight: "66px",
+                    display: "flex",
+                    paddingLeft: "12px",
+                    pb: 1,
+                    maxWidth: "98%",
+                    overflow: "auto",
+                    pr: 1,
+                    "&::-webkit-scrollbar": {
+                      height: "0.3rem",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      WebkitBoxShadow: "inset 0 0 6px rgba(0,0,0,0.00)",
+                      borderRadius: "0.2rem",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "rgba(0,0,0,.1)",
+                    },
+                  }}
+                >
+                  {!checkSelection() && selected.length > 0 ? (
+                    selected.map((selectedContact: Contact) => {
+                      return (
+                        <SelectedContactBox
+                          isDisabled={selectedUsers.some(
+                            (user: any) => user._id === selectedContact._id
+                          )}
+                          contact={selectedContact}
+                          handleSelectedList={handleSelectedList}
+                        />
+                      );
+                    })
+                  ) : (
+                    <Typography
+                      sx={{
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "end",
+                      }}
+                    >
+                      Please select any task assignee
+                    </Typography>
+                  )}
+                </Box>
+                <Box
+                  sx={{
+                    margin: "3px 16px",
+                  }}
+                >
+                  <Divider sx={{ marginTop: "4px", marginBottom: "16px" }} />
+                  <GroupContactList
+                    filterData={allContactsList}
+                    filteredUsers={selectedUsers}
+                    selected={selected}
+                    recentData={{
+                      "Suggested Users": filteredRecentUserContact,
+                    }}
+                    handleSelectedList={handleSelectedList}
+                  />
+                </Box>
+                <SearchBox
+                  disabled={false}
+                  searchBtnLabel="OK"
+                  placeholder="Start typing name"
+                  handleSearchChange={handleSearchChange}
+                  handleSubmit={closeModalLocal}
+                />
+              </Select>
+            </FormControl>
+          </Box>
+          <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
+          <Box
+            sx={{
+              padding: "2px 2px",
+              mt: 0.5,
+            }}
+          >
+            <FormControl
+              variant="standard"
+              sx={{ width: "100%", fontFamily: "Inter" }}
+            >
+              <MUIInputLabel htmlFor="comment">Comment</MUIInputLabel>
+              <Input
+                name="comment"
+                id="comment"
+                required
+                autoFocus
+                multiline
+                value={comment}
+                sx={{
+                  width: "100%",
+                  "&:hover:not(.Mui-disabled, .Mui-error):before": {
+                    borderBottom: "none !important",
+                  },
+                  ...beforeAfterStyles,
+                }}
+                onChange={handleDescriptionChange}
+              />
+            </FormControl>
+            <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
+          </Box>
         </Box>
       </Box>
 

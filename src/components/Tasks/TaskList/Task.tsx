@@ -138,7 +138,7 @@ const Task = () => {
         (item, index) => index === currentTask
       );
       if (!foundTask && filteredTask.length > 0) {
-        if (foundIndex!=-1&&filteredTask.length-1!==foundIndex) {
+        if (foundIndex !== -1 && filteredTask.length - 1 !== foundIndex) {
           foundTask = filteredTask[currentTask];
         } else {
           foundTask = filteredTask[currentTask - 1];
@@ -209,14 +209,6 @@ const Task = () => {
         "description",
       ]);
 
-      // let nextTask = null;
-      // if (filteredTask[currentTask]) {
-      //   nextTask = filteredTask[currentTask];
-      //   setCurrentTask(currentTask);
-      // } else if (!nextTask) {
-      //   nextTask = filteredTask[currentTask - 1];
-      //   setCurrentTask(currentTask - 1);
-      // }
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
         if (newSelectedTask) {
