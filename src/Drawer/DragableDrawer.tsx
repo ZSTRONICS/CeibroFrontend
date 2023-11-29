@@ -1,5 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
 import { TASK_CONFIG } from "config";
+import { useResponsive } from "hooks";
 import { useEffect, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useDispatch } from "react-redux";
@@ -35,6 +36,7 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const dispatch = useDispatch();
+  const isLargeScreen = useResponsive("down", "xl", "");
   const taskDetailContainer = document.getElementById("taskDetailContainer");
   let taskDetailContHeight = 200;
   let containerWidth: number = 200;
@@ -42,12 +44,13 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     containerWidth = taskDetailContainer.clientWidth - 10;
     taskDetailContHeight = taskDetailContainer.clientHeight;
   }
-  const defaultHeight = taskDetailContHeight * (2 / 3.37);
-  const defaultContainerHeight = taskDetailContHeight / 4;
+  const largeScreenCalc = isLargeScreen ? 2 / 3.48 : 2 / 3.53;
+  const defaultHeight = taskDetailContHeight * largeScreenCalc;
+  const defaultContainerHeight = taskDetailContHeight / 3.61;
   const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
   const [state, setState] = useState({
     activeDrags: 0,
-    deltaPosition: { x: -16, y: drawerHeight },
+    deltaPosition: { x: -12, y: drawerHeight },
   });
 
   const containerStyle: any = {
@@ -62,7 +65,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
       setDrawerHeight(defaultContainerHeight);
       setState({
         ...state,
-        deltaPosition: { x: -16, y: defaultHeight },
+        deltaPosition: { x: -12, y: defaultHeight },
       });
       dispatch({
         type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
@@ -77,7 +80,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
       setState({
         ...state,
         deltaPosition: {
-          x: -16,
+          x: -12,
           y: y + data.deltaY,
         },
       });
@@ -115,7 +118,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
             onDrag={handleDrag}
             bounds={{
               top: 150,
-              bottom: 610,
+              bottom: taskDetailContHeight,
             }}
           >
             <StyledBox id="dragableContainer" style={containerStyle}>
