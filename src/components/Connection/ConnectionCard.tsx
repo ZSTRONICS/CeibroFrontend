@@ -46,7 +46,11 @@ const ConnectionCard = ({
   }
 
   return (
-    <div style={style} className="listCard" id={listIndex}>
+    <div
+      style={{ ...style, paddingRight: "6px" }}
+      className="listCard"
+      id={listIndex}
+    >
       <Grid
         container
         justifyContent="space-between"
@@ -64,8 +68,9 @@ const ConnectionCard = ({
                 <SubHeadingTag sx={{ color: "#0075D0" }}>
                   {`${firstName} ${surName}`}
                 </SubHeadingTag>
-                <SubLabelTag>{`Company: ${companyName ? companyName : "N/A"
-                  }`}</SubLabelTag>
+                <SubLabelTag>{`Company: ${
+                  companyName ? companyName : "N/A"
+                }`}</SubLabelTag>
               </div>
             </Box>
             {isTabOrMobile && (

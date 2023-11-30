@@ -81,13 +81,26 @@ const ReadMoreWrapper = ({
     compRef: MutableRefObject<HTMLDivElement | null>
   ) => {
     if (compRef.current) {
-      // const computedStyle = getComputedStyle(compRef.current);
-      const width = compRef.current.offsetWidth;
-      const widthWithMarginAndPadding = width - 32;
-      return widthWithMarginAndPadding;
+      const width = compRef.current.clientWidth;
+      return width;
     }
     return 0;
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (imageRef.current) {
+        const localWidth = getWidthWithMarginAndPadding(imageRef);
+        if (count && count > 0 && localWidth > 150) {
+          setLocalCount(count - Math.floor(localWidth / 162));
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (type === "text") {
@@ -95,10 +108,8 @@ const ReadMoreWrapper = ({
     } else if (type === "image") {
       getHeight(imageRef, type, isExpanded);
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
-      if (count && count > 0) {
-        if (imgContWidth > 150) {
-          setLocalCount(count - Math.floor(imgContWidth / 160));
-        }
+      if (count && count > 0 && imgContWidth > 150) {
+        setLocalCount(count - Math.floor(imgContWidth / 162));
       }
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type, isExpanded);
@@ -109,9 +120,8 @@ const ReadMoreWrapper = ({
           getComputedStyle(fileCompRef.current).height
         );
         const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
-        console.log(compHeight, "lineHeight");
         if (count && count > 0) {
-          setLocalCount(count - Math.floor(fileCompWidth / 153));
+          setLocalCount(count - Math.floor(fileCompWidth / 160));
         }
       }
       getHeight(fileCompRef, type, isExpanded);

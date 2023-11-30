@@ -86,12 +86,23 @@ const Connections = () => {
         <NoData title="No Data Found" />
       ) : (
         <div
-          style={{ position: "relative" }}
+          style={{
+            position: "relative",
+            minWidth: "960",
+            maxWidth: "1440px",
+            margin: "0 auto",
+            padding: "7px",
+            height: "100%",
+            width: "100%",
+          }}
           id="Contactscontainer"
           ref={containerRef}
         >
           <VariableSizeList
             height={windowHeight + 35}
+            style={{
+              paddingBottom: "2rem",
+            }}
             itemCount={userAllContacts.length}
             overscanCount={13}
             itemSize={() => 57}

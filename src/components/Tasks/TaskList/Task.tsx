@@ -137,14 +137,14 @@ const Task = () => {
       let foundIndex = filteredTask.findIndex(
         (item, index) => index === currentTask
       );
-      if (!foundTask && filteredTask.length > 0) {
+      const isUnreadOrNew = filterkey === "new" || filterkey === "unread";
+      if (!foundTask && filteredTask.length > 0 && !isUnreadOrNew) {
         if (foundIndex !== -1 && filteredTask.length - 1 !== foundIndex) {
           foundTask = filteredTask[currentTask];
         } else {
           foundTask = filteredTask[currentTask - 1];
         }
       }
-
       if (!subtask && !filterkey) {
         path = `/tasks/${subTaskKey}/${getFilteredKey}`;
         ischangeUrl = true;

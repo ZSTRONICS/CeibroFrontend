@@ -8,9 +8,10 @@ import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
+import { RootState } from "redux/reducers";
 import Comment from "../Comment";
 import ForwardTask from "../Forward-Task";
 
@@ -56,12 +57,14 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState<TaskAction>("comment");
-
+  const taskDragContHeight = useSelector(
+    (store: RootState) => store.task.taskDragContHeight
+  );
   const handleClick = (action: TaskAction) => {
     setTaskAction(action);
     dispatch({
       type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-      payload: 220,
+      payload: taskDragContHeight,
     });
     openModal();
   };
