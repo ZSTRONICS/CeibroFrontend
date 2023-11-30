@@ -17,8 +17,8 @@ interface ReadMoreWrapperProps {
   type?: "text" | "image" | "imageWithDesp" | "file";
   data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
-  callback?: (file: File | any, type: fileType) => void,
-  allowExpandedView?:boolean
+  callback?: (file: File | any, type: fileType) => void;
+  allowExpandedView?: boolean;
 }
 const ImageBoxWrapper = styled(Box)({
   marginRight: "10px",
@@ -35,7 +35,7 @@ const ReadMoreWrapper = ({
   type,
   data,
   callback,
-  allowExpandedView=true
+  allowExpandedView = true,
 }: ReadMoreWrapperProps) => {
   const [isExpanded, setIsExpanded] = useState(readMore);
   const [isReadMore, setIsReadMore] = useState(false);
@@ -104,10 +104,12 @@ const ReadMoreWrapper = ({
       getHeight(imageWithCommentRef, type, isExpanded);
       count && count > 0 && setLocalCount(count - 1);
     } else if (type === "file") {
-      if(fileCompRef.current){
-        const compHeight = parseInt(getComputedStyle(fileCompRef.current).height);
+      if (fileCompRef.current) {
+        const compHeight = parseInt(
+          getComputedStyle(fileCompRef.current).height
+        );
         const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
-        console.log(compHeight,"lineHeight");
+        console.log(compHeight, "lineHeight");
         if (count && count > 0) {
           setLocalCount(count - Math.floor(fileCompWidth / 153));
         }
@@ -127,10 +129,9 @@ const ReadMoreWrapper = ({
       getHeight(imageRef, type, !isExpanded);
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type, !isExpanded);
-    }else if (type === "file"){
+    } else if (type === "file") {
       getHeight(fileCompRef, type, !isExpanded);
-    }
-    else {
+    } else {
       getHeight(despRef, "text", !isExpanded);
     }
   };
@@ -270,7 +271,10 @@ const ReadMoreWrapper = ({
                 </Box>
               )}
               {type === "file" && (
-                <Box ref={fileCompRef} sx={{maxHeight:`${allowExpandedView?height:'auto'}`}}>
+                <Box
+                  ref={fileCompRef}
+                  sx={{ maxHeight: `${allowExpandedView ? height : "auto"}` }}
+                >
                   <FileBox
                     title={title}
                     files={data}
@@ -281,7 +285,7 @@ const ReadMoreWrapper = ({
               {children ?? ""}
             </Box>
             <Box sx={{ display: "flex" }}>
-              {!isExpanded &&isReadMore && localCount && localCount > 0 ? (
+              {!isExpanded && isReadMore && localCount && localCount > 0 ? (
                 <Box
                   sx={{
                     fontFamily: "Inter",
@@ -296,7 +300,7 @@ const ReadMoreWrapper = ({
               ) : (
                 <></>
               )}
-              {isReadMore &&allowExpandedView&& (
+              {isReadMore && allowExpandedView && (
                 <IconButton
                   onClick={handleMore}
                   sx={{ height: "24px", width: "40px" }}
@@ -311,20 +315,20 @@ const ReadMoreWrapper = ({
             </Box>
           </Box>
         </Box>
-        {isReadMore &&allowExpandedView&& (
-          <Box
-            sx={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: "end",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: "400",
-              color: "#0076C8",
-            }}
-            onClick={handleMore}
-          >
-            {isExpanded ? "View less" : "View more"}
+        {isReadMore && allowExpandedView && (
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Typography
+              sx={{
+                cursor: "pointer",
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: "400",
+                color: "#0076C8",
+              }}
+              onClick={handleMore}
+            >
+              {isExpanded ? "View less" : "View more"}
+            </Typography>
           </Box>
         )}
       </Box>

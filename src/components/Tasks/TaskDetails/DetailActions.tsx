@@ -1,4 +1,4 @@
-import { Box, Chip, Grid } from "@mui/material";
+import { Box, Chip, Grid, Typography } from "@mui/material";
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
@@ -262,19 +262,19 @@ const DetailActions: React.FC<IProps> = (props) => {
             </SubLabelTag>
           )}
         </Grid>
-        <Box
-          sx={{
-            cursor: "pointer",
-            display: "flex",
-            alignSelf: "center",
-            fontFamily: "Inter",
-            fontSize: "12px",
-            fontWeight: "400",
-            color: "#0076C8",
-          }}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          {isExpanded ? "View less" : "View more"}
+        <Box sx={{ display: "flex", justifyContent: "end" }}>
+          <Typography
+            sx={{
+              cursor: "pointer",
+              fontFamily: "Inter",
+              fontSize: "12px",
+              fontWeight: "400",
+              color: "#0076C8",
+            }}
+            onClick={() => setIsExpanded(!isExpanded)}
+          >
+            {isExpanded ? "View less" : "View more"}
+          </Typography>
         </Box>
       </Grid>
       {/* {isOpen === true && (

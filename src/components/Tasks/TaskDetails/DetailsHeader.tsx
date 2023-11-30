@@ -4,7 +4,7 @@ import assets from "assets";
 import { CustomDivider } from "components/CustomTags";
 import DespcriptionBox from "components/Utills/DespcriptionBox";
 import { AssignedUserState, InvitedNumber, Topic } from "constants/interfaces";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import ExpandedHeaderView from "./ExpandedHeaderView";
 
@@ -25,7 +25,8 @@ interface InfoBoxProps {
 export default function DetailsHeader(props: IProps) {
   const { assignedToState, project, topic, creator, invitedNumbers } = props;
   const [isExpanded, setIsExpanded] = useState(false);
-  const [isReadMore, setIsReadMore] = useState(false)
+  const [isReadMore, setIsReadMore] = useState(false);
+  const infoBoxRef = useRef();
   const parms = useParams<{ filterkey: string }>();
 
   const capitalizeFirstLetter = (str: string | undefined): string =>
@@ -79,6 +80,22 @@ export default function DetailsHeader(props: IProps) {
   const [rowGap, setRowGap] = useState<number>(gap);
   const handleResize = () => {
     const windowWidth = window.innerWidth;
+    let flag = false;
+    if (windowWidth >= 1440) {
+      if (invitedNumbers.length >= 5 || assignedToState.length >= 5) {
+        flag = true;
+      }
+    } else if (windowWidth >= 1024) {
+      if (invitedNumbers.length >= 2 || assignedToState.length >= 2) {
+        flag = true;
+      }
+    } else if (windowWidth >= 768) {
+      if (invitedNumbers.length > 1 || assignedToState.length > 1) {
+        flag = true;
+      }
+    }
+    setIsReadMore(flag);
+
     let gap =
       windowWidth >= 786 && windowWidth < 1200
         ? 1
@@ -94,10 +111,8 @@ export default function DetailsHeader(props: IProps) {
   useEffect(() => {
     if (parms.filterkey === "unread" || parms.filterkey === "new") {
       setIsExpanded(true);
-      if (invitedNumbers.length > 4 || assignedToState.length > 4) {
-        setIsReadMore(true)
-      }
     }
+    handleResize()
     window.addEventListener("resize", handleResize);
   }, []);
 
@@ -106,9 +121,16 @@ export default function DetailsHeader(props: IProps) {
     value,
     width,
   }: InfoBoxProps): JSX.Element => (
-    <Box sx={{ display: "flex", minWidth: width ? `${width}px` : "auto" }}>
+    <Box
+      ref={infoBoxRef}
+      sx={{
+        display: "flex",
+        minWidth: width ? `${width}px` : "auto",
+        paddingRight: "64px",
+      }}
+    >
       {renderLabel(label)}
-      {renderValue(value, label === "Topic" ? 600 : 500)}
+      {renderValue(value, label)}
     </Box>
   );
 
@@ -136,24 +158,27 @@ export default function DetailsHeader(props: IProps) {
     </Box>
   );
 
-  const renderValue = (value: string, fontWeight: number): JSX.Element => (
-    <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
-      <Typography
-        style={{
-          fontWeight: fontWeight ?? 500,
-          fontSize: "12px",
-          color: "#000",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          display: "-webkit-box",
-          WebkitLineClamp: "1",
-          WebkitBoxOrient: "vertical",
-        }}
-      >
-        {value}
-      </Typography>
-    </Box>
-  );
+  const renderValue = (value: string, label: string): JSX.Element => {
+    const fontWeight = label === "Topic" ? 600 : 500;
+    return (
+      <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
+        <Typography
+          style={{
+            fontWeight: fontWeight ?? 500,
+            fontSize: "12px",
+            color: "#000",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            display: "-webkit-box",
+            WebkitLineClamp: "1",
+            WebkitBoxOrient: "vertical",
+          }}
+        >
+          {value}
+        </Typography>
+      </Box>
+    );
+  };
 
   return (
     <Box sx={{ padding: "0px 0px 0px 0px" }}>
@@ -165,17 +190,18 @@ export default function DetailsHeader(props: IProps) {
                 label: "Topic",
                 value: capitalizeFirstLetter(topic.topic) || "N/A",
               })}
-              {isReadMore&&
-              <IconButton
-                onClick={() => setIsExpanded(!isExpanded)}
-                sx={{ height: "24px", width: "24px" }}
-              >
-                {isExpanded ? (
-                  <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
-                ) : (
-                  <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
-                )}
-              </IconButton>}
+              {isReadMore && (
+                <IconButton
+                  onClick={() => setIsExpanded(!isExpanded)}
+                  sx={{ height: "24px", width: "24px" }}
+                >
+                  {isExpanded ? (
+                    <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />
+                  ) : (
+                    <assets.ExpandLessIcon sx={{ color: "#0076C8" }} />
+                  )}
+                </IconButton>
+              )}
             </Box>
             <Box sx={{ display: "flex" }}>
               {renderInfoBox({
@@ -240,20 +266,22 @@ export default function DetailsHeader(props: IProps) {
             />
           </>
         )}
-        {isReadMore&&<Box
-          sx={{
-            cursor: "pointer",
-            display: "flex",
-            justifyContent: "end",
-            fontFamily: "Inter",
-            fontSize: "12px",
-            fontWeight: "400",
-            color: "#0076C8",
-          }}
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
-          {isExpanded ? "View less" : "View more"}
-        </Box>}
+        {isReadMore && (
+          <Box sx={{ display: "flex", justifyContent: "end" }}>
+            <Typography
+              sx={{
+                cursor: "pointer",
+                fontFamily: "Inter",
+                fontSize: "12px",
+                fontWeight: "400",
+                color: "#0076C8",
+              }}
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "View less" : "View more"}
+            </Typography>
+          </Box>
+        )}
         <CustomDivider sx={{ my: 1.4 }} />
       </Box>
     </Box>
