@@ -95,6 +95,7 @@ export default function DetailsHeader(props: IProps) {
       }
     }
     setIsReadMore(flag);
+    !flag&&setIsExpanded(false)
 
     let gap =
       windowWidth >= 786 && windowWidth < 1200
