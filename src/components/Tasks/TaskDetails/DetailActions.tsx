@@ -274,7 +274,18 @@ const DetailActions: React.FC<IProps> = (props) => {
               fontWeight: "400",
               color: "#0076C8",
             }}
-            onClick={() => setIsExpanded(!isExpanded)}
+            onClick={() => {
+              let showFullViewData;
+              const data = localStorage.getItem("showFullView");
+              if (data) {
+                showFullViewData = JSON.parse(data);
+              }
+              localStorage.setItem(
+                "showFullView",
+                JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
+              );
+              setIsExpanded(!isExpanded);
+            }}
           >
             {isExpanded ? "View less" : "View more"}
           </Typography>

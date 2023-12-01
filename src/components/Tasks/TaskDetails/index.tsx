@@ -44,7 +44,17 @@ function TaskDetails(props: IProps) {
     doneCommentsRequired,
     doneImageRequired,
   } = props.task;
-  const [isShowFullView, setIsShowFullView] = useState(false);
+  const showFullView = localStorage.getItem("showFullView");
+  const [isShowFullView, setIsShowFullView] = useState(
+    showFullView ? JSON.parse(showFullView)[taskUID] ?? false : false
+  );
+
+  useEffect(() => {
+    setIsShowFullView(
+      showFullView ? JSON.parse(showFullView)[taskUID] ?? false : false
+    );
+  }, [taskUID]);
+
   const parms = useParams<{ filterkey: string }>();
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const taskDragContHeight = useSelector(

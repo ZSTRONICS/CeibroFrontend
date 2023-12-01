@@ -1,12 +1,5 @@
 import { MoreVert } from "@mui/icons-material";
-import {
-  Box,
-  ListSubheader,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Menu, MenuItem, TextField, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
@@ -99,17 +92,21 @@ function CustomDropDown(props: IProps) {
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
-    setAllFilterData({
-      all: sortedOptions,
-      recent: options.recentOptions,
-    });
+    setTimeout(() => {
+      setAllFilterData({
+        all: sortedOptions,
+        recent: options.recentOptions,
+      });
+    }, 1000);
   };
 
   const handleOpen = () => {
     setOpen(true);
   };
   const filteredData: { [key: string]: OptionType[] } = {};
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const searchValue = event.target.value;
     setSearchQuery(searchValue);
     setAllFilterData({
@@ -219,8 +216,8 @@ function CustomDropDown(props: IProps) {
           value={selected}
           renderValue={renderValue}
           MenuProps={{
-            autoFocus: true,
-            disableAutoFocusItem: true,
+            autoFocus: false,
+            disableAutoFocusItem: false,
             anchorOrigin: {
               vertical: "bottom",
               horizontal: "left",
@@ -235,7 +232,6 @@ function CustomDropDown(props: IProps) {
               },
             },
           }}
-          // onChange={handleChange}
           endAdornment={
             selected && (
               <IconButton
@@ -248,7 +244,7 @@ function CustomDropDown(props: IProps) {
             )
           }
         >
-          <ListSubheader
+          <Box
             style={{
               borderBottom: "1.9px solid #A0A0B0",
               display: "flex",
@@ -259,8 +255,12 @@ function CustomDropDown(props: IProps) {
             <TextField
               placeholder="Start typing"
               value={searchQuery}
-              onChange={handleSearchChange}
-              style={{ flex: 1, fontFamily: "Inter" }}
+              onChange={(e) => {
+                e.stopPropagation();
+                handleSearchChange(e);
+              }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ flex: 1, marginLeft: "10px", fontFamily: "Inter" }}
               sx={{
                 label: { color: "605b5c" },
               }}
@@ -287,7 +287,7 @@ function CustomDropDown(props: IProps) {
                 </Button>
               )}
             </>
-          </ListSubheader>
+          </Box>
 
           {allFilterData.recent.length > 0 && (
             <Box sx={{ margin: "10px 10px", marginBottom: "0px" }}>
