@@ -70,7 +70,6 @@ function AddedDetails(props: IProps) {
     }
   }, [events?.length, hasFile]);
 
-
   return (
     <>
       <Box sx={{ mb: 1 }}>
@@ -363,6 +362,7 @@ function AddedDetails(props: IProps) {
                           type="file"
                           data={docs}
                         />
+                        <CustomDivider />
                       </>
                     )}
                     {mediaWithoutComment.length > 0 && (

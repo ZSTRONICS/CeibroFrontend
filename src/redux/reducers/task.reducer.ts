@@ -281,17 +281,17 @@ const taskReducer = (
             state.allTaskHidden.canceled[taskIndex].hiddenBy = eventData.taskData.hiddenBy;
             state.allTaskHidden.canceled[taskIndex].creatorState = "unread";
             state.allTaskHidden.canceled[taskIndex].isCanceled = false;
-            const modifiedTask = {
+            const modifiedCreatorTask = {
               ...state.allTaskHidden.canceled[taskIndex],
               userSubState: 'unread',
             };
             if (eventData.oldTaskData.isCreator) {
-              state.allTaskFromMe.unread.unshift(modifiedTask);
+              state.allTaskFromMe.unread.unshift(modifiedCreatorTask);
             }
             if (isAssignedToMe) {
               const modifiedTask = {
                 ...state.allTaskHidden.canceled[taskIndex],
-                userSubState: 'new',
+                userSubState: eventData.newTaskData.userSubState,
               };
               console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
               state.allTaskToMe.new.unshift(modifiedTask);
@@ -677,7 +677,7 @@ const taskReducer = (
               state.allTaskFromMe.unread[fromMeUnreadIndex].updatedAt = forwardedTask.taskUpdatedAt;
               addUniqueEventToTask(state.allTaskFromMe.unread[fromMeUnreadIndex], forwardedTask)
               moveTaskOnTopByIndex(state.allTaskFromMe.unread, fromMeUnreadIndex);
-              if (forwardedTask.newTaskData.userSubState === "ongoing") {
+              if (forwardedTask.newTaskData.fromMeState === "ongoing") {
                 state.allTaskFromMe.ongoing.unshift(state.allTaskFromMe.unread[fromMeUnreadIndex]);
                 state.allTaskFromMe.unread.splice(fromMeUnreadIndex, 1)
                 // console.log("task forward from notifications", state.allTaskFromMe.ongoing[0])

@@ -3,7 +3,8 @@ import { TASK_CONFIG } from "config";
 import { useResponsive } from "hooks";
 import { useEffect, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "redux/reducers";
 interface Props {
   isOpen: boolean;
   openModal: any;
@@ -37,6 +38,9 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const dispatch = useDispatch();
   const isLargeScreen = useResponsive("down", "xl", "");
+  const taskDragContHeight = useSelector(
+    (store: RootState) => store.task.taskDragContHeight
+  );
   const taskDetailContainer = document.getElementById("taskDetailContainer");
   let taskDetailContHeight = 200;
   let containerWidth: number = 200;
@@ -85,6 +89,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   useEffect(() => {
     if (!isOpen) {
       setDrawerHeight(defaultContainerHeight);
+      setDrawerWidth(containerWidth);
       setState({
         ...state,
         deltaPosition: { x: -12, y: defaultHeight },

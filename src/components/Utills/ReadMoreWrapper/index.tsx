@@ -92,7 +92,7 @@ const ReadMoreWrapper = ({
       if (imageRef.current) {
         const localWidth = getWidthWithMarginAndPadding(imageRef);
         if (count && count > 0 && localWidth > 150) {
-          setLocalCount(count - Math.floor(localWidth / 162));
+          setLocalCount(count - Math.floor(localWidth / 160));
         }
       }
     };
@@ -109,7 +109,7 @@ const ReadMoreWrapper = ({
       getHeight(imageRef, type, isExpanded);
       const imgContWidth = getWidthWithMarginAndPadding(imageRef);
       if (count && count > 0 && imgContWidth > 150) {
-        setLocalCount(count - Math.floor(imgContWidth / 162));
+        setLocalCount(count - Math.floor(imgContWidth / 160));
       }
     } else if (type === "imageWithDesp") {
       getHeight(imageWithCommentRef, type, isExpanded);

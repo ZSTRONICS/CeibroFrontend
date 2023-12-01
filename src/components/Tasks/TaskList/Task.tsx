@@ -256,6 +256,7 @@ const Task = () => {
     let taskNeedToBeSeen =
       selectedTask &&
       selectedTask !== null &&
+      selectedTask.userSubState === filterkey &&
       !selectedTask.seenBy.includes(userId);
 
     if (taskNeedToBeSeen || selectedTask?.userSubState === "new") {

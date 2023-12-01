@@ -14,6 +14,9 @@ interface ApiCall {
   onFailSaga?: (err: any) => void
   finallySaga?: () => void
   isFormData?: boolean
+  isUrlEncodedData?: boolean
+  useOtpToken?: boolean
+  otpToken?: ((payload: any) => string)
   isBlob?: boolean
   useV2Route: boolean
 }
@@ -21,6 +24,7 @@ interface ApiCall {
 const apiCall = ({
   type,
   method,
+  isUrlEncodedData,
   path,
   success,
   onFailSaga,
@@ -28,6 +32,8 @@ const apiCall = ({
   isFormData,
   isBlob,
   useV2Route,
+  useOtpToken,
+  otpToken,
 }: ApiCall): any =>
   function* (action: any): Generator<any> {
     const {
@@ -38,18 +44,30 @@ const apiCall = ({
       finallyAction,
       showErrorToast = true,
     } = action.payload || {}
-    const idToken = localStorage.getItem('tokens')
-
+    let idToken = null
     let header: any = {}
+    if (useOtpToken) {
+      header['Authorization'] = `Bearer ${otpToken}`
+    } else {
+      idToken = localStorage.getItem('tokens')
+    }
 
-    if (!isFormData) {
+    if (isUrlEncodedData) {
       header = {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/x-www-form-urlencoded",
       }
 
     } else {
-      header = {
-        'Content-Type': 'multipart/form-data',
+      if (!isFormData) {
+        header = {
+          'Content-Type': 'application/json',
+        }
+
+
+      } else {
+        header = {
+          'Content-Type': 'multipart/form-data',
+        }
       }
     }
     header['Access-Control-Allow-Origin'] = '*'
@@ -57,17 +75,20 @@ const apiCall = ({
     const tokenLessRoutes = [
       "/auth/login",
       "/auth/veify-email",
-      "/auth/register",
+      // "/auth/register",
       "/auth/otp/verify",
       `/auth/forget-password`,
       "/auth/otp/verify-nodel",
       "/auth/reset-password"
     ]
+    console.log('idToken==>1', idToken, otpToken)
 
     if (!tokenLessRoutes.includes(`${path}`)) {
+      console.log('idToken', idToken)
       if (idToken && idToken !== 'undefined' && idToken !== 'null') {
+        console.log('Authorization', idToken)
         header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
-      } 
+      }
     }
 
     try {

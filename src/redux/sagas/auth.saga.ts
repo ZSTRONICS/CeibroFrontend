@@ -67,6 +67,14 @@ const resendOtp = apiCall({
   path: "auth/otp/resend",
 });
 
+const getAuthApiToken = apiCall({
+  type: AUTH_CONFIG.GET_AUTH_API_TOKEN,
+  useV2Route: true,
+  isUrlEncodedData: true,
+  path: "auth/token",
+  method: "post",
+})
+
 const registerSetupProfile = apiCall({
   useV2Route: true,
   type: REGISTER_PROFILE_SETUP,
@@ -100,6 +108,8 @@ const forgetPassword = apiCall({
   useV2Route: true,
   type: FORGET_PASSWORD,
   method: "post",
+  useOtpToken: true,
+  otpToken: (payload: any) => `${payload.otpToken}`,
   path: `/auth/forget-password`,
 });
 
@@ -140,6 +150,7 @@ const resetPassword = apiCall({
 });
 
 function* projectSaga() {
+  yield takeLatest(AUTH_CONFIG.GET_AUTH_API_TOKEN, getAuthApiToken);
   yield takeLatest(LOGIN, loginRequest);
   yield takeLatest(REGISTER, registerRequest);
   yield takeLatest(REGISTER_CONFIRMATION, registerConfirmationRequest);

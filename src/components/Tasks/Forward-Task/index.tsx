@@ -313,7 +313,7 @@ const ForwardTask = ({
                 sx={{
                   "&.Mui-focused": { color: "transparent", display: "none" },
                   pl: "1rem",
-                  top: { sm: "-50%", lg: "-40%" },
+                  top: { sm: "10%", lg: "-40%" },
                   display: {
                     md: "block",
                     lg: selected.length === 0 && !isOpen ? "block" : "none",
