@@ -9,7 +9,7 @@ import { useTranslation } from "react-i18next";
 import { Box, Button, Typography } from "@mui/material";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeNumber } from "redux/action/auth.action";
 
 // component
@@ -20,6 +20,7 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { toast } from "react-toastify";
+import { RootState } from "redux/reducers";
 import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../Auth/userSchema/AuthSchema";
 
@@ -49,7 +50,9 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
   const formikRef = useRef<
     FormikProps<FormikValues> | FormikProps<IInputValues> | undefined | any
   >();
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   const handleSubmit = (values: IInputValues) => {
     setShowLoading(true);
     const { phoneNumber, password, dialCode } = values;
@@ -78,7 +81,10 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
       },
       showErrorToast: false,
     };
-    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
     if (checkPhoneNumber?.isValid) {
       dispatch(changeNumber(payload));
     } else {

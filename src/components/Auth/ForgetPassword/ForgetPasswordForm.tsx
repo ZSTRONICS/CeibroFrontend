@@ -4,16 +4,17 @@ import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import axios from "axios";
 import { CustomStack } from "components/CustomTags";
 import MessageAlert from "components/MessageAlert/MessageAlert";
+import { encryptData } from "components/Utills/Globals";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
-import CryptoJS from "crypto-js";
 import { Formik, FormikProps } from "formik";
 import userAlertMessage from "hooks/userAlertMessage";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { RootState } from "redux/reducers";
 import { SERVER_URL } from "utills/axios";
-import { handlePhoneChange } from "utills/formFunctions";
+import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import colors from "../../../assets/colors";
 import { getAuthApiToken } from "../../../redux/action/auth.action";
 import { forgotPasswordSchemaValidation } from "../userSchema/AuthSchema";
@@ -27,31 +28,43 @@ const ForgetPasswordForm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   const formikRef = useRef<FormikProps<FormValues>>(null);
   const forgotPasswordSchema = forgotPasswordSchemaValidation(t);
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [loading, setLoading] = useState<boolean>(false);
   const [showSuccess, setShowSuccess] = useState<boolean>(false);
 
-  const isDisabled = !loading ? false : true;
-  const convertToBytes = (str: string) => CryptoJS.enc.Utf8.parse(str);
-  const encryptData = (data: any) => {
-    const apiKey: string = process.env.REACT_APP_SECRET_KEY || "";
-    const baselV: string = process.env.REACT_APP_SECRET_IV || "";
-    // if (apiKey !== "" && baselV !== "") {
-    var sKey = convertToBytes("C++BR0@uthS@Cre+AUTHVYU*B++%I*%+").toString();
-    var sIV = convertToBytes("C++BR0@uthS@Cre+").toString();
-    const secretKey = CryptoJS.enc.Hex.parse(sKey);
-    const secretIV = CryptoJS.enc.Hex.parse(sIV);
-    const encrypted = CryptoJS.AES.encrypt(data, secretKey, {
-      iv: secretIV,
-      mode: CryptoJS.mode.CBC,
-      padding: CryptoJS.pad.Pkcs7,
-    });
-    const encryptedHex = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
-    return encryptedHex;
-    // }
+  const getResetPassOtp = async (data: any) => {
+    try {
+      const response = await axios.post(
+        `${SERVER_URL}/v2/auth/forget-password`,
+        { phoneNumber: `${data.dialCode}${data.phoneNumber}` },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      console.log("Response:", response.data);
+      if (response.data) {
+        history.push("/forget-confirmation");
+        setLoading(false);
+        setShowSuccess(true);
+        setAlertMessage(response.data.message);
+        setTimeout(() => {
+          setShowSuccess(false);
+        }, 2000);
+      }
+    } catch (error: any) {
+      setLoading(false);
+      if (error.response) {
+        console.error("Server Error:", error);
+      }
+    }
   };
 
   const handleSubmit = (values: any) => {
@@ -59,61 +72,34 @@ const ForgetPasswordForm = () => {
     localStorage.setItem("phoneNumber", phoneNumber);
     localStorage.setItem("dialCode", dialCode);
     const encryptedHex = encryptData(`${dialCode}${phoneNumber}`);
-    console.log(encryptedHex);
     const getAuthToken = {
       body: {
         clientId: encryptedHex,
       },
       success: async (res: any) => {
-        console.log("res===>", res.data.access.token);
-        try {
-          const response = await axios
-            .post(
-              `${SERVER_URL}/v2/auth/forget-password`,
-              { phoneNumber: encryptData(`${dialCode}${phoneNumber}`) },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${res.data.access.token}`,
-                },
-              }
-            )
-            .then((res) => {
-              console.log(res);
-              history.push("/forget-confirmation");
-            });
-          console.log("Response:", response);
-        } catch (error) {
-          console.error("Error:", error);
+        if (res) {
+          getResetPassOtp({
+            dialCode: dialCode,
+            phoneNumber: phoneNumber,
+            token: res.data.access.token,
+          });
         }
       },
       onFailAction: (err: any) => {
         setLoading(false);
       },
-      finallyAction: () => {
-        // const payload = {
-        //   body: {
-        //   },
-        //   otpToken: localRes.data.access.token,
-        //   success: (res: any) => {
-        //     setShowSuccess(true);
-        //     setAlertMessage(res.data.message);
-        //     setTimeout(() => {
-        //       setShowSuccess(false);
-        //     }, 2000);
-        //   },
-        //   onFailAction: (err: any) => {
-        //     setAlertMessage(err.response.data.message);
-        //   },
-        //   finallyAction: () => {
-        //     setLoading(false);
-        //   },
-        // };
-        // dispatch(forgetPassword(payload));
-      },
+      finallyAction: () => {},
     };
-    dispatch(getAuthApiToken(getAuthToken));
-
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
+    if (checkPhoneNumber?.isValid) {
+      dispatch(getAuthApiToken(getAuthToken));
+    } else {
+      setAlertMessage(checkPhoneNumber.msg);
+      setLoading(false);
+    }
     if (phoneNumber.length <= 4) {
       setAlertMessage("Invalid phone number");
       return;
@@ -187,7 +173,7 @@ const ForgetPasswordForm = () => {
                 disabled={checkValidInputs(values) || loading}
                 sx={{ width: "100%" }}
               >
-                {isDisabled && loading && (
+                {loading && (
                   <CircularProgress
                     size={15}
                     sx={{

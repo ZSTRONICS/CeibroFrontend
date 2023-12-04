@@ -95,7 +95,7 @@ export default function DetailsHeader(props: IProps) {
       }
     }
     setIsReadMore(flag);
-    !flag&&setIsExpanded(false)
+    !flag && setIsExpanded(false);
 
     let gap =
       windowWidth >= 786 && windowWidth < 1200
@@ -113,7 +113,7 @@ export default function DetailsHeader(props: IProps) {
     if (parms.filterkey === "unread" || parms.filterkey === "new") {
       setIsExpanded(true);
     }
-    handleResize()
+    handleResize();
     window.addEventListener("resize", handleResize);
   }, []);
 
@@ -122,17 +122,21 @@ export default function DetailsHeader(props: IProps) {
     value,
     width,
   }: InfoBoxProps): JSX.Element => (
-    <Box
-      ref={infoBoxRef}
-      sx={{
-        display: "flex",
-        minWidth: width ? `${width}px` : "auto",
-        paddingRight: "64px",
-      }}
-    >
-      {renderLabel(label)}
-      {renderValue(value, label)}
-    </Box>
+    <>
+      {value && (
+        <Box
+          ref={infoBoxRef}
+          sx={{
+            display: "flex",
+            minWidth: width ? `${width}px` : "auto",
+            paddingRight: "64px",
+          }}
+        >
+          {renderLabel(label)}
+          {renderValue(value, label)}
+        </Box>
+      )}
+    </>
   );
 
   const renderLabel = (label: string): JSX.Element => (
@@ -162,22 +166,26 @@ export default function DetailsHeader(props: IProps) {
   const renderValue = (value: string, label: string): JSX.Element => {
     const fontWeight = label === "Topic" ? 600 : 500;
     return (
-      <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
-        <Typography
-          style={{
-            fontWeight: fontWeight ?? 500,
-            fontSize: "12px",
-            color: "#000",
-            overflow: "hidden",
-            textOverflow: "ellipsis",
-            display: "-webkit-box",
-            WebkitLineClamp: "1",
-            WebkitBoxOrient: "vertical",
-          }}
-        >
-          {value}
-        </Typography>
-      </Box>
+      <>
+        {value && value.length > 0 && (
+          <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
+            <Typography
+              style={{
+                fontWeight: fontWeight ?? 500,
+                fontSize: "12px",
+                color: "#000",
+                overflow: "hidden",
+                textOverflow: "ellipsis",
+                display: "-webkit-box",
+                WebkitLineClamp: "1",
+                WebkitBoxOrient: "vertical",
+              }}
+            >
+              {value}
+            </Typography>
+          </Box>
+        )}
+      </>
     );
   };
 

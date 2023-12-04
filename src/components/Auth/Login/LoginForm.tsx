@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 
 // redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginRequest } from "redux/action/auth.action";
 
 //toastify
@@ -31,6 +31,7 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import userAlertMessage from "hooks/userAlertMessage";
 import { userApiAction } from "redux/action";
+import { RootState } from "redux/reducers";
 import { purgeStoreStates } from "redux/store";
 import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
@@ -57,7 +58,9 @@ const LoginForm: React.FC<Props> = (props) => {
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   const handleSubmit = (
     values: IInputValues,
     { resetForm }: { resetForm: () => void }
@@ -97,7 +100,10 @@ const LoginForm: React.FC<Props> = (props) => {
       showErrorToast: false,
     };
     setShowLoading(true);
-    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
     if (checkPhoneNumber?.isValid) {
       dispatch(loginRequest(payload));
     } else {

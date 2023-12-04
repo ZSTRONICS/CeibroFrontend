@@ -20,6 +20,7 @@ interface UserReducerInt {
   refreshMyconnections: boolean;
   invites: { count: number };
   connections: { count: number };
+  countryCodeName: string
   openInvites: boolean;
   id: string;
   myConnections: any;
@@ -33,6 +34,7 @@ const intialStatue: UserReducerInt = {
   invites: { count: 0 },
   connections: { count: 0 },
   openInvites: false,
+  countryCodeName: "EE",
   myConnections: [],
   id: "",
 };
@@ -126,6 +128,12 @@ const UserReducer = (state = intialStatue, action: ActionInterface) => {
     }
 
 
+    case USER_CONFIG.COUNTRY_CODE_NAME: {
+      return {
+        ...state,
+        countryCodeName: action.payload
+      }
+    }
     case CLOSE_VIEW_INVITATIONS: {
       return {
         ...state,

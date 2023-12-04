@@ -1,4 +1,5 @@
 import { AutocompleteProps } from "@mui/material";
+import { CountryCode } from "libphonenumber-js";
 
 export interface IPhoneNumber {
   dialCode: string;
@@ -8,7 +9,7 @@ export interface IPhoneNumber {
 export type ICountryData = {
   name: string;
   flag: string;
-  code: string;
+  code: CountryCode | string;
   dial_code: string;
 };
 

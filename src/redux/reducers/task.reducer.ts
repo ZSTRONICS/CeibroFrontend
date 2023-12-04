@@ -532,12 +532,14 @@ const taskReducer = (
               // find task in new and move to ongoing and update task
               const taskIndex = state.allTaskToMe.new.findIndex((task: ITask) => task._id === eventData.taskId);
               if (taskIndex > -1) {
-                state.allTaskToMe.new[taskIndex].userSubState = "ongoing"
+                state.allTaskToMe.new[taskIndex].userSubState = eventData.newTaskData.userSubState
                 state.allTaskToMe.new[taskIndex].creatorState = "ongoing"
                 state.allTaskToMe.new[taskIndex].seenBy = eventData.seenBy;
-                state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[taskIndex]);
-                state.allTaskToMe.new.splice(taskIndex, 1);
-                console.log("task seen allTaskToMe.new => allTaskToMe.ongoing", state.allTaskToMe.ongoing[0].seenBy);
+                if (eventData.newTaskData.toMeState === "ongoing") {
+                  state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[taskIndex]);
+                  state.allTaskToMe.new.splice(taskIndex, 1);
+                  console.log("TASK_SEEN allTaskToMe.new => allTaskToMe.ongoing", state.allTaskToMe.ongoing[0].seenBy);
+                }
               }
             }
             // update  task to-me [ongoing]
@@ -631,7 +633,7 @@ const taskReducer = (
           break;
         case "TASK_FORWARDED":
           const forwardedTask = eventData.task;
-          if (forwardedTask.newTaskData.rootState === "to-me" && forwardedTask.newTaskData.isAssignedToMe) {
+          if (forwardedTask.newTaskData.isAssignedToMe) {
             if (forwardedTask.oldTaskData.isHiddenByMe) {
               const taskIndex = state.allTaskHidden.ongoing.findIndex((task: any) => task._id === forwardedTask.taskId);
               if (taskIndex !== -1) {
@@ -650,10 +652,12 @@ const taskReducer = (
                 addUniqueEventToTask(state.allTaskToMe.new[toMeNewIndex], forwardedTask)
                 state.allTaskToMe.new[toMeNewIndex].invitedNumbers = forwardedTask.taskData.invitedNumbers;
                 state.allTaskToMe.new[toMeNewIndex].assignedToState = forwardedTask.taskData.assignedToState;
-                state.allTaskToMe.new[toMeNewIndex].updatedAt = forwardedTask.updatedAt;
                 state.allTaskToMe.new[toMeNewIndex].userSubState = forwardedTask.newTaskData.userSubState;
+                state.allTaskToMe.new[toMeNewIndex].seenBy = forwardedTask.taskData.seenBy;
+                state.allTaskToMe.new[toMeNewIndex].updatedAt = forwardedTask.updatedAt;
                 moveTaskOnTopByIndex(state.allTaskToMe.new, toMeNewIndex);
                 if (forwardedTask.newTaskData.userSubState === "ongoing" && forwardedTask.oldTaskData.userSubState === "new") {
+                  state.allTaskToMe.new[toMeNewIndex].userSubState = "ongoing";
                   state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[toMeNewIndex]);
                   state.allTaskToMe.new.splice(toMeNewIndex, 1)
                 }
@@ -673,7 +677,8 @@ const taskReducer = (
             if (fromMeUnreadIndex > -1) {
               state.allTaskFromMe.unread[fromMeUnreadIndex].assignedToState = forwardedTask.taskData.assignedToState;
               state.allTaskFromMe.unread[fromMeUnreadIndex].invitedNumbers = forwardedTask.taskData.invitedNumbers;
-              state.allTaskFromMe.unread[fromMeUnreadIndex].userSubState = forwardedTask.newTaskData.userSubState;
+              state.allTaskFromMe.unread[fromMeUnreadIndex].userSubState = 'ongoing';
+              state.allTaskFromMe.unread[fromMeUnreadIndex].seenBy = forwardedTask.taskData.seenBy;
               state.allTaskFromMe.unread[fromMeUnreadIndex].updatedAt = forwardedTask.taskUpdatedAt;
               addUniqueEventToTask(state.allTaskFromMe.unread[fromMeUnreadIndex], forwardedTask)
               moveTaskOnTopByIndex(state.allTaskFromMe.unread, fromMeUnreadIndex);

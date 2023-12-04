@@ -1,7 +1,7 @@
 import { ITask } from "constants/interfaces";
+import CryptoJS from "crypto-js";
 import moment from "moment-timezone";
 import { AxiosV2 } from "utills/axios";
-
 declare global {
   var isSocketConnecting: boolean; // 👈️ disables type checking for property
 }
@@ -58,6 +58,20 @@ function countUnseenTasks(tasks: any[]) {
   return tasks.reduce((count, task) => (!task.isSeenByMe ? count + 1 : count), 0);
 }
 
+const convertToBytes = (str: string) => CryptoJS.enc.Utf8.parse(str);
+export const encryptData = (data: any) => {
+  var sKey = convertToBytes("C++BR0@uthS@Cre+AUTHVYU*B++%I*%+").toString();
+  var sIV = convertToBytes("C++BR0@uthS@Cre+").toString();
+  const secretKey = CryptoJS.enc.Hex.parse(sKey);
+  const secretIV = CryptoJS.enc.Hex.parse(sIV);
+  const encrypted = CryptoJS.AES.encrypt(data, secretKey, {
+    iv: secretIV,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7,
+  });
+  const encryptedHex = encrypted.ciphertext.toString(CryptoJS.enc.Hex);
+  return encryptedHex;
+};
 /**
   * @param array pass the array of objects 
   * @return Functino will return the unique objects

@@ -9,14 +9,14 @@ import { requestFail, requestPending, requestSuccess } from './status'
 interface ApiCall {
   type: string
   method: 'post' | 'get' | 'delete' | 'put' | 'patch'
-  path?: string | ((payload: any, store?: RootState) => string)
+  path: string | ((payload: any, store?: RootState) => string)
   success?: (res: any, action: any) => void
   onFailSaga?: (err: any) => void
   finallySaga?: () => void
   isFormData?: boolean
   isUrlEncodedData?: boolean
   useOtpToken?: boolean
-  otpToken?: ((payload: any) => string)
+  otpToken?: string | ((payload: any, store?: RootState) => string)
   isBlob?: boolean
   useV2Route: boolean
 }
@@ -44,12 +44,10 @@ const apiCall = ({
       finallyAction,
       showErrorToast = true,
     } = action.payload || {}
-    let idToken = null
+    let idToken = localStorage.getItem('tokens')
     let header: any = {}
-    if (useOtpToken) {
-      header['Authorization'] = `Bearer ${otpToken}`
-    } else {
-      idToken = localStorage.getItem('tokens')
+    if (useOtpToken && body.otpToken) {
+      header['Authorization'] = `Bearer ${body.otpToken}`
     }
 
     if (isUrlEncodedData) {
@@ -81,13 +79,10 @@ const apiCall = ({
       "/auth/otp/verify-nodel",
       "/auth/reset-password"
     ]
-    console.log('idToken==>1', idToken, otpToken)
-
     if (!tokenLessRoutes.includes(`${path}`)) {
-      console.log('idToken', idToken)
-      if (idToken && idToken !== 'undefined' && idToken !== 'null') {
-        console.log('Authorization', idToken)
-        header['Authorization'] = `Bearer ${JSON.parse(idToken)?.access?.token}`
+      const token = JSON.parse(idToken || '{}');
+      if (token && token.access && token.access.token) {
+        header['Authorization'] = `Bearer ${token.access.token}`;
       }
     }
 
@@ -98,59 +93,54 @@ const apiCall = ({
 
       //@ts-ignore
       const store: RootState = yield select(state => state)
-
-      let options: any = {
-        url: `${typeof path === 'function' ? path(action.payload, store) : path}`,
+      delete body.otpToken
+      const options: any = {
+        url: typeof path === 'function' ? path(action.payload, store) : path,
         method: method,
         headers: header,
         data: body,
         params,
-      }
+      };
 
       if (isBlob) {
-        options.responseType = 'blob'
+        options.responseType = 'blob';
       }
-      let res: any;
-      if (useV2Route) {
-        res = yield call(AxiosV2.request, options)
-      } else {
-        res = yield call(AxiosV1.request, options)
-      }
-      const oldState = yield select(state => state)
+
+      const axiosInstance = useV2Route ? AxiosV2 : AxiosV1;
+      const res: any = yield call(axiosInstance.request, options);
+
+      const oldState = yield select((state) => state);
       yield put({
         type: requestSuccess(type),
         payload: res.data,
         oldState,
-      })
+      });
 
-      successPayload && successPayload(res)
-      success && success(res, action)
+      successPayload && successPayload(res);
+      success && success(res, action);
     } catch (err: any) {
-      onFailAction && onFailAction(err)
-      onFailSaga && onFailSaga(err)
+      onFailAction && onFailAction(err);
+      onFailSaga && onFailSaga(err);
 
       yield put({
         type: requestFail(type),
         payload: err,
-      })
+      });
 
       if (showErrorToast) {
-        if (
-          err?.response?.status === 401 ||
-          err?.response?.status === 406 ||
-          err?.response?.status === 423
-        ) {
-          yield put(logoutUser())
-          return
+        const status = err?.response?.status;
+        if ([401, 406, 423].includes(status)) {
+          yield put(logoutUser());
+          return;
         }
 
-        const msg = err?.response?.data?.message || err?.message || 'Unknown error'
-
-        toast.error(msg)
+        const msg = err?.response?.data?.message || err?.message || 'Unknown error';
+        toast.error(msg);
       }
     } finally {
-      finallySaga?.()
-      finallyAction?.()
+      finallySaga?.();
+      finallyAction?.();
     }
-  }
+  };
+
 export default apiCall

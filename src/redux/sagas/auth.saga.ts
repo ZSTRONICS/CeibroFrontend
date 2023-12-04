@@ -109,7 +109,6 @@ const forgetPassword = apiCall({
   type: FORGET_PASSWORD,
   method: "post",
   useOtpToken: true,
-  otpToken: (payload: any) => `${payload.otpToken}`,
   path: `/auth/forget-password`,
 });
 

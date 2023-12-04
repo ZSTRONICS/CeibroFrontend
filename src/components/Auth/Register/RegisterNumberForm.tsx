@@ -8,9 +8,10 @@ import useResponsive from "hooks/useResponsive";
 import userAlertMessage from "hooks/userAlertMessage";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
 import { registerRequest } from "redux/action/auth.action";
+import { RootState } from "redux/reducers";
 import { LOGIN_ROUTE } from "utills/axios";
 import {
   checkValidPhoneNumber,
@@ -31,6 +32,10 @@ export default function RegisterNumberForm() {
   const history = useHistory();
   const dispatch = useDispatch();
   const registerPhoneNumberSchema = RegisterNumberSchema(t);
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
+
   const formikRef = useRef<FormikProps<FormValues | any>>(null);
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [showSuccessAlert, setShowSuccessAlert] = useState<boolean>(false);
@@ -56,11 +61,16 @@ export default function RegisterNumberForm() {
         setIsSubmit(false);
       },
     };
-    const checkPhoneNumber = checkValidPhoneNumber(`${dialCode}${phoneNumber}`);
+
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
     if (checkPhoneNumber?.isValid) {
       dispatch(registerRequest(payload));
     } else {
       setAlertMessage(checkPhoneNumber.msg);
+      setIsSubmit(false);
     }
   };
 
