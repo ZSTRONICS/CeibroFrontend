@@ -371,7 +371,14 @@ const Task = () => {
   }, [filterkey, subtask]);
 
   const handleTabClick = (type: string) => {
+    resetScrollPosition();
     history.push(`/tasks/${subtask}/${type}`);
+  };
+
+  const resetScrollPosition = () => {
+    if (taskCardListRef.current) {
+      taskCardListRef.current.scrollTo(0);
+    }
   };
 
   const handleSelectedTask = (task: ITask) => {
@@ -670,6 +677,7 @@ const Task = () => {
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
+              onScroll={() => {}}
               itemSize={(index) =>
                 getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
               }
