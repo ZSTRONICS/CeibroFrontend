@@ -7,7 +7,12 @@ import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import capitalize from "lodash/capitalize";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useState,
+  useTransition,
+} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
@@ -40,6 +45,7 @@ type TaskAction = "comment" | "forward" | "done";
 
 const DetailActions: React.FC<IProps> = (props) => {
   const { subtask, filterkey } = useParams<any>();
+  const [isPending, startTransition] = useTransition();
   const {
     userSubState,
     taskUid,
@@ -129,6 +135,22 @@ const DetailActions: React.FC<IProps> = (props) => {
   const justifyContent = {
     xs: "flex-start",
     md: "flex-end",
+  };
+  const handleFullView = () => {
+    {
+      let showFullViewData;
+      const data = localStorage.getItem("showFullView");
+      if (data) {
+        showFullViewData = JSON.parse(data);
+      }
+      localStorage.setItem(
+        "showFullView",
+        JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
+      );
+      startTransition(() => {
+        setIsExpanded(!isExpanded);
+      });
+    }
   };
   const getTitle = () => titles[taskAction] || "";
   return (
@@ -274,18 +296,7 @@ const DetailActions: React.FC<IProps> = (props) => {
               fontWeight: "400",
               color: "#0076C8",
             }}
-            onClick={() => {
-              let showFullViewData;
-              const data = localStorage.getItem("showFullView");
-              if (data) {
-                showFullViewData = JSON.parse(data);
-              }
-              localStorage.setItem(
-                "showFullView",
-                JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
-              );
-              setIsExpanded(!isExpanded);
-            }}
+            onClick={() => handleFullView()}
           >
             {isExpanded ? "View less" : "View more"}
           </Typography>

@@ -12,7 +12,7 @@ import {
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { RootState } from "redux/reducers";
@@ -45,14 +45,17 @@ function TaskDetails(props: IProps) {
     doneImageRequired,
   } = props.task;
   const showFullView = localStorage.getItem("showFullView");
-  const [isShowFullView, setIsShowFullView] = useState(
-    showFullView ? JSON.parse(showFullView)[taskUID] ?? false : false
-  );
+  const [isShowFullView, setIsShowFullView] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
-    setIsShowFullView(
-      showFullView ? JSON.parse(showFullView)[taskUID] ?? false : false
-    );
+    let getShowValue = showFullView && JSON.parse(showFullView)[taskUID];
+    if (getShowValue) {
+      getShowValue !== isShowFullView &&
+        startTransition(() => {
+          setIsShowFullView(getShowValue);
+        });
+    }
   }, [taskUID]);
 
   const parms = useParams<{ filterkey: string }>();
@@ -163,19 +166,12 @@ function TaskDetails(props: IProps) {
               data={docs}
             />
             <CustomDivider />
-            {events ? (
-              <>
-                <DetailsBody
-                  media={media}
-                  description={description}
-                  events={events}
-                  handleFiles={handleFiles}
-                />
-                <CustomDivider />
-              </>
-            ) : (
-              <></>
-            )}
+            <DetailsBody
+              media={media}
+              description={description}
+              handleFiles={handleFiles}
+            />
+            <CustomDivider />
           </>
         )}
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}
