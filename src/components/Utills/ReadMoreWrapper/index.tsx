@@ -5,7 +5,14 @@ import ImgsViewerSlider from "components/ImgLazyLoad/ImgsViewerSlider";
 import { fileType } from "components/Tasks/type";
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
-import { MutableRefObject, useEffect, useId, useRef, useState } from "react";
+import {
+  MutableRefObject,
+  useEffect,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import FileBox from "../FileBox";
 import ImageBox from "../ImageBox";
 import ImageBoxWithDesp from "../ImageBoxWithDesp";
@@ -14,7 +21,7 @@ interface ReadMoreWrapperProps {
   title: string;
   readMore?: boolean;
   count?: number;
-  type?: "text" | "image" | "imageWithDesp" | "file";
+  type: "text" | "image" | "imageWithDesp" | "file";
   data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
   callback?: (file: File | any, type: fileType) => void;
@@ -38,6 +45,12 @@ const ReadMoreWrapper = ({
   allowExpandedView = true,
 }: ReadMoreWrapperProps) => {
   const [isExpanded, setIsExpanded] = useState(readMore);
+  const compHeight = {
+    text: "23",
+    file: 21,
+    image: 151,
+    imageWithDesp: 151,
+  };
   const [isReadMore, setIsReadMore] = useState(false);
   const [height, setHeight] = useState("auto");
   const [images, setImages] = useState<any | null>(null);
@@ -48,12 +61,6 @@ const ReadMoreWrapper = ({
   const fileCompRef = useRef<HTMLDivElement | null>(null);
   const imageWithCommentRef = useRef<HTMLDivElement | null>(null);
   const [localCount, setLocalCount] = useState<number | null>(null);
-
-  const compHeight = {
-    file: 21,
-    image: 152,
-    imageWithDesp: 152,
-  };
 
   const getHeight = (
     compRef: MutableRefObject<HTMLDivElement | HTMLPreElement | null>,
@@ -71,7 +78,7 @@ const ReadMoreWrapper = ({
         setHeight(maxHeight + "px");
         setIsExpanded(false);
       } else {
-        setHeight("100%");
+        setHeight("auto");
         setIsExpanded(true);
       }
     }
@@ -102,37 +109,33 @@ const ReadMoreWrapper = ({
     };
   }, []);
 
-  useEffect(() => {
-    if (type === "text") {
-      getHeight(despRef, type, isExpanded);
-    } else if (type === "image") {
-      getHeight(imageRef, type, isExpanded);
-      const imgContWidth = getWidthWithMarginAndPadding(imageRef);
-      if (count && count > 0 && imgContWidth > 150) {
-        setLocalCount(count - Math.floor(imgContWidth / 160));
-      }
-    } else if (type === "imageWithDesp") {
-      getHeight(imageWithCommentRef, type, isExpanded);
-      count && count > 0 && setLocalCount(count - 1);
-    } else if (type === "file") {
-      if (fileCompRef.current) {
-        const compHeight = parseInt(
-          getComputedStyle(fileCompRef.current).height
-        );
-        const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
-        if (count && count > 0) {
-          setLocalCount(count - Math.floor(fileCompWidth / 160));
+  useLayoutEffect(() => {
+    if (data) {
+      if (type === "text") {
+        getHeight(despRef, type, isExpanded);
+      } else if (type === "image") {
+        getHeight(imageRef, type, isExpanded);
+        const imgContWidth = getWidthWithMarginAndPadding(imageRef);
+        if (count && count > 0 && imgContWidth > 150) {
+          setLocalCount(count - Math.floor(imgContWidth / 160));
         }
+      } else if (type === "imageWithDesp") {
+        getHeight(imageWithCommentRef, type, isExpanded);
+        count && count > 0 && setLocalCount(count - 1);
+      } else if (type === "file") {
+        if (fileCompRef.current) {
+          const compHeight = parseInt(
+            getComputedStyle(fileCompRef.current).height
+          );
+          const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
+          if (count && count > 0) {
+            setLocalCount(count - Math.floor(fileCompWidth / 160));
+          }
+        }
+        getHeight(fileCompRef, type, isExpanded);
       }
-      getHeight(fileCompRef, type, isExpanded);
     }
-  }, [
-    data,
-    despRef.current,
-    imageRef.current,
-    imageWithCommentRef.current,
-    fileCompRef.current,
-  ]);
+  }, [data]);
 
   const handleMore = () => {
     if (type === "image") {
@@ -228,7 +231,7 @@ const ReadMoreWrapper = ({
                   {data ? String(data) : "N/A"}
                 </pre>
               )}
-              {type === "image" && (
+              {type === "image" && data && data.length > 0 && (
                 <Box
                   ref={imageRef}
                   sx={{
@@ -251,11 +254,11 @@ const ReadMoreWrapper = ({
                     })}
                 </Box>
               )}
-              {type === "imageWithDesp" && (
+              {type === "imageWithDesp" && data && data.length > 0 && (
                 <Box
                   ref={imageWithCommentRef}
                   sx={{
-                    maxHeight: `${height}`,
+                    maxHeight: `${height + 20}`,
                     width: "100%",
                     padding: "10px 0px 16px 0px",
                     display: "flex",
@@ -263,21 +266,20 @@ const ReadMoreWrapper = ({
                     rowGap: "10px",
                   }}
                 >
-                  {data &&
-                    (data as IFile[]).map((file: IFile, index: any) => {
-                      return (
-                        <ImageBoxWrapper
-                          sx={{ width: "100%" }}
-                          key={file._id + index}
-                          onClick={() => handleClick(data, index)}
-                        >
-                          <ImageBoxWithDesp
-                            src={file.fileUrl}
-                            comment={file.comment}
-                          />
-                        </ImageBoxWrapper>
-                      );
-                    })}
+                  {(data as IFile[]).map((file: IFile, index: any) => {
+                    return (
+                      <ImageBoxWrapper
+                        sx={{ width: "100%" }}
+                        key={file._id + index}
+                        onClick={() => handleClick(data, index)}
+                      >
+                        <ImageBoxWithDesp
+                          src={file.fileUrl}
+                          comment={file.comment}
+                        />
+                      </ImageBoxWrapper>
+                    );
+                  })}
                 </Box>
               )}
               {type === "file" && (
@@ -313,7 +315,7 @@ const ReadMoreWrapper = ({
               {isReadMore && allowExpandedView && (
                 <IconButton
                   onClick={handleMore}
-                  sx={{ height: "24px", width: "40px" }}
+                  sx={{ height: "24px", width: "40px", cursor: "pointer" }}
                 >
                   {isExpanded ? (
                     <assets.ExpandMoreIcon sx={{ color: "#0076C8" }} />

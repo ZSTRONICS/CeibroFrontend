@@ -1,14 +1,13 @@
 import { Box } from "@mui/material";
 import { CustomDivider } from "components/CustomTags";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
-import { IFile, TaskEvent } from "constants/interfaces";
+import { IFile } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import DrawingFiles from "./DrawingFiles";
 
 interface IProps {
   description?: string;
-  events: TaskEvent[];
   media: IFile[];
   handleFiles: any;
 }
