@@ -3,6 +3,7 @@ import { Box, Typography } from "@mui/material";
 import {
   FromMEIcon,
   HiddenIcon,
+  MainLogo,
   ToMeIcon,
   UnseenFromMe,
   UnseenHidden,
@@ -86,6 +87,22 @@ function Sidebar(props: any) {
 
   return (
     <>
+      <Box
+        sx={{
+          display: "none",
+          width: "72px",
+          maxWidth: "90px",
+          padding: "6px 20px 5px 20px",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "12px",
+          "@media screen and (max-width: 899px)": {
+            display: "flex", // Hide the box when the screen width is 1024px or less
+          },
+        }}
+      >
+        <MainLogo />
+      </Box>
       <div className={classes.menueWrapper}>
         {configs &&
           Object.values(configs).map((config: any) => {

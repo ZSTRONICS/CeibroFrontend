@@ -7,7 +7,7 @@ import Topbar from "components/Topbar/Topbar";
 import UserMenu from "components/Topbar/UserMenu";
 import ConnectionIcon from "components/material-ui/icons/connections/ConnectionIcon";
 import { useResponsive } from "hooks";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
 
 const HEADER_MOBILE = 48;
 
@@ -45,12 +45,18 @@ interface Props {
 
 export default function Header({ onOpenNav }: Props) {
   const history = useHistory();
-  const isLargeScreen = useResponsive("up", "lg", "");
+  const showSidebar = useRouteMatch([
+    "/projects",
+    "/locations",
+    "/drawingDetail",
+    "/connections",
+  ]);
+  const isLargeScreen = useResponsive("up", "md", "");
 
   return (
     <StyledRoot>
       <StyledToolbar>
-        {!isLargeScreen && (
+        {!isLargeScreen && !showSidebar && (
           <IconButton
             onClick={onOpenNav}
             sx={{

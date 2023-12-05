@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useRouteMatch } from "react-router-dom";
 // @mui
 import { Box, Drawer } from "@mui/material";
 // hooks
@@ -23,8 +23,13 @@ interface Props {
 
 export default function Nav({ openNav, onCloseNav, height }: Props) {
   const { pathname } = useLocation();
-
-  const isDesktop = useResponsive("up", "lg", "");
+  const showSidebar = useRouteMatch([
+    "/projects",
+    "/locations",
+    "/drawingDetail",
+    "/connections",
+  ]);
+  const isDesktop = useResponsive("up", "md", "");
   useEffect(() => {
     if (openNav) {
       onCloseNav();
@@ -54,7 +59,7 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
         width: { lg: NAV_WIDTH },
       }}
     >
-      {isDesktop ? (
+      {isDesktop && !showSidebar ? (
         <Drawer
           open
           variant="permanent"
