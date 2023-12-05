@@ -229,6 +229,7 @@ const Task = () => {
       clearTaskCardListCache();
     }, 10);
   }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
+
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
@@ -253,13 +254,18 @@ const Task = () => {
     if (loadingAllTasks) {
       return;
     }
+    const isUserSubstateFind =
+      selectedTask && selectedTask.userSubState === filterkey;
     let taskNeedToBeSeen =
       selectedTask &&
       selectedTask !== null &&
-      selectedTask.userSubState === filterkey &&
+      isUserSubstateFind &&
       !selectedTask.seenBy.includes(userId);
 
-    if (taskNeedToBeSeen || selectedTask?.userSubState === "new") {
+    if (
+      taskNeedToBeSeen ||
+      (selectedTask?.userSubState === "new" && isUserSubstateFind)
+    ) {
       selectedTask !== null && markTaskAsSeen(selectedTask._id);
     }
     setTimeout(() => {
