@@ -95,7 +95,7 @@ export const PhoneNumberTextField = (props: IPhoneNumberProps) => {
             />
           )}
           sx={{
-            width: "130px",
+            minWidth: "85px",
             borderTopRightRadius: "0 !important",
             "& .MuiInputBase-sizeSmall": {
               borderBottomRightRadius: 0,

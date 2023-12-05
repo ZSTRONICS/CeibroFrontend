@@ -258,7 +258,7 @@ const ProfileForm = ({ user }: Props) => {
             <Grid
               item
               xs={12}
-              md={5}
+              md={6}
               sx={{ gap: { md: 2, sm: 1 }, paddingTop: { md: 2, sm: 1 } }}
             >
               <CustomMuiTextField

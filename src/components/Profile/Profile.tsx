@@ -22,7 +22,7 @@ const Profile = () => {
       xs={12}
       md={4}
       sx={{
-        "@media (max-width:960px)": {
+        "@media (max-width:899px)": {
           padding: "10px 20px",
         },
       }}
@@ -32,7 +32,7 @@ const Profile = () => {
   );
 
   return (
-    <Grid container justifyContent="center">
+    <Grid container justifyContent="center" sx={{ padding: "8px" }}>
       <ProfileImagePicker
         profilePic={user.profilePic}
         profilePicUploading={profilePicUploading}
