@@ -128,6 +128,7 @@ const ChangeNumberForm: React.FC<Props> = (props) => {
             values,
           }) => (
             <form
+              style={{ padding: "7px 14px" }}
               onSubmit={handleSubmit}
               onKeyDown={(e) => {
                 if (e.key === "Enter") {

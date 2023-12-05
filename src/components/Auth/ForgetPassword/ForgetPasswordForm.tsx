@@ -49,12 +49,12 @@ const ForgetPasswordForm = () => {
           },
         }
       );
-      console.log("Response:", response.data);
       if (response.data) {
         history.push("/forget-confirmation");
         setLoading(false);
         setShowSuccess(true);
         setAlertMessage(response.data.message);
+        // console.log("Response:", response.data);
         setTimeout(() => {
           setShowSuccess(false);
         }, 2000);
@@ -62,7 +62,8 @@ const ForgetPasswordForm = () => {
     } catch (error: any) {
       setLoading(false);
       if (error.response) {
-        console.error("Server Error:", error);
+        setAlertMessage(error.message);
+        // console.error("Server Error:", error);
       }
     }
   };

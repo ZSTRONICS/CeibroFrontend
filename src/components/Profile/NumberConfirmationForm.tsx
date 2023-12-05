@@ -1,21 +1,25 @@
 import { Button, Typography } from "@mui/material";
+import axios from "axios";
 import { SubLabelTag } from "components/CustomTags";
 import MessageAlert from "components/MessageAlert/MessageAlert";
+import { encryptData } from "components/Utills/Globals";
 import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { Formik } from "formik";
 import userAlertMessage from "hooks/userAlertMessage";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { toast } from "react-toastify";
 import {
-  authApiAction,
+  getAuthApiToken,
   logoutUser,
   verifyChangeNumber,
 } from "redux/action/auth.action";
-import { LOGIN_ROUTE } from "utills/axios";
+import { RootState } from "redux/reducers";
+import { LOGIN_ROUTE, SERVER_URL } from "utills/axios";
+import { checkValidPhoneNumber } from "utills/formFunctions";
 import useStyles from "../Auth/Register/RegisterStyles";
 
 interface IProps {
@@ -31,7 +35,9 @@ export default function NumberConfirmationForm(props: IProps) {
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
   const [counter, setCounter] = useState(60);
   let timer: false | NodeJS.Timer;
-
+  const countryCodeName = useSelector(
+    (state: RootState) => state.user.countryCodeName
+  );
   useEffect(() => {
     timer = startCountdown();
     return () => {
@@ -68,27 +74,71 @@ export default function NumberConfirmationForm(props: IProps) {
     dispatch(verifyChangeNumber(payload));
   };
 
+  const getResendOtp = async (data: any) => {
+    try {
+      const response = await axios.post(
+        `${SERVER_URL}/v2/auth/otp/resend`,
+        { phoneNumber: `${data.dialCode}${data.phoneNumber}` },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${data.token}`,
+          },
+        }
+      );
+      if (response.data) {
+        handleSuccess(response.data);
+        // console.log("Response:", response.data);
+      }
+    } catch (error: any) {
+      if (error.response) {
+        handleError(error.response.data);
+        // console.error("Server Error:", error);
+      }
+    }
+  };
+  const handleSuccess = (data: any) => {
+    toast.success(data.message);
+    setCounter(60);
+    startCountdown();
+  };
+
+  const handleError = (error: any) => {
+    setAlertMessage(error.message);
+  };
+
   const handleResend = (values: any) => {
     let phoneNumber = localStorage.getItem("phoneNumber");
     let dialCode = localStorage.getItem("dialCode");
-    const payload = {
+    const encryptedHex = encryptData(`${dialCode}${phoneNumber}`);
+    const getAuthToken = {
       body: {
-        phoneNumber: `${dialCode}${phoneNumber}`,
+        clientId: encryptedHex,
       },
-      success: (res: any) => {
-        toast.success(res.data.message);
-        setCounter(60);
-        startCountdown();
-      },
-      onFailAction: (err: any) => {
-        setAlertMessage(err.response.data.message);
+      success: async (res: any) => {
+        if (res) {
+          getResendOtp({
+            dialCode: dialCode,
+            phoneNumber: phoneNumber,
+            token: res.data.access.token,
+          });
+        }
       },
     };
-    dispatch(authApiAction.resendOtpRequest(payload));
+
+    const checkPhoneNumber = checkValidPhoneNumber(
+      `${dialCode}${phoneNumber}`,
+      countryCodeName
+    );
+    if (checkPhoneNumber?.isValid) {
+      dispatch(getAuthApiToken(getAuthToken));
+    } else {
+      setAlertMessage(checkPhoneNumber.msg);
+    }
   };
 
   return (
-    <div>
+    <div style={{ padding: "7px 14px" }}>
       <SubLabelTag sx={{ fontSize: { xs: 12, md: 14 }, mb: 2 }}>
         Confirmation code sent to your phone
       </SubLabelTag>
