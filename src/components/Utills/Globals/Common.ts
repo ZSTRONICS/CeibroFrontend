@@ -60,8 +60,10 @@ function countUnseenTasks(tasks: any[]) {
 
 const convertToBytes = (str: string) => CryptoJS.enc.Utf8.parse(str);
 export const encryptData = (data: any) => {
-  var sKey = convertToBytes("C++BR0@uthS@Cre+AUTHVYU*B++%I*%+").toString();
-  var sIV = convertToBytes("C++BR0@uthS@Cre+").toString();
+  const secretKey1 = process.env.REACT_APP_API_SECRET
+  const secretIV2 = process.env.REACT_APP_API_SECRET_IV
+  var sKey = convertToBytes(secretKey1!).toString();
+  var sIV = convertToBytes(secretIV2!).toString();
   const secretKey = CryptoJS.enc.Hex.parse(sKey);
   const secretIV = CryptoJS.enc.Hex.parse(sIV);
   const encrypted = CryptoJS.AES.encrypt(data, secretKey, {
