@@ -257,6 +257,7 @@ function CustomDropDown(props: IProps) {
               value={searchQuery}
               onChange={(e) => {
                 e.stopPropagation();
+                e.preventDefault();
                 handleSearchChange(e);
               }}
               onClick={(e) => e.stopPropagation()}
@@ -265,9 +266,18 @@ function CustomDropDown(props: IProps) {
                 label: { color: "605b5c" },
               }}
               variant="standard"
+              inputProps={{
+                maxLength: 100,
+              }}
               InputProps={{
                 disableUnderline: true,
               }}
+              error={searchQuery.length >= 100}
+              helperText={`${
+                searchQuery.length >= 100
+                  ? "Topic max length is 100 characters"
+                  : ""
+              }`}
             />
             <>
               {searchQuery && searchQuery.length > 0 && isMatchFound ? (

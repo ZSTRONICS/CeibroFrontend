@@ -212,6 +212,19 @@ const Comment = ({
             />
           </FormControl>
           <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#757575",
+              paddingBottom: "12px",
+              paddingRight: "5px",
+            }}
+          >
+            {`${description.length}`}/ 1500
+          </span>
         </Box>
       </Box>
       <Footer

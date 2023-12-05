@@ -448,6 +448,7 @@ const ForwardTask = ({
                   />
                 </Box>
                 <SearchBox
+                  maxLength={50}
                   disabled={false}
                   searchBtnLabel="OK"
                   placeholder="Start typing name"
@@ -487,6 +488,19 @@ const ForwardTask = ({
               />
             </FormControl>
             <CustomDivider key="bottom-divider3" sx={{ mt: "3px", mb: 1 }} />
+            <span
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                fontSize: "12px",
+                fontWeight: 500,
+                color: "#757575",
+                paddingBottom: "9px",
+                paddingRight: "5px",
+              }}
+            >
+              {`${comment.length}`}/ 1500
+            </span>
           </Box>
         </Box>
       </Box>

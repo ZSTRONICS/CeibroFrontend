@@ -60,6 +60,7 @@ function CreateNewTask() {
   const [isSubmit, setIsSubmit] = useState<boolean>(false);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [selectedDocuments, setSelectedDocuments] = useState<File[]>([]);
+  const [descriptionVal, setDescriptionVal] = useState<string>("");
   const [selectedData, setSelectedData] =
     useState<CreateNewTaskFormType>(initialValues);
   const [topicOptions, setTopicOptions] = useState<Options>({
@@ -382,6 +383,11 @@ function CreateNewTask() {
               >
                 <MUIInputLabel htmlFor="description">Description</MUIInputLabel>
                 <Input
+                  inputProps={{
+                    maxLength: 1500,
+                  }}
+                  onChange={(e: any) => setDescriptionVal(e.target.value)}
+                  error={descriptionVal.length === 1500}
                   name="description"
                   id="description"
                   onBlur={handleDescriptionChange}
@@ -389,6 +395,17 @@ function CreateNewTask() {
                   multiline
                 />
               </FormControl>
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  color: "#757575",
+                }}
+              >
+                {`${descriptionVal.length}`}/ 1500
+              </span>
             </Box>
             {selectedImages.length > 0 && (
               <ImagesToUpload

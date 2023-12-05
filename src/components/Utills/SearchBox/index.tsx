@@ -7,6 +7,7 @@ interface IProps {
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleSubmit: () => void;
   disabled?: boolean;
+  maxLength?: number;
 }
 
 export default function SearchBox(props: IProps) {
@@ -30,6 +31,9 @@ export default function SearchBox(props: IProps) {
     >
       <Box sx={{ flexGrow: 1 }}>
         <TextField
+          inputProps={{
+            maxLength: props.maxLength,
+          }}
           type="search"
           variant="standard"
           placeholder={placeholder}

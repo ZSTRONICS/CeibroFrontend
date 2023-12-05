@@ -260,6 +260,9 @@ function UserDropDown(props: IProps) {
                 marginRight: "8px",
               }}
               variant="standard"
+              inputProps={{
+                maxLength: 50,
+              }}
               InputProps={{
                 disableUnderline: true,
               }}
