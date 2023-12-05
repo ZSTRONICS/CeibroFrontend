@@ -46,9 +46,9 @@ const apiCall = ({
     } = action.payload || {}
     let idToken = localStorage.getItem('tokens')
     let header: any = {}
-    if (useOtpToken && body.otpToken) {
-      header['Authorization'] = `Bearer ${body.otpToken}`
-    }
+    // if (useOtpToken) {
+    //   header['Authorization'] = `Bearer ${body.otpToken}`
+    // }
 
     if (isUrlEncodedData) {
       header = {
@@ -93,7 +93,6 @@ const apiCall = ({
 
       //@ts-ignore
       const store: RootState = yield select(state => state)
-      delete body.otpToken
       const options: any = {
         url: typeof path === 'function' ? path(action.payload, store) : path,
         method: method,
