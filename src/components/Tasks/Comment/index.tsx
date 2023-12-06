@@ -1,8 +1,8 @@
 import { Box, Divider, FormControl, Input } from "@mui/material";
 import { CustomDivider, MUIInputLabel } from "components/CustomTags";
-import FileBox from "components/Utills/FileBox";
 import { IS_IMAGE, hasOnlySpaces } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
+import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { TASK_CONFIG } from "config";
 import { ChangeEvent, useCallback, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -148,6 +148,7 @@ const Comment = ({
         sx={{
           width: "100%",
           pt: "8px",
+          pr: 1.5,
           height: "100%",
           overflow: "auto",
         }}
@@ -161,11 +162,13 @@ const Comment = ({
         )}
         {selectedDocuments.length > 0 && (
           <>
-            <FileBox
+            <ReadMoreWrapper
+              count={selectedDocuments.length}
               title="Files"
-              showFullHeight={false}
-              files={selectedDocuments}
-              handleClearFile={handleClearFile}
+              type="file"
+              data={selectedDocuments}
+              callback={handleClearFile}
+              allowExpandedView={false}
             />
             <Divider
               key="bottom-divider"
@@ -196,6 +199,7 @@ const Comment = ({
               name="comment"
               id="comment"
               required
+              inputProps={{ maxLength: 1500 }}
               autoFocus
               multiline
               value={description}

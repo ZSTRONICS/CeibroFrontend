@@ -287,14 +287,13 @@ const taskReducer = (
             };
             if (eventData.oldTaskData.isCreator) {
               state.allTaskFromMe.unread.unshift(modifiedCreatorTask);
+              // console.log("UN_CANCEL_TASK allTaskFromMe.new", modifiedCreatorTask);
             }
             if (isAssignedToMe) {
-              const modifiedTask = {
-                ...state.allTaskHidden.canceled[taskIndex],
-                userSubState: eventData.newTaskData.userSubState,
-              };
-              console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
+              const modifiedTask = state.allTaskHidden.canceled[taskIndex];
+              modifiedTask.userSubState = 'new';
               state.allTaskToMe.new.unshift(modifiedTask);
+              // console.log("UN_CANCEL_TASK allTaskToMe.new", modifiedTask);
             }
             state.allTaskHidden.canceled.splice(taskIndex, 1)
           }

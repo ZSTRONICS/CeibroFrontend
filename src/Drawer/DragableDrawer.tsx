@@ -46,7 +46,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   let containerWidth: number = 200;
   if (taskDetailContainer) {
     const { clientWidth, clientHeight } = taskDetailContainer;
-    containerWidth = clientWidth - 10;
+    containerWidth = clientWidth - 6;
     taskDetailContHeight = clientHeight;
   }
   const largeScreenCalc = isLargeScreen ? 2 / 3.66 : 2 / 3.53;
@@ -56,18 +56,18 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const [drawwerWidth, setDrawerWidth] = useState(containerWidth);
   const [state, setState] = useState({
     activeDrags: 0,
-    deltaPosition: { x: -12, y: drawerHeight },
+    deltaPosition: { x: -13, y: drawerHeight },
   });
 
   useEffect(() => {
     const handleResize = () => {
       if (taskDetailContainer) {
-        setDrawerWidth(taskDetailContainer.clientWidth - 10);
+        setDrawerWidth(taskDetailContainer.clientWidth - 6);
         setDrawerHeight(defaultContainerHeight);
         setState({
           ...state,
           deltaPosition: {
-            x: -12,
+            x: -13,
             y: taskDetailContainer.clientHeight * largeScreenCalc - 20,
           },
         });
@@ -172,6 +172,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
                     fontWeight: 700,
                     pt: 1,
                     pl: 2.5,
+                    pb: 1,
                     color: "text.primary",
                   }}
                 >
@@ -180,7 +181,8 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
               </StyledBox>
               <StyledBox
                 sx={{
-                  px: 2,
+                  pl: 2,
+                  pr: 0.5,
                   // overflow: "auto",
                   height: `${drawerHeight}px`,
                   pb: "3.5rem",

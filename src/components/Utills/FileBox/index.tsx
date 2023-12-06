@@ -97,15 +97,14 @@ const FileBox: React.FC<IProps> = ({
   return (
     <>
       <Box
-       sx={{
+        sx={{
           width: "100%",
           gap: 1,
           display: "flex",
           alignItems: "center",
-          flexWrap:'wrap',
+          flexWrap: "wrap",
           color: "#605c5c",
-          overflow:'auto'
-          
+          overflow: "auto",
         }}
       >
         {files && Array.isArray(files) && files.length > 0 ? (
@@ -127,7 +126,7 @@ const FileBox: React.FC<IProps> = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  // padding: "8px",
+                  // width: `${item.size ? "unset" : "158px"}`,
                   gap: "16px",
                   pl: 0,
                   "&:hover": {

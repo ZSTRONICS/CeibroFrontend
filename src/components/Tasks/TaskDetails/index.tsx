@@ -82,7 +82,7 @@ function TaskDetails(props: IProps) {
   const allFiles = [...filteredFiles, ...eventsFiles];
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
-  const [heightOffset, setHeightOffset] = useState();
+  const [heightOffset, setHeightOffset] = useState<number>(0);
   const [initialRender, setInitialRender] = useState(true);
 
   useEffect(() => {
@@ -95,13 +95,12 @@ function TaskDetails(props: IProps) {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
       if (taskDragContHeight > 120) {
-        setHeightOffset(newTop + 60 + taskDragContHeight);
+        setHeightOffset(newTop + 65 + taskDragContHeight);
       } else {
         setHeightOffset(newTop + 25);
       }
     }
-  }, [containerRef, taskDragContHeight]);
-
+  }, [taskDragContHeight]);
   useEffect(() => {
     if (containerRef.current && !initialRender) {
       containerRef.current.scrollTo(0, containerRef.current.scrollHeight);

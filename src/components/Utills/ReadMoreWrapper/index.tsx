@@ -21,7 +21,7 @@ interface ReadMoreWrapperProps {
   title: string;
   readMore?: boolean;
   count?: number;
-  type: "text" | "image" | "imageWithDesp" | "file";
+  type: "text" | "image" | "imageWithDesp" | "file" | "Location";
   data?: string | IFile[] | File[];
   children?: JSX.Element | JSX.Element[];
   callback?: (file: File | any, type: fileType) => void;
@@ -99,6 +99,12 @@ const ReadMoreWrapper = ({
           setLocalCount(count - Math.floor(localWidth / 160));
         }
       }
+      if (fileCompRef.current) {
+        const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
+        if (count && count > 0 && fielsContWidth > 164) {
+          setLocalCount(count - Math.floor(fielsContWidth / 165));
+        }
+      }
     };
     window.addEventListener("resize", handleResize);
     return () => {
@@ -124,16 +130,15 @@ const ReadMoreWrapper = ({
           const compHeight = parseInt(
             getComputedStyle(fileCompRef.current).height
           );
-          const fileCompWidth = getWidthWithMarginAndPadding(fileCompRef);
-          if (count && count > 0) {
-            setLocalCount(count - Math.floor(fileCompWidth / 160));
+          const fielsContWidth = getWidthWithMarginAndPadding(fileCompRef);
+          if (count && count > 0 && fielsContWidth > 164) {
+            setLocalCount(count - Math.floor(fielsContWidth / 165));
           }
         }
         getHeight(fileCompRef, type, isExpanded);
       }
     }
   }, [data]);
-
   const handleMore = () => {
     if (type === "image") {
       getHeight(imageRef, type, !isExpanded);
@@ -286,7 +291,9 @@ const ReadMoreWrapper = ({
               {type === "file" && (
                 <Box
                   ref={fileCompRef}
-                  sx={{ maxHeight: `${allowExpandedView ? height : "auto"}` }}
+                  sx={{
+                    maxHeight: `${allowExpandedView ? height : "auto"}`,
+                  }}
                 >
                   <FileBox
                     title={title}

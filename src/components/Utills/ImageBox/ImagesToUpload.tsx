@@ -27,7 +27,7 @@ function ImagesToUpload(props: ImageUploadProps) {
             fontWeight: 600,
             fontSize: "12px",
             color: "#605C5C",
-            pr: 1.2,
+            // pr: 1.2,
           }}
         >
           Images

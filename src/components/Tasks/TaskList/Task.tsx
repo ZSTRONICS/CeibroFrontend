@@ -255,12 +255,11 @@ const Task = () => {
       return;
     }
     const isUserSubstateFind =
-      selectedTask && selectedTask.userSubState === filterkey;
-    let taskNeedToBeSeen =
       selectedTask &&
       selectedTask !== null &&
-      isUserSubstateFind &&
-      !selectedTask.seenBy.includes(userId);
+      selectedTask.userSubState === filterkey;
+    let taskNeedToBeSeen =
+      isUserSubstateFind && !selectedTask.seenBy.includes(userId);
 
     if (
       taskNeedToBeSeen ||

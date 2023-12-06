@@ -279,7 +279,7 @@ const ForwardTask = ({
   const hasAssignTo = renderValue();
   return (
     <>
-      <Box sx={{ height: "100%", overflow: "auto" }}>
+      <Box sx={{ height: "100%", overflow: "auto", pr: 1.5 }}>
         <CustomDivider key="bottom-divider2" sx={{ my: 1.25 }} />
         <Box>
           <Box
@@ -287,13 +287,14 @@ const ForwardTask = ({
               display: "flex",
               alignItems: "baseline",
               height: "100%",
+              flexWrap: "nowrap",
             }}
           >
             <SubLabelTag
               sx={{
                 fontSize: "14px",
                 pr: 1,
-                display: { md: "none", lg: "block" },
+                // display: { md: "none", lg: "block" },
               }}
             >
               Forward
@@ -308,20 +309,22 @@ const ForwardTask = ({
                 borderLeft: "1.9px solid #818181",
               }}
             >
-              <MUIInputLabel
-                id="controlled-open-select-label"
-                sx={{
-                  "&.Mui-focused": { color: "transparent", display: "none" },
-                  pl: "1rem",
-                  top: { sm: "10%", lg: "-40%" },
-                  display: {
-                    md: "block",
-                    lg: selected.length === 0 && !isOpen ? "block" : "none",
-                  },
-                }}
-              >
-                Forward to
-              </MUIInputLabel>
+              {selected.length === 0 && (
+                <MUIInputLabel
+                  id="controlled-open-select-label"
+                  sx={{
+                    "&.Mui-focused": { color: "transparent", display: "none" },
+                    pl: "1rem",
+                    top: { sm: "10%", lg: "-40%" },
+                    display: {
+                      md: "block",
+                      lg: selected.length === 0 && !isOpen ? "block" : "none",
+                    },
+                  }}
+                >
+                  Forward to
+                </MUIInputLabel>
+              )}
               <Select
                 className="custom-select"
                 labelId="controlled-open-select-label"
@@ -475,6 +478,7 @@ const ForwardTask = ({
                 id="comment"
                 required
                 autoFocus
+                inputProps={{ maxLength: 1500 }}
                 multiline
                 value={comment}
                 sx={{
