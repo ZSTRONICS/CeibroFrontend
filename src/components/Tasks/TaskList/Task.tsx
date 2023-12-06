@@ -707,6 +707,7 @@ const Task = () => {
           backgroundColor: "white",
           ml: 2,
           mr: 2,
+          overflow: "auto",
         }}
       >
         {selectedTask !== null &&

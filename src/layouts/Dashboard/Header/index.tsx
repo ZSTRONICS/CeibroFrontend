@@ -50,6 +50,7 @@ export default function Header({ onOpenNav }: Props) {
     "/locations",
     "/drawingDetail",
     "/connections",
+    "/profile",
   ]);
   const isLargeScreen = useResponsive("up", "md", "");
 

@@ -28,6 +28,7 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
     "/locations",
     "/drawingDetail",
     "/connections",
+    "/profile",
   ]);
   const isDesktop = useResponsive("up", "md", "");
   useEffect(() => {
@@ -54,7 +55,6 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
     <Box
       component="nav"
       sx={{
-        overflow: "hidden",
         flexShrink: { lg: 0 },
         width: { lg: NAV_WIDTH },
       }}
@@ -65,7 +65,6 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
           variant="permanent"
           PaperProps={{
             sx: {
-              overflow: "hidden",
               width: NAV_WIDTH,
               position: "relative",
               zIndex: 1,

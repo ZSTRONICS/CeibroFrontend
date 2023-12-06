@@ -29,9 +29,6 @@ interface ReadMoreWrapperProps {
 }
 const ImageBoxWrapper = styled(Box)({
   marginRight: "10px",
-  "&:hover": {
-    cursor: "pointer",
-  },
 });
 
 const ReadMoreWrapper = ({
@@ -78,7 +75,7 @@ const ReadMoreWrapper = ({
         setHeight(maxHeight + "px");
         setIsExpanded(false);
       } else {
-        setHeight("auto");
+        setHeight("100%");
         setIsExpanded(true);
       }
     }
@@ -244,11 +241,13 @@ const ReadMoreWrapper = ({
                   {data &&
                     (data as IFile[]).map((file: IFile, index: any) => {
                       return (
-                        <ImageBoxWrapper
-                          key={file._id + index}
-                          onClick={() => handleClick(data, index)}
-                        >
-                          <ImageBox src={file.fileUrl} />
+                        <ImageBoxWrapper key={file._id + index}>
+                          <ImageBox
+                            src={file.fileUrl}
+                            handleClick={() => {
+                              handleClick(data, index);
+                            }}
+                          />
                         </ImageBoxWrapper>
                       );
                     })}
@@ -271,11 +270,13 @@ const ReadMoreWrapper = ({
                       <ImageBoxWrapper
                         sx={{ width: "100%" }}
                         key={file._id + index}
-                        onClick={() => handleClick(data, index)}
                       >
                         <ImageBoxWithDesp
                           src={file.fileUrl}
                           comment={file.comment}
+                          handleClick={() => {
+                            handleClick(data, index);
+                          }}
                         />
                       </ImageBoxWrapper>
                     );

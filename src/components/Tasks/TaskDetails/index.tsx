@@ -55,6 +55,10 @@ function TaskDetails(props: IProps) {
         startTransition(() => {
           setIsShowFullView(getShowValue);
         });
+    } else {
+      startTransition(() => {
+        setIsShowFullView(getShowValue);
+      });
     }
   }, [taskUID]);
 

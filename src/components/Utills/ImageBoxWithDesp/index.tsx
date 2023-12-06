@@ -4,12 +4,17 @@ import StyledTypographyBox from "../StyledTypographyBox";
 interface IProps {
   src: string;
   comment: string;
+  handleClick: () => void;
 }
 
-export default function ImageBoxWithDesp({ src, comment }: IProps) {
+export default function ImageBoxWithDesp({
+  src,
+  comment,
+  handleClick,
+}: IProps) {
   return (
     <CustomStack>
-      <ImageBox src={src} />
+      <ImageBox src={src} handleClick={handleClick} />
       <StyledTypographyBox text={comment} />
     </CustomStack>
   );

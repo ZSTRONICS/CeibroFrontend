@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import React, { ReactNode } from "react";
 
 interface EventWrapProps {
@@ -8,10 +8,11 @@ interface EventWrapProps {
 }
 
 const EventWrap: React.FC<EventWrapProps> = ({ children, key, creator }) => {
+  const isMediumScreen = useMediaQuery("(max-width:960px)");
   const style = {
     backgroundColor: creator ? "#EAEAEA" : "#D3E9F9",
-    marginRight: creator ? "82px" : "0",
-    marginLeft: ` ${creator ? "0" : "82px"}`,
+    marginRight: creator ? (isMediumScreen ? "82px" : "16px") : "0",
+    marginLeft: ` ${creator ? 0 : isMediumScreen ? "16px" : "82px"}`,
     padding: "8px 16px 8px 16px",
     marginBottom: "11px",
     borderRadius: "4px",
