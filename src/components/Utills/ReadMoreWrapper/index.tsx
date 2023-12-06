@@ -262,7 +262,7 @@ const ReadMoreWrapper = ({
                 <Box
                   ref={imageWithCommentRef}
                   sx={{
-                    maxHeight: `${height + 20}`,
+                    maxHeight: `${height}`,
                     width: "100%",
                     padding: "10px 0px 16px 0px",
                     display: "flex",
