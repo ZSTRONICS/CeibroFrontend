@@ -46,11 +46,11 @@ const FileBox: React.FC<IProps> = ({
   };
 
   function trimFileName(filename: string) {
-    if (filename.length <= 16) {
+    if (filename.length <= 14) {
       return filename;
     }
 
-    const start = filename.slice(0, 7);
+    const start = filename.slice(0, 6);
     const end = filename.slice(-7);
     const trimmedName = start + "..." + end;
 
@@ -126,7 +126,7 @@ const FileBox: React.FC<IProps> = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  // width: `${item.size ? "unset" : "158px"}`,
+                  width: `${item.size ? "261px" : "160px"}`,
                   gap: "16px",
                   pl: 0,
                   "&:hover": {
@@ -148,7 +148,7 @@ const FileBox: React.FC<IProps> = ({
                   <Typography
                     sx={{
                       fontFamily: "Inter",
-                      fontWeight: 450,
+                      fontWeight: 400,
                       color: "#131516",
                       fontSize: "14px",
                     }}

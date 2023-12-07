@@ -31,7 +31,7 @@ export interface TaskReducerInt {
 }
 
 const intialStatue: TaskReducerInt = {
-  taskDragContHeight: 220,
+  taskDragContHeight: 0,
   unSeenTasks: unSeenTasks,
   RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",

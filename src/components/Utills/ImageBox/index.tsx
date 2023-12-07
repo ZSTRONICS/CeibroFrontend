@@ -3,12 +3,14 @@ import { Box } from "@mui/material";
 interface IProps {
   src: string;
   handleClick?: () => void;
+  type?: string;
 }
-export default function ImageBox({ src, handleClick }: IProps) {
+export default function ImageBox({ src, handleClick, type }: IProps) {
   return (
     <Box
       onClick={() => handleClick && handleClick()}
       sx={{
+        mt: `${type === "imageWithDesp" ? "7px" : "unset"}`,
         "&:hover": {
           cursor: "pointer",
         },

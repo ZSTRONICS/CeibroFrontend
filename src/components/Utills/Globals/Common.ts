@@ -379,9 +379,11 @@ export const momentLocalDateTime = (createdAt: Date | any) => {
     return 'Today, ' + inputDate.format('HH:mm');
   } else if (currentDate.clone().subtract(1, 'day').isSame(inputDate, 'day')) {
     return 'Yesterday, ' + inputDate.format('HH:mm');
-  } else if (currentDate.isSame(inputDate, 'week')) {
-    return inputDate.format('dddd HH:mm');
-  } else {
+  }
+  //  else if (currentDate.isSame(inputDate, 'week')) {
+  //   return inputDate.format('dddd HH:mm');
+  // }
+  else {
     return inputDate.format('DD.MM.YY HH:mm');
   }
 }

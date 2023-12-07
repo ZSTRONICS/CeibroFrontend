@@ -13,8 +13,8 @@ export default function ImageBoxWithDesp({
   handleClick,
 }: IProps) {
   return (
-    <CustomStack>
-      <ImageBox src={src} handleClick={handleClick} />
+    <CustomStack sx={{ alignItems: "flex-start" }}>
+      <ImageBox src={src} handleClick={handleClick} type="imageWithDesp" />
       <StyledTypographyBox text={comment} />
     </CustomStack>
   );

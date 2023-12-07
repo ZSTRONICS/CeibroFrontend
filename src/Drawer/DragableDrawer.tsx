@@ -1,7 +1,7 @@
 import { Box, Typography, styled } from "@mui/material";
 import { TASK_CONFIG } from "config";
 import { useResponsive } from "hooks";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -37,7 +37,8 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const dispatch = useDispatch();
-  const isLargeScreen = useResponsive("down", "xl", "");
+  const draggableRef = useRef(null);
+  const isLargeScreen = useResponsive("up", "lg", "");
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
   );
@@ -49,50 +50,85 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     containerWidth = clientWidth - 6;
     taskDetailContHeight = clientHeight;
   }
-  const largeScreenCalc = isLargeScreen ? 2 / 3.66 : 2 / 3.53;
-  const defaultHeight = taskDetailContHeight * largeScreenCalc;
+  const isSmallWindow = window.innerWidth < 985;
+  const largeScreenCalc = isSmallWindow
+    ? 2 / 3.91
+    : isLargeScreen
+    ? 2 / 3.5
+    : 2 / 3.53;
+  // const defaultHeight = taskDetailContHeight * largeScreenCalc;
   const defaultContainerHeight = taskDetailContHeight / 3.61;
   const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
   const [drawwerWidth, setDrawerWidth] = useState(containerWidth);
+  const smallWindowPoints = isSmallWindow ? 5 : 15;
   const [state, setState] = useState({
     activeDrags: 0,
-    deltaPosition: { x: -13, y: drawerHeight },
+    deltaPosition: {
+      x: -13,
+      y: taskDetailContainer
+        ? taskDetailContainer.clientHeight * largeScreenCalc - smallWindowPoints
+        : drawerHeight,
+    },
   });
 
+  const handleResize = () => {
+    if (taskDetailContainer) {
+      setDrawerWidth(taskDetailContainer.clientWidth - 6);
+      setDrawerHeight(taskDetailContHeight / 3.61);
+      setState({
+        ...state,
+        deltaPosition: {
+          x: -13,
+          y:
+            taskDetailContainer.clientHeight * largeScreenCalc -
+            smallWindowPoints,
+        },
+      });
+      // dispatch({
+      //   type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+      //   payload: drawerHeight,
+      // });
+    }
+  };
   useEffect(() => {
-    const handleResize = () => {
-      if (taskDetailContainer) {
-        setDrawerWidth(taskDetailContainer.clientWidth - 6);
-        setDrawerHeight(defaultContainerHeight);
-        setState({
-          ...state,
-          deltaPosition: {
-            x: -13,
-            y: taskDetailContainer.clientHeight * largeScreenCalc - 20,
-          },
-        });
-      }
-    };
+    if (!isOpen && taskDragContHeight === 0) {
+      return;
+    }
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, [taskDetailContHeight, containerWidth]);
-
+  // console.log(
+  //   "drawerHeight",
+  //   drawerHeight,
+  //   taskDetailContHeight,
+  //   "taskDetailContainer.clientHeight",
+  //   isLargeScreen,
+  //   taskDetailContainer && taskDetailContainer.clientHeight * largeScreenCalc
+  // );
   const containerStyle: any = {
     background: "white",
     position: "absolute",
     zIndex: "10",
-    width: `${drawwerWidth}px`,
+    maxWidth: `${drawwerWidth}px`,
+    width: "100%",
+    border: "1px solid",
   };
 
   useEffect(() => {
-    if (!isOpen) {
-      setDrawerHeight(defaultContainerHeight);
-      setDrawerWidth(containerWidth);
+    if (!isOpen && taskDetailContainer) {
+      setDrawerWidth(taskDetailContainer.clientWidth - 6);
+      setDrawerHeight(taskDetailContHeight / 3.61);
       setState({
         ...state,
-        deltaPosition: { x: -12, y: defaultHeight },
+        deltaPosition: {
+          x: -13,
+          y:
+            taskDetailContainer.clientHeight * largeScreenCalc -
+            smallWindowPoints,
+        },
       });
       dispatch({
         type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
@@ -111,7 +147,8 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
           y: y + data.deltaY,
         },
       });
-      const newHeight = taskDetailContHeight - y - data.deltaY - 130;
+      const newCalcPoints: number = isSmallWindow ? 170 : 140;
+      const newHeight = taskDetailContHeight - y - data.deltaY - newCalcPoints;
       setDrawerHeight(newHeight);
     }
   };
@@ -122,10 +159,12 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
 
   const onStop = () => {
     setState({ ...state, activeDrags: state.activeDrags - 1 });
-    dispatch({
-      type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-      payload: drawerHeight,
-    });
+    if (state.activeDrags > 0 && draggableRef.current) {
+      dispatch({
+        type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
+        payload: drawerHeight,
+      });
+    }
     if (drawerHeight < 120) {
       closeModal();
     }
@@ -137,6 +176,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
           <Draggable
             allowAnyClick={true}
             axis="y"
+            ref={draggableRef}
             position={state.deltaPosition}
             handle={".handle"}
             onStart={onStart}
@@ -144,7 +184,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
             onDrag={handleDrag}
             bounds={{
               top: 150,
-              bottom: taskDetailContHeight - 200,
+              bottom: taskDetailContHeight - 210,
             }}
           >
             <StyledBox id="dragableContainer" style={containerStyle}>

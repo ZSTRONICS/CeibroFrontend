@@ -12,7 +12,7 @@ import {
   DOC_EXT,
   FILTER_DATA_BY_EXT,
   MEDIA_EXT,
-  momentdeDateFormatWithDay,
+  momentLocalDateTime,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile, TaskEvent, TaskEventType } from "constants/interfaces";
@@ -124,7 +124,7 @@ function AddedDetails(props: IProps) {
                       <Span sx={{ fontSize: "12px" }}>invited by</Span>
                       <DocName>{`${initiator.firstName} ${
                         initiator.surName
-                      } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                      } ${momentLocalDateTime(createdAt)}`}</DocName>
                     </CustomStack>
                     <DocName>{`${invitedMembersData}`}</DocName>
                   </EventWrap>
@@ -172,7 +172,7 @@ function AddedDetails(props: IProps) {
                     {eventData && eventData.length > 0 && (
                       <>
                         <CustomStack gap={1.2}>
-                          <DocName>{` ${momentdeDateFormatWithDay(
+                          <DocName>{` ${momentLocalDateTime(
                             createdAt
                           )}`}</DocName>
                           <Span
@@ -199,7 +199,7 @@ function AddedDetails(props: IProps) {
                           <Span sx={{ fontSize: "12px" }}>invited by</Span>
                           <DocName>{`${initiator.firstName} ${
                             initiator.surName
-                          } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                          } ${momentLocalDateTime(createdAt)}`}</DocName>
                         </CustomStack>
                         <CustomDivider />
                         <DocName>{`${invitedMembersLocal}`}</DocName>
@@ -217,7 +217,7 @@ function AddedDetails(props: IProps) {
                       <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
                       <DocName>{`${initiator.firstName} ${
                         initiator.surName
-                      } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                      } ${momentLocalDateTime(createdAt)}`}</DocName>
                     </CustomStack>
                     <CustomDivider />
                     <Span sx={{ fontSize: "12px" }}>
@@ -235,7 +235,7 @@ function AddedDetails(props: IProps) {
                       <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
                       <DocName>{`${initiator.firstName} ${
                         initiator.surName
-                      } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                      } ${momentLocalDateTime(createdAt)}`}</DocName>
                     </CustomStack>
                     <CustomDivider />
                     <Span sx={{ fontSize: "12px" }}>
@@ -271,7 +271,7 @@ function AddedDetails(props: IProps) {
                       <Span sx={{ fontSize: "12px" }}>Done by</Span>
                       <DocName>{`${initiator.firstName} ${
                         initiator.surName
-                      } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                      } ${momentLocalDateTime(createdAt)}`}</DocName>
                     </CustomStack>
                     {/* <CustomDivider /> */}
 
@@ -341,7 +341,7 @@ function AddedDetails(props: IProps) {
                     <CustomStack gap={1.2}>
                       <DocName>{`${initiator.firstName} ${
                         initiator.surName
-                      } ${momentdeDateFormatWithDay(createdAt)}`}</DocName>
+                      } ${momentLocalDateTime(createdAt)}`}</DocName>
                     </CustomStack>
                     <CustomDivider />
                     {commentData?.message && (
