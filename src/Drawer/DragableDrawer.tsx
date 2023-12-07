@@ -114,7 +114,6 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     zIndex: "10",
     maxWidth: `${drawwerWidth}px`,
     width: "100%",
-    border: "1px solid",
   };
 
   useEffect(() => {
