@@ -247,15 +247,15 @@ export const useSocket = () => {
 
         sock.on("token_invalid", () => {
             console.log("token_invalid received from server");
-
             const tokens = localStorage.getItem("tokens") || "{}";
-            const jsonToken = JSON.parse(tokens);
-            if ("refresh" in jsonToken) {
+            const jsonToken = JSON.parse(tokens || '{}');
+            console.log('jsonToken>>>', jsonToken)
+            if (jsonToken && jsonToken.access && jsonToken.access.token) {
                 AxiosV2.post(`${urlV2}/auth/refresh-tokens`, {
                     refreshToken: String(jsonToken.refresh.token),
                 })
                     .then((response: any) => {
-                        if (response.status === 200) {
+                        if (response) {
                             localStorage.setItem("tokens", JSON.stringify(response.data));
 
                             const tokens = localStorage.getItem("tokens") || "{}";

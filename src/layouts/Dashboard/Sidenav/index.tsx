@@ -43,7 +43,6 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
       sx={{
         overflow: "hidden",
         height,
-        width: { lg: NAV_WIDTH },
         background: "rgba(244, 244, 244, 1)",
       }}
     >
