@@ -25,7 +25,7 @@ const Login = () => {
   const history = useHistory();
   const isLoggedIn = useSelector((store: RootState) => store.auth.isLoggedIn);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
 
   const LoginData = async () => {
     const queryParams = queryString.parse(history?.location?.search);

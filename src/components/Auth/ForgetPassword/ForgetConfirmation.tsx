@@ -18,7 +18,7 @@ import VerificationForm from "../CommonForm/VerificationForm";
 import useStyles from "../Register/RegisterStyles";
 
 const ForgetConfirmation: React.FC = () => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();

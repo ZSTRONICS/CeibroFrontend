@@ -41,7 +41,7 @@ const FileBox: React.FC<IProps> = ({
       openModal();
       setFileToView(file);
     } else {
-      console.log("not open ");
+      console.log("unable to open file");
     }
   };
 
@@ -49,21 +49,22 @@ const FileBox: React.FC<IProps> = ({
     if (filename.length <= 14) {
       return filename;
     }
-
     const start = filename.slice(0, 6);
     const end = filename.slice(-7);
     const trimmedName = start + "..." + end;
-
     return trimmedName;
   }
 
   const getFileIconThumbnail = (fileType: string) => {
+    // console.log("fileType", fileType);
     switch (fileType) {
       case "application/pdf":
       case ".pdf":
         return <PdfIconThumnails />;
       case "text/csv":
       case ".csv":
+      case ".xlsx":
+      case ".xls":
       case "application/vnd.ms-excel":
       case "application/vnd.oasis.opendocument.spreadsheet":
       case "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
@@ -74,6 +75,7 @@ const FileBox: React.FC<IProps> = ({
       case "application/vnd.oasis.opendocument.text":
         return <TextFileThumbnail />;
       case "application/msword":
+      case ".docx":
       case "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
         return <DocFileThumbnail />;
       case "application/autocad_dwg":
@@ -99,7 +101,7 @@ const FileBox: React.FC<IProps> = ({
       <Box
         sx={{
           width: "100%",
-          gap: 1,
+          gap: 1.2,
           display: "flex",
           alignItems: "center",
           flexWrap: "wrap",
@@ -126,8 +128,8 @@ const FileBox: React.FC<IProps> = ({
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  width: `${item.size ? "261px" : "160px"}`,
-                  gap: "16px",
+                  width: `${item.size ? "245px" : "160px"}`,
+                  gap: "10px",
                   pl: 0,
                   "&:hover": {
                     cursor: "pointer",
@@ -138,12 +140,6 @@ const FileBox: React.FC<IProps> = ({
                 {item.type
                   ? getFileIconThumbnail(item.type)
                   : getFileIconThumbnail(item.fileType)}
-                {/* <img
-                  width={20}
-                  height={20}
-                  src={assets.FileIcon}
-                  alt="File Icon"
-                /> */}
                 <Tooltip title={f_name}>
                   <Typography
                     sx={{
@@ -195,42 +191,6 @@ const FileBox: React.FC<IProps> = ({
           </Typography>
         )}
       </Box>
-      {/* <Box
-        className="custom-scrollbar"
-        sx={{
-          // height: "96px",
-          width: "100%",
-          padding: "10px 0px 16px 0px",
-          // marginRight: "16px",
-          // overflowX: "auto",
-          flexWrap: "wrap",
-          display: "flex",
-        }}
-      > */}
-      {/* {media && media.length > 0 &&
-        media.map((file: IFile) => {
-          const hasComment = file.comment.length === 0;
-
-          <Box
-            key={file._id}
-            sx={{
-              marginRight: "16px",
-              "&:hover": { cursor: "pointer" },
-            }}
-            onClick={() => handleClick(file)}
-          >
-            {hasComment ? (
-              <ImageBox src={file.fileUrl} />
-            ) : (
-              <ImageBoxWithDesp
-                src={file.fileUrl}
-                comment={file.comment}
-              />
-            )}
-          </Box>
-        })} */}
-      {/* </Box> */}
-
       {isOpen && (
         <ImagePreviewModal
           isPdfFile={true}

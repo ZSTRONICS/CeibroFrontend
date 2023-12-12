@@ -59,6 +59,10 @@ function TaskCard(props: IProps) {
   const cardBorderColor = !isCreator ? "#ccc" : "#FFE7E7";
   const isCanceled: boolean = userSubState === "canceled";
   const cardLabel = isCanceled && !isCreator ? "From" : isTaskFromMe;
+  const labelContent = cardLabel === "To" ? assignedToState[0] : creator;
+  const { firstName = "", surName = "" } = labelContent || {};
+  const displayName = `${firstName || ""} ${surName || ""}`;
+
   const assignToNames = () =>
     assignedToState.length > 1 ? (
       <Tooltip title={AssignedToList(assignedToState)}>
@@ -66,8 +70,13 @@ function TaskCard(props: IProps) {
           style={{
             fontWeight: "600",
             fontSize: "11px",
-            padding: "4px",
+            padding: "3px",
             backgroundColor: "transparent",
+            maxWidth: "43px",
+            width: "100%",
+            WebkitLineClamp: 1,
+            overflow: "hidden",
+            textOverflow: "ellipsis",
           }}
         >
           +{assignedToState.length - 1}
@@ -89,24 +98,6 @@ function TaskCard(props: IProps) {
     );
   };
 
-  const TaskCardLabelContent = () => {
-    const labelContent = cardLabel === "To" ? assignedToState[0] : creator;
-    const { firstName = "", surName = "" } = labelContent || {};
-    const displayName = `${firstName || ""} ${surName || ""}`;
-    return (
-      <>
-        {cardLabel}:&nbsp;{""}
-        <span
-          style={{
-            fontWeight: "600",
-            fontSize: "11px",
-          }}
-        >
-          {displayName}
-        </span>
-      </>
-    );
-  };
   return (
     <Card
       onMouseOver={() => setIsMouseOver(true)}
@@ -217,7 +208,15 @@ function TaskCard(props: IProps) {
         <CustomStack justifyContent="space-between" pt={0.2}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
             <TaskCardLabel className="textOverflowDescription">
-              <TaskCardLabelContent />
+              {cardLabel}:&nbsp;{""}
+              <span
+                style={{
+                  fontWeight: "600",
+                  fontSize: "11px",
+                }}
+              >
+                {displayName}
+              </span>
             </TaskCardLabel>
             {cardLabel !== "From" && assignToNames()}
           </Box>

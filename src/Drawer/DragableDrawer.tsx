@@ -54,13 +54,14 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const largeScreenCalc = isSmallWindow
     ? 2 / 3.91
     : isLargeScreen
-    ? 2 / 3.5
-    : 2 / 3.53;
-  // const defaultHeight = taskDetailContHeight * largeScreenCalc;
+    ? 2 / 3.662
+    : 2 / 3.66;
+
   const defaultContainerHeight = taskDetailContHeight / 3.61;
   const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
   const [drawwerWidth, setDrawerWidth] = useState(containerWidth);
   const smallWindowPoints = isSmallWindow ? 5 : 15;
+
   const [state, setState] = useState({
     activeDrags: 0,
     deltaPosition: {
@@ -70,7 +71,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
         : drawerHeight,
     },
   });
-
+  // console.log(isLargeScreen, taskDetailContHeight, state.deltaPosition.y);
   const handleResize = () => {
     if (taskDetailContainer) {
       setDrawerWidth(taskDetailContainer.clientWidth - 6);
@@ -146,7 +147,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
           y: y + data.deltaY,
         },
       });
-      const newCalcPoints: number = isSmallWindow ? 170 : 140;
+      const newCalcPoints: number = isSmallWindow ? 135 : 140;
       const newHeight = taskDetailContHeight - y - data.deltaY - newCalcPoints;
       setDrawerHeight(newHeight);
     }

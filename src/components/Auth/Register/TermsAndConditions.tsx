@@ -17,7 +17,7 @@ import useStyles from "./RegisterStyles";
 export default function TermsAndConditions() {
   const classes = useStyles();
   const [checked, setChecked] = useState(false);
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const history = useHistory();
   const isTabletOrMobile = useResponsive("down", "md", "");
 

@@ -313,6 +313,7 @@ const ReadMoreWrapper = ({
                     fontWeight: "400",
                     color: "#0076C8",
                     paddingRight: "4px",
+                    display: "flex",
                   }}
                 >
                   +{localCount}

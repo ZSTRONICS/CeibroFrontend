@@ -29,7 +29,7 @@ type FormValues = {
 };
 
 export default function RegisterNumberForm() {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();

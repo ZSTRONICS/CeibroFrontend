@@ -24,6 +24,7 @@ import DetailsHeader from "./DetailsHeader";
 interface IProps {
   task: ITask;
   TASK_UPDATED_TIME_STAMP: string;
+  userSubStateLocal: string;
   handleClick?: (task: ITask) => void;
 }
 function TaskDetails(props: IProps) {
@@ -31,7 +32,7 @@ function TaskDetails(props: IProps) {
     dueDate,
     taskUID,
     assignedToState,
-    userSubState,
+    // userSubState,
     topic,
     project,
     creator,
@@ -133,7 +134,7 @@ function TaskDetails(props: IProps) {
         doneImageRequired={doneImageRequired}
         doneCommentsRequired={doneCommentsRequired}
         taskId={_id}
-        userSubState={userSubState}
+        userSubState={props.userSubStateLocal}
         dueDate={convertDateFormat(dueDate)}
         taskUid={taskUID}
         createdOn={momentLocalDate(createdAt)}

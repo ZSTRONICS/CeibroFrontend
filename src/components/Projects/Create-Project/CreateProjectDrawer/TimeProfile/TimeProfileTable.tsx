@@ -1,7 +1,8 @@
 
 import {
+  Button,
   CircularProgress,
-  makeStyles,
+  Grid,
   Table,
   TableBody,
   TableCell,
@@ -9,14 +10,12 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Grid,
-  Button,
+  makeStyles,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
 import { avaialablePermissions } from "config/project.config";
 import { checkTimeProfilePermission } from "helpers/project.helper";
-import React, { useEffect, useState } from "react";
-import { AiOutlineCheckCircle } from "react-icons/ai";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions, { getProjectProfile } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
@@ -110,7 +109,7 @@ const RolesTable = () => {
 
                     <div className={classes.actions}>
                       <div className={classes.statusChip}>
-                        <AiOutlineCheckCircle className={classes.statusIcon} />
+                        {/* <AiOutlineCheckCircle className={classes.statusIcon} /> */}
                         <Typography className={classes.statusText}>
                           Activate
                         </Typography>

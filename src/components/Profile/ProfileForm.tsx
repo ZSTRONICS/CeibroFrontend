@@ -33,7 +33,7 @@ interface Props {
 }
 
 const ProfileForm = ({ user }: Props) => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
   const isDisabled = !loading ? false : true;

@@ -25,7 +25,7 @@ import useStyles from "./RegisterStyles";
 
 const RegisterForm = () => {
   const classes = useStyles();
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const dispatch = useDispatch();
   const history = useHistory();
   const registerSch = setValidationSchema(t);

@@ -24,7 +24,7 @@ const VerificationForm: React.FC<VerificationFormProps> = ({
   showAlert,
   alertMessage,
 }) => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const classes = useStyles();
 
   const initialValues = {

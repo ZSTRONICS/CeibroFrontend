@@ -25,7 +25,7 @@ type FormValues = {
 };
 
 const ForgetPasswordForm = () => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const dispatch = useDispatch();
   const history = useHistory();
   const countryCodeName = useSelector(

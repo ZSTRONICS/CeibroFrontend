@@ -230,6 +230,17 @@ const Task = () => {
     }, 10);
   }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
 
+  const userSubStateLocal: string = (() => {
+    if (selectedTask === null) {
+      return "N/A";
+    }
+    const isAllTaskFromMe =
+      selectedTask.isCreator && subtask === "allTaskFromMe";
+    return isAllTaskFromMe
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
+  })();
+
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
@@ -255,9 +266,7 @@ const Task = () => {
       return;
     }
     const isUserSubstateFind =
-      selectedTask &&
-      selectedTask !== null &&
-      selectedTask.userSubState === filterkey;
+      selectedTask && selectedTask !== null && userSubStateLocal === filterkey;
     let taskNeedToBeSeen =
       isUserSubstateFind && !selectedTask.seenBy.includes(userId);
 
@@ -551,6 +560,7 @@ const Task = () => {
       ? menuOptions.filter((option) => option.menuName === optionName)
       : [];
   };
+
   const TaskRow = ({ index, style }: any) => {
     const localTask = filteredTask[index];
     if (!localTask) {
@@ -716,6 +726,7 @@ const Task = () => {
         ) ? (
           <TaskDetails
             task={selectedTask}
+            userSubStateLocal={userSubStateLocal}
             TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
           />
         ) : (

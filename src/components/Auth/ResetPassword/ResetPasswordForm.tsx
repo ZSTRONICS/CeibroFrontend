@@ -17,7 +17,7 @@ import { LOGIN_ROUTE } from "utills/axios";
 import { resetPasswordSchemaValidation } from "../userSchema/AuthSchema";
 
 const ResetPasswordForm = () => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();
   const dispatch = useDispatch();

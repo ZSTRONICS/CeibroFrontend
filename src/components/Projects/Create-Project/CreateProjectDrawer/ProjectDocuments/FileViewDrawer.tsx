@@ -1,14 +1,14 @@
-import React from "react";
 import {
-  Button, Dialog,
+  Button,
+  Dialog,
   DialogActions,
   DialogContent,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import colors from "assets/colors";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 // @ts-ignore
-import FileViewer from "react-file-viewer";
 import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 
@@ -51,16 +51,16 @@ const FileViewDrawer: React.FC<AddGroupProps> = () => {
   // const filePath = folderFiles?.map?.((file) => {
   //   return file?.url;
   // });
-  
+
   return (
     <Dialog open={FileViewerDrawer} onClose={handleClose}>
       <DialogContent>
         <div className={classes.dropdownWrapper}>
-          <FileViewer
+          {/* <FileViewer
             fileType={fileType}
             filePath={filePath}
             onError={onError}
-          />
+          /> */}
         </div>
       </DialogContent>
       <DialogActions>

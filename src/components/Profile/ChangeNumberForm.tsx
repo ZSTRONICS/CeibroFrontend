@@ -42,7 +42,7 @@ interface CustomErrorMessages {
 
 const ChangeNumberForm: React.FC<Props> = (props) => {
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const signinSchema = SigninSchemaValidation(t);
 
   const dispatch = useDispatch();

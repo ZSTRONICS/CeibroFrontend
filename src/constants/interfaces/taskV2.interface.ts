@@ -52,6 +52,9 @@ export interface ITask {
   isHiddenByMe: boolean;
   isSeenByMe: boolean;
   isAssignedToMe: boolean;
+  fromMeState: string;
+  toMeState: string;
+  hiddenState: string;
 }
 
 export interface AssignedUserState extends UserInfo {

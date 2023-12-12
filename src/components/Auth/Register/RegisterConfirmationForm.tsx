@@ -24,7 +24,7 @@ import AuthLayout from "../AuthLayout/AuthLayout";
 import useStyles from "./RegisterStyles";
 
 export default function RegisterConfirmationForm() {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const classes = useStyles();
   const history = useHistory();
   const dispatch = useDispatch();

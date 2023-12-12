@@ -16,7 +16,7 @@ interface IProps {
 }
 
 const ChangePasswordForm = (props: IProps) => {
-  const { t } = useTranslation();
+  const { t }: any = useTranslation<any>();
   const history = useHistory();
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>();

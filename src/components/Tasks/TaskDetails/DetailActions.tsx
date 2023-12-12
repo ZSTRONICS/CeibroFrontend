@@ -137,20 +137,18 @@ const DetailActions: React.FC<IProps> = (props) => {
     md: "flex-end",
   };
   const handleFullView = () => {
-    {
-      let showFullViewData;
-      const data = localStorage.getItem("showFullView");
-      if (data) {
-        showFullViewData = JSON.parse(data);
-      }
-      localStorage.setItem(
-        "showFullView",
-        JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
-      );
-      startTransition(() => {
-        setIsExpanded(!isExpanded);
-      });
+    let showFullViewData;
+    const data = localStorage.getItem("showFullView");
+    if (data) {
+      showFullViewData = JSON.parse(data);
     }
+    localStorage.setItem(
+      "showFullView",
+      JSON.stringify({ ...showFullViewData, [taskUid]: !isExpanded })
+    );
+    startTransition(() => {
+      setIsExpanded(!isExpanded);
+    });
   };
   const getTitle = () => titles[taskAction] || "";
   return (
