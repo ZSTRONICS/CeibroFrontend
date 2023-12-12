@@ -11,13 +11,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { AxiosV2, LOGIN_ROUTE, SERVER_URL, urlV2 } from "./axios";
 
 export const useSocket = () => {
-    const { isLoggedIn, user } = useSelector((store: RootState) => store.auth);
+    const { isLoggedIn, forceCloseWindow, user } = useSelector((store: RootState) => store.auth);
     const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = useSelector((store: RootState) => store.task);
     const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
-    const windowClose = window.getSelection();
 
     const updateLocalTaskTabSeen = (newTaskData: any) => {
         const { toMeState,
@@ -123,11 +122,18 @@ export const useSocket = () => {
     }
 
     useEffect(() => {
+        const windowClose = window.getSelection();
+
+        if (windowClose && forceCloseWindow) {
+            window.close();
+        }
+    }, [forceCloseWindow]);
+
+
+    useEffect(() => {
         if (!isLoggedIn) {
             console.log("not logged in")
-            if (windowClose) {
-                window.close();
-            }
+
             global.isSocketConnecting = false;
             if (socket.getSocket() !== null) {
                 console.log("socket found")

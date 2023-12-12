@@ -23,6 +23,7 @@ import { ActionInterface } from "./appReducer";
 interface authInterface {
   profilePicUploading: boolean
   isLoggedIn: boolean;
+  forceCloseWindow: boolean;
   user: UserInterface;
   loginLoading: boolean;
   registerLoading: boolean;
@@ -33,6 +34,7 @@ interface authInterface {
 
 const intialStatue: authInterface = {
   isLoggedIn: false,
+  forceCloseWindow: false,
   profilePicUploading: false,
   secureUUID: null,
   user: userTemplate,
@@ -195,6 +197,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
       return {
         ...state,
         isLoggedIn: false,
+        forceCloseWindow: true,
         user: null,
       };
     }
