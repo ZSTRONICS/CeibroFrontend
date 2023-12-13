@@ -27,10 +27,21 @@ export default function DetailsHeader(props: IProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isReadMore, setIsReadMore] = useState(false);
   const infoBoxRef = useRef();
+  const ellipsisContainerRef = useRef<HTMLSpanElement | null>(null);
   const parms = useParams<{ filterkey: string }>();
 
   const capitalizeFirstLetter = (str: string | undefined): string =>
     str ? str.charAt(0).toUpperCase() + str.slice(1) : "";
+
+  const getTextWidth = (text: string, font: string) => {
+    var canvas = document.createElement("canvas");
+    var context = canvas.getContext("2d");
+    if (context) {
+      context.font = font;
+      var width = context.measureText(text).width;
+      return width;
+    }
+  };
 
   const formatUserName = (user: AssignedUserState | InvitedNumber) => {
     const { firstName, surName, phoneNumber } = user;
@@ -81,16 +92,12 @@ export default function DetailsHeader(props: IProps) {
   const handleResize = () => {
     const windowWidth = window.innerWidth;
     let flag = false;
-    if (windowWidth >= 1440) {
-      if (invitedNumbers.length >= 5 || assignedToState.length >= 5) {
-        flag = true;
-      }
-    } else if (windowWidth >= 1024) {
-      if (invitedNumbers.length >= 2 || assignedToState.length >= 2) {
-        flag = true;
-      }
-    } else if (windowWidth >= 768) {
-      if (invitedNumbers.length > 1 || assignedToState.length > 1) {
+    const ellipsisContainer = ellipsisContainerRef.current;
+    if (ellipsisContainer) {
+      let text: string = ellipsisContainer.textContent!;
+      let font = window.getComputedStyle(ellipsisContainer).font;
+      let textWidth = getTextWidth(text, font)!;
+      if (textWidth >= ellipsisContainer.clientWidth) {
         flag = true;
       }
     }
@@ -170,6 +177,7 @@ export default function DetailsHeader(props: IProps) {
         {value && value.length > 0 && (
           <Box sx={{ maxWidth: "95%", display: "flex", alignItems: "center" }}>
             <Typography
+              ref={ellipsisContainerRef}
               style={{
                 fontWeight: fontWeight ?? 500,
                 fontSize: "12px",
