@@ -413,7 +413,8 @@ const taskReducer = (
                 const taskToMove = state.allTaskFromMe.unread[taskIndex]
                 addEventToTask(state.allTaskFromMe.unread[taskIndex], eventData, taskIndex)
                 state.allTaskFromMe.unread[taskIndex].userSubState = "done";
-                state.allTaskFromMe.done.unshift(taskToMove);
+                state.allTaskFromMe.unread[taskIndex].creatorState = "done";
+                state.allTaskFromMe.done.unshift(state.allTaskFromMe.unread[taskIndex]);
                 state.allTaskFromMe.unread.splice(taskIndex, 1);
                 console.log("state.allTaskFromMe.unread=> state.allTaskFromMe.done", state.allTaskFromMe.done[0]._id);
               }
@@ -424,9 +425,10 @@ const taskReducer = (
               if (taskIndex > -1) {
                 addEventToTask(state.allTaskFromMe.ongoing[taskIndex], eventData, taskIndex)
                 state.allTaskFromMe.ongoing[taskIndex].userSubState = "done";
+                state.allTaskFromMe.ongoing[taskIndex].creatorState = "done";
                 state.allTaskFromMe.done.unshift(state.allTaskFromMe.ongoing[taskIndex]);
                 state.allTaskFromMe.ongoing.splice(taskIndex, 1);
-                console.log("move state.allTaskFromMe.ongoing=>  allTaskFromMe.done", state.allTaskFromMe.done[0]._id);
+                console.log("move state.allTaskFromMe.ongoing=>  allTaskFromMe.done", state.allTaskFromMe.done[0]);
               }
             }
           }
@@ -658,6 +660,7 @@ const taskReducer = (
                 moveTaskOnTopByIndex(state.allTaskToMe.new, toMeNewIndex);
                 if (forwardedTask.newTaskData.userSubState === "ongoing" && forwardedTask.oldTaskData.userSubState === "new") {
                   state.allTaskToMe.new[toMeNewIndex].userSubState = "ongoing";
+                  state.allTaskToMe.new[toMeNewIndex].creatorState = "ongoing";
                   state.allTaskToMe.ongoing.unshift(state.allTaskToMe.new[toMeNewIndex]);
                   state.allTaskToMe.new.splice(toMeNewIndex, 1)
                 }

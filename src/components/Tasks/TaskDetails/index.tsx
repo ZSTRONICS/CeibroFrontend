@@ -85,7 +85,6 @@ function TaskDetails(props: IProps) {
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState<number>(0);
   const [initialRender, setInitialRender] = useState(true);
-
   useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
