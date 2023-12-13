@@ -7,7 +7,7 @@ import {
   IS_IMAGE,
   MEDIA_EXT,
   convertDateFormat,
-  momentLocalDate,
+  momentLocalDateTime,
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
@@ -48,18 +48,18 @@ function TaskDetails(props: IProps) {
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
   const [isPending, startTransition] = useTransition();
-
   useEffect(() => {
-    let getShowValue = showFullView && JSON.parse(showFullView)[taskUID];
-    if (getShowValue) {
-      getShowValue !== isShowFullView &&
-        startTransition(() => {
-          setIsShowFullView(getShowValue);
-        });
-    } else {
+    let getShowValue = (showFullView && JSON.parse(showFullView)) || {};
+    const isTaskFind =
+      getShowValue &&
+      Object.keys(getShowValue).some((key) => key.startsWith(taskUID));
+    if (isTaskFind) {
       startTransition(() => {
-        setIsShowFullView(getShowValue);
+        setIsShowFullView(getShowValue[taskUID]);
       });
+    } else if (!isTaskFind) {
+      setIsShowFullView(true);
+      localStorage.removeItem("showFullView");
     }
   }, [taskUID]);
 
@@ -85,12 +85,6 @@ function TaskDetails(props: IProps) {
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState<number>(0);
   const [initialRender, setInitialRender] = useState(true);
-
-  useEffect(() => {
-    if (parms.filterkey === "unread" || parms.filterkey === "new") {
-      setIsShowFullView(true);
-    }
-  }, []);
 
   useEffect(() => {
     if (containerRef.current) {
@@ -137,7 +131,7 @@ function TaskDetails(props: IProps) {
         userSubState={props.userSubStateLocal}
         dueDate={convertDateFormat(dueDate)}
         taskUid={taskUID}
-        createdOn={momentLocalDate(createdAt)}
+        createdOn={momentLocalDateTime(createdAt)}
         assignedToState={assignedToState}
         invitedNumbers={invitedNumbers}
         isExpanded={isShowFullView}

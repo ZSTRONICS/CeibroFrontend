@@ -60,6 +60,7 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
 
     case requestSuccess(LOGIN): {
       localStorage.setItem("tokens", JSON.stringify(action.payload?.tokens));
+      state.forceCloseWindow = false
       return {
         ...state,
         isLoggedIn: true,

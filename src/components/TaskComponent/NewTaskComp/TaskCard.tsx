@@ -8,7 +8,7 @@ import {
 } from "components/CustomTags";
 import GenericMenu from "components/GenericMenu/GenericMenu";
 import {
-  dateFormatWithYearSplit,
+  convertDateFormat,
   momentLocalDateTime,
 } from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
@@ -49,7 +49,7 @@ function TaskCard(props: IProps) {
     seenBy,
   } = task;
   const taskCreatedAt = momentLocalDateTime(createdAt).split(" ");
-  const formattedDate = dateFormatWithYearSplit(dueDate);
+  const formattedDate = convertDateFormat(dueDate);
   const [isMouseOver, setIsMouseOver] = useState<boolean>(false);
   const isSelectedTask: boolean = selectedTaskId === _id;
   const trucateText =
@@ -77,6 +77,7 @@ function TaskCard(props: IProps) {
             WebkitLineClamp: 1,
             overflow: "hidden",
             textOverflow: "ellipsis",
+            textAlign: "end",
           }}
         >
           +{assignedToState.length - 1}
@@ -207,12 +208,15 @@ function TaskCard(props: IProps) {
       >
         <CustomStack justifyContent="space-between" pt={0.2}>
           <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
-            <TaskCardLabel className="textOverflowDescription">
+            <TaskCardLabel>
               {cardLabel}:&nbsp;{""}
               <span
+                className="textOverflowDescription"
                 style={{
                   fontWeight: "600",
                   fontSize: "11px",
+                  WebkitLineClamp: 1,
+                  maxWidth: "100px",
                 }}
               >
                 {displayName}
