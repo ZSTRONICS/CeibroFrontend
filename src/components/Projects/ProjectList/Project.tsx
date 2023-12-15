@@ -10,7 +10,7 @@ import ProjectList from "./ProjectList";
 import CDatePicker from "components/DatePicker/CDatePicker";
 import InputHOC from "components/Utills/Inputs/InputHOC";
 import moment from "moment-timezone";
-import { getAllProjects } from "redux/action/project.action";
+import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import "../../../components/MuiStyles.css";
 const Project = () => {
@@ -56,7 +56,7 @@ const Project = () => {
 
   useEffect(() => {
     if (isRenderEffect.current === false && allProjects.length === 0) {
-      dispatch(getAllProjects());
+      dispatch(PROJECT_APIS.getAllProjects());
       // dispatch(getAllProjectsWithMembers());
       // const payload = {
       //   success: (res: any) => {

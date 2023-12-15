@@ -15,7 +15,7 @@ import CustomModal from "components/Modal";
 import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import { useOpenCloseModal } from "hooks";
-import projectActions, { getAllProjects } from "redux/action/project.action";
+import projectActions, { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
 import { socket } from "services/socket.services";
 
@@ -32,7 +32,7 @@ const Title = () => {
 
   useEffect(() => {
     if (allProjects.length === 0) {
-      dispatch(getAllProjects());
+      dispatch(PROJECT_APIS.getAllProjects());
     }
   }, []);
 

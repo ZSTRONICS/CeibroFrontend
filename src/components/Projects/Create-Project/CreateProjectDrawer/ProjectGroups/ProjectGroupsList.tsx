@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import projectActions, {
-  deleteGroup,
+  PROJECT_APIS,
   getGroup,
 } from "redux/action/project.action";
 import { RootState } from "redux/reducers/appReducer";
@@ -41,7 +41,7 @@ const ProjectGroupsList = () => {
 
   const handleGroupDelete = (id: any) => {
     dispatch(
-      deleteGroup({
+      PROJECT_APIS.deleteGroupById({
         success: () => {
           toast.success("Deleted Successfully");
           dispatch(getGroup({ other: selectedProject }));

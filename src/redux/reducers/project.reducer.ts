@@ -15,7 +15,6 @@ import {
   GET_MEMBER,
   GET_NEW_WORK,
   GET_PERMISSIONS,
-  GET_PROJECTS,
   GET_PROJECTS_MEMBERS,
   GET_PROJECTS_WITH_MEMBERS,
   GET_PROJECT_DETAIL,
@@ -255,12 +254,12 @@ const NavigationReducer = (
         isFloorLoading: false,
       };
     }
-    case requestPending(GET_PROJECTS): {
+    case requestPending(PROJECT_CONFIG.GET_ALL_PROJECTS): {
       return {
         ...state,
       };
     }
-    case requestSuccess(GET_PROJECTS): {
+    case requestSuccess(PROJECT_CONFIG.GET_ALL_PROJECTS): {
       let projects = action.payload.allProjects;
       let newProjects: any = [];
 
@@ -289,7 +288,7 @@ const NavigationReducer = (
         allProjects: [...state.allProjects],
       };
     }
-    case requestFail(GET_PROJECTS): {
+    case requestFail(PROJECT_CONFIG.GET_ALL_PROJECTS): {
       return {
         ...state,
       };

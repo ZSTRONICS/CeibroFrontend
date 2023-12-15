@@ -61,7 +61,13 @@ const Login = () => {
   return (
     <AuthLayout title={t("auth.login")}>
       <LoginForm tokenLoading={tokenLoading} showSuccess={isLoggedIn} />
-      <Box className={classes.dontHave} sx={{ color: "#131516" }}>
+      <Box
+        className={classes.dontHave}
+        sx={{
+          color: "#131516",
+          bottom: `${window.innerHeight < 550 ? "1%" : "6%"}`,
+        }}
+      >
         {t("auth.dont_have_account")}{" "}
         <Link to="/register" className={classes.signup}>
           {t("auth.signUp")}

@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 import { formatDropdownData } from "components/Utills/Globals";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
 import { useDispatch } from "react-redux";
-import { taskActions } from "redux/action";
+import { PROJECT_APIS, taskActions } from "redux/action";
 
 const MockTaskApis = () => {
   const [selectedApi, setSelectedApi] = useState<any>(null);
@@ -18,6 +18,84 @@ const MockTaskApis = () => {
 
   useEffect(() => {
     if (selectedApi !== null) {
+      if (selectedApi.value === "createProject") {
+        const formdata = new FormData();
+        formdata.append("title", "first test project");
+        formdata.append("description", "first test project description");
+        dispatch(
+          PROJECT_APIS.createProject({
+            body: formdata,
+          })
+        );
+      } else if (selectedApi.value === "getAllProject") {
+        dispatch(PROJECT_APIS.getAllProjects());
+      } else if (selectedApi.value === "projectHide") {
+        dispatch(
+          PROJECT_APIS.projectHideUnhide({
+            other: {
+              isProjHidden: true,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectUnhide") {
+        dispatch(
+          PROJECT_APIS.projectHideUnhide({
+            other: {
+              isProjHidden: false,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectFav") {
+        dispatch(
+          PROJECT_APIS.projectFavUnFav({
+            other: {
+              isProjFav: true,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "projectUnFav") {
+        dispatch(
+          PROJECT_APIS.projectFavUnFav({
+            other: {
+              isProjFav: false,
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "createGroupByProjId") {
+        dispatch(
+          PROJECT_APIS.createProjectGroup({
+            other: {
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+            body: {
+              groupName: "Test Group 2",
+            },
+          })
+        );
+      } else if (selectedApi.value === "getGroupsByProjectId") {
+        dispatch(
+          PROJECT_APIS.getGroupsByProjectId({
+            other: {
+              projectId: "657c6868fa6501660b70b6b7",
+            },
+          })
+        );
+      } else if (selectedApi.value === "updateGroupById") {
+        dispatch(
+          PROJECT_APIS.updateGroupById({
+            other: {
+              groupId: "657c6cf2fa6501660b70c176",
+            },
+            body: {
+              groupName: "test group 1",
+            },
+          })
+        );
+      }
       if (selectedApi.value === "createTask") {
         dispatch(
           taskActions.createTask({
@@ -260,6 +338,38 @@ const MockTaskApis = () => {
 };
 
 const mockTaskApis = [
+  { title: "createProject: /project", id: "createProject" },
+  { title: "getAllProject: /project", id: "getAllProject" },
+  {
+    title: "projectHide: /project/hidden/isProjHidden/projectId",
+    id: "projectHide",
+  },
+  {
+    title: "projectUnhide: /project/hidden/isProjHidden/projectId",
+    id: "projectUnhide",
+  },
+
+  {
+    title: "projectFav: /project/favourite/isProjFav/projectId",
+    id: "projectFav",
+  },
+  {
+    title: "projectUnFav: /project/favourite/isProjFav/projectId",
+    id: "projectUnFav",
+  },
+  {
+    title: "createGroupByProjId: /project/projectId/group",
+    id: "createGroupByProjId",
+  },
+  {
+    title: "getGroupsByProjectId: /project/projectId/group",
+    id: "getGroupsByProjectId",
+  },
+  {
+    title: "updateGroupById: /project/group/groupId",
+    id: "updateGroupById",
+  },
+
   { title: "createTopic: /task/topic", id: "createTopic" },
   { title: "createTask: /task", id: "createTask" },
   { title: "createTaskWithFiles: /task/files", id: "createTaskWithFiles" },

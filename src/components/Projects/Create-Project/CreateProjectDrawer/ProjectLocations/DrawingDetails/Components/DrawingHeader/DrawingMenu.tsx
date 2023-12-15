@@ -6,7 +6,7 @@ import { Drawing } from "constants/interfaces";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
-import projectActions, { getAllProjects } from "redux/action/project.action";
+import projectActions from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 
@@ -48,7 +48,7 @@ function DrawingMenu() {
 
   useEffect(() => {
     if (allProjects.length === 0 && !selectedProject) {
-      dispatch(getAllProjects());
+      dispatch(PROJECT_APIS.getAllProjects());
     }
   }, []);
 

@@ -17,12 +17,7 @@ import { isEmpty } from "lodash";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import {
-  PROJECT_APIS,
-  getAllProjects,
-  taskActions,
-  userApiAction,
-} from "redux/action";
+import { PROJECT_APIS, taskActions, userApiAction } from "redux/action";
 import { RootState } from "redux/reducers";
 import { removeItem } from "utills/common";
 import TaskHeader from "../TaskHeader";
@@ -86,7 +81,7 @@ function CreateNewTask() {
     if (!isRenderEffect.current) {
       dispatch(taskActions.getAllTopic());
       if (allProjects.length === 0) {
-        dispatch(getAllProjects());
+        dispatch(PROJECT_APIS.getAllProjects());
       }
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
       recentUserContact.length < 1 &&
@@ -196,7 +191,7 @@ function CreateNewTask() {
           })
         );
         //todo check websocket events for new window
-        dispatch(getAllProjects());
+        dispatch(PROJECT_APIS.getAllProjects());
     }
   };
 
