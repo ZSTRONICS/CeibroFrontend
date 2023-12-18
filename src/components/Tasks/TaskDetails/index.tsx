@@ -168,7 +168,6 @@ function TaskDetails(props: IProps) {
               description={description}
               handleFiles={handleFiles}
             />
-            <CustomDivider />
           </>
         )}
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}

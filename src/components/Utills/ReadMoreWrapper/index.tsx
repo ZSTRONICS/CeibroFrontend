@@ -190,6 +190,8 @@ const ReadMoreWrapper = ({
                 lineHeight: "16px",
                 color: "#605c5c",
                 width: "100%",
+                overflowWrap: "anywhere",
+                paddingRight: "8px",
               }}
             >
               {title}
