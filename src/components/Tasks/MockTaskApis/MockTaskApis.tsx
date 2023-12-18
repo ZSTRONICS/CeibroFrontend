@@ -95,6 +95,24 @@ const MockTaskApis = () => {
             },
           })
         );
+      } else if (selectedApi.value === "addNewDrawing") {
+        const formdata = new FormData();
+        formdata.append("projectId", "64f736813bc4a418e498d2c1");
+        formdata.append("floorId", "64f736813bc4a418e498d2c1");
+        formdata.append("groupId", "64f736813bc4a418e498d2c1");
+        // formdata.append("uploaderLocalId", "64f735383bc4a418e498d0ae"); //set any local uuid
+        formdata.append(
+          "metadata",
+          JSON.stringify([
+            { fileName: "ui.png", orignalFileName: "ui.png", tag: "drawing" },
+          ])
+        );
+        formdata.append("files", "/C:/Users/ZST/Downloads/ui.png");
+        dispatch(
+          PROJECT_APIS.addNewDrawing({
+            body: formdata,
+          })
+        );
       }
       if (selectedApi.value === "createTask") {
         dispatch(
@@ -368,6 +386,10 @@ const mockTaskApis = [
   {
     title: "updateGroupById: /project/group/groupId",
     id: "updateGroupById",
+  },
+  {
+    title: "addNewDrawing: /docs/upload/drawing",
+    id: "addNewDrawing",
   },
 
   { title: "createTopic: /task/topic", id: "createTopic" },

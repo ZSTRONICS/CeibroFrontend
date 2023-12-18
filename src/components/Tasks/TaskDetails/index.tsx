@@ -14,7 +14,6 @@ import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { RootState } from "redux/reducers";
 import AddedDetails from "./AddedDetails";
 import DetailActions from "./DetailActions";
@@ -48,6 +47,8 @@ function TaskDetails(props: IProps) {
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const { openModal, isOpen, closeModal } = useOpenCloseModal();
+
   useEffect(() => {
     let getShowValue = (showFullView && JSON.parse(showFullView)) || {};
     const isTaskFind =
@@ -63,8 +64,6 @@ function TaskDetails(props: IProps) {
     }
   }, [taskUID]);
 
-  const parms = useParams<{ filterkey: string }>();
-  const { openModal, isOpen, closeModal } = useOpenCloseModal();
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
   );
@@ -79,7 +78,6 @@ function TaskDetails(props: IProps) {
         )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
-
   const allFiles = [...filteredFiles, ...eventsFiles];
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
@@ -89,12 +87,13 @@ function TaskDetails(props: IProps) {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
       if (taskDragContHeight > 120) {
-        setHeightOffset(newTop + 65 + taskDragContHeight);
+        setHeightOffset(newTop + 80 + taskDragContHeight);
       } else {
         setHeightOffset(newTop + 25);
       }
     }
   }, [taskDragContHeight]);
+
   useEffect(() => {
     if (containerRef.current && !initialRender) {
       containerRef.current.scrollTo(0, containerRef.current.scrollHeight);

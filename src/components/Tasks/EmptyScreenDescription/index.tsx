@@ -13,7 +13,7 @@ function EmptyScreenDescription(props: IProps) {
     <Box
       sx={{
         width: "100%",
-        height: "100%",
+        height: "80%",
         display: "flex",
         flexDirection: " column",
         justifyContent: "center",

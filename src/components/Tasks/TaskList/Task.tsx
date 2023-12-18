@@ -180,7 +180,7 @@ const Task = () => {
           path = `/tasks/${subTaskKey}/${getFilteredKey}/${foundTask.taskUID}`;
         }
         history.push(path);
-      } else if (filteredTask.length === 0 && taskuid) {
+      } else if (filteredTask.length === 0) {
         history.push(path);
       }
     }
@@ -646,7 +646,7 @@ const Task = () => {
             <FilterTabs
               userId={userId}
               subTaskKey={subtask}
-              activeTab={selectedTab}
+              activeTab={filterkey}
               filterKeys={Object.keys(task[subtask])}
               handleTabClick={handleTabClick}
             />

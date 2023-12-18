@@ -1,6 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
 import { TASK_CONFIG } from "config";
-import { useResponsive } from "hooks";
+// import { useResponsive } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,7 +38,7 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const dispatch = useDispatch();
   const draggableRef = useRef(null);
-  const isLargeScreen = useResponsive("up", "lg", "");
+  // const isLargeScreen = useResponsive("up", "lg", "");
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
   );
@@ -50,12 +50,18 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     containerWidth = clientWidth - 6;
     taskDetailContHeight = clientHeight;
   }
-  const isSmallWindow = window.innerWidth < 985;
-  const largeScreenCalc = isSmallWindow
-    ? 2 / 3.91
-    : isLargeScreen
-    ? 2 / 3.662
-    : 2 / 3.66;
+  const windowWidth = window.innerWidth;
+  const windowHeight = window.innerHeight;
+  const isSmallWindowHeight = windowHeight <= 551;
+  const isSmallWindow = windowWidth < 985;
+  let largeScreenCalc = 2 / 3.662;
+  if (isSmallWindowHeight) {
+    largeScreenCalc = 2 / 4.34;
+  } else if (windowHeight > 950) {
+    largeScreenCalc = 2 / 3.44;
+  } else {
+    largeScreenCalc = isSmallWindow ? 2 / 3.91 : 2 / 3.662;
+  }
 
   const defaultContainerHeight = taskDetailContHeight / 3.61;
   const [drawerHeight, setDrawerHeight] = useState(defaultContainerHeight);
@@ -71,7 +77,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
         : drawerHeight,
     },
   });
-  // console.log(isLargeScreen, taskDetailContHeight, state.deltaPosition.y);
+  // console.log(taskDetailContHeight, largeScreenCalc, state.deltaPosition.y);
   const handleResize = () => {
     if (taskDetailContainer) {
       setDrawerWidth(taskDetailContainer.clientWidth - 6);

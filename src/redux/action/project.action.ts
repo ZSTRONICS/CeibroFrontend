@@ -310,6 +310,7 @@ export const PROJECT_APIS = {
   createFloor: createAction(PROJECT_CONFIG.CREATE_FLOOR),
   getFloorsByProjectId: createAction(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID),
   // drawings
+  addNewDrawing: createAction(PROJECT_CONFIG.ADD_NEW_DRAWING),
   getDrawingById: createAction(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID),
   getRecentDrawings: createAction(PROJECT_CONFIG.GET_RECENT_DRAWINGS),
 

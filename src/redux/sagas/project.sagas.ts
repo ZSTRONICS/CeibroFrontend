@@ -100,6 +100,13 @@ const getRecentDrawings = apiCall({
   method: 'get',
   path: "/project/recentDrawings"
 })
+const addNewDrawing = apiCall({
+  useV2Route: true,
+  isFormData: true,
+  type: PROJECT_CONFIG.ADD_NEW_DRAWING,
+  method: 'post',
+  path: "/docs/upload/drawing"
+})
 
 // GROUPS APIS
 const createProjectGroup = apiCall({
@@ -463,6 +470,7 @@ function* projectSaga() {
   yield takeLatest(PROJECT_CONFIG.CREATE_FLOOR, createFloor);
   yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);
   // drawings
+  yield takeLatest(PROJECT_CONFIG.ADD_NEW_DRAWING, addNewDrawing);
   yield takeLatest(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID, getDrawingById);
   yield takeLatest(PROJECT_CONFIG.GET_RECENT_DRAWINGS, getRecentDrawings);
 

@@ -70,7 +70,12 @@ const DetailActions: React.FC<IProps> = (props) => {
     setTaskAction(action);
     dispatch({
       type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-      payload: taskDragContHeight === 0 ? 220 : taskDragContHeight,
+      payload:
+        taskDragContHeight === 0
+          ? window.innerHeight < 768
+            ? 140
+            : 200
+          : taskDragContHeight,
     });
     openModal();
   };
