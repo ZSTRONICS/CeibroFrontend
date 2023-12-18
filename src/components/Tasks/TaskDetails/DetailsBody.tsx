@@ -4,7 +4,6 @@ import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { IFile } from "constants/interfaces";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import DrawingFiles from "./DrawingFiles";
 
 interface IProps {
   description?: string;
@@ -89,7 +88,8 @@ export default function DetailsBody(props: IProps) {
             <CustomDivider />
           </>
         )}
-        <DrawingFiles />
+        {/* todo when drawingfiles functionality enable then show drawing files compoonent */}
+        {/* <DrawingFiles /> */}
       </Box>
     </>
   );
