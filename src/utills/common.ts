@@ -1,5 +1,7 @@
 // const windowsMap = new Map();
 
+import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+
 export const openFormInNewWindow = (path: string, windowTitle: string) => {
   let width = 900;
   let height = 782;
@@ -61,3 +63,84 @@ export const removeItem = (data: File[], removeFile: File) => {
   });
   return filteredData;
 };
+
+export const taskConstants: any = {
+  allTaskFromMe: {
+    ongoing: [
+      {
+        heading: taskConstantEt.FromMe_Ongoing_Qestion_et,
+        description: taskConstantEt.FromMe_Ongoing_desc_et,
+      },
+      {
+        heading: taskConstantEn.FromMe_Ongoing_Qestion_en,
+        description: taskConstantEn.FromMe_Ongoing_desc_en,
+      },
+    ],
+    done: [
+      {
+        heading: taskConstantEt.FromMe_Done_Qestion_et,
+        description: taskConstantEt.FromMe_Done_desc_et,
+      },
+      {
+        heading: taskConstantEn.FromMe_Done_Qestion_en,
+        description: taskConstantEn.FromMe_Done_desc_en,
+      },
+    ],
+  },
+  allTaskToMe: {
+    ongoing: [
+      {
+        heading: taskConstantEt.To_Me_Ongoing_Qestion_et,
+        description: taskConstantEt.To_Me_Ongoing_desc_et,
+      },
+      {
+        heading: taskConstantEn.To_Me_Ongoing_Qestion_en,
+        description: taskConstantEn.To_Me_Ongoing_desc_en,
+      },
+    ],
+    done: [
+      {
+        heading: taskConstantEt.To_Me_Done_Qestion_et,
+        description: taskConstantEt.To_Me_Done_desc_et,
+      },
+      {
+        heading: taskConstantEn.To_Me_Done_Qestion_en,
+        description: taskConstantEn.To_Me_Done_desc_en,
+      },
+    ],
+  },
+  allTaskHidden: {
+    canceled: [
+      {
+        heading: taskConstantEt.Hidden_Canceled_Qestion_et,
+        description: taskConstantEt.Hidden_Canceled_desc_et,
+      },
+      {
+        heading: taskConstantEn.Hidden_Canceled_Qestion_en,
+        description: taskConstantEn.Hidden_Canceled_desc_en,
+      },
+    ],
+    done: [
+      {
+        heading: taskConstantEt.Hidden_Done_Qestion_et,
+        description: taskConstantEt.Hidden_Done_desc_et,
+      },
+      {
+        heading: taskConstantEn.Hidden_Done_Qestion_en,
+        description: taskConstantEn.Hidden_Done_desc_en,
+      },
+    ],
+    ongoing: [
+      {
+        heading: taskConstantEt.Hidden_Ongoing_Qestion_et,
+        description: taskConstantEt.Hidden_Ongoing_Qestion_et,
+      },
+      {
+        heading: taskConstantEn.Hidden_Ongoing_Qestion_en,
+        description: taskConstantEn.Hidden_Ongoing_desc_en,
+      },
+    ],
+  },
+};
+
+

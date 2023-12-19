@@ -19,7 +19,7 @@ import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
-import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
+import { taskConstants } from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 import FilterTabs from "./FilterTabs";
@@ -122,6 +122,10 @@ const Task = () => {
     return keys[keyIndex];
   };
 
+  const navigateToTask = (taskUID: string) => {
+    history.push(`/tasks/${subtask}/${getFilterKey()}/${taskUID}`);
+  };
+
   useEffect(() => {
     if (loadingAllTasks) {
       return;
@@ -131,13 +135,14 @@ const Task = () => {
       let path = "";
       let getFilteredKey = getFilterKey();
       let isTaskData = getTaskDataRequired();
+      const isUnreadOrNew = filterkey === "new" || filterkey === "unread";
       let foundTask = filteredTask.find(
         (taskItem) => taskItem.taskUID === taskuid
       );
       let foundIndex = filteredTask.findIndex(
         (item, index) => index === currentTask
       );
-      const isUnreadOrNew = filterkey === "new" || filterkey === "unread";
+
       if (!foundTask && filteredTask.length > 0 && !isUnreadOrNew) {
         if (foundIndex !== -1 && filteredTask.length - 1 !== foundIndex) {
           foundTask = filteredTask[currentTask];
@@ -218,7 +223,7 @@ const Task = () => {
             (isCreator && userSubState === "unread") ||
             (isAssignedToMe && userSubState === "new");
           if (!isTaskTabNavigate) {
-            history.push(`/tasks/${subtask}/${getFilterKey()}/${taskUID}`);
+            navigateToTask(taskUID);
           }
         }
       }
@@ -230,16 +235,12 @@ const Task = () => {
     }, 10);
   }, [subtask, selectedTab, RECENT_TASK_UPDATED_TIME_STAMP]);
 
-  const userSubStateLocal: string = (() => {
-    if (selectedTask === null) {
-      return "N/A";
-    }
-    const isAllTaskFromMe =
-      selectedTask.isCreator && subtask === "allTaskFromMe";
-    return isAllTaskFromMe
+  const userSubStateLocal: string =
+    selectedTask === null
+      ? "N/A"
+      : subtask === "allTaskFromMe"
       ? selectedTask.creatorState
       : selectedTask.userSubState;
-  })();
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
@@ -291,96 +292,9 @@ const Task = () => {
     ) {
       setIsTaskFromMe(newIsTaskFromMe[filterkey]);
     }
-
-    switch (subtask) {
-      case "allTaskFromMe":
-        if (filterkey === "ongoing") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.FromMe_Ongoing_Qestion_et,
-              description: taskConstantEt.FromMe_Ongoing_desc_et,
-            },
-            {
-              heading: taskConstantEn.FromMe_Ongoing_Qestion_en,
-              description: taskConstantEn.FromMe_Ongoing_desc_en,
-            },
-          ]);
-        } else if (filterkey === "done") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.FromMe_Done_Qestion_et,
-              description: taskConstantEt.FromMe_Done_desc_et,
-            },
-            {
-              heading: taskConstantEn.FromMe_Done_Qestion_en,
-              description: taskConstantEn.FromMe_Done_desc_en,
-            },
-          ]);
-        }
-        break;
-      case "allTaskToMe":
-        if (filterkey === "ongoing") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.To_Me_Ongoing_Qestion_et,
-              description: taskConstantEt.To_Me_Ongoing_desc_et,
-            },
-            {
-              heading: taskConstantEn.To_Me_Ongoing_Qestion_en,
-              description: taskConstantEn.To_Me_Ongoing_desc_en,
-            },
-          ]);
-        } else if (filterkey === "done") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.To_Me_Done_Qestion_et,
-              description: taskConstantEt.To_Me_Done_desc_et,
-            },
-            {
-              heading: taskConstantEn.To_Me_Done_Qestion_en,
-              description: taskConstantEn.To_Me_Done_desc_en,
-            },
-          ]);
-        }
-        break;
-      case "allTaskHidden":
-        if (filterkey === "canceled") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.Hidden_Canceled_Qestion_et,
-              description: taskConstantEt.Hidden_Canceled_desc_et,
-            },
-            {
-              heading: taskConstantEn.Hidden_Canceled_Qestion_en,
-              description: taskConstantEn.Hidden_Canceled_desc_en,
-            },
-          ]);
-        } else if (filterkey === "done") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.Hidden_Done_Qestion_et,
-              description: taskConstantEt.Hidden_Done_desc_et,
-            },
-            {
-              heading: taskConstantEn.Hidden_Done_Qestion_en,
-              description: taskConstantEn.Hidden_Done_desc_en,
-            },
-          ]);
-        } else if (filterkey === "ongoing") {
-          setEmptyScreenContent([
-            {
-              heading: taskConstantEt.Hidden_Ongoing_Qestion_et,
-              description: taskConstantEt.Hidden_Ongoing_Qestion_et,
-            },
-            {
-              heading: taskConstantEn.Hidden_Ongoing_Qestion_en,
-              description: taskConstantEn.Hidden_Ongoing_desc_en,
-            },
-          ]);
-        }
-        break;
-      default:
-        break;
+    const emptyScreenContent = taskConstants[subtask][filterkey];
+    if (emptyScreenContent) {
+      setEmptyScreenContent([...emptyScreenContent]);
     }
   }, [filterkey, subtask]);
 
@@ -396,7 +310,7 @@ const Task = () => {
   };
 
   const handleSelectedTask = (task: ITask) => {
-    history.push(`/tasks/${subtask}/${getFilterKey()}/${task.taskUID}`);
+    navigateToTask(task.taskUID);
     setSelectedTask(task);
   };
 
