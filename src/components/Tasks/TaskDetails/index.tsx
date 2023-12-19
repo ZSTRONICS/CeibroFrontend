@@ -50,17 +50,14 @@ function TaskDetails(props: IProps) {
   const { openModal, isOpen, closeModal } = useOpenCloseModal();
 
   useEffect(() => {
-    let getShowValue = (showFullView && JSON.parse(showFullView)) || {};
-    const isTaskFind =
-      getShowValue &&
-      Object.keys(getShowValue).some((key) => key.startsWith(taskUID));
+    let getShowValue = showFullView && JSON.parse(showFullView);
+    const isTaskFind = getShowValue && taskUID in getShowValue;
     if (isTaskFind) {
       startTransition(() => {
         setIsShowFullView(getShowValue[taskUID]);
       });
-    } else if (!isTaskFind) {
+    } else {
       setIsShowFullView(true);
-      localStorage.removeItem("showFullView");
     }
   }, [taskUID]);
 

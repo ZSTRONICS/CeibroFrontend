@@ -59,6 +59,7 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     socket.getSocket()?.emit("logout-window");
+    localStorage.removeItem("showFullView");
     setAnchorElUser(null);
     dispatch(logoutUser());
     purgeStoreStates();
