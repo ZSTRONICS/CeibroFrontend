@@ -114,8 +114,8 @@ function TaskDetails(props: IProps) {
     <Box
       key={_id}
       sx={{
-        marginLeft: "16px",
-        marginRight: "16px",
+        paddingTop: 1.25,
+        px: 2,
       }}
       // className="custom-scrollbar"
     >

@@ -82,15 +82,15 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     if (taskDetailContainer) {
       setDrawerWidth(taskDetailContainer.clientWidth - 6);
       setDrawerHeight(taskDetailContHeight / 3.61);
-      setState({
-        ...state,
-        deltaPosition: {
-          x: -13,
-          y:
-            taskDetailContainer.clientHeight * largeScreenCalc -
-            smallWindowPoints,
-        },
-      });
+      // setState({
+      //   ...state,
+      //   deltaPosition: {
+      //     x: -13,
+      //     y:
+      //       taskDetailContainer.clientHeight * largeScreenCalc -
+      //       smallWindowPoints,
+      //   },
+      // });
       // dispatch({
       //   type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
       //   payload: drawerHeight,
