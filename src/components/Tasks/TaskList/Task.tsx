@@ -19,7 +19,7 @@ import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
-import { taskConstants } from "utills/common";
+import { includesIgnoreCase, taskConstants } from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 import FilterTabs from "./FilterTabs";
@@ -65,7 +65,12 @@ const Task = () => {
   const history = useHistory();
   const [selectedTab, setSelectedTab] = useState("");
   const subTaskKey = subtask ?? "allTaskFromMe";
-
+  const propertiesToSearch = [
+    "taskUID",
+    "topic.topic",
+    "description",
+    "creator",
+  ];
   const getTaskDataRequired = () => {
     const subtaskPropertyMapping: any = {
       allTaskToMe: ["new", "ongoing", "done"],
@@ -208,11 +213,7 @@ const Task = () => {
         dataToSearch = task[subtask][selectedTab];
       }
       // selecting top most task by default
-      const data = searchInData(dataToSearch, searchText, [
-        "taskUID",
-        "topic.topic",
-        "description",
-      ]);
+      const data = searchInData(dataToSearch, searchText, propertiesToSearch);
 
       if (!taskuid || taskuid === "") {
         const newSelectedTask = data.length > 0 ? data[0] : null;
@@ -292,7 +293,8 @@ const Task = () => {
     ) {
       setIsTaskFromMe(newIsTaskFromMe[filterkey]);
     }
-    const emptyScreenContent = taskConstants[subtask][filterkey];
+    const emptyScreenContent =
+      subtask && filterkey && taskConstants[subtask][filterkey];
     if (emptyScreenContent) {
       setEmptyScreenContent([...emptyScreenContent]);
     }
@@ -316,31 +318,38 @@ const Task = () => {
 
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const searchTxt = event.target.value;
-    const filterData = searchInData(task[subtask][selectedTab], searchTxt, [
-      "taskUID",
-      "topic.topic",
-      "description",
-    ]);
+    const filterData = searchInData(
+      task[subtask][selectedTab],
+      searchTxt,
+      propertiesToSearch
+    );
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
-
+  /**
+   *this function performs a search on an array of ITask objects based on the searchText and the properties specified in the properties array
+   */
   function searchInData(
     data: ITask[],
     searchText: string,
     properties: string[]
-  ) {
-    if (searchText === "") {
+  ): ITask[] {
+    if (!searchText.trim()) {
       return data;
     }
+    const lowerSearchText = searchText.toLowerCase();
     return data.filter((item: ITask) => {
-      const lowerSearchText = searchText.toLowerCase();
       return properties.some((property) => {
-        const searchValue = _.get(item, property);
-        return (
-          searchValue &&
-          searchValue.toString().toLowerCase().includes(lowerSearchText)
-        );
+        const searchValue: string | UserInfo = _.get(item, property);
+        if (_.isString(searchValue)) {
+          return includesIgnoreCase(searchValue, lowerSearchText);
+        } else if (_.isObject(searchValue)) {
+          if (searchValue.firstName) {
+            const fullName = `${searchValue.firstName} ${searchValue.surName}`;
+            return includesIgnoreCase(fullName, lowerSearchText);
+          }
+        }
+        return false;
       });
     });
   }

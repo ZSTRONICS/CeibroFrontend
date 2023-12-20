@@ -55,6 +55,19 @@ export const handleGroupSearch = (
   // });
   return filteredData;
 };
+/**
+ * Checks if the given string includes the search value, ignoring case.
+ *
+ * @param {string} str - The string to search in.
+ * @param {string} searchValue - The value to search for.
+ * @return {boolean} Returns true if the string contains the search value, 
+ *                    Otherwise, returns false.
+ */
+export function includesIgnoreCase(str: string, searchValue: string): boolean {
+  const lowerStr = str.toLowerCase();
+  const lowerSearchValue = searchValue.toLowerCase();
+  return lowerStr.includes(lowerSearchValue);
+}
 
 //handle remove Item from File array fo image and doc
 export const removeItem = (data: File[], removeFile: File) => {
