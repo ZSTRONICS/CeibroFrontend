@@ -227,7 +227,7 @@ const Comment = ({
               paddingRight: "5px",
             }}
           >
-            {`${description.length}`}/ 1500
+            {`${description.length}/ 1500`}
           </span>
         </Box>
       </Box>

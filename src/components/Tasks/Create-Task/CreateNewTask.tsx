@@ -399,7 +399,7 @@ function CreateNewTask() {
                   color: "#757575",
                 }}
               >
-                {`${descriptionVal.length}`}/ 1500
+                {`${descriptionVal.length}/1500`}
               </span>
             </Box>
             {selectedImages.length > 0 && (
