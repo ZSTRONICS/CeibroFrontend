@@ -503,7 +503,7 @@ const ForwardTask = ({
                 paddingRight: "5px",
               }}
             >
-              {`${comment.length}`}/ 1500
+              {`${comment.length}/ 1500`}
             </span>
           </Box>
         </Box>

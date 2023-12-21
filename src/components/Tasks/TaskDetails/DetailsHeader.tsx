@@ -149,7 +149,9 @@ export default function DetailsHeader(props: IProps) {
   const renderLabel = (label: string): JSX.Element => (
     <Box
       sx={{
-        minWidth: label === "Sent to" || label === "Invitees" ? "50px" : "73px",
+        marginRight: "8px",
+        minWidth: "max-content",
+        // minWidth: label === "Sent to" || label === "Invitees" ? "50px" : "73px",
         height: "20px",
         gap: 1,
         display: "flex",
