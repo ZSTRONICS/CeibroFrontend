@@ -19,13 +19,16 @@ import { setValidationSchema } from "components/Auth/userSchema/ProfileSchema";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 // i18next
+import { CustomStack } from "components/CustomTags";
 import CustomModal from "components/Modal";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { UPDATE_MY_PROFILE } from "config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import ChangeNumberForm from "./ChangeNumberForm";
 import ChangePasswordForm from "./ChangePasswordForm";
+import DeleteAccount from "./DeleteAccount";
 import NumberConfirmationForm from "./NumberConfirmationForm";
 
 interface Props {
@@ -35,6 +38,7 @@ interface Props {
 const ProfileForm = ({ user }: Props) => {
   const { t }: any = useTranslation<any>();
   const [loading, setLoading] = useState<boolean>(false);
+  const history = useHistory();
   const dispatch = useDispatch();
   const isDisabled = !loading ? false : true;
   const profileSchema = setValidationSchema(t);
@@ -118,11 +122,11 @@ const ProfileForm = ({ user }: Props) => {
       );
     } else {
       setIsOpen(false);
-      toast.success(`${modalTitle} successfully`);
+      modalTitle !== "" && toast.success(`${modalTitle} successfully`);
     }
   };
 
-  type ModalType = "change-password" | "change-number";
+  type ModalType = "change-password" | "change-number" | "delete-account";
 
   const handleModal = (type: ModalType) => {
     setIsOpen(true);
@@ -138,6 +142,10 @@ const ProfileForm = ({ user }: Props) => {
       "change-number": {
         title: "Change phone number",
         children: <ChangeNumberForm closeDialog={closeDialog} />,
+      },
+      "delete-account": {
+        title: "",
+        children: <DeleteAccount closeDialog={closeDialog} />,
       },
     };
 
@@ -317,24 +325,35 @@ const ProfileForm = ({ user }: Props) => {
             </Grid>
             <Divider sx={{ mt: 1, mb: 3 }} />
           </Grid>
-
-          <Button
-            sx={{ ml: 3 }}
-            variant="contained"
-            color="primary"
-            type="submit"
-            disabled={
-              isDisabled ||
-              !onUpdate ||
-              formik.values.firstName.length === 0 ||
-              formik.values.surName.length === 0 ||
-              formik.values.email.length === 0 ||
-              loading
-            }
-          >
-            Update
-            {isDisabled && loading && <CircularProgress size={20} />}
-          </Button>
+          <CustomStack sx={{ justifyContent: "space-between" }}>
+            <Button
+              sx={{ ml: 3 }}
+              variant="contained"
+              color="primary"
+              type="submit"
+              disabled={
+                isDisabled ||
+                !onUpdate ||
+                formik.values.firstName.length === 0 ||
+                formik.values.surName.length === 0 ||
+                formik.values.email.length === 0 ||
+                loading
+              }
+            >
+              Update
+              {isDisabled && loading && <CircularProgress size={20} />}
+            </Button>
+            <Button
+              onClick={() => {
+                history.push("profile/deleteAccount");
+                handleModal("delete-account");
+              }}
+              variant="text"
+              sx={{ fontWeight: 500, fontSize: "14px", color: "red" }}
+            >
+              Delete account
+            </Button>
+          </CustomStack>
         </form>
       </Grid>
       <CustomModal
@@ -344,7 +363,7 @@ const ProfileForm = ({ user }: Props) => {
         }}
         title={modalTitle}
         children={modalChildren}
-        showCloseBtn={true}
+        showCloseBtn={modalTitle === "" ? false : true}
       />
     </>
   );

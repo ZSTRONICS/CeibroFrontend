@@ -76,7 +76,10 @@ const RouterConfig = () => {
               component={ForwardTask}
             />
             <DashboardLayout>
-              <PrivateRoute path="/profile" component={Profile} />
+              <PrivateRoute
+                path="/profile/:deleteAccount?"
+                component={Profile}
+              />
               <PrivateRoute
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
                 component={Task}

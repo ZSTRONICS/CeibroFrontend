@@ -1,3 +1,4 @@
+import ConfirmDeleteWebp from "./images/ConfirmDelete.webp";
 import notification from "./images/Notification.png";
 import visualWebp from "./images/Visual.webp";
 import addUser from "./images/addUser.svg";
@@ -134,6 +135,7 @@ const assets = {
   sidebarChatIcon,
   sidebarPaseIcon,
   visualWebp,
+  ConfirmDeleteWebp,
   logo,
   clipboardIcon,
   moreIcon,

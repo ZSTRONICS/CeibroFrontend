@@ -63,6 +63,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   const dispatch = useDispatch();
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [taskAction, setTaskAction] = useState<TaskAction>("comment");
+  const [isloading, setIsLoading] = useState(false);
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
   );
@@ -81,7 +82,9 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const handleDoneClick = () => {
+    setIsLoading(true);
     if (doneImageRequired === true || doneCommentsRequired === true) {
+      setIsLoading(false);
       handleClick("done");
     } else {
       dispatch(
@@ -93,12 +96,16 @@ const DetailActions: React.FC<IProps> = (props) => {
           },
           success: (res: any) => {
             history.push(`/tasks/${subtask}/${filterkey}`);
+            setIsLoading(false);
             if (res) {
               dispatch({
                 type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
                 payload: res.data.data,
               });
             }
+          },
+          onFailAction: () => {
+            setIsLoading(false);
           },
         })
       );
@@ -221,7 +228,7 @@ const DetailActions: React.FC<IProps> = (props) => {
                     padding: "0px 16px",
                     width: "100px",
                   }}
-                  disabled={false}
+                  disabled={isloading}
                 >
                   Done
                 </LoadingButton>

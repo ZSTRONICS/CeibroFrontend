@@ -22,6 +22,13 @@ const getUserContacts = apiCall({
   method: 'get',
   path: payload => `users/contacts`,
 })
+const deleteUser = apiCall({
+  useV2Route: true,
+  type: USER_CONFIG.DELETE_USER,
+  method: 'delete',
+  path: "users/deleteUser",
+})
+
 const getRecentUserContacts = apiCall({
   useV2Route: true,
   type: USER_CONFIG.GET_RECENT_USER_CONTACTS,
@@ -137,6 +144,7 @@ const getAvailableUsers = apiCall({
 
 function* userSaga() {
   yield takeLatest(USER_CONFIG.GET_USER_CONTACTS, getUserContacts)
+  yield takeLatest(USER_CONFIG.DELETE_USER, deleteUser)
   yield takeLatest(USER_CONFIG.GET_RECENT_USER_CONTACTS, getRecentUserContacts)
   yield takeLatest(RESEND_INVITATION, resendInvites)
   yield takeLatest(REVOKE_INVITAION, revokeInvites)

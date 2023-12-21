@@ -79,6 +79,7 @@ export interface IFile {
   fileName: string;
   fileTag: string;
   fileUrl: string;
+  fileType: string;
   uploadStatus: string;
   moduleType: string;
   moduleId: string;

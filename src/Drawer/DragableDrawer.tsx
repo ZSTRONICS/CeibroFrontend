@@ -1,6 +1,5 @@
 import { Box, Typography, styled } from "@mui/material";
 import { TASK_CONFIG } from "config";
-// import { useResponsive } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,8 +36,7 @@ const DragableLines2 = styled(Box)(({ theme }: any) => ({
 
 function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
   const dispatch = useDispatch();
-  const draggableRef = useRef(null);
-  // const isLargeScreen = useResponsive("up", "lg", "");
+  const draggableRef: any = useRef(null);
   const taskDragContHeight = useSelector(
     (store: RootState) => store.task.taskDragContHeight
   );
@@ -168,7 +166,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     if (state.activeDrags > 0 && draggableRef.current) {
       dispatch({
         type: TASK_CONFIG.TASK_DRAGABLE_CONTAINER_HEIGHT,
-        payload: drawerHeight,
+        payload: draggableRef.current.clientHeight,
       });
     }
     if (drawerHeight < 120) {
@@ -182,7 +180,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
           <Draggable
             allowAnyClick={true}
             axis="y"
-            ref={draggableRef}
+            nodeRef={draggableRef}
             position={state.deltaPosition}
             handle={".handle"}
             onStart={onStart}
@@ -193,7 +191,11 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
               bottom: taskDetailContHeight - 210,
             }}
           >
-            <StyledBox id="dragableContainer" style={containerStyle}>
+            <StyledBox
+              ref={draggableRef}
+              id="dragableContainer"
+              style={containerStyle}
+            >
               <StyledBox
                 className={"handle"}
                 sx={{

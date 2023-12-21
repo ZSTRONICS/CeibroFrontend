@@ -428,8 +428,8 @@ export const onlyUnique = (value: any, index: any, array: any) => {
 //   year: "numeric",
 // });
 
-export const DOC_EXT = ['.pdf', '.svg', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv', '.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf', '.odt', '.ods', '.odp', '.odg', '.djvu', '.keynote']
-export const MEDIA_EXT = ['.jpg', '.jpeg', '.png', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
+export const DOC_EXT = ['.pdf', '.doc', '.docx', '.xls', '.xlsx', '.txt', '.rtf', '.ppt', '.pptx', '.csv', '.psd', '.ai', '.eps', '.cdr', '.dwg', '.dxf', '.odt', '.ods', '.odp', '.odg', '.djvu', '.keynote']
+export const MEDIA_EXT = ['.jpg', '.bmp', '.jpeg', '.png', '.svg', '.gif', '.mp4', '.mov', '.avi', '.flv', '.mp3', '.wav', '.indd']
 const imageFileRegex = /\.(jpg|jpeg|png)$/i;
 export const validTypes = [
   "image/*",

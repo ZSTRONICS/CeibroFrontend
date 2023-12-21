@@ -21,6 +21,7 @@ import { createAction } from './action'
 export const userApiAction = {
   getUsersByRole: createAction(USER_CONFIG.GET_USERS_BY_ROLE),
   getUserContacts: createAction(USER_CONFIG.GET_USER_CONTACTS),
+  deleteUser: createAction(USER_CONFIG.DELETE_USER),
   getRecentContacts: createAction(USER_CONFIG.GET_RECENT_USER_CONTACTS)
 }
 

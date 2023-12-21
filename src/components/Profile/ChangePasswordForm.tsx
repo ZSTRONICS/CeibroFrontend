@@ -89,7 +89,10 @@ const ChangePasswordForm = (props: IProps) => {
           handleBlur,
           handleSubmit,
         }) => (
-          <form onSubmit={handleSubmit} style={{ width: "100%" }}>
+          <form
+            onSubmit={handleSubmit}
+            style={{ width: "100%", padding: "5px 10px" }}
+          >
             {success && (
               <Alert severity="success">
                 {`${t("auth.password_reset_successfully")}`}
