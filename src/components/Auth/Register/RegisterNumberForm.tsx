@@ -58,7 +58,6 @@ export default function RegisterNumberForm() {
       );
       if (response.data) {
         handleSuccess(response.data);
-        console.log("Response:", response.data);
       }
     } catch (error: any) {
       if (error.response) {

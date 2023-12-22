@@ -72,7 +72,7 @@ function AddedDetails(props: IProps) {
 
   return (
     <>
-      <Box sx={{ mb: 1 }}>
+      <Box sx={{ mb: 1 }} id="task-added-detail">
         <Typography
           sx={{
             fontFamily: "Inter",
@@ -87,7 +87,7 @@ function AddedDetails(props: IProps) {
       </Box>
       <Box ref={listRef} className="custom-scrollbar">
         {events?.length > 0 ? (
-          events.map((event: TaskEvent) => {
+          events.map((event: TaskEvent, index: number) => {
             const {
               initiator,
               createdAt,
@@ -114,20 +114,95 @@ function AddedDetails(props: IProps) {
                 })
                 .join(", ");
             switch (eventType) {
+              case TaskEventType.Comment:
+                let media: any = [];
+                let docs: any = [];
+                if (commentData && commentData?.files.length > 0) {
+                  docs = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
+                  media = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
+                }
+                let mediaWithComment: any = media.filter(
+                  (file: IFile) => file.comment.length > 0
+                );
+                let mediaWithoutComment: any = media.filter(
+                  (file: IFile) => !(file.comment.length > 0)
+                );
+                return (
+                  <React.Fragment key={`${event.commentData?._id}-${index}`}>
+                    <EventWrap
+                      keyId={`${event.commentData?._id + "Comment" + index}`}
+                      creator={initiator._id === user._id}
+                    >
+                      <CustomStack gap={1.2}>
+                        <DocName>{`${initiator.firstName} ${
+                          initiator.surName
+                        } ${momentLocalDateTime(createdAt)}`}</DocName>
+                      </CustomStack>
+                      <CustomDivider />
+                      {commentData?.message && (
+                        <>
+                          <ReadMoreWrapper
+                            title="Comment"
+                            type="text"
+                            data={commentData.message}
+                          />
+                          <CustomDivider />
+                        </>
+                      )}
+                      {docs.length > 0 && (
+                        <>
+                          <ReadMoreWrapper
+                            count={docs.length}
+                            title="Files"
+                            type="file"
+                            data={docs}
+                          />
+                          <CustomDivider />
+                        </>
+                      )}
+                      {mediaWithoutComment.length > 0 && (
+                        <>
+                          <ReadMoreWrapper
+                            title="Images"
+                            type="image"
+                            count={mediaWithoutComment.length}
+                            data={mediaWithoutComment}
+                          />
+                          <CustomDivider />
+                        </>
+                      )}
+                      {mediaWithComment.filter(
+                        (file: IFile) => file.comment.length > 0
+                      ).length > 0 && (
+                        <>
+                          <ReadMoreWrapper
+                            title="Images with comments"
+                            type="imageWithDesp"
+                            count={mediaWithComment.length}
+                            data={mediaWithComment}
+                          />
+                          <CustomDivider />
+                        </>
+                      )}
+                    </EventWrap>
+                  </React.Fragment>
+                );
               case TaskEventType.InvitedUser:
                 return (
-                  <EventWrap
-                    key={event._id + "InvitedUser"}
-                    creator={initiator._id === user._id}
-                  >
-                    <CustomStack gap={1.2}>
-                      <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                      <DocName>{`${initiator.firstName} ${
-                        initiator.surName
-                      } ${momentLocalDateTime(createdAt)}`}</DocName>
-                    </CustomStack>
-                    <DocName>{`${invitedMembersData}`}</DocName>
-                  </EventWrap>
+                  <React.Fragment key={`${event._id}-${index}`}>
+                    <EventWrap
+                      keyId={`${event._id + "InvitedUser" + index}`}
+                      creator={initiator._id === user._id}
+                    >
+                      <CustomStack gap={1.2}>
+                        <Span sx={{ fontSize: "12px" }}>invited by</Span>
+                        <DocName>{`${initiator.firstName} ${
+                          initiator.surName
+                        } ${momentLocalDateTime(createdAt)}`}</DocName>
+                      </CustomStack>
+                      <DocName>{`${invitedMembersData}`}</DocName>
+                    </EventWrap>
+                  </React.Fragment>
                 );
 
               case TaskEventType.ForwardTask:
@@ -165,84 +240,93 @@ function AddedDetails(props: IProps) {
                         .join(", ")
                     : "N/A";
                 return (
-                  <EventWrap
-                    key={event._id + "invitedMembersLocal"}
-                    creator={initiator._id === user._id}
-                  >
-                    {eventData && eventData.length > 0 && (
-                      <>
-                        <CustomStack gap={1.2}>
-                          <DocName>{` ${momentLocalDateTime(
-                            createdAt
-                          )}`}</DocName>
-                          <Span
-                            sx={{ fontSize: "12px" }}
-                          >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
-                          <DocName>{userInfo}</DocName>
-                          <CustomDivider />
-                        </CustomStack>
+                  <React.Fragment key={`${event._id}-${index}`}>
+                    <EventWrap
+                      keyId={`${event._id + "invitedMembersLocal" + index}`}
+                      creator={initiator._id === user._id}
+                    >
+                      {eventData && eventData.length > 0 && (
                         <>
-                          {commentData?.message && (
-                            <ReadMoreWrapper
-                              title="Comment"
-                              type="text"
-                              data={commentData?.message}
-                            />
-                          )}
-                          <CustomDivider />
+                          <CustomStack gap={1.2}>
+                            <DocName>{` ${momentLocalDateTime(
+                              createdAt
+                            )}`}</DocName>
+                            <Span
+                              sx={{ fontSize: "12px" }}
+                            >{`${initiator.firstName} ${initiator.surName} forwarded task to:`}</Span>
+                            <DocName>{userInfo}</DocName>
+                            <CustomDivider />
+                          </CustomStack>
+                          <>
+                            {commentData?.message && (
+                              <ReadMoreWrapper
+                                title="Comment"
+                                type="text"
+                                data={commentData?.message}
+                              />
+                            )}
+                            <CustomDivider />
+                          </>
                         </>
-                      </>
-                    )}
-                    {invitedMembers.length > 0 && (
-                      <React.Fragment key={event._id + "invitedMembers"}>
-                        <CustomStack gap={1.2}>
-                          <Span sx={{ fontSize: "12px" }}>invited by</Span>
-                          <DocName>{`${initiator.firstName} ${
-                            initiator.surName
-                          } ${momentLocalDateTime(createdAt)}`}</DocName>
-                        </CustomStack>
-                        <CustomDivider />
-                        <DocName>{`${invitedMembersLocal}`}</DocName>
-                      </React.Fragment>
-                    )}
-                  </EventWrap>
+                      )}
+                      {invitedMembers.length > 0 && (
+                        <React.Fragment key={event._id + "invitedMembers"}>
+                          <CustomStack gap={1.2}>
+                            <Span sx={{ fontSize: "12px" }}>invited by</Span>
+                            <DocName>{`${initiator.firstName} ${
+                              initiator.surName
+                            } ${momentLocalDateTime(createdAt)}`}</DocName>
+                          </CustomStack>
+                          <CustomDivider />
+                          <DocName>{`${invitedMembersLocal}`}</DocName>
+                        </React.Fragment>
+                      )}
+                    </EventWrap>
+                  </React.Fragment>
                 );
+
               case TaskEventType.CancelTask:
                 return (
-                  <EventWrap
-                    key={event._id + "CancelTask"}
-                    creator={initiator._id === user._id}
-                  >
-                    <CustomStack gap={1.2}>
-                      <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
-                      <DocName>{`${initiator.firstName} ${
-                        initiator.surName
-                      } ${momentLocalDateTime(createdAt)}`}</DocName>
-                    </CustomStack>
-                    <CustomDivider />
-                    <Span sx={{ fontSize: "12px" }}>
-                      Task has been Canceled
-                    </Span>
-                  </EventWrap>
+                  <React.Fragment key={`${event._id}-${index}`}>
+                    <EventWrap
+                      keyId={`${event._id + "CancelTask" + index}`}
+                      creator={initiator._id === user._id}
+                    >
+                      <CustomStack gap={1.2}>
+                        <Span sx={{ fontSize: "12px" }}>Canceled by</Span>
+                        <DocName>{`${initiator.firstName} ${
+                          initiator.surName
+                        } ${momentLocalDateTime(createdAt)}`}</DocName>
+                      </CustomStack>
+                      <CustomDivider />
+                      <Span sx={{ fontSize: "12px" }}>
+                        Task has been Canceled
+                      </Span>
+                    </EventWrap>
+                  </React.Fragment>
                 );
+
               case TaskEventType.UnCancelTask:
                 return (
-                  <EventWrap
-                    key={event._id + "UnCancelTask"}
-                    creator={initiator._id === user._id}
-                  >
-                    <CustomStack gap={1.2}>
-                      <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
-                      <DocName>{`${initiator.firstName} ${
-                        initiator.surName
-                      } ${momentLocalDateTime(createdAt)}`}</DocName>
-                    </CustomStack>
-                    <CustomDivider />
-                    <Span sx={{ fontSize: "12px" }}>
-                      Task has been Un-canceled
-                    </Span>
-                  </EventWrap>
+                  <React.Fragment key={`${event._id}-${index}`}>
+                    <EventWrap
+                      keyId={`${event._id + "UnCancelTask" + index}`}
+                      creator={initiator._id === user._id}
+                    >
+                      <CustomStack gap={1.2}>
+                        <Span sx={{ fontSize: "12px" }}>Un-canceled by</Span>
+                        <DocName>{`${initiator.firstName} ${
+                          initiator.surName
+                        } ${momentLocalDateTime(createdAt)}`}</DocName>
+                      </CustomStack>
+                      <CustomDivider />
+                      <Span sx={{ fontSize: "12px" }}>
+                        Task has been Un-canceled
+                      </Span>
+                    </EventWrap>
+                  </React.Fragment>
                 );
+
               case TaskEventType.DoneTask:
                 let mediaLocal: any = [];
                 let docsLocal: any = [];
@@ -256,7 +340,6 @@ function AddedDetails(props: IProps) {
                 let mediaLocalWithoutComment: any = mediaLocal.filter(
                   (file: IFile) => !(file.comment.length > 0)
                 );
-
                 return (
                   <Box
                     key={event._id + "DoneTask"}
@@ -320,79 +403,9 @@ function AddedDetails(props: IProps) {
                     )}
                   </Box>
                 );
-              case TaskEventType.Comment:
-                let media: any = [];
-                let docs: any = [];
-                if (commentData && commentData?.files.length > 0) {
-                  docs = FILTER_DATA_BY_EXT(DOC_EXT, commentData.files);
-                  media = FILTER_DATA_BY_EXT(MEDIA_EXT, commentData.files);
-                }
-                let mediaWithComment: any = media.filter(
-                  (file: IFile) => file.comment.length > 0
-                );
-                let mediaWithoutComment: any = media.filter(
-                  (file: IFile) => !(file.comment.length > 0)
-                );
-                return (
-                  <EventWrap
-                    key={event._id + "Comment"}
-                    creator={initiator._id === user._id}
-                  >
-                    <CustomStack gap={1.2}>
-                      <DocName>{`${initiator.firstName} ${
-                        initiator.surName
-                      } ${momentLocalDateTime(createdAt)}`}</DocName>
-                    </CustomStack>
-                    <CustomDivider />
-                    {commentData?.message && (
-                      <>
-                        <ReadMoreWrapper
-                          title="Comment"
-                          type="text"
-                          data={commentData.message}
-                        />
-                        <CustomDivider />
-                      </>
-                    )}
-                    {docs.length > 0 && (
-                      <>
-                        <ReadMoreWrapper
-                          count={docs.length}
-                          title="Files"
-                          type="file"
-                          data={docs}
-                        />
-                        <CustomDivider />
-                      </>
-                    )}
-                    {mediaWithoutComment.length > 0 && (
-                      <>
-                        <ReadMoreWrapper
-                          title="Images"
-                          type="image"
-                          count={mediaWithoutComment.length}
-                          data={mediaWithoutComment}
-                        />
-                        <CustomDivider />
-                      </>
-                    )}
-                    {mediaWithComment.filter(
-                      (file: IFile) => file.comment.length > 0
-                    ).length > 0 && (
-                      <>
-                        <ReadMoreWrapper
-                          title="Images with comments"
-                          type="imageWithDesp"
-                          count={mediaWithComment.length}
-                          data={mediaWithComment}
-                        />
-                        <CustomDivider />
-                      </>
-                    )}
-                  </EventWrap>
-                );
+
               default:
-                return null;
+                return <></>;
             }
           })
         ) : (

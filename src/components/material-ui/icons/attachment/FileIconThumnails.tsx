@@ -30,8 +30,8 @@ function PdfIconThumnails() {
       />
       <path
         opacity="0.12"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M11.7057 9.02531H4.29395V8.24609H11.7057V9.02531ZM11.7057 10.9734H4.29395V10.1941H11.7057V10.9734ZM4.29395 12.9214H11.7057V12.1422H4.29395V12.9214ZM11.7057 14.8695H4.29395V14.0902H11.7057V14.8695ZM4.29395 16.8175H11.7057V16.0383H4.29395V16.8175Z"
         fill="white"
       />
@@ -83,9 +83,9 @@ function PdfIconThumnails() {
           width="56"
           height="56.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -196,8 +196,8 @@ const TextFileThumbnail = () => {
       </g>
       <path
         opacity="0.12"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M11.7057 9.02531H4.29395V8.24609H11.7057V9.02531ZM11.7057 10.9734H4.29395V10.1941H11.7057V10.9734ZM4.29395 12.9214H11.7057V12.1422H4.29395V12.9214ZM11.7057 14.8695H4.29395V14.0902H11.7057V14.8695ZM4.29395 16.8175H11.7057V16.0383H4.29395V16.8175Z"
         fill="white"
       />
@@ -249,9 +249,9 @@ const TextFileThumbnail = () => {
           width="88.4707"
           height="83.4531"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -270,9 +270,9 @@ const TextFileThumbnail = () => {
           width="56"
           height="56.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -385,8 +385,8 @@ const ExcelFileThumbnail = () => {
       </g>
       <path
         opacity="0.12"
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M5.76448 10.5856V8.24797H2.76448V10.5856H5.76448ZM2.05859 11.3649V10.5856V7.98823C2.05859 7.70135 2.26928 7.46875 2.52918 7.46875H5.76448H6.47036H9.47036H10.1762H13.4115C13.6714 7.46875 13.8821 7.70135 13.8821 7.98823V17.0791C13.8821 17.366 13.6714 17.5986 13.4115 17.5986H2.52918C2.26928 17.5986 2.05859 17.366 2.05859 17.0791V14.4817V13.7025V11.3649ZM2.76448 13.7025V11.3649H5.76448V13.7025H2.76448ZM2.76448 14.4817V16.8194H5.76448V14.4817H2.76448ZM6.47036 16.8194H9.47036V14.4817H6.47036V16.8194ZM10.1762 16.8194H13.1762V14.4817H10.1762V16.8194ZM13.1762 13.7025V11.3649H10.1762V13.7025H13.1762ZM13.1762 10.5856V8.24797H10.1762V10.5856H13.1762ZM9.47036 8.24797H6.47036V10.5856H9.47036V8.24797ZM9.47036 11.3649V13.7025H6.47036V11.3649H9.47036Z"
         fill="white"
       />
@@ -440,7 +440,7 @@ const ExcelFileThumbnail = () => {
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -459,9 +459,9 @@ const ExcelFileThumbnail = () => {
           width="56"
           height="56.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -672,9 +672,9 @@ const ZipFileThumbnail = () => {
           width="88.4707"
           height="83.4531"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -693,9 +693,9 @@ const ZipFileThumbnail = () => {
           width="56"
           height="56.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"
@@ -892,9 +892,9 @@ const DocFileThumbnail = () => {
           width="88.4707"
           height="83.4531"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             mode="normal"
             in="SourceGraphic"
@@ -913,9 +913,9 @@ const DocFileThumbnail = () => {
           width="56"
           height="56.625"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

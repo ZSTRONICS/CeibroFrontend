@@ -199,7 +199,6 @@ const DocumentViewer = (props) => {
     const icons = [...drawingIcons];
     setDrawingIcons(icons);
     handleCloseModal();
-    console.log("Assign Task");
   };
 
   const handleDeleteMarker = (index) => {

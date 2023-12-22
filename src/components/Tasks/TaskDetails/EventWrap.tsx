@@ -2,12 +2,12 @@ import { Box, useMediaQuery } from "@mui/material";
 import React, { ReactNode } from "react";
 
 interface EventWrapProps {
-  key: string;
+  keyId: string;
   children: ReactNode;
   creator: boolean;
 }
 
-const EventWrap: React.FC<EventWrapProps> = ({ children, key, creator }) => {
+const EventWrap: React.FC<EventWrapProps> = ({ children, keyId, creator }) => {
   const isMediumScreen = useMediaQuery("(max-width:960px)");
   const style = {
     backgroundColor: creator ? "#EAEAEA" : "#D3E9F9",
@@ -19,7 +19,7 @@ const EventWrap: React.FC<EventWrapProps> = ({ children, key, creator }) => {
   };
 
   return (
-    <Box key={key} style={{ ...style }}>
+    <Box key={`${keyId}`} style={{ ...style }}>
       {children}
     </Box>
   );

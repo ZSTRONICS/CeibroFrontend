@@ -41,7 +41,6 @@ const Task = () => {
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
-  const [updateTaskEvent, setUpdateTaskEvent] = useState<any>(null);
   const [currentTask, setCurrentTask] = useState<number>(-1);
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
@@ -327,7 +326,7 @@ const Task = () => {
     setFilteredTask(filterData);
   };
   /**
-   *this function performs a search on an array of ITask objects based on the searchText and the properties specified in the properties array
+   * Searches an array of ITask objects based on the specified properties and searchText.
    */
   function searchInData(
     data: ITask[],
@@ -341,9 +340,12 @@ const Task = () => {
     return data.filter((item: ITask) => {
       return properties.some((property) => {
         const searchValue: string | UserInfo = _.get(item, property);
+        // If the searchValue is a string, check if it includes the lowerSearchText
         if (_.isString(searchValue)) {
           return includesIgnoreCase(searchValue, lowerSearchText);
-        } else if (_.isObject(searchValue)) {
+        }
+        // If the searchValue is an object, check if it has firstName and surName properties
+        else if (_.isObject(searchValue)) {
           if (searchValue.firstName) {
             const fullName = `${searchValue.firstName} ${searchValue.surName}`;
             return includesIgnoreCase(fullName, lowerSearchText);
@@ -354,42 +356,47 @@ const Task = () => {
     });
   }
 
-  useEffect(() => {
-    if (updateTaskEvent !== null) {
-      dispatch({
-        type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-        payload: updateTaskEvent.data.data,
-      });
+  const handleTaskAction = (
+    actionType: (arg: {
+      other: { taskId: string };
+      success: (res: any) => void;
+    }) => any,
+    actionConfig: { eventType: any }
+  ) => {
+    if (selectedTask) {
+      dispatch(
+        actionType({
+          other: { taskId: selectedTask._id },
+          success: (res: any) => {
+            if (res) {
+              dispatch({
+                type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+                payload: {
+                  ...res.data,
+                  userId,
+                  eventType: actionConfig.eventType,
+                },
+              });
+            }
+            setFilteredTask((prevFilteredTask) =>
+              prevFilteredTask.filter(
+                (item) => item.taskUID !== selectedTask.taskUID
+              )
+            );
+          },
+        })
+      );
     }
-  }, [updateTaskEvent]);
+  };
 
   const menuOptions = [
     {
       menuName: "Hide",
       callBackHandler: () => {
         if (selectedTask) {
-          dispatch(
-            taskActions.taskHide({
-              other: { taskId: selectedTask._id },
-              success: (res: any) => {
-                if (res) {
-                  dispatch({
-                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                    payload: {
-                      ...res.data,
-                      userId,
-                      eventType: TASK_CONFIG.TASK_HIDDEN,
-                    },
-                  });
-                }
-                setFilteredTask(
-                  filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask.taskUID
-                  )
-                );
-              },
-            })
-          );
+          handleTaskAction(taskActions.taskHide, {
+            eventType: TASK_CONFIG.TASK_HIDDEN,
+          });
         }
       },
     },
@@ -397,28 +404,9 @@ const Task = () => {
       menuName: "Un-hide",
       callBackHandler: () => {
         if (selectedTask) {
-          dispatch(
-            taskActions.taskShow({
-              other: { taskId: selectedTask._id },
-              success: (res: any) => {
-                if (res) {
-                  dispatch({
-                    type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                    payload: {
-                      ...res.data,
-                      userId,
-                      eventType: TASK_CONFIG.TASK_SHOWN,
-                    },
-                  });
-                }
-                setFilteredTask(
-                  filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask.taskUID
-                  )
-                );
-              },
-            })
-          );
+          handleTaskAction(taskActions.taskShow, {
+            eventType: TASK_CONFIG.TASK_SHOW,
+          });
         }
       },
     },
@@ -426,22 +414,9 @@ const Task = () => {
       menuName: "Cancel",
       callBackHandler: () => {
         if (selectedTask) {
-          dispatch(
-            taskActions.taskCaneled({
-              other: { taskId: selectedTask._id },
-              success: (res: any) => {
-                dispatch({
-                  type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
-                  payload: res.data.data,
-                });
-                setFilteredTask(
-                  filteredTask.filter(
-                    (item: any) => item.taskUID !== selectedTask.taskUID
-                  )
-                );
-              },
-            })
-          );
+          handleTaskAction(taskActions.taskCaneled, {
+            eventType: TASK_CONFIG.TASK_CANCELED,
+          });
         }
       },
     },
@@ -449,28 +424,23 @@ const Task = () => {
       menuName: "Un-cancel",
       callBackHandler: () => {
         if (selectedTask) {
-          dispatch(
-            taskActions.taskUnCanel({
-              other: { taskId: selectedTask._id },
-              success: (res: any) => {
-                const localTasks = filteredTask.filter(
-                  (item: any) => String(item._id) !== String(selectedTask._id)
-                );
-                setFilteredTask(localTasks);
-                setSelectedTask(null);
-                setUpdateTaskEvent(res);
-              },
-            })
-          );
+          handleTaskAction(taskActions.taskUnCanel, {
+            eventType: TASK_CONFIG.TASK_UN_CANCEL,
+          });
         }
       },
     },
   ];
 
+  /**
+   * Clears the cache of the task card list.
+   */
   const clearTaskCardListCache = () => {
     if (taskCardListRef && taskCardListRef.current) {
+      // Reset the list starting from the first index
       taskCardListRef.current.resetAfterIndex(0, true);
     } else {
+      // If the taskCardListRef is not ready yet, wait for 5 milliseconds and try again
       setTimeout(() => {
         clearTaskCardListCache();
       }, 5);
@@ -478,6 +448,7 @@ const Task = () => {
   };
 
   const filteredMenuOptions = (myState: string, subState: string) => {
+    // Get the option name based on the given state and substate
     const optionName = optionMapping[myState]?.[subState];
     return optionName
       ? menuOptions.filter((option) => option.menuName === optionName)
@@ -555,7 +526,6 @@ const Task = () => {
         }}
       >
         <Box
-          // className="custom-scrollbar"
           sx={{
             display: "flex",
             alignItems: "center",
