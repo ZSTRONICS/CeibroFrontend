@@ -12,7 +12,7 @@ import {
   momentLocalDateTime,
 } from "components/Utills/Globals";
 import { AssignedUserState, ITask } from "constants/interfaces";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface IProps {
   task: ITask;
@@ -24,7 +24,7 @@ interface IProps {
   isTaskFromMe: string;
 }
 
-function TaskCard(props: IProps) {
+const TaskCard = React.memo((props: IProps) => {
   const {
     task,
     handleClick,
@@ -272,6 +272,6 @@ function TaskCard(props: IProps) {
       </CardContent>
     </Card>
   );
-}
+});
 
 export { TaskCard };

@@ -76,7 +76,7 @@ interface ProjectReducerInt {
   allProjects: any;
   allFloors: Floor[];
   isFloorLoading: boolean;
-  projects: ProjectInterface[];
+  projects: Project[];
   projectMembers: [];
   projectWithMembers: any[];
   selectedProject: any;

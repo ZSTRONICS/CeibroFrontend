@@ -58,7 +58,6 @@ const Task = () => {
     allTaskToMe,
     allTaskFromMe,
     loadingAllTasks,
-    allTaskHidden,
     RECENT_TASK_UPDATED_TIME_STAMP,
   } = task;
   const history = useHistory();

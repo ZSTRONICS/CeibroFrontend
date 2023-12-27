@@ -14,10 +14,10 @@ export const useSocket = () => {
     const { isLoggedIn, forceCloseWindow, user } = useSelector((store: RootState) => store.auth);
     const { RECENT_TASK_UPDATED_TIME_STAMP, unSeenTasks } = useSelector((store: RootState) => store.task);
     const [shouldSendHeartbeat, setShouldSendHeartbeat] = useState(true);
+    const [localToken, setLocalToken] = useState<string>("");
     const userId = user && user._id;
     const dispatch = useDispatch();
     const history = useHistory();
-
     const updateLocalTaskTabSeen = (newTaskData: any) => {
         const { toMeState,
             fromMeState,
@@ -131,6 +131,7 @@ export const useSocket = () => {
 
 
     useEffect(() => {
+        let sock: any = null
         if (!isLoggedIn) {
             console.log("not logged in")
 
@@ -159,8 +160,8 @@ export const useSocket = () => {
             return;
         }
 
-        const myToken = tokens && JSON.parse(tokens)?.access?.token;
-
+        const myToken = tokens && JSON.parse(tokens).access.token;
+        setLocalToken(myToken);
         global.isSocketConnecting = true;
         function generateSecureUUID() {
             return uuidv4();
@@ -189,11 +190,12 @@ export const useSocket = () => {
             socket.setSocket(null);
         });
 
-        const sock = io(SERVER_URL, {
+        sock = io(SERVER_URL, {
             transports: ["websocket"],
             auth: {
                 token: myToken,
-            }, query: {
+            },
+            query: {
                 secureUUID: String(secureUUID),
                 deviceType: "web",
             }
@@ -251,47 +253,52 @@ export const useSocket = () => {
             }
         });
 
-        sock.on("token_invalid", () => {
+        sock.on("token_invalid", async () => {
             console.log("token_invalid received from server");
-            const tokens = localStorage.getItem("tokens") || "{}";
-            const jsonToken = JSON.parse(tokens || '{}');
-            console.log('jsonToken>>>', jsonToken)
-            if (jsonToken && jsonToken.access && jsonToken.access.token) {
-                AxiosV2.post(`${urlV2}/auth/refresh-tokens`, {
-                    refreshToken: String(jsonToken.refresh.token),
-                })
-                    .then((response: any) => {
-                        if (response) {
-                            localStorage.setItem("tokens", JSON.stringify(response.data));
-
-                            const tokens = localStorage.getItem("tokens") || "{}";
-                            const newToken = JSON.parse(tokens)?.access?.token;
-
-                            sock.auth = {
-                                token: newToken,
-                            };
-                            sock.connect();
-                        } else {
-                            alert("Session Expired");
-                            global.isSocketConnecting = false;
-                            history.push(LOGIN_ROUTE);
-                            window.location.reload();
-                        }
+            try {
+                const tokens = localStorage.getItem("tokens") || "{}";
+                const jsonToken = JSON.parse(tokens || '{}');
+                if (jsonToken && jsonToken.access.token) {
+                    const response = await AxiosV2.post(`${urlV2}/auth/refresh-tokens`, {
+                        refreshToken: String(jsonToken.refresh.token),
                     })
-                    .catch((err) => {
-                        global.isSocketConnecting = false;
-                        history.push(LOGIN_ROUTE);
-                        alert("Session Expired");
-                        window.location.reload();
-                    });
-            } else {
+                    if (response) {
+                        localStorage.setItem("tokens", JSON.stringify(response.data));
+                        console.log('jsonToken>>>111', response.data.access);
+                        const newToken = response.data.access.token;
+                        setLocalToken(newToken);
+                        // Reconnect socket with the new token
+                        sock.disconnect();
+                        sock = io(SERVER_URL, {
+                            transports: ['websocket'],
+                            auth: {
+                                token: newToken,
+                            },
+                            query: {
+                                secureUUID: String(secureUUID),
+                                deviceType: 'web',
+                            },
+                        });
+                        setTimeout(function () {
+                            sock.emit("heartbeat");
+                        }, 1000);
+                        console.log('jsonToken>>>222', newToken, sock.auth)
+                    }
+                } else {
+                    alert("Session Expired");
+                    global.isSocketConnecting = false;
+                    history.push(LOGIN_ROUTE);
+                    window.location.reload();
+                }
+            } catch (error) {
+                alert("Session Expired");
+                global.isSocketConnecting = false;
                 history.push(LOGIN_ROUTE);
                 window.location.reload();
             }
         });
 
         sock.on(CEIBRO_LIVE_EVENT_BY_SERVER, (dataRcvd: any, ack: any) => {
-
             console.log("eventType--->", dataRcvd);
             // if (ack) {
             //     console.log(`sending ack to server`)
@@ -301,6 +308,5 @@ export const useSocket = () => {
             handleSocketEvents(dataRcvd);
         });
 
-    }, [isLoggedIn]);
-    // More socket event handling...
+    }, [isLoggedIn, localToken]);
 };

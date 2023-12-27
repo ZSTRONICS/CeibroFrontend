@@ -4,7 +4,7 @@ import { CBox } from "components/material-ui";
 import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PROJECT_APIS, docsAction } from "redux/action";
+import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
 import { socket } from "services/socket.services";
 
@@ -48,13 +48,14 @@ function AddDrawingFloor(props: IProps) {
       const finalMetadata = `"${metadataString}"`;
       if (file && floorId) {
         formData.append("files", file);
-        formData.append("moduleName", "Floor");
-        formData.append("moduleId", floorId);
+        formData.append("floorId", floorId);
+        // formData.append("projectId", projectId);
+        // formData.append("groupId", groupId);
         formData.append("metadata", finalMetadata);
         const payload = {
           body: formData,
         };
-        dispatch(docsAction.uploadDocsByModuleNameAndId(payload));
+        dispatch(PROJECT_APIS.addNewDrawing(payload));
       }
     } catch (error) {
       console.error("Error occurred while uploading image:", error);
