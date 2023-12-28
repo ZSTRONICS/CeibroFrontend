@@ -6,7 +6,7 @@ import { Formik, FormikProps, FormikValues } from "formik";
 import { useTranslation } from "react-i18next";
 
 // react router dom
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // material
 import {
@@ -37,7 +37,6 @@ import { checkValidPhoneNumber, handlePhoneChange } from "utills/formFunctions";
 import { SigninSchemaValidation } from "../userSchema/AuthSchema";
 
 interface Props {
-  tokenLoading: boolean;
   showSuccess: boolean;
 }
 
@@ -55,6 +54,7 @@ const LoginForm: React.FC<Props> = (props) => {
 
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
   const [showLoading, setShowLoading] = useState(false);
   const formikRef = useRef<FormikProps<FormikValues | any>>(null);
   const { alertMessage, setAlertMessage, showAlert } = userAlertMessage();
@@ -74,13 +74,25 @@ const LoginForm: React.FC<Props> = (props) => {
       setAlertMessage("Password is not allowed to be empty");
       return;
     }
-
+    setShowLoading(true);
     const payload = {
       body: {
         phoneNumber: `${dialCode}${phoneNumber}`,
         password,
       },
-
+      success: (res: any) => {
+        if (res) {
+          setShowLoading(false);
+          console.log(
+            "location>>",
+            (location.state as any)?.redirectTo || "/test"
+          );
+          const redirectTo =
+            (location.state as any)?.redirectTo || "/tasks/allTaskFromMe";
+          history.push(redirectTo);
+          dispatch(userApiAction.getUserContacts());
+        }
+      },
       onFailAction: (err: any) => {
         setShowLoading(false);
         if (err) {
@@ -94,12 +106,9 @@ const LoginForm: React.FC<Props> = (props) => {
           purgeStoreStates();
         }
       },
-      success: (res: any) => {
-        dispatch(userApiAction.getUserContacts());
-      },
       showErrorToast: false,
     };
-    setShowLoading(true);
+
     const checkPhoneNumber = checkValidPhoneNumber(
       `${dialCode}${phoneNumber}`,
       countryCodeName

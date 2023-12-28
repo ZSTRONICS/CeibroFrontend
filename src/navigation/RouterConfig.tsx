@@ -23,7 +23,6 @@ import {
   Task,
   TermsAndConditions,
 } from "components";
-import NotFound from "components/NotFound";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 import { LOGIN_ROUTE } from "utills/axios";
@@ -67,20 +66,19 @@ const RouterConfig = () => {
 
             <Redirect exact from="/tasks" to="/tasks/allTaskFromMe" />
             <PrivateRoute
+              exact
               path="/profile-pic"
               component={RegisterAddProfilePic}
             />
             <PrivateRoute path="/create-new-task" component={CreateNewTask} />
             <PrivateRoute
+              exact
               path="/forward-task/:taskId"
               component={ForwardTask}
             />
             <DashboardLayout>
               <PrivateRoute
-                path="/profile/:deleteAccount?"
-                component={Profile}
-              />
-              <PrivateRoute
+                exact
                 path="/tasks/:subtask/:filterkey?/:taskuid?"
                 component={Task}
               />
@@ -97,10 +95,18 @@ const RouterConfig = () => {
               />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
-              <PrivateRoute path="/mockTaskApis" component={MockTaskApis} />
+              <PrivateRoute
+                exact
+                path="/mockTaskApis"
+                component={MockTaskApis}
+              />
+              <PrivateRoute
+                exact
+                path="/profile/:deleteAccount?"
+                component={Profile}
+              />
+              {/* <Route path="/*" component={NotFound} /> */}
             </DashboardLayout>
-            <Route path="*" component={NotFound} />
-
             {/* <Route path="/comming-soon" component={CommingSoon}></Route>
             <Redirect from="/" to="/comming-soon" /> */}
           </Switch>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 // material & react-icon
 import {
@@ -25,7 +25,7 @@ import { CustomMuiTextField } from "components/material-ui/customMuiTextField";
 import { UPDATE_MY_PROFILE } from "config";
 import { UserInterface } from "constants/interfaces/user.interface";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import ChangeNumberForm from "./ChangeNumberForm";
 import ChangePasswordForm from "./ChangePasswordForm";
 import DeleteAccount from "./DeleteAccount";
@@ -36,6 +36,7 @@ interface Props {
 }
 
 const ProfileForm = ({ user }: Props) => {
+  const profileParams = useParams<{ deleteAccount: string }>();
   const { t }: any = useTranslation<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const history = useHistory();
@@ -113,6 +114,12 @@ const ProfileForm = ({ user }: Props) => {
       setOnUpdate(false);
     }
   }
+  useEffect(() => {
+    if (!profileParams.deleteAccount) {
+      return;
+    }
+    handleModal("delete-account");
+  }, [profileParams.deleteAccount]);
 
   const closeDialog = (number?: string) => {
     if (number && number !== "") {

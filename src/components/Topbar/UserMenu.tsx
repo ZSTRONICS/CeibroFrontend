@@ -27,6 +27,7 @@ const UserMenu = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const isRenderEffect = useRef<any>(false);
+  const userMenuRef = useRef<any>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -37,7 +38,7 @@ const UserMenu = () => {
 
   const { userAllContacts } = useSelector((state: RootState) => state.user);
   useEffect(() => {
-    if (!isRenderEffect.current) {
+    if (!isRenderEffect.current && userMenuRef.current) {
       userAllContacts.length < 1 && dispatch(userApiAction.getUserContacts());
     }
     return () => {
@@ -69,7 +70,7 @@ const UserMenu = () => {
     <></>
   ) : (
     <>
-      <Box sx={{ flexGrow: 0 }}>
+      <Box sx={{ flexGrow: 0 }} ref={userMenuRef}>
         <Button
           disableRipple
           onClick={handleOpenUserMenu}
@@ -127,7 +128,7 @@ const UserMenu = () => {
           >
             <MenuItem
               disableRipple
-              onClick={() => handleUserMenu("/profile")}
+              onClick={() => handleUserMenu(`/profile`)}
               divider
               sx={{
                 "&.MuiMenuItem-root": {

@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useEffect, useState } from "react";
 // components
-import DocumentViewer from "./Components/DocumentViewer";
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
+import DocumentViewer from "./Components/DocumentViewer";
 
 const useStyles = makeStyles({
   documentViewport: {
@@ -21,6 +21,7 @@ const DocumentReader = (props) => {
   );
 
   const classes = useStyles();
+  // const fileUrl = "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
   const [pdf, setPdf] = useState(null);
   useEffect(() => {
     if (loadDrawing) {
