@@ -70,7 +70,6 @@ const DocumentViewer = (props) => {
   // const [clickY, setClickY] = useState(null);
   const [drawingIcons, setDrawingIcons] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
-
   let scrollPanel,
     pageRef,
     canvasRef = useRef(null);
@@ -94,9 +93,9 @@ const DocumentViewer = (props) => {
     setLoadingPage(true);
   }
 
-  function onZoom(percentage) {
-    setPercentage(percentage);
-  }
+  // function onZoom(percentage) {
+  //   setPercentage(percentage);
+  // }
 
   function onPageChanged(page) {
     setPage(page);
@@ -146,35 +145,94 @@ const DocumentViewer = (props) => {
 
   function handleZoomIn() {
     if (percentage < 1.5) {
-      setPercentage((prevState) => prevState + 0.1);
-      setIsZooming(true);
-      setTimeout(() => setIsZooming(false), 500);
+      setPercentage((prevState) => {
+        const updatedPrevState = prevState + 0.1;
+        setIsZooming(true);
+        setTimeout(() => {
+          setIsZooming(false);
+          // Update marker position after scaling
+          setDrawingIcons((icons) =>
+            icons.map((icon) => ({
+              x: icon.x * (updatedPrevState + 0.1),
+              y: icon.y * (updatedPrevState + 0.1),
+              tooltip: icon.tooltip,
+            }))
+          );
+        }, 500);
+        return updatedPrevState;
+      });
     }
   }
   function handleZoomOut() {
     if (percentage > 0.5) {
-      setPercentage((prevState) => prevState - 0.1);
-      setIsZooming(true);
-      setTimeout(() => setIsZooming(false), 500);
+      setPercentage((prevState) => {
+        const updatedPrevState = prevState - 0.1;
+        setIsZooming(true);
+        setTimeout(() => {
+          setIsZooming(false);
+          // Update marker position after scaling
+          setDrawingIcons((icons) =>
+            icons.map((icon) => ({
+              x: icon.x * (updatedPrevState - 0.1),
+              y: icon.y * (updatedPrevState - 0.1),
+              tooltip: icon.tooltip,
+            }))
+          );
+        }, 500);
+        return updatedPrevState;
+      });
     }
   }
-
+  console.log("drawingIcons", drawingIcons);
   const handleMarkerClick = () => {
     setIsActive((prevState) => !prevState);
   };
 
+  /**
+   * Calculates the distance between two points in a 2D plane.
+   * @param {number} x1 - The x-coordinate of the first point.
+   * @param {number} y1 - The y-coordinate of the first point.
+   * @param {number} x2 - The x-coordinate of the second point.
+   * @param {number} y2 - The y-coordinate of the second point.
+   * @return {number} The distance between the two points.
+   */
+  function calculateDistance(x1, y1, x2, y2) {
+    return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+  }
+
+  /**
+   * Determines if the given coordinates are too close to any existing markers.
+   * @param {number} x - The x-coordinate of the new marker.
+   * @param {number} y - The y-coordinate of the new marker.
+   * @param {Array} existingMarkers - An array of existing markers.
+   * @return {boolean} Returns true if the coordinates are too close to any existing markers, false otherwise.
+   */
+  function isTooCloseToOtherMarkers(x, y, existingMarkers) {
+    for (const marker of existingMarkers) {
+      const distance = calculateDistance(x, y, marker.x, marker.y);
+      if (distance < 25) {
+        return true;
+      }
+    }
+    return false;
+  }
   function drawMarker(event) {
     const canvas = canvasRef.current;
     if (!canvas || !isActive) return;
     const canvasRect = canvas.getBoundingClientRect();
-    console.log(canvasRect, "canvas");
+    console.log("canvasRect>>", canvasRect);
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
+    // Check for existing markers within a 25px radius
+    if (isTooCloseToOtherMarkers(clickX, clickY, drawingIcons)) {
+      console.log("Too Close");
+      return;
+    }
     const icon = { x: clickX, y: clickY, tooltip: "" };
     const icons = [...drawingIcons, icon];
-    console.log(clickX, clickY, "clickX y");
     setDrawingIcons(icons);
-    setIsOpen(true);
+    console.log("clickX clickX", clickX, clickX);
+    // setIsOpen(true);
   }
 
   const handleCloseModal = () => {
@@ -287,8 +345,8 @@ const DocumentViewer = (props) => {
                       <div
                         style={{
                           position: "absolute",
-                          top: "-10px",
-                          right: "-10px",
+                          top: "-15px",
+                          right: "1px",
                           cursor: "pointer",
                         }}
                         onClick={(e) => {
@@ -309,7 +367,7 @@ const DocumentViewer = (props) => {
                           />
                         </Tooltip>
                       </div>
-                      <Tooltip title="Marker tooltip">
+                      <Tooltip title="Marker">
                         <Icon component={Room} style={{ color: "red" }} />
                       </Tooltip>
                     </div>
@@ -319,7 +377,6 @@ const DocumentViewer = (props) => {
             <Page
               inputRef={(r) => {
                 pageRef = r;
-                // canvasRef.current = r?.canvas;
               }}
               canvasRef={canvasRef}
               // className={classes.pageContainer}
