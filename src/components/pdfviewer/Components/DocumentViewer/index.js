@@ -153,8 +153,8 @@ const DocumentViewer = (props) => {
           // Update marker position after scaling
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x * (updatedPrevState + 0.1),
-              y: icon.y * (updatedPrevState + 0.1),
+               x: icon.x + (icon.x * 0.1),
+              y: icon.y + (icon.y * 0.1),
               tooltip: icon.tooltip,
             }))
           );
@@ -173,8 +173,8 @@ const DocumentViewer = (props) => {
           // Update marker position after scaling
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x * (updatedPrevState - 0.1),
-              y: icon.y * (updatedPrevState - 0.1),
+              x: icon.x - (icon.x * 0.1),
+              y: icon.y - (icon.y * 0.1),
               tooltip: icon.tooltip,
             }))
           );
@@ -321,6 +321,7 @@ const DocumentViewer = (props) => {
             onSourceError={(error) => {
               console.log(error.message);
             }}
+          
             onLoadSuccess={onDocumentLoaded}
             style={{
               transition: "transform 0.3s ease",
