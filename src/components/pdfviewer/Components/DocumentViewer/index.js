@@ -17,22 +17,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/$
 
 const DocumentViewerStyles = () => ({
   scrollContainer: {
-    // overflow: "auto",
     height: "100%",
-    // width: "100%",
-    padding: "5%",
+    padding: "2%",
   },
-  viewContainer: {
-    // padding: 0,
-    // borderRadius: 0,
-    // position: "absolute",
-    // top: "20%",
-    // left: "30%",
-    // // margin: "50px auto 100px auto",
-    // display: "table",
-    // width: "auto",
-    // textAlign: "center",
-  },
+  viewContainer: {},
   editorContainer: {
     position: "absolute",
     top: 0,
@@ -54,30 +42,49 @@ const DocumentViewerStyles = () => ({
 });
 
 const DocumentViewer = (props) => {
-  const [totalPage, setTotalPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(1);
   const [page, setPage] = useState(1);
   const [loadingPage, setLoadingPage] = useState(false);
   const [progress, setProgress] = useState(0);
   const [last, setLast] = useState(0);
   const [percentage, setPercentage] = useState(1);
-  const [buffer, setBuffer] = useState(0);
   const [first, setFirst] = useState(true);
-  // const [pageFactory, setPageFactory] = useState(null);
   const [factory, setFactory] = useState(null);
-  const [isZooming, setIsZooming] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  // const [clickX, setClickX] = useState(null);
-  // const [clickY, setClickY] = useState(null);
   const [drawingIcons, setDrawingIcons] = useState([]);
+  const [markers, setMarkers] = useState([]);
+
   const [isOpen, setIsOpen] = useState(false);
   let scrollPanel,
     pageRef,
     canvasRef = useRef(null);
 
   const { classes } = props;
+  // Function to draw markers on the canvas
+  const drawMarkerLocal = () => {
+    if (canvasRef.current) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      markers.forEach((marker) => {
+        ctx.beginPath();
+        ctx.moveTo(marker.x, marker.y - 12);
+        ctx.lineTo(marker.x - 8, marker.y);
+        ctx.lineTo(marker.x, marker.y + 12);
+        ctx.lineTo(marker.x + 8, marker.y);
+        ctx.closePath();
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(marker.x, marker.y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+  };
 
   function onLoadingPage({ loaded, total }) {
-    //  state not defined
     let { progress } = props.state;
     let buffer = 10;
     progress = Math.floor((loaded / total) * 100);
@@ -86,16 +93,11 @@ const DocumentViewer = (props) => {
     }
     setLoadingPage(true);
     setProgress(progress);
-    setBuffer(buffer);
   }
 
   function onDocumentSourceSuccess() {
     setLoadingPage(true);
   }
-
-  // function onZoom(percentage) {
-  //   setPercentage(percentage);
-  // }
 
   function onPageChanged(page) {
     setPage(page);
@@ -113,48 +115,26 @@ const DocumentViewer = (props) => {
     setFactory(pageFactory);
   }
 
-  // function onCreateObject() {
-  //   console.log(scrollPanel);
-  // }
-
   function onDocumentLoaded(factory) {
     const { numPages } = factory;
-    let totalPage = numPages;
-    let page = 1;
-    if (totalPage <= 0) {
-      page = 0;
-    }
     // console.log(factory, page, totalPage);
-    setTotalPage(totalPage);
-    setLast(totalPage === 1);
+    setTotalPage(numPages);
+    setLast(1);
     setPage(page);
     setFactory(factory);
   }
 
-  // function renderLoadingDocument() {
-  //   return (
-  //     <div className={classes.progressContainer}>
-  //       <LinearProgress
-  //         variant="buffer"
-  //         value={progress}
-  //         valueBuffer={buffer}
-  //       />
-  //     </div>
-  //   );
-  // }
-
   function handleZoomIn() {
-    if (percentage < 1.5) {
+    if (percentage < 3) {
       setPercentage((prevState) => {
         const updatedPrevState = prevState + 0.1;
-        setIsZooming(true);
         setTimeout(() => {
-          setIsZooming(false);
-          // Update marker position after scaling
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-               x: icon.x + (icon.x * 0.1),
-              y: icon.y + (icon.y * 0.1),
+              x: icon.x + icon.x * 0.1,
+              y: icon.y + icon.y * 0.1,
+              initialX: icon.initialX,
+              initialY: icon.initialY,
               tooltip: icon.tooltip,
             }))
           );
@@ -164,17 +144,18 @@ const DocumentViewer = (props) => {
     }
   }
   function handleZoomOut() {
+    console.log("drawingIcons", drawingIcons);
     if (percentage > 0.5) {
       setPercentage((prevState) => {
         const updatedPrevState = prevState - 0.1;
-        setIsZooming(true);
         setTimeout(() => {
-          setIsZooming(false);
           // Update marker position after scaling
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x - (icon.x * 0.1),
-              y: icon.y - (icon.y * 0.1),
+              x: icon.x - icon.x * 0.1,
+              y: icon.y - icon.y * 0.1,
+              initialX: icon.initialX,
+              initialY: icon.initialY,
               tooltip: icon.tooltip,
             }))
           );
@@ -183,7 +164,24 @@ const DocumentViewer = (props) => {
       });
     }
   }
-  console.log("drawingIcons", drawingIcons);
+  const handleReset = () => {
+    setPercentage(1);
+    setTimeout(() => {
+      // Update marker position after scaling
+      setDrawingIcons((icons) =>
+        icons.map((icon) => ({
+          x: icon.initialX,
+          y: icon.initialY,
+          initialX: icon.initialX,
+          initialY: icon.initialY,
+          tooltip: icon.tooltip,
+        }))
+      );
+    }, 500);
+    console.log("drawingIcons", drawingIcons, "percentage", percentage);
+  };
+
+  // console.log("drawingIcons", drawingIcons);
   const handleMarkerClick = () => {
     setIsActive((prevState) => !prevState);
   };
@@ -216,25 +214,74 @@ const DocumentViewer = (props) => {
     }
     return false;
   }
+
+  /**
+   * Calculates the boundaries of the displayed PDF based on the page dimensions, translation values, and zoom level.
+   *
+   * @param {number} pageWidth - The width of the PDF page.
+   * @param {number} pageHeight - The height of the PDF page.
+   * @param {number} transX - The translation value along the X-axis.
+   * @param {number} transY - The translation value along the Y-axis.
+   * @param {number} zoom - The zoom level of the PDF.
+   * @return {Object} An object containing the left, top, right, and bottom boundaries of the displayed PDF.
+   */
+
+  function calculatePDFBounds(pageWidth, pageHeight, transX, transY, zoom) {
+    console.log(
+      `PDFView calculatePDFBounds : pdfWidth=${pageWidth} -- pdfHeight=${pageHeight} -- zoom=${zoom} -- transX=${transX} -- transY=${transY}`
+    );
+    // Calculate the boundaries of the displayed PDF
+    const left = transX / zoom; // Calculate the left boundary
+    let top = transY / zoom; // Calculate the top boundary
+    if (zoom > 1.05) {
+      top = transY;
+    }
+    const right = left + pageWidth * zoom; // Calculate the right boundary
+    let bottom = top + pageHeight * zoom; // Calculate the bottom boundary
+    if (zoom > 1.05) {
+      bottom = pageHeight + transY;
+    }
+    console.log(
+      `PDFView calculatePDFBounds : left=${left} -- top=${top} -- right=${right} -- bottom=${bottom}`
+    );
+    return {
+      left: left,
+      top: top,
+      right: right,
+      bottom: bottom,
+    };
+  }
+
   function drawMarker(event) {
     const canvas = canvasRef.current;
-    if (!canvas || !isActive) return;
     const canvasRect = canvas.getBoundingClientRect();
-    console.log("canvasRect>>", canvasRect);
+    // console.log("canvasRect>>", canvasRect);
+
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
     // Check for existing markers within a 25px radius
-    if (isTooCloseToOtherMarkers(clickX, clickY, drawingIcons)) {
+    if (isTooCloseToOtherMarkers(clickX, clickY, markers)) {
       console.log("Too Close");
       return;
     }
-    const icon = { x: clickX, y: clickY, tooltip: "" };
+
+    const icon = {
+      x: clickX,
+      y: clickY,
+      initialX: clickX,
+      initialY: clickY,
+      tooltip: "",
+    };
     const icons = [...drawingIcons, icon];
+    // setMarkers([...markers, { x: clickX, y: clickY }]);
     setDrawingIcons(icons);
-    console.log("clickX clickX", clickX, clickX);
+    console.log("clickX clickY", clickX, clickY);
     // setIsOpen(true);
   }
 
+  // useEffect(() => {
+  //   drawMarkerLocal();
+  // }, [markers]);
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -254,8 +301,8 @@ const DocumentViewer = (props) => {
     //     pageNo: "",
     //   },
     // };
-    const icons = [...drawingIcons];
-    setDrawingIcons(icons);
+    // const icons = [...drawingIcons];
+    // setDrawingIcons(icons);
     handleCloseModal();
   };
 
@@ -289,12 +336,7 @@ const DocumentViewer = (props) => {
             <Button onClick={handleZoomOut} sx={{ p: 0 }}>
               <Icon component={ZoomOut} />
             </Button>
-            <Button
-              onClick={() => {
-                setPercentage(0.5);
-              }}
-              sx={{ p: 0 }}
-            >
+            <Button onClick={handleReset} sx={{ p: 0 }}>
               <Icon component={Refresh} />
             </Button>
             {props.newTask !== null && (
@@ -316,12 +358,10 @@ const DocumentViewer = (props) => {
             file={props.file}
             noData={<div />}
             loading={<div />}
-            onClick={drawMarker}
             onSourceSuccess={onDocumentSourceSuccess}
             onSourceError={(error) => {
               console.log(error.message);
             }}
-          
             onLoadSuccess={onDocumentLoaded}
             style={{
               transition: "transform 0.3s ease",
@@ -380,6 +420,8 @@ const DocumentViewer = (props) => {
                 pageRef = r;
               }}
               canvasRef={canvasRef}
+              onClick={drawMarker}
+              // height={height}
               // className={classes.pageContainer}
               onLoadProgress={onLoadingPage}
               onLoadSuccess={onLoadedPage}
