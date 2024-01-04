@@ -131,8 +131,10 @@ const DocumentViewer = (props) => {
         setTimeout(() => {
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x + icon.x * 0.1,
-              y: icon.y + icon.y * 0.1,
+              x: icon.x * 1.1,
+              y: icon.y * 1.1,
+              // x: icon.x + icon.x * 0.01,
+              // y: icon.y + icon.y * 0.01,
               initialX: icon.initialX,
               initialY: icon.initialY,
               tooltip: icon.tooltip,
@@ -143,9 +145,9 @@ const DocumentViewer = (props) => {
       });
     }
   }
+
   function handleZoomOut() {
-    console.log("drawingIcons", drawingIcons);
-    if (percentage > 0.5) {
+    if (percentage > 0.9) {
       setPercentage((prevState) => {
         const updatedPrevState = prevState - 0.1;
         setTimeout(() => {
@@ -178,8 +180,8 @@ const DocumentViewer = (props) => {
         }))
       );
     }, 500);
-    console.log("drawingIcons", drawingIcons, "percentage", percentage);
   };
+  console.log("drawingIcons", drawingIcons, "percentage", percentage);
 
   // console.log("drawingIcons", drawingIcons);
   const handleMarkerClick = () => {
@@ -215,49 +217,10 @@ const DocumentViewer = (props) => {
     return false;
   }
 
-  /**
-   * Calculates the boundaries of the displayed PDF based on the page dimensions, translation values, and zoom level.
-   *
-   * @param {number} pageWidth - The width of the PDF page.
-   * @param {number} pageHeight - The height of the PDF page.
-   * @param {number} transX - The translation value along the X-axis.
-   * @param {number} transY - The translation value along the Y-axis.
-   * @param {number} zoom - The zoom level of the PDF.
-   * @return {Object} An object containing the left, top, right, and bottom boundaries of the displayed PDF.
-   */
-
-  function calculatePDFBounds(pageWidth, pageHeight, transX, transY, zoom) {
-    console.log(
-      `PDFView calculatePDFBounds : pdfWidth=${pageWidth} -- pdfHeight=${pageHeight} -- zoom=${zoom} -- transX=${transX} -- transY=${transY}`
-    );
-    // Calculate the boundaries of the displayed PDF
-    const left = transX / zoom; // Calculate the left boundary
-    let top = transY / zoom; // Calculate the top boundary
-    if (zoom > 1.05) {
-      top = transY;
-    }
-    const right = left + pageWidth * zoom; // Calculate the right boundary
-    let bottom = top + pageHeight * zoom; // Calculate the bottom boundary
-    if (zoom > 1.05) {
-      bottom = pageHeight + transY;
-    }
-    console.log(
-      `PDFView calculatePDFBounds : left=${left} -- top=${top} -- right=${right} -- bottom=${bottom}`
-    );
-    return {
-      left: left,
-      top: top,
-      right: right,
-      bottom: bottom,
-    };
-  }
-
   function drawMarker(event) {
     if (!isActive || !canvasRef.current) return;
-    const canvas = canvasRef.current;
-    const canvasRect = canvas.getBoundingClientRect();
-    // console.log("canvasRect>>", canvasRect);
-
+    const canvasRect = event.target.getBoundingClientRect();
+    console.log("canvasRect>>", canvasRect);
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
     // Check for existing markers within a 25px radius
@@ -288,22 +251,6 @@ const DocumentViewer = (props) => {
   };
 
   const handleAssignTask = () => {
-    // payload for Assign Task
-    // const payload = {
-    //   projectID: "",
-    //   floorID: "",
-    //   drawingID: "",
-    //   iconData: {
-    //     id: "",
-    //     x: "",
-    //     y: "",
-    //     taskUUID: "",
-    //     taskLabel: "",
-    //     pageNo: "",
-    //   },
-    // };
-    // const icons = [...drawingIcons];
-    // setDrawingIcons(icons);
     handleCloseModal();
   };
 
@@ -349,26 +296,21 @@ const DocumentViewer = (props) => {
         </div>
         <div
           style={{
-            height: "600px",
             overflow: "auto",
-            display: "flex",
-            justifyContent: "center",
+            maxHeight: "650px",
+            minHeight: "450px",
+            height: "100%",
           }}
         >
           <Document
             file={props.file}
-            noData={<div />}
-            loading={<div />}
+            loading={<div> Loading pdf file... </div>}
+            noData={<div>No pdf file provided</div>}
             onSourceSuccess={onDocumentSourceSuccess}
             onSourceError={(error) => {
               console.log(error.message);
             }}
             onLoadSuccess={onDocumentLoaded}
-            style={{
-              transition: "transform 0.3s ease",
-              transform: `scale(${percentage})`,
-              height: "100%",
-            }}
           >
             <div style={{ position: "relative" }}>
               {drawingIcons.length > 0 &&
@@ -421,13 +363,13 @@ const DocumentViewer = (props) => {
                 pageRef = r;
               }}
               canvasRef={canvasRef}
+              pageNumber={page}
+              scale={percentage}
               onClick={drawMarker}
               onLoadProgress={onLoadingPage}
               onLoadSuccess={onLoadedPage}
-              pageNumber={page}
               renderAnnotationLayer={false}
               renderTextLayer={false}
-              scale={percentage}
             />
           </Document>
         </div>
