@@ -253,6 +253,7 @@ const DocumentViewer = (props) => {
   }
 
   function drawMarker(event) {
+    if (!isActive || !canvasRef.current) return;
     const canvas = canvasRef.current;
     const canvasRect = canvas.getBoundingClientRect();
     // console.log("canvasRect>>", canvasRect);
@@ -421,8 +422,6 @@ const DocumentViewer = (props) => {
               }}
               canvasRef={canvasRef}
               onClick={drawMarker}
-              // height={height}
-              // className={classes.pageContainer}
               onLoadProgress={onLoadingPage}
               onLoadSuccess={onLoadedPage}
               pageNumber={page}
@@ -436,7 +435,6 @@ const DocumentViewer = (props) => {
     );
   };
 
-  // const { classes } = props;
   let viewContainerStyle = [classes.viewContainer];
   // the user does not pick any file
   if (!props.pdf) {
@@ -458,34 +456,6 @@ const DocumentViewer = (props) => {
             file={props.file}
           />
         )}
-        {/* {factory && (
-          <OutlineControl
-            onChangePage={onPageChanged}
-            pdf={factory}
-            totalPage={totalPage}
-            currentPage={page}
-          />
-        )} */}
-        {/* {
-                        pageFactory && 
-                        <div className={classes.editorContainer}>
-                            <ImageMapEditor
-                                totalPage={totalPage}
-                                currentPage={page}
-                                onChangePage={onPageChanged}
-                                page={pageFactory}
-                                pdf={props.pdf}    // pdf arraybuffer object
-                                file={props.file}  // pdf file
-                                lastPage={last}
-                                firstPage={first}
-                                percentage={percentage}
-                                onCreateObject={onCreateObject}
-                                onZoom={onZoom}
-                                readOnly={false}
-                                encrypt={props.encrypt}
-                            />
-                        </div>
-                    } */}
 
         {props.newTask !== null && (
           <CustomModal

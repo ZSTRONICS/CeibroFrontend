@@ -92,6 +92,10 @@ div.react-simple-image-viewer__modal-content {
   animation-duration: 1s;
 }
 
+.react-pdf__Document {
+  overflow: auto;
+  width: 100%;
+}
 
 @media (max-width: 768px) {
   body {
