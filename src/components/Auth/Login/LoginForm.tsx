@@ -83,10 +83,6 @@ const LoginForm: React.FC<Props> = (props) => {
       success: (res: any) => {
         if (res) {
           setShowLoading(false);
-          console.log(
-            "location>>",
-            (location.state as any)?.redirectTo || "/test"
-          );
           const redirectTo =
             (location.state as any)?.redirectTo || "/tasks/allTaskFromMe";
           history.push(redirectTo);

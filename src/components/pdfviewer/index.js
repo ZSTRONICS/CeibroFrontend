@@ -23,7 +23,7 @@ const DocumentReader = (props) => {
   const classes = useStyles();
   const fileUrl =
     "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
-  // const fileUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-04/planfileold_1704361313456.pdf";
+  // const fileUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-05/actual_compressed-compressed_1704452772103.pdf";
   const [pdf, setPdf] = useState(fileUrl);
   useEffect(() => {
     if (loadDrawing) {

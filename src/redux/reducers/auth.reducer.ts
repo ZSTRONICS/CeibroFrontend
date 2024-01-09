@@ -68,6 +68,15 @@ const AuthReducer = (state = intialStatue, action: ActionInterface) => {
         loginLoading: false,
       };
     }
+    case requestFail(LOGIN): {
+      localStorage.clear();
+      return {
+        ...state,
+        isLoggedIn: false,
+        user: {},
+        loginLoading: false,
+      };
+    }
 
     case requestPending(REGISTER): {
       setTimeout(() => {

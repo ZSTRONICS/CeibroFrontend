@@ -190,7 +190,7 @@ const TextFileThumbnail = () => {
           <path
             d="M13.2352 9.93359H2.76465V15.3881H13.2352V9.93359Z"
             fill="#3F3F46"
-            fill-opacity="0.17"
+            fillOpacity="0.17"
           />
         </g>
       </g>
@@ -379,7 +379,7 @@ const ExcelFileThumbnail = () => {
           <path
             d="M13.2938 9.67578H2.82324V15.1303H13.2938V9.67578Z"
             fill="#0F7D56"
-            fill-opacity="0.27"
+            fillOpacity="0.27"
           />
         </g>
       </g>
@@ -599,7 +599,7 @@ const ZipFileThumbnail = () => {
           <path
             d="M13.2352 9.35156H2.76465V14.8061H13.2352V9.35156Z"
             fill="#0F7D56"
-            fill-opacity="0.33"
+            fillOpacity="0.33"
           />
         </g>
       </g>

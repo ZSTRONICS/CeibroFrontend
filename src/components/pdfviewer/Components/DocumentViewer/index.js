@@ -1,10 +1,3 @@
-import { useRef, useState } from "react";
-// import PropTypes from 'prop-types';
-// components
-import { Document, Page, pdfjs } from "react-pdf";
-import DocumentControl from "./../DocumentControl";
-//  import ImageMapEditor from './../../../imagemap/ImageMapEditor';
-// material-ui
 import Paper from "@material-ui/core/Paper";
 import { withStyles } from "@material-ui/core/styles";
 import { Close, Refresh, Room, ZoomIn, ZoomOut } from "@mui/icons-material";
@@ -12,6 +5,9 @@ import { Button, ButtonGroup, Icon, Tooltip } from "@mui/material";
 import CustomModal from "components/Modal";
 import { formatDropdownData } from "components/Utills/Globals";
 import { AutocompleteField } from "components/material-ui/customMuiTextField/simpleTextField";
+import { useRef, useState } from "react";
+import { Document, Page, pdfjs } from "react-pdf";
+import DocumentControl from "./../DocumentControl";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -47,13 +43,12 @@ const DocumentViewer = (props) => {
   const [loadingPage, setLoadingPage] = useState(false);
   const [progress, setProgress] = useState(0);
   const [last, setLast] = useState(0);
-  const [percentage, setPercentage] = useState(1);
+  const [scaleFactor, setScaleFactor] = useState(1);
   const [first, setFirst] = useState(true);
   const [factory, setFactory] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [drawingIcons, setDrawingIcons] = useState([]);
   const [markers, setMarkers] = useState([]);
-
   const [isOpen, setIsOpen] = useState(false);
   let scrollPanel,
     pageRef,
@@ -105,8 +100,8 @@ const DocumentViewer = (props) => {
     setFirst(first);
   }
 
-  function onScaleChanged(percentage) {
-    setPercentage(percentage);
+  function onScaleChanged(scaleFactor) {
+    setScaleFactor(scaleFactor);
   }
 
   function onLoadedPage(pageFactory) {
@@ -114,6 +109,7 @@ const DocumentViewer = (props) => {
     setProgress(0);
     setFactory(pageFactory);
   }
+  // console.log("factory>>", factory && factory);
 
   function onDocumentLoaded(factory) {
     const { numPages } = factory;
@@ -125,30 +121,28 @@ const DocumentViewer = (props) => {
   }
 
   function handleZoomIn() {
-    if (percentage < 3) {
-      setPercentage((prevState) => {
+    if (scaleFactor < 3) {
+      setScaleFactor((prevState) => {
         const updatedPrevState = prevState + 0.1;
         setTimeout(() => {
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x * 1.1,
-              y: icon.y * 1.1,
-              // x: icon.x + icon.x * 0.01,
-              // y: icon.y + icon.y * 0.01,
+              x: icon.x + icon.x * 0.01,
+              y: icon.y + icon.y * 0.01,
               initialX: icon.initialX,
               initialY: icon.initialY,
               tooltip: icon.tooltip,
             }))
           );
-        }, 500);
+        }, 100);
         return updatedPrevState;
       });
     }
   }
 
   function handleZoomOut() {
-    if (percentage > 0.9) {
-      setPercentage((prevState) => {
+    if (scaleFactor > 1) {
+      setScaleFactor((prevState) => {
         const updatedPrevState = prevState - 0.1;
         setTimeout(() => {
           // Update marker position after scaling
@@ -161,13 +155,14 @@ const DocumentViewer = (props) => {
               tooltip: icon.tooltip,
             }))
           );
-        }, 500);
+        }, 100);
         return updatedPrevState;
       });
     }
   }
+
   const handleReset = () => {
-    setPercentage(1);
+    setScaleFactor(1);
     setTimeout(() => {
       // Update marker position after scaling
       setDrawingIcons((icons) =>
@@ -179,11 +174,9 @@ const DocumentViewer = (props) => {
           tooltip: icon.tooltip,
         }))
       );
-    }, 500);
+    }, 100);
   };
-  console.log("drawingIcons", drawingIcons, "percentage", percentage);
-
-  // console.log("drawingIcons", drawingIcons);
+  //console.log("drawingIcons", drawingIcons, "scaleFactor", scaleFactor);
   const handleMarkerClick = () => {
     setIsActive((prevState) => !prevState);
   };
@@ -218,13 +211,19 @@ const DocumentViewer = (props) => {
   }
 
   function drawMarker(event) {
-    if (!isActive || !canvasRef.current) return;
-    const canvasRect = event.target.getBoundingClientRect();
+    if (!isActive || !canvasRef.current || !factory) return;
+    const canvasRect = canvasRef.current.getBoundingClientRect();
     console.log("canvasRect>>", canvasRect);
+    const parentContainer = canvasRef.current.parentElement;
+    const scrollX = parentContainer.scrollLeft;
+    const scrollY = parentContainer.scrollTop;
+    console.log("scrollX>>, scrollY>>", scrollX, scrollY);
+    const normalizedX = (event.clientX - canvasRect.left) / scaleFactor;
+    const normalizedY = (event.clientY - canvasRect.top) / scaleFactor;
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
     // Check for existing markers within a 25px radius
-    if (isTooCloseToOtherMarkers(clickX, clickY, markers)) {
+    if (isTooCloseToOtherMarkers(normalizedX, normalizedY, markers)) {
       console.log("Too Close");
       return;
     }
@@ -258,6 +257,21 @@ const DocumentViewer = (props) => {
     const icons = [...drawingIcons];
     icons.splice(index, 1);
     setDrawingIcons(icons);
+  };
+  const handleCanvasClick = (e) => {
+    const canvas = canvasRef.current;
+    const canvasRect = canvas.getBoundingClientRect();
+    console.log("canvasRect>>", canvasRect);
+    // Get the mouse position relative to the PDF viewer
+    const position = e.target.getPointerPosition();
+    if (position) {
+      // Convert the position to the PDF coordinate system
+      const x = e.clientX - canvasRect.left;
+      const y = e.clientY - canvasRect.top;
+      // const x = (position.x / scaleFactor) * (650 / window.innerWidth);
+      // const y = (position.y / scaleFactor) * (650 / window.innerHeight);
+      setDrawingIcons((prevPoints) => [...prevPoints, { x, y }]);
+    }
   };
 
   const renderMainDocument = () => {
@@ -300,6 +314,7 @@ const DocumentViewer = (props) => {
             maxHeight: "650px",
             minHeight: "450px",
             height: "100%",
+            position: "relative",
           }}
         >
           <Document
@@ -312,63 +327,62 @@ const DocumentViewer = (props) => {
             }}
             onLoadSuccess={onDocumentLoaded}
           >
-            <div style={{ position: "relative" }}>
-              {drawingIcons.length > 0 &&
-                drawingIcons.map((icon, index) => {
-                  return (
+            {drawingIcons.length > 0 &&
+              drawingIcons.map((icon, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      position: "absolute",
+                      top: `${icon.y}px`,
+                      left: `${icon.x}px`,
+                      transform: "translate(-50%, -50%)",
+                      zIndex: 99,
+                    }}
+                  >
                     <div
-                      key={index}
                       style={{
                         position: "absolute",
-                        top: `${icon.y}px`,
-                        left: `${icon.x}px`,
-                        transform: "translate(-50%, -50%)",
-                        zIndex: 99,
+                        top: "-15px",
+                        right: "1px",
+                        cursor: "pointer",
                       }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        handleDeleteMarker(index);
+                      }} // Replace handleIconClose with the appropriate function to handle icon close
                     >
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: "-15px",
-                          right: "1px",
-                          cursor: "pointer",
-                        }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          handleDeleteMarker(index);
-                        }} // Replace handleIconClose with the appropriate function to handle icon close
-                      >
-                        <Tooltip title="Close">
-                          <Icon
-                            component={Close}
-                            style={{
-                              height: "12px",
-                              width: "12px",
-                              color: "black",
-                              backgroundColor: "white",
-                            }}
-                          />
-                        </Tooltip>
-                      </div>
-                      <Tooltip title="Marker">
-                        <Icon component={Room} style={{ color: "red" }} />
+                      <Tooltip title="Close">
+                        <Icon
+                          component={Close}
+                          style={{
+                            height: "12px",
+                            width: "12px",
+                            color: "black",
+                            backgroundColor: "white",
+                          }}
+                        />
                       </Tooltip>
                     </div>
-                  );
-                })}
-            </div>
+                    <Tooltip title="Marker">
+                      <Icon component={Room} style={{ color: "red" }} />
+                    </Tooltip>
+                  </div>
+                );
+              })}
+
             <Page
               inputRef={(r) => {
                 pageRef = r;
               }}
               canvasRef={canvasRef}
               pageNumber={page}
-              scale={percentage}
+              scale={scaleFactor}
               onClick={drawMarker}
               onLoadProgress={onLoadingPage}
               onLoadSuccess={onLoadedPage}
-              renderAnnotationLayer={false}
+              renderAnnotationLayer={true}
               renderTextLayer={false}
             />
           </Document>
@@ -392,7 +406,7 @@ const DocumentViewer = (props) => {
             currentPage={page}
             totalPage={totalPage}
             onChangePage={onPageChanged}
-            percentage={percentage}
+            scaleFactor={scaleFactor}
             onScaleChanged={onScaleChanged}
             pdf={factory}
             file={props.file}
