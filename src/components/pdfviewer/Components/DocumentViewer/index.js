@@ -40,6 +40,8 @@ const DocumentViewerStyles = () => ({
 const DocumentViewer = (props) => {
   const [totalPage, setTotalPage] = useState(1);
   const [page, setPage] = useState(1);
+  const [pageHeight, setPageHeight] = useState(600);
+  const [pageWidth, setPageWidth] = useState(600);
   const [loadingPage, setLoadingPage] = useState(false);
   const [progress, setProgress] = useState(0);
   const [last, setLast] = useState(0);
@@ -105,30 +107,40 @@ const DocumentViewer = (props) => {
   }
 
   function onLoadedPage(pageFactory) {
+    // setPageHeight(pageFactory.height);
+    // setPageWidth(pageFactory.width);
     setLoadingPage(false);
     setProgress(0);
     setFactory(pageFactory);
   }
-  // console.log("factory>>", factory && factory);
+  console.log("factory>>", factory && factory);
 
   function onDocumentLoaded(factory) {
-    const { numPages } = factory;
+    const { numPages, width, height } = factory;
     // console.log(factory, page, totalPage);
     setTotalPage(numPages);
     setLast(1);
     setPage(page);
-    setFactory(factory);
+    setFactory({ width, height });
   }
 
   function handleZoomIn() {
     if (scaleFactor < 3) {
       setScaleFactor((prevState) => {
         const updatedPrevState = prevState + 0.1;
+        const scaleFactorChange = updatedPrevState / prevState;
+        if (!canvasRef.current) return;
+        const canvasRect = canvasRef.current.getBoundingClientRect();
+        console.log("canvasRect ZoomIn", canvasRef);
+        // setPageHeight(canvasRect.height);
+        // setPageWidth(canvasRect.width);
         setTimeout(() => {
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x + icon.x * 0.01,
-              y: icon.y + icon.y * 0.01,
+              // x: icon.initialX + (icon.x - icon.initialX) * updatedPrevState,
+              // y: icon.initialY + (icon.y - icon.initialY) * updatedPrevState,
+              x: icon.x + icon.x * 0.05,
+              y: icon.y + icon.y * 0.05,
               initialX: icon.initialX,
               initialY: icon.initialY,
               tooltip: icon.tooltip,
@@ -144,12 +156,20 @@ const DocumentViewer = (props) => {
     if (scaleFactor > 1) {
       setScaleFactor((prevState) => {
         const updatedPrevState = prevState - 0.1;
+        const scaleFactorChange = updatedPrevState / (prevState || 1);
+        if (!canvasRef.current) return;
+        const canvasRect = canvasRef.current.getBoundingClientRect();
+        console.log("canvasRect ZoomOut", canvasRect);
+        // setPageHeight(canvasRect.height);
+        // setPageWidth(canvasRect.width);
         setTimeout(() => {
           // Update marker position after scaling
           setDrawingIcons((icons) =>
             icons.map((icon) => ({
-              x: icon.x - icon.x * 0.1,
-              y: icon.y - icon.y * 0.1,
+              // x: icon.initialX + (icon.x - icon.initialX) * updatedPrevState,
+              // y: icon.initialY + (icon.y - icon.initialY) * updatedPrevState,
+              x: icon.x - icon.x * 0.05,
+              y: icon.y - icon.y * 0.05,
               initialX: icon.initialX,
               initialY: icon.initialY,
               tooltip: icon.tooltip,
@@ -163,6 +183,11 @@ const DocumentViewer = (props) => {
 
   const handleReset = () => {
     setScaleFactor(1);
+    // if (!canvasRef.current) return;
+    // const canvasRect = canvasRef.current.getBoundingClientRect();
+    // console.log("canvasRect reset", canvasRect);
+    // setPageHeight(canvasRect.height);
+    // setPageWidth(canvasRect.width);
     setTimeout(() => {
       // Update marker position after scaling
       setDrawingIcons((icons) =>
@@ -213,17 +238,13 @@ const DocumentViewer = (props) => {
   function drawMarker(event) {
     if (!isActive || !canvasRef.current || !factory) return;
     const canvasRect = canvasRef.current.getBoundingClientRect();
-    console.log("canvasRect>>", canvasRect);
-    const parentContainer = canvasRef.current.parentElement;
-    const scrollX = parentContainer.scrollLeft;
-    const scrollY = parentContainer.scrollTop;
-    console.log("scrollX>>, scrollY>>", scrollX, scrollY);
-    const normalizedX = (event.clientX - canvasRect.left) / scaleFactor;
-    const normalizedY = (event.clientY - canvasRect.top) / scaleFactor;
+    const actualX = (event.clientX - canvasRect.left) / scaleFactor;
+    const actualY = (event.clientY - canvasRect.top) / scaleFactor;
+    console.log("scrollX>>, scrollY>>", actualX, actualY);
     const clickX = event.clientX - canvasRect.left;
     const clickY = event.clientY - canvasRect.top;
     // Check for existing markers within a 25px radius
-    if (isTooCloseToOtherMarkers(normalizedX, normalizedY, markers)) {
+    if (isTooCloseToOtherMarkers(clickX, clickY, markers)) {
       console.log("Too Close");
       return;
     }
@@ -231,8 +252,8 @@ const DocumentViewer = (props) => {
     const icon = {
       x: clickX,
       y: clickY,
-      initialX: clickX,
-      initialY: clickY,
+      initialX: actualX,
+      initialY: actualY,
       tooltip: "",
     };
     const icons = [...drawingIcons, icon];
@@ -376,6 +397,8 @@ const DocumentViewer = (props) => {
               inputRef={(r) => {
                 pageRef = r;
               }}
+              width={595}
+              height={842}
               canvasRef={canvasRef}
               pageNumber={page}
               scale={scaleFactor}

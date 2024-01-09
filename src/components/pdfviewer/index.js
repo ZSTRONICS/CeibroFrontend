@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 // components
 import { useDispatch, useSelector } from "react-redux";
 import projectActions from "redux/action/project.action";
-import DocumentViewer from "./Components/DocumentViewer";
+// import DocumentViewer from "./Components/DocumentViewer";
+import PdfViewer from "./Components/DocumentViewer/PdfViewer";
 
 const useStyles = makeStyles({
   documentViewport: {
@@ -34,7 +35,8 @@ const DocumentReader = (props) => {
 
   return (
     <div className={classes.documentViewport}>
-      <DocumentViewer pdf={pdf} file={pdf} newTask={props.newTask} />
+      {/* <DocumentViewer pdf={pdf} file={pdf} newTask={props.newTask} /> */}
+      <PdfViewer />
     </div>
   );
 };

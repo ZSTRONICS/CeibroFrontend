@@ -88,12 +88,21 @@ const getFloorsByProjectId = apiCall({
 })
 
 // DRAWING APIS
+/**
+ * Retrieve a drawing by its ID for a specific project and floor.
+ *
+ * @param {Object} payload - The payload object containing the project, floor, and drawing IDs.
+ * @param {string} projectId - The ID of the project.
+ * @param {string} floorId - The ID of the floor.
+ * @param {string} drawingId - The ID of the drawing.
+ */
 const getDrawingById = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID,
   method: 'get',
-  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}}`, //projectId/floorId/drawingId
-})
+  path: (payload) => `/project/${payload.other.projectId}/${payload.other.floorId}/${payload.other.drawingId}`,
+});
+
 const getRecentDrawings = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.GET_RECENT_DRAWINGS,
@@ -108,12 +117,26 @@ const addNewDrawing = apiCall({
   path: "/docs/upload/drawing"
 })
 
+// const addDrawingPinByDrawingId = apiCall({
+//   useV2Route: true,
+//   type: PROJECT_CONFIG.ADD_DRAWING_PIN_BY_DRAWING_ID,
+//   method: 'post',
+//   path: (payload) => `/project/drawingPin/${payload.other.drawingId}`,
+// })
+
+// const getDrawingPinsByDrawingId = apiCall({
+//   useV2Route: true,
+//   type: PROJECT_CONFIG.GET_DRAWING_PINS_BY_DRAWING_ID,
+//   method: 'get',
+//   path: (payload) => `/project/drawingPin/${payload.other.drawingId}`,
+// })
+
 // GROUPS APIS
 const createProjectGroup = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.CREATE_GROUP,
   method: "post",
-  path: (payload) => `/project/${payload?.other.projectId}/group`,
+  path: (payload) => `/project/${payload.other.projectId}/group`,
 });
 
 const getGroupsByProjectId = apiCall({
@@ -473,6 +496,8 @@ function* projectSaga() {
   yield takeLatest(PROJECT_CONFIG.ADD_NEW_DRAWING, addNewDrawing);
   yield takeLatest(PROJECT_CONFIG.GET_DRAWINGS_BY_PROJECT_ID, getDrawingById);
   yield takeLatest(PROJECT_CONFIG.GET_RECENT_DRAWINGS, getRecentDrawings);
+  // yield takeLatest(PROJECT_CONFIG.ADD_DRAWING_PIN_BY_DRAWING_ID, addDrawingPinByDrawingId);
+  // yield takeLatest(PROJECT_CONFIG.GET_DRAWING_PINS_BY_DRAWING_ID, getDrawingPinsByDrawingId);
 
   yield takeLatest(GET_PROJECTS_WITH_MEMBERS, getProjectsWithMembers);
   yield takeLatest(GET_PROJECTS_MEMBERS, getProjectMembers);
