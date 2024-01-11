@@ -20,9 +20,6 @@ export default function useOnMouseDown(
       canvasState: CanvasState,
       defaultBehavior: (event: React.MouseEvent | MouseEvent) => void
     ) => {
-      const pinCoordsOfMouse = mouseToNodeCoords(mouseDownEvent, canvasState);
-      addNodeOnCanvas(pinCoordsOfMouse)
-      console.log("pinCoordsOfMouse", pinCoordsOfMouse);
 
       const onMouseUp = (mouseUpEvent: React.MouseEvent | MouseEvent) => {
         document.removeEventListener("mouseup", onMouseUp);
@@ -30,11 +27,17 @@ export default function useOnMouseDown(
           mouseUpEvent.clientX === mouseDownEvent.clientX &&
           mouseUpEvent.clientY === mouseDownEvent.clientY
         ) {
+          // console.log("mouseUpEvent start")
+          const pinCoordsOfMouse = mouseToNodeCoords(mouseDownEvent, canvasState);
+          console.log("pinCoordsOfMouse", pinCoordsOfMouse);
+          addNodeOnCanvas(pinCoordsOfMouse)
           // clearAndRedraw(canvasState);
         }
       };
       document.addEventListener("mouseup", onMouseUp);
       defaultBehavior(mouseDownEvent);
+      // console.log("mouseUpEvent leave")
+
     },
     [drawingPins.length]
   );

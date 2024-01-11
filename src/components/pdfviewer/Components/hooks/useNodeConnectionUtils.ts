@@ -17,7 +17,7 @@ export default function useNodeConnectionUtils(
       }));
       newPins.push({ ...pin, isActive: true });
       setDrawingPins(newPins);
-      console.log("newPins", newPins);
+      // console.log("newPins", newPins);
     },
     [drawingPins.length]
   );

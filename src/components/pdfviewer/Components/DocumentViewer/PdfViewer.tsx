@@ -17,22 +17,30 @@ const PdfViewer = () => {
   const [pageNum, setPageNum] = useState(1);
   const [pageRendering, setPageRendering] = useState(false);
   const [pageNumPending, setPageNumPending] = useState<any>(null);
+  const [drawingPins, setDrawingPins] = useState<any>([]);
+  const [isMouseMove, setIsMouseMove] = useState<boolean>(false);
+  const [addNewPin] = useNodeConnectionUtils(drawingPins, setDrawingPins);
+  const [size, ratio] = useWindowSize();
   const [canvasViewState, setCanvasViewState] = useState(
     defaultCanvasViewState
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRender = useRef<any>(false);
   //   const pdfUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-05/actual_compressed-compressed_1704452772103.pdf";
   const pdfUrl =
     "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
 
   useEffect(() => {
-    if (!canvasRef) {
+    if (!canvasRef && !pdfDoc) {
       return;
     }
-    const canvas: any = document.getElementById("pdfCanvas");
+    // const canvas: any = document.getElementById("pdfCanvas");
+    const canvas = canvasRef.current;
     renderPDF(pdfUrl, canvas);
-    cancelRender();
-  }, [pdfUrl, canvasViewState.scale, canvasViewState.offset.x]);
+    return () => {
+      cancelRender();
+    };
+  }, [pdfDoc, canvasViewState.scale, isMouseMove, drawingPins.length]);
 
   const queueRenderPage = (num: any) => {
     if (pageRendering) {
@@ -52,7 +60,6 @@ const PdfViewer = () => {
       // queueRenderPage(pageNum + 1);
     }
   };
-
   let renderTask: any | null = null;
   const controller = new AbortController();
 
@@ -74,20 +81,21 @@ const PdfViewer = () => {
       const currentPage = 1;
       const scale = canvasViewState.scale;
       // Determine the current viewport based on the canvas size and scale
-      const viewportPage = await pdfDoc.getPage(currentPage);
-      const viewport = viewportPage.getViewport({ scale });
-      // Start rendering the PDF page
-      renderTask = viewportPage.render({
-        canvasContext: context,
-        viewport: viewport,
-        // Use the controller's signal as an option for the rendering task
-        // This allows us to cancel the rendering if needed
-        ...(taskSignal ? { signal: taskSignal } : {}),
-      });
-      // Use Promise.race to wait for either the rendering task to complete
-      // or the controller's signal to be aborted
-      await Promise.race([renderTask.promise, taskSignal]);
-
+      if (pdfDoc) {
+        const viewportPage = await pdfDoc.getPage(currentPage);
+        const viewport = viewportPage.getViewport({ scale });
+        // Start rendering the PDF page
+        renderTask = viewportPage.render({
+          canvasContext: context,
+          viewport: viewport,
+          // Use the controller's signal as an option for the rendering task
+          // This allows us to cancel the rendering if needed
+          ...(taskSignal ? { signal: taskSignal } : {}),
+        });
+        // Use Promise.race to wait for either the rendering task to complete
+        // or the controller's signal to be aborted
+        await Promise.race([renderTask.promise, taskSignal]);
+      }
       // Wait for the rendering task to complete
       // await renderTask.promise;
       console.log("Rendering completed");
@@ -165,9 +173,7 @@ const PdfViewer = () => {
     savedCanvasState: CanvasViewState;
     panelSizes: PanelSizes;
   };
-  const [drawingPins, setDrawingPins] = useState<any>([]);
-  const [addNewPin] = useNodeConnectionUtils(drawingPins, setDrawingPins);
-  const [size, ratio] = useWindowSize();
+
   const [windowWidth, windowHeight] = size;
   const canvasHeight = 650;
   // windowHeight * appState.panelSizes.canvasHeightFraction - headerHeight;
@@ -232,6 +238,7 @@ const PdfViewer = () => {
       <div style={{ height: canvasHeight, width: "100%" }}>
         <Canvas
           canvasRef={canvasRef}
+          setIsMouseMove={setIsMouseMove}
           canvasWidth={canvasWidth}
           canvasHeight={canvasHeight}
           devicePixelRatio={ratio}

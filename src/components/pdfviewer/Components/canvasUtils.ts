@@ -41,7 +41,7 @@ function drawCircle(
   radius: number,
 ): void {
   context.save();
-  console.log("draw pinCircle", pinCoord)
+  // console.log("draw pinCircle", pinCoord)
   // draw node itself
   context.beginPath();
   context.arc(pinCoord.x_coord, pinCoord.y_coord, radius, 0, 2 * Math.PI);

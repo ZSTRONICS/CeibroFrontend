@@ -51,6 +51,7 @@ export type CanvasProps = {
   savedCanvasViewState: CanvasViewState;
   setSavedCanvasViewState: (newSavedCanvasState: CanvasViewState) => void;
   setKeyboardActive: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsMouseMove: (isMove: boolean) => void;
 };
 
 export default function Canvas(props: CanvasProps): React.ReactElement {
@@ -66,6 +67,7 @@ export default function Canvas(props: CanvasProps): React.ReactElement {
     setCanvasViewState,
     savedCanvasViewState,
     setSavedCanvasViewState,
+    setIsMouseMove,
     setKeyboardActive,
   } = props;
 
@@ -75,9 +77,9 @@ export default function Canvas(props: CanvasProps): React.ReactElement {
   const [context, setContext, startPan] = usePanZoomCanvas(
     canvasRef,
     canvasViewState,
-    setCanvasViewState
+    setCanvasViewState,
+    setIsMouseMove
   );
-  console.log("context", context);
   // setup canvas and set context
   useLayoutEffect(() => {
     if (canvasRef.current) {

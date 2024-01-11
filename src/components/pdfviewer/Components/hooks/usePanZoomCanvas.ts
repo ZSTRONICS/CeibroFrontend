@@ -19,7 +19,8 @@ const maxZoomDelta = 2;
 export default function usePanZoomCanvas(
   canvasRef: React.RefObject<HTMLCanvasElement>,
   canvasViewState: CanvasViewState,
-  setCanvasViewState: (newCanvasViewState: CanvasViewState) => void
+  setCanvasViewState: (newCanvasViewState: CanvasViewState) => void,
+  setIsMouseMove: (isMove: boolean) => void,
 ): [
     CanvasRenderingContext2D | null,
     React.Dispatch<React.SetStateAction<CanvasRenderingContext2D | null>>,
@@ -35,6 +36,8 @@ export default function usePanZoomCanvas(
     (event: React.MouseEvent | MouseEvent) => {
       if (context) {
         // update mouse position
+        // console.log("mouseMove")
+        setIsMouseMove(true)
         const newMousePos = calculateMousePositionOnElement(
           event,
           context.canvas
@@ -58,6 +61,8 @@ export default function usePanZoomCanvas(
   );
 
   const mouseUp = useCallback(() => {
+    // console.log("mouseUp")
+    setIsMouseMove(false)
     document.removeEventListener("mousemove", mouseMove);
     document.removeEventListener("mouseup", mouseUp);
   }, [mouseMove]);
@@ -65,6 +70,8 @@ export default function usePanZoomCanvas(
   const startPan = useCallback(
     (event: React.MouseEvent | MouseEvent) => {
       if (context) {
+        // console.log("startPan")
+        setIsMouseMove(true)
         document.addEventListener("mousemove", mouseMove);
         document.addEventListener("mouseup", mouseUp);
         mousePosRef.current = calculateMousePositionOnElement(
