@@ -42,7 +42,6 @@ export default function useDraw(
   ] {
   const draw = useCallback(
     (context: CanvasRenderingContext2D) => {
-      // console.log("draw Pins", drawingPins)
       drawPins(context, drawingPins);
     },
     [drawingPins.length]

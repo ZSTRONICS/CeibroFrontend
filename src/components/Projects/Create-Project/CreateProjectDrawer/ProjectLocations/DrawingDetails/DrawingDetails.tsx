@@ -15,10 +15,10 @@ function DrawingDetails() {
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box>
       <Grid container>
-        <Grid item md={4} sx={sideBarStyle}>
+        <Grid item md={6} sx={sideBarStyle}>
           <Task />
         </Grid>
-        <Grid item md={8}>
+        <Grid item md={6}>
           <DocumentReader newTask={allTaskToMe.new} />
         </Grid>
         {/* <Grid item md={1} sx={sideBarStyle}>

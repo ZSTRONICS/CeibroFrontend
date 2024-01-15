@@ -37,25 +37,22 @@ function roundRect(
 
 function drawCircle(
   context: CanvasRenderingContext2D,
-  pinCoord: DrawingPinInterface,
-  radius: number,
+  pinCoord: any,
+  radius: number
 ): void {
-  context.save();
-  // console.log("draw pinCircle", pinCoord)
-  // draw node itself
   context.beginPath();
-  context.arc(pinCoord.x_coord, pinCoord.y_coord, radius, 0, 2 * Math.PI);
+  context.arc(pinCoord.points.x, pinCoord.points.y, radius, 0, 2 * Math.PI);
   context.fillStyle = "red";
   context.fill();
   context.closePath();
-  context.restore();
+  context.save();
 }
 
 export function drawPin(
   context: CanvasRenderingContext2D,
   pin: DrawingPinInterface,
 ): void {
-  drawCircle(context, pin, 24);
+  drawCircle(context, pin, 16);
 }
 
 export function drawPins(

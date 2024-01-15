@@ -25,16 +25,15 @@ const PdfViewer = () => {
     defaultCanvasViewState
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasRender = useRef<any>(false);
   //   const pdfUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-05/actual_compressed-compressed_1704452772103.pdf";
   const pdfUrl =
     "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
+  // console.log("drawingPins>>>>>", drawingPins);
 
   useEffect(() => {
     if (!canvasRef && !pdfDoc) {
       return;
     }
-    // const canvas: any = document.getElementById("pdfCanvas");
     const canvas = canvasRef.current;
     renderPDF(pdfUrl, canvas);
     return () => {
@@ -60,6 +59,7 @@ const PdfViewer = () => {
       // queueRenderPage(pageNum + 1);
     }
   };
+
   let renderTask: any | null = null;
   const controller = new AbortController();
 
@@ -78,6 +78,7 @@ const PdfViewer = () => {
 
       // const pdfDocInstance = await pdfjs.getDocument(url).promise;
       const context = canvas.getContext("2d") as CanvasRenderingContext2D;
+
       const currentPage = 1;
       const scale = canvasViewState.scale;
       // Determine the current viewport based on the canvas size and scale
@@ -91,7 +92,13 @@ const PdfViewer = () => {
           // Use the controller's signal as an option for the rendering task
           // This allows us to cancel the rendering if needed
           ...(taskSignal ? { signal: taskSignal } : {}),
+          onAfterDraw: () => {
+            // drawPins(context, drawingPins);
+            console.log("draw circle after pdf render");
+          },
         });
+
+        // drawPins(context, drawingPins);
         // Use Promise.race to wait for either the rendering task to complete
         // or the controller's signal to be aborted
         await Promise.race([renderTask.promise, taskSignal]);
@@ -193,7 +200,7 @@ const PdfViewer = () => {
     // clearAndRedraw,
     addNodeOnCanvas
   );
-  // console.log("drawingPins", drawingPins);
+  console.log("draw", draw);
   const handleDoubleClick = useDoubleClick(drawingPins, addNewPin);
   const handleZoomOut = () => {
     let scale = canvasViewState.scale - 0.01;
