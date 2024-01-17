@@ -1,4 +1,8 @@
 import ClearIconSvgGray from "../icons/CustomSvgIcon/ClearIconSvgGray";
+import { FavIcon, UnFavIcon } from "./LocationIcons/FavUnFavIcon";
+import PrivateIcon from "./LocationIcons/PrivateIcon";
+import PublicIcon from "./LocationIcons/PublicIcon";
+import ShareIcon from "./LocationIcons/ShareIcon";
 import FileDownloadIcon from "./TaskIcons/FileDownloadIcon";
 import ForwardIcon from "./TaskIcons/ForwardIcon";
 import ReplyIcon from "./TaskIcons/ReplyIcon";
@@ -21,4 +25,14 @@ export { ProfileIcon } from "./profile/Profile";
 export { QuestionnairIcon } from "./questionnair/Questionnair";
 export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
-export { ClearIconSvgGray, FileDownloadIcon, ForwardIcon, ReplyIcon };
+export {
+  ClearIconSvgGray,
+  FavIcon,
+  FileDownloadIcon,
+  ForwardIcon,
+  PrivateIcon,
+  PublicIcon,
+  ReplyIcon,
+  ShareIcon,
+  UnFavIcon,
+};

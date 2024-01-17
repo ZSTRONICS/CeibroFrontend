@@ -1,41 +1,62 @@
-import { Box, Grid } from "@mui/material";
-import Task from "components/Tasks/TaskList/Task";
+import { Grid } from "@mui/material";
 import DocumentReader from "components/pdfviewer/index.js";
-import { useSelector } from "react-redux";
+import useWindowSize from "hooks/useWindowSize";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
-import { DrawingMenu, StickyHeader } from "./Components";
+import { HEADER_HEIGHT } from "utills/common";
+// import { DrawingMenu, StickyHeader } from "./Components";
+import { ExpandableProjectList } from "./Components/ProjectComponents";
 
 function DrawingDetails() {
-  const { task } = useSelector((state: RootState) => state);
-  const { allTaskToMe } = task;
-
+  const dispatch = useDispatch();
+  const [size, ratio] = useWindowSize();
+  const [windowWidth, windowHeight] = size;
+  const isRenderEffect = useRef<boolean>(true);
+  const { allProjects } = useSelector((state: RootState) => state.project);
+  // const task = useSelector((state: RootState) => state.task);
+  // const { allTaskToMe } = task;
+  // console.log("windowHeight", windowHeight);
+  useEffect(() => {
+    if (isRenderEffect.current && allProjects.length === 0) {
+      isRenderEffect.current = false;
+      dispatch(PROJECT_APIS.getAllProjects());
+    }
+  }, []);
+  const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
+  const sideBarStyle = {
+    borderRadius: "4px",
+    background: "#FFF",
+    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    height: `${windowActualHeight}px`,
+    overflow: "auto",
+  };
   return (
     <>
-      <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
+      {/* reuse drawing header with selected project, floor, drawing dropdown 
+       <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
-      </Box>
-      <Grid container>
-        <Grid item md={6} sx={sideBarStyle}>
-          <Task />
+      </Box> */}
+      <Grid container sx={{ mx: 2 }} gap={2}>
+        <Grid
+          item
+          md={2}
+          sx={{
+            ...sideBarStyle,
+          }}
+        >
+          <ExpandableProjectList allProjects={allProjects} />
         </Grid>
-        <Grid item md={6}>
-          <DocumentReader newTask={allTaskToMe.new} />
+        <Grid item md={3} sx={{ ...sideBarStyle }}>
+          <>Drawing files</>
         </Grid>
-        {/* <Grid item md={1} sx={sideBarStyle}>
-          Toolbar
-        </Grid> */}
+        <Grid item md={5}>
+          <DocumentReader />
+        </Grid>
       </Grid>
     </>
   );
 }
-const sideBarStyle = {
-  position: "relative",
-  zIndex: 10,
-  height: "calc(100vh - 137px)",
-  overflow: "auto",
-  display: "flex",
-  flexDirection: "column",
-  justifyContent: "flex-start",
-  background: "white",
-};
+
 export default DrawingDetails;

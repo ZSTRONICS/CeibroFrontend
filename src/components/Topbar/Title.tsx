@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core";
 import { ArrowBack } from "@material-ui/icons";
 import { projectOverviewTemplate } from "constants/interfaces/project.interface";
-import { useCallback, useEffect } from "react";
+import { useCallback, useLayoutEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 // import CreateChat from "./CreateChat";
@@ -30,7 +30,7 @@ const Title = () => {
   );
   const selectedProjectId = socket.getSelectedProjId();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (allProjects.length === 0) {
       dispatch(PROJECT_APIS.getAllProjects());
     }

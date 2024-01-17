@@ -47,12 +47,6 @@ function DrawingMenu() {
   }, [selectedProjectLocal]);
 
   useEffect(() => {
-    if (allProjects.length === 0 && !selectedProject) {
-      dispatch(PROJECT_APIS.getAllProjects());
-    }
-  }, []);
-
-  useEffect(() => {
     if (selectedProject) {
       dispatch(
         PROJECT_APIS.getFloorsByProjectId({

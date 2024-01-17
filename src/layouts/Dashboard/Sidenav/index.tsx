@@ -51,41 +51,45 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
   );
 
   return (
-    <Box
-      component="nav"
-      sx={{
-        flexShrink: { lg: 0 },
-        width: { lg: NAV_WIDTH },
-      }}
-    >
-      {isDesktop && !showSidebar ? (
-        <Drawer
-          open
-          variant="permanent"
-          PaperProps={{
-            sx: {
-              width: NAV_WIDTH,
-              position: "relative",
-              zIndex: 1,
-            },
+    <>
+      {!showSidebar && (
+        <Box
+          component="nav"
+          sx={{
+            flexShrink: { lg: 0 },
+            width: { lg: NAV_WIDTH },
           }}
         >
-          {renderContent}
-        </Drawer>
-      ) : (
-        <Drawer
-          open={openNav}
-          onClose={onCloseNav}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          PaperProps={{
-            sx: { width: NAV_WIDTH },
-          }}
-        >
-          {renderContent}
-        </Drawer>
+          {isDesktop ? (
+            <Drawer
+              open
+              variant="permanent"
+              PaperProps={{
+                sx: {
+                  width: NAV_WIDTH,
+                  position: "relative",
+                  zIndex: 1,
+                },
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          ) : (
+            <Drawer
+              open={openNav}
+              onClose={onCloseNav}
+              ModalProps={{
+                keepMounted: true,
+              }}
+              PaperProps={{
+                sx: { width: NAV_WIDTH },
+              }}
+            >
+              {renderContent}
+            </Drawer>
+          )}
+        </Box>
       )}
-    </Box>
+    </>
   );
 }

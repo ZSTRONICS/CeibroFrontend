@@ -94,7 +94,7 @@ const PdfViewer = () => {
           ...(taskSignal ? { signal: taskSignal } : {}),
           onAfterDraw: () => {
             // drawPins(context, drawingPins);
-            console.log("draw circle after pdf render");
+            // console.log("draw circle after pdf render");
           },
         });
 
@@ -105,11 +105,11 @@ const PdfViewer = () => {
       }
       // Wait for the rendering task to complete
       // await renderTask.promise;
-      console.log("Rendering completed");
+      // console.log("Rendering completed");
     } catch (error: any) {
       // Handle errors, check if the error is due to cancellation
       if (error.name === "AbortError") {
-        console.log("Rendering cancelled");
+        // console.log("Rendering cancelled");
       } else {
         console.error("Error rendering PDF:", error);
       }
@@ -135,7 +135,6 @@ const PdfViewer = () => {
   //   // Determine the current viewport based on the canvas size and scale
   //   const viewportPage = await pdfDocInstance.getPage(currentPage);
   //   const viewport = viewportPage.getViewport({ scale });
-  //   console.log("viewportPage>>>", viewportPage);
   //   viewportPage.render({
   //     canvasContext: context,
   //     viewport: viewport,
@@ -200,7 +199,7 @@ const PdfViewer = () => {
     // clearAndRedraw,
     addNodeOnCanvas
   );
-  console.log("draw", draw);
+  // console.log("draw", draw);
   const handleDoubleClick = useDoubleClick(drawingPins, addNewPin);
   const handleZoomOut = () => {
     let scale = canvasViewState.scale - 0.01;

@@ -19,7 +19,11 @@ import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
-import { includesIgnoreCase, taskConstants } from "utills/common";
+import {
+  HEADER_HEIGHT,
+  includesIgnoreCase,
+  taskConstants,
+} from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 import FilterTabs from "./FilterTabs";
@@ -48,9 +52,9 @@ const Task = () => {
       description: "",
     },
   ]);
-  const headerHeight = 87;
+
   const [windowHeight, setWindowHeight] = useState<number>(
-    window.innerHeight - headerHeight
+    window.innerHeight - HEADER_HEIGHT
   );
   const taskCardListRef: any = useRef();
   const task: any = useSelector((state: RootState) => state.task);
@@ -482,7 +486,7 @@ const Task = () => {
   };
 
   const handleResize = () => {
-    setWindowHeight(window.innerHeight - (headerHeight + 16));
+    setWindowHeight(window.innerHeight - (HEADER_HEIGHT + 16));
   };
 
   useEffect(() => {

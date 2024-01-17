@@ -156,4 +156,4 @@ export const taskConstants: any = {
   },
 };
 
-
+export const HEADER_HEIGHT = 87;

@@ -44,6 +44,14 @@ const SubHeading = styled(Typography)(({ theme }) => ({
   },
 }));
 
+const Heading2 = styled(Typography)(({ theme }) => ({
+  color: "#131516",
+  fontSize: 14,
+  fontWeight: 700,
+  lineHeight: "20px",
+  [theme.breakpoints.down("md")]: {},
+}));
+
 const DescriptionTag = styled(Typography)(({ theme }) => ({
   fontSize: 15,
   fontWeight: 500,
@@ -162,9 +170,14 @@ export const RoleLabelTag = styled(Typography)`
 `;
 export const SubLabelTag = styled(Typography)`
   font-family: "Inter";
-  font-style: normal;
   font-size: 12px;
   font-weight: 600 !important;
+  color: #605c5c;
+`;
+const LabelTag = styled("span")`
+  font-family: "Inter";
+  font-size: 12px;
+  font-weight: 500;
   color: #605c5c;
 `;
 export const ConfirmDescriptionTag = styled(Typography)`
@@ -258,7 +271,9 @@ export {
   CustomStack,
   CustomTitle,
   DescriptionTag,
+  Heading2,
   ImageStack,
+  LabelTag,
   MUIInputLabel,
   MenuItemTag,
   Span,
