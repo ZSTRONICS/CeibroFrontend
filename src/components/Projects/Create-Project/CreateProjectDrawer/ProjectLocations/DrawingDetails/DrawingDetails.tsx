@@ -60,6 +60,7 @@ function DrawingDetails() {
         </Grid>
         <Grid item md={3} sx={{ ...sideBarStyle, px: 2, py: 1.5 }}>
           <LocationDrawingFiles windowActualHeight={windowActualHeight} />
+          {/* <DrawingFiles /> */}
         </Grid>
         <Grid
           item
