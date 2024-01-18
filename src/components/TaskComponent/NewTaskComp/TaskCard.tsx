@@ -19,7 +19,7 @@ interface IProps {
   userId: string;
   selectedTaskId: string | undefined;
   handleClick: (task: ITask) => void;
-  menuOption: any;
+  menuOption: MenuOption[];
   disableMenu: boolean;
   isTaskFromMe: string;
 }

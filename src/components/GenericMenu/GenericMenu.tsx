@@ -4,17 +4,12 @@ import assets from "assets/assets";
 import { MenuItemTag } from "components/CustomTags";
 import React, { useState } from "react";
 
-export interface Option {
-  menuName: string;
-  callBackHandler: () => void;
-}
-
 interface MenuProps {
   icon?: any;
-  options: Option[];
+  options: MenuOption[];
   disableMenu: boolean;
   paddingTop?: null | number;
-  isTaskSelected: boolean;
+  isTaskSelected?: boolean;
 }
 
 const GenericMenu: React.FC<MenuProps> = ({
@@ -37,10 +32,11 @@ const GenericMenu: React.FC<MenuProps> = ({
     setAnchorEl(null);
   };
   const isMenuDisabled = disableMenu || options.length === 0;
+  console.log("isTaskSelected", isTaskSelected);
   return (
     <>
       <IconButton
-        sx={paddingTop !== null ? { pt: 0.5, pb: 0 } : undefined}
+        sx={paddingTop !== null ? { pt: 0, pb: 0 } : undefined}
         aria-label="more"
         id="long-button"
         aria-controls={open ? "long-menu" : undefined}
@@ -55,7 +51,7 @@ const GenericMenu: React.FC<MenuProps> = ({
       </IconButton>
       {anchorEl && (
         <Menu
-          sx={{ ul: { py: 0.5 } }}
+          sx={{ ul: { py: 1 } }}
           id="fade-menu"
           MenuListProps={{
             "aria-labelledby": "fade-button",
@@ -75,6 +71,7 @@ const GenericMenu: React.FC<MenuProps> = ({
         >
           {options.map((option) => (
             <MenuItemTag
+              sx={{ padding: `${!isTaskSelected ? "8px" : "0"}` }}
               disableGutters
               key={option.menuName}
               onClick={() => {

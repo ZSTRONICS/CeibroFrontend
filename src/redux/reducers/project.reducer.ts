@@ -73,7 +73,8 @@ import {
 interface ProjectReducerInt {
   drawerOpen: boolean;
   menue: number;
-  allProjects: any;
+  allProjects: Project[];
+  allGroupsByProjectId: Group[];
   allFloors: Floor[];
   isFloorLoading: boolean;
   projects: Project[];
@@ -132,6 +133,7 @@ const projectReducer: ProjectReducerInt = {
   drawerOpen: false,
   menue: 1,
   allProjects: [],
+  allGroupsByProjectId: [],
   allProjectsTitles: [],
   projects: [],
   projectMembers: [],

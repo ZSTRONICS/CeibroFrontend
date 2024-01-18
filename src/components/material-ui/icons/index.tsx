@@ -25,6 +25,7 @@ export { ProfileIcon } from "./profile/Profile";
 export { QuestionnairIcon } from "./questionnair/Questionnair";
 export { RemoveIcon } from "./remove/Remove";
 export { SendIcon } from "./send/Send";
+
 export {
   ClearIconSvgGray,
   FavIcon,

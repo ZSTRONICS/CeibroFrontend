@@ -5,6 +5,10 @@ declare interface UserInfo {
   profilePic: string;
   companyName: string;
 }
+declare interface MenuOption {
+  menuName: string;
+  callBackHandler: () => void;
+}
 
 declare interface Project {
   _id: string

@@ -445,7 +445,7 @@ button[disabled] {
   justify-content: space-between;
 }
 
-.textOverflowY {
+.textOverflowRow {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;

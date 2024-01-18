@@ -14,7 +14,9 @@ function DrawingDetails() {
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
-  const { allProjects } = useSelector((state: RootState) => state.project);
+  const { allProjects, allGroupsByProjectId } = useSelector(
+    (state: RootState) => state.project
+  );
   // const task = useSelector((state: RootState) => state.task);
   // const { allTaskToMe } = task;
   // console.log("windowHeight", windowHeight);
@@ -41,12 +43,17 @@ function DrawingDetails() {
       <Grid container sx={{ mx: 2 }} gap={2}>
         <Grid
           item
-          md={2}
+          md={3}
+          xs={4}
           sx={{
             ...sideBarStyle,
+            px: 2,
           }}
         >
-          <ExpandableProjectList allProjects={allProjects} />
+          <ExpandableProjectList
+            allProjects={allProjects}
+            groups={allGroupsByProjectId}
+          />
         </Grid>
         <Grid item md={3} sx={{ ...sideBarStyle }}>
           <>Drawing files</>
