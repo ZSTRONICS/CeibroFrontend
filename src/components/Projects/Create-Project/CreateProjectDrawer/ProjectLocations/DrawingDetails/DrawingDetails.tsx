@@ -8,6 +8,7 @@ import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
+import DrawingFiles from "./DrawingFiles";
 
 function DrawingDetails() {
   const dispatch = useDispatch();
@@ -56,7 +57,7 @@ function DrawingDetails() {
           />
         </Grid>
         <Grid item md={3} sx={{ ...sideBarStyle }}>
-          <>Drawing files</>
+          <DrawingFiles />
         </Grid>
         <Grid item md={5}>
           <DocumentReader />
