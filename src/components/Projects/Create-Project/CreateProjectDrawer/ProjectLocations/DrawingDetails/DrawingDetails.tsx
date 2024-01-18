@@ -1,5 +1,4 @@
 import { Grid } from "@mui/material";
-import DocumentReader from "components/pdfviewer/index.js";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,6 +6,7 @@ import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
+import LocationDrawingFiles from "./Components/DrawingComp/LocationDrawingFiles";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
 
 function DrawingDetails() {
@@ -14,7 +14,7 @@ function DrawingDetails() {
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
-  const { allProjects, allGroupsByProjectId } = useSelector(
+  const { allProjects, allGroups, allFloors } = useSelector(
     (state: RootState) => state.project
   );
   // const task = useSelector((state: RootState) => state.task);
@@ -32,8 +32,8 @@ function DrawingDetails() {
     background: "#FFF",
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     height: `${windowActualHeight}px`,
-    overflow: "auto",
   };
+
   return (
     <>
       {/* reuse drawing header with selected project, floor, drawing dropdown 
@@ -48,18 +48,33 @@ function DrawingDetails() {
           sx={{
             ...sideBarStyle,
             px: 2,
+            py: 1.5,
           }}
         >
           <ExpandableProjectList
+            windowActualHeight={windowActualHeight}
             allProjects={allProjects}
-            groups={allGroupsByProjectId}
+            groups={allGroups}
+            allFloors={allFloors}
           />
         </Grid>
-        <Grid item md={3} sx={{ ...sideBarStyle }}>
-          <>Drawing files</>
+        <Grid item md={3} sx={{ ...sideBarStyle, px: 2, py: 1.5 }}>
+          <LocationDrawingFiles windowActualHeight={windowActualHeight} />
         </Grid>
-        <Grid item md={5}>
-          <DocumentReader />
+        <Grid
+          item
+          container
+          justifyContent={"center"}
+          alignItems={"center"}
+          md={5}
+          sx={{
+            ...sideBarStyle,
+            background:
+              "linear-gradient(0deg, #E5E5E5 0%, #E5E5E5 100%), url(<path-to-image>), lightgray 50% / cover no-repeat",
+          }}
+        >
+          No drawing selected
+          {/* <DocumentReader /> */}
         </Grid>
       </Grid>
     </>

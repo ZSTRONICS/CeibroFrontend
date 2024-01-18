@@ -19,6 +19,22 @@ export interface Floor {
 
 export interface Drawing {
     _id: string;
+    fileName: string;
+    fileSize: string;
+    fileType: string;
+    fileTag: string;
+    fileUrl: string;
+    uploadStatus: string;
+    access: string[];
+    moduleType: string;
+    moduleId: string | null;
+    floor: Floor;
+    groupId: string;
+    uploaderlocalFilePath: string;
+    uploaderLocalId: string;
+    hasComment: boolean;
+    comment: string;
+    version: number;
     projectId: string;
     floorId: string;
     drawingName: string;
@@ -29,6 +45,7 @@ export interface Drawing {
     overlayEdits: any[];
     createdAt: string;
     updatedAt: string;
+    __v: number;
 }
 
 export interface Response {
@@ -39,19 +56,6 @@ export interface Response {
 
 export interface DrawingInterface {
     drawing: Drawing
-}
-
-export interface Drawing {
-    _id: string
-    projectId: string
-    floorId: string
-    drawingName: string
-    drawingUrl: string
-    uploadedBy: UploadedBy
-    overlayEdits: any[]
-    access: any[]
-    createdAt: string
-    updatedAt: string
 }
 
 export interface UploadedBy extends UserInfo { }

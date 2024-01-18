@@ -1,3 +1,4 @@
+
 declare interface UserInfo {
   _id: string;
   firstName: string;
@@ -38,11 +39,13 @@ declare interface Group {
   projectId: string;
   groupName: string;
   creator: UserInfo;
-  drawings: string[];
+  drawings: any[];
   deleted: boolean;
-  isPublicGroup: boolean;
+  publicGroup: boolean;
+  isCreator: boolean;
   sharedWith: string[];
   createdAt: string;
   updatedAt: string;
   isFavoriteByMe: boolean;
 }
+

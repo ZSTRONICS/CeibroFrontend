@@ -1,55 +1,61 @@
-import { Box, InputBase } from "@mui/material";
-import assets from "assets";
+import { Box } from "@mui/material";
 import { Heading2 } from "components/CustomTags";
-import { useSearchText } from "hooks";
-import { useState } from "react";
+import { InputSearch } from "components/GenericComponents";
+import { dataGroupById } from "components/Utills/Globals";
+import { useEffect, useRef, useState } from "react";
 import ProjectCard from "./ProjectCard";
 
 interface IProps {
   allProjects: Project[];
   groups: Group[];
+  allFloors: Floor[];
+  windowActualHeight: number;
 }
 const ExpandableProjectList: React.FC<IProps> = (props) => {
-  const { allProjects } = props;
-  const { searchText, handleSearchTextChange, clearSearchText } =
-    useSearchText();
-  const [filteredPorject, setFilteredProject] = useState<Project[]>([]);
-  const sortedProjects = allProjects.sort(
-    (a: any, b: any) => b.isFavoriteByMe - a.isFavoriteByMe
-  );
-  // console.log("searchText", searchText);
+  const { allProjects, groups, windowActualHeight } = props;
+  const [searchText, setSearchText] = useState("");
+  const [contHeight, setContHeight] = useState<number>(50);
+  const contRef: any = useRef(null);
+  const handleSearchTextChange = (newSearchText: string) => {
+    setSearchText(newSearchText);
+  };
+  useEffect(() => {
+    if (contRef.current) {
+      setContHeight(contRef.current.clientHeight + 25);
+    }
+  }, [windowActualHeight]);
   return (
     <Box sx={{}}>
       <Box
+        ref={contRef}
         sx={{
           pt: 1.25,
         }}
       >
-        <InputBase
-          type="search"
-          value={searchText}
-          placeholder="Start typing to search"
-          sx={{
-            pl: 4,
-            height: "40px",
-            borderWidth: "0px 0px 1px 0px",
-            borderColor: "#818181",
-            borderStyle: "solid",
-            width: "100%",
-            background: `url(${assets.searchSvgIcon})no-repeat`,
-            backgroundPosition: "5px center",
-          }}
-          onChange={handleSearchTextChange}
-        />
+        <InputSearch value={searchText} onChange={handleSearchTextChange} />
         <Heading2 sx={{ py: 2 }}>Projects</Heading2>
       </Box>
-      {allProjects
-        .sort((a: any, b: any) => b.isFavoriteByMe - a.isFavoriteByMe)
-        .map((project) => {
-          return (
-            <ProjectCard key={project._id} project={project} groups={[]} />
-          );
-        })}
+      <Box
+        sx={{
+          height: `${windowActualHeight - contHeight}px`,
+          overflow: "auto",
+        }}
+      >
+        {allProjects
+          .sort((a: any, b: any) => b.isFavoriteByMe - a.isFavoriteByMe)
+          .map((project) => {
+            const groupDictionary = dataGroupById(groups, "projectId");
+            const projectGroups = groupDictionary[project._id];
+            // const floorDictionary = dataGroupById(allFloors, "projectId")
+            return (
+              <ProjectCard
+                key={project._id}
+                project={project}
+                groups={projectGroups}
+              />
+            );
+          })}
+      </Box>
     </Box>
   );
 };

@@ -1,7 +1,6 @@
-import DrawingMenu from './DrawingHeader/DrawingMenu'
-import StickyHeader from './DrawingHeader/StickyHeader'
+import DrawingMenu from './DrawingComp/DrawingMenu'
+import StickyHeader from './DrawingComp/StickyHeader'
 
 export {
-    StickyHeader,
-    DrawingMenu
+    DrawingMenu, StickyHeader
 }

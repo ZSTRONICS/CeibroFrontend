@@ -9,14 +9,6 @@ interface HeaderProps {
 function StickyHeader(props: HeaderProps) {
   return (
     <StyledAppBar position="static">
-      {/* <Typography
-        variant="h6"
-        component="div"
-        textAlign="center"
-        sx={{ borderBottom: "1px solid #eeeeee", py: 1 }}
-      >
-        {props.title}
-      </Typography> */}
       <Box sx={{ width: "100%", p: 1, pb: 0.5 }}>{props.children} </Box>
     </StyledAppBar>
   );

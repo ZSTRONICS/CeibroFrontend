@@ -584,7 +584,68 @@ const optionMapping: { [key: string]: { [key: string]: string } } = {
   },
 };
 
-export {
-  countUnseenTasks, countUnseenTasksForTabs, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, updateLocalStorageObject
-};
+/**
+ * Groups an array of objects by the specified key.
+ *
+ * @param {Array} array - The array of objects to be grouped.
+ * @param {string} id - The key to group the objects by.
+ * @return {Object} - An object with the grouped data.
+ */
+function dataGroupById(arr: any[], id: string) {
+  return arr.reduce((acc, item) => {
+    acc[item[id]] = acc[item[id]] || [];
+    acc[item[id]].push(item);
+    return acc;
+  }, {});
+}
+
+/**
+ * Categorizes the given array of groups based on a condition callback.
+ * The function categorizes the groups based on the result of the callback 
+ * function and returns an object with the categorized groups. 
+ * The callback function determines the category of each group, 
+ * and if the callback function returns null, the group is categorized 
+ * as "otherGroups" by default. The categorized groups are stored in an object where
+ *  the keys represent the categories and the values are arrays of Group objects.
+ * @param {Group[]} groups - The array of groups to be categorized.
+ * @param {(group: Group) => string | null} conditionCallback - The callback function 
+ * that takes a group and returns a category string or null.
+ * @returns {Record<string, Group[]>} - An object containing categorized groups.
+ */
+
+function categorizeGroups(
+  groups: Group[],
+  conditionCallback: (group: Group) => string | null
+) {
+  return groups.reduce(
+    (categorized: Record<string, Group[]>, group) => {
+      const category = conditionCallback(group) || "otherGroups";
+      if (!categorized[category]) {
+        categorized[category] = [];
+      }
+      categorized[category].push(group);
+      return categorized;
+    },
+    { Favorites: [], creatorGroups: [], otherGroups: [] }
+  );
+}
+
+
+/**
+ * Trims the given filename if it is longer than 14 characters, by replacing the middle characters with "...".
+ *
+ * @param {string} filename - The name of the file to be trimmed.
+ * @return {string} The trimmed filename.
+ */
+function trimFileName(filename: string) {
+  if (filename.length <= 14) {
+    return filename;
+  }
+  const start = filename.slice(0, 6);
+  const end = filename.slice(-7);
+  const trimmedName = start + "..." + end;
+  return trimmedName;
+}
+
+export { categorizeGroups, countUnseenTasks, countUnseenTasksForTabs, dataGroupById, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, trimFileName, updateLocalStorageObject };
 

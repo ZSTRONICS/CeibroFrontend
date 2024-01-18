@@ -14,7 +14,7 @@ import {
 import { IFile } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import React, { useState } from "react";
-import { filesizes } from "../Globals";
+import { filesizes, trimFileName } from "../Globals";
 
 interface IProps {
   bt?: boolean;
@@ -44,16 +44,6 @@ const FileBox: React.FC<IProps> = ({
       console.log("unable to open file");
     }
   };
-
-  function trimFileName(filename: string) {
-    if (filename.length <= 14) {
-      return filename;
-    }
-    const start = filename.slice(0, 6);
-    const end = filename.slice(-7);
-    const trimmedName = start + "..." + end;
-    return trimmedName;
-  }
 
   const getFileIconThumbnail = (fileType: string) => {
     // console.log("fileType", fileType);

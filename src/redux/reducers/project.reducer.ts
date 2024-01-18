@@ -47,7 +47,7 @@ import {
 import { ActionInterface } from "./appReducer";
 
 import projectReduxConfigs from "config/project.config";
-import { Floor, UserInterface } from "constants/interfaces";
+import { Drawing, Floor, UserInterface } from "constants/interfaces";
 import {
   ProjectGroupInterface,
   ProjectMemberInterface,
@@ -71,11 +71,11 @@ import {
 } from "../../utills/status";
 
 interface ProjectReducerInt {
+  allProjects: Project[];
+  allGroups: Group[];
+  allFloors: Floor[];
   drawerOpen: boolean;
   menue: number;
-  allProjects: Project[];
-  allGroupsByProjectId: Group[];
-  allFloors: Floor[];
   isFloorLoading: boolean;
   projects: Project[];
   projectMembers: [];
@@ -122,18 +122,20 @@ interface ProjectReducerInt {
   allProjectsTitles: any[];
   isOpenProjectDocumentModal: boolean;
   isfloorCreating: boolean;
+  selectedDrawingFiles: Drawing[];
 }
 
 const projectReducer: ProjectReducerInt = {
-  isOpenProjectDocumentModal: false,
+  allProjects: [],
+  selectedDrawingFiles: [],
+  allGroups: [],
   allFloors: [],
+  isOpenProjectDocumentModal: false,
   isFloorLoading: false,
   isfloorCreating: false,
   getAllProjectRoles: [],
   drawerOpen: false,
   menue: 1,
-  allProjects: [],
-  allGroupsByProjectId: [],
   allProjectsTitles: [],
   projects: [],
   projectMembers: [],
@@ -288,6 +290,8 @@ const NavigationReducer = (
       return {
         ...state,
         allProjects: [...state.allProjects],
+        allGroups: action.payload.allGroups,
+        allFloors: action.payload.allFloors
       };
     }
     case requestFail(PROJECT_CONFIG.GET_ALL_PROJECTS): {
@@ -314,7 +318,12 @@ const NavigationReducer = (
         isfloorCreating: false,
       };
     }
-
+    case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
+      return {
+        ...state,
+        selectedDrawingFiles: action.payload,
+      };
+    }
     case PROJECT_CONFIG.PROJECT_CREATED: {
       let project = action.payload;
       if (state.allProjects.length === 0) {

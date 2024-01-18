@@ -10,6 +10,7 @@ interface MenuProps {
   disableMenu: boolean;
   paddingTop?: null | number;
   isTaskSelected?: boolean;
+  isProjectGroup?: boolean;
 }
 
 const GenericMenu: React.FC<MenuProps> = ({
@@ -18,6 +19,7 @@ const GenericMenu: React.FC<MenuProps> = ({
   disableMenu,
   isTaskSelected,
   paddingTop = null,
+  isProjectGroup,
 }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -32,7 +34,6 @@ const GenericMenu: React.FC<MenuProps> = ({
     setAnchorEl(null);
   };
   const isMenuDisabled = disableMenu || options.length === 0;
-  console.log("isTaskSelected", isTaskSelected);
   return (
     <>
       <IconButton
@@ -71,7 +72,9 @@ const GenericMenu: React.FC<MenuProps> = ({
         >
           {options.map((option) => (
             <MenuItemTag
-              sx={{ padding: `${!isTaskSelected ? "8px" : "0"}` }}
+              sx={{
+                padding: `${isProjectGroup ? "8px" : "0 8px 0 8px"}`,
+              }}
               disableGutters
               key={option.menuName}
               onClick={() => {

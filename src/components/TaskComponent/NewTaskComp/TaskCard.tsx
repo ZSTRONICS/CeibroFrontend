@@ -6,7 +6,7 @@ import {
   SubLabelTag,
   TaskCardLabel,
 } from "components/CustomTags";
-import GenericMenu from "components/GenericMenu/GenericMenu";
+import GenericMenu from "components/GenericComponents/GenericMenu";
 import {
   convertDateFormat,
   momentLocalDateTime,
