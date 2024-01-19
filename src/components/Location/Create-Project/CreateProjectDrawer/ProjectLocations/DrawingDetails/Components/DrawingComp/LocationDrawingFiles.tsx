@@ -2,18 +2,22 @@ import { Box, Grid, IconButton } from "@mui/material";
 import assets from "assets";
 import { Heading2 } from "components/CustomTags";
 import { InputSearch } from "components/GenericComponents";
+import CustomModal from "components/Modal";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
+import { useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import CreateDrawing from "../ProjectComponents/CreateDrawing";
 import DrawingFileCard from "./DrawingFileCard";
-
 interface Props {
   windowActualHeight: number;
 }
 function LocationDrawingFiles({ windowActualHeight }: Props) {
   const [searchText, setSearchText] = useState("");
   const searchContainer: any = useRef(null);
+  const { isOpen, closeModal, openModal } = useOpenCloseModal();
+
   const [contHeight, setContHeight] = useState<number>(50);
   const { selectedDrawingFiles } = useSelector(
     (state: RootState) => state.project
@@ -29,6 +33,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   };
   const handleAddDrawingFile = () => {
     console.log("added drawing logic");
+    openModal();
   };
 
   const handleSortingDrawingFile = () => {
@@ -86,6 +91,21 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           )}
         </Box>
       </Box>
+      {isOpen === true && (
+        <CustomModal
+          maxWidth={"sm"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={true}
+          title={"Project Name"}
+          isOpen={isOpen}
+          handleClose={closeModal}
+          children={
+            <CreateDrawing projectId={"adaf"} closeModal={closeModal} />
+          }
+        />
+      )}
     </>
   );
 }
