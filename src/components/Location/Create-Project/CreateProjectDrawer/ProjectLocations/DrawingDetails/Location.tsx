@@ -9,7 +9,7 @@ import { HEADER_HEIGHT } from "utills/common";
 import LocationDrawingFiles from "./Components/DrawingComp/LocationDrawingFiles";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
 
-function DrawingDetails() {
+function Location() {
   const dispatch = useDispatch();
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
@@ -82,4 +82,4 @@ function DrawingDetails() {
   );
 }
 
-export default DrawingDetails;
+export default Location;

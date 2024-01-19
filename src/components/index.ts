@@ -10,7 +10,7 @@ import ResetPassword from "./Auth/ResetPassword/ResetPassword";
 
 // task
 // import Projects from "./Projects/ProjectList/Project";
-import CreateProjectDrawer from "./Projects/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
+import CreateProjectDrawer from "./Location/Create-Project/CreateProjectDrawer/CreateProjectDrawer";
 
 //admin
 import AdminMain from "./Admin/AdminMain";
@@ -18,14 +18,16 @@ import AdminMain from "./Admin/AdminMain";
 // navigatoin
 import CDrawer from "Drawer/CDrawer";
 import RouterConfig from "navigation/RouterConfig";
-import DrawingDetails from "./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails";
+import Location from "./Location/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/Location";
 import ForwardTask from "./Tasks/Forward-Task";
 import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
 // Auth
 const Register = lazy(() => import("./Auth/Register/Register"));
 
-const ForgetConfirmation = lazy(() => import("./Auth/ForgetPassword/ForgetConfirmation"))
+const ForgetConfirmation = lazy(
+  () => import("./Auth/ForgetPassword/ForgetConfirmation")
+);
 
 // connection
 const Connections = lazy(() => import("./Connection/Connection"));
@@ -38,13 +40,37 @@ const Task = lazy(() => import("./Tasks/TaskList/Task"));
 const CreateNewTask = lazy(() => import("./Tasks/Create-Task/CreateNewTask"));
 
 // project
-const Projects = lazy(() => import("./Projects/ProjectList/Project"));
-const ProjectLocations = lazy(() => import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/ProjectLocations"));
+const Projects = lazy(() => import("./Location/ProjectList/Project"));
+const ProjectLocations = lazy(
+  () =>
+    import(
+      "./Location/Create-Project/CreateProjectDrawer/ProjectLocations/ProjectLocations"
+    )
+);
 // const DrawingDetails = lazy(()=>import("./Projects/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/DrawingDetails"))
 
-
 export {
-  AdminMain, CDrawer, Connections, CreateNewTask, CreateProjectDrawer, DrawingDetails, ForgetConfirmation, ForgetPassword, ForwardTask, Login, MockTaskApis, Profile, ProjectLocations, Projects, Register, RegisterAddProfilePic,
-  RegisterConfirmationForm, RegisterNumberForm, ResetPassword, RouterConfig, Task, TermsAndConditions
+  AdminMain,
+  CDrawer,
+  Connections,
+  CreateNewTask,
+  CreateProjectDrawer,
+  ForgetConfirmation,
+  ForgetPassword,
+  ForwardTask,
+  Location,
+  Login,
+  MockTaskApis,
+  Profile,
+  ProjectLocations,
+  Projects,
+  Register,
+  RegisterAddProfilePic,
+  RegisterConfirmationForm,
+  RegisterNumberForm,
+  ResetPassword,
+  RouterConfig,
+  Task,
+  TermsAndConditions
 };
 

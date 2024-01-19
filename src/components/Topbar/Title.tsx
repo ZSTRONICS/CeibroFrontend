@@ -11,8 +11,8 @@ import TextField from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
 import { CButton } from "components/Button";
 import { CustomStack, TopBarTitle } from "components/CustomTags";
+import AddDrawingFloor from "components/Location/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import CustomModal from "components/Modal";
-import AddDrawingFloor from "components/Projects/Create-Project/CreateProjectDrawer/ProjectLocations/AddDrawingFloor";
 import { DropDownSvg } from "components/material-ui/icons/CustomSvgIcon/dropDown";
 import { useOpenCloseModal } from "hooks";
 import projectActions, { PROJECT_APIS } from "redux/action/project.action";
@@ -190,7 +190,7 @@ const Title = () => {
         isDynamic: true,
       },
       {
-        path: "drawingDetail",
+        path: "location",
         title: "Drawing detail",
         // isDynamic: true,
         additionalComponent: <BackIcon />,

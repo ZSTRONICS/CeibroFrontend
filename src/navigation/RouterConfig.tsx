@@ -6,10 +6,10 @@ import {
   AdminMain,
   Connections,
   CreateNewTask,
-  DrawingDetails,
   ForgetConfirmation,
   ForgetPassword,
   ForwardTask,
+  Location,
   Login,
   MockTaskApis,
   Profile,
@@ -88,11 +88,7 @@ const RouterConfig = () => {
                 component={ProjectLocations}
               />
               <PrivateRoute path="/projects" component={Projects} />
-              <PrivateRoute
-                exact
-                path="/drawingDetail"
-                component={DrawingDetails}
-              />
+              <PrivateRoute exact path="/location" component={Location} />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute

@@ -5,12 +5,12 @@ import { useHistory } from "react-router-dom";
 // types
 import { Drawing, Floor } from "constants/interfaces";
 // components
-import { CButton } from "components/Button";
 import assets from "assets/assets";
-import LocationCard from "./LocationCard";
+import { CButton } from "components/Button";
 import { CustomStack } from "components/CustomTags";
 import { useDispatch } from "react-redux";
 import projectActions from "redux/action/project.action";
+import LocationCard from "./LocationCard";
 
 interface FloorTabsProps {
   floors: Floor[];
@@ -64,15 +64,15 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
     if (drawing) {
       dispatch(projectActions.setSelectedDrawing(drawing));
       dispatch(projectActions.setLoadDrawing(true));
-      dispatch(projectActions.setSelectedFloor(selectedFloor ? selectedFloor : null));
+      dispatch(
+        projectActions.setSelectedFloor(selectedFloor ? selectedFloor : null)
+      );
     }
 
-    const newRoutePath = `/drawingDetail`;
+    const newRoutePath = `/location`;
     history.push(newRoutePath);
 
-    //later api call for get task if alltask.length < 0 
-
-    
+    //later api call for get task if alltask.length < 0
   };
 
   const viewBtn = (drawing: Drawing) => {
@@ -92,7 +92,7 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
   };
   return (
     <CustomStack
-      sx={{ flexWrap: "wrap", gap: "20px", mt: 8,mb:2, position: "sticky" }}
+      sx={{ flexWrap: "wrap", gap: "20px", mt: 8, mb: 2, position: "sticky" }}
     >
       {selectedFloor.drawings.length > 0 ? (
         selectedFloor.drawings.map((drawing: Drawing, index: any) => {
@@ -112,4 +112,4 @@ const FloorContent: React.FC<FloorContentProps> = ({ floors, selectedTab }) => {
   );
 };
 
-export { FloorTabs, FloorContent };
+export { FloorContent, FloorTabs };

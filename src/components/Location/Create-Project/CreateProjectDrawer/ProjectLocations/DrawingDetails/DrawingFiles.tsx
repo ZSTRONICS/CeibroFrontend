@@ -75,12 +75,12 @@ const DrawingFiles = (props: DrawingFilesProps) => {
         </Grid>
       </Box>
 
-      <Box
+      {/* <Box
         sx={{
           height: `${windowActualHeight - contHeight}px`,
           overflow: "auto",
         }}
-      ></Box>
+      ></Box> */}
       {[1, 2, 3].map((item) => {
         return (
           <Box>

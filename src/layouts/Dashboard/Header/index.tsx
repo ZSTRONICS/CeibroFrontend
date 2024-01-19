@@ -47,8 +47,7 @@ export default function Header({ onOpenNav }: Props) {
   const history = useHistory();
   const showSidebar = useRouteMatch([
     "/projects",
-    "/locations",
-    "/drawingDetail",
+    "/location",
     "/connections",
     "/profile",
   ]);
