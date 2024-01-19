@@ -25,7 +25,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
     }
   }, [windowActualHeight]);
   return (
-    <Box sx={{}}>
+    <>
       <Box
         ref={contRef}
         sx={{
@@ -56,7 +56,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
             );
           })}
       </Box>
-    </Box>
+    </>
   );
 };
 

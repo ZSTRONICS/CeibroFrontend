@@ -9,6 +9,7 @@ import {
 import { CustomTitle } from "components/CustomTags";
 import PropTypes from "prop-types";
 import React from "react";
+import ModalHeader from "./ModalHeader";
 
 interface Props {
   isOpen: boolean;
@@ -19,11 +20,13 @@ interface Props {
   maxWidth?: any;
   showDivider?: boolean;
   showFullWidth?: boolean;
+  showTitleWithLogo?: boolean;
 }
 
 const CustomModal: React.FC<Props> = ({
   isOpen,
   handleClose,
+  showTitleWithLogo,
   title,
   children,
   showCloseBtn,
@@ -50,31 +53,34 @@ const CustomModal: React.FC<Props> = ({
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <Box sx={{ mt: { xs: 0.75, md: 1.5 }}}>
-          <Grid
-            container
-            justifyContent="space-between"
-          >
-            <Grid item sx={{ ml: { xs: 0.75, md: 1.5 } }}>
-              <CustomTitle sx={{ fontsize: 3 }}>{title}</CustomTitle>
-            </Grid>
-            {showCloseBtn && (
-              <Grid item sx={{ mr: { xs: 0.75, md: 1.5 } }}>
-                <Button
-                  sx={{
-                    padding: "3px 4px",
-                    textTransform: "capitalize",
-                  }}
-                  onClick={closeModal}
-                  variant="outlined"
-                >
-                  Close
-                </Button>
+        <Box sx={{ mt: { xs: 0.75, md: 1.5 } }}>
+          {showTitleWithLogo ? (
+            <ModalHeader title={title} handleClose={closeModal} />
+          ) : (
+            <Grid container justifyContent="space-between">
+              <Grid item sx={{ ml: { xs: 0.75, md: 1.5 } }}>
+                <CustomTitle sx={{ fontsize: 2 }}>{title}</CustomTitle>
               </Grid>
-            )}
-          </Grid>
+              {showCloseBtn && (
+                <Grid item sx={{ mr: { xs: 0.75, md: 1.5 } }}>
+                  <Button
+                    sx={{
+                      padding: "3px 4px",
+                      textTransform: "capitalize",
+                    }}
+                    onClick={closeModal}
+                    variant="outlined"
+                  >
+                    Close
+                  </Button>
+                </Grid>
+              )}
+            </Grid>
+          )}
 
-          {showDivider === true && <Divider sx={{ my: 1 }} />}
+          {!showTitleWithLogo && showDivider === true && (
+            <Divider sx={{ my: 1 }} />
+          )}
           <div style={{ width: "100%" }}>
             <DialogContent
               sx={{ padding: "0px" }}

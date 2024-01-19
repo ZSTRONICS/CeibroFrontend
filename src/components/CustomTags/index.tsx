@@ -24,7 +24,7 @@ const MUIInputLabel = styled(InputLabel)`
 const CustomTitle = styled(Typography)`
   font-family: "Inter";
   font-weight: 600 !important;
-  font-size: 24px !important;
+  font-size: 24px;
   padding-bottom: 0px;
   @media (max-width: 768px) {
     font-size: 20px;

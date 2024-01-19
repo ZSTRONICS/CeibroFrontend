@@ -7,19 +7,36 @@ import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
 import { Drawing } from "constants/interfaces";
 import { useDispatch } from "react-redux";
+import { PROJECT_APIS } from "redux/action";
 
 interface Props {
   groups: Group[];
-  menuOption: MenuOption[];
 }
-function GroupCard({ groups, menuOption }: Props) {
+function GroupCard({ groups }: Props) {
   const dispatch = useDispatch();
-  const handleSetDrawingFiles = (drawings: Drawing[]) => () => {
+  const handleSetDrawingFiles = (drawings: Drawing[]) => {
     dispatch({
       type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
       payload: drawings,
     });
   };
+  const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
+    dispatch(
+      PROJECT_APIS.markGroupPrivateOrPublic({
+        other: {
+          groupId: groupId,
+          ispublicGroup: ispublicGroup,
+        },
+        success: (res: any) => {
+          dispatch({
+            type: PROJECT_CONFIG.PROJECT_GROUP_UPDATED,
+            payload: res.data.group,
+          });
+        },
+      })
+    );
+  };
+
   return (
     <>
       {groups.map((group: Group) => {
@@ -30,11 +47,12 @@ function GroupCard({ groups, menuOption }: Props) {
           creator,
           drawings,
           publicGroup,
+          isCreator,
         } = group;
         return (
           <Box sx={{ padding: "8px 4px" }} key={_id}>
             <CustomStack
-              onClick={handleSetDrawingFiles(drawings)}
+              onClick={() => handleSetDrawingFiles(drawings)}
               sx={{
                 gap: 0.5,
                 justifyContent: "space-between",
@@ -78,9 +96,26 @@ function GroupCard({ groups, menuOption }: Props) {
                 <Box>
                   <GenericMenu
                     isProjectGroup={true}
-                    options={menuOption}
+                    options={[
+                      {
+                        menuName: "Mark as private",
+                        callBackHandler: () => {
+                          handleGroupUpdated(_id, false);
+                        },
+                      },
+                      {
+                        menuName: "Mark as public",
+                        callBackHandler: () => {
+                          handleGroupUpdated(_id, true);
+                        },
+                      },
+                    ].filter(
+                      (menu) =>
+                        menu.menuName !==
+                        (!publicGroup ? "Mark as private" : "Mark as public")
+                    )}
                     key={1}
-                    disableMenu={false}
+                    disableMenu={!isCreator}
                     paddingTop={0}
                   />
                 </Box>

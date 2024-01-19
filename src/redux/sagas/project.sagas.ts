@@ -138,6 +138,13 @@ const createProjectGroup = apiCall({
   method: "post",
   path: (payload) => `/project/${payload.other.projectId}/group`,
 });
+const markGroupPrivateOrPublic = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE,
+  method: "post",
+  path: (payload) => `/project/group/public/${payload.other.ispublicGroup}/${payload.other.groupId}`,
+});
+
 
 const getGroupsByProjectId = apiCall({
   useV2Route: true,
@@ -489,6 +496,7 @@ function* projectSaga() {
   yield takeLatest(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID, getGroupsByProjectId);
   yield takeLatest(PROJECT_CONFIG.UPDATE_GROUP_BY_ID, updateGroupById);
   yield takeLatest(PROJECT_CONFIG.DELETE_GROUP_BY_ID, deleteGroupById);
+  yield takeLatest(PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE, markGroupPrivateOrPublic);
   // floors
   yield takeLatest(PROJECT_CONFIG.CREATE_FLOOR, createFloor);
   yield takeLatest(PROJECT_CONFIG.GET_FLOORS_BY_PROJECT_ID, getFloorsByProjectId);

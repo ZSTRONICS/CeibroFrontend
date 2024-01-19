@@ -70,13 +70,13 @@ const GenericMenu: React.FC<MenuProps> = ({
             horizontal: "right",
           }}
         >
-          {options.map((option) => (
+          {options.map((option, index) => (
             <MenuItemTag
+              key={option.menuName + index}
               sx={{
                 padding: `${isProjectGroup ? "8px" : "0 8px 0 8px"}`,
               }}
               disableGutters
-              key={option.menuName}
               onClick={() => {
                 option.callBackHandler();
                 handleMenuClose();

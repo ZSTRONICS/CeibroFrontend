@@ -3,10 +3,7 @@ import { Box, Grid, IconButton, Typography } from "@mui/material";
 import SortIcon from "components/material-ui/icons/LocationIcons/SortIcon";
 import useSearchText from "hooks/useSearchText";
 import { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "redux/reducers";
 import SearchField from "./Components/SearchField";
-import DrawingFileCard from "./DrawingFileCard";
 
 interface DrawingFilesProps {
   windowActualHeight: number;
@@ -18,9 +15,6 @@ const DrawingFiles = (props: DrawingFilesProps) => {
   const searchContainer: any = useRef(null);
   const { searchText, handleSearchTextChange, clearSearchText } =
     useSearchText();
-  const { selectedDrawingFiles } = useSelector(
-    (state: RootState) => state.project
-  );
   useEffect(() => {
     if (searchContainer.current) {
       setContHeight(searchContainer.current.clientHeight + 25);
@@ -81,7 +75,7 @@ const DrawingFiles = (props: DrawingFilesProps) => {
           overflow: "auto",
         }}
       ></Box> */}
-      {[1, 2, 3].map((item) => {
+      {/* {[1, 2, 3].map((item) => {
         return (
           <Box>
             <DrawingFileCard
@@ -91,7 +85,7 @@ const DrawingFiles = (props: DrawingFilesProps) => {
             />
           </Box>
         );
-      })}
+      })} */}
     </Box>
   );
 };

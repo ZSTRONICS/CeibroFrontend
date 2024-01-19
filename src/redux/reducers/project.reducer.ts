@@ -749,36 +749,23 @@ const NavigationReducer = (
         };
       }
     }
-    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
     case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
-      let newGroup = action.payload;
-      if (String(state.projectOverview._id) !== String(newGroup.project)) {
-        return {
-          ...state,
-        };
-      } else {
-        if (state.groupList.length === 0) {
-          state.groupList.push(newGroup);
-        } else {
-          const isExistingGroup = state.groupList.findIndex(
-            (prevRole: any) => String(prevRole._id) === String(newGroup._id)
-          );
-          if (isExistingGroup > -1) {
-            state.groupList[isExistingGroup] = newGroup;
-
-            if (String(state.role._id) === String(newGroup._id)) {
-              state.role = newGroup;
-            }
-          } else {
-            state.groupList = [...state.groupList, newGroup];
-          }
-        }
-
-        return {
-          ...state,
-          groupList: [...state.groupList],
-        };
+      const isExistingGroup = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
+      if (isExistingGroup < 1) {
+        state.allGroups = [...state.allGroups, action.payload]
       }
+      return {
+        ...state,
+      }
+
+    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+      const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
+      if (groupIndex > -1) {
+        state.allGroups[groupIndex] = action.payload;
+      }
+      return {
+        ...state,
+      };
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
       let members = action.payload;

@@ -1,4 +1,4 @@
-import { DOCS_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
+import { DOCS_CONFIG, PROJECT_CONFIG, TASK_CONFIG, USER_CONFIG } from "config";
 import { CEIBRO_LIVE_EVENT_BY_SERVER } from "config/app.config";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +37,19 @@ export const useSocket = () => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
         switch (eventType) {
+
+            case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_UPDATED,
+                    payload: data
+                });
+                break;
+            case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_CREATED,
+                    payload: data,
+                });
+                break;
             case USER_CONFIG.USER_UPDATED:
                 dispatch({
                     type: USER_CONFIG.USER_UPDATED_IN_STORE,

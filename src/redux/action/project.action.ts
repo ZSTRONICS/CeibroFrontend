@@ -303,6 +303,7 @@ export const PROJECT_APIS = {
   getAllProjects: createAction(PROJECT_CONFIG.GET_ALL_PROJECTS),
   // groups
   createProjectGroup: createAction(PROJECT_CONFIG.CREATE_GROUP),
+  markGroupPrivateOrPublic: createAction(PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE),
   getGroupsByProjectId: createAction(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID),
   updateGroupById: createAction(PROJECT_CONFIG.UPDATE_GROUP_BY_ID),
   deleteGroupById: createAction(PROJECT_CONFIG.DELETE_GROUP_BY_ID),
