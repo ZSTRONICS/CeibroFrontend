@@ -25,8 +25,8 @@ export default function Nav({ openNav, onCloseNav, height }: Props) {
   const { pathname } = useLocation();
   const showSidebar = useRouteMatch([
     "/projects",
-    "/locations",
     "/location",
+    "/location-details",
     "/connections",
     "/profile",
   ]);
