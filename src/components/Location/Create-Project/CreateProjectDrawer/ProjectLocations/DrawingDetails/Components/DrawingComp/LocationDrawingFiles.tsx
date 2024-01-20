@@ -15,7 +15,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   const [searchText, setSearchText] = useState("");
   const searchContainer: any = useRef(null);
   const [contHeight, setContHeight] = useState<number>(50);
-  const { selectedDrawingFiles } = useSelector(
+  const { selectedDrawingFiles, selectedGroupName, selectedProjectName } = useSelector(
     (state: RootState) => state.project
   );
   useEffect(() => {
@@ -45,17 +45,22 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           }}
         >
           <InputSearch value={searchText} onChange={handleSearchTextChange} />
-
+          {selectedProjectName ?
+            <Heading2 sx={{ pt: 2, pb: 0, mb: 0, fontSize: 16, color: "grey", textTransform: "capitalize", }} > {selectedProjectName} </Heading2>
+            : <div > <br />  </div>
+          }
           <Grid
             container
             alignItems={"center"}
             marginBottom={"8px"}
-            marginTop={"8px"}
+            marginTop={"-5px"}
           >
-            <Grid item xs={10}>
-              <Heading2 sx={{ py: 2 }}>Drawing Files</Heading2>
-            </Grid>
-            <Grid item xs={2} container justifyContent="flex-end">
+            <Box sx={{ py: 2, display: 'flex', flexWrap: 'nowrap', width: "80%", maxWidth: "80%" }}>
+              <Heading2>Drawing Files</Heading2>
+              <Heading2 sx={{ px: 1, fontSize: 16, color: "grey", }}>{selectedGroupName ? `>` : ''}</Heading2>
+              <Heading2 sx={{ textTransform: "capitalize", color: "grey" }}> {selectedGroupName} </Heading2>
+            </Box>
+            <Grid item xs={2} gap={1} container justifyContent="flex-end">
               <IconButton
                 style={{ color: "#0076C8", padding: "0px" }}
                 onClick={handleSortingDrawingFile}
@@ -70,7 +75,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               </IconButton>
             </Grid>
           </Grid>
-        </Box>
+        </Box >
         <Box
           sx={{
             height: `${windowActualHeight - contHeight}px`,
@@ -85,7 +90,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             <>No Drawing file Found!</>
           )}
         </Box>
-      </Box>
+      </Box >
     </>
   );
 }

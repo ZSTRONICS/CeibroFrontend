@@ -123,11 +123,15 @@ interface ProjectReducerInt {
   isOpenProjectDocumentModal: boolean;
   isfloorCreating: boolean;
   selectedDrawingFiles: Drawing[];
+  selectedGroupName: String;
+  selectedProjectName: String;
 }
 
 const projectReducer: ProjectReducerInt = {
   allProjects: [],
   selectedDrawingFiles: [],
+  selectedGroupName: '',
+  selectedProjectName: '',
   allGroups: [],
   allFloors: [],
   isOpenProjectDocumentModal: false,
@@ -321,7 +325,9 @@ const NavigationReducer = (
     case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
       return {
         ...state,
-        selectedDrawingFiles: action.payload,
+        selectedDrawingFiles: action.payload.drawings,
+        selectedGroupName: action.payload.groupName,
+        selectedProjectName: action.payload.projectTitle
       };
     }
     case PROJECT_CONFIG.PROJECT_CREATED: {
