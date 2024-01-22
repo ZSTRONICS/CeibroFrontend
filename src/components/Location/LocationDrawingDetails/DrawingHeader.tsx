@@ -28,7 +28,7 @@ export default function DrawingHeader(props: DrawingProps) {
     selectedProjectGroups,
   } = props;
 
-  const renderSelectOptions = (options: string[], getValueKey: string) => {
+  const renderSelectOptions = (options: any[], getValueKey: string) => {
     return (
       options &&
       options.map((option) => (

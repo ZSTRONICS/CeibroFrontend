@@ -57,6 +57,26 @@ export interface ITask {
   hiddenState: string;
 }
 
+export interface ITaskFilterInterace {
+  fromMe: {
+    unread: boolean;
+    ongoing: boolean;
+    done: boolean;
+  },
+  toMe: {
+    new: boolean;
+    ongoing: boolean;
+    done: boolean;
+  },
+  hidden: {
+    ongoing: boolean;
+    done: boolean;
+    cancelled: boolean;
+  }
+  isAllSelectied: boolean;
+}
+
+
 export interface AssignedUserState extends UserInfo {
   userId: string;
   phoneNumber: string;

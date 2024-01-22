@@ -46,7 +46,7 @@ function LocationDrawingDetails() {
   const projectData = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
-    let selectedGroup = findData(allGroups, "_id", groupId);
+    let selectedGroup: any = findData(allGroups, "_id", groupId);
     let selectedDrawing = findData(selectedGroup.drawings, "_id", drawingId);
 
     return {
@@ -65,14 +65,13 @@ function LocationDrawingDetails() {
         );
         break;
       case "group":
-        let selectedGroup = findData(
+        let selectedGroup: any = findData(
           projectData.selectedProjectGroups,
           "_id",
           event.target.value
         );
         history.push(
-          `/location/project/${projectId}/group/${event.target.value}/drawing/${
-            selectedGroup.drawings[0]?._id ?? ""
+          `/location/project/${projectId}/group/${event.target.value}/drawing/${selectedGroup.drawings[0]?._id ?? ""
           }`
         );
         break;

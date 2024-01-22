@@ -60,8 +60,8 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             marginBottom={"8px"}
             marginTop={"-5px"}
           >
-            <Box sx={{ py: 2, display: 'flex', flexWrap: 'nowrap', width: "80%", maxWidth: "80%" }}>
-              <Heading2>Drawing Files</Heading2>
+            <Box sx={{ py: 2, display: 'flex', flexWrap: 'nowrap', width: "80%", maxWidth: "80%", transform: 'translateY(8px)' }}>
+              <Heading2 >Drawing Files</Heading2>
               <Heading2 sx={{ px: 1, fontSize: 16, color: "grey", }}>{selectedGroupName ? `>` : ''}</Heading2>
               <Heading2 sx={{ textTransform: "capitalize", color: "grey" }}> {selectedGroupName} </Heading2>
             </Box>

@@ -1,0 +1,112 @@
+import { styled } from '@mui/system';
+
+interface Styles {
+    [key: string]: React.CSSProperties;
+}
+
+// minicard
+export const MinicardTypography = styled('p')({
+    color: '#131516',
+    backgroundColor: 'aliceblue',
+    borderRadius: 4,
+    fontSize: '10px',
+    background: 'transparent',
+    paddingTop: '0px',
+    marginTop: '4px',
+    fontWeight: '500',
+});
+export const Minicardheading = styled('div')({
+    color: '#131516',
+    paddingLeft: '8px',
+    paddingRight: '8px',
+    borderRadius: '6px',
+    fontSize: '12px',
+    background: 'transparent',
+    paddingTop: '0px',
+    border: 'solid 1px #818181',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '25px',
+    backgroundColor: 'white',
+    fontWeight: '500',
+    marginTop: '3px',
+
+});
+
+export const styles: Styles = {
+    minicard_parent: {
+        width: '75px',
+        height: '57px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        transition: 'all linear 0.30s',
+        borderRadius: '10px',
+        marginTop: '15px',
+        boxShadow: '0px 4px 4px 0px #00000040',
+    },
+    minicard_container: {
+        width: '100%',
+        height: 'max-content',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        border: 'solid 1px green',
+    },
+
+}
+// minicardhead
+
+export const HeadStyles: Styles = {
+    head_container: {
+        width: '100%',
+        border: 'solid 1px red',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        height: '20%',
+    },
+    head_navigation: {
+        display: 'flex',
+        justifyContent: 'justify-around',
+        alignItems: 'center',
+        flexDirection: 'column',
+        border: 'solid 1px red',
+        height: '50%',
+    },
+    head_filterization: {
+        display: 'flex',
+        justifyContent: 'space-arroud',
+        alignItems: 'center',
+        height: '25%',
+        border: 'solid 1px green',
+    },
+    head_search: {
+        display: 'flex',
+        justifyContent: 'space-arroud',
+        alignItems: 'center',
+        height: '25%',
+        border: 'solid 1px green',
+    },
+    task_btn: {
+        width: '63px',
+        height: '25px',
+        padding: '2px, 8px, 2px, 8px',
+        backgroundColor: '#818181',
+        color: 'white',
+        fontSize: '12px',
+    },
+    img_btn: {
+        width: '63px',
+        height: '25px',
+        padding: '2px, 8px, 2px, 8px',
+        backgroundColor: '#818181',
+        color: 'white',
+        fontSize: '12px',
+    },
+
+}

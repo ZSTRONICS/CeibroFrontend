@@ -39,7 +39,7 @@ function DrawingFileCard({ drawing }: Props) {
             },
           }}
         >
-          <Box sx={{ width: '80%' }} >
+          <Box sx={{ width: '80%', py: 0.5 }} >
             <Box sx={{ display: "flex" }}>
               <Tooltip title={fileName}>
                 <Heading2
