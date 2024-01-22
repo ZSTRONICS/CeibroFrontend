@@ -156,6 +156,7 @@ function GroupCard({ groups, projectName }: Props) {
                     }}
                   >
                     <GenericMenu
+                      isTaskSelected={!isSelectedGroup}
                       isProjectGroup={true}
                       options={[
                         {
