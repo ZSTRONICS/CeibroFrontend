@@ -78,11 +78,10 @@ function GroupCard({ groups, projectName }: Props) {
                   gap: 0.5,
                   justifyContent: "start",
                   alignItems: "center",
-                  WebkitBoxShadow: `${
-                    isSelectedGroup
+                  WebkitBoxShadow: `${isSelectedGroup
                       ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
                       : "none"
-                  }`,
+                    }`,
                   "&:hover": {
                     cursor: "pointer",
                   },
@@ -156,6 +155,7 @@ function GroupCard({ groups, projectName }: Props) {
                     }}
                   >
                     <GenericMenu
+                      isTaskSelected={!isSelectedGroup}
                       isProjectGroup={true}
                       options={[
                         {
