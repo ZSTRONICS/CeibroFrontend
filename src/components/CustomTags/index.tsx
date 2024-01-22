@@ -191,7 +191,7 @@ export const GroupMemberNameTag = styled(Typography)`
   font-family: "Inter";
   font-style: normal;
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 550;
   color: #656565;
 `;
 export const EditMemberNameTag = styled(Typography)`
@@ -278,5 +278,6 @@ export {
   MenuItemTag,
   Span,
   SubHeading,
-  TaskCardLabel,
+  TaskCardLabel
 };
+

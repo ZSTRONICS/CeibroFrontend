@@ -50,6 +50,8 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ClearOutlinedIcon from "@mui/icons-material/ClearOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import DeleteIconMUI from '@mui/icons-material/Delete';
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import ErrorOutlinedIcon from "@mui/icons-material/ErrorOutlined";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -115,6 +117,8 @@ const assets = {
   MoreVertOutlinedIcon,
   StarOutlineIcon,
   StarIcon,
+  DeleteIconMUI,
+  DeleteOutlinedIcon,
   VolumeOffOutlinedIcon,
   VolumeUpOutlinedIcon,
   MarkUnreadChatAltOutlinedIcon,
