@@ -1,6 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
 import SortIcon from "components/material-ui/icons/LocationIcons/SortIcon";
+
 import useSearchText from "hooks/useSearchText";
 import { useEffect, useRef, useState } from "react";
 import SearchField from "./Components/SearchField";
@@ -12,6 +13,7 @@ interface DrawingFilesProps {
 const DrawingFiles = (props: DrawingFilesProps) => {
   const { windowActualHeight } = props;
   const [contHeight, setContHeight] = useState<number>(50);
+
   const searchContainer: any = useRef(null);
   const { searchText, handleSearchTextChange, clearSearchText } =
     useSearchText();
@@ -68,24 +70,6 @@ const DrawingFiles = (props: DrawingFilesProps) => {
           </Grid>
         </Grid>
       </Box>
-
-      {/* <Box
-        sx={{
-          height: `${windowActualHeight - contHeight}px`,
-          overflow: "auto",
-        }}
-      ></Box> */}
-      {/* {[1, 2, 3].map((item) => {
-        return (
-          <Box>
-            <DrawingFileCard
-              fileName="Electricity2.pdf "
-              from="Jaanus Kütson (1 task)"
-              floorName={"Floor " + item}
-            />
-          </Box>
-        );
-      })} */}
     </Box>
   );
 };

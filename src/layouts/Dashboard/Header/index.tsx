@@ -48,6 +48,7 @@ export default function Header({ onOpenNav }: Props) {
   const showSidebar = useRouteMatch([
     "/projects",
     "/location",
+    "/location-details",
     "/connections",
     "/profile",
   ]);

@@ -7,20 +7,30 @@ import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
 import { Drawing } from "constants/interfaces";
 import { useDispatch } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
 
 interface Props {
   groups: Group[];
   projectName: String;
 }
+
+interface RouteParams {
+  projectId: string;
+}
+
 function GroupCard({ groups, projectName }: Props) {
   const dispatch = useDispatch();
-  const handleSetDrawingFiles = (groupName: String, projectTitle: String, drawings: Drawing[]) => () => {
-    console.log("projectTitle", projectTitle)
+  const history = useHistory();
+  const { projectId } = useParams<RouteParams>();
+
+  const handleSetDrawingFiles = (drawings: Drawing[], group: Group, projectTitle: String) => {
     dispatch({
       type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
-      payload: { drawings, groupName, projectTitle },
+      payload: { drawings, groupName: group.groupName, projectTitle },
     });
+    const path = `/location/${projectId}/${group._id}`;
+    history.push(path);
   };
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
@@ -55,7 +65,7 @@ function GroupCard({ groups, projectName }: Props) {
           <Box sx={{ py: 0.5 }} key={_id}>
             <Box style={{ width: '100%' }} >
               <CustomStack
-                onClick={handleSetDrawingFiles(groupName, projectName, drawings)}
+                onClick={() => handleSetDrawingFiles(drawings, group, projectName)}
                 sx={{
                   gap: 0.5,
                   justifyContent: "start",

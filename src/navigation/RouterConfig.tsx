@@ -10,6 +10,7 @@ import {
   ForgetPassword,
   ForwardTask,
   Location,
+  LocationDrawingDetails,
   Login,
   MockTaskApis,
   Profile,
@@ -88,7 +89,16 @@ const RouterConfig = () => {
                 component={ProjectLocations}
               />
               <PrivateRoute path="/projects" component={Projects} />
-              <PrivateRoute exact path="/location" component={Location} />
+              <Route
+                exact
+                path="/location/:projectId?/:groupId?"
+                component={Location}
+              />
+              <PrivateRoute
+                exact
+                path="/location/project/:projectId/group/:groupId?/drawing/:drawingId?"
+                component={LocationDrawingDetails}
+              />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute

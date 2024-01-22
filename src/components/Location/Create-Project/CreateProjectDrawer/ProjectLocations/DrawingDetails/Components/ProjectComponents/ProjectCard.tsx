@@ -8,6 +8,7 @@ import { categorizeGroups } from "components/Utills/Globals";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { useOpenCloseModal } from "hooks";
 import React, { useRef } from "react";
+import { useHistory } from "react-router-dom";
 import CreateGroup from "./CreateGroup";
 import GroupCard from "./GroupCard";
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 function ProjectCard({ project, groups }: Props) {
+  const history = useHistory();
   const titleRef: any = useRef(null);
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const { _id, creator, title: projectTitle, isFavoriteByMe } = project;
@@ -76,7 +78,13 @@ function ProjectCard({ project, groups }: Props) {
 
             }}
           >
-            <CustomStack sx={{ gap: 1 }}>
+            <CustomStack
+              sx={{ gap: 1 }}
+              onClick={(e) => {
+                e.preventDefault();
+                history.push(`/location/${_id}`);
+              }}
+            >
               <Box sx={{ width: "28px" }}>
                 {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
               </Box>

@@ -2,16 +2,33 @@ import { Box, Tooltip, Typography } from "@mui/material";
 import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { momentLocalDateTime, trimFileName } from "components/Utills/Globals";
 import { Drawing } from "constants/interfaces";
+import { useHistory, useParams } from "react-router-dom";
 interface Props {
   drawing: Drawing;
 }
+
+interface IRouteParams {
+  projectId: string;
+  groupId: string;
+}
+
 function DrawingFileCard({ drawing }: Props) {
+  const history = useHistory();
+  const { projectId, groupId } = useParams<IRouteParams>();
   const { _id, fileName, updatedAt } = drawing;
   const localTimeData = momentLocalDateTime(updatedAt);
+
+  const handleClick = () => {
+    history.push(
+      `/location/project/${projectId}/group/${groupId}/drawing/${_id}`
+    );
+  };
+
   return (
     <>
       <Box sx={{ padding: "", width: "100%", }} key={_id}>
         <CustomStack
+          onClick={handleClick}
           sx={{
             gap: 1,
             justifyContent: "space-between",

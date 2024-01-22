@@ -19,6 +19,7 @@ import AdminMain from "./Admin/AdminMain";
 import CDrawer from "Drawer/CDrawer";
 import RouterConfig from "navigation/RouterConfig";
 import Location from "./Location/Create-Project/CreateProjectDrawer/ProjectLocations/DrawingDetails/Location";
+import LocationDrawingDetails from "./Location/LocationDrawingDetails";
 import ForwardTask from "./Tasks/Forward-Task";
 import MockTaskApis from "./Tasks/MockTaskApis/MockTaskApis";
 
@@ -58,8 +59,7 @@ export {
   ForgetConfirmation,
   ForgetPassword,
   ForwardTask,
-  Location,
-  Login,
+  Location, LocationDrawingDetails, Login,
   MockTaskApis,
   Profile,
   ProjectLocations,
