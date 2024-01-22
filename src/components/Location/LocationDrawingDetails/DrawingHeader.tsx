@@ -16,6 +16,7 @@ interface DrawingProps {
   selectedGroup: any;
   selectedDrawing: any;
   selectedProjectGroups: any;
+  headersize: boolean
 }
 
 export default function DrawingHeader(props: DrawingProps) {
@@ -26,6 +27,7 @@ export default function DrawingHeader(props: DrawingProps) {
     selectedGroup,
     selectedDrawing,
     selectedProjectGroups,
+    headersize
   } = props;
 
   const renderSelectOptions = (options: any[], getValueKey: string) => {
@@ -66,9 +68,12 @@ export default function DrawingHeader(props: DrawingProps) {
     />
   );
 
+  console.log(headersize, 'head...');
+
+
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md>
+    <Grid container gap={3} >
+      <Grid item xs={12} sx={{ transition: 'all linear 0.30s', width: '50%' }} md>
         {renderBox(
           <>
             <IconButton
@@ -85,36 +90,38 @@ export default function DrawingHeader(props: DrawingProps) {
               <ArrowBackSharpIcon />
             </IconButton>
             {renderDivider()}
-            {renderBox(
-              <Typography variant="body1">
-                {selectedProject &&
-                  selectedProject.length > 0 &&
-                  selectedProject[0].title}
-              </Typography>,
-              "50%"
-            )}
+            {/* //// */}
+            {/* {renderBox( */}
+            <Typography sx={{ width: '37%' }} variant="body1">
+              {selectedProject &&
+                selectedProject.length > 0 &&
+                selectedProject[0].title}
+            </Typography>
+            {/* "50%"
+            )} */}
+            {/* //// */}
             {renderDivider()}
-            {renderBox(
-              <Select
-                variant="standard"
-                disableUnderline
-                sx={{ width: "100%", height: "52px", marginRight: "16px" }}
-                value={selectedGroup._id || ""}
-                onChange={(e) => handleChangeCallback(e, "group")}
-              >
-                {renderSelectOptions(selectedProjectGroups, "groupName")}
-              </Select>,
-              "50%"
-            )}
+            {/* {renderBox( */}
+            <Select
+              variant="standard"
+              disableUnderline
+              sx={{ width: "50%", height: "52px", marginRight: "16px" }}
+              value={selectedGroup?._id || ""}
+              onChange={(e) => handleChangeCallback(e, "group")}
+            >
+              {renderSelectOptions(selectedProjectGroups, "groupName")}
+            </Select>
+
+            {/* } */}
           </>
         )}
       </Grid>
-
-      <Grid item xs={12} md={6.5}>
+      {/* /////////////////////////// */}
+      <Grid item sx={{ transition: 'all linear 0.30s', width: headersize ? '50%' : '68%' }} >
         {renderBox(
           <>
             <Select
-              value={selectedDrawing._id || ""}
+              value={selectedDrawing?._id || ""}
               variant="standard"
               disableUnderline
               sx={{ width: "100%", height: "52px", paddingLeft: "16px" }}
@@ -129,6 +136,6 @@ export default function DrawingHeader(props: DrawingProps) {
           </>
         )}
       </Grid>
-    </Grid>
+    </Grid >
   );
 }

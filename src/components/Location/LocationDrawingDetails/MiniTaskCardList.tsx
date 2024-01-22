@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { ITask, ITaskFilterInterace } from 'constants/interfaces';
 import React from 'react';
 import { MinicardTypography, Minicardheading, styles } from './MiniCardTaskStyle';
-import MiniTaskHead from './MiniTaskHead';
 
 interface IProps {
     allTask: ITask[];
@@ -10,8 +9,7 @@ interface IProps {
 }
 const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
 
-    allTask.sort((taskA, taskB) => {
-        // Compare updatedAt strings
+    allTask?.sort((taskA, taskB) => {
         return taskA.updatedAt.localeCompare(taskB.updatedAt);
     });
 
@@ -25,10 +23,9 @@ const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
 
 
 
-    const MiniCardRendering = allTask.map((task) => {
+    const MiniCardRendering = allTask?.map((task) => {
         const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(task.userSubState);
         const rootState = task.rootState;
-
 
         let emptyDiv = false;
 
@@ -70,23 +67,23 @@ const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
         }
 
         return (
-            <> {emptyDiv ? <> </> :
-                <Box style={{ ...styles.minicard_parent, backgroundColor: `${currentTaskColor}` }} >
-                    <Minicardheading>
-                        {task.taskUID}
-                    </Minicardheading>
-                    <MinicardTypography>
-                        {rootState}
-                    </MinicardTypography>
-                </Box>
-            }
+            <>
+                {emptyDiv ? <> </> :
+                    <Box style={{ ...styles.minicard_parent, backgroundColor: `${currentTaskColor}` }} >
+                        <Minicardheading>
+                            {task.taskUID}
+                        </Minicardheading>
+                        <MinicardTypography>
+                            {rootState}
+                        </MinicardTypography>
+                    </Box>
+                }
             </>
         )
     })
 
     return (
         <>
-            <MiniTaskHead />
             <Box style={styles.minicard_container}  >
                 {MiniCardRendering}
             </Box>

@@ -10,10 +10,19 @@ import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
+import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
+import { ITaskFilterInterace } from 'constants/interfaces';
 import { styles } from './DrawingDetailsStyle';
 import MiniTaskCardList from './MiniTaskCardList';
+import MiniTaskHead from "./MiniTaskHead";
 
-const LocatoinDrawingList = () => {
+
+interface LocationDrawingListProps {
+    headersize: boolean;
+    setHeadersize: (value: boolean) => void;
+}
+
+const LocatoinDrawingList = ({ headersize, setHeadersize }: LocationDrawingListProps) => {
 
     const dispatch = useDispatch();
     const [size, ratio] = useWindowSize();
@@ -42,24 +51,24 @@ const LocatoinDrawingList = () => {
         overflow: "auto",
     };
 
-    // const taskFilers: ITaskFilterInterace = {
-    //     fromMe: {
-    //         unread: true,
-    //         ongoing: true,
-    //         done: true,
-    //     },
-    //     toMe: {
-    //         new: true,
-    //         ongoing: true,
-    //         done: true
-    //     },
-    //     hidden: {
-    //         ongoing: true,
-    //         done: true,
-    //         cancelled: true
-    //     },
-    //     isAllSelectied: true,
-    // }
+    const taskFilers: ITaskFilterInterace = {
+        fromMe: {
+            unread: true,
+            ongoing: true,
+            done: true,
+        },
+        toMe: {
+            new: true,
+            ongoing: true,
+            done: true
+        },
+        hidden: {
+            ongoing: true,
+            done: true,
+            cancelled: true
+        },
+        isAllSelectied: true,
+    }
 
 
     const { task } = useSelector((state: RootState) => state);
@@ -85,6 +94,7 @@ const LocatoinDrawingList = () => {
             setS1(true);
             setS2(false);
             setS3(false);
+            setHeadersize(true);
         } else {
             setS1(false);
             setS2(true);
@@ -97,50 +107,63 @@ const LocatoinDrawingList = () => {
             setS1(false);
             setS2(true);
             setS3(false);
+            setHeadersize(true);
         } else {
             setS1(false);
             setS2(false);
             setS3(true);
+            setHeadersize(false);
         }
     };
 
+
     return (
         <>
-            <Box style={styles.location_Parent}>
-                <Box style={!s1 ? styles.location_task_min : styles.location_task}>
-                    <Box style={styles.location_all_taks} >
-                        {
-                            !s1 ? <MiniTaskCardList allTask={allTaskList}
-                            // taskListFilter={taskFilers}
-                            />
-                                // : <ExpandableProjectList allProjects={allProjects} />
-                                : 'expandableprojectlist'
-                        }
+            <Box style={styles.locatoin_main} >
+                <Box style={styles.location_Parent}>
+                    <Box style={!s1 ? styles.location_task_min : styles.location_task}>
+                        <Box style={styles.location_all_taks} >
+                            <Box style={styles.locatoin_task_header} >
+                                <MiniTaskHead />
+                            </Box>
+                            <Box style={styles.location_task_bottom} >
+                                {
+                                    !s1 ? <MiniTaskCardList allTask={allTaskList}
+                                        taskListFilter={taskFilers}
+                                    />
+                                        : <>   {
+                                            'abc'
+                                        }
+                                        </>
+                                }
+                            </Box>
+                        </Box>
+                        <Box>
+                            <button onClick={collapseDiv1} style={!s1 ? styles.location_btn_change : styles.location_btn}>
+                                <Locationarrow />
+                            </button>
+                        </Box>
                     </Box>
-                    <Box>
-                        <button onClick={collapseDiv1} style={!s1 ? styles.location_btn_change : styles.location_btn}>
-                            {/* <Locationarrow /> */}
-                            a
-                        </button>
+                    <Box style={!s2 ? styles.location_description : styles.location_description_max}>
+                        <Box style={styles.location_all_taks} >
+                            <>Drawing files</>
+                        </Box>
+                        <Box>
+                            <button onClick={collapseDiv2} style={!s3 ? styles.location_btn : styles.location_btn_change}>
+                                <Locationarrow />
+                            </button>
+                        </Box>
+                    </Box>
+                    <Box style={!s3 ? styles.location_drawing : styles.location_drawing_max}>
+                        <DocumentReader />
                     </Box>
                 </Box>
-                <Box style={!s2 ? styles.location_description : styles.location_description_max}>
-                    <Box style={styles.location_all_taks} >
-                        <>Drawing files</>
-                    </Box>
-                    <Box>
-                        <button onClick={collapseDiv2} style={!s3 ? styles.location_btn : styles.location_btn_change}>
-                            {/* <Locationarrow /> */}
-                            a
-                        </button>
-                    </Box>
-                </Box>
-                <Box style={!s3 ? styles.location_drawing : styles.location_drawing_max}>
-                    <DocumentReader />
-                </Box>
+
             </Box>
         </>
     )
 }
+
+
 
 export default LocatoinDrawingList
