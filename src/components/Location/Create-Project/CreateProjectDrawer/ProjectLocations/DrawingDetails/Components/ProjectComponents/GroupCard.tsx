@@ -16,12 +16,13 @@ interface Props {
 
 interface RouteParams {
   projectId: string;
+  groupId: string;
 }
 
 function GroupCard({ groups }: Props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { projectId } = useParams<RouteParams>();
+  const { projectId, groupId } = useParams<RouteParams>();
   const handleSetDrawingFiles = (drawings: Drawing[], group: Group) => {
     dispatch({
       type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
@@ -59,6 +60,7 @@ function GroupCard({ groups }: Props) {
           publicGroup,
           isCreator,
         } = group;
+        const isSelectedGroup = _id === groupId;
         return (
           <Box sx={{ padding: "8px 4px" }} key={_id}>
             <CustomStack
@@ -67,6 +69,11 @@ function GroupCard({ groups }: Props) {
                 gap: 0.5,
                 justifyContent: "space-between",
                 alignItems: "center",
+                WebkitBoxShadow: `${
+                  isSelectedGroup
+                    ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+                    : "none"
+                }`,
                 "&:hover": {
                   cursor: "pointer",
                 },
@@ -105,6 +112,7 @@ function GroupCard({ groups }: Props) {
                 </Box>
                 <Box>
                   <GenericMenu
+                    isTaskSelected={!isSelectedGroup}
                     isProjectGroup={true}
                     options={[
                       {
