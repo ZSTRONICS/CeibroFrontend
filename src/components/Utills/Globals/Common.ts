@@ -638,11 +638,11 @@ function categorizeGroups(
  * @return {string} The trimmed filename.
  */
 function trimFileName(filename: string) {
-  if (filename.length <= 14) {
+  if (filename.length <= 13) {
     return filename;
   }
-  const start = filename.slice(0, 6);
-  const end = filename.slice(-7);
+  const start = filename.slice(0, 13);
+  const end = filename.slice(-3);
   const trimmedName = start + "..." + end;
   return trimmedName;
 }

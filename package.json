@@ -9,6 +9,7 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/base": "^5.0.0-beta.3",
     "@mui/icons-material": "^5.11.16",
+    "@mui/lab": "^5.0.0-alpha.161",
     "@mui/material": "^5.12.1",
     "@mui/styles": "^5.12.3",
     "@mui/x-data-grid": "^6.2.0",

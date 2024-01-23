@@ -1,10 +1,11 @@
 import { Box } from "@mui/material";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import DrawingHeader from "./DrawingHeader";
+import LocatoinDrawingList from "./LocatoinDrawingList";
 
 interface RouteParams {
   projectId: string;
@@ -81,6 +82,8 @@ function LocationDrawingDetails() {
     }
   };
 
+  const [headersize, setHeadersize] = useState<boolean>(true);
+
   return (
     <Box
       sx={{
@@ -96,9 +99,12 @@ function LocationDrawingDetails() {
           selectedProjectGroups={projectData.selectedProjectGroups}
           selectedGroup={projectData.selectedGroup}
           selectedDrawing={projectData.selectedDrawing}
+          headersize={headersize}
         />
       )}
+      <LocatoinDrawingList headersize={headersize} setHeadersize={setHeadersize} />
     </Box>
+
   );
 }
 

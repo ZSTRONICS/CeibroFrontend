@@ -54,7 +54,6 @@ export const styles: Styles = {
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        border: 'solid 1px green',
     },
 
 }
@@ -63,39 +62,45 @@ export const styles: Styles = {
 export const HeadStyles: Styles = {
     head_container: {
         width: '100%',
-        border: 'solid 1px red',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        height: '20%',
+        height: '100%',
     },
     head_navigation: {
         display: 'flex',
-        justifyContent: 'justify-around',
+        justifyContent: 'start',
         alignItems: 'center',
-        flexDirection: 'column',
-        border: 'solid 1px red',
-        height: '50%',
+        // flexDirection: 'column',
+        height: 'max-content',
+        borderBottom: 'solid 1px #818181',
+        width: '100%',
+        // border: 'solid 1px red'
     },
     head_filterization: {
         display: 'flex',
         justifyContent: 'space-arroud',
         alignItems: 'center',
-        height: '25%',
-        border: 'solid 1px green',
+        height: '60px',
+        // border: 'solid 1px red',
+        width: '170%',
+        marginTop: '5px',
     },
     head_search: {
         display: 'flex',
         justifyContent: 'space-arroud',
         alignItems: 'center',
         height: '25%',
-        border: 'solid 1px green',
+        width: '170%',
+        marginTop: '3px',
     },
     task_btn: {
-        width: '63px',
+        // width: '56px',
+        // height: '20px',
         height: '25px',
-        padding: '2px, 8px, 2px, 8px',
+        width: '60px',
+        // padding: '2px, 8px, 2px, 8px',
         backgroundColor: '#818181',
         color: 'white',
         fontSize: '12px',
@@ -108,5 +113,67 @@ export const HeadStyles: Styles = {
         color: 'white',
         fontSize: '12px',
     },
+    tab_item: {
+        width: '60px',
+        height: '25px',
+        color: 'white',
+        backgroundColor: 'white',
+        marginTop: '60px',
+        marginLeft: '60px',
+    },
+    tab_item_active: {
+        width: '60px',
+        height: '25px',
+        color: 'white',
+        backgroundColor: '#818181',
+        marginTop: '60px',
+        marginLeft: '60px',
+    }
 
 }
+
+export const tabStyles = {
+    color: '#818181',
+    border: 'solid 1px #818181',
+    borderRadius: '7px',
+    fontSize: '11px',
+    marginLeft: '16px',
+    marginTop: '16px',
+    minHeight: '25px',
+    maxHeight: '25px',
+    width: '55px',
+    '&.Mui-selected': {
+        color: 'white',
+        backgroundColor: '#818181',
+        maxHeight: '25px',
+        width: '55px',
+        border: 'solid 1px #818181 ',
+        fontSize: '11px',
+        marginLeft: '16px',
+        marginTop: '16px',
+        minHeight: '25px',
+        borderRadius: '7px',
+    },
+    '&:hover': {
+        backgroundColor: '#818181',
+        color: 'white',
+        fontSize: '11px',
+    },
+    '& .MuiTabs-indicator': {
+        display: 'flex',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+    },
+    '& .MuiTabs-indicatorSpan': {
+        maxWidth: 40,
+        width: '100%',
+        backgroundColor: 'red',
+    },
+    head_navi_btn: {
+        width: '170%',
+        borderBottom: 'solid 1px #818181',
+        paddingBottom: '7px',
+
+    }
+
+};
