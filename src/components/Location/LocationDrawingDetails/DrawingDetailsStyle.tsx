@@ -20,20 +20,22 @@ export const LocatoinParent = styled('div')({
 
 export const styles: Styles = {
     location_Parent: {
-        width: '98%',
+        width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'start',
         transition: 'all linear 0.30s',
         marginLeft: '1%',
         height: '85vh',
+        border: 'solid 1px red',
     },
     locatoin_main: {
         width: '100%',
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
-        flexDirection: 'column',
+        border: 'solid 1px green',
+        padding: '0',
     },
     location_task: {
         width: '25%',
@@ -66,7 +68,6 @@ export const styles: Styles = {
     location_task_min: {
         width: '7%',
         height: '85vh',
-        // border: 'solid 1px black',
         transition: 'all linear 0.30s',
         position: 'relative',
         maxHeight: '88vh',
@@ -86,7 +87,6 @@ export const styles: Styles = {
     location_description_max: {
         width: '42%',
         height: '85vh',
-        // border: 'solid 1px black',
         transition: 'all linear 0.30s',
         position: 'relative',
     },
@@ -108,7 +108,25 @@ export const styles: Styles = {
         paddingRight: '5px',
         paddingTop: '10px',
         paddingBottom: '10px',
-
+    },
+    location_btn_left: {
+        height: 'max-content',
+        width: 'max-contnet',
+        transition: 'all linear 0.15s',
+        position: 'absolute',
+        top: '52.5%',
+        left: '95%',
+        transform: 'rotate(0deg)',
+        zIndex: '25',
+        border: 'solid 1px black',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        cursor: 'pointer',
+        paddingLeft: '5px',
+        paddingRight: '5px',
+        paddingTop: '10px',
+        paddingBottom: '10px',
     },
     location_btn_change: {
         height: 'max-content',
@@ -119,7 +137,6 @@ export const styles: Styles = {
         left: '95%',
         transform: 'rotate(180deg)',
         zIndex: '25',
-        // border: 'solid 1px black',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -130,7 +147,6 @@ export const styles: Styles = {
         paddingBottom: '10px',
     },
     location_all_taks: {
-        // border: 'solid 2px green',
         width: '95%',
         height: '81vh',
         overflowY: 'scroll',
@@ -147,15 +163,12 @@ export const styles: Styles = {
     locatoin_task_header: {
         height: 'max-content',
         width: '100%',
-        // border: 'solid 1px green', 
     },
     location_task_bottom: {
         height: '80%',
         width: '100%',
-        // border: 'solid 5px red'
     },
     location_all_drawings: {
-        // border: 'solid 2px green',
         width: '95%',
         height: '85vh',
         overflowY: 'scroll',

@@ -42,7 +42,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
 
   return (
     <>
-      <Box sx={{ border: 'solid 1px green' }} >
+      <Box >
         <Box
           ref={searchContainer}
           sx={{

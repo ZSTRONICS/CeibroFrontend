@@ -68,7 +68,7 @@ function GroupCard({ groups, projectName }: Props) {
         } = group;
         const isSelectedGroup = _id === groupId;
         return (
-          <Box sx={{ py: 0.5 }} key={_id}>
+          <Box sx={{ py: 0.5, }} key={_id}>
             <Box style={{ width: "100%" }}>
               <CustomStack
                 onClick={() =>
@@ -79,11 +79,12 @@ function GroupCard({ groups, projectName }: Props) {
                   justifyContent: "start",
                   alignItems: "center",
                   WebkitBoxShadow: `${isSelectedGroup
-                      ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-                      : "none"
+                    ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+                    : "none"
                     }`,
                   "&:hover": {
                     cursor: "pointer",
+                    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
                   },
                 }}
               >

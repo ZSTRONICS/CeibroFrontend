@@ -7,7 +7,7 @@ import CustomModal from "components/Modal";
 import { categorizeGroups } from "components/Utills/Globals";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { useOpenCloseModal } from "hooks";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from "react-router-dom";
 import CreateGroup from "./CreateGroup";
 import GroupCard from "./GroupCard";
@@ -64,12 +64,22 @@ function ProjectCard({ project, groups }: Props) {
           data,
         };
       });
+  const [projectcardbg, setProjectcardbg] = useState(false)
+  const changebg = () => {
+    if (!projectcardbg) {
+      setProjectcardbg(true);
+    }
+    else {
+      setProjectcardbg(false);
+    }
+  }
 
   return (
     <>
-      <Box sx={{ my: 1 }} key={_id}>
-        <CollapseComponent.Accordion sx={{ width: "98%" }}>
+      <Box sx={{ my: 1, }} key={_id}>
+        <CollapseComponent.Accordion sx={{ width: "98%", }}>
           <CollapseComponent.AccordionSummary
+            onClick={changebg}
             sx={{
               "&.MuiAccordionSummary-root": {
                 padding: "8px 16px 8px 8px",
@@ -77,6 +87,7 @@ function ProjectCard({ project, groups }: Props) {
               border: "1px solid #818181",
               borderRadius: "8px",
               boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+              backgroundColor: `${projectcardbg ? '#EBF5FB' : ''}`
             }}
           >
             <CustomStack

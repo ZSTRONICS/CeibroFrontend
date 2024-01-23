@@ -139,7 +139,10 @@ const LocatoinDrawingList = ({ headersize, setHeadersize }: LocationDrawingListP
                             </Box>
                         </Box>
                         <Box>
-                            <button onClick={collapseDiv1} style={!s1 ? styles.location_btn_change : styles.location_btn}>
+                            <button onClick={collapseDiv1} style={{
+                                transform: 'translate(300px, 300px)',
+                                ...(!s1 ? styles.location_btn_change : styles.location_btn_left)
+                            }}>
                                 <Locationarrow />
                             </button>
                         </Box>

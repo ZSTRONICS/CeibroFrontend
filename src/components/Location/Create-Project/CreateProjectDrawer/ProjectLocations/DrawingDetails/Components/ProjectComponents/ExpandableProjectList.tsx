@@ -55,7 +55,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
               />
             );
           })}
-      </Box>
+      </Box >
     </>
   );
 };

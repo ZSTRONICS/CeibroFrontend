@@ -33,8 +33,7 @@ function Location() {
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     height: `${windowActualHeight}px`,
     // minWidth: '290px',
-    border: 'solid 1px red',
-    width: '97%',
+    // width: '97%',
   };
 
   return (
@@ -43,7 +42,7 @@ function Location() {
        <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box> */}
-      <Grid container spacing={2} sx={{ border: 'solid 1px green', width: '98%', margin: 'auto' }}  >
+      <Grid container spacing={0} sx={{ width: '98%', margin: 'auto' }}>
         <Grid
           item
           md={4}
@@ -53,6 +52,7 @@ function Location() {
             ...sideBarStyle,
             px: 2,
             py: 1.5,
+            marginRight: 2, // Adjust the value to control the spacing
           }}
         >
           <ExpandableProjectList
@@ -62,7 +62,18 @@ function Location() {
             allFloors={allFloors}
           />
         </Grid>
-        <Grid item md={4} lg={3} xl={3} sx={{ ...sideBarStyle, px: 2, py: 1.5 }}>
+        <Grid
+          item
+          md={4}
+          lg={3}
+          xl={3}
+          sx={{
+            ...sideBarStyle,
+            px: 2,
+            py: 1.5,
+            marginRight: 2, // Adjust the value to control the spacing
+          }}
+        >
           <LocationDrawingFiles windowActualHeight={windowActualHeight} />
           {/* <DrawingFiles /> */}
         </Grid>
@@ -71,9 +82,9 @@ function Location() {
           container
           justifyContent={"center"}
           alignItems={"center"}
-          md={4}
-          lg={6}
-          xl={6}
+          md={3.5}
+          lg={5.6}
+          xl={5.7}
           sx={{
             ...sideBarStyle,
             background:
@@ -84,6 +95,7 @@ function Location() {
           {/* <DocumentReader /> */}
         </Grid>
       </Grid>
+
     </>
   );
 }
