@@ -26,7 +26,7 @@ import { handleGroupSearch } from "utills/common";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 interface IProps {
-  name: keyof CreateNewTaskFormType;
+  name: keyof CreateNewTaskFormType | any;
   label: string;
   options: Options;
   createCallback?: (type: string, label: string) => void;
