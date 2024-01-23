@@ -25,16 +25,13 @@ export const styles: Styles = {
         justifyContent: 'space-between',
         alignItems: 'start',
         transition: 'all linear 0.30s',
-        marginLeft: '1%',
         height: '85vh',
-        border: 'solid 1px red',
     },
     locatoin_main: {
         width: '100%',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        border: 'solid 1px green',
         padding: '0',
     },
     location_task: {
@@ -43,6 +40,7 @@ export const styles: Styles = {
         transition: 'all linear 0.30s',
         position: 'relative',
         maxHeight: '88vh',
+        zIndex: '26',
         ...({ '@media (max-width: 1100px)': { width: '20%', border: 'solid 4px red' } } as React.CSSProperties),
     },
     location_description: {
@@ -51,9 +49,8 @@ export const styles: Styles = {
         transition: 'all linear 0.30s',
         position: 'relative',
         maxHeight: '88vh',
+        zIndex: '25',
         ...({ '@media (max-width: 1100px)': { width: '35%' } } as any),
-
-
     },
     location_drawing: {
         width: '50%',
@@ -63,6 +60,7 @@ export const styles: Styles = {
         marginTop: '15px',
         boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
         borderRadius: '4px',
+        zIndex: '24',
         ...({ '@media (max-width: 1100px)': { width: '45%' } } as any),
     },
     location_task_min: {
@@ -71,9 +69,10 @@ export const styles: Styles = {
         transition: 'all linear 0.30s',
         position: 'relative',
         maxHeight: '88vh',
+        zIndex: '26',
     },
     location_drawing_max: {
-        width: '67%',
+        width: '68%',
         height: '81vh',
         transition: 'all linear 0.30s',
         position: 'relative',
@@ -83,12 +82,15 @@ export const styles: Styles = {
         boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
         borderRadius: '4px',
         backgroundColor: '#FFF',
+        zIndex: '24',
     },
     location_description_max: {
-        width: '42%',
+        width: '43%',
         height: '85vh',
         transition: 'all linear 0.30s',
         position: 'relative',
+        transform: 'translate(18px,0px)',
+        zIndex: '25'
     },
     location_btn: {
         height: 'max-content',
@@ -98,7 +100,7 @@ export const styles: Styles = {
         top: '50%',
         left: '95%',
         transform: 'rotate(0deg)',
-        zIndex: '25',
+        zIndex: '125',
         border: 'solid 1px black',
         display: 'flex',
         justifyContent: 'center',
@@ -117,7 +119,6 @@ export const styles: Styles = {
         top: '52.5%',
         left: '95%',
         transform: 'rotate(0deg)',
-        zIndex: '25',
         border: 'solid 1px black',
         display: 'flex',
         justifyContent: 'center',
@@ -136,7 +137,6 @@ export const styles: Styles = {
         top: '50%',
         left: '95%',
         transform: 'rotate(180deg)',
-        zIndex: '25',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

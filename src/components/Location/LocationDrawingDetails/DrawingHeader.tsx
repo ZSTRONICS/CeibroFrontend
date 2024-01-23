@@ -99,7 +99,6 @@ export default function DrawingHeader(props: DrawingProps) {
             </Typography>
             {/* "50%"
             )} */}
-            {/* //// */}
             {renderDivider()}
             {/* {renderBox( */}
             <Select
@@ -111,13 +110,10 @@ export default function DrawingHeader(props: DrawingProps) {
             >
               {renderSelectOptions(selectedProjectGroups, "groupName")}
             </Select>
-
-            {/* } */}
           </>
         )}
       </Grid>
-      {/* /////////////////////////// */}
-      <Grid item sx={{ transition: 'all linear 0.30s', width: headersize ? '50%' : '68%' }} >
+      <Grid item sx={{ transition: 'all linear 0.30s', width: headersize ? '50%' : '67.5%' }} >
         {renderBox(
           <>
             <Select
