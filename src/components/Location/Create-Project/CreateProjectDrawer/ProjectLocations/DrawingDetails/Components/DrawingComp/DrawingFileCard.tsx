@@ -13,6 +13,8 @@ interface IRouteParams {
 }
 
 function DrawingFileCard({ drawing }: Props) {
+  console.log(drawing, 'drawing....');
+
   const history = useHistory();
   const { projectId, groupId } = useParams<IRouteParams>();
   const { _id, fileName, updatedAt } = drawing;
@@ -46,7 +48,7 @@ function DrawingFileCard({ drawing }: Props) {
                   sx={{
                     fontWeight: 600,
                     width: 'max-content',
-                    maxWidth: "140px",
+                    minWidth: '80px',
                     paddingRight: '6px',
                   }}
                   className="textOverflowRow"

@@ -42,7 +42,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
 
   return (
     <>
-      <Box>
+      <Box sx={{ border: 'solid 1px green' }} >
         <Box
           ref={searchContainer}
           sx={{
@@ -67,13 +67,13 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             </Box>
             <Grid item xs={2} gap={1} container justifyContent="flex-end">
               <IconButton
-                style={{ color: "#0076C8", padding: "0px" }}
+                style={{ color: "#0076C8", padding: "0px", }}
                 onClick={handleSortingDrawingFile}
               >
                 <SortIcon />
               </IconButton>
               <IconButton
-                style={{ color: "#0076C8", padding: "0px" }}
+                style={{ color: "#0076C8", padding: "0px", }}
                 onClick={handleAddDrawingFile}
               >
                 <assets.AddIcon sx={{ color: "#0076C8" }} />
@@ -85,6 +85,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           sx={{
             height: `${windowActualHeight - contHeight}px`,
             overflow: "auto",
+
           }}
         >
           {selectedDrawingFiles.length > 0 ? (

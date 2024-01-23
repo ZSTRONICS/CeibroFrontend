@@ -32,6 +32,9 @@ function Location() {
     background: "#FFF",
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     height: `${windowActualHeight}px`,
+    // minWidth: '290px',
+    border: 'solid 1px red',
+    width: '97%',
   };
 
   return (
@@ -40,11 +43,12 @@ function Location() {
        <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box> */}
-      <Grid container sx={{ mx: 2 }} gap={2}>
+      <Grid container spacing={2} sx={{ border: 'solid 1px green', width: '98%', margin: 'auto' }}  >
         <Grid
           item
-          md={3}
-          xs={4}
+          md={4}
+          lg={3}
+          xl={3}
           sx={{
             ...sideBarStyle,
             px: 2,
@@ -58,7 +62,7 @@ function Location() {
             allFloors={allFloors}
           />
         </Grid>
-        <Grid item md={3} sx={{ ...sideBarStyle, px: 2, py: 1.5 }}>
+        <Grid item md={4} lg={3} xl={3} sx={{ ...sideBarStyle, px: 2, py: 1.5 }}>
           <LocationDrawingFiles windowActualHeight={windowActualHeight} />
           {/* <DrawingFiles /> */}
         </Grid>
@@ -67,7 +71,9 @@ function Location() {
           container
           justifyContent={"center"}
           alignItems={"center"}
-          md={5}
+          md={4}
+          lg={6}
+          xl={6}
           sx={{
             ...sideBarStyle,
             background:

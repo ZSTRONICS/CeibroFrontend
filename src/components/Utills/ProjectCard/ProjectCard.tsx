@@ -72,6 +72,7 @@ const ProjectCard = React.memo<ProjectCardInterface>((props) => {
               background: "#1976d2",
               padding: "1px 6px",
               borderRadius: "8%",
+
             }}
             onClick={handleLocation}
           >

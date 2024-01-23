@@ -147,7 +147,7 @@ export const styles: Styles = {
     locatoin_task_header: {
         height: 'max-content',
         width: '100%',
-        // border: 'solid 1px green',
+        // border: 'solid 1px green', 
     },
     location_task_bottom: {
         height: '80%',
