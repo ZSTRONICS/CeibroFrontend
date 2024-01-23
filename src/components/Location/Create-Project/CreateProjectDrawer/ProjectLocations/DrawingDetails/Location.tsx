@@ -2,7 +2,7 @@ import { Box, Grid } from "@mui/material";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { PROJECT_APIS } from "redux/action";
+import { PROJECT_APIS, taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
@@ -26,6 +26,7 @@ function Location() {
     if (isRenderEffect.current && allProjects.length === 0) {
       isRenderEffect.current = false;
       dispatch(PROJECT_APIS.getAllProjects());
+      dispatch(taskActions.getAllTasksAllEvents());
     }
   }, []);
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);

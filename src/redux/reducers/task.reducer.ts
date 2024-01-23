@@ -11,6 +11,7 @@ import {
   AllTaskFromMeInterface,
   AllTaskHiddenInterface,
   AllTaskToMeInterface,
+  AllTasksAllEvents,
   ITask,
 } from "constants/interfaces";
 import { TopicInterface } from "constants/interfaces/topic.interface";
@@ -26,6 +27,8 @@ export interface TaskReducerInt {
   selectedTaskFilter: selectedTaskFilterType;
   Topics: TopicInterface;
   loadingTopics: boolean;
+  loadingAllTasksAllEvents: boolean;
+  allTasksAllEvents: AllTasksAllEvents;
   unSeenTasks: any;
   taskDragContHeight: number;
 }
@@ -35,6 +38,13 @@ const intialStatue: TaskReducerInt = {
   unSeenTasks: unSeenTasks,
   RECENT_TASK_UPDATED_TIME_STAMP: "2020-10-13T12:00:00Z", // default time stamp for syncing all data
   selectedTaskFilter: "allTaskFromMe",
+  allTasksAllEvents: {
+    allEvents: [],
+    allTasks: [],
+    latestUpdatedAt: "",
+    allPins: [],
+  },
+  loadingAllTasksAllEvents: false,
   allTaskToMe: { new: [], ongoing: [], done: [] },
   allTaskFromMe: { unread: [], ongoing: [], done: [] },
   allTaskHidden: { ongoing: [], done: [], canceled: [] },
@@ -719,6 +729,28 @@ const taskReducer = (
       }
     }
     // API Request Start
+
+
+    case requestPending(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS): {
+      return {
+        ...state,
+        loadingAllTasksAllEvents: true
+      }
+    }
+    case requestSuccess(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS): {
+      return {
+        ...state,
+        loadingAllTasksAllEvents: false,
+        allTasksAllEvents: action.payload.data
+      }
+    }
+    case requestFail(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS): {
+      return {
+        ...state,
+        loadingAllTasksAllEvents: false,
+      }
+    }
+
     case requestPending(TASK_CONFIG.SYNC_ALL_TASKS): {
       return {
         ...state,

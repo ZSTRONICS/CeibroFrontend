@@ -55,6 +55,11 @@ export interface ITask {
   fromMeState: string;
   toMeState: string;
   hiddenState: string;
+  locations: any[];
+  eventsCount: number;
+  hasPinData: boolean;
+  pinData: any;
+  taskRootState: string;
 }
 
 export interface ITaskFilterInterace {
@@ -76,6 +81,31 @@ export interface ITaskFilterInterace {
   isAllSelectied: boolean;
 }
 
+export interface PinData {
+  _id: string;
+  pinUID: number;
+  type: string;
+  page_width: number;
+  page_height: number;
+  x_coord: number;
+  y_coord: number;
+  pinPhotoUrl: string;
+  creator: string;
+  taskData: ITask;
+  tags: string[];
+  drawingId: string;
+  thumbnailId: string | null;
+  thumbnail: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AllTasksAllEvents {
+  allEvents: TaskEvent[];
+  allTasks: ITask[];
+  latestUpdatedAt: string;
+  allPins: PinData[];
+}
 
 export interface AssignedUserState extends UserInfo {
   userId: string;
@@ -116,6 +146,8 @@ export enum TaskEventType {
 }
 
 export interface TaskEvent {
+  eventSeenBy: any[];
+  eventNumber: number;
   _id: string;
   taskId: string;
   eventType: string;

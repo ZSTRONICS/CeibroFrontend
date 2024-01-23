@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { taskActions } from "redux/action";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import DrawingHeader from "./DrawingHeader";
@@ -21,11 +22,16 @@ function LocationDrawingDetails() {
   const { allProjects, allGroups, allFloors } = useSelector(
     (state: RootState) => state.project
   );
+  const { allTasksAllEvents, loadingAllTasksAllEvents } = useSelector(
+    (state: RootState) => state.task
+  );
 
   useEffect(() => {
-    if (isRenderEffect.current && allProjects.length === 0) {
+    if (isRenderEffect.current) {
       isRenderEffect.current = false;
-      dispatch(PROJECT_APIS.getAllProjects());
+      allProjects.length === 0 && dispatch(PROJECT_APIS.getAllProjects());
+      allTasksAllEvents.allTasks.length === 0 &&
+        dispatch(taskActions.getAllTasksAllEvents());
     }
   }, []);
 
@@ -72,7 +78,8 @@ function LocationDrawingDetails() {
           event.target.value
         );
         history.push(
-          `/location/project/${projectId}/group/${event.target.value}/drawing/${selectedGroup.drawings[0]?._id ?? ""
+          `/location/project/${projectId}/group/${event.target.value}/drawing/${
+            selectedGroup.drawings[0]?._id ?? ""
           }`
         );
         break;
@@ -85,12 +92,7 @@ function LocationDrawingDetails() {
   const [headersize, setHeadersize] = useState<boolean>(true);
 
   return (
-    <Box
-      sx={{
-        marginLeft: "16px",
-        marginRight: "16px",
-      }}
-    >
+    <Box sx={{ mx: 2 }}>
       {projectData && (
         <DrawingHeader
           handleChangeCallback={handleGroupAndFileChange}
@@ -102,9 +104,11 @@ function LocationDrawingDetails() {
           headersize={headersize}
         />
       )}
-      <LocatoinDrawingList headersize={headersize} setHeadersize={setHeadersize} />
+      <LocatoinDrawingList
+        headersize={headersize}
+        setHeadersize={setHeadersize}
+      />
     </Box>
-
   );
 }
 
