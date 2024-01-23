@@ -6,7 +6,7 @@ interface StyledChipProps {
   notifyCount: number | string | any;
   active?: boolean;
   bgColor: string;
-  isDisabled: boolean;
+  isDisabled?: boolean;
   callback: MouseEventHandler<HTMLDivElement>;
 }
 
