@@ -1,4 +1,5 @@
 import { TASK_CONFIG } from "config/task.config";
+import { ITaskFilterInterace } from "constants/interfaces";
 import { selectedTaskFilterType } from "redux/type";
 import { createAction } from "./action";
 
@@ -7,6 +8,12 @@ const taskActions = {
     return {
       type: TASK_CONFIG.SELECTED_TASK_FILTER,
       payload: taskFilter,
+    };
+  },
+  updateDrawingFilters: (drawingTaskFilter: ITaskFilterInterace) => {
+    return {
+      type: TASK_CONFIG.UPDATE_DRAWING_TASK_FILTERS,
+      payload: drawingTaskFilter,
     };
   },
   getAllTasksAllEvents: createAction(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS),

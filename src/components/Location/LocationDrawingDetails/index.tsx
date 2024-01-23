@@ -26,6 +26,8 @@ function LocationDrawingDetails() {
     (state: RootState) => state.task
   );
 
+  const [SelectedTab, setSelectedTab] = useState(0);
+
   useEffect(() => {
     if (isRenderEffect.current) {
       isRenderEffect.current = false;

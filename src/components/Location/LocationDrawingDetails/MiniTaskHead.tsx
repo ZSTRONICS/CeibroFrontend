@@ -4,6 +4,7 @@ import { Box, TextField } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import { useState } from "react";
 import { HeadStyles, tabStyles } from "./MiniCardTaskStyle";
+import TaskFilters from "./TaskFilters";
 
 const MiniTaskImageNavi = () => {
   const [value, setValue] = useState("1");
@@ -16,7 +17,7 @@ const MiniTaskImageNavi = () => {
     <>
       <Box style={HeadStyles.head_container}>
         <Box style={HeadStyles.head_navigation}>
-          <Box>
+          <Box sx={{ width: "100%" }}>
             <Box sx={{ width: "100%", typography: "body1" }}>
               <TabContext value={value}>
                 <Box style={tabStyles.head_navi_btn}>
@@ -32,7 +33,9 @@ const MiniTaskImageNavi = () => {
                   </TabList>
                 </Box>
                 {/* //// */}
-                <Box style={HeadStyles.head_filterization}></Box>
+                <Box style={HeadStyles.head_filterization}>
+                  <TaskFilters />
+                </Box>
                 {/* //// */}
                 <Box style={HeadStyles.head_search}>
                   <Box sx={{ width: "88%" }}>

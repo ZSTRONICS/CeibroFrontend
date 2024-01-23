@@ -8,6 +8,9 @@ import {
   Select,
   Typography,
 } from "@mui/material";
+import assets from "assets";
+import { Heading2 } from "components/CustomTags";
+import DrawingGroupCard from "./DrawingGroupCard";
 
 interface DrawingProps {
   handleChangeCallback: (event: any, type: "group" | "drawing") => void;
@@ -16,7 +19,7 @@ interface DrawingProps {
   selectedGroup: any;
   selectedDrawing: any;
   selectedProjectGroups: any;
-  headersize: boolean
+  headersize: boolean;
 }
 
 export default function DrawingHeader(props: DrawingProps) {
@@ -27,15 +30,49 @@ export default function DrawingHeader(props: DrawingProps) {
     selectedGroup,
     selectedDrawing,
     selectedProjectGroups,
-    headersize
+    headersize,
   } = props;
 
-  const renderSelectOptions = (options: any[], getValueKey: string) => {
+  const renderDrawingSelectOptions = (
+    options: object[],
+    getValueKey: string
+  ) => {
     return (
       options &&
       options.map((option) => (
         <MenuItem key={option._id} value={option._id}>
-          {option[getValueKey]}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Box>{option[getValueKey]}</Box>
+            <Box sx={{ display: "flex" }}>
+              {renderDivider()}
+              {"Floor "}
+              {option.floor?.floorName}
+            </Box>
+          </Box>
+        </MenuItem>
+      ))
+    );
+  };
+
+  const renderGroupOptions = (options: Group[], getValueKey: string) => {
+    console.log(options, "options");
+
+    return (
+      options &&
+      options.map((option) => (
+        <MenuItem key={option._id} value={option._id}>
+          <Box sx={{ width: "100%" }}>
+            <DrawingGroupCard
+              group={option}
+              projectName={selectedProject.title}
+            />
+          </Box>
         </MenuItem>
       ))
     );
@@ -68,12 +105,16 @@ export default function DrawingHeader(props: DrawingProps) {
     />
   );
 
-  console.log(headersize, 'head...');
-
+  console.log(headersize, "head...");
 
   return (
-    <Grid container gap={3} >
-      <Grid item xs={12} sx={{ transition: 'all linear 0.30s', width: '50%' }} md>
+    <Grid container gap={3}>
+      <Grid
+        item
+        xs={12}
+        sx={{ transition: "all linear 0.30s", width: "50%" }}
+        md
+      >
         {renderBox(
           <>
             <IconButton
@@ -92,7 +133,7 @@ export default function DrawingHeader(props: DrawingProps) {
             {renderDivider()}
             {/* //// */}
             {/* {renderBox( */}
-            <Typography sx={{ width: '37%' }} variant="body1">
+            <Typography sx={{ width: "37%" }} variant="body1">
               {selectedProject &&
                 selectedProject.length > 0 &&
                 selectedProject[0].title}
@@ -100,38 +141,79 @@ export default function DrawingHeader(props: DrawingProps) {
             {/* "50%"
             )} */}
             {renderDivider()}
-            {/* {renderBox( */}
-            <Select
-              variant="standard"
-              disableUnderline
-              sx={{ width: "50%", height: "52px", marginRight: "16px" }}
-              value={selectedGroup?._id || ""}
-              onChange={(e) => handleChangeCallback(e, "group")}
-            >
-              {renderSelectOptions(selectedProjectGroups, "groupName")}
-            </Select>
+            {renderBox(
+              <Select
+                variant="standard"
+                disableUnderline
+                sx={{ width: "100%", height: "52px", marginRight: "16px" }}
+                value={selectedGroup._id || ""}
+                renderValue={() => selectedGroup.groupName}
+                onChange={(e) => handleChangeCallback(e, "group")}
+              >
+                <MenuItem value="" sx={{}}>
+                  <Box
+                    sx={{
+                      width: "100%",
+                      pr: "5px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Heading2
+                      sx={{
+                        width: "30%",
+                        marginLeft: "10px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      Groups
+                    </Heading2>
+                    <IconButton onClick={() => {}}>
+                      <assets.AddIcon sx={{ color: "#0076C8" }} />
+                    </IconButton>
+                  </Box>
+                </MenuItem>
+                {renderGroupOptions(selectedProjectGroups, "groupName")}
+              </Select>,
+              "50%"
+            )}
           </>
         )}
       </Grid>
-      <Grid item sx={{ transition: 'all linear 0.30s', width: headersize ? '50%' : '67.5%' }} >
+      <Grid
+        item
+        sx={{
+          transition: "all linear 0.30s",
+          width: headersize ? "50%" : "68%",
+        }}
+      >
         {renderBox(
           <>
             <Select
               value={selectedDrawing?._id || ""}
               variant="standard"
               disableUnderline
-              sx={{ width: "100%", height: "52px", paddingLeft: "16px" }}
+              sx={{
+                width: "100%",
+                height: "52px",
+                paddingLeft: "16px",
+              }}
               onChange={(e) => handleChangeCallback(e, "drawing")}
+              renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
             >
-              {renderSelectOptions(selectedGroup.drawings, "fileName")}
+              {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
             </Select>
             {renderDivider()}
-            <Typography variant="body1" sx={{ paddingRight: "16px" }}>
-              Floor
+            <Typography
+              variant="body1"
+              sx={{ paddingRight: "16px", whiteSpace: "nowrap" }}
+            >
+              {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
             </Typography>
           </>
         )}
       </Grid>
-    </Grid >
+    </Grid>
   );
 }

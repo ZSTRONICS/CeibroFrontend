@@ -13,6 +13,7 @@ import {
   AllTaskToMeInterface,
   AllTasksAllEvents,
   ITask,
+  ITaskFilterInterace,
 } from "constants/interfaces";
 import { TopicInterface } from "constants/interfaces/topic.interface";
 import { selectedTaskFilterType } from "redux/type";
@@ -31,7 +32,28 @@ export interface TaskReducerInt {
   allTasksAllEvents: AllTasksAllEvents;
   unSeenTasks: any;
   taskDragContHeight: number;
+  drawingTaskFilters:ITaskFilterInterace
 }
+
+
+const taskFilers: ITaskFilterInterace = {
+    fromMe: {
+      unread: false,
+      ongoing: false,
+      done: false,
+    },
+    toMe: {
+      new: true,
+      ongoing: true,
+      done: true,
+    },
+    hidden: {
+      ongoing: false,
+      done: false,
+      cancelled: false,
+    },
+    isAllSelectied: false,
+  };
 
 const intialStatue: TaskReducerInt = {
   taskDragContHeight: 0,
@@ -51,6 +73,7 @@ const intialStatue: TaskReducerInt = {
   loadingAllTasks: true,
   loadingTopics: false,
   Topics: { allTopics: [], recentTopics: [] },
+  drawingTaskFilters:taskFilers
 };
 
 const taskReducer = (
@@ -58,6 +81,11 @@ const taskReducer = (
   action: ActionInterface
 ): TaskReducerInt => {
   switch (action.type) {
+    case TASK_CONFIG.UPDATE_DRAWING_TASK_FILTERS:
+      return {
+        ...state,
+        drawingTaskFilters: {...action.payload},
+      };
     case TASK_CONFIG.SELECTED_TASK_FILTER:
       return {
         ...state,

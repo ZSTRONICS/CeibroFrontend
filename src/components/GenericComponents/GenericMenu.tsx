@@ -81,7 +81,8 @@ const GenericMenu: React.FC<MenuProps> = ({
                 padding: `${isProjectGroup ? "8px" : "0 8px 0 8px"}`,
               }}
               disableGutters
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 option.callBackHandler();
                 handleMenuClose();
               }}
