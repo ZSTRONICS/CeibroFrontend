@@ -46,9 +46,13 @@ const GenericMenu: React.FC<MenuProps> = ({
         onClick={handleMenuClick}
         disabled={isMenuDisabled || isTaskSelected}
       >
-        <assets.MoreVertOutlinedIcon
-          color={isMenuDisabled ? "disabled" : "primary"}
-        />
+        {!icon ? (
+          <assets.MoreVertOutlinedIcon
+            color={isMenuDisabled ? "disabled" : "primary"}
+          />
+        ) : (
+          icon
+        )}
       </IconButton>
       {anchorEl && (
         <Menu

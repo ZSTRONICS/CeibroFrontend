@@ -123,12 +123,14 @@ interface ProjectReducerInt {
   isOpenProjectDocumentModal: boolean;
   isfloorCreating: boolean;
   selectedDrawingFiles: Drawing[];
+  projectFloors: Floor[];
   selectedGroupName: String;
   selectedProjectName: String;
 }
 
 const projectReducer: ProjectReducerInt = {
   allProjects: [],
+  projectFloors: [],
   selectedDrawingFiles: [],
   selectedGroupName: '',
   selectedProjectName: '',
@@ -210,6 +212,49 @@ const NavigationReducer = (
   action: ActionInterface
 ): ProjectReducerInt => {
   switch (action.type) {
+
+    case PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED:
+      const findGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload.groupId))
+
+      if (findGroupIndex > -1) {
+        const drawingIndex = state.allGroups[findGroupIndex].drawings.findIndex((drawing: any) => String(drawing._id) === String(action.payload.drawings[0]._id))
+        if (drawingIndex === -1) {
+          state.allGroups[findGroupIndex].drawings = [...action.payload.drawings, ...state.allGroups[findGroupIndex].drawings]
+          state.selectedDrawingFiles = [...action.payload.drawings, ...state.selectedDrawingFiles]
+        }
+      }
+      return {
+        ...state,
+      }
+
+    case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
+      const isExistingGroup = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
+      if (isExistingGroup === - 1) {
+        state.allGroups = [...state.allGroups, action.payload]
+      }
+      return {
+        ...state,
+      }
+
+    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
+      const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
+      if (groupIndex > -1) {
+        state.allGroups[groupIndex] = action.payload;
+      }
+      return {
+        ...state,
+      };
+
+    case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
+      return {
+        ...state,
+        selectedDrawingFiles: action.payload.drawings,
+        selectedGroupName: action.payload.groupName,
+        selectedProjectName: action.payload.projectTitle,
+        projectFloors: action.payload.projectFloors
+      };
+    }
+
     case requestSuccess(DELETE_PROJECT): {
       return {
         ...state,
@@ -322,14 +367,7 @@ const NavigationReducer = (
         isfloorCreating: false,
       };
     }
-    case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
-      return {
-        ...state,
-        selectedDrawingFiles: action.payload.drawings,
-        selectedGroupName: action.payload.groupName,
-        selectedProjectName: action.payload.projectTitle
-      };
-    }
+
     case PROJECT_CONFIG.PROJECT_CREATED: {
       let project = action.payload;
       if (state.allProjects.length === 0) {
@@ -755,23 +793,7 @@ const NavigationReducer = (
         };
       }
     }
-    case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
-      const isExistingGroup = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
-      if (isExistingGroup < 1) {
-        state.allGroups = [...state.allGroups, action.payload]
-      }
-      return {
-        ...state,
-      }
 
-    case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
-      const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
-      if (groupIndex > -1) {
-        state.allGroups[groupIndex] = action.payload;
-      }
-      return {
-        ...state,
-      };
 
     case PROJECT_CONFIG.PROJECT_MEMBERS_ADDED: {
       let members = action.payload;

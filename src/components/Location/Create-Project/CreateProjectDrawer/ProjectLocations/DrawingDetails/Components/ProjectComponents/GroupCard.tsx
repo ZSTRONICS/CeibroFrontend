@@ -6,6 +6,7 @@ import { GenericMenu } from "components/GenericComponents";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
 import { Drawing } from "constants/interfaces";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
@@ -13,6 +14,7 @@ import { PROJECT_APIS } from "redux/action";
 interface Props {
   groups: Group[];
   projectName: String;
+  projectFloors: Floor[];
 }
 
 interface RouteParams {
@@ -20,22 +22,31 @@ interface RouteParams {
   groupId: string;
 }
 
-function GroupCard({ groups, projectName }: Props) {
+function GroupCard({ groups, projectName, projectFloors }: Props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { projectId, groupId } = useParams<RouteParams>();
-  const handleSetDrawingFiles = (
-    drawings: Drawing[],
-    group: Group,
-    projectTitle: String
-  ) => {
-    dispatch({
-      type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
-      payload: { drawings, groupName: group.groupName, projectTitle },
-    });
-    const path = `/location/${projectId}/${group._id}`;
-    history.push(path);
-  };
+  const { groupId } = useParams<RouteParams>();
+  const handleSetDrawingFiles = useCallback(
+    (
+      drawings: Drawing[],
+      group: Group,
+      projectTitle: String,
+      projectFloors: Floor[]
+    ) => {
+      dispatch({
+        type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
+        payload: {
+          drawings,
+          groupName: group.groupName,
+          projectTitle,
+          projectFloors,
+        },
+      });
+      const path = `/location/${group.projectId}/${group._id}`;
+      history.push(path);
+    },
+    [groups.length]
+  );
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
     dispatch(
@@ -61,27 +72,32 @@ function GroupCard({ groups, projectName }: Props) {
           _id,
           isFavoriteByMe,
           groupName,
-          creator,
           drawings,
           publicGroup,
           isCreator,
         } = group;
         const isSelectedGroup = _id === groupId;
         return (
-          <Box sx={{ py: 0.5, }} key={_id}>
+          <Box sx={{ py: 0.5 }} key={_id}>
             <Box style={{ width: "100%" }}>
               <CustomStack
                 onClick={() =>
-                  handleSetDrawingFiles(drawings, group, projectName)
+                  handleSetDrawingFiles(
+                    drawings,
+                    group,
+                    projectName,
+                    projectFloors
+                  )
                 }
                 sx={{
                   gap: 0.5,
                   justifyContent: "start",
                   alignItems: "center",
-                  WebkitBoxShadow: `${isSelectedGroup
-                    ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-                    : "none"
-                    }`,
+                  WebkitBoxShadow: `${
+                    isSelectedGroup
+                      ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+                      : "none"
+                  }`,
                   "&:hover": {
                     cursor: "pointer",
                     boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",

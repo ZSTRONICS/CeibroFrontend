@@ -1,5 +1,12 @@
 import { MoreVert } from "@mui/icons-material";
-import { Box, Menu, MenuItem, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import IconButton from "@mui/material/IconButton";
@@ -19,7 +26,7 @@ import { handleGroupSearch } from "utills/common";
 import ConfirmationDialog from "../ConfirmationDialog";
 
 interface IProps {
-  name: keyof CreateNewTaskFormType;
+  name: keyof CreateNewTaskFormType | any;
   label: string;
   options: Options;
   createCallback?: (type: string, label: string) => void;
@@ -27,6 +34,7 @@ interface IProps {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => void;
+  handleSelectedMenuList?: (option: any) => void;
 }
 
 function CustomDropDown(props: IProps) {
@@ -34,14 +42,25 @@ function CustomDropDown(props: IProps) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [deleteItem, setDeleteItem] = React.useState<OptionType | null>(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const { label, options, createCallback, handleChangeValues, name } = props;
+  const {
+    label,
+    options,
+    createCallback,
+    handleChangeValues,
+    name,
+    handleSelectedMenuList,
+  } = props;
   const [selected, setSelected] = React.useState<string>("");
   const [open, setOpen] = React.useState(false);
+
   const [searchQuery, setSearchQuery] = React.useState("");
   const [allFilterData, setAllFilterData] = React.useState<{
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
   }>({ all: {}, recent: [] });
+
+  const [showAllFloorItems, setShowAllFloorItems] = React.useState(false);
+  const [addFloorLabel, setAddFloorLabel] = React.useState("Add Floor");
   // const [recentfilterData, setRecentFilterData] = React.useState<{
   //   [key: string]: OptionType[];
   // }>({});
@@ -77,21 +96,33 @@ function CustomDropDown(props: IProps) {
     }
     setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
     setSortedOptions(allGroupedData);
-  }, [options]);
+  }, [options.allOptions.length, options.recentOptions.length, selected]);
 
   // const handleChange = (event: SelectChangeEvent<typeof selected>) => {
   //   setSelected(event.target.value);
   //   handleClose();
   // };
-  const handleMenuClick = (item: OptionType) => {
-    setSelected(item.label);
-    handleChangeValues(item.value, name);
-    handleClose();
-  };
+  const handleMenuClick = (e: any, item: OptionType) => {
+    e.stopPropagation();
+    e.preventDefault();
 
+    if (!showAllFloorItems) {
+      setSelected(item.value);
+      handleChangeValues(item.value, name);
+      handleSelectedMenuList && handleSelectedMenuList(item);
+      handleClose();
+    } else {
+      if (!item.isPermanenetOption) {
+        handleChangeValues(item.value, name);
+      }
+    }
+  };
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
+    setShowAllFloorItems(false);
+    setAddFloorLabel("Add Floor");
+    handleSelectedMenuList && handleSelectedMenuList(null);
     setTimeout(() => {
       setAllFilterData({
         all: sortedOptions,
@@ -140,6 +171,7 @@ function CustomDropDown(props: IProps) {
     handleChangeValues(undefined, name);
     setSearchQuery("");
     setSelected("");
+    handleSelectedMenuList && handleSelectedMenuList(null);
   };
 
   const renderValue = () => {
@@ -156,10 +188,10 @@ function CustomDropDown(props: IProps) {
     if (label === "Topic") {
       dispatch(
         taskActions.deleteTopic({
-          other: { topicId: option.value },
+          other: { topicId: option._id },
           success: (res: any) => {
             dispatch(taskActions.getAllTopic());
-            if (option.label === selected) {
+            if (option.value === selected) {
               setSelected("");
               setSearchQuery("");
             }
@@ -249,54 +281,75 @@ function CustomDropDown(props: IProps) {
               borderBottom: "1.9px solid #A0A0B0",
               display: "flex",
               alignItems: "center",
+              justifyContent: "flex-end",
               width: "100%",
             }}
           >
-            <TextField
-              placeholder="Start typing"
-              value={searchQuery}
-              onChange={(e) => {
-                e.stopPropagation();
-                e.preventDefault();
-                handleSearchChange(e);
-              }}
-              onClick={(e) => e.stopPropagation()}
-              style={{ flex: 1, marginLeft: "10px", fontFamily: "Inter" }}
-              sx={{
-                label: { color: "605b5c" },
-              }}
-              variant="standard"
-              inputProps={{
-                maxLength: 100,
-              }}
-              InputProps={{
-                disableUnderline: true,
-              }}
-              error={searchQuery.length >= 100}
-              helperText={`${
-                searchQuery.length >= 100
-                  ? "Topic max length is 100 characters"
-                  : ""
-              }`}
-            />
-            <>
-              {searchQuery && searchQuery.length > 0 && isMatchFound ? (
+            {label !== "Floor" ? (
+              <>
+                <TextField
+                  placeholder="Start typing"
+                  value={searchQuery}
+                  onChange={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleSearchChange(e);
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ flex: 1, marginLeft: "10px", fontFamily: "Inter" }}
+                  sx={{
+                    label: { color: "605b5c" },
+                  }}
+                  variant="standard"
+                  inputProps={{
+                    maxLength: 100,
+                  }}
+                  InputProps={{
+                    disableUnderline: true,
+                  }}
+                  error={searchQuery.length >= 100}
+                  helperText={`${
+                    searchQuery.length >= 100
+                      ? "Topic max length is 100 characters"
+                      : ""
+                  }`}
+                />
+                <>
+                  {searchQuery && searchQuery.length > 0 && isMatchFound ? (
+                    <Button
+                      onClick={handleCancelClick}
+                      sx={{ fontFamily: "Inter" }}
+                    >
+                      Cancel
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleCreateClick}
+                      disabled={searchQuery.length === 0}
+                      sx={{ fontFamily: "Inter" }}
+                    >
+                      Save
+                    </Button>
+                  )}
+                </>
+              </>
+            ) : (
+              <>
                 <Button
-                  onClick={handleCancelClick}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation(); //
+                    setShowAllFloorItems(!showAllFloorItems);
+                    !showAllFloorItems
+                      ? setAddFloorLabel("Done")
+                      : setAddFloorLabel("Add Floor");
+                  }}
                   sx={{ fontFamily: "Inter" }}
                 >
-                  Cancel
+                  {addFloorLabel}
                 </Button>
-              ) : (
-                <Button
-                  onClick={handleCreateClick}
-                  disabled={searchQuery.length === 0}
-                  sx={{ fontFamily: "Inter" }}
-                >
-                  Save
-                </Button>
-              )}
-            </>
+              </>
+            )}
           </Box>
 
           {allFilterData.recent.length > 0 && (
@@ -328,7 +381,7 @@ function CustomDropDown(props: IProps) {
                       fontWeight: 600,
                       fontFamily: "Inter",
                     }}
-                    onClick={() => handleMenuClick(item)}
+                    onClick={(e) => handleMenuClick(e, item)}
                   >
                     {item.label}
                   </Box>
@@ -336,101 +389,129 @@ function CustomDropDown(props: IProps) {
               })}
             </Box>
           )}
+
           <Box sx={{ margin: "8px 10px", fontFamily: "Inter" }}>
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [
-                // Wrap the list items in an array
-                <Typography
-                  sx={{
-                    paddingTop: "20px",
-                    color: "#000000",
-                    fontSize: "14px",
-                    fontWeight: 700,
-                    fontFamily: "Inter",
-                  }}
-                >
-                  {groupLetter}
-                </Typography>,
-                // Use map on the array to render the list items
-                ...groupOptions.map((item, i) => (
-                  <Box
-                    key={`all-${item.value + i}`}
-                    sx={{
-                      borderBottom: "1px solid #E0E0E0",
-                      padding: "8px 0",
-                      cursor: "pointer",
-                      display: "flex",
-                      color: "#000000",
-                      fontFamily: "Inter",
-                      justifyContent: "space-between",
-                    }}
-                    onClick={() => handleMenuClick(item)}
-                  >
+                // Wrap the list items in an array<>
+                <>
+                  {groupLetter !== "*" && (
                     <Typography
                       sx={{
-                        color: "#0E0E0E",
+                        paddingTop: "20px",
+                        color: "#000000",
                         fontSize: "14px",
-                        fontWeight: 600,
+                        fontWeight: 700,
                         fontFamily: "Inter",
                       }}
                     >
-                      {item.label}
+                      {groupLetter}
                     </Typography>
-                    {label === "Topic" && (
-                      <IconButton
-                        edge="end"
+                  )}
+                </>,
+                // Use map on the array to render the list items
+                ...groupOptions.map((item, i) => (
+                  <>
+                    {(item.isShown === true || showAllFloorItems) && (
+                      <Box
+                        key={`all-${item.value + i}`}
                         sx={{
-                          color: "#0075D0",
-                          padding: "0",
-                          "& .MuiSvgIcon-root": {
-                            padding: "0",
-                            height: "20px",
-                          },
-                        }}
-                        onClick={(e) => handleInfoMenuClick(e, item)}
-                      >
-                        <MoreVert />
-                      </IconButton>
-                    )}
-                    <Menu
-                      sx={{
-                        padding: 0,
-                      }}
-                      elevation={3}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      anchorEl={anchorEl}
-                      open={
-                        Boolean(anchorEl) && item.value === deleteItem?.value
-                      }
-                      onClose={handleCloseMenu}
-                    >
-                      <MenuItem
-                        sx={{
-                          paddingBottom: 0,
-                          paddingTop: 0,
-                          color: "#0E0E0E",
-                          fontSize: "13px",
-                          fontWeight: 600,
+                          borderBottom: "1px solid #E0E0E0",
+                          padding: "8px 0",
+                          cursor: "pointer",
+                          display: "flex",
+                          color: "#000000",
                           fontFamily: "Inter",
+                          justifyContent: "space-between",
                         }}
-                        key={i}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleDeleteClick(item);
-                        }}
+                        onClick={(e: any) => handleMenuClick(e, item)}
                       >
-                        Delete
-                      </MenuItem>
-                    </Menu>
-                  </Box>
+                        <Box sx={{ display: "flex", alignItems: "center" }}>
+                          {label === "Floor" && showAllFloorItems && (
+                            <Checkbox
+                              checked={item.isShown}
+                              disabled={item.isPermanenetOption}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                if (!item.isPermanenetOption) {
+                                  handleChangeValues(item.value, name);
+                                }
+                              }}
+                            />
+                          )}
+
+                          <Typography
+                            sx={{
+                              color: "#0E0E0E",
+                              fontSize: "14px",
+                              fontWeight: 600,
+                              fontFamily: "Inter",
+                            }}
+                          >
+                            {item.value}
+                          </Typography>
+                        </Box>
+                        {((label === "Floor" && !showAllFloorItems) ||
+                          label === "Topic") && (
+                          <IconButton
+                            edge="end"
+                            sx={{
+                              color: "#0075D0",
+                              padding: "0",
+                              mr: 0.5,
+                              "& .MuiSvgIcon-root": {
+                                height: "25px",
+                                width: "25px",
+                              },
+                            }}
+                            onClick={(e) => handleInfoMenuClick(e, item)}
+                          >
+                            <MoreVert />
+                          </IconButton>
+                        )}
+                        <Menu
+                          sx={{
+                            padding: 0,
+                          }}
+                          elevation={3}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "right",
+                          }}
+                          anchorEl={anchorEl}
+                          open={
+                            Boolean(anchorEl) &&
+                            item.value === deleteItem?.value
+                          }
+                          onClose={handleCloseMenu}
+                        >
+                          <MenuItem
+                            sx={{
+                              paddingBottom: 0,
+                              paddingTop: 0,
+                              color: "#0E0E0E",
+                              fontSize: "13px",
+                              fontWeight: 600,
+                              fontFamily: "Inter",
+                            }}
+                            key={i}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleDeleteClick(item);
+                            }}
+                          >
+                            Delete
+                          </MenuItem>
+                        </Menu>
+                      </Box>
+                    )}
+                  </>
                 )),
               ]
             )}

@@ -30,7 +30,7 @@ import {
 import Footer from "./Footer";
 
 import { MUIInputLabel } from "components/CustomTags";
-import { IS_IMAGE } from "components/Utills/Globals";
+import { IS_IMAGE, getDropdownOptions } from "components/Utills/Globals";
 import ImagesToUpload from "components/Utills/ImageBox/ImagesToUpload";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { taskConstantEn, taskConstantEt } from "translation/TaskConstant";
@@ -98,11 +98,13 @@ function CreateNewTask() {
         //todo null receive in array from backend
         Topics.allTopics.filter((item: any) => item != null),
         "topic",
+        "topic",
         "_id"
       );
       const getRecentTopicOptions = getDropdownOptions(
         //todo null receive in array from backend
         Topics.recentTopics.filter((item: any) => item != null),
+        "topic",
         "topic",
         "_id"
       );
@@ -133,19 +135,6 @@ function CreateNewTask() {
       });
     }
   }, [allProjects]);
-
-  const getDropdownOptions = (
-    data: object[],
-    labelName: string,
-    valueName: string
-  ) => {
-    return (
-      data &&
-      data.map((item: any) => {
-        return { label: item[labelName], value: item[valueName] };
-      })
-    );
-  };
 
   const handleDescriptionChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | undefined

@@ -8,7 +8,7 @@ declare interface UserInfo {
 }
 declare interface MenuOption {
   menuName: string;
-  callBackHandler: () => void;
+  callBackHandler: (e?: any) => void;
 }
 
 declare interface Project {

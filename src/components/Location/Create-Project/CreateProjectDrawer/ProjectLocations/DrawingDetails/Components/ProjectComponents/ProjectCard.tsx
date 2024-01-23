@@ -14,9 +14,10 @@ import GroupCard from "./GroupCard";
 interface Props {
   project: Project;
   groups: Group[];
+  projectFloors: Floor[];
 }
 
-function ProjectCard({ project, groups }: Props) {
+function ProjectCard({ project, groups, projectFloors }: Props) {
   const history = useHistory();
   const titleRef: any = useRef(null);
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
@@ -165,6 +166,7 @@ function ProjectCard({ project, groups }: Props) {
                           <>
                             <LabelTag sx={{ pl: 1.8 }}>{group.label}</LabelTag>
                             <GroupCard
+                              projectFloors={projectFloors}
                               groups={group.data}
                               projectName={projectTitle}
                             />
