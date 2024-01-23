@@ -12,7 +12,7 @@ interface IProps {
   windowActualHeight: number;
 }
 const ExpandableProjectList: React.FC<IProps> = (props) => {
-  const { allProjects, groups, windowActualHeight } = props;
+  const { allProjects, groups, windowActualHeight, allFloors } = props;
   const [searchText, setSearchText] = useState("");
   const [contHeight, setContHeight] = useState<number>(50);
   const contRef: any = useRef(null);
@@ -45,13 +45,15 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
           .sort((a: any, b: any) => b.isFavoriteByMe - a.isFavoriteByMe)
           .map((project) => {
             const groupDictionary = dataGroupById(groups, "projectId");
-            const projectGroups = groupDictionary[project._id];
-            // const floorDictionary = dataGroupById(allFloors, "projectId")
+            const projectGroups = groupDictionary[project._id] || [];
+            const floorDictionary = dataGroupById(allFloors, "projectId");
+            const projectFloors = floorDictionary[project._id] || [];
             return (
               <ProjectCard
                 key={project._id}
                 project={project}
                 groups={projectGroups}
+                projectFloors={projectFloors}
               />
             );
           })}

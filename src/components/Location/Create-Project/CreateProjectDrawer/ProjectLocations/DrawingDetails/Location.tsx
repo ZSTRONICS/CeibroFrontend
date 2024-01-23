@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,11 +6,13 @@ import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
+import { Heading2 } from "components/CustomTags";
+import { useParams } from "react-router-dom";
 import LocationDrawingFiles from "./Components/DrawingComp/LocationDrawingFiles";
 import { ExpandableProjectList } from "./Components/ProjectComponents";
-
 function Location() {
   const dispatch = useDispatch();
+  const { groupId } = useParams<any>();
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const isRenderEffect = useRef<boolean>(true);
@@ -35,14 +37,19 @@ function Location() {
     // minWidth: '290px',
     // width: '97%',
   };
-
+  const emptyDrawingContainer = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    background: "#E5E5E5",
+  };
   return (
     <>
       {/* reuse drawing header with selected project, floor, drawing dropdown 
        <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box> */}
-      <Grid container spacing={0} sx={{ width: '98%', margin: 'auto' }}>
+      <Grid container spacing={0} sx={{ width: "98%", margin: "auto" }}>
         <Grid
           item
           md={4}
@@ -64,17 +71,23 @@ function Location() {
         </Grid>
         <Grid
           item
-          md={4}
-          lg={3}
-          xl={3}
+          md={3}
           sx={{
             ...sideBarStyle,
+            ...(!groupId ? emptyDrawingContainer : {}),
             px: 2,
             py: 1.5,
-            marginRight: 2, // Adjust the value to control the spacing
           }}
         >
-          <LocationDrawingFiles windowActualHeight={windowActualHeight} />
+          {groupId ? (
+            <LocationDrawingFiles windowActualHeight={windowActualHeight} />
+          ) : (
+            <Box>
+              <Heading2 sx={{ fontWeight: 500 }}>
+                Click group to see drawing files in it
+              </Heading2>
+            </Box>
+          )}
           {/* <DrawingFiles /> */}
         </Grid>
         <Grid
@@ -91,11 +104,10 @@ function Location() {
               "linear-gradient(0deg, #E5E5E5 0%, #E5E5E5 100%), url(<path-to-image>), lightgray 50% / cover no-repeat",
           }}
         >
-          No drawing selected
+          <Heading2 sx={{ fontWeight: 500 }}>No drawing selected</Heading2>
           {/* <DocumentReader /> */}
         </Grid>
       </Grid>
-
     </>
   );
 }

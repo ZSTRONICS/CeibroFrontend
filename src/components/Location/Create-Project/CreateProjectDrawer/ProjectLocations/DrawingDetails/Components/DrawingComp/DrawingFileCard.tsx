@@ -13,11 +13,11 @@ interface IRouteParams {
 }
 
 function DrawingFileCard({ drawing }: Props) {
-  console.log(drawing, 'drawing....');
+  console.log(drawing, "drawing....");
 
   const history = useHistory();
   const { projectId, groupId } = useParams<IRouteParams>();
-  const { _id, fileName, updatedAt } = drawing;
+  const { _id, fileName, updatedAt, floor } = drawing;
   const localTimeData = momentLocalDateTime(updatedAt);
 
   const handleClick = () => {
@@ -28,28 +28,28 @@ function DrawingFileCard({ drawing }: Props) {
 
   return (
     <>
-      <Box sx={{ padding: "", width: "100%", }} key={_id}>
+      <Box sx={{ padding: "", width: "100%" }} key={_id}>
         <CustomStack
           onClick={handleClick}
           sx={{
             gap: 1,
             justifyContent: "space-between",
             alignItems: "center",
-            width: '100%',
+            width: "100%",
             "&:hover": {
               cursor: "pointer",
             },
           }}
         >
-          <Box sx={{ width: '80%', py: 0.5 }} >
+          <Box sx={{ width: "80%", py: 0.5 }}>
             <Box sx={{ display: "flex" }}>
               <Tooltip title={fileName}>
                 <Heading2
                   sx={{
                     fontWeight: 600,
-                    width: 'max-content',
-                    minWidth: '80px',
-                    paddingRight: '6px',
+                    width: "max-content",
+                    minWidth: "80px",
+                    paddingRight: "6px",
                   }}
                   className="textOverflowRow"
                 >
@@ -60,12 +60,20 @@ function DrawingFileCard({ drawing }: Props) {
             </Box>
             <LabelTag>Last update: {localTimeData}</LabelTag>
           </Box>
-          <Box sx={{ width: '20%', borderLeft: "1px solid #818181", display: 'flex', justifyContent: 'end', alignItems: 'center' }}>
+          <Box
+            sx={{
+              width: "20%",
+              borderLeft: "1px solid #818181",
+              display: "flex",
+              justifyContent: "end",
+              alignItems: "center",
+            }}
+          >
             <LabelTag>
-              <Typography sx={{ display: 'inline-block' }} >
-                1
+              <Typography sx={{ display: "inline-block" }}>
+                {floor.floorName}
               </Typography>
-              <Typography sx={{ display: 'inline-block', marginLeft: '2px' }} >
+              <Typography sx={{ display: "inline-block", marginLeft: "2px" }}>
                 Floor
               </Typography>
             </LabelTag>

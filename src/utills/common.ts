@@ -156,4 +156,5 @@ export const taskConstants: any = {
   },
 };
 
+export const ALL_FLOOR_NAMES = Array.from({ length: 29 }, (_, index) => `${index - 3}`).filter(num => num !== "0");
 export const HEADER_HEIGHT = 87;

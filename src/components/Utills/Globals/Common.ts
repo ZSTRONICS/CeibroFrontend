@@ -647,5 +647,29 @@ function trimFileName(filename: string) {
   return trimmedName;
 }
 
-export { categorizeGroups, countUnseenTasks, countUnseenTasksForTabs, dataGroupById, formatDropdownData, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, trimFileName, updateLocalStorageObject };
+
+const getDropdownOptions = (
+  data: object[],
+  labelName: string,
+  valueName: string,
+  _id?: string,
+  isShown: boolean = true,
+  overideLabel?: string,
+) => {
+  return (
+    data &&
+    data.map((item: any) => {
+      return {
+        label: overideLabel ? overideLabel : item[labelName],
+        value: item[valueName],
+        _id: item?._id || "",
+        isShown,
+        isPermanenetOption: true
+      };
+    })
+  );
+};
+
+
+export { categorizeGroups, countUnseenTasks, countUnseenTasksForTabs, dataGroupById, formatDropdownData, getDropdownOptions, hasOnlySpaces, momentdeDateFormatWithDay, optionMapping, trimFileName, updateLocalStorageObject };
 

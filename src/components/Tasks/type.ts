@@ -1,6 +1,9 @@
 export interface OptionType {
   label: string;
   value: string;
+  _id?: string;
+  isShown?: boolean;
+  isPermanenetOption?: boolean;
 }
 
 export interface Options {

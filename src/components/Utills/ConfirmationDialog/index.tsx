@@ -55,7 +55,7 @@ function ConfirmationDialog({
               fontFamily: "Inter",
             }}
           >
-            {item.label}
+            {item.value}
           </Typography>
         </Box>
         <Box

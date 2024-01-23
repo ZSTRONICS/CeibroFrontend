@@ -1,44 +1,31 @@
 import { Box, Button, TextField } from "@mui/material";
-import { PROJECT_CONFIG } from "config";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { PROJECT_APIS } from "redux/action";
+import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
+import FloorDropDown from "./FloorDropDown";
+
 interface Props {
-  projectId: string;
-  closeModal: () => void;
+  drawingFile: any;
+  isFloorSelected: boolean;
+  handleCreateDrawing: () => void;
+  projectFloors: Floor[];
+  selectedGroupName: string;
+  findSelectedFloor: (selectedFloor: any) => void;
 }
-function CreateDrawing({ projectId, closeModal }: Props) {
-  const dispatch = useDispatch();
-  const [groupName, setGroupName] = useState("");
-  const handleCreateGroup = () => {
-    if (groupName.length > 0) {
-      dispatch(
-        PROJECT_APIS.createProjectGroup({
-          other: {
-            projectId: projectId,
-          },
-          body: {
-            groupName: groupName,
-          },
-          success: (res: any) => {
-            setGroupName("");
-            closeModal();
-            dispatch({
-              type: PROJECT_CONFIG.PROJECT_GROUP_CREATED,
-              payload: res.data.group,
-            });
-          },
-        })
-      );
-    }
-  };
+
+function CreateDrawing({
+  drawingFile,
+  isFloorSelected,
+  handleCreateDrawing,
+  projectFloors,
+  selectedGroupName,
+  findSelectedFloor,
+}: Props) {
   return (
     <>
       <Box
         sx={{
           padding: "0 10px 14px",
           width: "100%",
-          height: "350px",
+          height: "450px",
           display: "flex",
           justifyContent: "space-between",
           flexDirection: "column",
@@ -46,21 +33,46 @@ function CreateDrawing({ projectId, closeModal }: Props) {
         }}
       >
         <Box>
-          <TextField
-            sx={{ width: "100%" }}
-            inputProps={{ style: { background: "white" } }}
-            variant="filled"
-            required={true}
-            name="groupName"
-            label="Group name"
-            placeholder={"Enter group name"}
-            value={groupName}
-            onChange={(e: any) => {
-              setGroupName(e.target.value);
-            }}
+          <FloorDropDown
+            projectFloors={projectFloors}
+            findSelectedFloor={findSelectedFloor}
           />
-        </Box>
+          <Box>
+            <TextField
+              sx={{
+                width: "100%",
+                label: {
+                  left: "-12px",
+                },
+              }}
+              inputProps={{
+                style: { background: "white", paddingLeft: "4px" },
+              }}
+              variant="filled"
+              required={true}
+              name="groupName"
+              label="Group name"
+              placeholder={"group name"}
+              value={selectedGroupName || ""}
+            />
+          </Box>
+          <LabelTag>
+            Select if you want to add this drawing under some group
+          </LabelTag>
 
+          <CustomStack gap={1} pt={2.5}>
+            <LabelTag
+              sx={{ borderRight: "1px solid #818181", paddingRight: 1.25 }}
+            >
+              Drawing name
+            </LabelTag>
+            {drawingFile && (
+              <Heading2 sx={{ fontWeight: "500" }}>
+                {drawingFile[0]?.name || ""}
+              </Heading2>
+            )}
+          </CustomStack>
+        </Box>
         <Button
           variant="contained"
           sx={{
@@ -69,7 +81,8 @@ function CreateDrawing({ projectId, closeModal }: Props) {
             left: "60%",
             transform: "translateX(100%)",
           }}
-          onClick={handleCreateGroup}
+          onClick={handleCreateDrawing}
+          disabled={!selectedGroupName || !isFloorSelected}
         >
           Create
         </Button>
