@@ -186,7 +186,18 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
           horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleMenuClose} sx={{ width: "450px", borderRadius: '4px', left: 0, }}>
+        <MenuItem
+          disableRipple
+          sx={{
+            width: "440px",
+            borderRadius: '4px',
+            left: 0,
+            '&:hover': {
+              backgroundColor: 'white',
+              cursor: 'auto',
+            }
+          }}
+        >
           <TaskFilterTabsView />
         </MenuItem>
       </Menu>
