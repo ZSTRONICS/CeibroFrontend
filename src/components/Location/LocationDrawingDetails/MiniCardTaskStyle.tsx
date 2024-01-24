@@ -33,28 +33,6 @@ export const Minicardheading = styled("div")({
   marginTop: "3px",
 });
 
-export const styles: Styles = {
-  minicard_parent: {
-    width: "75px",
-    height: "57px",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-    transition: "all linear 0.30s",
-    borderRadius: "10px",
-    marginTop: "15px",
-    boxShadow: "0px 4px 4px 0px #00000040",
-  },
-  minicard_container: {
-    width: "100%",
-    height: "max-content",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "column",
-  },
-};
 // minicardhead
 
 export const HeadStyles: Styles = {
@@ -167,7 +145,6 @@ export const tabStyles = {
     backgroundColor: "red",
   },
   head_navi_btn: {
-    width: "170%",
     borderBottom: "solid 1px #818181",
     paddingBottom: "7px",
   },

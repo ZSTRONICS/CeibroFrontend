@@ -104,11 +104,8 @@ export default function DrawingHeader(props: DrawingProps) {
       }}
     />
   );
-
-  console.log(headersize, "head...");
-
   return (
-    <Grid container gap={3}>
+    <Grid container gap={1.5} >
       <Grid
         item
         xs={12}
@@ -169,7 +166,7 @@ export default function DrawingHeader(props: DrawingProps) {
                     >
                       Groups
                     </Heading2>
-                    <IconButton onClick={() => {}}>
+                    <IconButton onClick={() => { }}>
                       <assets.AddIcon sx={{ color: "#0076C8" }} />
                     </IconButton>
                   </Box>
@@ -183,9 +180,12 @@ export default function DrawingHeader(props: DrawingProps) {
       </Grid>
       <Grid
         item
+        md={headersize ? 5.4 : 7.3}
+        lg={headersize ? 5.3 : 7.7}
+        xl={headersize ? 5.9 : 8.2}
         sx={{
           transition: "all linear 0.30s",
-          width: headersize ? "50%" : "68%",
+          // width: headersize ? "50%" : "68%",
         }}
       >
         {renderBox(
@@ -214,6 +214,6 @@ export default function DrawingHeader(props: DrawingProps) {
           </>
         )}
       </Grid>
-    </Grid>
+    </Grid >
   );
 }

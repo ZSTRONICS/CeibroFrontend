@@ -6,7 +6,6 @@ interface Styles {
 
 export const LocatoinParent = styled("div")({
   width: "98%",
-  // border: 'solid 2px green',
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
@@ -19,23 +18,14 @@ export const LocatoinParent = styled("div")({
 });
 
 export const styles: Styles = {
-  location_Parent: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "start",
-    transition: "all linear 0.30s",
-    height: "85vh",
-  },
   locatoin_main: {
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "start",
     padding: "0",
   },
   location_task: {
-    width: "25%",
     height: "81vh",
     transition: "all linear 0.30s",
     position: "relative",
@@ -46,7 +36,6 @@ export const styles: Styles = {
     } as React.CSSProperties),
   },
   location_description: {
-    width: "25%",
     height: "85vh",
     transition: "all linear 0.30s",
     position: "relative",
@@ -55,7 +44,6 @@ export const styles: Styles = {
     ...({ "@media (maxWidth: 1100px)": { width: "35%" } } as any),
   },
   location_drawing: {
-    width: "50%",
     height: "81vh",
     transition: "all linear 0.30s",
     position: "relative",
@@ -64,35 +52,6 @@ export const styles: Styles = {
     borderRadius: "4px",
     zIndex: "24",
     ...({ "@media (maxWidth: 1100px)": { width: "45%" } } as any),
-  },
-  location_task_min: {
-    width: "7%",
-    height: "85vh",
-    transition: "all linear 0.30s",
-    position: "relative",
-    maxHeight: "88vh",
-    zIndex: "26",
-  },
-  location_drawing_max: {
-    width: "68%",
-    height: "81vh",
-    transition: "all linear 0.30s",
-    position: "relative",
-    overflowY: "scroll",
-    overflowX: "hidden",
-    marginTop: "15px",
-    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-    borderRadius: "4px",
-    backgroundColor: "#FFF",
-    zIndex: "24",
-  },
-  location_description_max: {
-    width: "43%",
-    height: "85vh",
-    transition: "all linear 0.30s",
-    position: "relative",
-    transform: "translate(18px,0px)",
-    zIndex: "25",
   },
   location_btn: {
     height: "max-content",

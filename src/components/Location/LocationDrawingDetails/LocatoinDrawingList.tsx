@@ -1,20 +1,18 @@
-import { Box } from "@mui/material";
-// import { Locationarrow } from 'components/material-ui/icons/arrow/Locationarrow';
 
-import { Heading2 } from "components/CustomTags";
+import { Box, Grid } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
-import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import DocumentReader from "components/pdfviewer/index.js";
+import CollapsesBtn from './CollapsesBtn';
+// import { DrawingMenu, StickyHeader } from "./Components";
+import { Heading2 } from "components/CustomTags";
 import { AllTasksAllEvents, ITask } from "constants/interfaces";
 import useWindowSize from "hooks/useWindowSize";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
-import { styles } from "./DrawingDetailsStyle";
 import LocationTasksMain from "./LocationTasksMain";
 import MiniTaskCardList from "./MiniTaskCardList";
-import MiniTaskHead from "./MiniTaskHead";
+import MiniTaskImageNavi from "./MiniTaskHead";
 import { getfilteredTasks } from "./taskFiltered";
 
 interface LocationDrawingListProps {
@@ -44,8 +42,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -90,15 +88,22 @@ const LocatoinDrawingList = ({
 
   return (
     <>
-      <Box style={styles.locatoin_main}>
-        <Box style={styles.location_Parent}>
-          <Box style={!s1 ? styles.location_task_min : styles.location_task}>
-            <Box style={styles.location_all_taks}>
-              <Box style={styles.locatoin_task_header}>
-                <MiniTaskHead isSmallView={!s1} />
-              </Box>
-              <Box style={styles.location_task_bottom}>
-                {!s1 ? (
+      <Grid container alignItems={"start"} gap={1.5}>
+        <Grid item
+          md={s1 ? 3 : 1.3} lg={s1 ? 3.1 : 1} xl={s1 ? 3 : 0.7}
+          sx={{
+            position: 'relative',
+            height: '82vh',
+            transition: 'all 0.30s linear',
+            marginTop: '16px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+          }}>
+          <Box sx={{ width: '100%', backgroundColor: 'white', }} >
+            <Box>
+              <MiniTaskImageNavi isSmallView={!s1} />
+              {
+                !s1 ?
                   <MiniTaskCardList
                     allTask={getfilteredTasks(
                       allTasksAllEvents.allTasks,
@@ -108,8 +113,7 @@ const LocatoinDrawingList = ({
                     loadingAllTasksAllEvents={loadingAllTasksAllEvents}
                     handleSelectedTask={(task) => setSelectedTask(task)}
                   />
-                ) : (
-                  <>
+                  : <>
                     <LocationTasksMain
                       allTasks={getfilteredTasks(
                         allTasksAllEvents.allTasks,
@@ -121,52 +125,48 @@ const LocatoinDrawingList = ({
                       handleSelectedTask={(task) => setSelectedTask(task)}
                     />
                   </>
-                )}
-              </Box>
-            </Box>
-            <Box>
-              <button
-                onClick={collapseDiv1}
-                style={!s1 ? styles.location_btn_change : styles.location_btn}
-              >
-                <Locationarrow />
-              </button>
+              }
             </Box>
           </Box>
-          <Box
-            style={
-              !s2
-                ? styles.location_description
-                : styles.location_description_max
-            }
-          >
-            <Box style={styles.location_all_taks}>
-              {selectedTask ? (
-                <TaskDetails
-                  task={selectedTaskandEvents}
-                  userSubStateLocal={userSubStateLocal}
-                  TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
-                />
-              ) : (
-                <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
-              )}
-            </Box>
-            <Box>
-              <button
-                onClick={collapseDiv2}
-                style={!s3 ? styles.location_btn : styles.location_btn_change}
-              >
-                <Locationarrow />
-              </button>
-            </Box>
-          </Box>
-          <Box
-            style={!s3 ? styles.location_drawing : styles.location_drawing_max}
-          >
-            <DocumentReader />
-          </Box>
-        </Box>
-      </Box>
+          <CollapsesBtn collapseDiv={collapseDiv1} />
+        </Grid>
+        <Grid item
+          md={s2 ? 4.8 : 3} lg={s2 ? 5.2 : 3.1} xl={s2 ? 5.3 : 3}
+          sx={{
+            position: 'relative',
+            height: '82vh',
+            transition: 'all 0.30s linear',
+            backgroundColor: 'white',
+            marginTop: '16px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+          }}
+        >
+          {selectedTask ? (
+            <TaskDetails
+              task={selectedTaskandEvents}
+              userSubStateLocal={userSubStateLocal}
+              TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+            />
+          ) : (
+            <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
+          )}
+          <CollapsesBtn collapseDiv={collapseDiv2} />
+        </Grid>
+        <Grid
+          item md={s3 ? 7.3 : 5.5} lg={s3 ? 7.6 : 5.5} xl={s3 ? 8.1 : 5.8}
+          sx={{
+            position: 'relative',
+            height: '82vh',
+            backgroundColor: 'white',
+            marginTop: '16px',
+            borderRadius: '4px',
+            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+          }}
+        >
+          File previews
+        </Grid>
+      </Grid >
     </>
   );
 };

@@ -99,7 +99,7 @@ function LocationTasksMain(props: IProps) {
               itemCount={allTasks.length}
               overscanCount={20}
               layout="vertical"
-              onScroll={() => {}}
+              onScroll={() => { }}
               itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
               width={"100%"}
             >

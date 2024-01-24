@@ -71,8 +71,8 @@ function TaskDetails(props: IProps) {
   const eventsFiles =
     events.length > 0
       ? events.flatMap((data) =>
-          (data?.commentData?.files || []).filter(isImageFile)
-        )
+        (data?.commentData?.files || []).filter(isImageFile)
+      )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
   const allFiles = [...filteredFiles, ...eventsFiles];
@@ -116,8 +116,9 @@ function TaskDetails(props: IProps) {
       sx={{
         paddingTop: 1.25,
         px: 2,
+
       }}
-      // className="custom-scrollbar"
+    // className="custom-scrollbar"
     >
       <DetailActions
         doneImageRequired={doneImageRequired}

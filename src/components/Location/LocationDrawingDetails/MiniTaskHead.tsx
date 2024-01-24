@@ -43,7 +43,7 @@ const MiniTaskImageNavi = ({ isSmallView }: MiniTaskImageNaviProps) => {
                 </Box>
                 {/* //// */}
                 <Box style={HeadStyles.head_search}>
-                  <Box sx={{ width: "88%" }}>
+                  <Box sx={{ width: "88%", }}>
                     <Box
                       sx={{
                         display: "flex",
