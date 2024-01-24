@@ -63,7 +63,7 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
           }
         }
       }
-    } else {
+    } else if (key) {
       oldFilter[filter][key] = event.target.checked;
     }
     dispatch(taskActions.updateDrawingFilters(oldFilter));

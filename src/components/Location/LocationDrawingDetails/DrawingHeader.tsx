@@ -33,10 +33,7 @@ export default function DrawingHeader(props: DrawingProps) {
     headersize,
   } = props;
 
-  const renderDrawingSelectOptions = (
-    options: object[],
-    getValueKey: string
-  ) => {
+  const renderDrawingSelectOptions = (options: any[], getValueKey: string) => {
     return (
       options &&
       options.map((option) => (
@@ -105,7 +102,7 @@ export default function DrawingHeader(props: DrawingProps) {
     />
   );
   return (
-    <Grid container gap={1.5} >
+    <Grid container gap={1.5}>
       <Grid
         item
         xs={12}
@@ -166,7 +163,7 @@ export default function DrawingHeader(props: DrawingProps) {
                     >
                       Groups
                     </Heading2>
-                    <IconButton onClick={() => { }}>
+                    <IconButton onClick={() => {}}>
                       <assets.AddIcon sx={{ color: "#0076C8" }} />
                     </IconButton>
                   </Box>
@@ -214,6 +211,6 @@ export default function DrawingHeader(props: DrawingProps) {
           </>
         )}
       </Grid>
-    </Grid >
+    </Grid>
   );
 }

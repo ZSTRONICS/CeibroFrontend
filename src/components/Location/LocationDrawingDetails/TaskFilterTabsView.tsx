@@ -11,7 +11,7 @@ export default function TaskFilterTabsView() {
     (state: RootState) => state.task.drawingTaskFilters
   );
 
-  const tabsColor = {
+  const tabsColor: { [key: string]: string } = {
     unread: "#E2E4E5",
     ongoing: "#F1B740",
     done: "#55BCB3",
@@ -19,7 +19,7 @@ export default function TaskFilterTabsView() {
     canceled: "#FFE7E7",
   };
 
-  const filterLabel = {
+  const filterLabel: { [key: string]: string } = {
     fromMe: "From me",
     toMe: "To me",
     hidden: "Hidden",
@@ -43,7 +43,7 @@ export default function TaskFilterTabsView() {
           }
         }
       }
-    } else {
+    } else if (key) {
       oldFilter[filter][key] = value;
     }
     dispatch(taskActions.updateDrawingFilters(oldFilter));
