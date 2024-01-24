@@ -19,14 +19,12 @@ function LocationDrawingDetails() {
   const dispatch = useDispatch();
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
   const isRenderEffect = useRef<boolean>(true);
-  const { allProjects, allGroups, allFloors } = useSelector(
+  const { allProjects, allGroups } = useSelector(
     (state: RootState) => state.project
   );
   const { allTasksAllEvents, loadingAllTasksAllEvents } = useSelector(
     (state: RootState) => state.task
   );
-
-  const [SelectedTab, setSelectedTab] = useState(0);
 
   useEffect(() => {
     if (isRenderEffect.current) {
@@ -107,6 +105,8 @@ function LocationDrawingDetails() {
         />
       )}
       <LocatoinDrawingList
+        allTasksAllEvents={allTasksAllEvents}
+        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
         headersize={headersize}
         setHeadersize={setHeadersize}
       />

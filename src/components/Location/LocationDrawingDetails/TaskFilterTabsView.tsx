@@ -56,7 +56,7 @@ export default function TaskFilterTabsView() {
     return filterKeys.map((filterKey) => {
       let keys = Object.keys(taskListFilter[filterKey]);
       return (
-        <Grid container item>
+        <Grid container>
           <Grid item xs={4} md={4}>
             <Typography
               sx={{ fontFamily: "Inter", fontSize: "12px", fontWeight: 500 }}

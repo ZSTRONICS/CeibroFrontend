@@ -15,7 +15,7 @@ import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import TaskFilterTabsView from "./TaskFilterTabsView";
 
-const tabsColor = {
+const tabsColor: any = {
   unread: "#E2E4E5",
   ongoing: "#F1B740",
   done: "#55BCB3",
@@ -85,7 +85,7 @@ function TaskFilters() {
     const keys = Object.keys(taskListFilter[key]);
 
     return (
-      <Grid item flexGrow={1} key={key}>
+      <Grid item flexGrow={1} key={`${key}`}>
         <Box
           sx={{
             display: "flex",

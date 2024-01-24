@@ -3,14 +3,12 @@ import { Box } from "@mui/material";
 
 import DocumentReader from "components/pdfviewer/index.js";
 import useWindowSize from "hooks/useWindowSize";
-import { useLayoutEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { PROJECT_APIS } from "redux/action";
-import { RootState } from "redux/reducers";
+import { useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import { ITaskFilterInterace } from "constants/interfaces";
+import { AllTasksAllEvents, ITaskFilterInterace } from "constants/interfaces";
 import { styles } from "./DrawingDetailsStyle";
 import MiniTaskCardList from "./MiniTaskCardList";
 import MiniTaskHead from "./MiniTaskHead";
@@ -18,38 +16,21 @@ import MiniTaskHead from "./MiniTaskHead";
 interface LocationDrawingListProps {
   headersize: boolean;
   setHeadersize: (value: boolean) => void;
+  allTasksAllEvents: AllTasksAllEvents;
+  loadingAllTasksAllEvents: boolean;
 }
 
 const LocatoinDrawingList = ({
   headersize,
   setHeadersize,
+  allTasksAllEvents,
+  loadingAllTasksAllEvents,
 }: LocationDrawingListProps) => {
   const dispatch = useDispatch();
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
-  const isRenderEffect = useRef<boolean>(true);
-  const { allProjects } = useSelector((state: RootState) => state.project);
-  // const data = useSelector((state: RootState) => state.task);
-  const { allTaskList } = useSelector((state: RootState) => state.task);
-
-  // const task = useSelector((state: RootState) => state.task);
-  // const { allTaskToMe } = task;
-  // console.log("windowHeight", windowHeight);
-  useLayoutEffect(() => {
-    if (isRenderEffect.current && allProjects.length === 0) {
-      isRenderEffect.current = false;
-      dispatch(PROJECT_APIS.getAllProjects());
-    }
-  }, []);
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
-  const sideBarStyle = {
-    borderRadius: "4px",
-    background: "#FFF",
-    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-    height: `${windowActualHeight}px`,
-    overflow: "auto",
-  };
-
+  console.log("allTasksAllEvents", allTasksAllEvents);
   const taskFilers: ITaskFilterInterace = {
     fromMe: {
       unread: true,
@@ -68,12 +49,6 @@ const LocatoinDrawingList = ({
     },
     isAllSelectied: true,
   };
-
-  const { task } = useSelector((state: RootState) => state);
-  const { allTaskToMe } = task;
-  const [collapseconditoin, setCollapseconditon] = useState(0);
-  const [rotateonearrow, setRotateonearrow] = useState(false);
-  const [rotatetwoarrow, setRotatetwoarrow] = useState(false);
 
   const arrowoneRef = useRef<any>();
   const arrowtwoRef = useRef<any>();
@@ -124,11 +99,11 @@ const LocatoinDrawingList = ({
               <Box style={styles.location_task_bottom}>
                 {!s1 ? (
                   <MiniTaskCardList
-                    allTask={allTaskList}
+                    allTask={allTasksAllEvents.allTasks}
                     taskListFilter={taskFilers}
                   />
                 ) : (
-                  <> {"abc"}</>
+                  <> {"Location Task Card"}</>
                 )}
               </Box>
             </Box>
@@ -149,7 +124,7 @@ const LocatoinDrawingList = ({
             }
           >
             <Box style={styles.location_all_taks}>
-              <>Drawing files</>
+              <>Task detail</>
             </Box>
             <Box>
               <button

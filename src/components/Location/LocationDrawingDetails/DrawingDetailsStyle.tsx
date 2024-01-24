@@ -42,7 +42,7 @@ export const styles: Styles = {
     maxHeight: "88vh",
     zIndex: "26",
     ...({
-      "@media (max-width: 1100px)": { width: "20%", border: "solid 4px red" },
+      "@media (maxWidth: 1100px)": { width: "20%", border: "solid 4px red" },
     } as React.CSSProperties),
   },
   location_description: {
@@ -52,7 +52,7 @@ export const styles: Styles = {
     position: "relative",
     maxHeight: "88vh",
     zIndex: "25",
-    ...({ "@media (max-width: 1100px)": { width: "35%" } } as any),
+    ...({ "@media (maxWidth: 1100px)": { width: "35%" } } as any),
   },
   location_drawing: {
     width: "50%",
@@ -63,7 +63,7 @@ export const styles: Styles = {
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     borderRadius: "4px",
     zIndex: "24",
-    ...({ "@media (max-width: 1100px)": { width: "45%" } } as any),
+    ...({ "@media (maxWidth: 1100px)": { width: "45%" } } as any),
   },
   location_task_min: {
     width: "7%",
