@@ -1,12 +1,11 @@
-
 import { Box, Grid } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
-import CollapsesBtn from './CollapsesBtn';
+import CollapsesBtn from "./CollapsesBtn";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
 import { AllTasksAllEvents, ITask } from "constants/interfaces";
 import useWindowSize from "hooks/useWindowSize";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
@@ -31,19 +30,33 @@ const LocatoinDrawingList = ({
   RECENT_TASK_UPDATED_TIME_STAMP,
 }: LocationDrawingListProps) => {
   const { allEvents, allTasks, allPins } = allTasksAllEvents;
+  const [size, ratio] = useWindowSize();
+  const [windowWidth, windowHeight] = size;
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const [taskHeaderHeight, setTaskHeaderHeight] = useState<number>(0);
+  const [taskContainerHeight, setTaskContainerHeight] = useState<number>(0);
+  const [taskDetailContHeight, setTaskDetailContHeight] = useState<number>(0);
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
-  const [size, ratio] = useWindowSize();
-  const [windowWidth, windowHeight] = size;
+  const taskContainerRef: any = useRef(null);
+  const taskDetailContainerRef: any = useRef(null);
+  useEffect(() => {
+    if (taskContainerRef.current) {
+      setTaskContainerHeight(taskContainerRef.current.offsetHeight);
+    }
+    if (taskDetailContainerRef.current) {
+      setTaskDetailContHeight(taskDetailContainerRef.current.offsetHeight);
+    }
+  }, [taskContainerRef, taskDetailContainerRef, windowHeight]);
+
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const userSubStateLocal: string =
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -85,26 +98,47 @@ const LocatoinDrawingList = ({
       setHeadersize(false);
     }
   };
+  const sideBarStyle = {
+    borderRadius: "4px",
+    boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+    height: `${windowActualHeight - 68}px`,
+  };
 
   return (
     <>
-      <Grid container alignItems={"start"} gap={1.5}>
-        <Grid item
-          md={s1 ? 3 : 1.3} lg={s1 ? 3.1 : 1} xl={s1 ? 3 : 0.7}
+      <Grid container gap={1.5}>
+        <Grid
+          ref={taskContainerRef}
+          item
+          md={s1 ? 3 : 1}
+          lg={s1 ? 2.8 : 1}
+          xl={s1 ? 2.5 : 1}
+          xs={s1 ? 3 : 0.8}
           sx={{
-            position: 'relative',
-            height: '82vh',
-            transition: 'all 0.30s linear',
-            marginTop: '16px',
-            borderRadius: '4px',
-            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
-          }}>
-          <Box sx={{ width: '100%', backgroundColor: 'white', }} >
+            ...sideBarStyle,
+            position: "relative",
+            mt: 2,
+            transition: "all 0.30s linear",
+          }}
+        >
+          <Box sx={{ width: "100%", backgroundColor: "white" }}>
+            <MiniTaskImageNavi
+              isSmallView={!s1}
+              setTaskHeaderHeiht={(headerHeight) =>
+                setTaskHeaderHeight(headerHeight)
+              }
+            />
             <Box>
-              <MiniTaskImageNavi isSmallView={!s1} />
-              {
-                !s1 ?
+              {!s1 ? (
+                <Box
+                  sx={{
+                    height: `${taskContainerHeight - taskHeaderHeight}px`,
+                    overflowY: "auto",
+                    padding: "6px 6px",
+                  }}
+                >
                   <MiniTaskCardList
+                    windowActualHeight={windowActualHeight}
                     allTask={getfilteredTasks(
                       allTasksAllEvents.allTasks,
                       taskListFilter
@@ -113,37 +147,45 @@ const LocatoinDrawingList = ({
                     loadingAllTasksAllEvents={loadingAllTasksAllEvents}
                     handleSelectedTask={(task) => setSelectedTask(task)}
                   />
-                  : <>
-                    <LocationTasksMain
-                      allTasks={getfilteredTasks(
-                        allTasksAllEvents.allTasks,
-                        taskListFilter
-                      )}
-                      selectedTaskId={selectedTask?._id}
-                      taskListFilter={taskListFilter}
-                      loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                      handleSelectedTask={(task) => setSelectedTask(task)}
-                    />
-                  </>
-              }
+                </Box>
+              ) : (
+                <>
+                  <LocationTasksMain
+                    windowActualHeight={taskContainerHeight - taskHeaderHeight}
+                    allTasks={getfilteredTasks(
+                      allTasksAllEvents.allTasks,
+                      taskListFilter
+                    )}
+                    selectedTaskId={selectedTask?._id}
+                    taskListFilter={taskListFilter}
+                    loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                    handleSelectedTask={(task) => setSelectedTask(task)}
+                  />
+                </>
+              )}
             </Box>
           </Box>
           <CollapsesBtn collapseDiv={collapseDiv1} />
         </Grid>
-        <Grid item
-          md={s2 ? 4.8 : 3} lg={s2 ? 5.2 : 3.1} xl={s2 ? 5.3 : 3}
+        <Grid
+          item
+          ref={taskDetailContainerRef}
+          md={s2 ? 4.8 : 3}
+          lg={s2 ? 5.2 : 3.1}
+          xl={s2 ? 5.3 : 3}
           sx={{
-            position: 'relative',
-            height: '82vh',
-            transition: 'all 0.30s linear',
-            backgroundColor: 'white',
-            marginTop: '16px',
-            borderRadius: '4px',
-            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+            position: "relative",
+            height: `${windowActualHeight - 68}px`,
+            transition: "all 0.30s linear",
+            backgroundColor: "white",
+            marginTop: "16px",
+            borderRadius: "4px",
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           }}
         >
           {selectedTask ? (
             <TaskDetails
+              taskDetailContHeight={taskDetailContHeight}
               task={selectedTaskandEvents}
               userSubStateLocal={userSubStateLocal}
               TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
@@ -154,19 +196,22 @@ const LocatoinDrawingList = ({
           <CollapsesBtn collapseDiv={collapseDiv2} />
         </Grid>
         <Grid
-          item md={s3 ? 7.3 : 5.5} lg={s3 ? 7.6 : 5.5} xl={s3 ? 8.1 : 5.8}
+          item
+          md={s3 ? 7.3 : 5.5}
+          lg={s3 ? 7.6 : 5.5}
+          xl={s3 ? 8.1 : 5.8}
           sx={{
-            position: 'relative',
-            height: '82vh',
-            backgroundColor: 'white',
-            marginTop: '16px',
-            borderRadius: '4px',
-            boxShadow: '0px 4px 4px 0px rgba(0, 0, 0, 0.25)',
+            position: "relative",
+            height: "82vh",
+            backgroundColor: "white",
+            marginTop: "16px",
+            borderRadius: "4px",
+            boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
           }}
         >
           File previews
         </Grid>
-      </Grid >
+      </Grid>
     </>
   );
 };

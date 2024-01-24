@@ -145,7 +145,7 @@ export const tabStyles = {
     backgroundColor: "red",
   },
   head_navi_btn: {
-    borderBottom: "solid 1px #818181",
+    borderBottom: "1px solid #818181",
     paddingBottom: "7px",
   },
 };

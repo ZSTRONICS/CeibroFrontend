@@ -25,8 +25,10 @@ interface IProps {
   TASK_UPDATED_TIME_STAMP: string;
   userSubStateLocal: string;
   handleClick?: (task: ITask) => void;
+  taskDetailContHeight?: number;
 }
 function TaskDetails(props: IProps) {
+  const { taskDetailContHeight } = props;
   const {
     dueDate,
     taskUID,
@@ -71,8 +73,8 @@ function TaskDetails(props: IProps) {
   const eventsFiles =
     events.length > 0
       ? events.flatMap((data) =>
-        (data?.commentData?.files || []).filter(isImageFile)
-      )
+          (data?.commentData?.files || []).filter(isImageFile)
+        )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
   const allFiles = [...filteredFiles, ...eventsFiles];
@@ -116,9 +118,8 @@ function TaskDetails(props: IProps) {
       sx={{
         paddingTop: 1.25,
         px: 2,
-
       }}
-    // className="custom-scrollbar"
+      // className="custom-scrollbar"
     >
       <DetailActions
         doneImageRequired={doneImageRequired}
@@ -140,8 +141,10 @@ function TaskDetails(props: IProps) {
         pr={1.25}
         mr={-1}
         sx={{
+          maxHeight: taskDetailContHeight
+            ? `${taskDetailContHeight}px`
+            : `calc(100vh - ${heightOffset}px)`,
           overflow: "auto",
-          maxHeight: `calc(100vh - ${heightOffset}px)`,
         }}
       >
         <DetailsHeader

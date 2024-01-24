@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box } from "@mui/material";
 import { getTaskCardHeight } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { ITask, ITaskFilterInterace } from "constants/interfaces";
@@ -13,6 +13,7 @@ interface IProps {
   handleSelectedTask: (task: ITask) => void;
   taskListFilter: ITaskFilterInterace;
   selectedTaskId: string | undefined;
+  windowActualHeight: number;
 }
 
 function LocationTasksMain(props: IProps) {
@@ -22,6 +23,7 @@ function LocationTasksMain(props: IProps) {
     handleSelectedTask,
     selectedTaskId,
     taskListFilter,
+    windowActualHeight,
   } = props;
   const taskCardListRef: any = useRef();
   const { user } = useSelector((store: RootState) => store.auth);
@@ -65,49 +67,34 @@ function LocationTasksMain(props: IProps) {
   };
   return (
     <>
-      <Grid
-        item
-        height={"700px"}
-        pt={1}
+      <Box
         sx={{
-          maxWidth: "22.5rem",
-          width: "100%",
-          paddingLeft: "16px",
-          paddingRight: "10px",
-          borderRadius: "4px",
-          background: "#FFF",
-          boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+          mt: 1,
+          pb: 1,
         }}
       >
-        <Box
-          sx={{
-            mt: 3,
-            pb: 1,
-          }}
-        >
-          {loadingAllTasksAllEvents ? (
-            <Box style={{ height: "700px" }}>
-              {Array.from({ length: 6 }).map((_, index) => (
-                <TaskCardSkeleton key={index} />
-              ))}
-            </Box>
-          ) : (
-            <VariableSizeList
-              ref={taskCardListRef}
-              style={{ overflowY: "auto" }}
-              height={700}
-              itemCount={allTasks.length}
-              overscanCount={20}
-              layout="vertical"
-              onScroll={() => { }}
-              itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
-              width={"100%"}
-            >
-              {LocationTaskRow}
-            </VariableSizeList>
-          )}
-        </Box>
-      </Grid>
+        {loadingAllTasksAllEvents ? (
+          <Box style={{ height: `${windowActualHeight - 68}px` }}>
+            {Array.from({ length: 6 }).map((_, index) => (
+              <TaskCardSkeleton key={index} />
+            ))}
+          </Box>
+        ) : (
+          <VariableSizeList
+            ref={taskCardListRef}
+            style={{ overflowY: "auto" }}
+            height={windowActualHeight}
+            itemCount={allTasks.length}
+            overscanCount={20}
+            layout="vertical"
+            onScroll={() => {}}
+            itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
+            width={"100%"}
+          >
+            {LocationTaskRow}
+          </VariableSizeList>
+        )}
+      </Box>
     </>
   );
 }
