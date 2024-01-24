@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { ITask, ITaskFilterInterace } from "constants/interfaces";
 import React from "react";
+import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 import {
   MinicardTypography,
   Minicardheading,
@@ -10,19 +11,18 @@ import {
 interface IProps {
   allTask: ITask[];
   taskListFilter: ITaskFilterInterace;
+  loadingAllTasksAllEvents: boolean;
+  handleSelectedTask(task: ITask): void;
 }
-const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
+const MiniTaskCardList: React.FC<IProps> = ({
+  allTask,
+  taskListFilter,
+  handleSelectedTask,
+  loadingAllTasksAllEvents,
+}) => {
   allTask?.sort((taskA, taskB) => {
     return taskA.updatedAt.localeCompare(taskB.updatedAt);
   });
-
-  const MUI_TASK_CARD_COLOR_MAP: Map<string, string> = new Map([
-    ["ongoing", "#F1B740"],
-    ["new", "#CFECFF"],
-    ["canceled", "#FFE7E7"],
-    ["unread", "#E2E4E5"],
-    ["done", "#55BCB3"],
-  ]);
 
   const MiniCardRendering = allTask?.map((task) => {
     const currentTaskColor =
@@ -73,13 +73,19 @@ const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
     return (
       <>
         {emptyDiv ? (
-          <> </>
+          <>Select Any Filter </>
         ) : (
           <Box
+            sx={{
+              "&:hover": {
+                cursor: "pointer",
+              },
+            }}
             style={{
               ...styles.minicard_parent,
               backgroundColor: `${currentTaskColor}`,
             }}
+            onClick={() => handleSelectedTask(task)}
           >
             <Minicardheading>{task.taskUID}</Minicardheading>
             <MinicardTypography>{rootState}</MinicardTypography>

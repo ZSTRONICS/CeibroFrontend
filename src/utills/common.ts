@@ -155,6 +155,13 @@ export const taskConstants: any = {
     ],
   },
 };
+export const MUI_TASK_CARD_COLOR_MAP: Map<string, string> = new Map([
+  ["ongoing", "#F1B740"],
+  ["new", "#CFECFF"],
+  ["canceled", "#FFE7E7"],
+  ["unread", "#E2E4E5"],
+  ["done", "#55BCB3"],
+]);
 
 export const ALL_FLOOR_NAMES = Array.from({ length: 29 }, (_, index) => `${index - 3}`).filter(num => num !== "0");
 export const HEADER_HEIGHT = 87;

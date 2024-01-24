@@ -35,8 +35,6 @@ function Location() {
     background: "#FFF",
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     height: `${windowActualHeight}px`,
-    // minWidth: '290px',
-    // width: '97%',
   };
   const emptyDrawingContainer = {
     display: "flex",

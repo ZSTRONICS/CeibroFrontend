@@ -7,10 +7,13 @@ import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
+import { Heading2 } from "components/CustomTags";
+import TaskDetails from "components/Tasks/TaskDetails";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import { AllTasksAllEvents } from "constants/interfaces";
+import { AllTasksAllEvents, ITask } from "constants/interfaces";
 import { RootState } from "redux/reducers";
 import { styles } from "./DrawingDetailsStyle";
+import LocationTasksMain from "./LocationTasksMain";
 import MiniTaskCardList from "./MiniTaskCardList";
 import MiniTaskHead from "./MiniTaskHead";
 import { getfilteredTasks } from "./taskFiltered";
@@ -20,6 +23,7 @@ interface LocationDrawingListProps {
   setHeadersize: (value: boolean) => void;
   allTasksAllEvents: AllTasksAllEvents;
   loadingAllTasksAllEvents: boolean;
+  RECENT_TASK_UPDATED_TIME_STAMP: string;
 }
 
 const LocatoinDrawingList = ({
@@ -27,33 +31,32 @@ const LocatoinDrawingList = ({
   setHeadersize,
   allTasksAllEvents,
   loadingAllTasksAllEvents,
+  RECENT_TASK_UPDATED_TIME_STAMP,
 }: LocationDrawingListProps) => {
   const dispatch = useDispatch();
+  const { allEvents, allTasks, allPins } = allTasksAllEvents;
+  const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
-  console.log("allTasksAllEvents", allTasksAllEvents);
-  // const taskFilers: ITaskFilterInterace = {
-  //   fromMe: {
-  //     unread: true,
-  //     ongoing: true,
-  //     done: true,
-  //   },
-  //   toMe: {
-  //     new: true,
-  //     ongoing: true,
-  //     done: true,
-  //   },
-  //   hidden: {
-  //     ongoing: true,
-  //     done: true,
-  //     canceled: true,
-  //   },
-  //   isAllSelected: true,
-  // };
+  const userSubStateLocal: string =
+    selectedTask === null
+      ? "N/A"
+      : selectedTask.isCreator
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
+
+  const filteTaskEvents = allEvents.filter(
+    (event) => event.taskId === selectedTask?._id
+  );
+  const selectedTaskandEvents: ITask | any = {
+    ...selectedTask,
+    events: filteTaskEvents || [],
+  };
+  console.log("selectedTaskandEvents", selectedTaskandEvents);
 
   const arrowoneRef = useRef<any>();
   const arrowtwoRef = useRef<any>();
@@ -61,7 +64,6 @@ const LocatoinDrawingList = ({
   const [s1, setS1] = useState<boolean>(true);
   const [s2, setS2] = useState<boolean>(false);
   const [s3, setS3] = useState<boolean>(false);
-
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
       setS1(true);
@@ -109,9 +111,21 @@ const LocatoinDrawingList = ({
                       taskListFilter
                     )}
                     taskListFilter={taskListFilter}
+                    loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                    handleSelectedTask={(task) => setSelectedTask(task)}
                   />
                 ) : (
-                  <> {"Location Task Card"}</>
+                  <>
+                    <LocationTasksMain
+                      allTasks={getfilteredTasks(
+                        allTasksAllEvents.allTasks,
+                        taskListFilter
+                      )}
+                      taskListFilter={taskListFilter}
+                      loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                      handleSelectedTask={(task) => setSelectedTask(task)}
+                    />
+                  </>
                 )}
               </Box>
             </Box>
@@ -132,7 +146,15 @@ const LocatoinDrawingList = ({
             }
           >
             <Box style={styles.location_all_taks}>
-              <>Task detail</>
+              {selectedTask ? (
+                <TaskDetails
+                  task={selectedTaskandEvents}
+                  userSubStateLocal={userSubStateLocal}
+                  TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+                />
+              ) : (
+                <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
+              )}
             </Box>
             <Box>
               <button

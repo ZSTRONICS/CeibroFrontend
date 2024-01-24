@@ -22,9 +22,11 @@ function LocationDrawingDetails() {
   const { allProjects, allGroups } = useSelector(
     (state: RootState) => state.project
   );
-  const { allTasksAllEvents, loadingAllTasksAllEvents } = useSelector(
-    (state: RootState) => state.task
-  );
+  const {
+    allTasksAllEvents,
+    loadingAllTasksAllEvents,
+    RECENT_TASK_UPDATED_TIME_STAMP,
+  } = useSelector((state: RootState) => state.task);
 
   useEffect(() => {
     if (isRenderEffect.current) {
@@ -105,6 +107,7 @@ function LocationDrawingDetails() {
         />
       )}
       <LocatoinDrawingList
+        RECENT_TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
         allTasksAllEvents={allTasksAllEvents}
         loadingAllTasksAllEvents={loadingAllTasksAllEvents}
         headersize={headersize}

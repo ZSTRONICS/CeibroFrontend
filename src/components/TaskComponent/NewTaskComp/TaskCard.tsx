@@ -22,6 +22,7 @@ interface IProps {
   menuOption: MenuOption[];
   disableMenu: boolean;
   isTaskFromMe: string;
+  isLocationTask?: boolean;
 }
 
 const TaskCard = React.memo((props: IProps) => {
@@ -33,6 +34,7 @@ const TaskCard = React.memo((props: IProps) => {
     disableMenu,
     isTaskFromMe,
     userId,
+    isLocationTask,
   } = props;
   const {
     taskUID,
@@ -108,18 +110,20 @@ const TaskCard = React.memo((props: IProps) => {
         minWidth: 290,
         maxWidth: 320,
         cursor: "pointer",
-        border: `${isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
-          }`,
+        border: `${
+          isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
+        }`,
         borderRadius: "8px",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
-        WebkitBoxShadow: `${isSelectedTask === true
-          ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
-          : !seenBy.includes(userId)
+        WebkitBoxShadow: `${
+          isSelectedTask === true
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : !seenBy.includes(userId)
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
             : "none"
-          }`,
+        }`,
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
         "&:hover": {
@@ -144,10 +148,11 @@ const TaskCard = React.memo((props: IProps) => {
             backgroundColor: "white",
             borderTopLeftRadius: "4px",
             ml: "-1px",
-            WebkitBoxShadow: `${isSelectedTask || isMouseOver
-              ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
-              : "none"
-              }`,
+            WebkitBoxShadow: `${
+              isSelectedTask || isMouseOver
+                ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
+                : "none"
+            }`,
           }}
         >
           {taskUID}
@@ -272,4 +277,3 @@ const TaskCard = React.memo((props: IProps) => {
 });
 
 export { TaskCard };
-
