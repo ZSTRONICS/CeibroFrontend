@@ -50,9 +50,9 @@ const taskFilers: ITaskFilterInterace = {
     hidden: {
       ongoing: false,
       done: false,
-      cancelled: false,
+      canceled: false,
     },
-    isAllSelectied: false,
+    isAllSelected: false,
   };
 
 const intialStatue: TaskReducerInt = {

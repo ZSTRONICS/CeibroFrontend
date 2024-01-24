@@ -1,4 +1,4 @@
-import { CheckCircle, Circle } from "@mui/icons-material";
+import { CheckCircle, Circle, FilterAltOutlined } from "@mui/icons-material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
   Box,
@@ -20,10 +20,14 @@ const tabsColor: any = {
   ongoing: "#F1B740",
   done: "#55BCB3",
   new: "#CFECFF",
-  cancelled: "#FFE7E7",
+  canceled: "#FFE7E7",
 };
 
-function TaskFilters() {
+interface TaskFiltersProps {
+  isSmallView: boolean;
+}
+
+function TaskFilters({ isSmallView }: TaskFiltersProps) {
   const dispatch = useDispatch();
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
@@ -43,7 +47,7 @@ function TaskFilters() {
     key?: string
   ) => {
     let oldFilter = { ...taskListFilter };
-    if (filter === "isAllSelectied") {
+    if (filter === "isAllSelected") {
       oldFilter[filter] = event.target.checked;
       for (const topLevelFilter in oldFilter) {
         if (Object.prototype.hasOwnProperty.call(oldFilter, topLevelFilter)) {
@@ -116,45 +120,58 @@ function TaskFilters() {
 
   return (
     <>
-      <Grid container alignItems="center">
-        <Grid item>
-          <Box
-            //   bgcolor={tabsColor.unRead}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              paddingLeft: "8px",
-            }}
-          >
-            <Typography
+      {!isSmallView && (
+        <Grid container alignItems="center">
+          <Grid item>
+            <Box
+              //   bgcolor={tabsColor.unRead}
               sx={{
-                fontFamily: "Inter",
-                fontSize: "12px",
-                fontWeight: "500px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                paddingLeft: "8px",
               }}
             >
-              All
-            </Typography>
-            <Box>
-              <Checkbox
-                checked={taskListFilter.isAllSelectied}
-                onChange={(event) => handleChange(event, "isAllSelectied")}
-                sx={{ padding: 0 }}
-              />
+              <Typography
+                sx={{
+                  fontFamily: "Inter",
+                  fontSize: "12px",
+                  fontWeight: "500px",
+                }}
+              >
+                All
+              </Typography>
+              <Box>
+                <Checkbox
+                  checked={taskListFilter.isAllSelected}
+                  onChange={(event) => handleChange(event, "isAllSelected")}
+                  sx={{ padding: 0 }}
+                />
+              </Box>
             </Box>
-          </Box>
-        </Grid>
-        {renderFilterColumns("From me", "fromMe")}
-        {renderFilterColumns("To me", "toMe")}
-        {renderFilterColumns("Hidden", "hidden")}
+          </Grid>
+          {renderFilterColumns("From me", "fromMe")}
+          {renderFilterColumns("To me", "toMe")}
+          {renderFilterColumns("Hidden", "hidden")}
 
-        <Grid item>
-          <IconButton onClick={handleMenuOpen}>
-            <ArrowDropDownIcon />
-          </IconButton>
+          <Grid item>
+            <IconButton onClick={handleMenuOpen}>
+              <ArrowDropDownIcon />
+            </IconButton>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
+
+      {isSmallView && (
+        <Grid container alignItems="center" justifyContent={"center"}>
+          <Grid item>
+            <FilterAltOutlined color="primary" />
+            <IconButton onClick={handleMenuOpen}>
+              <ArrowDropDownIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      )}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}

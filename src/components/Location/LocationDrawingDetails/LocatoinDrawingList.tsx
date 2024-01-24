@@ -4,14 +4,16 @@ import { Box } from "@mui/material";
 import DocumentReader from "components/pdfviewer/index.js";
 import useWindowSize from "hooks/useWindowSize";
 import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HEADER_HEIGHT } from "utills/common";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
-import { AllTasksAllEvents, ITaskFilterInterace } from "constants/interfaces";
+import { AllTasksAllEvents } from "constants/interfaces";
+import { RootState } from "redux/reducers";
 import { styles } from "./DrawingDetailsStyle";
 import MiniTaskCardList from "./MiniTaskCardList";
 import MiniTaskHead from "./MiniTaskHead";
+import { getfilteredTasks } from "./taskFiltered";
 
 interface LocationDrawingListProps {
   headersize: boolean;
@@ -27,28 +29,31 @@ const LocatoinDrawingList = ({
   loadingAllTasksAllEvents,
 }: LocationDrawingListProps) => {
   const dispatch = useDispatch();
+  const taskListFilter = useSelector(
+    (state: RootState) => state.task.drawingTaskFilters
+  );
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   console.log("allTasksAllEvents", allTasksAllEvents);
-  const taskFilers: ITaskFilterInterace = {
-    fromMe: {
-      unread: true,
-      ongoing: true,
-      done: true,
-    },
-    toMe: {
-      new: true,
-      ongoing: true,
-      done: true,
-    },
-    hidden: {
-      ongoing: true,
-      done: true,
-      cancelled: true,
-    },
-    isAllSelectied: true,
-  };
+  // const taskFilers: ITaskFilterInterace = {
+  //   fromMe: {
+  //     unread: true,
+  //     ongoing: true,
+  //     done: true,
+  //   },
+  //   toMe: {
+  //     new: true,
+  //     ongoing: true,
+  //     done: true,
+  //   },
+  //   hidden: {
+  //     ongoing: true,
+  //     done: true,
+  //     canceled: true,
+  //   },
+  //   isAllSelected: true,
+  // };
 
   const arrowoneRef = useRef<any>();
   const arrowtwoRef = useRef<any>();
@@ -94,13 +99,16 @@ const LocatoinDrawingList = ({
           <Box style={!s1 ? styles.location_task_min : styles.location_task}>
             <Box style={styles.location_all_taks}>
               <Box style={styles.locatoin_task_header}>
-                <MiniTaskHead />
+                <MiniTaskHead isSmallView={!s1} />
               </Box>
               <Box style={styles.location_task_bottom}>
                 {!s1 ? (
                   <MiniTaskCardList
-                    allTask={allTasksAllEvents.allTasks}
-                    taskListFilter={taskFilers}
+                    allTask={getfilteredTasks(
+                      allTasksAllEvents.allTasks,
+                      taskListFilter
+                    )}
+                    taskListFilter={taskListFilter}
                   />
                 ) : (
                   <> {"Location Task Card"}</>

@@ -16,7 +16,7 @@ export default function TaskFilterTabsView() {
     ongoing: "#F1B740",
     done: "#55BCB3",
     new: "#CFECFF",
-    cancelled: "#FFE7E7",
+    canceled: "#FFE7E7",
   };
 
   const filterLabel = {
@@ -27,7 +27,7 @@ export default function TaskFilterTabsView() {
 
   const handleChange = (value: boolean, filter: string, key?: string) => {
     let oldFilter = { ...taskListFilter };
-    if (filter === "isAllSelectied") {
+    if (filter === "isAllSelected") {
       oldFilter[filter] = value;
       for (const topLevelFilter in oldFilter) {
         if (Object.prototype.hasOwnProperty.call(oldFilter, topLevelFilter)) {
@@ -117,7 +117,7 @@ export default function TaskFilterTabsView() {
         <Button
           size="small"
           onClick={() =>
-            handleChange(!taskListFilter.isAllSelectied, "isAllSelectied")
+            handleChange(!taskListFilter.isAllSelected, "isAllSelected")
           }
           sx={{
             fontSize: "12px",
@@ -126,7 +126,7 @@ export default function TaskFilterTabsView() {
             textTransform: "none",
           }}
         >
-          {taskListFilter.isAllSelectied ? "Deselect all" : "Select all"}
+          {taskListFilter.isAllSelected ? "Deselect all" : "Select all"}
         </Button>
       </Box>
       <Divider sx={{ marginTop: "16px", marginBottom: "16px" }} />

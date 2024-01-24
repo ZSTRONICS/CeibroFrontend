@@ -7,7 +7,11 @@ import { useState } from "react";
 import { HeadStyles, tabStyles } from "./MiniCardTaskStyle";
 import TaskFilters from "./TaskFilters";
 
-const MiniTaskImageNavi = () => {
+interface MiniTaskImageNaviProps {
+  isSmallView: boolean;
+}
+
+const MiniTaskImageNavi = ({ isSmallView }: MiniTaskImageNaviProps) => {
   const [value, setValue] = useState("1");
 
   const handleChange = (event: any, newValue: any) => {
@@ -35,7 +39,7 @@ const MiniTaskImageNavi = () => {
                 </Box>
                 {/* //// */}
                 <Box style={HeadStyles.head_filterization}>
-                  <TaskFilters />
+                  <TaskFilters isSmallView={isSmallView} />
                 </Box>
                 {/* //// */}
                 <Box style={HeadStyles.head_search}>

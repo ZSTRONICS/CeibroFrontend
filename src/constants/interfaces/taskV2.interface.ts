@@ -76,9 +76,9 @@ export interface ITaskFilterInterace {
   hidden: {
     ongoing: boolean;
     done: boolean;
-    cancelled: boolean;
+    canceled: boolean;
   }
-  isAllSelectied: boolean;
+  isAllSelected: boolean;
 }
 
 export interface PinData {

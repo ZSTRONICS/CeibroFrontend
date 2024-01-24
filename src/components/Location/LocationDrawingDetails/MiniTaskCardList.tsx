@@ -25,8 +25,9 @@ const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
   ]);
 
   const MiniCardRendering = allTask?.map((task) => {
-    const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(task.userSubState);
-    const rootState = task.rootState;
+    const currentTaskColor =
+      MUI_TASK_CARD_COLOR_MAP.get(task?.userSubState) ?? "";
+    const rootState = task?.rootState ?? "";
 
     let emptyDiv = false;
 
@@ -60,7 +61,7 @@ const MiniTaskCardList: React.FC<IProps> = ({ allTask, taskListFilter }) => {
         break;
 
       case "canceled":
-        emptyDiv = !taskListFilter.hidden.cancelled;
+        emptyDiv = !taskListFilter.hidden.canceled;
         break;
 
       default:
