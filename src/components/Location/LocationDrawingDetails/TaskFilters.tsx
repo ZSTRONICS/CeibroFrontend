@@ -186,8 +186,8 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
           horizontal: "right",
         }}
       >
-        <MenuItem sx={{ width: "450px", borderRadius: '4px', left: 0, }}>
-          <TaskFilterTabsView handleMenuClose={handleMenuClose} />
+        <MenuItem onClick={handleMenuClose} sx={{ width: "450px", borderRadius: '4px', left: 0, }}>
+          <TaskFilterTabsView />
         </MenuItem>
       </Menu>
     </>
