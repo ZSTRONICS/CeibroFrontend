@@ -10,7 +10,6 @@ import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { selectedTaskFilterType } from "redux/type";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
@@ -28,38 +27,45 @@ interface RouteParams {
 function LocationTaskCard(props: IProps) {
   const dispatch = useDispatch();
   const { handleTaskClick, task: localTask, userId, selectedTaskId } = props;
-  const { subtask, filterkey, taskuid } = useParams<RouteParams>();
+  //   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
   const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
   const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(localTask.userSubState);
   const currentTaskStateAndIcon = [
     {
       taskRootState: "from-me",
       title: "From me",
-      icon: FromMEIcon,
+      icon: <FromMEIcon color="#131516" />,
     },
     {
       taskRootState: "to-me",
       title: "To me",
-      icon: ToMeIcon,
+      icon: <ToMeIcon color="#131516" />,
     },
     {
       taskRootState: "hidden",
       title: "Hidden",
-      icon: HiddenIcon,
+      icon: <HiddenIcon color="#131516" />,
     },
   ].find((config) => config.taskRootState === localTask.taskRootState);
+  const stateMap: { [key: string]: string } = {
+    "from-me": "allTaskFromMe",
+    "to-me": "allTaskToMe",
+    hidden: "allTaskHidden",
+  };
 
+  const taskRootState = stateMap[localTask.rootState];
   useEffect(() => {
-    const newIsTaskFromMe = subtaskToIsTaskFromMe[subtask];
+    const newIsTaskFromMe = subtaskToIsTaskFromMe[taskRootState];
     if (typeof newIsTaskFromMe === "string") {
       setIsTaskFromMe(newIsTaskFromMe);
     } else if (
       typeof newIsTaskFromMe === "object" &&
-      newIsTaskFromMe[filterkey]
+      newIsTaskFromMe[taskRootState]
     ) {
-      setIsTaskFromMe(newIsTaskFromMe[filterkey]);
+      setIsTaskFromMe(newIsTaskFromMe[taskRootState]);
     }
-  }, [filterkey, subtask]);
+  }, [taskRootState]);
+
   const handleTaskAction = (
     actionType: (arg: {
       other: { taskId: string };
@@ -137,9 +143,11 @@ function LocationTaskCard(props: IProps) {
       ? menuOptions.filter((option) => option.menuName === optionName)
       : [];
   };
+
   return (
     <Box
       sx={{
+        width: 373,
         display: "flex",
         alignItems: "center",
         borderRadius: "8px",
@@ -149,9 +157,16 @@ function LocationTaskCard(props: IProps) {
       }}
     >
       {currentTaskStateAndIcon && (
-        <CustomStack sx={{ flexDirection: "column", gap: 0.3 }}>
-          <currentTaskStateAndIcon.icon />
-          <Span>{currentTaskStateAndIcon.title}</Span>
+        <CustomStack
+          sx={{
+            flexDirection: "column",
+            gap: 0.3,
+            width: "50px",
+            padding: "5px",
+          }}
+        >
+          {currentTaskStateAndIcon.icon}
+          <Span sx={{ fontSize: "9px" }}>{currentTaskStateAndIcon.title}</Span>
         </CustomStack>
       )}
       <TaskCard
@@ -162,8 +177,10 @@ function LocationTaskCard(props: IProps) {
         task={localTask}
         selectedTaskId={selectedTaskId}
         handleClick={handleTaskClick}
-        menuOption={filteredMenuOptions(subtask, filterkey)}
-        disableMenu={false}
+        menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
+        disableMenu={
+          localTask.userSubState === "canceled" ? !localTask.isCreator : false
+        }
       />
     </Box>
   );

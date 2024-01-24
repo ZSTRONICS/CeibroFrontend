@@ -111,7 +111,11 @@ const TaskCard = React.memo((props: IProps) => {
         maxWidth: 320,
         cursor: "pointer",
         border: `${
-          isCanceled ? `3px solid ${cardBorderColor}` : "1px solid #818181"
+          !isLocationTask && isCanceled
+            ? `3px solid ${cardBorderColor}`
+            : isLocationTask
+            ? "none"
+            : "1px solid #818181"
         }`,
         borderRadius: "8px",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
@@ -130,7 +134,7 @@ const TaskCard = React.memo((props: IProps) => {
           WebkitBoxShadow: !seenBy.includes(userId)
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
             : "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset",
-          borderTopRightRadius: "15px",
+          borderTopRightRadius: isLocationTask ? "" : "15px",
         },
       }}
       key={_id}

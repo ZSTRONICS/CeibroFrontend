@@ -1,17 +1,16 @@
 import { Box } from "@mui/material";
 // import { Locationarrow } from 'components/material-ui/icons/arrow/Locationarrow';
 
-import DocumentReader from "components/pdfviewer/index.js";
-import useWindowSize from "hooks/useWindowSize";
-import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { HEADER_HEIGHT } from "utills/common";
-// import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
 import TaskDetails from "components/Tasks/TaskDetails";
 import { Locationarrow } from "components/material-ui/icons/arrow/Locationarrow";
+import DocumentReader from "components/pdfviewer/index.js";
 import { AllTasksAllEvents, ITask } from "constants/interfaces";
+import useWindowSize from "hooks/useWindowSize";
+import { useState } from "react";
+import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
+import { HEADER_HEIGHT } from "utills/common";
 import { styles } from "./DrawingDetailsStyle";
 import LocationTasksMain from "./LocationTasksMain";
 import MiniTaskCardList from "./MiniTaskCardList";
@@ -33,7 +32,6 @@ const LocatoinDrawingList = ({
   loadingAllTasksAllEvents,
   RECENT_TASK_UPDATED_TIME_STAMP,
 }: LocationDrawingListProps) => {
-  const dispatch = useDispatch();
   const { allEvents, allTasks, allPins } = allTasksAllEvents;
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const taskListFilter = useSelector(
@@ -56,10 +54,6 @@ const LocatoinDrawingList = ({
     ...selectedTask,
     events: filteTaskEvents || [],
   };
-  console.log("selectedTaskandEvents", selectedTaskandEvents);
-
-  const arrowoneRef = useRef<any>();
-  const arrowtwoRef = useRef<any>();
 
   const [s1, setS1] = useState<boolean>(true);
   const [s2, setS2] = useState<boolean>(false);
@@ -121,6 +115,7 @@ const LocatoinDrawingList = ({
                         allTasksAllEvents.allTasks,
                         taskListFilter
                       )}
+                      selectedTaskId={selectedTask?._id}
                       taskListFilter={taskListFilter}
                       loadingAllTasksAllEvents={loadingAllTasksAllEvents}
                       handleSelectedTask={(task) => setSelectedTask(task)}
