@@ -87,7 +87,6 @@ function Location() {
               </Heading2>
             </Box>
           )}
-          {/* <DrawingFiles /> */}
         </Grid>
         <Grid
           item
