@@ -164,29 +164,30 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
 
       {isSmallView && (
         <Grid container alignItems="center" justifyContent={"center"}>
-          <Grid item>
+          <Grid item >
             <FilterAltOutlined color="primary" />
             <IconButton onClick={handleMenuOpen}>
               <ArrowDropDownIcon />
             </IconButton>
           </Grid>
-        </Grid>
-      )}
+        </Grid >
+      )
+      }
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={handleMenuClose}
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
+          vertical: "top",
+          horizontal: "right",
         }}
         transformOrigin={{
           vertical: "top",
-          horizontal: "left",
+          horizontal: "right",
         }}
       >
-        <MenuItem onClick={handleMenuClose} sx={{ width: "440px", left: 0 }}>
-          <TaskFilterTabsView />
+        <MenuItem sx={{ width: "450px", borderRadius: '4px', left: 0, }}>
+          <TaskFilterTabsView handleMenuClose={handleMenuClose} />
         </MenuItem>
       </Menu>
     </>

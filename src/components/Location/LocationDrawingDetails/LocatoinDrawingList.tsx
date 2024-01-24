@@ -1,6 +1,5 @@
 import { Box, Grid } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
-import CollapsesBtn from "./CollapsesBtn";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
 import { AllTasksAllEvents, ITask } from "constants/interfaces";
@@ -9,6 +8,8 @@ import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
+import CollapsesBtn from "./CollapsesLeftBtn";
+import CollapsesRightBtn from "./CollapsesRightBtn";
 import LocationTasksMain from "./LocationTasksMain";
 import MiniTaskCardList from "./MiniTaskCardList";
 import MiniTaskImageNavi from "./MiniTaskHead";
@@ -55,8 +56,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -69,16 +70,24 @@ const LocatoinDrawingList = ({
   const [s1, setS1] = useState<boolean>(true);
   const [s2, setS2] = useState<boolean>(false);
   const [s3, setS3] = useState<boolean>(false);
+  const [btnRotate, setBtnRotate] = useState<boolean>(true);
+  const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
+      setBtnRotate(true)
+      setBtnRightRotate(true)
       setS1(true);
       setS2(false);
     } else if (s1 === false && s2 === false && s3 === true) {
+      setBtnRotate(true)
+      setBtnRightRotate(false)
       setS1(true);
       setS2(false);
       setS3(false);
       setHeadersize(true);
     } else {
+      setBtnRightRotate(true)
+      setBtnRotate(false)
       setS1(false);
       setS2(true);
       setS3(false);
@@ -90,8 +99,10 @@ const LocatoinDrawingList = ({
       setS1(false);
       setS2(true);
       setS3(false);
+      setBtnRightRotate(true);
       setHeadersize(true);
     } else {
+      setBtnRightRotate(false)
       setS1(false);
       setS2(false);
       setS3(true);
@@ -165,7 +176,7 @@ const LocatoinDrawingList = ({
               )}
             </Box>
           </Box>
-          <CollapsesBtn collapseDiv={collapseDiv1} />
+          <CollapsesBtn btnRotate={btnRotate} collapseDiv={collapseDiv1} />
         </Grid>
         <Grid
           item
@@ -193,7 +204,7 @@ const LocatoinDrawingList = ({
           ) : (
             <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
           )}
-          <CollapsesBtn collapseDiv={collapseDiv2} />
+          <CollapsesRightBtn btnRightRotate={btnRightRotate} collapseDiv={collapseDiv2} />
         </Grid>
         <Grid
           item

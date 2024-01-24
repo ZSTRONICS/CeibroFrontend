@@ -5,7 +5,11 @@ import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import StyledFilterTab from "./StyledFilterTab";
 
-export default function TaskFilterTabsView() {
+interface CloseProps {
+  handleMenuClose: () => void;
+}
+
+const TaskFilterTabsView: React.FC<CloseProps> = ({ handleMenuClose }) => {
   const dispatch = useDispatch();
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
@@ -56,7 +60,7 @@ export default function TaskFilterTabsView() {
     return filterKeys.map((filterKey) => {
       let keys = Object.keys(taskListFilter[filterKey]);
       return (
-        <Grid container>
+        <Grid container sx={{ paddingTop: '16px', paddingBottom: '16px' }} >
           <Grid item xs={4} md={4}>
             <Typography
               sx={{ fontFamily: "Inter", fontSize: "12px", fontWeight: 500 }}
@@ -102,6 +106,7 @@ export default function TaskFilterTabsView() {
     >
       <Box display="flex" justifyContent="space-between" alignItems="center">
         <Button
+          onClick={handleMenuClose}
           variant="contained"
           size="small"
           color="primary"
