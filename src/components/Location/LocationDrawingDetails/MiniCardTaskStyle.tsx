@@ -42,7 +42,7 @@ export const HeadStyles: Styles = {
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "column",
-    height: "100%",
+    gap: "8px",
   },
   head_navigation: {
     display: "flex",
@@ -67,9 +67,7 @@ export const HeadStyles: Styles = {
     display: "flex",
     justifyContent: "space-arroud",
     alignItems: "center",
-    height: "25%",
     width: "100%",
-    marginTop: "3px",
   },
   task_btn: {
     // width: '56px',

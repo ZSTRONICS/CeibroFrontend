@@ -89,7 +89,6 @@ export default function DetailsBody(props: IProps) {
           </>
         )}
         {/* todo when drawingfiles functionality enable then show drawing files compoonent */}
-        {/* <DrawingFiles /> */}
       </Box>
     </>
   );

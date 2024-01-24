@@ -10,9 +10,9 @@ import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT } from "utills/common";
 import CollapsesBtn from "./CollapsesLeftBtn";
 import CollapsesRightBtn from "./CollapsesRightBtn";
+import LocationTaskHead from "./LocationTaskHead";
 import LocationTasksMain from "./LocationTasksMain";
 import MiniTaskCardList from "./MiniTaskCardList";
-import MiniTaskImageNavi from "./MiniTaskHead";
 import { getfilteredTasks } from "./taskFiltered";
 
 interface LocationDrawingListProps {
@@ -56,8 +56,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -74,20 +74,20 @@ const LocatoinDrawingList = ({
   const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
-      setBtnRotate(true)
-      setBtnRightRotate(true)
+      setBtnRotate(true);
+      setBtnRightRotate(true);
       setS1(true);
       setS2(false);
     } else if (s1 === false && s2 === false && s3 === true) {
-      setBtnRotate(true)
-      setBtnRightRotate(false)
+      setBtnRotate(true);
+      setBtnRightRotate(false);
       setS1(true);
       setS2(false);
       setS3(false);
       setHeadersize(true);
     } else {
-      setBtnRightRotate(true)
-      setBtnRotate(false)
+      setBtnRightRotate(true);
+      setBtnRotate(false);
       setS1(false);
       setS2(true);
       setS3(false);
@@ -102,7 +102,7 @@ const LocatoinDrawingList = ({
       setBtnRightRotate(true);
       setHeadersize(true);
     } else {
-      setBtnRightRotate(false)
+      setBtnRightRotate(false);
       setS1(false);
       setS2(false);
       setS3(true);
@@ -114,26 +114,31 @@ const LocatoinDrawingList = ({
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
     height: `${windowActualHeight - 68}px`,
   };
-
+  const noTaskSelectedStyle = {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  };
   return (
     <>
       <Grid container gap={1.5}>
         <Grid
           ref={taskContainerRef}
           item
-          md={s1 ? 3 : 1}
-          lg={s1 ? 2.8 : 1}
-          xl={s1 ? 2.5 : 1}
-          xs={s1 ? 3 : 0.8}
+          md={s1 ? 3.1 : 1}
+          lg={s1 ? 2.9 : 1}
+          xl={s1 ? 2.6 : 1}
+          xs={s1 ? 3.1 : 0.8}
           sx={{
             ...sideBarStyle,
             position: "relative",
             mt: 2,
+            px: 1,
             transition: "all 0.30s linear",
           }}
         >
           <Box sx={{ width: "100%", backgroundColor: "white" }}>
-            <MiniTaskImageNavi
+            <LocationTaskHead
               isSmallView={!s1}
               setTaskHeaderHeiht={(headerHeight) =>
                 setTaskHeaderHeight(headerHeight)
@@ -192,6 +197,7 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
         >
           {selectedTask ? (
@@ -204,7 +210,10 @@ const LocatoinDrawingList = ({
           ) : (
             <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
           )}
-          <CollapsesRightBtn btnRightRotate={btnRightRotate} collapseDiv={collapseDiv2} />
+          <CollapsesRightBtn
+            btnRightRotate={btnRightRotate}
+            collapseDiv={collapseDiv2}
+          />
         </Grid>
         <Grid
           item
@@ -213,14 +222,16 @@ const LocatoinDrawingList = ({
           xl={s3 ? 8.1 : 5.8}
           sx={{
             position: "relative",
-            height: "82vh",
             backgroundColor: "white",
+            height: `${windowActualHeight - 68}px`,
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            ...noTaskSelectedStyle,
           }}
         >
-          File previews
+          {/* <DocumentReader /> */}
+          <Heading2 sx={{ fontWeight: 600 }}>File previews!</Heading2>
         </Grid>
       </Grid>
     </>
