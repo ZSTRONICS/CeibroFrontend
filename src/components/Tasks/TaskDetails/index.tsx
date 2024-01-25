@@ -119,7 +119,6 @@ function TaskDetails(props: IProps) {
         paddingTop: 1.25,
         px: 2,
       }}
-      // className="custom-scrollbar"
     >
       <DetailActions
         doneImageRequired={doneImageRequired}
@@ -137,7 +136,6 @@ function TaskDetails(props: IProps) {
       <CustomDivider sx={{ my: 1.3 }} />
       <Box
         ref={containerRef}
-        // className="custom-scrollbar"
         pr={1.25}
         mr={-1}
         sx={{

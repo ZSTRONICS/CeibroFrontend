@@ -42,6 +42,7 @@ const Task = () => {
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [currentTask, setCurrentTask] = useState<number>(-1);
+
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
