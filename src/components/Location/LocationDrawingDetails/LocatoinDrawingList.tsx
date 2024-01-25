@@ -62,8 +62,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -125,13 +125,13 @@ const LocatoinDrawingList = ({
 
   return (
     <>
-      <Grid container gap={1.5}>
+      <Grid container gap={1.8}>
         <Grid
           ref={taskContainerRef}
           item
-          md={s1 ? 3.1 : 1}
-          lg={s1 ? 2.9 : 1}
-          xl={s1 ? 2.6 : 1}
+          md={s1 ? 3 : 1.5}
+          lg={s1 ? 3 : 1}
+          xl={s1 ? 3 : 0.7}
           xs={s1 ? 3.1 : 0.8}
           sx={{
             ...sideBarStyle,
@@ -168,17 +168,19 @@ const LocatoinDrawingList = ({
                 />
               </Box>
             ) : (
-              <LocationTasksMain
-                windowActualHeight={containerHeight}
-                allTasks={getfilteredTasks(
-                  allTasksAllEvents.allTasks,
-                  taskListFilter
-                )}
-                selectedTaskId={selectedTask?._id}
-                taskListFilter={taskListFilter}
-                loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                handleSelectedTask={(task) => setSelectedTask(task)}
-              />
+              <Box >
+                <LocationTasksMain
+                  windowActualHeight={containerHeight}
+                  allTasks={getfilteredTasks(
+                    allTasksAllEvents.allTasks,
+                    taskListFilter
+                  )}
+                  selectedTaskId={selectedTask?._id}
+                  taskListFilter={taskListFilter}
+                  loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                  handleSelectedTask={(task) => setSelectedTask(task)}
+                />
+              </Box>
             )}
           </Box>
           <CollapsesBtn btnRotate={btnRotate} collapseDiv={collapseDiv1} />
@@ -186,9 +188,9 @@ const LocatoinDrawingList = ({
         <Grid
           item
           ref={taskDetailContainerRef}
-          md={s2 ? 4.8 : 3}
-          lg={s2 ? 5.2 : 3.1}
-          xl={s2 ? 5.3 : 3}
+          md={s2 ? 4.5 : 3}
+          lg={s2 ? 5 : 3}
+          xl={s2 ? 5.4 : 3.1}
           sx={{
             position: "relative",
             height: `${windowActualHeight - 68}px`,
@@ -217,9 +219,9 @@ const LocatoinDrawingList = ({
         </Grid>
         <Grid
           item
-          md={s3 ? 7.3 : 5.5}
-          lg={s3 ? 7.6 : 5.5}
-          xl={s3 ? 8.1 : 5.8}
+          md={s3 ? 7.1 : 5.5}
+          lg={s3 ? 7.7 : 5.7}
+          xl={s3 ? 7.9 : 5.6}
           sx={{
             position: "relative",
             backgroundColor: "white",

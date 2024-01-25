@@ -58,7 +58,7 @@ function Location() {
             ...sideBarStyle,
             px: 2,
             py: 1.5,
-            marginRight: 2, // Adjust the value to control the spacing
+            marginRight: 2,
           }}
         >
           <ExpandableProjectList
