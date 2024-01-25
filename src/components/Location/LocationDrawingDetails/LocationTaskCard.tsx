@@ -1,11 +1,14 @@
 import { Box } from "@mui/material";
-import { CustomStack, Span } from "components/CustomTags";
 import { TaskCard } from "components/TaskComponent";
 import {
   optionMapping,
   subtaskToIsTaskFromMe,
 } from "components/Utills/Globals";
-import { FromMEIcon, HiddenIcon, ToMeIcon } from "components/material-ui/icons";
+import {
+  FromMeLabelIcon,
+  HiddenLabelIcon,
+  ToMeLabelIcon,
+} from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
 import { useEffect, useState } from "react";
@@ -33,23 +36,20 @@ function LocationTaskCard(props: IProps) {
   const currentTaskStateAndIcon = [
     {
       taskRootState: "from-me",
-      title: "From me",
-      icon: <FromMEIcon color="#131516" />,
+      icon: FromMeLabelIcon,
     },
     {
       taskRootState: "to-me",
-      title: "To me",
-      icon: <ToMeIcon color="#131516" />,
+      icon: ToMeLabelIcon,
     },
     {
       taskRootState: "hidden",
-      title: "Hidden",
-      icon: <HiddenIcon color="#131516" />,
+      icon: HiddenLabelIcon,
     },
     {
       taskRootState: "canceled",
       title: "Hidden",
-      icon: <HiddenIcon color="#131516" />,
+      icon: HiddenLabelIcon,
     },
   ].find((config) => config.taskRootState === localTask.taskRootState);
 
@@ -154,7 +154,7 @@ function LocationTaskCard(props: IProps) {
   return (
     <Box
       sx={{
-        width: 373,
+        width: 340,
         display: "flex",
         alignItems: "center",
         borderRadius: "8px",
@@ -164,17 +164,9 @@ function LocationTaskCard(props: IProps) {
       }}
     >
       {currentTaskStateAndIcon && (
-        <CustomStack
-          sx={{
-            flexDirection: "column",
-            gap: 0.3,
-            width: "50px",
-            padding: "5px",
-          }}
-        >
-          {currentTaskStateAndIcon.icon}
-          <Span sx={{ fontSize: "9px" }}>{currentTaskStateAndIcon.title}</Span>
-        </CustomStack>
+        <Box sx={{ padding: "1px" }}>
+          <currentTaskStateAndIcon.icon />
+        </Box>
       )}
       <TaskCard
         userId={userId}

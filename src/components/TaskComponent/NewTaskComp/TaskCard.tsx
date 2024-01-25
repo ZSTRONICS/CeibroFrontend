@@ -117,7 +117,7 @@ const TaskCard = React.memo((props: IProps) => {
             ? "none"
             : "1px solid #818181"
         }`,
-        borderRadius: "8px",
+        borderRadius: isLocationTask ? "" : "8px",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
@@ -231,7 +231,7 @@ const TaskCard = React.memo((props: IProps) => {
             {cardLabel !== "From" && assignToNames()}
           </Box>
 
-          {project?.title && (
+          {!isLocationTask && project?.title && (
             <TaskCardLabel
               className="textOverflowDescription"
               style={{ paddingLeft: "2px", whiteSpace: "nowrap" }}
@@ -252,7 +252,7 @@ const TaskCard = React.memo((props: IProps) => {
         <SubHeadingTag
           className="ellipsis"
           sx={{
-            maxWidth: "300px",
+            maxWidth: "270px",
             color: "black",
             pb: 0.1,
             WebkitLineClamp: 1,
@@ -267,7 +267,7 @@ const TaskCard = React.memo((props: IProps) => {
           className="textOverflowDescription"
           sx={{
             pb: 0.5,
-            maxWidth: "350px",
+            maxWidth: "270px",
             WebkitLineClamp: 2,
             wordWrap: "break-word",
             wordBreak: "break-all",

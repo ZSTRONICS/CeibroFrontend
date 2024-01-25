@@ -121,7 +121,7 @@ const LocatoinDrawingList = ({
     justifyContent: "center",
   };
   const containerHeight = taskContainerHeight - taskHeaderHeight;
-  console.log("taskContainerHeight", containerHeight, taskHeaderHeight);
+  console.log("taskDetailContHeight", taskDetailContHeight);
 
   return (
     <>
