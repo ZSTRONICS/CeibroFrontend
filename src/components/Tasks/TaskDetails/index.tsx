@@ -28,7 +28,6 @@ interface IProps {
   taskDetailContHeight?: number;
 }
 function TaskDetails(props: IProps) {
-  const { taskDetailContHeight } = props;
   const {
     dueDate,
     taskUID,
@@ -139,9 +138,7 @@ function TaskDetails(props: IProps) {
         pr={1.25}
         mr={-1}
         sx={{
-          maxHeight: taskDetailContHeight
-            ? `${taskDetailContHeight}px`
-            : `calc(100vh - ${heightOffset}px)`,
+          maxHeight: `calc(100vh - ${heightOffset}px)`,
           overflow: "auto",
         }}
       >
@@ -170,6 +167,7 @@ function TaskDetails(props: IProps) {
         )}
         {events && <AddedDetails events={events} hasFile={media.length > 0} />}
       </Box>
+
       {uniqueImageFiles.length > 0 && (
         <ImgsViewerSlider
           imgs={uniqueImageFiles.map((image: any) => image.fileUrl)}

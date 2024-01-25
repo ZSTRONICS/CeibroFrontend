@@ -10,6 +10,7 @@ interface Props {
   closeModal: any;
   children: any;
   title: string;
+  DETAIL_CONT_HEIGHT?: number;
 }
 
 const StyledBox = styled("div")(({ theme }) => ({
@@ -47,6 +48,7 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     const { clientWidth, clientHeight } = taskDetailContainer;
     containerWidth = clientWidth - 6;
     taskDetailContHeight = clientHeight;
+    console.log("taskDetailContHeight", taskDetailContHeight);
   }
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;

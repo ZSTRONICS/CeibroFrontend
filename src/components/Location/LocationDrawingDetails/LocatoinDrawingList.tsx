@@ -7,8 +7,9 @@ import {
   ITask,
   ITaskFilterInterace,
 } from "constants/interfaces";
+import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT, searchInData } from "utills/common";
@@ -30,7 +31,6 @@ interface LocationDrawingListProps {
 const propertiesToSearch = ["taskUID", "topic.topic", "description", "creator"];
 
 const LocatoinDrawingList = ({
-  headersize,
   setHeadersize,
   allTasksAllEvents,
   loadingAllTasksAllEvents,
@@ -41,8 +41,6 @@ const LocatoinDrawingList = ({
   const [windowWidth, windowHeight] = size;
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
   const [taskHeaderHeight, setTaskHeaderHeight] = useState<number>(0);
-  const [taskContainerHeight, setTaskContainerHeight] = useState<number>(0);
-  const [taskDetailContHeight, setTaskDetailContHeight] = useState<number>(0);
   const [s1, setS1] = useState<boolean>(true);
   const [s2, setS2] = useState<boolean>(false);
   const [s3, setS3] = useState<boolean>(false);
@@ -52,17 +50,26 @@ const LocatoinDrawingList = ({
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
-  const taskContainerRef: any = useRef(null);
-  const taskDetailContainerRef: any = useRef(null);
+  const {
+    containerRef: taskContainerRef,
+    dimensions: taskConDimension,
+    updateDimensions,
+  } = useDynamicDimensions();
+  const {
+    containerRef: taskDetailContRef,
+    dimensions: taskDetailContDimension,
+    updateDimensions: updateTaskDetailContDimensions,
+  } = useDynamicDimensions();
   const [taskSearchText, setTaskSearchText] = useState("");
+  console.log(
+    "taskDetailContDimension.height>>",
+    taskDetailContDimension.height
+  );
   useEffect(() => {
-    if (taskContainerRef.current) {
-      setTaskContainerHeight(taskContainerRef.current.clientHeight);
+    if (taskDetailContRef.current) {
+      updateTaskDetailContDimensions();
     }
-    if (taskDetailContainerRef.current) {
-      setTaskDetailContHeight(taskDetailContainerRef.current.clientHeight);
-    }
-  }, [taskContainerRef, taskDetailContainerRef, windowHeight, s1, s2, s3]);
+  }, [taskContainerRef, taskDetailContDimension.height, windowHeight]);
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const userSubStateLocal: string =
@@ -86,6 +93,7 @@ const LocatoinDrawingList = ({
       setBtnRightRotate(true);
       setS1(true);
       setS2(false);
+      updateDimensions();
     } else if (s1 === false && s2 === false && s3 === true) {
       setBtnRotate(true);
       setBtnRightRotate(false);
@@ -93,12 +101,14 @@ const LocatoinDrawingList = ({
       setS2(false);
       setS3(false);
       setHeadersize(true);
+      updateDimensions();
     } else {
       setBtnRightRotate(true);
       setBtnRotate(false);
       setS1(false);
       setS2(true);
       setS3(false);
+      updateDimensions();
     }
   };
 
@@ -127,8 +137,7 @@ const LocatoinDrawingList = ({
     alignItems: "center",
     justifyContent: "center",
   };
-  const containerHeight = taskContainerHeight - taskHeaderHeight;
-  console.log("taskDetailContHeight", taskDetailContHeight);
+  const containerHeight = taskConDimension.height - taskHeaderHeight;
 
   const handleTaskSearch = (searchValue: string) => {
     setTaskSearchText(searchValue);
@@ -171,9 +180,7 @@ const LocatoinDrawingList = ({
           <Box sx={{ width: "100%", backgroundColor: "white" }}>
             <LocationTaskHead
               isSmallView={!s1}
-              setTaskHeaderHeiht={(headerHeight) =>
-                setTaskHeaderHeight(headerHeight)
-              }
+              setTaskHeaderHeiht={setTaskHeaderHeight}
               handleSearch={handleTaskSearch}
               searchText={taskSearchText}
             />
@@ -198,30 +205,29 @@ const LocatoinDrawingList = ({
                 />
               </Box>
             ) : (
-              <Box>
-                <LocationTasksMain
-                  windowActualHeight={containerHeight}
-                  allTasks={taskFiltering(
-                    allTasksAllEvents.allTasks,
-                    taskListFilter,
-                    taskSearchText
-                  )}
-                  selectedTaskId={selectedTask?._id}
-                  taskListFilter={taskListFilter}
-                  loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                  handleSelectedTask={(task) => setSelectedTask(task)}
-                />
-              </Box>
+              <LocationTasksMain
+                windowActualHeight={containerHeight}
+                allTasks={taskFiltering(
+                  allTasksAllEvents.allTasks,
+                  taskListFilter,
+                  taskSearchText
+                )}
+                selectedTaskId={selectedTask?._id}
+                taskListFilter={taskListFilter}
+                loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                handleSelectedTask={(task) => setSelectedTask(task)}
+              />
             )}
           </Box>
           <CollapsesBtn btnRotate={btnRotate} collapseDiv={collapseDiv1} />
         </Grid>
         <Grid
           item
-          ref={taskDetailContainerRef}
+          ref={taskDetailContRef}
           md={s2 ? 4.5 : 3}
           lg={s2 ? 5 : 3}
           xl={s2 ? 5.4 : 3.1}
+          id="taskDetailContainer"
           sx={{
             position: "relative",
             height: `${windowActualHeight - 68}px`,
@@ -230,12 +236,13 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            overflow: "auto",
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
         >
           {selectedTask ? (
             <TaskDetails
-              taskDetailContHeight={taskDetailContHeight}
+              taskDetailContHeight={taskDetailContDimension.height}
               task={selectedTaskandEvents}
               userSubStateLocal={userSubStateLocal}
               TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}

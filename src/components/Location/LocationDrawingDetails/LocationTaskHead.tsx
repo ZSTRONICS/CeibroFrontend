@@ -4,7 +4,8 @@ import { Box, IconButton } from "@mui/material";
 import Tab from "@mui/material/Tab";
 import { InputSearch } from "components/GenericComponents";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
-import { useEffect, useRef, useState } from "react";
+import { useDynamicDimensions } from "hooks";
+import { useEffect, useState } from "react";
 import { HeadStyles, tabStyles } from "./MiniCardTaskStyle";
 import TaskFilters from "./TaskFilters";
 
@@ -22,13 +23,16 @@ const LocationTaskHead = ({
   searchText,
 }: IProps) => {
   const [value, setValue] = useState("1");
-  const headerRef: any = useRef(null);
+  const {
+    containerRef: headerRef,
+    dimensions,
+    updateDimensions,
+  } = useDynamicDimensions();
+
   useEffect(() => {
-    if (headerRef.current && headerRef.current.clientHeight) {
-      // console.log("headerRef clientHeight", headerRef.current.clientHeight);
-      setTaskHeaderHeiht(headerRef.current.clientHeight);
-    }
-  }, [headerRef, isSmallView]);
+    updateDimensions();
+    setTaskHeaderHeiht(dimensions.height);
+  }, [headerRef, dimensions.height, isSmallView]);
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };

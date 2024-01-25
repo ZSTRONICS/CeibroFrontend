@@ -167,7 +167,6 @@ const DetailActions: React.FC<IProps> = (props) => {
     <>
       <Grid
         container
-        // pt={1.25}
         mb={1.5}
         justifyContent="end"
         alignItems="flex-start"

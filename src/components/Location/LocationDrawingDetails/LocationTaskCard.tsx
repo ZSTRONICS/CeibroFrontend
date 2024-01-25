@@ -150,7 +150,7 @@ function LocationTaskCard(props: IProps) {
       ? menuOptions.filter((option) => option.menuName === optionName)
       : [];
   };
-
+  // const handleClick = (task: ITask) => {};
   return (
     <Box
       sx={{

@@ -4,13 +4,13 @@ interface UseDynamicDimensionsProps {
     debounceTime?: number;
 }
 
-interface DynamicDimensions {
+export interface DynamicDimensions {
     width: number;
     height: number;
 }
 
 const useDynamicDimensions = ({
-    debounceTime = 300,
+    debounceTime = 100,
 }: UseDynamicDimensionsProps = {}) => {
     const [dimensions, setDimensions] = useState<DynamicDimensions>({
         width: 0,
@@ -19,46 +19,40 @@ const useDynamicDimensions = ({
 
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const updateDimensions = () => {
+        if (containerRef.current) {
+            const { width, height } = containerRef.current.getBoundingClientRect();
+            setDimensions({ width, height });
+        }
+    };
     useEffect(() => {
-        const updateDimensions = () => {
-            if (containerRef.current) {
-                const { width, height } = containerRef.current.getBoundingClientRect();
-                setDimensions({ width, height });
-            }
-        };
-
         const debouncedUpdate = debounce(updateDimensions, debounceTime);
-
         // Initial update
         updateDimensions();
 
         // Event listeners
         window.addEventListener('resize', debouncedUpdate);
-
+        const observer = new IntersectionObserver(debouncedUpdate);
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
         // Cleanup
         return () => {
             window.removeEventListener('resize', debouncedUpdate);
+            observer.disconnect();
         };
-    }, [debounceTime]);
+    }, [dimensions.width, dimensions.height, containerRef]);
 
-    return { containerRef, dimensions };
+    return { containerRef, dimensions, updateDimensions };
 };
 
-/**
- * Creates a debounced function that delays invoking 'func' until
- *  after 'delay' milliseconds have elapsed since the last time the debounced function was invoked.
- *
- * @param {() => void} func - The function to debounce.
- * @param {number} delay - The number of milliseconds to delay.
- * @return {() => void} A debounced version of the original function.
- */
-const debounce = (func: () => void, delay: number) => {
-    let timeoutId: NodeJS.Timeout;
 
-    return () => {
+const debounce = <F extends (...args: any[]) => void>(func: F, delay: number) => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+    return (...args: Parameters<F>) => {
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(func, delay);
+        timeoutId = setTimeout(() => func(...args), delay);
     };
-};
+}
 
 export default useDynamicDimensions;

@@ -32,7 +32,6 @@ export function getfilteredTasks(tasks, filters) {
       for (const subKey in filter) {
         if (filter[subKey]) {
           // If the filter is true, push tasks to filteredDrawingTasks
-          console.log(key, subKey, ":::::: check");
           if (filteredTasks[key][subKey]) {
             filteredDrawingTasks = filteredDrawingTasks.concat(
               filteredTasks[key][subKey]

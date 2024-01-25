@@ -52,7 +52,7 @@ function LocationTasksMain(props: IProps) {
       return <></>;
     }
     return (
-      <div style={{ ...style, width: "100%", }}>
+      <div style={{ ...style, width: "100%" }}>
         {localTask && (
           <LocationTaskCard
             userId={userId}
@@ -68,9 +68,11 @@ function LocationTasksMain(props: IProps) {
   return (
     <>
       {loadingAllTasksAllEvents ? (
-        <Box style={{
-          height: `${windowActualHeight}px`,
-        }}>
+        <Box
+          style={{
+            height: `${windowActualHeight}px`,
+          }}
+        >
           {Array.from({ length: 6 }).map((_, index) => (
             <TaskCardSkeleton key={index} />
           ))}
@@ -78,19 +80,18 @@ function LocationTasksMain(props: IProps) {
       ) : (
         <VariableSizeList
           ref={taskCardListRef}
-          style={{ overflowY: "auto", }}
+          style={{ overflowY: "auto" }}
           height={windowActualHeight}
           itemCount={allTasks.length}
           overscanCount={20}
           layout="vertical"
-          onScroll={() => { }}
+          onScroll={() => {}}
           itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
           width={"100%"}
         >
           {LocationTaskRow}
-        </VariableSizeList >
-      )
-      }
+        </VariableSizeList>
+      )}
     </>
   );
 }

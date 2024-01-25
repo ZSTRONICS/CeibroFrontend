@@ -49,7 +49,6 @@ export default function DetailsBody(props: IProps) {
       <Box
         ref={listRef}
         sx={{
-          // maxHeight: `calc(100vh - ${heightOffset}px)`,
           paddingLeft: "0px",
         }}
       >
