@@ -37,6 +37,12 @@ const LocatoinDrawingList = ({
   const [taskHeaderHeight, setTaskHeaderHeight] = useState<number>(0);
   const [taskContainerHeight, setTaskContainerHeight] = useState<number>(0);
   const [taskDetailContHeight, setTaskDetailContHeight] = useState<number>(0);
+  const [s1, setS1] = useState<boolean>(true);
+  const [s2, setS2] = useState<boolean>(false);
+  const [s3, setS3] = useState<boolean>(false);
+  const [btnRotate, setBtnRotate] = useState<boolean>(true);
+  const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
+
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -44,12 +50,12 @@ const LocatoinDrawingList = ({
   const taskDetailContainerRef: any = useRef(null);
   useEffect(() => {
     if (taskContainerRef.current) {
-      setTaskContainerHeight(taskContainerRef.current.offsetHeight);
+      setTaskContainerHeight(taskContainerRef.current.clientHeight);
     }
     if (taskDetailContainerRef.current) {
-      setTaskDetailContHeight(taskDetailContainerRef.current.offsetHeight);
+      setTaskDetailContHeight(taskDetailContainerRef.current.clientHeight);
     }
-  }, [taskContainerRef, taskDetailContainerRef, windowHeight]);
+  }, [taskContainerRef, taskDetailContainerRef, windowHeight, s1, s2, s3]);
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const userSubStateLocal: string =
@@ -67,11 +73,6 @@ const LocatoinDrawingList = ({
     events: filteTaskEvents || [],
   };
 
-  const [s1, setS1] = useState<boolean>(true);
-  const [s2, setS2] = useState<boolean>(false);
-  const [s3, setS3] = useState<boolean>(false);
-  const [btnRotate, setBtnRotate] = useState<boolean>(true);
-  const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
       setBtnRotate(true);
@@ -119,6 +120,9 @@ const LocatoinDrawingList = ({
     alignItems: "center",
     justifyContent: "center",
   };
+  const containerHeight = taskContainerHeight - taskHeaderHeight;
+  console.log("taskContainerHeight", containerHeight, taskHeaderHeight);
+
   return (
     <>
       <Grid container gap={1.5}>
@@ -144,42 +148,38 @@ const LocatoinDrawingList = ({
                 setTaskHeaderHeight(headerHeight)
               }
             />
-            <Box>
-              {!s1 ? (
-                <Box
-                  sx={{
-                    height: `${taskContainerHeight - taskHeaderHeight}px`,
-                    overflowY: "auto",
-                    padding: "6px 6px",
-                  }}
-                >
-                  <MiniTaskCardList
-                    windowActualHeight={windowActualHeight}
-                    allTask={getfilteredTasks(
-                      allTasksAllEvents.allTasks,
-                      taskListFilter
-                    )}
-                    taskListFilter={taskListFilter}
-                    loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                    handleSelectedTask={(task) => setSelectedTask(task)}
-                  />
-                </Box>
-              ) : (
-                <>
-                  <LocationTasksMain
-                    windowActualHeight={taskContainerHeight - taskHeaderHeight}
-                    allTasks={getfilteredTasks(
-                      allTasksAllEvents.allTasks,
-                      taskListFilter
-                    )}
-                    selectedTaskId={selectedTask?._id}
-                    taskListFilter={taskListFilter}
-                    loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                    handleSelectedTask={(task) => setSelectedTask(task)}
-                  />
-                </>
-              )}
-            </Box>
+            {!s1 ? (
+              <Box
+                sx={{
+                  height: `${containerHeight}px`,
+                  overflowY: "auto",
+                  padding: "6px 6px",
+                }}
+              >
+                <MiniTaskCardList
+                  windowActualHeight={windowActualHeight}
+                  allTask={getfilteredTasks(
+                    allTasksAllEvents.allTasks,
+                    taskListFilter
+                  )}
+                  taskListFilter={taskListFilter}
+                  loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                  handleSelectedTask={(task) => setSelectedTask(task)}
+                />
+              </Box>
+            ) : (
+              <LocationTasksMain
+                windowActualHeight={containerHeight}
+                allTasks={getfilteredTasks(
+                  allTasksAllEvents.allTasks,
+                  taskListFilter
+                )}
+                selectedTaskId={selectedTask?._id}
+                taskListFilter={taskListFilter}
+                loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                handleSelectedTask={(task) => setSelectedTask(task)}
+              />
+            )}
           </Box>
           <CollapsesBtn btnRotate={btnRotate} collapseDiv={collapseDiv1} />
         </Grid>

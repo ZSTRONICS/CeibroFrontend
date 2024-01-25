@@ -48,18 +48,14 @@ export const HeadStyles: Styles = {
     display: "flex",
     justifyContent: "start",
     alignItems: "center",
-    // flexDirection: 'column',
     height: "max-content",
     borderBottom: "solid 1px #818181",
     width: "100%",
-    // border: 'solid 1px red'
   },
   head_filterization: {
     display: "flex",
     justifyContent: "space-arroud",
     alignItems: "center",
-    // height: "60px",
-    // border: 'solid 1px red',
     width: "100%",
     marginTop: "5px",
   },

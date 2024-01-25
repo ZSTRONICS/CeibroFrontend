@@ -67,34 +67,27 @@ function LocationTasksMain(props: IProps) {
   };
   return (
     <>
-      <Box
-        sx={{
-          mt: 1,
-          pb: 1,
-        }}
-      >
-        {loadingAllTasksAllEvents ? (
-          <Box style={{ height: `${windowActualHeight - 68}px` }}>
-            {Array.from({ length: 6 }).map((_, index) => (
-              <TaskCardSkeleton key={index} />
-            ))}
-          </Box>
-        ) : (
-          <VariableSizeList
-            ref={taskCardListRef}
-            style={{ overflowY: "auto" }}
-            height={windowActualHeight}
-            itemCount={allTasks.length}
-            overscanCount={20}
-            layout="vertical"
-            onScroll={() => {}}
-            itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
-            width={"100%"}
-          >
-            {LocationTaskRow}
-          </VariableSizeList>
-        )}
-      </Box>
+      {loadingAllTasksAllEvents ? (
+        <Box style={{ height: `${windowActualHeight}px` }}>
+          {Array.from({ length: 6 }).map((_, index) => (
+            <TaskCardSkeleton key={index} />
+          ))}
+        </Box>
+      ) : (
+        <VariableSizeList
+          ref={taskCardListRef}
+          style={{ overflowY: "auto" }}
+          height={windowActualHeight}
+          itemCount={allTasks.length}
+          overscanCount={20}
+          layout="vertical"
+          onScroll={() => {}}
+          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
+          width={"100%"}
+        >
+          {LocationTaskRow}
+        </VariableSizeList>
+      )}
     </>
   );
 }

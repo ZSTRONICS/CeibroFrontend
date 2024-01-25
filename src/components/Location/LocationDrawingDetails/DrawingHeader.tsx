@@ -46,7 +46,7 @@ export default function DrawingHeader(props: DrawingProps) {
             }}
           >
             <Box>{option[getValueKey]}</Box>
-            <Box sx={{ display: "flex", }}>
+            <Box sx={{ display: "flex" }}>
               {renderDivider()}
               {"Floor "}
               {option.floor?.floorName}
@@ -58,13 +58,13 @@ export default function DrawingHeader(props: DrawingProps) {
   };
 
   const renderGroupOptions = (options: Group[], getValueKey: string) => {
-    console.log(options, "options");
+    // console.log(options, "options");
 
     return (
       options &&
       options?.map((option) => (
         <MenuItem key={option._id} value={option._id}>
-          <Box sx={{ width: "100%", }}>
+          <Box sx={{ width: "100%" }}>
             <DrawingGroupCard
               group={option}
               projectName={selectedProject.title}

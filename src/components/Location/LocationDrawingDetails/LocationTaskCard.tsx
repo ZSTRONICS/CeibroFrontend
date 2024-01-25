@@ -46,7 +46,13 @@ function LocationTaskCard(props: IProps) {
       title: "Hidden",
       icon: <HiddenIcon color="#131516" />,
     },
+    {
+      taskRootState: "canceled",
+      title: "Hidden",
+      icon: <HiddenIcon color="#131516" />,
+    },
   ].find((config) => config.taskRootState === localTask.taskRootState);
+
   const stateMap: { [key: string]: string } = {
     "from-me": "allTaskFromMe",
     "to-me": "allTaskToMe",
@@ -54,6 +60,7 @@ function LocationTaskCard(props: IProps) {
   };
 
   const taskRootState = stateMap[localTask.rootState];
+  // console.log(taskRootState, localTask.rootState);
   useEffect(() => {
     const newIsTaskFromMe = subtaskToIsTaskFromMe[taskRootState];
     if (typeof newIsTaskFromMe === "string") {

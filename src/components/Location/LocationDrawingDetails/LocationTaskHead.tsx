@@ -18,9 +18,10 @@ const LocationTaskHead = ({ isSmallView, setTaskHeaderHeiht }: IProps) => {
   const headerRef: any = useRef(null);
   useEffect(() => {
     if (headerRef.current && headerRef.current.clientHeight) {
+      // console.log("headerRef clientHeight", headerRef.current.clientHeight);
       setTaskHeaderHeiht(headerRef.current.clientHeight);
     }
-  }, [headerRef]);
+  }, [headerRef, isSmallView]);
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
