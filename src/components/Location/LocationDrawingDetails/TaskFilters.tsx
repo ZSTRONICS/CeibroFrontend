@@ -64,6 +64,9 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
         }
       }
     } else if (key) {
+      if (oldFilter.isAllSelected) {
+        oldFilter["isAllSelected"] = false;
+      }
       oldFilter[filter][key] = event.target.checked;
     }
     dispatch(taskActions.updateDrawingFilters(oldFilter));
@@ -164,15 +167,14 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
 
       {isSmallView && (
         <Grid container alignItems="center" justifyContent={"center"}>
-          <Grid item >
+          <Grid item>
             <FilterAltOutlined color="primary" />
             <IconButton onClick={handleMenuOpen}>
               <ArrowDropDownIcon />
             </IconButton>
           </Grid>
-        </Grid >
-      )
-      }
+        </Grid>
+      )}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
@@ -190,15 +192,15 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
           disableRipple
           sx={{
             width: "440px",
-            borderRadius: '4px',
+            borderRadius: "4px",
             left: 0,
-            '&:hover': {
-              backgroundColor: 'white',
-              cursor: 'auto',
-            }
+            "&:hover": {
+              backgroundColor: "white",
+              cursor: "auto",
+            },
           }}
         >
-          <TaskFilterTabsView />
+          <TaskFilterTabsView handleMenuClose={handleMenuClose} />
         </MenuItem>
       </Menu>
     </>

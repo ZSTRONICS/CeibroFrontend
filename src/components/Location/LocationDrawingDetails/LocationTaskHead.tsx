@@ -11,9 +11,16 @@ import TaskFilters from "./TaskFilters";
 interface IProps {
   isSmallView: boolean;
   setTaskHeaderHeiht: (value: number) => void;
+  handleSearch: (value: string) => void;
+  searchText: string;
 }
 
-const LocationTaskHead = ({ isSmallView, setTaskHeaderHeiht }: IProps) => {
+const LocationTaskHead = ({
+  isSmallView,
+  setTaskHeaderHeiht,
+  handleSearch,
+  searchText,
+}: IProps) => {
   const [value, setValue] = useState("1");
   const headerRef: any = useRef(null);
   useEffect(() => {
@@ -65,8 +72,8 @@ const LocationTaskHead = ({ isSmallView, setTaskHeaderHeiht }: IProps) => {
         >
           <InputSearch
             placeholder="Start typing for search"
-            value=""
-            onChange={(e: any) => console.log(e.target.value)}
+            value={searchText}
+            onChange={handleSearch}
           />
           <IconButton
             style={{ color: "#0076C8", padding: "0px" }}

@@ -2,12 +2,16 @@ import { Box, Grid } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
-import { AllTasksAllEvents, ITask } from "constants/interfaces";
+import {
+  AllTasksAllEvents,
+  ITask,
+  ITaskFilterInterace,
+} from "constants/interfaces";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
-import { HEADER_HEIGHT } from "utills/common";
+import { HEADER_HEIGHT, searchInData } from "utills/common";
 import CollapsesBtn from "./CollapsesLeftBtn";
 import CollapsesRightBtn from "./CollapsesRightBtn";
 import LocationTaskHead from "./LocationTaskHead";
@@ -22,6 +26,8 @@ interface LocationDrawingListProps {
   loadingAllTasksAllEvents: boolean;
   RECENT_TASK_UPDATED_TIME_STAMP: string;
 }
+
+const propertiesToSearch = ["taskUID", "topic.topic", "description", "creator"];
 
 const LocatoinDrawingList = ({
   headersize,
@@ -48,6 +54,7 @@ const LocatoinDrawingList = ({
   );
   const taskContainerRef: any = useRef(null);
   const taskDetailContainerRef: any = useRef(null);
+  const [taskSearchText, setTaskSearchText] = useState("");
   useEffect(() => {
     if (taskContainerRef.current) {
       setTaskContainerHeight(taskContainerRef.current.clientHeight);
@@ -62,8 +69,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -123,6 +130,26 @@ const LocatoinDrawingList = ({
   const containerHeight = taskContainerHeight - taskHeaderHeight;
   console.log("taskDetailContHeight", taskDetailContHeight);
 
+  const handleTaskSearch = (searchValue: string) => {
+    setTaskSearchText(searchValue);
+  };
+
+  const taskFiltering = (
+    data: ITask[],
+    filterList: ITaskFilterInterace,
+    searchText: string
+  ) => {
+    let filteredTask = getfilteredTasks(
+      allTasksAllEvents.allTasks,
+      taskListFilter
+    );
+    if (searchText === "") {
+      return filteredTask;
+    } else {
+      return searchInData(filteredTask, searchText, propertiesToSearch);
+    }
+  };
+
   return (
     <>
       <Grid container gap={1.8}>
@@ -147,6 +174,8 @@ const LocatoinDrawingList = ({
               setTaskHeaderHeiht={(headerHeight) =>
                 setTaskHeaderHeight(headerHeight)
               }
+              handleSearch={handleTaskSearch}
+              searchText={taskSearchText}
             />
             {!s1 ? (
               <Box
@@ -158,9 +187,10 @@ const LocatoinDrawingList = ({
               >
                 <MiniTaskCardList
                   windowActualHeight={windowActualHeight}
-                  allTask={getfilteredTasks(
+                  allTasks={taskFiltering(
                     allTasksAllEvents.allTasks,
-                    taskListFilter
+                    taskListFilter,
+                    taskSearchText
                   )}
                   taskListFilter={taskListFilter}
                   loadingAllTasksAllEvents={loadingAllTasksAllEvents}
@@ -168,12 +198,13 @@ const LocatoinDrawingList = ({
                 />
               </Box>
             ) : (
-              <Box >
+              <Box>
                 <LocationTasksMain
                   windowActualHeight={containerHeight}
-                  allTasks={getfilteredTasks(
+                  allTasks={taskFiltering(
                     allTasksAllEvents.allTasks,
-                    taskListFilter
+                    taskListFilter,
+                    taskSearchText
                   )}
                   selectedTaskId={selectedTask?._id}
                   taskListFilter={taskListFilter}

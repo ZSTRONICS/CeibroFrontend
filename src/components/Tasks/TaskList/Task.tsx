@@ -19,11 +19,7 @@ import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
 import { selectedTaskFilterType } from "redux/type";
-import {
-  HEADER_HEIGHT,
-  includesIgnoreCase,
-  taskConstants,
-} from "utills/common";
+import { HEADER_HEIGHT, searchInData, taskConstants } from "utills/common";
 import EmptyScreenDescription from "../EmptyScreenDescription";
 import TaskDetails from "../TaskDetails";
 import FilterTabs from "./FilterTabs";
@@ -328,36 +324,6 @@ const Task = () => {
     setSearchText(searchTxt);
     setFilteredTask(filterData);
   };
-  /**
-   * Searches an array of ITask objects based on the specified properties and searchText.
-   */
-  function searchInData(
-    data: ITask[],
-    searchText: string,
-    properties: string[]
-  ): ITask[] {
-    if (!searchText.trim()) {
-      return data;
-    }
-    const lowerSearchText = searchText.toLowerCase();
-    return data.filter((item: ITask) => {
-      return properties.some((property) => {
-        const searchValue: string | UserInfo = _.get(item, property);
-        // If the searchValue is a string, check if it includes the lowerSearchText
-        if (_.isString(searchValue)) {
-          return includesIgnoreCase(searchValue, lowerSearchText);
-        }
-        // If the searchValue is an object, check if it has firstName and surName properties
-        else if (_.isObject(searchValue)) {
-          if (searchValue.firstName) {
-            const fullName = `${searchValue.firstName} ${searchValue.surName}`;
-            return includesIgnoreCase(fullName, lowerSearchText);
-          }
-        }
-        return false;
-      });
-    });
-  }
 
   const handleTaskAction = (
     actionType: (arg: {

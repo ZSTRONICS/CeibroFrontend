@@ -5,24 +5,24 @@ import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 import { MinicardTypography, Minicardheading } from "./MiniCardTaskStyle";
 
 interface IProps {
-  allTask: ITask[];
+  allTasks: ITask[];
   taskListFilter: ITaskFilterInterace;
   loadingAllTasksAllEvents: boolean;
   handleSelectedTask(task: ITask): void;
   windowActualHeight: number;
 }
 const MiniTaskCardList: React.FC<IProps> = ({
-  allTask,
+  allTasks,
   taskListFilter,
   handleSelectedTask,
   loadingAllTasksAllEvents,
   windowActualHeight,
 }) => {
-  allTask?.sort((taskA, taskB) => {
+  allTasks?.sort((taskA, taskB) => {
     return taskA.updatedAt.localeCompare(taskB.updatedAt);
   });
 
-  const MiniCardRendering = allTask?.map((task) => {
+  const MiniCardRendering = allTasks?.map((task) => {
     const currentTaskColor =
       MUI_TASK_CARD_COLOR_MAP.get(task?.userSubState) ?? "";
     const rootState = task?.rootState ?? "";
