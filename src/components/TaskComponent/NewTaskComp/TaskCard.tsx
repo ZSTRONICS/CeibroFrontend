@@ -107,8 +107,8 @@ const TaskCard = React.memo((props: IProps) => {
       onMouseOut={() => setIsMouseOver(false)}
       sx={{
         width: "100%",
-        minWidth: 290,
-        maxWidth: 320,
+        // minWidth: '60%',
+        // maxWidth: 320,
         cursor: "pointer",
         border: `${!isLocationTask && isCanceled
           ? `3px solid ${cardBorderColor}`
@@ -116,7 +116,7 @@ const TaskCard = React.memo((props: IProps) => {
             ? "none"
             : "1px solid #818181"
           }`,
-        borderRadius: "8px",
+        borderRadius: "0px 0px 8px 0px",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
@@ -142,6 +142,7 @@ const TaskCard = React.memo((props: IProps) => {
       <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative", }}>
         <Span
           sx={{
+            marginTop: '7px',
             color: "0d0d0d",
             fontWeight: 600,
             border: "1px solid #818181",
