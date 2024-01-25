@@ -98,6 +98,11 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            '@media screen and (max-width: 1150px)': {
+              flexDirection: 'row',
+              alignItems: 'start',
+              paddingLeft: '10px',
+            },
           }}
         >
           <Typography
@@ -105,11 +110,24 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
               fontFamily: "Inter",
               fontSize: "12px",
               fontWeight: "500px",
+              '@media screen and (max-width: 1150px)': {
+                width: '70px',
+                marginTop: '5px',
+              },
             }}
           >
             {text}
           </Typography>
-          <Box>
+          <Box
+            sx={{
+              '@media screen and (min-width:1000px) and (max-width: 1150px)': {
+                width: '80px',
+                display: 'flex',
+                justifyContent: "space-between",
+                alignItems: 'center',
+              },
+            }}
+          >
             {keys.map((k) =>
               renderCheckbox(tabsColor[k], taskListFilter[key][k], (e) =>
                 handleChange(e, key, k)
@@ -124,8 +142,14 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
   return (
     <>
       {!isSmallView && (
-        <Grid container alignItems="center">
-          <Grid item>
+        <Grid sx={{
+          display: 'flex',
+          '@media screen and (max-width: 1370px)': {
+            flexDirection: 'column',
+            alignItems: 'start',
+          },
+        }} container alignItems="center">
+          <Grid item xl={1} >
             <Box
               //   bgcolor={tabsColor.unRead}
               sx={{
@@ -133,6 +157,7 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
                 flexDirection: "column",
                 alignItems: "center",
                 paddingLeft: "8px",
+                minWidth: '30%'
               }}
             >
               <Typography
@@ -144,7 +169,7 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
               >
                 All
               </Typography>
-              <Box>
+              <Box  >
                 <Checkbox
                   checked={taskListFilter.isAllSelected}
                   onChange={(event) => handleChange(event, "isAllSelected")}
@@ -153,28 +178,63 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
               </Box>
             </Box>
           </Grid>
-          {renderFilterColumns("From me", "fromMe")}
-          {renderFilterColumns("To me", "toMe")}
-          {renderFilterColumns("Hidden", "hidden")}
+          <Box sx={{
+            width: '85%', display: 'flex',
+            '@media screen and (max-width: 1370px)': {
+              width: '100%',
+            },
+          }} >
+            <Box sx={{
+              width: '90%', display: 'flex', justifyContent: 'center',
+              '@media screen and (max-width: 1150px)': {
+                flexDirection: 'column',
+                alignItems: 'start',
+              },
+            }} >
+              {renderFilterColumns("From me", "fromMe")}
+              {renderFilterColumns("To me", "toMe")}
+              {renderFilterColumns("Hidden", "hidden")}
+            </Box>
+            <Grid sx={{
+              width: '10%',
+              '@media screen and (max-width: 1370px)': {
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              },
+            }} xl={1} item>
+              <IconButton
+                sx={{
+                  marginLeft: '22px',
+                  '@media screen and (max-width: 1370px)': {
+                    marginRight: '20px',
+                    marginLeft: '0px',
+                  },
+                }}
+                onClick={handleMenuOpen}>
+                <ArrowDropDownIcon />
+              </IconButton>
+            </Grid>
+          </Box>
+        </Grid >
+      )
+      }
 
-          <Grid item>
-            <IconButton onClick={handleMenuOpen}>
-              <ArrowDropDownIcon />
-            </IconButton>
+      {
+        isSmallView && (
+          <Grid container alignItems="center" justifyContent="center">
+            <Grid
+              item
+            >
+              <FilterAltOutlined color="primary" />
+              <IconButton
+                onClick={handleMenuOpen}>
+                <ArrowDropDownIcon />
+              </IconButton>
+            </Grid>
           </Grid>
-        </Grid>
-      )}
-
-      {isSmallView && (
-        <Grid container alignItems="center" justifyContent={"center"}>
-          <Grid item>
-            <FilterAltOutlined color="primary" />
-            <IconButton onClick={handleMenuOpen}>
-              <ArrowDropDownIcon />
-            </IconButton>
-          </Grid>
-        </Grid>
-      )}
+        )
+      }
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}

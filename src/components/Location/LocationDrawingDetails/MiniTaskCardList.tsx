@@ -39,8 +39,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
           rootState === "to-me"
             ? taskListFilter.toMe.ongoing
             : rootState === "from-me"
-            ? taskListFilter.fromMe.ongoing
-            : taskListFilter.hidden.ongoing;
+              ? taskListFilter.fromMe.ongoing
+              : taskListFilter.hidden.ongoing;
         emptyDiv = !ongoingFilter;
         break;
 
@@ -49,8 +49,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
           rootState === "to-me"
             ? taskListFilter.toMe.done
             : rootState === "from-me"
-            ? taskListFilter.fromMe.done
-            : taskListFilter.hidden.done;
+              ? taskListFilter.fromMe.done
+              : taskListFilter.hidden.done;
         emptyDiv = !doneFilter;
         break;
 
@@ -70,7 +70,7 @@ const MiniTaskCardList: React.FC<IProps> = ({
     return (
       <>
         {emptyDiv ? (
-          <>Select Any Filter </>
+          <></>
         ) : (
           <Box
             sx={{
@@ -80,17 +80,18 @@ const MiniTaskCardList: React.FC<IProps> = ({
             }}
             style={{
               borderRadius: "10px",
-              border: "solid 1px green",
               height: "max-content",
               minWidth: "54px",
               marginTop: "15px",
               boxShadow: "0px 4px 4px 0px #00000040",
               backgroundColor: `${currentTaskColor}`,
-              padding: "5px 6px 6px 6px",
+              padding: "5px 4px 4px 4px",
             }}
             onClick={() => handleSelectedTask(task)}
           >
-            <Minicardheading sx={{}}>{task.taskUID}</Minicardheading>
+            <Minicardheading sx={{}}>
+              {task.taskUID}
+            </Minicardheading>
             <MinicardTypography sx={{ width: "100%", textAlign: "center" }}>
               {rootState}
             </MinicardTypography>

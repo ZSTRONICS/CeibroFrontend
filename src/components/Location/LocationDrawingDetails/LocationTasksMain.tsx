@@ -68,11 +68,10 @@ function LocationTasksMain(props: IProps) {
   return (
     <>
       {loadingAllTasksAllEvents ? (
-        <Box
-          style={{
-            height: `${windowActualHeight}px`,
-          }}
-        >
+        <Box style={{
+          transition: "all 0.30s linear",
+          height: `${windowActualHeight}px`,
+        }}>
           {Array.from({ length: 6 }).map((_, index) => (
             <TaskCardSkeleton key={index} />
           ))}
@@ -85,7 +84,7 @@ function LocationTasksMain(props: IProps) {
           itemCount={allTasks.length}
           overscanCount={20}
           layout="vertical"
-          onScroll={() => {}}
+          onScroll={() => { }}
           itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
           width={"100%"}
         >

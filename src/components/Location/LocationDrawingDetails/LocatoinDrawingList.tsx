@@ -76,8 +76,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -87,6 +87,11 @@ const LocatoinDrawingList = ({
     events: filteTaskEvents || [],
   };
 
+
+  const [isfullcard, setIsfullcard] = useState(true);
+
+
+
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
       setBtnRotate(true);
@@ -94,6 +99,9 @@ const LocatoinDrawingList = ({
       setS1(true);
       setS2(false);
       updateDimensions();
+      setTimeout(() => {
+        setIsfullcard(true);
+      }, 5000);
     } else if (s1 === false && s2 === false && s3 === true) {
       setBtnRotate(true);
       setBtnRightRotate(false);
@@ -102,6 +110,9 @@ const LocatoinDrawingList = ({
       setS3(false);
       setHeadersize(true);
       updateDimensions();
+      setTimeout(() => {
+        setIsfullcard(true);
+      }, 5000);
     } else {
       setBtnRightRotate(true);
       setBtnRotate(false);
@@ -109,6 +120,9 @@ const LocatoinDrawingList = ({
       setS2(true);
       setS3(false);
       updateDimensions();
+      setTimeout(() => {
+        setIsfullcard(false);
+      }, 5000);
     }
   };
 
@@ -166,9 +180,9 @@ const LocatoinDrawingList = ({
           ref={taskContainerRef}
           item
           md={s1 ? 3 : 1.5}
-          lg={s1 ? 3 : 1}
-          xl={s1 ? 3 : 0.7}
-          xs={s1 ? 3.1 : 0.8}
+          lg={s1 ? 3 : 1.1}
+          xl={s1 ? 3 : 0.9}
+          xs={s1 ? 3.1 : 0.7}
           sx={{
             ...sideBarStyle,
             position: "relative",
@@ -190,6 +204,7 @@ const LocatoinDrawingList = ({
                   height: `${containerHeight}px`,
                   overflowY: "auto",
                   padding: "6px 6px",
+                  transition: "all 0.30s linear",
                 }}
               >
                 <MiniTaskCardList
@@ -205,18 +220,26 @@ const LocatoinDrawingList = ({
                 />
               </Box>
             ) : (
-              <LocationTasksMain
-                windowActualHeight={containerHeight}
-                allTasks={taskFiltering(
-                  allTasksAllEvents.allTasks,
-                  taskListFilter,
-                  taskSearchText
-                )}
-                selectedTaskId={selectedTask?._id}
-                taskListFilter={taskListFilter}
-                loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                handleSelectedTask={(task) => setSelectedTask(task)}
-              />
+              isfullcard && (
+                <Box
+                  sx={{
+                    transition: 'all 0.30s linear',
+                  }}
+                >
+                  <LocationTasksMain
+                    windowActualHeight={containerHeight}
+                    allTasks={taskFiltering(
+                      allTasksAllEvents.allTasks,
+                      taskListFilter,
+                      taskSearchText
+                    )}
+                    selectedTaskId={selectedTask?._id}
+                    taskListFilter={taskListFilter}
+                    loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                    handleSelectedTask={(task) => setSelectedTask(task)}
+                  />
+                </Box>
+              )
             )}
           </Box>
           <CollapsesBtn btnRotate={btnRotate} collapseDiv={collapseDiv1} />
@@ -225,9 +248,8 @@ const LocatoinDrawingList = ({
           item
           ref={taskDetailContRef}
           md={s2 ? 4.5 : 3}
-          lg={s2 ? 5 : 3}
-          xl={s2 ? 5.4 : 3.1}
-          id="taskDetailContainer"
+          lg={s2 ? 5 : 3.1}
+          xl={s2 ? 5.1 : 3}
           sx={{
             position: "relative",
             height: `${windowActualHeight - 68}px`,
@@ -258,8 +280,8 @@ const LocatoinDrawingList = ({
         <Grid
           item
           md={s3 ? 7.1 : 5.5}
-          lg={s3 ? 7.7 : 5.7}
-          xl={s3 ? 7.9 : 5.6}
+          lg={s3 ? 7.5 : 5.6}
+          xl={s3 ? 7.8 : 5.7}
           sx={{
             position: "relative",
             backgroundColor: "white",
@@ -267,6 +289,7 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            transition: "all 0.30s linear",
             ...noTaskSelectedStyle,
           }}
         >

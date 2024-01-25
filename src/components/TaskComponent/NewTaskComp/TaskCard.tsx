@@ -107,24 +107,24 @@ const TaskCard = React.memo((props: IProps) => {
       onMouseOut={() => setIsMouseOver(false)}
       sx={{
         width: "100%",
-        // minWidth: '60%',
-        // maxWidth: 320,
+        minWidth: 290,
+        maxWidth: 320,
         cursor: "pointer",
         border: `${!isLocationTask && isCanceled
-          ? `3px solid ${cardBorderColor}`
-          : isLocationTask
-            ? "none"
-            : "1px solid #818181"
+            ? `3px solid ${cardBorderColor}`
+            : isLocationTask
+              ? "none"
+              : "1px solid #818181"
           }`,
-        borderRadius: "0px 0px 8px 0px",
+        borderRadius: "8px",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
         WebkitBoxShadow: `${isSelectedTask === true
-          ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
-          : !seenBy.includes(userId)
-            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
-            : "none"
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : !seenBy.includes(userId)
+              ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
+              : "none"
           }`,
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
@@ -139,10 +139,9 @@ const TaskCard = React.memo((props: IProps) => {
       id={_id}
       onClick={() => handleClick(task)}
     >
-      <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative", }}>
+      <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative" }}>
         <Span
           sx={{
-            marginTop: '7px',
             color: "0d0d0d",
             fontWeight: 600,
             border: "1px solid #818181",
@@ -152,8 +151,8 @@ const TaskCard = React.memo((props: IProps) => {
             borderTopLeftRadius: "4px",
             ml: "-1px",
             WebkitBoxShadow: `${isSelectedTask || isMouseOver
-              ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
-              : "none"
+                ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
+                : "none"
               }`,
           }}
         >
@@ -229,7 +228,7 @@ const TaskCard = React.memo((props: IProps) => {
             {cardLabel !== "From" && assignToNames()}
           </Box>
 
-          {!isLocationTask && project?.title && (
+          {project?.title && (
             <TaskCardLabel
               className="textOverflowDescription"
               style={{ paddingLeft: "2px", whiteSpace: "nowrap" }}
@@ -250,7 +249,7 @@ const TaskCard = React.memo((props: IProps) => {
         <SubHeadingTag
           className="ellipsis"
           sx={{
-            maxWidth: "270px",
+            maxWidth: "300px",
             color: "black",
             pb: 0.1,
             WebkitLineClamp: 1,
@@ -265,7 +264,7 @@ const TaskCard = React.memo((props: IProps) => {
           className="textOverflowDescription"
           sx={{
             pb: 0.5,
-            maxWidth: "270px",
+            maxWidth: "350px",
             WebkitLineClamp: 2,
             wordWrap: "break-word",
             wordBreak: "break-all",

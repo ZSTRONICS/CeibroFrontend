@@ -44,7 +44,10 @@ const LocationTaskHead = ({
           sx={{
             width: "100%",
             borderBottom: "1px solid #818181",
-            padding: "10px 10px 16px",
+            padding: "10px 13px 16px",
+            '@media screen and (max-width: 1200px)': {
+
+            },
             "& .MuiTabs-flexContainer": {
               flexWrap: "wrap",
             },
@@ -58,11 +61,25 @@ const LocationTaskHead = ({
           onChange={handleChange}
           aria-label="lab API tabs example"
         >
-          <Tab sx={{ ...tabStyles }} label="Task" value="1" />
-          <Tab sx={{ ...tabStyles }} label="Image" value="2" />
+          <Tab sx={{
+            ...tabStyles, marginRight: '10px',
+            minWidth: '60px',
+            maxWidth: '60px',
+          }} label="Task" value="1" />
+          <Tab
+            sx={{
+              ...tabStyles,
+              minWidth: '60px',
+              maxWidth: '60px',
+              '@media screen and (max-width: 900px)': {
+                marginLeft: '0px',
+              },
+            }}
+            label="Image"
+            value="2"
+          />
         </TabList>
-
-        <Box style={HeadStyles.head_filterization}>
+        <Box style={HeadStyles.head_filterization}  >
           <TaskFilters isSmallView={isSmallView} />
         </Box>
         <Box
@@ -81,7 +98,7 @@ const LocationTaskHead = ({
           />
           <IconButton
             style={{ color: "#0076C8", padding: "0px" }}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <SortIcon />
           </IconButton>

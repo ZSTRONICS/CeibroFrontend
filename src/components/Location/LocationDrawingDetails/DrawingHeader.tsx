@@ -177,9 +177,9 @@ export default function DrawingHeader(props: DrawingProps) {
       </Grid>
       <Grid
         item
-        md={headersize ? 5.7 : 7.2}
-        lg={headersize ? 5.8 : 7.8}
-        xl={headersize ? 5.7 : 8}
+        md={headersize ? 5.6 : 7.1}
+        lg={headersize ? 5.7 : 7.8}
+        xl={headersize ? 5.8 : 7.9}
         sx={{
           transition: "all linear 0.30s",
           // width: headersize ? "50%" : "68%",
