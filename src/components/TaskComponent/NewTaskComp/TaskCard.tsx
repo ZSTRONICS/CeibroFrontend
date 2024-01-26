@@ -107,8 +107,8 @@ const TaskCard = React.memo((props: IProps) => {
       onMouseOut={() => setIsMouseOver(false)}
       sx={{
         width: "100%",
-        minWidth: 290,
-        maxWidth: 320,
+        // minWidth: 290,
+        // maxWidth: 320,
         cursor: "pointer",
         border: `${
           !isLocationTask && isCanceled

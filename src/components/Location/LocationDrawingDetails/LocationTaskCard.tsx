@@ -154,7 +154,8 @@ function LocationTaskCard(props: IProps) {
   return (
     <Box
       sx={{
-        width: 340,
+        maxWidth: "93%",
+        width: "100%",
         display: "flex",
         alignItems: "center",
         borderRadius: "8px",
