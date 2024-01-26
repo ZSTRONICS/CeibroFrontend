@@ -92,7 +92,7 @@ function CustomDropDown(props: IProps) {
       let updatedSelected = options.allOptions.find(
         (item) => item.label === selected
       );
-      handleChangeValues(updatedSelected?.value, name);
+      handleChangeValues(updatedSelected?._id, name);
     }
     setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
     setSortedOptions(allGroupedData);

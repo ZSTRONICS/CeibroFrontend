@@ -121,14 +121,17 @@ function CreateNewTask() {
       const getAllProjectOptions = getDropdownOptions(
         allProjects,
         "title",
+        "title",
         "_id"
       );
       //todo : add recentProjects
       const getRecentProjectOptions = getDropdownOptions(
         allProjects,
         "title",
+        "title",
         "_id"
       );
+
       setProjectOptions({
         allOptions: getAllProjectOptions,
         recentOptions: getRecentProjectOptions,

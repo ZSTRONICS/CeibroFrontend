@@ -47,7 +47,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   const handleSearchTextChange = (newSearchText: string) => {
     const lowerSearchString = newSearchText.toLowerCase();
     const filteredDrawingFiles = selectedDrawingFiles.filter(
-      (file) =>
+      (file: any) =>
         file.fileName.toLowerCase().includes(lowerSearchString) ||
         file.floor.floorName.includes(lowerSearchString)
     );

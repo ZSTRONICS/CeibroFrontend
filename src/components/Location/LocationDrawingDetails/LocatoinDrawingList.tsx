@@ -11,6 +11,7 @@ import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT, searchInData } from "utills/common";
 import CollapsesBtn from "./CollapsesLeftBtn";
@@ -40,6 +41,7 @@ const LocatoinDrawingList = ({
   const [size, ratio] = useWindowSize();
   const [windowWidth, windowHeight] = size;
   const [selectedTask, setSelectedTask] = useState<ITask | null>(null);
+  const { drawingId } = useParams<any>();
   const [taskHeaderHeight, setTaskHeaderHeight] = useState<number>(0);
   const [s1, setS1] = useState<boolean>(true);
   const [s2, setS2] = useState<boolean>(false);
@@ -50,6 +52,22 @@ const LocatoinDrawingList = ({
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
+
+  // let allDrawingTaskList: ITask[] = [];
+  // if (drawingId) {
+  //   allPins.forEach((pin) => {
+  //     console.log("drawingId", drawingId, pin.drawingId);
+  //     if (pin.drawingId === drawingId) {
+  //       allTasks.forEach((task) => {
+  //         console.log("task._id", task._id === pin.taskData._id);
+  //         if (task._id === pin.taskData._id) {
+  //           allDrawingTaskList.push(task);
+  //         }
+  //       });
+  //     }
+  //   });
+  // }
+  // console.log("allDrawingTaskList", allDrawingTaskList);
   const {
     containerRef: taskContainerRef,
     dimensions: taskConDimension,
@@ -247,6 +265,7 @@ const LocatoinDrawingList = ({
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             overflow: "auto",
+            overflowX: "hidden",
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
           id="taskDetailContainer"

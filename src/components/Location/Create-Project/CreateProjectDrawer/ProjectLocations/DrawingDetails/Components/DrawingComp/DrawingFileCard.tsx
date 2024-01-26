@@ -13,8 +13,6 @@ interface IRouteParams {
 }
 
 function DrawingFileCard({ drawing }: Props) {
-  console.log(drawing, "drawing....");
-
   const history = useHistory();
   const { projectId, groupId } = useParams<IRouteParams>();
   const { _id, fileName, updatedAt, floor } = drawing;
