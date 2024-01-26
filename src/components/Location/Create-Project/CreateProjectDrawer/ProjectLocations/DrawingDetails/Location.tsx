@@ -48,17 +48,16 @@ function Location() {
        <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
         <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
       </Box> */}
-      <Grid container spacing={0} sx={{ width: "98%", margin: "auto" }}>
+      <Grid container gap={1.8} sx={{ width: "98%", margin: "auto" }}>
         <Grid
           item
-          md={4}
-          lg={3}
+          md={4.2}
+          lg={3.4}
           xl={3}
           sx={{
             ...sideBarStyle,
             px: 2,
             py: 1.5,
-            marginRight: 2,
           }}
         >
           <ExpandableProjectList
@@ -70,7 +69,9 @@ function Location() {
         </Grid>
         <Grid
           item
-          md={3}
+          md={4.7}
+          lg={3.9}
+          xl={3}
           sx={{
             ...sideBarStyle,
             ...(!groupId ? emptyDrawingContainer : {}),
@@ -93,8 +94,8 @@ function Location() {
           container
           justifyContent={"center"}
           alignItems={"center"}
-          md={3.5}
-          lg={5.6}
+          md={2.6}
+          lg={4.4}
           xl={5.7}
           sx={{
             ...sideBarStyle,

@@ -1,4 +1,5 @@
-import ArrowBackSharpIcon from "@mui/icons-material/ArrowBackSharp";
+
+import { ArrowBackSharp } from "@mui/icons-material";
 import {
   Box,
   Divider,
@@ -6,7 +7,7 @@ import {
   IconButton,
   MenuItem,
   Select,
-  Typography,
+  Typography
 } from "@mui/material";
 import { Heading2 } from "components/CustomTags";
 import DrawingGroupCard from "./DrawingGroupCard";
@@ -57,8 +58,6 @@ export default function DrawingHeader(props: DrawingProps) {
   };
 
   const renderGroupOptions = (options: Group[], getValueKey: string) => {
-    // console.log(options, "options");
-
     return (
       options &&
       options?.map((option) => (
@@ -101,12 +100,17 @@ export default function DrawingHeader(props: DrawingProps) {
     />
   );
   return (
-    <Grid container gap={1.9}>
+    <Grid container gap={1.8}>
       <Grid
         item
-        xs={12}
-        sx={{ transition: "all linear 0.30s", width: "50%" }}
-        md
+        // xs={1}
+        // md={6.2}
+        // lg={6.2}
+        // xl={6.1}
+        md={headersize ? 6.2 : 4.7}
+        lg={headersize ? 6.2 : 4.3}
+        xl={headersize ? 6.1 : 4}
+        sx={{ transition: "all linear 0.30s", width: "50%", backgroundColor: 'white' }}
       >
         {renderBox(
           <>
@@ -121,24 +125,20 @@ export default function DrawingHeader(props: DrawingProps) {
               }}
               onClick={handleback}
             >
-              <ArrowBackSharpIcon />
+              <ArrowBackSharp />
             </IconButton>
             {renderDivider()}
-            {/* //// */}
-            {/* {renderBox( */}
-            <Typography sx={{ width: "37%" }} variant="body1">
+            <Typography sx={{ width: "39%", }} variant="body1">
               {selectedProject &&
                 selectedProject.length > 0 &&
                 selectedProject[0].title}
             </Typography>
-            {/* "50%"
-            )} */}
             {renderDivider()}
             {renderBox(
               <Select
                 variant="standard"
                 disableUnderline
-                sx={{ width: "100%", height: "52px", marginRight: "16px" }}
+                sx={{ width: "100%", height: "52px", marginRight: "16px", }}
                 value={selectedGroup._id || ""}
                 renderValue={() => selectedGroup.groupName}
                 onChange={(e) => handleChangeCallback(e, "group")}
@@ -162,9 +162,6 @@ export default function DrawingHeader(props: DrawingProps) {
                     >
                       Groups
                     </Heading2>
-                    {/* <IconButton onClick={() => { }}>
-                      <assets.AddIcon sx={{ color: "#0076C8" }} />
-                    </IconButton> */}
                   </Box>
                 </MenuItem>
                 {renderGroupOptions(selectedProjectGroups, "groupName")}
@@ -177,12 +174,13 @@ export default function DrawingHeader(props: DrawingProps) {
       <Grid
         item
         md={headersize ? 5.6 : 7.1}
-        lg={headersize ? 5.7 : 7.8}
-        xl={headersize ? 5.8 : 7.9}
+        lg={headersize ? 5.6 : 7.5}
+        xl={headersize ? 5.7 : 7.8}
         sx={{
           transition: "all linear 0.30s",
-          // width: headersize ? "50%" : "68%",
+          backgroundColor: 'white',
         }}
+
       >
         {renderBox(
           <>

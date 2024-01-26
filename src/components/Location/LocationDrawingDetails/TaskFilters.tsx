@@ -205,9 +205,13 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
             }} xl={1} item>
               <IconButton
                 sx={{
-                  marginLeft: '22px',
+                  marginLeft: '20px',
+                  '@media screen and (min-width: 1370px) and (max-width: 1535px)': {
+                    transform: 'translateX(10px)',
+                    marginLeft: '0px',
+                  },
                   '@media screen and (max-width: 1370px)': {
-                    marginRight: '20px',
+                    marginRight: '15px',
                     marginLeft: '0px',
                   },
                 }}

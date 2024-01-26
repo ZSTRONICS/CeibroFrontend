@@ -184,14 +184,26 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               xs={2}
               gap={1}
               container
-              justifyContent="flex-end"
               flexWrap={"nowrap"}
+              sx={{
+                marginLeft: '12px',
+                marginTop: '10px',
+                '@media (min-width: 1200px) and (max-width: 1229px)': {
+                  marginLeft: '6px',
+                },
+                '@media (min-width: 0px) and (max-width: 1019px)': {
+                  marginLeft: '6px',
+                }
+              }
+              }
             >
               <IconButton
-                style={{ color: "#0076C8", padding: "0px" }}
+                style={{ color: "#0076C8", padding: "0px", }}
                 onClick={handleSortingDrawingFile}
               >
-                <SortIcon />
+                <Box sx={{ marginLeft: '12px', transform: 'translateX(5px)' }} >
+                  <SortIcon />
+                </Box>
               </IconButton>
               <GenericMenu
                 icon={<assets.AddIcon sx={{ color: "#0076C8" }} />}
@@ -205,7 +217,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
                   },
                   {
                     menuName: "From Ceibro files",
-                    callBackHandler: () => {},
+                    callBackHandler: () => { },
                   },
                 ]}
                 key={1}
@@ -251,7 +263,8 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             />
           }
         />
-      )}
+      )
+      }
     </>
   );
 }

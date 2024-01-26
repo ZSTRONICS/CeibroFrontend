@@ -92,8 +92,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -109,6 +109,9 @@ const LocatoinDrawingList = ({
       setBtnRightRotate(true);
       setS1(true);
       setS2(false);
+      setTimeout(() => {
+        setIsfullcard(true);
+      }, 350);
       updateDimensionsAndFullCard();
     } else if (s1 === false && s2 === false && s3 === true) {
       setBtnRotate(true);
@@ -137,6 +140,7 @@ const LocatoinDrawingList = ({
       setHeadersize(true);
     } else {
       setBtnRightRotate(false);
+      setBtnRotate(false);
       setS1(false);
       setS2(false);
       setS3(true);
@@ -253,7 +257,7 @@ const LocatoinDrawingList = ({
         <Grid
           item
           ref={taskDetailContRef}
-          md={s2 ? 4.5 : 3}
+          md={s2 ? 4.5 : 3.1}
           lg={s2 ? 5 : 3.1}
           xl={s2 ? 5.1 : 3}
           sx={{
@@ -264,23 +268,23 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            overflow: "auto",
-            overflowX: "hidden",
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
           id="taskDetailContainer"
         >
-          {selectedTask ? (
-            <TaskDetails
-              isSmallView={!s2}
-              taskDetailContDimension={taskDetailContDimension}
-              task={selectedTaskandEvents}
-              userSubStateLocal={userSubStateLocal}
-              TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
-            />
-          ) : (
-            <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
-          )}
+          <Box sx={{ overflow: "auto", }} >
+            {selectedTask ? (
+              <TaskDetails
+                isSmallView={!s2}
+                taskDetailContDimension={taskDetailContDimension}
+                task={selectedTaskandEvents}
+                userSubStateLocal={userSubStateLocal}
+                TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
+              />
+            ) : (
+              <Heading2 sx={{ fontWeight: 600 }}>No Task Selected!</Heading2>
+            )}
+          </Box>
           <CollapsesRightBtn
             btnRightRotate={btnRightRotate}
             collapseDiv={collapseDiv2}
@@ -299,6 +303,7 @@ const LocatoinDrawingList = ({
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             transition: "all 0.30s linear",
+            // width: '100%',
             ...noTaskSelectedStyle,
           }}
         >
