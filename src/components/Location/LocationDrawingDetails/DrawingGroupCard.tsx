@@ -5,7 +5,6 @@ import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { GenericMenu } from "components/GenericComponents";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
-import { Drawing } from "constants/interfaces";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
@@ -24,18 +23,6 @@ function DrawingGroupCard({ group, projectName }: Props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { projectId, groupId } = useParams<RouteParams>();
-  const handleSetDrawingFiles = (
-    drawings: Drawing[],
-    group: Group,
-    projectTitle: String
-  ) => {
-    dispatch({
-      type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
-      payload: { drawings, groupName: group.groupName, projectTitle },
-    });
-    const path = `/location/${projectId}/${group._id}`;
-    history.push(path);
-  };
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
     dispatch(
@@ -73,9 +60,6 @@ function DrawingGroupCard({ group, projectName }: Props) {
             gap: 0.5,
             justifyContent: "start",
             alignItems: "center",
-            WebkitBoxShadow: `${
-              isSelectedGroup ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)" : "none"
-            }`,
             "&:hover": {
               cursor: "pointer",
             },
@@ -132,7 +116,14 @@ function DrawingGroupCard({ group, projectName }: Props) {
               justifyContent: "center",
             }}
           >
-            <Box sx={{ width: "50%", display: "flex", justify: "content" }}>
+            <Box
+              sx={{
+                width: "50%",
+                display: "flex",
+                justify: "content",
+                cursor: "default",
+              }}
+            >
               {publicGroup ? (
                 <PublicOutlinedIcon sx={{ p: 0.3, color: "#0076C8" }} />
               ) : (
@@ -152,11 +143,11 @@ function DrawingGroupCard({ group, projectName }: Props) {
                 options={[
                   {
                     menuName: "Mark as private",
-                    callBackHandler: () => {},
+                    callBackHandler: () => handleGroupUpdated(_id, false),
                   },
                   {
                     menuName: "Mark as public",
-                    callBackHandler: () => {},
+                    callBackHandler: () => handleGroupUpdated(_id, true),
                   },
                 ].filter(
                   (menu) =>

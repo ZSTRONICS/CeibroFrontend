@@ -8,7 +8,6 @@ import {
   Select,
   Typography,
 } from "@mui/material";
-import assets from "assets";
 import { Heading2 } from "components/CustomTags";
 import DrawingGroupCard from "./DrawingGroupCard";
 
@@ -163,9 +162,9 @@ export default function DrawingHeader(props: DrawingProps) {
                     >
                       Groups
                     </Heading2>
-                    <IconButton onClick={() => { }}>
+                    {/* <IconButton onClick={() => { }}>
                       <assets.AddIcon sx={{ color: "#0076C8" }} />
-                    </IconButton>
+                    </IconButton> */}
                   </Box>
                 </MenuItem>
                 {renderGroupOptions(selectedProjectGroups, "groupName")}

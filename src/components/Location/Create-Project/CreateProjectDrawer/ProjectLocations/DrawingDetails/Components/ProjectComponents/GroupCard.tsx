@@ -156,7 +156,12 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                   }}
                 >
                   <Box
-                    sx={{ width: "50%", display: "flex", justify: "content" }}
+                    sx={{
+                      width: "50%",
+                      display: "flex",
+                      justify: "content",
+                      cursor: "default",
+                    }}
                   >
                     {publicGroup ? (
                       <PublicOutlinedIcon sx={{ p: 0.3, color: "#0076C8" }} />
