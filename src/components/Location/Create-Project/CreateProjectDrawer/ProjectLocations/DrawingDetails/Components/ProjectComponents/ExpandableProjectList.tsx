@@ -13,12 +13,34 @@ interface IProps {
 }
 const ExpandableProjectList: React.FC<IProps> = (props) => {
   const { allProjects, groups, windowActualHeight, allFloors } = props;
+  const [filteredAllProjects, setFilteredAllProjects] = useState<Project[]>([]);
+  const [filteredGroups, setFilteredGroups] = useState<Group[]>([]);
   const [searchText, setSearchText] = useState("");
   const [contHeight, setContHeight] = useState<number>(50);
   const contRef: any = useRef(null);
+
   const handleSearchTextChange = (newSearchText: string) => {
+    const filteredGroups = groups.filter((group) =>
+      group.groupName.toLowerCase().includes(newSearchText.toLocaleLowerCase())
+    );
+    const filteredProjects = allProjects.filter((project) => {
+      let projectIdIsExist = filteredGroups.some(
+        (filteredGroup) => filteredGroup.projectId === project._id
+      );
+      if (projectIdIsExist) return true;
+      return project.title
+        .toLowerCase()
+        .includes(newSearchText.toLocaleLowerCase());
+    });
+    setFilteredAllProjects(filteredProjects);
+    setFilteredGroups(filteredGroups);
     setSearchText(newSearchText);
   };
+
+  useEffect(() => {
+    allProjects && setFilteredAllProjects(allProjects);
+  }, [allProjects]);
+
   useEffect(() => {
     if (contRef.current) {
       setContHeight(contRef.current.clientHeight + 25);
@@ -41,10 +63,10 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
           overflow: "auto",
         }}
       >
-        {allProjects
+        {filteredAllProjects
           .sort((a: any, b: any) => b.isFavoriteByMe - a.isFavoriteByMe)
           .map((project) => {
-            const groupDictionary = dataGroupById(groups, "projectId");
+            const groupDictionary = dataGroupById(filteredGroups, "projectId");
             const projectGroups = groupDictionary[project._id] || [];
             const floorDictionary = dataGroupById(allFloors, "projectId");
             const projectFloors = floorDictionary[project._id] || [];
@@ -57,7 +79,7 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
               />
             );
           })}
-      </Box >
+      </Box>
     </>
   );
 };
