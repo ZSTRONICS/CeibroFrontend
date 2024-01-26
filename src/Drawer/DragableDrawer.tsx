@@ -48,7 +48,6 @@ function DragableDrawer({ isOpen, title, children, closeModal }: Props) {
     const { clientWidth, clientHeight } = taskDetailContainer;
     containerWidth = clientWidth - 6;
     taskDetailContHeight = clientHeight;
-    console.log("taskDetailContHeight", taskDetailContHeight);
   }
   const windowWidth = window.innerWidth;
   const windowHeight = window.innerHeight;

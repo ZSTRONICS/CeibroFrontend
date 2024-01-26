@@ -11,7 +11,7 @@ import {
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
-import { useOpenCloseModal } from "hooks";
+import { useDynamicDimensions, useOpenCloseModal } from "hooks";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
@@ -26,8 +26,10 @@ interface IProps {
   userSubStateLocal: string;
   handleClick?: (task: ITask) => void;
   taskDetailContHeight?: number;
+  isSmallView?: boolean;
 }
 function TaskDetails(props: IProps) {
+  const { isSmallView, task } = props;
   const {
     dueDate,
     taskUID,
@@ -44,7 +46,7 @@ function TaskDetails(props: IProps) {
     _id,
     doneCommentsRequired,
     doneImageRequired,
-  } = props.task;
+  } = task;
   const showFullView = localStorage.getItem("showFullView");
   const [isShowFullView, setIsShowFullView] = useState(false);
   const [isPending, startTransition] = useTransition();
@@ -80,7 +82,18 @@ function TaskDetails(props: IProps) {
   const uniqueImageFiles = Array.from(new Set(allFiles));
   const containerRef: any = useRef(null);
   const [heightOffset, setHeightOffset] = useState<number>(0);
+  const [taskHeaderWidth, setTaskHeaderWidth] = useState<number>(0);
   const [initialRender, setInitialRender] = useState(true);
+  const {
+    containerRef: taskHeadRef,
+    dimensions: taskHeadDimensions,
+    updateDimensions,
+  } = useDynamicDimensions();
+  useEffect(() => {
+    updateDimensions();
+    setTaskHeaderWidth(taskHeadDimensions.width);
+  }, [isSmallView, taskHeadDimensions.height, taskHeadDimensions.width]);
+  console.log("taskHeaderHeiht", taskHeaderWidth, taskHeadDimensions);
   useEffect(() => {
     if (containerRef.current) {
       const newTop = containerRef.current.getBoundingClientRect().top;
@@ -113,7 +126,9 @@ function TaskDetails(props: IProps) {
 
   return (
     <Box
+      ref={taskHeadRef}
       key={_id}
+      border={"1px solid"}
       sx={{
         paddingTop: 1.25,
         px: 2,

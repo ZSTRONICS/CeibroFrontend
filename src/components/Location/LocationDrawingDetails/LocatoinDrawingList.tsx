@@ -61,10 +61,10 @@ const LocatoinDrawingList = ({
     updateDimensions: updateTaskDetailContDimensions,
   } = useDynamicDimensions();
   const [taskSearchText, setTaskSearchText] = useState("");
-  console.log(
-    "taskDetailContDimension.height>>",
-    taskDetailContDimension.height
-  );
+  // console.log(
+  //   "taskDetailContDimension.height>>",
+  //   taskDetailContDimension.height
+  // );
   useEffect(() => {
     if (taskDetailContRef.current) {
       updateTaskDetailContDimensions();
@@ -76,8 +76,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -87,10 +87,7 @@ const LocatoinDrawingList = ({
     events: filteTaskEvents || [],
   };
 
-
   const [isfullcard, setIsfullcard] = useState(true);
-
-
 
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
@@ -101,7 +98,7 @@ const LocatoinDrawingList = ({
       updateDimensions();
       setTimeout(() => {
         setIsfullcard(true);
-      }, 5000);
+      }, 1000);
     } else if (s1 === false && s2 === false && s3 === true) {
       setBtnRotate(true);
       setBtnRightRotate(false);
@@ -112,7 +109,7 @@ const LocatoinDrawingList = ({
       updateDimensions();
       setTimeout(() => {
         setIsfullcard(true);
-      }, 5000);
+      }, 1000);
     } else {
       setBtnRightRotate(true);
       setBtnRotate(false);
@@ -122,7 +119,7 @@ const LocatoinDrawingList = ({
       updateDimensions();
       setTimeout(() => {
         setIsfullcard(false);
-      }, 5000);
+      }, 1000);
     }
   };
 
@@ -223,7 +220,7 @@ const LocatoinDrawingList = ({
               isfullcard && (
                 <Box
                   sx={{
-                    transition: 'all 0.30s linear',
+                    transition: "all 0.30s linear",
                   }}
                 >
                   <LocationTasksMain
@@ -261,9 +258,11 @@ const LocatoinDrawingList = ({
             overflow: "auto",
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
+          id="taskDetailContainer"
         >
           {selectedTask ? (
             <TaskDetails
+              isSmallView={!s2}
               taskDetailContHeight={taskDetailContDimension.height}
               task={selectedTaskandEvents}
               userSubStateLocal={userSubStateLocal}

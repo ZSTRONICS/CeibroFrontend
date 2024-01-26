@@ -158,16 +158,11 @@ function LocationTaskCard(props: IProps) {
         display: "flex",
         alignItems: "center",
         borderRadius: "8px",
-        // border: `1px solid ${currentTaskColor}`,
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         background: `${currentTaskColor}`,
-        marginLeft: '16px',
-        marginBottom: '10px',
-        height: 'max-content',
-        border: 'solid 1px green',
-        '@media screen and (max-width: 1330px)': {
-          width: '90%',
-        },
+        border: `1px solid ${currentTaskColor}`,
+        marginLeft: "16px",
+        marginBottom: "10px",
       }}
     >
       {currentTaskStateAndIcon && (
