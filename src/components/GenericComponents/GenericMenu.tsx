@@ -45,6 +45,7 @@ const GenericMenu: React.FC<MenuProps> = ({
         aria-haspopup="true"
         onClick={handleMenuClick}
         disabled={isMenuDisabled || isTaskSelected}
+        disableRipple
       >
         {!icon ? (
           <assets.MoreVertOutlinedIcon

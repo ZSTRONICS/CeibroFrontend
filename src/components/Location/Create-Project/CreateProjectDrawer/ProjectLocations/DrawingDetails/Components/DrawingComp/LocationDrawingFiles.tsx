@@ -19,6 +19,7 @@ interface Props {
 }
 function LocationDrawingFiles({ windowActualHeight }: Props) {
   const [searchText, setSearchText] = useState("");
+  const [selectedGroupDrawings, setSelectedGroupDrawings] = useState([]);
   const searchContainer: any = useRef(null);
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [drawingFile, setDrawingFile] = useState<any>([]);
@@ -32,6 +33,11 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   const { groupId } = useParams<any>();
   const [slectedFloor, setSelectedFloor] = useState<Floor | null>({} as Floor);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    selectedDrawingFiles && setSelectedGroupDrawings(selectedDrawingFiles);
+  }, [selectedDrawingFiles]);
+
   useEffect(() => {
     if (searchContainer.current) {
       setContHeight(searchContainer.current.clientHeight + 25);
@@ -39,6 +45,13 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   }, [windowActualHeight]);
 
   const handleSearchTextChange = (newSearchText: string) => {
+    const lowerSearchString = newSearchText.toLowerCase();
+    const filteredDrawingFiles = selectedDrawingFiles.filter(
+      (file) =>
+        file.fileName.toLowerCase().includes(lowerSearchString) ||
+        file.floor.floorName.includes(lowerSearchString)
+    );
+    setSelectedGroupDrawings(filteredDrawingFiles);
     setSearchText(newSearchText);
   };
   const findSelectedFloor = (selectedFloor: any) => {
@@ -208,8 +221,8 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             overflow: "auto",
           }}
         >
-          {selectedDrawingFiles.length > 0 ? (
-            selectedDrawingFiles.map((drawing: any) => {
+          {selectedGroupDrawings.length > 0 ? (
+            selectedGroupDrawings.map((drawing: any) => {
               return <DrawingFileCard drawing={drawing} />;
             })
           ) : (
