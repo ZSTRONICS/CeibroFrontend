@@ -39,7 +39,8 @@ const ExpandableProjectList: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     allProjects && setFilteredAllProjects(allProjects);
-  }, [allProjects]);
+    groups && setFilteredGroups(groups);
+  }, [allProjects, groups]);
 
   useEffect(() => {
     if (contRef.current) {
