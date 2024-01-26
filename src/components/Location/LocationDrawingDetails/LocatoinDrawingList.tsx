@@ -9,7 +9,7 @@ import {
 } from "constants/interfaces";
 import { useDynamicDimensions } from "hooks";
 import useWindowSize from "hooks/useWindowSize";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "redux/reducers";
 import { HEADER_HEIGHT, searchInData } from "utills/common";
@@ -46,7 +46,7 @@ const LocatoinDrawingList = ({
   const [s3, setS3] = useState<boolean>(false);
   const [btnRotate, setBtnRotate] = useState<boolean>(true);
   const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
-
+  const [isfullcard, setIsfullcard] = useState(true);
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -61,15 +61,13 @@ const LocatoinDrawingList = ({
     updateDimensions: updateTaskDetailContDimensions,
   } = useDynamicDimensions();
   const [taskSearchText, setTaskSearchText] = useState("");
-  // console.log(
-  //   "taskDetailContDimension.height>>",
-  //   taskDetailContDimension.height
-  // );
-  useEffect(() => {
-    if (taskDetailContRef.current) {
+  const updateDimensionsAndFullCard = () => {
+    updateDimensions();
+    setTimeout(() => {
+      setIsfullcard(true);
       updateTaskDetailContDimensions();
-    }
-  }, [taskContainerRef, taskDetailContDimension.height, windowHeight]);
+    }, 1000);
+  };
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
   const userSubStateLocal: string =
@@ -87,18 +85,13 @@ const LocatoinDrawingList = ({
     events: filteTaskEvents || [],
   };
 
-  const [isfullcard, setIsfullcard] = useState(true);
-
   const collapseDiv1 = () => {
     if (s1 === false && s2 === true) {
       setBtnRotate(true);
       setBtnRightRotate(true);
       setS1(true);
       setS2(false);
-      updateDimensions();
-      setTimeout(() => {
-        setIsfullcard(true);
-      }, 1000);
+      updateDimensionsAndFullCard();
     } else if (s1 === false && s2 === false && s3 === true) {
       setBtnRotate(true);
       setBtnRightRotate(false);
@@ -106,20 +99,14 @@ const LocatoinDrawingList = ({
       setS2(false);
       setS3(false);
       setHeadersize(true);
-      updateDimensions();
-      setTimeout(() => {
-        setIsfullcard(true);
-      }, 1000);
+      updateDimensionsAndFullCard();
     } else {
       setBtnRightRotate(true);
       setBtnRotate(false);
       setS1(false);
       setS2(true);
       setS3(false);
-      updateDimensions();
-      setTimeout(() => {
-        setIsfullcard(false);
-      }, 1000);
+      updateDimensionsAndFullCard();
     }
   };
 
@@ -137,7 +124,11 @@ const LocatoinDrawingList = ({
       setS3(true);
       setHeadersize(false);
     }
+    setTimeout(() => {
+      updateTaskDetailContDimensions();
+    }, 1100);
   };
+
   const sideBarStyle = {
     borderRadius: "4px",
     boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
@@ -263,7 +254,7 @@ const LocatoinDrawingList = ({
           {selectedTask ? (
             <TaskDetails
               isSmallView={!s2}
-              taskDetailContHeight={taskDetailContDimension.height}
+              taskDetailContDimension={taskDetailContDimension}
               task={selectedTaskandEvents}
               userSubStateLocal={userSubStateLocal}
               TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}

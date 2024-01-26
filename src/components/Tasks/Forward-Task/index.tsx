@@ -21,6 +21,7 @@ import {
   InvitedNumber,
 } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
+import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import React, {
   ChangeEvent,
   useCallback,
@@ -43,6 +44,7 @@ interface IProps {
   invitedNumbers: InvitedNumber[];
   closeModal: () => void;
   isOpen: boolean;
+  taskDetailContDimension?: DynamicDimensions | undefined;
 }
 type ContactsState = {
   [key: string]: any[];
@@ -54,6 +56,7 @@ const ForwardTask = ({
   assignedToState,
   invitedNumbers,
   closeModal,
+  taskDetailContDimension,
 }: IProps) => {
   const dispatch = useDispatch();
   const isRenderEffect = useRef<boolean>(false);
@@ -96,9 +99,7 @@ const ForwardTask = ({
       isRenderEffect.current = true;
     };
   }, []);
-  const taskDragContHeight = useSelector(
-    (store: RootState) => store.task.taskDragContHeight
-  );
+
   const selectedUsers = [...recentUserContact, ...userAllContacts].filter(
     (contact: Contact) => {
       const isMatchContact = assignedToState.some(
@@ -350,16 +351,20 @@ const ForwardTask = ({
                 MenuProps={{
                   anchorOrigin: {
                     vertical: "bottom",
-                    horizontal: "left",
+                    horizontal: "center",
                   },
                   transformOrigin: {
                     vertical: "top",
-                    horizontal: "left",
+                    horizontal: "center",
                   },
                   PaperProps: {
                     style: {
                       maxHeight: "calc(100vh - 120px)",
-                      width: `calc(100vw - 29.4rem)`,
+                      width:
+                        taskDetailContDimension &&
+                        taskDetailContDimension?.width > 0
+                          ? taskDetailContDimension.width
+                          : `calc(100vw - 29.4rem)`,
                     },
                   },
                 }}
@@ -375,18 +380,6 @@ const ForwardTask = ({
                 }}
                 value={selected}
                 renderValue={renderValue}
-                // endAdornment={
-                //   selected.length > 0 && (
-                //     <IconButton
-                //       sx={{ display: "none" }}
-                //       size="small"
-                //       aria-label="clear selection"
-                //       // onClick={handleClearClick}
-                //     >
-                //       <ClearIconSvgGray />
-                //     </IconButton>
-                //   )
-                // }
               >
                 <Box
                   sx={{

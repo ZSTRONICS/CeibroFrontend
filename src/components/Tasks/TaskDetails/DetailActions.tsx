@@ -6,6 +6,7 @@ import { ForwardIcon, ReplyIcon } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
+import { DynamicDimensions } from "hooks/useDynamicDimensions";
 import capitalize from "lodash/capitalize";
 import React, {
   Dispatch,
@@ -32,6 +33,7 @@ interface IProps {
   invitedNumbers: InvitedNumber[];
   isExpanded: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
+  taskDetailContDimension: DynamicDimensions | undefined;
 }
 
 enum statusColors {
@@ -58,6 +60,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     invitedNumbers,
     isExpanded,
     setIsExpanded,
+    taskDetailContDimension,
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -119,6 +122,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     if (taskAction === "forward")
       return (
         <ForwardTask
+          taskDetailContDimension={taskDetailContDimension}
           invitedNumbers={invitedNumbers}
           assignedToState={assignedToState}
           taskId={taskId}
