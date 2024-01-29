@@ -1,10 +1,12 @@
 import { Box } from "@mui/material";
 import { getTaskCardHeight } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
+import { TASK_CONFIG } from "config";
 import { ITask, ITaskFilterInterace } from "constants/interfaces";
 import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { VariableSizeList } from "react-window";
+import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
 import LocationTaskCard from "./LocationTaskCard";
 interface IProps {
@@ -28,7 +30,9 @@ function LocationTasksMain(props: IProps) {
   const taskCardListRef: any = useRef();
   const { user } = useSelector((store: RootState) => store.auth);
   const userId = user && String(user._id);
-
+  const dispatch = useDispatch();
+  const selectedLocalTask: ITask | null =
+    allTasks?.find((task) => task?._id === selectedTaskId) || null;
   const clearTaskCardListCache = () => {
     if (taskCardListRef && taskCardListRef.current) {
       // Reset the list starting from the first index
@@ -45,6 +49,38 @@ function LocationTasksMain(props: IProps) {
       clearTaskCardListCache();
     }, 10);
   }, [allTasks.length]);
+  const markTaskAsSeen = (taskId: string): void => {
+    dispatch(
+      taskActions.taskSeen({
+        other: { taskId },
+        success: (res: any) => {
+          if (res) {
+            dispatch({
+              type: TASK_CONFIG.UPDATE_TASK_WITH_EVENTS,
+              payload: {
+                ...res.data.taskSeen,
+                userId,
+                eventType: TASK_CONFIG.TASK_SEEN,
+              },
+            });
+          }
+        },
+      })
+    );
+  };
+  useEffect(() => {
+    if (loadingAllTasksAllEvents || !selectedLocalTask) {
+      return;
+    }
+    let taskNeedToBeSeen =
+      selectedLocalTask && !selectedLocalTask?.seenBy.includes(userId);
+    if (taskNeedToBeSeen || selectedLocalTask?.userSubState === "new") {
+      markTaskAsSeen(selectedLocalTask._id);
+    }
+    setTimeout(() => {
+      clearTaskCardListCache();
+    }, 5);
+  }, [selectedLocalTask, selectedLocalTask?.events?.length]);
 
   const LocationTaskRow = ({ index, style }: any) => {
     const localTask = allTasks[index];
@@ -55,6 +91,7 @@ function LocationTasksMain(props: IProps) {
       <div style={{ ...style, width: "100%" }}>
         {localTask && (
           <LocationTaskCard
+            isTaskFromMe={localTask.isCreator ? "To" : "From"}
             userId={userId}
             key={localTask._id}
             task={localTask}

@@ -1,9 +1,6 @@
 import { Box } from "@mui/material";
 import { TaskCard } from "components/TaskComponent";
-import {
-  optionMapping,
-  subtaskToIsTaskFromMe,
-} from "components/Utills/Globals";
+import { optionMapping } from "components/Utills/Globals";
 import {
   FromMeLabelIcon,
   HiddenLabelIcon,
@@ -11,27 +8,26 @@ import {
 } from "components/material-ui/icons";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { taskActions } from "redux/action";
-import { selectedTaskFilterType } from "redux/type";
 import { MUI_TASK_CARD_COLOR_MAP } from "utills/common";
 interface IProps {
   userId: string;
   selectedTaskId: string | undefined;
   handleTaskClick: (task: ITask) => void;
   task: ITask;
+  isTaskFromMe: string;
 }
-interface RouteParams {
-  subtask: selectedTaskFilterType;
-  filterkey: string;
-  taskuid: string;
-}
+
 function LocationTaskCard(props: IProps) {
   const dispatch = useDispatch();
-  const { handleTaskClick, task: localTask, userId, selectedTaskId } = props;
-  //   const { subtask, filterkey, taskuid } = useParams<RouteParams>();
-  const [isTaskFromMe, setIsTaskFromMe] = useState<string>("To");
+  const {
+    handleTaskClick,
+    task: localTask,
+    userId,
+    selectedTaskId,
+    isTaskFromMe,
+  } = props;
   const currentTaskColor = MUI_TASK_CARD_COLOR_MAP.get(localTask.userSubState);
   const currentTaskStateAndIcon = [
     {
@@ -57,21 +53,9 @@ function LocationTaskCard(props: IProps) {
     "from-me": "allTaskFromMe",
     "to-me": "allTaskToMe",
     hidden: "allTaskHidden",
+    canceled: "allTaskHidden",
   };
-
-  const taskRootState = stateMap[localTask.rootState];
-  // console.log(taskRootState, localTask.rootState);
-  useEffect(() => {
-    const newIsTaskFromMe = subtaskToIsTaskFromMe[taskRootState];
-    if (typeof newIsTaskFromMe === "string") {
-      setIsTaskFromMe(newIsTaskFromMe);
-    } else if (
-      typeof newIsTaskFromMe === "object" &&
-      newIsTaskFromMe[taskRootState]
-    ) {
-      setIsTaskFromMe(newIsTaskFromMe[taskRootState]);
-    }
-  }, [taskRootState]);
+  const taskRootState = stateMap[localTask.taskRootState];
 
   const handleTaskAction = (
     actionType: (arg: {
@@ -181,7 +165,9 @@ function LocationTaskCard(props: IProps) {
         handleClick={handleTaskClick}
         menuOption={filteredMenuOptions(taskRootState, localTask.userSubState)}
         disableMenu={
-          localTask.userSubState === "canceled" ? !localTask.isCreator : false
+          localTask.userSubState === "canceled" && !localTask.isCreator
+            ? true
+            : false
         }
       />
     </Box>

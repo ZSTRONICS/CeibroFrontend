@@ -32,28 +32,28 @@ export interface TaskReducerInt {
   allTasksAllEvents: AllTasksAllEvents;
   unSeenTasks: any;
   taskDragContHeight: number;
-  drawingTaskFilters:ITaskFilterInterace
+  drawingTaskFilters: ITaskFilterInterace
 }
 
 
 const taskFilers: ITaskFilterInterace = {
-    fromMe: {
-      unread: false,
-      ongoing: false,
-      done: false,
-    },
-    toMe: {
-      new: true,
-      ongoing: true,
-      done: true,
-    },
-    hidden: {
-      ongoing: false,
-      done: false,
-      canceled: false,
-    },
-    isAllSelected: false,
-  };
+  fromMe: {
+    unread: true,
+    ongoing: true,
+    done: true,
+  },
+  toMe: {
+    new: true,
+    ongoing: true,
+    done: true,
+  },
+  hidden: {
+    ongoing: true,
+    done: true,
+    canceled: true,
+  },
+  isAllSelected: true,
+};
 
 const intialStatue: TaskReducerInt = {
   taskDragContHeight: 0,
@@ -73,7 +73,7 @@ const intialStatue: TaskReducerInt = {
   loadingAllTasks: true,
   loadingTopics: false,
   Topics: { allTopics: [], recentTopics: [] },
-  drawingTaskFilters:taskFilers
+  drawingTaskFilters: taskFilers
 };
 
 const taskReducer = (
@@ -84,7 +84,12 @@ const taskReducer = (
     case TASK_CONFIG.UPDATE_DRAWING_TASK_FILTERS:
       return {
         ...state,
-        drawingTaskFilters: {...action.payload},
+        drawingTaskFilters: { ...action.payload },
+      };
+    case TASK_CONFIG.UPDATE_DRAWING_RESET_TASK_FILTERS:
+      return {
+        ...state,
+        drawingTaskFilters: taskFilers,
       };
     case TASK_CONFIG.SELECTED_TASK_FILTER:
       return {

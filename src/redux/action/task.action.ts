@@ -16,6 +16,11 @@ const taskActions = {
       payload: drawingTaskFilter,
     };
   },
+  resetDrawingFilters: () => {
+    return {
+      type: TASK_CONFIG.UPDATE_DRAWING_RESET_TASK_FILTERS,
+    };
+  },
   getAllTasksAllEvents: createAction(TASK_CONFIG.GET_ALL_TASKS_ALL_EVENTS),
   syncTaskEventsByTaskId: createAction(TASK_CONFIG.SYNC_TASK_EVENTS_BY_TASK_ID),
   syncAllTasks: createAction(TASK_CONFIG.SYNC_ALL_TASKS),
