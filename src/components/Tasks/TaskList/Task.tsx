@@ -588,6 +588,7 @@ const Task = () => {
           (task: ITask) => task.taskUID === selectedTask?.taskUID
         ) ? (
           <TaskDetails
+            groupbtn={false}
             task={selectedTask}
             userSubStateLocal={userSubStateLocal}
             TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
