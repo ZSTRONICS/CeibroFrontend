@@ -25,7 +25,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
   const MiniCardRendering = allTasks?.map((task) => {
     const currentTaskColor =
       MUI_TASK_CARD_COLOR_MAP.get(task?.userSubState) ?? "";
-    const rootState = task?.rootState ?? "";
+    const rootState =
+      task?.taskRootState === "canceled" ? "hidden" : task?.taskRootState ?? "";
 
     let emptyDiv = false;
 
@@ -39,8 +40,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
           rootState === "to-me"
             ? taskListFilter.toMe.ongoing
             : rootState === "from-me"
-              ? taskListFilter.fromMe.ongoing
-              : taskListFilter.hidden.ongoing;
+            ? taskListFilter.fromMe.ongoing
+            : taskListFilter.hidden.ongoing;
         emptyDiv = !ongoingFilter;
         break;
 
@@ -49,8 +50,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
           rootState === "to-me"
             ? taskListFilter.toMe.done
             : rootState === "from-me"
-              ? taskListFilter.fromMe.done
-              : taskListFilter.hidden.done;
+            ? taskListFilter.fromMe.done
+            : taskListFilter.hidden.done;
         emptyDiv = !doneFilter;
         break;
 
@@ -89,9 +90,7 @@ const MiniTaskCardList: React.FC<IProps> = ({
             }}
             onClick={() => handleSelectedTask(task)}
           >
-            <Minicardheading sx={{}}>
-              {task.taskUID}
-            </Minicardheading>
+            <Minicardheading>{task.taskUID}</Minicardheading>
             <MinicardTypography sx={{ width: "100%", textAlign: "center" }}>
               {rootState}
             </MinicardTypography>
