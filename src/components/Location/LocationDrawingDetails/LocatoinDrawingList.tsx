@@ -52,6 +52,8 @@ const LocatoinDrawingList = ({
   const [btnRotate, setBtnRotate] = useState<boolean>(true);
   const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
   const [isfullcard, setIsfullcard] = useState(true);
+  const [isfullcardMini, setIsfullcardMini] = useState(false);
+  const [Taskbtn, setTaskbtn] = useState(true)
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -69,10 +71,10 @@ const LocatoinDrawingList = ({
   const [taskSearchText, setTaskSearchText] = useState("");
   const updateDimensionsAndFullCard = () => {
     updateDimensions();
-    setTimeout(() => {
-      setIsfullcard(true);
-      updateTaskDetailContDimensions();
-    }, 1000);
+    // setTimeout(() => {
+    //   setIsfullcard(true);
+    //   updateTaskDetailContDimensions();
+    // }, 1000);
   };
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
@@ -80,8 +82,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -92,29 +94,44 @@ const LocatoinDrawingList = ({
   };
 
   const collapseDiv1 = () => {
+    console.log('first');
     if (s1 === false && s2 === true) {
       setBtnRotate(true);
       setBtnRightRotate(true);
       setS1(true);
       setS2(false);
+      setTaskbtn(true);
+      setIsfullcardMini(false);
       setTimeout(() => {
         setIsfullcard(true);
       }, 350);
       updateDimensionsAndFullCard();
     } else if (s1 === false && s2 === false && s3 === true) {
+      console.log('second');
       setBtnRotate(true);
-      setBtnRightRotate(false);
+      setBtnRightRotate(true);
       setS1(true);
       setS2(false);
       setS3(false);
       setHeadersize(true);
+      setTaskbtn(true);
+      setIsfullcardMini(false);
+      setTimeout(() => {
+        setIsfullcard(true);
+      }, 350);
       updateDimensionsAndFullCard();
     } else {
+      console.log('third');
       setBtnRightRotate(true);
       setBtnRotate(false);
       setS1(false);
       setS2(true);
       setS3(false);
+      setTaskbtn(false);
+      setIsfullcard(false)
+      setTimeout(() => {
+        setIsfullcardMini(true);
+      }, 350);
       updateDimensionsAndFullCard();
     }
   };
@@ -127,16 +144,22 @@ const LocatoinDrawingList = ({
       setBtnRightRotate(true);
       setHeadersize(true);
     } else {
+      console.log('fourth');
+      setTaskbtn(false);
       setBtnRightRotate(false);
       setBtnRotate(false);
       setS1(false);
       setS2(false);
       setS3(true);
       setHeadersize(false);
+      setIsfullcard(false);
+      setTimeout(() => {
+        setIsfullcardMini(true);
+      }, 350);
     }
-    setTimeout(() => {
-      updateTaskDetailContDimensions();
-    }, 1100);
+    // setTimeout(() => {
+    //   updateTaskDetailContDimensions();
+    // }, 1100);
   };
 
   const sideBarStyle = {
@@ -191,16 +214,12 @@ const LocatoinDrawingList = ({
             mt: 2,
             px: 1,
             transition: "all 0.30s linear",
+            backgroundColor: 'white',
           }}
         >
-          <Box
-            sx={{
-              width: "100%",
-              backgroundColor: "white",
-              position: "relative",
-            }}
-          >
+          <Box sx={{ width: "100%", backgroundColor: "white", }}>
             <LocationTaskHead
+              Taskbtn={Taskbtn}
               isSmallView={!s1}
               setTaskHeaderHeiht={setTaskHeaderHeight}
               handleSearch={handleTaskSearch}
@@ -221,22 +240,24 @@ const LocatoinDrawingList = ({
             ) : (
               <>
                 {!s1 ? (
-                  <Box
-                    sx={{
-                      height: `${containerHeight}px`,
-                      overflowY: "auto",
-                      padding: "6px 6px",
-                      transition: "all 0.30s linear",
-                    }}
-                  >
-                    <MiniTaskCardList
-                      windowActualHeight={windowActualHeight}
-                      allTasks={allTask}
-                      taskListFilter={taskListFilter}
-                      loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                      handleSelectedTask={(task) => setSelectedTask(task)}
-                    />
-                  </Box>
+                  isfullcardMini && (
+                    <Box
+                      sx={{
+                        height: `${containerHeight}px`,
+                        overflowY: "auto",
+                        padding: "6px 6px",
+                        transition: "all 0.30s linear",
+                      }}
+                    >
+                      <MiniTaskCardList
+                        windowActualHeight={windowActualHeight}
+                        allTasks={allTask}
+                        taskListFilter={taskListFilter}
+                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                        handleSelectedTask={(task) => setSelectedTask(task)}
+                      />
+                    </Box>
+                  )
                 ) : (
                   isfullcard && (
                     <Box
@@ -274,6 +295,7 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+            // border: 'solid 1px red',
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
           id="taskDetailContainer"

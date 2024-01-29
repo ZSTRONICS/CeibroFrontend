@@ -9,6 +9,8 @@ import {
   Select,
   Typography
 } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import { Heading2 } from "components/CustomTags";
 import DrawingGroupCard from "./DrawingGroupCard";
 
@@ -93,120 +95,126 @@ export default function DrawingHeader(props: DrawingProps) {
       sx={{
         marginTop: "4px",
         marginBottom: "4px",
-        marginLeft: "16px",
+        marginLeft: isMdScreen ? '16px' : isLgScreen ? '-5px' : isxlScreen ? '5px' : '16px',
         marginRight: "16px",
         color: "#818181",
       }}
     />
   );
+
+  const theme = useTheme();
+  const isMdScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const isLgScreen = useMediaQuery(theme.breakpoints.down('lg'));
+  const isxlScreen = useMediaQuery(theme.breakpoints.down('xl'));
+
   return (
     <Grid container gap={1.8}>
       <Grid
         item
-        // xs={1}
-        // md={6.2}
-        // lg={6.2}
-        // xl={6.1}
-        md={headersize ? 6.2 : 4.7}
+        md={headersize ? 6.3 : 4.7}
         lg={headersize ? 6.2 : 4.3}
         xl={headersize ? 6.1 : 4}
-        sx={{ transition: "all linear 0.30s", width: "50%", backgroundColor: 'white' }}
+        sx={{ transition: "all linear 0.30s", }}
       >
-        {renderBox(
-          <>
-            <IconButton
-              sx={{
-                color: "#0076C8",
-                paddingLeft: "32px",
-                paddingRight: "16px",
-                "&:hover": {
-                  backgroundColor: "transparent",
-                },
-              }}
-              onClick={handleback}
-            >
-              <ArrowBackSharp />
-            </IconButton>
-            {renderDivider()}
-            <Typography sx={{ width: "39%", }} variant="body1">
-              {selectedProject &&
-                selectedProject.length > 0 &&
-                selectedProject[0].title}
-            </Typography>
-            {renderDivider()}
-            {renderBox(
-              <Select
-                variant="standard"
-                disableUnderline
-                sx={{ width: "100%", height: "52px", marginRight: "16px", }}
-                value={selectedGroup._id || ""}
-                renderValue={() => selectedGroup.groupName}
-                onChange={(e) => handleChangeCallback(e, "group")}
+        <Box sx={{ width: isMdScreen ? '100%' : isLgScreen ? '99%' : isxlScreen ? '100.4%' : '100%', backgroundColor: 'white', }} >
+          {renderBox(
+            <>
+              <IconButton
+                sx={{
+                  color: "#0076C8",
+                  paddingLeft: "32px",
+                  paddingRight: "16px",
+                  "&:hover": {
+                    backgroundColor: "transparent",
+                  },
+                }}
+                onClick={handleback}
               >
-                <MenuItem value="" sx={{}}>
-                  <Box
-                    sx={{
-                      width: "100%",
-                      pr: "5px",
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                  >
-                    <Heading2
+                <ArrowBackSharp />
+              </IconButton>
+              {renderDivider()}
+              <Typography sx={{ width: "39%", }} variant="body1">
+                {selectedProject &&
+                  selectedProject.length > 0 &&
+                  selectedProject[0].title}
+              </Typography>
+              {renderDivider()}
+              {renderBox(
+                <Select
+                  variant="standard"
+                  disableUnderline
+                  sx={{ width: "100%", height: "52px", marginRight: "16px", }}
+                  value={selectedGroup._id || ""}
+                  renderValue={() => selectedGroup.groupName}
+                  onChange={(e) => handleChangeCallback(e, "group")}
+                >
+                  <MenuItem value="" sx={{}}>
+                    <Box
                       sx={{
-                        width: "30%",
-                        marginLeft: "10px",
+                        width: "100%",
+                        pr: "5px",
                         display: "flex",
-                        alignItems: "center",
+                        justifyContent: "space-between",
+
                       }}
                     >
-                      Groups
-                    </Heading2>
-                  </Box>
-                </MenuItem>
-                {renderGroupOptions(selectedProjectGroups, "groupName")}
-              </Select>,
-              "50%"
-            )}
-          </>
-        )}
+                      <Heading2
+                        sx={{
+                          width: "30%",
+                          marginLeft: "10px",
+                          display: "flex",
+                          alignItems: "center",
+
+                        }}
+                      >
+                        Groups
+                      </Heading2>
+                    </Box>
+                  </MenuItem>
+                  {renderGroupOptions(selectedProjectGroups, "groupName")}
+                </Select>,
+                "50%"
+              )}
+            </>
+          )}
+        </Box>
       </Grid>
       <Grid
         item
-        md={headersize ? 5.6 : 7.1}
+        md={headersize ? 5.5 : 7.1}
         lg={headersize ? 5.6 : 7.5}
         xl={headersize ? 5.7 : 7.8}
         sx={{
           transition: "all linear 0.30s",
-          backgroundColor: 'white',
         }}
 
-      >
-        {renderBox(
-          <>
-            <Select
-              value={selectedDrawing?._id || ""}
-              variant="standard"
-              disableUnderline
-              sx={{
-                width: "100%",
-                height: "52px",
-                paddingLeft: "16px",
-              }}
-              onChange={(e) => handleChangeCallback(e, "drawing")}
-              renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
-            >
-              {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
-            </Select>
-            {renderDivider()}
-            <Typography
-              variant="body1"
-              sx={{ paddingRight: "16px", whiteSpace: "nowrap" }}
-            >
-              {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
-            </Typography>
-          </>
-        )}
+      > <Box sx={{ marginLeft: isMdScreen ? '-0.5%' : isLgScreen ? '-0.7%' : isxlScreen ? '0.5%' : '0%', backgroundColor: 'white', }} >
+          {renderBox(
+            <>
+              <Select
+                value={selectedDrawing?._id || ""}
+                variant="standard"
+                disableUnderline
+                sx={{
+                  height: "52px",
+                  paddingLeft: "16px",
+                  backgroundColor: 'transparent',
+                }}
+                onChange={(e) => handleChangeCallback(e, "drawing")}
+                renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
+              >
+                {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
+              </Select>
+              {renderDivider()}
+              <Typography
+                variant="body1"
+                sx={{ paddingRight: "16px", whiteSpace: "nowrap" }}
+              >
+                {`Floor ${selectedDrawing?.floor?.floorName ?? ""}`}
+              </Typography>
+            </>
+          )}
+        </Box>
       </Grid>
     </Grid>
   );

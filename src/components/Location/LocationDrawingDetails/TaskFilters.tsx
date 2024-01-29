@@ -1,4 +1,4 @@
-import { CheckCircle, Circle, FilterAltOutlined } from "@mui/icons-material";
+import { CheckCircle, Circle } from "@mui/icons-material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import {
   Box,
@@ -230,11 +230,11 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
             <Grid
               item
             >
-              <FilterAltOutlined color="primary" />
-              <IconButton
+              {/* <FilterAltOutlined color="primary" /> */}
+              {/* <IconButton
                 onClick={handleMenuOpen}>
                 <ArrowDropDownIcon />
-              </IconButton>
+              </IconButton> */}
             </Grid>
           </Grid>
         )

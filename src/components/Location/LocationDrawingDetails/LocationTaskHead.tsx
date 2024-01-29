@@ -14,6 +14,7 @@ interface IProps {
   setTaskHeaderHeiht: (value: number) => void;
   handleSearch: (value: string) => void;
   searchText: string;
+  Taskbtn: boolean
 }
 
 const LocationTaskHead = ({
@@ -21,6 +22,7 @@ const LocationTaskHead = ({
   setTaskHeaderHeiht,
   handleSearch,
   searchText,
+  Taskbtn,
 }: IProps) => {
   const [value, setValue] = useState("1");
   const {
@@ -37,48 +39,57 @@ const LocationTaskHead = ({
     setValue(newValue);
   };
 
+
   return (
     <Box style={HeadStyles.head_container} ref={headerRef}>
       <TabContext value={value}>
-        <TabList
-          sx={{
-            width: "100%",
-            borderBottom: "1px solid #818181",
-            padding: "10px 13px 16px",
-            '@media screen and (max-width: 1200px)': {
-
-            },
-            "& .MuiTabs-flexContainer": {
-              flexWrap: "wrap",
-            },
-            span: {
-              display: "none",
-            },
-          }}
-          TabIndicatorProps={{
-            children: <span className="MuiTabs-indicatorSpan" />,
-          }}
-          onChange={handleChange}
-          aria-label="lab API tabs example"
-        >
-          <Tab sx={{
-            ...tabStyles, marginRight: '10px',
-            minWidth: '60px',
-            maxWidth: '60px',
-          }} label="Task" value="1" />
-          <Tab
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'start', borderBottom: 'solid 1px #818181' }} >
+          <TabList
             sx={{
-              ...tabStyles,
-              minWidth: '60px',
-              maxWidth: '60px',
-              '@media screen and (max-width: 900px)': {
-                marginLeft: '0px',
+              maxWidth: "200px",
+              padding: "10px 13px 16px",
+              '@media screen and (max-width: 1200px)': {
+
+              },
+              "& .MuiTabs-flexContainer": {
+                flexWrap: "wrap",
+                alignItems: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+              },
+              span: {
+                display: "none",
               },
             }}
-            label="Image"
-            value="2"
-          />
-        </TabList>
+            TabIndicatorProps={{
+              children: <span className="MuiTabs-indicatorSpan" />,
+            }}
+            onChange={handleChange}
+            aria-label="lab API tabs example"
+          >
+            <Tab sx={{
+              ...tabStyles,
+              //  marginRight: '10px',
+              minWidth: '60px',
+              maxWidth: '60px',
+            }} label="Task" value="1" />
+            <Tab
+              sx={{
+                ...tabStyles,
+                marginLeft: Taskbtn ? '16px' : '',
+                minWidth: '60px',
+                maxWidth: '60px',
+                transition: 'all linear 0.30s',
+
+                '@media screen and (max-width: 900px)': {
+                  marginLeft: '0px',
+                },
+              }}
+              label="Image"
+              value="2"
+            />
+          </TabList>
+        </Box>
         <Box style={HeadStyles.head_filterization}  >
           <TaskFilters isSmallView={isSmallView} />
         </Box>
@@ -92,7 +103,7 @@ const LocationTaskHead = ({
           }}
         >
           <InputSearch
-            placeholder="Start typing for search"
+            placeholder={Taskbtn ? "Start typing for search" : ''}
             value={searchText}
             onChange={handleSearch}
           />
