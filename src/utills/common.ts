@@ -171,30 +171,35 @@ export const HEADER_HEIGHT = 87;
 /**
    * Searches an array of ITask objects based on the specified properties and searchText.
    */
- export function searchInData(
-    data: ITask[],
-    searchText: string,
-    properties: string[]
-  ): ITask[] {
-    if (!searchText.trim()) {
-      return data;
-    }
-    const lowerSearchText = searchText.toLowerCase();
-    return data.filter((item: ITask) => {
-      return properties.some((property) => {
-        const searchValue: string | UserInfo = _.get(item, property);
-        // If the searchValue is a string, check if it includes the lowerSearchText
-        if (_.isString(searchValue)) {
-          return includesIgnoreCase(searchValue, lowerSearchText);
-        }
-        // If the searchValue is an object, check if it has firstName and surName properties
-        else if (_.isObject(searchValue)) {
-          if (searchValue.firstName) {
-            const fullName = `${searchValue.firstName} ${searchValue.surName}`;
-            return includesIgnoreCase(fullName, lowerSearchText);
-          }
-        }
-        return false;
-      });
-    });
+export function searchInData(
+  data: ITask[],
+  searchText: string,
+  properties: string[]
+): ITask[] {
+  if (!searchText.trim()) {
+    return data;
   }
+  const lowerSearchText = searchText.toLowerCase();
+  return data.filter((item: ITask) => {
+    return properties.some((property) => {
+      const searchValue: string | UserInfo = _.get(item, property);
+      // If the searchValue is a string, check if it includes the lowerSearchText
+      if (_.isString(searchValue)) {
+        return includesIgnoreCase(searchValue, lowerSearchText);
+      }
+      // If the searchValue is an object, check if it has firstName and surName properties
+      else if (_.isObject(searchValue)) {
+        if (searchValue.firstName) {
+          const fullName = `${searchValue.firstName} ${searchValue.surName}`;
+          return includesIgnoreCase(fullName, lowerSearchText);
+        }
+      }
+      return false;
+    });
+  });
+}
+
+
+export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
+  return tasks.filter(condition);
+};

@@ -6,6 +6,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
+import { filterTasksByCondition } from "utills/common";
 import DrawingHeader from "./DrawingHeader";
 import LocatoinDrawingList from "./LocatoinDrawingList";
 
@@ -73,15 +74,14 @@ function LocationDrawingDetails() {
   }, [groupId, drawingId, allProjects, allGroups]);
   let allDrawingTaskList: ITask[] = [];
   if (projectData.selectedDrawing) {
-    allTasksAllEvents.allPins.forEach((pin: any) => {
-      if (pin.drawingId === projectData.selectedDrawing._id) {
-        allTasksAllEvents.allTasks.forEach((task: ITask) => {
-          if (task._id === pin.taskData._id) {
-            allDrawingTaskList.push(task);
-          }
-        });
-      }
-    });
+    const selectedDrawingPins = allTasksAllEvents.allPins.filter(
+      (pin: any) => pin.drawingId === projectData.selectedDrawing._id
+    );
+    allDrawingTaskList = filterTasksByCondition(
+      allTasksAllEvents.allTasks,
+      (task: ITask) =>
+        selectedDrawingPins.some((pin: any) => pin.taskData._id === task._id)
+    );
   }
   const handleGroupAndFileChange = (event: any, type: "group" | "drawing") => {
     switch (type) {

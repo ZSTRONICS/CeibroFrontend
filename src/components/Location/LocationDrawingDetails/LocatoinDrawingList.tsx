@@ -56,7 +56,7 @@ const LocatoinDrawingList = ({
   const [isfullcard, setIsfullcard] = useState(true);
   const [isfullcardMini, setIsfullcardMini] = useState(false);
   const [Taskbtn, setTaskbtn] = useState(true);
-  const [groupbtn, setGroupBtn] = useState(false)
+  const [groupbtn, setGroupBtn] = useState(false);
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -85,15 +85,15 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
-  const filteTaskEvents = allEvents.filter(
+  const filterTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
   );
   const selectedTaskandEvents: ITask | any = {
     ...selectedTask,
-    events: filteTaskEvents || [],
+    events: filterTaskEvents || [],
   };
 
   const collapseDiv1 = () => {
@@ -104,7 +104,7 @@ const LocatoinDrawingList = ({
       setS2(false);
       setTaskbtn(true);
       setIsfullcardMini(false);
-      setGroupBtn(false)
+      setGroupBtn(false);
       setTimeout(() => {
         setIsfullcard(true);
       }, 350);
@@ -144,7 +144,7 @@ const LocatoinDrawingList = ({
       setS1(false);
       setS2(true);
       setS3(false);
-      setGroupBtn(true)
+      setGroupBtn(true);
       setBtnRightRotate(true);
       setHeadersize(true);
     } else {
@@ -154,7 +154,7 @@ const LocatoinDrawingList = ({
       setS1(false);
       setS2(false);
       setS3(true);
-      setGroupBtn(false)
+      setGroupBtn(false);
       setHeadersize(false);
       setIsfullcard(false);
       setTimeout(() => {
@@ -245,39 +245,40 @@ const LocatoinDrawingList = ({
               <>
                 {!s1
                   ? isfullcardMini && (
-                    <Box
-                      sx={{
-                        height: `${containerHeight}px`,
-                        overflowY: "auto",
-                        padding: "6px 6px",
-                        transition: "all 0.30s linear",
-                      }}
-                    >
-                      <MiniTaskCardList
-                        windowActualHeight={windowActualHeight}
-                        allTasks={allTask}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)}
-                      />
-                    </Box>
-                  )
+                      <Box
+                        sx={{
+                          height: `${containerHeight}px`,
+                          overflowY: "auto",
+                          padding: "6px 6px",
+                          transition: "all 0.30s linear",
+                        }}
+                      >
+                        <MiniTaskCardList
+                          windowActualHeight={windowActualHeight}
+                          allTasks={allTask}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                        />
+                      </Box>
+                    )
                   : isfullcard && (
-                    <Box
-                      sx={{
-                        transition: "all 0.30s linear",
-                      }}
-                    >
-                      <LocationTasksMain
-                        windowActualHeight={containerHeight}
-                        allTasks={allTask}
-                        selectedTaskId={selectedTask?._id}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)}
-                      />
-                    </Box>
-                  )}
+                      <Box
+                        sx={{
+                          transition: "all 0.30s linear",
+                        }}
+                      >
+                        <LocationTasksMain
+                          allEvents={allEvents}
+                          windowActualHeight={containerHeight}
+                          allTasks={allTask}
+                          selectedTaskId={selectedTask?._id}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                        />
+                      </Box>
+                    )}
               </>
             )}
           </Box>
@@ -304,6 +305,7 @@ const LocatoinDrawingList = ({
           <Box sx={{ overflow: "auto" }}>
             {selectedTask ? (
               <TaskDetails
+                isLocationTaskDetail={true}
                 isSmallView={!s2}
                 taskDetailContDimension={taskDetailContDimension}
                 task={selectedTaskandEvents}

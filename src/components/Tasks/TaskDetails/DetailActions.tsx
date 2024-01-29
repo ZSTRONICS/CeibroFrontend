@@ -37,6 +37,7 @@ interface IProps {
   groupbtn: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
   taskDetailContDimension: DynamicDimensions | undefined;
+  isLocationTaskDetail?: boolean;
 }
 
 enum statusColors {
@@ -65,6 +66,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     groupbtn,
     setIsExpanded,
     taskDetailContDimension,
+    isLocationTaskDetail,
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -102,7 +104,8 @@ const DetailActions: React.FC<IProps> = (props) => {
             hasFiles: false,
           },
           success: (res: any) => {
-            history.push(`/tasks/${subtask}/${filterkey}`);
+            !isLocationTaskDetail &&
+              history.push(`/tasks/${subtask}/${filterkey}`);
             setIsLoading(false);
             if (res) {
               dispatch({

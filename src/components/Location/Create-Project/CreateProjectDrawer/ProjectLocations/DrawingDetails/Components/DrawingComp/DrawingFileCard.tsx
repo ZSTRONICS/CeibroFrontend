@@ -5,6 +5,7 @@ import { Drawing } from "constants/interfaces";
 import { useHistory, useParams } from "react-router-dom";
 interface Props {
   drawing: Drawing;
+  taskCount: number;
 }
 
 interface IRouteParams {
@@ -12,7 +13,7 @@ interface IRouteParams {
   groupId: string;
 }
 
-function DrawingFileCard({ drawing }: Props) {
+function DrawingFileCard({ drawing, taskCount }: Props) {
   const history = useHistory();
   const { projectId, groupId } = useParams<IRouteParams>();
   const { _id, fileName, updatedAt, floor } = drawing;
@@ -54,7 +55,7 @@ function DrawingFileCard({ drawing }: Props) {
                   {trimFileName(fileName)}
                 </Heading2>
               </Tooltip>
-              <LabelTag>{`(tasks count)`}</LabelTag>
+              <LabelTag>{`(${taskCount} tasks)`}</LabelTag>
             </Box>
             <LabelTag>Last update: {localTimeData}</LabelTag>
           </Box>

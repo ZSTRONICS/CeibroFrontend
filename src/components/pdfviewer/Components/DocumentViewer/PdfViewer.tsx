@@ -38,7 +38,6 @@ const PdfViewer = (props: IProps) => {
     }
     const canvas = canvasRef.current;
     renderPDF(props.pdfUrl, canvas);
-    console.log("renderPDF111");
 
     return () => {
       cancelRender();
@@ -51,7 +50,6 @@ const PdfViewer = (props: IProps) => {
     props.pdfUrl,
   ]);
 
-  console.log("props.pdfUrl", props.pdfUrl);
   const queueRenderPage = (num: any) => {
     if (pageRendering) {
       setPageNumPending(num);

@@ -5,13 +5,15 @@ import { GenericMenu, InputSearch } from "components/GenericComponents";
 import CustomModal from "components/Modal";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { PROJECT_CONFIG } from "config";
+import { ITask } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import _ from "lodash";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
 import { RootState } from "redux/reducers";
+import { filterTasksByCondition } from "utills/common";
 import CreateDrawing from "../ProjectComponents/CreateDrawing";
 import DrawingFileCard from "./DrawingFileCard";
 interface Props {
@@ -30,6 +32,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
     selectedProjectName,
     projectFloors,
   } = useSelector((state: RootState) => state.project);
+  const { allTasksAllEvents } = useSelector((state: RootState) => state.task);
   const { groupId } = useParams<any>();
   const [slectedFloor, setSelectedFloor] = useState<Floor | null>({} as Floor);
   const dispatch = useDispatch();
@@ -186,22 +189,21 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               container
               flexWrap={"nowrap"}
               sx={{
-                marginLeft: '12px',
-                marginTop: '10px',
-                '@media (min-width: 1200px) and (max-width: 1229px)': {
-                  marginLeft: '6px',
+                marginLeft: "12px",
+                marginTop: "10px",
+                "@media (min-width: 1200px) and (max-width: 1229px)": {
+                  marginLeft: "6px",
                 },
-                '@media (min-width: 0px) and (max-width: 1019px)': {
-                  marginLeft: '6px',
-                }
-              }
-              }
+                "@media (min-width: 0px) and (max-width: 1019px)": {
+                  marginLeft: "6px",
+                },
+              }}
             >
               <IconButton
-                style={{ color: "#0076C8", padding: "0px", }}
+                style={{ color: "#0076C8", padding: "0px" }}
                 onClick={handleSortingDrawingFile}
               >
-                <Box sx={{ marginLeft: '12px', transform: 'translateX(5px)' }} >
+                <Box sx={{ marginLeft: "12px", transform: "translateX(5px)" }}>
                   <SortIcon />
                 </Box>
               </IconButton>
@@ -217,7 +219,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
                   },
                   {
                     menuName: "From Ceibro files",
-                    callBackHandler: () => { },
+                    callBackHandler: () => {},
                   },
                 ]}
                 key={1}
@@ -234,8 +236,27 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           }}
         >
           {selectedGroupDrawings.length > 0 ? (
-            selectedGroupDrawings.map((drawing: any) => {
-              return <DrawingFileCard drawing={drawing} />;
+            selectedGroupDrawings.map((drawing: any, index: any) => {
+              if (!drawing) return <></>;
+              let allDrawingTaskList: ITask[] = [];
+              const selectedDrawingPins = allTasksAllEvents.allPins.filter(
+                (pin: any) => pin.drawingId === drawing._id
+              );
+              allDrawingTaskList = filterTasksByCondition(
+                allTasksAllEvents.allTasks,
+                (task: ITask) =>
+                  selectedDrawingPins.some(
+                    (pin: any) => pin.taskData._id === task._id
+                  )
+              );
+              return (
+                <React.Fragment key={index}>
+                  <DrawingFileCard
+                    drawing={drawing}
+                    taskCount={allDrawingTaskList.length}
+                  />
+                </React.Fragment>
+              );
             })
           ) : (
             <>No Drawing file Found!</>
@@ -263,8 +284,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             />
           }
         />
-      )
-      }
+      )}
     </>
   );
 }

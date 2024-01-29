@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { getTaskCardHeight } from "components/Utills/Globals";
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
-import { ITask, ITaskFilterInterace } from "constants/interfaces";
+import { ITask, ITaskFilterInterace, TaskEvent } from "constants/interfaces";
 import { useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { VariableSizeList } from "react-window";
@@ -16,6 +16,7 @@ interface IProps {
   taskListFilter: ITaskFilterInterace;
   selectedTaskId: string | undefined;
   windowActualHeight: number;
+  allEvents: TaskEvent[];
 }
 
 function LocationTasksMain(props: IProps) {
@@ -26,6 +27,7 @@ function LocationTasksMain(props: IProps) {
     selectedTaskId,
     taskListFilter,
     windowActualHeight,
+    allEvents,
   } = props;
   const taskCardListRef: any = useRef();
   const { user } = useSelector((store: RootState) => store.auth);
@@ -48,7 +50,7 @@ function LocationTasksMain(props: IProps) {
     setTimeout(() => {
       clearTaskCardListCache();
     }, 10);
-  }, [allTasks.length]);
+  }, [allTasks.length, allEvents.length]);
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
