@@ -141,7 +141,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
                 pb: 0,
                 mb: 0,
                 fontSize: 16,
-                color: "grey",
+                color: "#605C5C",
                 textTransform: "capitalize",
               }}
             >
@@ -171,10 +171,10 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
               }}
             >
               <Heading2>Drawing Files</Heading2>
-              <Heading2 sx={{ px: 1, fontSize: 16, color: "grey" }}>
+              <Heading2 sx={{ px: 1, fontSize: 16, color: "#605C5C" }}>
                 {selectedGroupName ? `>` : ""}
               </Heading2>
-              <Heading2 sx={{ textTransform: "capitalize", color: "grey" }}>
+              <Heading2 sx={{ textTransform: "capitalize", color: "#605C5C" }}>
                 {" "}
                 {selectedGroupName}{" "}
               </Heading2>

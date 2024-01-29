@@ -56,6 +56,7 @@ const LocatoinDrawingList = ({
   const [isfullcard, setIsfullcard] = useState(true);
   const [isfullcardMini, setIsfullcardMini] = useState(false);
   const [Taskbtn, setTaskbtn] = useState(true);
+  const [groupbtn, setGroupBtn] = useState(false)
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -84,8 +85,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -103,6 +104,7 @@ const LocatoinDrawingList = ({
       setS2(false);
       setTaskbtn(true);
       setIsfullcardMini(false);
+      setGroupBtn(false)
       setTimeout(() => {
         setIsfullcard(true);
       }, 350);
@@ -116,6 +118,7 @@ const LocatoinDrawingList = ({
       setHeadersize(true);
       setTaskbtn(true);
       setIsfullcardMini(false);
+      setGroupBtn(false);
       setTimeout(() => {
         setIsfullcard(true);
       }, 350);
@@ -127,6 +130,7 @@ const LocatoinDrawingList = ({
       setS2(true);
       setS3(false);
       setTaskbtn(false);
+      setGroupBtn(true);
       setIsfullcard(false);
       setTimeout(() => {
         setIsfullcardMini(true);
@@ -140,6 +144,7 @@ const LocatoinDrawingList = ({
       setS1(false);
       setS2(true);
       setS3(false);
+      setGroupBtn(true)
       setBtnRightRotate(true);
       setHeadersize(true);
     } else {
@@ -149,6 +154,7 @@ const LocatoinDrawingList = ({
       setS1(false);
       setS2(false);
       setS3(true);
+      setGroupBtn(false)
       setHeadersize(false);
       setIsfullcard(false);
       setTimeout(() => {
@@ -239,39 +245,39 @@ const LocatoinDrawingList = ({
               <>
                 {!s1
                   ? isfullcardMini && (
-                      <Box
-                        sx={{
-                          height: `${containerHeight}px`,
-                          overflowY: "auto",
-                          padding: "6px 6px",
-                          transition: "all 0.30s linear",
-                        }}
-                      >
-                        <MiniTaskCardList
-                          windowActualHeight={windowActualHeight}
-                          allTasks={allTask}
-                          taskListFilter={taskListFilter}
-                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                          handleSelectedTask={(task) => setSelectedTask(task)}
-                        />
-                      </Box>
-                    )
+                    <Box
+                      sx={{
+                        height: `${containerHeight}px`,
+                        overflowY: "auto",
+                        padding: "6px 6px",
+                        transition: "all 0.30s linear",
+                      }}
+                    >
+                      <MiniTaskCardList
+                        windowActualHeight={windowActualHeight}
+                        allTasks={allTask}
+                        taskListFilter={taskListFilter}
+                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                        handleSelectedTask={(task) => setSelectedTask(task)}
+                      />
+                    </Box>
+                  )
                   : isfullcard && (
-                      <Box
-                        sx={{
-                          transition: "all 0.30s linear",
-                        }}
-                      >
-                        <LocationTasksMain
-                          windowActualHeight={containerHeight}
-                          allTasks={allTask}
-                          selectedTaskId={selectedTask?._id}
-                          taskListFilter={taskListFilter}
-                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                          handleSelectedTask={(task) => setSelectedTask(task)}
-                        />
-                      </Box>
-                    )}
+                    <Box
+                      sx={{
+                        transition: "all 0.30s linear",
+                      }}
+                    >
+                      <LocationTasksMain
+                        windowActualHeight={containerHeight}
+                        allTasks={allTask}
+                        selectedTaskId={selectedTask?._id}
+                        taskListFilter={taskListFilter}
+                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                        handleSelectedTask={(task) => setSelectedTask(task)}
+                      />
+                    </Box>
+                  )}
               </>
             )}
           </Box>
@@ -280,7 +286,7 @@ const LocatoinDrawingList = ({
         <Grid
           item
           ref={taskDetailContRef}
-          md={s2 ? 4.5 : 3.1}
+          md={s2 ? 4.6 : 3.1}
           lg={s2 ? 5 : 3.1}
           xl={s2 ? 5.1 : 3}
           sx={{
@@ -291,7 +297,6 @@ const LocatoinDrawingList = ({
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            // border: 'solid 1px red',
             ...(selectedTask ? {} : noTaskSelectedStyle),
           }}
           id="taskDetailContainer"
@@ -303,6 +308,7 @@ const LocatoinDrawingList = ({
                 taskDetailContDimension={taskDetailContDimension}
                 task={selectedTaskandEvents}
                 userSubStateLocal={userSubStateLocal}
+                groupbtn={groupbtn}
                 TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
               />
             ) : (
@@ -318,7 +324,7 @@ const LocatoinDrawingList = ({
         </Grid>
         <Grid
           item
-          md={s3 ? 7.1 : 5.5}
+          md={s3 ? 7 : 5.5}
           lg={s3 ? 7.5 : 5.6}
           xl={s3 ? 7.8 : 5.7}
           sx={{

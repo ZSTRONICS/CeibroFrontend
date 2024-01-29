@@ -111,7 +111,7 @@ export default function DrawingHeader(props: DrawingProps) {
     <Grid container gap={1.8}>
       <Grid
         item
-        md={headersize ? 6.3 : 4.7}
+        md={headersize ? 6.3 : 4.8}
         lg={headersize ? 6.2 : 4.3}
         xl={headersize ? 6.1 : 4}
         sx={{ transition: "all linear 0.30s", }}
@@ -181,30 +181,34 @@ export default function DrawingHeader(props: DrawingProps) {
       </Grid>
       <Grid
         item
-        md={headersize ? 5.5 : 7.1}
+        md={headersize ? 5.5 : 7.0}
         lg={headersize ? 5.6 : 7.5}
         xl={headersize ? 5.7 : 7.8}
         sx={{
           transition: "all linear 0.30s",
         }}
 
-      > <Box sx={{ marginLeft: isMdScreen ? '-0.5%' : isLgScreen ? '-0.7%' : isxlScreen ? '0.5%' : '0%', backgroundColor: 'white', }} >
+      >
+        <Box sx={{ marginLeft: isMdScreen ? '-0.5%' : isLgScreen ? '-0.7%' : isxlScreen ? '0.5%' : '0%', backgroundColor: 'white', }} >
           {renderBox(
             <>
-              <Select
-                value={selectedDrawing?._id || ""}
-                variant="standard"
-                disableUnderline
-                sx={{
-                  height: "52px",
-                  paddingLeft: "16px",
-                  backgroundColor: 'transparent',
-                }}
-                onChange={(e) => handleChangeCallback(e, "drawing")}
-                renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
-              >
-                {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
-              </Select>
+              <Box sx={{ width: '85%' }} >
+                <Select
+                  value={selectedDrawing?._id || ""}
+                  variant="standard"
+                  disableUnderline
+                  sx={{
+                    height: "52px",
+                    paddingLeft: "16px",
+                    backgroundColor: 'transparent',
+                    width: '99%',
+                  }}
+                  onChange={(e) => handleChangeCallback(e, "drawing")}
+                  renderValue={() => selectedDrawing?.fileName ?? "Not Found"}
+                >
+                  {renderDrawingSelectOptions(selectedGroup.drawings, "fileName")}
+                </Select>
+              </Box>
               {renderDivider()}
               <Typography
                 variant="body1"

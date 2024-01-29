@@ -7,7 +7,7 @@ import {
   IS_IMAGE,
   MEDIA_EXT,
   convertDateFormat,
-  momentLocalDateTime,
+  momentLocalDateTime
 } from "components/Utills/Globals";
 import ReadMoreWrapper from "components/Utills/ReadMoreWrapper";
 import { ITask } from "constants/interfaces";
@@ -28,9 +28,10 @@ interface IProps {
   handleClick?: (task: ITask) => void;
   taskDetailContDimension?: DynamicDimensions;
   isSmallView?: boolean;
+  groupbtn: boolean;
 }
 function TaskDetails(props: IProps) {
-  const { task, taskDetailContDimension } = props;
+  const { task, taskDetailContDimension, groupbtn } = props;
   const {
     dueDate,
     taskUID,
@@ -75,8 +76,8 @@ function TaskDetails(props: IProps) {
   const eventsFiles =
     events.length > 0
       ? events.flatMap((data) =>
-          (data?.commentData?.files || []).filter(isImageFile)
-        )
+        (data?.commentData?.files || []).filter(isImageFile)
+      )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
   const allFiles = [...filteredFiles, ...eventsFiles];
@@ -135,6 +136,7 @@ function TaskDetails(props: IProps) {
         invitedNumbers={invitedNumbers}
         isExpanded={isShowFullView}
         setIsExpanded={setIsShowFullView}
+        groupbtn={groupbtn}
       />
       <CustomDivider sx={{ my: 1.3 }} />
       <Box

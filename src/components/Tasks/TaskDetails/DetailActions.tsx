@@ -1,4 +1,6 @@
 import { Box, Chip, Grid, Typography } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
@@ -32,6 +34,7 @@ interface IProps {
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
   isExpanded: boolean;
+  groupbtn: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
   taskDetailContDimension: DynamicDimensions | undefined;
 }
@@ -59,6 +62,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     assignedToState,
     invitedNumbers,
     isExpanded,
+    groupbtn,
     setIsExpanded,
     taskDetailContDimension,
   } = props;
@@ -115,6 +119,10 @@ const DetailActions: React.FC<IProps> = (props) => {
     }
   };
 
+  const theme = useTheme();
+  const isFourteen = useMediaQuery(theme.breakpoints.down(1400));
+  const isFourteenup = useMediaQuery(theme.breakpoints.up(1400));
+
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
 
@@ -167,6 +175,21 @@ const DetailActions: React.FC<IProps> = (props) => {
     });
   };
   const getTitle = () => titles[taskAction] || "";
+
+  const calculateWidth = () => {
+    switch (true) {
+      case groupbtn && !isFourteen:
+        return '52%';
+      case !groupbtn && !isFourteen:
+        return '85%';
+      case groupbtn && isFourteen:
+      case !groupbtn && isFourteen:
+        return '100%';
+      default:
+        return 'initial';
+    }
+  };
+
   return (
     <>
       <Grid
@@ -175,6 +198,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         justifyContent="end"
         alignItems="flex-start"
         rowGap={2}
+        sx={{ display: 'flex', justifyContent: 'end' }}
       >
         <Grid
           item
@@ -185,73 +209,83 @@ const DetailActions: React.FC<IProps> = (props) => {
           justifyContent={justifyContent}
           flexWrap="nowrap"
         >
-          <LoadingButton
-            startIcon={<ReplyIcon />}
-            onClick={() => handleClick("comment")}
-            variant="outlined"
-            sx={{
-              borderRadius: "4px",
-              fontWeight: "700",
-              border: "1px solid #0076C8",
-              padding: "0px 16px",
-              span: {
-                mr: "4px",
-              },
-            }}
-          >
-            Reply
-          </LoadingButton>
-          {!["done", "canceled", "new"].includes(userSubState) && (
-            <>
-              <LoadingButton
-                startIcon={<ForwardIcon />}
-                onClick={() => handleClick("forward")}
-                variant="outlined"
-                disabled={false}
-                sx={{
-                  borderRadius: "4px",
-                  fontWeight: "700",
-                  border: "1px solid #0076C8",
-                  padding: "0px 12px",
-                  span: {
-                    marginRight: "4px",
-                  },
-                }}
-              >
-                Forward
-              </LoadingButton>
-              <Box sx={{ position: "relative" }}>
+          <Box sx={{
+            display: 'flex', justifyContent: 'space-between',
+            width: calculateWidth(),
+            transition: 'all 0.3s linear',
+            flexDirection: isFourteen ? 'column' : 'row',
+          }} >
+            <LoadingButton
+              startIcon={<ReplyIcon />}
+              onClick={() => handleClick("comment")}
+              variant="outlined"
+              sx={{
+                borderRadius: "4px",
+                fontWeight: "700",
+                border: "1px solid #0076C8",
+                padding: "0px 16px",
+                marginBottom: isFourteen ? '10px' : '',
+                span: {
+                  mr: "4px",
+                },
+              }}
+            >
+              Reply
+            </LoadingButton>
+            {!["done", "canceled", "new"].includes(userSubState) && (
+              <>
                 <LoadingButton
-                  variant="contained"
-                  onClick={handleDoneClick}
+                  startIcon={<ForwardIcon />}
+                  onClick={() => handleClick("forward")}
+                  variant="outlined"
+                  disabled={false}
                   sx={{
                     borderRadius: "4px",
                     fontWeight: "700",
                     border: "1px solid #0076C8",
-                    padding: "0px 16px",
-                    width: "100px",
+                    padding: "0px 12px",
+                    marginBottom: isFourteen ? '10px' : '',
+                    span: {
+                      marginRight: "4px",
+                    },
+
                   }}
-                  disabled={isloading}
                 >
-                  Done
+                  Forward
                 </LoadingButton>
-                {(doneCommentsRequired || doneImageRequired) && (
-                  <span
-                    style={{
-                      height: "10px",
-                      width: "10px",
-                      backgroundColor: "red",
-                      borderRadius: "50%",
-                      display: "inline-block",
-                      position: "absolute",
-                      top: "13%",
-                      right: "6%",
+                <Box sx={{ position: "relative" }}>
+                  <LoadingButton
+                    variant="contained"
+                    onClick={handleDoneClick}
+                    sx={{
+                      borderRadius: "4px",
+                      fontWeight: "700",
+                      border: "1px solid #0076C8",
+                      padding: "0px 16px",
+                      width: isFourteen ? '100%' : '100px',
                     }}
-                  ></span>
-                )}
-              </Box>
-            </>
-          )}
+                    disabled={isloading}
+                  >
+                    Done
+                  </LoadingButton>
+                  {(doneCommentsRequired || doneImageRequired) && (
+                    <span
+                      style={{
+                        height: "10px",
+                        width: "10px",
+                        backgroundColor: "red",
+                        borderRadius: "50%",
+                        display: "inline-block",
+                        position: "absolute",
+                        top: "13%",
+                        right: "6%",
+                      }}
+                    ></span>
+                  )}
+                </Box>
+              </>
+            )}
+          </Box>
         </Grid>
       </Grid>
       <Grid
