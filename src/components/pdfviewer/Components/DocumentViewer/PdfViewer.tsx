@@ -8,7 +8,10 @@ import useNodeConnectionUtils from "../hooks/useNodeConnectionUtils";
 import useOnMouseDown from "../hooks/useOnMouseDown";
 import { ORIGIN, Point } from "../pointUtils";
 pdfjs.GlobalWorkerOptions.workerSrc = `https://unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-const PdfViewer = () => {
+interface IProps {
+  pdfUrl: string;
+}
+const PdfViewer = (props: IProps) => {
   const defaultCanvasViewState: CanvasViewState = {
     offset: ORIGIN,
     scale: 1,
@@ -26,21 +29,29 @@ const PdfViewer = () => {
   );
   const canvasRef = useRef<HTMLCanvasElement>(null);
   //   const pdfUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-05/actual_compressed-compressed_1704452772103.pdf";
-  const pdfUrl =
-    "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
-  // console.log("drawingPins>>>>>", drawingPins);
+  // const pdfUrl =
+  //   "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
 
   useEffect(() => {
-    if (!canvasRef && !pdfDoc) {
+    if (!canvasRef && !pdfDoc && !props.pdfUrl) {
       return;
     }
     const canvas = canvasRef.current;
-    renderPDF(pdfUrl, canvas);
+    renderPDF(props.pdfUrl, canvas);
+    console.log("renderPDF111");
+
     return () => {
       cancelRender();
     };
-  }, [pdfDoc, canvasViewState.scale, isMouseMove, drawingPins.length]);
+  }, [
+    pdfDoc,
+    canvasViewState.scale,
+    isMouseMove,
+    drawingPins.length,
+    props.pdfUrl,
+  ]);
 
+  console.log("props.pdfUrl", props.pdfUrl);
   const queueRenderPage = (num: any) => {
     if (pageRendering) {
       setPageNumPending(num);

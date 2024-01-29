@@ -1,8 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
-import { useEffect, useState } from "react";
 // components
 import { useDispatch, useSelector } from "react-redux";
-import projectActions from "redux/action/project.action";
 // import DocumentViewer from "./Components/DocumentViewer";
 import PdfViewer from "./Components/DocumentViewer/PdfViewer";
 
@@ -22,21 +20,19 @@ const DocumentReader = (props) => {
   );
 
   const classes = useStyles();
-  const fileUrl =
-    "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
+  // const fileUrl =
+  //   "https://ceibro-development.s3.eu-north-1.amazonaws.com/task/task/2023-12-19/CEIBRO-Test_run_2023_11_15__1__1701681729692__1__-_Copy_1702987503302.pdf";
   // const fileUrl ="https://ceibro-development.s3.eu-north-1.amazonaws.com/task/2024-01-05/actual_compressed-compressed_1704452772103.pdf";
-  const [pdf, setPdf] = useState(fileUrl);
-  useEffect(() => {
-    if (loadDrawing) {
-      setPdf(selectedDrawing.drawingUrl);
-      dispatch(projectActions.setLoadDrawing(false));
-    }
-  }, [loadDrawing]);
-
+  // const [pdf, setPdf] = useState(props.selectedDrawingUrl);
+  // useEffect(() => {
+  //   if (pdf) {
+  //     setPdf(props.selectedDrawingUrl);
+  //   }
+  // }, [props.selectedDrawingUrl]);
+  // console.log("pdf", pdf);
   return (
     <div className={classes.documentViewport}>
-      {/* <DocumentViewer pdf={pdf} file={pdf} newTask={props.newTask} /> */}
-      <PdfViewer />
+      <PdfViewer pdfUrl={props.selectedDrawingUrl} />
     </div>
   );
 };

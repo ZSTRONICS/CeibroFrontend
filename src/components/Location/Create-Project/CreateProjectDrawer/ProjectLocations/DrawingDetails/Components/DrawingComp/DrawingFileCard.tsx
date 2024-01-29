@@ -54,7 +54,7 @@ function DrawingFileCard({ drawing }: Props) {
                   {trimFileName(fileName)}
                 </Heading2>
               </Tooltip>
-              <LabelTag>{`(4 tasks)`}</LabelTag>
+              <LabelTag>{`(tasks count)`}</LabelTag>
             </Box>
             <LabelTag>Last update: {localTimeData}</LabelTag>
           </Box>

@@ -2,6 +2,7 @@ import { Box, Grid } from "@mui/material";
 import TaskDetails from "components/Tasks/TaskDetails";
 // import { DrawingMenu, StickyHeader } from "./Components";
 import { Heading2 } from "components/CustomTags";
+import DocumentReader from "components/pdfviewer";
 import {
   AllTasksAllEvents,
   ITask,
@@ -39,6 +40,7 @@ const LocatoinDrawingList = ({
   loadingAllTasksAllEvents,
   RECENT_TASK_UPDATED_TIME_STAMP,
   allDrawingTaskList,
+  selectedDrawing,
 }: LocationDrawingListProps) => {
   const { allEvents, allTasks, allPins } = allTasksAllEvents;
   const [size, ratio] = useWindowSize();
@@ -53,7 +55,7 @@ const LocatoinDrawingList = ({
   const [btnRightRotate, setBtnRightRotate] = useState<boolean>(true);
   const [isfullcard, setIsfullcard] = useState(true);
   const [isfullcardMini, setIsfullcardMini] = useState(false);
-  const [Taskbtn, setTaskbtn] = useState(true)
+  const [Taskbtn, setTaskbtn] = useState(true);
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
@@ -82,8 +84,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filteTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -94,7 +96,6 @@ const LocatoinDrawingList = ({
   };
 
   const collapseDiv1 = () => {
-    console.log('first');
     if (s1 === false && s2 === true) {
       setBtnRotate(true);
       setBtnRightRotate(true);
@@ -107,7 +108,6 @@ const LocatoinDrawingList = ({
       }, 350);
       updateDimensionsAndFullCard();
     } else if (s1 === false && s2 === false && s3 === true) {
-      console.log('second');
       setBtnRotate(true);
       setBtnRightRotate(true);
       setS1(true);
@@ -121,14 +121,13 @@ const LocatoinDrawingList = ({
       }, 350);
       updateDimensionsAndFullCard();
     } else {
-      console.log('third');
       setBtnRightRotate(true);
       setBtnRotate(false);
       setS1(false);
       setS2(true);
       setS3(false);
       setTaskbtn(false);
-      setIsfullcard(false)
+      setIsfullcard(false);
       setTimeout(() => {
         setIsfullcardMini(true);
       }, 350);
@@ -144,7 +143,6 @@ const LocatoinDrawingList = ({
       setBtnRightRotate(true);
       setHeadersize(true);
     } else {
-      console.log('fourth');
       setTaskbtn(false);
       setBtnRightRotate(false);
       setBtnRotate(false);
@@ -214,10 +212,10 @@ const LocatoinDrawingList = ({
             mt: 2,
             px: 1,
             transition: "all 0.30s linear",
-            backgroundColor: 'white',
+            backgroundColor: "white",
           }}
         >
-          <Box sx={{ width: "100%", backgroundColor: "white", }}>
+          <Box sx={{ width: "100%", backgroundColor: "white" }}>
             <LocationTaskHead
               Taskbtn={Taskbtn}
               isSmallView={!s1}
@@ -239,43 +237,41 @@ const LocatoinDrawingList = ({
               </Heading2>
             ) : (
               <>
-                {!s1 ? (
-                  isfullcardMini && (
-                    <Box
-                      sx={{
-                        height: `${containerHeight}px`,
-                        overflowY: "auto",
-                        padding: "6px 6px",
-                        transition: "all 0.30s linear",
-                      }}
-                    >
-                      <MiniTaskCardList
-                        windowActualHeight={windowActualHeight}
-                        allTasks={allTask}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)}
-                      />
-                    </Box>
-                  )
-                ) : (
-                  isfullcard && (
-                    <Box
-                      sx={{
-                        transition: "all 0.30s linear",
-                      }}
-                    >
-                      <LocationTasksMain
-                        windowActualHeight={containerHeight}
-                        allTasks={allTask}
-                        selectedTaskId={selectedTask?._id}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)}
-                      />
-                    </Box>
-                  )
-                )}
+                {!s1
+                  ? isfullcardMini && (
+                      <Box
+                        sx={{
+                          height: `${containerHeight}px`,
+                          overflowY: "auto",
+                          padding: "6px 6px",
+                          transition: "all 0.30s linear",
+                        }}
+                      >
+                        <MiniTaskCardList
+                          windowActualHeight={windowActualHeight}
+                          allTasks={allTask}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                        />
+                      </Box>
+                    )
+                  : isfullcard && (
+                      <Box
+                        sx={{
+                          transition: "all 0.30s linear",
+                        }}
+                      >
+                        <LocationTasksMain
+                          windowActualHeight={containerHeight}
+                          allTasks={allTask}
+                          selectedTaskId={selectedTask?._id}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                        />
+                      </Box>
+                    )}
               </>
             )}
           </Box>
@@ -333,11 +329,16 @@ const LocatoinDrawingList = ({
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
             transition: "all 0.30s linear",
-            ...noTaskSelectedStyle,
+            ...(selectedDrawing.fileUrl ? {} : noTaskSelectedStyle),
           }}
         >
-          {/* <DocumentReader /> */}
-          <Heading2 sx={{ fontWeight: 600 }}>File previews!</Heading2>
+          {selectedDrawing.fileUrl ? (
+            <DocumentReader selectedDrawingUrl={selectedDrawing.fileUrl} />
+          ) : (
+            <Heading2 sx={{ fontWeight: 600 }}>
+              Drawing file not found!
+            </Heading2>
+          )}
         </Grid>
       </Grid>
     </>

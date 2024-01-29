@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { ITask } from "constants/interfaces";
+import { Drawing, ITask } from "constants/interfaces";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -58,7 +58,7 @@ function LocationDrawingDetails() {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
     let selectedGroup: any = findData(allGroups, "_id", groupId);
-    let selectedDrawing: any = findData(
+    let selectedDrawing: Drawing | any = findData(
       selectedGroup.drawings,
       "_id",
       drawingId

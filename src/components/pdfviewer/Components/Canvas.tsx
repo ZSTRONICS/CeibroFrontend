@@ -3,7 +3,7 @@ import * as React from "react";
 import { useLayoutEffect } from "react";
 import CanvasControls from "./CanvasControls";
 import usePanZoomCanvas from "./hooks/usePanZoomCanvas";
-import { Point, roundToNearestHundredth } from "./pointUtils";
+import { Point } from "./pointUtils";
 
 const StyledCanvasWrapper = styled("div")`
   display: block;
@@ -117,9 +117,9 @@ export default function Canvas(props: CanvasProps): React.ReactElement {
   return (
     <StyledCanvasWrapper>
       <StyledCanvasState>
-        <div>{`x: ${Math.round(canvasViewState.offset.x)}`}</div>
+        {/* <div>{`x: ${Math.round(canvasViewState.offset.x)}`}</div>
         <div>{`y: ${Math.round(canvasViewState.offset.y)}`}</div>
-        <div>{`scale: ${roundToNearestHundredth(canvasViewState.scale)}`}</div>
+        <div>{`scale: ${roundToNearestHundredth(canvasViewState.scale)}`}</div> */}
       </StyledCanvasState>
       <CanvasControls
         setCanvasViewState={setCanvasViewState}
