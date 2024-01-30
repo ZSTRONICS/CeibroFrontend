@@ -21,7 +21,7 @@ function DrawingFileCard({ drawing, taskCount }: Props) {
 
   const handleClick = () => {
     history.push(
-      `/location/project/${projectId}/group/${groupId}/drawing/${_id}`
+      `/location/project/${projectId}/group/${groupId}/drawing/${_id}/task`
     );
   };
 

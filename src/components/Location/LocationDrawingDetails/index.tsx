@@ -7,6 +7,7 @@ import { taskActions } from "redux/action";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
 import { filterTasksByCondition } from "utills/common";
+import { filterData, findData } from "../utils";
 import DrawingHeader from "./DrawingHeader";
 import LocatoinDrawingList from "./LocatoinDrawingList";
 
@@ -40,21 +41,6 @@ function LocationDrawingDetails() {
     dispatch(taskActions.resetDrawingFilters());
   }, []);
 
-  const filterData = (data: any[], filterKey: string, value: any): any[] => {
-    if (data && data.length > 0) {
-      return data.filter((item) => item[filterKey] === value);
-    } else {
-      return [];
-    }
-  };
-  const findData = (data: any[], filterKey: string, value: any): any[] => {
-    if (data && data.length > 0) {
-      return data.find((item) => item[filterKey] === value);
-    } else {
-      return [];
-    }
-  };
-
   const projectData = useMemo(() => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
@@ -87,7 +73,7 @@ function LocationDrawingDetails() {
     switch (type) {
       case "drawing":
         history.push(
-          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}`
+          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}/task`
         );
         break;
       case "group":
@@ -99,7 +85,7 @@ function LocationDrawingDetails() {
         history.push(
           `/location/project/${projectId}/group/${event.target.value}/drawing/${
             selectedGroup.drawings[0]?._id ?? ""
-          }`
+          }/task`
         );
         break;
 
