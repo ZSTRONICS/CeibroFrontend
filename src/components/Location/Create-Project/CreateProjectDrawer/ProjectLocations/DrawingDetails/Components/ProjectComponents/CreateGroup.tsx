@@ -32,6 +32,20 @@ function CreateGroup({ projectId, closeModal }: Props) {
       );
     }
   };
+
+  const handleUpdateGroup = () => {
+    dispatch(
+      PROJECT_APIS.updateGroupById({
+        other: {
+          groupId: "657c6cf2fa6501660b70c176",
+        },
+        body: {
+          groupName: "test group 1",
+        },
+      })
+    );
+  };
+
   return (
     <>
       <Box

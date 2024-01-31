@@ -65,6 +65,13 @@ const projectFavUnFav = apiCall({
   path: (payload) => `/project/favorite/${payload.other.isProjFav}/${payload.other.projectId}`,
 });
 
+const groupFavUnFav = apiCall({
+  useV2Route: true,
+  type: PROJECT_CONFIG.GROUP_FAV_UNFAV,
+  method: "post",
+  path: (payload) => `/project/group/${payload.other.isGroupFav}/${payload.other.groupId}`,
+});
+
 const projectHideUnhide = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.PROJECT_HIDE_UNHIDE,
@@ -138,6 +145,7 @@ const createProjectGroup = apiCall({
   method: "post",
   path: (payload) => `/project/${payload.other.projectId}/group`,
 });
+
 const markGroupPrivateOrPublic = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE,
@@ -156,15 +164,15 @@ const getGroupsByProjectId = apiCall({
 const updateGroupById = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.UPDATE_GROUP_BY_ID,
-  method: "get",
-  path: (payload) => `/project/group${payload.other.groupId}`, //groupId is required
+  method: "patch",
+  path: (payload) => `/project/group/${payload.other.groupId}`
 });
 
 const deleteGroupById = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.DELETE_GROUP_BY_ID,
-  method: "get",
-  path: (payload) => `/project/group${payload?.other}`, //groupId is required
+  method: "delete",
+  path: (payload) => `/project/group/${payload.other.groupId}`
 });
 
 const getProjectsWithMembers = apiCall({
@@ -218,7 +226,7 @@ const getProjectDetail = apiCall({
   useV2Route: false,
   type: GET_PROJECT_DETAIL,
   method: "get",
-  path: (payload) => `/project/${payload?.other}`,
+  path: (payload) => `/project/${payload.other}`,
 });
 
 const createRoles = apiCall({
@@ -235,7 +243,7 @@ const getAllDocuments = apiCall({
   type: PROJECT_CONFIG.GET_ALL_DOCUMENTS,
   method: "get",
   // path: (payload) =>
-  //   `/project/folder/${payload?.other?.selectedProject}?search=${payload?.other?.findDoc}`,
+  //   `/project/folder/${payload.other?.selectedProject}?search=${payload.other?.findDoc}`,
   path: (payload) => {
     const selectedProject = payload.other.selectedProject;
     const inputData = payload.other.findDoc;
@@ -252,14 +260,14 @@ const createFolder = apiCall({
   useV2Route: false,
   type: CREATE_FOLDER,
   method: "post",
-  path: (payload) => `/project/folder/${payload?.other}`,
+  path: (payload) => `/project/folder/${payload.other}`,
 });
 
 const createMember = apiCall({
   useV2Route: false,
   type: CREATE_MEMBER,
   method: "post",
-  path: (payload) => `/project/member/${payload?.other}`,
+  path: (payload) => `/project/member/${payload.other}`,
 });
 
 const getMember = apiCall({
@@ -279,7 +287,7 @@ const updateMember = apiCall({
   useV2Route: false,
   type: UPDATE_MEMBER,
   method: "patch",
-  path: (payload) => `/project/member/update/${payload?.other}`,
+  path: (payload) => `/project/member/update/${payload.other}`,
 });
 
 const getFolderFiles = apiCall({
@@ -452,28 +460,28 @@ const deleteRole = apiCall({
   useV2Route: false,
   type: DELETE_ROLE,
   method: "delete",
-  path: (payload) => `/project/role/${payload?.other}`,
+  path: (payload) => `/project/role/${payload.other}`,
 });
 
 const getAvailableProjectMembers = apiCall({
   useV2Route: false,
   type: GET_AVAILABLE_PROJECT_MEMBERS,
   method: "get",
-  path: (payload) => `/project/members/available/${payload?.other}`,
+  path: (payload) => `/project/members/available/${payload.other}`,
 });
 
 // const getGroupMembers = apiCall({
 //  useV2Route: false,
 //   type: GET_GROUP_MEMBERS,
 //   method: "get",
-//   path: (payload) => `/project/group/members/${payload?.other}`,
+//   path: (payload) => `/project/group/members/${payload.other}`,
 // });
 
 const getGroupUsers = apiCall({
   useV2Route: false,
   type: GET_GROUP_USERS,
   method: "get",
-  path: (payload) => `/project/group/users/${payload?.other}`,
+  path: (payload) => `/project/group/users/${payload.other}`,
 });
 
 const addRemoveFolderUser = apiCall({
@@ -492,6 +500,7 @@ function* projectSaga() {
   yield takeLatest(PROJECT_CONFIG.PROJECT_HIDE_UNHIDE, projectHideUnhide);
   yield takeLatest(PROJECT_CONFIG.GET_ALL_PROJECTS, getAllProjects);
   // groups
+  yield takeLatest(PROJECT_CONFIG.GROUP_FAV_UNFAV, groupFavUnFav);
   yield takeLatest(PROJECT_CONFIG.CREATE_GROUP, createProjectGroup);
   yield takeLatest(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID, getGroupsByProjectId);
   yield takeLatest(PROJECT_CONFIG.UPDATE_GROUP_BY_ID, updateGroupById);

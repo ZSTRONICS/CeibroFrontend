@@ -343,6 +343,7 @@ function CreateNewTask() {
               options={topicOptions}
               createCallback={handleCreateCallback}
               handleChangeValues={handleChangeValues}
+              handleSelectedMenuList={(option: any) => {}}
             />
             <UserDropDown
               name="assignedToState"
@@ -357,6 +358,7 @@ function CreateNewTask() {
               options={projectOptions}
               createCallback={handleCreateCallback}
               handleChangeValues={handleChangeValues}
+              handleSelectedMenuList={(option: any) => {}}
             />
             <CustomDatePicker
               name="dueDate"

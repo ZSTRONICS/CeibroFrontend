@@ -1,6 +1,4 @@
 import { Box, Card, CardContent, Tooltip } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   CustomStack,
   Span,
@@ -103,35 +101,33 @@ const TaskCard = React.memo((props: IProps) => {
     );
   };
 
-  const theme = useTheme();
-  const isLgScreen = useMediaQuery(theme.breakpoints.down('xl'));
-  const isMdScreen = useMediaQuery(theme.breakpoints.down(1250));
-
   return (
     <Card
       onMouseOver={() => setIsMouseOver(true)}
       onMouseOut={() => setIsMouseOver(false)}
       sx={{
         width: "100%",
-        // minWidth: 290,
-        // maxWidth: 320,
+        minWidth: 290,
+        maxWidth: 320,
         cursor: "pointer",
-        border: `${!isLocationTask && isCanceled
-          ? `3px solid ${cardBorderColor}`
-          : isLocationTask
+        border: `${
+          !isLocationTask && isCanceled
+            ? `3px solid ${cardBorderColor}`
+            : isLocationTask
             ? "none"
             : "1px solid #818181"
-          }`,
+        }`,
         borderRadius: !isLocationTask ? "8px" : "",
         borderTopRightRadius: isSelectedTask ? "15px" : "10px",
         borderTopLeftRadius: "5px",
         borderTopStyle: "none",
-        WebkitBoxShadow: `${isSelectedTask === true
-          ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
-          : !seenBy.includes(userId)
+        WebkitBoxShadow: `${
+          isSelectedTask === true
+            ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25) inset"
+            : !seenBy.includes(userId)
             ? "0px 4px 4px 0px rgba(0, 0, 0, 0.25)"
             : "none"
-          }`,
+        }`,
         // background: !seenBy.includes(userId) ? "#EBF5FB" : "",
         background: isSelectedTask ? "#EBF5FB" : "",
         "&:hover": {
@@ -146,66 +142,57 @@ const TaskCard = React.memo((props: IProps) => {
       onClick={() => handleClick(task)}
     >
       <CustomStack sx={{ pt: 0.1, gap: 1, position: "relative" }}>
-        <Box sx={{ width: '100%', display: 'flex', flexDirection: isLgScreen ? 'column' : 'row', }} >
-          <Box sx={{}} >
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-                border: "1px solid #818181",
-                borderRadius: "4px",
-                paddingTop: "2px",
-                paddingBottom: '2px',
-                paddingLeft: '6px',
-                paddingRight: '6px',
-                backgroundColor: "white",
-                borderTopLeftRadius: "4px",
-                ml: "-1px",
-                WebkitBoxShadow: `${isSelectedTask || isMouseOver
-                  ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
-                  : "none"
-                  }`,
-              }}
-            >
-              {taskUID}
-            </Span>
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-                marginLeft: '7px',
-              }}
-            >
-              {`${taskCreatedAt[0]}`}
-            </Span>
-            <Span
-              sx={{
-                color: "0d0d0d",
-                fontWeight: 600,
-                marginLeft: '7px',
-              }}
-            >
-              {`${taskCreatedAt[1]}`}
-            </Span>
-          </Box>
-          <Box sx={{ marginLeft: '7px' }} >
-            {dueDate && dueDate !== "" ? (
-              <Span
-                sx={{
-                  color: "0d0d0d",
-                  fontWeight: 600,
-                }}
-              >{`Due date ${formattedDate}`}</Span>
-            ) : (
-              <Span
-                sx={{
-                  color: "0d0d0d",
-                  fontWeight: 600,
-                }}
-              >{`Due date N/A`}</Span>
-            )}
-          </Box>
-        </Box>
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+            border: "1px solid #818181",
+            borderRadius: "4px",
+            padding: "2px 6px",
+            backgroundColor: "white",
+            borderTopLeftRadius: "4px",
+            ml: "-1px",
+            WebkitBoxShadow: `${
+              isSelectedTask || isMouseOver
+                ? "0px 3px 4px 0px rgba(0, 0, 0, 0.25) inset"
+                : "none"
+            }`,
+          }}
+        >
+          {taskUID}
+        </Span>
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+          }}
+        >
+          {`${taskCreatedAt[0]}`}
+        </Span>
+
+        <Span
+          sx={{
+            color: "0d0d0d",
+            fontWeight: 600,
+          }}
+        >
+          {`${taskCreatedAt[1]}`}
+        </Span>
+        {dueDate && dueDate !== "" ? (
+          <Span
+            sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}
+          >{`Due date ${formattedDate}`}</Span>
+        ) : (
+          <Span
+            sx={{
+              color: "0d0d0d",
+              fontWeight: 600,
+            }}
+          >{`Due date N/A`}</Span>
+        )}
         <Box sx={{ position: "absolute", top: "3%", right: 0 }}>
           <GenericMenu
             options={menuOption}
@@ -225,53 +212,42 @@ const TaskCard = React.memo((props: IProps) => {
           "&:last-child": { pb: 0 },
         }}
       >
-
-        <Box sx={{
-          display: 'flex', justifyContent: 'space-between',
-        }} >
-          <CustomStack sx={{
-            flexDirection: isMdScreen ? 'column' : '',
-            display: isMdScreen ? 'flex' : '',
-            justifyContent: isMdScreen ? 'start' : '',
-            alignItems: isMdScreen ? 'start' : ''
-          }} justifyContent="space-between" pt={0.2}>
-
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
-              <TaskCardLabel>
-                {cardLabel}:&nbsp;{""}
-                <span
-                  className="textOverflowDescription"
-                  style={{
-                    fontWeight: "600",
-                    fontSize: "11px",
-                    WebkitLineClamp: 1,
-                    maxWidth: "100px",
-                  }}
-                >
-                  {displayName}
-                </span>
-              </TaskCardLabel>
-              {cardLabel !== "From" && assignToNames()}
-            </Box>
-
-            {project?.title && (
-              <TaskCardLabel
+        <CustomStack justifyContent="space-between" pt={0.2}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 0.8 }}>
+            <TaskCardLabel>
+              {cardLabel}:&nbsp;{""}
+              <span
                 className="textOverflowDescription"
-                style={{ marginLeft: isMdScreen ? '0px' : '40px', whiteSpace: "nowrap" }}
+                style={{
+                  fontWeight: "600",
+                  fontSize: "11px",
+                  WebkitLineClamp: 1,
+                  maxWidth: "100px",
+                }}
               >
-                Project: &nbsp;{""}
-                <span
-                  style={{
-                    fontWeight: "600",
-                    fontSize: "11px",
-                  }}
-                >
-                  {trucateText}
-                </span>
-              </TaskCardLabel>
-            )}
-          </CustomStack>
-        </Box>
+                {displayName}
+              </span>
+            </TaskCardLabel>
+            {cardLabel !== "From" && assignToNames()}
+          </Box>
+
+          {!isLocationTask && project?.title && (
+            <TaskCardLabel
+              className="textOverflowDescription"
+              style={{ paddingLeft: "2px", whiteSpace: "nowrap" }}
+            >
+              Project: &nbsp;{""}
+              <span
+                style={{
+                  fontWeight: "600",
+                  fontSize: "11px",
+                }}
+              >
+                {trucateText}
+              </span>
+            </TaskCardLabel>
+          )}
+        </CustomStack>
 
         <SubHeadingTag
           className="ellipsis"
@@ -305,4 +281,3 @@ const TaskCard = React.memo((props: IProps) => {
 });
 
 export { TaskCard };
-

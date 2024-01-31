@@ -111,6 +111,7 @@ function LocationTasksMain(props: IProps) {
           style={{
             transition: "all 0.30s linear",
             height: `${windowActualHeight}px`,
+            width: "100%",
           }}
         >
           {Array.from({ length: 6 }).map((_, index) => (

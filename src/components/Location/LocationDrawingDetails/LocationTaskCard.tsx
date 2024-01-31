@@ -138,16 +138,16 @@ function LocationTaskCard(props: IProps) {
   return (
     <Box
       sx={{
-        maxWidth: "93%",
         width: "100%",
+        maxWidth: "342px",
+        minWidth: "325px",
         display: "flex",
         alignItems: "center",
         borderRadius: "8px",
         boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
         background: `${currentTaskColor}`,
         border: `1px solid ${currentTaskColor}`,
-        marginLeft: "16px",
-        marginBottom: "10px",
+        marginLeft: "2px",
       }}
     >
       {currentTaskStateAndIcon && (

@@ -302,6 +302,7 @@ export const PROJECT_APIS = {
   projectHideUnhide: createAction(PROJECT_CONFIG.PROJECT_HIDE_UNHIDE),
   getAllProjects: createAction(PROJECT_CONFIG.GET_ALL_PROJECTS),
   // groups
+  groupFavUnFav: createAction(PROJECT_CONFIG.GROUP_FAV_UNFAV),
   createProjectGroup: createAction(PROJECT_CONFIG.CREATE_GROUP),
   markGroupPrivateOrPublic: createAction(PROJECT_CONFIG.MARK_GROUP_PUBLIC_OR_PRIVATE),
   getGroupsByProjectId: createAction(PROJECT_CONFIG.GET_GROUPS_BY_PROJECT_ID),

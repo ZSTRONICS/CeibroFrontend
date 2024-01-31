@@ -37,10 +37,23 @@ export const useSocket = () => {
         const eventType = dataRcvd.eventType;
         const data = dataRcvd.data;
         switch (eventType) {
-
+            // DOCS_CONFIG
             case DOCS_CONFIG.DRAWING_FILE_UPLOADED:
                 dispatch({
                     type: PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED,
+                    payload: data
+                });
+                break;
+            // PROJECT_CONFIG
+            case PROJECT_CONFIG.PROJECT_GROUP_DELETED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_GROUP_DELETED,
+                    payload: data
+                })
+                break;
+            case PROJECT_CONFIG.PROJECT_UPDATED:
+                dispatch({
+                    type: PROJECT_CONFIG.PROJECT_UPDATED,
                     payload: data
                 });
                 break;

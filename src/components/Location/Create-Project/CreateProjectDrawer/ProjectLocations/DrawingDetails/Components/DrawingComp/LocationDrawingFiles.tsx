@@ -33,10 +33,9 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
     projectFloors,
   } = useSelector((state: RootState) => state.project);
   const { allTasksAllEvents } = useSelector((state: RootState) => state.task);
-  const { groupId } = useParams<any>();
-  const [slectedFloor, setSelectedFloor] = useState<Floor | null>({} as Floor);
+  const { projectId, groupId } = useParams<any>();
+  const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
   const dispatch = useDispatch();
-
   useEffect(() => {
     selectedDrawingFiles && setSelectedGroupDrawings(selectedDrawingFiles);
   }, [selectedDrawingFiles]);
@@ -57,17 +56,20 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
     setSelectedGroupDrawings(filteredDrawingFiles);
     setSearchText(newSearchText);
   };
-  const findSelectedFloor = (selectedFloor: any) => {
-    const findFloor = projectFloors.find(
-      (floor: any) => floor.floorName === selectedFloor.value
-    );
-    if (findFloor) {
+  const findSelectedFloor = (selectedMenu: any) => {
+    // console.log("selectedMenu", selectedMenu);
+    if (selectedMenu) {
+      const findFloor = projectFloors.find(
+        (floor: any) => floor.floorName === selectedMenu.value
+      );
       setSelectedFloor(findFloor);
+    } else {
+      setSelectedFloor(null);
     }
   };
 
   const handleSortingDrawingFile = () => {
-    console.log("added sorting logic");
+    console.log("handleSortingDrawingFile");
   };
   const handleSelectDocument = () => {
     const input = document.createElement("input");
@@ -101,9 +103,9 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
         '\\"'
       );
       const finalMetadata = `"${metadataString}"`;
-      if (drawingFile && slectedFloor && groupId) {
-        formData.append("projectId", slectedFloor.projectId);
-        formData.append("floorId", slectedFloor._id);
+      if (drawingFile && selectedFloor && groupId) {
+        formData.append("projectId", selectedFloor.projectId);
+        formData.append("floorId", selectedFloor._id);
         formData.append("groupId", groupId);
         formData.append("metadata", finalMetadata);
         formData.append("files", drawingFile[0]);
@@ -178,8 +180,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
                 {selectedGroupName ? `>` : ""}
               </Heading2>
               <Heading2 sx={{ textTransform: "capitalize", color: "#605C5C" }}>
-                {" "}
-                {selectedGroupName}{" "}
+                {selectedGroupName}
               </Heading2>
             </Box>
             <Grid
@@ -275,7 +276,8 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           handleClose={closeModal}
           children={
             <CreateDrawing
-              isFloorSelected={slectedFloor && slectedFloor._id ? true : false}
+              projectId={projectId}
+              isFloorSelected={selectedFloor ? true : false}
               findSelectedFloor={findSelectedFloor}
               projectFloors={projectFloors}
               selectedGroupName={selectedGroupName}

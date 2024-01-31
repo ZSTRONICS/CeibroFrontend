@@ -1,14 +1,14 @@
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
-import { Box } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { GenericMenu } from "components/GenericComponents";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
-import { Drawing } from "constants/interfaces";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { PROJECT_APIS } from "redux/action";
 
 interface Props {
@@ -25,28 +25,33 @@ interface RouteParams {
 function GroupCard({ groups, projectName, projectFloors }: Props) {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { groupId } = useParams<RouteParams>();
-  const handleSetDrawingFiles = useCallback(
-    (
-      drawings: Drawing[],
-      group: Group,
-      projectTitle: String,
-      projectFloors: Floor[]
-    ) => {
+  const { projectId, groupId } = useParams<RouteParams>();
+  const handleDrawingFiles = useCallback(
+    (projectId: string, group: Group) => {
       dispatch({
         type: PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES,
         payload: {
-          drawings,
+          drawings: group.drawings,
           groupName: group.groupName,
-          projectTitle,
+          projectTitle: projectName,
           projectFloors,
         },
       });
-      const path = `/location/${group.projectId}/${group._id}`;
-      history.push(path);
+      history.push(`/location/${projectId}/${group._id}`);
     },
-    [groups.length]
+    [groups.length, groupId]
   );
+
+  useEffect(() => {
+    if (groupId && projectId) {
+      const group: Group | undefined = groups.find(
+        (group) => group._id === groupId
+      );
+      if (group) {
+        handleDrawingFiles(projectId, group);
+      }
+    }
+  }, [groupId]);
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
     dispatch(
@@ -63,6 +68,35 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
         },
       })
     );
+  };
+  const handleDeleteGroup = (groupId: string) => {
+    dispatch(
+      PROJECT_APIS.deleteGroupById({
+        other: {
+          groupId,
+        },
+        success: (res: any) => {
+          history.push(`/location/${projectId}`);
+          toast.success(res.data.message);
+        },
+        onFailAction: (err: any) => {
+          toast.error(err.message);
+        },
+      })
+    );
+  };
+
+  const handleGroupFavUnFav = (group: Group) => {
+    // dispatch(
+    //   PROJECT_APIS.groupFavUnFav({
+    //     other: {
+    //       groupId: groupId,
+    //       isGroupFav: !group.isFavoriteByMe,
+    //     },
+    //     // success: (res: any) => {
+    //     // },
+    //   })
+    // );
   };
 
   return (
@@ -81,14 +115,10 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
           <Box sx={{ py: 0.5 }} key={_id}>
             <Box style={{ width: "100%" }}>
               <CustomStack
-                onClick={() =>
-                  handleSetDrawingFiles(
-                    drawings,
-                    group,
-                    projectName,
-                    projectFloors
-                  )
-                }
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  history.push(`/location/${group.projectId}/${_id}`);
+                }}
                 sx={{
                   gap: 0.5,
                   justifyContent: "start",
@@ -114,7 +144,12 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                       justifyContent: "center",
                     }}
                   >
-                    {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
+                    <IconButton
+                      sx={{ padding: 0 }}
+                      onClick={() => handleGroupFavUnFav(group)}
+                    >
+                      {isFavoriteByMe ? <FavIcon /> : <UnFavIcon />}
+                    </IconButton>
                   </Box>
                   {/* /// */}
                   <Box sx={{ width: "82%" }}>
@@ -137,12 +172,7 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                         <></>
                       )}
                     </Box>
-                    {/*  Add this when we will add recently-used and favourite
-                    {isCreator === false ? <LabelTag className="textOverflowRow">
-                      {`From: ${creator.firstName} ${creator.surName}`}
-                    </LabelTag> : <></>} */}
                   </Box>
-                  {/* //// */}
                 </Box>
                 <CustomStack
                   sx={{
@@ -190,6 +220,12 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
                           menuName: "Mark as public",
                           callBackHandler: () => {
                             handleGroupUpdated(_id, true);
+                          },
+                        },
+                        {
+                          menuName: "Delete",
+                          callBackHandler: () => {
+                            handleDeleteGroup(_id);
                           },
                         },
                       ].filter(

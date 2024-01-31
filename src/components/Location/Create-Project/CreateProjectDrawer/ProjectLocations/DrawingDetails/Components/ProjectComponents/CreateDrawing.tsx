@@ -5,6 +5,7 @@ import FloorDropDown from "./FloorDropDown";
 interface Props {
   drawingFile: any;
   isFloorSelected: boolean;
+  projectId: string;
   handleCreateDrawing: () => void;
   projectFloors: Floor[];
   selectedGroupName: string;
@@ -18,6 +19,7 @@ function CreateDrawing({
   projectFloors,
   selectedGroupName,
   findSelectedFloor,
+  projectId,
 }: Props) {
   return (
     <>
@@ -34,6 +36,7 @@ function CreateDrawing({
       >
         <Box>
           <FloorDropDown
+            projectId={projectId}
             projectFloors={projectFloors}
             findSelectedFloor={findSelectedFloor}
           />

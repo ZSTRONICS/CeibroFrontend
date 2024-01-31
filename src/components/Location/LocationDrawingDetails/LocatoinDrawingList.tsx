@@ -203,22 +203,24 @@ const LocatoinDrawingList = ({
 
   return (
     <>
-      <Grid container gap={1.8}>
+      <Grid container gap={1.8} flexWrap={"nowrap"}>
         <Grid
           ref={taskContainerRef}
           item
           container
-          md={s1 ? 3 : 1.5}
-          lg={s1 ? 3 : 1.1}
-          xl={s1 ? 3 : 0.9}
-          xs={s1 ? 3.1 : 0.7}
+          // md={s1 ? 3.4 : 1.5}
+          // lg={s1 ? 3 : 1.1}
+          // xl={s1 ? 3 : 0.9}
+          // xs={s1 ? 3.1 : 0.7}
           sx={{
             ...sideBarStyle,
             position: "relative",
             mt: 2,
             px: 1,
+            maxWidth: `${s1 ? "22%" : "10%"}`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
+            width: "100%",
           }}
         >
           <Box sx={{ width: "100%", backgroundColor: "white" }}>
@@ -266,6 +268,7 @@ const LocatoinDrawingList = ({
                       <Box
                         sx={{
                           transition: "all 0.30s linear",
+                          width: "100%",
                         }}
                       >
                         <LocationTasksMain
@@ -287,23 +290,25 @@ const LocatoinDrawingList = ({
         <Grid
           item
           ref={taskDetailContRef}
-          md={s2 ? 4.6 : 3.1}
-          lg={s2 ? 5 : 3.1}
-          xl={s2 ? 5.1 : 3}
+          // md={s2 ? 4.6 : 3.1}
+          // lg={s2 ? 5 : 3.1}
+          // xl={s2 ? 5.1 : 3}
           sx={{
             position: "relative",
+            width: "100%",
+            maxWidth: `${s2 ? "60%" : "30%"}`,
             height: `${windowActualHeight - 68}px`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
             marginTop: "16px",
             borderRadius: "4px",
             boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
-            ...(selectedTask ? {} : noTaskSelectedStyle),
+            ...(allTask.length > 0 && selectedTask ? {} : noTaskSelectedStyle),
           }}
           id="taskDetailContainer"
         >
           <Box sx={{ overflow: "auto" }}>
-            {selectedTask ? (
+            {allTask.length > 0 && selectedTask ? (
               <TaskDetails
                 isLocationTaskDetail={true}
                 isSmallView={!s2}
@@ -326,11 +331,13 @@ const LocatoinDrawingList = ({
         </Grid>
         <Grid
           item
-          md={s3 ? 7 : 5.5}
-          lg={s3 ? 7.5 : 5.6}
-          xl={s3 ? 7.8 : 5.7}
+          // md={s3 ? 6.6 : 5.5}
+          // lg={s3 ? 7.5 : 5.6}
+          // xl={s3 ? 7.8 : 5.7}
           sx={{
             position: "relative",
+            width: "100%",
+            maxWidth: `${s3 ? "60%" : "48%"}`,
             backgroundColor: "white",
             height: `${windowActualHeight - 68}px`,
             marginTop: "16px",

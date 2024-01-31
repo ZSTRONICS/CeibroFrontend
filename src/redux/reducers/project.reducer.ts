@@ -226,6 +226,14 @@ const NavigationReducer = (
       return {
         ...state,
       }
+    case PROJECT_CONFIG.PROJECT_GROUP_DELETED:
+      const deletedGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload))
+      if (deletedGroupIndex > -1) {
+        state.allGroups.splice(deletedGroupIndex, 1)
+      }
+      return {
+        ...state,
+      }
 
     case PROJECT_CONFIG.PROJECT_GROUP_CREATED:
       const isExistingGroup = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
@@ -236,6 +244,15 @@ const NavigationReducer = (
         ...state,
       }
 
+    case PROJECT_CONFIG.PROJECT_UPDATED:
+      const projectIndex = state.allProjects.findIndex((project: any) => String(project._id) === String(action.payload._id))
+      if (projectIndex > -1) {
+        state.allProjects[projectIndex] = action.payload;
+      }
+      return {
+        ...state,
+      };
+
     case PROJECT_CONFIG.PROJECT_GROUP_UPDATED:
       const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
       if (groupIndex > -1) {
@@ -245,6 +262,12 @@ const NavigationReducer = (
         ...state,
       };
 
+    case PROJECT_CONFIG.UPDATE_PROJECT_FLOORS: {
+      return {
+        ...state,
+        projectFloors: [...state.projectFloors, action.payload],
+      }
+    }
     case PROJECT_CONFIG.SET_SELECTED_DRAWING_FILES: {
       return {
         ...state,

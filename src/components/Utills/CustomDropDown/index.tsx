@@ -34,7 +34,9 @@ interface IProps {
     value: ChangeValueType,
     name: keyof CreateNewTaskFormType
   ) => void;
-  handleSelectedMenuList?: (option: any) => void;
+  handleSelectedMenuList: (option: any) => void;
+  isDropDownOpen?: (open: boolean) => void;
+  handleCreateAllFloors?: () => void;
 }
 
 function CustomDropDown(props: IProps) {
@@ -42,6 +44,9 @@ function CustomDropDown(props: IProps) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [deleteItem, setDeleteItem] = React.useState<OptionType | null>(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selected, setSelected] = React.useState<string>("");
+  const [open, setOpen] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
   const {
     label,
     options,
@@ -49,11 +54,10 @@ function CustomDropDown(props: IProps) {
     handleChangeValues,
     name,
     handleSelectedMenuList,
+    handleCreateAllFloors,
+    isDropDownOpen,
   } = props;
-  const [selected, setSelected] = React.useState<string>("");
-  const [open, setOpen] = React.useState(false);
 
-  const [searchQuery, setSearchQuery] = React.useState("");
   const [allFilterData, setAllFilterData] = React.useState<{
     all: { [key: string]: OptionType[] };
     recent: OptionType[];
@@ -92,7 +96,10 @@ function CustomDropDown(props: IProps) {
       let updatedSelected = options.allOptions.find(
         (item) => item.label === selected
       );
-      handleChangeValues(updatedSelected?._id, name);
+      if (updatedSelected) {
+        handleChangeValues(updatedSelected._id, name);
+        handleSelectedMenuList(updatedSelected);
+      }
     }
     setAllFilterData({ all: allGroupedData, recent: options.recentOptions });
     setSortedOptions(allGroupedData);
@@ -105,24 +112,25 @@ function CustomDropDown(props: IProps) {
   const handleMenuClick = (e: any, item: OptionType) => {
     e.stopPropagation();
     e.preventDefault();
-
-    if (!showAllFloorItems) {
+    if (!showAllFloorItems && item) {
       setSelected(item.value);
       handleChangeValues(item.value, name);
-      handleSelectedMenuList && handleSelectedMenuList(item);
+      handleSelectedMenuList(item);
       handleClose();
     } else {
       if (!item.isPermanenetOption) {
         handleChangeValues(item.value, name);
+        handleSelectedMenuList(item);
       }
     }
   };
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
+    isDropDownOpen && isDropDownOpen(false);
     setShowAllFloorItems(false);
     setAddFloorLabel("Add Floor");
-    handleSelectedMenuList && handleSelectedMenuList(null);
+    // handleSelectedMenuList(null);
     setTimeout(() => {
       setAllFilterData({
         all: sortedOptions,
@@ -133,6 +141,7 @@ function CustomDropDown(props: IProps) {
 
   const handleOpen = () => {
     setOpen(true);
+    isDropDownOpen && isDropDownOpen(true);
   };
   const filteredData: { [key: string]: OptionType[] } = {};
   const handleSearchChange = (
@@ -167,11 +176,13 @@ function CustomDropDown(props: IProps) {
     handleClose();
   };
 
-  const handleClearClick = () => {
+  const handleClearClick = (e: any) => {
+    e.stopPropagation();
+    e.preventDefault();
     handleChangeValues(undefined, name);
     setSearchQuery("");
     setSelected("");
-    handleSelectedMenuList && handleSelectedMenuList(null);
+    handleSelectedMenuList(null);
   };
 
   const renderValue = () => {
@@ -343,6 +354,9 @@ function CustomDropDown(props: IProps) {
                     !showAllFloorItems
                       ? setAddFloorLabel("Done")
                       : setAddFloorLabel("Add Floor");
+                    addFloorLabel === "Done" &&
+                      handleCreateAllFloors &&
+                      handleCreateAllFloors();
                   }}
                   sx={{ fontFamily: "Inter" }}
                 >
@@ -394,7 +408,7 @@ function CustomDropDown(props: IProps) {
             {Object.entries(allFilterData.all).map(
               ([groupLetter, groupOptions], i: any) => [
                 // Wrap the list items in an array<>
-                <>
+                <React.Fragment key={groupLetter + i}>
                   {groupLetter !== "*" && (
                     <Typography
                       sx={{
@@ -408,10 +422,10 @@ function CustomDropDown(props: IProps) {
                       {groupLetter}
                     </Typography>
                   )}
-                </>,
+                </React.Fragment>,
                 // Use map on the array to render the list items
                 ...groupOptions.map((item, i) => (
-                  <>
+                  <React.Fragment key={item.value + i}>
                     {(item.isShown === true || showAllFloorItems) && (
                       <Box
                         key={`all-${item.value + i}`}
@@ -436,6 +450,7 @@ function CustomDropDown(props: IProps) {
                                 e.preventDefault();
                                 if (!item.isPermanenetOption) {
                                   handleChangeValues(item.value, name);
+                                  handleSelectedMenuList(item);
                                 }
                               }}
                             />
@@ -511,7 +526,7 @@ function CustomDropDown(props: IProps) {
                         </Menu>
                       </Box>
                     )}
-                  </>
+                  </React.Fragment>
                 )),
               ]
             )}
