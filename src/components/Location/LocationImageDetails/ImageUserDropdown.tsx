@@ -30,13 +30,16 @@ const ImageUserDropdown = ({
   return (
     <>
       <Box sx={{ width: "100%", maxWidth: maxWidth }}>
-        <FormControl sx={{ width: "100%" }}>
+        <FormControl sx={{ width: "100%" }} size="small">
           <InputLabel id="demo-simple-select-label">{label}</InputLabel>
           <Select
             labelId="demo-simple-select-label"
             id="demo-simple-select"
             label={label}
             onChange={handleChange}
+            sx={{
+              width: "100%",
+            }}
           >
             <SearchWithButton
               handleSearch={handleSearch}

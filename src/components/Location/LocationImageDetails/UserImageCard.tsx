@@ -26,12 +26,14 @@ export default function UserImageCard({
       key={user + "image-card"}
       sx={{
         display: "flex",
-        gap: 1.4,
+        alignItems: "center",
+        gap: "10px",
         marginBottom: "8px",
         marginTop: "8px",
         cursor: `${!isDisabled ? "pointer" : "not-allowed"}`,
         pointerEvents: `${isDisabled ? "none" : ""}`,
         opacity: `${isDisabled ? "0.5" : "1"}`,
+        padding: "0 16px",
       }}
       onClick={(e: any) => handleCheckBox(!selected)}
     >
@@ -40,9 +42,10 @@ export default function UserImageCard({
         sx={{
           "&.MuiCheckbox-root": {
             color: "black",
+            padding: "0",
           },
           "&.Mui-checked": {
-            color: "#0076C8 !important",
+            color: "#000 !important",
           },
           "&:hover": {
             backgroundColor: "transparent",
@@ -51,7 +54,13 @@ export default function UserImageCard({
       />
       {showImage && <NameAvatar url={""} firstname={user} surname={user} />}
       <div>
-        <SubHeadingTag sx={{ color: "#000" }}>
+        <SubHeadingTag
+          sx={{
+            color: "#000",
+            fontWeight: "500 !important",
+            lineHeight: "20px",
+          }}
+        >
           {`${user} ${user}`}
         </SubHeadingTag>
         <SubLabelTag>{`${displayText}`}</SubLabelTag>

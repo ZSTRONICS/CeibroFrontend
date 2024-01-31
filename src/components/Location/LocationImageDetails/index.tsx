@@ -1,13 +1,7 @@
-import {
-  Box,
-  Button,
-  Grid,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { DateTimePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
+import { SingleInputDateRangeField } from "@mui/x-date-pickers-pro/SingleInputDateRangeField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Heading2 } from "components/CustomTags";
 import DocumentReader from "components/pdfviewer";
@@ -68,7 +62,7 @@ const LocationImageDetails = () => {
     switch (type) {
       case "drawing":
         history.push(
-          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}`
+          `/location/project/${projectId}/group/${groupId}/drawing/${event.target.value}/image`
         );
         break;
       case "group":
@@ -80,7 +74,7 @@ const LocationImageDetails = () => {
         history.push(
           `/location/project/${projectId}/group/${event.target.value}/drawing/${
             selectedGroup.drawings[0]?._id ?? ""
-          }`
+          }/image`
         );
         break;
 
@@ -132,7 +126,7 @@ const LocationImageDetails = () => {
           />
         )}
         <Grid container spacing={2} sx={{ padding: "16px 0" }}>
-          <Grid item xs={6}>
+          <Grid item xs={6.3}>
             <Box
               style={{
                 backgroundColor: "#fff",
@@ -253,12 +247,26 @@ const LocationImageDetails = () => {
                   />
                   {/* <ImageUserDropdown maxWidth={"238px"} label={"date"} /> */}
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateTimePicker
+                    <DateRangePicker
+                      slots={{ field: SingleInputDateRangeField }}
+                      name="allowedRange"
+                    />
+
+                    {/* <DateTimePicker
                       label="Form-To"
                       value={""}
                       onChange={() => {}}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
+                      renderInput={(params) => (
+                        <TextField
+                          size="small"
+                          {...params}
+                          sx={{
+                            maxWidth: "180px",
+                            width: "100%",
+                          }}
+                        />
+                      )}
+                    /> */}
                   </LocalizationProvider>
                   <SortByDropdown />
                 </Box>
@@ -276,155 +284,171 @@ const LocationImageDetails = () => {
                   Clear all
                 </Button>
               </Box>
-              <Box
-                sx={{ display: "flex", width: "100%", padding: "10px 16px" }}
-              >
-                <ImageCarousel
-                  images={[
-                    "https://react-responsive-carousel.js.org/assets/6.jpeg",
-                    "https://react-responsive-carousel.js.org/assets/2.jpeg",
-                    "https://react-responsive-carousel.js.org/assets/3.jpeg",
-                  ]}
-                />
-              </Box>
+
               <Box
                 sx={{
-                  padding: "0 16px 10px",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  justifyContent: "space-between",
+                  maxHeight: "calc(100vh - 355px)",
+                  overflowY: "scroll",
                 }}
               >
                 <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "10px",
-                  }}
+                  sx={{ display: "flex", width: "100%", padding: "10px 16px" }}
                 >
-                  <Box
-                    component="span"
-                    sx={{
-                      color: "#605C5C",
-                      fontSize: "10px",
-                      fontWeight: "400",
-                      lineHeight: "16px",
-                    }}
-                  >
-                    <b>From:</b>Jaanus Kütson
-                  </Box>
-                  <Box
-                    component="span"
-                    sx={{
-                      color: "#131516",
-                      fontSize: "10px",
-                      fontWeight: "500",
-                      lineHeight: "16px",
-                    }}
-                  >
-                    Today 12:47
-                  </Box>
+                  <ImageCarousel
+                    images={[
+                      "https://react-responsive-carousel.js.org/assets/6.jpeg",
+                      "https://react-responsive-carousel.js.org/assets/2.jpeg",
+                      "https://react-responsive-carousel.js.org/assets/3.jpeg",
+                    ]}
+                  />
                 </Box>
                 <Box
                   sx={{
+                    padding: "0 16px 10px",
                     display: "flex",
                     alignItems: "center",
-                    gap: "24px",
+                    gap: "10px",
+                    justifyContent: "space-between",
                   }}
                 >
-                  <Typography
-                    component="h6"
-                    sx={{
-                      color: "#605C5C",
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      lineHeight: "16px",
-                    }}
-                  >
-                    Tags:
-                  </Typography>
                   <Box
                     sx={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "7px",
+                      gap: "10px",
                     }}
                   >
-                    {tags.map((tag) => (
-                      <Box
-                        component="span"
-                        sx={{
-                          backgroundColor: "#818181",
-                          borderRadius: "4px",
-                          color: "#fff",
-                          fontSize: "12px",
-                          fontWeight: "500",
-                          lineHeight: "16px",
-                          padding: "0 6px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        {tag}
-                      </Box>
-                    ))}
+                    <Box
+                      component="span"
+                      sx={{
+                        color: "#605C5C",
+                        fontSize: "10px",
+                        fontWeight: "400",
+                        lineHeight: "16px",
+                      }}
+                    >
+                      <b>From:</b>Jaanus Kütson
+                    </Box>
+                    <Box
+                      component="span"
+                      sx={{
+                        color: "#131516",
+                        fontSize: "10px",
+                        fontWeight: "500",
+                        lineHeight: "16px",
+                      }}
+                    >
+                      Today 12:47
+                    </Box>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "24px",
+                    }}
+                  >
+                    <Typography
+                      component="h6"
+                      sx={{
+                        color: "#605C5C",
+                        fontSize: "12px",
+                        fontWeight: "500",
+                        lineHeight: "16px",
+                      }}
+                    >
+                      Tags:
+                    </Typography>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "7px",
+                      }}
+                    >
+                      {tags.map((tag) => (
+                        <Box
+                          component="span"
+                          sx={{
+                            backgroundColor: "#818181",
+                            borderRadius: "4px",
+                            color: "#fff",
+                            fontSize: "12px",
+                            fontWeight: "500",
+                            lineHeight: "16px",
+                            padding: "0 6px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                          }}
+                        >
+                          {tag}
+                        </Box>
+                      ))}
+                    </Box>
                   </Box>
                 </Box>
-              </Box>
-              <Box sx={{ padding: "0 16px" }}>
-                <Typography>
-                  {showMore ? tempDesp : `${tempDesp.substring(0, 250)}`}
-                </Typography>
-                <Box
-                  sx={{
-                    textAlign: "right",
-                    padding: "10px 0",
-                  }}
-                >
-                  <button
-                    className="btn"
-                    onClick={() => setShowMore(!showMore)}
-                    style={{
-                      color: "#0076C8",
-                      fontSize: "12px",
-                      fontWeight: "400",
-                      lineHeight: "175%",
-                      letterSpacing: "0.15px",
-                      backgroundColor: "transparent",
-                      border: "none",
-                      padding: "none",
-                      cursor: "pointer",
+                <Box sx={{ padding: "0 16px" }}>
+                  <Typography>
+                    {showMore ? tempDesp : `${tempDesp.substring(0, 250)}`}
+                  </Typography>
+                  <Box
+                    sx={{
+                      textAlign: "right",
+                      padding: "10px 0",
                     }}
                   >
-                    {!showMore ? "View more" : "View less"}
-                  </button>
+                    <button
+                      className="btn"
+                      onClick={() => setShowMore(!showMore)}
+                      style={{
+                        color: "#0076C8",
+                        fontSize: "12px",
+                        fontWeight: "400",
+                        lineHeight: "175%",
+                        letterSpacing: "0.15px",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        padding: "none",
+                        cursor: "pointer",
+                      }}
+                    >
+                      {!showMore ? "View more" : "View less"}
+                    </button>
+                  </Box>
+                  <Box
+                    sx={{
+                      borderRadius: "4px",
+                      opacity: "0.9",
+                      backgroundColor: "#F4F4F4",
+                      filter: "blur(2px)",
+                      height: "4px",
+                      width: "100%",
+                    }}
+                  ></Box>
                 </Box>
-                <Box
-                  sx={{
-                    borderRadius: "4px",
-                    opacity: "0.9",
-                    backgroundColor: "#F4F4F4",
-                    filter: "blur(2px)",
-                    height: "4px",
-                    width: "100%",
-                  }}
-                ></Box>
+                <AllImagesSlider />
               </Box>
-              <AllImagesSlider />
             </Box>
           </Grid>
-          <Grid item xs={6}>
-            {projectData.selectedDrawing?.fileUrl ? (
-              <DocumentReader
-                selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
-              />
-            ) : (
-              <Heading2 sx={{ fontWeight: 600 }}>
-                Drawing file not found!
-              </Heading2>
-            )}
+          <Grid item xs={5.7}>
+            <Box
+              style={{
+                backgroundColor: "#fff",
+                boxShadow: "0px 4px 4px 0px rgba(0, 0, 0, 0.25)",
+                borderRadius: "4px",
+              }}
+            >
+              {projectData.selectedDrawing?.fileUrl ? (
+                <DocumentReader
+                  selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
+                />
+              ) : (
+                <Heading2 sx={{ fontWeight: 600 }}>
+                  Drawing file not found!
+                </Heading2>
+              )}
+            </Box>
           </Grid>
         </Grid>
       </Box>
