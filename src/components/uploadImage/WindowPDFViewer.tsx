@@ -35,6 +35,7 @@ export default function PDFViewer({ src, onLoad, onError }: Props) {
     return () => {
       req.abort();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src]);
   return (
     <>

@@ -1,7 +1,6 @@
 import { makeStyles } from "@material-ui/core/styles";
 // components
 import PDFViewer from "components/uploadImage/WindowPDFViewer";
-import { useDispatch, useSelector } from "react-redux";
 // import PdfViewer from "./Components/DocumentViewer/PdfViewer";
 
 const useStyles = makeStyles({
@@ -14,10 +13,10 @@ const useStyles = makeStyles({
 });
 
 const DocumentReader = (props) => {
-  const dispatch = useDispatch();
-  const { loadDrawing, selectedDrawing } = useSelector(
-    (state) => state.project
-  );
+  // const dispatch = useDispatch();
+  // const { loadDrawing, selectedDrawing } = useSelector(
+  //   (state) => state.project
+  // );
 
   const classes = useStyles();
   // const fileUrl =

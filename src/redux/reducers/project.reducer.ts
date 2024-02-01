@@ -412,27 +412,6 @@ const NavigationReducer = (
       };
     }
 
-    case PROJECT_CONFIG.PROJECT_UPDATED: {
-      let project = action.payload;
-
-      const isExistingProject = state.allProjects.findIndex(
-        (prevProject: any) => String(prevProject._id) === String(project._id)
-      );
-      if (isExistingProject > -1) {
-        state.allProjects[isExistingProject] = project;
-      }
-
-      if (String(state.projectOverview._id) === String(project._id)) {
-        state.projectOverview = project;
-      }
-
-      return {
-        ...state,
-        allProjects: [...state.allProjects],
-        projectOverview: { ...state.projectOverview },
-      };
-    }
-
     case requestSuccess(GET_PROJECTS_WITH_MEMBERS): {
       const projectLabels = action.payload.projectDetails.map(
         (project: any) => {

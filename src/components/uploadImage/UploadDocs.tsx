@@ -106,25 +106,25 @@ const UploadDocs = (props: Props) => {
       payload: filesPlaceholderData,
     });
 
-    const payload = {
-      body: formData,
-      success: (res: any) => {
-        if (res.status === 200) {
-          //toast.success("file(s) uploaded");
-          if (res.data.results.files.length > 0) {
-            let allFiles = res.data.results.files;
-            const files = allFiles.map((file: any) => {
-              file.progress = 100;
-              return file;
-            });
-            dispatch({
-              type: DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE,
-              payload: files,
-            });
-          }
-        }
-      },
-    };
+    // const payload = {
+    //   body: formData,
+    //   success: (res: any) => {
+    //     if (res.status === 200) {
+    //       //toast.success("file(s) uploaded");
+    //       if (res.data.results.files.length > 0) {
+    //         let allFiles = res.data.results.files;
+    //         const files = allFiles.map((file: any) => {
+    //           file.progress = 100;
+    //           return file;
+    //         });
+    //         dispatch({
+    //           type: DOCS_CONFIG.UPDATE_FILE_UPLAOD_RESPONSE,
+    //           payload: files,
+    //         });
+    //       }
+    //     }
+    //   },
+    // };
 
     setSelectedFile([]);
     // dispatch(uploadDocs(payload));

@@ -41,7 +41,7 @@ const useDynamicDimensions = ({
             window.removeEventListener('resize', debouncedUpdate);
             observer.disconnect();
         };
-    }, [dimensions.width, dimensions.height, containerRef]);
+    }, [dimensions.width, dimensions.height, containerRef, debounceTime]);
 
     return { containerRef, dimensions, updateDimensions };
 };

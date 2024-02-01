@@ -511,7 +511,6 @@ const taskReducer = (
               const taskIndex = state.allTaskFromMe.unread.findIndex((task: any) => task._id === eventData.taskId);
               if (taskIndex !== -1) {
                 // always push event on bottom
-                const taskToMove = state.allTaskFromMe.unread[taskIndex]
                 addEventToTask(state.allTaskFromMe.unread[taskIndex], eventData, taskIndex)
                 state.allTaskFromMe.unread[taskIndex].userSubState = "done";
                 state.allTaskFromMe.unread[taskIndex].creatorState = "done";
