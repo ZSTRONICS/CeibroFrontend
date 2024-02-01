@@ -15,8 +15,8 @@ const ImageCarousel = ({ images }: ImageCarouselProps) => {
         onClickThumb={() => {}}
         showThumbs={false}
       >
-        {images.map((image) => (
-          <Box>
+        {images.map((image, index) => (
+          <Box key={`img-${index}`}>
             <img src={image} />
           </Box>
         ))}

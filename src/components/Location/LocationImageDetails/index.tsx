@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Button, Grid, Modal, Tab, Tabs, Typography } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Heading2 } from "components/CustomTags";
@@ -13,6 +13,7 @@ import SearchField from "../Create-Project/CreateProjectDrawer/ProjectLocations/
 import DrawingHeader from "../LocationDrawingDetails/DrawingHeader";
 import { filterData, findData } from "../utils";
 import AllImagesSlider from "./AllImagesSlider";
+import ExportList from "./ExportList";
 import ImageCarousel from "./ImageCarousel";
 import ImageUserDropdown from "./ImageUserDropdown";
 import SortByDropdown from "./SortByDropdown";
@@ -34,6 +35,24 @@ const LocationImageDetails = () => {
   );
   const isRenderEffect = useRef<boolean>(true);
   const tags = ["Pipes", "Paint", "Tag 3", "Tag 4", "Tag 5"];
+
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const style = {
+    position: "absolute" as "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: "100%",
+    maxWidth: "934px",
+    bgcolor: "background.paper",
+    boxShadow: "0px 4px 16px 0px rgba(0, 0, 0, 0.45)",
+    // p: 4,
+    borderRadius: "8px",
+    overflow: "hidden",
+  };
 
   useEffect(() => {
     if (isRenderEffect.current) {
@@ -107,7 +126,6 @@ const LocationImageDetails = () => {
                   developing and don't mix it with something. We want 100% same
                   thing like we have in Fig e have in Fige have in Fige have in
                   Please use Figma for developing and don't mix it with`;
-
   return (
     <>
       <Box
@@ -156,10 +174,13 @@ const LocationImageDetails = () => {
                       display: "flex",
                       alignItems: "center",
                     }}
+                    value={1}
                   >
-                    {["Task", "Image"].map((label) => (
+                    {["Task", "Image"].map((label, index) => (
                       <Tab
+                        key={label + index}
                         label={label}
+                        value={index}
                         style={{
                           color: `${label === "Image" ? "white" : "#818181"}`,
                           textAlign: "center",
@@ -215,6 +236,7 @@ const LocationImageDetails = () => {
                     textTransform: "capitalize",
                     width: "109px",
                   }}
+                  onClick={handleOpen}
                 >
                   Start Export
                 </Button>
@@ -227,6 +249,9 @@ const LocationImageDetails = () => {
                   padding: "16px",
                   borderBottom: "1px solid #818181",
                   marginBottom: "10px",
+                  "@media(max-width:1600px)": {
+                    gap: "20px",
+                  },
                 }}
               >
                 <Box
@@ -348,6 +373,9 @@ const LocationImageDetails = () => {
                       display: "flex",
                       alignItems: "center",
                       gap: "24px",
+                      "@media(max-width:1200px)": {
+                        gap: "10px",
+                      },
                     }}
                   >
                     <Typography
@@ -368,8 +396,9 @@ const LocationImageDetails = () => {
                         gap: "7px",
                       }}
                     >
-                      {tags.map((tag) => (
+                      {tags.map((tag, index) => (
                         <Box
+                          key={`tag-${index}`}
                           component="span"
                           sx={{
                             backgroundColor: "#818181",
@@ -391,7 +420,13 @@ const LocationImageDetails = () => {
                   </Box>
                 </Box>
                 <Box sx={{ padding: "0 16px" }}>
-                  <Typography>
+                  <Typography
+                    sx={{
+                      fontSize: "13px",
+                      lineHeight: "20px",
+                      color: "#131516",
+                    }}
+                  >
                     {showMore ? tempDesp : `${tempDesp.substring(0, 250)}`}
                   </Typography>
                   <Box
@@ -454,6 +489,16 @@ const LocationImageDetails = () => {
           </Grid>
         </Grid>
       </Box>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <ExportList />
+        </Box>
+      </Modal>
     </>
   );
 };

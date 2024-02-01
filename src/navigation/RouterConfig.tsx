@@ -24,6 +24,7 @@ import {
   Task,
   TermsAndConditions,
 } from "components";
+import LocationImageDetails from "components/Location/LocationImageDetails";
 import { createBrowserHistory } from "history";
 import DashboardLayout from "layouts/Dashboard/DashboardLayout";
 import { LOGIN_ROUTE } from "utills/axios";
@@ -99,11 +100,11 @@ const RouterConfig = () => {
                 path="/location/project/:projectId/group/:groupId?/drawing/:drawingId?/task"
                 component={LocationDrawingDetails}
               />
-              {/* <PrivateRoute
+              <PrivateRoute
                 exact
                 path="/location/project/:projectId/group/:groupId?/drawing/:drawingId?/image"
                 component={LocationImageDetails}
-              /> */}
+              />
               <PrivateRoute path="/connections" component={Connections} />
               <PrivateRoute path="/admin" component={AdminMain} />
               <PrivateRoute
