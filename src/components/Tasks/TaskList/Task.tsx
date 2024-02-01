@@ -239,8 +239,8 @@ const Task = () => {
     selectedTask === null
       ? "N/A"
       : subtask === "allTaskFromMe"
-      ? selectedTask.creatorState
-      : selectedTask.userSubState;
+        ? selectedTask.creatorState
+        : selectedTask.userSubState;
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
@@ -555,7 +555,6 @@ const Task = () => {
               itemCount={filteredTask.length}
               overscanCount={20}
               layout="vertical"
-              onScroll={() => {}}
               itemSize={(index) =>
                 getTaskCardHeight(filteredTask[index]) + TASK_CARD_GAP_BETWEEN
               }
@@ -583,12 +582,12 @@ const Task = () => {
         }}
       >
         {selectedTask !== null &&
-        filteredTask &&
-        filteredTask.some(
-          (task: ITask) => task.taskUID === selectedTask?.taskUID
-        ) ? (
+          filteredTask &&
+          filteredTask.some(
+            (task: ITask) => task.taskUID === selectedTask?.taskUID
+          ) ? (
           <TaskDetails
-            groupbtn={false}
+            DrawDetailCollapse={false}
             task={selectedTask}
             userSubStateLocal={userSubStateLocal}
             TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}

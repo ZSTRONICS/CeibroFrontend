@@ -31,6 +31,7 @@ const InputSearch: React.FC<InputSearchProps> = ({
         width: "100%",
         background: `url(${assets.searchSvgIcon})no-repeat`,
         backgroundPosition: "5px center",
+        // border: 'none',
       }}
       onChange={handleInputChange}
     />

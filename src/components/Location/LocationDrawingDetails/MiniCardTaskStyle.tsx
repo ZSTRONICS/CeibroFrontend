@@ -14,6 +14,7 @@ export const MinicardTypography = styled("p")({
   paddingTop: "0px",
   marginTop: "4px",
   fontWeight: "500",
+  textTransform: 'capitalize',
 });
 export const Minicardheading = styled("div")({
   color: "#131516",
@@ -31,6 +32,7 @@ export const Minicardheading = styled("div")({
   backgroundColor: "white",
   fontWeight: "500",
   marginTop: "3px",
+
 });
 
 // minicardhead

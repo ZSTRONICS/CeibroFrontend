@@ -67,7 +67,7 @@ const LocationTaskHead = ({
         <TabList
           sx={{
             width: "100%",
-            padding: "7px 6px",
+            padding: "0 6px 6px",
             borderBottom: "solid 1px #818181",
             "& .MuiTabs-flexContainer": {
               flexWrap: "wrap",
@@ -132,7 +132,7 @@ const LocationTaskHead = ({
           />
           <IconButton
             style={{ color: "#0076C8", padding: "0px" }}
-            onClick={() => {}}
+            onClick={() => { }}
           >
             <SortIcon />
           </IconButton>

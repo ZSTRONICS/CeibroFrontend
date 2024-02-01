@@ -9,7 +9,7 @@ import { TASK_CONFIG } from "config";
 import { AssignedUserState, InvitedNumber } from "constants/interfaces";
 import { useOpenCloseModal } from "hooks";
 import { DynamicDimensions } from "hooks/useDynamicDimensions";
-import capitalize from "lodash/capitalize";
+import { capitalize } from "lodash";
 import React, {
   Dispatch,
   SetStateAction,
@@ -34,7 +34,7 @@ interface IProps {
   assignedToState: AssignedUserState[];
   invitedNumbers: InvitedNumber[];
   isExpanded: boolean;
-  groupbtn: boolean;
+  DrawDetailCollapse: boolean;
   setIsExpanded: Dispatch<SetStateAction<boolean>>;
   taskDetailContDimension: DynamicDimensions | undefined;
   isLocationTaskDetail?: boolean;
@@ -63,7 +63,7 @@ const DetailActions: React.FC<IProps> = (props) => {
     assignedToState,
     invitedNumbers,
     isExpanded,
-    groupbtn,
+    DrawDetailCollapse,
     setIsExpanded,
     taskDetailContDimension,
     isLocationTaskDetail,
@@ -123,8 +123,10 @@ const DetailActions: React.FC<IProps> = (props) => {
   };
 
   const theme = useTheme();
-  const isFourteen = useMediaQuery(theme.breakpoints.down(1400));
-  const isFourteenup = useMediaQuery(theme.breakpoints.up(1400));
+  const isTabletdown = useMediaQuery(theme.breakpoints.down(1400));
+  const isMinitabdown = useMediaQuery(theme.breakpoints.down(1200));
+  const isXlscreendown = useMediaQuery(theme.breakpoints.down('xl'));
+  const isLgscreendown = useMediaQuery(theme.breakpoints.down('lg'));
 
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
@@ -181,17 +183,129 @@ const DetailActions: React.FC<IProps> = (props) => {
 
   const calculateWidth = () => {
     switch (true) {
-      case groupbtn && !isFourteen:
+      case DrawDetailCollapse && !isTabletdown:
         return '52%';
-      case !groupbtn && !isFourteen:
+      case !DrawDetailCollapse && !isTabletdown:
         return '85%';
-      case groupbtn && isFourteen:
-      case !groupbtn && isFourteen:
+      case DrawDetailCollapse && isTabletdown:
+      case !DrawDetailCollapse && isTabletdown:
         return '100%';
       default:
         return 'initial';
     }
   };
+
+  const HeaderBtns = (
+    <>
+      <LoadingButton
+        startIcon={<ReplyIcon />}
+        onClick={() => handleClick("comment")}
+        variant="outlined"
+        sx={{
+          width: isLocationTaskDetail && isMinitabdown ? '100%' : 'max-content',
+          borderRadius: "4px",
+          fontWeight: "700",
+          border: "1px solid #0076C8",
+          padding: "0px 16px",
+          marginBottom: isTabletdown ? '10px' : '',
+          alignSelf: 'flex-end',
+          span: {
+            mr: "4px",
+          },
+        }}
+      >
+        Reply
+      </LoadingButton>
+      {!["done", "canceled", "new"].includes(userSubState) && (
+        <>
+          <LoadingButton
+            startIcon={<ForwardIcon />}
+            onClick={() => handleClick("forward")}
+            variant="outlined"
+            disabled={false}
+            sx={{
+              borderRadius: "4px",
+              fontWeight: "700",
+              border: "1px solid #0076C8",
+              padding: "0px 12px",
+              marginBottom: isTabletdown ? '10px' : '',
+              span: {
+                marginRight: "4px",
+              },
+
+            }}
+          >
+            Forward
+          </LoadingButton>
+          <Box sx={{ position: "relative" }}>
+            <LoadingButton
+              variant="contained"
+              onClick={handleDoneClick}
+              sx={{
+                borderRadius: "4px",
+                fontWeight: "700",
+                border: "1px solid #0076C8",
+                padding: "0px 16px",
+                width: isTabletdown ? '100%' : '100px',
+              }}
+              disabled={isloading}
+            >
+              Done
+            </LoadingButton>
+            {(doneCommentsRequired || doneImageRequired) && (
+              <span
+                style={{
+                  height: "10px",
+                  width: "10px",
+                  backgroundColor: "red",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  position: "absolute",
+                  top: "13%",
+                  right: "6%",
+                }}
+              ></span>
+            )}
+          </Box>
+        </>
+      )}
+    </>
+  )
+
+  const userSUBState =
+    <Chip
+      label={capitalize(userSubState)}
+      size="small"
+      sx={{
+        borderColor: chipColor,
+        backgroundColor: chipColor,
+        borderRadius: "4px",
+        fontFamily: "Inter",
+        fontSize: "12px",
+        fontWeight: 600,
+        color: "#131516",
+        padding: "2px 8px",
+      }}
+    />
+  const TaskUID =
+    <Chip
+      label={taskUid}
+      size="small"
+      sx={{
+        borderColor: "#818181",
+        backgroundColor: "white",
+        borderWidth: "1px",
+        borderStyle: "solid",
+        borderRadius: "5px",
+        fontFamily: "Inter",
+        fontSize: "12px",
+        fontWeight: 600,
+        color: "#131516",
+        padding: "2px 8px",
+        marginLeft: !isXlscreendown && isLocationTaskDetail && DrawDetailCollapse ? '-3.5px' : !isXlscreendown && isLocationTaskDetail && !DrawDetailCollapse ? '-4.5px' : ''
+        // !isLgscreendown && isLocationTaskDetail && !DrawDetailCollapse ? '-20px' : '',
+      }}
+    />
 
   return (
     <>
@@ -212,131 +326,72 @@ const DetailActions: React.FC<IProps> = (props) => {
           justifyContent={justifyContent}
           flexWrap="nowrap"
         >
-          <Box sx={{
-            display: 'flex', justifyContent: 'space-between',
-            width: calculateWidth(),
-            transition: 'all 0.3s linear',
-            flexDirection: isFourteen ? 'column' : 'row',
-          }} >
-            <LoadingButton
-              startIcon={<ReplyIcon />}
-              onClick={() => handleClick("comment")}
-              variant="outlined"
-              sx={{
-                borderRadius: "4px",
-                fontWeight: "700",
-                border: "1px solid #0076C8",
-                padding: "0px 16px",
-                marginBottom: isFourteen ? '10px' : '',
-                span: {
-                  mr: "4px",
-                },
-              }}
-            >
-              Reply
-            </LoadingButton>
-            {!["done", "canceled", "new"].includes(userSubState) && (
-              <>
-                <LoadingButton
-                  startIcon={<ForwardIcon />}
-                  onClick={() => handleClick("forward")}
-                  variant="outlined"
-                  disabled={false}
-                  sx={{
-                    borderRadius: "4px",
-                    fontWeight: "700",
-                    border: "1px solid #0076C8",
-                    padding: "0px 12px",
-                    marginBottom: isFourteen ? '10px' : '',
-                    span: {
-                      marginRight: "4px",
-                    },
-
-                  }}
-                >
-                  Forward
-                </LoadingButton>
-                <Box sx={{ position: "relative" }}>
-                  <LoadingButton
-                    variant="contained"
-                    onClick={handleDoneClick}
-                    sx={{
-                      borderRadius: "4px",
-                      fontWeight: "700",
-                      border: "1px solid #0076C8",
-                      padding: "0px 16px",
-                      width: isFourteen ? '100%' : '100px',
-                    }}
-                    disabled={isloading}
-                  >
-                    Done
-                  </LoadingButton>
-                  {(doneCommentsRequired || doneImageRequired) && (
-                    <span
-                      style={{
-                        height: "10px",
-                        width: "10px",
-                        backgroundColor: "red",
-                        borderRadius: "50%",
-                        display: "inline-block",
-                        position: "absolute",
-                        top: "13%",
-                        right: "6%",
-                      }}
-                    ></span>
-                  )}
-                </Box>
-              </>
-            )}
-          </Box>
+          {isLocationTaskDetail && isMinitabdown ? (
+            <>
+              <Box sx={{
+                display: 'flex', justifyContent: 'space-between',
+                width: calculateWidth(),
+                transition: 'all 0.3s linear',
+                flexDirection: isTabletdown ? 'column' : 'row',
+              }} >
+                {HeaderBtns}
+              </Box>
+            </>
+          ) : (
+            <>
+              {HeaderBtns}
+            </>
+          )}
         </Grid>
       </Grid>
+      {/* </Grid > */}
       <Grid
         container
         my={1.5}
         justifyContent={"space-between"}
-        alignItems="flex-start"
+        alignItems={`${isLocationTaskDetail ? 'center' : 'flex-start'}`}
         rowGap={2}
       >
-        <Grid item container md={10} xs={12} gap={1.7} alignItems="center">
-          <Chip
-            label={capitalize(userSubState)}
-            size="small"
-            sx={{
-              borderColor: chipColor,
-              backgroundColor: chipColor,
-              borderRadius: "4px",
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: 600,
-              color: "#131516",
-              padding: "2px 8px",
-            }}
-          />
-          <Chip
-            label={taskUid}
-            size="small"
-            sx={{
-              borderColor: "#818181",
-              backgroundColor: "white",
-              borderWidth: "1px",
-              borderStyle: "solid",
-              borderRadius: "5px",
-              ml: 1.25,
-              fontFamily: "Inter",
-              fontSize: "12px",
-              fontWeight: 600,
-              color: "#131516",
-              padding: "2px 8px",
-            }}
-          />
-          <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
-          {dueDate && (
-            <SubLabelTag sx={{ color: "#131516" }}>
-              Due date: {dueDate}
-            </SubLabelTag>
-          )}
+        <Grid item container xs={12} md={isLocationTaskDetail ? (DrawDetailCollapse ? 12 : 12) : 10} lg={isLocationTaskDetail ? (!DrawDetailCollapse ? 9 : 10) : 10} xl={isLocationTaskDetail ? (!DrawDetailCollapse ? 12 : 10) : 10} gap={isLocationTaskDetail ? 0.3 : 1.7} alignItems="center">
+          {
+            isLocationTaskDetail ?
+              <>
+                <Grid xs={8} md={!DrawDetailCollapse ? 5 : 3.5} lg={!DrawDetailCollapse ? 4.3 : 2.1} xl={!DrawDetailCollapse ? 2.9 : 1.9}  >
+                  {userSUBState}
+                </Grid>
+                <Grid xs={8} md={!DrawDetailCollapse ? 5 : 3} lg={!DrawDetailCollapse ? 5.5 : 2.5} xl={!DrawDetailCollapse ? 2.9 : 1.9}  >
+                  {TaskUID}
+                </Grid>
+                <Grid xs={8} md={!DrawDetailCollapse ? 12 : 12} lg={!DrawDetailCollapse ? 12 : 6} xl={!DrawDetailCollapse ? 5.5 : 7}  >
+                  <Grid container gap={0.5}
+                  >
+                    <Grid md={!DrawDetailCollapse ? 5 : 3.5} lg={!DrawDetailCollapse ? 12 : 12} xl={!DrawDetailCollapse ? 12 : 12} >
+                      <SubLabelTag sx={{ color: "#131516", }}>{createdOn}</SubLabelTag>
+                    </Grid>
+                    <Grid md={!DrawDetailCollapse ? 6.7 : 7} lg={!DrawDetailCollapse ? 12 : 12} xl={!DrawDetailCollapse ? 12 : 12}   >
+                      {dueDate && (
+                        <SubLabelTag sx={{ color: "#131516", }}>
+                          Due date: {dueDate}
+                        </SubLabelTag>
+                      )}
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </>
+              :
+              <>
+                {userSUBState}
+                {TaskUID}
+                <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
+                {dueDate && (
+                  <SubLabelTag sx={{ color: "#131516" }}>
+                    Due date: {dueDate}
+                  </SubLabelTag>
+                )}
+              </>
+          }
         </Grid>
+        {/* /// */}
         <Box sx={{ display: "flex", justifyContent: "end" }}>
           <Typography
             sx={{

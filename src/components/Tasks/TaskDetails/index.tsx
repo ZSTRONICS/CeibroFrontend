@@ -29,10 +29,10 @@ interface IProps {
   taskDetailContDimension?: DynamicDimensions;
   isLocationTaskDetail?: boolean;
   isSmallView?: boolean;
-  groupbtn: boolean;
+  DrawDetailCollapse: boolean;
 }
 function TaskDetails(props: IProps) {
-  const { task, taskDetailContDimension, isLocationTaskDetail, groupbtn } =
+  const { task, taskDetailContDimension, isLocationTaskDetail, DrawDetailCollapse } =
     props;
   const {
     dueDate,
@@ -78,8 +78,8 @@ function TaskDetails(props: IProps) {
   const eventsFiles =
     events.length > 0
       ? events.flatMap((data) =>
-          (data?.commentData?.files || []).filter(isImageFile)
-        )
+        (data?.commentData?.files || []).filter(isImageFile)
+      )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
   const allFiles = [...filteredFiles, ...eventsFiles];
@@ -139,7 +139,7 @@ function TaskDetails(props: IProps) {
         invitedNumbers={invitedNumbers}
         isExpanded={isShowFullView}
         setIsExpanded={setIsShowFullView}
-        groupbtn={groupbtn}
+        DrawDetailCollapse={DrawDetailCollapse}
       />
       <CustomDivider sx={{ my: 1.3 }} />
       <Box

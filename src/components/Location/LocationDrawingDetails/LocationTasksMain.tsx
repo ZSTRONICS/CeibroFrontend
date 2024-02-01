@@ -16,6 +16,7 @@ interface IProps {
   taskListFilter: ITaskFilterInterace;
   selectedTaskId: string | undefined;
   windowActualHeight: number;
+  setCardSelectedId: any;
   allEvents: TaskEvent[];
 }
 
@@ -28,6 +29,7 @@ function LocationTasksMain(props: IProps) {
     taskListFilter,
     windowActualHeight,
     allEvents,
+    setCardSelectedId,
   } = props;
   const taskCardListRef: any = useRef();
   const { user } = useSelector((store: RootState) => store.auth);
@@ -126,7 +128,6 @@ function LocationTasksMain(props: IProps) {
           itemCount={allTasks.length}
           overscanCount={20}
           layout="vertical"
-          onScroll={() => {}}
           itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
           width={"100%"}
         >
