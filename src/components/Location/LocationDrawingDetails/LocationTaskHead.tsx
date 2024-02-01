@@ -56,62 +56,63 @@ const LocationTaskHead = ({
   return (
     <Box style={HeadStyles.head_container} ref={headerRef}>
       <TabContext value={value}>
-        <Box
+        {/* <Box
           sx={{
             width: "100%",
             display: "flex",
             justifyContent: "start",
-            borderBottom: "solid 1px #818181",
+           
           }}
+        > */}
+        <TabList
+          sx={{
+            width: "100%",
+            padding: "7px 6px",
+            borderBottom: "solid 1px #818181",
+            "& .MuiTabs-flexContainer": {
+              flexWrap: "wrap",
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "flex-start",
+              gap: 1,
+            },
+            span: {
+              display: "none",
+            },
+          }}
+          TabIndicatorProps={{
+            children: <span className="MuiTabs-indicatorSpan" />,
+          }}
+          onChange={handleChange}
+          aria-label="lab API tabs example"
         >
-          <TabList
+          <Tab
             sx={{
-              maxWidth: "200px",
-              padding: "10px 13px 16px",
-              "@media screen and (max-width: 1200px)": {},
-              "& .MuiTabs-flexContainer": {
-                flexWrap: "wrap",
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "center",
-              },
-              span: {
-                display: "none",
-              },
+              ...tabStyles,
+              //  marginRight: '10px',
+              minWidth: "60px",
+              maxWidth: "60px",
             }}
-            TabIndicatorProps={{
-              children: <span className="MuiTabs-indicatorSpan" />,
-            }}
-            onChange={handleChange}
-            aria-label="lab API tabs example"
-          >
-            <Tab
-              sx={{
-                ...tabStyles,
-                //  marginRight: '10px',
-                minWidth: "60px",
-                maxWidth: "60px",
-              }}
-              label="Task"
-              value="1"
-            />
-            <Tab
-              sx={{
-                ...tabStyles,
-                marginLeft: Taskbtn ? "16px" : "",
-                minWidth: "60px",
-                maxWidth: "60px",
-                transition: "all linear 0.30s",
+            label="Task"
+            value="1"
+          />
+          <Tab
+            sx={{
+              ...tabStyles,
+              marginLeft: Taskbtn ? "16px" : "",
+              minWidth: "60px",
+              maxWidth: "60px",
+              transition: "all linear 0.30s",
 
-                "@media screen and (max-width: 900px)": {
-                  marginLeft: "0px",
-                },
-              }}
-              label="Image"
-              value="2"
-            />
-          </TabList>
-        </Box>
+              "@media screen and (max-width: 900px)": {
+                marginLeft: "0px",
+              },
+            }}
+            label="Image"
+            value="2"
+          />
+        </TabList>
+        {/* </Box> */}
         <Box style={HeadStyles.head_filterization}>
           <TaskFilters isSmallView={isSmallView} />
         </Box>
