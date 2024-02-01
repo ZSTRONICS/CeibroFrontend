@@ -108,21 +108,19 @@ export default function DrawingHeader(props: DrawingProps) {
   const isxlScreen = useMediaQuery(theme.breakpoints.down('xl'));
 
   return (
-    <Grid container gap={1.8}>
+    <Grid container sx={{display:'flex',justifyContent:'space-between'}} >
       <Grid
         item
-        md={headersize ? 6.3 : 4.8}
-        lg={headersize ? 6.2 : 4.3}
-        xl={headersize ? 6.1 : 4}
-        sx={{ transition: "all linear 0.30s", }}
+        sx={{ transition: "all linear 0.30s",width: headersize ? '53.8%' :'41.8%'}}
       >
-        <Box sx={{ width: isMdScreen ? '100%' : isLgScreen ? '99%' : isxlScreen ? '100.4%' : '100%', backgroundColor: 'white', }} >
+        <Box 
+         >
           {renderBox(
             <>
               <IconButton
                 sx={{
                   color: "#0076C8",
-                  paddingLeft: "32px",
+                  paddingLeft: "25px",
                   paddingRight: "16px",
                   "&:hover": {
                     backgroundColor: "transparent",
@@ -133,7 +131,7 @@ export default function DrawingHeader(props: DrawingProps) {
                 <ArrowBackSharp />
               </IconButton>
               {renderDivider()}
-              <Typography sx={{ width: "39%", }} variant="body1">
+              <Typography sx={{ width: "30%",}} variant="body1">
                 {selectedProject &&
                   selectedProject.length > 0 &&
                   selectedProject[0].title}
@@ -180,16 +178,13 @@ export default function DrawingHeader(props: DrawingProps) {
         </Box>
       </Grid>
       <Grid
-        item
-        md={headersize ? 5.5 : 7.0}
-        lg={headersize ? 5.6 : 7.5}
-        xl={headersize ? 5.7 : 7.8}
         sx={{
           transition: "all linear 0.30s",
+           width: headersize?'45.3%':'57.2%' ,
         }}
-
       >
-        <Box sx={{ marginLeft: isMdScreen ? '-0.5%' : isLgScreen ? '-0.7%' : isxlScreen ? '0.5%' : '0%', backgroundColor: 'white', }} >
+        <Box
+          >
           {renderBox(
             <>
               <Box sx={{ width: '85%' }} >

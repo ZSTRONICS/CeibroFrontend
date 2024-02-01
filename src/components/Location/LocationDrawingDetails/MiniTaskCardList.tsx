@@ -93,7 +93,8 @@ const MiniTaskCardList: React.FC<IProps> = ({
             style={{
               borderRadius: "10px",
               height: "max-content",
-              minWidth: "54px",
+              minWidth: "72px",
+              marginLeft:'-3px',
               marginTop: "15px",
               boxShadow: "0px 4px 4px 0px #00000040",
               backgroundColor: `${currentTaskColor}`,

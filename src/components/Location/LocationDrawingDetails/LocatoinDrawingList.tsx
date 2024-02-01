@@ -194,7 +194,7 @@ const LocatoinDrawingList = ({
 
   return (
     <>
-      <Grid container gap={1.8} flexWrap={"nowrap"}>
+      <Grid container sx={{display:'flex',justifyContent:'space-between'}} >
         <Grid
           ref={taskContainerRef}
           item
@@ -204,7 +204,7 @@ const LocatoinDrawingList = ({
             position: "relative",
             mt: 2,
             px: 1,
-            maxWidth: `${s1 ? "22%" : "10%"}`,
+            maxWidth: `${s1 ? "21.9%" : "9.9%"}`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
             width: "100%",
@@ -332,7 +332,7 @@ const LocatoinDrawingList = ({
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: `${s3 ? "60%" : "47%"}`,
+            maxWidth: `${s3 ? "57.2%" : "45.2%"}`,
             backgroundColor: "white",
             height: `${windowActualHeight - 68}px`,
             marginTop: "16px",
