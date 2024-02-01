@@ -15,6 +15,7 @@ import {
 import { TaskCardSkeleton } from "components/material-ui/skeleton";
 import { TASK_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
+import { useDynamicDimensions } from "hooks";
 import _ from "lodash";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { VariableSizeList } from "react-window";
@@ -42,7 +43,10 @@ const Task = () => {
   const userId = user && String(user._id);
   const isTaskRoute = location.pathname.split("/");
   const [currentTask, setCurrentTask] = useState<number>(-1);
-
+  const {
+    containerRef: taskDetailContRef,
+    dimensions: taskDetailContDimension,
+  } = useDynamicDimensions();
   const [emptyScreenContent, setEmptyScreenContent] = useState([
     {
       heading: "",
@@ -239,8 +243,8 @@ const Task = () => {
     selectedTask === null
       ? "N/A"
       : subtask === "allTaskFromMe"
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
@@ -569,6 +573,7 @@ const Task = () => {
       <Grid
         height={windowHeight}
         id="taskDetailContainer"
+        ref={taskDetailContRef}
         item
         sx={{
           borderRadius: "4px",
@@ -582,11 +587,12 @@ const Task = () => {
         }}
       >
         {selectedTask !== null &&
-          filteredTask &&
-          filteredTask.some(
-            (task: ITask) => task.taskUID === selectedTask?.taskUID
-          ) ? (
+        filteredTask &&
+        filteredTask.some(
+          (task: ITask) => task.taskUID === selectedTask?.taskUID
+        ) ? (
           <TaskDetails
+            taskDetailContDimension={taskDetailContDimension}
             DrawDetailCollapse={false}
             task={selectedTask}
             userSubStateLocal={userSubStateLocal}

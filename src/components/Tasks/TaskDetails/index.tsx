@@ -32,8 +32,12 @@ interface IProps {
   DrawDetailCollapse: boolean;
 }
 function TaskDetails(props: IProps) {
-  const { task, taskDetailContDimension, isLocationTaskDetail, DrawDetailCollapse } =
-    props;
+  const {
+    task,
+    taskDetailContDimension,
+    isLocationTaskDetail,
+    DrawDetailCollapse,
+  } = props;
   const {
     dueDate,
     taskUID,
@@ -78,8 +82,8 @@ function TaskDetails(props: IProps) {
   const eventsFiles =
     events.length > 0
       ? events.flatMap((data) =>
-        (data?.commentData?.files || []).filter(isImageFile)
-      )
+          (data?.commentData?.files || []).filter(isImageFile)
+        )
       : [];
   const filteredFiles = (files || []).filter(isImageFile);
   const allFiles = [...filteredFiles, ...eventsFiles];

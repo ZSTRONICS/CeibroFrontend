@@ -65,17 +65,13 @@ const LocatoinDrawingList = ({
     updateDimensions,
   } = useDynamicDimensions();
   const {
-    containerRef: taskDetailContRef,
+    containerRef: loctaskDetailContRef,
     dimensions: taskDetailContDimension,
     updateDimensions: updateTaskDetailContDimensions,
   } = useDynamicDimensions();
   const [taskSearchText, setTaskSearchText] = useState("");
   const updateDimensionsAndFullCard = () => {
     updateDimensions();
-    // setTimeout(() => {
-    //   setIsfullcard(true);
-    //   updateTaskDetailContDimensions();
-    // }, 1000);
   };
 
   const windowActualHeight = windowHeight - (HEADER_HEIGHT + 16);
@@ -83,8 +79,8 @@ const LocatoinDrawingList = ({
     selectedTask === null
       ? "N/A"
       : selectedTask.isCreator
-        ? selectedTask.creatorState
-        : selectedTask.userSubState;
+      ? selectedTask.creatorState
+      : selectedTask.userSubState;
 
   const filterTaskEvents = allEvents.filter(
     (event) => event.taskId === selectedTask?._id
@@ -229,8 +225,8 @@ const LocatoinDrawingList = ({
                   textAlign: "center",
                   position: "absolute",
                   top: "50%",
-                  left: '0%',
-                  right: '0%',
+                  left: "0%",
+                  right: "0%",
                 }}
               >
                 No task found!
@@ -239,41 +235,43 @@ const LocatoinDrawingList = ({
               <>
                 {!s1
                   ? isfullcardMini && (
-                    <Box
-                      sx={{
-                        height: `${containerHeight}px`,
-                        overflowY: "auto",
-                        padding: "6px 6px",
-                        transition: "all 0.30s linear",
-                      }}
-                    >
-                      <MiniTaskCardList
-                        windowActualHeight={windowActualHeight}
-                        allTasks={allTask}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)}
-                        selectedTaskId={selectedTask?._id}
-                      />
-                    </Box>
-                  )
+                      <Box
+                        sx={{
+                          height: `${containerHeight}px`,
+                          overflowY: "auto",
+                          padding: "6px 6px",
+                          transition: "all 0.30s linear",
+                        }}
+                      >
+                        <MiniTaskCardList
+                          windowActualHeight={windowActualHeight}
+                          allTasks={allTask}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                          selectedTaskId={selectedTask?._id}
+                        />
+                      </Box>
+                    )
                   : isfullcard && (
-                    <Box
-                      sx={{
-                        transition: "all 0.30s linear",
-                        width: "100%",
-                      }}
-                    >
-                      <LocationTasksMain
-                        allEvents={allEvents}
-                        windowActualHeight={containerHeight}
-                        allTasks={allTask}
-                        selectedTaskId={selectedTask?._id}
-                        taskListFilter={taskListFilter}
-                        loadingAllTasksAllEvents={loadingAllTasksAllEvents}
-                        handleSelectedTask={(task) => setSelectedTask(task)} setCardSelectedId={undefined} />
-                    </Box>
-                  )}
+                      <Box
+                        sx={{
+                          transition: "all 0.30s linear",
+                          width: "100%",
+                        }}
+                      >
+                        <LocationTasksMain
+                          allEvents={allEvents}
+                          windowActualHeight={containerHeight}
+                          allTasks={allTask}
+                          selectedTaskId={selectedTask?._id}
+                          taskListFilter={taskListFilter}
+                          loadingAllTasksAllEvents={loadingAllTasksAllEvents}
+                          handleSelectedTask={(task) => setSelectedTask(task)}
+                          setCardSelectedId={undefined}
+                        />
+                      </Box>
+                    )}
               </>
             )}
           </Box>
@@ -281,7 +279,7 @@ const LocatoinDrawingList = ({
         </Grid>
         <Grid
           item
-          ref={taskDetailContRef}
+          ref={loctaskDetailContRef}
           sx={{
             position: "relative",
             width: "100%",
@@ -296,7 +294,7 @@ const LocatoinDrawingList = ({
           }}
           id="taskDetailContainer"
         >
-          <Box sx={{ overflow: "auto" }}>
+          <Box sx={{ width: "100%", overflow: "auto" }}>
             {allTask.length > 0 && selectedTask ? (
               <TaskDetails
                 isLocationTaskDetail={true}
@@ -308,16 +306,18 @@ const LocatoinDrawingList = ({
                 TASK_UPDATED_TIME_STAMP={RECENT_TASK_UPDATED_TIME_STAMP}
               />
             ) : (
-              <Heading2 sx={{
-                fontWeight: 600,
-                textAlign: "center",
-                position: "absolute",
-                top: "50%",
-                bottom: '0%',
-                left: '0%',
-                right: '0%',
-                margin: 'auto',
-              }}>
+              <Heading2
+                sx={{
+                  fontWeight: 600,
+                  textAlign: "center",
+                  position: "absolute",
+                  top: "50%",
+                  bottom: "0%",
+                  left: "0%",
+                  right: "0%",
+                  margin: "auto",
+                }}
+              >
                 No task selected!
               </Heading2>
             )}
@@ -345,16 +345,18 @@ const LocatoinDrawingList = ({
           {selectedDrawing.fileUrl ? (
             <DocumentReader selectedDrawingUrl={selectedDrawing.fileUrl} />
           ) : (
-            <Heading2 sx={{
-              fontWeight: 600,
-              textAlign: "center",
-              position: "absolute",
-              top: "50%",
-              bottom: '0%',
-              left: '0%',
-              right: '0%',
-              margin: 'auto',
-            }}>
+            <Heading2
+              sx={{
+                fontWeight: 600,
+                textAlign: "center",
+                position: "absolute",
+                top: "50%",
+                bottom: "0%",
+                left: "0%",
+                right: "0%",
+                margin: "auto",
+              }}
+            >
               Drawing file not found!
             </Heading2>
           )}

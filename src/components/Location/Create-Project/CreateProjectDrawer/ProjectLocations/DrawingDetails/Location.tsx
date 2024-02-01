@@ -19,9 +19,6 @@ function Location() {
   const { allProjects, allGroups, allFloors } = useSelector(
     (state: RootState) => state.project
   );
-  // const task = useSelector((state: RootState) => state.task);
-  // const { allTaskToMe } = task;
-  // console.log("windowHeight", windowHeight);
   useEffect(() => {
     if (isRenderEffect.current && allProjects.length === 0) {
       isRenderEffect.current = false;
@@ -43,71 +40,69 @@ function Location() {
     background: "#E5E5E5",
   };
   return (
-    <>
-      {/* reuse drawing header with selected project, floor, drawing dropdown 
-       <Box sx={{ width: "100%", position: "relative", zIndex: 10 }}>
-        <StickyHeader title="Drawing Title" children={<DrawingMenu />} />
-      </Box> */}
-      <Grid container gap={1.8} sx={{ width: "98%", margin: "auto" }}>
-        <Grid
-          item
-          md={4.2}
-          lg={3.4}
-          xl={3}
-          sx={{
-            ...sideBarStyle,
-            px: 2,
-            py: 1.5,
-          }}
-        >
-          <ExpandableProjectList
-            windowActualHeight={windowActualHeight}
-            allProjects={allProjects}
-            groups={allGroups}
-            allFloors={allFloors}
-          />
-        </Grid>
-        <Grid
-          item
-          md={4.7}
-          lg={3.9}
-          xl={3}
-          sx={{
-            ...sideBarStyle,
-            ...(!groupId ? emptyDrawingContainer : {}),
-            px: 2,
-            py: 1.5,
-          }}
-        >
-          {groupId ? (
-            <LocationDrawingFiles windowActualHeight={windowActualHeight} />
-          ) : (
-            <Box>
-              <Heading2 sx={{ fontWeight: 500 }}>
-                Click group to see drawing files in it
-              </Heading2>
-            </Box>
-          )}
-        </Grid>
-        <Grid
-          item
-          container
-          justifyContent={"center"}
-          alignItems={"center"}
-          md={2.6}
-          lg={4.4}
-          xl={5.7}
-          sx={{
-            ...sideBarStyle,
-            background:
-              "linear-gradient(0deg, #E5E5E5 0%, #E5E5E5 100%), url(<path-to-image>), lightgray 50% / cover no-repeat",
-          }}
-        >
-          <Heading2 sx={{ fontWeight: 500 }}>No drawing selected</Heading2>
-          {/* <DocumentReader /> */}
-        </Grid>
+    <Grid
+      container
+      gap={1.8}
+      sx={{ width: "98%", margin: "auto", flexWrap: "nowrap" }}
+    >
+      <Grid
+        item
+        md={4.2}
+        lg={3.4}
+        xl={3}
+        sx={{
+          ...sideBarStyle,
+          px: 2,
+          py: 1.5,
+        }}
+      >
+        <ExpandableProjectList
+          windowActualHeight={windowActualHeight}
+          allProjects={allProjects}
+          groups={allGroups}
+          allFloors={allFloors}
+        />
       </Grid>
-    </>
+      <Grid
+        item
+        md={4.7}
+        lg={3.9}
+        xl={3}
+        sx={{
+          ...sideBarStyle,
+          ...(!groupId ? emptyDrawingContainer : {}),
+          px: 2,
+          py: 1.5,
+        }}
+      >
+        {groupId ? (
+          <LocationDrawingFiles windowActualHeight={windowActualHeight} />
+        ) : (
+          <Box>
+            <Heading2 sx={{ fontWeight: 500 }}>
+              Click group to see drawing files in it
+            </Heading2>
+          </Box>
+        )}
+      </Grid>
+      <Grid
+        item
+        container
+        justifyContent={"center"}
+        alignItems={"center"}
+        md={3.1}
+        lg={4.7}
+        xl={5.8}
+        sx={{
+          ...sideBarStyle,
+          background:
+            "linear-gradient(0deg, #E5E5E5 0%, #E5E5E5 100%), url(<path-to-image>), lightgray 50% / cover no-repeat",
+        }}
+      >
+        <Heading2 sx={{ fontWeight: 500 }}>No drawing selected</Heading2>
+        {/* <DocumentReader /> */}
+      </Grid>
+    </Grid>
   );
 }
 

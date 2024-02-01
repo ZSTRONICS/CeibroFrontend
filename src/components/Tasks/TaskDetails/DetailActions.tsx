@@ -1,6 +1,6 @@
 import { Box, Chip, Grid, Typography } from "@mui/material";
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import DragableDrawer from "Drawer/DragableDrawer";
 import { LoadingButton } from "components/Button";
 import { SubLabelTag } from "components/CustomTags";
@@ -125,8 +125,7 @@ const DetailActions: React.FC<IProps> = (props) => {
   const theme = useTheme();
   const isTabletdown = useMediaQuery(theme.breakpoints.down(1400));
   const isMinitabdown = useMediaQuery(theme.breakpoints.down(1200));
-  const isXlscreendown = useMediaQuery(theme.breakpoints.down('xl'));
-  const isLgscreendown = useMediaQuery(theme.breakpoints.down('lg'));
+  const isXlscreendown = useMediaQuery(theme.breakpoints.down("xl"));
 
   const chipColor: string =
     statusColors[userSubState as keyof typeof statusColors];
@@ -184,14 +183,14 @@ const DetailActions: React.FC<IProps> = (props) => {
   const calculateWidth = () => {
     switch (true) {
       case DrawDetailCollapse && !isTabletdown:
-        return '52%';
+        return "52%";
       case !DrawDetailCollapse && !isTabletdown:
-        return '85%';
+        return "85%";
       case DrawDetailCollapse && isTabletdown:
       case !DrawDetailCollapse && isTabletdown:
-        return '100%';
+        return "100%";
       default:
-        return 'initial';
+        return "initial";
     }
   };
 
@@ -202,13 +201,13 @@ const DetailActions: React.FC<IProps> = (props) => {
         onClick={() => handleClick("comment")}
         variant="outlined"
         sx={{
-          width: isLocationTaskDetail && isMinitabdown ? '100%' : 'max-content',
+          width: isLocationTaskDetail && isMinitabdown ? "100%" : "max-content",
           borderRadius: "4px",
           fontWeight: "700",
           border: "1px solid #0076C8",
           padding: "0px 16px",
-          marginBottom: isTabletdown ? '10px' : '',
-          alignSelf: 'flex-end',
+          marginBottom: isTabletdown ? "10px" : "",
+          alignSelf: "flex-end",
           span: {
             mr: "4px",
           },
@@ -228,11 +227,10 @@ const DetailActions: React.FC<IProps> = (props) => {
               fontWeight: "700",
               border: "1px solid #0076C8",
               padding: "0px 12px",
-              marginBottom: isTabletdown ? '10px' : '',
+              marginBottom: isTabletdown ? "10px" : "",
               span: {
                 marginRight: "4px",
               },
-
             }}
           >
             Forward
@@ -246,7 +244,7 @@ const DetailActions: React.FC<IProps> = (props) => {
                 fontWeight: "700",
                 border: "1px solid #0076C8",
                 padding: "0px 16px",
-                width: isTabletdown ? '100%' : '100px',
+                width: isTabletdown ? "100%" : "100px",
               }}
               disabled={isloading}
             >
@@ -270,9 +268,9 @@ const DetailActions: React.FC<IProps> = (props) => {
         </>
       )}
     </>
-  )
+  );
 
-  const userSUBState =
+  const userSUBState = (
     <Chip
       label={capitalize(userSubState)}
       size="small"
@@ -287,7 +285,8 @@ const DetailActions: React.FC<IProps> = (props) => {
         padding: "2px 8px",
       }}
     />
-  const TaskUID =
+  );
+  const TaskUID = (
     <Chip
       label={taskUid}
       size="small"
@@ -302,10 +301,16 @@ const DetailActions: React.FC<IProps> = (props) => {
         fontWeight: 600,
         color: "#131516",
         padding: "2px 8px",
-        marginLeft: !isXlscreendown && isLocationTaskDetail && DrawDetailCollapse ? '-3.5px' : !isXlscreendown && isLocationTaskDetail && !DrawDetailCollapse ? '-4.5px' : ''
+        marginLeft:
+          !isXlscreendown && isLocationTaskDetail && DrawDetailCollapse
+            ? "-3.5px"
+            : !isXlscreendown && isLocationTaskDetail && !DrawDetailCollapse
+            ? "-4.5px"
+            : "",
         // !isLgscreendown && isLocationTaskDetail && !DrawDetailCollapse ? '-20px' : '',
       }}
     />
+  );
 
   return (
     <>
@@ -315,7 +320,7 @@ const DetailActions: React.FC<IProps> = (props) => {
         justifyContent="end"
         alignItems="flex-start"
         rowGap={2}
-        sx={{ display: 'flex', justifyContent: 'end' }}
+        sx={{ display: "flex", justifyContent: "end" }}
       >
         <Grid
           item
@@ -328,70 +333,101 @@ const DetailActions: React.FC<IProps> = (props) => {
         >
           {isLocationTaskDetail && isMinitabdown ? (
             <>
-              <Box sx={{
-                display: 'flex', justifyContent: 'space-between',
-                width: calculateWidth(),
-                transition: 'all 0.3s linear',
-                flexDirection: isTabletdown ? 'column' : 'row',
-              }} >
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: calculateWidth(),
+                  transition: "all 0.3s linear",
+                  flexDirection: isTabletdown ? "column" : "row",
+                }}
+              >
                 {HeaderBtns}
               </Box>
             </>
           ) : (
-            <>
-              {HeaderBtns}
-            </>
+            <>{HeaderBtns}</>
           )}
         </Grid>
       </Grid>
-      {/* </Grid > */}
       <Grid
         container
         my={1.5}
         justifyContent={"space-between"}
-        alignItems={`${isLocationTaskDetail ? 'center' : 'flex-start'}`}
+        alignItems={`${isLocationTaskDetail ? "center" : "flex-start"}`}
         rowGap={2}
       >
-        <Grid item container xs={12} md={isLocationTaskDetail ? (DrawDetailCollapse ? 12 : 12) : 10} lg={isLocationTaskDetail ? (!DrawDetailCollapse ? 9 : 10) : 10} xl={isLocationTaskDetail ? (!DrawDetailCollapse ? 12 : 10) : 10} gap={isLocationTaskDetail ? 0.3 : 1.7} alignItems="center">
-          {
-            isLocationTaskDetail ?
-              <>
-                <Grid xs={8} md={!DrawDetailCollapse ? 5 : 3.5} lg={!DrawDetailCollapse ? 4.3 : 2.1} xl={!DrawDetailCollapse ? 2.9 : 1.9}  >
-                  {userSUBState}
-                </Grid>
-                <Grid xs={8} md={!DrawDetailCollapse ? 5 : 3} lg={!DrawDetailCollapse ? 5.5 : 2.5} xl={!DrawDetailCollapse ? 2.9 : 1.9}  >
-                  {TaskUID}
-                </Grid>
-                <Grid xs={8} md={!DrawDetailCollapse ? 12 : 12} lg={!DrawDetailCollapse ? 12 : 6} xl={!DrawDetailCollapse ? 5.5 : 7}  >
-                  <Grid container gap={0.5}
+        <Grid
+          item
+          container
+          xs={12}
+          md={isLocationTaskDetail ? (DrawDetailCollapse ? 12 : 12) : 10}
+          lg={isLocationTaskDetail ? (!DrawDetailCollapse ? 9 : 10) : 10}
+          xl={isLocationTaskDetail ? (!DrawDetailCollapse ? 12 : 10) : 10}
+          gap={isLocationTaskDetail ? 0.3 : 1.7}
+          alignItems="center"
+        >
+          {isLocationTaskDetail ? (
+            <>
+              <Grid
+                xs={8}
+                md={!DrawDetailCollapse ? 5 : 3.5}
+                lg={!DrawDetailCollapse ? 4.3 : 2.1}
+                xl={!DrawDetailCollapse ? 2.9 : 1.9}
+              >
+                {userSUBState}
+              </Grid>
+              <Grid
+                xs={8}
+                md={!DrawDetailCollapse ? 5 : 3}
+                lg={!DrawDetailCollapse ? 5.5 : 2.5}
+                xl={!DrawDetailCollapse ? 2.9 : 1.9}
+              >
+                {TaskUID}
+              </Grid>
+              <Grid
+                xs={8}
+                md={!DrawDetailCollapse ? 12 : 12}
+                lg={!DrawDetailCollapse ? 12 : 6}
+                xl={!DrawDetailCollapse ? 5.5 : 7}
+              >
+                <Grid container gap={0.5}>
+                  <Grid
+                    md={!DrawDetailCollapse ? 5 : 3.5}
+                    lg={!DrawDetailCollapse ? 12 : 12}
+                    xl={!DrawDetailCollapse ? 12 : 12}
                   >
-                    <Grid md={!DrawDetailCollapse ? 5 : 3.5} lg={!DrawDetailCollapse ? 12 : 12} xl={!DrawDetailCollapse ? 12 : 12} >
-                      <SubLabelTag sx={{ color: "#131516", }}>{createdOn}</SubLabelTag>
-                    </Grid>
-                    <Grid md={!DrawDetailCollapse ? 6.7 : 7} lg={!DrawDetailCollapse ? 12 : 12} xl={!DrawDetailCollapse ? 12 : 12}   >
-                      {dueDate && (
-                        <SubLabelTag sx={{ color: "#131516", }}>
-                          Due date: {dueDate}
-                        </SubLabelTag>
-                      )}
-                    </Grid>
+                    <SubLabelTag sx={{ color: "#131516" }}>
+                      {createdOn}
+                    </SubLabelTag>
+                  </Grid>
+                  <Grid
+                    md={!DrawDetailCollapse ? 6.7 : 7}
+                    lg={!DrawDetailCollapse ? 12 : 12}
+                    xl={!DrawDetailCollapse ? 12 : 12}
+                  >
+                    {dueDate && (
+                      <SubLabelTag sx={{ color: "#131516" }}>
+                        Due date: {dueDate}
+                      </SubLabelTag>
+                    )}
                   </Grid>
                 </Grid>
-              </>
-              :
-              <>
-                {userSUBState}
-                {TaskUID}
-                <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
-                {dueDate && (
-                  <SubLabelTag sx={{ color: "#131516" }}>
-                    Due date: {dueDate}
-                  </SubLabelTag>
-                )}
-              </>
-          }
+              </Grid>
+            </>
+          ) : (
+            <>
+              {userSUBState}
+              {TaskUID}
+              <SubLabelTag sx={{ color: "#131516" }}>{createdOn}</SubLabelTag>
+              {dueDate && (
+                <SubLabelTag sx={{ color: "#131516" }}>
+                  Due date: {dueDate}
+                </SubLabelTag>
+              )}
+            </>
+          )}
         </Grid>
-        {/* /// */}
         <Box sx={{ display: "flex", justifyContent: "end" }}>
           <Typography
             sx={{
