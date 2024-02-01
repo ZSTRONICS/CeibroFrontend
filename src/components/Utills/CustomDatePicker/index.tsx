@@ -53,7 +53,7 @@ const CustomDatePicker = ({
           open={open}
           onOpen={() => setOpen(true)}
           onClose={() => setOpen(false)}
-          minDate={new Date()}
+          // minDate={new Date()}
           InputAdornmentProps={{ position: "start" }}
           PopperProps={{
             sx: { marginLeft: "-35px !important" },

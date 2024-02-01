@@ -1,7 +1,5 @@
 import { Box, Button, Grid, Tab, Tabs, Typography } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { DateRangePicker } from "@mui/x-date-pickers-pro/DateRangePicker";
-import { SingleInputDateRangeField } from "@mui/x-date-pickers-pro/SingleInputDateRangeField";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { Heading2 } from "components/CustomTags";
 import DocumentReader from "components/pdfviewer";
@@ -48,7 +46,11 @@ const LocationImageDetails = () => {
     let selectedProject = filterData(allProjects, "_id", projectId);
     let selectedProjectGroups = filterData(allGroups, "projectId", projectId);
     let selectedGroup: any = findData(allGroups, "_id", groupId);
-    let selectedDrawing = findData(selectedGroup.drawings, "_id", drawingId);
+    let selectedDrawing: any = findData(
+      selectedGroup.drawings,
+      "_id",
+      drawingId
+    );
 
     return {
       selectedProject,
@@ -247,10 +249,10 @@ const LocationImageDetails = () => {
                   />
                   {/* <ImageUserDropdown maxWidth={"238px"} label={"date"} /> */}
                   <LocalizationProvider dateAdapter={AdapterDayjs}>
-                    <DateRangePicker
-                      slots={{ field: SingleInputDateRangeField }}
+                    {/* <DateRangePicker
+                      // slots={{ field: SingleInputDateRangeField }}
                       name="allowedRange"
-                    />
+                    /> */}
 
                     {/* <DateTimePicker
                       label="Form-To"
@@ -439,9 +441,9 @@ const LocationImageDetails = () => {
                 borderRadius: "4px",
               }}
             >
-              {projectData.selectedDrawing?.fileUrl ? (
+              {projectData.selectedDrawing ? (
                 <DocumentReader
-                  selectedDrawingUrl={projectData.selectedDrawing?.fileUrl}
+                  selectedDrawingUrl={projectData.selectedDrawing.fileUrl}
                 />
               ) : (
                 <Heading2 sx={{ fontWeight: 600 }}>

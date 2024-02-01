@@ -1,17 +1,16 @@
-import React from "react";
 import { TextField } from "@mui/material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 // import { ThemeProvider, createTheme, styled } from "@mui/material/styles";
-import de from "date-fns/locale/de";
 import { makeStyles } from "@material-ui/core";
 import InputHOC from "components/Utills/Inputs/InputHOC";
+import de from "date-fns/locale/de";
 import "../../components/MuiStyles.css";
 
 function CDatePicker(props: any) {
   const classes = useStyles();
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale ={de}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={de}>
       {props.showLabel === true ? (
         <InputHOC title={props.dueDateLabel || "Due date"}>
           <DatePicker
@@ -78,10 +77,9 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiInputBase-root-MuiInput-root:before": {
       borderBottom: "none",
     },
-    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before":
-      {
-        borderBottom: "none",
-      },
+    "& .MuiInputBase-root-MuiInput-root:hover:not(.Mui-disabled):before": {
+      borderBottom: "none",
+    },
     "& .MuiInputBase-root-MuiInput-root.Mui-disabled:before": {
       borderBottomStyle: "none",
     },
