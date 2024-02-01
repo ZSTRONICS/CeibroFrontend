@@ -296,7 +296,7 @@ const LocatoinDrawingList = ({
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: `${s2 ? "60%" : "30%"}`,
+            maxWidth: `${s2 ? "43%" : "31%"}`,
             height: `${windowActualHeight - 68}px`,
             transition: "all 0.30s linear",
             backgroundColor: "white",
@@ -337,7 +337,7 @@ const LocatoinDrawingList = ({
           sx={{
             position: "relative",
             width: "100%",
-            maxWidth: `${s3 ? "60%" : "48%"}`,
+            maxWidth: `${s3 ? "60%" : "47%"}`,
             backgroundColor: "white",
             height: `${windowActualHeight - 68}px`,
             marginTop: "16px",
