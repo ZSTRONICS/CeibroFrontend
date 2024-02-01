@@ -19,7 +19,7 @@ const AllImagesSlider = () => {
     "https://react-responsive-carousel.js.org/assets/6.jpeg",
   ];
 
-  const totalWidth = allImages.length * (139 + 10);
+  const totalWidth = allImages.length * (135 + 10);
 
   const [selectedValue, setSelectedValue] = React.useState("a");
 
@@ -72,11 +72,15 @@ const AllImagesSlider = () => {
                 <Box
                   key={index}
                   sx={{
-                    width: "139px",
+                    width: "135px",
                     height: "119px",
                     borderRadius: "6px",
                     overflow: "hidden",
                     position: "relative",
+                    "@media(max-width:1366px)": {
+                      // width:"100px",
+                      // height:"100px"
+                    },
                   }}
                 >
                   <Checkbox

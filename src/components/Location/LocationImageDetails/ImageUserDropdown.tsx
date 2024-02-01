@@ -47,9 +47,10 @@ const ImageUserDropdown = ({
               handleDone={() => {}}
             />
             {type === "user" &&
-              temArray.map((item) => {
+              temArray.map((item, index) => {
                 return (
                   <UserImageCard
+                    key={`img-use-card${index}`}
                     user={item}
                     handleSelectedList={() => {}}
                     selected={false}
@@ -58,9 +59,10 @@ const ImageUserDropdown = ({
                 );
               })}
             {type === "tag" &&
-              temArray.map((item) => {
+              temArray.map((item, index) => {
                 return (
                   <UserImageCard
+                    key={`img-tag-card${index}`}
                     user={item}
                     handleSelectedList={() => {}}
                     selected={false}

@@ -1,5 +1,5 @@
 import Checkbox from "@mui/material/Checkbox";
-import { CustomStack, SubHeadingTag, SubLabelTag } from "components/CustomTags";
+import { CustomStack, SubHeadingTag } from "components/CustomTags";
 import NameAvatar from "components/Utills/Others/NameAvatar";
 
 interface IProps {
@@ -20,7 +20,7 @@ export default function UserImageCard({
   const handleCheckBox = (checked: boolean) => {
     handleSelectedList(user, checked);
   };
-  const displayText = "";
+  const displayText = "dummy text";
   return (
     <CustomStack
       key={user + "image-card"}
@@ -63,7 +63,8 @@ export default function UserImageCard({
         >
           {`${user} ${user}`}
         </SubHeadingTag>
-        <SubLabelTag>{`${displayText}`}</SubLabelTag>
+        {/* <SubLabelTag>{`${displayText}`}</SubLabelTag>
+        <SubLabelTag>{`${displayText}`}</SubLabelTag> */}
       </div>
     </CustomStack>
   );
