@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton } from "@mui/material";
+import { Box, Grid, IconButton, Tooltip } from "@mui/material";
 import assets from "assets";
 import { Heading2 } from "components/CustomTags";
 import { GenericMenu, InputSearch } from "components/GenericComponents";
@@ -6,9 +6,9 @@ import CustomModal from "components/Modal";
 import { SortIcon } from "components/material-ui/icons/sort/sort";
 import { PROJECT_CONFIG } from "config";
 import { ITask } from "constants/interfaces";
-import { useOpenCloseModal } from "hooks";
+import { useDynamicDimensions, useOpenCloseModal } from "hooks";
 import _ from "lodash";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PROJECT_APIS } from "redux/action";
@@ -22,7 +22,6 @@ interface Props {
 function LocationDrawingFiles({ windowActualHeight }: Props) {
   const [searchText, setSearchText] = useState("");
   const [selectedGroupDrawings, setSelectedGroupDrawings] = useState([]);
-  const searchContainer: any = useRef(null);
   const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const [drawingFile, setDrawingFile] = useState<any>([]);
   const [contHeight, setContHeight] = useState<number>(50);
@@ -36,6 +35,9 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   const { projectId, groupId } = useParams<any>();
   const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
   const dispatch = useDispatch();
+  const { containerRef: headingRef, dimensions: headingRefDimension } =
+    useDynamicDimensions();
+  const { containerRef: searchContainer, dimensions } = useDynamicDimensions();
   useEffect(() => {
     selectedDrawingFiles && setSelectedGroupDrawings(selectedDrawingFiles);
   }, [selectedDrawingFiles]);
@@ -140,19 +142,24 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
         >
           <InputSearch value={searchText} onChange={handleSearchTextChange} />
           {selectedProjectName ? (
-            <Heading2
-              sx={{
-                pt: 2,
-                pb: 0,
-                mb: 0,
-                fontSize: 16,
-                color: "#605C5C",
-                textTransform: "capitalize",
-              }}
-            >
-              {" "}
-              {selectedProjectName}{" "}
-            </Heading2>
+            <Tooltip title={selectedProjectName}>
+              <Heading2
+                sx={{
+                  pt: 2,
+                  pb: 0,
+                  mb: 0,
+                  fontSize: 16,
+                  color: "#605C5C",
+                  textTransform: "capitalize",
+                  maxWidth: `${dimensions.width - 10}px`,
+                  width: "100%",
+                }}
+                className="ellipsis"
+              >
+                {" "}
+                {selectedProjectName}{" "}
+              </Heading2>
+            </Tooltip>
           ) : (
             <div>
               {" "}
@@ -163,25 +170,35 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
             container
             alignItems={"center"}
             marginBottom={"8px"}
-            marginTop={"-5px"}
+            // marginTop={"-5px"}
+            flexWrap={"nowrap"}
           >
             <Box
               sx={{
                 py: 2,
                 display: "flex",
                 flexWrap: "nowrap",
-                width: "80%",
-                maxWidth: "80%",
+                width: "100%",
                 transform: "translateY(8px)",
               }}
+              ref={headingRef}
             >
               <Heading2>Drawing Files</Heading2>
               <Heading2 sx={{ px: 1, fontSize: 16, color: "#605C5C" }}>
                 {selectedGroupName ? `>` : ""}
               </Heading2>
-              <Heading2 sx={{ textTransform: "capitalize", color: "#605C5C" }}>
-                {selectedGroupName}
-              </Heading2>
+              <Tooltip title={selectedGroupName}>
+                <Heading2
+                  className="ellipsis"
+                  sx={{
+                    maxWidth: `${headingRefDimension.width - 160}px`,
+                    textTransform: "capitalize",
+                    color: "#605C5C",
+                  }}
+                >
+                  {selectedGroupName}
+                </Heading2>
+              </Tooltip>
             </Box>
             <Grid
               item
