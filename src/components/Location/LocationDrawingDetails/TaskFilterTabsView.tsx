@@ -3,6 +3,7 @@ import { capitalize } from "lodash";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
+import { updateTaskListFilter } from "utills/common";
 import StyledFilterTab from "./StyledFilterTab";
 
 interface TaskFilterTabsViewProps {
@@ -16,6 +17,11 @@ export default function TaskFilterTabsView({
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
+
+  const updatedData = {
+    ...taskListFilter,
+    isAllSelected: updateTaskListFilter(taskListFilter),
+  };
 
   const tabsColor: { [key: string]: string } = {
     unread: "#E2E4E5",
@@ -32,35 +38,34 @@ export default function TaskFilterTabsView({
   };
 
   const handleChange = (value: boolean, filter: string, key?: string) => {
-    let oldFilter = { ...taskListFilter };
     if (filter === "isAllSelected") {
-      oldFilter[filter] = value;
-      for (const topLevelFilter in oldFilter) {
-        if (Object.prototype.hasOwnProperty.call(oldFilter, topLevelFilter)) {
-          for (const property in oldFilter[topLevelFilter]) {
+      updatedData[filter] = value;
+      for (const topLevelFilter in updatedData) {
+        if (Object.prototype.hasOwnProperty.call(updatedData, topLevelFilter)) {
+          for (const property in updatedData[topLevelFilter]) {
             if (
               Object.prototype.hasOwnProperty.call(
-                oldFilter[topLevelFilter],
+                updatedData[topLevelFilter],
                 property
               )
             ) {
-              oldFilter[topLevelFilter][property] = value;
+              updatedData[topLevelFilter][property] = value;
             }
           }
         }
       }
     } else if (key) {
-      oldFilter[filter][key] = value;
+      updatedData[filter][key] = value;
     }
-    dispatch(taskActions.updateDrawingFilters(oldFilter));
+    dispatch(taskActions.updateDrawingFilters(updatedData));
   };
 
   const RenderFilterTabs = () => {
-    let filterKeys = Object.keys(taskListFilter).filter(
+    let filterKeys = Object.keys(updatedData).filter(
       (item, index) => index < 3
     );
     return filterKeys.map((filterKey) => {
-      let keys = Object.keys(taskListFilter[filterKey]);
+      let keys = Object.keys(updatedData[filterKey]);
       return (
         <Grid container sx={{ paddingTop: "16px", paddingBottom: "16px" }}>
           <Grid item xs={4} md={4}>
@@ -79,7 +84,7 @@ export default function TaskFilterTabsView({
             justifyContent="flex-end"
           >
             {keys.map((key) => {
-              let value = taskListFilter[filterKey][key];
+              let value = updatedData[filterKey][key];
               return (
                 <Grid item>
                   <StyledFilterTab
@@ -124,7 +129,7 @@ export default function TaskFilterTabsView({
         <Button
           size="small"
           onClick={() =>
-            handleChange(!taskListFilter.isAllSelected, "isAllSelected")
+            handleChange(!updatedData.isAllSelected, "isAllSelected")
           }
           sx={{
             fontSize: "12px",
@@ -133,7 +138,7 @@ export default function TaskFilterTabsView({
             textTransform: "none",
           }}
         >
-          {taskListFilter.isAllSelected ? "Deselect all" : "Select all"}
+          {updatedData.isAllSelected ? "Deselect all" : "Select all"}
         </Button>
       </Box>
       <Divider sx={{ marginTop: "16px", marginBottom: "16px" }} />

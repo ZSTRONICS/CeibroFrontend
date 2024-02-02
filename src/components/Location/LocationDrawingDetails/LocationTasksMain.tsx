@@ -45,14 +45,14 @@ function LocationTasksMain(props: IProps) {
       // If the taskCardListRef is not ready yet, wait for 5 milliseconds and try again
       setTimeout(() => {
         clearTaskCardListCache();
-      }, 5);
+      }, 10);
     }
   };
   useEffect(() => {
     setTimeout(() => {
       clearTaskCardListCache();
     }, 10);
-  }, [allTasks.length, allEvents.length]);
+  }, [taskListFilter, allTasks.length, allEvents.length]);
   const markTaskAsSeen = (taskId: string): void => {
     dispatch(
       taskActions.taskSeen({
@@ -83,7 +83,7 @@ function LocationTasksMain(props: IProps) {
     }
     setTimeout(() => {
       clearTaskCardListCache();
-    }, 5);
+    }, 10);
   }, [selectedLocalTask, selectedLocalTask?.events?.length]);
 
   const LocationTaskRow = ({ index, style }: any) => {
@@ -128,7 +128,7 @@ function LocationTasksMain(props: IProps) {
           itemCount={allTasks.length}
           overscanCount={20}
           layout="vertical"
-          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 14}
+          itemSize={(index) => getTaskCardHeight(allTasks[index]) + 3}
           width={"100%"}
         >
           {LocationTaskRow}

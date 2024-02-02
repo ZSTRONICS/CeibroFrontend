@@ -199,6 +199,14 @@ export function searchInData(
   });
 }
 
+export const updateTaskListFilter = (filter: any) => {
+  const isAnyStateFalse = Object.values(filter).some(
+    (TaskFilter: any) =>
+      Object.values(TaskFilter).some((state) => state === false)
+  );
+  return !isAnyStateFalse;
+}
+
 
 export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
   return tasks.filter(condition);

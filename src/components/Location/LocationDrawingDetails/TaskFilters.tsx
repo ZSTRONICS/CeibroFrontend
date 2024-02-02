@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { taskActions } from "redux/action";
 import { RootState } from "redux/reducers";
+import { updateTaskListFilter } from "utills/common";
 import TaskFilterTabsView from "./TaskFilterTabsView";
 
 const tabsColor: any = {
@@ -32,6 +33,12 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
   const taskListFilter = useSelector(
     (state: RootState) => state.task.drawingTaskFilters
   );
+
+  const updatedData = {
+    ...taskListFilter,
+    isAllSelected: updateTaskListFilter(taskListFilter),
+  };
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -46,30 +53,29 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
     filter: string,
     key?: string
   ) => {
-    let oldFilter = { ...taskListFilter };
     if (filter === "isAllSelected") {
-      oldFilter[filter] = event.target.checked;
-      for (const topLevelFilter in oldFilter) {
-        if (Object.prototype.hasOwnProperty.call(oldFilter, topLevelFilter)) {
-          for (const property in oldFilter[topLevelFilter]) {
+      updatedData[filter] = event.target.checked;
+      for (const topLevelFilter in updatedData) {
+        if (Object.prototype.hasOwnProperty.call(updatedData, topLevelFilter)) {
+          for (const property in updatedData[topLevelFilter]) {
             if (
               Object.prototype.hasOwnProperty.call(
-                oldFilter[topLevelFilter],
+                updatedData[topLevelFilter],
                 property
               )
             ) {
-              oldFilter[topLevelFilter][property] = event.target.checked;
+              updatedData[topLevelFilter][property] = event.target.checked;
             }
           }
         }
       }
     } else if (key) {
-      if (oldFilter.isAllSelected) {
-        oldFilter["isAllSelected"] = false;
+      if (updatedData.isAllSelected) {
+        updatedData["isAllSelected"] = false;
       }
-      oldFilter[filter][key] = event.target.checked;
+      updatedData[filter][key] = event.target.checked;
     }
-    dispatch(taskActions.updateDrawingFilters(oldFilter));
+    dispatch(taskActions.updateDrawingFilters(updatedData));
   };
 
   const renderCheckbox = (
@@ -98,10 +104,10 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            '@media screen and (max-width: 1150px)': {
-              flexDirection: 'row',
-              alignItems: 'start',
-              paddingLeft: '10px',
+            "@media screen and (max-width: 1150px)": {
+              flexDirection: "row",
+              alignItems: "start",
+              paddingLeft: "10px",
             },
           }}
         >
@@ -110,9 +116,9 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
               fontFamily: "Inter",
               fontSize: "12px",
               fontWeight: "500px",
-              '@media screen and (max-width: 1150px)': {
-                width: '70px',
-                marginTop: '5px',
+              "@media screen and (max-width: 1150px)": {
+                width: "70px",
+                marginTop: "5px",
               },
             }}
           >
@@ -120,11 +126,11 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
           </Typography>
           <Box
             sx={{
-              '@media screen and (min-width:1000px) and (max-width: 1150px)': {
-                width: '80px',
-                display: 'flex',
+              "@media screen and (min-width:1000px) and (max-width: 1150px)": {
+                width: "80px",
+                display: "flex",
                 justifyContent: "space-between",
-                alignItems: 'center',
+                alignItems: "center",
               },
             }}
           >
@@ -142,14 +148,18 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
   return (
     <>
       {!isSmallView && (
-        <Grid sx={{
-          display: 'flex',
-          '@media screen and (max-width: 1370px)': {
-            flexDirection: 'column',
-            alignItems: 'start',
-          },
-        }} container alignItems="center">
-          <Grid item xl={1} >
+        <Grid
+          sx={{
+            display: "flex",
+            "@media screen and (max-width: 1370px)": {
+              flexDirection: "column",
+              alignItems: "start",
+            },
+          }}
+          container
+          alignItems="center"
+        >
+          <Grid item xl={1}>
             <Box
               //   bgcolor={tabsColor.unRead}
               sx={{
@@ -157,7 +167,7 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
                 flexDirection: "column",
                 alignItems: "center",
                 paddingLeft: "8px",
-                minWidth: '30%'
+                minWidth: "30%",
               }}
             >
               <Typography
@@ -169,78 +179,97 @@ function TaskFilters({ isSmallView }: TaskFiltersProps) {
               >
                 All
               </Typography>
-              <Box  >
+              <Box>
                 <Checkbox
-                  checked={taskListFilter.isAllSelected}
+                  checked={updatedData.isAllSelected}
                   onChange={(event) => handleChange(event, "isAllSelected")}
                   sx={{ padding: 0 }}
                 />
               </Box>
             </Box>
           </Grid>
-          <Box sx={{
-            width: '85%', display: 'flex',
-            '@media screen and (max-width: 1370px)': {
-              width: '100%',
-            },
-          }} >
-            <Box sx={{
-              width: '90%', display: 'flex', justifyContent: 'center',
-              '@media screen and (max-width: 1150px)': {
-                flexDirection: 'column',
-                alignItems: 'start',
+          <Box
+            sx={{
+              width: "85%",
+              display: "flex",
+              "@media screen and (max-width: 1370px)": {
+                width: "100%",
               },
-            }} >
+            }}
+          >
+            <Box
+              sx={{
+                width: "90%",
+                display: "flex",
+                justifyContent: "center",
+                "@media screen and (max-width: 1150px)": {
+                  flexDirection: "column",
+                  alignItems: "start",
+                },
+              }}
+            >
               {renderFilterColumns("From me", "fromMe")}
               {renderFilterColumns("To me", "toMe")}
               {renderFilterColumns("Hidden", "hidden")}
             </Box>
-            <Grid sx={{
-              width: '10%',
-              '@media screen and (max-width: 1370px)': {
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-              },
-            }} xl={1} item>
+            <Grid
+              sx={{
+                width: "10%",
+                "@media screen and (max-width: 1370px)": {
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                },
+              }}
+              xl={1}
+              item
+            >
               <IconButton
                 sx={{
-                  marginLeft: '20px',
-                  '@media screen and (min-width: 1370px) and (max-width: 1535px)': {
-                    transform: 'translateX(10px)',
-                    marginLeft: '0px',
-                  },
-                  '@media screen and (max-width: 1370px)': {
-                    marginRight: '15px',
-                    marginLeft: '0px',
+                  marginLeft: "20px",
+                  "@media screen and (min-width: 1370px) and (max-width: 1535px)":
+                    {
+                      transform: "translateX(10px)",
+                      marginLeft: "0px",
+                    },
+                  "@media screen and (max-width: 1370px)": {
+                    marginRight: "15px",
+                    marginLeft: "0px",
                   },
                 }}
-                onClick={handleMenuOpen}>
+                onClick={handleMenuOpen}
+              >
                 <ArrowDropDownIcon />
               </IconButton>
             </Grid>
           </Box>
-        </Grid >
-      )
-      }
+        </Grid>
+      )}
 
-      {
-        isSmallView && (
-          <Grid container alignItems="center" justifyContent="center">
-            <Grid
-              onClick={handleMenuOpen}
-              sx={{ cursor: 'pointer', borderBottom: 'solid 1px #818181', width: '100%', display: 'flex', justifyContent: 'center', marginLeft: '-8px' }}
-              item
-            >
-              <FilterAltOutlined color="primary" sx={{ transform: 'translateY(7px)' }} />
-              <IconButton
-                onClick={handleMenuOpen}>
-                <ArrowDropDownIcon />
-              </IconButton>
-            </Grid>
+      {isSmallView && (
+        <Grid container alignItems="center" justifyContent="center">
+          <Grid
+            onClick={handleMenuOpen}
+            sx={{
+              cursor: "pointer",
+              borderBottom: "solid 1px #818181",
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              marginLeft: "-8px",
+            }}
+            item
+          >
+            <FilterAltOutlined
+              color="primary"
+              sx={{ transform: "translateY(7px)" }}
+            />
+            <IconButton onClick={handleMenuOpen}>
+              <ArrowDropDownIcon />
+            </IconButton>
           </Grid>
-        )
-      }
+        </Grid>
+      )}
       <Menu
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
