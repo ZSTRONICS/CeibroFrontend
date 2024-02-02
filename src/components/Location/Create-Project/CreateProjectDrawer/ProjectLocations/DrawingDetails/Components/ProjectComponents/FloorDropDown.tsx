@@ -4,7 +4,7 @@ import { PROJECT_CONFIG } from "config";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { PROJECT_APIS } from "redux/action";
-import { ALL_FLOOR_NAMES } from "utills/common";
+import { ALL_FLOOR_NAMES, createFloorDropdownOption } from "utills/common";
 interface Props {
   projectFloors: Floor[];
   findSelectedFloor: (selectedFloor: any) => void;
@@ -14,44 +14,36 @@ function FloorDropDown(props: Props) {
   const { projectFloors, findSelectedFloor, projectId } = props;
   const dispatch = useDispatch();
   const [newFloors, setNewFloors] = useState<any[]>([]);
-  const [allFloorsRes, setAllFloorsRes] = useState<any[]>([]);
 
-  const getFloorDropdownOptions = () => {
-    const projectFloorsArr = projectFloors.map((floor) => floor.floorName);
-    return ALL_FLOOR_NAMES.map((item: any) => {
-      const isShown = projectFloorsArr.includes(item);
-      return {
-        label: "*",
-        value: item,
-        _id: "",
-        isShown,
-        isPermanenetOption: isShown,
-      };
-    });
-  };
-
-  const [getAllFloorOptions, setAllFloorOptions] = useState(
-    getFloorDropdownOptions()
+  const floorDropdownOptions = createFloorDropdownOption(
+    projectFloors,
+    ALL_FLOOR_NAMES
   );
 
-  const handleCreateFloor = (drwingFloorName: string) => {
+  const [getAllFloorOptions, setAllFloorOptions] =
+    useState(floorDropdownOptions);
+
+  const handleCreateFloor = (floorNames: string[]) => {
     const payload = {
       body: {
-        floorName: drwingFloorName,
+        floorName: floorNames,
       },
       other: projectId,
       success: (res: any) => {
-        setAllFloorsRes((prev) => [...prev, res.data.floor]);
+        const updatedFloorDropdown = createFloorDropdownOption(
+          [...projectFloors, ...res.data.floor],
+          ALL_FLOOR_NAMES
+        );
+        setAllFloorOptions(updatedFloorDropdown);
+        setNewFloors([]);
         dispatch({
-          type: PROJECT_CONFIG.UPDATE_PROJECT_FLOORS,
+          type: PROJECT_CONFIG.PROJECT_FLOOR_CREATED,
           payload: res.data.floor,
         });
       },
     };
     dispatch(PROJECT_APIS.createFloor(payload));
   };
-
-  // console.log("allFloorsRes", allFloorsRes);
 
   return (
     <>
@@ -63,29 +55,10 @@ function FloorDropDown(props: Props) {
             allOptions: [...getAllFloorOptions],
             recentOptions: [],
           }}
-          isDropDownOpen={(isDropDownOPen: boolean) => {}}
           handleCreateAllFloors={() => {
             if (newFloors.length > 0) {
-              const updatedFloorOptions = getAllFloorOptions.map((item) => {
-                const matchingFloor = newFloors.find(
-                  (floor) => floor.value === item.value
-                );
-
-                if (matchingFloor && !matchingFloor.isPermanenetOption) {
-                  handleCreateFloor(matchingFloor.value);
-                  return {
-                    ...item,
-                    _id: "",
-                    label: "*",
-                    value: matchingFloor.value,
-                    isShown: true,
-                    isPermanenetOption: true,
-                  };
-                }
-
-                return item;
-              });
-              setAllFloorOptions(updatedFloorOptions);
+              const floorNames = newFloors.map((floor) => floor.value);
+              handleCreateFloor(floorNames);
             }
           }}
           handleSelectedMenuList={(selected: any) => {
@@ -96,11 +69,9 @@ function FloorDropDown(props: Props) {
           }}
           createCallback={() => {}}
           handleChangeValues={(e) => {
-            console.log("e", e);
             const newValue = getAllFloorOptions.map((item) => {
               if (item.value === e && !item.isPermanenetOption) {
                 item.isShown = !item.isShown;
-                // Run mutlitple APIs here to add floors.
               }
               return item;
             });

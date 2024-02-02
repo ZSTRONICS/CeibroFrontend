@@ -208,6 +208,30 @@ export const updateTaskListFilter = (filter: any) => {
 }
 
 
+/**
+  * Creates a dropdown option for each floor in the project, based on the provided project floors and all floor names.
+  *
+  * @param {Array} projectFloors - An array of objects representing the project floors
+  * @param {Array} allFloorNames - An array of strings representing all floor names
+  * @return {Array} An array of dropdown options for each floor
+  */
+export const createFloorDropdownOption = (
+  allFloors: Floor[],
+  allFloorNames: string[]
+) => {
+  const floorNames = allFloors.map((floor) => floor.floorName);
+  return allFloorNames.map((item) => {
+    const isShown = floorNames.includes(item);
+    return {
+      label: "*",
+      value: item,
+      _id: "",
+      isShown,
+      isPermanenetOption: isShown,
+    };
+  });
+};
+
 export const filterTasksByCondition = (tasks: ITask[], condition: (task: ITask) => boolean): ITask[] => {
   return tasks.filter(condition);
 };

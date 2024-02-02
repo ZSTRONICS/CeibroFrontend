@@ -35,7 +35,6 @@ interface IProps {
     name: keyof CreateNewTaskFormType
   ) => void;
   handleSelectedMenuList: (option: any) => void;
-  isDropDownOpen?: (open: boolean) => void;
   handleCreateAllFloors?: () => void;
 }
 
@@ -55,7 +54,6 @@ function CustomDropDown(props: IProps) {
     name,
     handleSelectedMenuList,
     handleCreateAllFloors,
-    isDropDownOpen,
   } = props;
 
   const [allFilterData, setAllFilterData] = React.useState<{
@@ -119,6 +117,7 @@ function CustomDropDown(props: IProps) {
       handleClose();
     } else {
       if (!item.isPermanenetOption) {
+        setSelected(item.value);
         handleChangeValues(item.value, name);
         handleSelectedMenuList(item);
       }
@@ -127,7 +126,6 @@ function CustomDropDown(props: IProps) {
   const handleClose = () => {
     setSearchQuery("");
     setOpen(false);
-    isDropDownOpen && isDropDownOpen(false);
     setShowAllFloorItems(false);
     setAddFloorLabel("Add Floor");
     // handleSelectedMenuList(null);
@@ -141,7 +139,6 @@ function CustomDropDown(props: IProps) {
 
   const handleOpen = () => {
     setOpen(true);
-    isDropDownOpen && isDropDownOpen(true);
   };
   const filteredData: { [key: string]: OptionType[] } = {};
   const handleSearchChange = (

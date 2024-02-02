@@ -33,6 +33,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   } = useSelector((state: RootState) => state.project);
   const { allTasksAllEvents } = useSelector((state: RootState) => state.task);
   const { projectId, groupId } = useParams<any>();
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedFloor, setSelectedFloor] = useState<Floor | null>(null);
   const dispatch = useDispatch();
   const { containerRef: headingRef, dimensions: headingRefDimension } =
@@ -47,7 +48,6 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
       setContHeight(searchContainer.current.clientHeight + 25);
     }
   }, [windowActualHeight]);
-
   const handleSearchTextChange = (newSearchText: string) => {
     const lowerSearchString = newSearchText.toLowerCase();
     const filteredDrawingFiles = selectedDrawingFiles.filter(
@@ -59,7 +59,6 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
     setSearchText(newSearchText);
   };
   const findSelectedFloor = (selectedMenu: any) => {
-    // console.log("selectedMenu", selectedMenu);
     if (selectedMenu) {
       const findFloor = projectFloors.find(
         (floor: any) => floor.floorName === selectedMenu.value
@@ -90,6 +89,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
   };
   const handleCreateDrawing = () => {
     try {
+      setIsLoading(true);
       const formData = new FormData();
       const metadataObject = [
         {
@@ -115,6 +115,8 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           body: formData,
           success: (res: any) => {
             if (res.data) {
+              setIsLoading(false);
+
               dispatch({
                 type: PROJECT_CONFIG.GROUP_DRAWING_FILE_UPLOADED,
                 payload: res.data,
@@ -127,6 +129,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
         dispatch(PROJECT_APIS.addNewDrawing(payload));
       }
     } catch (error) {
+      setIsLoading(false);
       console.error("Error occurred while uploading file:", error);
     }
   };
@@ -293,6 +296,7 @@ function LocationDrawingFiles({ windowActualHeight }: Props) {
           handleClose={closeModal}
           children={
             <CreateDrawing
+              isLoading={isLoading}
               projectId={projectId}
               isFloorSelected={selectedFloor ? true : false}
               findSelectedFloor={findSelectedFloor}

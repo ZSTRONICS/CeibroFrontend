@@ -226,8 +226,10 @@ const NavigationReducer = (
       return {
         ...state,
       }
+    case PROJECT_CONFIG.PROJECT_GROUP_REMOVED:
     case PROJECT_CONFIG.PROJECT_GROUP_DELETED:
-      const deletedGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload))
+      const groupId = action.payload.removedGroupId ? action.payload.removedGroupId : action.payload
+      const deletedGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(groupId))
       if (deletedGroupIndex > -1) {
         state.allGroups.splice(deletedGroupIndex, 1)
       }
@@ -257,10 +259,43 @@ const NavigationReducer = (
       const groupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload._id))
       if (groupIndex > -1) {
         state.allGroups[groupIndex] = action.payload;
+      } else {
+        state.allGroups = [...state.allGroups, action.payload]
+        console.log("PROJECT_GROUP_UPDATED", action.payload)
       }
       return {
         ...state,
       };
+
+    // case PROJECT_CONFIG.PROJECT_GROUP_REMOVED:
+    //   const findDeletedGroupIndex = state.allGroups.findIndex((group: any) => String(group._id) === String(action.payload))
+    //   if (groupIndex > -1) {
+    //     state.allGroups[groupIndex] = action.payload;
+    //     console.log(state.allGroups[groupIndex])
+    //   }
+    //   return {
+    //     ...state,
+    //   };
+
+    case PROJECT_CONFIG.PROJECT_FLOOR_CREATED: {
+      if (action.payload.length > 0) {
+        action.payload.forEach((commingFloor: any) => {
+          const matchingFloorIndex = state.projectFloors.findIndex((floor: any) => String(floor._id) === String(commingFloor._id));
+          if (matchingFloorIndex === -1) {
+            state.projectFloors.push(commingFloor);
+          }
+        });
+      } else {
+        const findFloorIndex = state.projectFloors.findIndex((floor: any) => String(floor._id) === String(action.payload._id))
+        if (findFloorIndex === -1) {
+          state.projectFloors = [...state.projectFloors, action.payload]
+        }
+      }
+
+      return {
+        ...state,
+      }
+    }
 
     case PROJECT_CONFIG.UPDATE_PROJECT_FLOORS: {
       return {

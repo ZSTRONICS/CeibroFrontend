@@ -3,13 +3,15 @@ import PublicOutlinedIcon from "@mui/icons-material/PublicOutlined";
 import { Box, IconButton } from "@mui/material";
 import { CustomStack, Heading2, LabelTag } from "components/CustomTags";
 import { GenericMenu } from "components/GenericComponents";
+import { findData } from "components/Location/utils";
 import { FavIcon, UnFavIcon } from "components/material-ui/icons";
 import { PROJECT_CONFIG } from "config";
 import { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { PROJECT_APIS } from "redux/action";
+import { RootState } from "redux/reducers";
 
 interface Props {
   groups: Group[];
@@ -26,6 +28,9 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
   const dispatch = useDispatch();
   const history = useHistory();
   const { projectId, groupId } = useParams<RouteParams>();
+  const { allGroups } = useSelector((state: RootState) => state.project);
+  let selectedGroup: any = findData(allGroups, "_id", groupId);
+
   const handleDrawingFiles = useCallback(
     (projectId: string, group: Group) => {
       dispatch({
@@ -51,7 +56,10 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
         handleDrawingFiles(projectId, group);
       }
     }
-  }, [groupId]);
+    if (!selectedGroup) {
+      history.push(`/location/${projectId}`);
+    }
+  }, [groupId, selectedGroup]);
 
   const handleGroupUpdated = (groupId: string, ispublicGroup: boolean) => {
     dispatch(
@@ -87,18 +95,22 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
   };
 
   const handleGroupFavUnFav = (group: Group) => {
-    // dispatch(
-    //   PROJECT_APIS.groupFavUnFav({
-    //     other: {
-    //       groupId: groupId,
-    //       isGroupFav: !group.isFavoriteByMe,
-    //     },
-    //     // success: (res: any) => {
-    //     // },
-    //   })
-    // );
+    dispatch(
+      PROJECT_APIS.groupFavUnFav({
+        other: {
+          groupId: group._id,
+          isGroupFav: !group.isFavoriteByMe,
+        },
+        success: (res: any) => {
+          // dispatch({
+          //   type: PROJECT_CONFIG.PROJECT_GROUP_FAV_UNFAV,
+          //   payload: res.data.group,
+          // })
+        },
+      })
+    );
   };
-
+  // console.log("groups>>", groups);
   return (
     <>
       {groups.map((group: Group) => {
@@ -111,6 +123,9 @@ function GroupCard({ groups, projectName, projectFloors }: Props) {
           isCreator,
         } = group;
         const isSelectedGroup = _id === groupId;
+        if (isSelectedGroup) {
+          console.log("isSelectedGroup>>>", isSelectedGroup);
+        }
         return (
           <Box sx={{ py: 0.5 }} key={_id}>
             <Box style={{ width: "100%" }}>

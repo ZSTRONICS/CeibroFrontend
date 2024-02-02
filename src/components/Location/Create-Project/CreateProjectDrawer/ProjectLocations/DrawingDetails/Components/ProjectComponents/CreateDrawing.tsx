@@ -6,6 +6,7 @@ interface Props {
   drawingFile: any;
   isFloorSelected: boolean;
   projectId: string;
+  isLoading: boolean;
   handleCreateDrawing: () => void;
   projectFloors: Floor[];
   selectedGroupName: string;
@@ -20,6 +21,7 @@ function CreateDrawing({
   selectedGroupName,
   findSelectedFloor,
   projectId,
+  isLoading,
 }: Props) {
   return (
     <>
@@ -85,7 +87,7 @@ function CreateDrawing({
             transform: "translateX(100%)",
           }}
           onClick={handleCreateDrawing}
-          disabled={!selectedGroupName || !isFloorSelected}
+          disabled={isLoading || !selectedGroupName || !isFloorSelected}
         >
           Create
         </Button>

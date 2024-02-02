@@ -1,8 +1,10 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import CustomModal from "components/Modal";
 import { Drawing, ITask } from "constants/interfaces";
+import { useOpenCloseModal } from "hooks";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import { taskActions } from "redux/action";
 import { PROJECT_APIS } from "redux/action/project.action";
 import { RootState } from "redux/reducers";
@@ -21,10 +23,17 @@ function LocationDrawingDetails() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { projectId, groupId, drawingId } = useParams<RouteParams>();
+  const { isOpen, closeModal, openModal } = useOpenCloseModal();
   const isRenderEffect = useRef<boolean>(true);
   const { allProjects, allGroups } = useSelector(
     (state: RootState) => state.project
   );
+  let selectedGroup: any = findData(allGroups, "_id", groupId);
+  useEffect(() => {
+    if (!selectedGroup) {
+      openModal();
+    }
+  }, [selectedGroup]);
   const {
     allTasksAllEvents,
     loadingAllTasksAllEvents,
@@ -118,6 +127,46 @@ function LocationDrawingDetails() {
         headersize={headersize}
         setHeadersize={setHeadersize}
       />
+
+      {isOpen === true && (
+        <CustomModal
+          maxWidth={"sm"}
+          showFullWidth={true}
+          showDivider={true}
+          showCloseBtn={false}
+          showTitleWithLogo={false}
+          title={"You no longer have access to this group!"}
+          isOpen={isOpen}
+          handleClose={closeModal}
+          children={
+            <>
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "80px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Button>
+                  <Link
+                    style={{
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "700",
+                      color: "#0076c8",
+                    }}
+                    to={`/location/${groupId}`}
+                  >
+                    Back
+                  </Link>
+                </Button>
+              </Box>
+            </>
+          }
+        />
+      )}
     </Box>
   );
 }

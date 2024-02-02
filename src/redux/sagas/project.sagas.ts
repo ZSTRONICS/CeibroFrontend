@@ -69,7 +69,7 @@ const groupFavUnFav = apiCall({
   useV2Route: true,
   type: PROJECT_CONFIG.GROUP_FAV_UNFAV,
   method: "post",
-  path: (payload) => `/project/group/${payload.other.isGroupFav}/${payload.other.groupId}`,
+  path: (payload) => `/project/group/favorite/${payload.other.isGroupFav}/${payload.other.groupId}`,
 });
 
 const projectHideUnhide = apiCall({
