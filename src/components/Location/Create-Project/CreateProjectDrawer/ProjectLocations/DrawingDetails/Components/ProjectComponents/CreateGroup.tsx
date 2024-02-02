@@ -62,7 +62,7 @@ function CreateGroup({ projectId, closeModal }: Props) {
         <Box>
           <TextField
             sx={{ width: "100%" }}
-            inputProps={{ style: { background: "white" } }}
+            inputProps={{ maxLength: 50, style: { background: "white" } }}
             variant="filled"
             required={true}
             name="groupName"
@@ -73,6 +73,17 @@ function CreateGroup({ projectId, closeModal }: Props) {
               setGroupName(e.target.value);
             }}
           />
+          <span
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              fontSize: "12px",
+              fontWeight: 500,
+              color: "#757575",
+            }}
+          >
+            {`${groupName.length}/50`}
+          </span>
         </Box>
 
         <Button
